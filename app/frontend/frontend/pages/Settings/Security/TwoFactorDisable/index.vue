@@ -1,6 +1,6 @@
 <template>
-  <SecurePage class="row">
-    <div v-if="currentUser" class="col-12">
+  <div v-if="currentUser" class="row">
+    <div class="col-12">
       <div class="row">
         <div class="col-12">
           <h1>{{ $t("headlines.settings.twoFactor.disable") }}</h1>
@@ -51,7 +51,7 @@
         </div>
       </div>
     </div>
-  </SecurePage>
+  </div>
 </template>
 
 <script lang="ts">
@@ -63,7 +63,6 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { enabledRouteGuard } from "@/frontend/utils/RouteGuards/TwoFactor";
 import twoFactorCollection from "@/frontend/api/collections/TwoFactor";
 import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
-import SecurePage from "@/frontend/components/core/SecurePage/index.vue";
 
 @Component<TwoFactorDisable>({
   beforeRouteEnter: enabledRouteGuard,

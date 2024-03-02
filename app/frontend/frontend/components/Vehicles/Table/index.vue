@@ -178,7 +178,7 @@ import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue"
 import HangarEmptyTable from "@/frontend/components/HangarEmptyTable/index.vue";
 import WishlistEmptyTable from "@/frontend/components/WishlistEmptyTable/index.vue";
 import { useNoty } from "@/shared/composables/useNoty";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { type Vehicle } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 

@@ -52,7 +52,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 // import hangarGroupsCollection from "@/frontend/api/collections/HangarGroups";
 import type { HangarGroup } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   vehicleIds: string[];

@@ -19,6 +19,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "settings.twoFactor.enable",
       needsAuthentication: true,
+      needsSecurityConfirm: true,
     },
   },
   {
@@ -29,6 +30,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "settings.twoFactor.disable",
       needsAuthentication: true,
+      needsSecurityConfirm: true,
     },
   },
   {
@@ -41,6 +43,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "settings.twoFactor.backupCodes",
       needsAuthentication: true,
+      needsSecurityConfirm: true,
     },
   },
 ];

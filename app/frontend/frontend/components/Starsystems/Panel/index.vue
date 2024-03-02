@@ -46,7 +46,7 @@ import Panel from "@/shared/components/Panel/index.vue";
 import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/Panel/Body/index.vue";
 import CelestialObjectPanel from "@/frontend/components/CelestialObjects/Panel/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useQuery } from "@tanstack/vue-query";
 import type { Starsystem } from "@/services/fyApi";

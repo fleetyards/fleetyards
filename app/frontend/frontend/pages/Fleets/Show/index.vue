@@ -95,7 +95,7 @@
 <script lang="ts" setup>
 import Avatar from "@/shared/components/Avatar/index.vue";
 import FleetWrapper from "@/frontend/components/Fleets/FleetWrapper/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useFleetQuery } from "@/frontend/composables/useFleetQuery";
 
 const route = useRoute();

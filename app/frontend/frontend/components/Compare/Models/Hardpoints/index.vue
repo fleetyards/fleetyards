@@ -55,7 +55,7 @@
 <script lang="ts" setup>
 import Collapsed from "@/shared/components/Collapsed.vue";
 import HardpointGroup from "@/frontend/components/Models/Hardpoints/Group/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { Model, ModelHardpoint } from "@/services/fyApi";
 
 type Props = {

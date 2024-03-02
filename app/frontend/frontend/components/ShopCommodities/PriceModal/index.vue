@@ -240,7 +240,7 @@ import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useNoty } from "@/shared/composables/useNoty";
 import type { CommodityPriceInput, Shop } from "@/services/fyApi";
 import { CommodityPricePathEnum } from "@/services/fyApi";

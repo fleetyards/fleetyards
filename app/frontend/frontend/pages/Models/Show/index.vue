@@ -220,7 +220,7 @@ import ModelSpeedMetrics from "@/frontend/components/Models/SpeedMetrics/index.v
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import HoloViewer from "@/frontend/components/core/HoloViewer/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useHangarItems } from "@/frontend/composables/useHangarItems";
 import { useWishlistItems } from "@/frontend/composables/useWishlistItems";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";

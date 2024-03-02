@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useNoty } from "@/shared/composables/useNoty";
 import { useRoute, useRouter } from "vue-router";
 

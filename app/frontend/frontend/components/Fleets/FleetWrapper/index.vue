@@ -9,7 +9,7 @@
 <script lang="ts" setup>
 import AsyncData from "@/shared/components/AsyncData.vue";
 import { useFleetQuery } from "@/frontend/composables/useFleetQuery";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 
 type Props = {

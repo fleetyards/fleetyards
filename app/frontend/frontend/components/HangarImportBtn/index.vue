@@ -26,7 +26,7 @@
 import VueUploadComponent from "vue-upload-component";
 import type { VueUploadItem } from "vue-upload-component";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useNoty } from "@/shared/composables/useNoty";
 import type {
   BtnVariants,
@@ -81,8 +81,8 @@ const inputFilter = (
 ) => {
   if (newFile && !oldFile) {
     if (
-      !fileExtensionsList.value.some(
-        (extension) => newFile.name?.endsWith(extension),
+      !fileExtensionsList.value.some((extension) =>
+        newFile.name?.endsWith(extension),
       )
     ) {
       displayAlert({

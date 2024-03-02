@@ -92,7 +92,7 @@ import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import Addons from "./Addons/index.vue";
 import Packages from "./Packages/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { VehicleUpdateInput, type Vehicle } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useVehicleQueries } from "@/frontend/composables/useVehicleQueries";

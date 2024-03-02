@@ -83,7 +83,7 @@
 import Panel from "@/shared/components/Panel/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import type { ShopCommodityMinimal } from "@/services/fyApi";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 
 const { t, toNumber } = useI18n();
 

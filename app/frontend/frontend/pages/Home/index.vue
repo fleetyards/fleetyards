@@ -149,7 +149,7 @@ import { RouteLocationRaw } from "vue-router";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Support from "@/frontend/components/Support/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import Panel from "@/shared/components/Panel/index.vue";
 import TeaserPanel from "@/shared/components/TeaserPanel2/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";

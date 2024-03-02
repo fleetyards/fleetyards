@@ -23,7 +23,7 @@ import type {
   BtnVariants,
   BtnSizes,
 } from "@/shared/components/base/Btn/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import type { Vehicle, Model, VehiclePublic } from "@/services/fyApi";
 import { useMobile } from "@/shared/composables/useMobile";
 import type { SpinnerAlignment } from "@/shared/components/SmallLoader/index.vue";

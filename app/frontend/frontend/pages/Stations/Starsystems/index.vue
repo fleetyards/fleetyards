@@ -75,7 +75,7 @@ import Pagination from "@/shared/components/Paginator/index.vue";
 import StarsystemPanel from "@/frontend/components/Starsystems/Panel/index.vue";
 import mapImageUrl from "@/images/map.png";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useQuery } from "@tanstack/vue-query";

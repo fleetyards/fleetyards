@@ -1,136 +1,115 @@
 <template>
-  <div>
-    <transition name="fade" mode="out-in" appear>
-      <slot v-if="confirmed" />
-      <section
-        v-else
-        class="container confirm-access"
-        data-test="confirm-access"
-      >
-        <div class="row">
-          <div class="col-12">
-            <ValidationObserver
-              ref="form"
-              v-slot="{ handleSubmit }"
-              :small="true"
-            >
-              <form @submit.prevent="handleSubmit(confirmAccess)">
-                <h1>{{ $t("headlines.confirmAccess") }}</h1>
+  <section class="container confirm-access" data-test="confirm-access">
+    <div class="row">
+      <div class="col-12">
+        <form @submit.prevent="confirmAccess">
+          <h1>{{ t("headlines.confirmAccess") }}</h1>
 
-                <ValidationProvider
-                  v-slot="{ errors }"
-                  vid="password"
-                  rules="required"
-                  :name="$t('labels.password')"
-                  :slim="true"
-                >
-                  <FormInput
-                    id="password"
-                    v-model="password"
-                    :error="errors[0]"
-                    type="password"
-                    :autofocus="true"
-                  />
-                </ValidationProvider>
+          <FormInput
+            v-model="password"
+            name="password"
+            type="password"
+            :autofocus="true"
+          />
 
-                <Btn
-                  :loading="submitting"
-                  type="submit"
-                  :class="{ confirmed: confirmed }"
-                  data-test="submit-confirm-access"
-                  :block="true"
-                >
-                  {{ $t("actions.confirmAccess") }}
-                </Btn>
-              </form>
-            </ValidationObserver>
-          </div>
-        </div>
-      </section>
-    </transition>
-  </div>
+          <Btn
+            :loading="submitting"
+            type="submit"
+            :class="{ confirmed: confirmed }"
+            data-test="submit-confirm-access"
+            :block="true"
+          >
+            {{ t("actions.confirmAccess") }}
+          </Btn>
+        </form>
+      </div>
+    </div>
+  </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-import { Getter, Action } from "vuex-class";
-import { displayAlert } from "@/frontend/lib/Noty";
-import sessionCollection from "@/frontend/api/collections/Session";
+<script lang="ts" setup>
+import { useI18n } from "@/shared/composables/useI18n";
+import { useNoty } from "@/shared/composables/useNoty";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import { useSessionStore } from "@/frontend/stores/session";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useSessionQueries } from "@/frontend/composables/useSessionQueries";
+import { useForm } from "vee-validate";
 
-@Component<Signup>({
-  components: {
-    Btn,
-    FormInput,
+const { t } = useI18n();
+const { displayAlert } = useNoty(t);
+
+const sessionStore = useSessionStore();
+
+const submitting = ref(false);
+
+const confirmed = ref(!!sessionStore.accessConfirmed);
+
+// metaTitle = computed(() => {
+//   return t(`title.confirmAccess`);
+// });
+
+const comlink = useComlink();
+
+const validationSchema = {
+  password: "required",
+};
+
+const { useFieldModel, handleSubmit } = useForm({ validationSchema });
+
+const [password] = useFieldModel(["password"]);
+
+onMounted(() => {
+  comlink.on("access-confirmation-required", resetConfirmation);
+});
+
+onUnmounted(() => {
+  comlink.off("access-confirmation-required");
+});
+
+watch(
+  () => confirmed.value,
+  () => {
+    if (confirmed.value) {
+      comlink.emit("access-confirmed");
+    }
   },
-})
-export default class Signup extends Vue {
-  @Getter("accessConfirmed", { namespace: "session" }) accessConfirmed: boolean;
+);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  @Action("confirmAccess", { namespace: "session" }) saveConfirmAccess: any;
+const resetConfirmation = () => {
+  confirmed.value = false;
+  sessionStore.resetConfirmAccess();
+};
 
-  @Action("resetConfirmAccess", { namespace: "session" })
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  resetConfirmAccess: any;
+const { confirmAccessMutation } = useSessionQueries();
 
-  submitting = false;
+const confirmAccess = handleSubmit(async () => {
+  submitting.value = true;
 
-  password: string = null;
+  try {
+    await confirmAccessMutation.mutate({
+      password: password.value,
+    });
 
-  confirmed = false;
+    password.value = undefined;
+    submitting.value = false;
 
-  get metaTitle() {
-    return this.$t(`title.confirmAccess`);
+    await sessionStore.confirmAccess();
+
+    confirmed.value = true;
+  } catch (error) {
+    displayAlert({
+      text: t("messages.confirmAccess.failure"),
+    });
   }
+});
+</script>
 
-  mounted() {
-    this.$comlink.$on("access-confirmation-required", this.resetConfirmation);
-  }
-
-  created() {
-    if (this.accessConfirmed) {
-      this.confirmed = true;
-    }
-  }
-
-  beforeDestroy() {
-    this.$comlink.$off("access-confirmation-required");
-  }
-
-  @Watch("confirmed")
-  onConfirmedChange() {
-    if (this.confirmed) {
-      this.$comlink.$emit("access-confirmed");
-    }
-  }
-
-  resetConfirmation() {
-    this.confirmed = false;
-    this.resetConfirmAccess();
-  }
-
-  async confirmAccess() {
-    this.submitting = true;
-
-    const response = await sessionCollection.confirmAccess(this.password);
-
-    this.password = null;
-
-    this.submitting = false;
-
-    if (response) {
-      await this.saveConfirmAccess();
-      this.confirmed = true;
-    } else {
-      displayAlert({
-        text: this.$t("messages.confirmAccess.failure"),
-      });
-    }
-  }
-}
+<script lang="ts">
+export default {
+  name: "SecurePage",
+};
 </script>
 
 <style lang="scss" scoped>

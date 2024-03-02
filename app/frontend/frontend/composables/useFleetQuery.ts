@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/vue-query";
 import { useApiClient } from "@/frontend/composables/useApiClient";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 
 export const useFleetQuery = (fleetSlug: string) => {
   const { currentLocale } = useI18n();

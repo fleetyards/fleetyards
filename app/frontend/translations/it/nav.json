@@ -1,0 +1,64 @@
+{
+  "it": {
+    "nav": {
+      "home": "Home",
+      "back": "Indietro",
+      "models": { "index": "Navi" },
+      "compare": { "models": "Confronta" },
+      "manufacturers": "Produttori",
+      "images": "Immagini",
+      "videos": "Video",
+      "hangar": "Il Mio Hangar",
+      "login": "Login",
+      "logout": "Esci",
+      "signUp": "Registrati",
+      "privacyPolicy": "Informativa sulla privacy",
+      "privacySettings": "Impostazioni sulla privacy",
+      "impressum": "Info legali",
+      "admin": "Admin",
+      "fleets": {
+        "index": "Flotte",
+        "add": "Crea una nuova Flotta",
+        "invites": "Inviti",
+        "ships": "Navi",
+        "members": "Membri",
+        "stats": "Statistiche",
+        "settings": {
+          "index": "Impostazioni",
+          "fleet": "Impostazioni Della Flotta",
+          "membership": "Impostazioni dei Membri"
+        }
+      },
+      "rsiProfile": "Profilo RSI",
+      "tradeRoutes": "Rotte Commerciali",
+      "api": "Documentazione delle API",
+      "stats": "Statistiche",
+      "toggleSlimCollapse": "Comprimi",
+      "toggleSlimExpand": "Espandi",
+      "roadmap": {
+        "index": "Roadmap",
+        "overview": "Panoramica",
+        "changes": "Modifiche",
+        "ships": "Roadmap Delle Navi"
+      },
+      "rsiVerification": "Verifica RSI",
+      "settings": {
+        "index": "Impostazioni",
+        "profile": "Profilo",
+        "account": "Account",
+        "security": "Sicurezza",
+        "notifications": "Notifiche",
+        "hangar": "Hangar",
+        "verify": "Verifica dell'account RSI"
+      },
+      "starsystems": "Sistemi Stellari",
+      "stations": {
+        "index": "Stazioni",
+        "overview": "Panoramica",
+        "starsystems": "Per Sistemi Stellari",
+        "shops": "Negozi"
+      },
+      "reload": "Aggiornamento disponibile!"
+    }
+  }
+}

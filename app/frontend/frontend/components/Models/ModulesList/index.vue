@@ -26,7 +26,7 @@
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useQuery } from "@tanstack/vue-query";
 import AsyncData from "@/shared/components/AsyncData.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import TeaserPanel from "@/shared/components/TeaserPanel2/index.vue";
 
 type Props = {

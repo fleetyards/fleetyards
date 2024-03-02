@@ -180,7 +180,7 @@
 import Avatar from "@/shared/components/Avatar/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useSessionStore } from "@/frontend/stores/session";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useNoty } from "@/shared/composables/useNoty";
 import { useMobile } from "@/shared/composables/useMobile";

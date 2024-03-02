@@ -34,7 +34,7 @@
 <script lang="ts" setup>
 import loadoutListIcon from "@/images/icons/loadout-list-icon.svg";
 import type { ModelHardpoint } from "@/services/fyApi";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   hardpoint: ModelHardpoint;

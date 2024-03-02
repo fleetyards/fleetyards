@@ -107,7 +107,7 @@ import SpeedRows from "@/frontend/components/Compare/Models/Speed/index.vue";
 import HardpointRows from "@/frontend/components/Compare/Models/Hardpoints/index.vue";
 import Starship42Btn from "@/frontend/components/Starship42Btn/index.vue";
 import { type Model } from "@/services/fyApi";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useNavStore } from "@/frontend/stores/nav";
 

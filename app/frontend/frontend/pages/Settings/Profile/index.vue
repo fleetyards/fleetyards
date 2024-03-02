@@ -1,300 +1,271 @@
 <template>
-  <ValidationObserver v-if="form" v-slot="{ handleSubmit }" :slim="true">
-    <form @submit.prevent="handleSubmit(submit)">
-      <div class="row">
-        <div class="col-lg-12">
-          <h1>{{ $t("headlines.settings.profile") }}</h1>
-        </div>
+  <form @submit.prevent="submit">
+    <div class="row">
+      <div class="col-lg-12">
+        <h1>{{ t("headlines.settings.profile") }}</h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <FormFileInput
+          v-model="avatar"
+          name="avatar"
+          :extensions="fileExtensions"
+          :accept="acceptedMimeTypes"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <FormInput
+          id="rsiHandle"
+          v-model="rsiHandle"
+          icon="icon icon-rsi icon-label"
+          translation-key="user.rsiHandle"
+        />
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <FormInput
+          v-model="homepage"
+          name="homepage"
+          translation-key="homepage"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <FormInput
+          v-model="discord"
+          name="discord"
+          translation-key="discord"
+          icon="fab fa-discord"
+        />
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <FormInput
+          v-model="youtube"
+          name="youtube"
+          translation-key="youtube"
+          icon="fab fa-youtube"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <FormInput
+          v-model="twitch"
+          name="twitch"
+          translation-key="twitch"
+          icon="fab fa-twitch"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <FormInput
+          v-model="guilded"
+          name="guilded"
+          icon="fab fa-guilded"
+          :clearable="true"
+          translation-key="guilded"
+        />
       </div>
 
-      <div class="row">
-        <div class="col-12 col-md-6">
-          <ValidationProvider
-            v-slot="{ errors }"
-            vid="logo"
-            :name="$t('labels.user.avatar')"
-            :slim="true"
-          >
-            <div
-              :class="{ 'has-error has-feedback': errors[0] }"
-              class="form-group mb-3"
-            >
-              <VueUploadComponent
-                ref="upload"
-                :value="files"
-                name="uploadAvatar"
-                :extensions="fileExtensions"
-                :accept="acceptedMimeTypes"
-                class="avatar-uploader"
-                @input="updatedValue"
-                @input-filter="inputFilter"
-              />
-              <Avatar
-                :avatar="avatarUrl"
-                size="large"
-                :editable="true"
-                @upload="selectAvatar"
-                @destroy="removeAvatar"
-              />
-            </div>
-          </ValidationProvider>
-        </div>
+      <div class="col-12">
+        <br />
+        <Btn :loading="submitting" type="submit" size="large">
+          {{ t("actions.save") }}
+        </Btn>
       </div>
-      <div class="row">
-        <div class="col-12 col-md-6">
-          <FormInput
-            id="rsiHandle"
-            v-model="form.rsiHandle"
-            icon="icon icon-rsi icon-label"
-            translation-key="user.rsiHandle"
-          />
-        </div>
-      </div>
-      <hr />
-      <div class="row">
-        <div class="col-12 col-md-6">
-          <ValidationProvider
-            v-slot="{ errors }"
-            vid="homepage"
-            rules="url"
-            :name="$t('labels.homepage')"
-            :slim="true"
-          >
-            <FormInput
-              id="homepage"
-              v-model="form.homepage"
-              translation-key="homepage"
-              :error="errors[0]"
-            />
-          </ValidationProvider>
-        </div>
-        <div class="col-12 col-md-6">
-          <ValidationProvider
-            v-slot="{ errors }"
-            vid="discord"
-            rules="url"
-            :name="$t('labels.discord')"
-            :slim="true"
-          >
-            <FormInput
-              id="discord"
-              v-model="form.discord"
-              translation-key="discord"
-              icon="fab fa-discord"
-              :error="errors[0]"
-            />
-          </ValidationProvider>
-        </div>
-      </div>
-      <hr />
-      <div class="row">
-        <div class="col-12 col-md-6">
-          <ValidationProvider
-            v-slot="{ errors }"
-            vid="youtube"
-            rules="url"
-            :name="$t('labels.youtube')"
-            :slim="true"
-          >
-            <FormInput
-              id="youtube"
-              v-model="form.youtube"
-              translation-key="youtube"
-              icon="fab fa-youtube"
-              :error="errors[0]"
-            />
-          </ValidationProvider>
-        </div>
-        <div class="col-12 col-md-6">
-          <ValidationProvider
-            v-slot="{ errors }"
-            vid="twitch"
-            rules="url"
-            :name="$t('labels.twitch')"
-            :slim="true"
-          >
-            <FormInput
-              id="twitch"
-              v-model="form.twitch"
-              translation-key="twitch"
-              icon="fab fa-twitch"
-              :error="errors[0]"
-            />
-          </ValidationProvider>
-        </div>
-        <div class="col-12 col-md-6">
-          <ValidationProvider
-            v-slot="{ errors }"
-            vid="guilded"
-            rules="url"
-            :name="$t('labels.guilded')"
-            :slim="true"
-          >
-            <FormInput
-              id="guilded"
-              v-model="form.guilded"
-              icon="fab fa-guilded"
-              :clearable="true"
-              translation-key="guilded"
-              :error="errors[0]"
-            />
-          </ValidationProvider>
-        </div>
-
-        <div class="col-12">
-          <br />
-          <Btn :loading="submitting" type="submit" size="large">
-            {{ $t("actions.save") }}
-          </Btn>
-        </div>
-      </div>
-    </form>
-  </ValidationObserver>
+    </div>
+  </form>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-import { Getter } from "vuex-class";
-import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
+<script lang="ts" setup>
+import { useI18n } from "@/shared/composables/useI18n";
+import { useNoty } from "@/shared/composables/useNoty";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import VueUploadComponent from "vue-upload-component";
-import userCollection from "@/frontend/api/collections/User";
-import Avatar from "@/frontend/core/components/Avatar/index.vue";
+import FormFileInput from "@/frontend/core/components/Form/FormFileInput/index.vue";
+import { useSessionStore } from "@/frontend/stores/session";
+import { useForm } from "vee-validate";
 
-@Component<SettingsAccount>({
-  components: {
-    VueUploadComponent,
-    FormInput,
-    Btn,
-    Avatar,
+const { t } = useI18n();
+
+const { displaySuccess, displayAlert } = useNoty(t);
+
+type UserUpdateInput = {
+  rsiHandle?: string;
+  homepage?: string;
+  discord?: string;
+  youtube?: string;
+  twitch?: string;
+  guilded?: string;
+  avatar?: string;
+  removeAvatar?: boolean;
+};
+
+const sessionStore = useSessionStore();
+
+const initialValues = ref<UserUpdateInput>({
+  rsiHandle: sessionStore.currentUser?.rsiHandle,
+  homepage: sessionStore.currentUser?.homepage,
+  discord: sessionStore.currentUser?.discord,
+  youtube: sessionStore.currentUser?.youtube,
+  twitch: sessionStore.currentUser?.twitch,
+  guilded: sessionStore.currentUser?.guilded,
+  avatar: sessionStore.currentUser?.avatar,
+  removeAvatar: false,
+});
+
+const { useFieldModel, handleSubmit } = useForm({ initialValues });
+
+const [
+  rsiHandle,
+  homepage,
+  discord,
+  youtube,
+  twitch,
+  guilded,
+  avatar,
+  removeAvatar,
+] = useFieldModel([
+  "rsiHandle",
+  "homepage",
+  "discord",
+  "youtube",
+  "twitch",
+  "guilded",
+  "avatar",
+  "removeAvatar",
+]);
+
+const files = ref([]);
+
+const fileExtensions = "jpg,jpeg,png,webp";
+
+const acceptedMimeTypes = "image/png,image/jpeg,image/webp";
+
+const submitting = ref(false);
+
+const avatarUrl = computed(() => {
+  return newAvatar.url || (currentUser.value && currentUser.value.avatar);
+});
+
+const newAvatar = computed(() => {
+  return (files.value && files.value[0]) || {};
+});
+
+const fileExtensionsList = computed(() => {
+  return fileExtensions.split(",");
+});
+
+watch(
+  () => sessionStore.currentUser,
+  () => {
+    setupForm();
   },
-})
-export default class SettingsAccount extends Vue {
-  @Getter("currentUser", { namespace: "session" }) currentUser;
+);
 
-  form: UserForm | null = null;
-
-  files = [];
-
-  fileExtensions = "jpg,jpeg,png,webp";
-
-  acceptedMimeTypes = "image/png,image/jpeg,image/webp";
-
-  submitting = false;
-
-  get avatarUrl() {
-    return this.newAvatar.url || (this.currentUser && this.currentUser.avatar);
+onMounted(() => {
+  if (sessionStore.currentUser) {
+    setupForm();
   }
+});
 
-  get newAvatar() {
-    return (this.files && this.files[0]) || {};
-  }
+const selectAvatar = () => {
+  // form.removeAvatar = false;
+  // $refs.upload.$el.querySelector("input").click();
+};
 
-  get fileExtensionsList() {
-    return this.fileExtensions.split(",");
-  }
-
-  @Watch("currentUser")
-  onCurrentUserChange() {
-    this.setupForm();
-  }
-
-  created() {
-    if (this.currentUser) {
-      this.setupForm();
+watch(
+  () => removeAvatar.value,
+  () => {
+    if (removeAvatar.value) {
+      files.value = [];
     }
+  },
+);
+
+const setupForm = () => {
+  rsiHandle.value = sessionStore.currentUser?.rsiHandle;
+  homepage.value = sessionStore.currentUser?.homepage;
+  discord.value = sessionStore.currentUser?.discord;
+  youtube.value = sessionStore.currentUser?.youtube;
+  twitch.value = sessionStore.currentUser?.twitch;
+  guilded.value = sessionStore.currentUser?.guilded;
+  removeAvatar.value = false;
+};
+
+const submit = handleSubmit(async () => {
+  submitting.value = true;
+
+  const uploadResponse = await uploadAvatar();
+
+  const response = await userCollection.updateProfile(this.form);
+
+  submitting.value = false;
+
+  if (!uploadResponse.error && !response.error) {
+    comlink.emit("user-update");
+
+    setTimeout(() => {
+      files.value = [];
+    }, 1000);
+
+    displaySuccess({
+      text: t("messages.updateProfile.success"),
+    });
+  }
+});
+
+const uploadAvatar = async () => {
+  const uploadResponse = { error: null };
+
+  if (newAvatar.value && newAvatar.value.file) {
+    const uploadData = new FormData();
+    uploadData.append("avatar", newAvatar.value.file);
+
+    // uploadResponse = await this.$api.upload("users/current", uploadData);
   }
 
-  selectAvatar() {
-    this.form.removeAvatar = false;
-    this.$refs.upload.$el.querySelector("input").click();
-  }
+  return uploadResponse;
+};
 
-  removeAvatar() {
-    this.files = [];
-    this.currentUser.avatar = null;
-    this.form.removeAvatar = true;
-  }
+const updatedValue = (value) => {
+  files.value = value;
+};
 
-  setupForm() {
-    this.form = {
-      rsiHandle: this.currentUser.rsiHandle,
-      homepage: this.currentUser.homepage,
-      discord: this.currentUser.discord,
-      youtube: this.currentUser.youtube,
-      twitch: this.currentUser.twitch,
-      guilded: this.currentUser.guilded,
-      removeAvatar: false,
-    };
-  }
-
-  async submit() {
-    this.submitting = true;
-
-    const uploadResponse = await this.uploadAvatar();
-
-    const response = await userCollection.updateProfile(this.form);
-
-    this.submitting = false;
-
-    if (!uploadResponse.error && !response.error) {
-      this.$comlink.$emit("user-update");
-
-      setTimeout(() => {
-        this.files = [];
-      }, 1000);
-
-      displaySuccess({
-        text: this.$t("messages.updateProfile.success"),
+const inputFilter = (newFile, oldFile, prevent) => {
+  if (newFile && !oldFile) {
+    if (
+      !fileExtensionsList.some((extension) => newFile.name.endsWith(extension))
+    ) {
+      displayAlert({
+        text: t("messages.avatarUpload.invalidExtension", {
+          extensions: fileExtensions,
+        }),
       });
+      return prevent();
     }
   }
-
-  async uploadAvatar() {
-    let uploadResponse = { error: null };
-
-    if (this.newAvatar && this.newAvatar.file) {
-      const uploadData = new FormData();
-      uploadData.append("avatar", this.newAvatar.file);
-
-      uploadResponse = await this.$api.upload("users/current", uploadData);
-    }
-
-    return uploadResponse;
-  }
-
-  updatedValue(value) {
-    this.files = value;
-  }
-
-  inputFilter(newFile, oldFile, prevent) {
-    if (newFile && !oldFile) {
-      if (
-        !this.fileExtensionsList.some((extension) =>
-          newFile.name.endsWith(extension),
-        )
-      ) {
-        displayAlert({
-          text: this.$t("messages.avatarUpload.invalidExtension", {
-            extensions: this.fileExtensions,
-          }),
-        });
-        return prevent();
-      }
-    }
-    if (newFile && (!oldFile || newFile.file !== oldFile.file)) {
+  if (newFile && (!oldFile || newFile.file !== oldFile.file)) {
+    // eslint-disable-next-line no-param-reassign
+    newFile.url = "";
+    const URL = window.URL || window.webkitURL;
+    if (URL && URL.createObjectURL) {
       // eslint-disable-next-line no-param-reassign
-      newFile.url = "";
-      const URL = window.URL || window.webkitURL;
-      if (URL && URL.createObjectURL) {
-        // eslint-disable-next-line no-param-reassign
-        newFile.url = URL.createObjectURL(newFile.file);
-      }
+      newFile.url = URL.createObjectURL(newFile.file);
     }
-
-    return null;
   }
-}
+
+  return null;
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "SettingsProfilePage",
+};
 </script>

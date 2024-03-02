@@ -13,7 +13,7 @@
       </small>
     </template>
 
-    <form :id="`vehicle-${vehicle.id}`" @submit="onSubmit">
+    <form :id="`vehicle-${vehicle.id}`" @submit.prevent="onSubmit">
       <div class="row">
         <div class="col-12 col-md-6">
           <Checkbox
@@ -92,7 +92,7 @@ import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import Checkbox from "@/shared/components/base/Checkbox/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { type VehicleUpdateInput, type Vehicle } from "@/services/fyApi";
 import { useVehicleQueries } from "@/frontend/composables/useVehicleQueries";
 import { useModelQueries } from "@/frontend/composables/useModelQueries";

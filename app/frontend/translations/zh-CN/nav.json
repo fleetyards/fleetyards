@@ -1,0 +1,74 @@
+{
+  "zh-CN": {
+    "nav": {
+      "home": "Home",
+      "back": "Back",
+      "models": {
+        "index": "Ships"
+      },
+      "compare": {
+        "index": "Compare",
+        "models": "Compare Ships"
+      },
+      "manufacturers": "Manufacturers",
+      "images": "Images",
+      "videos": "Videos",
+      "hangar": "My Hangar",
+      "login": "Login",
+      "logout": "Logout",
+      "signUp": "Sign up",
+      "privacyPolicy": "Privacy policy",
+      "privacySettings": "Privacy settings",
+      "impressum": "Impressum",
+      "admin": "Admin",
+      "fleets": {
+        "index": "Fleets",
+        "add": "Create a new Fleet",
+        "invites": "Invites",
+        "ships": "Ships",
+        "members": "Members",
+        "stats": "Stats",
+        "settings": {
+          "index": "Settings",
+          "fleet": "Fleet Settings",
+          "membership": "Membership Settings"
+        }
+      },
+      "rsiProfile": "RSI Profile",
+      "rsiHangar": "RSI Hangar",
+      "tools": {
+        "index": "Tools",
+        "tradeRoutes": "Trade Routes",
+        "travelTimes": "Travel Times"
+      },
+      "api": "API Docs",
+      "stats": "Stats",
+      "toggleSlimCollapse": "Collapse",
+      "toggleSlimExpand": "Expand",
+      "roadmap": {
+        "index": "Roadmap",
+        "overview": "Overview",
+        "changes": "Changes",
+        "ships": "Ship-Roadmap"
+      },
+      "rsiVerification": "RSI Verification",
+      "settings": {
+        "index": "Settings",
+        "profile": "Profile",
+        "account": "Account",
+        "security": "Security",
+        "notifications": "Notifications",
+        "hangar": "Hangar",
+        "verify": "RSI Account Verification"
+      },
+      "starsystems": "Starsystems",
+      "stations": {
+        "index": "Stations",
+        "overview": "Overview",
+        "starsystems": "By Starsystems",
+        "shops": "Shops"
+      },
+      "reload": "Update available!"
+    }
+  }
+}

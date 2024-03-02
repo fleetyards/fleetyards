@@ -123,7 +123,7 @@ import EmptyBox from "@/shared/components/EmptyBox/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { useCable } from "@/shared/composables/useCable";
 import type { Subscription } from "@rails/actioncable";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 
 const { t } = useI18n();
 const loading = ref(true);

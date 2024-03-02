@@ -1,13 +1,15 @@
-import datetime from "@/shared/translations/en/datetime";
-import number from "@/shared/translations/en/number";
-import model from "@/shared/translations/en/models/model";
-import actions from "./actions";
-import labels from "./labels";
+import { extractTranslations, type MessagesJSON } from "@/translations/utils";
+import datetime from "@/translations/en/datetime.json";
+import number from "@/translations/en/number.json";
+import model from "@/translations/en/models/model.json";
+
+const files = import.meta.glob<Record<string, MessagesJSON>>("./**/*.json", {
+  eager: true,
+});
 
 export default {
-  actions,
-  datetime,
-  number,
-  labels,
-  model,
+  ...extractTranslations("en", files),
+  ...datetime.en,
+  ...number.en,
+  ...model.en,
 };

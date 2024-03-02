@@ -18,6 +18,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "settings.account",
       needsAuthentication: true,
+      needsSecurityConfirm: true,
     },
   },
   {

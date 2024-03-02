@@ -54,7 +54,7 @@ import empIconUrl from "@/images/hardpoints/emp.svg";
 import Panel from "@/shared/components/Panel/index.vue";
 import HardpointItems from "../Items/index.vue";
 import type { ModelHardpoint, ModelHardpointGroupEnum } from "@/services/fyApi";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   group: ModelHardpointGroupEnum;

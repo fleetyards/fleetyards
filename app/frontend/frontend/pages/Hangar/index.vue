@@ -327,7 +327,7 @@ import {
   type HangarGroupMetric,
   HangarGroup,
 } from "@/services/fyApi";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useCable } from "@/shared/composables/useCable";
 import { useNoty } from "@/shared/composables/useNoty";

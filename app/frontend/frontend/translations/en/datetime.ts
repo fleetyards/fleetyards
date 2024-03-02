@@ -1,6 +1,0 @@
-export default {
-  formats: {
-    default: "d MMMM y 'at' HH:mm z",
-    iso: "yyyy-MM-dd'T'HH:mm:ss.SSSxxx",
-  },
-};

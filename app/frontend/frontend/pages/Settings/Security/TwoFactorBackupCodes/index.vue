@@ -1,6 +1,6 @@
 <template>
-  <SecurePage class="row">
-    <div v-if="currentUser" class="col-12">
+  <div v-if="currentUser" class="row">
+    <div class="col-12">
       <div class="row">
         <div class="col-12">
           <h1>{{ $t("headlines.settings.twoFactor.backupCodes") }}</h1>
@@ -18,14 +18,13 @@
         </div>
       </div>
     </div>
-  </SecurePage>
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import { Getter } from "vuex-class";
-import SecurePage from "@/frontend/components/core/SecurePage/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BackupCodesPanel from "@/frontend/components/Security/TwoFactorBackupCodesPanel/index.vue";
 import { enabledRouteGuard } from "@/frontend/utils/RouteGuards/TwoFactor";

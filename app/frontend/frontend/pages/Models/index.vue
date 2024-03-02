@@ -106,7 +106,7 @@ import ModelsFilterForm from "@/frontend/components/Models/FilterForm/index.vue"
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import { useHangarItems } from "@/frontend/composables/useHangarItems";
 import { useWishlistItems } from "@/frontend/composables/useWishlistItems";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { type BaseList } from "@/services/fyApi";
 import { useModelsStore } from "@/frontend/stores/models";
 import { storeToRefs } from "pinia";

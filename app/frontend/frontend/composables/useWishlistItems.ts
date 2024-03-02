@@ -2,7 +2,7 @@ import { useRoute } from "vue-router";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useWishlistStore } from "@/frontend/stores/wishlist";
 import { useApiClient } from "@/frontend/composables/useApiClient";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 
 export const useWishlistItems = () => {
   const sessionStore = useSessionStore();

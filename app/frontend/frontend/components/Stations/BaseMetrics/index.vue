@@ -56,7 +56,7 @@
 <script lang="ts" setup>
 import LocationLabel from "@/frontend/components/Stations/LocationLabel/index.vue";
 import type { Station } from "@/services/fyApi";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   station: Station;

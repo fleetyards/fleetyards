@@ -1,0 +1,15 @@
+{
+  "it": {
+    "emptyBox": {
+      "headline": "Non c'è niente da vedere qui...",
+      "actions": {
+        "reset": "Resetta i filtri/pagine",
+        "resetPage": "Vai alla prima pagina"
+      },
+      "texts": {
+        "info": "Non abbiamo trovato alcun record.",
+        "query": "Sembra che tu abbia alcuni filtri attivi o visitati una pagina senza alcun record."
+      }
+    }
+  }
+}

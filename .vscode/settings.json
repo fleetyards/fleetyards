@@ -1,17 +1,26 @@
 {
-  "i18n-ally.localesPaths": ["config/locales"],
+  "i18n-ally.localesPaths": [
+    "app/admin/translations",
+    "app/embed/translations",
+    "app/docs/translations",
+    "app/frontend/translations",
+    "config/locales"
+  ],
+  "i18n-ally.enabledParsers": ["json", "yaml"],
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.enabledFrameworks": ["vue", "ruby-rails"],
   "[javascript]": {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.codeActionsOnSave": {
-      "source.fixAll": true
+      "source.fixAll": "explicit"
     }
   },
   "[typescript]": {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.codeActionsOnSave": {
-      "source.fixAll": true
+      "source.fixAll": "explicit"
     }
   },
   "[vue]": {
@@ -38,11 +47,11 @@
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "aliariff.vscode-erb-beautify"
   },
-  "i18n-ally.keystyle": "nested",
   "files.insertFinalNewline": true,
   "[javascript][typescript]": {
     "editor.codeActionsOnSave": {
       "source.fixAll": "explicit"
     }
-  }
+  },
+  "i18n-ally.sourceLanguage": "en"
 }

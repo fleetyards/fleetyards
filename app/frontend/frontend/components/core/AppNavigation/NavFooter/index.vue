@@ -23,7 +23,7 @@
 import NavItem from "../NavItem/index.vue";
 import UserNav from "../UserNav/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useNavStore } from "@/frontend/stores/nav";
 import { useSessionStore } from "@/frontend/stores/session";
 import { storeToRefs } from "pinia";

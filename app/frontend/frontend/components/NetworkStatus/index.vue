@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useAppStore } from "@/frontend/stores/app";
 import { storeToRefs } from "pinia";
 

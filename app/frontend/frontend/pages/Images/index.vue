@@ -51,7 +51,7 @@ import GalleryImage from "@/frontend/core/components/Gallery/Image/index.vue";
 // import imagesCollection from "@/frontend/api/collections/Images";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 
 const { t } = useI18n();
 

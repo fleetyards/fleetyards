@@ -129,7 +129,7 @@ import type {
 } from "@/frontend/stores/shoppingCart";
 import { storeToRefs } from "pinia";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { SearchResultTypeEnum } from "@/services/fyAdminApi";
 

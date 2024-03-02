@@ -88,7 +88,7 @@ import Panel from "@/shared/components/Panel/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { type FleetMember } from "@/services/fyApi";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useNoty } from "@/shared/composables/useNoty";
 import { useQuery } from "@tanstack/vue-query";

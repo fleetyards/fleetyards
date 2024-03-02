@@ -151,7 +151,7 @@ import Checkbox from "@/shared/components/base/Checkbox/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import type { Cookies } from "@/frontend/stores/cookies";
 import { useCookiesStore } from "@/frontend/stores/cookies";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 
 type Props = {

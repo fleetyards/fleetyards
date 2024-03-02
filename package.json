@@ -93,6 +93,7 @@
     "@types/downloadjs": "^1.4.6",
     "@types/i18n-js": "3.8.9",
     "@types/lodash.debounce": "^4.0.7",
+    "@types/lodash.merge": "^4.6.9",
     "@types/nprogress": "^0.2.0",
     "@types/photoswipe": "^4.1.2",
     "@types/qs": "^6.9.10",

@@ -46,7 +46,7 @@ import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useSearchStore } from "@/frontend/stores/search";
 import { storeToRefs } from "pinia";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 
 const { t } = useI18n();
 

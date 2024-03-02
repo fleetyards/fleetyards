@@ -54,7 +54,7 @@ import TeaserPanel from "@/shared/components/TeaserPanel/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { type Vehicle, type Model, Models, ModelQuery } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useQueryClient } from "@tanstack/vue-query";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { FilterGroupParams } from "@/shared/components/base/FilterGroup/index.vue";

@@ -30,7 +30,7 @@ import type { FilterGroupOption } from "@/shared/components/base/FilterGroup/Opt
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { FleetMemberQuery } from "@/services/fyApi";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useFilters } from "@/shared/composables/useFilters";
 
 const { t } = useI18n();

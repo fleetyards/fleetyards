@@ -71,7 +71,7 @@
 <script lang="ts" setup>
 import { groupBy, sortBy } from "@/shared/utils/Array";
 import DockItem from "./Item/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import type { Dock, DockCount } from "@/services/fyApi";
 
 type Props = {

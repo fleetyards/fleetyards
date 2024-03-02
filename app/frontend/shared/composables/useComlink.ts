@@ -15,6 +15,8 @@ type Events = {
   "fleet-member-invited": FleetMember;
   "fleet-member-update": undefined;
   "hangar-sync-finished": undefined;
+  "access-confirmed": undefined;
+  "access-confirmation-required": undefined;
 };
 
 const AppComlink = mitt<Events>();

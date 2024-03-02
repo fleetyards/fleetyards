@@ -92,7 +92,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";

@@ -42,7 +42,7 @@ import MetricsList from "@/shared/components/MetricsList/index.vue";
 import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
 import type { Component } from "@/services/fyApi";
 import { SearchResultTypeEnum } from "@/services/fyApi";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";

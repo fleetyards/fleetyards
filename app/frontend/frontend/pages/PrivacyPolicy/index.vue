@@ -207,7 +207,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import AppContact from "@/frontend/components/core/AppContact/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 
 const { t } = useI18n();
 

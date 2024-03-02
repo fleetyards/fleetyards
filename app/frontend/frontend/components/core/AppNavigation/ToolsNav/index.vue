@@ -27,7 +27,7 @@
 
 <script lang="ts" setup>
 import { type LocationQueryRaw } from "vue-router";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useFiltersStore } from "@/shared/stores/filters";
 import { storeToRefs } from "pinia";
 import NavItem from "../NavItem/index.vue";

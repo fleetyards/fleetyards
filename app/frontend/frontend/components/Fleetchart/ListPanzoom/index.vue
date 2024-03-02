@@ -163,7 +163,7 @@ import Starship42Btn from "@/frontend/components/Starship42Btn/index.vue";
 import CommunityLogo from "@/shared/components/CommunityLogo/index.vue";
 import FleetchartItem from "./Item/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import type {
   Vehicle,
   Model,

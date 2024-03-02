@@ -228,7 +228,7 @@ import QuickFilter from "@/frontend/components/TradeRoutes/QuickFilter/index.vue
 import TradeRoutePrice from "@/frontend/components/TradeRoutes/Price/index.vue";
 import TradeRouteProfit from "@/frontend/components/TradeRoutes/Profit/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import type { Model, TradeRoute } from "@/services/fyApi";
 import { useMobile } from "@/shared/composables/useMobile";
 

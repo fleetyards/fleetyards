@@ -185,7 +185,7 @@ import RadioList from "@/shared/components/base/RadioList/index.vue";
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useFilters } from "@/shared/composables/useFilters";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 

@@ -1,0 +1,160 @@
+{
+  "it": {
+    "actions": {
+      "showReleased": "Mostra vecchi rilasci",
+      "hideReleased": "Nascondi vecchi rilasci",
+      "upgrade": "Aggiornamento disponibile!",
+      "backToHome": "Pianifica nuova rotta",
+      "disableGrouping": "Disabilita raggruppamento",
+      "enableGrouping": "Abilita raggruppamento",
+      "groupedByModel": "Raggruppa per modello",
+      "ungrouped": "Non raggruppati",
+      "destroyAccount": "Elimina Account",
+      "saveScreenshot": "Salva come PNG",
+      "verify": "Verifica",
+      "findModel": "Scrivi per cercare una nave",
+      "find": "Scrivi per cercare",
+      "clearHistory": "Pulisci la cronologia",
+      "sortBy": "Ordina per",
+      "back": "Indietro",
+      "open": "Apri",
+      "copy": "Copia",
+      "more": "Di più...",
+      "showMore": "Mostra altro",
+      "export": "Esporta",
+      "import": "Importa",
+      "here": "qui",
+      "backToTop": "Torna all'inizio",
+      "cancel": "Annulla",
+      "ok": "Ok",
+      "reset": "Reset",
+      "reload": "Ricarica",
+      "confirm": "Conferma",
+      "moreInfo": "Più informazioni",
+      "showDetailPage": "Pagina dei dettagli",
+      "showDetails": "Mostra i dettagli",
+      "hideDetails": "Nascondi i dettagli",
+      "showGuide": "Mostra guida",
+      "hideGuide": "Nascondi guida",
+      "showFleetchart": "Fleetchart",
+      "hideFleetchart": "Vista di default",
+      "showLabels": "Mostra etichette",
+      "hideLabels": "Nascondi etichette",
+      "resetZoom": "Resetta lo zoom",
+      "supportUs": "Supporta FleetYards.net",
+      "login": "Login",
+      "signUp": "Registrati",
+      "confirmAccess": "Conferma la password",
+      "reset-password": "Password dimenticata?",
+      "edit": "Modifica",
+      "done": "Conferma",
+      "share": "Condividi",
+      "change": "Cambia",
+      "upload": "Carica",
+      "editCommodities": "Modifica le merci",
+      "save": "Salva",
+      "remove": "Rimuovi",
+      "delete": "Elimina",
+      "deleteSelected": "Elimina selezionati",
+      "close": "Chiudi",
+      "filter": "Filtra",
+      "showStatusColor": "Mostra stato come colori",
+      "hideStatusColor": "Nascondi stato come colori",
+      "addToHangar": "Add to Hangar",
+      "resetFilter": "Resetta i filtri",
+      "resetPrices": "Resetta i prezzi",
+      "requestPassword": "Richiedi la password via email",
+      "changePassword": "Cambia la password",
+      "updatePassword": "Aggiorna la password",
+      "copyBackupCodes": "Copia i codici di backup",
+      "add": "Aggiungi",
+      "addToWishlist": "Add to Wishlist",
+      "addAnother": "Aggiungi un altro",
+      "addVehicle": "Aggiungi nave",
+      "addGroup": "Aggiungi gruppo",
+      "addModule": "Aggiungi un altro modulo",
+      "addUpgrade": "Aggiungi un altro upgrade",
+      "showTableView": "Mostra come lista",
+      "showGridView": "Mostra come griglia",
+      "syncRsiHangar": "Sync RSI Hangar",
+      "compare": { "models": "Compara" },
+      "hangar": {
+        "editGroups": "Aggiungi o rimuovi gruppo",
+        "editName": "Rinomina la nave",
+        "useName": "Usa il nome",
+        "destroyAll": "Rimuovi tutte le navi",
+        "showOnPublicHangar": "Rendi pubblico",
+        "hideFromPublicHangar": "Nascondi da pubblico",
+        "editGroupsSelected": "Aggiungi/rimuovi gruppo",
+        "resetIngame": {
+          "openModal": "Reset Ingame Ships after Wipe",
+          "moveToWishlist": "Move to Wishlist",
+          "removeAll": "Remove all"
+        }
+      },
+      "syncExtension": {
+        "cancel": "Cancel",
+        "start": "Start Sync",
+        "close": "Close"
+      },
+      "empty": {
+        "hangarGuide": "Need Help?"
+      },
+      "fleet": {
+        "join": "Unisciti a %{fleet}!",
+        "leave": "Abbandona %{fleet}",
+        "createInviteUrl": "Crea Urls d'invito",
+        "inviteMember": "Invita nuovi membri",
+        "acceptInvite": "Accetta l'invito",
+        "declineInvite": "Rifiuta l'invito",
+        "acceptRequest": "Accetta la richiesta",
+        "declineRequest": "Rifiuta la richiesta",
+        "showOwners": "Altri",
+        "members": {
+          "invite": "Invita",
+          "promote": "Promuovi",
+          "demote": "Retrocedi",
+          "accept": "Accetta",
+          "decline": "Rifiuta",
+          "remove": "Rimuovi"
+        },
+        "inviteUrls": { "create": "Crea nuovo URL per invito" }
+      },
+      "model": {
+        "gallery": "Galleria",
+        "onSale": "In vendita %{price}",
+        "store": "Pagina su RSI"
+      },
+      "unselect": "Deseleziona tutti i selezionati",
+      "openPriceModal": "Invia Prezzo",
+      "shoppingCart": {
+        "add": "Aggiungi al carrello",
+        "refresh": "Aggiorna Carrello",
+        "clear": "Svuota Carrello"
+      },
+      "twoFactor": {
+        "enable": "Abilita Due Fattori",
+        "disable": "Disabilita Due-Fattori",
+        "generateBackupCodes": "Genera Codici Di Backup"
+      },
+      "holoViewer": {
+        "autoRotate": {
+          "enable": "Abilita rotazione automatica",
+          "disable": "Disabilita rotazione automatica"
+        },
+        "zoom": {
+          "enable": "Abilita zoom",
+          "disable": "Disabilita zoom"
+        },
+        "color": {
+          "enable": "Abilita i colori",
+          "disable": "Disabilita i colori"
+        }
+      },
+      "roadmap": {
+        "showRemoved": "Mostra Rimossi",
+        "hideRemoved": "Nascondi Rimossi"
+      }
+    }
+  }
+}

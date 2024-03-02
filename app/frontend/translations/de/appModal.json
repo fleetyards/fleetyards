@@ -1,0 +1,11 @@
+{
+  "de": {
+    "appModal": {
+      "messages": {
+        "confirm": {
+          "dirty": "Ungespeicherte Änderungen gehen verlorgen."
+        }
+      }
+    }
+  }
+}

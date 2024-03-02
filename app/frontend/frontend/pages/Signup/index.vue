@@ -2,7 +2,7 @@
   <section class="container signup">
     <div class="row">
       <div class="col-12">
-        <form method="post" @submit="onSubmit">
+        <form @submit="onSubmit">
           <h1>
             <router-link to="/" :exact="true">
               {{ t("app") }}
@@ -87,7 +87,7 @@
 <script lang="ts" setup>
 import { useForm } from "vee-validate";
 import { transformErrors } from "@/frontend/api/helpers";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useNoty } from "@/shared/composables/useNoty";
 import { useFleetStore } from "@/frontend/stores/fleet";
 import { storeToRefs } from "pinia";

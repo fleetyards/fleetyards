@@ -103,7 +103,7 @@ import { usePublicFleetStore } from "@/frontend/stores/publicFleet";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { storeToRefs } from "pinia";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useFilters } from "@/shared/composables/useFilters";
 import { usePagination } from "@/shared/composables/usePagination";
 

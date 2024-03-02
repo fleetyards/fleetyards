@@ -106,7 +106,7 @@ import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
 import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index.vue";
 import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue";
 import type { Vehicle, Manufacturer } from "@/services/fyApi";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";

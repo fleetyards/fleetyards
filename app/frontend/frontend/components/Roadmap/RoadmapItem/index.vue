@@ -70,7 +70,7 @@
 import Panel from "@/shared/components/Panel/index.vue";
 import { isBefore, addHours } from "date-fns";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 
 const { t } = useI18n();
 

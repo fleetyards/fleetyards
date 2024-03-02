@@ -2,7 +2,7 @@
   <section class="container login">
     <div class="row">
       <div class="col-12">
-        <form method="post" @submit="onSubmit">
+        <form @submit.prevent="onSubmit">
           <h1>
             <router-link to="/" exact>
               {{ t("app") }}
@@ -83,7 +83,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Checkbox from "@/shared/components/base/Checkbox/index.vue";
 import { useNoty } from "@/shared/composables/useNoty";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useSessionStore } from "@/frontend/stores/session";
 import type { RouteParamsRaw, LocationQueryRaw } from "vue-router";
 import { useApiClient } from "@/frontend/composables/useApiClient";
@@ -128,7 +128,7 @@ onMounted(() => {
   }
 });
 
-const onSubmit = ww
+const onSubmit = handleSubmit(async () => {
   submitting.value = true;
 
   try {

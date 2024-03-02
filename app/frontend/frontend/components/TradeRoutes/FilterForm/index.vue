@@ -119,7 +119,7 @@ import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import { TradeRouteQuery } from "@/services/fyApi";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useFilters } from "@/shared/composables/useFilters";
 // import celestialObjectCollection from "@/frontend/api/collections/CelestialObjects";
 // import starsystemCollection from "@/frontend/api/collections/Starsystems";

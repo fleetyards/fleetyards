@@ -91,7 +91,7 @@
 
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import VideoEmbed from "@/shared/components/Video/index.vue";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import type { Video } from "@/services/fyApi";

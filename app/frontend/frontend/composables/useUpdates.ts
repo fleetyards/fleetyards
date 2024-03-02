@@ -5,7 +5,7 @@ import { useHangarStore } from "@/frontend/stores/hangar";
 import { useWishlistStore } from "@/frontend/stores/wishlist";
 import { useCable } from "@/shared/composables/useCable";
 import { useNoty } from "@/shared/composables/useNoty";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import type { Subscription } from "@rails/actioncable";
 
 type ChannelName =

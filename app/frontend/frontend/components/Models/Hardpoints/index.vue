@@ -62,7 +62,7 @@
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import HardpointGroup from "./Group/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useQuery } from "@tanstack/vue-query";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { ModelHardpointGroupEnum } from "@/services/fyApi";

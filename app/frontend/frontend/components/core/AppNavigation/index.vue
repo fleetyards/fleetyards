@@ -85,7 +85,7 @@
 <script lang="ts" setup>
 import { type LocationQueryRaw } from "vue-router";
 import { isFleetRoute as fleetRouteCheck } from "./utils";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import NavItem from "./NavItem/index.vue";
 import FleetNav from "./FleetNav/index.vue";
 import FleetsNav from "./FleetsNav/index.vue";

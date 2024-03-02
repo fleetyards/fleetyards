@@ -120,7 +120,7 @@ import EquipmentPanel from "@/frontend/components/Equipment/Panel/index.vue";
 import SearchHistory from "@/frontend/components/Search/History/index.vue";
 import { Form } from "vee-validate";
 import { useRoute } from "vue-router";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useFilters } from "@/shared/composables/useFilters";
 import {
   type Station,

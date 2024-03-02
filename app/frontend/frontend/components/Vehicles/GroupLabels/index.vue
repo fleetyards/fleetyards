@@ -86,7 +86,7 @@
 import draggable from "vuedraggable";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useNoty } from "@/shared/composables/useNoty";
 import { useMobile } from "@/shared/composables/useMobile";
 import type { HangarGroup, HangarGroupMetric } from "@/services/fyApi";

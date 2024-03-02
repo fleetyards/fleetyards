@@ -176,7 +176,7 @@ import SizeFilterGroup from "@/frontend/components/base/ModelSizeFilterGroup/ind
 import WillItFitFilterGroup from "@/frontend/components/base/ModelWillItFitFilterGroup/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 import { type ModelQuery } from "@/services/fyApi";
 import { Form } from "vee-validate";

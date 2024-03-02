@@ -23,7 +23,7 @@ import type { Model } from "@/services/fyApi";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { useWishlistStore } from "@/frontend/stores/wishlist";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useNoty } from "@/shared/composables/useNoty";
 

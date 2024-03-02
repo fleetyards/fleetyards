@@ -21,7 +21,7 @@
         <NavItem
           :href="`https://robertsspaceindustries.com/citizens/${currentUser.rsiHandle}`"
           :label="t('nav.rsiProfile')"
-          :image="require('@/images/rsi_logo.png')"
+          :image="rsiLogo"
         />
         <NavItem :divider="true" />
       </template>
@@ -38,16 +38,17 @@
 <script lang="ts" setup>
 import NavItem from "../NavItem/index.vue";
 import { useRoute } from "vue-router";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useSessionStore } from "@/frontend/stores/session";
 import { storeToRefs } from "pinia";
 import { useApiClient } from "@/frontend/composables/useApiClient";
+import rsiLogo from "@/images/rsi_logo.png";
 
 const sessionStore = useSessionStore();
 
 const { currentUser } = storeToRefs(sessionStore);
 
-const { t, currentLocale } = useI18n();
+const { t } = useI18n();
 
 const route = useRoute();
 

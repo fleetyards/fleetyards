@@ -1,5 +1,5 @@
 import { FyApi } from "@/services/fyApi";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import axios from "axios";
 import { useSessionStore } from "@/frontend/stores/session";
 

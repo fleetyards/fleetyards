@@ -1,11 +1,7 @@
-import main from "./main";
-import labels from "./labels";
-import nav from "./nav";
-import meta from "./meta";
+import { extractTranslations, type MessagesJSON } from "@/translations/utils";
 
-export default {
-  ...main,
-  nav,
-  labels,
-  meta,
-};
+const files = import.meta.glob<Record<string, MessagesJSON>>("./**/*.json", {
+  eager: true,
+});
+
+export default extractTranslations("en", files);

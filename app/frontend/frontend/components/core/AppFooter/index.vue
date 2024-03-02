@@ -150,7 +150,7 @@
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import CommunityLogo from "@/shared/components/CommunityLogo/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppStore } from "@/frontend/stores/app";
 import { useI18nStore } from "@/shared/stores/i18n";

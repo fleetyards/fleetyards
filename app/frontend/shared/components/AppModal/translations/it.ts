@@ -1,9 +1,0 @@
-export default {
-  appModal: {
-    messages: {
-      confirm: {
-        dirty: "Sono presenti modifiche non salvate che andranno perse.",
-      },
-    },
-  },
-};

@@ -114,7 +114,7 @@ import RoadmapItem from "@/frontend/components/Roadmap/RoadmapItem/index.vue";
 import EmptyBox from "@/shared/components/EmptyBox/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import { Subscription } from "@rails/actioncable";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useCable } from "@/shared/composables/useCable";
 import type { RoadmapItem as TRoadmapItem } from "@/services/fyApi";
 import { useQuery } from "@tanstack/vue-query";
@@ -150,19 +150,18 @@ const emptyBoxVisible = computed(
   () => !isLoading.value && data.value?.length === 0,
 );
 
-const groupedByRelease = computed(
-  () =>
-    data.value?.reduce(
-      (rv, x) => {
-        const value = JSON.parse(JSON.stringify(rv));
+const groupedByRelease = computed(() =>
+  data.value?.reduce(
+    (rv, x) => {
+      const value = JSON.parse(JSON.stringify(rv));
 
-        value[x.release] = rv[x.release] || [];
-        value[x.release].push(x);
+      value[x.release] = rv[x.release] || [];
+      value[x.release].push(x);
 
-        return value;
-      },
-      {} as Record<string, TRoadmapItem[]>,
-    ),
+      return value;
+    },
+    {} as Record<string, TRoadmapItem[]>,
+  ),
 );
 
 onMounted(() => {

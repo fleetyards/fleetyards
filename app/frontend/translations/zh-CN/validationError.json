@@ -1,0 +1,9 @@
+{
+  "zh-CN": {
+    "validation_error": {
+      "fleet_memberships": {
+        "create": "Member already present or has a pending invite"
+      }
+    }
+  }
+}

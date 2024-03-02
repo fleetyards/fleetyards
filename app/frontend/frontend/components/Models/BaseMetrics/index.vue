@@ -149,7 +149,7 @@
 
 <script lang="ts" setup>
 import type { Model, ShopCommodity } from "@/services/fyApi";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 
 const { t, toNumber, toDollar, toUEC } = useI18n();
 

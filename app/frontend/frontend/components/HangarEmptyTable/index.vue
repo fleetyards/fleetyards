@@ -52,7 +52,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import HangarSyncBtn from "@/frontend/components/HangarSyncBtn/index.vue";
 import { useRoute, useRouter } from "vue-router";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useHangarStore } from "@/frontend/stores/hangar";
 
 const { t } = useI18n();

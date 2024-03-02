@@ -41,7 +41,7 @@ import Panel from "@/shared/components/Panel/index.vue";
 import MetricsList from "@/shared/components/MetricsList/index.vue";
 import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
 import { SearchResultTypeEnum } from "@/services/fyApi";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import type { Equipment } from "@/services/fyApi";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";

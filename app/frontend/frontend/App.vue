@@ -22,7 +22,17 @@
 
           <router-view v-slot="{ Component, route: viewRoute }">
             <transition name="fade" mode="out-in">
-              <component :is="Component" :key="`${locale}-${viewRoute.path}`" />
+              <SecurePage
+                v-if="
+                  viewRoute.meta.needsSecurityConfirm &&
+                  !sessionStore.accessConfirmedDate
+                "
+              />
+              <component
+                :is="Component"
+                v-else
+                :key="`${locale}-${viewRoute.path}`"
+              />
             </transition>
           </router-view>
         </div>
@@ -44,9 +54,10 @@ import AppNavigationMobile from "@/frontend/components/core/AppNavigation/Mobile
 import AppFooter from "@/frontend/components/core/AppFooter/index.vue";
 import AppModal from "@/shared/components/AppModal/index.vue";
 import AppShoppingCart from "@/frontend/components/core/AppShoppingCart/index.vue";
+import SecurePage from "@/frontend/components/core/SecurePage/index.vue";
 import BackgroundImage from "@/shared/components/BackgroundImage/index.vue";
 import { useNoty } from "@/shared/composables/useNoty";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useUpdates } from "@/frontend/composables/useUpdates";
 import { useAppStore } from "@/frontend/stores/app";

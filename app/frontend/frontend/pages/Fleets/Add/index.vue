@@ -1,6 +1,6 @@
 <template>
   <section class="container">
-    <form @submit="submit">
+    <form @submit.prevent="submit">
       <div class="row justify-content-lg-center">
         <div class="col-12 col-md-6 col-lg-4">
           <h1>{{ t("headlines.fleets.add") }}</h1>
@@ -33,7 +33,7 @@
 <script lang="ts" setup>
 import { useForm } from "vee-validate";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useNoty } from "@/shared/composables/useNoty";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { useApiClient } from "@/frontend/composables/useApiClient";

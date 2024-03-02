@@ -16,7 +16,7 @@
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Box from "@/shared/components/base/Box/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 
 const { t } = useI18n();
 </script>

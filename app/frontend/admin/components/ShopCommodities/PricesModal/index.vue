@@ -85,7 +85,7 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import type { ShopCommodity } from "@/services/fyAdminApi";
-import { useI18n} from "@/frontend/composables/useI18n"
+import { useI18n} from "@/shared/composables/useI18n"
 
 const { t, l } = useI18n();
 

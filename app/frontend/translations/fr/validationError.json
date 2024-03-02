@@ -1,0 +1,9 @@
+{
+  "fr": {
+    "validation_error": {
+      "fleet_memberships": {
+        "create": "Membre déjà présent ou a une invitation en attente"
+      }
+    }
+  }
+}

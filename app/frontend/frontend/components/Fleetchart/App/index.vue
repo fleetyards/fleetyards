@@ -99,7 +99,7 @@ import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import type { Vehicle, Model, VehiclePublic } from "@/services/fyApi";
 import { useMobile } from "@/shared/composables/useMobile";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { useOverlayStore } from "@/shared/stores/overlay";
 import { FleetchartModes } from "@/shared/stores/fleetchart";

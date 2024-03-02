@@ -58,7 +58,7 @@
 <script lang="ts" setup>
 import AppContact from "@/frontend/core/components/AppContact/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 
 const { t } = useI18n();
 </script>

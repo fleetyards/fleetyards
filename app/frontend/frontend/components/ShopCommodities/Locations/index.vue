@@ -64,7 +64,7 @@ import {
   type Commodity,
   type Shop,
 } from "@/services/fyApi";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   item: Model | Equipment | Commodity;

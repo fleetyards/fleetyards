@@ -74,7 +74,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import FilteredTable from "@/shared/components/FilteredTable/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useNoty } from "@/shared/composables/useNoty";
 import { useQuery } from "@tanstack/vue-query";
 import { usePagination } from "@/shared/composables/usePagination";

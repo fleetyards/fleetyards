@@ -44,7 +44,7 @@ import StationPanel from "@/frontend/components/Stations/Panel/index.vue";
 import FilterForm from "@/frontend/components/Stations/FilterForm/index.vue";
 // import stationsCollection from "@/frontend/api/collections/Stations";
 // import type { StationsCollection } from "@/frontend/api/collections/Stations";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 
 const { t } = useI18n();

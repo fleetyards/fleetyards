@@ -59,7 +59,7 @@
 <script lang="ts" setup>
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { type ModelModule, type ModelUpgrade } from "@/services/fyApi";
 import { FilterGroupOption } from "@/shared/components/base/FilterGroup/Option/index.vue";
 import PanelHeading from "@/shared/components/Panel/Heading/index.vue";

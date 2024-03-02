@@ -19,7 +19,7 @@ import type {
 } from "@/shared/components/base/Btn/index.vue";
 import copyText from "@/frontend/utils/CopyText";
 import { useNoty } from "@/shared/composables/useNoty";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import type { SpinnerAlignment } from "@/shared/components/SmallLoader/index.vue";
 import type { RouteLocationRaw } from "vue-router";
 

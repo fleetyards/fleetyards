@@ -1,0 +1,10 @@
+{
+  "en": {
+    "actions": {
+      "add": "Add",
+      "edit": "Edit",
+      "remove": "Remove",
+      "resetFilter": "Reset Filter"
+    }
+  }
+}

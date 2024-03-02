@@ -1,6 +1,6 @@
 <template>
-  <div class="row">
-    <div v-if="currentUser" class="col-12">
+  <div v-if="currentUser" class="row">
+    <div class="col-12">
       <div class="row">
         <div class="col-12">
           <h1>{{ $t("headlines.settings.security.index") }}</h1>

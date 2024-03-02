@@ -23,7 +23,7 @@
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { sum as sumArray } from "@/frontend/utils/Array";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useAppStore } from "@/frontend/stores/app";
 import { useShoppingCartStore } from "@/frontend/stores/shoppingCart";
 import type { ShoppingCartItem } from "@/frontend/stores/shoppingCart";

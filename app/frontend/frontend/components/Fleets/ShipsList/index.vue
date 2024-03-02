@@ -199,7 +199,7 @@ import { debounce } from "ts-debounce";
 import { format } from "date-fns";
 import { useNoty } from "@/shared/composables/useNoty";
 import { useFilters } from "@/shared/composables/useFilters";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useCable } from "@/shared/composables/useCable";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useFleetStore } from "@/frontend/stores/fleet";

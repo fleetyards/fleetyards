@@ -13,7 +13,7 @@
 import Btn from "@/shared/components/base/Btn/index.vue";
 import type { ShoppingCartItemType } from "@/frontend/stores/shoppingCart";
 import { SearchResultTypeEnum } from "@/services/fyAdminApi";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useShoppingCartStore } from "@/frontend/stores/shoppingCart";
 
 type Props = {

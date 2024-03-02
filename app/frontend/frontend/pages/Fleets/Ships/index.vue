@@ -57,7 +57,7 @@ import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import PublicShipsList from "@/frontend/components/Fleets/PublicShipsList/index.vue";
 import ShipsList from "@/frontend/components/Fleets/ShipsList/index.vue";
 import Avatar from "@/shared/components/Avatar/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import FleetWrapper from "@/frontend/components/Fleets/FleetWrapper/index.vue";

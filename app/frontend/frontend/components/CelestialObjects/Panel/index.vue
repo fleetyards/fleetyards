@@ -48,7 +48,7 @@ import PanelBody from "@/shared/components/Panel/Body/index.vue";
 import CelestialObjectPanel from "@/frontend/components/CelestialObjects/Panel/index.vue";
 import type { CelestialObject } from "@/services/fyApi";
 import { useApiClient } from "@/frontend/composables/useApiClient";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useQuery } from "@tanstack/vue-query";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";

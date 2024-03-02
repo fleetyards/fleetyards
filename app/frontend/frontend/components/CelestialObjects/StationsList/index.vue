@@ -37,7 +37,7 @@
 <script lang="ts" setup>
 import StationPanel from "@/frontend/components/Stations/Panel/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useQuery } from "@tanstack/vue-query";
 import { useRoute } from "vue-router";
