@@ -6444,10 +6444,10 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
-swagger-ui-dist@^5.11.8:
-  version "5.11.8"
-  resolved "https://registry.yarnpkg.com/swagger-ui-dist/-/swagger-ui-dist-5.11.8.tgz#5f92f1f4ca979a5df847da5df180c8b10ccc3e0c"
-  integrity sha512-IfPtCPdf6opT5HXrzHO4kjL1eco0/8xJCtcs7ilhKuzatrpF2j9s+3QbOag6G3mVFKf+g+Ca5UG9DquVUs2obA==
+swagger-ui-dist@^5.11.9:
+  version "5.11.9"
+  resolved "https://registry.yarnpkg.com/swagger-ui-dist/-/swagger-ui-dist-5.11.9.tgz#f927d31300cd9be5a22da4db44a36cdd8288268a"
+  integrity sha512-e1x1x92wwjBWTjM+P9aH6qRurjFol/y5eCN0U2pK/nrS5mKxZuTsZUqdYya1W+JMom8fbw6/X8Ymp99lHRjBfw==
 
 symbol-tree@^3.2.4:
   version "3.2.4"
