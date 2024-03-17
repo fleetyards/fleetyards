@@ -231,10 +231,11 @@ class PaintsImporter
     cutlass = ["Cutlass Black", "Cutlass Blue", "Cutlass Red", "Cutlass Steel"]
     fury = ["Fury", "Fury MX", "Fury LX"]
     scorpius = ["Scorpius", "Scorpius Antares"]
-    hornet = [
-      "F7C-S Hornet Ghost", "F7C-R Hornet Tracker", "F7C-M Super Hornet Heartseeker",
-      "F7C-M Super Hornet", "F7C Hornet Wildfire", "F7C Hornet"
+    hornet_mk1 = [
+      "F7C-S Hornet Ghost Mk I", "F7C-R Hornet Tracker Mk I", "F7C-M Super Hornet Heartseeker Mk I",
+      "F7C-M Super Hornet Mk I", "F7C Hornet Wildfire Mk I", "F7C Hornet Mk I"
     ]
+    hornet_mk2 = ["F7C Hornet Mk II", "F7A Hornet Mk II"]
     mercury = ["Mercury", "Mercury Star Runner"]
     roc = %w[ROC ROC-DS]
     prospector = ["Prospector"]
@@ -273,7 +274,9 @@ class PaintsImporter
       "Freelancer" => freelancer,
       "Freelancer - Black" => freelancer,
       "2950 Invictus Freelancer Storm Surge" => freelancer,
-      "Anvil Hornet" => hornet,
+      "Anvil Hornet" => hornet_mk1,
+      "F7 Hornet Mk I" => hornet_mk1,
+      "F7 Hornet Mk II" => hornet_mk2,
       "MOLE Dolivine" => ["MOLE"],
       "MOLE Aphorite" => ["MOLE"],
       "MOLE Hadanite" => ["MOLE"],
