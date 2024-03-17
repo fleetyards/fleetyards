@@ -71,6 +71,7 @@ module Rsi
         "Fury Variants" => ["Fury", "Fury MX", "Fury LX"],
         "100 Series" => %w[100i 125a 135c],
         "600i Series" => ["600i Touring", "600i Explorer", "600i Executive-Edition"],
+        "600i Explorer and Executive" => ["600i Explorer", "600i Executive-Edition"],
         "Apollo" => ["Apollo Medivac", "Apollo Triage"],
         "Ares Ion / Inferno" => ["Ares Ion", "Ares Inferno"],
         "Dragonfly" => ["Dragonfly Yellowjacket", "Dragonfly Black"],
@@ -117,7 +118,9 @@ module Rsi
     private def model_mapping(name)
       model_map = {
         "85x" => "85X",
-        "F7C - Hornet" => "F7C Hornet",
+        "F7C - Hornet" => "F7C Hornet Mk I",
+        "F7C Hornet" => "F7C Hornet Mk I",
+        "F7C-M Super Hornet" => "F7C-M Super Hornet Mk I",
         "URSA Rover" => "Ursa",
         "MPUV Passenger" => "MPUV Personnel",
         "Hercules C2" => "C2 Hercules",
