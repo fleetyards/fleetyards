@@ -4,7 +4,10 @@ window.App ?= {}
 
 window.App.initSelect = () ->
   if $('select:not(.selectized)').length
-    $('select:not(.selectized)').selectize()
+    $('select:not(.selectized)').selectize({
+      allowEmptyOption: true,
+      showEmptyOptionInDropdown: true,
+    })
 
 window.App.unloadSelect = () ->
   $selectize = $('select.selectized')
