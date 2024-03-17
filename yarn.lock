@@ -7074,10 +7074,10 @@ vite-plugin-manifest-sri@^0.2.0:
   resolved "https://registry.yarnpkg.com/vite-plugin-manifest-sri/-/vite-plugin-manifest-sri-0.2.0.tgz#cb1cfd11692ee81f5d1194926cbea6d3a38b8599"
   integrity sha512-Zt5jt19xTIJ91LOuQTCtNG7rTFc5OziAjBz2H5NdCGqaOD1nxrWExLhcKW+W4/q8/jOPCg/n5ncYEQmqCxiGQQ==
 
-vite-plugin-pwa@0.19.0:
-  version "0.19.0"
-  resolved "https://registry.yarnpkg.com/vite-plugin-pwa/-/vite-plugin-pwa-0.19.0.tgz#2223d6014b9b980deb89a7e8aefebafe71d8a7ef"
-  integrity sha512-Unfb4Jk/ka4HELtpMLIPCmGcW4LFT+CL7Ri1/Of1544CVKXS2ftP91kUkNzkzeI1sGpOdVGuxprVLB9NjMoCAA==
+vite-plugin-pwa@0.19.4:
+  version "0.19.4"
+  resolved "https://registry.yarnpkg.com/vite-plugin-pwa/-/vite-plugin-pwa-0.19.4.tgz#98c29f9f3e60838a523d032ec6044e03223ac947"
+  integrity sha512-KiEFXaYEj2Hg1it+yECy75oqNmlXimI7BaLx7Sxl7Qsd9EIVxaf3GX1mZdLpHe83pDgHBNwm9USGQxSCNp5m7A==
   dependencies:
     debug "^4.3.4"
     fast-glob "^3.3.2"
