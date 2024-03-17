@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.30.2](https://github.com/fleetyards/fleetyards/compare/v5.30.1...v5.30.2) (2024-03-17)
+
+
+### Bug Fixes
+
+* **paints-importer:** update hornet mapping ([1c535f8](https://github.com/fleetyards/fleetyards/commit/1c535f84d33c754178fe78f21c3bad15316720e2))
+
 ### [5.30.1](https://github.com/fleetyards/fleetyards/compare/v5.30.0...v5.30.1) (2024-03-17)
 
 ## [5.30.0](https://github.com/fleetyards/fleetyards/compare/v5.29.3...v5.30.0) (2024-03-17)
