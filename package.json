@@ -50,7 +50,7 @@
     "popper.js": "1.16.1",
     "qs": "6.11.2",
     "swagger-ui-dist": "^5.11.8",
-    "three": "0.161.0",
+    "three": "0.162.0",
     "ts-debounce": "4.0.0",
     "uuid": "^9.0.1",
     "v-show-slide": "^1.8.3",
