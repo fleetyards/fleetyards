@@ -32,7 +32,7 @@
     "core-js": "3.36.0",
     "date-fns": "2.30.0",
     "date-fns-tz": "2.0.1",
-    "debounce": "1.2.1",
+    "debounce": "2.0.0",
     "dom-to-image": "2.6.0",
     "downloadjs": "1.4.7",
     "highcharts": "9.3.3",
