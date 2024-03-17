@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.30.0](https://github.com/fleetyards/fleetyards/compare/v5.29.3...v5.30.0) (2024-03-17)
+
+
+### Features
+
+* **scdata:** bump sc version to 3.22.1 ([f066b16](https://github.com/fleetyards/fleetyards/commit/f066b16adebec3a05c23f09c4e2284af914efed9))
+
 ### [5.29.3](https://github.com/fleetyards/fleetyards/compare/v5.29.2...v5.29.3) (2024-02-26)
 
 
