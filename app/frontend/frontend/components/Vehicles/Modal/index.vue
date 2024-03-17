@@ -168,8 +168,10 @@ const { updateMutation, boughtViaFiltersQuery } = useVehicleQueries(
   props.vehicle,
 );
 
+const mutation = updateMutation();
+
 const onSubmit = handleSubmit(async (values) => {
-  updateMutation.mutate(values, {
+  mutation.mutate(values, {
     onSuccess: () => {
       comlink.emit("close-modal");
     },
@@ -179,7 +181,7 @@ const onSubmit = handleSubmit(async (values) => {
 const { data: boughtViaFilters } = boughtViaFiltersQuery();
 
 const { paintsFilterQuery, paintsFilterFormatter } = useModelQueries(
-  props.vehicle.model,
+  props.vehicle.model.slug,
 );
 </script>
 

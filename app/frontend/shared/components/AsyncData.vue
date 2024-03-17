@@ -33,9 +33,12 @@ const props = withDefaults(defineProps<Props>(), {
   fullscreen: true,
 });
 
+const route = useRoute();
+
 const cssClasses = computed(() => {
   return {
     "container main": props.fullscreen,
+    [route.name as string]: props.fullscreen,
   };
 });
 

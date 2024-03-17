@@ -52,12 +52,18 @@
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import TeaserPanel from "@/shared/components/TeaserPanel/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { type Vehicle, type Model, Models, ModelQuery } from "@/services/fyApi";
+import {
+  type Vehicle,
+  type Model,
+  Models,
+  ModelQuery,
+  VehicleCreateInput,
+} from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useQueryClient } from "@tanstack/vue-query";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { FilterGroupParams } from "@/shared/components/base/FilterGroup/index.vue";
+import { useVehicleQueries } from "@/frontend/composables/useVehicleQueries";
 
 type VehicleFormData = {
   vehicles: Partial<Vehicle>[];
@@ -125,39 +131,23 @@ const formatter = (response: Models) => {
 
 const comlink = useComlink();
 
-const { vehicles: vehiclesService } = useApiClient();
+const { createBulkMutation } = useVehicleQueries();
 
-const queryClient = useQueryClient();
+const mutation = createBulkMutation();
+
+const newVehicles = computed(() => {
+  return form.value.vehicles.map((item) => {
+    return {
+      wanted: props.wanted,
+      modelId: item.model?.id,
+    } as VehicleCreateInput;
+  });
+});
 
 const save = async () => {
   submitting.value = true;
 
-  form.value.vehicles.forEach(async (item) => {
-    if (!item.model) {
-      return;
-    }
-
-    try {
-      await vehiclesService.vehicleCreate({
-        requestBody: {
-          wanted: props.wanted,
-          modelId: item.model.id,
-        },
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  });
-
-  if (props.wanted) {
-    queryClient.invalidateQueries({
-      queryKey: ["wishlist"],
-    });
-  } else {
-    queryClient.invalidateQueries({
-      queryKey: ["hangar"],
-    });
-  }
+  await mutation.mutateAsync(newVehicles.value);
 
   submitting.value = false;
 

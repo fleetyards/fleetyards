@@ -75,9 +75,9 @@ import type { I18nPluginOptions } from "@/shared/plugins/I18n";
 
 type Props = {
   queryResultRef: BaseList;
-  inline?: boolean;
   updatePerPage?: (perPage: number | string) => void;
   perPage?: number | string;
+  inline?: boolean;
   hash?: string;
 };
 
@@ -85,7 +85,6 @@ const props = withDefaults(defineProps<Props>(), {
   updatePerPage: undefined,
   perPage: undefined,
   inline: false,
-  perPageSelectable: true,
   hash: undefined,
 });
 

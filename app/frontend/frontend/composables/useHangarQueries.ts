@@ -2,6 +2,12 @@ import { useApiClient } from "@/frontend/composables/useApiClient";
 import { type HangarQuery } from "@/services/fyApi";
 import { useQuery, useQueryClient } from "@tanstack/vue-query";
 
+export enum QueryKeysEnum {
+  HANGAR = "hangar",
+  HANGAR_STATS = "hangarStats",
+  HANGAR_GROUPS = "hangarGroups",
+}
+
 export const useHangarQueries = () => {
   const {
     hangar: hangarService,
@@ -19,7 +25,7 @@ export const useHangarQueries = () => {
     return useQuery(
       {
         refetchOnWindowFocus: false,
-        queryKey: ["vehicles"],
+        queryKey: [QueryKeysEnum.HANGAR, page],
         queryFn: () => {
           return hangarService.hangar({
             q: filters.value,
@@ -35,7 +41,7 @@ export const useHangarQueries = () => {
   const statsQuery = (filters: Ref<HangarQuery>) => {
     return useQuery(
       {
-        queryKey: ["hangarStats"],
+        queryKey: [QueryKeysEnum.HANGAR_STATS],
         queryFn: () =>
           hangarStatsService.hangarStats({
             q: filters.value,
@@ -48,7 +54,7 @@ export const useHangarQueries = () => {
   const groupsQuery = () => {
     return useQuery(
       {
-        queryKey: ["hangarGroups"],
+        queryKey: [QueryKeysEnum.HANGAR_GROUPS],
         queryFn: () => hangarGroupsService.hangarGroups(),
       },
       queryClient,

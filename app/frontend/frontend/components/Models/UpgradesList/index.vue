@@ -23,11 +23,10 @@
 </template>
 
 <script lang="ts" setup>
-import { useApiClient } from "@/frontend/composables/useApiClient";
-import { useQuery } from "@tanstack/vue-query";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import TeaserPanel from "@/shared/components/TeaserPanel2/index.vue";
+import { useModelQueries } from "@/frontend/composables/useModelQueries";
 
 type Props = {
   modelSlug: string;
@@ -35,15 +34,9 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { models: modelsService } = useApiClient();
+const { upgradesQuery } = useModelQueries(props.modelSlug);
 
-const { data: upgrades, ...asyncStatus } = useQuery({
-  queryKey: ["model-upgrades", props.modelSlug],
-  queryFn: () =>
-    modelsService.modelUpgrades({
-      slug: props.modelSlug,
-    }),
-});
+const { data: upgrades, ...asyncStatus } = upgradesQuery();
 
 const { t } = useI18n();
 </script>

@@ -1,140 +1,133 @@
 <template>
-  <section class="container">
-    <div class="row">
-      <div class="col-12">
-        <div class="row">
-          <div class="col-12">
-            <BreadCrumbs :crumbs="crumbs" />
-            <h1>
-              {{ metaTitle }}
-            </h1>
-          </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="row">
+        <div class="col-12">
+          <BreadCrumbs :crumbs="crumbs" />
+          <h1>
+            {{ metaTitle }}
+          </h1>
         </div>
-        <div class="row">
-          <div class="col-12">
-            <Paginator
-              v-if="videos.length"
-              :page="currentPage"
-              :total="totalPages"
-            />
-          </div>
-        </div>
-        <transition-group
-          v-if="videos"
-          name="fade-list"
-          class="row flex-center videos"
-          tag="div"
-          appear
-        >
-          <div
-            v-for="video in videos"
-            :key="video.id"
-            class="col-12 col-lg-6 col-lgx-3 fade-list-item"
-          >
-            <VideoEmbed :video="video" />
-          </div>
-        </transition-group>
-        <div class="row">
-          <div class="col-12">
-            <Paginator
-              v-if="videos.length"
-              :page="currentPage"
-              :total="totalPages"
-            />
-          </div>
-        </div>
-        <Loader :loading="loading" />
       </div>
     </div>
-  </section>
+  </div>
+  <FilteredList
+    id="modelVideos"
+    name="modelVideos"
+    :records="data?.items || []"
+    :async-status="asyncStatus"
+    primary-key="id"
+    class="videos"
+  >
+    <template #default="{ records, loading, filterVisible, primaryKey }">
+      <FilteredGrid
+        :records="records"
+        :loading="loading"
+        :filter-visible="filterVisible"
+        :primary-key="primaryKey"
+        grid-base="2"
+      >
+        <template #default="{ record }">
+          <VideoEmbed :video="record" />
+        </template>
+      </FilteredGrid>
+    </template>
+  </FilteredList>
 </template>
 
 <script lang="ts" setup>
+import FilteredList from "@/shared/components/FilteredList/index.vue";
+import FilteredGrid from "@/shared/components/FilteredGrid/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
-import Loader from "@/shared/components/Loader/index.vue";
 import VideoEmbed from "@/shared/components/Video/index.vue";
+import { useModelQueries } from "@/frontend/composables/useModelQueries";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useMetaInfo } from "@/shared/composables/useMetaInfo";
+import { type Model } from "@/services/fyApi";
 
-// data() {
-//   return {
-//     videos: [],
-//     model: null,
-//     loading: false,
-//   };
-// },
+type Props = {
+  model: Model;
+};
 
-// computed: {
-//   ...mapGetters("cookies", ["cookies"]),
+const props = defineProps<Props>();
 
-//   metaTitle() {
-//     if (!this.model) {
-//       return null;
-//     }
+const { t } = useI18n();
 
-//     return this.$t("title.modelVideos", {
-//       name: this.model.name,
-//     });
-//   },
+const { updateMetaInfo } = useMetaInfo(t);
 
-//   crumbs() {
-//     if (!this.model) {
-//       return null;
-//     }
+const metaTitle = computed(() => {
+  if (!props.model) {
+    return undefined;
+  }
 
-//     return [
-//       {
-//         to: {
-//           name: "models",
-//           hash: `#${this.model.slug}`,
-//         },
-//         label: this.$t("nav.models.index"),
-//       },
-//       {
-//         to: { name: "model", param: { slug: this.$route.params.slug } },
-//         label: this.model.name,
-//       },
-//     ];
-//   },
-// },
+  return t("title.modelVideos", {
+    name: props.model.name,
+  });
+});
 
-// watch: {
-//   $route() {
-//     this.fetch();
-//   },
-// },
+const metaDescription = computed(() => {
+  if (!props.model || !props.model.description) {
+    return undefined;
+  }
 
-// created() {
-//   this.fetchModel();
-//   this.fetch();
-// }
+  return props.model.description;
+});
 
-// async fetch() {
-//   this.loading = true;
+const metaImage = computed(() => {
+  if (!props.model) {
+    return undefined;
+  }
 
-//   const response = await this.$api.get(
-//     `models/${this.$route.params.slug}/videos`,
-//     {
-//       page: this.$route.query.page,
-//     }
-//   );
+  return props.model.media.storeImage?.large;
+});
 
-//   this.loading = false;
+const route = useRoute();
 
-//   if (!response.error) {
-//     this.videos = response.data;
-//   }
+const crumbs = computed(() => {
+  if (!props.model) {
+    return [];
+  }
 
-//   this.setPages(response.meta);
-// },
+  return [
+    {
+      to: {
+        name: "models",
+        hash: `#${props.model.slug}`,
+      },
+      label: t("nav.models.index"),
+    },
+    {
+      to: { name: "model", param: { slug: route.params.slug } },
+      label: props.model.name,
+    },
+  ];
+});
 
-// async fetchModel() {
-//   const response = await this.$api.get(`models/${this.$route.params.slug}`);
+const { videosQuery } = useModelQueries(route.params.slug as string);
 
-//   if (!response.error) {
-//     this.model = response.data;
-//   } else if (response.error.response.status === 404) {
-//     this.$router.replace({ name: "404" });
-//   }
-// }
+const { data, ...asyncStatus } = videosQuery({});
+
+onMounted(() => {
+  updateTitle();
+});
+
+watch(
+  () => props.model,
+  () => updateTitle,
+);
+
+const updateTitle = () => {
+  if (!props.model) {
+    return;
+  }
+
+  updateMetaInfo({
+    title: metaTitle.value,
+    description: metaDescription.value,
+    image: metaImage.value,
+    type: "article",
+  });
+};
 </script>
 
 <script lang="ts">

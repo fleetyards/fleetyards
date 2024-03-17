@@ -1,48 +1,128 @@
 import { useApiClient } from "@/frontend/composables/useApiClient";
-import { ModelPaint, type Model } from "@/services/fyApi";
+import { ModelPaint, type ModelQuery } from "@/services/fyApi";
 import { FilterGroupParams } from "@/shared/components/base/FilterGroup/index.vue";
 import { useQuery, useQueryClient } from "@tanstack/vue-query";
 
-export const useModelQueries = (model: Model) => {
+export enum QueryKeysEnum {
+  MODELS = "models",
+  MODEL = "model",
+  MODEL_IMAGES = "modelImages",
+  MODEL_VIDEOS = "modelVideos",
+  MODEL_MODULE_PACKAGES = "modelModulePackages",
+  MODEL_MODULES = "modelModules",
+  MODEL_UPGRADES = "modelUpgrades",
+  MODEL_PAINTS = "modelPaints",
+  MODEL_VARIANTS = "modelVariants",
+}
+
+export const useModelQueries = (slug?: string) => {
   const { models: modelsService } = useApiClient();
 
   const queryClient = useQueryClient();
 
-  const modulePackagesQuery = () => {
+  const modelsQuery = ({
+    page,
+    perPage,
+    q,
+  }: {
+    page?: string;
+    perPage?: string;
+    q?: ModelQuery;
+  }) => {
     return useQuery(
       {
-        queryKey: ["modulePackages", model.slug],
-        queryFn: () => modelsService.modelModulePackages({ slug: model.slug }),
+        queryKey: [QueryKeysEnum.MODELS],
+        queryFn: () =>
+          modelsService.models({
+            page,
+            perPage,
+            q,
+          }),
+      },
+      queryClient,
+    );
+  };
+
+  const modelQuery = () => {
+    if (!slug) throw new Error("slug is required");
+
+    return useQuery(
+      {
+        queryKey: [QueryKeysEnum.MODEL, slug],
+        queryFn: () => modelsService.model({ slug }),
+        retry: false,
+      },
+      queryClient,
+    );
+  };
+
+  const imagesQuery = ({ page }: { page?: string }) => {
+    if (!slug) throw new Error("slug is required");
+
+    return useQuery(
+      {
+        queryKey: [QueryKeysEnum.MODEL_IMAGES, slug],
+        queryFn: () => modelsService.modelImages({ slug, page }),
+      },
+      queryClient,
+    );
+  };
+
+  const videosQuery = ({ page }: { page?: string }) => {
+    if (!slug) throw new Error("slug is required");
+
+    return useQuery(
+      {
+        queryKey: [QueryKeysEnum.MODEL_VIDEOS, slug],
+        queryFn: () => modelsService.modelVideos({ slug, page }),
+      },
+      queryClient,
+    );
+  };
+
+  const modulePackagesQuery = () => {
+    if (!slug) throw new Error("slug is required");
+
+    return useQuery(
+      {
+        queryKey: [QueryKeysEnum.MODEL_MODULE_PACKAGES, slug],
+        queryFn: () => modelsService.modelModulePackages({ slug }),
       },
       queryClient,
     );
   };
 
   const modulesQuery = () => {
+    if (!slug) throw new Error("slug is required");
+
     return useQuery(
       {
-        queryKey: ["modules", model.slug],
-        queryFn: () => modelsService.modelModules({ slug: model.slug }),
+        queryKey: [QueryKeysEnum.MODEL_MODULES, slug],
+        queryFn: () => modelsService.modelModules({ slug }),
       },
       queryClient,
     );
   };
 
   const upgradesQuery = () => {
+    if (!slug) throw new Error("slug is required");
+
     return useQuery(
       {
-        queryKey: ["upgrades", model.slug],
-        queryFn: () => modelsService.modelUpgrades({ slug: model.slug }),
+        queryKey: [QueryKeysEnum.MODEL_UPGRADES, slug],
+        queryFn: () => modelsService.modelUpgrades({ slug }),
       },
       queryClient,
     );
   };
 
   const paintsQuery = (options = {}) => {
+    if (!slug) throw new Error("slug is required");
+
     return useQuery(
       {
-        queryKey: ["paints", model.slug],
-        queryFn: () => modelsService.modelPaints({ slug: model.slug }),
+        queryKey: [QueryKeysEnum.MODEL_PAINTS, slug],
+        queryFn: () => modelsService.modelPaints({ slug }),
         ...options,
       },
       queryClient,
@@ -50,7 +130,9 @@ export const useModelQueries = (model: Model) => {
   };
 
   const paintsFilterQuery = (_params: FilterGroupParams) => {
-    return modelsService.modelPaints({ slug: model.slug });
+    if (!slug) throw new Error("slug is required");
+
+    return modelsService.modelPaints({ slug });
   };
 
   const paintsFilterFormatter = (paints: ModelPaint[]) => {
@@ -60,12 +142,29 @@ export const useModelQueries = (model: Model) => {
     }));
   };
 
+  const variantsQuery = () => {
+    if (!slug) throw new Error("slug is required");
+
+    return useQuery(
+      {
+        queryKey: [QueryKeysEnum.MODEL_VARIANTS, slug],
+        queryFn: () => modelsService.modelVariants({ slug }),
+      },
+      queryClient,
+    );
+  };
+
   return {
+    modelsQuery,
+    modelQuery,
+    imagesQuery,
+    videosQuery,
     modulePackagesQuery,
     modulesQuery,
     upgradesQuery,
     paintsQuery,
     paintsFilterQuery,
     paintsFilterFormatter,
+    variantsQuery,
   };
 };

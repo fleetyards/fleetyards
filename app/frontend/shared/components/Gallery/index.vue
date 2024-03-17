@@ -58,20 +58,14 @@ import copyText from "@/shared/utils/CopyText";
 import { useNoty } from "@/shared/composables/useNoty";
 import type { I18nPluginOptions } from "@/shared/plugins/I18n";
 import { useOverlayStore } from "@/shared/stores/overlay";
+import { type Image } from "@/services/fyApi";
 
 const i18n = inject<I18nPluginOptions>("i18n");
 
 const { displayAlert, displaySuccess } = useNoty(i18n!.t);
 
-type GalleryItem = {
-  url: string;
-  smallUrl: string;
-  width: number;
-  height: number;
-};
-
 type Props = {
-  items?: Array<GalleryItem>;
+  items?: Array<Image>;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -140,12 +134,13 @@ const getThumbBounds = (index: number) => {
 
 const overlayStore = useOverlayStore();
 
-const open = (index = "0") => {
-  internalIndex.value = parseInt(index, 10);
+const open = (index = 0) => {
+  internalIndex.value = +index;
 
   overlayStore.show();
 
   setup();
+
   gallery.value?.init();
 };
 

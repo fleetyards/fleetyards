@@ -1,38 +1,46 @@
 <template>
   <AsyncData :async-status="asyncStatus">
     <template #resolved>
-      <slot :fleet="fleet" />
+      <router-view :fleet="fleet" />
     </template>
   </AsyncData>
 </template>
 
 <script lang="ts" setup>
+import { useComlink } from "@/shared/composables/useComlink";
 import AsyncData from "@/shared/components/AsyncData.vue";
-import { useFleetQuery } from "@/frontend/composables/useFleetQuery";
+import { useFleetQueries } from "@/frontend/composables/useFleetQueries";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 
-type Props = {
-  fleetSlug: string;
-  titleKey?: string;
-};
+const route = useRoute();
 
-const props = withDefaults(defineProps<Props>(), {
-  titleKey: undefined,
-});
+const slug = computed(() => route.params.slug as string);
 
-const { fleet, asyncStatus } = useFleetQuery(props.fleetSlug);
+const { fleetQuery } = useFleetQueries(slug.value);
+
+const { data: fleet, refetch, ...asyncStatus } = fleetQuery();
 
 const { t } = useI18n();
 
 const { updateMetaInfo } = useMetaInfo(t);
 
+const comlink = useComlink();
+
+onMounted(() => {
+  comlink.on("fleet-update", refetch);
+});
+
+onUnmounted(() => {
+  comlink.off("fleet-update", refetch);
+});
+
 const fleetTitle = computed(() => {
-  if (!props.titleKey) {
+  if (!route.meta.title) {
     return fleet.value?.name;
   }
 
-  return t(props.titleKey, { fleet: fleet.value?.name });
+  return t(route.meta.title, { fleet: fleet.value?.name });
 });
 
 watch(
@@ -54,6 +62,6 @@ watch(
 
 <script lang="ts">
 export default {
-  name: "FleetWrapper",
+  name: "FleetRouterView",
 };
 </script>

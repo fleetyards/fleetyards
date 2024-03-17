@@ -74,7 +74,7 @@
       <div class="float-sm-right">
         <Btn
           :form="`vehicle-addons-${vehicle.id}`"
-          :loading="updateMutation.isPending.value"
+          :loading="mutation.isPending.value"
           type="submit"
           size="large"
           :inline="true"
@@ -133,7 +133,7 @@ const setupForm = () => {
 };
 
 const { modulePackagesQuery, modulesQuery, upgradesQuery } = useModelQueries(
-  props.vehicle.model,
+  props.vehicle.model.slug,
 );
 
 const { data: modulePackages, ...modulePackagesAsyncStatus } =
@@ -147,12 +147,14 @@ const comlink = useComlink();
 
 const { updateMutation } = useVehicleQueries(props.vehicle);
 
+const mutation = updateMutation();
+
 const save = async () => {
   if (!props.editable || !form.value) {
     return;
   }
 
-  updateMutation.mutate(form.value, {
+  mutation.mutate(form.value, {
     onSuccess: () => {
       comlink.emit("close-modal");
     },

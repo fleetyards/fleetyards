@@ -2,71 +2,139 @@ import { useApiClient } from "@/frontend/composables/useApiClient";
 import {
   type Hangar,
   type Vehicle,
+  type VehicleCreateInput,
   type VehicleUpdateInput,
 } from "@/services/fyApi";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
+import { QueryKeysEnum as HangarQueryKeysEnum } from "@/frontend/composables/useHangarQueries";
 
-export const useVehicleQueries = (vehicle: Vehicle) => {
+export enum QueryKeysEnum {
+  VEHICLE = "vehicle",
+  FILTERS_BOUGHT_VIA = "filtersBoughtVia",
+}
+
+export const useVehicleQueries = (vehicle?: Vehicle) => {
   const { vehicles: vehiclesService } = useApiClient();
 
   const queryClient = useQueryClient();
 
-  const updateMutation = useMutation(
-    {
-      mutationFn: (requestBody: VehicleUpdateInput) => {
-        return vehiclesService.updateVehicle({
-          id: vehicle.id,
-          requestBody,
-        });
+  const createMutation = () => {
+    return useMutation(
+      {
+        mutationFn: (requestBody: VehicleCreateInput) => {
+          return vehiclesService.vehicleCreate({ requestBody });
+        },
+        onSettled: () => {
+          queryClient.invalidateQueries({
+            queryKey: [HangarQueryKeysEnum.HANGAR],
+          });
+          queryClient.invalidateQueries({
+            queryKey: ["wishlist"],
+          });
+        },
       },
-      onMutate: async (input: VehicleUpdateInput) => {
-        const updatedVehicle = {
-          ...vehicle,
-          ...input,
-        };
-        await queryClient.cancelQueries({
-          queryKey: ["vehicles"],
-        });
-        await queryClient.cancelQueries({
-          queryKey: ["vehicles", updatedVehicle.id],
-        });
+      queryClient,
+    );
+  };
 
-        const previousVehicles = queryClient.getQueryData([
-          "vehicles",
-        ]) as Hangar;
+  const createBulkMutation = () => {
+    return useMutation(
+      {
+        mutationFn: (requestBody: VehicleCreateInput[]) => {
+          if (requestBody.length === 0) {
+            return Promise.resolve();
+          }
 
-        queryClient.setQueryData(["vehicles"], {
-          ...previousVehicles,
-          items: previousVehicles.items.map((vehicle) => {
-            if (vehicle.id === updatedVehicle.id) {
-              return updatedVehicle;
-            }
+          return new Promise((resolve, reject) => {
+            const promises = requestBody.map((vehicle) => {
+              return vehiclesService.vehicleCreate({ requestBody: vehicle });
+            });
 
-            return vehicle;
-          }),
-        });
-
-        return { previousVehicles };
+            Promise.all(promises)
+              .then(() => {
+                resolve(undefined);
+              })
+              .catch((error) => {
+                reject(error);
+              });
+          });
+        },
+        onSettled: () => {
+          queryClient.invalidateQueries({
+            queryKey: [HangarQueryKeysEnum.HANGAR],
+          });
+          queryClient.invalidateQueries({
+            queryKey: ["wishlist"],
+          });
+        },
       },
-      onError: (_error, _updatedVehicle, context) => {
-        queryClient.setQueryData(["vehicles"], context?.previousVehicles);
+      queryClient,
+    );
+  };
+
+  const updateMutation = () => {
+    if (!vehicle) throw new Error("vehicle is required");
+
+    return useMutation(
+      {
+        mutationFn: (requestBody: VehicleUpdateInput) => {
+          return vehiclesService.vehicleUpdate({
+            id: vehicle.id,
+            requestBody,
+          });
+        },
+        onMutate: async (input: VehicleUpdateInput) => {
+          const updatedVehicle = {
+            ...vehicle,
+            ...input,
+          };
+          await queryClient.cancelQueries({
+            queryKey: [HangarQueryKeysEnum.HANGAR],
+          });
+
+          const previousVehicles = queryClient.getQueryData([
+            HangarQueryKeysEnum.HANGAR,
+          ]) as Hangar;
+
+          queryClient.setQueryData([HangarQueryKeysEnum.HANGAR], {
+            ...previousVehicles,
+            items: previousVehicles.items.map((vehicle) => {
+              if (vehicle.id === updatedVehicle.id) {
+                return updatedVehicle;
+              }
+
+              return vehicle;
+            }),
+          });
+
+          return { previousVehicles };
+        },
+        onError: (_error, _updatedVehicle, context) => {
+          queryClient.setQueryData(
+            [HangarQueryKeysEnum.HANGAR],
+            context?.previousVehicles,
+          );
+        },
+        onSettled: (updatedVehicle) => {
+          queryClient.invalidateQueries({
+            queryKey: [QueryKeysEnum.VEHICLE, updatedVehicle?.id],
+          });
+          queryClient.invalidateQueries({
+            queryKey: [HangarQueryKeysEnum.HANGAR],
+          });
+          queryClient.invalidateQueries({
+            queryKey: ["wishlist"],
+          });
+        },
       },
-      onSettled: (updatedVehicle) => {
-        queryClient.invalidateQueries({
-          queryKey: ["vehicles", updatedVehicle?.id],
-        });
-        queryClient.invalidateQueries({
-          queryKey: ["vehicles"],
-        });
-      },
-    },
-    queryClient,
-  );
+      queryClient,
+    );
+  };
 
   const boughtViaFiltersQuery = () => {
     return useQuery(
       {
-        queryKey: ["boughtViaFilters"],
+        queryKey: [QueryKeysEnum.FILTERS_BOUGHT_VIA],
         queryFn: async () => {
           return vehiclesService.boughtViaFilters();
         },
@@ -76,6 +144,8 @@ export const useVehicleQueries = (vehicle: Vehicle) => {
   };
 
   return {
+    createMutation,
+    createBulkMutation,
     updateMutation,
     boughtViaFiltersQuery,
   };

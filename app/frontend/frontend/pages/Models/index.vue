@@ -73,7 +73,8 @@
         >
           <template #pagination>
             <Paginator
-              :pagination="pagination"
+              v-if="models"
+              :query-result-ref="models"
               :per-page="perPage"
               :update-per-page="updatePerPage"
             />
@@ -86,7 +87,8 @@
 
       <template #pagination-bottom>
         <Paginator
-          :pagination="pagination"
+          v-if="models"
+          :query-result-ref="models"
           :per-page="perPage"
           :update-per-page="updatePerPage"
         />
@@ -107,19 +109,23 @@ import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import { useHangarItems } from "@/frontend/composables/useHangarItems";
 import { useWishlistItems } from "@/frontend/composables/useWishlistItems";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type BaseList } from "@/services/fyApi";
 import { useModelsStore } from "@/frontend/stores/models";
 import { storeToRefs } from "pinia";
-import { useApiClient } from "@/frontend/composables/useApiClient";
-import { useQuery } from "@tanstack/vue-query";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
+import { useMetaInfo } from "@/shared/composables/useMetaInfo";
+import {
+  QueryKeysEnum,
+  useModelQueries,
+} from "@/frontend/composables/useModelQueries";
 
 useHangarItems();
 useWishlistItems();
 
 const { t } = useI18n();
+
+useMetaInfo(t);
 
 const modelsStore = useModelsStore();
 const fleetchartsStore = useFleetchartStore();
@@ -138,22 +144,20 @@ const toggleFleetchart = () => {
   fleetchartsStore.toggleFleetchart("models");
 };
 
-const { models: modelsService } = useApiClient();
+const { modelsQuery } = useModelQueries();
+
+const route = useRoute();
+
+const { perPage, page, updatePerPage } = usePagination(QueryKeysEnum.MODELS);
 
 const {
   data: models,
   refetch,
   ...asyncStatus
-} = useQuery({
-  refetchOnWindowFocus: false,
-  queryKey: ["models"],
-  queryFn: () => {
-    return modelsService.models({
-      q: filters.value.filters,
-      page: page.value,
-      perPage: perPage.value,
-    });
-  },
+} = modelsQuery({
+  page: page.value,
+  perPage: perPage.value,
+  q: route.query,
 });
 
 const toggleDetailsTooltip = computed(() => {
@@ -164,18 +168,10 @@ const toggleDetailsTooltip = computed(() => {
   return t("actions.showDetails");
 });
 
-const route = useRoute();
-
 const filters = computed(() => ({
   filters: route.query,
   page: Number(route.query.page),
 }));
-
-const { perPage, page, pagination, updatePerPage } = usePagination(
-  "models",
-  models as Ref<BaseList>,
-  refetch,
-);
 
 watch(
   () => perPage.value,
@@ -195,6 +191,6 @@ watch(
 
 <script lang="ts">
 export default {
-  name: "ModelsPage",
+  name: "ModelsIndex",
 };
 </script>

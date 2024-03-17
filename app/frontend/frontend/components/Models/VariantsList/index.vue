@@ -23,11 +23,10 @@
 </template>
 
 <script lang="ts" setup>
-import { useApiClient } from "@/frontend/composables/useApiClient";
-import { useQuery } from "@tanstack/vue-query";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
+import { useModelQueries } from "@/frontend/composables/useModelQueries";
 
 type Props = {
   modelSlug: string;
@@ -35,15 +34,9 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { models: modelsService } = useApiClient();
+const { variantsQuery } = useModelQueries(props.modelSlug);
 
-const { data: variants, ...asyncStatus } = useQuery({
-  queryKey: ["model-variants", props.modelSlug],
-  queryFn: () =>
-    modelsService.modelVariants({
-      slug: props.modelSlug,
-    }),
-});
+const { data: variants, ...asyncStatus } = variantsQuery();
 
 const { t } = useI18n();
 </script>

@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
-import { routes as SettingsRoutes } from "@/frontend/pages/Fleets/Settings/routes";
+import { routes as fleetRoutes } from "@/frontend/pages/Fleets/Show/routes";
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -42,58 +42,9 @@ export const routes: RouteRecordRaw[] = [
   },
   {
     path: ":slug/",
-    name: "fleet",
-    component: () => import("@/frontend/pages/Fleets/Show/index.vue"),
-    meta: {
-      backgroundImage: "bg-8",
-    },
-  },
-  {
-    path: ":slug/ships/",
-    name: "fleet-ships",
-    component: () => import("@/frontend/pages/Fleets/Ships/index.vue"),
-    meta: {
-      backgroundImage: "bg-8",
-    },
-  },
-  {
-    path: ":slug/fleetchart/",
-    name: "fleet-fleetchart",
-    redirect: {
-      name: "fleet-ships",
-      query: { fleetchart: "true" },
-    },
-  },
-  {
-    path: ":slug/members/",
-    name: "fleet-members",
-    component: () => import("@/frontend/pages/Fleets/Members/index.vue"),
-    meta: {
-      needsAuthentication: true,
-      backgroundImage: "bg-8",
-    },
-  },
-  {
-    path: ":slug/settings/",
-    name: "fleet-settings",
-    component: () => import("@/frontend/pages/Fleets/Settings/index.vue"),
-    meta: {
-      needsAuthentication: true,
-      backgroundImage: "bg-8",
-    },
-    redirect: {
-      name: "fleet-settings-fleet",
-    },
-    children: SettingsRoutes,
-  },
-  {
-    path: ":slug/stats/",
-    name: "fleet-stats",
-    component: () => import("@/frontend/pages/Fleets/Stats/index.vue"),
-    meta: {
-      needsAuthentication: true,
-      backgroundImage: "bg-8",
-    },
+    component: () => import("@/frontend/pages/Fleets/Show/routerView.vue"),
+    children: fleetRoutes,
+    redirect: { name: fleetRoutes[0].name },
   },
 ];
 

@@ -241,7 +241,7 @@
       </template>
 
       <template #filter>
-        <!-- <VehiclesFilterForm :hangar-groups-options="hangarGroups" /> -->
+        <VehiclesFilterForm :hangar-groups-options="hangarGroups" />
       </template>
 
       <template #default="{ records, loading, filterVisible, primaryKey }">
@@ -340,6 +340,7 @@ import rsiLogo from "@/images/rsi_logo.png";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { useHangarQueries } from "@/frontend/composables/useHangarQueries";
+import { useFilters } from "@/shared/composables/useFilters";
 
 const { t, toDollar, toUEC, toNumber } = useI18n();
 
@@ -370,9 +371,7 @@ const shareTitle = computed(() => t("title.hangar.index"));
 
 const { statsQuery, hangarQuery, groupsQuery } = useHangarQueries();
 
-const filters = computed(() => {
-  return route.query.q as HangarQuery;
-});
+const { filters } = useFilters<HangarQuery>();
 
 const { perPage, page, updatePerPage } = usePagination("hangar");
 

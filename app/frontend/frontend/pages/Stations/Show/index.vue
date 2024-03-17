@@ -1,82 +1,80 @@
 <template>
   <AsyncData :async-status="asyncStatus">
     <template #resolved>
-      <section class="container">
-        <div class="row">
-          <div class="col-12 col-md-8">
-            <BreadCrumbs :crumbs="crumbs" />
-            <h1 v-if="station">
-              {{ station.name }}
-            </h1>
-          </div>
-          <div class="col-12 col-md-4">
-            <div class="page-actions page-actions-right">
-              <PriceModalBtn
-                v-if="station && station.shops?.length"
-                :station-slug="station.slug"
-              />
-            </div>
-          </div>
+      <div class="row">
+        <div class="col-12 col-md-8">
+          <BreadCrumbs :crumbs="crumbs" />
+          <h1 v-if="station">
+            {{ station.name }}
+          </h1>
         </div>
-        <div class="row">
-          <div v-if="station" class="col-12 col-lg-8">
-            <img
-              v-if="station.media.storeImage"
-              :src="station.media.storeImage.large"
-              class="image"
-              alt="model image"
+        <div class="col-12 col-md-4">
+          <div class="page-actions page-actions-right">
+            <PriceModalBtn
+              v-if="station && station.shops?.length"
+              :station-slug="station.slug"
             />
-            <blockquote v-if="station.description" class="description">
-              <p v-html="station.description" />
-            </blockquote>
           </div>
-          <div v-if="station" class="col-12 col-lg-4">
-            <Panel>
-              <StationBaseMetrics :station="station" :padding="true" />
-              <StationDocks
-                :docks="station.docks"
-                :dock-counts="station.dockCounts"
-                :padding="true"
-              />
-              <StationHabitations
-                :habitations="station.habitations"
-                :habitation-counts="station.habitationCounts"
-                :padding="true"
-              />
-            </Panel>
-            <div class="text-right">
-              <div class="page-actions page-actions-right">
-                <Btn
-                  v-if="station.hasImages"
-                  :to="{
-                    name: 'station-images',
-                    params: { slug: station.slug },
-                  }"
-                >
-                  <i class="fa fa-images" />
-                </Btn>
-              </div>
+        </div>
+      </div>
+      <div class="row">
+        <div v-if="station" class="col-12 col-lg-8">
+          <img
+            v-if="station.media.storeImage"
+            :src="station.media.storeImage.large"
+            class="image"
+            alt="model image"
+          />
+          <blockquote v-if="station.description" class="description">
+            <p v-html="station.description" />
+          </blockquote>
+        </div>
+        <div v-if="station" class="col-12 col-lg-4">
+          <Panel>
+            <StationBaseMetrics :station="station" :padding="true" />
+            <StationDocks
+              :docks="station.docks"
+              :dock-counts="station.dockCounts"
+              :padding="true"
+            />
+            <StationHabitations
+              :habitations="station.habitations"
+              :habitation-counts="station.habitationCounts"
+              :padding="true"
+            />
+          </Panel>
+          <div class="text-right">
+            <div class="page-actions page-actions-right">
+              <Btn
+                v-if="station.hasImages"
+                :to="{
+                  name: 'station-images',
+                  params: { slug: station.slug },
+                }"
+              >
+                <i class="fa fa-images" />
+              </Btn>
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-12 shops">
-            <template v-if="station && station.shops?.length">
-              <h2>{{ t("headlines.shops") }}</h2>
-              <transition-group name="fade-list" class="row" tag="div" appear>
-                <div
-                  v-for="shop in station.shops"
-                  :key="shop.slug"
-                  class="col-12 col-lg-4 fade-list-item"
-                >
-                  <ShopPanel :shop="shop" />
-                </div>
-              </transition-group>
-              <Loader :loading="loading" :fixed="true" />
-            </template>
-          </div>
+      </div>
+      <div class="row">
+        <div class="col-12 shops">
+          <template v-if="station && station.shops?.length">
+            <h2>{{ t("headlines.shops") }}</h2>
+            <transition-group name="fade-list" class="row" tag="div" appear>
+              <div
+                v-for="shop in station.shops"
+                :key="shop.slug"
+                class="col-12 col-lg-4 fade-list-item"
+              >
+                <ShopPanel :shop="shop" />
+              </div>
+            </transition-group>
+            <Loader :loading="loading" :fixed="true" />
+          </template>
         </div>
-      </section>
+      </div>
     </template>
   </AsyncData>
 </template>

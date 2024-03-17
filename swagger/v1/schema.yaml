@@ -4840,7 +4840,7 @@ paths:
                 "$ref": "#/components/schemas/HangarPublic"
     delete:
       summary: Delete Vehicle
-      operationId: destroyVehicle
+      operationId: vehicleDestroy
       tags:
       - Vehicles
       responses:
@@ -4864,7 +4864,7 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
     put:
       summary: Update Vehicle
-      operationId: updateVehicle
+      operationId: vehicleUpdate
       tags:
       - Vehicles
       parameters: []

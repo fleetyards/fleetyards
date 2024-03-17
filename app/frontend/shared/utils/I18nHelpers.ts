@@ -17,6 +17,10 @@ export const i18nHelpers = (i18n: I18n) => {
       count = value || 1;
     }
 
+    if (units === "ships") {
+      count = value || 1;
+    }
+
     if (units === "speed" && value) {
       count = String(value || "")
         .split(" - ")

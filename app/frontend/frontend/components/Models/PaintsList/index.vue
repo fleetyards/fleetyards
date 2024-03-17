@@ -31,14 +31,13 @@
 import AsyncData from "@/shared/components/AsyncData.vue";
 import Panel from "@/shared/components/Panel/index.vue";
 import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
-import { useQuery } from "@tanstack/vue-query";
-import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type ModelPaint } from "@/services/fyApi";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 import { useMobile } from "@/shared/composables/useMobile";
+import { useModelQueries } from "@/frontend/composables/useModelQueries";
 
 type Props = {
   modelSlug: string;
@@ -48,16 +47,9 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 
-const { data: paints, ...asyncStatus } = useQuery({
-  queryKey: ["model-paints", props.modelSlug],
-  queryFn: () => {
-    return modelsService.modelPaints({
-      slug: props.modelSlug,
-    });
-  },
-});
+const { paintsQuery } = useModelQueries(props.modelSlug);
 
-const { models: modelsService } = useApiClient();
+const { data: paints, ...asyncStatus } = paintsQuery();
 
 const { supported: webpSupported } = useWebpCheck();
 

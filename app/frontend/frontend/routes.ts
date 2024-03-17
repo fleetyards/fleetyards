@@ -1,10 +1,11 @@
 import type { RouteRecordRaw } from "vue-router";
-import { routes as StationsRoutes } from "@/frontend/pages/Stations/routes";
-import { routes as RoadmapRoutes } from "@/frontend/pages/Roadmap/routes";
-import { routes as SettingsRoutes } from "@/frontend/pages/Settings/routes";
-import { routes as FleetsRoutes } from "@/frontend/pages/Fleets/routes";
-import { routes as ToolsRoutes } from "@/frontend/pages/Tools/routes";
-import { routes as VisualTestsSubRoutes } from "@/frontend/pages/VisualTests/routes";
+import { routes as stationsRoutes } from "@/frontend/pages/Stations/routes";
+import { routes as roadmapRoutes } from "@/frontend/pages/Roadmap/routes";
+import { routes as settingsRoutes } from "@/frontend/pages/Settings/routes";
+import { routes as fleetsRoutes } from "@/frontend/pages/Fleets/routes";
+import { routes as modelRoutes } from "@/frontend/pages/Models/Show/routes";
+import { routes as toolsRoutes } from "@/frontend/pages/Tools/routes";
+import { routes as visualTestsSubRoutes } from "@/frontend/pages/VisualTests/routes";
 
 const VisualTestsRoutes =
   process.env.NODE_ENV !== "production"
@@ -13,7 +14,7 @@ const VisualTestsRoutes =
           path: "/visual-tests/",
           name: "visual-tests",
           component: () => import("@/frontend/pages/VisualTests/index.vue"),
-          children: VisualTestsSubRoutes,
+          children: visualTestsSubRoutes,
         },
       ]
     : [];
@@ -153,18 +154,9 @@ export const routes: RouteRecordRaw[] = [
   },
   {
     path: "/ships/:slug/",
-    name: "model",
-    component: () => import("@/frontend/pages/Models/Show/index.vue"),
-  },
-  {
-    path: "/ships/:slug/images/",
-    name: "model-images",
-    component: () => import("@/frontend/pages/Models/Show/Images/index.vue"),
-  },
-  {
-    path: "/ships/:slug/videos/",
-    name: "model-videos",
-    component: () => import("@/frontend/pages/Models/Show/Videos/index.vue"),
+    component: () => import("@/frontend/pages/Models/Show/routerView.vue"),
+    children: modelRoutes,
+    redirect: { name: modelRoutes[0].name },
   },
   {
     path: "/stats/",
@@ -178,8 +170,8 @@ export const routes: RouteRecordRaw[] = [
     path: "/fleets/",
     name: "fleets",
     component: () => import("@/frontend/pages/Fleets/routerView.vue"),
-    children: FleetsRoutes,
-    redirect: { name: FleetsRoutes[0].name },
+    children: fleetsRoutes,
+    redirect: { name: fleetsRoutes[0].name },
   },
   {
     path: "/images/",
@@ -192,20 +184,20 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/stations/",
     component: () => import("@/frontend/pages/Stations/routerView.vue"),
-    children: StationsRoutes,
-    redirect: { name: StationsRoutes[0].name },
+    children: stationsRoutes,
+    redirect: { name: stationsRoutes[0].name },
   },
   {
     path: "/tools/",
     component: () => import("@/frontend/pages/Tools/routerView.vue"),
-    children: ToolsRoutes,
-    redirect: { name: ToolsRoutes[0].name },
+    children: toolsRoutes,
+    redirect: { name: toolsRoutes[0].name },
   },
   {
     path: "/roadmap/",
     component: () => import("@/frontend/pages/Roadmap/routerView.vue"),
-    children: RoadmapRoutes,
-    redirect: { name: RoadmapRoutes[0].name },
+    children: roadmapRoutes,
+    redirect: { name: roadmapRoutes[0].name },
   },
   {
     path: "/settings/",
@@ -217,7 +209,7 @@ export const routes: RouteRecordRaw[] = [
     redirect: {
       name: "settings-profile",
     },
-    children: SettingsRoutes,
+    children: settingsRoutes,
   },
   {
     path: "/sign-up/",

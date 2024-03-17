@@ -220,7 +220,7 @@ export class VehiclesService {
      * @returns Vehicle successful
      * @throws ApiError
      */
-    public destroyVehicle({
+    public vehicleDestroy({
         id,
     }: {
         /**
@@ -245,7 +245,7 @@ export class VehiclesService {
      * @returns Vehicle successful
      * @throws ApiError
      */
-    public updateVehicle({
+    public vehicleUpdate({
         id,
         requestBody,
     }: {
