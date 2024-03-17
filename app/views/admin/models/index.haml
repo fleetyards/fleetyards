@@ -39,7 +39,7 @@
 
           .form-group
             = f.label :production_status_eq
-            = f.select :production_status_eq, options_from_collection_for_select(Model.production_status_filters, :value, :label, @q.production_status_eq), { include_blank: true }, { class: 'form-control' }
+            = f.select :production_status_eq, options_from_collection_for_select(Model.production_status_filters, :value, :name, @q.production_status_eq), { include_blank: true }, { class: 'form-control' }
 
           .form-group
             = f.label :fleetchart_image_blank
