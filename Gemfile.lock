@@ -315,7 +315,7 @@ GEM
       foundation_emails (~> 2)
       nokogiri
     io-console (0.7.2)
-    irb (1.11.2)
+    irb (1.12.0)
       rdoc
       reline (>= 0.4.2)
     jbuilder (2.11.5)
@@ -378,7 +378,7 @@ GEM
     mini_magick (4.12.0)
     mini_mime (1.1.5)
     mini_portile2 (2.8.5)
-    minitest (5.22.2)
+    minitest (5.22.3)
     minitest-ci (3.4.0)
       minitest (>= 5.0.6)
     minitest-rails (7.1.0)
@@ -505,7 +505,7 @@ GEM
     rails-html-sanitizer (1.6.0)
       loofah (~> 2.21)
       nokogiri (~> 1.14)
-    rails-i18n (7.0.8)
+    rails-i18n (7.0.9)
       i18n (>= 0.7, < 2)
       railties (>= 6.0.0, < 8)
     rails-perftest (0.0.7)
