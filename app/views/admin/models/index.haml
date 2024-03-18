@@ -50,6 +50,10 @@
             = f.select :holo_blank, [true, false], { include_blank: true }, { class: 'form-control' }
 
           .form-group
+            = f.label :front_view_blank
+            = f.select :front_view_blank, [true, false], { include_blank: true }, { class: 'form-control' }
+
+          .form-group
             = f.label :top_view_colored_blank
             = f.select :top_view_colored_blank, [true, false], { include_blank: true }, { class: 'form-control' }
 
