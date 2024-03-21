@@ -79,7 +79,7 @@
     "@tailwindcss/typography": "^0.5.10",
     "@types/downloadjs": "^1.4.6",
     "@types/i18n-js": "3.8.9",
-    "@types/qs": "^6.9.12",
+    "@types/qs": "^6.9.14",
     "@types/rails__actioncable": "^6.1.10",
     "@types/swagger-ui": "^3.52.4",
     "@types/swagger-ui-dist": "^3.30.4",
