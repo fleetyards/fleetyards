@@ -6440,6 +6440,8 @@ components:
           type: string
         publicFleet:
           type: boolean
+        publicFleetStats:
+          type: boolean
         logo:
           type: string
         backgroundImage:
@@ -6457,6 +6459,7 @@ components:
       - name
       - slug
       - publicFleet
+      - publicFleetStats
       - createdAt
       - updatedAt
       title: Fleet

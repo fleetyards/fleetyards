@@ -25,13 +25,14 @@ module V1
             slug: {type: :string},
             description: {type: :string},
             publicFleet: {type: :boolean},
+            publicFleetStats: {type: :boolean},
             logo: {type: :string},
             backgroundImage: {type: :string},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id fid name slug publicFleet createdAt updatedAt]
+          required: %w[id fid name slug publicFleet publicFleetStats createdAt updatedAt]
         })
       end
     end
