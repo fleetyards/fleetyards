@@ -1,3 +1,16 @@
+<route lang="json">
+{
+  "name": "hangar",
+  "meta": {
+    "needsAuthentication": true,
+    "quickSearch": "searchCont",
+    "title": "hangar.index",
+    "primaryAction": true,
+    "backgroundImage": "bg-5"
+  }
+}
+</route>
+
 <template>
   <section class="container hangar">
     <div class="row">

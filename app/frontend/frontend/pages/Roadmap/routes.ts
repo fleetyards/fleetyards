@@ -4,7 +4,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "",
     name: "roadmap",
-    component: () => import("@/frontend/pages/Roadmap/index.vue"),
+    component: () => import("@/frontend/pages/roadmap/index.vue"),
     meta: {
       title: "roadmap.index",
     },
@@ -12,7 +12,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "changes/",
     name: "roadmap-changes",
-    component: () => import("@/frontend/pages/Roadmap/Changes/index.vue"),
+    component: () => import("@/frontend/pages/roadmap/changes.vue"),
     meta: {
       title: "roadmap.changes",
     },
@@ -20,7 +20,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "ships/",
     name: "roadmap-ships",
-    component: () => import("@/frontend/pages/Roadmap/Ships/index.vue"),
+    component: () => import("@/frontend/pages/roadmap/ships.vue"),
     meta: {
       title: "roadmap.ships",
     },

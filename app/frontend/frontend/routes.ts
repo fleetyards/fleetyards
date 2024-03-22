@@ -1,20 +1,22 @@
 import type { RouteRecordRaw } from "vue-router";
-import { routes as stationsRoutes } from "@/frontend/pages/Stations/routes";
-import { routes as roadmapRoutes } from "@/frontend/pages/Roadmap/routes";
-import { routes as settingsRoutes } from "@/frontend/pages/Settings/routes";
-import { routes as fleetsRoutes } from "@/frontend/pages/Fleets/routes";
-import { routes as modelRoutes } from "@/frontend/pages/Models/Show/routes";
-import { routes as toolsRoutes } from "@/frontend/pages/Tools/routes";
-import { routes as visualTestsSubRoutes } from "@/frontend/pages/VisualTests/routes";
+import { routes as compareRoutes } from "@/frontend/pages/compare/routes";
+import { routes as fleetsRoutes } from "@/frontend/pages/fleets/routes";
+import { routes as hangarRoutes } from "@/frontend/pages/hangar/routes";
+import { routes as roadmapRoutes } from "@/frontend/pages/roadmap/routes";
+import { routes as settingsRoutes } from "@/frontend/pages/settings/routes";
+import { routes as shipsRoutes } from "@/frontend/pages/ships/routes";
+import { routes as stationsRoutes } from "@/frontend/pages/stations/routes";
+import { routes as toolsRoutes } from "@/frontend/pages/tools/routes";
+import { routes as visualTestsRoutes } from "@/frontend/pages/visual-tests/routes";
 
 const VisualTestsRoutes =
   process.env.NODE_ENV !== "production"
     ? [
         {
           path: "/visual-tests/",
-          name: "visual-tests",
-          component: () => import("@/frontend/pages/VisualTests/index.vue"),
-          children: visualTestsSubRoutes,
+          component: () => import("@/frontend/pages/visual-tests.vue"),
+          children: visualTestsRoutes,
+          redirect: { name: visualTestsRoutes[0].name },
         },
       ]
     : [];
@@ -23,7 +25,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "home",
-    component: () => import("@/frontend/pages/Home/index.vue"),
+    component: () => import("@/frontend/pages/index.vue"),
     meta: {
       title: "home",
     },
@@ -31,7 +33,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/search/",
     name: "search",
-    component: () => import("@/frontend/pages/Search/index.vue"),
+    component: () => import("@/frontend/pages/search.vue"),
     meta: {
       title: "search",
     },
@@ -39,7 +41,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/impressum/",
     name: "impressum",
-    component: () => import("@/frontend/pages/Impressum/index.vue"),
+    component: () => import("@/frontend/pages/impressum.vue"),
     meta: {
       title: "impressum",
     },
@@ -47,121 +49,33 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/privacy-policy/",
     name: "privacy-policy",
-    component: () => import("@/frontend/pages/PrivacyPolicy/index.vue"),
+    component: () => import("@/frontend/pages/privacy-policy.vue"),
     meta: {
       title: "privacyPolicy",
     },
   },
   {
     path: "/hangar/",
-    name: "hangar",
-    component: () => import("@/frontend/pages/Hangar/index.vue"),
-    meta: {
-      needsAuthentication: true,
-      quickSearch: "searchCont",
-      title: "hangar.index",
-      primaryAction: true,
-      backgroundImage: "bg-5",
-    },
+    component: () => import("@/frontend/pages/hangar.vue"),
+    children: hangarRoutes,
+    redirect: { name: hangarRoutes[0].name },
   },
   {
-    path: "/hangar/wishlist/",
-    name: "hangar-wishlist",
-    component: () => import("@/frontend/pages/Hangar/Wishlist/index.vue"),
-    meta: {
-      needsAuthentication: true,
-      quickSearch: "searchCont",
-      title: "hangar.wishlist",
-      primaryAction: true,
-      backgroundImage: "bg-5",
-    },
-  },
-  {
-    path: "/hangar/preview/",
-    name: "hangar-preview",
-    component: () => import("@/frontend/pages/Hangar/Preview/index.vue"),
-    meta: {
-      title: "hangar.preview",
-      backgroundImage: "bg-5",
-    },
-  },
-  {
-    path: "/hangar/fleetchart/",
-    name: "hangar-fleetchart",
-    redirect: {
-      name: "hangar",
-      query: { fleetchart: "true" },
-    },
-  },
-  {
-    path: "/hangar/stats/",
-    name: "hangar-stats",
-    component: () => import("@/frontend/pages/Hangar/Stats/index.vue"),
-    meta: {
-      needsAuthentication: true,
-      title: "hangar.stats",
-      backgroundImage: "bg-5",
-    },
-  },
-  {
-    path: "/hangar/:username/",
-    name: "hangar-public",
-    component: () => import("@/frontend/pages/Hangar/Public/index.vue"),
-    meta: {
-      backgroundImage: "bg-5",
-    },
-  },
-  {
-    path: "/hangar/:username/fleetchart/",
-    name: "hangar-public-fleetchart",
-    redirect: {
-      name: "hangar-public",
-      query: { fleetchart: "true" },
-    },
-  },
-  {
-    path: "/hangar/:username/wishlist/",
-    name: "wishlist-public",
-    component: () => import("@/frontend/pages/Hangar/PublicWishlist/index.vue"),
-    meta: {
-      backgroundImage: "bg-5",
-    },
+    path: "/compare/",
+    component: () => import("@/frontend/pages/compare.vue"),
+    children: compareRoutes,
+    redirect: { name: compareRoutes[0].name },
   },
   {
     path: "/ships/",
-    name: "models",
-    component: () => import("@/frontend/pages/Models/index.vue"),
-    meta: {
-      title: "models.index",
-      quickSearch: "searchCont",
-    },
-  },
-  {
-    path: "/ships/fleetchart/",
-    name: "models-fleetchart",
-    redirect: {
-      name: "models",
-      query: { fleetchart: "true" },
-    },
-  },
-  {
-    path: "/compare/ships/",
-    name: "models-compare",
-    component: () => import("@/frontend/pages/Models/Compare/index.vue"),
-    meta: {
-      title: "compare.models",
-    },
-  },
-  {
-    path: "/ships/:slug/",
-    component: () => import("@/frontend/pages/Models/Show/routerView.vue"),
-    children: modelRoutes,
-    redirect: { name: modelRoutes[0].name },
+    component: () => import("@/frontend/pages/ships.vue"),
+    children: shipsRoutes,
+    redirect: { name: shipsRoutes[0].name },
   },
   {
     path: "/stats/",
     name: "stats",
-    component: () => import("@/frontend/pages/Stats/index.vue"),
+    component: () => import("@/frontend/pages/stats.vue"),
     meta: {
       title: "stats",
     },
@@ -169,40 +83,40 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/fleets/",
     name: "fleets",
-    component: () => import("@/frontend/pages/Fleets/routerView.vue"),
+    component: () => import("@/frontend/pages/fleets.vue"),
     children: fleetsRoutes,
     redirect: { name: fleetsRoutes[0].name },
   },
   {
     path: "/images/",
     name: "images",
-    component: () => import("@/frontend/pages/Images/index.vue"),
+    component: () => import("@/frontend/pages/images.vue"),
     meta: {
       title: "images",
     },
   },
   {
     path: "/stations/",
-    component: () => import("@/frontend/pages/Stations/routerView.vue"),
+    component: () => import("@/frontend/pages/stations.vue"),
     children: stationsRoutes,
     redirect: { name: stationsRoutes[0].name },
   },
   {
     path: "/tools/",
-    component: () => import("@/frontend/pages/Tools/routerView.vue"),
+    component: () => import("@/frontend/pages/tools.vue"),
     children: toolsRoutes,
     redirect: { name: toolsRoutes[0].name },
   },
   {
     path: "/roadmap/",
-    component: () => import("@/frontend/pages/Roadmap/routerView.vue"),
+    component: () => import("@/frontend/pages/roadmap.vue"),
     children: roadmapRoutes,
     redirect: { name: roadmapRoutes[0].name },
   },
   {
     path: "/settings/",
     name: "settings",
-    component: () => import("@/frontend/pages/Settings/index.vue"),
+    component: () => import("@/frontend/pages/settings.vue"),
     meta: {
       needsAuthentication: true,
     },
@@ -214,7 +128,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/sign-up/",
     name: "signup",
-    component: () => import("@/frontend/pages/Signup/index.vue"),
+    component: () => import("@/frontend/pages/signup.vue"),
     meta: {
       title: "signUp",
     },
@@ -222,7 +136,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/login/",
     name: "login",
-    component: () => import("@/frontend/pages/Login/index.vue"),
+    component: () => import("@/frontend/pages/login.vue"),
     meta: {
       title: "login",
     },
@@ -230,7 +144,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/password/request/",
     name: "request-password",
-    component: () => import("@/frontend/pages/RequestPassword/index.vue"),
+    component: () => import("@/frontend/pages/request-password.vue"),
     meta: {
       title: "requestPassword",
     },
@@ -238,7 +152,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/password/update/:token/",
     name: "change-password",
-    component: () => import("@/frontend/pages/ChangePassword/index.vue"),
+    component: () => import("@/frontend/pages/change-password.vue"),
     meta: {
       title: "changePassword",
     },
@@ -246,13 +160,13 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/confirm/:token/",
     name: "confirm",
-    component: () => import("@/frontend/pages/Confirm/index.vue"),
+    component: () => import("@/frontend/pages/confirm.vue"),
   },
   ...VisualTestsRoutes,
   {
     path: "/404/",
     name: "404",
-    component: () => import("@/frontend/pages/NotFound/index.vue"),
+    component: () => import("@/frontend/pages/404.vue"),
     meta: {
       title: "notFound",
       backgroundImage: "bg-404",
@@ -260,7 +174,7 @@ export const routes: RouteRecordRaw[] = [
   },
   {
     path: "/:pathMatch(.*)*",
-    component: () => import("@/frontend/pages/NotFound/index.vue"),
+    component: () => import("@/frontend/pages/404.vue"),
     meta: {
       title: "notFound",
       backgroundImage: "bg-404",

@@ -4,7 +4,6 @@ import { createRouter, createWebHistory } from "vue-router";
 import type { LocationQuery } from "vue-router";
 import { addTrailingSlashToAllRoutes } from "@/shared/utils/RouterHelper";
 
-console.log("window.ON_SUBDOMAIN", window.ON_SUBDOMAIN);
 const router = createRouter({
   history: createWebHistory(window.ON_SUBDOMAIN ? "" : "/docs/"),
   linkActiveClass: "active",

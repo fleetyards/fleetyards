@@ -22,7 +22,6 @@ export const addTrailingSlashToAllRoutes = (
       }
 
       return [
-        modifiedRoute,
         {
           path,
           redirect: (to: RouteLocation) => ({
@@ -31,6 +30,7 @@ export const addTrailingSlashToAllRoutes = (
             query: to.query || undefined,
           }),
         },
+        modifiedRoute,
       ];
     }),
   );

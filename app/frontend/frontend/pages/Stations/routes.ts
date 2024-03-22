@@ -4,7 +4,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "",
     name: "stations",
-    component: () => import("@/frontend/pages/Stations/index.vue"),
+    component: () => import("@/frontend/pages/stations/index.vue"),
     meta: {
       title: "stations",
       quickSearch: "searchCont",
@@ -14,7 +14,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/starsystems/",
     name: "starsystems",
-    component: () => import("@/frontend/pages/Stations/Starsystems/index.vue"),
+    component: () => import("@/frontend/pages/stations/Starsystems/index.vue"),
     meta: {
       title: "starsystems",
       backgroundImage: "bg-0",
@@ -23,7 +23,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/starsystems/:slug/",
     name: "starsystem",
-    component: () => import("@/frontend/pages/Stations/Starsystem/index.vue"),
+    component: () => import("@/frontend/pages/stations/Starsystem/index.vue"),
     meta: {
       backgroundImage: "bg-0",
     },
@@ -32,7 +32,7 @@ export const routes: RouteRecordRaw[] = [
     path: "/starsystems/:starsystem/celestial-objects/:slug/",
     name: "celestial-object",
     component: () =>
-      import("@/frontend/pages/Stations/CelestialObject/index.vue"),
+      import("@/frontend/pages/stations/CelestialObject/index.vue"),
     meta: {
       backgroundImage: "bg-0",
     },
@@ -40,7 +40,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/shops/",
     name: "shops",
-    component: () => import("@/frontend/pages/Stations/ShopList/index.vue"),
+    component: () => import("@/frontend/pages/stations/ShopList/index.vue"),
     meta: {
       title: "shops",
       backgroundImage: "bg-2",
@@ -50,7 +50,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: ":slug/",
     name: "station",
-    component: () => import("@/frontend/pages/Stations/Show/index.vue"),
+    component: () => import("@/frontend/pages/stations/Show/index.vue"),
     meta: {
       backgroundImage: "bg-0",
     },
@@ -58,7 +58,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: ":slug/images/",
     name: "station-images",
-    component: () => import("@/frontend/pages/Stations/Show/Images/index.vue"),
+    component: () => import("@/frontend/pages/stations/Show/Images/index.vue"),
     meta: {
       backgroundImage: "bg-0",
     },
@@ -66,7 +66,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: ":stationSlug/shops/:slug/",
     name: "shop",
-    component: () => import("@/frontend/pages/Stations/Shop/index.vue"),
+    component: () => import("@/frontend/pages/stations/Shop/index.vue"),
     meta: {
       backgroundImage: "bg-2",
     },

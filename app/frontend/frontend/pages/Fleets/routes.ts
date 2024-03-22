@@ -1,11 +1,11 @@
 import type { RouteRecordRaw } from "vue-router";
-import { routes as fleetRoutes } from "@/frontend/pages/Fleets/Show/routes";
+import { routes as fleetRoutes } from "@/frontend/pages/fleets/[slug]/routes";
 
 export const routes: RouteRecordRaw[] = [
   {
     path: "add/",
     name: "fleet-add",
-    component: () => import("@/frontend/pages/Fleets/Add/index.vue"),
+    component: () => import("@/frontend/pages/fleets/add.vue"),
     meta: {
       needsAuthentication: true,
       title: "fleets.add",
@@ -15,7 +15,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "preview/",
     name: "fleet-preview",
-    component: () => import("@/frontend/pages/Fleets/Preview/index.vue"),
+    component: () => import("@/frontend/pages/fleets/preview.vue"),
     meta: {
       title: "fleets.preview",
       backgroundImage: "bg-8",
@@ -24,7 +24,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "invites/",
     name: "fleet-invites",
-    component: () => import("@/frontend/pages/Fleets/Invites/index.vue"),
+    component: () => import("@/frontend/pages/fleets/invites.vue"),
     meta: {
       needsAuthentication: true,
       title: "fleets.invites",
@@ -34,7 +34,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "invites/:token/",
     name: "fleet-invite",
-    component: () => import("@/frontend/pages/Fleets/Invite/index.vue"),
+    component: () => import("@/frontend/pages/fleets/invite.vue"),
     meta: {
       needsAuthentication: true,
       backgroundImage: "bg-8",
@@ -42,7 +42,7 @@ export const routes: RouteRecordRaw[] = [
   },
   {
     path: ":slug/",
-    component: () => import("@/frontend/pages/Fleets/Show/routerView.vue"),
+    component: () => import("@/frontend/pages/fleets/[slug].vue"),
     children: fleetRoutes,
     redirect: { name: fleetRoutes[0].name },
   },

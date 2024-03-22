@@ -1,11 +1,11 @@
 import type { RouteRecordRaw } from "vue-router";
-import SecurityRoutes from "./Security/routes";
+import SecurityRoutes from "./security/routes";
 
 export const routes: RouteRecordRaw[] = [
   {
     path: "profile/",
     name: "settings-profile",
-    component: () => import("@/frontend/pages/Settings/Profile/index.vue"),
+    component: () => import("@/frontend/pages/settings/profile.vue"),
     meta: {
       title: "settings.index",
       needsAuthentication: true,
@@ -14,7 +14,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "account/",
     name: "settings-account",
-    component: () => import("@/frontend/pages/Settings/Account/index.vue"),
+    component: () => import("@/frontend/pages/settings/account.vue"),
     meta: {
       title: "settings.account",
       needsAuthentication: true,
@@ -24,8 +24,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "notifications/",
     name: "settings-notifications",
-    component: () =>
-      import("@/frontend/pages/Settings/Notifications/index.vue"),
+    component: () => import("@/frontend/pages/settings/notifications.vue"),
     meta: {
       title: "settings.notifications",
       needsAuthentication: true,
@@ -34,7 +33,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "hangar/",
     name: "settings-hangar",
-    component: () => import("@/frontend/pages/Settings/Hangar/index.vue"),
+    component: () => import("@/frontend/pages/settings/hangar.vue"),
     meta: {
       title: "settings.hangar",
       needsAuthentication: true,
@@ -43,8 +42,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "security/",
     name: "settings-security",
-    component: () =>
-      import("@/frontend/pages/Settings/Security/routerView.vue"),
+    component: () => import("@/frontend/pages/settings/security.vue"),
     meta: {
       needsAuthentication: true,
     },

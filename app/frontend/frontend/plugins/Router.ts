@@ -8,8 +8,7 @@ import qs from "qs";
 import { useAppStore } from "@/frontend/stores/app";
 import { useFleetStore } from "@/frontend/stores/fleet";
 import { useSessionStore } from "@/frontend/stores/session";
-import { routes as initialRoutes } from "@/frontend/routes";
-import { addTrailingSlashToAllRoutes } from "@/shared/utils/RouterHelper";
+import { routes } from "@/frontend/routes";
 
 import "vue-router";
 
@@ -63,7 +62,7 @@ const router = createRouter({
     return result ? `${result}` : "";
   },
 
-  routes: addTrailingSlashToAllRoutes(initialRoutes),
+  routes,
 });
 
 const validateAndResolveNewRoute = (to: RouteLocation) => {
@@ -71,19 +70,32 @@ const validateAndResolveNewRoute = (to: RouteLocation) => {
   if (to.meta.needsAuthentication && !sessionStore.isAuthenticated) {
     return {
       routeName: "login",
-      routeParams: {
-        redirectToRoute: String(to.name),
+      routeQuery: {
+        redirectTo: String(to.fullPath),
       },
     };
   }
-  return null;
+
+  if (!to.path.endsWith("/")) {
+    return {
+      routeName: to.name || "home",
+      routeParams: to.params,
+      routeQuery: to.query,
+    };
+  }
+
+  return undefined;
 };
 
 router.beforeResolve((to, _from, next) => {
   const newRoute = validateAndResolveNewRoute(to);
   if (newRoute) {
     router
-      .push({ name: newRoute.routeName, params: newRoute.routeParams })
+      .push({
+        name: newRoute.routeName,
+        params: newRoute.routeParams,
+        query: newRoute.routeQuery,
+      })
       .catch(() => {
         window.location.reload();
       });

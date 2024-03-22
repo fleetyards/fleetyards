@@ -1,110 +1,11 @@
-<template>
-  <section class="container roadmap">
-    <div class="row">
-      <div class="col-12">
-        <h1 class="sr-only">
-          {{ t("headlines.roadmap") }}
-        </h1>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <div class="page-actions page-actions-right">
-          <Btn
-            :to="{ name: 'roadmap-changes' }"
-            data-test="nav-roadmap-changes"
-          >
-            <i class="fad fa-tasks" />
-            {{ t("nav.roadmap.changes") }}
-          </Btn>
-          <Btn :to="{ name: 'roadmap-ships' }" data-test="nav-roadmap-ships">
-            <i class="fad fa-starship" />
-            {{ t("nav.roadmap.ships") }}
-          </Btn>
-          <Btn href="https://robertsspaceindustries.com/roadmap">
-            {{ t("labels.rsiRoadmap") }}
-          </Btn>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-3"></div>
-      <div class="col-6">
-        <div class="text-center">
-          <a class="show-released" @click="toggleReleased">
-            - {{ releasedToggleLabel }} -
-          </a>
-        </div>
-      </div>
-      <div class="col-3">
-        <div class="d-flex justify-content-end">
-          <BtnDropdown size="small">
-            <Btn
-              size="small"
-              variant="dropdown"
-              :active="showRemoved"
-              :aria-label="toggleRemovedTooltip"
-              @click="togglerShowRemoved"
-            >
-              <span v-if="showRemoved">
-                <i class="fad fa-eye-slash"></i>
-              </span>
-              <span v-else>
-                <i class="fad fa-eye"></i>
-              </span>
-              <span>{{ toggleRemovedTooltip }}</span>
-            </Btn>
-          </BtnDropdown>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <transition-group name="fade-list" class="row" tag="div" appear>
-          <div
-            v-for="(items, release) in groupedByRelease"
-            :key="`releases-${release}`"
-            class="col-12 fade-list-item release"
-          >
-            <h2
-              :class="{
-                open: visible.includes(String(release)),
-              }"
-              class="toggleable"
-              @click="toggle(String(release))"
-            >
-              <span class="title">{{ release }}</span>
-              <span v-if="items[0].releaseDescription" class="released-label">
-                ({{ items[0].releaseDescription }})
-              </span>
-              <small class="text-muted">
-                {{ t("labels.roadmap.stories", { count: items.length }) }}
-              </small>
-              <i class="fa fa-chevron-right" />
-            </h2>
-
-            <Collapsed
-              :id="`${release}-cards`"
-              :visible="visible.includes(String(release))"
-            >
-              <div class="row">
-                <div
-                  v-for="item in items"
-                  :key="item.id"
-                  class="col-12 col-lg-6 col-xl-4 col-xxl-2dot4 fade-list-item"
-                >
-                  <RoadmapItem :item="item" />
-                </div>
-              </div>
-            </Collapsed>
-          </div>
-        </transition-group>
-        <EmptyBox :visible="emptyBoxVisible" />
-        <Loader :loading="isLoading || isFetching" :fixed="true" />
-      </div>
-    </div>
-  </section>
-</template>
+<route lang="json">
+{
+  "name": "roadmap",
+  "meta": {
+    "title": "roadmap.index"
+  }
+}
+</route>
 
 <script lang="ts" setup>
 import Collapsed from "@/shared/components/Collapsed.vue";
@@ -264,3 +165,111 @@ export default {
   name: "RoadmapPage",
 };
 </script>
+
+<template>
+  <section class="container roadmap">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="sr-only">
+          {{ t("headlines.roadmap") }}
+        </h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="page-actions page-actions-right">
+          <Btn
+            :to="{ name: 'roadmap-changes' }"
+            data-test="nav-roadmap-changes"
+          >
+            <i class="fad fa-tasks" />
+            {{ t("nav.roadmap.changes") }}
+          </Btn>
+          <Btn :to="{ name: 'roadmap-ships' }" data-test="nav-roadmap-ships">
+            <i class="fad fa-starship" />
+            {{ t("nav.roadmap.ships") }}
+          </Btn>
+          <Btn href="https://robertsspaceindustries.com/roadmap">
+            {{ t("labels.rsiRoadmap") }}
+          </Btn>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3"></div>
+      <div class="col-6">
+        <div class="text-center">
+          <a class="show-released" @click="toggleReleased">
+            - {{ releasedToggleLabel }} -
+          </a>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="d-flex justify-content-end">
+          <BtnDropdown size="small">
+            <Btn
+              size="small"
+              variant="dropdown"
+              :active="showRemoved"
+              :aria-label="toggleRemovedTooltip"
+              @click="togglerShowRemoved"
+            >
+              <span v-if="showRemoved">
+                <i class="fad fa-eye-slash"></i>
+              </span>
+              <span v-else>
+                <i class="fad fa-eye"></i>
+              </span>
+              <span>{{ toggleRemovedTooltip }}</span>
+            </Btn>
+          </BtnDropdown>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <transition-group name="fade-list" class="row" tag="div" appear>
+          <div
+            v-for="(items, release) in groupedByRelease"
+            :key="`releases-${release}`"
+            class="col-12 fade-list-item release"
+          >
+            <h2
+              :class="{
+                open: visible.includes(String(release)),
+              }"
+              class="toggleable"
+              @click="toggle(String(release))"
+            >
+              <span class="title">{{ release }}</span>
+              <span v-if="items[0].releaseDescription" class="released-label">
+                ({{ items[0].releaseDescription }})
+              </span>
+              <small class="text-muted">
+                {{ t("labels.roadmap.stories", { count: items.length }) }}
+              </small>
+              <i class="fa fa-chevron-right" />
+            </h2>
+
+            <Collapsed
+              :id="`${release}-cards`"
+              :visible="visible.includes(String(release))"
+            >
+              <div class="row">
+                <div
+                  v-for="item in items"
+                  :key="item.id"
+                  class="col-12 col-lg-6 col-xl-4 col-xxl-2dot4 fade-list-item"
+                >
+                  <RoadmapItem :item="item" />
+                </div>
+              </div>
+            </Collapsed>
+          </div>
+        </transition-group>
+        <EmptyBox :visible="emptyBoxVisible" />
+        <Loader :loading="isLoading || isFetching" :fixed="true" />
+      </div>
+    </div>
+  </section>
+</template>
