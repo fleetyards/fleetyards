@@ -12,7 +12,7 @@ module Api
           authorize! :read, :api_fleet
 
           unless fleet.public_fleet?
-            @model_counts = {}
+            not_found
             return
           end
 
@@ -23,62 +23,66 @@ module Api
           @model_counts = @q.result.includes(:model).joins(:model).group("models.slug").count
         end
 
-        # def members
-        #   authorize! :show, fleet
-        #   @q = fleet.fleet_memberships.ransack(member_query_params)
+        def members
+          authorize! :read, :api_fleet
 
-        #   members = @q.result
+          unless fleet.public_fleet_stats?
+            not_found
+            return
+          end
 
-        #   @quick_stats = QuickStats.new(
-        #     total: members.size,
-        #     metrics: {
-        #       total_admins: members.where(role: :admin).size,
-        #       total_officers: members.where(role: :officer).size,
-        #       total_members: members.where(role: :member).size
-        #     }
-        #   )
-        # end
+          @q = fleet.fleet_memberships.ransack(member_query_params)
 
-        # # rubocop:disable Metrics/CyclomaticComplexity
-        # def vehicles
-        #   authorize! :show, fleet
+          members = @q.result
 
-        #   scope = fleet.vehicles.includes(:model, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules)
+          @quick_stats = QuickStats.new(
+            total: members.size,
+          )
+        end
 
-        #   scope = scope.where(loaner: loaner_included?)
+        def vehicles
+          authorize! :read, :api_fleet
 
-        #   @q = scope.ransack(vehicle_query_params)
+          unless fleet.public_fleet_stats?
+            not_found
+            return
+          end
 
-        #   @q.sorts = ["model_classification asc"]
+          scope = fleet.vehicles.includes(:model, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules)
 
-        #   vehicles = @q.result
-        #   ingame_vehicles = vehicles.select(&:bought_via_ingame?)
-        #   models = vehicles.map(&:model)
-        #   models_without_loaners = vehicles.reject(&:loaner?).map(&:model)
-        #   ingame_models = ingame_vehicles.map(&:model)
-        #   upgrades = vehicles.map(&:model_upgrades).flatten
-        #   modules = vehicles.map(&:model_modules).flatten
+          scope = scope.where(loaner: loaner_included?)
 
-        #   @quick_stats = QuickStats.new(
-        #     total: vehicles.count,
-        #     classifications: models.map(&:classification).uniq.compact.map do |classification|
-        #       ClassificationCount.new(
-        #         classification_count: models.count { |model| model.classification == classification },
+          @q = scope.ransack(vehicle_query_params)
 
-        #         name: classification,
-        #         label: classification.humanize
-        #       )
-        #     end,
-        #     metrics: {
-        #       total_money: models_without_loaners.map(&:last_pledge_price).sum(&:to_i) + modules.map(&:pledge_price).sum(&:to_i) + upgrades.map(&:pledge_price).sum(&:to_i),
-        #       total_credits: ingame_models.map(&:price).sum(&:to_i),
-        #       total_min_crew: models.map(&:min_crew).sum(&:to_i),
-        #       total_max_crew: models.map(&:max_crew).sum(&:to_i),
-        #       total_cargo: models.map(&:cargo).sum(&:to_i)
-        #     }
-        #   )
-        # end
-        # # rubocop:enable Metrics/CyclomaticComplexity
+          @q.sorts = ["model_classification asc"]
+
+          vehicles = @q.result
+          ingame_vehicles = vehicles.select(&:bought_via_ingame?)
+          models = vehicles.map(&:model)
+          models_without_loaners = vehicles.reject(&:loaner?).map(&:model)
+          ingame_models = ingame_vehicles.map(&:model)
+          upgrades = vehicles.map(&:model_upgrades).flatten
+          modules = vehicles.map(&:model_modules).flatten
+
+          @quick_stats = QuickStats.new(
+            total: vehicles.count,
+            classifications: models.map(&:classification).uniq.compact.map do |classification|
+              ClassificationCount.new(
+                classification_count: models.count { |model| model.classification == classification },
+
+                name: classification,
+                label: classification.humanize
+              )
+            end,
+            metrics: {
+              total_money: models_without_loaners.map(&:last_pledge_price).sum(&:to_i) + modules.map(&:pledge_price).sum(&:to_i) + upgrades.map(&:pledge_price).sum(&:to_i),
+              total_credits: ingame_models.map(&:price).sum(&:to_i),
+              total_min_crew: models.map(&:min_crew).sum(&:to_i),
+              total_max_crew: models.map(&:max_crew).sum(&:to_i),
+              total_cargo: models.map(&:cargo).sum(&:to_i)
+            }
+          )
+        end
 
         # def vehicles_by_model
         #   authorize! :show, fleet

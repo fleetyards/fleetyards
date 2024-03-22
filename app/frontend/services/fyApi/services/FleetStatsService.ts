@@ -4,6 +4,7 @@
 /* eslint-disable */
 import type { BarChartStats } from '../models/BarChartStats';
 import type { FleetMembersStats } from '../models/FleetMembersStats';
+import type { FleetMembersStatsPublic } from '../models/FleetMembersStatsPublic';
 import type { FleetModelCountsStats } from '../models/FleetModelCountsStats';
 import type { FleetVehicleQuery } from '../models/FleetVehicleQuery';
 import type { FleetVehiclesStats } from '../models/FleetVehiclesStats';
@@ -201,6 +202,54 @@ export class FleetStatsService {
             url: '/fleets/{fleetSlug}/stats/vehicles',
             path: {
                 'fleetSlug': fleetSlug,
+            },
+        });
+    }
+    /**
+     * Public Fleet Members Stats
+     * @returns FleetMembersStatsPublic successful
+     * @throws ApiError
+     */
+    public publicFleetMembersStats({
+        fleetSlug,
+    }: {
+        /**
+         * Fleet slug
+         */
+        fleetSlug: string,
+    }): CancelablePromise<FleetMembersStatsPublic> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/public/fleets/{fleetSlug}/stats/members',
+            path: {
+                'fleetSlug': fleetSlug,
+            },
+            errors: {
+                404: `not found`,
+            },
+        });
+    }
+    /**
+     * Public Fleet Vehicles Stats
+     * @returns FleetVehiclesStats successful
+     * @throws ApiError
+     */
+    public publicFleetVehiclesStats({
+        fleetSlug,
+    }: {
+        /**
+         * Fleet slug
+         */
+        fleetSlug: string,
+    }): CancelablePromise<FleetVehiclesStats> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/public/fleets/{fleetSlug}/stats/vehicles',
+            path: {
+                'fleetSlug': fleetSlug,
+            },
+            errors: {
+                404: `not found`,
             },
         });
     }

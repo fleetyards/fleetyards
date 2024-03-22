@@ -70,9 +70,9 @@ namespace :public do
     end
 
     resource :fleet_stats, path: "stats", only: %i[] do
-      # get "vehicles", to: "fleet_stats#vehicles"
+      get "vehicles", to: "fleet_stats#vehicles"
       get "model-counts", to: "fleet_stats#model_counts"
-      # get "members", to: "fleet_stats#members"
+      get "members", to: "fleet_stats#members"
       # get "vehicles-by-model", to: "fleet_stats#vehicles_by_model"
       # get "models-by-size", to: "fleet_stats#models_by_size"
       # get "models-by-production-status", to: "fleet_stats#models_by_production_status"

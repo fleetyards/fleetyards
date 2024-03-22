@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_12_122953) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_22_205606) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
@@ -290,6 +290,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_12_122953) do
     t.string "guilded"
     t.boolean "public_fleet", default: false
     t.text "description"
+    t.boolean "public_fleet_stats", default: false
     t.index ["fid"], name: "index_fleets_on_fid", unique: true
   end
 

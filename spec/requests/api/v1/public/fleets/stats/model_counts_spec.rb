@@ -67,17 +67,13 @@ RSpec.describe "api/v1/public/fleets/stats", type: :request, swagger_doc: "v1/sc
         end
       end
 
-      response(200, "successful") do
-        schema "$ref": "#/components/schemas/FleetModelCountsStats"
+      response(404, "not found") do
+        schema "$ref": "#/components/schemas/StandardError"
 
         let(:fleet) { fleets :klingon_empire }
         let(:fleetSlug) { fleet.slug }
 
-        run_test! do |response|
-          data = JSON.parse(response.body)
-
-          expect(data["modelCounts"]).to be_empty
-        end
+        run_test!
       end
 
       response(404, "not found") do
