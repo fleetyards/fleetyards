@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.31.0](https://github.com/fleetyards/fleetyards/compare/v5.30.4...v5.31.0) (2024-03-22)
+
+
+### Features
+
+* **fleet:** add public stats endpoints ([96a5c3a](https://github.com/fleetyards/fleetyards/commit/96a5c3a58eca6691a43b7e4f1fdaa31d58bf4965))
+* **fleets:** add option for public stats to settings ([3bc5192](https://github.com/fleetyards/fleetyards/commit/3bc5192052bc97b2c061f8c21c385402f0b1e649))
+
 ### [5.30.4](https://github.com/fleetyards/fleetyards/compare/v5.30.3...v5.30.4) (2024-03-18)
 
 ### [5.30.3](https://github.com/fleetyards/fleetyards/compare/v5.30.2...v5.30.3) (2024-03-17)
