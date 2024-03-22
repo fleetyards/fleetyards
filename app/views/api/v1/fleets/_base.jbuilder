@@ -13,6 +13,7 @@ json.name fleet.name
 json.description fleet.description
 json.slug fleet.slug
 json.public_fleet fleet.public_fleet
+json.public_fleet_stats fleet.public_fleet_stats
 json.logo((fleet.logo.small.url if fleet.logo.present?))
 json.background_image((fleet.background_image.url if fleet.background_image.present?))
 

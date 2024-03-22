@@ -9,7 +9,7 @@ module V1
         schema({
           type: :object,
           properties: {
-            total: {type: :integer},
+            total: {type: :integer}
           },
           additionalProperties: false,
           required: %w[total]

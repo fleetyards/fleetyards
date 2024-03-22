@@ -31,7 +31,6 @@ RSpec.describe "api/v1/public/fleets/stats", type: :request, swagger_doc: "v1/sc
         run_test!
       end
 
-
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
 

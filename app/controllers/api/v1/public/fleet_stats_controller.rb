@@ -36,7 +36,7 @@ module Api
           members = @q.result
 
           @quick_stats = QuickStats.new(
-            total: members.size,
+            total: members.size
           )
         end
 
