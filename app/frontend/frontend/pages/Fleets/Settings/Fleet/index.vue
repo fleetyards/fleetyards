@@ -177,21 +177,12 @@
             </ValidationProvider>
           </div>
           <div class="col-12 col-md-6">
-            <ValidationProvider
-              v-slot="{ errors }"
-              vid="ts"
-              rules="url"
-              :name="$t('labels.fleet.ts')"
-              :slim="true"
-            >
-              <FormInput
-                id="ts"
-                v-model="form.ts"
-                icon="fab fa-teamspeak"
-                translation-key="fleet.ts"
-                :error="errors[0]"
-              />
-            </ValidationProvider>
+            <FormInput
+              id="ts"
+              v-model="form.ts"
+              icon="fab fa-teamspeak"
+              translation-key="fleet.ts"
+            />
           </div>
         </div>
         <hr />

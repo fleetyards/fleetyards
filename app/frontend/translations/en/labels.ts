@@ -212,6 +212,7 @@ export default {
     logo: "Logo",
     rsiSid: "SID",
     public: "Public Fleetview",
+    publicStats: "Public Stats",
     ts: "Teamspeak Server",
     awaitingConfirmation: "Awaiting confirmation by Fleet",
     members: {
