@@ -124,6 +124,22 @@
               />
             </ValidationProvider>
           </div>
+          <div class="col-12 col-md-6">
+            <ValidationProvider
+              v-slot="{ errors }"
+              vid="publicFleetStats"
+              :name="$t('labels.fleet.publicStats')"
+              :slim="true"
+            >
+              <Checkbox
+                id="publicFleetStats"
+                v-model="form.publicFleetStats"
+                :label="$t('labels.fleet.publicStats')"
+                :class="{ 'has-error has-feedback': errors[0] }"
+                :slim="false"
+              />
+            </ValidationProvider>
+          </div>
         </div>
         <hr />
         <div class="row">
@@ -161,21 +177,12 @@
             </ValidationProvider>
           </div>
           <div class="col-12 col-md-6">
-            <ValidationProvider
-              v-slot="{ errors }"
-              vid="ts"
-              rules="url"
-              :name="$t('labels.fleet.ts')"
-              :slim="true"
-            >
-              <FormInput
-                id="ts"
-                v-model="form.ts"
-                icon="fab fa-teamspeak"
-                translation-key="fleet.ts"
-                :error="errors[0]"
-              />
-            </ValidationProvider>
+            <FormInput
+              id="ts"
+              v-model="form.ts"
+              icon="fab fa-teamspeak"
+              translation-key="fleet.ts"
+            />
           </div>
         </div>
         <hr />
@@ -312,6 +319,7 @@ export default class FleetSettings extends Vue {
     youtube: null,
     guilded: null,
     publicFleet: false,
+    publicFleetStats: false,
     removeLogo: false,
   };
 
@@ -419,6 +427,7 @@ export default class FleetSettings extends Vue {
       youtube: this.fleet.youtube,
       guilded: this.fleet.guilded,
       publicFleet: this.fleet.publicFleet,
+      publicFleetStats: this.fleet.publicFleetStats,
       removeLogo: false,
     };
   }

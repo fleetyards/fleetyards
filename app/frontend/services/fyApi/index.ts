@@ -60,6 +60,7 @@ export { FleetMembershipSortEnum } from './models/FleetMembershipSortEnum';
 export { FleetMembershipStatusEnum } from './models/FleetMembershipStatusEnum';
 export type { FleetMembershipUpdateInput } from './models/FleetMembershipUpdateInput';
 export type { FleetMembersStats } from './models/FleetMembersStats';
+export type { FleetMembersStatsPublic } from './models/FleetMembersStatsPublic';
 export type { FleetModelCountsStats } from './models/FleetModelCountsStats';
 export type { FleetPublicVehicles } from './models/FleetPublicVehicles';
 export type { FleetUpdateInput } from './models/FleetUpdateInput';

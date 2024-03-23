@@ -3452,6 +3452,32 @@ paths:
             schema:
               "$ref": "#/components/schemas/PasswordInput"
         required: true
+  "/public/fleets/{fleetSlug}/stats/members":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Public Fleet Members Stats
+      operationId: publicFleetMembersStats
+      tags:
+      - FleetStats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetMembersStatsPublic"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/public/fleets/{fleetSlug}/stats/model-counts":
     parameters:
     - name: fleetSlug
@@ -3481,6 +3507,32 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FleetModelCountsStats"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/public/fleets/{fleetSlug}/stats/vehicles":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Public Fleet Vehicles Stats
+      operationId: publicFleetVehiclesStats
+      tags:
+      - FleetStats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetVehiclesStats"
         '404':
           description: not found
           content:
@@ -6524,6 +6576,8 @@ components:
           type: string
         publicFleet:
           type: boolean
+        publicFleetStats:
+          type: boolean
         logo:
           type: string
         backgroundImage:
@@ -6541,6 +6595,7 @@ components:
       - name
       - slug
       - publicFleet
+      - publicFleetStats
       - createdAt
       - updatedAt
       title: Fleet
@@ -6682,6 +6737,15 @@ components:
       - total
       - metrics
       title: FleetMembersStats
+    FleetMembersStatsPublic:
+      type: object
+      properties:
+        total:
+          type: integer
+      additionalProperties: false
+      required:
+      - total
+      title: FleetMembersStatsPublic
     FleetModelCountsStats:
       type: object
       properties:

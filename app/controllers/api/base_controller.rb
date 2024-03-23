@@ -29,9 +29,7 @@ module Api
       render json: {code: "invalid_authenticity_token", message: I18n.t("error_pages.unprocessable_entity")}, status: :unprocessable_entity
     end
 
-    rescue_from ActiveRecord::RecordNotFound do |_exception|
-      render json: {code: "not_found", message: I18n.t("errors.not_found.message")}, status: :not_found
-    end
+    rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
     rescue_from Pagination::MaxPerPageReached do |_exception|
       render json: {code: "pagination.max_per_page_reached", message: I18n.t("errors.pagination.max_per_page_reached")}, status: :bad_request

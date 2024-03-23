@@ -20,6 +20,7 @@ export type Fleet = {
     slug: string;
     description?: string;
     publicFleet: boolean;
+    publicFleetStats: boolean;
     logo?: string;
     backgroundImage?: string;
     createdAt: string;

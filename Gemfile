@@ -148,7 +148,7 @@ group :development do
   gem "rails-erd"
 
   gem "dotenv"
-  gem "dotenv-rails", require: "dotenv/rails-now"
+  gem "dotenv-rails", require: "dotenv/load"
 
   gem "standard"
 
