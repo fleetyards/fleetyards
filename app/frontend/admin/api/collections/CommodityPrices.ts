@@ -21,8 +21,8 @@ export class AdminCommodityPricesCollection extends BaseCollection {
     );
 
     if (!response.error) {
-      this.records = response.data.items;
-      this.setPages(response.data.meta.pagination);
+      this.records = response.data;
+      // this.setPages(response.data.meta.pagination);
     }
 
     return this.records;
