@@ -53,5 +53,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import "index";
+@import "shops";
 </style>
