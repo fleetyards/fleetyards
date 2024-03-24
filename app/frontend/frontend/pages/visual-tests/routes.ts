@@ -11,7 +11,7 @@ export const routes = [
   {
     path: "panels/",
     name: "visual-tests-panels",
-    component: () => import("@/frontend/pages/visual-tests/panelsPage.vue"),
+    component: () => import("@/frontend/pages/visual-tests/panels-page.vue"),
     meta: {
       title: "visualTests.panels",
       backgroundImage: "bg-7",

@@ -14,7 +14,7 @@ export const routes: RouteRecordRaw[] = [
     path: "two-factor/enable/",
     name: "settings-two-factor-enable",
     component: () =>
-      import("@/frontend/pages/settings/security/twoFactorEnable.vue"),
+      import("@/frontend/pages/settings/security/two-factor-enable.vue"),
     meta: {
       title: "settings.twoFactor.enable",
       needsAuthentication: true,
@@ -25,7 +25,7 @@ export const routes: RouteRecordRaw[] = [
     path: "two-factor/disable/",
     name: "settings-two-factor-disable",
     component: () =>
-      import("@/frontend/pages/settings/security/twoFactorDisable.vue"),
+      import("@/frontend/pages/settings/security/two-factor-disable.vue"),
     meta: {
       title: "settings.twoFactor.disable",
       needsAuthentication: true,
@@ -36,7 +36,7 @@ export const routes: RouteRecordRaw[] = [
     path: "two-factor/backup-codes/",
     name: "settings-two-factor-backup-codes",
     component: () =>
-      import("@/frontend/pages/settings/security/twoFactorBackupCodes.vue"),
+      import("@/frontend/pages/settings/security/two-factor-backup-codes.vue"),
     meta: {
       title: "settings.twoFactor.backupCodes",
       needsAuthentication: true,
