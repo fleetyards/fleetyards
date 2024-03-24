@@ -23,7 +23,7 @@
               size="small"
               variant="link"
               :inline="true"
-              @click.native="resetSelected"
+              @click="resetSelected"
             >
               <i class="fal fa-times" />
             </Btn>
@@ -143,6 +143,7 @@ export type FilteredTableColumn = {
 const i18n = inject<I18nPluginOptions>("i18n");
 
 type Props = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   records: any[];
   columns: FilteredTableColumn[];
   primaryKey: string;

@@ -41,7 +41,6 @@ import FilteredGrid from "@/shared/components/FilteredGrid/index.vue";
 import FilterForm from "@/frontend/components/Shops/FilterForm/index.vue";
 import ShopPanel from "@/frontend/components/Shops/Panel/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-// import shopsCollection from "@/frontend/api/collections/Shops";
 
 const { t } = useI18n();
 </script>

@@ -1,6 +1,7 @@
 <template>
   <div
     :id="uuid"
+    ref="chart"
     :class="{
       loading,
     }"
@@ -9,13 +10,15 @@
 </template>
 
 <script lang="ts" setup>
-import { chart } from "highcharts";
-import type { TooltipFormatterContextObject } from "highcharts";
+import Highcharts from "highcharts";
+import accessibility from "highcharts/modules/accessibility";
 import type { PieChartStats, BarChartStats } from "@/services/fyApi";
 import { v4 as uuidv4 } from "uuid";
 import defaultTheme from "./defaultTheme";
-import type { I18nPluginOptions } from "@/shared/plugins/I18n";
-import { useQuery } from "@tanstack/vue-query";
+import { type AsyncStatus } from "@/shared/components/AsyncData.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+
+accessibility(Highcharts);
 
 type TooltipLabelOption = {
   label: number;
@@ -27,7 +30,8 @@ type ChartData = PieChartStats | BarChartStats;
 
 type Props = {
   name: string;
-  loadData: () => Promise<ChartData[]>;
+  asyncStatus: AsyncStatus;
+  options?: ChartData[];
   type?: "line" | "bar" | "column" | "area" | "pie";
   reload?: number;
   tooltipType?: string;
@@ -35,13 +39,16 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  options: () => [],
   type: "line",
   tooltipType: "",
   reload: undefined,
   height: 400,
 });
 
-const i18n = inject<I18nPluginOptions>("i18n");
+const { t } = useI18n();
+
+const chart = ref<HTMLElement | undefined>();
 
 const uuid = ref(`chart-${uuidv4()}`);
 
@@ -58,7 +65,7 @@ const chartWithCategory = computed(() => {
 const xAxis = computed(() => {
   if (chartWithCategory.value) {
     return {
-      categories: (data.value as BarChartStats[]).map((item) => item.label),
+      categories: (props.options as BarChartStats[]).map((item) => item.label),
     };
   }
   return {};
@@ -75,7 +82,7 @@ const yAxis = computed(() => {
 
 const legend = computed(() => {
   if (chartWithCategory.value) {
-    return undefined;
+    return { enabled: false };
   }
 
   return theme.value.legend;
@@ -83,13 +90,13 @@ const legend = computed(() => {
 
 const chartData = computed(() => {
   if (chartWithCategory.value) {
-    return (data.value as BarChartStats[]).map((item) => [
+    return (props.options as BarChartStats[]).map((item) => [
       item.tooltip,
       item.count,
     ]);
   }
 
-  return data.value;
+  return props.options;
 });
 
 onMounted(() => {
@@ -99,13 +106,14 @@ onMounted(() => {
 
   if (props.reload) {
     interval.value = setInterval(() => {
-      refetch();
-      // reloadChart();
+      if (props.asyncStatus.refetch) {
+        props.asyncStatus.refetch();
+      }
     }, props.reload * 1000);
   }
 });
 
-const tooltipFormat = (tooltip: TooltipFormatterContextObject) => {
+const tooltipFormat = (tooltip: Highcharts.TooltipFormatterContextObject) => {
   const options: TooltipLabelOption = {
     label: tooltip.key,
     count: tooltip.y,
@@ -116,20 +124,17 @@ const tooltipFormat = (tooltip: TooltipFormatterContextObject) => {
     options.percentage = Math.round(tooltip.percentage || 0);
   }
 
-  return i18n?.t(`labels.charts.${props.tooltipType}`, options);
+  return t(`chart.labels.${props.tooltipType}`, options);
 };
 
 const loading = computed(() => {
-  return isLoading.value || isFetching.value;
-});
-
-const { isLoading, isFetching, data, refetch } = useQuery({
-  queryKey: [props.name],
-  queryFn: () => props.loadData(),
+  return (
+    props.asyncStatus.isLoading.value || props.asyncStatus.isFetching.value
+  );
 });
 
 watch(
-  () => data.value,
+  () => props.options,
   () => {
     if (instance.value) {
       reloadChart();
@@ -137,13 +142,12 @@ watch(
       setupChart();
     }
   },
+  {
+    deep: true,
+  },
 );
 
 const reloadChart = async () => {
-  if (!data.value) {
-    return;
-  }
-
   const series = instance.value?.series[0];
 
   if (!series) {
@@ -152,19 +156,26 @@ const reloadChart = async () => {
 
   if (chartWithCategory.value) {
     series.setData(
-      (data.value as BarChartStats[]).map((item) => [item.tooltip, item.count]),
+      (props.options as BarChartStats[]).map((item) => [
+        item.tooltip,
+        item.count,
+      ]),
     );
 
     instance.value?.xAxis[0].setCategories(
-      (data.value as BarChartStats[]).map((item) => item.label || ""),
+      (props.options as BarChartStats[]).map((item) => item.label || ""),
     );
   } else {
-    series.setData(data.value);
+    series.setData(props.options);
   }
 };
 
 const setupChart = () => {
-  instance.value = chart({
+  if (!chart.value) {
+    return;
+  }
+
+  instance.value = Highcharts.chart(chart.value, {
     ...theme.value,
     chart: {
       ...theme.value.chart,

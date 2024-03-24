@@ -1,4 +1,6 @@
-const defaultTheme: Highcharts.Options = {
+import { type Options } from "highcharts";
+
+const defaultTheme: Options = {
   colors: [
     "#428bca",
     "#90ee7e",
@@ -121,6 +123,7 @@ const defaultTheme: Highcharts.Options = {
     itemMarginBottom: 3,
     itemStyle: {
       color: "#E0E0E3",
+      fontSize: "12px",
     },
     itemHoverStyle: {
       color: "#FFF",
@@ -132,11 +135,6 @@ const defaultTheme: Highcharts.Options = {
   credits: {
     enabled: false,
   },
-  // labels: {
-  //   style: {
-  //     color: "#707073",
-  //   },
-  // },
   drilldown: {
     activeAxisLabelStyle: {
       color: "#F0F0F3",

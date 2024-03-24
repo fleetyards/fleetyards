@@ -20,6 +20,7 @@ export type AsyncStatus = {
   isLoading: Ref<boolean>;
   isFetching: Ref<boolean>;
   isRefetching: Ref<boolean>;
+  refetch?: () => void;
 };
 
 type Props = {

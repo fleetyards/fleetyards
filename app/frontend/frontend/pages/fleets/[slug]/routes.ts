@@ -33,6 +33,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       needsAuthentication: true,
       backgroundImage: "bg-8",
+      quickSearch: "searchCont",
     },
   },
   {

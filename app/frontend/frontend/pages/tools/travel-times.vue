@@ -82,7 +82,8 @@
 
       <template #pagination-bottom>
         <Paginator
-          :pagination="pagination"
+          v-if="quantumDrives"
+          :query-result-ref="quantumDrives"
           :per-page="perPage"
           :update-per-page="updatePerPage"
         />
@@ -96,12 +97,14 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import FilteredTable from "@/shared/components/FilteredTable/index.vue";
+import FilteredTable, {
+  type FilteredTableColumn,
+} from "@/shared/components/FilteredTable/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import TravelTime from "@/frontend/components/TravelTime/index.vue";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useQuery } from "@tanstack/vue-query";
-import { type BaseList, type Component } from "@/services/fyApi";
+import { type Component } from "@/services/fyApi";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
@@ -112,16 +115,17 @@ const { t } = useI18n();
 
 const route = useRoute();
 
-const columns = computed(() => {
+const columns = computed<FilteredTableColumn[]>(() => {
   return [
     {
       name: "store_image",
+      label: "",
       class: "store-image extra-small",
       type: "store-image",
     },
-    { name: "name", class: "name", width: "30%" },
-    { name: "fuel_usage", class: "fuel-usage", width: "30%" },
-    { name: "travel_time", class: "travel-time", width: "30%" },
+    { name: "name", label: "", class: "name", width: "30%" },
+    { name: "fuel_usage", label: "", class: "fuel-usage", width: "30%" },
+    { name: "travel_time", label: "", class: "travel-time", width: "30%" },
   ];
 });
 
@@ -204,11 +208,7 @@ const {
     }),
 });
 
-const { page, perPage, pagination, updatePerPage } = usePagination(
-  "quantumDrives",
-  quantumDrives as Ref<BaseList>,
-  refetch,
-);
+const { page, perPage, updatePerPage } = usePagination("quantumDrives");
 </script>
 
 <script lang="ts">

@@ -121,13 +121,6 @@ import { useMobile } from "@/shared/composables/useMobile";
 import { TradeRouteQuery } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFilters } from "@/shared/composables/useFilters";
-// import celestialObjectCollection from "@/frontend/api/collections/CelestialObjects";
-// import starsystemCollection from "@/frontend/api/collections/Starsystems";
-
-// celestialObjectCollection: CelestialObjectCollection =
-//   celestialObjectCollection;
-
-// starsystemCollection: StarsystemCollection = starsystemCollection;
 
 const { t } = useI18n();
 

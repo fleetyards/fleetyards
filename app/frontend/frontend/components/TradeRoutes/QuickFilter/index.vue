@@ -5,7 +5,7 @@
         <div class="col-12 col-md-4">
           <FilterGroup
             v-model="form.originStationIn"
-            :label="$t('labels.filters.tradeRoutes.origin')"
+            :label="t('labels.filters.tradeRoutes.origin')"
             fetch-path="stations?quickfilter-origin"
             name="origin"
             value-attr="slug"
@@ -18,7 +18,7 @@
         <div class="col-12 col-md-4">
           <FilterGroup
             v-model="form.commodityIn"
-            :label="$t('labels.filters.shops.commodity')"
+            :label="t('labels.filters.shops.commodity')"
             fetch-path="commodities?quickfilter"
             name="commodity"
             value-attr="slug"
@@ -31,7 +31,7 @@
         <div class="col-12 col-md-4">
           <FilterGroup
             v-model="form.destinationStationIn"
-            :label="$t('labels.filters.tradeRoutes.destination')"
+            :label="t('labels.filters.tradeRoutes.destination')"
             fetch-path="stations?quickfilter-destination"
             name="destination"
             value-attr="slug"
@@ -48,6 +48,9 @@
 
 <script lang="ts" setup>
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+
+const { t } = useI18n();
 
 const form = ref({});
 
