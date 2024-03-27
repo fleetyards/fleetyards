@@ -1643,42 +1643,42 @@
   resolved "https://registry.yarnpkg.com/@ungap/structured-clone/-/structured-clone-1.2.0.tgz#756641adb587851b5ccb3e095daf27ae581c8406"
   integrity sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==
 
-"@unocss/core@0.58.6", "@unocss/core@^0.58.6":
-  version "0.58.6"
-  resolved "https://registry.yarnpkg.com/@unocss/core/-/core-0.58.6.tgz#94d3e95d0710bf0227269314b6eda6f3cdd31f7e"
-  integrity sha512-m87iuENM/PLqLKnfE2mJbpfzj7NQ99LP2go0r+x5X4kXKppyGRJNQg6RIW3AqTS22jup1YPgd62UNXvvRtHtww==
+"@unocss/core@0.58.7", "@unocss/core@^0.58.7":
+  version "0.58.7"
+  resolved "https://registry.yarnpkg.com/@unocss/core/-/core-0.58.7.tgz#906073a09acd946b7408fc562faaa1187201011c"
+  integrity sha512-Df5ytibV0MB7kWLggzLHsJUj08Of2oqXmPg7QjRUghMvCT3dl2LUIZXiztYPMH0F4x0cPebNoa/pavNt8xz9eQ==
 
-"@unocss/extractor-arbitrary-variants@0.58.6":
-  version "0.58.6"
-  resolved "https://registry.yarnpkg.com/@unocss/extractor-arbitrary-variants/-/extractor-arbitrary-variants-0.58.6.tgz#5243615fc4b28a6c2a52e1557f51524ba84e1df9"
-  integrity sha512-iSrjLEM+dtcpCmJ8myttPZ/0Dg4HKYVYpM71rNTybrX1HB/cfRsGwIHobjsvvRnve+LAxC4Hmdi8EXRd8V1xPg==
+"@unocss/extractor-arbitrary-variants@0.58.7":
+  version "0.58.7"
+  resolved "https://registry.yarnpkg.com/@unocss/extractor-arbitrary-variants/-/extractor-arbitrary-variants-0.58.7.tgz#92b996cea8c68632af507cdb470bb28a698023d7"
+  integrity sha512-wEuilON0u/e1milNp1UBWGps3Hdtm9qBfmc2YmsHN8KhpTSSCluzbrLSYfF++tU5iWmVWR2514Lc2waVDhuiwg==
   dependencies:
-    "@unocss/core" "0.58.6"
+    "@unocss/core" "0.58.7"
 
-"@unocss/preset-mini@0.58.6":
-  version "0.58.6"
-  resolved "https://registry.yarnpkg.com/@unocss/preset-mini/-/preset-mini-0.58.6.tgz#0b02cc7632b6c92c94d23bca3af1791e6bbd5bdc"
-  integrity sha512-COaM/04Z6/gawzrFcCwoyD6t0FCpuKRyljKKs3VxitoGxsN9BHKiFE3U/cPSQarpG789rmZg8D/wmLHCChSXvg==
+"@unocss/preset-mini@0.58.7":
+  version "0.58.7"
+  resolved "https://registry.yarnpkg.com/@unocss/preset-mini/-/preset-mini-0.58.7.tgz#b97c343ec53d26aa8a47bc9abfc63acdf1207c35"
+  integrity sha512-ktfrMlOtnks9j1r1ZJFzPcmCbWRjOfXh7UwoGYhH7c3Fi9Zbn1HI9+wblroEBstvbGUZGyaH5Ht+0rCmRrg5HQ==
   dependencies:
-    "@unocss/core" "0.58.6"
-    "@unocss/extractor-arbitrary-variants" "0.58.6"
-    "@unocss/rule-utils" "0.58.6"
+    "@unocss/core" "0.58.7"
+    "@unocss/extractor-arbitrary-variants" "0.58.7"
+    "@unocss/rule-utils" "0.58.7"
 
-"@unocss/preset-wind@^0.58.6":
-  version "0.58.6"
-  resolved "https://registry.yarnpkg.com/@unocss/preset-wind/-/preset-wind-0.58.6.tgz#d4bd5bb76882ac4a5dd09f57b1768a1ef610c93f"
-  integrity sha512-zs41CpFVvLB8CutroUeI1iqxzPsztiur9ei0QjRshxpYerPSsTSgdTkF+eul5D1q3BcsebLebzqtCSqnpFOuOA==
+"@unocss/preset-wind@^0.58.7":
+  version "0.58.7"
+  resolved "https://registry.yarnpkg.com/@unocss/preset-wind/-/preset-wind-0.58.7.tgz#a81d30b436e52fc4fbb67c04d5b3917a31fa65dc"
+  integrity sha512-rELMKcd/cwMnw6fPf/dmg63u41fRXJoXDO5rlO/+Fa8DF4/r8KJTUbjJbZfcOnh3n8jHz3NUz+QigdRBuDTEuw==
   dependencies:
-    "@unocss/core" "0.58.6"
-    "@unocss/preset-mini" "0.58.6"
-    "@unocss/rule-utils" "0.58.6"
+    "@unocss/core" "0.58.7"
+    "@unocss/preset-mini" "0.58.7"
+    "@unocss/rule-utils" "0.58.7"
 
-"@unocss/rule-utils@0.58.6":
-  version "0.58.6"
-  resolved "https://registry.yarnpkg.com/@unocss/rule-utils/-/rule-utils-0.58.6.tgz#cdafb595a0807af0e8059be112cbe23e9631eb90"
-  integrity sha512-qbVDeyKzExFY/YeoIbMw/lu8PXEGJzSHrFXRumNHX5lvTu8ggAjH6p9xyvYa/YnuNU0+pFKuYxG8LNK2F8f1EQ==
+"@unocss/rule-utils@0.58.7":
+  version "0.58.7"
+  resolved "https://registry.yarnpkg.com/@unocss/rule-utils/-/rule-utils-0.58.7.tgz#290138bf550edd410262833e0c0eec6028d23a61"
+  integrity sha512-SbMwAUSgx5v4TXy+MXiWbqzoMjVHSeMaJpJOruU9PmtrOuZmqeajffMtI6pLtGlgrEL76frLRyMmSErxhyNelw==
   dependencies:
-    "@unocss/core" "^0.58.6"
+    "@unocss/core" "^0.58.7"
     magic-string "^0.30.8"
 
 "@vitejs/plugin-vue2@2.3.1":
