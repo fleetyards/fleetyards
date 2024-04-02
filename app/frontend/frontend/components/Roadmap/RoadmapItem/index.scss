@@ -1,0 +1,79 @@
+.roadmap-item {
+  width: 100%;
+  cursor: pointer;
+
+  :deep(.panel-inner) {
+    min-height: 80px;
+  }
+
+  .item-body {
+    position: relative;
+    flex: 0.8;
+    padding: 15px;
+  }
+
+  .item-image {
+    position: relative;
+    flex: 0.2;
+    width: 120px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border-top-left-radius: $panelContentBorderRadius;
+    border-bottom-left-radius: $panelContentBorderRadius;
+    cursor: pointer;
+    opacity: 0.8;
+
+    .roadmap-item-updated {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 15px;
+      height: 15px;
+      background-color: $success;
+      border-radius: 50%;
+      box-shadow: 0 0 3px $gray-darker;
+    }
+  }
+
+  a {
+    color: $text-color;
+  }
+
+  h3 {
+    position: relative;
+    font-weight: 400;
+    font-size: 20px;
+    font-family: "Orbitron", tahoma, sans-serif;
+    cursor: pointer;
+    flex-direction: row;
+  }
+
+  :deep(.panel-heading-title-main) {
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  p {
+    position: relative;
+    z-index: 20;
+    margin-bottom: 10px;
+  }
+
+  &.compact {
+    h3 {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    :deep(.panel-heading-title-main) {
+      flex-direction: row;
+    }
+  }
+
+  &.inactive {
+    opacity: 0.5;
+  }
+}

@@ -20,8 +20,10 @@ declare module 'vue' {
     FormFileInput: typeof import('./shared/components/base/FormFileInput/index.vue')['default']
     FormInput: typeof import('./shared/components/base/FormInput/index.vue')['default']
     FormTextarea: typeof import('./shared/components/base/FormTextarea/index.vue')['default']
+    Grid: typeof import('./shared/components/base/Grid/index.vue')['default']
     RadioList: typeof import('./shared/components/base/RadioList/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Table: typeof import('./shared/components/base/Table/index.vue')['default']
   }
 }
