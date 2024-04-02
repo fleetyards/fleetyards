@@ -16,7 +16,7 @@ module Shared
             value: {type: :string}
           },
           additionalProperties: false,
-          required: %w[name value category]
+          required: %w[label value]
         })
       end
     end

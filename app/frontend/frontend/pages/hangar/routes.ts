@@ -7,7 +7,6 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/hangar/index.vue"),
     meta: {
       needsAuthentication: true,
-      quickSearch: "searchCont",
       title: "hangar.index",
       primaryAction: true,
       backgroundImage: "bg-5",

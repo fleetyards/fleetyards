@@ -449,7 +449,7 @@
           "public": "Pubblico",
           "group": "Gruppo",
           "loaner": "Navi in comodato",
-          "boughtVia": { "nullablePrompt": "Bought via?" }
+          "boughtVia": "Bought via?"
         },
         "tradeRoutes": {
           "sortBy": "Ordina per",

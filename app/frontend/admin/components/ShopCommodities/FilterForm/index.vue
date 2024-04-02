@@ -75,7 +75,7 @@ import { useRoute } from "vue-router";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import type { FilterGroupParams } from "@/shared/components/base/FilterGroup/index.vue";
-import { useI18n } from "@/admin/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useFilters } from "@/shared/composables/useFilters";
 import type { ShopCommodityQuery } from "@/services/fyAdminApi";
 import { useApiClient } from "@/admin/composables/useApiClient";

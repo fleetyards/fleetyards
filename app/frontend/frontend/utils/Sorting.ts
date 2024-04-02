@@ -1,4 +1,4 @@
-import { RouteLocation } from "vue-router";
+import { LocationQueryRaw, RouteLocation, RouterLinkProps } from "vue-router";
 
 type QueryParams = {
   sorts: string[];
@@ -62,9 +62,9 @@ export const sortBy = function sortBy(
   currentRoute: FleetYardsLocation,
   field: string,
   direction = "asc",
-) {
+): RouterLinkProps["to"] {
   return {
-    name: currentRoute.name,
+    name: currentRoute.name || "",
     params: currentRoute.params,
     query: {
       ...currentRoute.query,
@@ -72,6 +72,6 @@ export const sortBy = function sortBy(
         ...currentRoute.query?.q,
         sorts: [`${field} ${direction}`],
       },
-    },
+    } as unknown as LocationQueryRaw,
   };
 };

@@ -1,11 +1,8 @@
-<route lang="json">
-{
-  "name": "models-compare",
-  "meta": {
-    "title": "compare.models"
-  }
-}
-</route>
+<script lang="ts">
+export default {
+  name: "CompareShipsPage",
+};
+</script>
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -73,9 +70,9 @@ const crumbs = computed(() => {
   return [
     {
       to: {
-        name: "models",
+        name: "ships",
       },
-      label: t("nav.models.index"),
+      label: t("nav.ships.index"),
     },
   ];
 });
@@ -171,18 +168,12 @@ const fetchModel = async (slug: string) => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "ModelsCompare",
-};
-</script>
-
 <template>
   <section
     :class="{
       'nav-slim': navStore.slim,
     }"
-    class="container compare-models"
+    class="container main compare-models"
   >
     <div class="row">
       <div class="col-12">
@@ -225,7 +216,7 @@ export default {
                   <router-link
                     :key="model.storeImage"
                     v-lazy:background-image="model.storeImage"
-                    :to="{ name: 'model', params: { slug: model.slug } }"
+                    :to="{ name: 'ship', params: { slug: model.slug } }"
                     :aria-label="model.name"
                     class="lazy"
                   />

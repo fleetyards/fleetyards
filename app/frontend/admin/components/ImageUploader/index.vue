@@ -121,13 +121,13 @@ import ImageRow from "@/admin/components/ImageUploader/ImageRow/index.vue";
 import type { Image } from "@/services/fyAdminApi";
 import Panel from "@/shared/components/Panel/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
-import { useI18n } from "@/admin/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { formatSize } from "@/shared/utils/Format";
 import { csrfToken } from "@/shared/utils/Meta";
 
 const { t } = useI18n();
 
-const { displayAlert } = useNoty(t);
+const { displayAlert } = useNoty();
 
 type Props = {
   images: Image[];

@@ -1,29 +1,16 @@
-<template>
-  <div
-    v-if="component"
-    ref="modal"
-    :class="{
-      in: isOpen,
-      show: isShow,
-      wide: wide,
-      fixed: fixed,
-    }"
-    class="app-modal fade"
-    @click.self="() => close()"
-  >
-    <div class="modal-dialog">
-      <Component :is="component" ref="modalComponent" v-bind="componentProps" />
-    </div>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "AppModal",
+};
+</script>
 
 <script lang="ts" setup>
 import { defineAsyncComponent } from "vue";
 import type { Component, Raw } from "vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useOverlayStore } from "@/shared/stores/overlay";
-import type { I18nPluginOptions } from "@/shared/plugins/I18n";
 import type { NotyPluginOptions } from "@/shared/plugins/Noty";
+import { useI18n } from "@/shared/composables/useI18n";
 
 export type AppModalOptions = {
   component: () => Promise<Component>;
@@ -31,7 +18,8 @@ export type AppModalOptions = {
   wide?: boolean;
   fixed?: boolean;
   dirty?: boolean;
-  props?: unknown;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  props?: any;
 };
 
 interface ModalComponent extends HTMLElement {
@@ -44,7 +32,7 @@ const modalComponent = ref<ModalComponent | undefined>();
 
 const component = ref<Raw<Component> | undefined>();
 
-const componentProps = ref<unknown>();
+const componentProps = ref({});
 
 const wide = ref(false);
 
@@ -98,7 +86,7 @@ const open = (options: AppModalOptions) => {
 
 const noty = inject<NotyPluginOptions>("noty");
 
-const i18n = inject<I18nPluginOptions>("i18n");
+const { t } = useI18n();
 
 const close = (force = false) => {
   if (fixed.value && !force) {
@@ -107,7 +95,7 @@ const close = (force = false) => {
 
   if (modalComponent.value?.dirty) {
     noty?.displayConfirm({
-      text: i18n?.t("appModal.messages.confirm.dirty"),
+      text: t("appModal.messages.confirm.dirty"),
       onConfirm: () => {
         internalClose();
       },
@@ -126,7 +114,7 @@ const internalClose = () => {
     setTimeout(() => {
       isShow.value = false;
       component.value = undefined;
-      componentProps.value = null;
+      componentProps.value = {};
 
       emit("modal-closed");
     }, 300);
@@ -139,11 +127,24 @@ defineExpose({
 });
 </script>
 
-<script lang="ts">
-export default {
-  name: "AppModal",
-};
-</script>
+<template>
+  <div
+    v-if="component"
+    ref="modal"
+    :class="{
+      in: isOpen,
+      show: isShow,
+      wide: wide,
+      fixed: fixed,
+    }"
+    class="app-modal fade"
+    @click.self="() => close()"
+  >
+    <div class="modal-dialog">
+      <Component :is="component" ref="modalComponent" v-bind="componentProps" />
+    </div>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 @import "./index.scss";

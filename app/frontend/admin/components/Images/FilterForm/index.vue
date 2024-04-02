@@ -37,7 +37,7 @@ import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import type { FilterGroupParams } from "@/shared/components/base/FilterGroup/index.vue";
 import { useRoute } from "vue-router";
 import { useFilters } from "@/shared/composables/useFilters";
-import { useI18n } from "@/admin/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import type {
   ImageQuery,
   Models,

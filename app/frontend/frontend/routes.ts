@@ -5,8 +5,6 @@ import { routes as hangarRoutes } from "@/frontend/pages/hangar/routes";
 import { routes as roadmapRoutes } from "@/frontend/pages/roadmap/routes";
 import { routes as settingsRoutes } from "@/frontend/pages/settings/routes";
 import { routes as shipsRoutes } from "@/frontend/pages/ships/routes";
-import { routes as stationsRoutes } from "@/frontend/pages/stations/routes";
-import { routes as starsystemsRoutes } from "@/frontend/pages/starsystems/routes";
 import { routes as toolsRoutes } from "@/frontend/pages/tools/routes";
 import { routes as visualTestsRoutes } from "@/frontend/pages/visual-tests/routes";
 
@@ -94,28 +92,6 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/images.vue"),
     meta: {
       title: "images",
-    },
-  },
-  {
-    path: "/stations/",
-    component: () => import("@/frontend/pages/stations.vue"),
-    children: stationsRoutes,
-    redirect: { name: stationsRoutes[0].name },
-  },
-  {
-    path: "/starsystems/",
-    component: () => import("@/frontend/pages/starsystems.vue"),
-    children: starsystemsRoutes,
-    redirect: { name: starsystemsRoutes[0].name },
-  },
-  {
-    path: "/shops/",
-    name: "shops",
-    component: () => import("@/frontend/pages/shops.vue"),
-    meta: {
-      title: "shops",
-      backgroundImage: "bg-2",
-      quickSearch: "searchCont",
     },
   },
   {

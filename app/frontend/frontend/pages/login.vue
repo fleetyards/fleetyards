@@ -41,9 +41,9 @@
           </div>
           <Btn
             :loading="submitting"
-            type="submit"
+            :type="BtnTypesEnum.SUBMIT"
             data-test="submit-login"
-            size="large"
+            :size="BtnSizesEnum.LARGE"
             :block="true"
           >
             {{ t("actions.login") }}
@@ -52,8 +52,8 @@
             :to="{
               name: 'request-password',
             }"
-            variant="link"
-            size="small"
+            :variant="BtnVariantsEnum.LINK"
+            :size="BtnSizesEnum.SMALL"
             :block="true"
           >
             {{ t("actions.reset-password") }}
@@ -65,7 +65,7 @@
             <Btn
               data-test="signup-link"
               :to="{ name: 'signup' }"
-              size="small"
+              :size="BtnSizesEnum.SMALL"
               :block="true"
             >
               {{ t("actions.signUp") }}
@@ -89,9 +89,15 @@ import type { RouteParamsRaw, LocationQueryRaw } from "vue-router";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { SessionInput, ApiError } from "@/services/fyApi";
 
+import {
+  BtnTypesEnum,
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
+
 const { t } = useI18n();
 
-const { displayAlert } = useNoty(t);
+const { displayAlert } = useNoty();
 
 const submitting = ref(false);
 

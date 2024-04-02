@@ -16,14 +16,11 @@
         {{ gitRevision }}
       </span>
     </div>
-    <QuickSearch v-if="route.meta.quickSearch" />
-    <Search v-if="route.meta.search" />
+    <div id="quicksearch" class="quick-search-bar"></div>
   </header>
 </template>
 
 <script lang="ts" setup>
-import QuickSearch from "../QuickSearch/index.vue";
-import Search from "../Search/index.vue";
 import { useAppStore } from "@/frontend/stores/app";
 import { storeToRefs } from "pinia";
 import { useMobile } from "@/shared/composables/useMobile";
@@ -33,8 +30,6 @@ const appStore = useAppStore();
 const { gitRevision } = storeToRefs(appStore);
 
 const mobile = useMobile();
-
-const route = useRoute();
 
 const environmentLabelClasses = computed(() => {
   const cssClasses = ["pill"];

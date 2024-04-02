@@ -1,35 +1,31 @@
-<route lang="json">
-{
-  "name": "roadmap",
-  "meta": {
-    "title": "roadmap.index"
-  }
-}
-</route>
+<script lang="ts">
+export default {
+  name: "RoadmapPage",
+};
+</script>
 
 <script lang="ts" setup>
 import Collapsed from "@/shared/components/Collapsed.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import Loader from "@/shared/components/Loader/index.vue";
 import RoadmapItem from "@/frontend/components/Roadmap/RoadmapItem/index.vue";
-import EmptyBox from "@/shared/components/EmptyBox/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
-import { Subscription } from "@rails/actioncable";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useCable } from "@/shared/composables/useCable";
+import {
+  useSubscription,
+  ChannelsEnum,
+} from "@/shared/composables/useSubscription";
 import type { RoadmapItem as TRoadmapItem } from "@/services/fyApi";
-import { useQuery } from "@tanstack/vue-query";
-import { useApiClient } from "@/frontend/composables/useApiClient";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { useRoadmapQueries } from "@/frontend/composables/useRoadmapQueries";
+import FilteredList from "@/shared/components/FilteredList/index.vue";
 
-const { t, currentLocale } = useI18n();
+const { t } = useI18n();
 
 const released = ref(false);
 
 const showRemoved = ref(false);
 
 const visible = ref<string[]>([]);
-
-const roadmapChannel = ref<Subscription | null>(null);
 
 const releasedToggleLabel = computed(() => {
   if (released.value) {
@@ -47,10 +43,6 @@ const toggleRemovedTooltip = computed(() => {
   return t("actions.roadmap.showRemoved");
 });
 
-const emptyBoxVisible = computed(
-  () => !isLoading.value && data.value?.length === 0,
-);
-
 const groupedByRelease = computed(() =>
   data.value?.reduce(
     (rv, x) => {
@@ -65,39 +57,12 @@ const groupedByRelease = computed(() =>
   ),
 );
 
-onMounted(() => {
-  setupUpdates();
-});
-
-onUnmounted(() => {
-  if (roadmapChannel.value) {
-    roadmapChannel.value.unsubscribe();
-  }
-});
-
 watch(
   () => released.value,
   () => {
     refetch();
   },
 );
-
-const cable = useCable();
-
-const setupUpdates = () => {
-  if (roadmapChannel.value) {
-    roadmapChannel.value.unsubscribe();
-  }
-
-  roadmapChannel.value = cable.consumer.subscriptions.create(
-    {
-      channel: "RoadmapChannel",
-    },
-    {
-      received: fetch,
-    },
-  );
-};
 
 const toggleReleased = () => {
   released.value = !released.value;
@@ -137,33 +102,32 @@ const openReleased = () => {
   });
 };
 
-const { roadmap: roadmapService } = useApiClient();
+const { listQuery } = useRoadmapQueries();
 
-const { isLoading, isFetching, data, refetch, status } = useQuery({
-  queryKey: ["roadmap-items"],
-  queryFn: () =>
-    roadmapService.roadmapItems({
-      q: {
-        releasedEq: released.value,
-        activeIn: [true, !showRemoved.value],
-      },
-    }),
+const filters = computed(() => {
+  return {
+    releasedEq: released.value,
+    activeIn: [true, !showRemoved.value],
+  };
+});
+
+const { data, refetch, ...asyncStatus } = listQuery(filters);
+
+useSubscription({
+  channelName: ChannelsEnum.ROADMAP,
+  received: () => refetch(),
+});
+
+onMounted(() => {
+  openReleased();
 });
 
 watch(
-  () => status.value,
+  () => data.value,
   () => {
-    if (status.value === "success") {
-      openReleased();
-    }
+    openReleased();
   },
 );
-</script>
-
-<script lang="ts">
-export default {
-  name: "RoadmapPage",
-};
 </script>
 
 <template>
@@ -183,11 +147,11 @@ export default {
             data-test="nav-roadmap-changes"
           >
             <i class="fad fa-tasks" />
-            {{ t("nav.roadmap.changes") }}
+            <span>{{ t("nav.roadmap.changes") }}</span>
           </Btn>
           <Btn :to="{ name: 'roadmap-ships' }" data-test="nav-roadmap-ships">
             <i class="fad fa-starship" />
-            {{ t("nav.roadmap.ships") }}
+            <span>{{ t("nav.roadmap.ships") }}</span>
           </Btn>
           <Btn href="https://robertsspaceindustries.com/roadmap">
             {{ t("labels.rsiRoadmap") }}
@@ -195,6 +159,7 @@ export default {
         </div>
       </div>
     </div>
+
     <div class="row">
       <div class="col-3"></div>
       <div class="col-6">
@@ -206,10 +171,9 @@ export default {
       </div>
       <div class="col-3">
         <div class="d-flex justify-content-end">
-          <BtnDropdown size="small">
+          <BtnDropdown :size="BtnSizesEnum.SMALL">
             <Btn
-              size="small"
-              variant="dropdown"
+              :size="BtnSizesEnum.SMALL"
               :active="showRemoved"
               :aria-label="toggleRemovedTooltip"
               @click="togglerShowRemoved"
@@ -226,8 +190,13 @@ export default {
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-12">
+
+    <FilteredList
+      name="roadmap"
+      :records="data || []"
+      :async-status="asyncStatus"
+    >
+      <template #default>
         <transition-group name="fade-list" class="row" tag="div" appear>
           <div
             v-for="(items, release) in groupedByRelease"
@@ -267,9 +236,11 @@ export default {
             </Collapsed>
           </div>
         </transition-group>
-        <EmptyBox :visible="emptyBoxVisible" />
-        <Loader :loading="isLoading || isFetching" :fixed="true" />
-      </div>
-    </div>
+      </template>
+    </FilteredList>
   </section>
 </template>
+
+<style lang="scss" scoped>
+@import "index";
+</style>

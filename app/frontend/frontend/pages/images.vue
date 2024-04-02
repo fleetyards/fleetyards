@@ -1,33 +1,40 @@
-<route lang="json">
-{
-  "name": "images",
-  "meta": {
-    "title": "images"
-  }
-}
-</route>
+<script lang="ts">
+export default {
+  name: "ImagesPage",
+};
+</script>
 
 <script lang="ts" setup>
 import Gallery from "@/shared/components/Gallery/index.vue";
-import GalleryImage from "@/frontend/core/components/Gallery/Image/index.vue";
-// import imagesCollection from "@/frontend/api/collections/Images";
+import GalleryImage from "@/shared/components/Image/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
+import Grid from "@/shared/components/base/Grid/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+import { usePagination } from "@/shared/composables/usePagination";
+import { useQuery } from "@tanstack/vue-query";
+import Paginator from "@/shared/components/Paginator/index.vue";
 
 const { t } = useI18n();
 
 const gallery = ref<InstanceType<typeof Gallery> | undefined>();
 
-const openGallery = (index: string) => {
+const openGallery = (index: number) => {
   gallery.value?.open(index);
 };
-</script>
 
-<script lang="ts">
-export default {
-  name: "ImagesPage",
-};
+const { images: imagesService } = useApiClient();
+
+const { page, perPage } = usePagination("images");
+
+const { data: images, ...asyncStatus } = useQuery({
+  queryKey: ["images"],
+  queryFn: () =>
+    imagesService.images({
+      page: page.value,
+      perPage: perPage.value,
+    }),
+});
 </script>
 
 <template>
@@ -45,16 +52,13 @@ export default {
     </div>
 
     <FilteredList
-      key="images"
-      :collection="collection"
-      :name="$route.name"
-      :route-query="$route.query"
-      :hash="$route.hash"
-      :paginated="true"
+      name="images"
+      :records="images?.items || []"
+      :async-status="asyncStatus"
       class="images"
     >
       <template #default="{ records, loading, filterVisible, primaryKey }">
-        <FilteredGrid
+        <Grid
           :records="records"
           :loading="loading"
           :filter-visible="filterVisible"
@@ -69,10 +73,17 @@ export default {
               @click.prevent.exact="openGallery(index)"
             />
           </template>
-        </FilteredGrid>
+        </Grid>
+      </template>
+      <template #pagination-bottom>
+        <Paginator
+          v-if="images"
+          :query-result-ref="images"
+          :per-page="perPage"
+        />
       </template>
     </FilteredList>
 
-    <Gallery ref="gallery" :items="collection.records" />
+    <Gallery ref="gallery" :items="images?.items" />
   </section>
 </template>

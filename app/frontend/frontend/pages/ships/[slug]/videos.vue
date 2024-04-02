@@ -1,12 +1,12 @@
-<route lang="json">
-{
-  "name": "model-videos"
-}
-</route>
+<script lang="ts">
+export default {
+  name: "ShipVideosPage",
+};
+</script>
 
 <script lang="ts" setup>
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import FilteredGrid from "@/shared/components/FilteredGrid/index.vue";
+import Grid from "@/shared/components/base/Grid/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import VideoEmbed from "@/shared/components/Video/index.vue";
 import { useModelQueries } from "@/frontend/composables/useModelQueries";
@@ -60,13 +60,13 @@ const crumbs = computed(() => {
   return [
     {
       to: {
-        name: "models",
+        name: "ships",
         hash: `#${props.model.slug}`,
       },
-      label: t("nav.models.index"),
+      label: t("nav.ships.index"),
     },
     {
-      to: { name: "model", param: { slug: route.params.slug } },
+      to: { name: "ship", param: { slug: route.params.slug } },
       label: props.model.name,
     },
   ];
@@ -99,12 +99,6 @@ const updateTitle = () => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "ModelVideos",
-};
-</script>
-
 <template>
   <div class="row">
     <div class="col-12">
@@ -127,7 +121,7 @@ export default {
     class="videos"
   >
     <template #default="{ records, loading, filterVisible, primaryKey }">
-      <FilteredGrid
+      <Grid
         :records="records"
         :loading="loading"
         :filter-visible="filterVisible"
@@ -137,7 +131,7 @@ export default {
         <template #default="{ record }">
           <VideoEmbed :video="record" />
         </template>
-      </FilteredGrid>
+      </Grid>
     </template>
   </FilteredList>
 </template>

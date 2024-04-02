@@ -95,7 +95,7 @@ import { useQuery } from "@tanstack/vue-query";
 
 const { t } = useI18n();
 
-const { displayAlert, displayConfirm, displaySuccess } = useNoty(t);
+const { displayAlert, displayConfirm, displaySuccess } = useNoty();
 
 const submitting = ref(false);
 

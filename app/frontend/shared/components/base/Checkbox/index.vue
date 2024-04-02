@@ -1,29 +1,8 @@
-<template>
-  <div
-    class="form-group form-group-checkbox"
-    :class="{
-      'form-group-checkbox-expanded': !slim,
-    }"
-  >
-    <input
-      :id="uuid"
-      v-model="value"
-      v-tooltip.right="errorMessage"
-      :name="name"
-      :checked="checked"
-      :disabled="disabled"
-      class="form-checkbox"
-      type="checkbox"
-      :value="checkboxValue"
-      :data-test="`checkbox-${name}`"
-      @update:model-value="update"
-    />
-    <label :for="uuid">
-      {{ label }}
-    </label>
-    {{ errorMessage }}
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "FormCheckbox",
+};
+</script>
 
 <script lang="ts" setup>
 import { v4 as uuidv4 } from "uuid";
@@ -78,12 +57,33 @@ const update = () => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "FormCheckbox",
-};
-</script>
+<template>
+  <div
+    class="form-group form-group-checkbox"
+    :class="{
+      'form-group-checkbox-expanded': !slim,
+    }"
+  >
+    <input
+      :id="uuid"
+      v-model="value"
+      v-tooltip.right="errorMessage"
+      :name="name"
+      :checked="checked"
+      :disabled="disabled"
+      class="form-checkbox"
+      type="checkbox"
+      :value="checkboxValue"
+      :data-test="`checkbox-${name}`"
+      @update:model-value="update"
+    />
+    <label :for="uuid">
+      {{ label }}
+    </label>
+    {{ errorMessage }}
+  </div>
+</template>
 
 <style lang="scss" scoped>
-@import "./index.scss";
+@import "index";
 </style>

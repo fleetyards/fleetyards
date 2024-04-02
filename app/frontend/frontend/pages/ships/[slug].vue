@@ -11,12 +11,6 @@ const { modelQuery } = useModelQueries(slug.value);
 const { data: model, ...asyncStatus } = modelQuery();
 </script>
 
-<script lang="ts">
-export default {
-  name: "ModelRouterView",
-};
-</script>
-
 <template>
   <AsyncData :async-status="asyncStatus">
     <template #resolved>

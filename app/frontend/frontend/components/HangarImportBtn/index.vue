@@ -1,26 +1,8 @@
-<template>
-  <Btn
-    :size="size"
-    :variant="variant"
-    :aria-label="t('actions.import')"
-    :disabled="disabled"
-    @click="selectFile"
-  >
-    <i class="fal fa-upload" />
-    <span>
-      {{ t("actions.import") }}
-      <VueUploadComponent
-        ref="upload"
-        name="uploadAvatar"
-        :extensions="fileExtensions"
-        :accept="acceptedMimeTypes"
-        class="hangar-importer"
-        @input="importJson"
-        @input-filter="inputFilter"
-      />
-    </span>
-  </Btn>
-</template>
+<script lang="ts">
+export default {
+  name: "HangarImportBtn",
+};
+</script>
 
 <script lang="ts" setup>
 import VueUploadComponent from "vue-upload-component";
@@ -28,26 +10,26 @@ import type { VueUploadItem } from "vue-upload-component";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useNoty } from "@/shared/composables/useNoty";
-import type {
-  BtnVariants,
-  BtnSizes,
-} from "@/shared/components/base/Btn/index.vue";
 import { useApiClient } from "@/frontend/composables/useApiClient";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 
 type Props = {
-  variant?: BtnVariants;
-  size?: BtnSizes;
+  variant?: BtnVariantsEnum;
+  size?: BtnSizesEnum;
 };
 
 withDefaults(defineProps<Props>(), {
-  variant: "default",
-  size: "default",
+  variant: BtnVariantsEnum.DEFAULT,
+  size: BtnSizesEnum.DEFAULT,
 });
 
 const { t } = useI18n();
 
 const { displayWarning, displayAlert, displaySuccess, displayConfirm } =
-  useNoty(t);
+  useNoty();
 
 const fileExtensions = "json";
 const acceptedMimeTypes = "application/json";
@@ -149,8 +131,26 @@ const importJson = async (value: VueUploadItem) => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "HangarImportBtn",
-};
-</script>
+<template>
+  <Btn
+    :size="size"
+    :variant="variant"
+    :aria-label="t('actions.import')"
+    :disabled="disabled"
+    @click="selectFile"
+  >
+    <i class="fal fa-upload" />
+    <span>
+      {{ t("actions.import") }}
+      <VueUploadComponent
+        ref="upload"
+        name="uploadAvatar"
+        :extensions="fileExtensions"
+        :accept="acceptedMimeTypes"
+        class="hangar-importer"
+        @input="importJson"
+        @input-filter="inputFilter"
+      />
+    </span>
+  </Btn>
+</template>

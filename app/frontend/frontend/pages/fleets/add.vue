@@ -43,7 +43,7 @@ import { transformErrors } from "@/frontend/api/helpers";
 
 const { t } = useI18n();
 
-const { displaySuccess, displayAlert } = useNoty(t);
+const { displaySuccess, displayAlert } = useNoty();
 
 const form = ref<Partial<FleetCreateInput>>({});
 

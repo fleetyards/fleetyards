@@ -123,7 +123,7 @@ import { debounce } from "ts-debounce";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { v4 as uuidv4 } from "uuid";
 import { formatSize } from "@/shared/utils/Format";
-import { useI18n } from "@/admin/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import type { Image } from "@/services/fyAdminApi";
 import type { VueUploadItem } from "vue-upload-component";
 import { useApiClient } from "@/admin/composables/useApiClient";

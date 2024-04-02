@@ -3,12 +3,12 @@
     "nav": {
       "home": "Home",
       "back": "Back",
-      "models": {
+      "ships": {
         "index": "Ships"
       },
       "compare": {
         "index": "Compare",
-        "models": "Compare Ships"
+        "ships": "Compare Ships"
       },
       "manufacturers": "Manufacturers",
       "images": "Images",
@@ -38,7 +38,6 @@
       "rsiHangar": "RSI Hangar",
       "tools": {
         "index": "Tools",
-        "tradeRoutes": "Trade Routes",
         "travelTimes": "Travel Times"
       },
       "api": "API Docs",
@@ -60,13 +59,6 @@
         "notifications": "Notifications",
         "hangar": "Hangar",
         "verify": "RSI Account Verification"
-      },
-      "starsystems": "Starsystems",
-      "stations": {
-        "index": "Stations",
-        "overview": "Overview",
-        "starsystems": "By Starsystems",
-        "shops": "Shops"
       },
       "reload": "Update available!"
     }

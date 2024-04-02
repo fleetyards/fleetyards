@@ -3,8 +3,8 @@
     "nav": {
       "home": "Home",
       "back": "Indietro",
-      "models": { "index": "Navi" },
-      "compare": { "models": "Confronta" },
+      "ships": { "index": "Navi" },
+      "compare": { "ships": "Confronta" },
       "manufacturers": "Produttori",
       "images": "Immagini",
       "videos": "Video",

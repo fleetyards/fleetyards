@@ -19,65 +19,6 @@ servers:
 security:
 - SessionCookie: []
 paths:
-  "/commodities":
-    get:
-      summary: Commodities list
-      operationId: commodities
-      description: Get a List of Commodities
-      tags:
-      - Commotities
-      parameters:
-      - "$ref": "#/components/parameters/PageParameter"
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 30
-        required: false
-      - "$ref": "#/components/parameters/SortingParameter"
-      - name: q
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/CommodityQuery"
-        style: deepObject
-        explode: true
-        required: false
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Commodities"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/components/item_type_filters":
-    get:
-      summary: Component Item Type Filters
-      operationId: itemTypes
-      description: Get a list of Component Item Types
-      tags:
-      - ComponentsFilters
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
   "/images":
     post:
       summary: Image create
@@ -222,130 +163,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Models"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/shop-commodities/{id}":
-    parameters:
-    - name: id
-      in: path
-      description: Shop Commodity ID
-      schema:
-        type: string
-        format: uuid
-      required: true
-    delete:
-      summary: Shop Commodity Destroy
-      operationId: destroyShopCommodity
-      tags:
-      - ShopCommodities
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ShopCommodity"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/shops/{shopId}/commodities":
-    parameters:
-    - name: shopId
-      in: path
-      schema:
-        type: string
-        format: uuid
-      required: true
-    get:
-      summary: Shop Commodities list
-      operationId: shopCommodities
-      description: Get a List of Shop Commodities
-      tags:
-      - Shops
-      parameters:
-      - "$ref": "#/components/parameters/PageParameter"
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 30
-        required: false
-      - name: order
-        in: query
-        schema:
-          "$ref": "#/components/schemas/ShopCommodityOrder"
-        required: false
-      - name: filters
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/ShopCommodityQuery"
-        style: deepObject
-        explode: true
-        required: false
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ShopCommodities"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/stations":
-    get:
-      summary: Stations list
-      operationId: stations
-      description: Get a List of Stations
-      tags:
-      - Stations
-      parameters:
-      - "$ref": "#/components/parameters/PageParameter"
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 10
-        required: false
-      - "$ref": "#/components/parameters/SortingParameter"
-      - name: q
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/StationQuery"
-        style: deepObject
-        explode: true
-        required: false
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Stations"
         '401':
           description: unauthorized
           content:
@@ -706,6 +523,14 @@ components:
       - sell
       - rental
       title: CommodityPricePathEnum
+    CommodityPriceTimeRangeEnum:
+      type: string
+      enum:
+      - 1-day
+      - 3-days
+      - 7-days
+      - 30-days
+      title: CommodityPriceTimeRangeEnum
     CommodityTypeEnum:
       type: string
       enum:
@@ -888,6 +713,21 @@ components:
       - qed
       - emp
       title: ModelHardpointTypeEnum
+    ModelPriceTimeRangeEnum:
+      type: string
+      enum:
+      - 1-day
+      - 3-days
+      - 7-days
+      - 30-days
+      title: ModelPriceTimeRangeEnum
+    ModelPriceTypeEnum:
+      type: string
+      enum:
+      - buy
+      - sell
+      - rental
+      title: ModelPriceTypeEnum
     ModelProductionStatusEnum:
       type: string
       enum:
@@ -1154,9 +994,8 @@ components:
           type: string
       additionalProperties: false
       required:
-      - name
+      - label
       - value
-      - category
       title: FilterOption
     Gallery:
       type: object
@@ -1679,6 +1518,49 @@ components:
       - createdAt
       - updatedAt
       title: CelestialObject
+    CommodityPrice:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        price:
+          type: number
+        timeRange:
+          type: string
+        confirmed:
+          type: boolean
+        type:
+          type: string
+        submitters:
+          type: array
+          items:
+            type: string
+            format: uuid
+        shopCommodity:
+          "$ref": "#/components/schemas/ShopCommodity"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - price
+      - confirmed
+      - type
+      - submitters
+      - createdAt
+      - updatedAt
+      title: CommodityPrice
+    CommodityPrices:
+      type: array
+      items:
+        "$ref": "#/components/schemas/CommodityPrice"
+      additionalProperties: false
+      title: CommodityPrices
     Image:
       type: object
       properties:
@@ -1749,6 +1631,20 @@ components:
       - items
       - meta
       title: Images
+    CommodityPriceInput:
+      type: object
+      properties:
+        shopCommodityId:
+          type: string
+          format: uuid
+        price:
+          type: number
+        timeRange:
+          "$ref": "#/components/schemas/CommodityPriceTimeRangeEnum"
+        path:
+          "$ref": "#/components/schemas/CommodityPricePathEnum"
+      additionalProperties: false
+      title: CommodityPriceInput
     ImageInput:
       type: object
       properties:
@@ -1815,24 +1711,24 @@ components:
           type: object
           properties:
             listedAt:
+              deprecated: true
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ModelPrice"
             boughtAt:
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ModelPrice"
             soldAt:
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ModelPrice"
             rentalAt:
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ModelPrice"
           additionalProperties: false
           required:
-          - listedAt
           - boughtAt
           - soldAt
           - rentalAt
@@ -2011,180 +1907,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-        holoColored:
-          type: boolean
-          deprecated: true
-        afterburnerGroundSpeed:
-          type: number
-          deprecated: true
-        afterburnerSpeed:
-          type: number
-          deprecated: true
-        angledView:
-          type: string
-          deprecated: true
-        angledViewHeight:
-          type: number
-          deprecated: true
-        angledViewLarge:
-          type: string
-          deprecated: true
-        angledViewMedium:
-          type: string
-          deprecated: true
-        angledViewSmall:
-          type: string
-          deprecated: true
-        angledViewWidth:
-          type: number
-          deprecated: true
-        angledViewXlarge:
-          type: string
-          deprecated: true
-        beam:
-          type: number
-          deprecated: true
-        beamLabel:
-          type: string
-          deprecated: true
-        cargo:
-          type: number
-          deprecated: true
-        cargoLabel:
-          type: string
-          deprecated: true
-        fleetchartImage:
-          type: string
-          deprecated: true
-        fleetchartLength:
-          type: number
-          deprecated: true
-        groundSpeed:
-          type: number
-          deprecated: true
-        height:
-          type: number
-          deprecated: true
-        heightLabel:
-          type: string
-          deprecated: true
-        hydrogenFuelTankSize:
-          type: number
-          deprecated: true
-        length:
-          type: number
-          deprecated: true
-        lengthLabel:
-          type: string
-          deprecated: true
-        mass:
-          type: number
-          deprecated: true
-        massLabel:
-          type: number
-          deprecated: true
-        maxCrew:
-          type: integer
-          deprecated: true
-        maxCrewLabel:
-          type: string
-          deprecated: true
-        minCrew:
-          type: integer
-          deprecated: true
-        minCrewLabel:
-          type: string
-          deprecated: true
-        pitchMax:
-          type: number
-          deprecated: true
-        quantumFuelTankSize:
-          type: number
-          deprecated: true
-        rollMax:
-          type: number
-          deprecated: true
-        salesPageUrl:
-          type: string
-          deprecated: true
-        scmSpeed:
-          type: number
-          deprecated: true
-        sideView:
-          type: string
-          deprecated: true
-        sideViewHeight:
-          type: number
-          deprecated: true
-        sideViewLarge:
-          type: string
-          deprecated: true
-        sideViewMedium:
-          type: string
-          deprecated: true
-        sideViewSmall:
-          type: string
-          deprecated: true
-        sideViewWidth:
-          type: number
-          deprecated: true
-        sideViewXlarge:
-          type: string
-          deprecated: true
-        size:
-          type: string
-          deprecated: true
-        sizeLabel:
-          type: string
-          deprecated: true
-        storeImage:
-          type: string
-          deprecated: true
-        storeImageLarge:
-          type: string
-          deprecated: true
-        storeImageMedium:
-          type: string
-          deprecated: true
-        storeImageSmall:
-          type: string
-          deprecated: true
-        storeUrl:
-          type: string
-          deprecated: true
-        topView:
-          type: string
-          deprecated: true
-        topViewHeight:
-          type: number
-          deprecated: true
-        topViewLarge:
-          type: string
-          deprecated: true
-        topViewMedium:
-          type: string
-          deprecated: true
-        topViewSmall:
-          type: string
-          deprecated: true
-        topViewWidth:
-          type: number
-          deprecated: true
-        topViewXlarge:
-          type: string
-          deprecated: true
-        xaxisAcceleration:
-          type: number
-          deprecated: true
-        yawMax:
-          type: number
-          deprecated: true
-        yaxisAcceleration:
-          type: number
-          deprecated: true
-        zaxisAcceleration:
-          type: number
-          deprecated: true
       additionalProperties: false
       required:
       - id
@@ -2206,6 +1928,38 @@ components:
       - createdAt
       - updatedAt
       title: Model
+    ModelPrice:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        price:
+          type: number
+        timeRange:
+          "$ref": "#/components/schemas/ModelPriceTimeRangeEnum"
+        priceType:
+          "$ref": "#/components/schemas/ModelPriceTypeEnum"
+        location:
+          type: string
+        locationUrl:
+          type: string
+          format: uri
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - price
+      - priceType
+      - location
+      - createdAt
+      - updatedAt
+      title: ModelPrice
     Models:
       type: object
       properties:

@@ -15,7 +15,7 @@
     </span>
     <span
       v-if="multiple || (selected && nullable)"
-      v-tooltip="i18n?.t('filterGroup.labels.removeTooltip')"
+      v-tooltip="t('filterGroup.labels.removeTooltip')"
     >
       <i class="fal fa-plus" />
     </span>
@@ -23,16 +23,11 @@
 </template>
 
 <script lang="ts" setup>
-import type { I18nPluginOptions } from "@/shared/plugins/I18n";
-
-export type FilterGroupOption = {
-  value: string;
-  label: string;
-  icon?: string;
-};
+import { FilterOption } from "@/services/fyApi";
+import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
-  option: FilterGroupOption;
+  option: FilterOption;
   selected?: boolean;
   multiple?: boolean;
   bigIcon?: boolean;
@@ -46,11 +41,11 @@ withDefaults(defineProps<Props>(), {
   nullable: false,
 });
 
-const i18n = inject<I18nPluginOptions>("i18n");
+const { t } = useI18n();
 
 const emit = defineEmits(["select"]);
 
-const select = (option: FilterGroupOption) => {
+const select = (option: FilterOption) => {
   emit("select", option);
 };
 </script>

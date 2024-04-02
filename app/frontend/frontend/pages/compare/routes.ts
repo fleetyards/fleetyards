@@ -3,10 +3,10 @@ import type { RouteRecordRaw } from "vue-router";
 export const routes: RouteRecordRaw[] = [
   {
     path: "ships/",
-    name: "models-compare",
+    name: "compare-ships",
     component: () => import("@/frontend/pages/compare/ships.vue"),
     meta: {
-      title: "compare.models",
+      title: "compare.ships",
     },
   },
 ];

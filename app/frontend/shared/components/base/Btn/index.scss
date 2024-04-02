@@ -1,7 +1,8 @@
 .panel-btn {
   position: relative;
-  display: inline-block;
-  min-width: 50px;
+  display: inline-flex;
+  min-width: 48px;
+  height: 48px;
   margin-right: 10px;
   margin-bottom: 20px;
   padding: 3px;
@@ -11,6 +12,7 @@
   cursor: pointer;
   opacity: 1;
   transition: all $transition-base-speed ease;
+  align-items: stretch;
 
   &::before {
     position: absolute;
@@ -43,12 +45,11 @@
     text-overflow: ellipsis;
     border-radius: $panel-content-border-radius;
     transition: all $transition-base-speed ease;
-
-    > :first-child {
-      width: 16px;
-      text-align: center;
-      margin-right: 5px;
-    }
+    display: flex;
+    flex: 1 1;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 
     > :last-child {
       margin-right: 0;
@@ -99,33 +100,6 @@
     background: transparent;
   }
 
-  &.panel-btn-dropdown-link {
-    display: block;
-    width: 100%;
-    margin: 0;
-    text-align: left;
-    line-height: 1.5;
-
-    > * {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      text-align: left;
-      gap: 10px;
-
-      > :first-c {
-        width: 16px;
-        display: flex;
-        justify-content: center;
-      }
-
-      > :not(:first-child) {
-        flex: 1 1;
-      }
-    }
-  }
-
-  &.panel-btn-dropdown-link,
   &.panel-btn-link {
     background: transparent;
     border: none;
@@ -153,7 +127,8 @@
   }
 
   &.panel-btn-small {
-    min-width: 46px;
+    min-width: 42px;
+    height: 42px;
 
     .panel-btn-inner {
       padding: 5px 10px;
@@ -163,6 +138,7 @@
 
   &.panel-btn-large {
     min-width: 62px;
+    height: 55px;
 
     .panel-btn-inner {
       padding: 6px 16px;
@@ -174,7 +150,6 @@
     min-width: 140px;
   }
 
-  &.panel-btn-dropdown-link,
   &.panel-btn-inline {
     margin-bottom: 0;
   }

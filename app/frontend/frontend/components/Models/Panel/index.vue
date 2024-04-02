@@ -14,7 +14,7 @@
           <slot name="heading-title">
             <router-link
               :to="{
-                name: 'model',
+                name: 'ship',
                 params: {
                   slug: model.slug,
                 },

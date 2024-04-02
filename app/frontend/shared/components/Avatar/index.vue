@@ -1,39 +1,11 @@
-<template>
-  <div
-    class="avatar"
-    :class="{
-      [`avatar-${size}`]: true,
-      'avatar-editable': editable || creatable,
-      'avatar-transparent': transparent,
-      'avatar-round': round,
-    }"
-  >
-    <img v-if="avatar" :src="avatar" alt="avatar" />
-    <div v-else class="no-avatar">
-      <i :class="icon" />
-    </div>
-    <div v-if="editable || creatable" class="edit" @click.prevent="emitClick">
-      <template v-if="avatar">
-        <i class="fa fa-times" />
-
-        {{ i18n?.t("actions.remove") }}
-      </template>
-      <template v-else>
-        <i class="fa fa-upload" />
-
-        <template v-if="editable">
-          {{ i18n?.t("actions.change") }}
-        </template>
-        <template v-else>
-          {{ i18n?.t("actions.upload") }}
-        </template>
-      </template>
-    </div>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "AvatarComponent",
+};
+</script>
 
 <script lang="ts" setup>
-import type { I18nPluginOptions } from "@/shared/plugins/I18n";
+import { useI18n } from "@/shared/composables/useI18n";
 
 type AvatarSizes = "default" | "small" | "large";
 
@@ -57,7 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
   round: true,
 });
 
-const i18n = inject<I18nPluginOptions>("i18n");
+const { t } = useI18n();
 
 const emit = defineEmits(["upload", "destroy"]);
 
@@ -70,11 +42,39 @@ const emitClick = () => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "AvatarComponent",
-};
-</script>
+<template>
+  <div
+    class="avatar"
+    :class="{
+      [`avatar-${size}`]: true,
+      'avatar-editable': editable || creatable,
+      'avatar-transparent': transparent,
+      'avatar-round': round,
+    }"
+  >
+    <img v-if="avatar" :src="avatar" alt="avatar" />
+    <div v-else class="no-avatar">
+      <i :class="icon" />
+    </div>
+    <div v-if="editable || creatable" class="edit" @click.prevent="emitClick">
+      <template v-if="avatar">
+        <i class="fa fa-times" />
+
+        {{ t("actions.remove") }}
+      </template>
+      <template v-else>
+        <i class="fa fa-upload" />
+
+        <template v-if="editable">
+          {{ t("actions.change") }}
+        </template>
+        <template v-else>
+          {{ t("actions.upload") }}
+        </template>
+      </template>
+    </div>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 @import "index";

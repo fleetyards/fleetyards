@@ -56,7 +56,7 @@
         :placeholder="searchPlaceholder"
         :label="searchLabelFallback"
         class="filter-group-search"
-        variant="clean"
+        :variant="InputVariantsEnum.CLEAN"
         :no-label="true"
         :clearable="true"
         @input="onSearch"
@@ -76,11 +76,11 @@
         <Btn
           v-if="fetchMoreVisible && paginated"
           :disabled="loading"
-          variant="link"
+          :variant="BtnVariantsEnum.LINK"
           inline
           class="fade-list-item filter-group-fetch-more"
           @click="fetchMore"
-          >{{ i18n?.t("filterGroup.actions.fetchMore") }}</Btn
+          >{{ t("filterGroup.actions.fetchMore") }}</Btn
         >
       </div>
     </Collapsed>
@@ -95,14 +95,15 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { debounce } from "ts-debounce";
 import { v4 as uuidv4 } from "uuid";
 import Option from "./Option/index.vue";
-import type { FilterGroupOption } from "./Option/index.vue";
-import type { I18nPluginOptions } from "@/shared/plugins/I18n";
 import {
   UseQueryReturnType,
   keepPreviousData,
   useQuery,
 } from "@tanstack/vue-query";
-import type { BaseList } from "@/services/fyApi";
+import type { BaseList, FilterOption } from "@/services/fyApi";
+import { useI18n } from "@/shared/composables/useI18n";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
+import { InputVariantsEnum } from "@/shared/components/base/FormInput/types";
 
 export type ValueType = string[] | string | number[] | number | boolean | null;
 
@@ -116,13 +117,13 @@ type Props = {
   name: string;
   query?: (
     params: FilterGroupParams,
-  ) => UseQueryReturnType<FilterGroupOption[], Error>;
+  ) => UseQueryReturnType<FilterOption[], Error>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   queryFn?: (params: FilterGroupParams) => Promise<any>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  queryResponseFormatter?: (response: any) => FilterGroupOption[];
+  queryResponseFormatter?: (response: any) => FilterOption[];
   modelValue?: ValueType;
-  options?: FilterGroupOption[];
+  options?: FilterOption[];
   error?: string;
   label?: string;
   searchLabel?: string;
@@ -141,7 +142,7 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   query: undefined,
   queryFn: undefined,
-  queryResponseFormatter: (items: FilterGroupOption[]) => items,
+  queryResponseFormatter: (items: FilterOption[]) => items,
   modelValue: undefined,
   options: undefined,
   error: undefined,
@@ -159,7 +160,7 @@ const props = withDefaults(defineProps<Props>(), {
   bigIcon: false,
 });
 
-const i18n = inject<I18nPluginOptions>("i18n");
+const { t } = useI18n();
 
 const id = ref<string>(uuidv4());
 
@@ -173,7 +174,7 @@ const missing = ref<ValueType | undefined>();
 
 const page = ref(1);
 
-const internalOptions = ref<FilterGroupOption[]>([]);
+const internalOptions = ref<FilterOption[]>([]);
 
 const prompt = computed(() => {
   if (!props.multiple && selectedOptions.value.length > 0) {
@@ -182,23 +183,21 @@ const prompt = computed(() => {
 
   if (props.translationKey) {
     if (props.nullable) {
-      return i18n?.t(
-        `.labels.filterGroup.${props.translationKey}.nullablePrompt`,
-      );
+      return t(`.labels.filterGroup.${props.translationKey}.nullablePrompt`);
     }
 
-    return i18n?.t(`labels.filterGroup.${props.translationKey}.prompt`);
+    return t(`labels.filterGroup.${props.translationKey}.prompt`);
   }
 
-  if (props.noLabel) {
+  if (props.noLabel && props.label) {
     return props.label;
   }
 
   if (props.nullable) {
-    return i18n?.t(`filterGroup.labels.nullablePrompt`);
+    return t(`filterGroup.labels.nullablePrompt`);
   }
 
-  return i18n?.t(`filterGroup.labels.prompt`);
+  return t(`filterGroup.labels.prompt`);
 });
 
 const loading = computed(() => {
@@ -271,10 +270,10 @@ const innerLabel = computed(() => {
   }
 
   if (props.translationKey) {
-    return i18n?.t(`labels.filterGroup.${props.translationKey}.label`);
+    return t(`labels.filterGroup.${props.translationKey}.label`);
   }
 
-  return i18n?.t(`labels.filterGroup.${props.name}.label`);
+  return t(`labels.filterGroup.${props.name}.label`);
 });
 
 const labelFor = computed(() => {
@@ -290,10 +289,10 @@ const searchPlaceholder = computed(() => {
 });
 
 const searchLabelFallback = computed(() => {
-  return i18n?.t("filterGroup.labels.search");
+  return t("filterGroup.labels.search");
 });
 
-const availableOptions = computed<FilterGroupOption[]>(() =>
+const availableOptions = computed<FilterOption[]>(() =>
   sort(internalOptions.value),
 );
 
@@ -386,9 +385,9 @@ const fetchMore = () => {
   refetch();
 };
 
-const sort = (options: FilterGroupOption[]) => {
+const sort = (options: FilterOption[]) => {
   const sortedOptions = JSON.parse(JSON.stringify(options));
-  return sortedOptions.sort((a: FilterGroupOption, b: FilterGroupOption) => {
+  return sortedOptions.sort((a: FilterOption, b: FilterOption) => {
     if (a.label < b.label) {
       return -1;
     }
@@ -399,7 +398,7 @@ const sort = (options: FilterGroupOption[]) => {
   });
 };
 
-const addOptions = (newOptions: FilterGroupOption[]) => {
+const addOptions = (newOptions: FilterOption[]) => {
   newOptions.forEach((item) => {
     if (!internalOptions.value.find((option) => option.value === item.value)) {
       internalOptions.value.push(item);

@@ -7,9 +7,9 @@ const setupConsumer = (): Consumer => {
   return createConsumer(window.CABLE_ENDPOINT);
 };
 
-export const useCable = () => {
-  let consumer = setupConsumer();
+let consumer = setupConsumer();
 
+export const useCable = () => {
   const refresh = () => {
     console.info("Subscriptions: Refresh consumer");
 

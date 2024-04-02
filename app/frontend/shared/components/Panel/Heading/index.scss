@@ -29,6 +29,7 @@
     gap: 5px;
     display: flex;
     flex-direction: column;
+    width: 100%;
 
     &-align-left {
       text-align: left;
@@ -53,7 +54,8 @@
     &-main {
       display: flex;
       gap: 5px;
-      align-items: flex-end;
+      align-items: center;
+      justify-content: space-between;
 
       :deep(small) {
         font-size: 15px;
@@ -82,6 +84,11 @@
   &-with-actions {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+
+    .panel-heading-actions {
+      margin-right: 10px;
+    }
 
     h1,
     h2,
@@ -89,7 +96,7 @@
     h4,
     h5,
     h6 {
-      margin-bottom: 10.5px;
+      // margin-bottom: 10.5px;
       padding-right: 40px;
     }
   }

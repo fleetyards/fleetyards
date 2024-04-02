@@ -93,7 +93,7 @@ import { useForm } from "vee-validate";
 
 const { t } = useI18n();
 
-const { displaySuccess, displayAlert } = useNoty(t);
+const { displaySuccess, displayAlert } = useNoty();
 
 type UserUpdateInput = {
   rsiHandle?: string;

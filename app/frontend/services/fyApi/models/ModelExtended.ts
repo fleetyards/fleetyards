@@ -6,8 +6,8 @@ import type { DockCount } from './DockCount';
 import type { Manufacturer } from './Manufacturer';
 import type { MediaImage } from './MediaImage';
 import type { ModelLoaner } from './ModelLoaner';
+import type { ModelPrice } from './ModelPrice';
 import type { ModelProductionStatusEnum } from './ModelProductionStatusEnum';
-import type { ShopCommodity } from './ShopCommodity';
 import type { ViewImage } from './ViewImage';
 export type ModelExtended = {
     id: string;
@@ -15,10 +15,13 @@ export type ModelExtended = {
     name: string;
     slug: string;
     availability: {
-        listedAt: Array<ShopCommodity>;
-        boughtAt: Array<ShopCommodity>;
-        soldAt: Array<ShopCommodity>;
-        rentalAt: Array<ShopCommodity>;
+        /**
+         * @deprecated
+         */
+        listedAt?: Array<ModelPrice>;
+        boughtAt: Array<ModelPrice>;
+        soldAt: Array<ModelPrice>;
+        rentalAt: Array<ModelPrice>;
     };
     brochure?: string;
     classification?: string;
@@ -107,238 +110,6 @@ export type ModelExtended = {
     };
     createdAt: string;
     updatedAt: string;
-    /**
-     * @deprecated
-     */
-    holoColored?: boolean;
-    /**
-     * @deprecated
-     */
-    afterburnerGroundSpeed?: number;
-    /**
-     * @deprecated
-     */
-    afterburnerSpeed?: number;
-    /**
-     * @deprecated
-     */
-    angledView?: string;
-    /**
-     * @deprecated
-     */
-    angledViewHeight?: number;
-    /**
-     * @deprecated
-     */
-    angledViewLarge?: string;
-    /**
-     * @deprecated
-     */
-    angledViewMedium?: string;
-    /**
-     * @deprecated
-     */
-    angledViewSmall?: string;
-    /**
-     * @deprecated
-     */
-    angledViewWidth?: number;
-    /**
-     * @deprecated
-     */
-    angledViewXlarge?: string;
-    /**
-     * @deprecated
-     */
-    beam?: number;
-    /**
-     * @deprecated
-     */
-    beamLabel?: string;
-    /**
-     * @deprecated
-     */
-    cargo?: number;
-    /**
-     * @deprecated
-     */
-    cargoLabel?: string;
-    /**
-     * @deprecated
-     */
-    fleetchartImage?: string;
-    /**
-     * @deprecated
-     */
-    fleetchartLength?: number;
-    /**
-     * @deprecated
-     */
-    groundSpeed?: number;
-    /**
-     * @deprecated
-     */
-    height?: number;
-    /**
-     * @deprecated
-     */
-    heightLabel?: string;
-    /**
-     * @deprecated
-     */
-    hydrogenFuelTankSize?: number;
-    /**
-     * @deprecated
-     */
-    length?: number;
-    /**
-     * @deprecated
-     */
-    lengthLabel?: string;
-    /**
-     * @deprecated
-     */
-    mass?: number;
-    /**
-     * @deprecated
-     */
-    massLabel?: number;
-    /**
-     * @deprecated
-     */
-    maxCrew?: number;
-    /**
-     * @deprecated
-     */
-    maxCrewLabel?: string;
-    /**
-     * @deprecated
-     */
-    minCrew?: number;
-    /**
-     * @deprecated
-     */
-    minCrewLabel?: string;
-    /**
-     * @deprecated
-     */
-    pitchMax?: number;
-    /**
-     * @deprecated
-     */
-    quantumFuelTankSize?: number;
-    /**
-     * @deprecated
-     */
-    rollMax?: number;
-    /**
-     * @deprecated
-     */
-    salesPageUrl?: string;
-    /**
-     * @deprecated
-     */
-    scmSpeed?: number;
-    /**
-     * @deprecated
-     */
-    sideView?: string;
-    /**
-     * @deprecated
-     */
-    sideViewHeight?: number;
-    /**
-     * @deprecated
-     */
-    sideViewLarge?: string;
-    /**
-     * @deprecated
-     */
-    sideViewMedium?: string;
-    /**
-     * @deprecated
-     */
-    sideViewSmall?: string;
-    /**
-     * @deprecated
-     */
-    sideViewWidth?: number;
-    /**
-     * @deprecated
-     */
-    sideViewXlarge?: string;
-    /**
-     * @deprecated
-     */
-    size?: string;
-    /**
-     * @deprecated
-     */
-    sizeLabel?: string;
-    /**
-     * @deprecated
-     */
-    storeImage?: string;
-    /**
-     * @deprecated
-     */
-    storeImageLarge?: string;
-    /**
-     * @deprecated
-     */
-    storeImageMedium?: string;
-    /**
-     * @deprecated
-     */
-    storeImageSmall?: string;
-    /**
-     * @deprecated
-     */
-    storeUrl?: string;
-    /**
-     * @deprecated
-     */
-    topView?: string;
-    /**
-     * @deprecated
-     */
-    topViewHeight?: number;
-    /**
-     * @deprecated
-     */
-    topViewLarge?: string;
-    /**
-     * @deprecated
-     */
-    topViewMedium?: string;
-    /**
-     * @deprecated
-     */
-    topViewSmall?: string;
-    /**
-     * @deprecated
-     */
-    topViewWidth?: number;
-    /**
-     * @deprecated
-     */
-    topViewXlarge?: string;
-    /**
-     * @deprecated
-     */
-    xaxisAcceleration?: number;
-    /**
-     * @deprecated
-     */
-    yawMax?: number;
-    /**
-     * @deprecated
-     */
-    yaxisAcceleration?: number;
-    /**
-     * @deprecated
-     */
-    zaxisAcceleration?: number;
     dockCounts: Array<DockCount>;
 };
 

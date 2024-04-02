@@ -41,7 +41,7 @@ import { useSessionStore } from "@/frontend/stores/session";
 import { useComlink } from "@/shared/composables/useComlink";
 
 const { t } = useI18n();
-const { displaySuccess } = useNoty(t);
+const { displaySuccess } = useNoty();
 
 const sessionStore = useSessionStore();
 

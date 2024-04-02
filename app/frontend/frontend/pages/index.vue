@@ -1,11 +1,8 @@
-<route lang="json">
-{
-  "name": "home",
-  "meta": {
-    "title": "home"
-  }
-}
-</route>
+<script lang="ts">
+export default {
+  name: "HomePage",
+};
+</script>
 
 <script lang="ts" setup>
 import VueScrollTo from "vue-scrollto";
@@ -23,6 +20,8 @@ import { type Image } from "@/services/fyApi";
 import logo from "@/images/pride/logo-planet.png";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useQuery } from "@tanstack/vue-query";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 
 const { t } = useI18n();
 
@@ -48,7 +47,7 @@ const search = () => {
       {
         name: "search",
         query: {
-          q: { search: searchQuery.value },
+          search: searchQuery.value,
         },
       } as unknown as RouteLocationRaw, // HACK to make insufficient types for vue-router work
     )
@@ -86,12 +85,6 @@ const routeForImage = (image: Image) => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "HomePage",
-};
-</script>
-
 <template>
   <div>
     <Support />
@@ -119,7 +112,7 @@ export default {
                         <FormInput
                           v-model="searchQuery"
                           name="search"
-                          size="large"
+                          :size="InputSizesEnum.LARGE"
                           :autofocus="!mobile"
                           translation-key="search.default"
                           :no-label="true"
@@ -128,7 +121,7 @@ export default {
                         <Btn
                           id="search-submit"
                           :aria-label="t('labels.search')"
-                          size="large"
+                          :size="BtnSizesEnum.LARGE"
                           :inline="true"
                           @click="search"
                         >
@@ -147,6 +140,7 @@ export default {
         <div class="row">
           <div class="col-12">
             <blockquote class="blockquote text-right">
+              <!-- eslint-disable-next-line vue/no-v-html -->
               <p v-html="t('texts.indexQuote')" />
               <footer class="blockquote-footer">
                 {{ t("texts.indexQuoteSource") }}
@@ -192,7 +186,7 @@ export default {
               <TeaserPanel
                 :item="model"
                 :to="{
-                  name: 'model',
+                  name: 'ship',
                   params: { slug: model.slug },
                 }"
                 level="h3"

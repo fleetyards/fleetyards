@@ -74,7 +74,7 @@ import { storeToRefs } from "pinia";
 
 const { t } = useI18n();
 
-const { displaySuccess, displayAlert } = useNoty(t);
+const { displaySuccess, displayAlert } = useNoty();
 
 const submitting = ref(false);
 

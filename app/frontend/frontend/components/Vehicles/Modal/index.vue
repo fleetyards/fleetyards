@@ -8,6 +8,7 @@
       <br />
 
       <small class="text-muted">
+        <!-- eslint-disable-next-line vue/no-v-html -->
         <span v-html="vehicle.model.manufacturer?.name" />
         {{ vehicle.model.name }}
       </small>
@@ -58,7 +59,7 @@
             <FilterGroup
               :key="`bought-via-${vehicle.model.id}`"
               v-model="boughtVia"
-              :options="boughtViaFilters as FilterGroupOption[]"
+              :options="boughtViaFilters"
               :label="t('labels.vehicle.boughtViaSelect.label')"
               name="boughtVia"
               :nullable="false"
@@ -96,7 +97,6 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { type VehicleUpdateInput, type Vehicle } from "@/services/fyApi";
 import { useVehicleQueries } from "@/frontend/composables/useVehicleQueries";
 import { useModelQueries } from "@/frontend/composables/useModelQueries";
-import { FilterGroupOption } from "@/shared/components/base/FilterGroup/Option/index.vue";
 
 type Props = {
   vehicle: Vehicle;

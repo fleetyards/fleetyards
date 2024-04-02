@@ -1,12 +1,12 @@
-<route lang="json">
-{
-  "name": "model-images"
-}
-</route>
+<script lang="ts">
+export default {
+  name: "ShipImagesPage",
+};
+</script>
 
 <script lang="ts" setup>
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import FilteredGrid from "@/shared/components/FilteredGrid/index.vue";
+import Grid from "@/shared/components/base/Grid/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Gallery from "@/shared/components/Gallery/index.vue";
 import GalleryImage from "@/shared/components/Image/index.vue";
@@ -61,13 +61,13 @@ const crumbs = computed(() => {
   return [
     {
       to: {
-        name: "models",
+        name: "ships",
         hash: `#${props.model.slug}`,
       },
-      label: t("nav.models.index"),
+      label: t("nav.ships.index"),
     },
     {
-      to: { name: "model", param: { slug: route.params.slug } },
+      to: { name: "ship", param: { slug: route.params.slug } },
       label: props.model.name,
     },
   ];
@@ -128,7 +128,7 @@ const openGallery = (index: number) => {
     class="images"
   >
     <template #default="{ records, loading, filterVisible, primaryKey }">
-      <FilteredGrid
+      <Grid
         :records="records"
         :loading="loading"
         :filter-visible="filterVisible"
@@ -143,7 +143,7 @@ const openGallery = (index: number) => {
             @click.prevent.exact="openGallery(index)"
           />
         </template>
-      </FilteredGrid>
+      </Grid>
     </template>
   </FilteredList>
 

@@ -47,22 +47,26 @@
             />
             <NavItem
               :to="{
-                name: 'models',
-                query: filterFor('models'),
+                name: 'ships',
+                query: filterFor('ships'),
               }"
-              :label="t('nav.models.index')"
-              :active="isModelRoute"
+              :label="t('nav.ships.index')"
+              :active="isShipRoute"
               icon="fad fa-starship"
             />
             <CompareNav />
-            <StationsNav />
             <FleetsNav />
             <NavItem
               :to="{ name: 'images' }"
               :label="t('nav.images')"
               icon="fad fa-images"
             />
-            <ToolsNav />
+            <NavItem
+              :to="{ name: 'tools' }"
+              :label="t('nav.tools.index')"
+              icon="fad fa-toolbox"
+              :active="isToolsRoute"
+            />
             <NavItem
               :to="{ name: 'roadmap' }"
               :label="t('nav.roadmap.index')"
@@ -89,8 +93,6 @@ import { useI18n } from "@/shared/composables/useI18n";
 import NavItem from "./NavItem/index.vue";
 import FleetNav from "./FleetNav/index.vue";
 import FleetsNav from "./FleetsNav/index.vue";
-import StationsNav from "./StationsNav/index.vue";
-import ToolsNav from "./ToolsNav/index.vue";
 import NavFooter from "./NavFooter/index.vue";
 import CompareNav from "./CompareNav/index.vue";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -130,12 +132,20 @@ const isRoadmapRoute = computed(() => {
   return String(route.name).includes("roadmap");
 });
 
-const isModelRoute = computed(() => {
+const isToolsRoute = computed(() => {
   if (!route.name) {
     return false;
   }
 
-  return ["models", "model", "model-images", "model-videos"].includes(
+  return String(route.name).includes("tools");
+});
+
+const isShipRoute = computed(() => {
+  if (!route.name) {
+    return false;
+  }
+
+  return ["ships", "ship", "ship-images", "ship-videos"].includes(
     String(route.name),
   );
 });

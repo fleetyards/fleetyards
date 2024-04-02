@@ -1,12 +1,3 @@
-<route lang="json">
-{
-  "name": "roadmap-ships",
-  "meta": {
-    "title": "roadmap.ships"
-  }
-}
-</route>
-
 <template>
   <section class="container roadmap">
     <div class="row">
@@ -23,7 +14,7 @@
           <Btn
             :active="!compact"
             :aria-label="toggleCompactTooltip"
-            @click.native="toggleCompact"
+            @click="toggleCompact"
           >
             {{ toggleCompactTooltip }}
           </Btn>
@@ -53,7 +44,7 @@
                 ({{ items[0].releaseDescription }})
               </span>
               <small class="text-muted">
-                {{ t("labels.roadmap.ships", { count: String(items.length) }) }}
+                {{ t("labels.roadmap.ships", { count: items.length }) }}
               </small>
               <i class="fa fa-chevron-right" />
             </h2>
@@ -91,7 +82,7 @@
               <small class="text-muted">
                 {{
                   t("labels.roadmap.ships", {
-                    count: String(unscheduledModels.length),
+                    count: unscheduledModels.length,
                   })
                 }}
               </small>
@@ -108,7 +99,7 @@
                   :key="model.slug"
                   class="col-12 col-lg-6 col-xl-4 col-xxl-2dot4 fade-list-item"
                 >
-                  <RoadmapItem
+                  <RoadmapItemComponent
                     :item="model"
                     :compact="compact"
                     :active="true"
@@ -127,12 +118,13 @@
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
-import RoadmapItem from "@/frontend/components/Roadmap/RoadmapItem/index.vue";
+import RoadmapItemComponent from "@/frontend/components/Roadmap/RoadmapItem/index.vue";
 import EmptyBox from "@/shared/components/EmptyBox/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { useCable } from "@/shared/composables/useCable";
 import type { Subscription } from "@rails/actioncable";
 import { useI18n } from "@/shared/composables/useI18n";
+import { type RoadmapItem, type Model } from "@/services/fyApi";
 
 const { t } = useI18n();
 const loading = ref(true);

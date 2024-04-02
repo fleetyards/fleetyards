@@ -4,11 +4,10 @@ import { routes as shipRoutes } from "@/frontend/pages/ships/[slug]/routes";
 export const routes: RouteRecordRaw[] = [
   {
     path: "",
-    name: "models",
+    name: "ships",
     component: () => import("@/frontend/pages/ships/index.vue"),
     meta: {
-      title: "models.index",
-      quickSearch: "searchCont",
+      title: "ships.index",
     },
   },
   {
@@ -19,9 +18,9 @@ export const routes: RouteRecordRaw[] = [
   },
   {
     path: "fleetchart/",
-    name: "models-fleetchart",
+    name: "ships-fleetchart",
     redirect: {
-      name: "models",
+      name: "ships",
       query: { fleetchart: "true" },
     },
   },

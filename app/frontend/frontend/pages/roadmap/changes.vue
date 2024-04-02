@@ -1,15 +1,11 @@
-<route lang="json">
-{
-  "name": "roadmap-changes",
-  "meta": {
-    "title": "roadmap.changes"
-  }
-}
-</route>
-
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+export default {
+  name: "RoadmapChangesPage",
+};
+</script>
+
+<script lang="ts" setup>
+import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
@@ -17,127 +13,119 @@ import RoadmapItem from "@/frontend/components/Roadmap/RoadmapItem/index.vue";
 import EmptyBox from "@/shared/components/EmptyBox/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 
-@Component<RoadmapChanges>({
-  components: {
-    Btn,
-    Loader,
-    FilterGroup,
-    EmptyBox,
-    RoadmapItem,
-    BreadCrumbs,
-  },
-})
-export default class RoadmapChanges extends Vue {
-  loading = true;
+const { changesQuery } = useRoadmapQueries();
 
-  compact = false;
+const { data, refetch, ...asyncStatus } = changesQuery(filters);
 
-  roadmapChanges = [];
+// loading = true;
 
-  options = [];
+const compact = ref(false);
 
-  roadmapChannel = null;
+// roadmapChanges = [];
 
-  selectedWeek = 0;
+// options = [];
 
-  get toggleCompactTooltip() {
-    if (this.compact) {
-      return this.$t("actions.showDetails");
-    }
+const roadmapChannel = ref();
 
-    return this.$t("actions.hideDetails");
-  }
+// selectedWeek = 0;
 
-  get emptyBoxVisible() {
-    return !this.loading && this.roadmapChanges.length === 0;
-  }
+// get toggleCompactTooltip() {
+//   if (this.compact) {
+//     return this.$t("actions.showDetails");
+//   }
 
-  get query() {
-    if (!this.options.length) {
-      return null;
-    }
+//   return this.$t("actions.hideDetails");
+// }
 
-    return this.options[this.selectedWeek].query;
-  }
+// get emptyBoxVisible() {
+//   return !this.loading && this.roadmapChanges.length === 0;
+// }
 
-  get groupedByRelease() {
-    return this.roadmapChanges.reduce((rv, x) => {
-      const value = JSON.parse(JSON.stringify(rv));
+// get query() {
+//   if (!this.options.length) {
+//     return null;
+//   }
 
-      value[x.release] = rv[x.release] || [];
-      value[x.release].push(x);
+//   return this.options[this.selectedWeek].query;
+// }
 
-      return value;
-    }, {});
-  }
+const groupedByRelease = computed(() => {
+  return this.roadmapChanges.reduce((rv, x) => {
+    const value = JSON.parse(JSON.stringify(rv));
 
-  get crumbs() {
-    return [
-      {
-        to: {
-          name: "roadmap",
-        },
-        label: this.$t("nav.roadmap.index"),
+    value[x.release] = rv[x.release] || [];
+    value[x.release].push(x);
+
+    return value;
+  }, {});
+});
+
+const { t } = useI18n();
+
+const crumbs = computed(() => {
+  return [
+    {
+      to: {
+        name: "roadmap",
       },
-    ];
+      label: t("nav.roadmap.index"),
+    },
+  ];
+});
+
+onMounted(() => {
+  setupUpdates();
+});
+
+onUnmounted(() => {
+  if (roadmapChannel.value) {
+    roadmapChannel.value.unsubscribe();
+  }
+});
+
+const setupUpdates = () => {
+  if (roadmapChannel.value) {
+    roadmapChannel.value.unsubscribe();
   }
 
-  async mounted() {
-    await this.fetchOptions();
-    this.fetch();
-    this.setupUpdates();
-  }
+  roadmapChannel.value = cable.consumer.subscriptions.create(
+    {
+      channel: "RoadmapChannel",
+    },
+    {
+      received: refetch,
+    },
+  );
+};
 
-  beforeDestroy() {
-    if (this.roadmapChannel) {
-      this.roadmapChannel.unsubscribe();
-    }
-  }
+const toggleCompact = () => {
+  compact.value = !compact.value;
+};
 
-  setupUpdates() {
-    if (this.roadmapChannel) {
-      this.roadmapChannel.unsubscribe();
-    }
+// async fetchOptions() {
+//   const response = await this.$api.get("roadmap/weeks");
 
-    this.roadmapChannel = this.$cable.consumer.subscriptions.create(
-      {
-        channel: "RoadmapChannel",
-      },
-      {
-        received: this.fetch,
-      },
-    );
-  }
+//   if (!response.error) {
+//     this.options = response.data;
+//   }
+// }
 
-  toggleCompact() {
-    this.compact = !this.compact;
-  }
+// async fetch() {
+//   if (!this.query) {
+//     return;
+//   }
 
-  async fetchOptions() {
-    const response = await this.$api.get("roadmap/weeks");
+//   this.loading = true;
+//   const response = await this.$api.get("roadmap?changes=1", {
+//     q: this.query,
+//   });
 
-    if (!response.error) {
-      this.options = response.data;
-    }
-  }
+//   this.loading = false;
 
-  async fetch() {
-    if (!this.query) {
-      return;
-    }
-
-    this.loading = true;
-    const response = await this.$api.get("roadmap?changes=1", {
-      q: this.query,
-    });
-
-    this.loading = false;
-
-    if (!response.error) {
-      this.roadmapChanges = response.data.filter((item) => item.lastVersion);
-    }
-  }
-}
+//   if (!response.error) {
+//     this.roadmapChanges = response.data.filter((item) => item.lastVersion);
+//   }
+// }
 </script>
 
 <template>
@@ -146,7 +134,7 @@ export default class RoadmapChanges extends Vue {
       <div class="col-12">
         <BreadCrumbs :crumbs="crumbs" />
         <h1 class="sr-only">
-          {{ $t("headlines.roadmap") }}
+          {{ t("headlines.roadmap") }}
         </h1>
       </div>
     </div>
@@ -154,7 +142,7 @@ export default class RoadmapChanges extends Vue {
       <div class="col-12 col-lg-6">
         <FilterGroup
           v-model="selectedWeek"
-          :label="$t('labels.roadmap.selectWeek')"
+          :label="t('labels.roadmap.selectWeek')"
           name="query"
           :options="options"
           label-attr="label"
@@ -166,12 +154,20 @@ export default class RoadmapChanges extends Vue {
       <div class="col-12 col-lg-6">
         <div class="page-actions page-actions-right">
           <Btn href="https://robertsspaceindustries.com/roadmap">
-            {{ $t("labels.rsiRoadmap") }}
+            {{ t("labels.rsiRoadmap") }}
           </Btn>
         </div>
       </div>
     </div>
     <hr class="dark" />
+
+    <FilteredList
+      name="roadmapChanges"
+      :records="data || []"
+      :async-status="asyncStatus"
+    >
+      <template #default> foo </template>
+    </FilteredList>
     <div class="row">
       <div class="col-12">
         <transition-group name="fade-list" class="row" tag="div" appear>
@@ -186,7 +182,7 @@ export default class RoadmapChanges extends Vue {
                 ({{ items[0].releaseDescription }})
               </span>
               <small class="text-muted">
-                {{ $t("labels.roadmap.stories", { count: items.length }) }}
+                {{ t("labels.roadmap.stories", { count: items.length }) }}
               </small>
             </h2>
 

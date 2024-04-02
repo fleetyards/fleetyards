@@ -1,13 +1,8 @@
-<template>
-  <div
-    :key="`${backgroundImageKey}-${uuid}`"
-    class="background-image"
-    :class="{
-      [backgroundImageKey]: true,
-      webp: webpSupported,
-    }"
-  />
-</template>
+<script lang="ts">
+export default {
+  name: "BackgroundImage",
+};
+</script>
 
 <script lang="ts" setup>
 import { v4 as uuidv4 } from "uuid";
@@ -35,11 +30,16 @@ onMounted(() => {
 });
 </script>
 
-<script lang="ts">
-export default {
-  name: "BackgroundImage",
-};
-</script>
+<template>
+  <div
+    :key="`${backgroundImageKey}-${uuid}`"
+    class="background-image"
+    :class="{
+      [backgroundImageKey]: true,
+      webp: webpSupported,
+    }"
+  />
+</template>
 
 <style lang="scss" scoped>
 @import "./index.scss";

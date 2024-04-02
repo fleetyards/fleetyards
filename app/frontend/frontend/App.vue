@@ -41,8 +41,6 @@
       </div>
     </div>
 
-    <AppShoppingCart />
-
     <AppModal />
   </div>
 </template>
@@ -53,7 +51,6 @@ import AppNavigationHeader from "@/frontend/components/core/AppNavigation/Header
 import AppNavigationMobile from "@/frontend/components/core/AppNavigation/Mobile/index.vue";
 import AppFooter from "@/frontend/components/core/AppFooter/index.vue";
 import AppModal from "@/shared/components/AppModal/index.vue";
-import AppShoppingCart from "@/frontend/components/core/AppShoppingCart/index.vue";
 import SecurePage from "@/frontend/components/core/SecurePage/index.vue";
 import BackgroundImage from "@/shared/components/BackgroundImage/index.vue";
 import { useNoty } from "@/shared/composables/useNoty";
@@ -110,7 +107,7 @@ const { t, availableLocales } = useI18n();
 
 useMetaInfo(t);
 
-const { requestBrowserPermission } = useNoty(t);
+const { requestBrowserPermission } = useNoty();
 
 watch(
   () => navCollapsed.value,

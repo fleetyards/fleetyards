@@ -3,8 +3,8 @@
     "nav": {
       "home": "Home",
       "back": "Back",
-      "models": { "index": "Ships" },
-      "compare": { "models": "Compare" },
+      "ships": { "index": "Ships" },
+      "compare": { "ships": "Compare" },
       "manufacturers": "Manufacturers",
       "images": "Images",
       "videos": "Videos",

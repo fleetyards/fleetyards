@@ -23,14 +23,6 @@
         "wishlist": "Wishlist",
         "publicWishlist": "%{user} Wishlist"
       },
-      "stations": "Stations",
-      "shops": "Shops",
-      "starsystems": "Starsystems",
-      "starsystem": "%{starsystem} Starsystem",
-      "celestialObject": "%{celestialObject} in the %{starsystem} System",
-      "station": "%{station} near %{celestialObject}",
-      "stationImages": "Images of %{station} near %{celestialObject}",
-      "shop": "%{shop} - %{station}",
       "requestPassword": "Request Password",
       "changePassword": "Change Password",
       "fleets": {
@@ -63,11 +55,9 @@
       },
       "notFound": "404",
       "tools": {
-        "profitCalculator": "Profit Calculator",
-        "tradeRoutes": "Trade Routes",
+        "index": "Tools",
         "travelTimes": "Travel Times"
       },
-      "commodities": "Commodities",
       "impressum": "Impressum",
       "privacyPolicy": "Privacy policy",
       "cookiePolicy": "Cookie policy",

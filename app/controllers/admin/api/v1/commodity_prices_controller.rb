@@ -18,30 +18,21 @@ module Admin
             .per(40)
         end
 
-        def create_sell_price
+        def create
           authorize! :create, :admin_api_commodity_prices
 
-          @commodity_price = CommoditySellPrice.new(commodity_price_params)
+          path = commodity_price_params.delete(:path)
 
-          return if commodity_price.save
-
-          render json: ValidationError.new("commodity_price.create", errors: commodity_price.errors), status: :bad_request
-        end
-
-        def create_buy_price
-          authorize! :create, :admin_api_commodity_prices
-
-          @commodity_price = CommodityBuyPrice.new(commodity_price_params)
-
-          return if commodity_price.save
-
-          render json: ValidationError.new("commodity_price.create", errors: commodity_price.errors), status: :bad_request
-        end
-
-        def create_rental_price
-          authorize! :create, :admin_api_commodity_prices
-
-          @commodity_price = CommodityRentalPrice.new(commodity_price_params)
+          @commodity_price = if path == "sell"
+            CommoditySellPrice.new(commodity_price_params)
+          elsif path == "buy"
+            CommodityBuyPrice.new(commodity_price_params)
+          elsif path == "rental"
+            CommodityRentalPrice.new(commodity_price_params)
+          else
+            render json: {code: "commodity_price.create", message: "Invalid path"}, status: :bad_request
+            return
+          end
 
           return if commodity_price.save
 
@@ -79,7 +70,7 @@ module Admin
 
         private def commodity_price_params
           @commodity_price_params ||= params.transform_keys(&:underscore)
-            .permit(:shop_commodity_id, :price, :time_range).merge(confirmed: true)
+            .permit(:shop_commodity_id, :price, :time_range, :path).merge(confirmed: true)
         end
         private def commodity_prices_query_params
           @commodity_prices_query_params ||= query_params(

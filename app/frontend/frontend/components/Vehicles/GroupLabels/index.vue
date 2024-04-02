@@ -106,7 +106,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const { displayAlert } = useNoty(t);
+const { displayAlert } = useNoty();
 
 const drag = ref(false);
 

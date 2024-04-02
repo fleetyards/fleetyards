@@ -190,7 +190,7 @@ import { useApiClient } from "@/frontend/composables/useApiClient";
 
 const { t } = useI18n();
 
-const { displayConfirm, displaySuccess, displayAlert } = useNoty(t);
+const { displayConfirm, displaySuccess, displayAlert } = useNoty();
 
 type Props = {
   member: FleetMember;

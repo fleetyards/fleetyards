@@ -29,19 +29,7 @@ namespace :frontend, **frontend_options do
   get "compare/ships" => "base#compare_models"
 
   get "tools" => "base#index"
-  get "tools/profit-calculator" => "base#index"
-  get "tools/trade-routes" => "base#index"
-  get "trade-routes", to: redirect("/tools/trade-routes")
   get "tools/travel-times" => "base#index"
-
-  get "stations" => "base#index", :as => :stations
-  get "shops" => "base#index", :as => :shops
-  get "stations/:slug" => "base#station", :as => :station
-  get "stations/:slug/images" => "base#station_images", :as => :station_images
-  get "stations/:station_slug/shops/:slug" => "base#shop", :as => :station_shop
-  get "starsystems" => "base#index"
-  get "starsystems/:slug" => "base#starsystem"
-  get "starsystems/:starsystem_slug/celestial-objects/:slug" => "base#celestial_object"
 
   get "commodities" => "base#index"
   get "commodities/:id" => "base#commodities"

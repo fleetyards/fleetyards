@@ -3,12 +3,12 @@
     "nav": {
       "home": "Home",
       "back": "Back",
-      "models": {
+      "ships": {
         "index": "Ships"
       },
       "compare": {
         "index": "Compare",
-        "models": "Compare Ships"
+        "ships": "Compare Ships"
       },
       "manufacturers": "Manufacturers",
       "images": "Images",

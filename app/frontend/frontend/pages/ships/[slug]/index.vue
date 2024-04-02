@@ -1,8 +1,8 @@
-<route lang="json">
-{
-  "name": "model"
-}
-</route>
+<script lang="ts">
+export default {
+  name: "ShipPage",
+};
+</script>
 
 <script lang="ts" setup>
 import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
@@ -34,6 +34,7 @@ import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 import { type Model } from "@/services/fyApi";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
   model: Model;
@@ -136,10 +137,10 @@ const crumbs = computed(() => {
   return [
     {
       to: {
-        name: "models",
+        name: "ships",
         hash: `#${props.model.slug}`,
       },
-      label: t("nav.models.index"),
+      label: t("nav.ships.index"),
     },
   ];
 });
@@ -188,12 +189,6 @@ const toggleHoloviewer = () => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "ModelsShow",
-};
-</script>
-
 <template>
   <div v-if="model" class="row">
     <div class="col-12">
@@ -226,7 +221,7 @@ export default {
             <Btn
               :active="holoviewerVisible"
               class="toggle-3d"
-              size="small"
+              :size="BtnSizesEnum.SMALL"
               @click="toggleHoloviewer"
             >
               {{ t("labels.3dView") }}
@@ -273,6 +268,7 @@ export default {
             </div>
           </div>
           <blockquote class="description">
+            <!-- eslint-disable-next-line vue/no-v-html -->
             <p v-html="model.description" />
           </blockquote>
         </div>
@@ -305,23 +301,24 @@ export default {
               {{ t("actions.model.store") }}
             </Btn>
 
-            <AddToHangar :model="model" />
+            <AddToHangar :model="model" :size="BtnSizesEnum.SMALL" />
 
             <ShareBtn
               v-if="!mobile"
               data-test="share"
               :url="shareUrl"
               :title="metaTitle || ''"
+              :size="BtnSizesEnum.SMALL"
             />
 
-            <BtnDropdown data-test="model-dropdown">
+            <BtnDropdown data-test="model-dropdown" :size="BtnSizesEnum.SMALL">
               <Btn
                 v-if="model.hasImages"
                 :to="{
-                  name: 'model-images',
+                  name: 'ship-images',
                   params: { slug: model.slug },
                 }"
-                variant="dropdown"
+                :size="BtnSizesEnum.SMALL"
               >
                 <i class="fa fa-images" />
                 <span>{{ t("nav.images") }}</span>
@@ -329,10 +326,10 @@ export default {
               <Btn
                 v-if="model.hasVideos"
                 :to="{
-                  name: 'model-videos',
+                  name: 'ship-videos',
                   params: { slug: model.slug },
                 }"
-                variant="dropdown"
+                :size="BtnSizesEnum.SMALL"
               >
                 <i class="fal fa-video" />
                 <span>{{ t("nav.videos") }}</span>
@@ -340,18 +337,18 @@ export default {
               <Btn
                 v-if="model.brochure"
                 :href="model.brochure"
-                variant="dropdown"
+                :size="BtnSizesEnum.SMALL"
               >
                 <i class="fal fa-download" />
                 <span>{{ t("labels.model.brochure") }}</span>
               </Btn>
               <Btn
                 :to="{
-                  name: 'models-compare',
+                  name: 'compare-ships',
                   query: { models: [model.slug] },
                 }"
                 data-test="compare"
-                variant="dropdown"
+                :size="BtnSizesEnum.SMALL"
               >
                 <i class="fal fa-code-compare" />
                 <span>{{ t("actions.compare.models") }}</span>
@@ -359,14 +356,14 @@ export default {
               <ShareBtn
                 v-if="mobile"
                 data-test="share"
-                variant="dropdown"
                 :url="shareUrl"
                 :title="metaTitle || ''"
+                :size="BtnSizesEnum.SMALL"
               />
               <Btn
                 v-if="model.links.salesPageUrl"
                 :href="model.links.salesPageUrl"
-                variant="dropdown"
+                :size="BtnSizesEnum.SMALL"
               >
                 <i class="fad fa-megaphone" />
                 <span>{{ t("labels.model.salesPage") }}</span>

@@ -1,3 +1,30 @@
+<script lang="ts">
+export default {
+  name: "AppModalInner",
+};
+</script>
+
+<script lang="ts" setup>
+import Panel from "@/shared/components/Panel/index.vue";
+import { useComlink } from "@/shared/composables/useComlink";
+
+export type ModalProps = {
+  title?: string;
+  fixed?: boolean;
+};
+
+withDefaults(defineProps<ModalProps>(), {
+  title: "",
+  fixed: false,
+});
+
+const comlink = useComlink();
+
+const close = () => {
+  comlink.emit("close-modal");
+};
+</script>
+
 <template>
   <div class="modal-inner">
     <Panel :outer-spacing="false" slim>
@@ -23,33 +50,6 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import Panel from "@/shared/components/Panel/index.vue";
-import { useComlink } from "@/shared/composables/useComlink";
-
-export type ModalProps = {
-  title?: string;
-  fixed?: boolean;
-};
-
-withDefaults(defineProps<ModalProps>(), {
-  title: "",
-  fixed: false,
-});
-
-const comlink = useComlink();
-
-const close = () => {
-  comlink.emit("close-modal");
-};
-</script>
-
-<script lang="ts">
-export default {
-  name: "AppModalInner",
-};
-</script>
 
 <style lang="scss" scoped>
 @import "./index.scss";

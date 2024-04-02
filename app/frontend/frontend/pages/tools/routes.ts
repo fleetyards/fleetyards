@@ -1,10 +1,10 @@
 export const routes = [
   {
-    path: "trade-routes/",
-    name: "trade-routes",
-    component: () => import("@/frontend/pages/tools/trade-routes.vue"),
+    path: "",
+    name: "tools",
+    component: () => import("@/frontend/pages/tools/index.vue"),
     meta: {
-      title: "tools.tradeRoutes",
+      title: "tools.index",
       backgroundImage: "bg-7",
     },
   },

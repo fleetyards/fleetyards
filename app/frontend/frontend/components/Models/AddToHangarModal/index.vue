@@ -41,7 +41,7 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 
-const { displaySuccess } = useNoty(t);
+const { displaySuccess } = useNoty();
 
 const hangarStore = useHangarStore();
 const wishlistStore = useWishlistStore();

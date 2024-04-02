@@ -1,38 +1,27 @@
-<template>
-  <component
-    :is="btnType"
-    class="panel-btn"
-    :class="cssClasses"
-    :disabled="disabled || loading || undefined"
-    v-bind="btnProps"
-  >
-    <BtnInner :loading="loading" :spinner="spinner">
-      <slot />
-    </BtnInner>
-  </component>
-</template>
+<script lang="ts">
+export default {
+  name: "BaseBtn",
+};
+</script>
 
 <script lang="ts" setup>
 import BtnInner from "@/shared/components/base/Btn/Inner/index.vue";
 import type { SpinnerAlignment } from "@/shared/components/SmallLoader/index.vue";
-import type { RouteLocationRaw } from "vue-router";
-
-export type BtnVariants =
-  | "default"
-  | "transparent"
-  | "link"
-  | "danger"
-  | "dropdown";
-export type BtnSizes = "default" | "xsmall" | "small" | "large";
+import type { RouterLinkProps } from "vue-router";
+import {
+  BtnTypesEnum,
+  BtnVariantsEnum,
+  BtnSizesEnum,
+} from "@/shared/components/base/Btn/types";
 
 export type Props = {
-  to?: RouteLocationRaw;
+  to?: RouterLinkProps["to"];
   href?: string;
-  type?: "button" | "submit";
+  type?: BtnTypesEnum;
   loading?: boolean;
   spinner?: boolean | SpinnerAlignment;
-  variant?: BtnVariants;
-  size?: BtnSizes;
+  variant?: BtnVariantsEnum;
+  size?: BtnSizesEnum;
   exact?: boolean;
   block?: boolean;
   mobileBlock?: boolean;
@@ -41,17 +30,16 @@ export type Props = {
   active?: boolean;
   disabled?: boolean;
   routeActiveClass?: string;
-  inGroup?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   to: undefined,
   href: undefined,
-  type: "button",
+  type: BtnTypesEnum.BUTTON,
   loading: false,
   spinner: false,
-  variant: "default",
-  size: "default",
+  variant: BtnVariantsEnum.DEFAULT,
+  size: BtnSizesEnum.DEFAULT,
   exact: false,
   block: false,
   mobileBlock: false,
@@ -60,7 +48,6 @@ const props = withDefaults(defineProps<Props>(), {
   active: false,
   disabled: false,
   routeActiveClass: undefined,
-  inGroup: false,
 });
 
 const btnType = computed(() => {
@@ -78,6 +65,7 @@ const btnProps = computed(() => {
       // event: props.disabled ? '' : 'click',
       activeClass: props.routeActiveClass,
       exactActiveClass: props.routeActiveClass,
+      exact: props.exact,
     };
   }
 
@@ -95,29 +83,35 @@ const btnProps = computed(() => {
 });
 
 const cssClasses = computed(() => ({
-  "panel-btn-submit": props.type === "submit",
-  "panel-btn-transparent": props.variant === "transparent",
-  "panel-btn-link": props.variant === "link",
-  "panel-btn-danger": props.variant === "danger",
-  "panel-btn-small": props.size === "small",
-  "panel-btn-xsmall": props.size === "xsmall",
-  "panel-btn-large": props.size === "large",
+  "panel-btn-submit": props.type === BtnTypesEnum.SUBMIT,
+  "panel-btn-transparent": props.variant === BtnVariantsEnum.TRANSPARENT,
+  "panel-btn-link": props.variant === BtnVariantsEnum.LINK,
+  "panel-btn-danger": props.variant === BtnVariantsEnum.DANGER,
+  "panel-btn-small": props.size === BtnSizesEnum.SMALL,
+  "panel-btn-xsmall": props.size === BtnSizesEnum.X_SMALL,
+  "panel-btn-large": props.size === BtnSizesEnum.LARGE,
   "panel-btn-block": props.block,
   "panel-btn-inline": props.inline,
-  "panel-btn-dropdown-link": props.variant === "dropdown",
   "panel-btn-text-inline": props.textInline,
   "panel-btn-mobile-block": props.mobileBlock,
-  "panel-btn-in-group": props.inGroup,
   active: props.active,
   disabled: props.disabled,
 }));
 </script>
 
-<script lang="ts">
-export default {
-  name: "BaseBtn",
-};
-</script>
+<template>
+  <component
+    :is="btnType"
+    class="panel-btn"
+    :class="cssClasses"
+    :disabled="disabled || loading || undefined"
+    v-bind="btnProps"
+  >
+    <BtnInner :loading="loading" :spinner="spinner">
+      <slot />
+    </BtnInner>
+  </component>
+</template>
 
 <style lang="scss" scoped>
 @import "./index.scss";

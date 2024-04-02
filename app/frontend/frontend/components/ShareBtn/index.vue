@@ -1,27 +1,20 @@
-<template>
-  <Btn
-    v-tooltip="variant !== 'dropdown' && t('actions.share')"
-    :variant="variant"
-    :size="size"
-    :inline="inline"
-    @click="share"
-  >
-    <i class="fad fa-share-square" />
-    <span v-if="variant === 'dropdown'">{{ t("actions.share") }}</span>
-  </Btn>
-</template>
+<script lang="ts">
+export default {
+  name: "ShareBtn",
+};
+</script>
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import type {
-  BtnVariants,
-  BtnSizes,
-} from "@/shared/components/base/Btn/index.vue";
 import copyText from "@/frontend/utils/CopyText";
 import { useNoty } from "@/shared/composables/useNoty";
 import { useI18n } from "@/shared/composables/useI18n";
 import type { SpinnerAlignment } from "@/shared/components/SmallLoader/index.vue";
 import type { RouteLocationRaw } from "vue-router";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 
 type Props = {
   url: string;
@@ -31,8 +24,8 @@ type Props = {
   type?: "button" | "submit";
   loading?: boolean;
   spinner?: boolean | SpinnerAlignment;
-  variant?: BtnVariants;
-  size?: BtnSizes;
+  variant?: BtnVariantsEnum;
+  size?: BtnSizesEnum;
   exact?: boolean;
   block?: boolean;
   mobileBlock?: boolean;
@@ -42,6 +35,7 @@ type Props = {
   disabled?: boolean;
   routeActiveClass?: string;
   inGroup?: boolean;
+  noLabel?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -50,8 +44,8 @@ const props = withDefaults(defineProps<Props>(), {
   type: "button",
   loading: false,
   spinner: false,
-  variant: "default",
-  size: "default",
+  variant: BtnVariantsEnum.DEFAULT,
+  size: BtnSizesEnum.DEFAULT,
   exact: false,
   block: false,
   mobileBlock: false,
@@ -61,11 +55,12 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   routeActiveClass: undefined,
   inGroup: false,
+  noLabel: false,
 });
 
 const { t } = useI18n();
 
-const { displayAlert, displaySuccess } = useNoty(t);
+const { displayAlert, displaySuccess } = useNoty();
 
 const share = () => {
   if (navigator.canShare && navigator.canShare({ url: props.url })) {
@@ -105,8 +100,15 @@ const copyShareUrl = () => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "ShareBtn",
-};
-</script>
+<template>
+  <Btn
+    v-tooltip="noLabel && t('actions.share')"
+    :variant="variant"
+    :size="size"
+    :inline="inline"
+    @click="share"
+  >
+    <i class="fad fa-share-square" />
+    <span v-if="!noLabel">{{ t("actions.share") }}</span>
+  </Btn>
+</template>

@@ -7,8 +7,8 @@
   >
     <template #submenu>
       <NavItem
-        :to="{ name: 'models-compare' }"
-        :label="t('nav.compare.models')"
+        :to="{ name: 'compare-ships' }"
+        :label="t('nav.compare.ships')"
         icon="fad fa-starship"
       />
     </template>
@@ -24,7 +24,7 @@ const { t } = useI18n();
 
 const route = useRoute();
 
-const active = computed(() => ["models-compare"].includes(route.name || ""));
+const active = computed(() => ["compare-ships"].includes(route.name || ""));
 </script>
 
 <script lang="ts">

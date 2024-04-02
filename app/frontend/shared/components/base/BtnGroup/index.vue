@@ -1,8 +1,8 @@
-<template>
-  <div :class="cssClasses">
-    <slot />
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "BaseBtnGroup",
+};
+</script>
 
 <script lang="ts" setup>
 type Props = {
@@ -21,11 +21,11 @@ const cssClasses = computed(() => {
 });
 </script>
 
-<script lang="ts">
-export default {
-  name: "BaseBtnGroup",
-};
-</script>
+<template>
+  <div :class="cssClasses">
+    <slot />
+  </div>
+</template>
 
 <style lang="scss" scoped>
 @import "./index.scss";

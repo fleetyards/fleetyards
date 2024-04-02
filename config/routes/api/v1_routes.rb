@@ -22,12 +22,6 @@ v1_api_routes = lambda do
   draw "api/hangar_routes"
   draw "api/vehicles_routes"
   draw "api/fleets_routes"
-  draw "api/stations_routes"
-  draw "api/shops_routes"
-  draw "api/commodities_routes"
-  draw "api/components_routes"
-  draw "api/commodity_prices_routes"
-  draw "api/shop_commodities_routes"
 
   resources :manufacturers, param: :slug, only: %i[index] do
     get "with-models", to: "manufacturers#with_models", on: :collection
@@ -42,14 +36,6 @@ v1_api_routes = lambda do
   end
 
   resources :search, only: %i[index]
-
-  resources :trade_routes, path: "trade-routes", only: [:index]
-
-  resources :equipment, only: [:index]
-
-  resources :starsystems, param: :slug, only: %i[index show]
-
-  resources :celestial_objects, path: "celestial-objects", param: :slug, only: %i[index show]
 
   namespace :stats do
     get "quick-stats", to: "base#quick_stats"

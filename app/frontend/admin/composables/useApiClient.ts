@@ -1,5 +1,5 @@
 import { FyAdminApi } from "@/services/fyAdminApi";
-import { useI18n } from "@/admin/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { csrfToken } from "@/shared/utils/Meta";
 
 const languageHeader = () => {

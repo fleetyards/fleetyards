@@ -1,11 +1,11 @@
 import type { App } from "vue";
-import type { I18nPluginOptions } from "@/shared/plugins/I18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { setupRules } from "@/frontend/validations";
 import { configure } from "vee-validate";
 
 export default {
-  install: (_app: App<Element>, i18nComposable: () => I18nPluginOptions) => {
-    const { t } = i18nComposable();
+  install: (_app: App<Element>) => {
+    const { t } = useI18n();
 
     configure({
       generateMessage: (context) => {

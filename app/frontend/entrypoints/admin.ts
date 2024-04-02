@@ -10,7 +10,6 @@ import FloatingVue from "floating-vue";
 import "floating-vue/dist/style.css";
 import VueLazyload from "vue-lazyload";
 import veeValidate from "@/admin/plugins/VeeValidate";
-import { useI18n } from "@/admin/composables/useI18n";
 import { VueQueryPlugin } from "@tanstack/vue-query";
 
 const pinia = createPinia();
@@ -24,10 +23,10 @@ app.use(VueQueryPlugin);
 app.use(router);
 app.use(pinia);
 app.use(sentry, router);
-app.use(i18n, useI18n);
-app.use(noty, useI18n);
+app.use(i18n);
+app.use(noty);
 app.use(VueLazyload);
-app.use(veeValidate, useI18n);
+app.use(veeValidate);
 app.use(FloatingVue);
 
 app.mount("#app");

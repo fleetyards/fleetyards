@@ -1,12 +1,12 @@
 import type { App } from "vue";
 import { useNoty } from "@/shared/composables/useNoty";
-import type { I18nPluginOptions } from "@/shared/plugins/I18n";
+import { useI18n } from "@/shared/composables/useI18n";
 
 export type NotyPluginOptions = ReturnType<typeof useNoty>;
 
 export default {
-  install: (app: App<Element>, i18nComposable: () => I18nPluginOptions) => {
-    const { t } = i18nComposable();
+  install: (app: App<Element>) => {
+    const { t } = useI18n();
 
     const {
       displaySuccess,
@@ -15,7 +15,7 @@ export default {
       displayAlert,
       displayConfirm,
       requestBrowserPermission,
-    } = useNoty(t);
+    } = useNoty();
 
     app.provide<NotyPluginOptions>("noty", {
       displaySuccess,

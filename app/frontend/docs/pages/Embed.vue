@@ -165,7 +165,7 @@ const widgetExample = `\<div id="fleetyards-view"\>\</div\>
 
 const { t } = useI18n();
 
-const { displayInfo, displayAlert } = useNoty(t);
+const { displayInfo, displayAlert } = useNoty();
 
 const copyExample = () => {
   copyText(widgetExample).then(

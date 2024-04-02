@@ -1,6 +1,6 @@
 <template>
   <div>
-    <FilteredTable
+    <BaseTable
       :records="vehicles"
       :primary-key="primaryKey"
       :columns="tableColumns"
@@ -11,24 +11,20 @@
     >
       <template #selected-actions>
         <div class="d-flex">
-          <BtnGroup :inline="true">
+          <BtnGroup inline>
             <span>{{ t("labels.public") }}</span>
             <Btn
               v-tooltip="t('actions.hangar.showOnPublicHangar')"
-              size="small"
-              variant="dropdown"
+              :size="BtnSizesEnum.SMALL"
               :disabled="updating"
-              in-group
               @click="showOnPublicHangar"
             >
               <i class="fad fa-eye" />
             </Btn>
             <Btn
               v-tooltip="t('actions.hangar.hideFromPublicHangar')"
-              size="small"
-              variant="dropdown"
+              :size="BtnSizesEnum.SMALL"
               :disabled="updating"
-              in-group
               @click="hideFromPublicHangar"
             >
               <i class="fad fa-eye-slash" />
@@ -36,35 +32,35 @@
           </BtnGroup>
           <Btn
             v-if="wishlist"
-            size="small"
-            :inline="true"
+            :size="BtnSizesEnum.SMALL"
             :disabled="updating"
+            inline
             @click="addToHangarBulk"
           >
             {{ t("actions.addToHangar") }}
           </Btn>
           <Btn
             v-else
-            size="small"
-            :inline="true"
+            :size="BtnSizesEnum.SMALL"
             :disabled="updating"
+            inline
             @click="addToWishlistBulk"
           >
             {{ t("actions.addToWishlist") }}
           </Btn>
           <Btn
             v-if="!wishlist"
-            size="small"
-            :inline="true"
+            :size="BtnSizesEnum.SMALL"
+            inline
             @click="openBulkGroupEditModal"
           >
             {{ t("actions.hangar.editGroupsSelected") }}
           </Btn>
           <Btn
             v-tooltip="t('actions.deleteSelected')"
-            size="small"
-            :inline="true"
+            :size="BtnSizesEnum.SMALL"
             :disabled="deleting"
+            inline
             @click="destroyBulk"
           >
             <i class="fal fa-trash" />
@@ -83,7 +79,7 @@
         <div class="name">
           <router-link
             :to="{
-              name: 'model',
+              name: 'ship',
               params: {
                 slug: record.model.slug,
               },
@@ -141,11 +137,10 @@
           <Btn
             v-if="record && editable && !record.loaner"
             :aria-label="t('actions.edit')"
-            size="small"
+            :size="BtnSizesEnum.SMALL"
             data-test="vehicle-edit"
-            :inline="true"
-            variant="link"
-            in-group
+            :variant="BtnVariantsEnum.LINK"
+            inline
             @click="openEditModal(record)"
           >
             {{ t("actions.edit") }}
@@ -154,8 +149,7 @@
             :vehicle="record"
             :editable="editable && !record.loaner"
             :wishlist="wishlist"
-            :hide-edit="true"
-            in-group
+            hide-edit
           />
         </BtnGroup>
       </template>
@@ -163,14 +157,12 @@
         <WishlistEmptyTable v-if="wishlist" />
         <HangarEmptyTable v-else />
       </template>
-    </FilteredTable>
+    </BaseTable>
   </div>
 </template>
 
 <script lang="ts" setup>
-// import vehiclesCollection from "@/frontend/api/collections/Vehicles";
-// import wishlistCollection from "@/frontend/api/collections/Wishlist";
-import FilteredTable from "@/shared/components/FilteredTable/index.vue";
+import BaseTable from "@/shared/components/base/Table/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index.vue";
@@ -181,6 +173,10 @@ import { useNoty } from "@/shared/composables/useNoty";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type Vehicle } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 
 type Props = {
   vehicles: Vehicle[];
@@ -192,7 +188,7 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
-const { displayConfirm } = useNoty(t);
+const { displayConfirm } = useNoty();
 
 const selected = ref<string[]>([]);
 

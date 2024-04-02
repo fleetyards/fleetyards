@@ -1,6 +1,8 @@
-import { I18nPluginOptions } from "@/shared/plugins/I18n";
+import { useI18n } from "@/shared/composables/useI18n";
 
-export const useFilterOptions = (t: I18nPluginOptions["t"]) => {
+export const useFilterOptions = () => {
+  const { t } = useI18n();
+
   const booleanOptions = [
     {
       label: t("labels.false"),

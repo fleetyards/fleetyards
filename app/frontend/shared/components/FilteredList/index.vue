@@ -1,78 +1,8 @@
-<template>
-  <div class="row">
-    <div class="col-12">
-      <div class="row">
-        <div class="col-12 filtered-header">
-          <div class="filtered-header-left">
-            <Btn
-              v-if="hasFilterSlot"
-              v-tooltip="filterTooltip"
-              :active="filterVisible"
-              :aria-label="filterTooltip"
-              size="small"
-              @click="toggleFilter"
-            >
-              <i v-if="isFilterSelected" class="fas fa-filter" />
-              <i v-else class="far fa-filter" />
-            </Btn>
-          </div>
-          <div class="filtered-header-right">
-            <slot name="actions" :records="records" />
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12">
-          <slot name="pagination-top" />
-        </div>
-      </div>
-      <div class="row">
-        <transition
-          name="slide"
-          :appear="true"
-          @before-enter="toggleFullscreen"
-          @after-leave="toggleFullscreen"
-        >
-          <div v-if="filterVisible" class="col-12 col-lg-3 col-xxl-2">
-            <slot name="filter" />
-          </div>
-        </transition>
-        <div
-          :class="{
-            'col-lg-9 col-xxl-10': !fullscreen,
-          }"
-          class="col-12 col-animated"
-        >
-          <slot
-            name="default"
-            :records="records"
-            :filter-visible="filterVisible"
-            :loading="loading"
-            :primary-key="primaryKey"
-            :empty-box-visible="emptyBoxVisible"
-          />
-
-          <slot
-            name="empty"
-            :filter-visible="filterVisible"
-            :hide-empty-box="hideEmptyBox"
-            :empty-box-visible="emptyBoxVisible"
-          >
-            <EmptyBox v-if="!hideEmptyBox" :visible="emptyBoxVisible" />
-          </slot>
-          <slot name="loader" :loading="loading">
-            <Loader v-if="!hideLoading" :loading="loading" :fixed="true" />
-          </slot>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12">
-          <slot name="pagination-bottom" />
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "FilteredList",
+};
+</script>
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -80,8 +10,9 @@ import Loader from "@/shared/components/Loader/index.vue";
 import EmptyBox from "@/shared/components/EmptyBox/index.vue";
 import { useFiltersStore } from "@/shared/stores/filters";
 import { useFilters } from "@/shared/composables/useFilters";
-import type { I18nPluginOptions } from "@/shared/plugins/I18n";
 import type { AsyncStatus } from "@/shared/components/AsyncData.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   name: string;
@@ -140,14 +71,14 @@ const hasPagintion = computed(() => {
   return !!slots.paginationBottom || !!slots.paginationTop;
 });
 
-const i18n = inject<I18nPluginOptions>("i18n");
+const { t } = useI18n();
 
 const filterTooltip = computed(() => {
   if (filterVisible) {
-    return i18n?.t("filteredList.actions.hideFilter");
+    return t("filteredList.actions.hideFilter");
   }
 
-  return i18n?.t("filteredList.actions.showFilter");
+  return t("filteredList.actions.showFilter");
 });
 
 const emptyBoxVisible = computed(() => {
@@ -209,8 +140,78 @@ const toggleFilter = () => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "FilteredList",
-};
-</script>
+<template>
+  <div class="row">
+    <div class="col-12">
+      <div class="row">
+        <div class="col-12 filtered-header">
+          <div class="filtered-header-left">
+            <Btn
+              v-if="hasFilterSlot"
+              v-tooltip="filterTooltip"
+              :active="filterVisible"
+              :aria-label="filterTooltip"
+              :size="BtnSizesEnum.SMALL"
+              @click="toggleFilter"
+            >
+              <i v-if="isFilterSelected" class="fas fa-filter" />
+              <i v-else class="far fa-filter" />
+            </Btn>
+          </div>
+          <div class="filtered-header-right">
+            <slot name="actions" :records="records" />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <slot name="pagination-top" />
+        </div>
+      </div>
+      <div class="row">
+        <transition
+          name="slide"
+          :appear="true"
+          @before-enter="toggleFullscreen"
+          @after-leave="toggleFullscreen"
+        >
+          <div v-show="filterVisible" class="col-12 col-lg-3 col-xxl-2">
+            <slot name="filter" />
+          </div>
+        </transition>
+        <div
+          :class="{
+            'col-lg-9 col-xxl-10': !fullscreen,
+          }"
+          class="col-12 col-animated"
+        >
+          <slot
+            name="default"
+            :records="records"
+            :filter-visible="filterVisible"
+            :loading="loading"
+            :primary-key="primaryKey"
+            :empty-box-visible="emptyBoxVisible"
+          />
+
+          <slot
+            name="empty"
+            :filter-visible="filterVisible"
+            :hide-empty-box="hideEmptyBox"
+            :empty-box-visible="emptyBoxVisible"
+          >
+            <EmptyBox v-if="!hideEmptyBox" :visible="emptyBoxVisible" />
+          </slot>
+          <slot name="loader" :loading="loading">
+            <Loader v-if="!hideLoading" :loading="loading" :fixed="true" />
+          </slot>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <slot name="pagination-bottom" />
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

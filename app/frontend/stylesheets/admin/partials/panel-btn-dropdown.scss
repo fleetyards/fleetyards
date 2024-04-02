@@ -1,4 +1,4 @@
-.panel-btn-dropdown {
+.panel-btn-dropdown-rails {
   position: relative;
   display: inline-block;
   margin-right: 10px;
@@ -101,7 +101,7 @@
 }
 
 @media (max-width: $desktop-breakpoint) {
-  .panel-btn-dropdown {
+  .panel-btn-dropdown-rails {
     .panel-btn-dropdown-list {
       &.expand-left {
         right: 0;

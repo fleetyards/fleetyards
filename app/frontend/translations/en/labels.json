@@ -85,8 +85,8 @@
         "committed": "Committed",
         "lastVersion": {
           "active": {
-            "decreased": "Item was removed from the Roadmap",
-            "increased": "Item was readded to the Roadmap"
+            "false": "Item was removed from the Roadmap",
+            "true": "Item was readded to the Roadmap"
           },
           "committed": "Item was marked as committed",
           "released": "Item was released to PU",
@@ -466,9 +466,7 @@
           "public": "Public",
           "group": "Group",
           "loaner": "Loaners",
-          "boughtVia": {
-            "nullablePrompt": "Bought via?"
-          }
+          "boughtVia": "Bought via?"
         },
         "tradeRoutes": {
           "sortBy": "Sort by",

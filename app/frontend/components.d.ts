@@ -13,6 +13,8 @@ declare module 'vue' {
     BtnGroup: typeof import('./shared/components/base/BtnGroup/index.vue')['default']
     BtnInner: typeof import('./shared/components/base/Btn/Inner/index.vue')['default']
     Checkbox: typeof import('./shared/components/base/Checkbox/index.vue')['default']
+    FilteredGrid: typeof import('./shared/components/base/FilteredGrid/index.vue')['default']
+    FilteredTable: typeof import('./shared/components/base/FilteredTable/index.vue')['default']
     FilterGroup: typeof import('./shared/components/base/FilterGroup/index.vue')['default']
     FilterGroupOption: typeof import('./shared/components/base/FilterGroup/Option/index.vue')['default']
     FilterGroupQuery: typeof import('./shared/components/base/FilterGroupQuery/index.vue')['default']

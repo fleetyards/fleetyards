@@ -1,35 +1,25 @@
-<template>
-  <Btn
-    v-if="!mobile"
-    :size="size"
-    :variant="variant"
-    :aria-label="t('actions.import')"
-    :loading="loading"
-    @click="openModal"
-  >
-    <i class="fal fa-sync" />
-    <span>
-      {{ t("actions.syncRsiHangar") }}
-    </span>
-  </Btn>
-</template>
+<script lang="ts">
+export default {
+  name: "HangarSyncBtn",
+};
+</script>
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import type {
-  BtnVariants,
-  BtnSizes,
-} from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import type { SpinnerAlignment } from "@/shared/components/SmallLoader/index.vue";
 import type { RouteLocationRaw } from "vue-router";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 
 type Props = {
-  variant?: BtnVariants;
-  size?: BtnSizes;
+  variant?: BtnVariantsEnum;
+  size?: BtnSizesEnum;
   inline?: boolean;
   to?: RouteLocationRaw;
   href?: string;
@@ -47,8 +37,8 @@ type Props = {
 };
 
 withDefaults(defineProps<Props>(), {
-  variant: "default",
-  size: "default",
+  variant: BtnVariantsEnum.DEFAULT,
+  size: BtnSizesEnum.DEFAULT,
   inline: false,
   to: undefined,
   href: undefined,
@@ -124,8 +114,18 @@ const openModal = () => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "HangarSyncBtn",
-};
-</script>
+<template>
+  <Btn
+    v-if="!mobile"
+    :size="size"
+    :variant="variant"
+    :aria-label="t('actions.import')"
+    :loading="loading"
+    @click="openModal"
+  >
+    <i class="fal fa-sync" />
+    <span>
+      {{ t("actions.syncRsiHangar") }}
+    </span>
+  </Btn>
+</template>

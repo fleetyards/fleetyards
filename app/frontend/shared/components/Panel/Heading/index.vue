@@ -4,6 +4,7 @@
     :class="{
       'panel-heading-top': shadow === 'top',
       'panel-heading-bottom': shadow === 'bottom',
+      'panel-heading-with-actions': slots.actions,
     }"
   >
     <component
@@ -26,7 +27,9 @@
         <slot name="subtitle" />
       </small>
     </component>
-    <slot name="actions" />
+    <div class="panel-heading-actions">
+      <slot name="actions" />
+    </div>
   </div>
 </template>
 
@@ -46,6 +49,8 @@ withDefaults(defineProps<Props>(), {
   titleAlign: "left",
   multiline: false,
 });
+
+const slots = defineSlots();
 </script>
 
 <script lang="ts">

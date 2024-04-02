@@ -1,5 +1,90 @@
+<script lang="ts">
+export default {
+  name: "ModelsFilterForm",
+};
+</script>
+
+<script lang="ts" setup>
+import RadioList from "@/shared/components/base/RadioList/index.vue";
+import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import ManufacturerFilterGroup from "@/frontend/components/base/ManufacturerFilterGroup/index.vue";
+import ProductionStatusFilterGroup from "@/frontend/components/base/ProductionStatusFilterGroup/index.vue";
+import ClassificationFilterGroup from "@/frontend/components/base/ModelClassificationFilterGroup/index.vue";
+import FocusFilterGroup from "@/frontend/components/base/ModelFocusFilterGroup/index.vue";
+import SizeFilterGroup from "@/frontend/components/base/ModelSizeFilterGroup/index.vue";
+import WillItFitFilterGroup from "@/frontend/components/base/ModelWillItFitFilterGroup/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useFilterOptions } from "@/shared/composables/useFilterOptions";
+import { type ModelQuery } from "@/services/fyApi";
+import { Form } from "vee-validate";
+import { useModelFilters } from "@/frontend/composables/useModelFilters";
+import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
+
+const { t } = useI18n();
+
+const prefillFormValues = () => {
+  return {
+    searchCont: filters.value.searchCont,
+    nameCont: filters.value.nameCont,
+    onSaleEq: filters.value.onSaleEq,
+    priceLteq: filters.value.priceLteq,
+    priceGteq: filters.value.priceGteq,
+    pledgePriceLteq: filters.value.pledgePriceLteq,
+    pledgePriceGteq: filters.value.pledgePriceGteq,
+    lengthLteq: filters.value.lengthLteq,
+    lengthGteq: filters.value.lengthGteq,
+    beamLteq: filters.value.beamLteq,
+    beamGteq: filters.value.beamGteq,
+    heightLteq: filters.value.heightLteq,
+    heightGteq: filters.value.heightGteq,
+    willItFit: filters.value.willItFit,
+    manufacturerIn: filters.value.manufacturerIn || [],
+    classificationIn: filters.value.classificationIn || [],
+    focusIn: filters.value.focusIn || [],
+    productionStatusIn: filters.value.productionStatusIn || [],
+    priceIn: filters.value.priceIn || [],
+    pledgePriceIn: filters.value.pledgePriceIn || [],
+    sizeIn: filters.value.sizeIn || [],
+  };
+};
+
+const setupForm = () => {
+  form.value = prefillFormValues();
+};
+
+const { filter, resetFilter, isFilterSelected, filters } =
+  useModelFilters(setupForm);
+
+const handleSubmit = () => {
+  filter(form.value);
+};
+
+const form = ref<ModelQuery>(prefillFormValues());
+
+watch(
+  () => form.value,
+  () => {
+    filter(form.value);
+  },
+  { deep: true },
+);
+
+const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
+</script>
+
 <template>
   <form @submit.prevent="handleSubmit">
+    <Teleport to="#quicksearch">
+      <FormInput
+        v-model="form.searchCont"
+        name="search"
+        translation-key="filters.models.name"
+        :no-label="true"
+        :clearable="true"
+      />
+    </Teleport>
     <FormInput
       v-model="form.nameCont"
       name="model-name"
@@ -52,7 +137,7 @@
         <FormInput
           v-model="form.lengthGteq"
           name="model-length-gteq"
-          type="number"
+          :type="InputTypesEnum.NUMBER"
           translation-key="filters.models.lengthGt"
           :no-placeholder="true"
         />
@@ -62,7 +147,7 @@
         <FormInput
           v-model="form.lengthLteq"
           name="model-length-lteq"
-          type="number"
+          :type="InputTypesEnum.NUMBER"
           translation-key="filters.models.lengthLt"
           :no-placeholder="true"
         />
@@ -74,7 +159,7 @@
         <FormInput
           v-model="form.beamGteq"
           name="model-beam-gteq"
-          type="number"
+          :type="InputTypesEnum.NUMBER"
           translation-key="filters.models.beamGt"
           :no-placeholder="true"
         />
@@ -84,7 +169,7 @@
         <FormInput
           v-model="form.beamLteq"
           name="model-beam-lteq"
-          type="number"
+          :type="InputTypesEnum.NUMBER"
           translation-key="filters.models.beamLt"
           :no-placeholder="true"
         />
@@ -96,7 +181,7 @@
         <FormInput
           v-model="form.heightGteq"
           name="model-height-gteq"
-          type="number"
+          :type="InputTypesEnum.NUMBER"
           translation-key="filters.models.heightGt"
           :no-placeholder="true"
         />
@@ -106,7 +191,7 @@
         <FormInput
           v-model="form.heightLteq"
           name="model-height-lteq"
-          type="number"
+          :type="InputTypesEnum.NUMBER"
           translation-key="filters.models.heightLt"
           :no-placeholder="true"
         />
@@ -118,7 +203,7 @@
         <FormInput
           v-model="form.pledgePriceGteq"
           name="model-pledge-price-gteq"
-          type="number"
+          :type="InputTypesEnum.NUMBER"
           translation-key="filters.models.pledgePriceGt"
           :no-placeholder="true"
         />
@@ -127,7 +212,7 @@
         <FormInput
           v-model="form.pledgePriceLteq"
           name="model-pledge-price-lteq"
-          type="number"
+          :type="InputTypesEnum.NUMBER"
           translation-key="filters.models.pledgePriceLt"
           :no-placeholder="true"
         />
@@ -137,7 +222,7 @@
     <FormInput
       v-model="form.priceGteq"
       name="model-price-gteq"
-      type="number"
+      :type="InputTypesEnum.NUMBER"
       translation-key="filters.models.priceGt"
       :no-placeholder="true"
     />
@@ -145,7 +230,7 @@
     <FormInput
       v-model="form.priceLteq"
       name="model-price-lteq"
-      type="number"
+      :type="InputTypesEnum.NUMBER"
       translation-key="filters.models.priceLt"
       :no-placeholder="true"
     />
@@ -164,110 +249,3 @@
     </Btn>
   </form>
 </template>
-
-<script lang="ts" setup>
-import RadioList from "@/shared/components/base/RadioList/index.vue";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
-import ManufacturerFilterGroup from "@/frontend/components/base/ManufacturerFilterGroup/index.vue";
-import ProductionStatusFilterGroup from "@/frontend/components/base/ProductionStatusFilterGroup/index.vue";
-import ClassificationFilterGroup from "@/frontend/components/base/ModelClassificationFilterGroup/index.vue";
-import FocusFilterGroup from "@/frontend/components/base/ModelFocusFilterGroup/index.vue";
-import SizeFilterGroup from "@/frontend/components/base/ModelSizeFilterGroup/index.vue";
-import WillItFitFilterGroup from "@/frontend/components/base/ModelWillItFitFilterGroup/index.vue";
-import FormInput from "@/shared/components/base/FormInput/index.vue";
-import Btn from "@/shared/components/base/Btn/index.vue";
-import { useI18n } from "@/shared/composables/useI18n";
-import { useFilterOptions } from "@/shared/composables/useFilterOptions";
-import { type ModelQuery } from "@/services/fyApi";
-import { Form } from "vee-validate";
-import { useFilters } from "@/shared/composables/useFilters2";
-
-const { t } = useI18n();
-
-const prefillFormValues = () => {
-  return {
-    searchCont: routeQuery.value.searchCont,
-    nameCont: routeQuery.value.nameCont,
-    onSaleEq: routeQuery.value.onSaleEq,
-    priceLteq: routeQuery.value.priceLteq,
-    priceGteq: routeQuery.value.priceGteq,
-    pledgePriceLteq: routeQuery.value.pledgePriceLteq,
-    pledgePriceGteq: routeQuery.value.pledgePriceGteq,
-    lengthLteq: routeQuery.value.lengthLteq,
-    lengthGteq: routeQuery.value.lengthGteq,
-    beamLteq: routeQuery.value.beamLteq,
-    beamGteq: routeQuery.value.beamGteq,
-    heightLteq: routeQuery.value.heightLteq,
-    heightGteq: routeQuery.value.heightGteq,
-    willItFit: routeQuery.value.willItFit,
-    manufacturerIn: routeQuery.value.manufacturerIn || [],
-    classificationIn: routeQuery.value.classificationIn || [],
-    focusIn: routeQuery.value.focusIn || [],
-    productionStatusIn: routeQuery.value.productionStatusIn || [],
-    priceIn: routeQuery.value.priceIn || [],
-    pledgePriceIn: routeQuery.value.pledgePriceIn || [],
-    sizeIn: routeQuery.value.sizeIn || [],
-  };
-};
-
-const setupForm = () => {
-  form.value = prefillFormValues();
-};
-
-interface AllowedFilters extends ModelQuery {
-  fleetchart?: boolean;
-}
-
-const { filter, resetFilter, isFilterSelected, routeQuery } =
-  useFilters<AllowedFilters>(
-    [
-      "searchCont",
-      "nameCont",
-      "onSaleEq",
-      "priceLteq",
-      "priceGteq",
-      "pledgePriceLteq",
-      "pledgePriceGteq",
-      "lengthLteq",
-      "lengthGteq",
-      "beamLteq",
-      "beamGteq",
-      "heightLteq",
-      "heightGteq",
-      "willItFit",
-      "manufacturerIn",
-      "classificationIn",
-      "focusIn",
-      "productionStatusIn",
-      "priceIn",
-      "pledgePriceIn",
-      "sizeIn",
-      "fleetchart",
-    ],
-    ["fleetchart"],
-    setupForm,
-  );
-
-const handleSubmit = () => {
-  filter(form.value);
-};
-
-const form = ref<ModelQuery>(prefillFormValues());
-
-watch(
-  () => form.value,
-  () => {
-    filter(form.value);
-  },
-  { deep: true },
-);
-
-const { booleanOptions, priceOptions, pledgePriceOptions } =
-  useFilterOptions(t);
-</script>
-
-<script lang="ts">
-export default {
-  name: "ModelsFilterForm",
-};
-</script>

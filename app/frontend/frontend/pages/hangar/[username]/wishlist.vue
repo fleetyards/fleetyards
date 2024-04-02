@@ -31,7 +31,7 @@
       :paginated="true"
     >
       <template #default="{ records, filterVisible, primaryKey }">
-        <FilteredGrid
+        <Grid
           :records="records"
           :filter-visible="filterVisible"
           :primary-key="primaryKey"
@@ -42,7 +42,7 @@
               :loaners-hint-visible="user.publicHangarLoaners"
             />
           </template>
-        </FilteredGrid>
+        </Grid>
       </template>
     </FilteredList>
   </section>

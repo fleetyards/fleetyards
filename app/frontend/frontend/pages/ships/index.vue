@@ -1,21 +1,16 @@
-<route lang="json">
-{
-  "name": "models",
-  "meta": {
-    "title": "models.index",
-    "quickSearch": "searchCont"
-  }
-}
-</route>
+<script lang="ts">
+export default {
+  name: "ShipsPage",
+};
+</script>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import FilteredGrid from "@/shared/components/FilteredGrid/index.vue";
+import Grid from "@/shared/components/base/Grid/index.vue";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
-import ModelsFilterForm from "@/frontend/components/Models/FilterForm/index.vue";
+import FilterForm from "@/frontend/components/Models/FilterForm/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import { useHangarItems } from "@/frontend/composables/useHangarItems";
 import { useWishlistItems } from "@/frontend/composables/useWishlistItems";
@@ -30,6 +25,8 @@ import {
   QueryKeysEnum,
   useModelQueries,
 } from "@/frontend/composables/useModelQueries";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { useModelFilters } from "@/frontend/composables/useModelFilters";
 
 useHangarItems();
 useWishlistItems();
@@ -57,18 +54,18 @@ const toggleFleetchart = () => {
 
 const { modelsQuery } = useModelQueries();
 
-const route = useRoute();
-
 const { perPage, page, updatePerPage } = usePagination(QueryKeysEnum.MODELS);
+
+const { filters } = useModelFilters(() => refetch());
 
 const {
   data: models,
   refetch,
   ...asyncStatus
 } = modelsQuery({
-  page: page.value,
-  perPage: perPage.value,
-  q: route.query,
+  page: page,
+  perPage: perPage,
+  q: filters,
 });
 
 const toggleDetailsTooltip = computed(() => {
@@ -78,32 +75,6 @@ const toggleDetailsTooltip = computed(() => {
 
   return t("actions.showDetails");
 });
-
-const filters = computed(() => ({
-  filters: route.query,
-  page: Number(route.query.page),
-}));
-
-watch(
-  () => perPage.value,
-  () => {
-    refetch();
-  },
-);
-
-watch(
-  () => filters.value,
-  () => {
-    refetch();
-  },
-  { deep: true },
-);
-</script>
-
-<script lang="ts">
-export default {
-  name: "ModelsIndex",
-};
 </script>
 
 <template>
@@ -121,7 +92,7 @@ export default {
           <Btn
             data-test="model-compare-link"
             :to="{
-              name: 'models-compare',
+              name: 'compare-ships',
             }"
           >
             <i class="fad fa-code-compare" />
@@ -136,20 +107,17 @@ export default {
     </div>
 
     <FilteredList
-      key="models"
-      :paginated="true"
+      name="models"
       :hide-loading="fleetchartVisible"
       :records="models?.items || []"
-      :name="route.name?.toString() || ''"
       :async-status="asyncStatus"
     >
       <template #actions>
-        <BtnDropdown size="small">
+        <BtnDropdown :size="BtnSizesEnum.SMALL">
           <Btn
             :active="detailsVisible"
             :aria-label="toggleDetailsTooltip"
-            size="small"
-            variant="dropdown"
+            :size="BtnSizesEnum.SMALL"
             @click="toggleDetails"
           >
             <i class="fad fa-info-square" />
@@ -159,11 +127,11 @@ export default {
       </template>
 
       <template #filter>
-        <ModelsFilterForm />
+        <FilterForm />
       </template>
 
       <template #default="{ records, loading, filterVisible, primaryKey }">
-        <FilteredGrid
+        <Grid
           :records="records"
           :filter-visible="filterVisible"
           :primary-key="primaryKey"
@@ -171,7 +139,7 @@ export default {
           <template #default="{ record }">
             <ModelPanel :model="record" :details="detailsVisible" />
           </template>
-        </FilteredGrid>
+        </Grid>
 
         <FleetchartApp
           :items="models?.items || []"

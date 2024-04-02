@@ -37,7 +37,7 @@ const { youtubeAccepted } = storeToRefs(cookiesStore);
 
 const { t } = useI18n();
 
-const { displaySuccess, displayAlert } = useNoty(t);
+const { displaySuccess, displayAlert } = useNoty();
 
 const copyVideoUrl = (video: Video) => {
   copyText(`https://www.youtube.com/watch?v=${video.videoId}`).then(

@@ -12,6 +12,7 @@
 #  import_data :text
 #  info        :text
 #  input       :jsonb
+#  meta        :text
 #  output      :jsonb
 #  started_at  :datetime
 #  type        :string

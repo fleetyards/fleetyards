@@ -1,5 +1,5 @@
 .form-group-checkbox {
-  margin-bottom: 15px;
+  margin-bottom: 0;
   display: flex;
 }
 
@@ -13,6 +13,7 @@
     min-width: 24px;
     min-height: 24px;
     cursor: pointer;
+    margin-bottom: 0;
     display: flex;
     justify-content: flex-start;
     align-items: center;

@@ -2,7 +2,7 @@
   <ol v-if="crumbs" aria-label="breadcrumb" class="breadcrumb">
     <li class="breadcrumb-item">
       <router-link :to="{ name: 'home' }">
-        {{ i18n?.t("nav.home") }}
+        {{ t("nav.home") }}
       </router-link>
     </li>
     <li v-for="(crumb, index) in crumbs" :key="index" class="breadcrumb-item">
@@ -15,7 +15,7 @@
 
 <script lang="ts" setup>
 import { type RouteLocationRaw } from "vue-router";
-import type { I18nPluginOptions } from "@/shared/plugins/I18n";
+import { useI18n } from "@/shared/composables/useI18n";
 
 export type Crumb = {
   to: RouteLocationRaw;
@@ -30,7 +30,7 @@ withDefaults(defineProps<Props>(), {
   crumbs: undefined,
 });
 
-const i18n = inject<I18nPluginOptions>("i18n");
+const { t } = useI18n();
 </script>
 
 <script lang="ts">

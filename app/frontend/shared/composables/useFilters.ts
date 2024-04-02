@@ -1,7 +1,17 @@
 import { debounce } from "ts-debounce";
 
-export const useFilters = <T>(updateCallback?: () => void, filterKey = "q") => {
+export const useFilters = <T>({
+  allowedKeys,
+  ignoreKeys,
+  updateCallback,
+}: {
+  allowedKeys?: (keyof T)[];
+  ignoreKeys?: (keyof T)[];
+  updateCallback?: () => void;
+} = {}) => {
   const route = useRoute();
+
+  const defaultAllowedKeys = ["page", "perPage", "limit"];
 
   onMounted(() => {
     if (!updateCallback) return;
@@ -9,8 +19,10 @@ export const useFilters = <T>(updateCallback?: () => void, filterKey = "q") => {
     updateCallback();
   });
 
+  const filters = computed<T>(() => (route.query || {}) as T);
+
   watch(
-    () => route.query,
+    () => filters.value,
     () => {
       if (!updateCallback) return;
 
@@ -20,34 +32,45 @@ export const useFilters = <T>(updateCallback?: () => void, filterKey = "q") => {
   );
 
   const getQuery = (formData: T) => {
-    const query = JSON.parse(JSON.stringify(formData));
+    const query = {
+      ...route.query,
+      ...formData,
+    };
 
     Object.keys(query)
-      .filter((key) => !query[key] || query[key].length === 0)
+      .filter((key) => !query[key] || query[key]?.length === 0)
+      .forEach((key) => delete query[key]);
+
+    Object.keys(query)
+      .filter((key) => {
+        return ![...(allowedKeys || []), ...defaultAllowedKeys].includes(
+          key as keyof T,
+        );
+      })
       .forEach((key) => delete query[key]);
 
     return query;
   };
 
-  const filters = computed<T>(() => (route.query[filterKey] || {}) as T);
-
   const isFilterSelected = computed(() => {
     const query = getQuery(filters.value);
+
+    Object.keys(query)
+      .filter((key) => {
+        return (ignoreKeys || []).includes(key as keyof T);
+      })
+      .forEach((key) => delete query[key]);
 
     return Object.keys(query).length > 0;
   });
 
   const router = useRouter();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const debouncedFilter = (filter: any) => {
+  const debouncedFilter = (filter: T) => {
     router
       .replace({
         name: route.name || undefined,
-        query: {
-          ...route.query,
-          [filterKey]: getQuery(filter as T),
-        },
+        query: getQuery(filter),
       })
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       .catch((_error: Error) => {});

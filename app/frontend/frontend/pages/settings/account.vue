@@ -113,7 +113,7 @@ const comlink = useComlink();
 
 const { t } = useI18n();
 
-const { displaySuccess, displayAlert, displayConfirm } = useNoty(t);
+const { displaySuccess, displayAlert, displayConfirm } = useNoty();
 
 const updateAccount = handleSubmit(async () => {
   if (!initialValues.value) {

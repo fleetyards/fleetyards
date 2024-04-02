@@ -29,4 +29,5 @@ class ModelPrice < ApplicationRecord
   validates :price_type, presence: true
   validates :time_range, presence: true, if: -> { rental? }
   validates :price, presence: true
+  validates :location, presence: true
 end

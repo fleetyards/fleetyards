@@ -10,7 +10,7 @@
         <h2 class="panel-title">
           <router-link
             :to="{
-              name: 'model',
+              name: 'ship',
               params: {
                 slug: model.slug,
               },
@@ -56,7 +56,7 @@
         class="panel-image text-center"
       >
         <LazyImage
-          :to="{ name: 'model', params: { slug: model.slug } }"
+          :to="{ name: 'ship', params: { slug: model.slug } }"
           :aria-label="model.name"
           :src="storeImage"
           :alt="model.name"

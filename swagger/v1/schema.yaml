@@ -18,272 +18,6 @@ servers:
   description: Staging Server
 security: []
 paths:
-  "/celestial-objects":
-    get:
-      summary: Celestial Objects List
-      operationId: list
-      description: Get a List of Celestial Objects
-      tags:
-      - CelestialObjects
-      parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 30
-        required: false
-      - name: q
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/CelestialObjectQuery"
-        style: deepObject
-        explode: true
-        required: false
-      - name: cacheId
-        in: query
-        required: false
-        schema:
-          type: string
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/CelestialObjects"
-  "/celestial-objects/{slug}":
-    parameters:
-    - name: slug
-      in: path
-      description: slug
-      schema:
-        type: string
-      required: true
-    get:
-      summary: Celestial Object Detail
-      operationId: detail
-      description: Get Detail of a Celestial Object referenced by its Slug
-      tags:
-      - CelestialObjects
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/CelestialObject"
-        '404':
-          description: not_found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/commodities/types":
-    get:
-      summary: Commodity Types
-      deprecated: true
-      operationId: DEPRECATEDcommodityTypes
-      tags:
-      - Commodities
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
-  "/commodities":
-    get:
-      summary: Commodities list
-      operationId: commodities
-      tags:
-      - Commodities
-      parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 50
-        required: false
-      - name: q
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/CommodityQuery"
-        style: deepObject
-        explode: true
-        required: false
-      - name: cacheId
-        in: query
-        required: false
-        schema:
-          type: string
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Commodities"
-  "/commodity-prices":
-    post:
-      summary: Create Commodity Price
-      operationId: createPrice
-      tags:
-      - CommodityPrices
-      parameters: []
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/CommodityPrice"
-        '400':
-          description: bad request
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ValidationError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/CommodityPriceInput"
-        required: true
-  "/components/class_filters":
-    get:
-      summary: Commodity Types
-      deprecated: true
-      operationId: DEPRECATEDcomponentClasses
-      tags:
-      - Components
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
-  "/components/item_type_filters":
-    get:
-      summary: Commodity Types
-      deprecated: true
-      operationId: DEPRECATEDcomponentItemTypes
-      tags:
-      - Components
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
-  "/components":
-    get:
-      summary: Components list
-      operationId: components
-      tags:
-      - Components
-      parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 50
-        required: false
-      - name: q
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/ComponentQuery"
-        style: deepObject
-        explode: true
-        required: false
-      - name: cacheId
-        in: query
-        required: false
-        schema:
-          type: string
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Components"
-  "/equipment":
-    get:
-      summary: Equipment list
-      operationId: equipment
-      tags:
-      - Equipment
-      parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 50
-        required: false
-      - name: q
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/EquipmentQuery"
-        style: deepObject
-        explode: true
-        required: false
-      - name: cacheId
-        in: query
-        required: false
-        schema:
-          type: string
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Equipment"
   "/features":
     get:
       summary: Feature Flags for User
@@ -299,111 +33,6 @@ paths:
                 type: array
                 items:
                   type: string
-  "/filters/commodities/types":
-    get:
-      summary: Commodity Types
-      operationId: commodityTypes
-      tags:
-      - CommodityFilters
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
-  "/filters/commodity-prices/time-ranges":
-    get:
-      summary: Commodity Types
-      operationId: commodityPriceTimeRanges
-      tags:
-      - CommodityPriceFilters
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
-  "/filters/components/classes":
-    get:
-      summary: Commodity Types
-      operationId: componentClasses
-      tags:
-      - ComponentFilters
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
-  "/filters/components/item-types":
-    get:
-      summary: Commodity Types
-      operationId: componentItemTypes
-      tags:
-      - ComponentFilters
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
-  "/filters/shop-commodities/commodity-type-options":
-    get:
-      summary: Shop Commodity Commodity Type Options
-      operationId: commodityTypeOptions
-      tags:
-      - ShopCommodityFilters
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/CommodityItemType"
-  "/filters/shop-commodities/sub-categories":
-    get:
-      summary: Shop Commodity Sub Categories
-      operationId: shopCommoditySubCategories
-      tags:
-      - ShopCommodityFilters
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
-  "/filters/shops/types":
-    get:
-      summary: Shop types
-      operationId: shopTypes
-      tags:
-      - ShopFilters
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
   "/fleets/check":
     post:
       summary: Check Fleet FID Availability
@@ -3954,376 +3583,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/stations/{stationSlug}/shops/{slug}/commodities":
-    parameters:
-    - name: slug
-      in: path
-      required: true
-      schema:
-        type: string
-    - name: stationSlug
-      in: path
-      required: true
-      schema:
-        type: string
-    get:
-      summary: Shop Commodity list
-      operationId: shopCommodities
-      tags:
-      - Shops
-      parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 30
-        required: false
-      - name: search
-        in: query
-        required: false
-        schema:
-          type: string
-      - name: query
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/ShopCommodityQuery"
-        style: deepObject
-        explode: true
-        required: false
-      - name: order
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/ShopCommodityOrderQuery"
-        required: false
-      - name: cacheId
-        in: query
-        required: false
-        schema:
-          type: string
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/ShopCommodity"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/shops/shop-types":
-    get:
-      summary: Shop types
-      deprecated: true
-      operationId: DEPRECATEDshopsTypes
-      tags:
-      - Shops
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
-  "/shops":
-    get:
-      summary: Shops list
-      operationId: shops
-      tags:
-      - Shops
-      parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 30
-        required: false
-      - name: q
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/ShopQuery"
-        style: deepObject
-        explode: true
-        required: false
-      - name: cacheId
-        in: query
-        required: false
-        schema:
-          type: string
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Shops"
-  "/stations/{stationSlug}/shops/{slug}":
-    parameters:
-    - name: stationSlug
-      in: path
-      description: Station slug
-      required: true
-      schema:
-        type: string
-    - name: slug
-      in: path
-      description: Shop slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: Shop Detail
-      operationId: shop
-      tags:
-      - Shops
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Shop"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/starsystems":
-    get:
-      summary: Starsystems list
-      operationId: starsystems
-      tags:
-      - Starsystems
-      parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 15
-        required: false
-      - name: q
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/StarsystemQuery"
-        style: deepObject
-        explode: true
-        required: false
-      - name: cacheId
-        in: query
-        required: false
-        schema:
-          type: string
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Starsystems"
-  "/starsystems/{slug}":
-    parameters:
-    - name: slug
-      in: path
-      description: Starsystem slug
-      schema:
-        type: string
-      required: true
-    get:
-      summary: Starsystem Detail
-      operationId: starsystem
-      tags:
-      - Starsystems
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Starsystem"
-        '404':
-          description: not_found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/stations/station-types":
-    get:
-      summary: Station types
-      operationId: stationsTypes
-      tags:
-      - Stations
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
-  "/stations/ship-sizes":
-    get:
-      summary: Station Ship sizes
-      operationId: stationsShipSizes
-      tags:
-      - Stations
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
-  "/stations/classifications":
-    get:
-      summary: Station classifications
-      operationId: stationsClassifications
-      tags:
-      - Stations
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
-  "/stations":
-    get:
-      summary: Stations list
-      operationId: stations
-      tags:
-      - Stations
-      parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 10
-        required: false
-      - name: q
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/StationQuery"
-        style: deepObject
-        explode: true
-        required: false
-      - name: cacheId
-        in: query
-        required: false
-        schema:
-          type: string
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Stations"
-  "/stations/{slug}":
-    parameters:
-    - name: slug
-      in: path
-      description: Station slug
-      schema:
-        type: string
-      required: true
-    get:
-      summary: Station Detail
-      operationId: station
-      tags:
-      - Stations
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Station"
-        '404':
-          description: not_found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/stations/{slug}/images":
-    parameters:
-    - name: slug
-      in: path
-      description: Station slug
-      schema:
-        type: string
-      required: true
-    get:
-      summary: Station Images
-      operationId: stationImages
-      tags:
-      - Stations
-      parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 30
-        required: false
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Images"
-        '404':
-          description: not_found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
   "/stats/components-by-class":
     get:
       summary: Stats Components by Class
@@ -4427,47 +3686,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Stats"
-  "/trade-routes":
-    get:
-      summary: Trade Routes
-      operationId: tradeRoutes
-      tags:
-      - TradeRoutes
-      parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 50
-        required: false
-      - name: q
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/TradeRouteQuery"
-        style: deepObject
-        explode: true
-        required: false
-      - name: cacheId
-        in: query
-        required: false
-        schema:
-          type: string
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/TradeRoute"
   "/users/check-email":
     post:
       summary: Check E-Mail Availability
@@ -5478,6 +4696,14 @@ components:
       - sell
       - rental
       title: CommodityPricePathEnum
+    CommodityPriceTimeRangeEnum:
+      type: string
+      enum:
+      - 1-day
+      - 3-days
+      - 7-days
+      - 30-days
+      title: CommodityPriceTimeRangeEnum
     CommodityTypeEnum:
       type: string
       enum:
@@ -5660,6 +4886,21 @@ components:
       - qed
       - emp
       title: ModelHardpointTypeEnum
+    ModelPriceTimeRangeEnum:
+      type: string
+      enum:
+      - 1-day
+      - 3-days
+      - 7-days
+      - 30-days
+      title: ModelPriceTimeRangeEnum
+    ModelPriceTypeEnum:
+      type: string
+      enum:
+      - buy
+      - sell
+      - rental
+      title: ModelPriceTypeEnum
     ModelProductionStatusEnum:
       type: string
       enum:
@@ -5926,9 +5167,8 @@ components:
           type: string
       additionalProperties: false
       required:
-      - name
+      - label
       - value
-      - category
       title: FilterOption
     Gallery:
       type: object
@@ -7732,24 +6972,24 @@ components:
           type: object
           properties:
             listedAt:
+              deprecated: true
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ModelPrice"
             boughtAt:
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ModelPrice"
             soldAt:
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ModelPrice"
             rentalAt:
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ModelPrice"
           additionalProperties: false
           required:
-          - listedAt
           - boughtAt
           - soldAt
           - rentalAt
@@ -7928,180 +7168,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-        holoColored:
-          type: boolean
-          deprecated: true
-        afterburnerGroundSpeed:
-          type: number
-          deprecated: true
-        afterburnerSpeed:
-          type: number
-          deprecated: true
-        angledView:
-          type: string
-          deprecated: true
-        angledViewHeight:
-          type: number
-          deprecated: true
-        angledViewLarge:
-          type: string
-          deprecated: true
-        angledViewMedium:
-          type: string
-          deprecated: true
-        angledViewSmall:
-          type: string
-          deprecated: true
-        angledViewWidth:
-          type: number
-          deprecated: true
-        angledViewXlarge:
-          type: string
-          deprecated: true
-        beam:
-          type: number
-          deprecated: true
-        beamLabel:
-          type: string
-          deprecated: true
-        cargo:
-          type: number
-          deprecated: true
-        cargoLabel:
-          type: string
-          deprecated: true
-        fleetchartImage:
-          type: string
-          deprecated: true
-        fleetchartLength:
-          type: number
-          deprecated: true
-        groundSpeed:
-          type: number
-          deprecated: true
-        height:
-          type: number
-          deprecated: true
-        heightLabel:
-          type: string
-          deprecated: true
-        hydrogenFuelTankSize:
-          type: number
-          deprecated: true
-        length:
-          type: number
-          deprecated: true
-        lengthLabel:
-          type: string
-          deprecated: true
-        mass:
-          type: number
-          deprecated: true
-        massLabel:
-          type: number
-          deprecated: true
-        maxCrew:
-          type: integer
-          deprecated: true
-        maxCrewLabel:
-          type: string
-          deprecated: true
-        minCrew:
-          type: integer
-          deprecated: true
-        minCrewLabel:
-          type: string
-          deprecated: true
-        pitchMax:
-          type: number
-          deprecated: true
-        quantumFuelTankSize:
-          type: number
-          deprecated: true
-        rollMax:
-          type: number
-          deprecated: true
-        salesPageUrl:
-          type: string
-          deprecated: true
-        scmSpeed:
-          type: number
-          deprecated: true
-        sideView:
-          type: string
-          deprecated: true
-        sideViewHeight:
-          type: number
-          deprecated: true
-        sideViewLarge:
-          type: string
-          deprecated: true
-        sideViewMedium:
-          type: string
-          deprecated: true
-        sideViewSmall:
-          type: string
-          deprecated: true
-        sideViewWidth:
-          type: number
-          deprecated: true
-        sideViewXlarge:
-          type: string
-          deprecated: true
-        size:
-          type: string
-          deprecated: true
-        sizeLabel:
-          type: string
-          deprecated: true
-        storeImage:
-          type: string
-          deprecated: true
-        storeImageLarge:
-          type: string
-          deprecated: true
-        storeImageMedium:
-          type: string
-          deprecated: true
-        storeImageSmall:
-          type: string
-          deprecated: true
-        storeUrl:
-          type: string
-          deprecated: true
-        topView:
-          type: string
-          deprecated: true
-        topViewHeight:
-          type: number
-          deprecated: true
-        topViewLarge:
-          type: string
-          deprecated: true
-        topViewMedium:
-          type: string
-          deprecated: true
-        topViewSmall:
-          type: string
-          deprecated: true
-        topViewWidth:
-          type: number
-          deprecated: true
-        topViewXlarge:
-          type: string
-          deprecated: true
-        xaxisAcceleration:
-          type: number
-          deprecated: true
-        yawMax:
-          type: number
-          deprecated: true
-        yaxisAcceleration:
-          type: number
-          deprecated: true
-        zaxisAcceleration:
-          type: number
-          deprecated: true
       additionalProperties: false
       required:
       - id
@@ -8139,24 +7205,24 @@ components:
           type: object
           properties:
             listedAt:
+              deprecated: true
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ModelPrice"
             boughtAt:
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ModelPrice"
             soldAt:
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ModelPrice"
             rentalAt:
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ModelPrice"
           additionalProperties: false
           required:
-          - listedAt
           - boughtAt
           - soldAt
           - rentalAt
@@ -8341,180 +7407,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-        holoColored:
-          type: boolean
-          deprecated: true
-        afterburnerGroundSpeed:
-          type: number
-          deprecated: true
-        afterburnerSpeed:
-          type: number
-          deprecated: true
-        angledView:
-          type: string
-          deprecated: true
-        angledViewHeight:
-          type: number
-          deprecated: true
-        angledViewLarge:
-          type: string
-          deprecated: true
-        angledViewMedium:
-          type: string
-          deprecated: true
-        angledViewSmall:
-          type: string
-          deprecated: true
-        angledViewWidth:
-          type: number
-          deprecated: true
-        angledViewXlarge:
-          type: string
-          deprecated: true
-        beam:
-          type: number
-          deprecated: true
-        beamLabel:
-          type: string
-          deprecated: true
-        cargo:
-          type: number
-          deprecated: true
-        cargoLabel:
-          type: string
-          deprecated: true
-        fleetchartImage:
-          type: string
-          deprecated: true
-        fleetchartLength:
-          type: number
-          deprecated: true
-        groundSpeed:
-          type: number
-          deprecated: true
-        height:
-          type: number
-          deprecated: true
-        heightLabel:
-          type: string
-          deprecated: true
-        hydrogenFuelTankSize:
-          type: number
-          deprecated: true
-        length:
-          type: number
-          deprecated: true
-        lengthLabel:
-          type: string
-          deprecated: true
-        mass:
-          type: number
-          deprecated: true
-        massLabel:
-          type: number
-          deprecated: true
-        maxCrew:
-          type: integer
-          deprecated: true
-        maxCrewLabel:
-          type: string
-          deprecated: true
-        minCrew:
-          type: integer
-          deprecated: true
-        minCrewLabel:
-          type: string
-          deprecated: true
-        pitchMax:
-          type: number
-          deprecated: true
-        quantumFuelTankSize:
-          type: number
-          deprecated: true
-        rollMax:
-          type: number
-          deprecated: true
-        salesPageUrl:
-          type: string
-          deprecated: true
-        scmSpeed:
-          type: number
-          deprecated: true
-        sideView:
-          type: string
-          deprecated: true
-        sideViewHeight:
-          type: number
-          deprecated: true
-        sideViewLarge:
-          type: string
-          deprecated: true
-        sideViewMedium:
-          type: string
-          deprecated: true
-        sideViewSmall:
-          type: string
-          deprecated: true
-        sideViewWidth:
-          type: number
-          deprecated: true
-        sideViewXlarge:
-          type: string
-          deprecated: true
-        size:
-          type: string
-          deprecated: true
-        sizeLabel:
-          type: string
-          deprecated: true
-        storeImage:
-          type: string
-          deprecated: true
-        storeImageLarge:
-          type: string
-          deprecated: true
-        storeImageMedium:
-          type: string
-          deprecated: true
-        storeImageSmall:
-          type: string
-          deprecated: true
-        storeUrl:
-          type: string
-          deprecated: true
-        topView:
-          type: string
-          deprecated: true
-        topViewHeight:
-          type: number
-          deprecated: true
-        topViewLarge:
-          type: string
-          deprecated: true
-        topViewMedium:
-          type: string
-          deprecated: true
-        topViewSmall:
-          type: string
-          deprecated: true
-        topViewWidth:
-          type: number
-          deprecated: true
-        topViewXlarge:
-          type: string
-          deprecated: true
-        xaxisAcceleration:
-          type: number
-          deprecated: true
-        yawMax:
-          type: number
-          deprecated: true
-        yaxisAcceleration:
-          type: number
-          deprecated: true
-        zaxisAcceleration:
-          type: number
-          deprecated: true
         dockCounts:
           type: array
           items:
@@ -8541,6 +7433,38 @@ components:
       - updatedAt
       - dockCounts
       title: ModelExtended
+    ModelPrice:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        price:
+          type: number
+        timeRange:
+          "$ref": "#/components/schemas/ModelPriceTimeRangeEnum"
+        priceType:
+          "$ref": "#/components/schemas/ModelPriceTypeEnum"
+        location:
+          type: string
+        locationUrl:
+          type: string
+          format: uri
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - price
+      - priceType
+      - location
+      - createdAt
+      - updatedAt
+      title: ModelPrice
     Models:
       type: object
       properties:

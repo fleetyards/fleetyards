@@ -4,15 +4,13 @@
     :variant="variant"
     class="panel-edit-menu"
     data-test="vehicle-menu"
-    :expand-left="true"
-    :inline="true"
-    :in-group="inGroup"
+    expand-left
+    inline
   >
     <Btn
       v-if="editable && !hideEdit"
       :aria-label="t('actions.edit')"
-      size="small"
-      variant="dropdown"
+      :size="BtnSizesEnum.SMALL"
       data-test="vehicle-edit"
       @click="openEditModal"
     >
@@ -22,13 +20,12 @@
     <Btn
       v-if="vehicle.model"
       :to="{
-        name: 'model',
+        name: 'ship',
         params: {
           slug: vehicle.model.slug,
         },
       }"
-      size="small"
-      variant="dropdown"
+      :size="BtnSizesEnum.SMALL"
     >
       <i class="fad fa-starship" />
       <span>{{ t("actions.showDetailPage") }}</span>
@@ -36,8 +33,7 @@
     <Btn
       v-if="editable && !wishlist"
       :aria-label="t('actions.addToWishlist')"
-      size="small"
-      variant="dropdown"
+      :size="BtnSizesEnum.SMALL"
       :disabled="updating"
       data-test="vehicle-add-to-wishlist"
       @click="addToWishlist"
@@ -48,8 +44,7 @@
     <Btn
       v-if="editable && wishlist"
       :aria-label="t('actions.addToHangar')"
-      size="small"
-      variant="dropdown"
+      :size="BtnSizesEnum.SMALL"
       :disabled="updating"
       data-test="vehicle-add-to-hangar"
       @click="addToHangar"
@@ -60,8 +55,7 @@
     <Btn
       v-if="editable"
       :aria-label="t('actions.hangar.editName')"
-      size="small"
-      variant="dropdown"
+      :size="BtnSizesEnum.SMALL"
       data-test="vehicle-edit-name"
       @click="openNamingModal"
     >
@@ -71,8 +65,7 @@
     <Btn
       v-if="editable && !wishlist"
       :aria-label="t('actions.hangar.editGroups')"
-      size="small"
-      variant="dropdown"
+      :size="BtnSizesEnum.SMALL"
       data-test="vehicle-edit-groups"
       @click="openEditGroupsModal"
     >
@@ -82,8 +75,7 @@
     <Btn
       v-if="upgradable"
       :aria-label="t('labels.model.addons')"
-      size="small"
-      variant="dropdown"
+      :size="BtnSizesEnum.SMALL"
       @click="openAddonsModal"
     >
       <i class="fa fa-plus-octagon" />
@@ -92,8 +84,7 @@
     <Btn
       v-if="editable"
       :aria-label="t('actions.remove')"
-      size="small"
-      variant="dropdown"
+      :size="BtnSizesEnum.SMALL"
       :disabled="deleting"
       data-test="vehicle-remove"
       @click="remove"
@@ -110,10 +101,10 @@ import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useNoty } from "@/shared/composables/useNoty";
 import type { Vehicle } from "@/services/fyApi";
-import type {
-  BtnVariants,
-  BtnSizes,
-} from "@/shared/components/base/Btn/index.vue";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 
@@ -122,8 +113,8 @@ type Props = {
   editable?: boolean;
   hideEdit?: boolean;
   wishlist?: boolean;
-  variant?: BtnVariants;
-  size?: BtnSizes;
+  variant?: BtnVariantsEnum;
+  size?: BtnSizesEnum;
   inGroup?: boolean;
 };
 
@@ -131,14 +122,14 @@ const props = withDefaults(defineProps<Props>(), {
   editable: false,
   hideEdit: false,
   wishlist: false,
-  variant: "link",
-  size: "small",
+  variant: BtnVariantsEnum.LINK,
+  size: BtnSizesEnum.SMALL,
   inGroup: false,
 });
 
 const { t } = useI18n();
 
-const { displayConfirm } = useNoty(t);
+const { displayConfirm } = useNoty();
 
 const deleting = ref(false);
 
@@ -175,7 +166,7 @@ const addToWishlist = async () => {
   updating.value = true;
 
   try {
-    await vehiclesService.updateVehicle({
+    await vehiclesService.vehicleUpdate({
       id: props.vehicle.id,
       requestBody: {
         wanted: true,
@@ -196,7 +187,7 @@ const addToHangar = async () => {
   updating.value = true;
 
   try {
-    await vehiclesService.updateVehicle({
+    await vehiclesService.vehicleUpdate({
       id: props.vehicle.id,
       requestBody: {
         wanted: false,
@@ -229,7 +220,7 @@ const destroy = async () => {
   }
 
   try {
-    await vehiclesService.destroyVehicle({
+    await vehiclesService.vehicleDestroy({
       id: props.vehicle.id,
     });
   } catch (error) {

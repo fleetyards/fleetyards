@@ -65,6 +65,37 @@
       height: 2px;
       margin-block: 5px;
     }
+
+    > :deep(.panel-btn) {
+      background-color: transparent;
+      border: none;
+      margin: 0;
+      width: 100%;
+      text-align: left;
+      line-height: 1.5;
+
+      &::after,
+      &::before {
+        display: none;
+      }
+
+      > * {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        text-align: left;
+
+        > :first-child {
+          display: flex;
+          justify-content: center;
+          width: 20px;
+        }
+
+        > :not(:first-child) {
+          flex: 1 1;
+        }
+      }
+    }
   }
 
   &.panel-btn-dropdown-inline {

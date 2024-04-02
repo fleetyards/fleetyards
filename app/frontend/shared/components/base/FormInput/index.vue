@@ -65,13 +65,19 @@
 <script lang="ts" setup>
 import { useField } from "vee-validate";
 import { v4 as uuidv4 } from "uuid";
-import type { I18nPluginOptions } from "@/shared/plugins/I18n";
+import {
+  InputTypesEnum,
+  InputVariantsEnum,
+  InputSizesEnum,
+  InputAlignmentsEnum,
+} from "@/shared/components/base/FormInput/types";
+import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   name: string;
   icon?: string;
   modelValue?: string | number;
-  type?: "text" | "number" | "password" | "email" | "url" | "color";
+  type?: InputTypesEnum;
   translationKey?: string;
   autofocus?: boolean;
   autocomplete?: string;
@@ -88,15 +94,15 @@ type Props = {
   inline?: boolean;
   prefix?: string;
   suffix?: string;
-  variant?: "default" | "clean";
-  size?: "default" | "large";
-  alignment?: "left" | "right";
+  variant?: InputVariantsEnum;
+  size?: InputSizesEnum;
+  alignment?: InputAlignmentsEnum;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   icon: undefined,
   modelValue: undefined,
-  type: "text",
+  type: InputTypesEnum.TEXT,
   translationKey: undefined,
   autofocus: false,
   autocomplete: undefined,
@@ -113,9 +119,9 @@ const props = withDefaults(defineProps<Props>(), {
   inline: false,
   prefix: undefined,
   suffix: undefined,
-  variant: "default",
-  size: "default",
-  alignment: "left",
+  variant: InputVariantsEnum.DEFAULT,
+  size: InputSizesEnum.DEFAULT,
+  alignment: InputAlignmentsEnum.LEFT,
 });
 
 watch(
@@ -127,7 +133,7 @@ watch(
   },
 );
 
-const i18n = inject<I18nPluginOptions>("i18n");
+const { t } = useI18n();
 
 const inputElement = ref<HTMLInputElement | undefined>();
 
@@ -147,10 +153,10 @@ const innerLabel = computed(() => {
   }
 
   if (props.translationKey) {
-    return i18n?.t(`labels.${props.translationKey}`);
+    return t(`labels.${props.translationKey}`);
   }
 
-  return i18n?.t(`labels.${props.name}`);
+  return t(`labels.${props.name}`);
 });
 
 const {
@@ -180,22 +186,22 @@ const innerPlaceholder = computed(() => {
   }
 
   if (props.translationKey) {
-    return i18n?.t(`placeholders.${props.translationKey}`);
+    return t(`placeholders.${props.translationKey}`);
   }
 
-  return i18n?.t(`placeholders.${props.name}`);
+  return t(`placeholders.${props.name}`);
 });
 
 const cssClasses = computed(() => {
   return {
     "has-error has-feedback": hasErrors.value,
-    "form-input-large": props.size === "large",
-    "form-input-clean": props.variant === "clean",
+    "form-input-large": props.size === InputSizesEnum.LARGE,
+    "form-input-clean": props.variant === InputVariantsEnum.CLEAN,
     "form-input-clearable": props.clearable,
     "form-input-disabled": props.disabled,
     "form-input-inline": props.inline,
-    "form-input-align-left": props.alignment === "left",
-    "form-input-align-right": props.alignment === "right",
+    "form-input-align-left": props.alignment === InputAlignmentsEnum.LEFT,
+    "form-input-align-right": props.alignment === InputAlignmentsEnum.RIGHT,
     [`form-input-${props.type}`]: true,
   };
 });

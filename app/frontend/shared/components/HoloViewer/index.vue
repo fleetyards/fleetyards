@@ -1,46 +1,8 @@
-<template>
-  <div ref="modelViewer" class="holo-viewer">
-    <BtnGroup :inline="true" class="actions">
-      <Btn
-        v-tooltip="autoRotateTooltip"
-        size="small"
-        variant="dropdown"
-        :inline="true"
-        :active="autoRotate"
-        in-group
-        @click="toggleAutoRotate"
-      >
-        <i class="fal fa-planet-ringed" />
-      </Btn>
-      <Btn
-        v-tooltip="zoomTooltip"
-        size="small"
-        variant="dropdown"
-        :inline="true"
-        :active="zoom"
-        in-group
-        @click="toggleZoom"
-      >
-        <i class="fal fa-search-plus" />
-      </Btn>
-      <Btn
-        v-if="colored"
-        v-tooltip="colorTooltip"
-        size="small"
-        variant="dropdown"
-        :inline="true"
-        :active="color"
-        in-group
-        @click="toggleColor"
-      >
-        <i class="fad fa-fill-drip" />
-      </Btn>
-    </BtnGroup>
-
-    <Loader v-if="loading" :loading="loading" :progress="progress" />
-    <input v-if="debug" v-model="modelColor" type="color" />
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "HoloViewer",
+};
+</script>
 
 <script lang="ts" setup>
 import Loader from "@/shared/components/Loader/index.vue";
@@ -53,6 +15,7 @@ import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { useNoty } from "@/shared/composables/useNoty";
 import { useI18n } from "@/shared/composables/useI18n";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
   holo: string;
@@ -65,7 +28,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const { displayAlert } = useNoty(t);
+const { displayAlert } = useNoty();
 
 const modelColor = ref(0x428bca);
 
@@ -362,12 +325,44 @@ const toggleAutoRotate = () => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "HoloViewer",
-};
-</script>
+<template>
+  <div ref="modelViewer" class="holo-viewer">
+    <BtnGroup class="actions" inline>
+      <Btn
+        v-tooltip="autoRotateTooltip"
+        :size="BtnSizesEnum.SMALL"
+        :active="autoRotate"
+        inline
+        @click="toggleAutoRotate"
+      >
+        <i class="fal fa-planet-ringed" />
+      </Btn>
+      <Btn
+        v-tooltip="zoomTooltip"
+        :size="BtnSizesEnum.SMALL"
+        :active="zoom"
+        inline
+        @click="toggleZoom"
+      >
+        <i class="fal fa-search-plus" />
+      </Btn>
+      <Btn
+        v-if="colored"
+        v-tooltip="colorTooltip"
+        :size="BtnSizesEnum.SMALL"
+        :active="color"
+        inline
+        @click="toggleColor"
+      >
+        <i class="fad fa-fill-drip" />
+      </Btn>
+    </BtnGroup>
+
+    <Loader v-if="loading" :loading="loading" :progress="progress" />
+    <input v-if="debug" v-model="modelColor" type="color" />
+  </div>
+</template>
 
 <style lang="scss" scoped>
-@import "index.scss";
+@import "index";
 </style>

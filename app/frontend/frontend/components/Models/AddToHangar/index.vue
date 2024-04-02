@@ -26,6 +26,10 @@ import { useWishlistStore } from "@/frontend/stores/wishlist";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useNoty } from "@/shared/composables/useNoty";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 
 type Props = {
   model: Model;
@@ -38,7 +42,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const { displayWarning } = useNoty(t);
+const { displayWarning } = useNoty();
 
 const sessionStore = useSessionStore();
 
@@ -58,18 +62,18 @@ const onWishlist = computed(() => {
 
 const btnVariant = computed(() => {
   if (["panel", "menu"].includes(props.variant)) {
-    return "link";
+    return BtnVariantsEnum.LINK;
   }
 
-  return "default";
+  return BtnVariantsEnum.DEFAULT;
 });
 
 const btnSize = computed(() => {
   if (["panel", "menu"].includes(props.variant)) {
-    return "small";
+    return BtnSizesEnum.SMALL;
   }
 
-  return "default";
+  return BtnSizesEnum.DEFAULT;
 });
 
 const comlink = useComlink();

@@ -6,7 +6,7 @@
           <div class="col-12">
             <BreadCrumbs :crumbs="crumbs" />
             <h1>
-              {{ $t("headlines.fleets.stats") }}
+              {{ t("headlines.fleets.stats") }}
             </h1>
           </div>
         </div>
@@ -20,7 +20,7 @@
                 <div class="panel-box-text">
                   {{ totalMemberCount }}
                   <div class="panel-box-text-info">
-                    {{ $t("labels.stats.quickStats.totalMembers") }}
+                    {{ t("labels.stats.quickStats.totalMembers") }}
                   </div>
                 </div>
               </div>
@@ -35,7 +35,7 @@
                 <div class="panel-box-text">
                   {{ totalShipCount }}
                   <div class="panel-box-text-info">
-                    {{ $t("labels.stats.quickStats.totalShips") }}
+                    {{ t("labels.stats.quickStats.totalShips") }}
                   </div>
                 </div>
               </div>
@@ -50,7 +50,7 @@
                 <div class="panel-box-text">
                   {{ minCrew }}
                   <div class="panel-box-text-info">
-                    {{ $t("labels.hangarMetrics.totalMinCrew") }}
+                    {{ t("labels.hangarMetrics.totalMinCrew") }}
                   </div>
                 </div>
               </div>
@@ -65,7 +65,7 @@
                 <div class="panel-box-text">
                   {{ maxCrew }}
                   <div class="panel-box-text-info">
-                    {{ $t("labels.hangarMetrics.totalMaxCrew") }}
+                    {{ t("labels.hangarMetrics.totalMaxCrew") }}
                   </div>
                 </div>
               </div>
@@ -80,7 +80,7 @@
                 <div class="panel-box-text">
                   {{ totalCargo }}
                   <div class="panel-box-text-info">
-                    {{ $t("labels.hangarMetrics.totalCargo") }}
+                    {{ t("labels.hangarMetrics.totalCargo") }}
                   </div>
                 </div>
               </div>
@@ -92,12 +92,13 @@
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
-                  {{ $t("labels.stats.modelsByClassification") }}
+                  {{ t("labels.stats.modelsByClassification") }}
                 </h2>
               </div>
               <Chart
-                key="models-by-classification"
-                :load-data="loadModelsByClassification"
+                name="models-by-classification"
+                :async-status="modelsByClassificationStatus"
+                :options="modelsByClassificationOptions"
                 tooltip-type="ship-pie"
                 type="pie"
               />
@@ -107,12 +108,13 @@
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
-                  {{ $t("labels.stats.modelsBySize") }}
+                  {{ t("labels.stats.modelsBySize") }}
                 </h2>
               </div>
               <Chart
-                key="models-by-size"
-                :load-data="loadModelsBySize"
+                name="models-by-size"
+                :async-status="modelsBySizeStatus"
+                :options="modelsBySizeOptions"
                 tooltip-type="ship-pie"
                 type="pie"
               />
@@ -124,12 +126,13 @@
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
-                  {{ $t("labels.stats.modelsByProductionStatus") }}
+                  {{ t("labels.stats.modelsByProductionStatus") }}
                 </h2>
               </div>
               <Chart
-                key="models-by-production-status"
-                :load-data="loadModelsByProductionStatus"
+                name="models-by-production-status"
+                :async-status="modelsByProductionStatusStatus"
+                :options="modelsByProductionStatusOptions"
                 tooltip-type="ship-pie"
                 type="pie"
               />
@@ -139,12 +142,13 @@
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
-                  {{ $t("labels.stats.modelsByManufacturer") }}
+                  {{ t("labels.stats.modelsByManufacturer") }}
                 </h2>
               </div>
               <Chart
-                key="models-by-manufacturer"
-                :load-data="loadModelsByManufacturer"
+                name="models-by-manufacturer"
+                :async-status="modelsByManufacturerStatus"
+                :options="modelsByManufacturerOptions"
                 tooltip-type="ship-pie"
                 type="pie"
               />
@@ -157,15 +161,16 @@
               <div class="panel-heading">
                 <h2 class="panel-title">
                   {{
-                    $t("labels.stats.vehiclesByModel", {
+                    t("labels.stats.vehiclesByModel", {
                       limit: vehiclesByModelLimit,
                     })
                   }}
                 </h2>
               </div>
               <Chart
-                key="vehicles-by-model"
-                :load-data="loadVehiclesByModel"
+                name="vehicles-by-model"
+                :async-status="vehiclesByModelStatus"
+                :options="vehiclesByModelOptions"
                 tooltip-type="ship"
                 type="bar"
               />
@@ -178,150 +183,108 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import { fleetRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";
-import fleetsCollection from "@/frontend/api/collections/Fleets";
-import vehiclesCollection from "@/frontend/api/collections/FleetVehicles";
-import membersCollection from "@/frontend/api/collections/FleetMembers";
+export default {
+  name: "FleetStatsPage",
+};
+</script>
+
+<script lang="ts" setup>
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
+import { Fleet } from "@/services/fyApi";
 import Chart from "@/shared/components/Chart/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
 
-@Component({
-  beforeRouteEnter: fleetRouteGuard,
-  components: {
-    Chart,
-    Panel,
-    BreadCrumbs,
-  },
-})
-export default class FleetStats extends Vue {
-  collection: FleetsCollection = fleetsCollection;
+type Props = {
+  fleet: Fleet;
+};
 
-  vehiclesCollection: FleetVehiclesCollection = vehiclesCollection;
+const props = defineProps<Props>();
 
-  membersCollection: FleetMembersCollection = membersCollection;
+const { t, toNumber } = useI18n();
 
-  vehiclesByModelLimit = 20;
+const vehiclesByModelLimit = ref(20);
 
-  get fleet() {
-    return this.collection.record;
+const vehicleStats = computed(() => {
+  return this.vehiclesCollection.stats;
+});
+
+const memberStats = computed(() => {
+  return this.membersCollection.stats;
+});
+
+const totalMemberCount = computed(() => {
+  if (!this.memberStats) {
+    return 0;
   }
 
-  get slug() {
-    return this.$route.params.slug;
+  return this.memberStats.total;
+});
+
+const totalShipCount = computed(() => {
+  if (!this.vehicleStats) {
+    return 0;
   }
 
-  get vehicleStats() {
-    return this.vehiclesCollection.stats;
+  return this.vehicleStats.total;
+});
+
+const minCrew = computed(() => {
+  if (!this.vehicleStats) {
+    return toNumber(0, "people");
   }
 
-  get memberStats() {
-    return this.membersCollection.stats;
+  return toNumber(this.vehicleStats.metrics.totalMinCrew, "people");
+});
+
+const maxCrew = computed(() => {
+  if (!this.vehicleStats) {
+    return toNumber(0, "people");
   }
 
-  get totalMemberCount() {
-    if (!this.memberStats) {
-      return 0;
-    }
+  return toNumber(this.vehicleStats.metrics.totalMaxCrew, "people");
+});
 
-    return this.memberStats.total;
+const totalCargo = computed(() => {
+  if (!this.vehicleStats) {
+    return toNumber(0, "cargo");
   }
 
-  get totalShipCount() {
-    if (!this.vehicleStats) {
-      return 0;
-    }
+  return toNumber(this.vehicleStats.metrics.totalCargo, "cargo");
+});
 
-    return this.vehicleStats.total;
+const crumbs = computed(() => {
+  if (!props.fleet) {
+    return [];
   }
 
-  get minCrew() {
-    if (!this.vehicleStats) {
-      return this.$toNumber(0, "people");
-    }
-
-    return this.$toNumber(this.vehicleStats.metrics.totalMinCrew, "people");
-  }
-
-  get maxCrew() {
-    if (!this.vehicleStats) {
-      return this.$toNumber(0, "people");
-    }
-
-    return this.$toNumber(this.vehicleStats.metrics.totalMaxCrew, "people");
-  }
-
-  get totalCargo() {
-    if (!this.vehicleStats) {
-      return this.$toNumber(0, "cargo");
-    }
-
-    return this.$toNumber(this.vehicleStats.metrics.totalCargo, "cargo");
-  }
-
-  get crumbs() {
-    if (!this.fleet) {
-      return [];
-    }
-
-    return [
-      {
-        to: {
-          name: "fleet",
-          params: {
-            slug: this.fleet.slug,
-          },
+  return [
+    {
+      to: {
+        name: "fleet",
+        params: {
+          slug: props.fleet.slug,
         },
-        label: this.fleet.name,
       },
-    ];
-  }
+      label: props.fleet.name,
+    },
+  ];
+});
 
-  get metaTitle() {
-    if (!this.fleet) {
-      return null;
-    }
+// get metaTitle() {
+//   if (!props.fleet) {
+//     return null;
+//   }
 
-    return this.$t("title.fleets.stats", { fleet: this.fleet.name });
-  }
+//   return t("title.fleets.stats", { fleet: props.fleet.name });
+// }
 
-  mounted() {
-    this.fetchFleet();
-    this.loadQuickStats();
-  }
+// onMounted(() => {
+//   loadQuickStats();
+// })
 
-  loadQuickStats() {
-    this.vehiclesCollection.findStats({ slug: this.slug });
-    this.membersCollection.findStats({ slug: this.slug });
-  }
-
-  loadModelsByClassification() {
-    return this.collection.findModelsByClassificationBySlug(this.slug);
-  }
-
-  loadVehiclesByModel() {
-    return this.collection.findVehiclesByModelBySlug(
-      this.slug,
-      this.vehiclesByModelLimit,
-    );
-  }
-
-  loadModelsBySize() {
-    return this.collection.findModelsBySizeBySlug(this.slug);
-  }
-
-  loadModelsByManufacturer() {
-    return this.collection.findModelsByManufacturerBySlug(this.slug);
-  }
-
-  loadModelsByProductionStatus() {
-    return this.collection.findModelsByProductionStatusBySlug(this.slug);
-  }
-
-  async fetchFleet() {
-    await this.collection.findBySlug(this.$route.params.slug);
-  }
-}
+// const loadQuickStats = () => {
+//   this.vehiclesCollection.findStats({ slug: this.slug });
+//   this.membersCollection.findStats({ slug: this.slug });
+// }
 </script>

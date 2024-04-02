@@ -317,8 +317,6 @@ en:
       index: Equipment
       new: New Equipment
     frontend:
-      celestial_object: "%{celestial_object} in the %{starsystem} System"
-      commodities: Commodities
       compare_ships: Compare Ships
       confirm: Confirm Account
       cookie-policy: Cookie Policy
@@ -362,17 +360,9 @@ en:
       ship_images: "%{model} Images"
       ship_videos: "%{model} Videos"
       ships: Ships
-      shop: "%{shop} - %{station}"
-      shops: Shops
       sign-up: Sign Up
-      starsystem: "%{starsystem} Starsystem"
-      starsystems: Starsystems
-      station: "%{station} near %{celestial_object}"
-      station_images: Images of %{station} near %{celestial_object}
-      stations: Stations
       stats: Stats
-      tools_profit_calculator: Profit Calculator
-      tools_trade-routes: Trade Routes
+      tools: Tools
       tools_travel-times: Travel Times
       visual-tests: "Visual Tests"
       visual-tests_panels: Panels - Visual Tests

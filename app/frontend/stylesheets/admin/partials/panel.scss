@@ -4,7 +4,7 @@ $innerBorderWidth: 3px;
 $innerBorderRadius: $panelInnerBorderRadius;
 $contentBorderRadius: $panelContentBorderRadius;
 
-.panel-wrapper {
+.panel-wrapper-rails {
   position: relative;
   box-sizing: border-box;
   padding: $outerBorderWidth;
@@ -41,7 +41,7 @@ $contentBorderRadius: $panelContentBorderRadius;
   }
 }
 
-.panel {
+.panel-rails {
   position: relative;
   min-height: $innerBorderRadius * 2;
   background-color: $panel-bg;

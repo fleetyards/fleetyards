@@ -1,6 +1,6 @@
 import Noty from "noty";
 import { isBefore, addSeconds } from "date-fns";
-import { I18nPluginOptions } from "@/shared/plugins/I18n";
+import { useI18n } from "@/shared/composables/useI18n";
 
 export interface FleetyardsNotyOptions extends Noty.Options {
   icon?: string;
@@ -165,7 +165,9 @@ const displayNotification = (options: FleetyardsNotyOptions) => {
   }
 };
 
-export const useNoty = (t: I18nPluginOptions["t"]) => {
+export const useNoty = () => {
+  const { t } = useI18n();
+
   const displaySuccess = function success(options: FleetyardsNotyOptions) {
     displayNotification({
       ...options,

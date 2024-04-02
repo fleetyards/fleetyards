@@ -1,4 +1,4 @@
-.panel-btn {
+.panel-btn-rails {
   position: relative;
   display: inline-block;
   min-width: 50px;
@@ -189,7 +189,7 @@
 }
 
 @media (max-width: $desktop-breakpoint) {
-  .panel-btn {
+  .panel-btn-rails {
     &.panel-btn-block,
     &.panel-btn-mobile-block,
     &:last-child:first-child {

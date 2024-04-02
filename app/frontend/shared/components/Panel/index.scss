@@ -96,8 +96,11 @@ $contentBorderRadius: $panelContentBorderRadius;
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     min-height: 286px;
+
+    // :deep(> div) {
+    //   width: 100%;
+    // }
 
     &-text {
       padding: 20px;
@@ -113,6 +116,10 @@ $contentBorderRadius: $panelContentBorderRadius;
     &-left {
       > :first-child {
         flex: 30% 0 0;
+      }
+
+      > :last-child {
+        flex: 1;
       }
     }
 

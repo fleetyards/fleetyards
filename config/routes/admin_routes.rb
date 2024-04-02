@@ -66,32 +66,7 @@ namespace :admin, path: (Rails.configuration.app.on_subdomain? ? "" : "admin"), 
 
   resources :manufacturers, except: [:show]
 
-  resources :components, except: [:show]
-
   resources :images, only: %i[index]
-
-  resources :celestial_objects, path: "celestial-objects", except: [:show]
-  resources :starsystems, except: [:show]
-  resources :commodities, except: [:show]
-  resources :equipment, except: [:show]
-  resources :stations, except: [:show] do
-    get "images", on: :member
-  end
-  resources :shops, except: [:show] do
-    resources :shop_commodities, path: "commodities", only: %i[index]
-  end
-
-  resources :shop_commodities, path: "shop-commodities", only: %i[] do
-    collection do
-      get :confirmation
-    end
-  end
-
-  resources :commodity_prices, path: "commodity-prices", only: %i[] do
-    collection do
-      get :confirmation
-    end
-  end
 
   resource :maintenance, only: [] do
     get "rsi-api-status" => "maintenance#rsi_api_status", :as => :rsi_api_status

@@ -9,7 +9,7 @@ import { useRoute, useRouter } from "vue-router";
 
 const { t } = useI18n();
 
-const { displaySuccess, displayAlert } = useNoty(t);
+const { displaySuccess, displayAlert } = useNoty();
 
 onMounted(() => {
   fetch();

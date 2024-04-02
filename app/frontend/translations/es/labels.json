@@ -449,7 +449,7 @@
           "public": "Public",
           "group": "Group",
           "loaner": "Loaners",
-          "boughtVia": { "nullablePrompt": "Bought via?" }
+          "boughtVia": "Bought via?"
         },
         "tradeRoutes": {
           "sortBy": "Sort by",

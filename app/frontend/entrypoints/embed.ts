@@ -6,7 +6,6 @@ import { createPinia } from "pinia";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import FloatingVue from "floating-vue";
 import "floating-vue/dist/style.css";
-import { useI18n } from "@/embed/composables/useI18n";
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
@@ -16,7 +15,7 @@ setTimeout(() => {
 
   app.use(router);
   app.use(pinia);
-  app.use(i18n, useI18n);
+  app.use(i18n);
   app.use(VueLazyload);
 
   app.use(FloatingVue, {

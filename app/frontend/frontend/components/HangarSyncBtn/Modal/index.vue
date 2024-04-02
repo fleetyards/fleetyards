@@ -349,8 +349,7 @@ import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
 
 const { t } = useI18n();
 
-const { displayInfo, displaySuccess, displayWarning, displayAlert } =
-  useNoty(t);
+const { displayInfo, displaySuccess, displayWarning, displayAlert } = useNoty();
 
 const started = ref(false);
 

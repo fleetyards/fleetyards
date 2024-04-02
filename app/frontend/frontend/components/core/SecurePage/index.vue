@@ -38,7 +38,7 @@ import { useSessionQueries } from "@/frontend/composables/useSessionQueries";
 import { useForm } from "vee-validate";
 
 const { t } = useI18n();
-const { displayAlert } = useNoty(t);
+const { displayAlert } = useNoty();
 
 const sessionStore = useSessionStore();
 

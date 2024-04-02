@@ -15,8 +15,8 @@
               :slim="true"
             >
               <FormInput
-                id="username"
                 v-model="form.username"
+                name="username"
                 :error="errors[0]"
                 :no-label="true"
                 :autofocus="true"
@@ -54,7 +54,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 
 const { t } = useI18n();
 
-const { displayAlert } = useNoty(t);
+const { displayAlert } = useNoty();
 
 type Props = {
   fleet: Fleet;

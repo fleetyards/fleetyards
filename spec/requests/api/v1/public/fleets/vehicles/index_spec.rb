@@ -6,6 +6,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
   fixtures :all
 
   let(:fleet) { fleets :starfleet }
+  let(:fleetSlug) { fleet.slug }
 
   path "/public/fleets/{fleetSlug}/vehicles" do
     parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
@@ -31,15 +32,13 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
       response(200, "successful") do
         schema "$ref": "#/components/schemas/FleetPublicVehicles"
 
-        let(:fleetSlug) { fleet.slug }
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
+        # after do |example|
+        #   example.metadata[:response][:content] = {
+        #     "application/json" => {
+        #       example: JSON.parse(response.body, symbolize_names: true)
+        #     }
+        #   }
+        # end
 
         run_test! do |response|
           data = JSON.parse(response.body)
@@ -70,7 +69,6 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
       response(200, "successful") do
         schema "$ref": "#/components/schemas/FleetPublicVehicles"
 
-        let(:fleetSlug) { fleet.slug }
         let(:perPage) { 1 }
 
         run_test! do |response|
@@ -83,7 +81,6 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
       response(200, "successful") do
         schema "$ref": "#/components/schemas/FleetPublicVehicles"
 
-        let(:fleetSlug) { fleet.slug }
         let(:grouped) { true }
 
         run_test! do |response|
@@ -97,7 +94,6 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
         schema "$ref": "#/components/schemas/FleetPublicVehicles"
 
         let(:fleet) { fleets :klingon_empire }
-        let(:fleetSlug) { fleet.slug }
 
         run_test! do |response|
           data = JSON.parse(response.body)

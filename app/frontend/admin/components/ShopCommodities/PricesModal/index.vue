@@ -1,156 +1,168 @@
 <template>
-  <ValidationObserver v-slot="{ handleSubmit }" :small="true" :slim="true">
-    <Modal v-if="shopCommodity" ref="modal" :title="title" class="prices-modal">
-      <form @submit.prevent="handleSubmit(create)">
-        <div
-          v-for="record in collection.records"
-          :key="record.id"
-          class="price-item"
+  <Modal v-if="shopCommodity" ref="modal" :title="title" class="prices-modal">
+    <form @submit.prevent="onSubmit">
+      <div v-for="record in prices" :key="record.id" class="price-item">
+        <!-- eslint-disable vue/no-v-html -->
+        <span
+          v-if="record.price"
+          class="price-label"
+          v-html="toUEC(record.price)"
+        />
+        <!-- eslint-enable vue/no-v-html -->
+        <span v-if="record.timeRange" class="time-range-label">
+          {{ record.timeRange }}
+        </span>
+        <span class="date-label">
+          {{ l(record.createdAt) }}
+        </span>
+        <span
+          v-tooltip="t('labels.shopCommodity.confirmed')"
+          class="confirmed-label"
         >
-          <FormInput
-            :id="record.id"
-            class="input"
-            type="number"
-            :disabled="true"
-            :value="record.price"
-            :no-label="true"
-          />
-          <span v-if="record.timeRange" class="time-range-label">
-            {{ record.timeRange }}
-          </span>
-          <span class="date-label">
-            {{ l(record.createdAt) }}
-          </span>
-          <span
-            v-tooltip="t('labels.shopCommodity.confirmed')"
-            class="confirmed-label"
-          >
-            <i v-if="record.confirmed" class="fal fa-check" />
-            <i v-else class="fal fa-times" />
-          </span>
-          <Btn size="small" @click.native="destroy(record)">
-            <i class="fa fa-times" />
-          </Btn>
-        </div>
-        <div v-if="form" class="new-price">
-          <ValidationProvider
-            v-slot="{ errors }"
-            vid="price"
-            rules="required"
-            :name="t('labels.price')"
-            :slim="true"
-          >
-            <FormInput
-              id="new-price"
-              v-model="form.price"
-              :error="errors[0]"
-              class="input"
-              type="number"
-              :no-label="true"
-              :autofocus="true"
-              translation-key="commodityPrice.price"
-            />
-          </ValidationProvider>
-          <ValidationProvider
-            v-if="path === 'rental'"
-            v-slot="{ errors }"
-            vid="timeRange"
-            rules="required"
-            :name="t('labels.commodityPrice.timeRange')"
-            :slim="true"
-          >
-            <FilterGroup
-              v-model="form.timeRange"
-              name="time-range"
-              :error="errors[0]"
-              :label="t('labels.filters.commodityPrice.timeRange')"
-              :collection="collection"
-              collection-method="timeRanges"
-              :no-label="true"
-            />
-          </ValidationProvider>
-          <Btn size="small" @click="handleSubmit(create)">
-            <i class="fa fa-check" />
-          </Btn>
-        </div>
-      </form>
-    </Modal>
-  </ValidationObserver>
+          <i v-if="record.confirmed" class="fal fa-check" />
+          <i v-else class="fal fa-times" />
+        </span>
+        <Btn size="small" inline @click="handleDestroy(record)">
+          <i class="fa fa-times" />
+        </Btn>
+      </div>
+      <div class="new-price">
+        <FormInput
+          v-model="price"
+          name="price"
+          class="input"
+          type="number"
+          :no-label="true"
+          :autofocus="true"
+          translation-key="commodityPrice.price"
+        />
+        <FilterGroup
+          v-if="path === 'rental'"
+          v-model="timeRange"
+          name="timeRange"
+          :options="timeRanges"
+          :no-label="true"
+        />
+        <Btn size="small" type="submit">
+          <i class="fa fa-check" />
+        </Btn>
+      </div>
+    </form>
+  </Modal>
 </template>
 
 <script lang="ts" setup>
-// import commodityPricesCollection from "@/admin/api/collections/CommodityPrices";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
-import type { ShopCommodity } from "@/services/fyAdminApi";
-import { useI18n} from "@/shared/composables/useI18n"
+import {
+  CommodityPriceTimeRangeEnum,
+  type CommodityPrice,
+  type CommodityPriceInput,
+  type ShopCommodity,
+} from "@/services/fyAdminApi";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useForm } from "vee-validate";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useShopCommodityPriceQueries } from "@/admin/composables/useShopCommodityPriceQueries";
+import { CommodityPricePathEnum } from "@/services/fyApi";
 
-const { t, l } = useI18n();
+const { t, l, toUEC } = useI18n();
 
 type Props = {
   shopId: string;
-  path: string;
+  path: CommodityPricePathEnum;
   shopCommodity: ShopCommodity;
-}
+};
 
 const props = defineProps<Props>();
 
-  // collection: CommodityPricesCollection = commodityPricesCollection;
-
-  // prices: ShopCommodityPrice[] = [];
-
-  const form = ref<ShopCommodityPriceForm>({]});
-
-  const title = computed(() => {
-    return t(`headlines.modals.shopCommodity.${props.path}Prices`, {
-      shopCommodity: props.shopCommodity.item?.name,
-    });
-  })
-
-  const params = computed(() => {
-    return {
-      shopId: props.shopId,
-      shopCommodityId: props.shopCommodity.id,
-      path: props.path
-    };
-  })
-
-  onMounted(() => {
-    // fetch();
-    setupForm();
-  })
-
-  const setupForm = () => {
-    form.value = {
-      shopCommodityId: props.shopCommodity.id,
-      path: props.path,
-      price: null,
-    };
+const prices = computed(() => {
+  if (props.path === "sell") {
+    return sellPrices.value || [];
   }
 
-  // const fetch =  async () => {
-  //   await this.collection.findAll(this.params);
-  // }
+  if (props.path === "buy") {
+    return buyPrices.value || [];
+  }
 
-  // const create = async () => {
-  //   await this.collection.create(this.form);
+  return rentalPrices.value || [];
+});
 
-  //   this.$comlink.$emit("prices-update");
+const initialValues = ref<CommodityPriceInput>({
+  shopCommodityId: props.shopCommodity.id,
+  price: undefined,
+  timeRange: undefined,
+  path: props.path,
+});
 
-  //   this.newPrice = null;
+const validationSchema = {
+  price: "required",
+  timeRange: props.path === "rental" ? "required" : undefined,
+};
 
-  //   this.$comlink.$emit("close-modal");
-  // }
+const { useFieldModel, handleSubmit } = useForm({
+  initialValues,
+  validationSchema,
+});
 
-  // const destroy =  async (record) => {
-  //   await this.collection.destroy(record.id);
+const [price, timeRange] = useFieldModel(["price", "timeRange"]);
 
-  //   this.$comlink.$emit("prices-update");
+const comlink = useComlink();
 
-  //   this.fetch();
-  // }
+const timeRanges = computed(() => {
+  return Object.values(CommodityPriceTimeRangeEnum).map((value) => ({
+    value,
+    label: value,
+  }));
+});
+
+const {
+  createMutation,
+  destroyMutation,
+  buyPricesQuery,
+  sellPricesQuery,
+  rentalPricesQuery,
+} = useShopCommodityPriceQueries(props.shopId, props.shopCommodity.id);
+
+const { data: buyPrices } = buyPricesQuery({
+  enabled: props.path === "buy",
+});
+
+const { data: sellPrices } = sellPricesQuery({
+  enabled: props.path === "sell",
+});
+
+const { data: rentalPrices } = rentalPricesQuery({
+  enabled: props.path === "rental",
+});
+
+const mutation = createMutation();
+
+const onSubmit = handleSubmit(async (values) => {
+  mutation.mutate(values, {
+    onSuccess: () => {
+      price.value = undefined;
+      timeRange.value = undefined;
+      comlink.emit("prices-update");
+    },
+  });
+});
+
+const title = computed(() => {
+  return t(`headlines.modals.shopCommodity.${props.path}Prices`, {
+    shopCommodity: props.shopCommodity.item?.name,
+  });
+});
+
+const destroy = destroyMutation();
+
+const handleDestroy = async (record: CommodityPrice) => {
+  await destroy.mutate(record.id);
+
+  comlink.emit("prices-update");
+};
 </script>
 
 <script lang="ts">
@@ -158,3 +170,7 @@ export default {
   name: "BuyPricesModal",
 };
 </script>
+
+<style lang="scss" scoped>
+@import "index";
+</style>

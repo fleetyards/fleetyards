@@ -14,9 +14,13 @@ type Events = {
   "fleetchart-toggle-status": undefined;
   "fleet-member-invited": FleetMember;
   "fleet-member-update": undefined;
-  "hangar-sync-finished": undefined;
   "access-confirmed": undefined;
   "access-confirmation-required": undefined;
+  "vehicle-save": undefined;
+  "vehicles-delete-all": undefined;
+  "hangar-sync-finished": undefined;
+  "hangar-group-save": undefined;
+  "hangar-group-delete": undefined;
 };
 
 const AppComlink = mitt<Events>();

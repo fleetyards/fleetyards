@@ -28,7 +28,7 @@
         "shops": "Search for Shops..."
       },
       "search": {
-        "default": "Search the Verse...",
+        "default": "Search...",
         "roadmap-progress-tracker": "Search"
       },
       "home": {

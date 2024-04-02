@@ -50,7 +50,7 @@ import { useNoty } from "@/shared/composables/useNoty";
 
 const { t } = useI18n();
 
-const { displayAlert, displayConfirm, displaySuccess } = useNoty(t);
+const { displayAlert, displayConfirm, displaySuccess } = useNoty();
 
 type Props = {
   fleet: Fleet;

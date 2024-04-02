@@ -72,8 +72,8 @@
           size="large"
           :inline="true"
           :to="{
-            name: 'models',
-            query: filterFor('models'),
+            name: 'ships',
+            query: filterFor('ships'),
           }"
         >
           <i class="fad fa-starship" />

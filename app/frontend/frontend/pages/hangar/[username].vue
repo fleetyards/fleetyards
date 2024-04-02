@@ -101,7 +101,7 @@
       :hide-loading="fleetchartVisible"
     >
       <template #default="{ records, loading, filterVisible, primaryKey }">
-        <FilteredGrid
+        <Grid
           :records="records"
           :filter-visible="filterVisible"
           :primary-key="primaryKey"
@@ -113,7 +113,7 @@
               :loaners-hint-visible="user.publicHangarLoaners"
             />
           </template>
-        </FilteredGrid>
+        </Grid>
 
         <FleetchartApp
           :items="records"
@@ -140,7 +140,7 @@ import AddonsModal from "@/frontend/components/Vehicles/AddonsModal/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import Avatar from "@/frontend/core/components/Avatar/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
+import Grid from "@/shared/components/base/Grid/index.vue";
 import GroupLabels from "@/frontend/components/Vehicles/GroupLabels/index.vue";
 
 @Component<PublicHangar>({
@@ -149,7 +149,7 @@ import GroupLabels from "@/frontend/components/Vehicles/GroupLabels/index.vue";
     Btn,
     AddonsModal,
     FilteredList,
-    FilteredGrid,
+    Grid,
     FleetchartApp,
     VehiclePanel,
     ModelClassLabels,

@@ -100,7 +100,7 @@ import { useApiClient } from "@/frontend/composables/useApiClient";
 
 const { t } = useI18n();
 
-const { displaySuccess, displayAlert } = useNoty(t);
+const { displaySuccess, displayAlert } = useNoty();
 
 const fleetStore = useFleetStore();
 

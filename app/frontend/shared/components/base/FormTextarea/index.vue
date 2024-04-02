@@ -1,37 +1,12 @@
-<template>
-  <div :key="uuid" class="form-input" :class="cssClasses">
-    <transition name="fade">
-      <label
-        v-show="!hideLabelOnEmpty || inputValue"
-        v-if="innerLabel && !noLabel"
-        :for="id"
-      >
-        <i v-if="icon" :class="icon" />
-        {{ innerLabel }}
-      </label>
-    </transition>
-    <div class="form-input-wrapper">
-      <textarea
-        :id="uuid"
-        v-model="inputValue"
-        v-tooltip.right="error"
-        :placeholder="innerPlaceholder"
-        :data-test="`input-${id}`"
-        :aria-label="innerLabel"
-        :autofocus="autofocus"
-        :disabled="disabled"
-        :name="id"
-        :rows="inputValue ? 10 : 5"
-        @input="update"
-        @blur="update"
-      />
-    </div>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "FormTextarea",
+};
+</script>
 
 <script lang="ts" setup>
 import { v4 as uuidv4 } from "uuid";
-import type { I18nPluginOptions } from "@/shared/plugins/I18n";
+import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   id: string;
@@ -68,7 +43,7 @@ const inputValue = ref<string | undefined>();
 
 const uuid = ref(`${props.id}-${uuidv4()}`);
 
-const i18n = inject<I18nPluginOptions>("i18n");
+const { t } = useI18n();
 
 const innerLabel = computed(() => {
   if (props.label) {
@@ -76,10 +51,10 @@ const innerLabel = computed(() => {
   }
 
   if (props.translationKey) {
-    return i18n?.t(`labels.${props.translationKey}`);
+    return t(`labels.${props.translationKey}`);
   }
 
-  return i18n?.t(`labels.${props.id}`);
+  return t(`labels.${props.id}`);
 });
 
 const innerPlaceholder = computed(() => {
@@ -92,10 +67,10 @@ const innerPlaceholder = computed(() => {
   }
 
   if (props.translationKey) {
-    return i18n?.t(`placeholders.${props.translationKey}`);
+    return t(`placeholders.${props.translationKey}`);
   }
 
-  return i18n?.t(`placeholders.${props.id}`);
+  return t(`placeholders.${props.id}`);
 });
 
 const cssClasses = computed(() => {
@@ -147,8 +122,33 @@ defineExpose({
 });
 </script>
 
-<script lang="ts">
-export default {
-  name: "FormTextarea",
-};
-</script>
+<template>
+  <div :key="uuid" class="form-input" :class="cssClasses">
+    <transition name="fade">
+      <label
+        v-show="!hideLabelOnEmpty || inputValue"
+        v-if="innerLabel && !noLabel"
+        :for="id"
+      >
+        <i v-if="icon" :class="icon" />
+        {{ innerLabel }}
+      </label>
+    </transition>
+    <div class="form-input-wrapper">
+      <textarea
+        :id="uuid"
+        v-model="inputValue"
+        v-tooltip.right="error"
+        :placeholder="innerPlaceholder"
+        :data-test="`input-${id}`"
+        :aria-label="innerLabel"
+        :autofocus="autofocus"
+        :disabled="disabled"
+        :name="id"
+        :rows="inputValue ? 10 : 5"
+        @input="update"
+        @blur="update"
+      />
+    </div>
+  </div>
+</template>

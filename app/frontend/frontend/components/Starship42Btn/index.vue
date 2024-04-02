@@ -19,23 +19,23 @@
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import type {
-  BtnVariants,
-  BtnSizes,
-} from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import type { Vehicle, Model, VehiclePublic } from "@/services/fyApi";
 import { useMobile } from "@/shared/composables/useMobile";
 import type { SpinnerAlignment } from "@/shared/components/SmallLoader/index.vue";
 import type { RouteLocationRaw } from "vue-router";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 
 type Props = {
   items: (Vehicle | Model | VehiclePublic)[];
   withIcon?: boolean;
   block?: boolean;
   inline?: boolean;
-  variant?: BtnVariants;
-  size?: BtnSizes;
+  variant?: BtnVariantsEnum;
+  size?: BtnSizesEnum;
   to?: RouteLocationRaw;
   href?: string;
   type?: "button" | "submit";
@@ -54,8 +54,8 @@ const props = withDefaults(defineProps<Props>(), {
   withIcon: false,
   block: false,
   inline: false,
-  variant: "default",
-  size: "default",
+  variant: BtnVariantsEnum.DEFAULT,
+  size: BtnSizesEnum.DEFAULT,
   to: undefined,
   href: undefined,
   type: "button",

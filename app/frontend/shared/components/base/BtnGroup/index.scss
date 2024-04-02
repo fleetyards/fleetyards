@@ -1,7 +1,6 @@
 .panel-btn-group {
   position: relative;
   display: flex;
-  align-items: stretch;
   justify-content: space-between;
   min-width: 50px;
   margin-right: 10px;
@@ -46,19 +45,76 @@
 
     > .panel-btn {
       margin-right: 0 !important;
-      border-radius: 0 !important;
+      border: none;
+      background: transparent;
+      min-width: 38px;
+      min-height: 38px;
+
+      &::after,
+      &::before {
+        display: none;
+      }
 
       .panel-btn-inner {
         border-radius: $border-radius-base - 1px;
-        border-top-left-radius: $panel-content-border-radius;
-        border-bottom-left-radius: $panel-content-border-radius;
+      }
+    }
+
+    &:first-child {
+      > .panel-btn {
+        flex-grow: 1;
+
+        .panel-btn-inner {
+          border-top-left-radius: $panel-content-border-radius;
+          border-bottom-left-radius: $panel-content-border-radius;
+        }
+      }
+    }
+
+    &:last-child {
+      > .panel-btn {
+        .panel-btn-inner {
+          border-top-right-radius: $panel-content-border-radius;
+          border-bottom-right-radius: $panel-content-border-radius;
+        }
       }
     }
   }
 
   > :deep(.panel-btn) {
     margin-right: 0 !important;
-    border-radius: 0 !important;
+    border: none;
+    margin-bottom: 0;
+    background: transparent;
+    min-width: 44px;
+    min-height: 44px;
+
+    &::after,
+    &::before {
+      display: none;
+    }
+
+    .panel-btn-inner {
+      padding: 3px 14px;
+    }
+
+    &.panel-btn-small {
+      min-width: 38px;
+      min-height: 38px;
+
+      .panel-btn-inner {
+        padding: 3px 10px;
+      }
+    }
+
+    &.panel-btn-large {
+      min-width: 58px;
+      min-height: 58px;
+
+      .panel-btn-inner {
+        padding: 4px 16px;
+      }
+    }
 
     &:not(:last-child):not(:first-child) {
       padding-inline: 1.5px;
@@ -74,10 +130,6 @@
 
     .panel-btn-inner {
       border-radius: $border-radius-base - 1px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
     }
 
     &:first-child {

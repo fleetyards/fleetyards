@@ -30,6 +30,7 @@
               {{ t("labels.hangarMetrics.totalCredits") }}:
             </div>
             <div class="metrics-value">
+              <!-- eslint-disable-next-line vue/no-v-html -->
               <span v-html="toUEC(fleetStats.metrics.totalCredits)" />
             </div>
           </div>
@@ -71,16 +72,15 @@
       <FilteredList
         name="fleet-ships"
         :records="fleetVehicles?.items || []"
-        :loading="isLoading || isFetching"
+        :async-status="asyncStatus"
         primary-key="id"
         :hide-loading="fleetchartVisible"
       >
         <template #actions>
-          <BtnDropdown size="small">
+          <BtnDropdown :size="BtnSizesEnum.SMALL">
             <template v-if="mobile">
               <Btn
-                size="small"
-                variant="dropdown"
+                :size="BtnSizesEnum.SMALL"
                 data-test="fleetchart-link"
                 @click="toggleFleetchart"
               >
@@ -92,8 +92,7 @@
                 v-if="fleet.publicFleet"
                 :url="shareUrl"
                 :title="shareTitle"
-                size="small"
-                variant="dropdown"
+                :size="BtnSizesEnum.SMALL"
               />
 
               <hr />
@@ -101,19 +100,14 @@
             <Btn
               :active="detailsVisible"
               :aria-label="toggleDetailsTooltip"
-              size="small"
-              variant="dropdown"
+              :size="BtnSizesEnum.SMALL"
               @click="fleetStore.toggleDetails"
             >
               <i class="fad fa-info-square" />
               <span>{{ toggleDetailsTooltip }}</span>
             </Btn>
 
-            <Btn
-              size="small"
-              variant="dropdown"
-              @click="fleetStore.toggleGrouped"
-            >
+            <Btn :size="BtnSizesEnum.SMALL" @click="fleetStore.toggleGrouped">
               <template v-if="grouped">
                 <i class="fas fa-object-intersect" />
                 <span>{{ t("actions.ungrouped") }}</span>
@@ -125,8 +119,7 @@
             </Btn>
 
             <Btn
-              size="small"
-              variant="dropdown"
+              :size="BtnSizesEnum.SMALL"
               :aria-label="t('actions.export')"
               @click="exportJson"
             >
@@ -140,7 +133,7 @@
           <FleetVehiclesFilterForm />
         </template>
         <template #default="{ records, loading, filterVisible, primaryKey }">
-          <FilteredGrid
+          <Grid
             :records="records"
             :filter-visible="filterVisible"
             :primary-key="primaryKey"
@@ -153,7 +146,7 @@
                 :details="detailsVisible"
               />
             </template>
-          </FilteredGrid>
+          </Grid>
 
           <FleetchartApp
             :items="fleetVehicles?.items || []"
@@ -164,7 +157,8 @@
         </template>
         <template #pagination-bottom>
           <Paginator
-            :pagination="pagination"
+            v-if="fleetVehicles"
+            :query-result-ref="fleetVehicles"
             :per-page="perPage"
             :update-per-page="updatePerPage"
           />
@@ -177,7 +171,7 @@
 <script lang="ts" setup>
 import type { Subscription } from "@rails/actioncable";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import FilteredGrid from "@/shared/components/FilteredGrid/index.vue";
+import Grid from "@/shared/components/base/Grid/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
@@ -188,12 +182,7 @@ import ModelClassLabels from "@/frontend/components/Models/ClassLabels/index.vue
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useQuery } from "@tanstack/vue-query";
 import { useApiClient } from "@/frontend/composables/useApiClient";
-import type {
-  BaseList,
-  FleetVehicleQuery,
-  Fleet,
-  VehicleExport,
-} from "@/services/fyApi";
+import type { FleetVehicleQuery, Fleet, VehicleExport } from "@/services/fyApi";
 import { usePagination } from "@/shared/composables/usePagination";
 import { debounce } from "ts-debounce";
 import { format } from "date-fns";
@@ -205,6 +194,7 @@ import { useMobile } from "@/shared/composables/useMobile";
 import { useFleetStore } from "@/frontend/stores/fleet";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { storeToRefs } from "pinia";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
   fleet: Fleet;
@@ -216,7 +206,7 @@ const props = defineProps<Props>();
 
 const { t, toDollar, toUEC, toNumber } = useI18n();
 
-const { displayAlert } = useNoty(t);
+const { displayAlert } = useNoty();
 
 const fleetVehiclesChannel = ref<Subscription>();
 
@@ -280,7 +270,7 @@ const exportJson = async () => {
   try {
     const exportedData = await fleetService.fleetVehiclesExport({
       fleetSlug: String(route.params.slug),
-      q: routeQuery.value,
+      q: filters.value,
     });
 
     downloadExport(exportedData);
@@ -332,7 +322,7 @@ const { data: modelCounts, refetch: refetchModelCounts } = useQuery({
   queryFn: () =>
     fleetStatsService.fleetModelCounts({
       fleetSlug: String(route.params.slug),
-      q: routeQuery.value,
+      q: filters.value,
     }),
 });
 
@@ -343,10 +333,9 @@ const refetch = () => {
 };
 
 const {
-  isLoading,
-  isFetching,
   data: fleetVehicles,
   refetch: refetchVehicles,
+  ...asyncStatus
 } = useQuery({
   queryKey: ["fleet-ships", props.fleet.slug],
   queryFn: () =>
@@ -354,17 +343,15 @@ const {
       fleetSlug: String(route.params.slug),
       page: page.value,
       perPage: perPage.value,
-      q: routeQuery.value,
+      q: filters.value,
     }),
 });
 
-const { routeQuery } = useFilters<FleetVehicleQuery>(refetch);
+const { filters } = useFilters<FleetVehicleQuery>({
+  updateCallback: () => refetch(),
+});
 
-const { perPage, page, pagination, updatePerPage } = usePagination(
-  "fleet-ships",
-  fleetVehicles as Ref<BaseList>,
-  refetch,
-);
+const { perPage, page, updatePerPage } = usePagination("fleet-ships");
 </script>
 
 <script lang="ts">

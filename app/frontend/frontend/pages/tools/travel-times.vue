@@ -18,9 +18,9 @@
           v-model.number="distance"
           :min="1"
           name="distance"
-          type="number"
+          :type="InputTypesEnum.NUMBER"
           inline
-          alignment="right"
+          :alignment="InputAlignmentsEnum.RIGHT"
           suffix="Mkm"
         />
       </div>
@@ -46,7 +46,7 @@
       :async-status="asyncStatus"
     >
       <template #default="{ records, primaryKey }">
-        <FilteredTable
+        <BaseTable
           :records="records"
           :filter-visible="false"
           :primary-key="primaryKey"
@@ -77,7 +77,7 @@
               :distance="distance * 1000000"
             />
           </template>
-        </FilteredTable>
+        </BaseTable>
       </template>
 
       <template #pagination-bottom>
@@ -97,9 +97,9 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import FilteredTable, {
-  type FilteredTableColumn,
-} from "@/shared/components/FilteredTable/index.vue";
+import BaseTable, {
+  type TableColumn,
+} from "@/shared/components/base/Table/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import TravelTime from "@/frontend/components/TravelTime/index.vue";
 import { usePagination } from "@/shared/composables/usePagination";
@@ -110,12 +110,16 @@ import fallbackImage from "@/images/fallback/store_image.webp";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 import { useMobile } from "@/shared/composables/useMobile";
 import { calculateTravelTime } from "@/frontend/utils/travelTimes";
+import {
+  InputTypesEnum,
+  InputAlignmentsEnum,
+} from "@/shared/components/base/FormInput/types";
 
 const { t } = useI18n();
 
 const route = useRoute();
 
-const columns = computed<FilteredTableColumn[]>(() => {
+const columns = computed<TableColumn[]>(() => {
   return [
     {
       name: "store_image",
