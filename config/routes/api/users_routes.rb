@@ -10,10 +10,6 @@ resources :users, only: [] do
     delete "me", to: "users#destroy"
     put "account", to: "users#update_account"
 
-    get :current, to: "users#me" # DEPRECATED
-    put :current, to: "users#update" # DEPRECATED
-    delete :current, to: "users#destroy" # DEPRECATED
-
     get ":username", to: "users#public"
 
     resource :two_factor, path: "two-factor", only: [] do

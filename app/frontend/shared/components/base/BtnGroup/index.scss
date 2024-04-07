@@ -47,8 +47,26 @@
       margin-right: 0 !important;
       border: none;
       background: transparent;
-      min-width: 38px;
-      min-height: 38px;
+      min-width: 44px;
+      height: 44px;
+
+      &.panel-btn-small {
+        min-width: 38px;
+        height: 38px;
+
+        .panel-btn-inner {
+          padding: 3px 10px;
+        }
+      }
+
+      &.panel-btn-large {
+        min-width: 58px;
+        height: 58px;
+
+        .panel-btn-inner {
+          padding: 4px 16px;
+        }
+      }
 
       &::after,
       &::before {
@@ -87,7 +105,7 @@
     margin-bottom: 0;
     background: transparent;
     min-width: 44px;
-    min-height: 44px;
+    height: 44px;
 
     &::after,
     &::before {
@@ -100,7 +118,7 @@
 
     &.panel-btn-small {
       min-width: 38px;
-      min-height: 38px;
+      height: 38px;
 
       .panel-btn-inner {
         padding: 3px 10px;
@@ -109,7 +127,7 @@
 
     &.panel-btn-large {
       min-width: 58px;
-      min-height: 58px;
+      height: 58px;
 
       .panel-btn-inner {
         padding: 4px 16px;

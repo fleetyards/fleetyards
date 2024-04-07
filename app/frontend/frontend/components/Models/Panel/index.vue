@@ -43,7 +43,7 @@
           <slot name="heading-actions">
             <AddToHangar
               :model="model"
-              class="model-panel-add-to-hangar-button"
+              class="model-panel--add-to-hangar-button"
               variant="panel"
             />
           </slot>

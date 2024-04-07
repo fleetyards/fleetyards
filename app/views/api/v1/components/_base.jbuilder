@@ -5,14 +5,11 @@ json.name component.name
 json.slug component.slug
 
 json.availability do
-  json.listed_at do
-    json.array! component.listed_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
-  end
   json.bought_at do
-    json.array! component.bought_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
+    json.array! component.bought_at, partial: "api/v1/item_prices/base", as: :item_price
   end
   json.sold_at do
-    json.array! component.sold_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
+    json.array! component.sold_at, partial: "api/v1/item_prices/base", as: :item_price
   end
 end
 
@@ -48,11 +45,3 @@ json.type_data do
 end
 
 json.partial! "api/shared/dates", record: component
-
-# DEPRECATED
-
-json.store_image component.store_image.url
-json.store_image_is_fallback component.store_image.identifier.nil?
-json.store_image_large component.store_image.large.url
-json.store_image_medium component.store_image.medium.url
-json.store_image_small component.store_image.small.url

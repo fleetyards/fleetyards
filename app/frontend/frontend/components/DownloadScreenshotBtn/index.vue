@@ -20,58 +20,28 @@
 import html2canvas from "html2canvas";
 import downloadJs from "downloadjs";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import type {
-  BtnVariants,
-  BtnSizes,
-} from "@/shared/components/base/Btn/index.vue";
 import SmallLoader from "@/shared/components/SmallLoader/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import type { SpinnerAlignment } from "@/shared/components/SmallLoader/index.vue";
-import type { RouteLocationRaw } from "vue-router";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 
 type Props = {
   element: string;
   withLabel?: boolean;
   filename?: string;
-  variant?: BtnVariants;
-  size?: BtnSizes;
+  variant?: BtnVariantsEnum;
+  size?: BtnSizesEnum;
   inline?: boolean;
-  url: string;
-  title: string;
-  to?: RouteLocationRaw;
-  href?: string;
-  type?: "button" | "submit";
-  loading?: boolean;
-  spinner?: boolean | SpinnerAlignment;
-  exact?: boolean;
-  block?: boolean;
-  mobileBlock?: boolean;
-  textInline?: boolean;
-  active?: boolean;
-  disabled?: boolean;
-  routeActiveClass?: string;
-  inGroup?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   withLabel: true,
   filename: "fleetyards-screenshot",
-  variant: "default",
-  size: "default",
+  variant: BtnVariantsEnum.DEFAULT,
+  size: BtnSizesEnum.DEFAULT,
   inline: false,
-  to: undefined,
-  href: undefined,
-  type: "button",
-  loading: false,
-  spinner: false,
-  exact: false,
-  block: false,
-  mobileBlock: false,
-  textInline: false,
-  active: false,
-  disabled: false,
-  routeActiveClass: undefined,
-  inGroup: false,
 });
 
 const { t } = useI18n();

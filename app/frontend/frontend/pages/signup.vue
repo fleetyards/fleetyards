@@ -1,88 +1,8 @@
-<template>
-  <section class="container signup">
-    <div class="row">
-      <div class="col-12">
-        <form @submit="onSubmit">
-          <h1>
-            <router-link to="/" :exact="true">
-              {{ t("app") }}
-            </router-link>
-          </h1>
-
-          <FormInput
-            v-model="values.username"
-            name="username"
-            :hide-label-on-empty="true"
-            :autofocus="true"
-          />
-
-          <FormInput
-            v-model="values.email"
-            name="email"
-            :hide-label-on-empty="true"
-          />
-
-          <FormInput
-            v-model="values.password"
-            name="password"
-            type="password"
-            :hide-label-on-empty="true"
-          />
-
-          <FormInput
-            v-model="values.passwordConfirmation"
-            name="passwordConfirmation"
-            type="password"
-            :hide-label-on-empty="true"
-          />
-
-          <FormInput
-            v-if="fleetInviteToken"
-            v-model="values.fleetInviteToken"
-            name="fleetInviteToken"
-            :disabled="true"
-            :hide-label-on-empty="true"
-            :clearable="true"
-            @clear="resetFleetInviteToken"
-          />
-
-          <Checkbox
-            v-model="values.saleNotify"
-            name="saleNotify"
-            :label="t('labels.user.saleNotify')"
-          />
-
-          <Btn
-            :loading="submitting"
-            type="submit"
-            data-test="submit-signup"
-            size="large"
-            :block="true"
-          >
-            {{ t("actions.signUp") }}
-          </Btn>
-
-          <p class="privacy-info">
-            {{ t("labels.signup.privacyPolicy") }}
-            <router-link :to="{ name: 'privacy-policy' }">
-              {{ t("labels.privacyPolicy") }}
-            </router-link>
-          </p>
-
-          <footer>
-            <p class="text-center">
-              {{ t("labels.alreadyRegistered") }}
-            </p>
-
-            <Btn :to="{ name: 'login' }" size="small" :block="true">
-              {{ t("actions.login") }}
-            </Btn>
-          </footer>
-        </form>
-      </div>
-    </div>
-  </section>
-</template>
+<script lang="ts">
+export default {
+  name: "SignupPage",
+};
+</script>
 
 <script lang="ts" setup>
 import { useForm } from "vee-validate";
@@ -170,11 +90,89 @@ const onSubmit = handleSubmit(async (values: UserCreateInput) => {
 });
 </script>
 
-<script lang="ts">
-export default {
-  name: "SignupPage",
-};
-</script>
+<template>
+  <div class="row">
+    <div class="col-12">
+      <form @submit="onSubmit">
+        <h1>
+          <router-link to="/" :exact="true">
+            {{ t("app") }}
+          </router-link>
+        </h1>
+
+        <FormInput
+          v-model="values.username"
+          name="username"
+          :hide-label-on-empty="true"
+          :autofocus="true"
+        />
+
+        <FormInput
+          v-model="values.email"
+          name="email"
+          :hide-label-on-empty="true"
+        />
+
+        <FormInput
+          v-model="values.password"
+          name="password"
+          type="password"
+          :hide-label-on-empty="true"
+        />
+
+        <FormInput
+          v-model="values.passwordConfirmation"
+          name="passwordConfirmation"
+          type="password"
+          :hide-label-on-empty="true"
+        />
+
+        <FormInput
+          v-if="fleetInviteToken"
+          v-model="values.fleetInviteToken"
+          name="fleetInviteToken"
+          :disabled="true"
+          :hide-label-on-empty="true"
+          :clearable="true"
+          @clear="resetFleetInviteToken"
+        />
+
+        <Checkbox
+          v-model="values.saleNotify"
+          name="saleNotify"
+          :label="t('labels.user.saleNotify')"
+        />
+
+        <Btn
+          :loading="submitting"
+          type="submit"
+          data-test="submit-signup"
+          size="large"
+          :block="true"
+        >
+          {{ t("actions.signUp") }}
+        </Btn>
+
+        <p class="privacy-info">
+          {{ t("labels.signup.privacyPolicy") }}
+          <router-link :to="{ name: 'privacy-policy' }">
+            {{ t("labels.privacyPolicy") }}
+          </router-link>
+        </p>
+
+        <footer>
+          <p class="text-center">
+            {{ t("labels.alreadyRegistered") }}
+          </p>
+
+          <Btn :to="{ name: 'login' }" size="small" :block="true">
+            {{ t("actions.login") }}
+          </Btn>
+        </footer>
+      </form>
+    </div>
+  </div>
+</template>
 
 <style lang="scss">
 @import "signup";

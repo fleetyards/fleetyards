@@ -4,10 +4,10 @@
       "main": "%{title} | FleetYards.net",
       "home": "Home",
       "search": "Search Results",
-      "models": { "index": "Ships" },
-      "model": "%{name} - %{manufacturer}",
-      "modelImages": "%{name} Images",
-      "modelVideos": "%{name} Videos",
+      "ships": { "index": "Ships" },
+      "ship": "%{name} - %{manufacturer}",
+      "shipImages": "%{name} Images",
+      "shipVideos": "%{name} Videos",
       "images": "Images",
       "stats": "Stats",
       "login": "Login",
@@ -56,7 +56,7 @@
           "backupCodes": "Generate Two-Factor Backup Codes"
         }
       },
-      "compare": { "models": "Compare Ships" },
+      "compare": { "ships": "Compare Ships" },
       "notFound": "404",
       "tools": {
         "profitCalculator": "Profit Calculator",

@@ -49,13 +49,12 @@
           {{ suffix }}
         </div>
       </slot>
-      <div v-if="inputValue && clearable" class="clear">
+      <div v-if="inputValue && clearable" class="clear" @click="clear">
         <i
           class="fal fa-times"
           :class="{
             'with-label': !!innerLabel && !noLabel,
           }"
-          @click="clear"
         />
       </div>
     </div>

@@ -66,18 +66,6 @@ export class UsersService {
         });
     }
     /**
-     * @deprecated
-     * My Data
-     * @returns User successful
-     * @throws ApiError
-     */
-    public deprecateDcurrent(): CancelablePromise<User> {
-        return this.httpRequest.request({
-            method: 'GET',
-            url: '/users/current',
-        });
-    }
-    /**
      * My Data
      * @returns User successful
      * @throws ApiError

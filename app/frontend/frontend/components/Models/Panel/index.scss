@@ -1,9 +1,5 @@
 .model-panel {
-  &-add-to-hangar-button {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 12px 6px;
+  &--add-to-hangar-button {
     font-size: 18px;
 
     > :first-child {

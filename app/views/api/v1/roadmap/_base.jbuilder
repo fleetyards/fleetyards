@@ -25,9 +25,3 @@ json.model do
 end
 
 json.partial! "api/shared/dates", record: item
-
-# DEPRECATED
-json.store_image item.store_image.url
-json.store_image_large item.store_image.large.url
-json.store_image_medium item.store_image.medium.url
-json.store_image_small item.store_image.small.url

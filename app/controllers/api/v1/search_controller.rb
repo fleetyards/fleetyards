@@ -9,11 +9,17 @@ module Api
       def index
         authorize! :index, :api_search
 
-        @results = Model.search(
+        @results = Searchkick.search(
           search_query_params[:search],
+          models: [Model, Component],
           fields: [
-            {"name^5": :word_start}, {manufacturer_name: :word_start}, "manufacturer_code"
+            {"name^5": :word_start}, {manufacturer_name: :word_start}, {item_type: :word_start},
+            "manufacturer_code", "item_class"
           ],
+          indices_boost: {
+            Model => 10,
+            Component => 4
+          },
           misspellings: {below: 5},
           page: params[:page],
           per_page: 30

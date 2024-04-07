@@ -32,19 +32,12 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
       response(200, "successful") do
         schema "$ref": "#/components/schemas/FleetPublicVehicles"
 
-        # after do |example|
-        #   example.metadata[:response][:content] = {
-        #     "application/json" => {
-        #       example: JSON.parse(response.body, symbolize_names: true)
-        #     }
-        #   }
-        # end
-
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to be > 0
-          expect(data.count).to eq(2)
+          expect(items.count).to be > 0
+          expect(items.count).to eq(2)
         end
       end
 
@@ -60,9 +53,10 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to eq(1)
-          expect(data.first.dig("model", "name")).to eq("600i")
+          expect(items.count).to eq(1)
+          expect(items.first.dig("model", "name")).to eq("600i")
         end
       end
 
@@ -73,8 +67,9 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to eq(1)
+          expect(items.count).to eq(1)
         end
       end
 
@@ -85,21 +80,18 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to eq(2)
+          expect(items.count).to eq(2)
         end
       end
 
-      response(200, "successful") do
-        schema "$ref": "#/components/schemas/FleetPublicVehicles"
+      response(404, "not found") do
+        schema "$ref": "#/components/schemas/StandardError"
 
         let(:fleet) { fleets :klingon_empire }
 
-        run_test! do |response|
-          data = JSON.parse(response.body)
-
-          expect(data.count).to eq(0)
-        end
+        run_test!
       end
 
       response(404, "not found") do

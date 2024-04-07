@@ -53,10 +53,6 @@ const { isFilterSelected } = useFilters();
 
 const route = useRoute();
 
-const page = computed(() => {
-  return Number(route.query.page || 1);
-});
-
 const filters = computed(() => {
   return route.query.q || {};
 });
@@ -65,10 +61,6 @@ const slots = useSlots();
 
 const hasFilterSlot = computed(() => {
   return !!slots.filter;
-});
-
-const hasPagintion = computed(() => {
-  return !!slots.paginationBottom || !!slots.paginationTop;
 });
 
 const { t } = useI18n();
@@ -83,9 +75,7 @@ const filterTooltip = computed(() => {
 
 const emptyBoxVisible = computed(() => {
   return !!(
-    props.asyncStatus?.fetchStatus.value === "idle" &&
-    !props.records.length &&
-    (isFilterSelected.value || (hasPagintion && page.value > 1))
+    props.asyncStatus?.fetchStatus.value === "idle" && !props.records.length
   );
 });
 

@@ -22,6 +22,7 @@ v1_api_routes = lambda do
   draw "api/hangar_routes"
   draw "api/vehicles_routes"
   draw "api/fleets_routes"
+  draw "api/components_routes"
 
   resources :manufacturers, param: :slug, only: %i[index] do
     get "with-models", to: "manufacturers#with_models", on: :collection

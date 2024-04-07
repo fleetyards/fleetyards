@@ -4,10 +4,10 @@
       "main": "%{title} | FleetYards.net",
       "home": "Home",
       "search": "Risultati Ricerca",
-      "models": { "index": "Navi" },
-      "model": "%{name} - %{manufacturer}",
-      "modelImages": "%{name} Immagini",
-      "modelVideos": "%{name} Video",
+      "ships": { "index": "Navi" },
+      "ship": "%{name} - %{manufacturer}",
+      "shipImages": "%{name} Immagini",
+      "shipVideos": "%{name} Video",
       "images": "Immagini",
       "stats": "Statistiche",
       "login": "Login",
@@ -56,7 +56,7 @@
           "backupCodes": "Genera Codici Di Backup Autenticazione a Due Fattori"
         }
       },
-      "compare": { "models": "Confronta Navi" },
+      "compare": { "ships": "Confronta Navi" },
       "notFound": "404",
       "tools": {
         "profitCalculator": "Calcolatore Dei Profitti",

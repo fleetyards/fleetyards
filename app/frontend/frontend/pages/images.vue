@@ -38,52 +38,46 @@ const { data: images, ...asyncStatus } = useQuery({
 </script>
 
 <template>
-  <section class="container">
-    <div class="row">
-      <div class="col-12">
-        <div class="row">
-          <div class="col-12">
-            <h1 class="sr-only">
-              {{ t("headlines.images") }}
-            </h1>
-          </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="row">
+        <div class="col-12">
+          <h1 class="sr-only">
+            {{ t("headlines.images") }}
+          </h1>
         </div>
       </div>
     </div>
+  </div>
 
-    <FilteredList
-      name="images"
-      :records="images?.items || []"
-      :async-status="asyncStatus"
-      class="images"
-    >
-      <template #default="{ records, loading, filterVisible, primaryKey }">
-        <Grid
-          :records="records"
-          :loading="loading"
-          :filter-visible="filterVisible"
-          :primary-key="primaryKey"
-        >
-          <template #default="{ record, index }">
-            <GalleryImage
-              :src="record.smallUrl"
-              :href="record.url"
-              :alt="record.name"
-              :title="record.caption || record.name"
-              @click.prevent.exact="openGallery(index)"
-            />
-          </template>
-        </Grid>
-      </template>
-      <template #pagination-bottom>
-        <Paginator
-          v-if="images"
-          :query-result-ref="images"
-          :per-page="perPage"
-        />
-      </template>
-    </FilteredList>
+  <FilteredList
+    name="images"
+    :records="images?.items || []"
+    :async-status="asyncStatus"
+    class="images"
+  >
+    <template #default="{ records, loading, filterVisible, primaryKey }">
+      <Grid
+        :records="records"
+        :loading="loading"
+        :filter-visible="filterVisible"
+        :primary-key="primaryKey"
+      >
+        <template #default="{ record, index }">
+          <GalleryImage
+            :src="record.smallUrl"
+            :href="record.url"
+            :alt="record.name"
+            :title="record.caption || record.name"
+            @click.prevent.exact="openGallery(index)"
+          />
+        </template>
+      </Grid>
+    </template>
+    <template #pagination-bottom>
+      <Paginator v-if="images" :query-result-ref="images" :per-page="perPage" />
+    </template>
+  </FilteredList>
 
-    <Gallery ref="gallery" :items="images?.items" />
-  </section>
+  <Gallery ref="gallery" :items="images?.items" />
 </template>

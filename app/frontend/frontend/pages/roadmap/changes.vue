@@ -5,59 +5,54 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import Loader from "@/shared/components/Loader/index.vue";
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
-import RoadmapItem from "@/frontend/components/Roadmap/RoadmapItem/index.vue";
-import EmptyBox from "@/shared/components/EmptyBox/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import { useRoadmapQueries } from "@/frontend/composables/useRoadmapQueries";
+import RoadmapList from "@/frontend/components/Roadmap/List/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import {
+  useSubscription,
+  ChannelsEnum,
+} from "@/shared/composables/useSubscription";
+import { type FilterOption } from "@/services/fyApi";
 
-const { changesQuery } = useRoadmapQueries();
+const { changesQuery, weeksFilterQuery } = useRoadmapQueries();
 
-const { data, refetch, ...asyncStatus } = changesQuery(filters);
+const { data: weekOptions } = weeksFilterQuery();
 
-// loading = true;
+const selectedWeek = ref(0);
 
-const compact = ref(false);
+const filters = computed(() => {
+  if (!weekOptions || !weekOptions.value) {
+    return undefined;
+  }
 
-// roadmapChanges = [];
+  return weekOptions.value[selectedWeek.value].query;
+});
 
-// options = [];
+const { data, refetch, ...asyncStatus } = changesQuery(filters, {
+  enabled: !!filters.value,
+});
 
-const roadmapChannel = ref();
+watch(
+  () => filters.value,
+  () => {
+    refetch();
+  },
+);
 
-// selectedWeek = 0;
+useSubscription({
+  channelName: ChannelsEnum.ROADMAP,
+  received: () => refetch(),
+});
 
-// get toggleCompactTooltip() {
-//   if (this.compact) {
-//     return this.$t("actions.showDetails");
-//   }
+const filterOptions = computed(() => {
+  if (!weekOptions.value) {
+    return [];
+  }
 
-//   return this.$t("actions.hideDetails");
-// }
-
-// get emptyBoxVisible() {
-//   return !this.loading && this.roadmapChanges.length === 0;
-// }
-
-// get query() {
-//   if (!this.options.length) {
-//     return null;
-//   }
-
-//   return this.options[this.selectedWeek].query;
-// }
-
-const groupedByRelease = computed(() => {
-  return this.roadmapChanges.reduce((rv, x) => {
-    const value = JSON.parse(JSON.stringify(rv));
-
-    value[x.release] = rv[x.release] || [];
-    value[x.release].push(x);
-
-    return value;
-  }, {});
+  return weekOptions.value as unknown as FilterOption[];
 });
 
 const { t } = useI18n();
@@ -72,134 +67,44 @@ const crumbs = computed(() => {
     },
   ];
 });
-
-onMounted(() => {
-  setupUpdates();
-});
-
-onUnmounted(() => {
-  if (roadmapChannel.value) {
-    roadmapChannel.value.unsubscribe();
-  }
-});
-
-const setupUpdates = () => {
-  if (roadmapChannel.value) {
-    roadmapChannel.value.unsubscribe();
-  }
-
-  roadmapChannel.value = cable.consumer.subscriptions.create(
-    {
-      channel: "RoadmapChannel",
-    },
-    {
-      received: refetch,
-    },
-  );
-};
-
-const toggleCompact = () => {
-  compact.value = !compact.value;
-};
-
-// async fetchOptions() {
-//   const response = await this.$api.get("roadmap/weeks");
-
-//   if (!response.error) {
-//     this.options = response.data;
-//   }
-// }
-
-// async fetch() {
-//   if (!this.query) {
-//     return;
-//   }
-
-//   this.loading = true;
-//   const response = await this.$api.get("roadmap?changes=1", {
-//     q: this.query,
-//   });
-
-//   this.loading = false;
-
-//   if (!response.error) {
-//     this.roadmapChanges = response.data.filter((item) => item.lastVersion);
-//   }
-// }
 </script>
 
 <template>
-  <section class="container roadmap">
-    <div class="row">
-      <div class="col-12">
-        <BreadCrumbs :crumbs="crumbs" />
-        <h1 class="sr-only">
-          {{ t("headlines.roadmap") }}
-        </h1>
-      </div>
+  <div class="row">
+    <div class="col-12">
+      <BreadCrumbs :crumbs="crumbs" />
+      <h1 class="sr-only">
+        {{ t("headlines.roadmap") }}
+      </h1>
     </div>
-    <div class="row">
-      <div class="col-12 col-lg-6">
-        <FilterGroup
-          v-model="selectedWeek"
-          :label="t('labels.roadmap.selectWeek')"
-          name="query"
-          :options="options"
-          label-attr="label"
-          :nullable="false"
-          :no-label="true"
-          @input="fetch"
-        />
-      </div>
-      <div class="col-12 col-lg-6">
-        <div class="page-actions page-actions-right">
-          <Btn href="https://robertsspaceindustries.com/roadmap">
-            {{ t("labels.rsiRoadmap") }}
-          </Btn>
-        </div>
-      </div>
-    </div>
-    <hr class="dark" />
+  </div>
 
-    <FilteredList
-      name="roadmapChanges"
-      :records="data || []"
-      :async-status="asyncStatus"
-    >
-      <template #default> foo </template>
-    </FilteredList>
-    <div class="row">
-      <div class="col-12">
-        <transition-group name="fade-list" class="row" tag="div" appear>
-          <div
-            v-for="(items, release) in groupedByRelease"
-            :key="`releases-${release}`"
-            class="col-12 fade-list-item release"
-          >
-            <h2>
-              <span class="title">{{ release }}</span>
-              <span v-if="items[0].releaseDescription" class="released-label">
-                ({{ items[0].releaseDescription }})
-              </span>
-              <small class="text-muted">
-                {{ t("labels.roadmap.stories", { count: items.length }) }}
-              </small>
-            </h2>
+  <Teleport to="#header-actions">
+    <Btn href="https://robertsspaceindustries.com/roadmap">
+      {{ t("labels.rsiRoadmap") }}
+    </Btn>
+  </Teleport>
 
-            <div class="row">
-              <div
-                v-for="item in items"
-                :key="item.id"
-                class="col-12 col-lg-6 col-xl-4 col-xxl-2dot4 fade-list-item"
-              >
-                <RoadmapItem :item="item" :compact="false" />
-              </div>
-            </div>
-          </div>
-        </transition-group>
-        <EmptyBox :visible="emptyBoxVisible" />
-        <Loader :loading="loading" :fixed="true" />
-      </div>
+  <div class="row">
+    <div class="col-12 col-lg-6">
+      <FilterGroup
+        v-model="selectedWeek"
+        :label="t('labels.roadmap.selectWeek')"
+        name="query"
+        :options="filterOptions"
+        label-attr="label"
+        :nullable="false"
+        :no-label="true"
+        @input="refetch"
+      />
     </div>
-  </section>
+  </div>
+
+  <hr class="dark" />
+
+  <RoadmapList
+    name="roadmap-changes"
+    :records="data || []"
+    :async-status="asyncStatus"
+  />
 </template>

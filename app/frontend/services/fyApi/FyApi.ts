@@ -5,6 +5,7 @@
 import type { BaseHttpRequest } from './core/BaseHttpRequest';
 import type { OpenAPIConfig } from './core/OpenAPI';
 import { AxiosHttpRequest } from './core/AxiosHttpRequest';
+import { ComponentsService } from './services/ComponentsService';
 import { FeaturesService } from './services/FeaturesService';
 import { FleetInviteUrlsService } from './services/FleetInviteUrlsService';
 import { FleetMembersService } from './services/FleetMembersService';
@@ -29,12 +30,11 @@ import { SessionsService } from './services/SessionsService';
 import { StatsService } from './services/StatsService';
 import { UsersService } from './services/UsersService';
 import { VehiclesService } from './services/VehiclesService';
-import { VehiclesPublicService } from './services/VehiclesPublicService';
-import { VehiclesStatsService } from './services/VehiclesStatsService';
 import { VersionsService } from './services/VersionsService';
 import { WishlistService } from './services/WishlistService';
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 export class FyApi {
+    public readonly components: ComponentsService;
     public readonly features: FeaturesService;
     public readonly fleetInviteUrls: FleetInviteUrlsService;
     public readonly fleetMembers: FleetMembersService;
@@ -59,8 +59,6 @@ export class FyApi {
     public readonly stats: StatsService;
     public readonly users: UsersService;
     public readonly vehicles: VehiclesService;
-    public readonly vehiclesPublic: VehiclesPublicService;
-    public readonly vehiclesStats: VehiclesStatsService;
     public readonly versions: VersionsService;
     public readonly wishlist: WishlistService;
     public readonly request: BaseHttpRequest;
@@ -76,6 +74,7 @@ export class FyApi {
             HEADERS: config?.HEADERS,
             ENCODE_PATH: config?.ENCODE_PATH,
         });
+        this.components = new ComponentsService(this.request);
         this.features = new FeaturesService(this.request);
         this.fleetInviteUrls = new FleetInviteUrlsService(this.request);
         this.fleetMembers = new FleetMembersService(this.request);
@@ -100,8 +99,6 @@ export class FyApi {
         this.stats = new StatsService(this.request);
         this.users = new UsersService(this.request);
         this.vehicles = new VehiclesService(this.request);
-        this.vehiclesPublic = new VehiclesPublicService(this.request);
-        this.vehiclesStats = new VehiclesStatsService(this.request);
         this.versions = new VersionsService(this.request);
         this.wishlist = new WishlistService(this.request);
     }

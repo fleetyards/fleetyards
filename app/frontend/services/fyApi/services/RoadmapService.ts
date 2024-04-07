@@ -16,14 +16,17 @@ export class RoadmapService {
      */
     public roadmapItems({
         q,
+        changes,
     }: {
         q?: RoadmapItemQuery,
+        changes?: boolean,
     }): CancelablePromise<Array<RoadmapItem>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/roadmap',
             query: {
                 'q': q,
+                'changes': changes,
             },
         });
     }

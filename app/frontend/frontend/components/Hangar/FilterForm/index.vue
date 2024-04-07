@@ -23,6 +23,14 @@ import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
 import { type HangarQuery } from "@/services/fyApi";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 
+type Props = {
+  hideQuicksearch?: boolean;
+};
+
+withDefaults(defineProps<Props>(), {
+  hideQuicksearch: false,
+});
+
 const { t } = useI18n();
 
 const prefillFormValues = () => {
@@ -82,7 +90,7 @@ const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
 
 <template>
   <form @submit.prevent="handleSubmit">
-    <Teleport to="#quicksearch">
+    <Teleport v-if="!hideQuicksearch" to="#quicksearch">
       <FormInput
         v-model="form.searchCont"
         name="vehicle-search"
@@ -239,6 +247,8 @@ const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
       :options="booleanOptions"
       name="public"
     />
+
+    <br />
 
     <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
       <i class="fal fa-times" />

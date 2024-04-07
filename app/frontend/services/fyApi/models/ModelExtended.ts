@@ -3,10 +3,10 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { DockCount } from './DockCount';
+import type { ItemPrice } from './ItemPrice';
 import type { Manufacturer } from './Manufacturer';
 import type { MediaImage } from './MediaImage';
 import type { ModelLoaner } from './ModelLoaner';
-import type { ModelPrice } from './ModelPrice';
 import type { ModelProductionStatusEnum } from './ModelProductionStatusEnum';
 import type { ViewImage } from './ViewImage';
 export type ModelExtended = {
@@ -15,13 +15,9 @@ export type ModelExtended = {
     name: string;
     slug: string;
     availability: {
-        /**
-         * @deprecated
-         */
-        listedAt?: Array<ModelPrice>;
-        boughtAt: Array<ModelPrice>;
-        soldAt: Array<ModelPrice>;
-        rentalAt: Array<ModelPrice>;
+        boughtAt: Array<ItemPrice>;
+        soldAt: Array<ItemPrice>;
+        rentalAt: Array<ItemPrice>;
     };
     brochure?: string;
     classification?: string;

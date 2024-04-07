@@ -77,7 +77,7 @@
       "showTableView": "Mostra come lista",
       "showGridView": "Mostra come griglia",
       "syncRsiHangar": "Sync RSI Hangar",
-      "compare": { "models": "Compara" },
+      "compare": { "ships": "Compara" },
       "hangar": {
         "editGroups": "Aggiungi o rimuovi gruppo",
         "editName": "Rinomina la nave",

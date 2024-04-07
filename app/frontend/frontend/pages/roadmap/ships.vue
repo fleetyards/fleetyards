@@ -1,118 +1,112 @@
 <template>
-  <section class="container roadmap">
-    <div class="row">
-      <div class="col-12">
-        <BreadCrumbs :crumbs="crumbs" />
-        <h1 class="sr-only">
-          {{ t("headlines.roadmap") }}
-        </h1>
-      </div>
+  <div class="row">
+    <div class="col-12">
+      <BreadCrumbs :crumbs="crumbs" />
+      <h1 class="sr-only">
+        {{ t("headlines.roadmap") }}
+      </h1>
     </div>
-    <div class="row">
-      <div class="col-12">
-        <div class="page-actions page-actions-right">
-          <Btn
-            :active="!compact"
-            :aria-label="toggleCompactTooltip"
-            @click="toggleCompact"
+  </div>
+  <Teleport to="#header-actions">
+    <Btn
+      :active="!compact"
+      :aria-label="toggleCompactTooltip"
+      @click="toggleCompact"
+    >
+      {{ toggleCompactTooltip }}
+    </Btn>
+    <Btn href="https://robertsspaceindustries.com/roadmap">
+      {{ t("labels.rsiRoadmap") }}
+    </Btn>
+  </Teleport>
+  <div class="row">
+    <div class="col-12">
+      <transition-group name="fade-list" class="row" tag="div" appear>
+        <div
+          v-for="(items, release) in groupedByRelease"
+          :key="`releases-${release}`"
+          class="col-12 fade-list-item release"
+        >
+          <h2
+            :class="{
+              open: visible.includes(String(release)),
+            }"
+            class="toggleable"
+            @click="toggle(String(release))"
           >
-            {{ toggleCompactTooltip }}
-          </Btn>
-          <Btn href="https://robertsspaceindustries.com/roadmap">
-            {{ t("labels.rsiRoadmap") }}
-          </Btn>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <transition-group name="fade-list" class="row" tag="div" appear>
+            <span class="title">{{ release }}</span>
+            <span v-if="items[0].releaseDescription" class="released-label">
+              ({{ items[0].releaseDescription }})
+            </span>
+            <small class="text-muted">
+              {{ t("labels.roadmap.ships", { count: items.length }) }}
+            </small>
+            <i class="fa fa-chevron-right" />
+          </h2>
+
           <div
-            v-for="(items, release) in groupedByRelease"
-            :key="`releases-${release}`"
-            class="col-12 fade-list-item release"
+            :id="`${release}-cards`"
+            v-show-slide:400:ease-in-out="visible.includes(String(release))"
           >
-            <h2
-              :class="{
-                open: visible.includes(String(release)),
-              }"
-              class="toggleable"
-              @click="toggle(String(release))"
-            >
-              <span class="title">{{ release }}</span>
-              <span v-if="items[0].releaseDescription" class="released-label">
-                ({{ items[0].releaseDescription }})
-              </span>
-              <small class="text-muted">
-                {{ t("labels.roadmap.ships", { count: items.length }) }}
-              </small>
-              <i class="fa fa-chevron-right" />
-            </h2>
-
-            <div
-              :id="`${release}-cards`"
-              v-show-slide:400:ease-in-out="visible.includes(String(release))"
-            >
-              <div class="row">
-                <div
-                  v-for="item in items"
-                  :key="item.id"
-                  class="col-12 col-lg-6 col-xl-4 col-xxl-2dot4 fade-list-item"
-                >
-                  <RoadmapItem :item="item" :compact="compact" />
-                </div>
+            <div class="row">
+              <div
+                v-for="item in items"
+                :key="item.id"
+                class="col-12 col-lg-6 col-xl-4 col-xxl-2dot4 fade-list-item"
+              >
+                <RoadmapItem :item="item" :compact="compact" />
               </div>
             </div>
           </div>
-        </transition-group>
-        <EmptyBox :visible="emptyBoxVisible" />
-        <Loader :loading="loading" :fixed="true" />
-        <div class="row">
-          <div class="col-12 fade-list-item release">
-            <h2
-              :class="{
-                open: visible.includes('unscheduled'),
-              }"
-              class="toggleable"
-              @click="toggle('unscheduled')"
-            >
-              <span class="title">
-                {{ t("labels.roadmap.unscheduled") }}
-              </span>
-              <small class="text-muted">
-                {{
-                  t("labels.roadmap.ships", {
-                    count: unscheduledModels.length,
-                  })
-                }}
-              </small>
-              <i class="fa fa-chevron-right" />
-            </h2>
+        </div>
+      </transition-group>
+      <EmptyBox :visible="emptyBoxVisible" />
+      <Loader :loading="loading" :fixed="true" />
+      <div class="row">
+        <div class="col-12 fade-list-item release">
+          <h2
+            :class="{
+              open: visible.includes('unscheduled'),
+            }"
+            class="toggleable"
+            @click="toggle('unscheduled')"
+          >
+            <span class="title">
+              {{ t("labels.roadmap.unscheduled") }}
+            </span>
+            <small class="text-muted">
+              {{
+                t("labels.roadmap.ships", {
+                  count: unscheduledModels.length,
+                })
+              }}
+            </small>
+            <i class="fa fa-chevron-right" />
+          </h2>
 
-            <div
-              id="unscheduled-cards"
-              v-show-slide:400:ease-in-out="visible.includes('unscheduled')"
-            >
-              <div class="row">
-                <div
-                  v-for="model in unscheduledModels"
-                  :key="model.slug"
-                  class="col-12 col-lg-6 col-xl-4 col-xxl-2dot4 fade-list-item"
-                >
-                  <RoadmapItemComponent
-                    :item="model"
-                    :compact="compact"
-                    :active="true"
-                    :show-progress="false"
-                  />
-                </div>
+          <div
+            id="unscheduled-cards"
+            v-show-slide:400:ease-in-out="visible.includes('unscheduled')"
+          >
+            <div class="row">
+              <div
+                v-for="model in unscheduledModels"
+                :key="model.slug"
+                class="col-12 col-lg-6 col-xl-4 col-xxl-2dot4 fade-list-item"
+              >
+                <RoadmapItemComponent
+                  :item="model"
+                  :compact="compact"
+                  :active="true"
+                  :show-progress="false"
+                />
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script lang="ts" setup>

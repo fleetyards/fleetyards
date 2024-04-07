@@ -182,7 +182,7 @@ const fetchModel = async (slug: string) => {
             <BreadCrumbs :crumbs="crumbs" />
             <br />
             <h1 class="sr-only">
-              {{ t("headlines.compare.models") }}
+              {{ t("headlines.compare.ships") }}
             </h1>
           </div>
         </div>
@@ -246,8 +246,8 @@ const fetchModel = async (slug: string) => {
             <div v-if="!sortedModels.length" class="row compare-row">
               <div class="col-12">
                 <Box class="info" :large="true">
-                  <h1>{{ t("headlines.compare.models") }}</h1>
-                  <p>{{ t("texts.compare.models.info") }}</p>
+                  <h1>{{ t("headlines.compare.ships") }}</h1>
+                  <p>{{ t("texts.compare.ships.info") }}</p>
                 </Box>
               </div>
             </div>

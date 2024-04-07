@@ -1,3 +1,75 @@
+<script lang="ts">
+export default {
+  name: "AppFooter",
+};
+</script>
+
+<script lang="ts" setup>
+import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
+import CommunityLogo from "@/shared/components/CommunityLogo/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useAppStore } from "@/frontend/stores/app";
+import { useI18nStore } from "@/shared/stores/i18n";
+import { storeToRefs } from "pinia";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
+
+const { t, availableLocales, currentLocale } = useI18n();
+
+const i18nStore = useI18nStore();
+
+const appStore = useAppStore();
+
+const { online, version, codename, gitRevision } = storeToRefs(appStore);
+
+const localeMapping = {
+  de: "Deutsch",
+  en: "English",
+  es: "Español",
+  fr: "Français",
+  it: "Italiano",
+  zh: "中文",
+  "zh-CN": "中文 (简体)",
+  "zh-TW": "中文 (繁體)",
+};
+
+const copyrightOwner = computed(() => {
+  return window.COPYRIGHT_OWNER;
+});
+
+const scDataVersion = computed(() => {
+  return window.SC_DATA_VERSION;
+});
+
+const locales = computed(() => {
+  return availableLocales() as (keyof typeof localeMapping)[];
+});
+
+const activeLocale = (locale: string) => {
+  return (
+    locale === currentLocale() ||
+    (!locale.includes("zh") && locale === currentLocale().split("-")[0])
+  );
+};
+
+const comlink = useComlink();
+
+const openSupportModal = () => {
+  comlink.emit("open-modal", {
+    component: () => import("@/frontend/components/SupportBtn/Modal/index.vue"),
+    wide: true,
+  });
+};
+
+const setLocale = (locale: string) => {
+  i18nStore.locale = locale;
+};
+</script>
+
 <template>
   <footer class="app-footer">
     <div class="app-footer-border app-footer-border-top">
@@ -33,8 +105,8 @@
         <BtnDropdown
           :text-inline="true"
           :inline="true"
-          size="small"
-          variant="link"
+          :size="BtnSizesEnum.SMALL"
+          :variant="BtnVariantsEnum.LINK"
           :expand-top="true"
         >
           <template #label>
@@ -43,8 +115,7 @@
           <Btn
             v-for="locale in locales"
             :key="`locale-${locale}`"
-            size="small"
-            variant="dropdown"
+            :size="BtnSizesEnum.SMALL"
             :active="activeLocale(locale)"
             @click="setLocale(locale)"
           >
@@ -100,17 +171,17 @@
         </a>
       </div>
       <div class="app-footer-support">
-        <Btn :inline="true" variant="link" @click="openSupportModal">
+        <Btn inline :variant="BtnVariantsEnum.LINK" @click="openSupportModal">
           {{ t("labels.supportUs") }}
           <i class="fa fa-heart" />
         </Btn>
       </div>
-      <div class="app-footer-item">
+      <div class="app-footer-disclaimer">
         <p>
           <span>Copyright &copy; {{ new Date().getFullYear() }}</span>
           {{ copyrightOwner }}
         </p>
-        <p class="rsi-disclaimer">
+        <p class="app-footer-disclaimer-rsi">
           This is an unofficial Star Citizen fansite, not affiliated with the
           Cloud Imperium group of companies.
           <br />
@@ -124,12 +195,13 @@
           reserved.
         </p>
       </div>
-      <div class="app-community-logo">
+      <div class="app-footer-community-logo">
         <CommunityLogo />
       </div>
-      <div class="app-version">
+      <div class="app-footer-version">
         {{ codename }} ({{ version }})
         <span
+          v-tooltip="gitRevision"
           :class="{
             online: online,
           }"
@@ -139,77 +211,13 @@
           <i class="far fa-fingerprint" />
         </span>
       </div>
-      <div class="sc-data-version">
+      <div class="app-footer-sc-data-version">
         {{ t("labels.scDataVersion") }}: {{ scDataVersion }}
       </div>
     </div>
   </footer>
 </template>
 
-<script lang="ts" setup>
-import Btn from "@/shared/components/base/Btn/index.vue";
-import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
-import CommunityLogo from "@/shared/components/CommunityLogo/index.vue";
-import { useI18n } from "@/shared/composables/useI18n";
-import { useComlink } from "@/shared/composables/useComlink";
-import { useAppStore } from "@/frontend/stores/app";
-import { useI18nStore } from "@/shared/stores/i18n";
-import { storeToRefs } from "pinia";
-
-const { t, availableLocales, currentLocale } = useI18n();
-
-const i18nStore = useI18nStore();
-
-const appStore = useAppStore();
-
-const { online, version, codename, gitRevision } = storeToRefs(appStore);
-
-const localeMapping = {
-  de: "Deutsch",
-  en: "English",
-  es: "Español",
-  fr: "Français",
-  it: "Italiano",
-  zh: "中文",
-  "zh-CN": "中文 (简体)",
-  "zh-TW": "中文 (繁體)",
-};
-
-const copyrightOwner = computed(() => {
-  return window.COPYRIGHT_OWNER;
-});
-
-const scDataVersion = computed(() => {
-  return window.SC_DATA_VERSION;
-});
-
-const locales = computed(() => {
-  return availableLocales();
-});
-
-const activeLocale = (locale: string) => {
-  return (
-    locale === currentLocale() ||
-    (!locale.includes("zh") && locale === currentLocale().split("-")[0])
-  );
-};
-
-const comlink = useComlink();
-
-const openSupportModal = () => {
-  comlink.emit("open-modal", {
-    component: () => import("@/frontend/components/Support/Modal/index.vue"),
-    wide: true,
-  });
-};
-
-const setLocale = (locale: string) => {
-  i18nStore.locale = locale;
-};
-</script>
-
-<script lang="ts">
-export default {
-  name: "AppFooter",
-};
-</script>
+<style lang="scss" scoped>
+@import "index";
+</style>

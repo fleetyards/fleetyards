@@ -17,22 +17,17 @@ module V1
             availability: {
               type: :object,
               properties: {
-                listedAt: {
-                  deprecated: true,
-                  type: :array,
-                  items: {"$ref": "#/components/schemas/ModelPrice"}
-                },
                 boughtAt: {
                   type: :array,
-                  items: {"$ref": "#/components/schemas/ModelPrice"}
+                  items: {"$ref": "#/components/schemas/ItemPrice"}
                 },
                 soldAt: {
                   type: :array,
-                  items: {"$ref": "#/components/schemas/ModelPrice"}
+                  items: {"$ref": "#/components/schemas/ItemPrice"}
                 },
                 rentalAt: {
                   type: :array,
-                  items: {"$ref": "#/components/schemas/ModelPrice"}
+                  items: {"$ref": "#/components/schemas/ItemPrice"}
                 }
               },
               additionalProperties: false,

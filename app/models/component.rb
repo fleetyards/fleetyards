@@ -48,13 +48,14 @@ class Component < ApplicationRecord
   end
 
   def should_index?
-    listed_at.present? || sold_at.present? || bought_at.present?
+    sold_at.present? || bought_at.present?
   end
 
   belongs_to :manufacturer, optional: true
 
-  has_many :shop_commodities, as: :commodity_item, dependent: :destroy
   has_many :model_hardpoints, dependent: :nullify
+
+  has_many :item_prices, as: :item, dependent: :destroy
 
   validates :name, presence: true
 
@@ -157,16 +158,12 @@ class Component < ApplicationRecord
     end
   end
 
-  def listed_at
-    shop_commodities.where(sell_price: nil, buy_price: nil).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
-  end
-
   def sold_at
-    shop_commodities.where.not(sell_price: nil).order(sell_price: :asc).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
+    item_prices.sell.order(price: :asc).uniq(&:location)
   end
 
   def bought_at
-    shop_commodities.where.not(buy_price: nil).order(buy_price: :desc).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
+    item_prices.buy.order(price: :asc).uniq(&:location)
   end
 
   def item_class_label

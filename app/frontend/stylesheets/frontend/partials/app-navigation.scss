@@ -66,37 +66,6 @@
   }
 }
 
-.navigation-header {
-  position: relative;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  padding: 20px 15px;
-
-  .environment-label {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
-
-    &.spacing-right {
-      right: 230px;
-    }
-
-    .git-revision {
-      cursor: pointer;
-    }
-  }
-
-  .quick-search-bar {
-    width: 600px;
-
-    .form-input {
-      margin-bottom: 0;
-    }
-  }
-}
-
 .nav-toggle {
   display: block;
   height: 43px;

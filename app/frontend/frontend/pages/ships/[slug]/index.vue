@@ -107,7 +107,7 @@ const metaTitle = computed(() => {
     return undefined;
   }
 
-  return t("title.model", {
+  return t("title.ship", {
     name: props.model.name,
     manufacturer: props.model.manufacturer?.name,
   });
@@ -351,7 +351,7 @@ const toggleHoloviewer = () => {
                 :size="BtnSizesEnum.SMALL"
               >
                 <i class="fal fa-code-compare" />
-                <span>{{ t("actions.compare.models") }}</span>
+                <span>{{ t("actions.compare.ships") }}</span>
               </Btn>
               <ShareBtn
                 v-if="mobile"

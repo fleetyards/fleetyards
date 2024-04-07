@@ -4,10 +4,10 @@
       "main": "%{title} | FleetYards.net",
       "home": "Accueil",
       "search": "Résultats de la recherche",
-      "models": { "index": "Vaisseaux" },
-      "model": "%{name} - %{manufacturer}",
-      "modelImages": "Images de %{name}",
-      "modelVideos": "Vidéos de %{name}",
+      "ships": { "index": "Vaisseaux" },
+      "ship": "%{name} - %{manufacturer}",
+      "shipImages": "Images de %{name}",
+      "shipVideos": "Vidéos de %{name}",
       "images": "Images",
       "stats": "Statistiques",
       "login": "Se connecter",
@@ -56,7 +56,7 @@
           "backupCodes": "Générer des codes de sauvegarde"
         }
       },
-      "compare": { "models": "Comparer les vaisseaux" },
+      "compare": { "ships": "Comparer les vaisseaux" },
       "notFound": "404",
       "tools": {
         "profitCalculator": "Calculatrice de profits",

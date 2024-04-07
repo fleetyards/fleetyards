@@ -1,52 +1,8 @@
-<template>
-  <section class="container request-password">
-    <div class="row">
-      <div class="col-12">
-        <ValidationObserver v-if="form" v-slot="{ handleSubmit }" :slim="true">
-          <form @submit.prevent="handleSubmit(requestPassword)">
-            <h1>
-              <router-link to="/" exact>
-                {{ t("app") }}
-              </router-link>
-            </h1>
-
-            <ValidationProvider
-              v-slot="{ errors }"
-              vid="email"
-              rules="required|email"
-              :name="t('labels.email')"
-              :slim="true"
-            >
-              <FormInput
-                v-model="form.email"
-                name="email"
-                :error="errors[0]"
-                type="email"
-                :hide-label-on-empty="true"
-                autocomplete="off"
-                :autofocus="true"
-              />
-            </ValidationProvider>
-
-            <Btn :loading="submitting" type="submit" size="large" :block="true">
-              {{ t("actions.requestPassword") }}
-            </Btn>
-
-            <footer v-if="!isAuthenticated">
-              <p class="text-center">
-                {{ t("labels.alreadyRegistered") }}
-              </p>
-
-              <Btn :to="{ name: 'login' }" size="small" :block="true">
-                {{ t("actions.login") }}
-              </Btn>
-            </footer>
-          </form>
-        </ValidationObserver>
-      </div>
-    </div>
-  </section>
-</template>
+<script lang="ts">
+export default {
+  name: "RequestPasswordPage",
+};
+</script>
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -106,11 +62,53 @@ const requestPassword = async () => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "RequestPasswordPage",
-};
-</script>
+<template>
+  <div class="row">
+    <div class="col-12">
+      <ValidationObserver v-if="form" v-slot="{ handleSubmit }" :slim="true">
+        <form @submit.prevent="handleSubmit(requestPassword)">
+          <h1>
+            <router-link to="/" exact>
+              {{ t("app") }}
+            </router-link>
+          </h1>
+
+          <ValidationProvider
+            v-slot="{ errors }"
+            vid="email"
+            rules="required|email"
+            :name="t('labels.email')"
+            :slim="true"
+          >
+            <FormInput
+              v-model="form.email"
+              name="email"
+              :error="errors[0]"
+              type="email"
+              :hide-label-on-empty="true"
+              autocomplete="off"
+              :autofocus="true"
+            />
+          </ValidationProvider>
+
+          <Btn :loading="submitting" type="submit" size="large" :block="true">
+            {{ t("actions.requestPassword") }}
+          </Btn>
+
+          <footer v-if="!isAuthenticated">
+            <p class="text-center">
+              {{ t("labels.alreadyRegistered") }}
+            </p>
+
+            <Btn :to="{ name: 'login' }" size="small" :block="true">
+              {{ t("actions.login") }}
+            </Btn>
+          </footer>
+        </form>
+      </ValidationObserver>
+    </div>
+  </div>
+</template>
 
 <style lang="scss">
 @import "request-password";

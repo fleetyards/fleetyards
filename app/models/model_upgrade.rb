@@ -21,7 +21,7 @@ class ModelUpgrade < ApplicationRecord
   has_many :upgrade_kits,
     dependent: :destroy
   has_many :models, through: :upgrade_kits
-  has_many :shop_commodities, as: :commodity_item, dependent: :destroy
+  has_many :item_prices, as: :item, dependent: :destroy
 
   mount_uploader :store_image, StoreImageUploader
 

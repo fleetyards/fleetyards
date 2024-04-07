@@ -4,7 +4,7 @@
       "welcome": "Benvenuto su",
       "welcomeShips": "Ultime Navi",
       "welcomeImages": "Immagini Casuali",
-      "models": {
+      "ships": {
         "index": "Indice Delle Navi",
         "fleetchart": "Ships Fleetchart"
       },
@@ -68,7 +68,7 @@
         "edit": "Modifica Gruppo"
       },
       "searchHistory": "Cronologia di Ricerca",
-      "compare": { "models": "Confronta Navi" },
+      "compare": { "ships": "Confronta Navi" },
       "settings": {
         "account": "Profilo",
         "profile": "Impostazioni del Profilo",

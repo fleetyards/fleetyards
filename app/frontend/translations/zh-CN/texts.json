@@ -20,7 +20,7 @@
         }
       },
       "compare": {
-        "models": {
+        "ships": {
           "info": "To start select at least two and not more than eight Ships you want to compare."
         }
       },

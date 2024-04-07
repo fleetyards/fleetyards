@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  name: "StatsPage",
+};
+</script>
+
 <script lang="ts" setup>
 import Chart from "@/shared/components/Chart/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
@@ -48,136 +54,128 @@ const { data: modelsByManufacturer, ...modelsByManufacturerStatus } = useQuery({
 });
 </script>
 
-<script lang="ts">
-export default {
-  name: "StatsPage",
-};
-</script>
-
 <template>
-  <section class="container stats">
-    <div class="row">
-      <div class="col-12">
-        <div class="row">
-          <div class="col-12">
-            <h1 class="sr-only">
-              {{ t("headlines.stats") }}
-            </h1>
-          </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="row">
+        <div class="col-12">
+          <h1 class="sr-only">
+            {{ t("headlines.stats") }}
+          </h1>
         </div>
-        <div v-if="quickStats" class="row">
-          <div class="col-12 col-sm-6 col-lg-3">
-            <StatsPanel
-              icon="fad fa-rocket-launch fa-4x"
-              :value="quickStats.shipsCountYear"
-              :label="
-                t('labels.stats.quickStats.newShips', {
-                  year: String(new Date().getFullYear()),
-                })
-              "
-            />
-          </div>
-          <div class="col-12 col-sm-6 col-lg-3">
-            <StatsPanel
-              icon="fad fa-rocket fa-4x"
-              :value="quickStats.shipsCountTotal"
-              :label="t('labels.stats.quickStats.totalShips')"
-            />
-          </div>
+      </div>
+      <div v-if="quickStats" class="row">
+        <div class="col-12 col-sm-6 col-lg-3">
+          <StatsPanel
+            icon="fad fa-rocket-launch fa-4x"
+            :value="quickStats.shipsCountYear"
+            :label="
+              t('labels.stats.quickStats.newShips', {
+                year: String(new Date().getFullYear()),
+              })
+            "
+          />
         </div>
-        <div class="row">
-          <div class="col-12 col-md-6">
-            <Panel>
-              <PanelHeading level="h2">
-                {{ t("labels.stats.modelsByClassification") }}
-              </PanelHeading>
-              <PanelBody>
-                <Chart
-                  v-if="modelsByClassification"
-                  key="models-by-classification"
-                  name="models-by-classification"
-                  :options="modelsByClassification"
-                  :async-status="modelsByClassificationStatus"
-                  tooltip-type="ship-pie"
-                  type="pie"
-                />
-              </PanelBody>
-            </Panel>
-          </div>
-          <div class="col-12 col-md-6">
-            <Panel>
-              <PanelHeading level="h2">
-                {{ t("labels.stats.modelsBySize") }}
-              </PanelHeading>
-              <PanelBody>
-                <Chart
-                  key="models-by-size"
-                  name="models-by-size"
-                  :options="modelsBySize"
-                  :async-status="modelsBySizeStatus"
-                  tooltip-type="ship-pie"
-                  type="pie"
-                />
-              </PanelBody>
-            </Panel>
-          </div>
+        <div class="col-12 col-sm-6 col-lg-3">
+          <StatsPanel
+            icon="fad fa-rocket fa-4x"
+            :value="quickStats.shipsCountTotal"
+            :label="t('labels.stats.quickStats.totalShips')"
+          />
         </div>
-        <div class="row">
-          <div class="col-12 col-md-5">
-            <Panel>
-              <PanelHeading level="h2">
-                {{ t("labels.stats.modelsByProductionStatus") }}
-              </PanelHeading>
-              <PanelBody>
-                <Chart
-                  key="models-by-production-status"
-                  name="models-by-production-status"
-                  :options="modelsByProductionStatus"
-                  :async-status="modelsByProductionStatusStatus"
-                  tooltip-type="ship-pie"
-                  type="pie"
-                />
-              </PanelBody>
-            </Panel>
-          </div>
-          <div class="col-12 col-md-7">
-            <Panel>
-              <PanelHeading level="h2">
-                {{ t("labels.stats.modelsPerMonth") }}
-              </PanelHeading>
-              <PanelBody>
-                <Chart
-                  key="models-per-month"
-                  name="models-per-month"
-                  :options="modelsPerMonth"
-                  :async-status="modelsPerMonthStatus"
-                  tooltip-type="ship"
-                  type="column"
-                />
-              </PanelBody>
-            </Panel>
-          </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <Panel>
+            <PanelHeading level="h2">
+              {{ t("labels.stats.modelsByClassification") }}
+            </PanelHeading>
+            <PanelBody>
+              <Chart
+                v-if="modelsByClassification"
+                key="models-by-classification"
+                name="models-by-classification"
+                :options="modelsByClassification"
+                :async-status="modelsByClassificationStatus"
+                tooltip-type="ship-pie"
+                type="pie"
+              />
+            </PanelBody>
+          </Panel>
         </div>
-        <div class="row">
-          <div class="col-12 col-lg-6">
-            <Panel>
-              <PanelHeading level="h2">
-                {{ t("labels.stats.modelsByManufacturer") }}
-              </PanelHeading>
-              <PanelBody>
-                <Chart
-                  key="models-by-manufacturer"
-                  name="models-by-manufacturer"
-                  :options="modelsByManufacturer"
-                  :async-status="modelsByManufacturerStatus"
-                  tooltip-type="ship-pie"
-                  type="pie"
-                />
-              </PanelBody>
-            </Panel>
-          </div>
+        <div class="col-12 col-md-6">
+          <Panel>
+            <PanelHeading level="h2">
+              {{ t("labels.stats.modelsBySize") }}
+            </PanelHeading>
+            <PanelBody>
+              <Chart
+                key="models-by-size"
+                name="models-by-size"
+                :options="modelsBySize"
+                :async-status="modelsBySizeStatus"
+                tooltip-type="ship-pie"
+                type="pie"
+              />
+            </PanelBody>
+          </Panel>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-md-5">
+          <Panel>
+            <PanelHeading level="h2">
+              {{ t("labels.stats.modelsByProductionStatus") }}
+            </PanelHeading>
+            <PanelBody>
+              <Chart
+                key="models-by-production-status"
+                name="models-by-production-status"
+                :options="modelsByProductionStatus"
+                :async-status="modelsByProductionStatusStatus"
+                tooltip-type="ship-pie"
+                type="pie"
+              />
+            </PanelBody>
+          </Panel>
+        </div>
+        <div class="col-12 col-md-7">
+          <Panel>
+            <PanelHeading level="h2">
+              {{ t("labels.stats.modelsPerMonth") }}
+            </PanelHeading>
+            <PanelBody>
+              <Chart
+                key="models-per-month"
+                name="models-per-month"
+                :options="modelsPerMonth"
+                :async-status="modelsPerMonthStatus"
+                tooltip-type="ship"
+                type="column"
+              />
+            </PanelBody>
+          </Panel>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-lg-6">
+          <Panel>
+            <PanelHeading level="h2">
+              {{ t("labels.stats.modelsByManufacturer") }}
+            </PanelHeading>
+            <PanelBody>
+              <Chart
+                key="models-by-manufacturer"
+                name="models-by-manufacturer"
+                :options="modelsByManufacturer"
+                :async-status="modelsByManufacturerStatus"
+                tooltip-type="ship-pie"
+                type="pie"
+              />
+            </PanelBody>
+          </Panel>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </template>

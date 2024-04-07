@@ -17,6 +17,7 @@ type Props = {
   queryResultRef: BaseList;
   updatePerPage?: (perPage: number | string) => void;
   perPage?: number | string;
+  size?: BtnSizesEnum;
   inline?: boolean;
   hash?: string;
 };
@@ -24,6 +25,7 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   updatePerPage: undefined,
   perPage: undefined,
+  size: BtnSizesEnum.DEFAULT,
   inline: false,
   hash: undefined,
 });
@@ -61,13 +63,13 @@ const currentPage = computed(() => {
     <BtnGroup :inline="inline">
       <PerPageDropdown
         v-if="perPageSelectable"
-        :size="BtnSizesEnum.SMALL"
+        :size="size"
         :per-page="internalPerPage"
         :steps="pagination.perPageSteps"
         @change="updatePerPage"
       />
       <Btn
-        :size="BtnSizesEnum.SMALL"
+        :size="size"
         :to="pageRoute(1)"
         :disabled="currentPage <= 1"
         route-active-class=""
@@ -75,7 +77,7 @@ const currentPage = computed(() => {
         <i class="fa fa-chevron-double-left" />
       </Btn>
       <Btn
-        :size="BtnSizesEnum.SMALL"
+        :size="size"
         :to="pageRoute(currentPage - 1)"
         :disabled="currentPage <= 1"
         route-active-class=""
@@ -91,7 +93,7 @@ const currentPage = computed(() => {
         }}
       </span>
       <Btn
-        :size="BtnSizesEnum.SMALL"
+        :size="size"
         :to="pageRoute(currentPage + 1)"
         :disabled="currentPage >= pagination.totalPages"
         route-active-class=""
@@ -99,7 +101,7 @@ const currentPage = computed(() => {
         <i class="fa fa-chevron-right" />
       </Btn>
       <Btn
-        :size="BtnSizesEnum.SMALL"
+        :size="size"
         :to="pageRoute(pagination.totalPages)"
         :disabled="currentPage >= pagination.totalPages"
         route-active-class=""

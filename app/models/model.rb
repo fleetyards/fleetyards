@@ -228,7 +228,7 @@ class Model < ApplicationRecord
     through: :model_snub_crafts,
     source: :snub_craft
 
-  has_many :model_prices, dependent: :destroy
+  has_many :item_prices, as: :item, dependent: :destroy
 
   has_many :docks, dependent: :destroy
 
@@ -417,15 +417,15 @@ class Model < ApplicationRecord
   end
 
   def sold_at
-    model_prices.sell.order(price: :asc).uniq(&:location)
+    item_prices.sell.order(price: :asc).uniq(&:location)
   end
 
   def bought_at
-    model_prices.buy.order(price: :asc).uniq(&:location)
+    item_prices.buy.order(price: :asc).uniq(&:location)
   end
 
   def rental_at
-    model_prices.rental.order(price: :asc).uniq(&:location)
+    item_prices.rental.order(price: :asc).uniq(&:location)
   end
 
   def dock_counts

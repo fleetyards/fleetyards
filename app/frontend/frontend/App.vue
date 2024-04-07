@@ -28,14 +28,23 @@
                   !sessionStore.accessConfirmedDate
                 "
               />
-              <component
-                :is="Component"
+              <section
                 v-else
-                :key="`${locale}-${viewRoute.path}`"
-              />
+                class="container main"
+                :class="{
+                  [route.name || '']: true,
+                }"
+              >
+                <component
+                  :is="Component"
+                  :key="`${locale}-${viewRoute.path}`"
+                />
+              </section>
             </transition>
           </router-view>
         </div>
+
+        <AppEnvironment />
 
         <AppFooter />
       </div>
@@ -50,6 +59,7 @@ import AppNavigation from "@/frontend/components/core/AppNavigation/index.vue";
 import AppNavigationHeader from "@/frontend/components/core/AppNavigation/Header/index.vue";
 import AppNavigationMobile from "@/frontend/components/core/AppNavigation/Mobile/index.vue";
 import AppFooter from "@/frontend/components/core/AppFooter/index.vue";
+import AppEnvironment from "@/frontend/components/core/AppEnvironment/index.vue";
 import AppModal from "@/shared/components/AppModal/index.vue";
 import SecurePage from "@/frontend/components/core/SecurePage/index.vue";
 import BackgroundImage from "@/shared/components/BackgroundImage/index.vue";

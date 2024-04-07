@@ -29,7 +29,7 @@ const metaTitle = computed(() => {
     return undefined;
   }
 
-  return t("title.modelVideos", {
+  return t("title.shipVideos", {
     name: props.model.name,
   });
 });

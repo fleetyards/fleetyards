@@ -362,7 +362,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_27_160635) do
     t.uuid "user_id"
     t.string "import"
     t.text "import_data"
-    t.text "meta"
+  end
+
+  create_table "item_prices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "price_type"
+    t.decimal "price", precision: 15, scale: 2
+    t.string "location"
+    t.string "location_url"
+    t.integer "time_range"
+    t.string "item_type", null: false
+    t.uuid "item_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_type", "item_id"], name: "index_item_prices_on_item"
   end
 
   create_table "manufacturers", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -538,18 +550,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_27_160635) do
     t.integer "top_view_width"
     t.integer "side_view_height"
     t.integer "side_view_width"
-  end
-
-  create_table "model_prices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "price_type"
-    t.decimal "price", precision: 15, scale: 2
-    t.string "location"
-    t.string "location_url"
-    t.integer "time_range"
-    t.uuid "model_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["model_id"], name: "index_model_prices_on_model_id"
   end
 
   create_table "model_snub_crafts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1025,7 +1025,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_27_160635) do
     t.string "rsi_pledge_id"
     t.datetime "rsi_pledge_synced_at"
     t.string "slug"
-    t.string "rsi_account_handle"
     t.index ["model_id", "id"], name: "index_vehicles_on_model_id_and_id"
     t.index ["serial", "user_id"], name: "index_vehicles_on_serial_and_user_id", unique: true
     t.index ["user_id"], name: "index_vehicles_on_user_id"
@@ -1062,7 +1061,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_27_160635) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "model_prices", "models"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_grants", "users", column: "resource_owner_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"

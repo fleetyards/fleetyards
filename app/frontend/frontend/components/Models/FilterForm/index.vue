@@ -22,6 +22,14 @@ import { Form } from "vee-validate";
 import { useModelFilters } from "@/frontend/composables/useModelFilters";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 
+type Props = {
+  hideQuicksearch?: boolean;
+};
+
+withDefaults(defineProps<Props>(), {
+  hideQuicksearch: false,
+});
+
 const { t } = useI18n();
 
 const prefillFormValues = () => {
@@ -76,7 +84,7 @@ const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
 
 <template>
   <form @submit.prevent="handleSubmit">
-    <Teleport to="#quicksearch">
+    <Teleport v-if="!hideQuicksearch" to="#quicksearch">
       <FormInput
         v-model="form.searchCont"
         name="search"
@@ -243,6 +251,7 @@ const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
       name="sale"
     />
 
+    <br />
     <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
       <i class="fal fa-times" />
       {{ t("actions.resetFilter") }}

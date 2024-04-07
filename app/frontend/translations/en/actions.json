@@ -78,7 +78,7 @@
       "showGridView": "Display as Grid",
       "syncRsiHangar": "Sync RSI Hangar",
       "compare": {
-        "models": "Compare"
+        "ships": "Compare"
       },
       "hangar": {
         "editGroups": "Add or remove Groups",

@@ -14,7 +14,6 @@
 #  name_visible         :boolean          default(FALSE)
 #  notify               :boolean          default(TRUE)
 #  public               :boolean          default(FALSE)
-#  rsi_account_handle   :string
 #  rsi_pledge_synced_at :datetime
 #  sale_notify          :boolean          default(FALSE)
 #  serial               :string

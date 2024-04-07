@@ -52,12 +52,13 @@
         :vehicle="vehicle"
         :editable="editable"
         :wishlist="wishlist"
+        class="vehicle-panel--context-menu-button"
       />
 
       <AddToHangar
         v-else-if="!editable"
         :model="model"
-        class="vehicle-panel-add-to-hangar-button"
+        class="vehicle-panel--add-to-hangar-button"
         variant="panel"
       />
     </template>

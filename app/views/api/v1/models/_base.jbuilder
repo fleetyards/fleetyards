@@ -6,17 +6,14 @@ json.name model.name
 json.slug model.slug
 
 json.availability do
-  json.listed_at do
-    json.array! [], partial: "api/v1/model_prices/base", as: :model_price
-  end
   json.bought_at do
-    json.array! model.bought_at, partial: "api/v1/model_prices/base", as: :model_price
+    json.array! model.bought_at, partial: "api/v1/item_prices/base", as: :item_price
   end
   json.sold_at do
-    json.array! model.sold_at, partial: "api/v1/model_prices/base", as: :model_price
+    json.array! model.sold_at, partial: "api/v1/item_prices/base", as: :item_price
   end
   json.rental_at do
-    json.array! model.rental_at, partial: "api/v1/model_prices/base", as: :model_price
+    json.array! model.rental_at, partial: "api/v1/item_prices/base", as: :item_price
   end
 end
 
@@ -41,7 +38,6 @@ json.has_paints model.model_paints_count.positive?
 json.has_upgrades model.upgrade_kits_count.positive?
 json.has_videos model.videos_count.positive?
 json.holo model.holo.url
-json.holo_colored model.holo_colored
 json.last_pledge_price((model.last_pledge_price.to_f if model.last_pledge_price.present?))
 json.last_pledge_price_label model.last_pledge_price_label
 json.last_updated_at model.last_updated_at&.utc&.iso8601

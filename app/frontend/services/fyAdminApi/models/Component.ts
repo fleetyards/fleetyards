@@ -3,17 +3,16 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { ComponentQuantumDrive } from './ComponentQuantumDrive';
+import type { ItemPrice } from './ItemPrice';
 import type { Manufacturer } from './Manufacturer';
 import type { MediaImage } from './MediaImage';
-import type { ShopCommodity } from './ShopCommodity';
 export type Component = {
     id: string;
     name: string;
     slug: string;
     availability: {
-        listedAt: Array<ShopCommodity>;
-        boughtAt: Array<ShopCommodity>;
-        soldAt: Array<ShopCommodity>;
+        boughtAt: Array<ItemPrice>;
+        soldAt: Array<ItemPrice>;
     };
     class?: string;
     grade?: string;
@@ -33,25 +32,5 @@ export type Component = {
     typeLabel?: string;
     createdAt: string;
     updatedAt: string;
-    /**
-     * @deprecated
-     */
-    storeImage?: string;
-    /**
-     * @deprecated
-     */
-    storeImageIsFallback?: boolean;
-    /**
-     * @deprecated
-     */
-    storeImageLarge?: string;
-    /**
-     * @deprecated
-     */
-    storeImageMedium?: string;
-    /**
-     * @deprecated
-     */
-    storeImageSmall?: string;
 };
 

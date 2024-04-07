@@ -16,7 +16,7 @@
         }
       },
       "compare": {
-        "models": {
+        "ships": {
           "info": "Per iniziare a selezionare almeno due e non più di otto Navi che si desiderano confrontare."
         }
       },

@@ -1,16 +1,14 @@
 <template>
-  <div class="container">
-    <Box class="error" :large="true">
-      <h1>{{ t("headlines.error") }}</h1>
-      <p>{{ t("texts.error") }}</p>
-      <template #footer>
-        <Btn :to="{ name: 'home' }" :exact="true">
-          <i class="fa fa-chevron-left" />
-          {{ t("actions.backToHome").toUpperCase() }}
-        </Btn>
-      </template>
-    </Box>
-  </div>
+  <Box class="error" :large="true">
+    <h1>{{ t("headlines.error") }}</h1>
+    <p>{{ t("texts.error") }}</p>
+    <template #footer>
+      <Btn :to="{ name: 'home' }" :exact="true">
+        <i class="fa fa-chevron-left" />
+        {{ t("actions.backToHome").toUpperCase() }}
+      </Btn>
+    </template>
+  </Box>
 </template>
 
 <script lang="ts" setup>

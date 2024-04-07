@@ -12,7 +12,7 @@ module Api
           authorize! :read, :api_fleet
 
           unless fleet.public_fleet?
-            @vehicles = Kaminari.paginate_array([]).page(params[:page]).per(per_page(Vehicle))
+            not_found
             return
           end
 

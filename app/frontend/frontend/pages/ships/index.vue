@@ -78,97 +78,98 @@ const toggleDetailsTooltip = computed(() => {
 </script>
 
 <template>
-  <section class="container main">
-    <div class="row">
-      <div class="col-12 col-lg-12">
-        <div class="row">
-          <div class="col-12">
-            <h1 class="sr-only">
-              {{ t("headlines.models.index") }}
-            </h1>
-          </div>
-        </div>
-        <div class="page-actions page-actions-right">
-          <Btn
-            data-test="model-compare-link"
-            :to="{
-              name: 'compare-ships',
-            }"
-          >
-            <i class="fad fa-code-compare" />
-            {{ t("actions.compare.models") }}
-          </Btn>
-          <Btn data-test="fleetchart-link" @click="toggleFleetchart">
-            <i class="fad fa-starship" />
-            {{ t("labels.fleetchart") }}
-          </Btn>
+  <div class="row">
+    <div class="col-12 col-lg-12">
+      <div class="row">
+        <div class="col-12">
+          <h1 class="sr-only">
+            {{ t("headlines.ships.index") }}
+          </h1>
         </div>
       </div>
     </div>
+  </div>
 
-    <FilteredList
-      name="models"
-      :hide-loading="fleetchartVisible"
-      :records="models?.items || []"
-      :async-status="asyncStatus"
+  <Teleport to="#header-actions">
+    <Btn
+      data-test="model-compare-link"
+      :to="{
+        name: 'compare-ships',
+      }"
+      mobile-block
     >
-      <template #actions>
-        <BtnDropdown :size="BtnSizesEnum.SMALL">
-          <Btn
-            :active="detailsVisible"
-            :aria-label="toggleDetailsTooltip"
+      <i class="fad fa-code-compare" />
+      {{ t("actions.compare.ships") }}
+    </Btn>
+    <Btn data-test="fleetchart-link" mobile-block @click="toggleFleetchart">
+      <i class="fad fa-starship" />
+      {{ t("labels.fleetchart") }}
+    </Btn>
+  </Teleport>
+
+  <FilteredList
+    name="models"
+    :hide-loading="fleetchartVisible"
+    :records="models?.items || []"
+    :async-status="asyncStatus"
+  >
+    <template #actions>
+      <BtnDropdown :size="BtnSizesEnum.SMALL">
+        <Btn
+          :active="detailsVisible"
+          :aria-label="toggleDetailsTooltip"
+          :size="BtnSizesEnum.SMALL"
+          @click="toggleDetails"
+        >
+          <i class="fad fa-info-square" />
+          <span>{{ toggleDetailsTooltip }}</span>
+        </Btn>
+      </BtnDropdown>
+    </template>
+
+    <template #filter>
+      <FilterForm />
+    </template>
+
+    <template #default="{ records, loading, filterVisible, primaryKey }">
+      <Grid
+        :records="records"
+        :filter-visible="filterVisible"
+        :primary-key="primaryKey"
+      >
+        <template #default="{ record }">
+          <ModelPanel :model="record" :details="detailsVisible" />
+        </template>
+      </Grid>
+
+      <FleetchartApp
+        :items="models?.items || []"
+        namespace="models"
+        :loading="loading"
+        download-name="ships-fleetchart"
+      >
+        <template #pagination>
+          <Paginator
+            v-if="models"
+            :query-result-ref="models"
+            :per-page="perPage"
             :size="BtnSizesEnum.SMALL"
-            @click="toggleDetails"
-          >
-            <i class="fad fa-info-square" />
-            <span>{{ toggleDetailsTooltip }}</span>
-          </Btn>
-        </BtnDropdown>
-      </template>
+            :update-per-page="updatePerPage"
+          />
+        </template>
+        <template #filter>
+          <FilterForm hide-quicksearch />
+        </template>
+      </FleetchartApp>
+    </template>
 
-      <template #filter>
-        <FilterForm />
-      </template>
-
-      <template #default="{ records, loading, filterVisible, primaryKey }">
-        <Grid
-          :records="records"
-          :filter-visible="filterVisible"
-          :primary-key="primaryKey"
-        >
-          <template #default="{ record }">
-            <ModelPanel :model="record" :details="detailsVisible" />
-          </template>
-        </Grid>
-
-        <FleetchartApp
-          :items="models?.items || []"
-          namespace="models"
-          :loading="loading"
-          download-name="ships-fleetchart"
-        >
-          <template #pagination>
-            <Paginator
-              v-if="models"
-              :query-result-ref="models"
-              :per-page="perPage"
-              :update-per-page="updatePerPage"
-            />
-          </template>
-          <template #filter>
-            <ModelsFilterForm />
-          </template>
-        </FleetchartApp>
-      </template>
-
-      <template #pagination-bottom>
-        <Paginator
-          v-if="models"
-          :query-result-ref="models"
-          :per-page="perPage"
-          :update-per-page="updatePerPage"
-        />
-      </template>
-    </FilteredList>
-  </section>
+    <template #pagination-bottom>
+      <Paginator
+        v-if="models"
+        :query-result-ref="models"
+        :per-page="perPage"
+        :update-per-page="updatePerPage"
+      />
+    </template>
+  </FilteredList>
 </template>

@@ -16,12 +16,17 @@ module V1
               availability: {
                 type: :object,
                 properties: {
-                  listedAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}},
-                  boughtAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}},
-                  soldAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}}
+                  boughtAt: {
+                    type: :array,
+                    items: {"$ref": "#/components/schemas/ItemPrice"}
+                  },
+                  soldAt: {
+                    type: :array,
+                    items: {"$ref": "#/components/schemas/ItemPrice"}
+                  }
                 },
                 additionalProperties: false,
-                required: %w[listedAt boughtAt soldAt]
+                required: %w[boughtAt soldAt]
               },
               description: {type: :string},
               media: {

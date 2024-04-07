@@ -1,79 +1,69 @@
-<route lang="json">
-{
-  "name": "impressum",
-  "meta": {
-    "title": "impressum"
-  }
-}
-</route>
-
-<script lang="ts" setup>
-import AppContact from "@/frontend/core/components/AppContact/index.vue";
-import Panel from "@/shared/components/Panel/index.vue";
-import { useI18n } from "@/shared/composables/useI18n";
-
-const { t } = useI18n();
-</script>
-
 <script lang="ts">
 export default {
   name: "ImpressumPage",
 };
 </script>
 
+<script lang="ts" setup>
+import AppContact from "@/frontend/components/core/AppContact/index.vue";
+import Panel from "@/shared/components/Panel/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+
+const { t } = useI18n();
+</script>
+
 <template>
-  <section class="container">
-    <div class="row justify-content-lg-center">
-      <div class="col-12 col-lg-8">
-        <Panel inset>
-          <h1>{{ t("headlines.impressum") }}</h1>
-          <br />
+  <div class="row justify-content-lg-center">
+    <div class="col-12 col-lg-8">
+      <Panel inset>
+        <h1>{{ t("headlines.impressum") }}</h1>
+        <br />
 
-          <h2>{{ t("sublines.impressum.general") }}</h2>
+        <h2>{{ t("sublines.impressum.general") }}</h2>
 
-          <AppContact />
-          <br />
+        <AppContact />
+        <br />
 
-          <h2>{{ t("sublines.impressum.thirdpartycontent") }}</h2>
-          <br />
-          <h3>YT Ship Images</h3>
-          <p v-html="t('texts.impressum.ytShipImages')" />
-          <p>
-            <a href="https://redd.it/8k18sm" target="_blank" rel="noopener">
-              https://redd.it/8k18sm
-            </a>
-          </p>
-          <br />
-          <h2>{{ t("sublines.impressum.sponsors") }}</h2>
-          <h3>AppSignal</h3>
-          <p>{{ t("texts.impressum.appSignal") }}</p>
-          <p>
-            {{ t("texts.impressum.visit") }}
-            <a href="https://appsignal.com/" target="_blank" rel="noopener">
-              appsignal.com
-            </a>
-          </p>
-          <br />
+        <h2>{{ t("sublines.impressum.thirdpartycontent") }}</h2>
+        <br />
+        <h3>YT Ship Images</h3>
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <p v-html="t('texts.impressum.ytShipImages')" />
+        <p>
+          <a href="https://redd.it/8k18sm" target="_blank" rel="noopener">
+            https://redd.it/8k18sm
+          </a>
+        </p>
+        <br />
+        <h2>{{ t("sublines.impressum.sponsors") }}</h2>
+        <h3>AppSignal</h3>
+        <p>{{ t("texts.impressum.appSignal") }}</p>
+        <p>
+          {{ t("texts.impressum.visit") }}
+          <a href="https://appsignal.com/" target="_blank" rel="noopener">
+            appsignal.com
+          </a>
+        </p>
+        <br />
 
-          <h2>{{ t("sublines.impressum.disclaimer") }}</h2>
-          <p>{{ t("texts.impressum.disclaimer.p1") }}</p>
-          <p>{{ t("texts.impressum.disclaimer.p2") }}</p>
-          <p>{{ t("texts.impressum.disclaimer.p3") }}</p>
-          <br />
+        <h2>{{ t("sublines.impressum.disclaimer") }}</h2>
+        <p>{{ t("texts.impressum.disclaimer.p1") }}</p>
+        <p>{{ t("texts.impressum.disclaimer.p2") }}</p>
+        <p>{{ t("texts.impressum.disclaimer.p3") }}</p>
+        <br />
 
-          <h3>{{ t("sublines.impressum.copyright") }}:</h3>
-          <p>{{ t("texts.impressum.copyright") }}</p>
-          <br />
+        <h3>{{ t("sublines.impressum.copyright") }}:</h3>
+        <p>{{ t("texts.impressum.copyright") }}</p>
+        <br />
 
-          <h3>{{ t("sublines.impressum.liabilityInternal") }}:</h3>
-          <p>{{ t("texts.impressum.liabilityInternal.p1") }}</p>
-          <p>{{ t("texts.impressum.liabilityInternal.p2") }}</p>
+        <h3>{{ t("sublines.impressum.liabilityInternal") }}:</h3>
+        <p>{{ t("texts.impressum.liabilityInternal.p1") }}</p>
+        <p>{{ t("texts.impressum.liabilityInternal.p2") }}</p>
 
-          <h3>{{ t("sublines.impressum.liabilityExternal") }}:</h3>
-          <p>{{ t("texts.impressum.liabilityExternal") }}</p>
-          <br />
-        </Panel>
-      </div>
+        <h3>{{ t("sublines.impressum.liabilityExternal") }}:</h3>
+        <p>{{ t("texts.impressum.liabilityExternal") }}</p>
+        <br />
+      </Panel>
     </div>
-  </section>
+  </div>
 </template>

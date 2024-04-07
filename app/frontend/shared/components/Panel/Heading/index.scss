@@ -84,10 +84,11 @@
   &-with-actions {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
 
     .panel-heading-actions {
       margin-right: 10px;
+      padding-top: 10px;
     }
 
     h1,
@@ -96,7 +97,6 @@
     h4,
     h5,
     h6 {
-      // margin-bottom: 10.5px;
       padding-right: 40px;
     }
   }

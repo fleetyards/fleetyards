@@ -1,65 +1,63 @@
 <template>
-  <section class="container change-password">
-    <div class="row">
-      <div class="col-12">
-        <ValidationObserver v-slot="{ handleSubmit }" :slim="true">
-          <form @submit.prevent="handleSubmit(changePassword)">
-            <h1>
-              <router-link :to="{ name: 'home' }" exact>
-                {{ t("app") }}
-              </router-link>
-            </h1>
-            <ValidationProvider
-              v-slot="{ errors }"
-              vid="password"
-              rules="required|min:8"
-              :name="t('labels.password')"
-              :slim="true"
-            >
-              <FormInput
-                id="password"
-                v-model="form.password"
-                :error="errors[0]"
-                type="password"
-                :autofocus="true"
-                :hide-label-on-empty="true"
-              />
-            </ValidationProvider>
+  <div class="row">
+    <div class="col-12">
+      <ValidationObserver v-slot="{ handleSubmit }" :slim="true">
+        <form @submit.prevent="handleSubmit(changePassword)">
+          <h1>
+            <router-link :to="{ name: 'home' }" exact>
+              {{ t("app") }}
+            </router-link>
+          </h1>
+          <ValidationProvider
+            v-slot="{ errors }"
+            vid="password"
+            rules="required|min:8"
+            :name="t('labels.password')"
+            :slim="true"
+          >
+            <FormInput
+              id="password"
+              v-model="form.password"
+              :error="errors[0]"
+              type="password"
+              :autofocus="true"
+              :hide-label-on-empty="true"
+            />
+          </ValidationProvider>
 
-            <ValidationProvider
-              v-slot="{ errors }"
-              vid="passwordConfirmation"
-              rules="required|confirmed:password"
-              :name="t('labels.passwordConfirmation')"
-              :slim="true"
-            >
-              <FormInput
-                id="passwordConfirmation"
-                v-model="form.passwordConfirmation"
-                :error="errors[0]"
-                type="password"
-                :hide-label-on-empty="true"
-              />
-            </ValidationProvider>
+          <ValidationProvider
+            v-slot="{ errors }"
+            vid="passwordConfirmation"
+            rules="required|confirmed:password"
+            :name="t('labels.passwordConfirmation')"
+            :slim="true"
+          >
+            <FormInput
+              id="passwordConfirmation"
+              v-model="form.passwordConfirmation"
+              :error="errors[0]"
+              type="password"
+              :hide-label-on-empty="true"
+            />
+          </ValidationProvider>
 
-            <Btn :loading="submitting" type="submit" size="large" :block="true">
-              {{ t("actions.save") }}
+          <Btn :loading="submitting" type="submit" size="large" :block="true">
+            {{ t("actions.save") }}
+          </Btn>
+
+          <footer>
+            <p class="text-center">
+              {{ t("labels.alreadyRegistered") }}
+            </p>
+
+            <Btn :to="{ name: 'login' }" size="small" :block="true">
+              {{ t("actions.login") }}
             </Btn>
-
-            <footer>
-              <p class="text-center">
-                {{ t("labels.alreadyRegistered") }}
-              </p>
-
-              <Btn :to="{ name: 'login' }" size="small" :block="true">
-                {{ t("actions.login") }}
-              </Btn>
-            </footer>
-          </form>
-        </ValidationObserver>
-      </div>
+          </footer>
+        </form>
+      </ValidationObserver>
     </div>
-  </section>
+  </div>
 </template>
 
 <script lang="ts" setup>

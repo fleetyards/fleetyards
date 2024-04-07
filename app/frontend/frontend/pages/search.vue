@@ -101,80 +101,78 @@ const restoreSearch = (search: string) => {
 </script>
 
 <template>
-  <section class="container search">
-    <div class="row">
-      <div class="col-12">
-        <h1 class="sr-only">
-          {{ t("headlines.search") }}
-        </h1>
-      </div>
+  <div class="row">
+    <div class="col-12">
+      <h1 class="sr-only">
+        {{ t("headlines.search") }}
+      </h1>
     </div>
-    <div class="row">
-      <div class="col-12">
-        <div class="row justify-content-center">
-          <div class="col-12 col-lg-6">
-            <Form class="search-form" @submit="search">
-              <div class="form-group">
-                <div class="input-group-flex">
-                  <FormInput
-                    v-model="searchTerm"
-                    name="search"
-                    size="large"
-                    :autofocus="true"
-                    :clearable="true"
-                    translation-key="search.default"
-                    :no-label="true"
-                  />
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-6">
+          <Form class="search-form" @submit="search">
+            <div class="form-group">
+              <div class="input-group-flex">
+                <FormInput
+                  v-model="searchTerm"
+                  name="search"
+                  size="large"
+                  :autofocus="true"
+                  :clearable="true"
+                  translation-key="search.default"
+                  :no-label="true"
+                />
 
-                  <Btn
-                    id="search-submit"
-                    :aria-label="t('labels.search')"
-                    :size="BtnSizesEnum.LARGE"
-                    :inline="true"
-                    :type="BtnTypesEnum.SUBMIT"
-                  >
-                    <i class="fal fa-search" />
-                  </Btn>
-                </div>
+                <Btn
+                  id="search-submit"
+                  :aria-label="t('labels.search')"
+                  :size="BtnSizesEnum.LARGE"
+                  :inline="true"
+                  :type="BtnTypesEnum.SUBMIT"
+                >
+                  <i class="fal fa-search" />
+                </Btn>
               </div>
-            </Form>
-          </div>
+            </div>
+          </Form>
         </div>
       </div>
     </div>
-    <transition name="fade">
-      <SearchHistory v-if="historyVisible" @restore="restoreSearch" />
+  </div>
+  <transition name="fade">
+    <SearchHistory v-if="historyVisible" @restore="restoreSearch" />
 
-      <FilteredList
-        v-else-if="searchResults"
-        id="search"
-        key="search"
-        :records="searchResults"
-        :name="route.name?.toString() || ''"
-        :async-status="asyncStatus"
-      >
-        <template #actions>
-          <ShareBtn :url="shareUrl" :title="shareTitle" />
-        </template>
-        <template #default>
-          <transition-group name="fade-list" class="row" tag="div" appear>
-            <div
-              v-for="result in searchResults"
-              :key="`${result.type}-${result.id}`"
-              class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4 fade-list-item"
-            >
-              <ModelPanel
-                v-if="result.type === 'Model'"
-                :model="result.item as Model"
-                details
-              />
-              <SearchPanel v-else :item="result" />
-            </div>
-          </transition-group>
-        </template>
-      </FilteredList>
-    </transition>
-  </section>
+    <FilteredList
+      v-else-if="searchResults"
+      id="search"
+      key="search"
+      :records="searchResults"
+      :name="route.name?.toString() || ''"
+      :async-status="asyncStatus"
+    >
+      <template #actions>
+        <ShareBtn :url="shareUrl" :title="shareTitle" />
+      </template>
+      <template #default>
+        <transition-group name="fade-list" class="row" tag="div" appear>
+          <div
+            v-for="result in searchResults"
+            :key="`${result.type}-${result.id}`"
+            class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4 fade-list-item"
+          >
+            <ModelPanel
+              v-if="result.type === 'Model'"
+              :model="result.item as Model"
+              details
+            />
+            <SearchPanel v-else :item="result" />
+          </div>
+        </transition-group>
+      </template>
+    </FilteredList>
+  </transition>
 </template>
 
 <style lang="scss" scoped>

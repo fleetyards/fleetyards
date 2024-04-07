@@ -4,7 +4,7 @@
       "welcome": "Welcome to",
       "welcomeShips": "Latest Ships",
       "welcomeImages": "Random Images",
-      "models": {
+      "ships": {
         "index": "Ships Index",
         "fleetchart": "Ships Fleetchart"
       },
@@ -69,7 +69,7 @@
       },
       "searchHistory": "Search History",
       "compare": {
-        "models": "Compare Ships"
+        "ships": "Compare Ships"
       },
       "settings": {
         "account": "Account",

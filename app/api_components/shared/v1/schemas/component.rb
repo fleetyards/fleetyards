@@ -16,12 +16,17 @@ module Shared
             availability: {
               type: :object,
               properties: {
-                listedAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}},
-                boughtAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}},
-                soldAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}}
+                boughtAt: {
+                  type: :array,
+                  items: {"$ref": "#/components/schemas/ItemPrice"}
+                },
+                soldAt: {
+                  type: :array,
+                  items: {"$ref": "#/components/schemas/ItemPrice"}
+                }
               },
               additionalProperties: false,
-              required: %w[listedAt boughtAt soldAt]
+              required: %w[boughtAt soldAt]
             },
 
             class: {type: :string},
@@ -54,15 +59,7 @@ module Shared
             typeLabel: {type: :string},
 
             createdAt: {type: :string, format: "date-time"},
-            updatedAt: {type: :string, format: "date-time"},
-
-            # DEPRECATED
-
-            storeImage: {type: :string, format: :uri, deprecated: true},
-            storeImageIsFallback: {type: :boolean, deprecated: true},
-            storeImageLarge: {type: :string, format: :uri, deprecated: true},
-            storeImageMedium: {type: :string, format: :uri, deprecated: true},
-            storeImageSmall: {type: :string, format: :uri, deprecated: true}
+            updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
           required: %w[id name slug availability media createdAt updatedAt]

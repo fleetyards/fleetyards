@@ -1,14 +1,15 @@
 .vehicle-panel {
-  &-add-to-hangar-button {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 12px 6px;
+  &--add-to-hangar-button,
+  &--context-menu-button {
     font-size: 18px;
 
     > :first-child {
       font-size: 18px;
     }
+  }
+
+  :deep(.panel-heading-title-main) {
+    justify-content: flex-start;
   }
 
   &-flagship-icon {

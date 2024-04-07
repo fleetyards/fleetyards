@@ -1,6 +1,0 @@
-# frozen_string_literal: true
-
-json.items do
-  json.array! @images, partial: "api/v1/images/image", as: :image
-end
-json.partial! "api/shared/meta", result: @images

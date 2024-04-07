@@ -1,91 +1,8 @@
-<template>
-  <div ref="filterGroup" class="filter-group" :class="cssClasses">
-    <transition name="fade">
-      <label
-        v-show="labelVisible"
-        v-if="innerLabel && !noLabel"
-        :for="labelFor"
-      >
-        {{ innerLabel }}
-      </label>
-    </transition>
-    <div
-      v-tooltip.right="error"
-      :class="{
-        active: visible,
-        disabled,
-        selected: selectedOptions.length > 0,
-        hasLabel: labelVisible,
-      }"
-      class="filter-group-title"
-      @click="toggle"
-    >
-      <span class="filter-group-title-prompt">
-        {{ prompt }}
-      </span>
-      <SmallLoader v-if="queryFn" :loading="loading" />
-      <i class="fa fa-chevron-right" />
-    </div>
-    <Collapsed
-      v-if="multiple"
-      :id="`${name}-selected-${id}`"
-      :visible="selectedOptions.length > 0 && !visible"
-      class="filter-group-items"
-    >
-      <Option
-        v-for="(option, index) in selectedOptions"
-        :key="`${name}-selected-${id}-${option.value}-${index}`"
-        :option="option"
-        :selected="selected(option.value)"
-        :big-icon="bigIcon"
-        :multiple="multiple"
-        :nullable="nullable"
-        @select="select(option.value)"
-      />
-    </Collapsed>
-    <Collapsed
-      :id="`${name}-options-${id}`"
-      :visible="visible"
-      class="filter-group-items-wrapper"
-    >
-      <FormInput
-        v-if="searchable"
-        ref="searchInput"
-        v-model="search"
-        :name="`${name}-searchInput-${id}`"
-        :placeholder="searchPlaceholder"
-        :label="searchLabelFallback"
-        class="filter-group-search"
-        :variant="InputVariantsEnum.CLEAN"
-        :no-label="true"
-        :clearable="true"
-        @input="onSearch"
-      />
-      <div class="filter-group-items">
-        <Option
-          v-for="(option, index) in filteredOptions"
-          :key="`${name}-options-${id}-${option.value}-${index}`"
-          :option="option"
-          :selected="selected(option.value)"
-          :big-icon="bigIcon"
-          :multiple="multiple"
-          :nullable="nullable"
-          @select="select(option.value)"
-        />
-
-        <Btn
-          v-if="fetchMoreVisible && paginated"
-          :disabled="loading"
-          :variant="BtnVariantsEnum.LINK"
-          inline
-          class="fade-list-item filter-group-fetch-more"
-          @click="fetchMore"
-          >{{ t("filterGroup.actions.fetchMore") }}</Btn
-        >
-      </div>
-    </Collapsed>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "FilterGroup",
+};
+</script>
 
 <script lang="ts" setup>
 import Collapsed from "@/shared/components/Collapsed.vue";
@@ -488,12 +405,95 @@ const focusSearch = () => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "FilterGroup",
-};
-</script>
+<template>
+  <div ref="filterGroup" class="filter-group" :class="cssClasses">
+    <transition name="fade">
+      <label
+        v-show="labelVisible"
+        v-if="innerLabel && !noLabel"
+        :for="labelFor"
+      >
+        {{ innerLabel }}
+      </label>
+    </transition>
+    <div
+      v-tooltip.right="error"
+      :class="{
+        active: visible,
+        disabled,
+        selected: selectedOptions.length > 0,
+        hasLabel: labelVisible,
+      }"
+      class="filter-group-title"
+      @click="toggle"
+    >
+      <span class="filter-group-title-prompt">
+        {{ prompt }}
+      </span>
+      <SmallLoader v-if="queryFn" :loading="loading" />
+      <i class="fa fa-chevron-right" />
+    </div>
+    <Collapsed
+      v-if="multiple"
+      :id="`${name}-selected-${id}`"
+      :visible="selectedOptions.length > 0 && !visible"
+      class="filter-group-items"
+    >
+      <Option
+        v-for="(option, index) in selectedOptions"
+        :key="`${name}-selected-${id}-${option.value}-${index}`"
+        :option="option"
+        :selected="selected(option.value)"
+        :big-icon="bigIcon"
+        :multiple="multiple"
+        :nullable="nullable"
+        @select="select(option.value)"
+      />
+    </Collapsed>
+    <Collapsed
+      :id="`${name}-options-${id}`"
+      :visible="visible"
+      class="filter-group-items-wrapper"
+    >
+      <FormInput
+        v-if="searchable"
+        ref="searchInput"
+        v-model="search"
+        :name="`${name}-searchInput-${id}`"
+        :placeholder="searchPlaceholder"
+        :label="searchLabelFallback"
+        class="filter-group-search"
+        :variant="InputVariantsEnum.CLEAN"
+        :no-label="true"
+        :clearable="true"
+        @input="onSearch"
+      />
+      <div class="filter-group-items">
+        <Option
+          v-for="(option, index) in filteredOptions"
+          :key="`${name}-options-${id}-${option.value}-${index}`"
+          :option="option"
+          :selected="selected(option.value)"
+          :big-icon="bigIcon"
+          :multiple="multiple"
+          :nullable="nullable"
+          @select="select(option.value)"
+        />
+
+        <Btn
+          v-if="fetchMoreVisible && paginated"
+          :disabled="loading"
+          :variant="BtnVariantsEnum.LINK"
+          inline
+          class="fade-list-item filter-group-fetch-more"
+          @click="fetchMore"
+          >{{ t("filterGroup.actions.fetchMore") }}</Btn
+        >
+      </div>
+    </Collapsed>
+  </div>
+</template>
 
 <style lang="scss" scoped>
-@import "./index.scss";
+@import "index";
 </style>

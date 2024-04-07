@@ -4,7 +4,7 @@
       "welcome": "Bienvenue sur",
       "welcomeShips": "Derniers vaisseaux",
       "welcomeImages": "Images Aléatoires",
-      "models": {
+      "ships": {
         "index": "Index des vaisseaux",
         "fleetchart": "Fleetchart des vaisseaux"
       },
@@ -68,7 +68,7 @@
         "edit": "Modifier le groupe"
       },
       "searchHistory": "Historique de recherche",
-      "compare": { "models": "Comparer les vaisseaux" },
+      "compare": { "ships": "Comparer les vaisseaux" },
       "settings": {
         "account": "Mon compte",
         "profile": "Paramètres du profil",

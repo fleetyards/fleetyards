@@ -4,12 +4,12 @@
       "main": "%{title} | FleetYards.net",
       "home": "Home",
       "search": "Search Results",
-      "models": {
+      "ships": {
         "index": "Ships"
       },
-      "model": "%{name} - %{manufacturer}",
-      "modelImages": "%{name} Images",
-      "modelVideos": "%{name} Videos",
+      "ship": "%{name} - %{manufacturer}",
+      "shipImages": "%{name} Images",
+      "shipVideos": "%{name} Videos",
       "images": "Images",
       "stats": "Stats",
       "login": "Login",
@@ -51,7 +51,7 @@
         }
       },
       "compare": {
-        "models": "Compare Ships"
+        "ships": "Compare Ships"
       },
       "notFound": "404",
       "tools": {

@@ -1,38 +1,33 @@
 <template>
   <NavItem
+    :to="{ name: 'settings' }"
+    :active="active"
+    :label="t('nav.settings.index')"
+    icon="fal fa-cog"
+  />
+  <NavItem :divider="true" />
+  <template v-if="currentUser.rsiHandle">
+    <NavItem
+      :href="`https://robertsspaceindustries.com/citizens/${currentUser.rsiHandle}`"
+      :label="t('nav.rsiProfile')"
+      :image="rsiLogo"
+    />
+    <NavItem :divider="true" />
+  </template>
+  <NavItem
+    :action="logout"
+    menu-key="logout"
+    :label="t('nav.logout')"
+    icon="fal fa-sign-out"
+  />
+  <NavItem
     v-if="currentUser"
-    :submenu-active="active"
-    submenu-direction="up"
     menu-key="user-menu"
     :image="currentUser.avatar"
     :avatar="true"
     :label="currentUser.username"
     class="user-menu"
-  >
-    <template #submenu>
-      <NavItem
-        :to="{ name: 'settings' }"
-        :active="active"
-        :label="t('nav.settings.index')"
-        icon="fal fa-cog"
-      />
-      <NavItem :divider="true" />
-      <template v-if="currentUser.rsiHandle">
-        <NavItem
-          :href="`https://robertsspaceindustries.com/citizens/${currentUser.rsiHandle}`"
-          :label="t('nav.rsiProfile')"
-          :image="rsiLogo"
-        />
-        <NavItem :divider="true" />
-      </template>
-      <NavItem
-        :action="logout"
-        menu-key="logout"
-        :label="t('nav.logout')"
-        icon="fal fa-sign-out"
-      />
-    </template>
-  </NavItem>
+  />
 </template>
 
 <script lang="ts" setup>

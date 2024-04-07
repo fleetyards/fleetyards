@@ -9,7 +9,7 @@ import VueScrollTo from "vue-scrollto";
 import { RouteLocationRaw } from "vue-router";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import Support from "@/frontend/components/Support/index.vue";
+import SupportBtn from "@/frontend/components/SupportBtn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import Panel from "@/shared/components/Panel/index.vue";
 import TeaserPanel from "@/shared/components/TeaserPanel2/index.vue";
@@ -79,7 +79,7 @@ const routeForImage = (image: Image) => {
   }
 
   return {
-    name: "model-images",
+    name: "ship-images",
     params: { slug: image.gallery?.slug },
   };
 };
@@ -87,9 +87,11 @@ const routeForImage = (image: Image) => {
 
 <template>
   <div>
-    <Support />
+    <Teleport to="#header-actions">
+      <SupportBtn />
+    </Teleport>
     <div class="home-screen-intro">
-      <section class="container">
+      <section>
         <div class="row">
           <div class="col-12">
             <div class="search-form text-center">
@@ -136,7 +138,7 @@ const routeForImage = (image: Image) => {
           </div>
         </div>
       </section>
-      <section class="container">
+      <section>
         <div class="row">
           <div class="col-12">
             <blockquote class="blockquote text-right">
@@ -166,7 +168,7 @@ const routeForImage = (image: Image) => {
         </div>
       </transition>
     </div>
-    <section class="container">
+    <section>
       <div class="row">
         <div class="col-12 col-lg-6 relative home-ships">
           <h2 class="sr-only">
