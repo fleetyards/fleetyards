@@ -2,23 +2,23 @@
 
 require "swagger_helper"
 
-RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/schema.yaml" do
-  fixtures :admin_users, :images, :models
+RSpec.describe "admin/api/v1/item_prices", type: :request, swagger_doc: "admin/v1/schema.yaml" do
+  fixtures :admin_users, :item_prices, :models
 
   let(:user) { admin_users :jeanluc }
-  let(:model_image) { images :model_image }
-  let(:id) { model_image.id }
+  let(:item_price) { item_prices :andromeda_item_price }
+  let(:id) { item_price.id }
 
   before do
     sign_in user if user.present?
   end
 
-  path "/images/{id}" do
+  path "/item-prices/{id}" do
     parameter name: "id", in: :path, schema: {type: :string, format: :uuid}, description: "id"
 
-    delete("Image destroy") do
-      operationId "destroyImage"
-      tags "Images"
+    delete("Item price destroy") do
+      operationId "destroyItemPrice"
+      tags "ItemPrices"
 
       response(204, "successful") do
         run_test!

@@ -3903,6 +3903,14 @@ components:
       - Station
       - Album
       title: GalleryTypeEnum
+    ItemPriceItemTypeEnum:
+      type: string
+      enum:
+      - Model
+      - ModelModule
+      - ModelPaint
+      - Component
+      title: ItemPriceItemTypeEnum
     ItemPriceTimeRangeEnum:
       type: string
       enum:
@@ -5439,6 +5447,11 @@ components:
           "$ref": "#/components/schemas/ItemPriceTimeRangeEnum"
         priceType:
           "$ref": "#/components/schemas/ItemPriceTypeEnum"
+        itemId:
+          type: string
+          format: uuid
+        itemType:
+          "$ref": "#/components/schemas/ItemPriceItemTypeEnum"
         location:
           type: string
         locationUrl:
@@ -5455,6 +5468,8 @@ components:
       - id
       - price
       - priceType
+      - itemId
+      - itemType
       - location
       - createdAt
       - updatedAt

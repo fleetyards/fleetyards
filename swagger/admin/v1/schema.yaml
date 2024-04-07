@@ -23,7 +23,6 @@ paths:
     post:
       summary: Image create
       operationId: createImage
-      description: Create a new Image
       tags:
       - Images
       parameters: []
@@ -92,16 +91,16 @@ paths:
       required: true
     delete:
       summary: Image destroy
-      operationId: destroy
+      operationId: destroyImage
       tags:
       - Images
       responses:
         '204':
           description: successful
-        '401':
-          description: unauthorized
         '404':
           description: not_found
+        '401':
+          description: unauthorized
     put:
       summary: Image update
       operationId: updateImage
@@ -132,11 +131,159 @@ paths:
           application/json:
             schema:
               "$ref": "#/components/schemas/ImageInput"
+  "/item-prices":
+    post:
+      summary: Create new Item Price
+      operationId: createItemPrice
+      tags:
+      - ItemPrices
+      parameters: []
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ItemPrice"
+        '400':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ItemPriceInput"
+        required: true
+    get:
+      summary: Item Prices list
+      operationId: itemPrices
+      tags:
+      - ItemPrices
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 25
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ItemPriceQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ItemPrices"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/item-prices/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: id
+      required: true
+    delete:
+      summary: Item price destroy
+      operationId: destroyItemPrice
+      tags:
+      - ItemPrices
+      responses:
+        '204':
+          description: successful
+        '404':
+          description: not_found
+        '401':
+          description: unauthorized
+    get:
+      summary: Get Item Price
+      operationId: itemPrice
+      tags:
+      - ItemPrices
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ItemPrice"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    put:
+      summary: Update Item Price
+      operationId: updateItemPrice
+      tags:
+      - ItemPrices
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ItemPrice"
+        '400':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ItemPriceInput"
+        required: true
   "/models":
     get:
       summary: Models list
       operationId: models
-      description: Get a List of Models
       tags:
       - Models
       parameters:
@@ -437,6 +584,14 @@ components:
       - Station
       - Album
       title: GalleryTypeEnum
+    ItemPriceItemTypeEnum:
+      type: string
+      enum:
+      - Model
+      - ModelModule
+      - ModelPaint
+      - Component
+      title: ItemPriceItemTypeEnum
     ItemPriceTimeRangeEnum:
       type: string
       enum:
@@ -983,6 +1138,25 @@ components:
           type: string
       additionalProperties: false
       title: ImageInputCreate
+    ItemPriceInput:
+      type: object
+      properties:
+        itemId:
+          type: string
+          format: uuid
+        itemType:
+          "$ref": "#/components/schemas/ItemPriceItemTypeEnum"
+        price:
+          type: number
+        priceType:
+          "$ref": "#/components/schemas/ItemPriceTypeEnum"
+        location:
+          type: string
+        locationUrl:
+          type: string
+          format: uri
+      additionalProperties: false
+      title: ItemPriceInput
     ItemPrice:
       type: object
       properties:
@@ -995,6 +1169,11 @@ components:
           "$ref": "#/components/schemas/ItemPriceTimeRangeEnum"
         priceType:
           "$ref": "#/components/schemas/ItemPriceTypeEnum"
+        itemId:
+          type: string
+          format: uuid
+        itemType:
+          "$ref": "#/components/schemas/ItemPriceItemTypeEnum"
         location:
           type: string
         locationUrl:
@@ -1011,10 +1190,27 @@ components:
       - id
       - price
       - priceType
+      - itemId
+      - itemType
       - location
       - createdAt
       - updatedAt
       title: ItemPrice
+    ItemPrices:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            "$ref": "#/components/schemas/ItemPrice"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: ItemPrices
     ModelLoaner:
       type: object
       properties:
@@ -1521,6 +1717,33 @@ components:
           type: string
       additionalProperties: false
       title: ImageQuery
+    ItemPriceQuery:
+      type: object
+      properties:
+        locationCont:
+          type: string
+        itemIdEq:
+          type: string
+          format: uuid
+        itemIdIn:
+          type: array
+          items:
+            type: string
+            format: uuid
+        itemTypeEq:
+          "$ref": "#/components/schemas/ItemPriceItemTypeEnum"
+        itemTypeIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ItemPriceItemTypeEnum"
+        priceTypeEq:
+          "$ref": "#/components/schemas/ItemPriceTypeEnum"
+        priceTypeIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ItemPriceTypeEnum"
+      additionalProperties: false
+      title: ItemPriceQuery
     ModelQuery:
       type: object
       properties:

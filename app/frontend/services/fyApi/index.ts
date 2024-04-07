@@ -74,6 +74,7 @@ export type { Image } from './models/Image';
 export type { ImageQuery } from './models/ImageQuery';
 export type { Images } from './models/Images';
 export type { ItemPrice } from './models/ItemPrice';
+export { ItemPriceItemTypeEnum } from './models/ItemPriceItemTypeEnum';
 export { ItemPriceTimeRangeEnum } from './models/ItemPriceTimeRangeEnum';
 export { ItemPriceTypeEnum } from './models/ItemPriceTypeEnum';
 export type { Manufacturer } from './models/Manufacturer';

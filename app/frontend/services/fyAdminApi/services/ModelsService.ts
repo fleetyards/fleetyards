@@ -10,7 +10,6 @@ export class ModelsService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**
      * Models list
-     * Get a List of Models
      * @returns Models successful
      * @throws ApiError
      */

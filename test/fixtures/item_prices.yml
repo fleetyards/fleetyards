@@ -1,0 +1,14 @@
+
+andromeda_item_price:
+  price: 1000
+  item: andromeda
+  item_type: Model
+  price_type: :buy
+  location: Area 18
+
+explorer_item_price:
+  price: 2000
+  item: explorer
+  item_type: Model
+  price_type: :buy
+  location: Lorville

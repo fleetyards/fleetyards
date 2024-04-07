@@ -38,6 +38,10 @@ export type { ImageInputCreate } from './models/ImageInputCreate';
 export type { ImageQuery } from './models/ImageQuery';
 export type { Images } from './models/Images';
 export type { ItemPrice } from './models/ItemPrice';
+export type { ItemPriceInput } from './models/ItemPriceInput';
+export { ItemPriceItemTypeEnum } from './models/ItemPriceItemTypeEnum';
+export type { ItemPriceQuery } from './models/ItemPriceQuery';
+export type { ItemPrices } from './models/ItemPrices';
 export { ItemPriceTimeRangeEnum } from './models/ItemPriceTimeRangeEnum';
 export { ItemPriceTypeEnum } from './models/ItemPriceTypeEnum';
 export type { Manufacturer } from './models/Manufacturer';
@@ -76,4 +80,5 @@ export { VideoTypeEnum } from './models/VideoTypeEnum';
 export type { ViewImage } from './models/ViewImage';
 
 export { ImagesService } from './services/ImagesService';
+export { ItemPricesService } from './services/ItemPricesService';
 export { ModelsService } from './services/ModelsService';

@@ -12,13 +12,15 @@ module V1
           price: {type: :number},
           timeRange: {"$ref": "#/components/schemas/ItemPriceTimeRangeEnum"},
           priceType: {"$ref": "#/components/schemas/ItemPriceTypeEnum"},
+          itemId: {type: :string, format: :uuid},
+          itemType: {"$ref": "#/components/schemas/ItemPriceItemTypeEnum"},
           location: {type: :string},
           locationUrl: {type: :string, format: :uri},
           createdAt: {type: :string, format: "date-time"},
           updatedAt: {type: :string, format: "date-time"}
         },
         additionalProperties: false,
-        required: %w[id price priceType location createdAt updatedAt]
+        required: %w[id price priceType itemId itemType location createdAt updatedAt]
       })
     end
   end

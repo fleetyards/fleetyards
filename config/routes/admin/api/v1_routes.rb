@@ -14,6 +14,8 @@ v1_admin_api_routes = lambda do
     get :item_type_filters, on: :collection
   end
 
+  resources :item_prices, path: "item-prices", only: %i[index show create update destroy]
+
   resource :stats, only: [] do
     get "quick-stats" => "stats#quick_stats"
     get "most-viewed-pages" => "stats#most_viewed_pages"

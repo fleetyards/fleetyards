@@ -2,44 +2,43 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Image } from '../models/Image';
-import type { ImageInput } from '../models/ImageInput';
-import type { ImageInputCreate } from '../models/ImageInputCreate';
-import type { ImageQuery } from '../models/ImageQuery';
-import type { Images } from '../models/Images';
+import type { ItemPrice } from '../models/ItemPrice';
+import type { ItemPriceInput } from '../models/ItemPriceInput';
+import type { ItemPriceQuery } from '../models/ItemPriceQuery';
+import type { ItemPrices } from '../models/ItemPrices';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-export class ImagesService {
+export class ItemPricesService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**
-     * Image create
-     * @returns Image successful
+     * Create new Item Price
+     * @returns ItemPrice successful
      * @throws ApiError
      */
-    public createImage({
-        formData,
+    public createItemPrice({
+        requestBody,
     }: {
-        formData?: ImageInputCreate,
-    }): CancelablePromise<Image> {
+        requestBody: ItemPriceInput,
+    }): CancelablePromise<ItemPrice> {
         return this.httpRequest.request({
             method: 'POST',
-            url: '/images',
-            formData: formData,
-            mediaType: 'multipart/form-data',
+            url: '/item-prices',
+            body: requestBody,
+            mediaType: 'application/json',
             errors: {
+                400: `unauthorized`,
                 401: `unauthorized`,
             },
         });
     }
     /**
-     * Images list
-     * Get a List of Images
-     * @returns Images successful
+     * Item Prices list
+     * @returns ItemPrices successful
      * @throws ApiError
      */
-    public images({
+    public itemPrices({
         page = '1',
-        perPage = '30',
+        perPage = '25',
         s,
         q,
     }: {
@@ -49,11 +48,11 @@ export class ImagesService {
          * Sorting
          */
         s?: Array<string>,
-        q?: ImageQuery,
-    }): CancelablePromise<Images> {
+        q?: ItemPriceQuery,
+    }): CancelablePromise<ItemPrices> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/images',
+            url: '/item-prices',
             query: {
                 'page': page,
                 'perPage': perPage,
@@ -66,11 +65,11 @@ export class ImagesService {
         });
     }
     /**
-     * Image destroy
+     * Item price destroy
      * @returns void
      * @throws ApiError
      */
-    public destroyImage({
+    public destroyItemPrice({
         id,
     }: {
         /**
@@ -80,7 +79,7 @@ export class ImagesService {
     }): CancelablePromise<void> {
         return this.httpRequest.request({
             method: 'DELETE',
-            url: '/images/{id}',
+            url: '/item-prices/{id}',
             path: {
                 'id': id,
             },
@@ -91,11 +90,36 @@ export class ImagesService {
         });
     }
     /**
-     * Image update
-     * @returns Image successful
+     * Get Item Price
+     * @returns ItemPrice successful
      * @throws ApiError
      */
-    public updateImage({
+    public itemPrice({
+        id,
+    }: {
+        /**
+         * id
+         */
+        id: string,
+    }): CancelablePromise<ItemPrice> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/item-prices/{id}',
+            path: {
+                'id': id,
+            },
+            errors: {
+                401: `unauthorized`,
+                404: `not found`,
+            },
+        });
+    }
+    /**
+     * Update Item Price
+     * @returns ItemPrice successful
+     * @throws ApiError
+     */
+    public updateItemPrice({
         id,
         requestBody,
     }: {
@@ -103,19 +127,20 @@ export class ImagesService {
          * id
          */
         id: string,
-        requestBody?: ImageInput,
-    }): CancelablePromise<Image> {
+        requestBody: ItemPriceInput,
+    }): CancelablePromise<ItemPrice> {
         return this.httpRequest.request({
             method: 'PUT',
-            url: '/images/{id}',
+            url: '/item-prices/{id}',
             path: {
                 'id': id,
             },
             body: requestBody,
             mediaType: 'application/json',
             errors: {
+                400: `unauthorized`,
                 401: `unauthorized`,
-                404: `not_found`,
+                404: `not found`,
             },
         });
     }

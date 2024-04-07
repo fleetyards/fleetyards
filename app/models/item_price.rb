@@ -20,11 +20,20 @@
 class ItemPrice < ApplicationRecord
   belongs_to :item, polymorphic: true
 
-  enum price_type: {buy: 0, sell: 1, rental: 2}
-  enum time_range: {"1-day": 0, "3-days": 1, "7-days": 2, "30-days": 3}
+  enum :price_type, {buy: 0, sell: 1, rental: 2}, validate: true
+  enum :time_range, {"1-day": 0, "3-days": 1, "7-days": 2, "30-days": 3}, validate: {allow_nil: true}
 
-  validates :price_type, presence: true
   validates :time_range, presence: true, if: -> { rental? }
   validates :price, presence: true
   validates :location, presence: true
+
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "item_id", "item_type", "location"
+    ]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["item"]
+  end
 end

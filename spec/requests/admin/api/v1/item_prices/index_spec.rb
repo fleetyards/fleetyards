@@ -2,52 +2,51 @@
 
 require "swagger_helper"
 
-RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/schema.yaml" do
-  fixtures :admin_users, :images, :models
+RSpec.describe "admin/api/v1/item_prices", type: :request, swagger_doc: "admin/v1/schema.yaml" do
+  fixtures :admin_users, :item_prices, :models
 
   let(:user) { admin_users :jeanluc }
-  let(:model_image) { images :model_image }
   let(:model) { models :andromeda }
 
   before do
     sign_in user if user.present?
   end
 
-  path "/images" do
-    get("Images list") do
-      operationId "images"
-      description "Get a List of Images"
+  path "/item-prices" do
+    get("Item Prices list") do
+      operationId "itemPrices"
+      tags "ItemPrices"
+
       produces "application/json"
-      tags "Images"
 
       parameter "$ref": "#/components/parameters/PageParameter"
-      parameter name: "perPage", in: :query, schema: {type: :string, default: Image.default_per_page}, required: false
+      parameter name: "perPage", in: :query, schema: {type: :string, default: ItemPrice.default_per_page}, required: false
       parameter "$ref": "#/components/parameters/SortingParameter"
       parameter name: "q", in: :query,
         schema: {
           type: :object,
-          "$ref": "#/components/schemas/ImageQuery"
+          "$ref": "#/components/schemas/ItemPriceQuery"
         },
         style: :deepObject,
         explode: true,
         required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/Images"
+        schema "$ref": "#/components/schemas/ItemPrices"
 
         run_test! do |response|
           data = JSON.parse(response.body)
 
-          expect(data["items"].count).to be > 0
+          expect(data["items"].count).to eq(2)
         end
       end
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/Images"
+        schema "$ref": "#/components/schemas/ItemPrices"
 
         let(:q) do
           {
-            "galleryIdEq" => model.id
+            "itemIdEq" => model.id
           }
         end
 
