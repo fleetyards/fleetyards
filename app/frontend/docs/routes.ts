@@ -29,7 +29,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/embed/",
     name: "embed",
-    component: () => import("@/docs/pages/Embed.vue"),
+    component: () => import("@/docs/pages/embed.vue"),
     meta: {
       title: "embed",
     },
