@@ -8,7 +8,8 @@
         "code": "Inoltre puoi ottenere 5000 UEC come denaro iniziale usando il seguente codice di reclutamento <a href=\"https://robertsspaceindustries.com/enlist?referral=%{code}\" target=\"_blank\" rel=\"noopener\"><b>\"%{code}\"</b></a> quando acquisti Star Citizen o puoi:",
         "info": "Se ti piace FleetYards.net e vuoi supportare lo sviluppo e la manutenzione del progetto, per favore dai un upvote sul nostro <a href=\"https://robertsspaceindustries.com/spectrum/community/SC/forum/57219/thread/fleetyards-net\" target=\"_blank\" rel=\"noopener\"><b>Spectrum Post</b></a> e il nostro Post su <a href=\"https://robertsspaceindustries.com/community/deep-space-radar/1730-FleetYardsnet\" target=\"_blank\" rel=\"noopener\"><b>Deep Space Radar</b></a>."
       },
-      "error": "Attualmente stai avventurando uno spazio sconosciuto. In caso di smarrimento, l'UEE raccomanda vivamente di tracciare una nuova destinazione di nuovo verso lo spazio di casa.",
+      "notFound": "Attualmente stai avventurando uno spazio sconosciuto. In caso di smarrimento, l'UEE raccomanda vivamente di tracciare una nuova destinazione di nuovo verso lo spazio di casa.",
+      "serverError": "The server is currently experiencing technical difficulties. Please try again later.",
       "empty": {
         "hangar": {
           "info": "You can add Ships to your Hangar by clicking on the bookmark icon in the top right corner of a Ship or by using the Plus Button in the bottom right corner.",

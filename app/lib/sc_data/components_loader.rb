@@ -29,7 +29,7 @@ module ScData
       description = component_data["Description"]
       description = translations_loader.translate(description) if needs_translation?(description)
 
-      component.update!(
+      component_params = {
         sc_identifier: component_data["ClassName"],
         size: component_data["Size"],
         grade: component_data["Grade"],
@@ -43,7 +43,12 @@ module ScData
         power_connection: extract_power_connection(component_data),
         heat_connection: extract_heat_connection(component_data),
         ammunition: extract_ammunition(component_data)
-      )
+      }
+
+      unless component.update(component_params)
+        puts "Failed to update component: #{component.errors.full_messages}"
+        raise "Failed to update component: #{component.errors.full_messages}"
+      end
 
       component
     end

@@ -28,7 +28,6 @@ class ModelUpgrade < ApplicationRecord
   accepts_nested_attributes_for :upgrade_kits, allow_destroy: true
 
   before_save :update_slugs
-  after_save :touch_shop_commodities
   after_save :touch_models
 
   def self.ordered_by_name
@@ -41,12 +40,6 @@ class ModelUpgrade < ApplicationRecord
 
   def self.active
     where(active: true)
-  end
-
-  private def touch_shop_commodities
-    # rubocop:disable Rails/SkipsModelValidations
-    shop_commodities.update_all(updated_at: Time.zone.now)
-    # rubocop:enable Rails/SkipsModelValidations
   end
 
   private def touch_models

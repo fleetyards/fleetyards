@@ -9,7 +9,8 @@
         "code": "Additionally you can get 5000 UEC starting money by using the following Recruitment Code when you buy Star Citizen:",
         "subline": "or you can support us directly via:"
       },
-      "error": "You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space.",
+      "notFound": "You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space.",
+      "serverError": "The server is currently experiencing technical difficulties. Please try again later.",
       "empty": {
         "hangar": {
           "info": "You can add Ships to your Hangar by clicking on the bookmark icon in the top right corner of a Ship or by using the Plus Button in the bottom right corner.",

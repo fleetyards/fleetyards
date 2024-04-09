@@ -10,8 +10,6 @@ import { useFleetStore } from "@/frontend/stores/fleet";
 import { useSessionStore } from "@/frontend/stores/session";
 import { routes } from "@/frontend/routes";
 
-import "vue-router";
-
 // To ensure it is treated as a module, add at least one `export` statement
 export {};
 

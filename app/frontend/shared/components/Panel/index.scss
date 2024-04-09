@@ -73,16 +73,6 @@ $contentBorderRadius: $panelContentBorderRadius;
     content: "";
   }
 
-  &-primary {
-    color: white;
-    background-color: $primary;
-  }
-
-  &-success {
-    color: white;
-    background-color: $success;
-  }
-
   &-transparency-more {
     background-color: rgba($panel-bg, 0.6);
   }
@@ -97,10 +87,6 @@ $contentBorderRadius: $panelContentBorderRadius;
     display: flex;
     flex-direction: column;
     min-height: 286px;
-
-    // :deep(> div) {
-    //   width: 100%;
-    // }
 
     &-text {
       padding: 20px;
@@ -141,5 +127,22 @@ $contentBorderRadius: $panelContentBorderRadius;
   table:first-child tbody:first-child tr:first-child td,
   table:first-child thead tr:first-child th {
     border-top: none;
+  }
+}
+
+.panel-wrapper {
+  &-error {
+    border-color: darken(red, 10%);
+  }
+
+  &-primary {
+    .panel {
+      color: white;
+      background-color: $primary;
+    }
+  }
+
+  &-success {
+    border-color: darken($success, 5%);
   }
 }

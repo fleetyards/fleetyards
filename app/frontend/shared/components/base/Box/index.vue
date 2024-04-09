@@ -6,13 +6,16 @@ export default {
 
 <script lang="ts" setup>
 import Panel from "@/shared/components/Panel/index.vue";
+import { PanelVariantsEnum } from "@/shared/components/Panel/types";
 
 type Props = {
   large?: boolean;
+  variant?: PanelVariantsEnum;
 };
 
 withDefaults(defineProps<Props>(), {
   large: false,
+  variant: undefined,
 });
 </script>
 
@@ -23,7 +26,7 @@ withDefaults(defineProps<Props>(), {
     }"
     class="box"
   >
-    <Panel slim>
+    <Panel :variant="variant" slim>
       <div class="box-inner">
         <slot />
       </div>
@@ -33,5 +36,5 @@ withDefaults(defineProps<Props>(), {
 </template>
 
 <style lang="scss" scoped>
-@import "./index.scss";
+@import "index";
 </style>

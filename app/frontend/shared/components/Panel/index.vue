@@ -3,12 +3,13 @@
     :class="{
       'panel-outer-spacing': outerSpacing,
       'panel-highlight': highlight,
+      'panel-wrapper-error': variant === PanelVariantsEnum.ERROR,
+      [variantClass]: true,
     }"
     class="panel-wrapper"
   >
     <div
       :class="{
-        [variantClass]: true,
         [transparencyClass]: true,
       }"
       class="panel"
@@ -42,40 +43,48 @@ import type { RouteLocationRaw } from "vue-router";
 import PanelLink from "@/shared/components/Panel/Link/index.vue";
 import PanelBgImage from "@/shared/components/Panel/BgImage/index.vue";
 import PanelShadow from "@/shared/components/Panel/Shadow/index.vue";
+import {
+  PanelVariantsEnum,
+  PanelTransparenciesEnum,
+  PanelAlignmentsEnum,
+  PanelShadowsEnum,
+  PanelBgAlignmentsEnum,
+  PanelBgRoundedEnum,
+} from "@/shared/components/Panel/types";
 
 type Props = {
-  outerSpacing?: boolean;
-  transparency?: "default" | "more" | "complete";
-  highlight?: boolean;
-  variant?: "default" | "primary" | "success";
-  alignment?: "left" | "right";
-  inset?: boolean;
-  shadow?: "left" | "right" | "top" | "bottom";
+  alignment?: PanelAlignmentsEnum;
+  bgAlign?: PanelBgAlignmentsEnum;
   bgImage?: string;
-  bgAlign?: "left" | "right";
-  bgRounded?: "all" | "left" | "right" | "top" | "bottom";
-  to?: RouteLocationRaw;
+  bgRounded?: PanelBgRoundedEnum;
+  highlight?: boolean;
+  inset?: boolean;
   linkLabel?: string;
+  outerSpacing?: boolean;
   slim?: boolean;
+  shadow?: PanelShadowsEnum;
+  transparency?: PanelTransparenciesEnum;
+  to?: RouteLocationRaw;
+  variant?: PanelVariantsEnum;
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  outerSpacing: true,
-  transparency: "default",
+  alignment: undefined,
+  bgAlign: undefined,
+  bgImage: undefined,
+  bgRounded: PanelBgRoundedEnum.ALL,
   highlight: false,
   inset: false,
-  alignment: undefined,
-  variant: "default",
-  shadow: undefined,
-  bgImage: undefined,
-  bgAlign: undefined,
-  bgRounded: "all",
-  to: undefined,
   linkLabel: undefined,
+  outerSpacing: true,
   slim: false,
+  shadow: undefined,
+  transparency: PanelTransparenciesEnum.DEFAULT,
+  to: undefined,
+  variant: PanelVariantsEnum.DEFAULT,
 });
 
-const variantClass = computed(() => `panel-${props.variant}`);
+const variantClass = computed(() => `panel-wrapper-${props.variant}`);
 
 const transparencyClass = computed(
   () => `panel-transparency-${props.transparency}`,

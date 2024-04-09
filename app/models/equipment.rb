@@ -60,7 +60,6 @@ class Equipment < ApplicationRecord
   validates :name, presence: true
 
   before_save :update_slugs
-  after_save :touch_shop_commodities
 
   mount_uploader :store_image, StoreImageUploader
 
@@ -180,11 +179,5 @@ class Equipment < ApplicationRecord
 
   def backpack_compatibility_label
     Equipment.human_enum_name(:backpack_compatibility, backpack_compatibility)
-  end
-
-  private def touch_shop_commodities
-    # rubocop:disable Rails/SkipsModelValidations
-    shop_commodities.update_all(updated_at: Time.zone.now)
-    # rubocop:enable Rails/SkipsModelValidations
   end
 end

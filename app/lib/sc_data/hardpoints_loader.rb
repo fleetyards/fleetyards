@@ -2,6 +2,8 @@ module ScData
   class HardpointsLoader < ::ScData::BaseLoader
     attr_accessor :components_loader
 
+    A2_MODEL_ID = "d8e30072-ca4f-4e16-a2b2-e97a2053f989"
+
     def initialize(components_loader:)
       super()
 
@@ -105,8 +107,21 @@ module ScData
     private def extract_missiles(hardpoint_type, model_id, ports_data)
       hardpoint_ids = []
 
+      ports_data["PilotHardpoints"].each_with_index.map do |port_data, index|
+        next if port_data["Flags"]&.include?("invisible")
+        next unless port_data["PortName"].include?("bombrack")
+
+        category = port_data["PortName"].include?("turret") ? "missile_turret" : nil
+        key_modifier = port_data.dig("InstalledItem", "Ports", 0, "Loadout")
+        hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, category, key_modifier)&.id
+      end
+
       ports_data["MissileRacks"].each_with_index.map do |port_data, index|
         next if port_data["Flags"]&.include?("invisible")
+        # Hack for A2 missile racks on the Starlifter
+        next if model_id == A2_MODEL_ID && port_data["InstalledItem"].blank?
+
+        puts port_data["InstalledItem"].inspect
 
         category = port_data["PortName"].include?("turret") ? "missile_turret" : nil
         key_modifier = port_data.dig("InstalledItem", "Ports", 0, "Loadout")
@@ -138,6 +153,9 @@ module ScData
       hardpoint_ids = []
 
       ports_data["PilotHardpoints"].each_with_index.map do |port_data, index|
+        next if port_data["PortName"].include?("bombrack")
+        next if port_data["Loadout"].present? && port_data["Loadout"].include?("CRUS_Starlifter_Bomb_Turret")
+
         key_modifier = "#{port_data["Loadout"]}_#{port_data.dig("InstalledItem", "Ports", 0, "Loadout")}"
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, nil, key_modifier)&.id
       end
@@ -175,7 +193,10 @@ module ScData
 
       component_data = port_data["InstalledItem"] || {}
 
-      key = [key_modifier, hardpoint_type, category, size].compact.join("-")
+      loadout_count = component_data["Ports"].size if component_data["Ports"].present?
+      loadout_name = component_data["Ports"]&.first&.dig("Loadout")
+
+      key = [key_modifier, hardpoint_type, category, size, loadout_count, loadout_name].compact.join("-")
 
       hardpoint = ModelHardpoint.find_or_create_by!(
         source: :game_files,
@@ -189,6 +210,16 @@ module ScData
         new_hardpoint.hardpoint_type = hardpoint_type
         new_hardpoint.category = category
         new_hardpoint.size = size
+      end
+
+      # Hack for A2 missile racks on the Starlifter
+      if model_id == A2_MODEL_ID && component_data["Name"] == "MSD-313 Missile Rack"
+        component_data["Name"] = "A2-10210"
+        component_data["Description"] = ""
+        component_data["Manufacturer"] = {
+          "Code" => "CRUS",
+          "Name" => "Crusader Industries"
+        }
       end
 
       component = components_loader.extract_component!(component_data)
@@ -214,7 +245,9 @@ module ScData
       end.each do |port_data|
         loadout = hardpoint.model_hardpoint_loadouts.find_or_create_by!(name: port_data["PortName"])
 
-        component = components_loader.extract_component!(port_data["InstalledItem"])
+        installed_item = port_data["InstalledItem"]
+
+        component = components_loader.extract_component!(installed_item)
 
         loadout.update!(component_id: component&.id)
 
@@ -250,7 +283,7 @@ module ScData
       component_size = component.dig("InstalledItem", "Size").to_i if component_size.zero?
       loadout_size = component.dig("InstalledItem", "Ports", 0, "Size").to_i
 
-      return loadout_size if [:turrets].include?(hardpoint_type) && loadout_size.present?
+      return [component_size, loadout_size].max if [:turrets].include?(hardpoint_type) && loadout_size.present?
 
       return loadout_size if %w[manned_missile_turrets remote_missile_turrets].include?(category) && loadout_size.present? && category.present?
 

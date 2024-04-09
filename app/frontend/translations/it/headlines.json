@@ -10,7 +10,8 @@
       },
       "images": "Indice Delle Immagini",
       "stats": "Statistiche",
-      "error": "Errore di Navigazione",
+      "notFound": "Errore di Navigazione",
+      "serverError": "Server Error",
       "comments": "Commenti",
       "login": "Login",
       "hangar": {

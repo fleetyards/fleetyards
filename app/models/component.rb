@@ -60,7 +60,6 @@ class Component < ApplicationRecord
   validates :name, presence: true
 
   before_save :update_slugs
-  after_save :touch_shop_commodities
 
   mount_uploader :store_image, StoreImageUploader
 
@@ -180,11 +179,5 @@ class Component < ApplicationRecord
 
   def tracking_signal_label
     Component.human_enum_name(:tracking_signal, tracking_signal)
-  end
-
-  private def touch_shop_commodities
-    # rubocop:disable Rails/SkipsModelValidations
-    shop_commodities.update_all(updated_at: Time.zone.now)
-    # rubocop:enable Rails/SkipsModelValidations
   end
 end

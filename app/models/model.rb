@@ -567,12 +567,6 @@ class Model < ApplicationRecord
     ActionCable.server.broadcast("on_sale", to_json)
   end
 
-  private def touch_shop_commodities
-    # rubocop:disable Rails/SkipsModelValidations
-    shop_commodities.update_all(updated_at: Time.zone.now)
-    # rubocop:enable Rails/SkipsModelValidations
-  end
-
   private def update_slugs
     super
     self.rsi_slug = SlugHelper.generate_slug(rsi_name)

@@ -1,7 +1,8 @@
 <template>
   <section :class="cssClasses">
     <slot v-if="error" name="error">
-      <NotFound />
+      <NotFound v-if="errorType === ErrorTypesEnum.NOT_FOUND" />
+      <ServerError v-else />
     </slot>
     <slot v-else-if="loading" name="loading">
       <Loader v-if="showSpinner" :loading="true" />
@@ -12,16 +13,13 @@
 
 <script lang="ts" setup>
 import NotFound from "@/shared/components/NotFound/index.vue";
+import ServerError from "@/shared/components/ServerError/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
-
-export type AsyncStatus = {
-  fetchStatus: Ref<string>;
-  isError: Ref<boolean>;
-  isLoading: Ref<boolean>;
-  isFetching: Ref<boolean>;
-  isRefetching: Ref<boolean>;
-  refetch?: () => void;
-};
+import {
+  type AsyncStatus,
+  ErrorTypesEnum,
+} from "@/shared/components/AsyncData.types";
+import { isAxiosError } from "axios";
 
 type Props = {
   asyncStatus: AsyncStatus;
@@ -44,7 +42,31 @@ const cssClasses = computed(() => {
 });
 
 const error = computed(() => {
-  return props.asyncStatus.isError.value;
+  return props.asyncStatus.error?.value;
+});
+
+const status = computed(() => {
+  if (!error.value) return;
+
+  // AxiosError
+  if (isAxiosError(error.value)) {
+    return error.value.response?.status;
+  }
+
+  // ApiError
+  return error.value.status;
+});
+
+const errorType = computed(() => {
+  if (!status.value) {
+    return undefined;
+  }
+
+  if (status.value == 404) {
+    return ErrorTypesEnum.NOT_FOUND;
+  }
+
+  return ErrorTypesEnum.ERROR;
 });
 
 const loading = computed(() => {

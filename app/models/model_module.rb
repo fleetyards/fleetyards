@@ -37,7 +37,6 @@ class ModelModule < ApplicationRecord
 
   before_save :update_slugs
 
-  after_save :touch_shop_commodities
   after_save :touch_models
 
   def self.ordered_by_name
@@ -58,12 +57,6 @@ class ModelModule < ApplicationRecord
 
   def bought_at
     item_prices.buy.order(price: :asc).uniq(&:location)
-  end
-
-  private def touch_shop_commodities
-    # rubocop:disable Rails/SkipsModelValidations
-    shop_commodities.update_all(updated_at: Time.zone.now)
-    # rubocop:enable Rails/SkipsModelValidations
   end
 
   private def touch_models
