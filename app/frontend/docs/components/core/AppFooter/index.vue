@@ -92,7 +92,7 @@
         </a>
       </div>
       <div class="app-footer-support">
-        <Btn :inline="true" variant="link" @click.native="openSupportModal">
+        <Btn :inline="true" variant="link" @click="openSupportModal">
           {{ t("labels.supportUs") }}
           <i class="fa fa-heart" />
         </Btn>
@@ -155,7 +155,7 @@ const comlink = useComlink();
 
 const openSupportModal = () => {
   comlink.emit("open-modal", {
-    component: () => import("@/frontend/components/Support/Modal/index.vue"),
+    component: () => import("@/frontend/components/SupportBtn/Modal/index.vue"),
     wide: true,
   });
 };

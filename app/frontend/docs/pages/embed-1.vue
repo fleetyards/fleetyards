@@ -1,3 +1,61 @@
+<script lang="ts">
+export default {
+  name: "EmbedPage",
+};
+</script>
+
+<script lang="ts" setup>
+import "highlight.js";
+import "highlight.js/styles/atom-one-dark.css";
+import copyText from "@/shared/utils/CopyText";
+import { useI18n } from "@/docs/composables/useI18n";
+import { useNoty } from "@/shared/composables/useNoty";
+
+/* eslint-disable no-useless-escape */
+const widgetExample = `\<div id="fleetyards-view"\>\</div\>
+\<script\>
+    window.FleetYardsFleetchartConfig = {
+        details: true, // Set to false if you want to display a minimal version of the Ship Panel
+        grouped: true, // Set to false if you want to display the same Ships multiple times in your Fleetview.
+        fleetchart: false, // Set to true if you want to display a Fleetchart instead of the normal Ship Panels.
+        fleetchartGrouped: false, // Set to true if you want to group the Ships on the Fleetchart View or not.
+        fleetchartScale: 50, // Initial Scale of the Fleetchart
+        groupedButton: false, // Allow the User to toggle Groupped Views
+        fleetchartSlider: false, // Set to true to display a slider which allows users to scale the Fleetchart
+        ships: ['100i', '300i', '600i-touring', '890-jump'], // Replace the Array with a List of Shipnames (slugs) you want to display,
+        users: ['torlekmaru', 'johndoe'], // Replace the Array with a list of Fleetyards.net usernames, alternative to the ships option.
+        fleetId: 'maru', // Replace the value with a your Fleetyards.net fleet id, alternative to the ships option.
+    };
+    (function() {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fleetyards.net/embed-v2.js#' + new Date().getTime();
+        (d.head || d.body).appendChild(s);
+    })();
+\</script\>
+\<noscript\>Please enable JavaScript to view your custom Fleetview powered by FleetYards.net.\</noscript\>
+`;
+/* eslint-enable no-useless-escape */
+
+const { t } = useI18n();
+
+const { displayInfo, displayAlert } = useNoty();
+
+const copyExample = () => {
+  copyText(widgetExample).then(
+    () => {
+      displayInfo({
+        text: t("messages.copyWidgetExample.success"),
+      });
+    },
+    () => {
+      displayAlert({
+        text: t("messages.copyWidgetExample.failure"),
+      });
+    },
+  );
+};
+</script>
+
 <template>
   <main class="embed-page">
     <div class="px-4 sm:px-6 lg:px-8 py-6">
@@ -130,64 +188,6 @@
     </div>
   </main>
 </template>
-
-<script lang="ts" setup>
-import "highlight.js";
-import "highlight.js/styles/atom-one-dark.css";
-import copyText from "@/shared/utils/CopyText";
-import { useI18n } from "@/docs/composables/useI18n";
-import { useNoty } from "@/shared/composables/useNoty";
-
-/* eslint-disable no-useless-escape */
-const widgetExample = `\<div id="fleetyards-view"\>\</div\>
-\<script\>
-    window.FleetYardsFleetchartConfig = {
-        details: true, // Set to false if you want to display a minimal version of the Ship Panel
-        grouped: true, // Set to false if you want to display the same Ships multiple times in your Fleetview.
-        fleetchart: false, // Set to true if you want to display a Fleetchart instead of the normal Ship Panels.
-        fleetchartGrouped: false, // Set to true if you want to group the Ships on the Fleetchart View or not.
-        fleetchartScale: 50, // Initial Scale of the Fleetchart
-        groupedButton: false, // Allow the User to toggle Groupped Views
-        fleetchartSlider: false, // Set to true to display a slider which allows users to scale the Fleetchart
-        ships: ['100i', '300i', '600i-touring', '890-jump'], // Replace the Array with a List of Shipnames (slugs) you want to display,
-        users: ['torlekmaru', 'johndoe'], // Replace the Array with a list of Fleetyards.net usernames, alternative to the ships option.
-        fleetId: 'maru', // Replace the value with a your Fleetyards.net fleet id, alternative to the ships option.
-    };
-    (function() {
-        var d = document, s = d.createElement('script');
-        s.src = 'https://fleetyards.net/embed-v2.js#' + new Date().getTime();
-        (d.head || d.body).appendChild(s);
-    })();
-\</script\>
-\<noscript\>Please enable JavaScript to view your custom Fleetview powered by FleetYards.net.\</noscript\>
-`;
-/* eslint-enable no-useless-escape */
-
-const { t } = useI18n();
-
-const { displayInfo, displayAlert } = useNoty();
-
-const copyExample = () => {
-  copyText(widgetExample).then(
-    () => {
-      displayInfo({
-        text: t("messages.copyWidgetExample.success"),
-      });
-    },
-    () => {
-      displayAlert({
-        text: t("messages.copyWidgetExample.failure"),
-      });
-    },
-  );
-};
-</script>
-
-<script lang="ts">
-export default {
-  name: "EmbedPage",
-};
-</script>
 
 <style lang="scss">
 .code-highlight {

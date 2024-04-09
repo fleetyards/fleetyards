@@ -1,3 +1,45 @@
+<script lang="ts">
+export default {
+  name: "ApiPage",
+};
+</script>
+
+<script lang="ts" setup>
+import { SwaggerUIBundle } from "swagger-ui-dist";
+
+const schemaUrl = computed(() => `${window.API_ENDPOINT}/schema.yaml`);
+
+const apiVersion = computed(() => window.API_VERSION);
+const oasVersion = computed(() => window.API_OAS_VERSION);
+
+const swagger = ref<SwaggerUIBundle>();
+
+const validatorIconUrl = computed(
+  () => `https://validator.swagger.io/validator?url=${schemaUrl.value}`,
+);
+
+const validatorUrl = computed(
+  () => `https://validator.swagger.io/validator/debug?url=${schemaUrl.value}`,
+);
+
+onMounted(() => {
+  swagger.value = SwaggerUIBundle({
+    dom_id: "#swagger-ui",
+    url: schemaUrl.value,
+    showCommonExtensions: true,
+    filter: true,
+    defaultModelRendering: "model",
+    defaultModelExpandDepth: 3,
+  });
+
+  swagger.value?.initOAuth({
+    clientId: "your-client-id",
+    clientSecret: "",
+    usePkceWithAuthorizationCodeGrant: true,
+  });
+});
+</script>
+
 <template>
   <main class="api-page">
     <div class="px-4 sm:px-6 lg:px-8 py-6">
@@ -40,48 +82,6 @@
     </div>
   </main>
 </template>
-
-<script lang="ts" setup>
-import { SwaggerUIBundle } from "swagger-ui-dist";
-
-const schemaUrl = computed(() => `${window.API_ENDPOINT}/schema.yaml`);
-
-const apiVersion = computed(() => window.API_VERSION);
-const oasVersion = computed(() => window.API_OAS_VERSION);
-
-const swagger = ref<SwaggerUIBundle>();
-
-const validatorIconUrl = computed(
-  () => `https://validator.swagger.io/validator?url=${schemaUrl.value}`,
-);
-
-const validatorUrl = computed(
-  () => `https://validator.swagger.io/validator/debug?url=${schemaUrl.value}`,
-);
-
-onMounted(() => {
-  swagger.value = SwaggerUIBundle({
-    dom_id: "#swagger-ui",
-    url: schemaUrl.value,
-    showCommonExtensions: true,
-    filter: true,
-    defaultModelRendering: "model",
-    defaultModelExpandDepth: 3,
-  });
-
-  swagger.value?.initOAuth({
-    clientId: "your-client-id",
-    clientSecret: "",
-    usePkceWithAuthorizationCodeGrant: true,
-  });
-});
-</script>
-
-<script lang="ts">
-export default {
-  name: "ApiPage",
-};
-</script>
 
 <style lang="scss">
 .swagger-ui-wrapper {
