@@ -1643,43 +1643,43 @@
   resolved "https://registry.yarnpkg.com/@ungap/structured-clone/-/structured-clone-1.2.0.tgz#756641adb587851b5ccb3e095daf27ae581c8406"
   integrity sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==
 
-"@unocss/core@0.58.6", "@unocss/core@^0.58.6":
-  version "0.58.6"
-  resolved "https://registry.yarnpkg.com/@unocss/core/-/core-0.58.6.tgz#94d3e95d0710bf0227269314b6eda6f3cdd31f7e"
-  integrity sha512-m87iuENM/PLqLKnfE2mJbpfzj7NQ99LP2go0r+x5X4kXKppyGRJNQg6RIW3AqTS22jup1YPgd62UNXvvRtHtww==
+"@unocss/core@0.59.2", "@unocss/core@^0.59.2":
+  version "0.59.2"
+  resolved "https://registry.yarnpkg.com/@unocss/core/-/core-0.59.2.tgz#204aa8153267904556ed703ccb92c25bde416807"
+  integrity sha512-0NtauY7v5bG0UIcvIABWnD2ssD5b9UcFkyw4iRIsT9NvR0e7QqGIOvZEg5XN0j25o50GtxlotMmTAAiaazHZ0Q==
 
-"@unocss/extractor-arbitrary-variants@0.58.6":
-  version "0.58.6"
-  resolved "https://registry.yarnpkg.com/@unocss/extractor-arbitrary-variants/-/extractor-arbitrary-variants-0.58.6.tgz#5243615fc4b28a6c2a52e1557f51524ba84e1df9"
-  integrity sha512-iSrjLEM+dtcpCmJ8myttPZ/0Dg4HKYVYpM71rNTybrX1HB/cfRsGwIHobjsvvRnve+LAxC4Hmdi8EXRd8V1xPg==
+"@unocss/extractor-arbitrary-variants@0.59.2":
+  version "0.59.2"
+  resolved "https://registry.yarnpkg.com/@unocss/extractor-arbitrary-variants/-/extractor-arbitrary-variants-0.59.2.tgz#59e2e16c43a6de8b5910a504c163bd20027c8849"
+  integrity sha512-v+1cdybFmi7sRUG8/B2vSVaBi/CgViithbiwjTjzeKETA5Cw/pWgk1Rf/MDu4jfux4MZ0+mLULm20HSUg0oXdg==
   dependencies:
-    "@unocss/core" "0.58.6"
+    "@unocss/core" "0.59.2"
 
-"@unocss/preset-mini@0.58.6":
-  version "0.58.6"
-  resolved "https://registry.yarnpkg.com/@unocss/preset-mini/-/preset-mini-0.58.6.tgz#0b02cc7632b6c92c94d23bca3af1791e6bbd5bdc"
-  integrity sha512-COaM/04Z6/gawzrFcCwoyD6t0FCpuKRyljKKs3VxitoGxsN9BHKiFE3U/cPSQarpG789rmZg8D/wmLHCChSXvg==
+"@unocss/preset-mini@0.59.2":
+  version "0.59.2"
+  resolved "https://registry.yarnpkg.com/@unocss/preset-mini/-/preset-mini-0.59.2.tgz#4efef20baf1a595402a1fbd76acfff589aba7dcb"
+  integrity sha512-OFFPNyuuQcPJU4lIE1nQXnmH6uOuinA0+bCAjyB6/1Bj7LCLJGPqdviud/to6cLT90PUsKTIG2TTEQisO3CWAQ==
   dependencies:
-    "@unocss/core" "0.58.6"
-    "@unocss/extractor-arbitrary-variants" "0.58.6"
-    "@unocss/rule-utils" "0.58.6"
+    "@unocss/core" "0.59.2"
+    "@unocss/extractor-arbitrary-variants" "0.59.2"
+    "@unocss/rule-utils" "0.59.2"
 
-"@unocss/preset-wind@^0.58.6":
-  version "0.58.6"
-  resolved "https://registry.yarnpkg.com/@unocss/preset-wind/-/preset-wind-0.58.6.tgz#d4bd5bb76882ac4a5dd09f57b1768a1ef610c93f"
-  integrity sha512-zs41CpFVvLB8CutroUeI1iqxzPsztiur9ei0QjRshxpYerPSsTSgdTkF+eul5D1q3BcsebLebzqtCSqnpFOuOA==
+"@unocss/preset-wind@^0.59.2":
+  version "0.59.2"
+  resolved "https://registry.yarnpkg.com/@unocss/preset-wind/-/preset-wind-0.59.2.tgz#74f53af9c7c7a5fa7abba066f6539e24d4ccf24b"
+  integrity sha512-LbdsxU8M90guqV4e7K1weDp3wWcSwzcSmxkogSI/R818SJgnocv4eNzeIR5/mbZu8y8ENtEiE8rEYL1jA6L2GQ==
   dependencies:
-    "@unocss/core" "0.58.6"
-    "@unocss/preset-mini" "0.58.6"
-    "@unocss/rule-utils" "0.58.6"
+    "@unocss/core" "0.59.2"
+    "@unocss/preset-mini" "0.59.2"
+    "@unocss/rule-utils" "0.59.2"
 
-"@unocss/rule-utils@0.58.6":
-  version "0.58.6"
-  resolved "https://registry.yarnpkg.com/@unocss/rule-utils/-/rule-utils-0.58.6.tgz#cdafb595a0807af0e8059be112cbe23e9631eb90"
-  integrity sha512-qbVDeyKzExFY/YeoIbMw/lu8PXEGJzSHrFXRumNHX5lvTu8ggAjH6p9xyvYa/YnuNU0+pFKuYxG8LNK2F8f1EQ==
+"@unocss/rule-utils@0.59.2":
+  version "0.59.2"
+  resolved "https://registry.yarnpkg.com/@unocss/rule-utils/-/rule-utils-0.59.2.tgz#6e71780c41b62879bbb5b0cd465f400d2b6bc176"
+  integrity sha512-2F1Q1pCfeG65GxPEhGQDZXXoZk38fX4o5LOYf35XkknhjQmkaeK76szVYXLDoyK30n9EiwXqoc0MdKrGjeCMUA==
   dependencies:
-    "@unocss/core" "^0.58.6"
-    magic-string "^0.30.8"
+    "@unocss/core" "^0.59.2"
+    magic-string "^0.30.9"
 
 "@vitejs/plugin-vue2@2.3.1":
   version "2.3.1"
@@ -4835,10 +4835,10 @@ magic-string@^0.25.0, magic-string@^0.25.7:
   dependencies:
     sourcemap-codec "^1.4.8"
 
-magic-string@^0.30.1, magic-string@^0.30.3, magic-string@^0.30.5, magic-string@^0.30.8:
-  version "0.30.8"
-  resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.30.8.tgz#14e8624246d2bedba70d5462aa99ac9681844613"
-  integrity sha512-ISQTe55T2ao7XtlAStud6qwYPZjE4GK1S/BeVPus4jrq6JuOnQ00YKQC581RWhR122W7msZV263KzVeLoqidyQ==
+magic-string@^0.30.1, magic-string@^0.30.3, magic-string@^0.30.5, magic-string@^0.30.9:
+  version "0.30.9"
+  resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.30.9.tgz#8927ae21bfdd856310e07a1bc8dd5e73cb6c251d"
+  integrity sha512-S1+hd+dIrC8EZqKyT9DstTH/0Z+f76kmmvZnkfQVmOpDEF9iVgdYif3Q/pIWHmCoo59bQVGW0kVL3e2nl+9+Sw==
   dependencies:
     "@jridgewell/sourcemap-codec" "^1.4.15"
 
