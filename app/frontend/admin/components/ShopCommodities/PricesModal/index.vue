@@ -1,55 +1,8 @@
-<template>
-  <Modal v-if="shopCommodity" ref="modal" :title="title" class="prices-modal">
-    <form @submit.prevent="onSubmit">
-      <div v-for="record in prices" :key="record.id" class="price-item">
-        <!-- eslint-disable vue/no-v-html -->
-        <span
-          v-if="record.price"
-          class="price-label"
-          v-html="toUEC(record.price)"
-        />
-        <!-- eslint-enable vue/no-v-html -->
-        <span v-if="record.timeRange" class="time-range-label">
-          {{ record.timeRange }}
-        </span>
-        <span class="date-label">
-          {{ l(record.createdAt) }}
-        </span>
-        <span
-          v-tooltip="t('labels.shopCommodity.confirmed')"
-          class="confirmed-label"
-        >
-          <i v-if="record.confirmed" class="fal fa-check" />
-          <i v-else class="fal fa-times" />
-        </span>
-        <Btn size="small" inline @click="handleDestroy(record)">
-          <i class="fa fa-times" />
-        </Btn>
-      </div>
-      <div class="new-price">
-        <FormInput
-          v-model="price"
-          name="price"
-          class="input"
-          type="number"
-          :no-label="true"
-          :autofocus="true"
-          translation-key="commodityPrice.price"
-        />
-        <FilterGroup
-          v-if="path === 'rental'"
-          v-model="timeRange"
-          name="timeRange"
-          :options="timeRanges"
-          :no-label="true"
-        />
-        <Btn size="small" type="submit">
-          <i class="fa fa-check" />
-        </Btn>
-      </div>
-    </form>
-  </Modal>
-</template>
+<!-- <script lang="ts">
+export default {
+  name: "BuyPricesModal",
+};
+</script>
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -165,12 +118,59 @@ const handleDestroy = async (record: CommodityPrice) => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "BuyPricesModal",
-};
-</script>
+<template>
+  <Modal v-if="shopCommodity" ref="modal" :title="title" class="prices-modal">
+    <form @submit.prevent="onSubmit">
+      <div v-for="record in prices" :key="record.id" class="price-item">
+        <!-- eslint-disable vue/no-v-html -->
+        <span
+          v-if="record.price"
+          class="price-label"
+          v-html="toUEC(record.price)"
+        />
+        <!-- eslint-enable vue/no-v-html -->
+        <span v-if="record.timeRange" class="time-range-label">
+          {{ record.timeRange }}
+        </span>
+        <span class="date-label">
+          {{ l(record.createdAt) }}
+        </span>
+        <span
+          v-tooltip="t('labels.shopCommodity.confirmed')"
+          class="confirmed-label"
+        >
+          <i v-if="record.confirmed" class="fal fa-check" />
+          <i v-else class="fal fa-times" />
+        </span>
+        <Btn size="small" inline @click="handleDestroy(record)">
+          <i class="fa fa-times" />
+        </Btn>
+      </div>
+      <div class="new-price">
+        <FormInput
+          v-model="price"
+          name="price"
+          class="input"
+          type="number"
+          :no-label="true"
+          :autofocus="true"
+          translation-key="commodityPrice.price"
+        />
+        <FilterGroup
+          v-if="path === 'rental'"
+          v-model="timeRange"
+          name="timeRange"
+          :options="timeRanges"
+          :no-label="true"
+        />
+        <Btn size="small" type="submit">
+          <i class="fa fa-check" />
+        </Btn>
+      </div>
+    </form>
+  </Modal>
+</template>
 
 <style lang="scss" scoped>
 @import "index";
-</style>
+</style> -->

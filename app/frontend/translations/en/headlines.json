@@ -8,6 +8,7 @@
         "index": "Ships Index",
         "fleetchart": "Ships Fleetchart"
       },
+      "search": "Search",
       "images": "Images Index",
       "stats": "Stats",
       "notFound": "Navigation Error",

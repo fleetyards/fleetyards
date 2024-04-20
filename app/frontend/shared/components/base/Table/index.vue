@@ -1,130 +1,10 @@
-<template>
-  <Panel class="relative" :slim="true">
-    <transition-group
-      name="fade"
-      class="filtered-table"
-      :class="{
-        'filtered-table-loading': loading,
-      }"
-      tag="div"
-      :appear="true"
-    >
-      <div
-        v-if="internalSelected.length"
-        key="selected-header"
-        class="fade-list-item col-12 filtered-table-selected"
-      >
-        <div class="filtered-table-row">
-          <div class="selected-count">
-            {{
-              t("filteredTable.labels.selected", {
-                count: internalSelected.length,
-              })
-            }}
-            <Btn
-              v-tooltip="t('filteredTable.actions.unselect')"
-              :size="BtnSizesEnum.SMALL"
-              :variant="BtnVariantsEnum.LINK"
-              :inline="true"
-              @click="resetSelected"
-            >
-              <i class="fal fa-times" />
-            </Btn>
-          </div>
-          <slot
-            :selected-count="internalSelected.length"
-            name="selected-actions"
-          />
-        </div>
-      </div>
-      <div key="heading" class="fade-list-item col-12 filtered-table-heading">
-        <div class="filtered-table-row">
-          <div v-if="selectable && !mobile" class="col-selectable">
-            <Checkbox
-              name="all"
-              :model-value="allSelected"
-              @update:model-value="onAllSelectedChange"
-            />
-          </div>
-          <div
-            v-for="(column, index) in columns"
-            :key="`filtered-table-heading-${uuid}-${index}-${column.name}`"
-            :class="column.class"
-            :style="{
-              'flex-grow': column.flexGrow,
-              width: column.width,
-              'min-width': column.minWidth,
-            }"
-          >
-            {{ column.label }}
-          </div>
-        </div>
-      </div>
-      <template v-if="records.length">
-        <div
-          v-for="(record, index) in records"
-          :key="record[primaryKey]"
-          class="fade-list-item col-12 filtered-table-item"
-        >
-          <slot :record="record" :index="index">
-            <div class="filtered-table-row">
-              <div v-if="selectable && !mobile" class="col-selectable">
-                <Checkbox
-                  v-model="internalSelected"
-                  name="item"
-                  :checkbox-value="record.id"
-                />
-              </div>
-              <template
-                v-for="(column, colIndex) in columns"
-                :key="`filtered-table-item-${uuid}-${colIndex}-${column.name}`"
-              >
-                <div
-                  :class="column.class"
-                  :style="{
-                    'flex-grow': column.flexGrow,
-                    width: column.width,
-                    'min-width': column.minWidth,
-                  }"
-                >
-                  <slot :record="record" :name="`col-${column.name}`">
-                    {{ record[column.field || column.name] }}
-                  </slot>
-                </div>
-              </template>
-            </div>
-          </slot>
-        </div>
-      </template>
-      <div
-        v-if="loading && inlineLoader"
-        key="loading-row"
-        class="fade-list-item col-12 filtered-table-loader"
-      >
-        <div class="filtered-table-row">
-          <slot name="loader-inline" :loading="loading"></slot>
-        </div>
-      </div>
-      <div
-        v-else-if="emptyBoxVisible"
-        key="empty-row"
-        class="fade-list-item col-12 filtered-table-empty"
-      >
-        <div class="filtered-table-row">
-          <slot name="empty">
-            {{ t("filteredTable.empty.info") }}
-          </slot>
-        </div>
-      </div>
-    </transition-group>
-    <slot v-if="!inlineLoader" name="loader" :loading="loading">
-      <Loader :loading="loading" relative />
-    </slot>
-  </Panel>
-</template>
+<script lang="ts">
+export default {
+  name: "BaseTable",
+};
+</script>
 
-<script lang="ts" setup>
-import Btn from "@/shared/components/base/Btn/index.vue";
+<script lang="ts" setup generic="T">
 import { uniq as uniqArray } from "@/shared/utils/Array";
 import Checkbox from "@/shared/components/base/Checkbox/index.vue";
 import { v4 as uuidv4 } from "uuid";
@@ -132,28 +12,19 @@ import Panel from "@/shared/components/Panel/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useI18n } from "@/shared/composables/useI18n";
+import { type BaseTableColumn } from "@/shared/components/base/Table/types";
+import { RouteLocationRaw } from "vue-router";
 import {
-  BtnSizesEnum,
   BtnVariantsEnum,
+  BtnSizesEnum,
 } from "@/shared/components/base/Btn/types";
-
-export type TableColumn = {
-  name: string;
-  label: string;
-  field?: string;
-  class?: string;
-  flexGrow?: number;
-  width?: string;
-  minWidth?: string;
-};
 
 const { t } = useI18n();
 
 type Props = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  records: any[];
-  columns: TableColumn[];
-  primaryKey: string;
+  records: T[];
+  columns: BaseTableColumn[];
+  primaryKey: keyof T;
   loading?: boolean;
   inlineLoader?: boolean;
   emptyBoxVisible?: boolean;
@@ -173,6 +44,14 @@ const internalSelected = ref<string[]>([]);
 
 const mobile = useMobile();
 
+const filteredColumns = computed(() => {
+  return props.columns.filter((column) => {
+    const showMobile = column.mobile === undefined || column.mobile === true;
+
+    return showMobile || !mobile.value;
+  });
+});
+
 const uuid = ref<string>(uuidv4());
 
 const allSelected = computed(() => {
@@ -181,8 +60,8 @@ const allSelected = computed(() => {
   }
 
   return props.records
-    .map((record) => record.id)
-    .every((recordId) => internalSelected.value.includes(recordId));
+    .map((record) => record[props.primaryKey])
+    .every((recordId) => internalSelected.value.includes(recordId as string));
 });
 
 watch(
@@ -205,30 +84,234 @@ onMounted(() => {
   uuid.value = uuidv4();
 });
 
-const onAllSelectedChange = (value: string[]) => {
+const onAllSelectedChange = (value?: string[]) => {
   if (value) {
     internalSelected.value = [
       ...internalSelected.value,
-      ...props.records.map((record) => record.id),
+      ...props.records.map((record) => record[props.primaryKey] as string),
     ].filter(uniqArray);
   } else {
     internalSelected.value = [...internalSelected.value].filter(
       (selected) =>
-        !props.records.map((record) => record.id).includes(selected),
+        !props.records
+          .map((record) => record[props.primaryKey] as string)
+          .includes(selected),
     );
   }
 };
+
+const fieldByColumn = (column: BaseTableColumn) => {
+  return (column.field || column.name) as keyof T;
+};
+
+const primaryValue = (record: T) => {
+  return record[props.primaryKey] as string | number;
+};
+
+const route = useRoute();
+
+const sortableDirection = (column: BaseTableColumn) => {
+  if (!column.sortable || !route.query.s) {
+    return undefined;
+  }
+
+  if (route.query.s.includes(sortableField(column))) {
+    return (route.query.s as string).split(" ")[1];
+  }
+};
+
+const sortableField = (column: BaseTableColumn) => {
+  return (column.field || column.name) as string;
+};
+
+const sortableLink = (column: BaseTableColumn) => {
+  const direction = sortableDirection(column) === "asc" ? "desc" : "asc";
+
+  return {
+    query: {
+      s: `${sortableField(column)} ${direction}`,
+    },
+  } as RouteLocationRaw;
+};
+
+const columnCssClasses = (column: BaseTableColumn) => {
+  return {
+    [`${column.class}`]: column.class,
+    [`base-table__column--sorted-${sortableDirection(column) || "asc"}`]:
+      column.sortable,
+  };
+};
+
+const slots = useSlots();
+
+const columnCount = computed(() => {
+  return (
+    props.columns.length + (slots.actions ? 1 : 0) + (props.selectable ? 1 : 0)
+  );
+});
 
 const resetSelected = () => {
   internalSelected.value = [];
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "BaseTable",
-};
-</script>
+<template>
+  <Panel class="base-table" :slim="true">
+    <div class="base-table__wrapper">
+      <table class="base-table__inner">
+        <transition-group
+          name="list"
+          :class="{
+            'base-table__loading': loading,
+          }"
+          tag="thead"
+          :appear="true"
+        >
+          <tr v-if="internalSelected.length > 0" key="selected-header">
+            <th :colspan="columnCount">
+              <div class="base-table__selected">
+                <div class="base-table__selected--count">
+                  <span>
+                    {{
+                      t("filteredTable.labels.selected", {
+                        count: internalSelected.length,
+                      })
+                    }}
+                  </span>
+                  <Btn
+                    v-tooltip="t('filteredTable.actions.unselect')"
+                    :size="BtnSizesEnum.SMALL"
+                    :variant="BtnVariantsEnum.LINK"
+                    inline
+                    @click="resetSelected"
+                  >
+                    <i class="fa fa-times" />
+                  </Btn>
+                </div>
+                <div class="base-table__selected--actions">
+                  <slot name="selected-actions" :selected="internalSelected" />
+                </div>
+              </div>
+            </th>
+          </tr>
+          <tr key="header" class="base-table__header">
+            <th v-if="selectable" class="base-table__column">
+              <Checkbox
+                name="all"
+                :model-value="allSelected"
+                inline
+                :partial="internalSelected.length > 0 && !allSelected"
+                @update:model-value="onAllSelectedChange"
+              />
+            </th>
+            <th
+              v-for="(column, index) in filteredColumns"
+              :key="`base-table__header-${uuid}-${index}-${column.name}`"
+              class="base-table__column"
+              :class="columnCssClasses(column)"
+              :style="{
+                'flex-grow': column.flexGrow,
+                width: column.width,
+                'min-width': column.minWidth,
+              }"
+            >
+              <router-link v-if="column.sortable" :to="sortableLink(column)">
+                {{ column.label }}
+                <i
+                  v-if="sortableDirection(column) === 'desc'"
+                  class="fad fa-sort-up"
+                />
+                <i v-else class="fad fa-sort-down" />
+              </router-link>
+              <span v-else>
+                {{ column.label }}
+              </span>
+            </th>
+            <th
+              v-if="slots.actions"
+              class="base-table__column base-table__column-actions"
+            >
+              {{ t("labels.actions") }}
+            </th>
+          </tr>
+        </transition-group>
+        <transition-group
+          name="list"
+          :class="{
+            'base-table__loading': loading,
+          }"
+          tag="tbody"
+          :appear="true"
+        >
+          <tr
+            v-for="record in records"
+            :key="primaryValue(record)"
+            class="base-table__row"
+          >
+            <td v-if="selectable" class="base-table__column">
+              <Checkbox
+                v-model="internalSelected"
+                name="item"
+                inline
+                :checkbox-value="primaryValue(record)"
+              />
+            </td>
+            <td
+              v-for="column in filteredColumns"
+              :key="`base-table__item-${uuid}-${column.name}`"
+              class="base-table__column"
+              :class="{
+                [`${column.class}`]: !!column.class,
+                'base-table__column--centered': column.centered,
+              }"
+              :style="{
+                'flex-grow': column.flexGrow,
+                width: column.width,
+                'min-width': column.minWidth,
+              }"
+            >
+              <div class="base-table__column-inner">
+                <slot :record="record" :name="`col-${column.name}`">
+                  {{ record[fieldByColumn(column)] }}
+                </slot>
+              </div>
+            </td>
+            <td class="base-table__column base-table__column-actions">
+              <div class="base-table__column-inner">
+                <slot :record="record" name="actions" />
+              </div>
+            </td>
+          </tr>
+          <tr
+            v-if="loading && inlineLoader"
+            key="loading-row"
+            class="base-table__loader"
+          >
+            <td class="base-table__column">
+              <slot name="loader-inline" :loading="loading"></slot>
+            </td>
+          </tr>
+          <tr
+            v-else-if="emptyBoxVisible"
+            key="empty-row"
+            class="base-table__empty"
+          >
+            <td class="base-table__column" :colspan="columnCount">
+              <div class="base-table__empty-inner">
+                <slot name="empty">
+                  {{ t("filteredTable.empty.info") }}
+                </slot>
+              </div>
+            </td>
+          </tr>
+        </transition-group>
+      </table>
+      <slot v-if="!inlineLoader" name="loader" :loading="loading">
+        <Loader :loading="loading" relative />
+      </slot>
+    </div>
+  </Panel>
+</template>
 
 <style lang="scss" scoped>
 @import "index";

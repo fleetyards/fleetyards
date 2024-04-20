@@ -130,6 +130,11 @@
         "onSale": "On Sale: %{price}",
         "store": "RSI Page"
       },
+      "models": {
+        "sync": "Sync from RSI",
+        "exchangeStoreImage": "Use RSI Image",
+        "images": "Images"
+      },
       "unselect": "Unselect all Selected",
       "openPriceModal": "Submit Price",
       "shoppingCart": {

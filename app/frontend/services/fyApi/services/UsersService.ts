@@ -2,10 +2,13 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { AccountUpdateInput } from '../models/AccountUpdateInput';
 import type { Check } from '../models/Check';
 import type { CheckInput } from '../models/CheckInput';
+import type { StandardMessage } from '../models/StandardMessage';
 import type { User } from '../models/User';
 import type { UserCreateInput } from '../models/UserCreateInput';
+import type { UserUpdateInput } from '../models/UserUpdateInput';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class UsersService {
@@ -66,6 +69,20 @@ export class UsersService {
         });
     }
     /**
+     * Destroy Account
+     * @returns StandardMessage successful
+     * @throws ApiError
+     */
+    public destroyAccount(): CancelablePromise<StandardMessage> {
+        return this.httpRequest.request({
+            method: 'DELETE',
+            url: '/users/me',
+            errors: {
+                401: `bad request`,
+            },
+        });
+    }
+    /**
      * My Data
      * @returns User successful
      * @throws ApiError
@@ -75,6 +92,47 @@ export class UsersService {
             method: 'GET',
             url: '/users/me',
             errors: {
+                401: `unauthorized`,
+            },
+        });
+    }
+    /**
+     * Update My Data
+     * @returns User successful
+     * @throws ApiError
+     */
+    public updateProfile({
+        formData,
+    }: {
+        formData: UserUpdateInput,
+    }): CancelablePromise<User> {
+        return this.httpRequest.request({
+            method: 'PUT',
+            url: '/users/me',
+            formData: formData,
+            mediaType: 'multipart/form-data',
+            errors: {
+                401: `unauthorized`,
+            },
+        });
+    }
+    /**
+     * Update My Account
+     * @returns User successful
+     * @throws ApiError
+     */
+    public updateAccount({
+        requestBody,
+    }: {
+        requestBody: AccountUpdateInput,
+    }): CancelablePromise<User> {
+        return this.httpRequest.request({
+            method: 'PUT',
+            url: '/users/account',
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                400: `bad request`,
                 401: `unauthorized`,
             },
         });

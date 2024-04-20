@@ -50,7 +50,8 @@
         "failure": "Your password could not be updated."
       },
       "updateProfile": {
-        "success": "Profile updated."
+        "success": "Profile updated.",
+        "failure": "Profile could not be updated."
       },
       "updateHangar": {
         "success": "Hangar Settings updated."
@@ -62,7 +63,14 @@
         "success": "Account updated."
       },
       "avatarUpload": {
-        "success": "Avatar uploaded",
+        "create": {
+          "success": "Avatar uploaded",
+          "failure": "Could not upload Avatar"
+        },
+        "destroy": {
+          "success": "Avatar removed",
+          "failure": "Could not remove Avatar"
+        },
         "invalidExtension": "The Picture you provided has an invalid Format. Supported Formats are: %{extensions}."
       },
       "hangarImport": {

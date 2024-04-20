@@ -21,6 +21,7 @@ import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useQuery } from "@tanstack/vue-query";
 import { useSearchStore } from "@/frontend/stores/search";
 import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
+import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 
 const form = ref<SearchQuery>({
   search: undefined,
@@ -118,7 +119,7 @@ const restoreSearch = (search: string) => {
                 <FormInput
                   v-model="searchTerm"
                   name="search"
-                  size="large"
+                  :size="InputSizesEnum.LARGE"
                   :autofocus="true"
                   :clearable="true"
                   translation-key="search.default"

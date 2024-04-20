@@ -1,10 +1,10 @@
 <template>
-  <Panel alignment="left" :slim="slim">
+  <Panel :alignment="PanelAlignmentsEnum.LEFT" :slim="slim">
     <PanelImage
       :image="storeImage"
       image-size="auto"
       rounded="left"
-      alt="Odyssey"
+      :alt="item.name"
       :to="to"
     />
     <div>
@@ -36,6 +36,7 @@ import {
   type ModelUpgrade,
 } from "@/services/fyApi";
 import { type RouteLocationRaw } from "vue-router";
+import { PanelAlignmentsEnum } from "@/shared/components/Panel/types";
 
 type Props = {
   item: Model | ModelModule | ModelUpgrade;
@@ -73,6 +74,6 @@ const storeImage = computed(() => {
 
 <script lang="ts">
 export default {
-  name: "",
+  name: "TeaserPanel",
 };
 </script>

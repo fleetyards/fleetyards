@@ -25,7 +25,7 @@
 <script lang="ts" setup>
 import AsyncData from "@/shared/components/AsyncData.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import TeaserPanel from "@/shared/components/TeaserPanel2/index.vue";
+import TeaserPanel from "@/shared/components/TeaserPanel/index.vue";
 import { useModelQueries } from "@/frontend/composables/useModelQueries";
 
 type Props = {

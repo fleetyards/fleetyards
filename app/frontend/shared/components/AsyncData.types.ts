@@ -4,11 +4,11 @@ import { type AxiosError } from "axios";
 export type AsyncStatus = {
   fetchStatus: Ref<string>;
   isError: Ref<boolean>;
-  error?: Ref<ApiError | AxiosError>;
   isLoading: Ref<boolean>;
   isFetching: Ref<boolean>;
   isRefetching: Ref<boolean>;
   refetch?: () => void;
+  error: Ref<AxiosError | ApiError | Error | null>;
 };
 
 export enum ErrorTypesEnum {

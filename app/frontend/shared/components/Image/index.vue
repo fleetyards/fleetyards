@@ -6,8 +6,8 @@
     :title="title || alt"
     :href="href"
     class="image gallery-image"
-    @click.native.ctrl.prevent="openInNewTab(href)"
-    @click.native.meta.prevent="openInNewTab(href)"
+    @click.ctrl.prevent="openInNewTab(href)"
+    @click.meta.prevent="openInNewTab(href)"
   />
 </template>
 

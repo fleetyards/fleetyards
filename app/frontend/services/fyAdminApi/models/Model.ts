@@ -57,6 +57,7 @@ export type Model = {
         storeImage?: MediaImage;
         topView?: ViewImage;
         topViewColored?: ViewImage;
+        rsiStoreImage?: MediaImage;
     };
     metrics: {
         beam?: number;
@@ -103,5 +104,7 @@ export type Model = {
     };
     createdAt: string;
     updatedAt: string;
+    hidden: boolean;
+    active: boolean;
 };
 

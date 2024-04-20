@@ -12,18 +12,6 @@
       :no-label="true"
     />
 
-    <FilterGroup
-      key="admin-images-filter-station"
-      v-model="stationIdEq"
-      :label="t('labels.filters.images.station')"
-      :query-fn="fetchStations"
-      :query-response-formatter="stationsFormatter"
-      name="station"
-      :searchable="true"
-      :paginated="true"
-      :no-label="true"
-    />
-
     <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
       <i class="fal fa-times" />
       {{ t("actions.resetFilter") }}
@@ -38,13 +26,7 @@ import type { FilterGroupParams } from "@/shared/components/base/FilterGroup/ind
 import { useRoute } from "vue-router";
 import { useFilters } from "@/shared/composables/useFilters";
 import { useI18n } from "@/shared/composables/useI18n";
-import type {
-  ImageQuery,
-  Models,
-  ModelQuery,
-  Stations,
-  StationQuery,
-} from "@/services/fyAdminApi";
+import type { ImageQuery, Models, ModelQuery } from "@/services/fyAdminApi";
 import { useApiClient } from "@/admin/composables/useApiClient";
 
 const { t } = useI18n();
@@ -126,7 +108,7 @@ const submit = () => {
   filter(form.value);
 };
 
-const { models: modelsService, stations: stationsService } = useApiClient();
+const { models: modelsService } = useApiClient();
 
 const modelsFormatter = (response: Models) => {
   return response.items.map((model) => {
@@ -153,33 +135,6 @@ const fetchModels = async (params: FilterGroupParams) => {
   }
 
   return modelsService.models({
-    page: String(params.page || 1),
-    s: ["name asc"],
-    q,
-  });
-};
-
-const stationsFormatter = (response: Stations) => {
-  return response.items.map((station) => {
-    return {
-      label: station.name,
-      value: station.id,
-    };
-  });
-};
-
-const fetchStations = async (params: FilterGroupParams) => {
-  const q: StationQuery = {};
-
-  if (params.search) {
-    q.searchCont = params.search;
-  }
-
-  if (params.missing) {
-    q.idEq = params.missing as string;
-  }
-
-  return stationsService.stations({
     page: String(params.page || 1),
     s: ["name asc"],
     q,

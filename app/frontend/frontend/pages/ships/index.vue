@@ -113,7 +113,7 @@ const toggleDetailsTooltip = computed(() => {
     :records="models?.items || []"
     :async-status="asyncStatus"
   >
-    <template #actions>
+    <template #actions-right>
       <BtnDropdown :size="BtnSizesEnum.SMALL">
         <Btn
           :active="detailsVisible"
@@ -131,11 +131,11 @@ const toggleDetailsTooltip = computed(() => {
       <FilterForm />
     </template>
 
-    <template #default="{ records, loading, filterVisible, primaryKey }">
+    <template #default="{ records, loading, filterVisible }">
       <Grid
         :records="records"
         :filter-visible="filterVisible"
-        :primary-key="primaryKey"
+        primary-key="slug"
       >
         <template #default="{ record }">
           <ModelPanel :model="record" :details="detailsVisible" />

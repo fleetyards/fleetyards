@@ -14,6 +14,7 @@ module Admin
       @models = @q.result
         .page(params.fetch(:page) { nil })
         .per(40)
+      @app_enabled = true
     end
 
     def name_diff

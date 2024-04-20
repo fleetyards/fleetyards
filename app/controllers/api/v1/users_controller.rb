@@ -8,6 +8,7 @@ module Api
 
       def me
         authorize! :read, current_user
+
         @user = current_user
       end
 
@@ -20,6 +21,7 @@ module Api
         authorize! :update, current_user
 
         @user = current_user
+
         return if @user.update(user_params)
 
         render json: ValidationError.new("update", errors: @user.errors), status: :bad_request

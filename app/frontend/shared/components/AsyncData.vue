@@ -20,6 +20,7 @@ import {
   ErrorTypesEnum,
 } from "@/shared/components/AsyncData.types";
 import { isAxiosError } from "axios";
+import { type ApiError } from "@/services/fyApi";
 
 type Props = {
   asyncStatus: AsyncStatus;
@@ -54,7 +55,7 @@ const status = computed(() => {
   }
 
   // ApiError
-  return error.value.status;
+  return (error.value as ApiError).status;
 });
 
 const errorType = computed(() => {
@@ -71,8 +72,9 @@ const errorType = computed(() => {
 
 const loading = computed(() => {
   return (
-    (props.asyncStatus.isFetching.value || props.asyncStatus.isLoading.value) &&
-    !props.asyncStatus.isRefetching.value
+    (props.asyncStatus.isFetching?.value ||
+      props.asyncStatus.isLoading?.value) &&
+    !props.asyncStatus.isRefetching?.value
   );
 });
 </script>

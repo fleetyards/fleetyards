@@ -4,28 +4,26 @@ export default {
 };
 </script>
 
-<script lang="ts" setup>
+<script lang="ts" setup generic="T">
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import EmptyBox from "@/shared/components/EmptyBox/index.vue";
 import { useFiltersStore } from "@/shared/stores/filters";
 import { useFilters } from "@/shared/composables/useFilters";
-import type { AsyncStatus } from "@/shared/components/AsyncData.vue";
+import { type AsyncStatus } from "@/shared/components/AsyncData.types";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   name: string;
-  records: Record<string, unknown>[];
+  records: T[];
   asyncStatus: AsyncStatus;
-  primaryKey?: string;
   staticFilters?: boolean;
   hideEmptyBox?: boolean;
   hideLoading?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  primaryKey: "id",
   staticFilters: false,
   hideEmptyBox: false,
   hideLoading: false,
@@ -147,9 +145,10 @@ const toggleFilter = () => {
               <i v-if="isFilterSelected" class="fas fa-filter" />
               <i v-else class="far fa-filter" />
             </Btn>
+            <slot name="actions-left" :records="records" />
           </div>
           <div class="filtered-header-right">
-            <slot name="actions" :records="records" />
+            <slot name="actions-right" :records="records" />
           </div>
         </div>
       </div>
@@ -180,7 +179,6 @@ const toggleFilter = () => {
             :records="records"
             :filter-visible="filterVisible"
             :loading="loading"
-            :primary-key="primaryKey"
             :empty-box-visible="emptyBoxVisible"
           />
 

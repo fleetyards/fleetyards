@@ -10,6 +10,7 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
+export type { AccountUpdateInput } from './models/AccountUpdateInput';
 export type { BarChartStats } from './models/BarChartStats';
 export type { BaseList } from './models/BaseList';
 export { BoughtViaEnum } from './models/BoughtViaEnum';
@@ -130,6 +131,7 @@ export type { Stats } from './models/Stats';
 export type { SyncRsiHangarInput } from './models/SyncRsiHangarInput';
 export type { User } from './models/User';
 export type { UserCreateInput } from './models/UserCreateInput';
+export type { UserUpdateInput } from './models/UserUpdateInput';
 export type { ValidationError } from './models/ValidationError';
 export type { Vehicle } from './models/Vehicle';
 export type { VehicleBulkDestroyInput } from './models/VehicleBulkDestroyInput';

@@ -56,12 +56,12 @@ const { data: images, ...asyncStatus } = useQuery({
     :async-status="asyncStatus"
     class="images"
   >
-    <template #default="{ records, loading, filterVisible, primaryKey }">
+    <template #default="{ records, loading, filterVisible }">
       <Grid
         :records="records"
         :loading="loading"
         :filter-visible="filterVisible"
-        :primary-key="primaryKey"
+        primary-key="id"
       >
         <template #default="{ record, index }">
           <GalleryImage

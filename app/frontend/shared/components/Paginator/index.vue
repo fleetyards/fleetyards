@@ -25,7 +25,7 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   updatePerPage: undefined,
   perPage: undefined,
-  size: BtnSizesEnum.DEFAULT,
+  size: BtnSizesEnum.SMALL,
   inline: false,
   hash: undefined,
 });

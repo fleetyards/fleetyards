@@ -1,99 +1,8 @@
-<template>
-  <BtnDropdown
-    :size="size"
-    :variant="variant"
-    class="panel-edit-menu"
-    data-test="vehicle-menu"
-    expand-left
-    inline
-  >
-    <Btn
-      v-if="editable && !hideEdit"
-      :aria-label="t('actions.edit')"
-      :size="BtnSizesEnum.SMALL"
-      data-test="vehicle-edit"
-      @click="openEditModal"
-    >
-      <i class="fa fa-pencil" />
-      <span>{{ t("actions.edit") }}</span>
-    </Btn>
-    <Btn
-      v-if="vehicle.model"
-      :to="{
-        name: 'ship',
-        params: {
-          slug: vehicle.model.slug,
-        },
-      }"
-      :size="BtnSizesEnum.SMALL"
-    >
-      <i class="fad fa-starship" />
-      <span>{{ t("actions.showDetailPage") }}</span>
-    </Btn>
-    <Btn
-      v-if="editable && !wishlist"
-      :aria-label="t('actions.addToWishlist')"
-      :size="BtnSizesEnum.SMALL"
-      :disabled="updating"
-      data-test="vehicle-add-to-wishlist"
-      @click="addToWishlist"
-    >
-      <i class="fad fa-wand-sparkles" />
-      <span>{{ t("actions.addToWishlist") }}</span>
-    </Btn>
-    <Btn
-      v-if="editable && wishlist"
-      :aria-label="t('actions.addToHangar')"
-      :size="BtnSizesEnum.SMALL"
-      :disabled="updating"
-      data-test="vehicle-add-to-hangar"
-      @click="addToHangar"
-    >
-      <i class="fad fa-garage" />
-      <span>{{ t("actions.addToHangar") }}</span>
-    </Btn>
-    <Btn
-      v-if="editable"
-      :aria-label="t('actions.hangar.editName')"
-      :size="BtnSizesEnum.SMALL"
-      data-test="vehicle-edit-name"
-      @click="openNamingModal"
-    >
-      <i class="fa fa-signature" />
-      <span>{{ t("actions.hangar.editName") }}</span>
-    </Btn>
-    <Btn
-      v-if="editable && !wishlist"
-      :aria-label="t('actions.hangar.editGroups')"
-      :size="BtnSizesEnum.SMALL"
-      data-test="vehicle-edit-groups"
-      @click="openEditGroupsModal"
-    >
-      <i class="fad fa-object-group" />
-      <span>{{ t("actions.hangar.editGroups") }}</span>
-    </Btn>
-    <Btn
-      v-if="upgradable"
-      :aria-label="t('labels.model.addons')"
-      :size="BtnSizesEnum.SMALL"
-      @click="openAddonsModal"
-    >
-      <i class="fa fa-plus-octagon" />
-      <span>{{ t("labels.model.addons") }}</span>
-    </Btn>
-    <Btn
-      v-if="editable"
-      :aria-label="t('actions.remove')"
-      :size="BtnSizesEnum.SMALL"
-      :disabled="deleting"
-      data-test="vehicle-remove"
-      @click="remove"
-    >
-      <i class="fal fa-trash" />
-      <span>{{ t("actions.remove") }}</span>
-    </Btn>
-  </BtnDropdown>
-</template>
+<script lang="ts">
+export default {
+  name: "VehicleContextMenu",
+};
+</script>
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -122,7 +31,7 @@ const props = withDefaults(defineProps<Props>(), {
   editable: false,
   hideEdit: false,
   wishlist: false,
-  variant: BtnVariantsEnum.LINK,
+  variant: BtnVariantsEnum.DEFAULT,
   size: BtnSizesEnum.SMALL,
   inGroup: false,
 });
@@ -274,8 +183,99 @@ const openAddonsModal = () => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "VehicleContextMenu",
-};
-</script>
+<template>
+  <BtnDropdown
+    :size="size"
+    :variant="variant"
+    class="panel-edit-menu"
+    data-test="vehicle-menu"
+    expand-left
+    inline
+  >
+    <Btn
+      v-if="editable && !hideEdit"
+      :aria-label="t('actions.edit')"
+      :size="BtnSizesEnum.SMALL"
+      data-test="vehicle-edit"
+      @click="openEditModal"
+    >
+      <i class="fa fa-pencil" />
+      <span>{{ t("actions.edit") }}</span>
+    </Btn>
+    <Btn
+      v-if="vehicle.model"
+      :to="{
+        name: 'ship',
+        params: {
+          slug: vehicle.model.slug,
+        },
+      }"
+      :size="BtnSizesEnum.SMALL"
+    >
+      <i class="fad fa-starship" />
+      <span>{{ t("actions.showDetailPage") }}</span>
+    </Btn>
+    <Btn
+      v-if="editable && !wishlist"
+      :aria-label="t('actions.addToWishlist')"
+      :size="BtnSizesEnum.SMALL"
+      :disabled="updating"
+      data-test="vehicle-add-to-wishlist"
+      @click="addToWishlist"
+    >
+      <i class="fad fa-wand-sparkles" />
+      <span>{{ t("actions.addToWishlist") }}</span>
+    </Btn>
+    <Btn
+      v-if="editable && wishlist"
+      :aria-label="t('actions.addToHangar')"
+      :size="BtnSizesEnum.SMALL"
+      :disabled="updating"
+      data-test="vehicle-add-to-hangar"
+      @click="addToHangar"
+    >
+      <i class="fad fa-garage" />
+      <span>{{ t("actions.addToHangar") }}</span>
+    </Btn>
+    <Btn
+      v-if="editable"
+      :aria-label="t('actions.hangar.editName')"
+      :size="BtnSizesEnum.SMALL"
+      data-test="vehicle-edit-name"
+      @click="openNamingModal"
+    >
+      <i class="fa fa-signature" />
+      <span>{{ t("actions.hangar.editName") }}</span>
+    </Btn>
+    <Btn
+      v-if="editable && !wishlist"
+      :aria-label="t('actions.hangar.editGroups')"
+      :size="BtnSizesEnum.SMALL"
+      data-test="vehicle-edit-groups"
+      @click="openEditGroupsModal"
+    >
+      <i class="fad fa-object-group" />
+      <span>{{ t("actions.hangar.editGroups") }}</span>
+    </Btn>
+    <Btn
+      v-if="upgradable"
+      :aria-label="t('labels.model.addons')"
+      :size="BtnSizesEnum.SMALL"
+      @click="openAddonsModal"
+    >
+      <i class="fa fa-plus-octagon" />
+      <span>{{ t("labels.model.addons") }}</span>
+    </Btn>
+    <Btn
+      v-if="editable"
+      :aria-label="t('actions.remove')"
+      :size="BtnSizesEnum.SMALL"
+      :disabled="deleting"
+      data-test="vehicle-remove"
+      @click="remove"
+    >
+      <i class="fal fa-trash" />
+      <span>{{ t("actions.remove") }}</span>
+    </Btn>
+  </BtnDropdown>
+</template>

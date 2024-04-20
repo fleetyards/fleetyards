@@ -3318,6 +3318,24 @@ paths:
               "$ref": "#/components/schemas/UserCreateInput"
         required: true
   "/users/me":
+    delete:
+      summary: Destroy Account
+      operationId: destroyAccount
+      tags:
+      - Users
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardMessage"
+        '401':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
     get:
       summary: My Data
       operationId: me
@@ -3336,6 +3354,63 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    put:
+      summary: Update My Data
+      operationId: updateProfile
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/User"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              "$ref": "#/components/schemas/UserUpdateInput"
+        required: true
+  "/users/account":
+    put:
+      summary: Update My Account
+      operationId: updateAccount
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/User"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AccountUpdateInput"
+        required: true
   "/vehicles/bulk":
     put:
       summary: Update multiple vehicles
@@ -5057,6 +5132,16 @@ components:
       - items
       - meta
       title: Images
+    AccountUpdateInput:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+      additionalProperties: false
+      title: AccountUpdateInput
     ConfirmAccessInput:
       type: object
       properties:
@@ -5283,6 +5368,37 @@ components:
           type: string
       additionalProperties: false
       title: UserCreateInput
+    UserUpdateInput:
+      type: object
+      properties:
+        avatar:
+          type: file
+        removeAvatar:
+          type: boolean
+        rsiHandle:
+          type: string
+        homepage:
+          type: string
+        discord:
+          type: string
+        youtube:
+          type: string
+        guilded:
+          type: string
+        twitch:
+          type: string
+        saleNotify:
+          type: boolean
+        publicHangar:
+          type: boolean
+        publicHangarLoaners:
+          type: boolean
+        publicWishlist:
+          type: boolean
+        hideOwner:
+          type: boolean
+      additionalProperties: false
+      title: UserUpdateInput
     VehicleBulkDestroyInput:
       type: object
       properties:

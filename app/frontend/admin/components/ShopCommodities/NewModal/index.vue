@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <ValidationObserver v-slot="{ handleSubmit }" :small="true" :slim="true">
     <Modal v-if="form" :title="title">
       <form :id="formId" @submit.prevent="handleSubmit(submit)">
@@ -338,4 +338,4 @@ const props = withDefaults(defineProps<Props>(), {
 export default {
   name: "ShopCommoditiesNewModal",
 };
-</script>
+</script> -->

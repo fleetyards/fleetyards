@@ -4,6 +4,8 @@ json.id model.id
 json.sc_identifier model.sc_identifier
 json.name model.name
 json.slug model.slug
+json.hidden model.hidden
+json.active model.active
 
 json.availability do
   json.bought_at do
@@ -80,6 +82,9 @@ json.media do
   end
   json.store_image do
     json.partial! "api/v1/shared/media_image", media_image: model.store_image
+  end
+  json.rsi_store_image do
+    json.partial! "api/v1/shared/media_image", media_image: model.rsi_store_image
   end
   json.top_view do
     json.partial! "api/v1/shared/view_image", view_image: model.top_view, width: model.top_view_width, height: model.top_view_height

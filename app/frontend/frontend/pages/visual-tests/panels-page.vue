@@ -1,164 +1,8 @@
-<template>
-  <div>
-    <div class="row">
-      <div class="col-12 col-md-4">
-        <h2>Panel</h2>
-        <Panel>
-          <PanelHeading level="h2">Panel Heading</PanelHeading>
-          <PanelImage :image="modelImage" alt="Odyssey" />
-          <PanelBody no-min-height>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus
-            laborum necessitatibus obcaecati exercitationem perferendis ad
-            cupiditate dolorem quam autem. At qui eum temporibus ad similique
-            ipsa id sed eos iure.
-          </PanelBody>
-        </Panel>
-      </div>
-      <div class="col-12 col-md-4">
-        <h2>Panel Image Top</h2>
-        <Panel>
-          <PanelImage :image="modelImage" rounded="top" alt="Odyssey" />
-          <div>
-            <PanelHeading level="h2">Panel Heading</PanelHeading>
-            <PanelBody no-min-height no-padding-top>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Accusamus laborum necessitatibus obcaecati exercitationem
-              perferendis ad cupiditate dolorem quam autem. At qui eum
-              temporibus ad similique ipsa id sed eos iure.
-            </PanelBody>
-          </div>
-        </Panel>
-      </div>
-      <div class="col-12 col-md-4">
-        <h2>Panel Image Bottom</h2>
-        <Panel>
-          <div>
-            <PanelHeading level="h2">Panel Heading</PanelHeading>
-            <PanelBody no-min-height no-padding-top>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Accusamus laborum necessitatibus obcaecati exercitationem
-              perferendis ad cupiditate dolorem quam autem. At qui eum
-              temporibus ad similique ipsa id sed eos iure.
-            </PanelBody>
-          </div>
-          <PanelImage :image="modelImage" rounded="bottom" alt="Odyssey" />
-        </Panel>
-      </div>
-    </div>
-    <hr />
-    <div class="row">
-      <div class="col-12 col-md-4">
-        <h2>Panel Image Left</h2>
-        <Panel alignment="left" slim>
-          <PanelImage
-            :image="modelImage"
-            image-size="auto"
-            rounded="left"
-            alt="Odyssey"
-          />
-          <div>
-            <PanelHeading level="h2">Panel Heading</PanelHeading>
-            <PanelBody no-min-height no-padding-top>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Accusamus laborum necessitatibus obcaecati exercitationem
-              perferendis ad cupiditate dolorem quam autem. At qui eum
-              temporibus ad similique ipsa id sed eos iure.
-            </PanelBody>
-          </div>
-        </Panel>
-      </div>
-      <div class="col-12 col-md-4">
-        <h2>Panel Image Right</h2>
-        <Panel alignment="right" slim>
-          <div>
-            <PanelHeading level="h2">Panel Heading</PanelHeading>
-            <PanelBody no-min-height no-padding-top>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Accusamus laborum necessitatibus obcaecati exercitationem
-              perferendis ad cupiditate dolorem quam autem. At qui eum
-              temporibus ad similique ipsa id sed eos iure.
-            </PanelBody>
-          </div>
-          <PanelImage
-            :image="modelImage"
-            image-size="auto"
-            rounded="right"
-            alt="Odyssey"
-          />
-        </Panel>
-      </div>
-    </div>
-    <hr />
-    <div class="row">
-      <div class="col-12">
-        <div class="row">
-          <div class="col-12 col-md-4">
-            <h2>Model Panel</h2>
-            <ModelPanel
-              v-if="internalModel"
-              :model="internalModel"
-              :details="modelPanelDetails"
-            />
-          </div>
-        </div>
-      </div>
-      <div class="col-12">
-        <Btn :size="BtnSizesEnum.SMALL" @click="toggleModelPanel"> Toggle </Btn>
-        <Btn :size="BtnSizesEnum.SMALL" @click="toggleModelOnSale">
-          Toggle on Sale
-        </Btn>
-      </div>
-    </div>
-    <hr />
-    <div class="row">
-      <div class="col-12">
-        <div class="row">
-          <div class="col-12 col-md-4">
-            <h2>Vehicle Panel</h2>
-            <VehiclePanel
-              v-if="vehicle"
-              :vehicle="vehicle"
-              :details="vehiclePanelDetails"
-              :editable="vehiclePanelEditable"
-              :loaners-hint-visible="vehiclePanelLoanerHint"
-            />
-          </div>
-        </div>
-      </div>
-      <div class="col-12">
-        <Btn :size="BtnSizesEnum.SMALL" @click="toggleVehiclePanel">
-          Toggle
-        </Btn>
-        <Btn :size="BtnSizesEnum.SMALL" @click="toggleVehiclePanelModelOnSale">
-          Toggle on Sale: {{ vehiclePanelModelOnSale }}
-        </Btn>
-        <Btn :size="BtnSizesEnum.SMALL" @click="toggleVehiclePanelEditable">
-          Toggle Edtiable: {{ vehiclePanelEditable ? "editable" : "read-only" }}
-        </Btn>
-        <Btn :size="BtnSizesEnum.SMALL" @click="toggleVehiclePanelFlagship">
-          Toggle Flagship: {{ vehiclePanelFlagship }}
-        </Btn>
-        <Btn :size="BtnSizesEnum.SMALL" @click="toggleVehiclePanelLoaner">
-          Toggle Loaner: {{ vehiclePanelLoaner }}
-        </Btn>
-        <Btn :size="BtnSizesEnum.SMALL" @click="toggleVehiclePanelLoanerHint">
-          Toggle Loaner Hint: {{ vehiclePanelLoanerHint }}
-        </Btn>
-      </div>
-    </div>
-    <hr />
-    <div class="row">
-      <div class="col-12">
-        <div class="row">
-          <div class="col-12 col-md-4">
-            <h2>Search Panel</h2>
-            <SearchPanel v-if="searchResult" :item="searchResult[0]" />
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "VisualTestsPanelsPage",
+};
+</script>
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -173,6 +17,10 @@ import { BoughtViaEnum } from "@/services/fyApi";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useQuery } from "@tanstack/vue-query";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import {
+  PanelAlignmentsEnum,
+  PanelVariantsEnum,
+} from "@/shared/components/Panel/types";
 
 const modelPanelDetails = ref(false);
 
@@ -308,8 +156,225 @@ const vehicle = computed(() => {
 });
 </script>
 
-<script lang="ts">
-export default {
-  name: "VisualTestsPanelsPage",
-};
-</script>
+<template>
+  <div>
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <Panel>
+          <PanelHeading level="h2">Panel</PanelHeading>
+          <PanelImage :image="modelImage" alt="Odyssey" />
+          <PanelBody no-min-height>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus
+            laborum necessitatibus obcaecati exercitationem perferendis ad
+            cupiditate dolorem quam autem. At qui eum temporibus ad similique
+            ipsa id sed eos iure.
+          </PanelBody>
+        </Panel>
+      </div>
+      <div class="col-12 col-md-4">
+        <Panel>
+          <PanelImage :image="modelImage" rounded="top" alt="Odyssey" />
+          <div>
+            <PanelHeading level="h2">Panel Image Top</PanelHeading>
+            <PanelBody no-min-height no-padding-top>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Accusamus laborum necessitatibus obcaecati exercitationem
+              perferendis ad cupiditate dolorem quam autem. At qui eum
+              temporibus ad similique ipsa id sed eos iure.
+            </PanelBody>
+          </div>
+        </Panel>
+      </div>
+      <div class="col-12 col-md-4">
+        <Panel>
+          <div>
+            <PanelHeading level="h2">Panel Image Bottom</PanelHeading>
+            <PanelBody no-min-height no-padding-top>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Accusamus laborum necessitatibus obcaecati exercitationem
+              perferendis ad cupiditate dolorem quam autem. At qui eum
+              temporibus ad similique ipsa id sed eos iure.
+            </PanelBody>
+          </div>
+          <PanelImage :image="modelImage" rounded="bottom" alt="Odyssey" />
+        </Panel>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <Panel :alignment="PanelAlignmentsEnum.LEFT" slim>
+          <PanelImage
+            :image="modelImage"
+            image-size="auto"
+            rounded="left"
+            alt="Odyssey"
+          />
+          <div>
+            <PanelHeading level="h2">Panel Image Left</PanelHeading>
+            <PanelBody no-min-height no-padding-top>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Accusamus laborum necessitatibus obcaecati exercitationem
+              perferendis ad cupiditate dolorem quam autem. At qui eum
+              temporibus ad similique ipsa id sed eos iure.
+            </PanelBody>
+          </div>
+        </Panel>
+      </div>
+      <div class="col-12 col-md-4">
+        <Panel :alignment="PanelAlignmentsEnum.RIGHT" slim>
+          <div>
+            <PanelHeading level="h2">Panel Image Right</PanelHeading>
+            <PanelBody no-min-height no-padding-top>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Accusamus laborum necessitatibus obcaecati exercitationem
+              perferendis ad cupiditate dolorem quam autem. At qui eum
+              temporibus ad similique ipsa id sed eos iure.
+            </PanelBody>
+          </div>
+          <PanelImage
+            :image="modelImage"
+            image-size="auto"
+            rounded="right"
+            alt="Odyssey"
+          />
+        </Panel>
+      </div>
+    </div>
+    <hr />
+    <h2>Panel Variants</h2>
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <Panel :variant="PanelVariantsEnum.ERROR" slim>
+          <PanelHeading level="h2">Panel Error</PanelHeading>
+          <PanelBody no-min-height>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus
+            laborum necessitatibus obcaecati exercitationem perferendis ad
+            cupiditate dolorem quam autem. At qui eum temporibus ad similique
+            ipsa id sed eos iure.
+          </PanelBody>
+        </Panel>
+      </div>
+      <div class="col-12 col-md-4">
+        <Panel :variant="PanelVariantsEnum.SUCCESS" slim>
+          <div>
+            <PanelHeading level="h2">Panel Success</PanelHeading>
+            <PanelBody no-min-height no-padding-top>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Accusamus laborum necessitatibus obcaecati exercitationem
+              perferendis ad cupiditate dolorem quam autem. At qui eum
+              temporibus ad similique ipsa id sed eos iure.
+            </PanelBody>
+          </div>
+        </Panel>
+      </div>
+      <div class="col-12 col-md-4">
+        <Panel :variant="PanelVariantsEnum.PRIMARY" slim>
+          <div>
+            <PanelHeading level="h2">Panel Primary</PanelHeading>
+            <PanelBody no-min-height no-padding-top>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Accusamus laborum necessitatibus obcaecati exercitationem
+              perferendis ad cupiditate dolorem quam autem. At qui eum
+              temporibus ad similique ipsa id sed eos iure.
+            </PanelBody>
+          </div>
+        </Panel>
+      </div>
+      <div class="col-12 col-md-4">
+        <Panel highlight slim>
+          <div>
+            <PanelHeading level="h2">Panel Highlight</PanelHeading>
+            <PanelBody no-min-height no-padding-top>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Accusamus laborum necessitatibus obcaecati exercitationem
+              perferendis ad cupiditate dolorem quam autem. At qui eum
+              temporibus ad similique ipsa id sed eos iure.
+            </PanelBody>
+          </div>
+        </Panel>
+      </div>
+      <div class="col-12 col-md-4">
+        <Panel :variant="PanelVariantsEnum.PRIMARY" highlight slim>
+          <div>
+            <PanelHeading level="h2">Panel Primary Highlight</PanelHeading>
+            <PanelBody no-min-height no-padding-top>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Accusamus laborum necessitatibus obcaecati exercitationem
+              perferendis ad cupiditate dolorem quam autem. At qui eum
+              temporibus ad similique ipsa id sed eos iure.
+            </PanelBody>
+          </div>
+        </Panel>
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-12 col-md-4">
+            <h2>Model Panel</h2>
+            <ModelPanel
+              v-if="internalModel"
+              :model="internalModel"
+              :details="modelPanelDetails"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <Btn :size="BtnSizesEnum.SMALL" @click="toggleModelPanel"> Toggle </Btn>
+        <Btn :size="BtnSizesEnum.SMALL" @click="toggleModelOnSale">
+          Toggle on Sale
+        </Btn>
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-12 col-md-4">
+            <h2>Vehicle Panel</h2>
+            <VehiclePanel
+              v-if="vehicle"
+              :vehicle="vehicle"
+              :details="vehiclePanelDetails"
+              :editable="vehiclePanelEditable"
+              :loaners-hint-visible="vehiclePanelLoanerHint"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <Btn :size="BtnSizesEnum.SMALL" @click="toggleVehiclePanel">
+          Toggle
+        </Btn>
+        <Btn :size="BtnSizesEnum.SMALL" @click="toggleVehiclePanelModelOnSale">
+          Toggle on Sale: {{ vehiclePanelModelOnSale }}
+        </Btn>
+        <Btn :size="BtnSizesEnum.SMALL" @click="toggleVehiclePanelEditable">
+          Toggle Edtiable: {{ vehiclePanelEditable ? "editable" : "read-only" }}
+        </Btn>
+        <Btn :size="BtnSizesEnum.SMALL" @click="toggleVehiclePanelFlagship">
+          Toggle Flagship: {{ vehiclePanelFlagship }}
+        </Btn>
+        <Btn :size="BtnSizesEnum.SMALL" @click="toggleVehiclePanelLoaner">
+          Toggle Loaner: {{ vehiclePanelLoaner }}
+        </Btn>
+        <Btn :size="BtnSizesEnum.SMALL" @click="toggleVehiclePanelLoanerHint">
+          Toggle Loaner Hint: {{ vehiclePanelLoanerHint }}
+        </Btn>
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-12 col-md-4">
+            <h2>Search Panel</h2>
+            <SearchPanel v-if="searchResult" :item="searchResult[0]" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

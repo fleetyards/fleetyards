@@ -6,11 +6,19 @@ module RansackHelper
   end
 
   def sorting_params(model, fallback = nil)
-    sorting_params = query_params(:sorts, sorts: [])
+    sorting_params = query_params(:sorts, sorts: []).presence || params.permit(:s, :sorts, s: [], sorts: [])
 
-    (sorting_params[:sorts].is_a?(Array) ? sorting_params[:sorts] : [sorting_params[:sorts]]).filter do |sort|
-      model::ALLOWED_SORTING_PARAMS.include?(sort)
-    end.presence || fallback || model::DEFAULT_SORTING_PARAMS
+    sorts = sorting_params[:s].presence || sorting_params[:sorts].presence
+
+    filtered_sorts = if current_user.is_a?(User)
+      (sorts.is_a?(Array) ? sorts : [sorts]).filter do |sort|
+        model::ALLOWED_SORTING_PARAMS.include?(sort)
+      end
+    else
+      sorts
+    end
+
+    filtered_sorts.presence || fallback || model::DEFAULT_SORTING_PARAMS
   end
 
   private def parse_query_params

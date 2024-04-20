@@ -13,6 +13,9 @@ import { useApiClient } from "@/frontend/composables/useApiClient";
 import type { PasswordRequestInput } from "@/services/fyApi";
 import { useSessionStore } from "@/frontend/stores/session";
 import { storeToRefs } from "pinia";
+import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
+import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
+import { useForm } from "vee-validate";
 
 const { t } = useI18n();
 
@@ -26,29 +29,27 @@ const sessionStore = useSessionStore();
 
 const { isAuthenticated } = storeToRefs(sessionStore);
 
-onMounted(() => {
-  setupForm();
+const { defineField, handleSubmit } = useForm<PasswordRequestInput>({
+  validationSchema: {
+    email: "required|email",
+  },
 });
 
-const setupForm = () => {
-  form.value = {
-    email: undefined,
-  };
-};
+const [email, emailProps] = defineField("email");
 
 const { password: passwordService } = useApiClient();
 
 const router = useRouter();
 
-const requestPassword = async () => {
+const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
   try {
     await passwordService.requestPasswordReset({
-      requestBody: form.value,
+      requestBody: values,
     });
   } catch (error) {
-    // console.error(error);
+    console.error(error);
   }
 
   displaySuccess({
@@ -57,55 +58,49 @@ const requestPassword = async () => {
 
   submitting.value = false;
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  router.push("/").catch(() => {});
-};
+  router.push("/");
+});
 </script>
 
 <template>
   <div class="row">
     <div class="col-12">
-      <ValidationObserver v-if="form" v-slot="{ handleSubmit }" :slim="true">
-        <form @submit.prevent="handleSubmit(requestPassword)">
-          <h1>
-            <router-link to="/" exact>
-              {{ t("app") }}
-            </router-link>
-          </h1>
+      <form @submit.prevent="onSubmit">
+        <h1>
+          <router-link to="/" exact>
+            {{ t("app") }}
+          </router-link>
+        </h1>
 
-          <ValidationProvider
-            v-slot="{ errors }"
-            vid="email"
-            rules="required|email"
-            :name="t('labels.email')"
-            :slim="true"
-          >
-            <FormInput
-              v-model="form.email"
-              name="email"
-              :error="errors[0]"
-              type="email"
-              :hide-label-on-empty="true"
-              autocomplete="off"
-              :autofocus="true"
-            />
-          </ValidationProvider>
+        <FormInput
+          v-model="email"
+          name="email"
+          :label="t('labels.email')"
+          :type="InputTypesEnum.EMAIL"
+          :hide-label-on-empty="true"
+          autocomplete="off"
+          v-bind="emailProps"
+          :autofocus="true"
+        />
+        <Btn
+          :loading="submitting"
+          :type="BtnTypesEnum.SUBMIT"
+          :size="BtnSizesEnum.LARGE"
+          :block="true"
+        >
+          {{ t("actions.requestPassword") }}
+        </Btn>
 
-          <Btn :loading="submitting" type="submit" size="large" :block="true">
-            {{ t("actions.requestPassword") }}
+        <footer v-if="!isAuthenticated">
+          <p class="text-center">
+            {{ t("labels.alreadyRegistered") }}
+          </p>
+
+          <Btn :to="{ name: 'login' }" :size="BtnSizesEnum.SMALL" :block="true">
+            {{ t("actions.login") }}
           </Btn>
-
-          <footer v-if="!isAuthenticated">
-            <p class="text-center">
-              {{ t("labels.alreadyRegistered") }}
-            </p>
-
-            <Btn :to="{ name: 'login' }" size="small" :block="true">
-              {{ t("actions.login") }}
-            </Btn>
-          </footer>
-        </form>
-      </ValidationObserver>
+        </footer>
+      </form>
     </div>
   </div>
 </template>

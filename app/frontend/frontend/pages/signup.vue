@@ -10,21 +10,20 @@ import { transformErrors } from "@/frontend/api/helpers";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useNoty } from "@/shared/composables/useNoty";
 import { useFleetStore } from "@/frontend/stores/fleet";
-import { storeToRefs } from "pinia";
 import type {
   UserCreateInput,
   ApiError,
   ValidationError,
 } from "@/services/fyApi";
 import { useApiClient } from "@/frontend/composables/useApiClient";
+import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
+import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
 
 const { t } = useI18n();
 
 const { displaySuccess, displayAlert } = useNoty();
 
 const fleetStore = useFleetStore();
-
-const { inviteToken: fleetInviteToken } = storeToRefs(fleetStore);
 
 const initialValues = ref<UserCreateInput>({
   username: "",
@@ -42,10 +41,20 @@ const validationSchema = {
   passwordConfirmation: "required|confirmed:password",
 };
 
-const { values, handleSubmit, setErrors } = useForm({
-  initialValues,
+const { defineField, handleSubmit, setErrors } = useForm<UserCreateInput>({
+  initialValues: initialValues.value,
   validationSchema,
 });
+
+const [username, usernameProps] = defineField("username");
+const [email, emailProps] = defineField("email");
+const [password, passwordProps] = defineField("password");
+const [passwordConfirmation, passwordConfirmationProps] = defineField(
+  "passwordConfirmation",
+);
+const [fleetInviteToken, fleetInviteTokenProps] =
+  defineField("fleetInviteToken");
+const [saleNotify, saleNotifyProps] = defineField("saleNotify");
 
 const submitting = ref(false);
 
@@ -55,7 +64,7 @@ const router = useRouter();
 
 const { users: usersService } = useApiClient();
 
-const onSubmit = handleSubmit(async (values: UserCreateInput) => {
+const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
   try {
@@ -93,7 +102,7 @@ const onSubmit = handleSubmit(async (values: UserCreateInput) => {
 <template>
   <div class="row">
     <div class="col-12">
-      <form @submit="onSubmit">
+      <form @submit.prevent="onSubmit">
         <h1>
           <router-link to="/" :exact="true">
             {{ t("app") }}
@@ -101,35 +110,41 @@ const onSubmit = handleSubmit(async (values: UserCreateInput) => {
         </h1>
 
         <FormInput
-          v-model="values.username"
+          v-model="username"
+          v-bind="usernameProps"
           name="username"
           :hide-label-on-empty="true"
           :autofocus="true"
         />
 
         <FormInput
-          v-model="values.email"
+          v-model="email"
+          v-bind="emailProps"
           name="email"
+          :type="InputTypesEnum.EMAIL"
           :hide-label-on-empty="true"
         />
 
         <FormInput
-          v-model="values.password"
+          v-model="password"
+          v-bind="passwordProps"
           name="password"
-          type="password"
+          :type="InputTypesEnum.PASSWORD"
           :hide-label-on-empty="true"
         />
 
         <FormInput
-          v-model="values.passwordConfirmation"
+          v-model="passwordConfirmation"
+          v-bind="passwordConfirmationProps"
           name="passwordConfirmation"
-          type="password"
+          :type="InputTypesEnum.PASSWORD"
           :hide-label-on-empty="true"
         />
 
         <FormInput
-          v-if="fleetInviteToken"
-          v-model="values.fleetInviteToken"
+          v-if="fleetStore.inviteToken"
+          v-model="fleetInviteToken"
+          v-bind="fleetInviteTokenProps"
           name="fleetInviteToken"
           :disabled="true"
           :hide-label-on-empty="true"
@@ -138,16 +153,17 @@ const onSubmit = handleSubmit(async (values: UserCreateInput) => {
         />
 
         <Checkbox
-          v-model="values.saleNotify"
+          v-model="saleNotify"
+          v-bind="saleNotifyProps"
           name="saleNotify"
           :label="t('labels.user.saleNotify')"
         />
 
         <Btn
           :loading="submitting"
-          type="submit"
+          :type="BtnTypesEnum.SUBMIT"
           data-test="submit-signup"
-          size="large"
+          :size="BtnSizesEnum.LARGE"
           :block="true"
         >
           {{ t("actions.signUp") }}
@@ -165,7 +181,7 @@ const onSubmit = handleSubmit(async (values: UserCreateInput) => {
             {{ t("labels.alreadyRegistered") }}
           </p>
 
-          <Btn :to="{ name: 'login' }" size="small" :block="true">
+          <Btn :to="{ name: 'login' }" :size="BtnSizesEnum.SMALL" :block="true">
             {{ t("actions.login") }}
           </Btn>
         </footer>

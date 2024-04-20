@@ -15,6 +15,8 @@ type Props = {
   disabled?: boolean;
   checkboxValue?: string | number;
   slim?: boolean;
+  inline?: boolean;
+  partial?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -23,6 +25,8 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   checkboxValue: undefined,
   slim: true,
+  inline: false,
+  partial: false,
 });
 
 const { value, errorMessage } = useField(props.name);
@@ -59,9 +63,11 @@ const update = () => {
 
 <template>
   <div
-    class="form-group form-group-checkbox"
+    class="form-checkbox"
     :class="{
-      'form-group-checkbox-expanded': !slim,
+      'form-checkbox__expanded': !slim,
+      'form-checkbox__inline': inline,
+      'form-checkbox__partial': partial,
     }"
   >
     <input
@@ -71,7 +77,6 @@ const update = () => {
       :name="name"
       :checked="checked"
       :disabled="disabled"
-      class="form-checkbox"
       type="checkbox"
       :value="checkboxValue"
       :data-test="`checkbox-${name}`"

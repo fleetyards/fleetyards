@@ -1,136 +1,142 @@
-<template>
-  <ValidationObserver v-if="form" v-slot="{ handleSubmit }" :slim="true">
-    <form @submit.prevent="handleSubmit(submit)">
-      <div class="row">
-        <div class="col-lg-12">
-          <h1>{{ $t("headlines.settings.hangar") }}</h1>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12 col-md-6">
-          <ValidationProvider
-            v-slot="{ errors }"
-            vid="publicHangar"
-            :name="$t('labels.user.publicHangar')"
-            :slim="true"
-          >
-            <Checkbox
-              id="publicHangar"
-              v-model="form.publicHangar"
-              :label="$t('labels.user.publicHangar')"
-              :class="{ 'has-error has-feedback': errors[0] }"
-            />
-          </ValidationProvider>
-        </div>
-        <div class="col-12 col-md-6">
-          <ValidationProvider
-            v-slot="{ errors }"
-            vid="publicHangarLoaners"
-            :name="$t('labels.user.publicHangarLoaners')"
-            :slim="true"
-          >
-            <Checkbox
-              id="publicHangarLoaners"
-              v-model="form.publicHangarLoaners"
-              :label="$t('labels.user.publicHangarLoaners')"
-              :class="{ 'has-error has-feedback': errors[0] }"
-            />
-          </ValidationProvider>
-        </div>
-        <div class="col-12 col-md-6">
-          <ValidationProvider
-            v-slot="{ errors }"
-            vid="publicWishlist"
-            :name="$t('labels.user.publicWishlist')"
-            :slim="true"
-          >
-            <Checkbox
-              id="publicWishlist"
-              v-model="form.publicWishlist"
-              :label="$t('labels.user.publicWishlist')"
-              :class="{ 'has-error has-feedback': errors[0] }"
-            />
-          </ValidationProvider>
-        </div>
-        <div class="col-12 col-md-6">
-          <ValidationProvider
-            v-slot="{ errors }"
-            vid="hideOwner"
-            :name="$t('labels.user.hideOwner')"
-            :slim="true"
-          >
-            <Checkbox
-              id="hideOwner"
-              v-model="form.hideOwner"
-              :label="$t('labels.user.hideOwner')"
-              :class="{ 'has-error has-feedback': errors[0] }"
-            />
-          </ValidationProvider>
-        </div>
-      </div>
-      <br />
-      <Btn :loading="submitting" type="submit" size="large">
-        {{ $t("actions.save") }}
-      </Btn>
-    </form>
-  </ValidationObserver>
-</template>
-
 <script lang="ts">
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-import { Getter } from "vuex-class";
-import { displaySuccess } from "@/frontend/lib/Noty";
+export default {
+  name: "SettingsHangar",
+};
+</script>
+
+<script lang="ts" setup>
+import { useApiClient } from "@/frontend/composables/useApiClient";
+import { useSessionStore } from "@/frontend/stores/session";
+import { type UserUpdateInput } from "@/services/fyApi";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Checkbox from "@/shared/components/base/Checkbox/index.vue";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useNoty } from "@/shared/composables/useNoty";
+import { useForm } from "vee-validate";
+import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
 
-@Component<SettingsHangar>({
-  components: {
-    Btn,
-    Checkbox,
+const { t } = useI18n();
+
+const { displaySuccess } = useNoty();
+
+const sessionStore = useSessionStore();
+
+const submitting = ref(false);
+
+const initialValues = ref<UserUpdateInput>({
+  publicHangar: sessionStore.currentUser?.publicHangar,
+  publicHangarLoaners: sessionStore.currentUser?.publicHangarLoaners,
+  publicWishlist: sessionStore.currentUser?.publicWishlist,
+  hideOwner: sessionStore.currentUser?.hideOwner,
+});
+
+const setupForm = () => {
+  initialValues.value = {
+    publicHangar: sessionStore.currentUser?.publicHangar,
+    publicHangarLoaners: sessionStore.currentUser?.publicHangarLoaners,
+    publicWishlist: sessionStore.currentUser?.publicWishlist,
+    hideOwner: sessionStore.currentUser?.hideOwner,
+  };
+};
+
+onMounted(() => {
+  if (sessionStore.currentUser) {
+    setupForm();
+  }
+});
+
+watch(
+  () => sessionStore.currentUser,
+  () => {
+    setupForm();
   },
-})
-export default class SettingsHangar extends Vue {
-  @Getter("currentUser", { namespace: "session" }) currentUser;
+);
 
-  form: NotificationSettingsForm = null;
+const comlink = useComlink();
 
-  submitting = false;
+const { defineField, handleSubmit } = useForm({
+  initialValues: initialValues.value,
+});
 
-  created() {
-    if (this.currentUser) {
-      this.setupForm();
-    }
+const [publicHangar, publicHangarProps] = defineField("publicHangar");
+const [publicHangarLoaners, publicHangarLoanersProps] = defineField(
+  "publicHangarLoaners",
+);
+const [publicWishlist, publicWishlistProps] = defineField("publicWishlist");
+const [hideOwner, hideOwnerProps] = defineField("hideOwner");
+
+const { users: usersService } = useApiClient();
+
+const onSubmit = handleSubmit(async (values) => {
+  submitting.value = true;
+
+  try {
+    await usersService.updateProfile({
+      formData: values,
+    });
+
+    comlink.emit("user-update");
+
+    displaySuccess({
+      text: t("messages.updateHangar.success"),
+    });
+  } catch (error) {
+    console.error(error);
   }
 
-  @Watch("currentUser")
-  onCurrentUserChange() {
-    this.setupForm();
-  }
-
-  setupForm() {
-    this.form = {
-      publicHangar: this.currentUser.publicHangar,
-      publicHangarLoaners: this.currentUser.publicHangarLoaners,
-      publicWishlist: this.currentUser.publicWishlist,
-      hideOwner: this.currentUser.hideOwner,
-    };
-  }
-
-  async submit() {
-    this.submitting = true;
-
-    const response = await userCollection.updateProfile(this.form);
-
-    this.submitting = false;
-
-    if (!response.error) {
-      this.$comlink.$emit("user-update");
-
-      displaySuccess({
-        text: this.$t("messages.updateHangar.success"),
-      });
-    }
-  }
-}
+  submitting.value = false;
+});
 </script>
+
+<template>
+  <form @submit.prevent="onSubmit">
+    <div class="row">
+      <div class="col-lg-12">
+        <h1>{{ t("headlines.settings.hangar") }}</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <Checkbox
+          v-model="publicHangar"
+          v-bind="publicHangarProps"
+          name="publicHangar"
+          :label="t('labels.user.publicHangar')"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <Checkbox
+          v-model="publicHangarLoaners"
+          name="publicHangarLoaners"
+          v-bind="publicHangarLoanersProps"
+          :label="t('labels.user.publicHangarLoaners')"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <Checkbox
+          v-model="publicWishlist"
+          name="publicWishlist"
+          v-bind="publicWishlistProps"
+          :label="t('labels.user.publicWishlist')"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <Checkbox
+          v-model="hideOwner"
+          name="hideOwner"
+          v-bind="hideOwnerProps"
+          :label="t('labels.user.hideOwner')"
+        />
+      </div>
+    </div>
+    <br />
+    <Btn
+      :loading="submitting"
+      :type="BtnTypesEnum.SUBMIT"
+      :size="BtnSizesEnum.LARGE"
+    >
+      {{ t("actions.save") }}
+    </Btn>
+  </form>
+</template>

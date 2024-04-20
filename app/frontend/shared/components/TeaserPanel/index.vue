@@ -1,5 +1,5 @@
 <template>
-  <Panel alignment="left" :slim="slim">
+  <Panel :alignment="PanelAlignmentsEnum.LEFT" :slim="slim">
     <PanelImage
       :image="image"
       image-size="auto"
@@ -33,6 +33,7 @@ import PanelBody from "@/shared/components/Panel/Body/index.vue";
 import PanelImage from "@/shared/components/Panel/Image/index.vue";
 import type { MediaImage } from "@/services/fyApi";
 import type { RouteLocationNamedRaw } from "vue-router";
+import { PanelAlignmentsEnum } from "@/shared/components/Panel/types";
 
 type TeaserItem = {
   name: string;

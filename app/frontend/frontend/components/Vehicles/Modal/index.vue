@@ -1,90 +1,8 @@
-<template>
-  <Modal v-if="vehicle">
-    <template #title>
-      <span>{{ t("headlines.editMyVehicle", { vehicle: vehicleName }) }}</span>
-      <small v-if="vehicle.serial" class="text-muted">
-        {{ vehicle.serial }}
-      </small>
-      <br />
-
-      <small class="text-muted">
-        <!-- eslint-disable-next-line vue/no-v-html -->
-        <span v-html="vehicle.model.manufacturer?.name" />
-        {{ vehicle.model.name }}
-      </small>
-    </template>
-
-    <form :id="`vehicle-${vehicle.id}`" @submit.prevent="onSubmit">
-      <div class="row">
-        <div class="col-12 col-md-6">
-          <Checkbox
-            v-if="!wishlist"
-            v-model="flagship"
-            name="flagship"
-            :label="t('labels.vehicle.flagship')"
-          />
-        </div>
-        <div v-if="vehicle && vehicle.model.hasPaints" class="col-12 col-md-6">
-          <div class="form-group">
-            <FilterGroup
-              :key="`paints-new-${vehicle.model.id}`"
-              v-model="modelPaintId"
-              :label="t('actions.findModel')"
-              :query-fn="paintsFilterQuery"
-              :query-response-formatter="paintsFilterFormatter"
-              name="modelPaintId"
-              :big-icon="true"
-              :nullable="true"
-            />
-          </div>
-        </div>
-        <div class="col-12">
-          <hr class="dark slim-spacer" />
-        </div>
-        <div class="col-12 col-md-6">
-          <Checkbox
-            v-if="wishlist"
-            v-model="saleNotify"
-            name="saleNotify"
-            :label="t('labels.vehicle.saleNotify')"
-          />
-          <Checkbox
-            v-model="publicVisible"
-            name="public"
-            :label="t('labels.vehicle.public')"
-          />
-        </div>
-        <div class="col-12 col-md-6">
-          <div class="form-group">
-            <FilterGroup
-              :key="`bought-via-${vehicle.model.id}`"
-              v-model="boughtVia"
-              :options="boughtViaFilters"
-              :label="t('labels.vehicle.boughtViaSelect.label')"
-              name="boughtVia"
-              :nullable="false"
-            />
-          </div>
-        </div>
-      </div>
-    </form>
-
-    <template #footer>
-      <div class="float-sm-right">
-        <Btn
-          :form="`vehicle-${vehicle.id}`"
-          :loading="submitting"
-          type="submit"
-          size="large"
-          data-test="vehicle-save"
-          :inline="true"
-        >
-          {{ t("actions.save") }}
-        </Btn>
-      </div>
-    </template>
-  </Modal>
-</template>
+<script lang="ts">
+export default {
+  name: "VehicleEditModal",
+};
+</script>
 
 <script lang="ts" setup>
 import { useForm } from "vee-validate";
@@ -97,6 +15,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { type VehicleUpdateInput, type Vehicle } from "@/services/fyApi";
 import { useVehicleQueries } from "@/frontend/composables/useVehicleQueries";
 import { useModelQueries } from "@/frontend/composables/useModelQueries";
+import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
   vehicle: Vehicle;
@@ -119,18 +38,15 @@ const initialValues = ref<VehicleUpdateInput>({
   boughtVia: props.vehicle.boughtVia,
 });
 
-const { useFieldModel, handleSubmit } = useForm({
-  initialValues,
+const { defineField, handleSubmit } = useForm({
+  initialValues: initialValues.value,
 });
 
-const [flagship, publicVisible, saleNotify, modelPaintId, boughtVia] =
-  useFieldModel([
-    "flagship",
-    "public",
-    "saleNotify",
-    "modelPaintId",
-    "boughtVia",
-  ]);
+const [flagship, flagshipProps] = defineField("flagship");
+const [publicVisible, publicVisibleProps] = defineField("public");
+const [saleNotify, saleNotifyProps] = defineField("saleNotify");
+const [modelPaintId, modelPaintIdProps] = defineField("modelPaintId");
+const [boughtVia, boughtViaProps] = defineField("boughtVia");
 
 const vehicleName = computed(() => {
   if (props.vehicle.name) {
@@ -185,8 +101,95 @@ const { paintsFilterQuery, paintsFilterFormatter } = useModelQueries(
 );
 </script>
 
-<script lang="ts">
-export default {
-  name: "VehicleEditModal",
-};
-</script>
+<template>
+  <Modal v-if="vehicle">
+    <template #title>
+      <span>{{ t("headlines.editMyVehicle", { vehicle: vehicleName }) }}</span>
+      <small v-if="vehicle.serial" class="text-muted">
+        {{ vehicle.serial }}
+      </small>
+      <br />
+
+      <small class="text-muted">
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <span v-html="vehicle.model.manufacturer?.name" />
+        {{ vehicle.model.name }}
+      </small>
+    </template>
+
+    <form :id="`vehicle-${vehicle.id}`" @submit.prevent="onSubmit">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <Checkbox
+            v-if="!wishlist"
+            v-model="flagship"
+            v-bind="flagshipProps"
+            name="flagship"
+            :label="t('labels.vehicle.flagship')"
+          />
+        </div>
+        <div v-if="vehicle && vehicle.model.hasPaints" class="col-12 col-md-6">
+          <div class="form-group">
+            <FilterGroup
+              :key="`paints-new-${vehicle.model.id}`"
+              v-model="modelPaintId"
+              v-bind="modelPaintIdProps"
+              :label="t('actions.findModel')"
+              :query-fn="paintsFilterQuery"
+              :query-response-formatter="paintsFilterFormatter"
+              name="modelPaintId"
+              :big-icon="true"
+              :nullable="true"
+            />
+          </div>
+        </div>
+        <div class="col-12">
+          <hr class="dark slim-spacer" />
+        </div>
+        <div class="col-12 col-md-6">
+          <Checkbox
+            v-if="wishlist"
+            v-model="saleNotify"
+            v-bind="saleNotifyProps"
+            name="saleNotify"
+            :label="t('labels.vehicle.saleNotify')"
+          />
+          <Checkbox
+            v-model="publicVisible"
+            v-bind="publicVisibleProps"
+            name="public"
+            :label="t('labels.vehicle.public')"
+          />
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+            <FilterGroup
+              :key="`bought-via-${vehicle.model.id}`"
+              v-model="boughtVia"
+              v-bind="boughtViaProps"
+              :options="boughtViaFilters"
+              :label="t('labels.vehicle.boughtViaSelect.label')"
+              name="boughtVia"
+              :nullable="false"
+            />
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <template #footer>
+      <div class="float-sm-right">
+        <Btn
+          :form="`vehicle-${vehicle.id}`"
+          :loading="submitting"
+          :type="BtnTypesEnum.SUBMIT"
+          :size="BtnSizesEnum.LARGE"
+          data-test="vehicle-save"
+          :inline="true"
+        >
+          {{ t("actions.save") }}
+        </Btn>
+      </div>
+    </template>
+  </Modal>
+</template>

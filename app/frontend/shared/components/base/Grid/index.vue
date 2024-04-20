@@ -4,11 +4,10 @@ export default {
 };
 </script>
 
-<script lang="ts" setup>
+<script lang="ts" setup generic="T">
 type Props = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  records: any[];
-  primaryKey: string;
+  records: T[];
+  primaryKey: keyof T;
   gridBase?: "2" | "3";
   filterVisible?: boolean;
 };
@@ -44,13 +43,17 @@ const gridClassesWithFilter = computed(() => {
 const cssClasses = computed(() => {
   return `fade-list-item ${gridClasses.value}`;
 });
+
+const primaryValue = (record: T) => {
+  return record[props.primaryKey] as string | number;
+};
 </script>
 
 <template>
   <transition-group name="fade-list" class="row" tag="div" :appear="true">
     <div
       v-for="(record, index) in records"
-      :key="record[primaryKey]"
+      :key="primaryValue(record)"
       :class="cssClasses"
     >
       <slot :record="record" :index="index" />

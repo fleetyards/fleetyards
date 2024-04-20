@@ -2,7 +2,7 @@
   position: relative;
   display: inline-flex;
   min-width: 48px;
-  height: 48px;
+  min-height: 48px;
   margin-right: 10px;
   margin-bottom: 20px;
   padding: 3px;
@@ -92,7 +92,8 @@
 
   &.panel-btn-danger {
     .panel-btn-inner {
-      color: $danger;
+      background-color: $danger;
+      color: white;
     }
   }
 
@@ -128,17 +129,17 @@
 
   &.panel-btn-small {
     min-width: 42px;
-    height: 42px;
+    min-height: 42px;
 
     .panel-btn-inner {
-      padding: 5px 10px;
+      padding: 4px 10px;
       font-size: 100%;
     }
   }
 
   &.panel-btn-large {
     min-width: 62px;
-    height: 55px;
+    min-height: 55px;
 
     .panel-btn-inner {
       padding: 6px 16px;

@@ -1,15 +1,46 @@
+<script lang="ts">
+export default {
+  name: "SettingsSecurityStatus",
+};
+</script>
+
+<script lang="ts" setup>
+import Btn from "@/shared/components/base/Btn/index.vue";
+import ChangePasswordForm from "@/frontend/components/Security/ChangePasswordForm/index.vue";
+import { useSessionStore } from "@/frontend/stores/session";
+import { useNoty } from "@/shared/composables/useNoty";
+import { useI18n } from "@/shared/composables/useI18n";
+
+const sessionStore = useSessionStore();
+
+const { t } = useI18n();
+
+const { displayConfirm } = useNoty();
+
+const router = useRouter();
+
+const generateBackupCodes = () => {
+  displayConfirm({
+    text: t("messages.confirm.twoFactor.generateBackupCodes"),
+    onConfirm: () => {
+      router.push({ name: "settings-two-factor-backup-codes" });
+    },
+  });
+};
+</script>
+
 <template>
-  <div v-if="currentUser" class="row">
+  <div v-if="sessionStore.currentUser" class="row">
     <div class="col-12">
       <div class="row">
         <div class="col-12">
-          <h1>{{ $t("headlines.settings.security.index") }}</h1>
+          <h1>{{ t("headlines.settings.security.index") }}</h1>
         </div>
       </div>
       <br />
       <div class="row">
         <div class="col-12 col-md-6">
-          <h2 id="change-password">{{ $t("headlines.changePassword") }}</h2>
+          <h2 id="change-password">{{ t("headlines.changePassword") }}</h2>
           <ChangePasswordForm />
         </div>
       </div>
@@ -19,32 +50,32 @@
       <div class="row">
         <div class="col-12 col-md-6">
           <h2 id="two-factor">
-            {{ $t("headlines.settings.security.twoFactor") }}
+            {{ t("headlines.settings.security.twoFactor") }}
             <small>
               <span
-                v-if="currentUser.twoFactorRequired"
+                v-if="sessionStore.currentUser.twoFactorRequired"
                 class="badge badge-success"
               >
                 <i class="fas fa-check" />
-                {{ $t("labels.enabled") }}
+                {{ t("labels.enabled") }}
               </span>
               <span v-else class="badge badge-danger">
                 <i class="fas fa-times" />
-                {{ $t("labels.disabled") }}
+                {{ t("labels.disabled") }}
               </span>
             </small>
           </h2>
           <div class="two-factor-actions">
-            <template v-if="currentUser.twoFactorRequired">
+            <template v-if="sessionStore.currentUser.twoFactorRequired">
               <Btn :to="{ name: 'settings-two-factor-disable' }">
-                {{ $t("actions.twoFactor.disable") }}
+                {{ t("actions.twoFactor.disable") }}
               </Btn>
-              <Btn @click.native="generateBackupCodes">
-                {{ $t("actions.twoFactor.generateBackupCodes") }}
+              <Btn @click="generateBackupCodes">
+                {{ t("actions.twoFactor.generateBackupCodes") }}
               </Btn>
             </template>
             <Btn v-else :to="{ name: 'settings-two-factor-enable' }">
-              {{ $t("actions.twoFactor.enable") }}
+              {{ t("actions.twoFactor.enable") }}
             </Btn>
           </div>
         </div>
@@ -52,44 +83,6 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import Btn from "@/shared/components/base/Btn/index.vue";
-import ChangePasswordForm from "@/frontend/components/Security/ChangePasswordForm/index.vue";
-import { Getter } from "vuex-class";
-import { displayConfirm } from "@/frontend/lib/Noty";
-
-@Component<SettingsSecurityStatus>({
-  components: {
-    Btn,
-    ChangePasswordForm,
-  },
-})
-export default class SettingsSecurityStatus extends Vue {
-  @Getter("currentUser", { namespace: "session" }) currentUser;
-
-  generateBackupCodes() {
-    this.backupCodesWaiting = true;
-
-    displayConfirm({
-      text: this.$t("messages.confirm.twoFactor.generateBackupCodes"),
-      onConfirm: () => {
-        this.backupCodesWaiting = false;
-        this.$router
-          .push({ name: "settings-two-factor-backup-codes" })
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
-          .catch(() => {});
-      },
-      onClose: () => {
-        this.backupCodesWaiting = false;
-        this.deleting = false;
-      },
-    });
-  }
-}
-</script>
 
 <style lang="scss" scoped>
 .two-factor-status {

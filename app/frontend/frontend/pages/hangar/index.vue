@@ -49,7 +49,9 @@ const comlink = useComlink();
 
 const deleting = ref(false);
 
-const highlightedGroup = ref<string | undefined>();
+const updating = ref(false);
+
+const highlightedGroup = ref<string>("");
 
 const mobile = useMobile();
 
@@ -169,7 +171,7 @@ const showNewModal = () => {
 
 const highlightGroup = (group?: HangarGroup) => {
   if (!group) {
-    highlightedGroup.value = undefined;
+    highlightedGroup.value = "";
     return;
   }
 
@@ -331,7 +333,7 @@ const openGuide = () => {
     </div>
   </div>
 
-  <Teleport to="#header-actions">
+  <Teleport v-if="!mobile" to="#header-actions">
     <Btn :to="{ name: 'hangar-wishlist' }">
       <i class="fad fa-wand-sparkles" />
       {{ t("labels.wishlist") }}
@@ -368,7 +370,7 @@ const openGuide = () => {
     :name="route.name?.toString() || ''"
     :async-status="asyncStatus"
   >
-    <template #actions>
+    <template #actions-right>
       <HangarSyncBtn :size="BtnSizesEnum.SMALL" />
       <BtnDropdown :size="BtnSizesEnum.SMALL">
         <template v-if="mobile">
@@ -481,12 +483,12 @@ const openGuide = () => {
       <FilterForm />
     </template>
 
-    <template #default="{ records, loading, filterVisible, primaryKey }">
+    <template #default="{ records, loading, filterVisible }">
       <Grid
         v-if="gridView"
         :records="records"
         :filter-visible="filterVisible"
-        :primary-key="primaryKey"
+        primary-key="id"
       >
         <template #default="{ record }">
           <VehiclePanel
@@ -501,7 +503,6 @@ const openGuide = () => {
       <VehiclesTable
         v-else
         :vehicles="vehicles?.items || []"
-        :primary-key="primaryKey"
         :editable="true"
       />
 

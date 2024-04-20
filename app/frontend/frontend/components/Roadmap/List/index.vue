@@ -46,7 +46,7 @@
 
 <script lang="ts" setup>
 import { type RoadmapItem } from "@/services/fyApi";
-import { type AsyncStatus } from "@/shared/components/AsyncData.vue";
+import { type AsyncStatus } from "@/shared/components/AsyncData.types";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import RoadmapItemComp from "@/frontend/components/Roadmap/RoadmapItem/index.vue";
 import Collapsed from "@/shared/components/Collapsed.vue";

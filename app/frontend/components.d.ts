@@ -27,5 +27,8 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Table: typeof import('./shared/components/base/Table/index.vue')['default']
+    TableActions: typeof import('./shared/components/base/Table/Actions/index.vue')['default']
+    TableImage: typeof import('./shared/components/base/Table/Image/index.vue')['default']
+    TableMobile: typeof import('./shared/components/base/Table/Mobile/index.vue')['default']
   }
 }

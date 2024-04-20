@@ -43,10 +43,15 @@ const validationSchema = {
   twoFactorCode: twoFactorRequired.value ? "required" : undefined,
 };
 
-const { values, handleSubmit } = useForm({
-  initialValues,
+const { defineField, handleSubmit } = useForm({
+  initialValues: initialValues.value,
   validationSchema,
 });
+
+const [login, loginProps] = defineField("login");
+const [password, passwordProps] = defineField("password");
+const [twoFactorCode, twoFactorCodeProps] = defineField("twoFactorCode");
+const [rememberMe, rememberMeProps] = defineField("rememberMe");
 
 const sessionStore = useSessionStore();
 
@@ -61,7 +66,7 @@ onMounted(() => {
   }
 });
 
-const onSubmit = handleSubmit(async () => {
+const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
   try {
@@ -110,7 +115,8 @@ const onSubmit = handleSubmit(async () => {
 
         <template v-if="twoFactorRequired">
           <FormInput
-            v-model="values.twoFactorCode"
+            v-model="twoFactorCode"
+            v-bind="twoFactorCodeProps"
             name="twoFactorCode"
             :autofocus="true"
             :hide-label-on-empty="true"
@@ -119,21 +125,24 @@ const onSubmit = handleSubmit(async () => {
         </template>
         <div v-show="!twoFactorRequired">
           <FormInput
-            v-model="values.login"
+            v-model="login"
+            v-bind="loginProps"
             name="login"
             :autofocus="true"
             :hide-label-on-empty="true"
             :clearable="true"
           />
           <FormInput
-            v-model="values.password"
+            v-model="password"
+            v-bind="passwordProps"
             name="password"
             :type="InputTypesEnum.PASSWORD"
             :hide-label-on-empty="true"
             :clearable="true"
           />
           <Checkbox
-            v-model="values.rememberMe"
+            v-model="rememberMe"
+            v-bind="rememberMeProps"
             name="rememberMe"
             :label="t('labels.rememberMe')"
           />

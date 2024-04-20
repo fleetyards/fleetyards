@@ -1,7 +1,8 @@
 import { resolve } from "path";
-import { defineConfig, splitVendorChunkPlugin } from "vite";
+import { defineConfig } from "vite";
 import ViteRails from "vite-plugin-rails";
 import Vue from "@vitejs/plugin-vue";
+import tailwindcss from "tailwindcss";
 import { VitePWA } from "vite-plugin-pwa";
 import Components from "unplugin-vue-components/vite";
 import AutoImport from "unplugin-auto-import/vite";
@@ -28,6 +29,7 @@ export default defineConfig({
   plugins: [
     ViteRails(),
     Vue(),
+    tailwindcss(),
     VitePWA({
       registerType: "autoUpdate",
       filename: "sw.js",
@@ -65,7 +67,6 @@ export default defineConfig({
       },
       imports: ["vue", "vitest", "vue-router"],
     }),
-    splitVendorChunkPlugin(),
   ],
   resolve: {
     alias: {
@@ -77,6 +78,12 @@ export default defineConfig({
     emptyOutDir: false,
     rollupOptions: {
       maxParallelFileOps: 5,
+      output: {
+        manualChunks: {
+          vue: ["vue"],
+          "vue-router": ["vue-router"],
+        },
+      },
     },
     commonjsOptions: {
       requireReturnsDefault: true,

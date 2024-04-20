@@ -10,9 +10,12 @@
   &-actions {
     display: flex;
     justify-content: flex-end;
+    gap: 10px;
 
-    :deep(.panel-btn) {
+    :deep(.panel-btn),
+    :deep(.panel-btn-group) {
       margin-bottom: 0;
+      margin-right: 0;
     }
   }
 
@@ -34,15 +37,16 @@
 @media (max-width: $desktop-breakpoint) {
   .navigation-header {
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
 
     &-quicksearch {
+      width: 100%;
       max-width: 100%;
     }
 
     &-actions {
       justify-content: space-between;
-      gap: 10px;
+      flex-wrap: wrap;
     }
   }
 }

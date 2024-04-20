@@ -1,65 +1,8 @@
-<template>
-  <div :key="id" class="form-input" :class="cssClasses">
-    <transition name="fade">
-      <label
-        v-show="!hideLabelOnEmpty || inputValue"
-        v-if="innerLabel && !noLabel"
-        :for="id"
-      >
-        <i v-if="icon" :class="icon" />
-        {{ innerLabel }}
-      </label>
-    </transition>
-    <div
-      class="form-input-wrapper"
-      :class="{
-        'from-input-wrapper-with-prefix': !!prefix,
-        'from-input-wrapper-with-suffix': !!suffix,
-      }"
-    >
-      <slot name="prefix">
-        <div v-if="prefix" class="form-input-prefix">
-          {{ prefix }}
-        </div>
-      </slot>
-      <input
-        :id="id"
-        ref="inputElement"
-        v-tooltip.right="hasErrors && errorMessage"
-        :value="inputValue"
-        :placeholder="innerPlaceholder"
-        :type="type"
-        :data-test="`input-${name}`"
-        :aria-label="innerLabel"
-        :autofocus="autofocus"
-        :autocomplete="autocomplete"
-        :disabled="disabled"
-        :name="name"
-        :min="min"
-        :max="max"
-        :step="innerStep"
-        :class="{
-          clearable,
-        }"
-        @input="onChange"
-        @blur="handleBlur"
-      />
-      <slot name="suffix">
-        <div v-if="suffix" class="form-input-suffix">
-          {{ suffix }}
-        </div>
-      </slot>
-      <div v-if="inputValue && clearable" class="clear" @click="clear">
-        <i
-          class="fal fa-times"
-          :class="{
-            'with-label': !!innerLabel && !noLabel,
-          }"
-        />
-      </div>
-    </div>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "FormInput",
+};
+</script>
 
 <script lang="ts" setup>
 import { useField } from "vee-validate";
@@ -235,11 +178,68 @@ defineExpose({
 });
 </script>
 
-<script lang="ts">
-export default {
-  name: "FormInput",
-};
-</script>
+<template>
+  <div :key="id" class="form-input" :class="cssClasses">
+    <transition name="fade">
+      <label
+        v-show="!hideLabelOnEmpty || inputValue"
+        v-if="innerLabel && !noLabel"
+        :for="id"
+      >
+        <i v-if="icon" :class="icon" />
+        {{ innerLabel }}
+      </label>
+    </transition>
+    <div
+      class="form-input-wrapper"
+      :class="{
+        'from-input-wrapper-with-prefix': !!prefix,
+        'from-input-wrapper-with-suffix': !!suffix,
+      }"
+    >
+      <slot name="prefix">
+        <div v-if="prefix" class="form-input-prefix">
+          {{ prefix }}
+        </div>
+      </slot>
+      <input
+        :id="id"
+        ref="inputElement"
+        v-tooltip.right="hasErrors && errorMessage"
+        :value="inputValue"
+        :placeholder="innerPlaceholder"
+        :type="type"
+        :data-test="`input-${name}`"
+        :aria-label="innerLabel"
+        :autofocus="autofocus"
+        :autocomplete="autocomplete"
+        :disabled="disabled"
+        :name="name"
+        :min="min"
+        :max="max"
+        :step="innerStep"
+        :class="{
+          clearable,
+        }"
+        @input="onChange"
+        @blur="handleBlur"
+      />
+      <slot name="suffix">
+        <div v-if="suffix" class="form-input-suffix">
+          {{ suffix }}
+        </div>
+      </slot>
+      <div v-if="inputValue && clearable" class="clear" @click="clear">
+        <i
+          class="fal fa-times"
+          :class="{
+            'with-label': !!innerLabel && !noLabel,
+          }"
+        />
+      </div>
+    </div>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 @import "./index.scss";

@@ -1,5 +1,11 @@
 import { useApiClient } from "@/frontend/composables/useApiClient";
-import { ModelPaint, type ModelQuery } from "@/services/fyApi";
+import {
+  type ApiError,
+  type ModelPaint,
+  type Models,
+  type ModelQuery,
+  type ModelExtended,
+} from "@/services/fyApi";
 import { FilterGroupParams } from "@/shared/components/base/FilterGroup/index.vue";
 import { useQuery, useQueryClient } from "@tanstack/vue-query";
 
@@ -29,7 +35,7 @@ export const useModelQueries = (slug?: string) => {
     perPage: ComputedRef<string | undefined>;
     q: ComputedRef<ModelQuery | undefined>;
   }) => {
-    return useQuery(
+    return useQuery<Models, ApiError>(
       {
         queryKey: [QueryKeysEnum.MODELS],
         queryFn: () => {
@@ -47,7 +53,7 @@ export const useModelQueries = (slug?: string) => {
   const modelQuery = () => {
     if (!slug) throw new Error("slug is required");
 
-    return useQuery(
+    return useQuery<ModelExtended, ApiError>(
       {
         queryKey: [QueryKeysEnum.MODEL, slug],
         queryFn: () => modelsService.model({ slug }),

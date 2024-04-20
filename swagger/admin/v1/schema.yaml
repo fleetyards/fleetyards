@@ -1337,6 +1337,8 @@ components:
               "$ref": "#/components/schemas/ViewImage"
             topViewColored:
               "$ref": "#/components/schemas/ViewImage"
+            rsiStoreImage:
+              "$ref": "#/components/schemas/MediaImage"
           additionalProperties: false
         metrics:
           type: object
@@ -1430,6 +1432,10 @@ components:
         updatedAt:
           type: string
           format: date-time
+        hidden:
+          type: boolean
+        active:
+          type: boolean
       additionalProperties: false
       required:
       - id
@@ -1450,6 +1456,8 @@ components:
       - speeds
       - createdAt
       - updatedAt
+      - hidden
+      - active
       title: Model
     Models:
       type: object
