@@ -7,13 +7,7 @@ module Admin
 
     def index
       authorize! :index, :admin_models
-      @q = Model.ransack(params[:q])
 
-      @q.sorts = "name asc" if @q.sorts.empty?
-
-      @models = @q.result
-        .page(params.fetch(:page) { nil })
-        .per(40)
       @app_enabled = true
     end
 

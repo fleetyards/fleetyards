@@ -63,11 +63,11 @@ const update = () => {
 
 <template>
   <div
-    class="form-checkbox"
+    class="base-checkbox"
     :class="{
-      'form-checkbox__expanded': !slim,
-      'form-checkbox__inline': inline,
-      'form-checkbox__partial': partial,
+      'base-checkbox--expanded': !slim,
+      'base-checkbox--inline': inline,
+      'base-checkbox--partial': partial,
     }"
   >
     <input

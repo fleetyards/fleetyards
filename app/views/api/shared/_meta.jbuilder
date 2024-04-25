@@ -2,6 +2,7 @@
 
 json.meta do
   json.pagination do
+    json.total_count result.respond_to?(:total_count) ? result.total_count : 0
     json.current_page result.respond_to?(:current_page) ? result.current_page : 1
     json.total_pages result.respond_to?(:total_pages) ? result.total_pages : 1
     if result.instance_of?(Searchkick::Relation)

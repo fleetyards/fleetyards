@@ -7,11 +7,13 @@ import type { OpenAPIConfig } from './core/OpenAPI';
 import { AxiosHttpRequest } from './core/AxiosHttpRequest';
 import { ImagesService } from './services/ImagesService';
 import { ItemPricesService } from './services/ItemPricesService';
+import { ManufacturersService } from './services/ManufacturersService';
 import { ModelsService } from './services/ModelsService';
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 export class FyAdminApi {
     public readonly images: ImagesService;
     public readonly itemPrices: ItemPricesService;
+    public readonly manufacturers: ManufacturersService;
     public readonly models: ModelsService;
     public readonly request: BaseHttpRequest;
     constructor(config?: Partial<OpenAPIConfig>, HttpRequest: HttpRequestConstructor = AxiosHttpRequest) {
@@ -28,6 +30,7 @@ export class FyAdminApi {
         });
         this.images = new ImagesService(this.request);
         this.itemPrices = new ItemPricesService(this.request);
+        this.manufacturers = new ManufacturersService(this.request);
         this.models = new ModelsService(this.request);
     }
 }

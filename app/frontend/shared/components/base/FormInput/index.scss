@@ -1,4 +1,4 @@
-.form-input {
+.base-input {
   position: relative;
   width: 100%;
   margin-bottom: 1rem;
@@ -7,7 +7,43 @@
     white-space: nowrap;
   }
 
-  &-wrapper {
+  &__prefix,
+  &__suffix {
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    background-color: lighten($input-bg, 10%);
+    border: 1px solid $input-border;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  }
+
+  &__prefix {
+    border-right: none;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+  }
+
+  &__suffix {
+    border-left: none;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+  }
+
+  &__clear {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 100%;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  &__wrapper {
     position: relative;
     display: flex;
 
@@ -53,43 +89,7 @@
       height: auto;
     }
 
-    .form-input-prefix,
-    .form-input-suffix {
-      display: flex;
-      align-items: center;
-      padding: 0 6px;
-      background-color: lighten($input-bg, 10%);
-      border: 1px solid $input-border;
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-    }
-
-    .form-input-prefix {
-      border-right: none;
-      border-top-left-radius: 3px;
-      border-bottom-left-radius: 3px;
-    }
-
-    .form-input-suffix {
-      border-left: none;
-      border-top-right-radius: 3px;
-      border-bottom-right-radius: 3px;
-    }
-
-    .clear {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 50px;
-      height: 100%;
-      margin: 0;
-      cursor: pointer;
-    }
-
-    &.from-input-wrapper-with-prefix {
+    &--with-prefix {
       input,
       textarea {
         border-top-left-radius: 0;
@@ -97,7 +97,7 @@
       }
     }
 
-    &.from-input-wrapper-with-suffix {
+    &--with-suffix {
       input,
       textarea {
         border-top-right-radius: 0;
@@ -106,14 +106,14 @@
     }
   }
 
-  &-clearable {
+  &--clearable {
     input,
     textarea {
       padding-right: 50px;
     }
   }
 
-  &-disabled {
+  &--disabled {
     input,
     textarea {
       color: darken($input-color, 10%);
@@ -122,7 +122,7 @@
     }
   }
 
-  &-large {
+  &--large {
     input,
     textarea {
       height: 55px;
@@ -133,7 +133,7 @@
     }
   }
 
-  &-clean {
+  &--clean {
     margin-bottom: 0;
 
     input,
@@ -143,7 +143,7 @@
     }
   }
 
-  &-inline {
+  &--inline {
     display: flex;
     justify-content: stretch;
     align-items: center;
@@ -154,52 +154,56 @@
     }
   }
 
-  &-align-left {
+  &--align-left {
     input {
       text-align: left;
     }
   }
 
-  &-align-right {
+  &--align-right {
     input {
       text-align: right;
     }
   }
 
-  &.has-error {
+  &--with-error {
     input,
     textarea {
       border-color: darken($danger, 15%);
       box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
     }
 
-    .form-input-prefix,
-    .form-input-suffix {
-      border-color: darken($danger, 15%);
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-    }
-
-    .from-input-wrapper-with-prefix {
-      input,
-      textarea {
-        border-left: none;
+    .base-input {
+      &--prefix,
+      &--suffix {
+        border-color: darken($danger, 15%);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
       }
     }
 
-    .from-input-wrapper-with-suffix {
-      input,
-      textarea {
-        border-right: none;
+    .base-input__wrapper {
+      &--with-prefix {
+        input,
+        textarea {
+          border-left: none;
+        }
+      }
+
+      &--with-suffix {
+        input,
+        textarea {
+          border-right: none;
+        }
       }
     }
   }
 }
 
-.input-group-flex,
-.input-group {
+.base-input-group-flex,
+.base-input-group {
   margin-bottom: 1rem;
 
-  .form-input {
+  .base-input {
     margin-bottom: 0;
   }
 }

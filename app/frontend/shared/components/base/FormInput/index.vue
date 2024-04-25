@@ -136,15 +136,15 @@ const innerPlaceholder = computed(() => {
 
 const cssClasses = computed(() => {
   return {
-    "has-error has-feedback": hasErrors.value,
-    "form-input-large": props.size === InputSizesEnum.LARGE,
-    "form-input-clean": props.variant === InputVariantsEnum.CLEAN,
-    "form-input-clearable": props.clearable,
-    "form-input-disabled": props.disabled,
-    "form-input-inline": props.inline,
-    "form-input-align-left": props.alignment === InputAlignmentsEnum.LEFT,
-    "form-input-align-right": props.alignment === InputAlignmentsEnum.RIGHT,
-    [`form-input-${props.type}`]: true,
+    "base-input--with-error": hasErrors.value,
+    "base-input--large": props.size === InputSizesEnum.LARGE,
+    "base-input--clean": props.variant === InputVariantsEnum.CLEAN,
+    "base-input--clearable": props.clearable,
+    "base-input--disabled": props.disabled,
+    "base-input--inline": props.inline,
+    "base-input--align-left": props.alignment === InputAlignmentsEnum.LEFT,
+    "base-input--align-right": props.alignment === InputAlignmentsEnum.RIGHT,
+    [`base-input--${props.type}`]: true,
   };
 });
 
@@ -179,7 +179,7 @@ defineExpose({
 </script>
 
 <template>
-  <div :key="id" class="form-input" :class="cssClasses">
+  <div :key="id" class="base-input" :class="cssClasses">
     <transition name="fade">
       <label
         v-show="!hideLabelOnEmpty || inputValue"
@@ -191,14 +191,14 @@ defineExpose({
       </label>
     </transition>
     <div
-      class="form-input-wrapper"
+      class="base-input__wrapper"
       :class="{
-        'from-input-wrapper-with-prefix': !!prefix,
-        'from-input-wrapper-with-suffix': !!suffix,
+        'base-input__wrapper--with-prefix': !!prefix,
+        'base-input__wrapper--with-suffix': !!suffix,
       }"
     >
       <slot name="prefix">
-        <div v-if="prefix" class="form-input-prefix">
+        <div v-if="prefix" class="base-input__prefix">
           {{ prefix }}
         </div>
       </slot>
@@ -225,7 +225,7 @@ defineExpose({
         @blur="handleBlur"
       />
       <slot name="suffix">
-        <div v-if="suffix" class="form-input-suffix">
+        <div v-if="suffix" class="base-input__suffix">
           {{ suffix }}
         </div>
       </slot>

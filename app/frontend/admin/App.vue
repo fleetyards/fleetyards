@@ -1,13 +1,8 @@
-<template>
-  <div id="app" class="app-body container-fluid">
-    <router-view v-slot="{ Component, route }">
-      <transition name="fade" mode="out-in">
-        <component :is="Component" :key="`${locale}-${route.path}`" />
-      </transition>
-    </router-view>
-    <AppModal />
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "AdminApp",
+};
+</script>
 
 <script lang="ts" setup>
 import AppModal from "@/shared/components/AppModal/index.vue";
@@ -17,6 +12,8 @@ import { storeToRefs } from "pinia";
 import { useNProgress } from "@/shared/composables/useNProgress";
 
 useNProgress();
+
+const route = useRoute();
 
 const i18nStore = useI18nStore();
 
@@ -38,8 +35,36 @@ const checkMobile = () => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "AdminApp",
-};
-</script>
+<template>
+  <div
+    id="app"
+    :key="locale"
+    :class="{
+      [`page-${String(route.name)}`]: true,
+    }"
+    class="flex flex-col min-h-screen"
+  >
+    <div class="flex items-stretch">
+      <div class="flex flex-1 flex-col max-w-full h-full">
+        <div class="min-h-screen">
+          <router-view v-slot="{ Component, route: viewRoute }">
+            <transition name="fade" mode="out-in">
+              <section
+                class="px-4 relative left-0 w-full max-w-full mb-12"
+                :class="{
+                  [route.name || '']: true,
+                }"
+              >
+                <component
+                  :is="Component"
+                  :key="`${locale}-${viewRoute.path}`"
+                />
+              </section>
+            </transition>
+          </router-view>
+        </div>
+      </div>
+    </div>
+    <AppModal />
+  </div>
+</template>

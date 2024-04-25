@@ -129,11 +129,11 @@ const toggleFilter = () => {
 </script>
 
 <template>
-  <div class="row">
+  <div class="row filtered-list">
     <div class="col-12">
       <div class="row">
-        <div class="col-12 filtered-header">
-          <div class="filtered-header-left">
+        <div class="col-12 filtered-list__header">
+          <div class="filtered-list__header-left">
             <Btn
               v-if="hasFilterSlot"
               v-tooltip="filterTooltip"
@@ -147,15 +147,14 @@ const toggleFilter = () => {
             </Btn>
             <slot name="actions-left" :records="records" />
           </div>
-          <div class="filtered-header-right">
+          <div class="filtered-list__header-right">
             <slot name="actions-right" :records="records" />
+            <slot name="pagination-top" />
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-12">
-          <slot name="pagination-top" />
-        </div>
+        <div class="col-12"></div>
       </div>
       <div class="row">
         <transition
@@ -203,3 +202,7 @@ const toggleFilter = () => {
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+@import "index";
+</style>

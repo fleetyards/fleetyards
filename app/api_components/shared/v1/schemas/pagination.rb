@@ -9,6 +9,7 @@ module Shared
         schema({
           type: :object,
           properties: {
+            totalCount: {type: :integer},
             currentPage: {type: :integer},
             totalPages: {type: :integer},
             defaultPerPage: {type: :integer},

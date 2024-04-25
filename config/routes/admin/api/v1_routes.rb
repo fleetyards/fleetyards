@@ -2,12 +2,18 @@
 
 v1_admin_api_routes = lambda do
   resources :models, only: %i[index] do
-    get :options, on: :collection
+    collection do
+      get :options
+      get "production-states" => "models#production_states"
+    end
+
     get :images, on: :member
   end
 
   resources :model_modules, path: "model-modules", only: [:index]
   resources :model_paints, path: "model-paints", only: [:index]
+
+  resources :manufacturers, only: %i[index]
 
   resources :components, only: [:index] do
     get :class_filters, on: :collection

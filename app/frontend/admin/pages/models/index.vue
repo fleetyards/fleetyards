@@ -5,17 +5,21 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { useApiClient } from "@/admin/composables/useApiClient";
-import { useQuery } from "@tanstack/vue-query";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
 import { type BaseTableColumn } from "@/shared/components/base/Table/types";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import ModelActions from "@/admin/components/Models/Actions/index.vue";
-import { type Models, type ApiError } from "@/services/fyAdminApi";
-
-const { models: modelsService } = useApiClient();
+import FilterForm from "@/admin/components/Models/FilterForm/index.vue";
+import {
+  QueryKeysEnum,
+  useModelQueries,
+} from "@/admin/composables/useModelQueries";
+import { useModelFilters } from "@/admin/composables/useModelFilters";
+import { usePagination } from "@/shared/composables/usePagination";
+import Paginator from "@/shared/components/Paginator/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
 
 const route = useRoute();
 
@@ -30,16 +34,21 @@ watch(
   },
 );
 
+const { perPage, page, updatePerPage } = usePagination(QueryKeysEnum.MODELS);
+
+const { filters } = useModelFilters(() => refetch());
+
+const { modelsQuery } = useModelQueries();
+
 const {
   data: models,
   refetch,
   ...asyncStatus
-} = useQuery<Models, ApiError>({
-  queryKey: ["models", sorts.value],
-  queryFn: () =>
-    modelsService.models({
-      s: sorts.value,
-    }),
+} = modelsQuery({
+  page: page,
+  perPage: perPage,
+  q: filters,
+  s: sorts,
 });
 
 const columns = computed<BaseTableColumn[]>(() => {
@@ -86,15 +95,41 @@ const columns = computed<BaseTableColumn[]>(() => {
     },
   ];
 });
+
+const { t } = useI18n();
 </script>
 
 <template>
+  <div class="row">
+    <div class="col-12 col-lg-12">
+      <div class="row">
+        <div class="col-12">
+          <h1>
+            {{ t("headlines.models.index") }}
+            <small v-if="models">
+              {{
+                t("headlines.pagination.count", {
+                  current: models?.items.length,
+                  total: models?.meta.pagination?.totalCount,
+                })
+              }}
+            </small>
+          </h1>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <FilteredList
     v-if="models"
     name="admin-models"
     :records="models.items || []"
     :async-status="asyncStatus"
+    static-filters
   >
+    <template #filter>
+      <FilterForm hide-quicksearch />
+    </template>
     <template #default>
       <BaseTable
         :records="models.items || []"
@@ -156,6 +191,22 @@ const columns = computed<BaseTableColumn[]>(() => {
           <ModelActions :record="record" />
         </template>
       </BaseTable>
+    </template>
+    <template #pagination-top>
+      <Paginator
+        v-if="models"
+        :query-result-ref="models"
+        :per-page="perPage"
+        :update-per-page="updatePerPage"
+      />
+    </template>
+    <template #pagination-bottom>
+      <Paginator
+        v-if="models"
+        :query-result-ref="models"
+        :per-page="perPage"
+        :update-per-page="updatePerPage"
+      />
     </template>
   </FilteredList>
 </template>

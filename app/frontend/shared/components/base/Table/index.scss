@@ -130,14 +130,6 @@
     }
   }
 
-  &
-  // &__empty > &__column {
-  //   justify-content: center;
-  //   padding: 20px;
-  //   color: darken($text-color, 30%);
-  //   font-family: "Orbitron", sans-serif;
-  // }
-
   &__empty &__empty-inner {
     display: flex;
     justify-content: center;

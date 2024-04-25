@@ -503,7 +503,12 @@
           "pledgePriceGt": "Pledge Price >=",
           "priceLt": "Price <=",
           "priceGt": "Price >=",
-          "willItFit": "Will it Fit?"
+          "willItFit": "Will it Fit?",
+          "scIdentifierBlank": "Without SC Identifier?",
+          "fleetchartImageBlank": "Without Fleetchart Image?",
+          "holoBlank": "Without Holo?",
+          "frontViewBlank": "Without Front View Image?",
+          "topViewColoredBlank": "Without Top View Colored Image?"
         },
         "images": {
           "station": "Station",

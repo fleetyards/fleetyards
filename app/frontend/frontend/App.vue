@@ -1,58 +1,8 @@
-<template>
-  <div
-    id="app"
-    :key="locale"
-    :class="{
-      [`page-${String(route.name)}`]: true,
-    }"
-    class="app-body"
-  >
-    <BackgroundImage />
-
-    <div class="app-content">
-      <transition name="fade" mode="out-in">
-        <AppNavigationMobile v-if="mobile" />
-      </transition>
-      <transition name="fade" mode="out-in">
-        <AppNavigation />
-      </transition>
-      <div class="main-wrapper">
-        <div class="main-inner">
-          <AppNavigationHeader />
-
-          <router-view v-slot="{ Component, route: viewRoute }">
-            <transition name="fade" mode="out-in">
-              <SecurePage
-                v-if="
-                  viewRoute.meta.needsSecurityConfirm &&
-                  !sessionStore.accessConfirmedDate
-                "
-              />
-              <section
-                v-else
-                class="container main"
-                :class="{
-                  [route.name || '']: true,
-                }"
-              >
-                <component
-                  :is="Component"
-                  :key="`${locale}-${viewRoute.path}`"
-                />
-              </section>
-            </transition>
-          </router-view>
-        </div>
-
-        <AppEnvironment />
-
-        <AppFooter />
-      </div>
-    </div>
-
-    <AppModal />
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "FrontendApp",
+};
+</script>
 
 <script lang="ts" setup>
 import AppNavigation from "@/frontend/components/core/AppNavigation/index.vue";
@@ -264,8 +214,58 @@ const checkVersion = async () => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "FrontendApp",
-};
-</script>
+<template>
+  <div
+    id="app"
+    :key="locale"
+    :class="{
+      [`page-${String(route.name)}`]: true,
+    }"
+    class="app-body"
+  >
+    <BackgroundImage />
+
+    <div class="app-content">
+      <transition name="fade" mode="out-in">
+        <AppNavigationMobile v-if="mobile" />
+      </transition>
+      <transition name="fade" mode="out-in">
+        <AppNavigation />
+      </transition>
+      <div class="main-wrapper">
+        <div class="main-inner">
+          <AppNavigationHeader />
+
+          <router-view v-slot="{ Component, route: viewRoute }">
+            <transition name="fade" mode="out-in">
+              <SecurePage
+                v-if="
+                  viewRoute.meta.needsSecurityConfirm &&
+                  !sessionStore.accessConfirmedDate
+                "
+              />
+              <section
+                v-else
+                class="container main"
+                :class="{
+                  [route.name || '']: true,
+                }"
+              >
+                <component
+                  :is="Component"
+                  :key="`${locale}-${viewRoute.path}`"
+                />
+              </section>
+            </transition>
+          </router-view>
+        </div>
+
+        <AppEnvironment />
+
+        <AppFooter />
+      </div>
+    </div>
+
+    <AppModal />
+  </div>
+</template>

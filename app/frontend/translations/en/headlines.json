@@ -117,6 +117,12 @@
       "vehicle": {
         "bulkGroupEdit": "Add/Remove Groups"
       },
+      "pagination": {
+        "count": "%{current} of %{total}"
+      },
+      "models": {
+        "index": "Models"
+      },
       "modals": {
         "shopCommodity": {
           "update": "Update Commodity %{shopCommodity}",

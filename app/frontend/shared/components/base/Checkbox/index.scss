@@ -1,4 +1,4 @@
-.form-checkbox {
+.base-checkbox {
   margin-bottom: 1rem;
   display: flex;
 
@@ -71,7 +71,7 @@
     }
   }
 
-  &__partial {
+  &--partial {
     input + label::after {
       background: url("@/images/icons/solid/minus-primary.svg");
       background-repeat: no-repeat;
@@ -80,11 +80,11 @@
     }
   }
 
-  &__expanded {
+  &--expanded {
     margin-top: 30px;
   }
 
-  &__inline {
+  &--inline {
     margin-bottom: 0;
   }
 }

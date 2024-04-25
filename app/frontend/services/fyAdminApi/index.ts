@@ -45,6 +45,8 @@ export type { ItemPrices } from './models/ItemPrices';
 export { ItemPriceTimeRangeEnum } from './models/ItemPriceTimeRangeEnum';
 export { ItemPriceTypeEnum } from './models/ItemPriceTypeEnum';
 export type { Manufacturer } from './models/Manufacturer';
+export type { ManufacturerQuery } from './models/ManufacturerQuery';
+export type { Manufacturers } from './models/Manufacturers';
 export type { MediaImage } from './models/MediaImage';
 export type { Meta } from './models/Meta';
 export type { Model } from './models/Model';
@@ -81,4 +83,5 @@ export type { ViewImage } from './models/ViewImage';
 
 export { ImagesService } from './services/ImagesService';
 export { ItemPricesService } from './services/ItemPricesService';
+export { ManufacturersService } from './services/ManufacturersService';
 export { ModelsService } from './services/ModelsService';

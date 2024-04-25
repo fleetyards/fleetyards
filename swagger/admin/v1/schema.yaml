@@ -280,6 +280,72 @@ paths:
             schema:
               "$ref": "#/components/schemas/ItemPriceInput"
         required: true
+  "/manufacturers":
+    get:
+      summary: Manufacturers list
+      operationId: manufacturers
+      tags:
+      - Manufacturers
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ManufacturerQuery"
+        style: deepObject
+        explode: true
+        required: false
+      - name: cacheId
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Manufacturers"
+  "/manufacturers/with-models":
+    get:
+      summary: with_models manufacturer
+      tags:
+      - Manufacturers
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Manufacturers"
+  "/models/production-states":
+    get:
+      summary: Model Production states
+      operationId: modelProductionStates
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
   "/models":
     get:
       summary: Models list
@@ -841,6 +907,8 @@ components:
     Pagination:
       type: object
       properties:
+        totalCount:
+          type: integer
         currentPage:
           type: integer
         totalPages:
@@ -1211,6 +1279,21 @@ components:
       - items
       - meta
       title: ItemPrices
+    Manufacturers:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            "$ref": "#/components/schemas/Manufacturer"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: Manufacturers
     ModelLoaner:
       type: object
       properties:
@@ -1752,6 +1835,29 @@ components:
             "$ref": "#/components/schemas/ItemPriceTypeEnum"
       additionalProperties: false
       title: ItemPriceQuery
+    ManufacturerQuery:
+      type: object
+      properties:
+        withModels:
+          type: boolean
+        nameEq:
+          type: string
+        nameCont:
+          type: string
+        nameIn:
+          type: array
+          items:
+            type: string
+        slugEq:
+          type: string
+        slugCont:
+          type: string
+        slugIn:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      title: ManufacturerQuery
     ModelQuery:
       type: object
       properties:
@@ -1771,6 +1877,32 @@ components:
           type: array
           items:
             type: string
+        manufacturerIn:
+          type: array
+          items:
+            type: string
+        productionStatusIn:
+          type: array
+          items:
+            type: string
+        searchCont:
+          type: string
+        scIdentifierBlank:
+          type: boolean
+        fleetchartImageBlank:
+          type: boolean
+        holoBlank:
+          type: boolean
+        topViewColoredBlank:
+          type: boolean
+        frontViewBlank:
+          type: boolean
+        sorts:
+          oneOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/ModelSortEnum"
+          - "$ref": "#/components/schemas/ModelSortEnum"
       additionalProperties: false
       title: ModelQuery
   securitySchemes:

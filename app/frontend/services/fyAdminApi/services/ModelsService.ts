@@ -2,12 +2,24 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { FilterOption } from '../models/FilterOption';
 import type { ModelQuery } from '../models/ModelQuery';
 import type { Models } from '../models/Models';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class ModelsService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
+    /**
+     * Model Production states
+     * @returns FilterOption successful
+     * @throws ApiError
+     */
+    public modelProductionStates(): CancelablePromise<Array<FilterOption>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/production-states',
+        });
+    }
     /**
      * Models list
      * @returns Models successful

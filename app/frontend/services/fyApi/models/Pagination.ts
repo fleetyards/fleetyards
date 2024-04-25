@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export type Pagination = {
+    totalCount?: number;
     currentPage: number;
     totalPages: number;
     defaultPerPage?: number;
