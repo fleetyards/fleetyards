@@ -90,16 +90,16 @@ const onSubmit = handleSubmit(async (values) => {
   } catch (error) {
     const body = (error as unknown as ApiError).body;
 
-    if (body.code === "session.create.two_factor_required") {
+    if (body?.code === "session.create.two_factor_required") {
       twoFactorRequired.value = true;
     } else {
       displayAlert({
-        text: body.message,
+        text: body?.message || t("errors.generic"),
       });
     }
+  } finally {
+    submitting.value = false;
   }
-
-  submitting.value = false;
 });
 </script>
 
@@ -109,7 +109,7 @@ const onSubmit = handleSubmit(async (values) => {
       <form @submit.prevent="onSubmit">
         <h1>
           <router-link to="/" exact>
-            {{ t("app") }}
+            {{ t("title.default") }}
           </router-link>
         </h1>
 

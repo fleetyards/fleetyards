@@ -1,14 +1,15 @@
-<template>
-  <ImagesList
-    name="admin-model-images"
-    gallery-type="Model"
-    :gallery-id="galleryId"
-  />
-</template>
+<script lang="ts">
+export default {
+  name: "AdminModelImagesPage",
+};
+</script>
 
 <script lang="ts" setup>
+import { useI18n } from "@/shared/composables/useI18n";
 import ImagesList from "@/admin/components/Images/List.vue";
-import { useRoute } from "vue-router";
+import Heading from "@/shared/components/base/Heading/index.vue";
+
+const { t } = useI18n();
 
 const route = useRoute();
 
@@ -17,8 +18,11 @@ const galleryId = computed(() => {
 });
 </script>
 
-<script lang="ts">
-export default {
-  name: "AdminModelImagesPage",
-};
-</script>
+<template>
+  <Heading>{{ t("headlines.admin.models.images") }}</Heading>
+  <ImagesList
+    name="admin-model-images"
+    gallery-type="Model"
+    :gallery-id="galleryId"
+  />
+</template>

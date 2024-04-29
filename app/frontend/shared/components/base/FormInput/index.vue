@@ -229,7 +229,11 @@ defineExpose({
           {{ suffix }}
         </div>
       </slot>
-      <div v-if="inputValue && clearable" class="clear" @click="clear">
+      <div
+        v-if="inputValue && clearable"
+        class="base-input__clear"
+        @click="clear"
+      >
         <i
           class="fal fa-times"
           :class="{

@@ -10,21 +10,24 @@ import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import CommunityLogo from "@/shared/components/CommunityLogo/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useAppStore } from "@/frontend/stores/app";
 import { useI18nStore } from "@/shared/stores/i18n";
-import { storeToRefs } from "pinia";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 
+type Props = {
+  version: string;
+  codename: string;
+  gitRevision: string;
+  online: boolean;
+};
+
+defineProps<Props>();
+
 const { t, availableLocales, currentLocale } = useI18n();
 
 const i18nStore = useI18nStore();
-
-const appStore = useAppStore();
-
-const { online, version, codename, gitRevision } = storeToRefs(appStore);
 
 const localeMapping = {
   de: "Deutsch",
@@ -149,7 +152,7 @@ const setLocale = (locale: string) => {
           rel="noopener"
           aria-label="Bluesky"
         >
-          <i class="fa fa-square" />
+          <i class="fab fa-bluesky" />
         </a>
         <a
           v-tooltip="'Mastodon'"

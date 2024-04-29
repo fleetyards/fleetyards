@@ -24,6 +24,8 @@ export default {
           grayBg: "#272B30",
           grayBgDark: "#1f1f1f",
           grayBorder: "#1e2226",
+          text: "#c8c8c8",
+          textdark: "#959595",
         },
         panel: {
           borderOuter: "#6f6f6f",
@@ -37,6 +39,12 @@ export default {
       },
       fontFamily: {
         sans: ["Inter var", ...defaultTheme.fontFamily.sans],
+        opensans: [
+          "Open Sans",
+          "sans-serif",
+          "Inter var",
+          ...defaultTheme.fontFamily.sans,
+        ],
         hero: ["Orbitron", "Inter var", ...defaultTheme.fontFamily.sans],
       },
       borderWidth: {

@@ -25,6 +25,8 @@ type Props = {
   vehicles: Vehicle[];
   editable?: boolean;
   wishlist?: boolean;
+  loading?: boolean;
+  emptyBoxVisible?: boolean;
 };
 
 const props = defineProps<Props>();
@@ -185,7 +187,8 @@ const resetSelected = () => {
       :columns="tableColumns"
       :selectable="editable"
       :selected="selected"
-      :empty-box-visible="!vehicles.length"
+      :loading="loading"
+      :empty-box-visible="emptyBoxVisible"
       @selected-change="onSelectedChange"
     >
       <template #selected-actions>

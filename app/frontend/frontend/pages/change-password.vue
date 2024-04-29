@@ -89,7 +89,7 @@ const onSubmit = handleSubmit(async (values) => {
       <form @submit.prevent="onSubmit">
         <h1>
           <router-link :to="{ name: 'home' }" exact>
-            {{ t("app") }}
+            {{ t("title.default") }}
           </router-link>
         </h1>
         <FormInput

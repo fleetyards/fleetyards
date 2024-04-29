@@ -1,10 +1,14 @@
 <template>
-  <div class="form-group">
-    <label :for="uuid">
+  <div class="radio-list">
+    <label :for="uuid" class="radio-list__label">
       {{ label }}
     </label>
-    <div class="radio-list">
-      <div v-if="resetLabel" :class="{ 'radio-inline': inline }" class="radio">
+    <div class="radio-list__wrapper">
+      <div
+        v-if="resetLabel"
+        :class="{ 'radio-inline': inline }"
+        class="radio-list__item"
+      >
         <input
           :id="`${uuid}-reset`"
           :checked="!modelValue"
@@ -13,7 +17,7 @@
           type="radio"
           @change="clear"
         />
-        <label :for="`${uuid}-reset`" class="radio-label">
+        <label :for="`${uuid}-reset`">
           {{ resetLabel }}
         </label>
       </div>
@@ -21,7 +25,7 @@
         v-for="(option, index) in options"
         :key="`${uuid}-${option.value}-${index}`"
         :class="{ 'radio-inline': inline }"
-        class="radio"
+        class="radio-list__item"
       >
         <input
           :id="`${uuid}-${option.value}`"
@@ -32,7 +36,7 @@
           type="radio"
           @change="change"
         />
-        <label :for="`${uuid}-${option.value}`" class="radio-label">
+        <label :for="`${uuid}-${option.value}`" class="radio-list__label">
           {{ option.label }}
         </label>
       </div>

@@ -1,7 +1,10 @@
 {
   "en": {
     "title": {
-      "main": "%{title} | FleetYards.net",
+      "default": "FleetYards.net",
+      "defaultShort": "FleetYards",
+      "defaultAdmin": "FleetYards.net Command",
+      "defaultAdminShort": "FltYrds Command",
       "home": "Home",
       "search": "Search Results",
       "ships": {
@@ -64,6 +67,23 @@
       "visualTests": {
         "index": "Visual Tests",
         "panels": "Panels - Visual Tests"
+      },
+      "admin": {
+        "models": {
+          "index": "Models",
+          "new": "New Model",
+          "edit": "Edit Model"
+        },
+        "components": {
+          "index": "Components",
+          "new": "New Component",
+          "edit": "Edit Component"
+        },
+        "manufacturers": {
+          "index": "Manufacturers",
+          "new": "New Manufacturer",
+          "edit": "Edit Manufacturer"
+        }
       }
     }
   }

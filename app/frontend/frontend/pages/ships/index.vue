@@ -33,7 +33,7 @@ useWishlistItems();
 
 const { t } = useI18n();
 
-useMetaInfo(t);
+useMetaInfo();
 
 const modelsStore = useModelsStore();
 const fleetchartsStore = useFleetchartStore();

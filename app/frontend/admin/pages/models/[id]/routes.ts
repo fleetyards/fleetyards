@@ -7,6 +7,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/models/[id]/index.vue"),
     meta: {
       title: "admin.models.detail",
+      activeRoute: "models",
     },
   },
   {
@@ -15,6 +16,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/models/[id]/edit.vue"),
     meta: {
       title: "admin.models.edit",
+      activeRoute: "models",
     },
   },
   {
@@ -23,6 +25,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/models/[id]/images.vue"),
     meta: {
       title: "admin.models.images",
+      activeRoute: "models",
     },
   },
   {
@@ -31,6 +34,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/models/[id]/videos.vue"),
     meta: {
       title: "admin.models.videos",
+      activeRoute: "models",
     },
   },
   {
@@ -39,6 +43,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/models/[id]/prices.vue"),
     meta: {
       title: "admin.models.prices",
+      activeRoute: "models",
     },
   },
 ];

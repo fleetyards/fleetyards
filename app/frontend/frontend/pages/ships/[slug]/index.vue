@@ -47,7 +47,7 @@ useWishlistItems();
 
 const { t, toDollar } = useI18n();
 
-const { updateMetaInfo } = useMetaInfo(t);
+const { updateMetaInfo } = useMetaInfo();
 
 const route = useRoute();
 

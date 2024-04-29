@@ -18,7 +18,7 @@ import Starship42Btn from "@/frontend/components/Starship42Btn/index.vue";
 import { type Model } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useApiClient } from "@/frontend/composables/useApiClient";
-import { useNavStore } from "@/frontend/stores/nav";
+import { useNavStore } from "@/shared/stores/nav";
 
 type CompareForm = {
   models?: string[];

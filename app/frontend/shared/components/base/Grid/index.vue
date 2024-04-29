@@ -19,10 +19,10 @@ const props = withDefaults(defineProps<Props>(), {
 
 const gridClasses = computed(() => {
   if (props.gridBase === "3") {
-    return `col-12 col-md-6 col-lg-4 ${gridClassesWithFilter.value}`;
+    return `columns-1 md:columns-2 lg:columns-4 col-12 col-md-6 col-lg-4 ${gridClassesWithFilter.value}`;
   }
 
-  return `col-12 col-lg-6 col-lgx-3 ${gridClassesWithFilter.value}`;
+  return `columns-1 lg:columns-2 col-12 col-lg-6 col-lgx-3 ${gridClassesWithFilter.value}`;
 });
 
 const gridClassesWithFilter = computed(() => {

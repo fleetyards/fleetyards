@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import Heading from "@/shared/components/base/Heading/index.vue";
+import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
 import { type BaseTableColumn } from "@/shared/components/base/Table/types";
@@ -100,41 +102,37 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <div class="row">
-    <div class="col-12 col-lg-12">
-      <div class="row">
-        <div class="col-12">
-          <h1>
-            {{ t("headlines.models.index") }}
-            <small v-if="models">
-              {{
-                t("headlines.pagination.count", {
-                  current: models?.items.length,
-                  total: models?.meta.pagination?.totalCount,
-                })
-              }}
-            </small>
-          </h1>
-        </div>
-      </div>
-    </div>
-  </div>
+  <Heading>
+    {{ t("headlines.models.index") }}
+    <HeadingSmall v-if="models">
+      {{
+        t("headlines.pagination.count", {
+          current: models?.items.length,
+          total: models?.meta.pagination?.totalCount,
+        })
+      }}
+    </HeadingSmall>
+  </Heading>
 
   <FilteredList
     v-if="models"
     name="admin-models"
     :records="models.items || []"
     :async-status="asyncStatus"
+    hide-loading
+    hide-empty-box
     static-filters
   >
     <template #filter>
       <FilterForm hide-quicksearch />
     </template>
-    <template #default>
+    <template #default="{ loading, emptyBoxVisible }">
       <BaseTable
         :records="models.items || []"
         primary-key="id"
         :columns="columns"
+        :loading="loading"
+        :empty-box-visible="emptyBoxVisible"
         selectable
       >
         <template #col-storeImage="{ record }">

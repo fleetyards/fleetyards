@@ -20,7 +20,6 @@
       "privacyPolicy": "Privacy policy",
       "privacySettings": "Privacy settings",
       "impressum": "Impressum",
-      "admin": "Admin",
       "fleets": {
         "index": "Fleets",
         "add": "Create a new Fleet",
@@ -60,7 +59,42 @@
         "hangar": "Hangar",
         "verify": "RSI Account Verification"
       },
-      "reload": "Update available!"
+      "reload": "Update available!",
+      "admin": {
+        "index": "Admin",
+        "models": {
+          "index": "Models",
+          "create": "Create Model"
+        },
+        "components": {
+          "index": "Components"
+        },
+        "manufacturers": {
+          "index": "Manufacturers"
+        },
+        "images": {
+          "index": "Images"
+        },
+        "users": {
+          "index": "Users"
+        },
+        "fleets": {
+          "index": "Fleets"
+        },
+        "vehicles": {
+          "index": "Vehicles"
+        },
+        "admins": {
+          "index": "Admins"
+        },
+        "maintenance": {
+          "index": "Maintenance",
+          "pghero": "PG-Hero",
+          "features": "Features",
+          "workers": "Workers",
+          "rsiApiStatus": "RSI API Status"
+        }
+      }
     }
   }
 }

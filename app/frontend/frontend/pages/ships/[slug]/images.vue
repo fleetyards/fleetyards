@@ -23,7 +23,7 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 
-const { updateMetaInfo } = useMetaInfo(t);
+const { updateMetaInfo } = useMetaInfo();
 
 const metaTitle = computed(() => {
   if (!props.model) {

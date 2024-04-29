@@ -65,7 +65,7 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 
-const { getTitle } = useMetaInfo(t);
+const { getTitle } = useMetaInfo();
 
 const mobile = useMobile();
 

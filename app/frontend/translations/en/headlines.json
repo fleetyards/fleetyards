@@ -1,6 +1,28 @@
 {
   "en": {
     "headlines": {
+      "admin": {
+        "dashboard": "Dashboard",
+        "models": {
+          "index": "Models",
+          "edit": "Edit Model",
+          "new": "New Model",
+          "show": "Model",
+          "images": "Images",
+          "videos": "Videos",
+          "prices": "Prices"
+        },
+        "components": {
+          "index": "Components",
+          "new": "New Component",
+          "edit": "Edit Component"
+        },
+        "manufacturers": {
+          "index": "Manufacturers",
+          "new": "New Manufacturer",
+          "edit": "Edit Manufacturer"
+        }
+      },
       "welcome": "Welcome to",
       "welcomeShips": "Latest Ships",
       "welcomeImages": "Random Images",

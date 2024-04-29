@@ -23,6 +23,8 @@ declare module 'vue' {
     FormInput: typeof import('./shared/components/base/FormInput/index.vue')['default']
     FormTextarea: typeof import('./shared/components/base/FormTextarea/index.vue')['default']
     Grid: typeof import('./shared/components/base/Grid/index.vue')['default']
+    Heading: typeof import('./shared/components/base/Heading/index.vue')['default']
+    HeadingSmall: typeof import('./shared/components/base/Heading/Small/index.vue')['default']
     RadioList: typeof import('./shared/components/base/RadioList/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
@@ -30,5 +32,6 @@ declare module 'vue' {
     TableActions: typeof import('./shared/components/base/Table/Actions/index.vue')['default']
     TableImage: typeof import('./shared/components/base/Table/Image/index.vue')['default']
     TableMobile: typeof import('./shared/components/base/Table/Mobile/index.vue')['default']
+    Text: typeof import('./shared/components/base/Text/index.vue')['default']
   }
 }

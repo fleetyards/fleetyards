@@ -104,7 +104,7 @@ const routeForImage = (image: Image) => {
                   height="101"
                   alt="logo"
                 />
-                {{ t("app") }}
+                {{ t("title.default") }}
               </h1>
               <div class="row justify-content-md-center">
                 <div class="col-12 col-lg-6">

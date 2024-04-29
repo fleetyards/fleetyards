@@ -1,0 +1,150 @@
+en:
+  title:
+    default: FleetYards.net
+    default_short: FleetYards
+    default_admin: FleetYards.net Command
+    default_admin_short: FltYrds Command
+    not_found: 404
+    server_error: 500
+    unprocessable_entity: 422
+    frontend:
+      compare_ships: Compare Ships
+      confirm: Confirm Account
+      cookie-policy: Cookie Policy
+      fleet_invite: Join %{fleet}
+      fleet_members: "%{fleet} Members"
+      fleet_settings: "%{fleet} Settings"
+      fleet_stats: "%{fleet} Stats"
+      fleets: Fleets
+      fleets_add: Create new Fleet
+      fleets_invites: Fleet Invites
+      fleets_preview: Fleet Preview
+      hangar: My Hangar
+      hangar_import: Import
+      hangar_preview: My Hangar Preview
+      hangar_stats: My Hangar Stats
+      hangar_wishlist: Wishlist
+      home: Home
+      images: Images
+      impressum: Impressum
+      login: Login
+      password_change: Change Password
+      password_request: Request Password
+      privacy-policy: Privacy Policy
+      public_hangar: "%{user} Hangar"
+      public_wishlist: "%{user} Wishlist"
+      roadmap: Roadmap
+      roadmap_changes: Roadmap Changes
+      roadmap_progress-tracker: Progress Tracker
+      roadmap_ships: Ship-Roadmap
+      search: Search Results
+      settings: Settings
+      settings_account: Account
+      settings_change-password: Change Password
+      settings_hangar: Hangar Settings
+      settings_notifications: Notification Settings
+      settings_profile: Profile Settings
+      settings_security: Account Security
+      settings_security_two-factor_backup-codes: Generate Two-factor Backup Codes
+      settings_security_two-factor_disable: Disable Two-factor Authentication
+      settings_security_two-factor_enable: Enable Two-factor Authentication
+      ship_images: "%{model} Images"
+      ship_videos: "%{model} Videos"
+      ships: Ships
+      sign-up: Sign Up
+      stats: Stats
+      tools: Tools
+      tools_travel-times: Travel Times
+      visual-tests: "Visual Tests"
+      visual-tests_panels: Panels - Visual Tests
+    api:
+      docs:
+        swagger: Swagger
+    admin:
+      dashboard: Dashboard
+      models: Models
+    # admin_user:
+    #   edit: Edit Admin User
+    #   index: Admin Users
+    #   new: New Admin User
+    # celestial_object:
+    #   edit: Edit Celestial Object
+    #   index: Celestial Objects
+    #   new: New Planet
+    # commodity:
+    #   edit: Edit Commodity
+    #   index: Commodities
+    #   new: New Commodity
+    # commodity_price:
+    #   confirmation: Confirm submitted Prices
+    # component:
+    #   edit: Edit Component
+    #   index: Components
+    #   new: New Component
+    # admin_maintenance:
+    #   rsi_api_status: RSI API Status
+    # confirm: Confirm Account
+    # devise:
+    #   otp: 2-Factor-Authentication
+    # equipment:
+    #   edit: Edit Equipment
+    #   index: Equipment
+    #   new: New Equipment
+    # image:
+    #   index: All Images
+    # loaner_uploads:
+    #   new: New Loaner Upload
+    # manufacturer:
+    #   edit: Edit Manufacturer
+    #   index: Manufacturers
+    #   new: New Manufacturer
+    # model:
+    #   edit: Edit Model
+    #   images: Images
+    #   index: Models
+    #   name_diff: Models with different RSI Name
+    #   new: New Model
+    #   price_diff: Models with outdated Pledge price
+    # model_module:
+    #   edit: Edit Module
+    #   index: Modules
+    #   new: New Module
+    # model_module_package:
+    #   edit: Edit Module Package
+    #   index: Module Packages
+    #   new: New Module Package
+    # model_paint:
+    #   edit: Edit Paint
+    #   index: Paints
+    #   new: New Paint
+    # model_upgrade:
+    #   edit: Edit Upgrade
+    #   index: Upgrades
+    #   new: New Upgrade
+    # otp: 2-Factor-Auth
+    # password:
+    #   edit: Change Password
+    #   new: Forgot your Password?
+    # shop:
+    #   edit: Edit Shop
+    #   index: Shops
+    #   new: New Shop
+    # shop_commodities:
+    #   index: Shop Commodities
+    # shop_commodity:
+    #   confirmation: Confirm submitted Shop Commodities
+    # sign_in: Login
+    # starsystem:
+    #   edit: Edit Starsystem
+    #   index: Starsystems
+    #   new: New Starsystem
+    # station:
+    #   edit: Edit Station
+    #   images: Images
+    #   index: Stations
+    #   new: New Station
+    # unlock: Unlock Account
+    # user:
+    #   edit: Edit User
+    #   index: Users
+    #   new: New User

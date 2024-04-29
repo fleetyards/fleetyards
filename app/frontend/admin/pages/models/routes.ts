@@ -8,6 +8,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/models/index.vue"),
     meta: {
       title: "admin.models.index",
+      icon: "fad fa-list",
     },
   },
   {
@@ -15,7 +16,8 @@ export const routes: RouteRecordRaw[] = [
     name: "model-create",
     component: () => import("@/admin/pages/models/create.vue"),
     meta: {
-      title: "admin.models.create",
+      title: "admin.models.new",
+      icon: "fad fa-plus",
     },
   },
   {
@@ -23,5 +25,8 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/models/[id].vue"),
     children: modelRoutes,
     redirect: { name: modelRoutes[0].name },
+    meta: {
+      hide: true,
+    },
   },
 ];

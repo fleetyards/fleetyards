@@ -1,0 +1,21 @@
+.app-environment {
+  position: sticky;
+  z-index: 1000;
+  bottom: 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+  padding: 20px 15px;
+
+  &.spacing-right {
+    right: 230px;
+  }
+
+  &--git-revision {
+    cursor: pointer;
+  }
+
+  &--with-primary-action {
+    padding-right: 90px;
+  }
+}

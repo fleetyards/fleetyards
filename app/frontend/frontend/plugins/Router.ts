@@ -8,7 +8,8 @@ import qs from "qs";
 import { useAppStore } from "@/frontend/stores/app";
 import { useFleetStore } from "@/frontend/stores/fleet";
 import { useSessionStore } from "@/frontend/stores/session";
-import { routes } from "@/frontend/routes";
+import { routes as initialRoutes } from "@/frontend/pages/routes";
+import { addTrailingSlashToAllRoutes } from "@/shared/utils/RouterHelper";
 
 // To ensure it is treated as a module, add at least one `export` statement
 export {};
@@ -23,15 +24,11 @@ export type FyLocationQuery = Record<
   LocationQueryValueRaw | LocationQueryValueRaw[] | FyLocartionQueryValue
 >;
 
-declare module "vue-router" {
-  interface RouteMeta {
-    title?: string;
-    needsAuthentication?: boolean;
-    quickSearch?: string;
-    primaryAction?: boolean;
-    backgroundImage?: string;
-  }
-}
+type RedirectRoute = {
+  routeName: string;
+  routeParams?: Record<string, string>;
+  routeQuery?: Record<string, string>;
+};
 
 const router = createRouter({
   history: createWebHistory(),
@@ -60,10 +57,12 @@ const router = createRouter({
     return result ? `${result}` : "";
   },
 
-  routes,
+  routes: addTrailingSlashToAllRoutes(initialRoutes),
 });
 
-const validateAndResolveNewRoute = (to: RouteLocation) => {
+const validateAndResolveNewRoute = (
+  to: RouteLocation,
+): RedirectRoute | undefined => {
   const sessionStore = useSessionStore();
   if (to.meta.needsAuthentication && !sessionStore.isAuthenticated) {
     return {
@@ -73,16 +72,6 @@ const validateAndResolveNewRoute = (to: RouteLocation) => {
       },
     };
   }
-
-  if (!to.path.endsWith("/")) {
-    return {
-      routeName: to.name || "home",
-      routeParams: to.params,
-      routeQuery: to.query,
-    };
-  }
-
-  return undefined;
 };
 
 router.beforeResolve((to, _from, next) => {

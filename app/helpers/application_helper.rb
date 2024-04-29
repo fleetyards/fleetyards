@@ -30,6 +30,10 @@ module ApplicationHelper
     @title ? "#{@title} | #{I18n.t(:"title.default")}" : I18n.t(:"title.default")
   end
 
+  def admin_title
+    @title ? "#{@title} | #{I18n.t(:"title.default_admin")}" : I18n.t(:"title.default_admin")
+  end
+
   def description
     @description || I18n.t(:"meta.description")
   end

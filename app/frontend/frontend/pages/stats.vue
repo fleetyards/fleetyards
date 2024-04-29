@@ -19,7 +19,7 @@ const { stats: statsService } = useApiClient();
 
 const { t } = useI18n();
 
-useMetaInfo(t);
+useMetaInfo();
 
 const { data: quickStats } = useQuery({
   queryKey: ["quickstats"],

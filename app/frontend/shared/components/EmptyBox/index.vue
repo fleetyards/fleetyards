@@ -13,12 +13,10 @@ import { useI18n } from "@/shared/composables/useI18n";
 const { t } = useI18n();
 
 type Props = {
-  visible?: boolean;
   ignoreFilter?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  visible: true,
   ignoreFilter: false,
 });
 
@@ -59,27 +57,25 @@ const resetPage = () => {
 </script>
 
 <template>
-  <transition name="fade">
-    <div v-if="visible" class="empty-box">
-      <Box class="info" :large="true">
-        <h1>{{ t("emptyBox.headline") }}</h1>
-        <p v-if="isQueryPresent">{{ t("emptyBox.texts.query") }}</p>
-        <p v-else>
-          {{ t("emptyBox.texts.info") }}
-        </p>
-        <template v-if="isQueryPresent" #footer>
-          <div class="empty-box-actions">
-            <Btn v-if="isPagePresent" @click="resetPage">
-              {{ t("emptyBox.actions.resetPage") }}
-            </Btn>
-            <Btn :to="{ name: String(route.name) }" route-active-class="">
-              {{ t("emptyBox.actions.reset") }}
-            </Btn>
-          </div>
-        </template>
-      </Box>
-    </div>
-  </transition>
+  <div class="empty-box">
+    <Box class="info" :large="true">
+      <h1>{{ t("emptyBox.headline") }}</h1>
+      <p v-if="isQueryPresent">{{ t("emptyBox.texts.query") }}</p>
+      <p v-else>
+        {{ t("emptyBox.texts.info") }}
+      </p>
+      <template v-if="isQueryPresent" #footer>
+        <div class="empty-box-actions">
+          <Btn v-if="isPagePresent" @click="resetPage">
+            {{ t("emptyBox.actions.resetPage") }}
+          </Btn>
+          <Btn :to="{ name: String(route.name) }" route-active-class="">
+            {{ t("emptyBox.actions.reset") }}
+          </Btn>
+        </div>
+      </template>
+    </Box>
+  </div>
 </template>
 
 <style lang="scss" scoped>

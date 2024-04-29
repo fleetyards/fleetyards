@@ -1,5 +1,5 @@
 import qs from "qs";
-import { routes as initialRoutes } from "@/admin/routes";
+import { routes as initialRoutes } from "@/admin/pages/routes";
 import { createRouter, createWebHistory } from "vue-router";
 import type { LocationQuery } from "vue-router";
 import { addTrailingSlashToAllRoutes } from "@/shared/utils/RouterHelper";

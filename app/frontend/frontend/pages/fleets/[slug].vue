@@ -23,7 +23,7 @@ const { data: fleet, refetch, ...asyncStatus } = fleetQuery();
 
 const { t } = useI18n();
 
-const { updateMetaInfo } = useMetaInfo(t);
+const { updateMetaInfo } = useMetaInfo();
 
 const comlink = useComlink();
 

@@ -68,7 +68,7 @@ const onSubmit = handleSubmit(async (values) => {
       <form @submit.prevent="onSubmit">
         <h1>
           <router-link to="/" exact>
-            {{ t("app") }}
+            {{ t("title.default") }}
           </router-link>
         </h1>
 

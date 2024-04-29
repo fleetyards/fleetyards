@@ -5,9 +5,9 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import AppNavigation from "@/frontend/components/core/AppNavigation/index.vue";
-import AppNavigationHeader from "@/frontend/components/core/AppNavigation/Header/index.vue";
-import AppNavigationMobile from "@/frontend/components/core/AppNavigation/Mobile/index.vue";
+import FrontendNavigation from "@/frontend/components/Navigation/index.vue";
+import AppNavigationHeader from "@/shared/components/AppNavigation/Header/index.vue";
+import AppNavigationMobile from "@/shared/components/AppNavigation/Mobile/index.vue";
 import AppFooter from "@/frontend/components/core/AppFooter/index.vue";
 import AppEnvironment from "@/frontend/components/core/AppEnvironment/index.vue";
 import AppModal from "@/shared/components/AppModal/index.vue";
@@ -18,7 +18,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useUpdates } from "@/frontend/composables/useUpdates";
 import { useAppStore } from "@/frontend/stores/app";
-import { useNavStore } from "@/frontend/stores/nav";
+import { useNavStore } from "@/shared/stores/nav";
 import { useOverlayStore } from "@/shared/stores/overlay";
 import { useI18nStore } from "@/shared/stores/i18n";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -30,6 +30,10 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useAhoy } from "@/frontend/composables/useAhoy";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useNProgress } from "@/shared/composables/useNProgress";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 
 useNProgress();
 
@@ -49,10 +53,6 @@ const overlayStore = useOverlayStore();
 
 const { visible: overlayVisible } = storeToRefs(overlayStore);
 
-const i18nStore = useI18nStore();
-
-const { locale } = storeToRefs(i18nStore);
-
 const sessionStore = useSessionStore();
 
 const { isAuthenticated } = storeToRefs(sessionStore);
@@ -63,9 +63,9 @@ const { infoVisible } = storeToRefs(cookiesStore);
 
 const CHECK_VERSION_INTERVAL = 1800 * 1000; // 30 mins
 
-const { t, availableLocales } = useI18n();
+const { t, availableLocales, currentLocale } = useI18n();
 
-useMetaInfo(t);
+useMetaInfo();
 
 const { requestBrowserPermission } = useNoty();
 
@@ -156,6 +156,10 @@ onUnmounted(() => {
   comlink.off("fleet-update");
 });
 
+const i18nStore = useI18nStore();
+
+const { locale } = storeToRefs(i18nStore);
+
 const setupLocale = () => {
   if (!locale.value && availableLocales().includes(navigator.language)) {
     i18nStore.locale = navigator.language;
@@ -212,6 +216,32 @@ const checkVersion = async () => {
     console.error(error);
   }
 };
+
+const localeMapping = {
+  de: "Deutsch",
+  en: "English",
+  es: "Español",
+  fr: "Français",
+  it: "Italiano",
+  zh: "中文",
+  "zh-CN": "中文 (简体)",
+  "zh-TW": "中文 (繁體)",
+};
+
+const locales = computed(() => {
+  return availableLocales() as (keyof typeof localeMapping)[];
+});
+
+const activeLocale = (locale: string) => {
+  return (
+    locale === currentLocale() ||
+    (!locale.includes("zh") && locale === currentLocale().split("-")[0])
+  );
+};
+
+const setLocale = (locale: string) => {
+  i18nStore.locale = locale;
+};
 </script>
 
 <template>
@@ -230,7 +260,7 @@ const checkVersion = async () => {
         <AppNavigationMobile v-if="mobile" />
       </transition>
       <transition name="fade" mode="out-in">
-        <AppNavigation />
+        <FrontendNavigation />
       </transition>
       <div class="main-wrapper">
         <div class="main-inner">
@@ -260,9 +290,56 @@ const checkVersion = async () => {
           </router-view>
         </div>
 
-        <AppEnvironment />
+        <AppEnvironment :git-revision="appStore.gitRevision" />
 
-        <AppFooter />
+        <AppFooter
+          :codename="appStore.codename"
+          :version="appStore.version"
+          :git-revision="appStore.gitRevision"
+          :online="appStore.online"
+        >
+          <a
+            v-tooltip="'Roberts Space Industries'"
+            href="https://robertsspaceindustries.com/"
+            target="_blank"
+            rel="noopener"
+          >
+            RSI
+          </a>
+          |
+          <router-link :to="{ name: 'privacy-policy' }">
+            {{ t("nav.privacyPolicy") }}
+          </router-link>
+          |
+          <router-link :to="{ name: 'impressum' }">
+            {{ t("nav.impressum") }}
+          </router-link>
+          |
+          <a href="https://api.fleetyards.net" target="_blank" rel="noopener">
+            {{ t("nav.api") }}
+          </a>
+          |
+          <BtnDropdown
+            :text-inline="true"
+            :inline="true"
+            :size="BtnSizesEnum.SMALL"
+            :variant="BtnVariantsEnum.LINK"
+            :expand-top="true"
+          >
+            <template #label>
+              <i class="fad fa-language" /> {{ currentLocale() }}
+            </template>
+            <Btn
+              v-for="availableLocale in locales"
+              :key="`locale-${availableLocale}`"
+              :size="BtnSizesEnum.SMALL"
+              :active="activeLocale(availableLocale)"
+              @click="setLocale(availableLocale)"
+            >
+              {{ localeMapping[availableLocale] }} - {{ availableLocale }}
+            </Btn>
+          </BtnDropdown>
+        </AppFooter>
       </div>
     </div>
 

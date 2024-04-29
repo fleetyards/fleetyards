@@ -364,7 +364,7 @@ const openGuide = () => {
 
   <FilteredList
     key="hangar"
-    :hide-loading="fleetchartVisible"
+    :hide-loading="fleetchartVisible || !gridView"
     :hide-empty-box="!gridView"
     :records="vehicles?.items || []"
     :name="route.name?.toString() || ''"
@@ -483,7 +483,7 @@ const openGuide = () => {
       <FilterForm />
     </template>
 
-    <template #default="{ records, loading, filterVisible }">
+    <template #default="{ records, loading, filterVisible, emptyBoxVisible }">
       <Grid
         v-if="gridView"
         :records="records"
@@ -502,6 +502,8 @@ const openGuide = () => {
 
       <VehiclesTable
         v-else
+        :loading="loading"
+        :empty-box-visible="emptyBoxVisible"
         :vehicles="vehicles?.items || []"
         :editable="true"
       />

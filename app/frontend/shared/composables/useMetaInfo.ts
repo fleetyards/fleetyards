@@ -1,11 +1,19 @@
 import { useRoute } from "vue-router";
 import logo from "@/images/favicon.png";
-import { I18nPluginOptions } from "@/shared/plugins/I18n";
+import { useI18n } from "./useI18n";
 
 type MetaType = "website" | "article";
 
-export const useMetaInfo = (t: I18nPluginOptions["t"]) => {
+type MetaInfoOptions = {
+  appTitle?: string;
+};
+
+export const useMetaInfo = (options: MetaInfoOptions = {}) => {
   const route = useRoute();
+
+  const { t } = useI18n();
+
+  const appTitle = options.appTitle || t("title.default");
 
   const routeTitle = computed(() => {
     const routeMetaTitle: string | undefined = route.meta?.title as
@@ -59,11 +67,11 @@ export const useMetaInfo = (t: I18nPluginOptions["t"]) => {
 
   const getTitle = (title?: string): string | undefined => {
     if (title) {
-      return `${title} | ${t("app")}`;
+      return `${title} | ${appTitle}`;
     }
 
     if (routeTitle.value) {
-      return `${routeTitle.value} | ${t("app")}`;
+      return `${routeTitle.value} | ${appTitle}`;
     }
 
     return undefined;

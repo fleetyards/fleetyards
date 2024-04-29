@@ -12,7 +12,7 @@ module Frontend
       route = request.fullpath.split("?").first.sub(%r{^/}, "").tr("/", "_")
       route = "home" if route.blank?
 
-      @title = I18n.t("title.frontend.#{route}")
+      @title = I18n.t("title.frontend.#{route}") if I18n.exists?("title.frontend.#{route}")
 
       render_frontend
     end

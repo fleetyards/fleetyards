@@ -1,62 +1,82 @@
 $color1: #f4f4f4;
 $color2: #3197ee;
 
-.radio {
-  margin-top: 0;
-  margin-right: 5px;
-  padding: 0;
+.radio-list {
+  display: flex;
+  margin-bottom: 20px;
+  gap: 5px;
+  flex-wrap: wrap;
+  justify-content: space-between;
 
-  &.radio-inline {
-    display: inline-block;
+  &__wrapper {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+    align-items: center;
   }
 
-  label {
+  &__label {
     padding: 0;
     padding-top: 2px;
   }
 
-  input[type="radio"] {
-    position: absolute;
-    opacity: 0;
+  &__item {
+    margin-top: 0;
+    padding: 5px 0;
+    display: flex;
+    white-space: nowrap;
+    align-items: center;
 
-    + .radio-label::before {
+    &--inline {
       display: inline-block;
-      width: 24px;
-      height: 24px;
-      margin-top: -2px;
-      margin-right: 5px;
-      text-align: center;
-      vertical-align: top;
-      background: $input-bg;
-      border: 1px solid $input-border;
-      border-radius: 100%;
-      cursor: pointer;
-      transition: all 250ms ease;
-      content: "";
     }
 
-    &:checked + .radio-label::before {
-      background-color: $primary;
-      box-shadow: inset 0 0 0 4px $input-bg;
-    }
+    input[type="radio"] {
+      display: none;
+      position: absolute;
 
-    &:focus + .radio-label::before {
-      border-color: $primary;
-      outline: none;
-    }
+      + label {
+        cursor: pointer;
 
-    &:disabled,
-    &:disabled + .radio-label,
-    &:disabled + .radio-label::before {
-      cursor: not-allowed;
-    }
+        &::before {
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          margin-right: 10px;
+          text-align: center;
+          vertical-align: top;
+          background: $input-bg;
+          border: 1px solid $input-border;
+          border-radius: 100%;
+          cursor: pointer;
+          transition: all 250ms ease;
+          content: "";
+        }
+      }
 
-    &:disabled + .radio-label::before {
-      opacity: 0.9;
-    }
+      &:checked + label::before {
+        background-color: $primary;
+        box-shadow: inset 0 0 0 4px $input-bg;
+      }
 
-    &:disabled:checked + .radio-label::before {
-      background: lighten($input-bg, 10%);
+      &:focus + label::before {
+        border-color: $primary;
+        outline: none;
+      }
+
+      &:disabled,
+      &:disabled + label,
+      &:disabled + label::before {
+        cursor: not-allowed;
+      }
+
+      &:disabled + label::before {
+        opacity: 0.9;
+      }
+
+      &:disabled:checked + label::before {
+        background: lighten($input-bg, 10%);
+      }
     }
   }
 }

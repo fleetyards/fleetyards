@@ -31,9 +31,9 @@ const props = withDefaults(defineProps<Props>(), {
 
 const loading = computed(() => {
   return (
-    props.asyncStatus.isFetching.value ||
-    props.asyncStatus.isLoading.value ||
-    props.asyncStatus.isRefetching.value
+    (props.asyncStatus.isFetching.value &&
+      !props.asyncStatus.isRefetching.value) ||
+    props.asyncStatus.isLoading.value
   );
 });
 
@@ -132,8 +132,12 @@ const toggleFilter = () => {
   <div class="row filtered-list">
     <div class="col-12">
       <div class="row">
-        <div class="col-12 filtered-list__header">
-          <div class="filtered-list__header-left">
+        <div
+          class="col-12 filtered-list__header flex justify-between flex-wrap md:flex-nowrap"
+        >
+          <div
+            class="filtered-list__header-left max-md:ml-0 max-md:grow max-md:shrink-0 max-md:basis-0"
+          >
             <Btn
               v-if="hasFilterSlot"
               v-tooltip="filterTooltip"
@@ -147,23 +151,23 @@ const toggleFilter = () => {
             </Btn>
             <slot name="actions-left" :records="records" />
           </div>
-          <div class="filtered-list__header-right">
+          <div class="filtered-list__header-right max-md:mr-0 max-md:ml-2.5">
             <slot name="actions-right" :records="records" />
             <slot name="pagination-top" />
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-12"></div>
-      </div>
-      <div class="row">
+      <div class="row flex gap-4 flex-col md:flex-row">
         <transition
           name="slide"
           :appear="true"
           @before-enter="toggleFullscreen"
           @after-leave="toggleFullscreen"
         >
-          <div v-show="filterVisible" class="col-12 col-lg-3 col-xxl-2">
+          <div
+            v-show="filterVisible"
+            class="basis-full max-w-full lg:basis-4/12 3xl:basis-2/12 col-12 col-lg-3 col-xxl-2"
+          >
             <slot name="filter" />
           </div>
         </transition>
@@ -171,31 +175,36 @@ const toggleFilter = () => {
           :class="{
             'col-lg-9 col-xxl-10': !fullscreen,
           }"
-          class="col-12 col-animated"
+          class="col-12 basis-full max-w-full col-animated"
         >
+          <slot v-if="!hideLoading && loading" name="loader" :loading="loading">
+            <Loader :loading="loading" :fixed="true" />
+          </slot>
+
           <slot
+            v-else-if="!hideEmptyBox && emptyBoxVisible"
+            name="empty"
+            :filter-visible="filterVisible"
+            :hide-empty-box="hideEmptyBox"
+            :empty-box-visible="emptyBoxVisible"
+          >
+            <transition name="fade">
+              <EmptyBox />
+            </transition>
+          </slot>
+
+          <slot
+            v-else
             name="default"
             :records="records"
             :filter-visible="filterVisible"
             :loading="loading"
             :empty-box-visible="emptyBoxVisible"
           />
-
-          <slot
-            name="empty"
-            :filter-visible="filterVisible"
-            :hide-empty-box="hideEmptyBox"
-            :empty-box-visible="emptyBoxVisible"
-          >
-            <EmptyBox v-if="!hideEmptyBox" :visible="emptyBoxVisible" />
-          </slot>
-          <slot name="loader" :loading="loading">
-            <Loader v-if="!hideLoading" :loading="loading" :fixed="true" />
-          </slot>
         </div>
       </div>
-      <div class="row">
-        <div class="col-12">
+      <div class="row flex">
+        <div class="col-12 basis-full">
           <slot name="pagination-bottom" />
         </div>
       </div>

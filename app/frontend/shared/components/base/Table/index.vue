@@ -156,8 +156,8 @@ const resetSelected = () => {
 </script>
 
 <template>
-  <Panel class="base-table" :slim="true">
-    <div class="base-table__wrapper">
+  <Panel class="base-table w-full" :slim="true">
+    <div class="base-table__wrapper w-full">
       <table class="base-table__inner">
         <transition-group
           name="list"
@@ -197,6 +197,7 @@ const resetSelected = () => {
           <tr key="header" class="base-table__header">
             <th v-if="selectable" class="base-table__column">
               <Checkbox
+                v-if="!loading && !emptyBoxVisible"
                 name="all"
                 :model-value="allSelected"
                 inline
@@ -243,8 +244,29 @@ const resetSelected = () => {
           tag="tbody"
           :appear="true"
         >
+          <tr v-if="loading" key="loading-row" class="base-table__loader">
+            <td class="base-table__column" :colspan="columnCount">
+              <slot name="loader" :loading="loading">
+                <Loader :loading="loading" inline />
+              </slot>
+            </td>
+          </tr>
+          <tr
+            v-else-if="emptyBoxVisible"
+            key="empty-row"
+            class="base-table__empty"
+          >
+            <td class="base-table__column" :colspan="columnCount">
+              <div class="base-table__empty-inner">
+                <slot name="empty">
+                  {{ t("filteredTable.empty.info") }}
+                </slot>
+              </div>
+            </td>
+          </tr>
           <tr
             v-for="record in records"
+            v-else
             :key="primaryValue(record)"
             class="base-table__row"
           >
@@ -282,33 +304,8 @@ const resetSelected = () => {
               </div>
             </td>
           </tr>
-          <tr
-            v-if="loading && inlineLoader"
-            key="loading-row"
-            class="base-table__loader"
-          >
-            <td class="base-table__column">
-              <slot name="loader-inline" :loading="loading"></slot>
-            </td>
-          </tr>
-          <tr
-            v-else-if="emptyBoxVisible"
-            key="empty-row"
-            class="base-table__empty"
-          >
-            <td class="base-table__column" :colspan="columnCount">
-              <div class="base-table__empty-inner">
-                <slot name="empty">
-                  {{ t("filteredTable.empty.info") }}
-                </slot>
-              </div>
-            </td>
-          </tr>
         </transition-group>
       </table>
-      <slot v-if="!inlineLoader" name="loader" :loading="loading">
-        <Loader :loading="loading" relative />
-      </slot>
     </div>
   </Panel>
 </template>
