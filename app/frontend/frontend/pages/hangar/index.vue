@@ -79,7 +79,11 @@ const {
   data: vehicles,
   refetch,
   ...asyncStatus
-} = hangarQuery(filters, page, perPage);
+} = hangarQuery({
+  page,
+  perPage,
+  filters,
+});
 
 const { data: hangarStats, refetch: refetchStats } = statsQuery(filters);
 
@@ -333,7 +337,7 @@ const openGuide = () => {
     </div>
   </div>
 
-  <Teleport v-if="!mobile" to="#header-actions">
+  <Teleport v-if="!mobile" to="#header-right">
     <Btn :to="{ name: 'hangar-wishlist' }">
       <i class="fad fa-wand-sparkles" />
       {{ t("labels.wishlist") }}

@@ -25,6 +25,7 @@ declare module 'vue' {
     Grid: typeof import('./shared/components/base/Grid/index.vue')['default']
     Heading: typeof import('./shared/components/base/Heading/index.vue')['default']
     HeadingSmall: typeof import('./shared/components/base/Heading/Small/index.vue')['default']
+    Pill: typeof import('./shared/components/base/Pill/index.vue')['default']
     RadioList: typeof import('./shared/components/base/RadioList/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

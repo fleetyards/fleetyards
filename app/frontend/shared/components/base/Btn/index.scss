@@ -13,6 +13,7 @@
   opacity: 1;
   transition: all $transition-base-speed ease;
   align-items: stretch;
+  text-decoration: none;
 
   &::before {
     position: absolute;
@@ -197,8 +198,7 @@
 @media (max-width: $desktop-breakpoint) {
   .panel-btn {
     &.panel-btn-block,
-    &.panel-btn-mobile-block,
-    &:last-child:first-child {
+    &.panel-btn-mobile-block {
       width: 100%;
     }
 

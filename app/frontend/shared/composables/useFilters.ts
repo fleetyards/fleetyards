@@ -11,7 +11,7 @@ export const useFilters = <T>({
 } = {}) => {
   const route = useRoute();
 
-  const defaultAllowedKeys = ["page", "perPage", "limit"];
+  const defaultAllowedKeys = ["page", "perPage", "limit", "s", "sorts"];
 
   onMounted(() => {
     if (!updateCallback) return;
@@ -69,7 +69,7 @@ export const useFilters = <T>({
   const debouncedFilter = (filter: T) => {
     router
       .replace({
-        name: route.name || undefined,
+        ...route,
         query: getQuery(filter),
       })
       // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -79,7 +79,7 @@ export const useFilters = <T>({
   const resetFilter = () => {
     router
       .replace({
-        name: route.name || undefined,
+        ...route,
         query: {},
       })
       // eslint-disable-next-line @typescript-eslint/no-empty-function

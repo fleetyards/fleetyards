@@ -2,21 +2,13 @@ import type { RouteRecordRaw } from "vue-router";
 
 export const routes: RouteRecordRaw[] = [
   {
-    path: "",
-    name: "admin-model",
-    component: () => import("@/admin/pages/models/[id]/index.vue"),
-    meta: {
-      title: "admin.models.detail",
-      activeRoute: "models",
-    },
-  },
-  {
     path: "edit",
     name: "admin-model-edit",
     component: () => import("@/admin/pages/models/[id]/edit.vue"),
     meta: {
       title: "admin.models.edit",
       activeRoute: "models",
+      needsAuthentication: true,
     },
   },
   {
@@ -26,6 +18,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.models.images",
       activeRoute: "models",
+      needsAuthentication: true,
     },
   },
   {
@@ -35,6 +28,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.models.videos",
       activeRoute: "models",
+      needsAuthentication: true,
     },
   },
   {
@@ -44,6 +38,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.models.prices",
       activeRoute: "models",
+      needsAuthentication: true,
     },
   },
 ];

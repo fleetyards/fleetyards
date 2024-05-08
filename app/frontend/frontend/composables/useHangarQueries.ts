@@ -23,20 +23,24 @@ export const useHangarQueries = () => {
 
   const queryClient = useQueryClient();
 
-  const hangarQuery = (
-    filters: Ref<HangarQuery>,
-    page: Ref<string>,
-    perPage: Ref<string | undefined>,
-  ) => {
+  const hangarQuery = ({
+    page,
+    perPage,
+    filters,
+  }: {
+    page: ComputedRef<string>;
+    perPage: ComputedRef<string | undefined>;
+    filters: ComputedRef<HangarQuery | undefined>;
+  }) => {
     return useQuery(
       {
         refetchOnWindowFocus: false,
-        queryKey: [QueryKeysEnum.HANGAR, page],
+        queryKey: [QueryKeysEnum.HANGAR, page, perPage, filters],
         queryFn: () => {
           return hangarService.hangar({
-            q: filters.value,
             page: page.value,
             perPage: perPage.value,
+            q: filters.value,
           });
         },
       },

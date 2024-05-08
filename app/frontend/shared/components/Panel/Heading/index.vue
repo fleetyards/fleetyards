@@ -1,3 +1,34 @@
+<script lang="ts">
+export default {
+  name: "PanelHeading",
+};
+</script>
+
+<script lang="ts" setup>
+import {
+  PanelHeadingLevelEnum,
+  PanelHeadingShadowEnum,
+  PanelHeadingSizeEnum,
+  PanelHeadingAlignmentEnum,
+} from "@/shared/components/Panel/Heading/types";
+
+type Props = {
+  level?: PanelHeadingLevelEnum;
+  shadow?: PanelHeadingShadowEnum;
+  size?: PanelHeadingSizeEnum;
+  titleAlign?: PanelHeadingAlignmentEnum;
+};
+
+withDefaults(defineProps<Props>(), {
+  level: PanelHeadingLevelEnum.H2,
+  shadow: undefined,
+  size: PanelHeadingSizeEnum.DEFAULT,
+  titleAlign: PanelHeadingAlignmentEnum.LEFT,
+});
+
+const slots = defineSlots();
+</script>
+
 <template>
   <div
     class="panel-heading"
@@ -11,7 +42,6 @@
       :is="level"
       class="panel-heading-title"
       :class="{
-        'panel-heading-title-singleline': !multiline,
         'panel-heading-title-title-large': size === 'large',
         'panel-heading-title-align-left': titleAlign === 'left',
         'panel-heading-title-align-center': titleAlign === 'center',
@@ -32,32 +62,6 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-type Props = {
-  level?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
-  shadow?: "top" | "bottom";
-  size?: "default" | "large";
-  titleAlign?: "left" | "center" | "right" | "justify";
-  multiline?: boolean;
-};
-
-withDefaults(defineProps<Props>(), {
-  level: "h2",
-  shadow: undefined,
-  size: "default",
-  titleAlign: "left",
-  multiline: false,
-});
-
-const slots = defineSlots();
-</script>
-
-<script lang="ts">
-export default {
-  name: "PanelHeading",
-};
-</script>
 
 <style lang="scss" scoped>
 @import "index";

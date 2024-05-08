@@ -90,7 +90,7 @@ const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
 
 <template>
   <form @submit.prevent="handleSubmit">
-    <Teleport v-if="!hideQuicksearch" to="#quicksearch">
+    <Teleport v-if="!hideQuicksearch" to="#header-left">
       <FormInput
         v-model="form.searchCont"
         name="vehicle-search"

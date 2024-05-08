@@ -1,7 +1,11 @@
 import { routes as modelsRoutes } from "@/admin/pages/models/routes";
+import { routes as manufacturersRoutes } from "@/admin/pages/manufacturers/routes";
+import { routes as componentsRoutes } from "@/admin/pages/components/routes";
 import { routes as maintenanceRoutes } from "@/admin/pages/maintenance/routes";
+import { routes as usersRoutes } from "@/admin/pages/users/routes";
+import { RouteRecordRaw } from "vue-router";
 
-export const routes = [
+export const routes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "home",
@@ -9,7 +13,9 @@ export const routes = [
     meta: {
       title: "home",
       icon: "fad fa-home-alt",
+      needsAuthentication: true,
       exact: true,
+      mobileNav: 0,
     },
   },
   {
@@ -19,80 +25,106 @@ export const routes = [
     redirect: { name: modelsRoutes[0].name },
     meta: {
       title: "admin.models.index",
+      needsAuthentication: true,
       icon: "fad fa-starship",
+      mobileNav: 1,
     },
   },
   {
     path: "/components/",
-    name: "components",
     component: () => import("@/admin/pages/components.vue"),
+    children: componentsRoutes,
+    redirect: { name: componentsRoutes[0].name },
     meta: {
       title: "admin.components.index",
+      needsAuthentication: true,
       icon: "fad fa-flux-capacitor",
     },
   },
   {
     path: "/manufacturers/",
-    name: "manufacturers",
     component: () => import("@/admin/pages/manufacturers.vue"),
+    children: manufacturersRoutes,
+    redirect: { name: manufacturersRoutes[0].name },
     meta: {
       title: "admin.manufacturers.index",
+      needsAuthentication: true,
       icon: "fad fa-industry",
     },
   },
   {
     path: "/images",
-    name: "images",
+    name: "admin-images",
     component: () => import("@/admin/pages/images.vue"),
     meta: {
       title: "admin.images.index",
+      needsAuthentication: true,
       icon: "fad fa-images",
     },
   },
   {
     path: "/vehicles",
-    name: "vehicles",
+    name: "admin-vehicles",
     component: () => import("@/admin/pages/vehicles.vue"),
     meta: {
       title: "admin.vehicles.index",
+      needsAuthentication: true,
       icon: "fad fa-rocket",
     },
   },
   {
     path: "/fleets",
-    name: "fleets",
+    name: "admin-fleets",
     component: () => import("@/admin/pages/fleets.vue"),
     meta: {
       title: "admin.fleets.index",
-      icon: "fad fa-users",
+      needsAuthentication: true,
+      icon: "fad fa-users-class",
+      mobileNav: 2,
     },
   },
   {
     path: "/users",
-    name: "users",
     component: () => import("@/admin/pages/users.vue"),
+    children: usersRoutes,
+    redirect: { name: usersRoutes[0].name },
     meta: {
       title: "admin.users.index",
-      icon: "fad fa-user-group",
+      needsAuthentication: true,
+      icon: "fad fa-users",
+      mobileNav: 3,
     },
   },
   {
     path: "/admins",
-    name: "admins",
+    name: "admin-admins",
     component: () => import("@/admin/pages/admins.vue"),
     meta: {
       title: "admin.admins.index",
+      needsAuthentication: true,
       icon: "fad fa-user-group-crown",
     },
   },
   {
     path: "/maintenance",
-    name: "maintenance",
+    name: "admin-maintenance",
     children: maintenanceRoutes,
     redirect: { name: maintenanceRoutes[0].name },
     meta: {
       title: "admin.maintenance.index",
+      needsAuthentication: true,
       icon: "fad fa-screwdriver-wrench",
+    },
+  },
+  {
+    path: "/login/",
+    name: "admin-login",
+    component: () => import("@/admin/pages/login.vue"),
+    meta: {
+      title: "login",
+      icon: "fal fa-sign-in",
+      hideWhenAuthenticated: true,
+      nav: "footer",
     },
   },
   {
@@ -102,7 +134,7 @@ export const routes = [
     meta: {
       title: "notFound",
       backgroundImage: "bg-404",
-      hide: true,
+      nav: "hidden",
     },
   },
   {
@@ -111,7 +143,7 @@ export const routes = [
     meta: {
       title: "notFound",
       backgroundImage: "bg-404",
-      hide: true,
+      nav: "hidden",
     },
   },
 ];

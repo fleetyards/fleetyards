@@ -4,20 +4,20 @@ import { routes as modelRoutes } from "@/admin/pages/models/[id]/routes";
 export const routes: RouteRecordRaw[] = [
   {
     path: "",
-    name: "models",
+    name: "admin-models",
     component: () => import("@/admin/pages/models/index.vue"),
+    strict: true,
     meta: {
-      title: "admin.models.index",
-      icon: "fad fa-list",
+      needsAuthentication: true,
     },
   },
   {
     path: "create/",
-    name: "model-create",
+    name: "admin-model-create",
     component: () => import("@/admin/pages/models/create.vue"),
     meta: {
-      title: "admin.models.new",
-      icon: "fad fa-plus",
+      needsAuthentication: true,
+      nav: "hidden",
     },
   },
   {
@@ -26,7 +26,8 @@ export const routes: RouteRecordRaw[] = [
     children: modelRoutes,
     redirect: { name: modelRoutes[0].name },
     meta: {
-      hide: true,
+      needsAuthentication: true,
+      nav: "hidden",
     },
   },
 ];

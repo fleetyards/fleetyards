@@ -39,7 +39,7 @@ const innerExpandTop = ref(false);
 
 const cssClasses = computed(() => {
   return {
-    "panel-btn-dropdown-inline": props.inline,
+    "panel-btn-dropdown--inline": props.inline,
   };
 });
 
@@ -61,9 +61,9 @@ const toggle = (event: MouseEvent) => {
     const bounding = (target as HTMLElement).getBoundingClientRect();
 
     innerExpandLeft.value =
-      props.expandLeft || window.innerWidth - bounding.left < 200;
+      props.expandLeft || window.innerWidth - bounding.left < 300;
     innerExpandTop.value =
-      props.expandTop || window.innerHeight - bounding.top < 200;
+      props.expandTop || window.innerHeight - bounding.top < 300;
   }
 
   visible.value = !visible.value;
@@ -104,7 +104,7 @@ const documentClick = (event: MouseEvent) => {
     </Btn>
     <div
       ref="btnList"
-      class="panel-btn-dropdown-list"
+      class="panel-btn-dropdown__list"
       :class="{
         visible,
         'expand-left': innerExpandLeft,

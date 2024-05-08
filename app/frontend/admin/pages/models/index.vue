@@ -47,56 +47,54 @@ const {
   refetch,
   ...asyncStatus
 } = modelsQuery({
-  page: page,
-  perPage: perPage,
-  q: filters,
-  s: sorts,
+  page,
+  perPage,
+  filters,
+  sorts,
 });
 
-const columns = computed<BaseTableColumn[]>(() => {
-  return [
-    {
-      name: "storeImage",
-      label: "",
-      centered: true,
-    },
-    {
-      name: "rsiStoreImage",
-      label: "",
-      centered: true,
-      mobile: false,
-    },
-    {
-      name: "angledView",
-      label: "",
-      centered: true,
-      mobile: false,
-    },
-    {
-      name: "name",
-      label: "Name",
-      sortable: true,
-    },
-    {
-      name: "rsiId",
-      label: "RSI ID",
-      field: "rsi_id",
-      sortable: true,
-    },
-    {
-      name: "hidden",
-      label: "hidden?",
-      mobile: false,
-      sortable: true,
-    },
-    {
-      name: "active",
-      label: "active?",
-      mobile: false,
-      sortable: true,
-    },
-  ];
-});
+const columns: BaseTableColumn[] = [
+  {
+    name: "storeImage",
+    label: "",
+    centered: true,
+  },
+  {
+    name: "rsiStoreImage",
+    label: "",
+    centered: true,
+    mobile: false,
+  },
+  {
+    name: "angledView",
+    label: "",
+    centered: true,
+    mobile: false,
+  },
+  {
+    name: "name",
+    label: "Name",
+    sortable: true,
+  },
+  {
+    name: "rsiId",
+    label: "RSI ID",
+    field: "rsi_id",
+    sortable: true,
+  },
+  {
+    name: "hidden",
+    label: "hidden?",
+    mobile: false,
+    sortable: true,
+  },
+  {
+    name: "active",
+    label: "active?",
+    mobile: false,
+    sortable: true,
+  },
+];
 
 const { t } = useI18n();
 </script>
@@ -114,25 +112,31 @@ const { t } = useI18n();
     </HeadingSmall>
   </Heading>
 
+  <Teleport to="#header-right">
+    <Btn :to="{ name: 'admin-model-create' }">
+      <i class="fa fa-plus" />
+      {{ t("actions.create") }}
+    </Btn>
+  </Teleport>
+
   <FilteredList
-    v-if="models"
     name="admin-models"
-    :records="models.items || []"
+    :records="models?.items || []"
     :async-status="asyncStatus"
     hide-loading
     hide-empty-box
-    static-filters
   >
     <template #filter>
-      <FilterForm hide-quicksearch />
+      <FilterForm />
     </template>
     <template #default="{ loading, emptyBoxVisible }">
       <BaseTable
-        :records="models.items || []"
+        :records="models?.items || []"
         primary-key="id"
         :columns="columns"
         :loading="loading"
         :empty-box-visible="emptyBoxVisible"
+        default-sort="name asc"
         selectable
       >
         <template #col-storeImage="{ record }">
@@ -165,7 +169,7 @@ const { t } = useI18n();
         <template #col-name="{ record }">
           <router-link
             :to="{
-              name: 'admin-model',
+              name: 'admin-model-edit',
               params: {
                 id: record.id,
               },
@@ -186,7 +190,7 @@ const { t } = useI18n();
           <i v-else class="fad fa-times" />
         </template>
         <template #actions="{ record }">
-          <ModelActions :record="record" />
+          <ModelActions :model="record" />
         </template>
       </BaseTable>
     </template>

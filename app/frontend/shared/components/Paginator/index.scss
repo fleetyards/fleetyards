@@ -1,16 +1,5 @@
 $innerBorderWidth: 2px;
 
-.pagination-pages {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 100px;
-  white-space: nowrap;
-  padding: 5px 10px;
-  margin-right: 0 !important;
-  border-radius: 0 !important;
-}
-
 .pagination {
   display: inline-flex;
   align-items: center;
@@ -19,10 +8,15 @@ $innerBorderWidth: 2px;
   margin: 0;
   padding: 0;
   list-style-type: none;
-}
 
-@media (max-width: $desktop-breakpoint) {
-  .pagination {
-    justify-content: center;
+  &__pages {
+    display: flex;
+    align-items: center;
+    justify-content: center !important;
+    min-width: 100px;
+    white-space: nowrap;
+    padding: 5px 10px;
+    margin-right: 0 !important;
+    border-radius: 0 !important;
   }
 }

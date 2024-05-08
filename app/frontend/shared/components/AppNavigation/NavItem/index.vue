@@ -79,7 +79,7 @@
     <li
       role="link"
       :class="{
-        active: active || routeActive,
+        'nav-item--active': active || routeActive,
         'nav-item--slim': slim,
       }"
       :data-test="`nav-${navKey}`"

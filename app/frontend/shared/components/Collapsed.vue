@@ -1,16 +1,8 @@
-<template>
-  <transition
-    :css="false"
-    :on-before-enter="onBeforeEnter"
-    :on-enter="enterTransition"
-    :on-before-leave="onBeforeLeave"
-    :on-leave="leaveTransition"
-  >
-    <component :is="as" v-if="visible" v-bind="$attrs">
-      <slot />
-    </component>
-  </transition>
-</template>
+<script lang="ts">
+export default {
+  name: "CollapsedComponent",
+};
+</script>
 
 <script lang="ts" setup>
 interface InitialElementStyle {
@@ -202,8 +194,16 @@ const leaveTransition = (element: Element, done: () => void) => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "CollapsedComponent",
-};
-</script>
+<template>
+  <transition
+    :css="false"
+    :on-before-enter="onBeforeEnter"
+    :on-enter="enterTransition"
+    :on-before-leave="onBeforeLeave"
+    :on-leave="leaveTransition"
+  >
+    <component :is="as" v-if="visible" v-bind="$attrs">
+      <slot />
+    </component>
+  </transition>
+</template>

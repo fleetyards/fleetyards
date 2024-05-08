@@ -1,15 +1,8 @@
-<template>
-  <section :class="cssClasses">
-    <slot v-if="error" name="error">
-      <NotFound v-if="errorType === ErrorTypesEnum.NOT_FOUND" />
-      <ServerError v-else />
-    </slot>
-    <slot v-else-if="loading" name="loading">
-      <Loader v-if="showSpinner" :loading="true" />
-    </slot>
-    <slot v-else name="resolved"></slot>
-  </section>
-</template>
+<script lang="ts">
+export default {
+  name: "AsyncData",
+};
+</script>
 
 <script lang="ts" setup>
 import NotFound from "@/shared/components/NotFound/index.vue";
@@ -25,21 +18,10 @@ import { type ApiError } from "@/services/fyApi";
 type Props = {
   asyncStatus: AsyncStatus;
   showSpinner?: boolean;
-  fullscreen?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   showSpinner: true,
-  fullscreen: true,
-});
-
-const route = useRoute();
-
-const cssClasses = computed(() => {
-  return {
-    "container main": props.fullscreen,
-    [route.name as string]: props.fullscreen,
-  };
 });
 
 const error = computed(() => {
@@ -79,8 +61,13 @@ const loading = computed(() => {
 });
 </script>
 
-<script lang="ts">
-export default {
-  name: "AsyncData",
-};
-</script>
+<template>
+  <slot v-if="error" name="error">
+    <NotFound v-if="errorType === ErrorTypesEnum.NOT_FOUND" />
+    <ServerError v-else />
+  </slot>
+  <slot v-else-if="loading" name="loading">
+    <Loader v-if="showSpinner" :loading="true" />
+  </slot>
+  <slot v-else name="resolved"></slot>
+</template>

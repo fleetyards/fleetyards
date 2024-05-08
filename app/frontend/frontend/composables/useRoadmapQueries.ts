@@ -21,7 +21,7 @@ export const useRoadmapQueries = () => {
   const listQuery = (filters: Ref<RoadmapItemQuery>) => {
     return useQuery(
       {
-        queryKey: [QueryKeysEnum.ROADMAP],
+        queryKey: [QueryKeysEnum.ROADMAP, filters],
         queryFn: () =>
           roadmapService.roadmapItems({
             q: filters.value,

@@ -44,12 +44,12 @@
     margin-top: 40px;
   }
 
-  .form-input label {
+  .base-input label {
     display: none;
   }
 
   @media (min-width: $desktop-breakpoint) {
-    .form-input label {
+    .base-input label {
       position: absolute;
       top: 12px;
       left: -100%;

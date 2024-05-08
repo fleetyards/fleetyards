@@ -79,7 +79,7 @@ const crumbs = computed(() => {
     </div>
   </div>
 
-  <Teleport to="#header-actions">
+  <Teleport to="#header-right">
     <Btn href="https://robertsspaceindustries.com/roadmap">
       {{ t("labels.rsiRoadmap") }}
     </Btn>

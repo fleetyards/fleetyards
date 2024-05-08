@@ -2,7 +2,23 @@
   "en": {
     "headlines": {
       "admin": {
-        "dashboard": "Dashboard",
+        "dashboard": {
+          "title": "Dashboard",
+          "modelsByClassification": "Models by Classification",
+          "models": "Models",
+          "modelsByManufacturer": "Models by Manufacturer",
+          "manufacturers": "Manufacturers",
+          "modelsByStatus": "Models by Status",
+          "modelsBySize": "Models by Size",
+          "modelsPerMonth": "Models per Month",
+          "componentsByClass": "Components by Class",
+          "components": "Components",
+          "visitsPerDay": "Visits per Day",
+          "visitsPerMonth": "Visits per Month",
+          "mostViewedPages": "Most Viewed Pages",
+          "registrationsPerMonth": "Registrations per Month",
+          "users": "Users"
+        },
         "models": {
           "index": "Models",
           "edit": "Edit Model",
@@ -21,6 +37,15 @@
           "index": "Manufacturers",
           "new": "New Manufacturer",
           "edit": "Edit Manufacturer"
+        },
+        "users": {
+          "index": "Users",
+          "edit": "Edit User"
+        },
+        "admins": {
+          "index": "Admins",
+          "new": "New Admin",
+          "edit": "Edit Admin"
         }
       },
       "welcome": "Welcome to",

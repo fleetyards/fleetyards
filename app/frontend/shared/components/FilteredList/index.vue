@@ -132,12 +132,8 @@ const toggleFilter = () => {
   <div class="row filtered-list">
     <div class="col-12">
       <div class="row">
-        <div
-          class="col-12 filtered-list__header flex justify-between flex-wrap md:flex-nowrap"
-        >
-          <div
-            class="filtered-list__header-left max-md:ml-0 max-md:grow max-md:shrink-0 max-md:basis-0"
-          >
+        <div class="col-12 filtered-list__header">
+          <div class="filtered-list__header-left">
             <Btn
               v-if="hasFilterSlot"
               v-tooltip="filterTooltip"
@@ -151,23 +147,20 @@ const toggleFilter = () => {
             </Btn>
             <slot name="actions-left" :records="records" />
           </div>
-          <div class="filtered-list__header-right max-md:mr-0 max-md:ml-2.5">
+          <div class="filtered-list__header-right">
             <slot name="actions-right" :records="records" />
             <slot name="pagination-top" />
           </div>
         </div>
       </div>
-      <div class="row flex gap-4 flex-col md:flex-row">
+      <div class="row">
         <transition
           name="slide"
           :appear="true"
           @before-enter="toggleFullscreen"
           @after-leave="toggleFullscreen"
         >
-          <div
-            v-show="filterVisible"
-            class="basis-full max-w-full lg:basis-4/12 3xl:basis-2/12 col-12 col-lg-3 col-xxl-2"
-          >
+          <div v-show="filterVisible" class="col-12 col-lg-3 col-xxl-2">
             <slot name="filter" />
           </div>
         </transition>
@@ -175,7 +168,7 @@ const toggleFilter = () => {
           :class="{
             'col-lg-9 col-xxl-10': !fullscreen,
           }"
-          class="col-12 basis-full max-w-full col-animated"
+          class="col-12 col-animated"
         >
           <slot v-if="!hideLoading && loading" name="loader" :loading="loading">
             <Loader :loading="loading" :fixed="true" />
@@ -203,8 +196,8 @@ const toggleFilter = () => {
           />
         </div>
       </div>
-      <div class="row flex">
-        <div class="col-12 basis-full">
+      <div class="row">
+        <div class="col-12">
           <slot name="pagination-bottom" />
         </div>
       </div>

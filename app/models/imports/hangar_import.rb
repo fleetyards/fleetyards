@@ -46,5 +46,9 @@ module Imports
     rescue JSON::ParserError
       nil
     end
+
+    def notify_admin
+      # don't notify on hangar imports
+    end
   end
 end

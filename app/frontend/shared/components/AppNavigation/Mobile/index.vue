@@ -17,25 +17,37 @@ const { collapsed: navCollapsed } = storeToRefs(navStore);
 </script>
 
 <template>
-  <div class="navigation-mobile noselect">
-    <div class="navigation-items">
+  <div class="navigation-mobile">
+    <ul class="navigation-mobile__items">
       <slot />
-      <button
-        :class="{
-          collapsed: navCollapsed,
-        }"
-        class="nav-toggle"
-        type="button"
-        aria-label="Toggle Navigation"
-        @click.stop.prevent="navStore.toggle"
-      >
-        <span class="sr-only">
-          {{ t("labels.toggleNavigation") }}
-        </span>
-        <span class="icon-bar top-bar" />
-        <span class="icon-bar middle-bar" />
-        <span class="icon-bar bottom-bar" />
-      </button>
-    </div>
+      <li>
+        <button
+          :class="{
+            'navigation-mobile__toggle--collapsed': navCollapsed,
+          }"
+          class="navigation-mobile__toggle"
+          type="button"
+          aria-label="Toggle Navigation"
+          @click.stop.prevent="navStore.toggle"
+        >
+          <span class="sr-only">
+            {{ t("labels.toggleNavigation") }}
+          </span>
+          <span
+            class="navigation-mobile__toggle__icon-bar navigation-mobile__toggle__icon-bar--top-bar"
+          />
+          <span
+            class="navigation-mobile__toggle__icon-bar navigation-mobile__toggle__icon-bar--middle-bar"
+          />
+          <span
+            class="navigation-mobile__toggle__icon-bar navigation-mobile__toggle__icon-bar--bottom-bar"
+          />
+        </button>
+      </li>
+    </ul>
   </div>
 </template>
+
+<style lang="scss" scoped>
+@import "index";
+</style>

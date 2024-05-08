@@ -7,15 +7,13 @@ module Admin
         def quick_stats
           authorize! :stats, :admin
 
-          quick_stats = {
+          @quick_stats = {
             online_count:,
             ships_count_year: Model.year(Time.current.year).count,
             ships_count_total: Model.count,
             users_count_total: User.count,
             fleets_count_total: Fleet.count
           }
-
-          render json: quick_stats.to_json
         end
 
         def most_viewed_pages

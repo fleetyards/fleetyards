@@ -84,7 +84,7 @@ const currentPage = computed(() => {
       >
         <i class="fa fa-chevron-left" />
       </Btn>
-      <span class="pagination-pages" style="flex-grow: none">
+      <span class="pagination__pages" style="flex-grow: none">
         {{
           t("paginator.labels.pages", {
             page: String(currentPage),

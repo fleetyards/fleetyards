@@ -5,14 +5,21 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import {
+  HeadingLevelEnum,
+  HeadingAlignmentEnum,
+} from "@/shared/components/base/Heading/types";
+
 type Props = {
-  level?: "h1" | "h2" | "h3" | "h4";
-  hide?: boolean;
+  level?: HeadingLevelEnum;
+  hidden?: boolean;
+  alignment?: HeadingAlignmentEnum;
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  level: "h1",
-  hide: false,
+  level: HeadingLevelEnum.H1,
+  hidden: false,
+  alignment: HeadingAlignmentEnum.LEFT,
 });
 
 const cssClasses = computed(() => {
@@ -21,17 +28,15 @@ const cssClasses = computed(() => {
     "text-2xl": props.level === "h2",
     "text-xl": props.level === "h3",
     "text-lg": props.level === "h4",
-    "sr-only": props.hide,
+    "sr-only": props.hidden,
+    "text-center": props.alignment === "center",
+    "text-right": props.alignment === "right",
   };
 });
 </script>
 
 <template>
-  <component
-    :is="level"
-    :class="cssClasses"
-    class="font-hero font-medium text-brand-text mb-5"
-  >
+  <component :is="level" :class="cssClasses">
     <slot />
   </component>
 </template>

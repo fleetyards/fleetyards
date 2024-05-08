@@ -27,6 +27,9 @@
       "groups": "Groups",
       "fleetInviteToken": "Fleet Invite",
       "scDataVersion": "Patch Version",
+      "lastReload": "Last Reload",
+      "createdAt": "Created at",
+      "updatedAt": "Updated at",
       "home": {
         "search": "Search for Ships..."
       },
@@ -341,7 +344,9 @@
         "publicHangar": "Public Hangar enabled",
         "publicHangarLoaners": "Show Loaners Hint on Public Hangar",
         "publicWishlist": "Public Wishlist enabled",
-        "hideOwner": "Hide Ownership for Fleets"
+        "hideOwner": "Hide Ownership for Fleets",
+        "lastActiveAt": "Last Active",
+        "confirmedAt": "Confirmed at"
       },
       "vehicle": {
         "name": "Name",
@@ -632,6 +637,17 @@
           "foundUpgrades": "Found Upgrades",
           "missingUpgrades": "Upgrades not found",
           "missingUpgradeVehicles": "No matching Ship found for Upgrades"
+        }
+      },
+      "admin": {
+        "dashboard": {
+          "quickStats": {
+            "onlineUsers": "Online Users",
+            "totalUsers": "Total Users",
+            "totalShips": "Total Ships",
+            "newShipsInYear": "New Ships in %{year}",
+            "totalFleets": "Total Fleets"
+          }
         }
       }
     }

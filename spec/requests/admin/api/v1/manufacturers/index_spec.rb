@@ -3,7 +3,7 @@
 require "swagger_helper"
 
 RSpec.describe "admin/api/v1/manufacturers", type: :request, swagger_doc: "admin/v1/schema.yaml" do
-  fixtures :manufacturers
+  fixtures :manufacturers, :admin_users
 
   let(:user) { admin_users :jeanluc }
 
@@ -17,8 +17,9 @@ RSpec.describe "admin/api/v1/manufacturers", type: :request, swagger_doc: "admin
       tags "Manufacturers"
       produces "application/json"
 
-      parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
+      parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: Manufacturer.default_per_page}, required: false
+      parameter "$ref": "#/components/parameters/SortingParameter"
       parameter name: "q", in: :query,
         schema: {
           type: :object,
@@ -31,14 +32,6 @@ RSpec.describe "admin/api/v1/manufacturers", type: :request, swagger_doc: "admin
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Manufacturers"
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
 
         run_test! do |response|
           data = JSON.parse(response.body)
@@ -78,24 +71,11 @@ RSpec.describe "admin/api/v1/manufacturers", type: :request, swagger_doc: "admin
           expect(items.count).to eq(2)
         end
       end
-    end
-  end
 
-  path "/manufacturers/with-models" do
-    get("with_models manufacturer") do
-      tags "Manufacturers"
-      produces "application/json"
+      response(401, "unauthorized") do
+        schema "$ref": "#/components/schemas/StandardError"
 
-      response(200, "successful") do
-        schema "$ref": "#/components/schemas/Manufacturers"
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
+        let(:user) { nil }
 
         run_test!
       end

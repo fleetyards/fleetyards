@@ -83,6 +83,10 @@
           "index": "Manufacturers",
           "new": "New Manufacturer",
           "edit": "Edit Manufacturer"
+        },
+        "users": {
+          "index": "Users",
+          "edit": "Edit User"
         }
       }
     }

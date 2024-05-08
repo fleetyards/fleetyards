@@ -10,13 +10,13 @@ $footerOuterBorderWidth: 2px;
     left ease 0.5s,
     right ease 0.5s;
 
-  &-border {
+  &__border {
     position: absolute;
     right: 0;
     left: 0;
   }
 
-  .git-revision {
+  &__git-revision {
     cursor: pointer;
     opacity: 0.5;
 
@@ -29,54 +29,54 @@ $footerOuterBorderWidth: 2px;
     }
   }
 
-  &-border-left,
-  &-border-right {
+  &__border-left,
+  &__border-right {
     position: absolute;
     display: block;
     width: 80px;
     height: $footerOuterBorderWidth;
   }
 
-  &-border-left {
+  &__border-left {
     left: 0;
   }
 
-  &-border-right {
+  &__border-right {
     right: 0;
   }
 
-  &-border-top {
+  &__border-top {
     top: 0;
 
-    .app-footer-border-left,
-    .app-footer-border-right {
+    .app-footer__border-left,
+    .app-footer__border-right {
       top: 0;
       border-top: $footerOuterBorderWidth solid $panel-outer-border;
     }
   }
 
-  &-inner {
+  &__inner {
     position: relative;
     padding-top: 30px;
     padding-bottom: 30px;
     background-color: rgba($gray-darker, 0.7);
     border-top: $footerInnerBorderWidth solid $panel-inner-border;
 
-    .app-footer-inner-border {
+    &__border {
       position: absolute;
       width: 100%;
       height: $footerInnerBorderWidth;
       padding-right: 40px;
       padding-left: 40px;
 
-      .app-footer-inner-border-bg {
+      &-bg {
         width: 100%;
         height: $footerInnerBorderWidth;
         background: #444;
       }
     }
 
-    .app-footer-inner-border-top {
+    &__border-top {
       top: -$footerInnerBorderWidth;
     }
   }
@@ -90,7 +90,7 @@ $footerOuterBorderWidth: 2px;
     }
   }
 
-  &-links {
+  &__links {
     margin-bottom: 10px;
     display: flex;
     justify-content: center;
@@ -99,7 +99,7 @@ $footerOuterBorderWidth: 2px;
     flex-wrap: wrap;
   }
 
-  &-social-links {
+  &__social-links {
     gap: 15px;
     display: flex;
     justify-content: center;
@@ -110,11 +110,11 @@ $footerOuterBorderWidth: 2px;
     right: 25px;
   }
 
-  &-support {
+  &__support {
     margin: 30px 0;
   }
 
-  &-community-logo {
+  &__community-logo {
     position: absolute;
     top: 10px;
     left: 25px;
@@ -128,19 +128,19 @@ $footerOuterBorderWidth: 2px;
     }
   }
 
-  &-disclaimer {
+  &__disclaimer {
     &-rsi {
       color: darken($text-color, 20%);
     }
   }
 
-  &-version {
+  &__version {
     position: absolute;
     bottom: 15px;
     left: 15px;
   }
 
-  &-sc-data-version {
+  &__sc-data-version {
     position: absolute;
     right: 15px;
     bottom: 15px;
@@ -153,13 +153,13 @@ $footerOuterBorderWidth: 2px;
     right: 0;
     left: auto;
 
-    &-social-links {
+    &__social-links {
       position: relative;
       right: auto;
       top: auto;
     }
 
-    .app-community-logo {
+    &__community-logo {
       position: relative;
       top: auto;
       left: auto;
@@ -168,16 +168,16 @@ $footerOuterBorderWidth: 2px;
       background-size: 100px;
     }
 
-    &-support {
+    &__support {
       margin: 15px 0;
     }
 
-    &-inner {
+    &__inner {
       padding-right: env(safe-area-inset-right);
       padding-left: env(safe-area-inset-left);
     }
 
-    .sc-data-version {
+    &__sc-data-version {
       position: relative;
       right: 0;
       bottom: 0;

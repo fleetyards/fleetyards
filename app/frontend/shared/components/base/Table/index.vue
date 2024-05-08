@@ -9,6 +9,8 @@ import { uniq as uniqArray } from "@/shared/utils/Array";
 import Checkbox from "@/shared/components/base/Checkbox/index.vue";
 import { v4 as uuidv4 } from "uuid";
 import Panel from "@/shared/components/Panel/index.vue";
+import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
+import { PanelHeadingLevelEnum } from "@/shared/components/Panel/Heading/types";
 import Loader from "@/shared/components/Loader/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -25,6 +27,9 @@ type Props = {
   records: T[];
   columns: BaseTableColumn[];
   primaryKey: keyof T;
+  defaultSort?: string;
+  title?: string;
+  titleLevel?: PanelHeadingLevelEnum;
   loading?: boolean;
   inlineLoader?: boolean;
   emptyBoxVisible?: boolean;
@@ -33,6 +38,9 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  title: undefined,
+  defaultSort: undefined,
+  titleLevel: PanelHeadingLevelEnum.H2,
   loading: false,
   inlineLoader: false,
   emptyBoxVisible: false,
@@ -111,12 +119,17 @@ const primaryValue = (record: T) => {
 const route = useRoute();
 
 const sortableDirection = (column: BaseTableColumn) => {
-  if (!column.sortable || !route.query.s) {
+  if (!column.sortable && !route.query.s) {
     return undefined;
   }
 
-  if (route.query.s.includes(sortableField(column))) {
+  if (route.query.s && route.query.s.includes(sortableField(column))) {
     return (route.query.s as string).split(" ")[1];
+  } else if (
+    props.defaultSort &&
+    props.defaultSort.includes(sortableField(column))
+  ) {
+    return props.defaultSort.split(" ")[1];
   }
 };
 
@@ -157,6 +170,9 @@ const resetSelected = () => {
 
 <template>
   <Panel class="base-table w-full" :slim="true">
+    <PanelHeading v-if="title || slots.title" :level="titleLevel">
+      <slot name="title">{{ title }}</slot>
+    </PanelHeading>
     <div class="base-table__wrapper w-full">
       <table class="base-table__inner">
         <transition-group
@@ -244,18 +260,18 @@ const resetSelected = () => {
           tag="tbody"
           :appear="true"
         >
-          <tr v-if="loading" key="loading-row" class="base-table__loader">
+          <tr
+            v-if="loading && !records.length"
+            key="loading-row"
+            class="base-table__loader"
+          >
             <td class="base-table__column" :colspan="columnCount">
               <slot name="loader" :loading="loading">
                 <Loader :loading="loading" inline />
               </slot>
             </td>
           </tr>
-          <tr
-            v-else-if="emptyBoxVisible"
-            key="empty-row"
-            class="base-table__empty"
-          >
+          <tr v-if="emptyBoxVisible" key="empty-row" class="base-table__empty">
             <td class="base-table__column" :colspan="columnCount">
               <div class="base-table__empty-inner">
                 <slot name="empty">
@@ -267,6 +283,7 @@ const resetSelected = () => {
           <tr
             v-for="record in records"
             v-else
+            :id="String(primaryValue(record))"
             :key="primaryValue(record)"
             class="base-table__row"
           >

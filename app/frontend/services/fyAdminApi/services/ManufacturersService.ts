@@ -16,11 +16,16 @@ export class ManufacturersService {
     public manufacturers({
         page = '1',
         perPage = '30',
+        s,
         q,
         cacheId,
     }: {
         page?: string,
         perPage?: string,
+        /**
+         * Sorting
+         */
+        s?: Array<string>,
         q?: ManufacturerQuery,
         cacheId?: string,
     }): CancelablePromise<Manufacturers> {
@@ -30,20 +35,13 @@ export class ManufacturersService {
             query: {
                 'page': page,
                 'perPage': perPage,
+                's': s,
                 'q': q,
                 'cacheId': cacheId,
             },
-        });
-    }
-    /**
-     * with_models manufacturer
-     * @returns Manufacturers successful
-     * @throws ApiError
-     */
-    public getManufacturersWithModels(): CancelablePromise<Manufacturers> {
-        return this.httpRequest.request({
-            method: 'GET',
-            url: '/manufacturers/with-models',
+            errors: {
+                401: `unauthorized`,
+            },
         });
     }
 }

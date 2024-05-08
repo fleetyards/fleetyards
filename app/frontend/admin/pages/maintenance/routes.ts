@@ -8,6 +8,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.maintenance.pghero",
       icon: "fad fa-database",
+      needsAuthentication: true,
     },
   },
   {
@@ -17,6 +18,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.maintenance.features",
       icon: "fad fa-circle-star",
+      needsAuthentication: true,
     },
   },
   {
@@ -26,6 +28,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.maintenance.workers",
       icon: "fad fa-list-timeline",
+      needsAuthentication: true,
     },
   },
   {
@@ -35,6 +38,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.maintenance.rsiApiStatus",
       icon: "fad fa-chart-line",
+      needsAuthentication: true,
     },
   },
 ];

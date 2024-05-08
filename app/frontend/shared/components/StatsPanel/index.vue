@@ -1,13 +1,17 @@
 <script lang="ts" setup>
 import Panel from "@/shared/components/Panel/index.vue";
+import { PanelVariantsEnum } from "@/shared/components/Panel/types";
 
 type Props = {
   label: string;
   icon: string;
   value: number;
+  outerSpacing?: boolean;
 };
 
-defineProps<Props>();
+withDefaults(defineProps<Props>(), {
+  outerSpacing: true,
+});
 </script>
 
 <script lang="ts">
@@ -17,7 +21,11 @@ export default {
 </script>
 
 <template>
-  <Panel variant="primary" :slim="true">
+  <Panel
+    :variant="PanelVariantsEnum.PRIMARY"
+    :outer-spacing="outerSpacing"
+    slim
+  >
     <div class="stats-panel">
       <div class="stats-panel-icon">
         <i :class="icon" />

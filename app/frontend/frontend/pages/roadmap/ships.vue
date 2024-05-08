@@ -7,7 +7,7 @@
       </h1>
     </div>
   </div>
-  <Teleport to="#header-actions">
+  <Teleport to="#header-right">
     <Btn
       :active="!compact"
       :aria-label="toggleCompactTooltip"

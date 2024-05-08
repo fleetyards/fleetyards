@@ -4,7 +4,6 @@
       :to="{ name: 'home' }"
       :label="t('nav.back')"
       icon="fal fa-chevron-left"
-      :exact="true"
     />
     <template v-if="currentFleet">
       <NavItem
@@ -13,7 +12,6 @@
         :image="currentFleet.logo || undefined"
         :active="route.name === 'fleet'"
         prefix="00"
-        :exact="true"
       />
       <NavItem
         v-if="currentFleet.publicFleet || currentFleet.myFleet"

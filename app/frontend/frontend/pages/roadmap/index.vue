@@ -80,7 +80,7 @@ useSubscription({
       </h1>
     </div>
   </div>
-  <Teleport to="#header-actions">
+  <Teleport to="#header-right">
     <Btn :to="{ name: 'roadmap-changes' }" data-test="nav-roadmap-changes">
       <i class="fad fa-tasks" />
       <span>{{ t("nav.roadmap.changes") }}</span>

@@ -1,7 +1,21 @@
 # frozen_string_literal: true
 
 v1_admin_api_routes = lambda do
-  resources :models, only: %i[index] do
+  resource :sessions, only: %i[create destroy]
+
+  resources :admin_users, only: %i[index create update destroy] do
+    collection do
+      get :me
+    end
+  end
+
+  resources :users, only: %i[index create update destroy] do
+    member do
+      get "login-as", to: "users#login_as"
+    end
+  end
+
+  resources :models, only: %i[index show] do
     collection do
       get :options
       get "production-states" => "models#production_states"
@@ -10,8 +24,8 @@ v1_admin_api_routes = lambda do
     get :images, on: :member
   end
 
-  resources :model_modules, path: "model-modules", only: [:index]
-  resources :model_paints, path: "model-paints", only: [:index]
+  resources :model_modules, path: "model-modules", only: %i[index]
+  resources :model_paints, path: "model-paints", only: %i[index]
 
   resources :manufacturers, only: %i[index]
 
@@ -31,6 +45,8 @@ v1_admin_api_routes = lambda do
   end
 
   resources :images, only: %i[index create destroy update]
+
+  resources :imports, only: %i[index show]
 end
 
 scope :v1, as: :v1 do

@@ -74,6 +74,12 @@
           "onSale": "Yes or No",
           "productionStatus": "Announced, Flight Ready, In Concept..."
         },
+        "users": {
+          "search": "Username or Email",
+          "username": "Username",
+          "rsiHandle": "RSI Handle",
+          "email": "Email"
+        },
         "fleets": {
           "members": {
             "username": "Username"

@@ -1,20 +1,20 @@
 <template>
   <BtnDropdown v-if="mobile" :size="BtnSizesEnum.SMALL" inline>
-    <Items :record="props.record" with-labels />
+    <Items :model="props.model" with-labels />
   </BtnDropdown>
   <BtnGroup v-else inline>
-    <Items :record="props.record" />
+    <Items :model="props.model" />
   </BtnGroup>
 </template>
 
-<script lang="ts" setup generic="T extends ModelActionsRecord">
+<script lang="ts" setup>
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Items from "@/admin/components/Models/Actions/Items.vue";
 import { useMobile } from "@/shared/composables/useMobile";
-import { ModelActionsRecord } from "@/admin/components/Models/Actions/types";
+import { type Model } from "@/services/fyAdminApi";
 
 type Props = {
-  record: T;
+  model: Model;
 };
 
 const props = defineProps<Props>();

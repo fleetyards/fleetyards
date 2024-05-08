@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+json.id manufacturer.id
 json.name manufacturer.name
 json.long_name manufacturer.long_name || manufacturer.name
 json.slug manufacturer.slug

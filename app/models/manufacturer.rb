@@ -31,6 +31,9 @@ class Manufacturer < ApplicationRecord
 
   before_save :update_slugs
 
+  DEFAULT_SORTING_PARAMS = "name asc"
+  ALLOWED_SORTING_PARAMS = ["name asc", "name desc", "created_at asc", "created_at desc"]
+
   def self.ransackable_attributes(auth_object = nil)
     [
       "code", "code_mapping", "created_at", "description", "id", "id_value", "known_for", "logo",

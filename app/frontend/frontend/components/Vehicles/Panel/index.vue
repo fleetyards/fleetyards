@@ -52,6 +52,7 @@
         :vehicle="vehicle"
         :editable="editable"
         :wishlist="wishlist"
+        :variant="BtnVariantsEnum.LINK"
         class="vehicle-panel--context-menu-button"
       />
 
@@ -112,6 +113,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
   vehicle: Vehicle;

@@ -58,6 +58,9 @@ class Commodity < ApplicationRecord
 
   mount_uploader :store_image, CommodityStoreImageUploader
 
+  DEFAULT_SORTING_PARAMS = "name asc"
+  ALLOWED_SORTING_PARAMS = ["name asc", "name desc", "created_at asc", "created_at desc"]
+
   def self.type_filters
     Commodity.commodity_types.map do |(item, _index)|
       Filter.new(

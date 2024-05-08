@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { type LocationQueryRaw } from "vue-router";
-import { isFleetRoute as fleetRouteCheck } from "@/frontend/components/Navigation/utils";
+import { useFleetRouteCheck } from "@/frontend/composables/useFleetRouteCheck";
 import { useI18n } from "@/shared/composables/useI18n";
 import AppNavigation from "@/shared/components/AppNavigation/index.vue";
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
@@ -31,7 +31,7 @@ const hangarStore = useHangarStore();
 
 const { preview: hangarPreview } = storeToRefs(hangarStore);
 
-const isFleetRoute = computed(() => fleetRouteCheck(String(route.name)));
+const { isFleetRoute } = useFleetRouteCheck();
 
 const filtersStore = useFiltersStore();
 
@@ -114,7 +114,7 @@ const settingsActive = computed(() => {
 </script>
 
 <template>
-  <AppNavigation :title="t('app')" :logo="favicon">
+  <AppNavigation :title="t('title.default')" :logo="favicon">
     <template #main>
       <FleetNav v-if="isFleetRoute" />
       <template v-else>
@@ -122,7 +122,6 @@ const settingsActive = computed(() => {
           :to="{ name: 'home' }"
           :label="t('nav.home')"
           icon="fad fa-home-alt"
-          :exact="true"
         />
         <NavItem
           v-if="isAuthenticated || !hangarPreview"

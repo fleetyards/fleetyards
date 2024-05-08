@@ -23,12 +23,7 @@
         {{ firstLetter }}
       </span>
     </span>
-    <span
-      v-if="!slim"
-      :class="{
-        'nav-item-text': !icon && !image,
-      }"
-    >
+    <span v-if="!slim" class="nav-item-text">
       {{ label }}
     </span>
   </div>

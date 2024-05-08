@@ -15,7 +15,7 @@ module Admin
 
           scope = scope.with_model if manufacturer_query_params.delete(:with_models)
 
-          manufacturer_query_params["sorts"] = "name asc"
+          manufacturer_query_params["sorts"] ||= sorting_params(Manufacturer)
 
           q = scope.ransack(manufacturer_query_params)
 

@@ -19,6 +19,66 @@ servers:
 security:
 - SessionCookie: []
 paths:
+  "/admin_users/me":
+    get:
+      summary: My Data
+      operationId: me
+      tags:
+      - AdminUsers
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminUser"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/components":
+    get:
+      summary: Components list
+      operationId: components
+      tags:
+      - Components
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 50
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ComponentQuery"
+        style: deepObject
+        explode: true
+        required: false
+      - name: cacheId
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Components"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/images":
     post:
       summary: Image create
@@ -131,6 +191,76 @@ paths:
           application/json:
             schema:
               "$ref": "#/components/schemas/ImageInput"
+  "/imports":
+    get:
+      summary: Imports list
+      operationId: imports
+      description: Get a List of Imports
+      tags:
+      - Imports
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 25
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ImportQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Imports"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/imports/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: id
+      required: true
+    get:
+      summary: Import Detail
+      operationId: import
+      tags:
+      - Imports
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Import"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/item-prices":
     post:
       summary: Create new Item Price
@@ -287,18 +417,14 @@ paths:
       tags:
       - Manufacturers
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
           type: string
           default: 30
         required: false
+      - "$ref": "#/components/parameters/SortingParameter"
       - name: q
         in: query
         schema:
@@ -319,18 +445,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Manufacturers"
-  "/manufacturers/with-models":
-    get:
-      summary: with_models manufacturer
-      tags:
-      - Manufacturers
-      responses:
-        '200':
-          description: successful
+        '401':
+          description: unauthorized
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/Manufacturers"
+                "$ref": "#/components/schemas/StandardError"
   "/models/production-states":
     get:
       summary: Model Production states
@@ -376,6 +496,223 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Models"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/{id}":
+    parameters:
+    - name: id
+      in: path
+      format: uuid
+      description: Model id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Model Detail
+      operationId: model
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelExtended"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/sessions":
+    post:
+      summary: create session
+      operationId: createSession
+      tags:
+      - Sessions
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardMessage"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SessionInput"
+        required: true
+    delete:
+      summary: delete session
+      operationId: deleteSession
+      tags:
+      - Sessions
+      responses:
+        '200':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/stats/most-viewed-pages":
+    get:
+      summary: Stats most viewed Pages
+      operationId: mostViewedPages
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/BarChartStats"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/stats/registrations-per-month":
+    get:
+      summary: Stats Registrations per Month
+      operationId: registrationsPerMonth
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/BarChartStats"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/stats/quick-stats":
+    get:
+      summary: Stats
+      operationId: stats
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Stats"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/stats/visits-per-day":
+    get:
+      summary: Stats Visits per Day
+      operationId: visitsPerDay
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/BarChartStats"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/stats/visits-per-month":
+    get:
+      summary: Stats Visits per Month
+      operationId: visitsPerMonth
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/BarChartStats"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/users":
+    get:
+      summary: Users list
+      operationId: users
+      tags:
+      - Users
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 25
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/UserQuery"
+        style: deepObject
+        explode: true
+        required: false
+      - name: cacheId
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Users"
         '401':
           description: unauthorized
           content:
@@ -650,6 +987,24 @@ components:
       - Station
       - Album
       title: GalleryTypeEnum
+    ImportStatusEnum:
+      type: string
+      enum:
+      - created
+      - started
+      - finished
+      - failed
+      title: ImportStatusEnum
+    ImportTypeEnum:
+      type: string
+      enum:
+      - "::Imports::ModelImport"
+      - "::Imports::ModelsImport"
+      - "::Imports::ScDataImport"
+      - "::Imports::ScDataShipImport"
+      - "::Imports::HangarSync"
+      - "::Imports::HangarImport"
+      title: ImportTypeEnum
     ItemPriceItemTypeEnum:
       type: string
       enum:
@@ -868,12 +1223,16 @@ components:
         updatedAt:
           type: string
           format: date-time
+        id:
+          type: string
+          format: uuid
       additionalProperties: false
       required:
       - name
       - slug
       - createdAt
       - updatedAt
+      - id
       title: Manufacturer
     MediaImage:
       type: object
@@ -1000,6 +1359,20 @@ components:
       - rsi_category_id asc
       - rsi_category_id desc
       title: RoadmapItemSortEnum
+    UserSortEnum:
+      type: string
+      enum:
+      - username asc
+      - username desc
+      - email asc
+      - email desc
+      - created_at asc
+      - created_at desc
+      - last_active_at asc
+      - last_active_at desc
+      - last_sign_in_at asc
+      - last_sign_in_at desc
+      title: UserSortEnum
     VehicleSortEnum:
       type: string
       enum:
@@ -1098,6 +1471,36 @@ components:
       - width
       - height
       title: ViewImage
+    AdminUser:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        email:
+          type: string
+        twoFactorRequired:
+          type: boolean
+        twoFactorQrCodeUrl:
+          type: string
+        twoFactorProvisioningUrl:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - username
+      - email
+      - twoFactorRequired
+      - createdAt
+      - updatedAt
+      title: AdminUser
     Image:
       type: object
       properties:
@@ -1168,6 +1571,65 @@ components:
       - items
       - meta
       title: Images
+    Import:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          "$ref": "#/components/schemas/ImportTypeEnum"
+        status:
+          "$ref": "#/components/schemas/ImportStatusEnum"
+        info:
+          type: string
+        version:
+          type: string
+        input:
+          type: string
+        output:
+          type: string
+        import:
+          type: string
+        importData:
+          type: string
+        startedAt:
+          type: string
+          format: date-time
+        finishedAt:
+          type: string
+          format: date-time
+        failedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - type
+      - status
+      - createdAt
+      - updatedAt
+      title: Import
+    Imports:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            "$ref": "#/components/schemas/Import"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: Imports
     ImageInput:
       type: object
       properties:
@@ -1225,6 +1687,19 @@ components:
           format: uri
       additionalProperties: false
       title: ItemPriceInput
+    SessionInput:
+      type: object
+      properties:
+        login:
+          type: string
+        password:
+          type: string
+        rememberMe:
+          type: boolean
+        twoFactorCode:
+          type: string
+      additionalProperties: false
+      title: SessionInput
     ItemPrice:
       type: object
       properties:
@@ -1542,6 +2017,253 @@ components:
       - hidden
       - active
       title: Model
+    ModelExtended:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        scIdentifier:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        availability:
+          type: object
+          properties:
+            boughtAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ItemPrice"
+            soldAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ItemPrice"
+            rentalAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ItemPrice"
+          additionalProperties: false
+          required:
+          - boughtAt
+          - soldAt
+          - rentalAt
+        brochure:
+          type: string
+        classification:
+          type: string
+        classificationLabel:
+          type: string
+        crew:
+          type: object
+          properties:
+            max:
+              type: integer
+            maxLabel:
+              type: string
+            min:
+              type: integer
+            minLabel:
+              type: string
+          additionalProperties: false
+        description:
+          type: string
+        erkulIdentifier:
+          type: string
+        focus:
+          type: string
+        hasImages:
+          type: boolean
+        hasModules:
+          type: boolean
+        hasPaints:
+          type: boolean
+        hasUpgrades:
+          type: boolean
+        hasVideos:
+          type: boolean
+        holo:
+          type: string
+        lastPledgePrice:
+          type: number
+        lastPledgePriceLabel:
+          type: string
+        lastUpdatedAt:
+          type: string
+          format: date-time
+        lastUpdatedAtLabel:
+          type: string
+        links:
+          type: object
+          properties:
+            salesPageUrl:
+              type: string
+            storeUrl:
+              type: string
+            self:
+              type: string
+              format: uri
+            frontend:
+              type: string
+              format: uri
+          additionalProperties: false
+        loaners:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelLoaner"
+        manufacturer:
+          "$ref": "#/components/schemas/Manufacturer"
+        media:
+          type: object
+          properties:
+            angledView:
+              "$ref": "#/components/schemas/ViewImage"
+            angledViewColored:
+              "$ref": "#/components/schemas/ViewImage"
+            fleetchartImage:
+              type: string
+            frontView:
+              "$ref": "#/components/schemas/ViewImage"
+            frontViewColored:
+              "$ref": "#/components/schemas/ViewImage"
+            sideView:
+              "$ref": "#/components/schemas/ViewImage"
+            sideViewColored:
+              "$ref": "#/components/schemas/ViewImage"
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+            topView:
+              "$ref": "#/components/schemas/ViewImage"
+            topViewColored:
+              "$ref": "#/components/schemas/ViewImage"
+            rsiStoreImage:
+              "$ref": "#/components/schemas/MediaImage"
+          additionalProperties: false
+        metrics:
+          type: object
+          properties:
+            beam:
+              type: number
+            beamLabel:
+              type: string
+            cargo:
+              type: number
+            cargoLabel:
+              type: string
+            fleetchartLength:
+              type: number
+            height:
+              type: number
+            heightLabel:
+              type: string
+            hydrogenFuelTankSize:
+              type: number
+            isGroundVehicle:
+              type: boolean
+            length:
+              type: number
+            lengthLabel:
+              type: string
+            mass:
+              type: number
+            massLabel:
+              type: string
+            quantumFuelTankSize:
+              type: number
+            size:
+              type: string
+            sizeLabel:
+              type: string
+          additionalProperties: false
+        onSale:
+          type: boolean
+        pledgePrice:
+          type: number
+        pledgePriceLabel:
+          type: string
+        price:
+          type: number
+        priceLabel:
+          type: string
+        productionNote:
+          type: string
+        productionStatus:
+          "$ref": "#/components/schemas/ModelProductionStatusEnum"
+        rsiId:
+          type: integer
+        rsiName:
+          type: string
+        rsiSlug:
+          type: string
+        speeds:
+          type: object
+          properties:
+            groundAcceleration:
+              type: number
+            groundDecceleration:
+              type: number
+            groundMaxSpeed:
+              type: number
+            groundReverseSpeed:
+              type: number
+            maxSpeed:
+              type: number
+            maxSpeedAcceleration:
+              type: number
+            maxSpeedDecceleration:
+              type: number
+            pitch:
+              type: number
+            roll:
+              type: number
+            scmSpeed:
+              type: number
+            scmSpeedAcceleration:
+              type: number
+            scmSpeedDecceleration:
+              type: number
+            yaw:
+              type: number
+          additionalProperties: false
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        hidden:
+          type: boolean
+        active:
+          type: boolean
+        dockCounts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/DockCount"
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - availability
+      - crew
+      - hasImages
+      - hasModules
+      - hasPaints
+      - hasUpgrades
+      - hasVideos
+      - links
+      - loaners
+      - media
+      - metrics
+      - onSale
+      - speeds
+      - createdAt
+      - updatedAt
+      - hidden
+      - active
+      - dockCounts
+      title: ModelExtended
     Models:
       type: object
       properties:
@@ -1798,6 +2520,30 @@ components:
       - createdAt
       - updatedAt
       title: ModelPaint
+    ComponentQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        idIn:
+          type: array
+          items:
+            type: string
+            format: uuid
+        nameIn:
+          type: array
+          items:
+            type: string
+        itemTypeIn:
+          type: array
+          items:
+            type: string
+        componentClassIn:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      title: ComponentQuery
     ImageQuery:
       type: object
       properties:
@@ -1808,6 +2554,17 @@ components:
           type: string
       additionalProperties: false
       title: ImageQuery
+    ImportQuery:
+      type: object
+      properties:
+        typeEq:
+          "$ref": "#/components/schemas/ImportTypeEnum"
+        typeIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ImportTypeEnum"
+      additionalProperties: false
+      title: ImportQuery
     ItemPriceQuery:
       type: object
       properties:
@@ -1905,6 +2662,152 @@ components:
           - "$ref": "#/components/schemas/ModelSortEnum"
       additionalProperties: false
       title: ModelQuery
+    UserQuery:
+      type: object
+      properties:
+        searchCont:
+          type: string
+        usernameCont:
+          type: string
+        emailCont:
+          type: string
+        rsiHandleCont:
+          type: string
+        idIn:
+          type: array
+          items:
+            type: string
+            format: uuid
+        usernameIn:
+          type: array
+          items:
+            type: string
+        emailIn:
+          type: array
+          items:
+            type: string
+        rsihandleIn:
+          type: array
+          items:
+            type: string
+        sorts:
+          oneOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/UserSortEnum"
+          - "$ref": "#/components/schemas/UserSortEnum"
+      additionalProperties: false
+      title: UserQuery
+    Stats:
+      type: object
+      properties:
+        onlineCount:
+          type: integer
+        shipsCountYear:
+          type: integer
+        shipsCountTotal:
+          type: integer
+        usersCountTotal:
+          type: integer
+        fleetsCountTotal:
+          type: integer
+      additionalProperties: false
+      required:
+      - onlineCount
+      - shipsCountYear
+      - shipsCountTotal
+      - usersCountTotal
+      - fleetsCountTotal
+      title: Stats
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        email:
+          type: string
+        unconfirmedEmail:
+          type: string
+        avatar:
+          type: string
+        rsiHandle:
+          type: string
+        discord:
+          type: string
+        youtube:
+          type: string
+        twitch:
+          type: string
+        guilded:
+          type: string
+        homepage:
+          type: string
+        saleNotify:
+          type: boolean
+        publicHangar:
+          type: boolean
+        publicHangarUrl:
+          type: string
+        publicHangarLoaners:
+          type: boolean
+        publicWishlist:
+          type: boolean
+        publicWishlistUrl:
+          type: string
+        hideOwner:
+          type: boolean
+        twoFactorRequired:
+          type: boolean
+        twoFactorQrCodeUrl:
+          type: string
+        twoFactorProvisioningUrl:
+          type: string
+        hangarUpdatedAt:
+          type: string
+          format: date-time
+        confirmedAt:
+          type: string
+          format: date-time
+        lastActiveAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - username
+      - email
+      - saleNotify
+      - publicHangar
+      - publicHangarLoaners
+      - publicWishlist
+      - hideOwner
+      - twoFactorRequired
+      - createdAt
+      - updatedAt
+      title: User
+    Users:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            "$ref": "#/components/schemas/User"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: Users
   securitySchemes:
     SessionCookie:
       type: apiKey

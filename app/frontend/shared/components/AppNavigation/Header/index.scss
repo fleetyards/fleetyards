@@ -7,10 +7,14 @@
   padding: 20px 15px;
   gap: 20px;
 
-  &-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
+  &__left {
+    max-width: 400px;
+    transition: max-width $transition-base-speed ease-in-out;
+    flex: 1;
+
+    :deep(.base-input) {
+      margin-bottom: 0;
+    }
 
     :deep(.panel-btn),
     :deep(.panel-btn-group) {
@@ -19,34 +23,62 @@
     }
   }
 
-  &-quicksearch {
-    max-width: 400px;
-    transition: max-width $transition-base-speed ease-in-out;
-    flex: 1;
+  &__right {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
 
-    .form-input {
+    :deep(.base-input) {
       margin-bottom: 0;
     }
 
-    :deep(.form-input) {
+    :deep(.panel-btn),
+    :deep(.panel-btn-group) {
       margin-bottom: 0;
+      margin-right: 0;
     }
   }
 }
 
 @media (max-width: $desktop-breakpoint) {
   .navigation-header {
-    flex-direction: column;
     gap: 20px;
+    right: 0;
+    left: auto;
+    flex-direction: column;
+    transition: right ease $transition-base-speed;
 
-    &-quicksearch {
+    &__left {
       width: 100%;
       max-width: 100%;
     }
 
-    &-actions {
-      justify-content: space-between;
-      flex-wrap: wrap;
+    &__right {
+      width: 100%;
+      max-width: 100%;
+      justify-content: flex-end;
+    }
+  }
+
+  .nav-visible {
+    .navigation-header {
+      right: 300px;
+
+      .environment-label {
+        left: -280px;
+      }
+    }
+  }
+}
+
+@media (max-width: 370px) {
+  .nav-visible {
+    .navigation-header {
+      right: 250px;
+
+      .environment-label {
+        left: -230px;
+      }
     }
   }
 }

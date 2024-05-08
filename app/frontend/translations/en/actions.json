@@ -1,6 +1,12 @@
 {
   "en": {
     "actions": {
+      "admin": {
+        "dashboard": {
+          "reloadModels": "Reload Models",
+          "reloadScData": "Reload SC Data"
+        }
+      },
       "showReleased": "Show old Releases",
       "hideReleased": "Hide old Releases",
       "upgrade": "Update available!",
@@ -68,6 +74,7 @@
       "updatePassword": "Update Password",
       "copyBackupCodes": "Copy Backup Codes",
       "add": "Add",
+      "create": "Create",
       "addToWishlist": "Add to Wishlist",
       "addAnother": "Add another",
       "addVehicle": "Add Ships",

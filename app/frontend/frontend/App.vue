@@ -7,8 +7,8 @@ export default {
 <script lang="ts" setup>
 import FrontendNavigation from "@/frontend/components/Navigation/index.vue";
 import AppNavigationHeader from "@/shared/components/AppNavigation/Header/index.vue";
-import AppNavigationMobile from "@/shared/components/AppNavigation/Mobile/index.vue";
-import AppFooter from "@/frontend/components/core/AppFooter/index.vue";
+import FrontendNavigationMobile from "@/frontend/components/Navigation/Mobile/index.vue";
+import AppFooter from "@/shared/components/AppFooter/index.vue";
 import AppEnvironment from "@/frontend/components/core/AppEnvironment/index.vue";
 import AppModal from "@/shared/components/AppModal/index.vue";
 import SecurePage from "@/frontend/components/core/SecurePage/index.vue";
@@ -83,13 +83,17 @@ watch(
   },
 );
 
+const router = useRouter();
+
 watch(
   () => isAuthenticated.value,
   () => {
-    if (isAuthenticated) {
+    if (isAuthenticated.value) {
       requestBrowserPermission();
 
       fetchCurrentUser();
+    } else if (route.meta.needsAuthentication) {
+      router.push({ name: "login" });
     }
   },
 );
@@ -151,6 +155,7 @@ onMounted(async () => {
 });
 
 onUnmounted(() => {
+  comlink.off("open-privacy-settings");
   comlink.off("user-update");
   comlink.off("fleet-create");
   comlink.off("fleet-update");
@@ -246,7 +251,6 @@ const setLocale = (locale: string) => {
 
 <template>
   <div
-    id="app"
     :key="locale"
     :class="{
       [`page-${String(route.name)}`]: true,
@@ -257,7 +261,7 @@ const setLocale = (locale: string) => {
 
     <div class="app-content">
       <transition name="fade" mode="out-in">
-        <AppNavigationMobile v-if="mobile" />
+        <FrontendNavigationMobile v-if="mobile" />
       </transition>
       <transition name="fade" mode="out-in">
         <FrontendNavigation />

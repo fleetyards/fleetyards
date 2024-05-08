@@ -3,11 +3,13 @@ import {
   type ApiError,
   type Models,
   type ModelQuery,
+  type ModelExtended,
 } from "@/services/fyAdminApi";
 import { useQuery, useQueryClient } from "@tanstack/vue-query";
 
 export enum QueryKeysEnum {
   MODELS = "models",
+  MODEL = "model",
 }
 
 export const useModelQueries = () => {
@@ -18,23 +20,36 @@ export const useModelQueries = () => {
   const modelsQuery = ({
     page,
     perPage,
-    q,
-    s,
+    filters,
+    sorts,
   }: {
     page: ComputedRef<string>;
     perPage: ComputedRef<string | undefined>;
-    q: ComputedRef<ModelQuery | undefined>;
-    s: ComputedRef<string[] | undefined>;
+    filters: ComputedRef<ModelQuery | undefined>;
+    sorts: ComputedRef<string[] | undefined>;
   }) => {
     return useQuery<Models, ApiError>(
       {
-        queryKey: [QueryKeysEnum.MODELS],
+        queryKey: [QueryKeysEnum.MODELS, page, perPage, filters, sorts],
         queryFn: () =>
           modelsService.models({
             page: page.value,
             perPage: perPage.value,
-            q: q.value,
-            s: s.value,
+            q: filters.value,
+            s: sorts.value,
+          }),
+      },
+      queryClient,
+    );
+  };
+
+  const modelQuery = ({ id }: { id: string }) => {
+    return useQuery<ModelExtended, ApiError>(
+      {
+        queryKey: [QueryKeysEnum.MODEL, id],
+        queryFn: () =>
+          modelsService.model({
+            id,
           }),
       },
       queryClient,
@@ -43,5 +58,6 @@ export const useModelQueries = () => {
 
   return {
     modelsQuery,
+    modelQuery,
   };
 };

@@ -3,22 +3,22 @@
 namespace :admin, path: (Rails.configuration.app.on_subdomain? ? "" : "admin"), constraints: ->(req) { !Rails.configuration.app.on_subdomain? || req.subdomain == "admin" } do
   draw "admin/api_routes"
 
-  devise_for :admin_users,
-    singular: :admin_user, path: "", skip: %i[registration],
-    path_names: {
-      sign_in: "login",
-      sign_out: "logout"
-    }
+  # devise_for :admin_users,
+  #   singular: :admin_user, path: "", skip: %i[registration],
+  #   path_names: {
+  #     sign_in: "login",
+  #     sign_out: "logout"
+  #   }
 
-  resource :me, controller: :current_user, only: [] do
-    get :otp
-    get :otp_qrcode
-    post :otp_backup_codes
-    post :enable_otp
-    post :disable_otp
-  end
+  # resource :me, controller: :current_user, only: [] do
+  #   get :otp
+  #   get :otp_qrcode
+  #   post :otp_backup_codes
+  #   post :enable_otp
+  #   post :disable_otp
+  # end
 
-  resource :password, only: %i[edit update]
+  # resource :password, only: %i[edit update]
 
   # resources :users, except: [:show] do
   #   member do
@@ -35,7 +35,7 @@ namespace :admin, path: (Rails.configuration.app.on_subdomain? ? "" : "admin"), 
 
   # resources :vehicles, only: [:index]
 
-  resources :settings, except: %i[index show]
+  # resources :settings, except: %i[index show]
 
   authenticate :admin_user, ->(u) { u.present? } do
     mount Sidekiq::Web => "/workers"

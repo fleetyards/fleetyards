@@ -1,105 +1,51 @@
-html {
-  height: 100%;
+:root {
+  color-scheme: light dark;
 }
 
-body {
-  position: relative;
-  min-width: 320px;
-  min-height: 100%;
-  font-family: "Open Sans", sans-serif;
-  background-color: $background;
+a,
+input[type="button"],
+button {
+  outline: 0 none !important;
 }
 
-.hidden {
-  display: none;
-}
-
-.app-body {
+.flex {
   display: flex;
-  flex-direction: column;
-  padding-top: 70px;
 }
 
-.nav-item a {
+.justify-between {
+  justify-content: space-between;
+}
+
+.relative {
   position: relative;
+}
 
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 20px;
-    margin-left: 5px;
-    padding: 0 5px;
-    color: white;
-    background-color: $primary;
-    border-radius: 10px;
+hr {
+  height: 3px;
+  margin: 20px 5%;
+  background-color: $gray;
+  border: none;
+  border-radius: 50%;
+
+  &.large-spacer {
+    margin: 60px 5%;
+  }
+
+  &.dark {
+    background-color: $gray-black;
+  }
+
+  &.slim-spacer {
+    margin: 10px 5%;
+  }
+
+  &.space-bottom {
+    margin-bottom: 30px;
   }
 }
 
-.app-wrapper {
-  .app-body {
-    padding-top: 20px;
-  }
-}
-
-.admin-app-body {
-  min-height: 100vh;
-}
-
-.version {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-}
-
-.fa-4-icons {
+.page-main-actions {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  width: 70px;
-  height: 70px;
-}
-
-.environment-label {
-  span {
-    margin-right: 5px;
-
-    &:last-child {
-      margin-right: 0;
-    }
-  }
-}
-
-.app-intro {
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  justify-content: space-evenly;
-  height: 100vh;
-  margin-top: -80px;
-  margin-bottom: -50px;
-  text-align: center;
-}
-
-.chart {
-  position: relative;
-
-  &.loading::before {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 50px;
-    height: 50px;
-    margin-top: -25px;
-    margin-left: -25px;
-    background-image: image-url("@/images/loading.gif");
-    background-position: center;
-    background-size: 100%;
-    content: "";
-  }
-}
-
-.app-footer {
-  margin-top: 30px;
+  align-items: flex-end;
+  justify-content: flex-end;
 }

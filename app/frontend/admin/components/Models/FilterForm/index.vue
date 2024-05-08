@@ -18,14 +18,6 @@ import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 
 const { booleanOptions } = useFilterOptions();
 
-type Props = {
-  hideQuicksearch?: boolean;
-};
-
-withDefaults(defineProps<Props>(), {
-  hideQuicksearch: false,
-});
-
 const { t } = useI18n();
 
 const prefillFormValues = () => {
@@ -66,22 +58,16 @@ watch(
 
 <template>
   <form @submit.prevent="handleSubmit">
-    <Teleport v-if="!hideQuicksearch" to="#quicksearch">
+    <Teleport to="#header-left">
       <FormInput
         v-model="form.searchCont"
         name="search"
         translation-key="filters.models.name"
         :no-label="true"
         :clearable="true"
+        inline
       />
     </Teleport>
-    <FormInput
-      v-model="form.nameCont"
-      name="model-name"
-      translation-key="filters.models.name"
-      :no-label="true"
-      :clearable="true"
-    />
 
     <ManufacturerFilterGroup
       v-model="form.manufacturerIn"

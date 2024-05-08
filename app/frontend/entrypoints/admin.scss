@@ -1,16 +1,14 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+@import "@/stylesheets/variables";
+@import "@/fontawesome/css/all";
+@import "noty/lib/noty";
 @import "photoswipe/dist/photoswipe";
 @import "@/stylesheets/shared/vendor/photoswipe/default-skin";
-@import "@/stylesheets/shared/noty";
+@import "@/stylesheets/shared/fonts";
+@import "@/stylesheets/shared/bootstrap-custom";
+@import "@/stylesheets/shared/nprogress-custom";
+@import "@/stylesheets/shared/vue-swatches-custom";
 @import "@/stylesheets/shared/transitions";
-@import "@/stylesheets/frontend/fonts";
-@import "@/fontawesome/css/all";
-
-body {
-  position: relative;
-  background-color: black;
-  color: white;
-}
+@import "@/stylesheets/shared/typography";
+@import "@/stylesheets/shared/links";
+@import "@/stylesheets/shared/layout";
+@import "@/stylesheets/admin/base";

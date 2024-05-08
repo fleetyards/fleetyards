@@ -1,10 +1,19 @@
 import type { I18n } from "i18n-js";
-import { parseISO } from "date-fns";
+import { parseISO, formatDistance } from "date-fns";
 import { format } from "date-fns-tz";
 
 export const i18nHelpers = (i18n: I18n) => {
   const l = (value: string, dateFormat = "datetime.formats.default") =>
     format(parseISO(value), i18n.t(dateFormat));
+
+  const lUtc = (value: string, dateFormat = "datetime.formats.default") =>
+    format(parseISO(value), i18n.t(dateFormat), { timeZone: "UTC" });
+
+  const timeDistance = (value: string) => {
+    return formatDistance(parseISO(value), new Date(), {
+      addSuffix: true,
+    });
+  };
 
   const toNumber = (value?: number | string | null, units = "") => {
     let count: string | number = i18n.l("number", value);
@@ -81,6 +90,8 @@ export const i18nHelpers = (i18n: I18n) => {
 
   return {
     l,
+    lUtc,
+    timeDistance,
     toNumber,
     toDollar,
     toAu,

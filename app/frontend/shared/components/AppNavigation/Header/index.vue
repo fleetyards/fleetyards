@@ -6,8 +6,8 @@ export default {
 
 <template>
   <header class="navigation-header">
-    <div id="quicksearch" class="navigation-header-quicksearch"></div>
-    <div id="header-actions" class="navigation-header-actions"></div>
+    <div id="header-left" class="navigation-header__left"></div>
+    <div id="header-right" class="navigation-header__right"></div>
   </header>
 </template>
 

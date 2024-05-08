@@ -1,20 +1,21 @@
 <template>
   <div v-if="nodeEnv && !mobile" class="app-environment" :class="cssClasses">
-    <span :class="environmentLabelClasses">
+    <BasePill :variant="environtmentVariant">
       <i class="far fa-info-circle" />
       {{ nodeEnv }}
-    </span>
-    <span
+    </BasePill>
+    <BasePill
+      :variant="environtmentVariant"
       class="app-environment--git-revision"
-      :class="environmentLabelClasses"
     >
       <i class="far fa-fingerprint" />
       {{ gitRevision }}
-    </span>
+    </BasePill>
   </div>
 </template>
 
 <script lang="ts" setup>
+import BasePill from "@/shared/components/base/Pill/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 
 type Props = {
@@ -27,21 +28,20 @@ const mobile = useMobile();
 
 const route = useRoute();
 
+const environtmentVariant = computed(() => {
+  if (window.NODE_ENV === "staging") {
+    return "warning";
+  } else if (window.NODE_ENV === "production") {
+    return "danger";
+  }
+
+  return "default";
+});
+
 const cssClasses = computed(() => {
   return {
     "app-environment--with-primary-action": route.meta.primaryAction,
   };
-});
-const environmentLabelClasses = computed(() => {
-  const cssClasses = ["pill"];
-
-  if (window.NODE_ENV === "staging") {
-    cssClasses.push("pill-warning");
-  } else if (window.NODE_ENV === "production") {
-    cssClasses.push("pill-danger");
-  }
-
-  return cssClasses;
 });
 
 const nodeEnv = computed(() => {

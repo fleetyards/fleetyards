@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { BarChartStats } from '../models/BarChartStats';
 import type { PieChartStats } from '../models/PieChartStats';
 import type { Stats } from '../models/Stats';
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -65,10 +66,10 @@ export class StatsService {
     }
     /**
      * Stats Models per Month
-     * @returns PieChartStats successful
+     * @returns BarChartStats successful
      * @throws ApiError
      */
-    public modelsPerMonth(): CancelablePromise<Array<PieChartStats>> {
+    public modelsPerMonth(): CancelablePromise<Array<BarChartStats>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/stats/models-per-month',

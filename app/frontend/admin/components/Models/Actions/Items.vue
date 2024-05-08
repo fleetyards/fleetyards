@@ -8,13 +8,16 @@
     <span v-if="withLabels">{{ t("actions.models.exchangeStoreImage") }}</span>
   </Btn>
   <Btn
-    :to="{ name: 'admin-model-images', params: { id: props.record.id } }"
+    :to="{ name: 'admin-model-images', params: { id: props.model.id } }"
     :size="BtnSizesEnum.SMALL"
   >
     <i class="fad fa-images" />
     <span v-if="withLabels">{{ t("actions.models.images") }}</span>
   </Btn>
-  <Btn :size="BtnSizesEnum.SMALL" @click="edit">
+  <Btn
+    :size="BtnSizesEnum.SMALL"
+    :to="{ name: 'admin-model-edit', params: { id: props.model.id } }"
+  >
     <i class="fad fa-pen-to-square" />
     <span v-if="withLabels">{{ t("actions.edit") }}</span>
   </Btn>
@@ -28,16 +31,16 @@
   </Btn>
 </template>
 
-<script lang="ts" setup generic="T extends ModelActionsRecord">
+<script lang="ts" setup>
+import { type Model } from "@/services/fyAdminApi";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
-import { type ModelActionsRecord } from "@/admin/components/Models/Actions/types";
 import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
-  record: T;
+  model: Model;
   withLabels?: boolean;
 };
 
@@ -48,19 +51,15 @@ const props = withDefaults(defineProps<Props>(), {
 const { t } = useI18n();
 
 const sync = async () => {
-  console.log("sync", props.record);
+  console.log("sync", props.model);
 };
 
 const exchangeStoreImage = () => {
-  console.log("exchangeStoreImage", props.record);
-};
-
-const edit = () => {
-  console.log("edit", props.record);
+  console.log("exchangeStoreImage", props.model);
 };
 
 const destroy = () => {
-  console.log("destroy", props.record);
+  console.log("destroy", props.model);
 };
 </script>
 

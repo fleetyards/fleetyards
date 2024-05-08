@@ -10,5 +10,6 @@ export type Manufacturer = {
     longName?: string;
     createdAt: string;
     updatedAt: string;
+    id: string;
 };
 

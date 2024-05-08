@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { FilterOption } from '../models/FilterOption';
+import type { ModelExtended } from '../models/ModelExtended';
 import type { ModelQuery } from '../models/ModelQuery';
 import type { Models } from '../models/Models';
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -50,6 +51,31 @@ export class ModelsService {
             },
             errors: {
                 401: `unauthorized`,
+            },
+        });
+    }
+    /**
+     * Model Detail
+     * @returns ModelExtended successful
+     * @throws ApiError
+     */
+    public model({
+        id,
+    }: {
+        /**
+         * Model id
+         */
+        id: string,
+    }): CancelablePromise<ModelExtended> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/{id}',
+            path: {
+                'id': id,
+            },
+            errors: {
+                401: `unauthorized`,
+                404: `not found`,
             },
         });
     }

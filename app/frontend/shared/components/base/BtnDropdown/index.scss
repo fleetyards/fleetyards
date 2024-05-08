@@ -12,7 +12,7 @@
     margin-right: 0;
   }
 
-  .panel-btn-dropdown-list {
+  &__list {
     position: absolute;
     top: 100%;
     margin-top: 10px;
@@ -98,14 +98,14 @@
     }
   }
 
-  &.panel-btn-dropdown-inline {
+  &--inline {
     margin-bottom: 0px;
   }
 }
 
 @media (max-width: $desktop-breakpoint) {
   .panel-btn-dropdown {
-    .panel-btn-dropdown-list {
+    &__list {
       &.expand-left {
         right: 0;
       }

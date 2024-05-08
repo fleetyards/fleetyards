@@ -39,18 +39,18 @@ const openSupportModal = () => {
 
 <template>
   <footer class="app-footer">
-    <div class="app-footer-border app-footer-border-top">
-      <div class="app-footer-border-left" />
-      <div class="app-footer-border-right" />
+    <div class="app-footer__border app-footer__border-top">
+      <div class="app-footer__border-left" />
+      <div class="app-footer__border-right" />
     </div>
-    <div class="app-footer-inner">
-      <div class="app-footer-inner-border app-footer-inner-border-top">
-        <div class="app-footer-inner-border-bg" />
+    <div class="app-footer__inner">
+      <div class="app-footer__inner__border app-footer__inner__border-top">
+        <div class="app-footer__inner__border-bg" />
       </div>
-      <div class="app-footer-links">
+      <div class="app-footer__links">
         <slot />
       </div>
-      <div class="app-footer-social-links">
+      <div class="app-footer__social-links">
         <a
           v-tooltip="'Discord'"
           href="https://discord.gg/6EQKAsb"
@@ -97,18 +97,18 @@ const openSupportModal = () => {
           <i class="fab fa-instagram" />
         </a>
       </div>
-      <div class="app-footer-support">
+      <div class="app-footer__support">
         <Btn inline :variant="BtnVariantsEnum.LINK" @click="openSupportModal">
           {{ t("labels.supportUs") }}
           <i class="fa fa-heart" />
         </Btn>
       </div>
-      <div class="app-footer-disclaimer">
+      <div class="app-footer__disclaimer">
         <p>
           <span>Copyright &copy; {{ new Date().getFullYear() }}</span>
           {{ copyrightOwner }}
         </p>
-        <p class="app-footer-disclaimer-rsi">
+        <p class="app-footer__disclaimer-rsi">
           This is an unofficial Star Citizen fansite, not affiliated with the
           Cloud Imperium group of companies.
           <br />
@@ -122,23 +122,23 @@ const openSupportModal = () => {
           reserved.
         </p>
       </div>
-      <div class="app-footer-community-logo">
+      <div class="app-footer__community-logo">
         <CommunityLogo />
       </div>
-      <div class="app-footer-version">
+      <div class="app-footer__version">
         {{ codename }} ({{ version }})
         <span
           v-tooltip="gitRevision"
           :class="{
             online: online,
           }"
-          class="git-revision"
+          class="app-footer__git-revision"
         >
           <span class="hidden">{{ gitRevision }}</span>
           <i class="far fa-fingerprint" />
         </span>
       </div>
-      <div class="app-footer-sc-data-version">
+      <div class="app-footer__sc-data-version">
         {{ t("labels.scDataVersion") }}: {{ scDataVersion }}
       </div>
     </div>

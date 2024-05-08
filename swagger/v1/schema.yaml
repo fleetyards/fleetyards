@@ -3231,7 +3231,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/PieChartStats"
+                  "$ref": "#/components/schemas/BarChartStats"
   "/stats/quick-stats":
     get:
       summary: Stats
@@ -3978,6 +3978,24 @@ components:
       - Station
       - Album
       title: GalleryTypeEnum
+    ImportStatusEnum:
+      type: string
+      enum:
+      - created
+      - started
+      - finished
+      - failed
+      title: ImportStatusEnum
+    ImportTypeEnum:
+      type: string
+      enum:
+      - "::Imports::ModelImport"
+      - "::Imports::ModelsImport"
+      - "::Imports::ScDataImport"
+      - "::Imports::ScDataShipImport"
+      - "::Imports::HangarSync"
+      - "::Imports::HangarImport"
+      title: ImportTypeEnum
     ItemPriceItemTypeEnum:
       type: string
       enum:
@@ -4328,6 +4346,20 @@ components:
       - rsi_category_id asc
       - rsi_category_id desc
       title: RoadmapItemSortEnum
+    UserSortEnum:
+      type: string
+      enum:
+      - username asc
+      - username desc
+      - email asc
+      - email desc
+      - created_at asc
+      - created_at desc
+      - last_active_at asc
+      - last_active_at desc
+      - last_sign_in_at asc
+      - last_sign_in_at desc
+      title: UserSortEnum
     VehicleSortEnum:
       type: string
       enum:

@@ -63,9 +63,9 @@ const {
   refetch,
   ...asyncStatus
 } = modelsQuery({
-  page: page,
-  perPage: perPage,
-  q: filters,
+  page,
+  perPage,
+  filters,
 });
 
 const toggleDetailsTooltip = computed(() => {
@@ -78,19 +78,9 @@ const toggleDetailsTooltip = computed(() => {
 </script>
 
 <template>
-  <div class="row">
-    <div class="col-12 col-lg-12">
-      <div class="row">
-        <div class="col-12">
-          <h1 class="sr-only">
-            {{ t("headlines.ships.index") }}
-          </h1>
-        </div>
-      </div>
-    </div>
-  </div>
+  <Heading hidden>{{ t("headlines.ships.index") }}</Heading>
 
-  <Teleport to="#header-actions">
+  <Teleport to="#header-right">
     <Btn
       data-test="model-compare-link"
       :to="{

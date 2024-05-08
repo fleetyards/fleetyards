@@ -29,20 +29,20 @@ export const useModelQueries = (slug?: string) => {
   const modelsQuery = ({
     page,
     perPage,
-    q,
+    filters,
   }: {
     page: ComputedRef<string>;
     perPage: ComputedRef<string | undefined>;
-    q: ComputedRef<ModelQuery | undefined>;
+    filters: ComputedRef<ModelQuery | undefined>;
   }) => {
     return useQuery<Models, ApiError>(
       {
-        queryKey: [QueryKeysEnum.MODELS],
+        queryKey: [QueryKeysEnum.MODELS, page, perPage, filters],
         queryFn: () => {
           return modelsService.models({
             page: page.value,
             perPage: perPage.value,
-            q: q.value,
+            q: filters.value,
           });
         },
       },
