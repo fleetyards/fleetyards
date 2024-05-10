@@ -1,5 +1,4 @@
 import type { RouteRecordRaw } from "vue-router";
-import { routes as compareRoutes } from "@/frontend/pages/compare/routes";
 import { routes as fleetsRoutes } from "@/frontend/pages/fleets/routes";
 import { routes as hangarRoutes } from "@/frontend/pages/hangar/routes";
 import { routes as roadmapRoutes } from "@/frontend/pages/roadmap/routes";
@@ -61,9 +60,11 @@ export const routes: RouteRecordRaw[] = [
   },
   {
     path: "/compare/",
+    name: "compare",
     component: () => import("@/frontend/pages/compare.vue"),
-    children: compareRoutes,
-    redirect: { name: compareRoutes[0].name },
+    meta: {
+      title: "compare.ships",
+    },
   },
   {
     path: "/ships/",

@@ -12,7 +12,6 @@ import AppNavigation from "@/shared/components/AppNavigation/index.vue";
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
 import FleetNav from "./FleetNav/index.vue";
 import FleetsNav from "./FleetsNav/index.vue";
-import CompareNav from "./CompareNav/index.vue";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { useFiltersStore } from "@/shared/stores/filters";
@@ -148,7 +147,11 @@ const settingsActive = computed(() => {
           :active="isShipRoute"
           icon="fad fa-starship"
         />
-        <CompareNav />
+        <NavItem
+          :to="{ name: 'compare' }"
+          :label="t('nav.compare.ships')"
+          icon="fad fa-code-compare"
+        />
         <FleetsNav />
         <NavItem
           :to="{ name: 'images' }"

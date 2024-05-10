@@ -84,7 +84,7 @@ const toggleDetailsTooltip = computed(() => {
     <Btn
       data-test="model-compare-link"
       :to="{
-        name: 'compare-ships',
+        name: 'compare',
       }"
       mobile-block
     >

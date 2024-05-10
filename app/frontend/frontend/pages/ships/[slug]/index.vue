@@ -344,7 +344,7 @@ const toggleHoloviewer = () => {
               </Btn>
               <Btn
                 :to="{
-                  name: 'compare-ships',
+                  name: 'compare',
                   query: { models: [model.slug] },
                 }"
                 data-test="compare"

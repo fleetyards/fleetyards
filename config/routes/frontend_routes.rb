@@ -8,7 +8,8 @@ frontend_options = {
 
 namespace :frontend, **frontend_options do
   get "ships/mercury", to: redirect("/ships/mercury-star-runner")
-  get "ships/compare", to: redirect("/compare/ships")
+  get "ships/compare", to: redirect("/compare/")
+  get "compare/ships", to: redirect("/compare/")
 
   get "ships/:slug", to: "base#model", as: :model
   get "ships/:slug/images", to: "base#model_images", as: :model_images
