@@ -170,7 +170,7 @@ GEM
     css_parser (1.16.0)
       addressable
     dalli (3.2.8)
-    data_migrate (9.3.0)
+    data_migrate (9.4.0)
       activerecord (>= 6.1)
       railties (>= 6.1)
     date (3.3.4)
