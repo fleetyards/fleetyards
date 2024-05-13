@@ -224,11 +224,10 @@ GEM
       railties (>= 5.0.0)
     faker (3.2.3)
       i18n (>= 1.8.11, < 2)
-    faraday (2.7.12)
-      base64
-      faraday-net_http (>= 2.0, < 3.1)
-      ruby2_keywords (>= 0.0.4)
-    faraday-net_http (3.0.2)
+    faraday (2.9.0)
+      faraday-net_http (>= 2.0, < 3.2)
+    faraday-net_http (3.1.0)
+      net-http
     ffi (1.16.3)
     flipper (1.2.2)
       concurrent-ruby (< 2)
@@ -390,6 +389,8 @@ GEM
     multi_json (1.15.0)
     multi_xml (0.6.0)
     mutex_m (0.2.0)
+    net-http (0.4.1)
+      uri
     net-imap (0.4.10)
       date
       net-protocol
@@ -415,7 +416,7 @@ GEM
       racc (~> 1.4)
     oj (3.16.3)
       bigdecimal (>= 3.0)
-    opensearch-ruby (3.1.0)
+    opensearch-ruby (3.3.0)
       faraday (>= 1.0, < 3)
       multi_json (>= 1.0)
     options (2.3.2)
@@ -719,6 +720,7 @@ GEM
       execjs (>= 0.3.0, < 3)
     unicode-display_width (2.5.0)
     uniform_notifier (1.16.0)
+    uri (0.13.0)
     url_plumber (0.1.2)
       activesupport (>= 3.0.0)
     useragent (0.16.10)
