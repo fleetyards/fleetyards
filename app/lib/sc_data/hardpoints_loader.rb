@@ -175,7 +175,9 @@ module ScData
 
       component_data = port_data["InstalledItem"] || {}
 
-      key = [key_modifier, hardpoint_type, category, size].compact.join("-")
+      loadout_key = extract_loadout_key(hardpoint_type, category, component_data)
+
+      key = [key_modifier, hardpoint_type, category, size, loadout_key].compact.join("-")
 
       hardpoint = ModelHardpoint.find_or_create_by!(
         source: :game_files,
@@ -231,6 +233,15 @@ module ScData
       ModelHardpoint.types_by_group.find do |_group, items|
         items.key?(hardpoint_type.to_s)
       end.first
+    end
+
+    private def extract_loadout_key(hardpoint_type, category, component_data)
+      return unless %i[turrets].include?(hardpoint_type) && %w[manned_missile_turrets remote_missile_turrets].include?(category)
+
+      [
+        component_data.dig("InstalledItem", "Ports")&.size,
+        component_data.dig("InstalledItem", "Ports", 0, "Loadout") || component_data.dig("InstalledItem", "Ports", 0, "InstalledItem", "Name")
+      ].compact.join("-")
     end
 
     private def category_for_thruster_mapping(port_data)
