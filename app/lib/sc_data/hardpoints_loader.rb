@@ -135,13 +135,13 @@ module ScData
       hardpoint_ids = []
 
       ports_data["MannedTurrets"].reject do |port_data|
-        missile_turret?(port_data)
+        missile_turret?(port_data) || port_data["PortName"] == "hardpoint_turret_torpedo_camera"
       end.each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, "manned_turret")&.id
       end
 
       ports_data["RemoteTurrets"].reject do |port_data|
-        missile_turret?(port_data)
+        missile_turret?(port_data) || port_data["PortName"] == "hardpoint_turret_torpedo_camera"
       end.each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, "remote_turret")&.id
       end
@@ -193,10 +193,9 @@ module ScData
 
       component_data = port_data["InstalledItem"] || {}
 
-      loadout_count = component_data["Ports"].size if component_data["Ports"].present?
-      loadout_name = component_data["Ports"]&.first&.dig("Loadout")
+      loadout_key = extract_loadout_key(hardpoint_type, category, component_data)
 
-      key = [key_modifier, hardpoint_type, category, size, loadout_count, loadout_name].compact.join("-")
+      key = [key_modifier, hardpoint_type, category, size, loadout_key].compact.join("-")
 
       hardpoint = ModelHardpoint.find_or_create_by!(
         source: :game_files,
@@ -264,6 +263,15 @@ module ScData
       ModelHardpoint.types_by_group.find do |_group, items|
         items.key?(hardpoint_type.to_s)
       end.first
+    end
+
+    private def extract_loadout_key(hardpoint_type, category, component_data)
+      return unless %i[turrets].include?(hardpoint_type) && %w[manned_missile_turrets remote_missile_turrets].include?(category)
+
+      [
+        component_data.dig("Ports")&.size,
+        component_data.dig("Ports", 0, "Loadout") || component_data.dig("Ports", 0, "InstalledItem", "Name")
+      ].compact.join("-")
     end
 
     private def category_for_thruster_mapping(port_data)

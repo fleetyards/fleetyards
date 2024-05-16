@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.6](https://github.com/fleetyards/fleetyards/compare/v5.31.5...v5.31.6) (2024-05-16)
+
+### [5.31.5](https://github.com/fleetyards/fleetyards/compare/v5.31.4...v5.31.5) (2024-05-16)
+
+### [5.31.4](https://github.com/fleetyards/fleetyards/compare/v5.31.3...v5.31.4) (2024-05-15)
+
+### [5.31.3](https://github.com/fleetyards/fleetyards/compare/v5.31.2...v5.31.3) (2024-05-14)
+
+
+### Bug Fixes
+
+* **hangar-sync:** update hornet mk i mapping ([13b5668](https://github.com/fleetyards/fleetyards/commit/13b5668f973e8977274bd6669c24962d476f7067))
+
 ### [5.31.2](https://github.com/fleetyards/fleetyards/compare/v5.31.1...v5.31.2) (2024-03-24)
 
 ### [5.31.1](https://github.com/fleetyards/fleetyards/compare/v5.31.0...v5.31.1) (2024-03-22)
