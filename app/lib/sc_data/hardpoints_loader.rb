@@ -259,11 +259,11 @@ module ScData
     private def size_for_type(hardpoint_type, component, category = nil)
       component_size = component["Size"].to_i
       component_size = component.dig("InstalledItem", "Size").to_i if component_size.zero?
-      # loadout_size = component.dig("InstalledItem", "Ports", 0, "Size").to_i
+      loadout_size = component.dig("InstalledItem", "Ports", 0, "Size").to_i
 
-      # return loadout_size if [:turrets].include?(hardpoint_type) && loadout_size.present?
+      return [component_size, loadout_size].max if [:turrets].include?(hardpoint_type) && loadout_size.present?
 
-      # return loadout_size if %w[manned_missile_turrets remote_missile_turrets].include?(category) && loadout_size.present? && category.present?
+      return loadout_size if %w[manned_missile_turrets remote_missile_turrets].include?(category) && loadout_size.present? && category.present?
 
       return size_mapping[component_size.to_s] if %i[power_plants coolers shield_generators quantum_drives].include?(hardpoint_type) && size_mapping[component_size.to_s].present?
 
