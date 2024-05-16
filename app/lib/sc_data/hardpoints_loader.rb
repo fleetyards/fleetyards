@@ -239,8 +239,8 @@ module ScData
       return unless %i[turrets].include?(hardpoint_type) && %w[manned_missile_turrets remote_missile_turrets].include?(category)
 
       [
-        component_data.dig("InstalledItem", "Ports")&.size,
-        component_data.dig("InstalledItem", "Ports", 0, "Loadout") || component_data.dig("InstalledItem", "Ports", 0, "InstalledItem", "Name")
+        component_data.dig("Ports")&.size,
+        component_data.dig("Ports", 0, "Loadout") || component_data.dig("Ports", 0, "InstalledItem", "Name")
       ].compact.join("-")
     end
 
