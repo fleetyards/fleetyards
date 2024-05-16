@@ -193,7 +193,7 @@ module ScData
 
       component_data = port_data["InstalledItem"] || {}
 
-      loadout_key = extract_loadout_key(hardpoint_type, category, component_data)
+      loadout_key = extract_loadout_key(hardpoint_type, port_data)
 
       key = [key_modifier, hardpoint_type, category, size, loadout_key].compact.join("-")
 
@@ -265,12 +265,12 @@ module ScData
       end.first
     end
 
-    private def extract_loadout_key(hardpoint_type, category, component_data)
-      return unless %i[turrets].include?(hardpoint_type) && %w[manned_missile_turrets remote_missile_turrets].include?(category)
+    private def extract_loadout_key(hardpoint_type, component)
+      return if %i[power_plants coolers shield_generators quantum_drives].include?(hardpoint_type)
 
       [
-        component_data.dig("Ports")&.size,
-        component_data.dig("Ports", 0, "Loadout") || component_data.dig("Ports", 0, "InstalledItem", "Name")
+        component.dig("InstalledItem", "Ports")&.size,
+        component.dig("InstalledItem", "Ports", 0, "Loadout") || component.dig("InstalledItem", "Ports", 0, "InstalledItem", "Name")
       ].compact.join("-")
     end
 
