@@ -1,5 +1,5 @@
 <template>
-  <AsyncData :async-status="asyncStatus" hide-error inline>
+  <AsyncData :async-status="asyncStatus" hide-error>
     <template v-if="variants?.items.length" #resolved>
       <hr />
       <div id="variants" class="row">

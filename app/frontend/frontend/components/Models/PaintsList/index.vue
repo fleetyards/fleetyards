@@ -1,8 +1,8 @@
 <template>
-  <AsyncData :async-status="asyncStatus" hide-error inline>
-    <template v-if="paints?.length" #resolved>
-      <hr />
-      <div id="paints" class="row">
+  <AsyncData :async-status="asyncStatus" hide-error>
+    <template #resolved>
+      <div v-if="paints?.length" id="paints" class="row">
+        <hr />
         <div class="col-12">
           <h2 v-if="paints?.length" id="paints" class="text-uppercase">
             {{ t("labels.model.paints") }}

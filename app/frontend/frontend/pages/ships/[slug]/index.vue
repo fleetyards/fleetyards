@@ -372,17 +372,17 @@ const toggleHoloviewer = () => {
           </div>
         </div>
       </div>
-      <FleetchartImages v-if="model" :model="model" />
+      <FleetchartImages :model="model" />
       <hr />
-      <Hardpoints v-if="model" :model="model" />
+      <Hardpoints :model="model" />
     </div>
   </div>
 
-  <PaintsList v-if="model" :model-slug="model.slug" />
-  <ModulesList v-if="model" :model-slug="model.slug" />
-  <UpgradesList v-if="model" :model-slug="model.slug" />
-  <VariantsList v-if="model" :model-slug="model.slug" />
-  <LoanersList v-if="model" :model-slug="model.slug" />
+  <PaintsList :model-slug="model.slug" />
+  <ModulesList :model-slug="model.slug" />
+  <UpgradesList :model-slug="model.slug" />
+  <VariantsList :model-slug="model.slug" />
+  <LoanersList :model-slug="model.slug" />
 </template>
 
 <style lang="scss" scoped>

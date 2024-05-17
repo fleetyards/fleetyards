@@ -18,10 +18,12 @@ import { type ApiError } from "@/services/fyApi";
 type Props = {
   asyncStatus: AsyncStatus;
   showSpinner?: boolean;
+  hideError?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   showSpinner: true,
+  hideError: false,
 });
 
 const error = computed(() => {
@@ -62,7 +64,7 @@ const loading = computed(() => {
 </script>
 
 <template>
-  <slot v-if="error" name="error">
+  <slot v-if="error && !hideError" name="error">
     <NotFound v-if="errorType === ErrorTypesEnum.NOT_FOUND" />
     <ServerError v-else />
   </slot>
