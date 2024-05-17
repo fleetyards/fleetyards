@@ -29,7 +29,7 @@ module ScData
     private def extract_fuel_tanks(hardpoint_type, model_id, ports_data)
       hardpoint_ids = []
 
-      ports_data["HydrogenFuelTanks"].each_with_index.map do |port_data, index|
+      ports_data["HydrogenFuelTanks"].reject(&:exclude_port?).each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index)&.id
       end
 
@@ -39,15 +39,15 @@ module ScData
     private def extract_main_thrusters(hardpoint_type, model_id, ports_data)
       hardpoint_ids = []
 
-      ports_data["MainThrusters"].each_with_index.map do |port_data, index|
+      ports_data["MainThrusters"].reject(&:exclude_port?).each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, :main)&.id
       end
 
-      ports_data["VtolThrusters"].each_with_index.map do |port_data, index|
+      ports_data["VtolThrusters"].reject(&:exclude_port?).each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, :vtol)&.id
       end
 
-      ports_data["RetroThrusters"].each_with_index.map do |port_data, index|
+      ports_data["RetroThrusters"].reject(&:exclude_port?).each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, :retro)&.id
       end
 
@@ -57,7 +57,7 @@ module ScData
     private def extract_maneuvering_thrusters(hardpoint_type, model_id, ports_data)
       hardpoint_ids = []
 
-      ports_data["ManeuveringThrusters"].each_with_index.map do |port_data, index|
+      ports_data["ManeuveringThrusters"].reject(&:exclude_port?).each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, category_for_thruster_mapping(port_data))&.id
       end
 
@@ -67,7 +67,7 @@ module ScData
     private def extract_quantum_drives(hardpoint_type, model_id, ports_data)
       hardpoint_ids = []
 
-      ports_data["QuantumDrives"].each_with_index.map do |port_data, index|
+      ports_data["QuantumDrives"].reject(&:exclude_port?).each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index)&.id
       end
 
@@ -77,7 +77,7 @@ module ScData
     private def extract_power_plants(hardpoint_type, model_id, ports_data)
       hardpoint_ids = []
 
-      ports_data["PowerPlants"].each_with_index.map do |port_data, index|
+      ports_data["PowerPlants"].reject(&:exclude_port?).each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index)&.id
       end
 
@@ -87,7 +87,7 @@ module ScData
     private def extract_coolers(hardpoint_type, model_id, ports_data)
       hardpoint_ids = []
 
-      ports_data["Coolers"].each_with_index.map do |port_data, index|
+      ports_data["Coolers"].reject(&:exclude_port?).each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index)&.id
       end
 
@@ -97,7 +97,7 @@ module ScData
     private def extract_shield_generators(hardpoint_type, model_id, ports_data)
       hardpoint_ids = []
 
-      ports_data["Shields"].each_with_index.map do |port_data, index|
+      ports_data["Shields"].reject(&:exclude_port?).each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index)&.id
       end
 
@@ -107,7 +107,7 @@ module ScData
     private def extract_missiles(hardpoint_type, model_id, ports_data)
       hardpoint_ids = []
 
-      ports_data["PilotHardpoints"].each_with_index.map do |port_data, index|
+      ports_data["PilotHardpoints"].reject(&:exclude_port?).each_with_index.map do |port_data, index|
         next if port_data["Flags"]&.include?("invisible")
         next unless port_data["PortName"].include?("bombrack")
 
@@ -116,7 +116,7 @@ module ScData
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, category, key_modifier)&.id
       end
 
-      ports_data["MissileRacks"].each_with_index.map do |port_data, index|
+      ports_data["MissileRacks"].reject(&:exclude_port?).each_with_index.map do |port_data, index|
         next if port_data["Flags"]&.include?("invisible")
         # Hack for A2 missile racks on the Starlifter
         next if model_id == A2_MODEL_ID && port_data["InstalledItem"].blank?
@@ -134,13 +134,13 @@ module ScData
     private def extract_turrets(hardpoint_type, model_id, ports_data)
       hardpoint_ids = []
 
-      ports_data["MannedTurrets"].reject do |port_data|
+      ports_data["MannedTurrets"].reject(&:exclude_port?).reject do |port_data|
         missile_turret?(port_data) || port_data["PortName"] == "hardpoint_turret_torpedo_camera"
       end.each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, "manned_turret")&.id
       end
 
-      ports_data["RemoteTurrets"].reject do |port_data|
+      ports_data["RemoteTurrets"].reject(&:exclude_port?).reject do |port_data|
         missile_turret?(port_data) || port_data["PortName"] == "hardpoint_turret_torpedo_camera"
       end.each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, "remote_turret")&.id
@@ -152,7 +152,7 @@ module ScData
     private def extract_weapons(hardpoint_type, model_id, ports_data)
       hardpoint_ids = []
 
-      ports_data["PilotHardpoints"].each_with_index.map do |port_data, index|
+      ports_data["PilotHardpoints"].reject(&:exclude_port?).each_with_index.map do |port_data, index|
         next if port_data["PortName"].include?("bombrack")
         next if port_data["Loadout"].present? && port_data["Loadout"].include?("CRUS_Starlifter_Bomb_Turret")
 
@@ -166,7 +166,7 @@ module ScData
     private def extract_qed(hardpoint_type, model_id, ports_data)
       hardpoint_ids = []
 
-      ports_data["InterdictionHardpoints"].select do |port_data|
+      ports_data["InterdictionHardpoints"].reject(&:exclude_port?).select do |port_data|
         port_data["Types"].include?("QuantumInterdictionGenerator")
       end.each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, "qed")&.id
@@ -178,7 +178,7 @@ module ScData
     private def extract_emp(hardpoint_type, model_id, ports_data)
       hardpoint_ids = []
 
-      ports_data["InterdictionHardpoints"].select do |port_data|
+      ports_data["InterdictionHardpoints"].reject(&:exclude_port?).select do |port_data|
         port_data["Types"].include?("EMP")
       end.each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, "emp")&.id
@@ -245,6 +245,10 @@ module ScData
         loadout = hardpoint.model_hardpoint_loadouts.find_or_create_by!(name: port_data["PortName"])
 
         installed_item = port_data["InstalledItem"]
+
+        if installed_item.present? && installed_item["ClassName"].include?("Mount_Gimbal")
+          installed_item = installed_item.dig("Ports", 0, "InstalledItem")
+        end
 
         component = components_loader.extract_component!(installed_item)
 
@@ -328,6 +332,10 @@ module ScData
         hardpoint_type: hardpoint_types
       ).where.not(id: hardpoint_ids.flatten)
         .update(deleted_at: Time.zone.now)
+    end
+
+    private def exclude_port?(port_data)
+      (port_data["Flags"] || []).include?("invisible")
     end
   end
 end
