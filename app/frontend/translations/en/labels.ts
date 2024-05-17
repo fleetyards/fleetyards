@@ -319,6 +319,7 @@ export default {
     rackSize: "Rack Size",
     details: "Details",
     group: "Group",
+    jumpDrive: "Jump Drive",
     groups: {
       avionic: "Avionics",
       system: "Systems",

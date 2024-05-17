@@ -13,12 +13,21 @@
       class="hardpoint-item-inner"
       :class="{ 'has-component': loadout.component }"
     >
-      <div v-if="showComponent" class="hardpoint-item-size">
-        {{ $t("labels.hardpoint.size") }} {{ loadout.component.size }}
+      <div
+        v-if="loadout.name === 'hardpoint_Jump_Drive'"
+        class="hardpoint-item-size"
+      >
+        {{ $t("labels.hardpoint.size") }} {{ hardpoint.sizeLabel }}
+      </div>
+      <div v-else-if="showComponent" class="hardpoint-item-size">
+        {{ $t("labels.hardpoint.size") }} {{ loadout.component?.size }}
       </div>
       <div class="hardpoint-item-component">
-        <template v-if="showComponent">
-          {{ loadout.component.name }}
+        <template v-if="loadout.name === 'hardpoint_Jump_Drive'">
+          {{ $t("labels.hardpoint.jumpDrive") }}
+        </template>
+        <template v-else-if="showComponent">
+          {{ loadout.component?.name }}
         </template>
         <template v-else>TBD</template>
       </div>
