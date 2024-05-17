@@ -29,7 +29,11 @@ const { t } = useI18n();
 
 const router = useRouter();
 
-const lastRoute = computed<RouteLocationNormalizedLoaded>(() => {
+const lastRoute = computed<RouteLocationNormalizedLoaded | undefined>(() => {
+  if (!router.options.history.state.back) {
+    return undefined;
+  }
+
   return router.resolve(router.options.history.state.back as string);
 });
 
