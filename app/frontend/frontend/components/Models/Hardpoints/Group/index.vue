@@ -6,7 +6,7 @@
     <Panel>
       <div class="hardpoint-group-inner">
         <div
-          v-for="(items, type) in groupByType(hardpoints)"
+          v-for="(items, type) in groupByType(filteredHardpoints)"
           :key="type"
           class="hardpoint-type"
         >
@@ -90,16 +90,24 @@ export default class HardpointGroup extends Vue {
     emp: empIconUrl,
   };
 
+  get filteredHardpoints() {
+    return this.hardpoints.filter(
+      (hardpoint) =>
+        hardpoint.type !== "jump_modules" &&
+        !this.hardpoints.some((h) => h.source === "scdata"),
+    );
+  }
+
   grouped(type) {
     return ["main_thrusters", "maneuvering_thrusters"].includes(type);
   }
 
-  groupByType(hardpoints) {
-    return groupBy(sortBy(hardpoints, "type"), "type");
+  groupByType(items) {
+    return groupBy(sortBy(items, "type"), "type");
   }
 
-  groupByKey(hardpoints) {
-    return groupBy(sortBy(hardpoints, "category"), "key");
+  groupByKey(items) {
+    return groupBy(sortBy(items, "category"), "key");
   }
 
   openComponentModal(hardpoint) {
