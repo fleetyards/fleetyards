@@ -244,6 +244,8 @@ class PaintsImporter
     starfarer = ["Starfarer", "Starfarer Gemini"]
     cutter = ["Cutter", "Cutter Scout", "Cutter Rambler"]
     x1 = ["X1", "X1 Velocity", "X1 Force"]
+    ursa = ["Ursa", "Ursa Medivac", "Ursa Fortuna", "Lynx"]
+    mpuv = ["MPUV Cargo", "MPUV Personnel", "MPUV Tractor"]
 
     models_map = {
       "Cutter" => cutter,
@@ -256,6 +258,9 @@ class PaintsImporter
       "Retaliator Grey" => tali,
       "Fury Variants" => fury,
       "Fury" => fury,
+      "Ursa" => ursa,
+      "MPUV TRACTOR" => mpuv,
+      "MPUV" => mpuv,
       "Origin 100 series" => series_100,
       "100 Series Deck the Hull" => series_100,
       "100 Series IceBreak" => series_100,
