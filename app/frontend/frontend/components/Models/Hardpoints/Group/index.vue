@@ -6,7 +6,7 @@
     <Panel slim>
       <div class="hardpoint-group-inner">
         <div
-          v-for="(items, type) in groupByType(hardpoints)"
+          v-for="(items, type) in groupByType(filteredHardpoints)"
           :key="type"
           class="hardpoint-type"
         >
@@ -53,7 +53,7 @@ import qedIconUrl from "@/images/hardpoints/qed.svg";
 import empIconUrl from "@/images/hardpoints/emp.svg";
 import Panel from "@/shared/components/Panel/index.vue";
 import HardpointItems from "../Items/index.vue";
-import type { ModelHardpoint, ModelHardpointGroupEnum } from "@/services/fyApi";
+import { ModelHardpointSourceEnum, type ModelHardpoint, type ModelHardpointGroupEnum } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
@@ -62,7 +62,7 @@ type Props = {
   withoutTitle?: boolean;
 };
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   withoutTitle: false,
 });
 
@@ -88,6 +88,14 @@ const icons = {
   qed: qedIconUrl,
   emp: empIconUrl,
 };
+
+const filteredHardpoints = computed(() => {
+  return props.hardpoints.filter(
+    (hardpoint) =>
+      hardpoint.type !== "jump_modules" &&
+      !props.hardpoints.some((h) => h.source === ModelHardpointSourceEnum.GAME_FILES),
+  );
+});
 
 const groupByType = (hardpoints: ModelHardpoint[]) => {
   return groupBy<ModelHardpoint>(

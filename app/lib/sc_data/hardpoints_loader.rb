@@ -167,7 +167,7 @@ module ScData
       hardpoint_ids = []
 
       ports_data["InterdictionHardpoints"].reject do |port_data|
-        exclude_port?(port_data)
+        (port_data["Flags"] || []).include?("invisible") && model_id == "dc7f4408-c474-4d54-b105-227991ab64b3"
       end.select do |port_data|
         port_data["Types"].include?("QuantumInterdictionGenerator")
       end.each_with_index.map do |port_data, index|
@@ -180,9 +180,7 @@ module ScData
     private def extract_emp(hardpoint_type, model_id, ports_data)
       hardpoint_ids = []
 
-      ports_data["InterdictionHardpoints"].reject do |port_data|
-        exclude_port?(port_data)
-      end.select do |port_data|
+      ports_data["InterdictionHardpoints"].select do |port_data|
         port_data["Types"].include?("EMP")
       end.each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, "emp")&.id
@@ -336,10 +334,6 @@ module ScData
         hardpoint_type: hardpoint_types
       ).where.not(id: hardpoint_ids.flatten)
         .update(deleted_at: Time.zone.now)
-    end
-
-    private def exclude_port?(port_data)
-      (port_data["Flags"] || []).include?("invisible")
     end
   end
 end
