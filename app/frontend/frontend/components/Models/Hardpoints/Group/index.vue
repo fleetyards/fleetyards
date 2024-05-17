@@ -53,7 +53,11 @@ import qedIconUrl from "@/images/hardpoints/qed.svg";
 import empIconUrl from "@/images/hardpoints/emp.svg";
 import Panel from "@/shared/components/Panel/index.vue";
 import HardpointItems from "../Items/index.vue";
-import { ModelHardpointSourceEnum, type ModelHardpoint, type ModelHardpointGroupEnum } from "@/services/fyApi";
+import {
+  ModelHardpointSourceEnum,
+  type ModelHardpoint,
+  type ModelHardpointGroupEnum,
+} from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
@@ -91,9 +95,13 @@ const icons = {
 
 const filteredHardpoints = computed(() => {
   return props.hardpoints.filter(
-    (hardpoint) =>
-      hardpoint.type !== "jump_modules" &&
-      !props.hardpoints.some((h) => h.source === ModelHardpointSourceEnum.GAME_FILES),
+    (hardpoint) => hardpoint.type !== "jump_modules" || !hasGameFileData.value,
+  );
+});
+
+const hasGameFileData = computed(() => {
+  return props.hardpoints.some(
+    (h) => h.source === ModelHardpointSourceEnum.GAME_FILES,
   );
 });
 
