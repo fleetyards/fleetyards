@@ -74,6 +74,18 @@ module ScData
       hardpoint_ids.compact
     end
 
+    private def extract_utility_items(hardpoint_type, model_id, ports_data)
+      hardpoint_ids = []
+
+      ports_data["UtilityHardpoints"].reject do |port_data|
+        port_data["PortName"].include?("controller")
+      end.each_with_index.map do |port_data, index|
+        hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index)&.id
+      end
+
+      hardpoint_ids.compact
+    end
+
     private def extract_power_plants(hardpoint_type, model_id, ports_data)
       hardpoint_ids = []
 

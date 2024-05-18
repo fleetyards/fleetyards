@@ -44,13 +44,13 @@ class ModelHardpoint < ApplicationRecord
     power_plants: 10, coolers: 11, shield_generators: 12,
     quantum_drives: 22,
     main_thrusters: 30, maneuvering_thrusters: 31,
-    weapons: 40, turrets: 41, missiles: 42, qed: 43, emp: 44
+    weapons: 40, turrets: 41, missiles: 42, qed: 43, emp: 44,
+    utility_items: 45
   }.freeze
 
   SHIP_MATRIX_HARDPOINT_TYPES = {
     radar: 0, computers: 1,
-    fuel_intakes: 20, fuel_tanks: 21, jump_modules: 23, quantum_fuel_tanks: 24,
-    utility_items: 43
+    fuel_intakes: 20, fuel_tanks: 21, jump_modules: 23, quantum_fuel_tanks: 24
   }.freeze
 
   enum hardpoint_type: SHIP_MATRIX_HARDPOINT_TYPES.merge(GAME_FILE_HARDPOINT_TYPES), _suffix: true
