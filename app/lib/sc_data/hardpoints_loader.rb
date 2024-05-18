@@ -337,6 +337,7 @@ module ScData
     private def size_for_type(hardpoint_type, component, category = nil)
       component_size = component["Size"].to_i
       component_size = component.dig("InstalledItem", "Size").to_i if component_size.zero?
+      component_size = component.dig("InstalledItem", "Ports", 0, "InstalledItem", "Ports", 0, "InstalledItem", "Size").to_i if component.dig("InstalledItem", "ClassName") == "ARGO_SRV_MainTractorBeamArm"
       loadout_size = component.dig("InstalledItem", "Ports", 0, "Size").to_i
 
       return [component_size, loadout_size].max if [:turrets].include?(hardpoint_type) && loadout_size.present?
