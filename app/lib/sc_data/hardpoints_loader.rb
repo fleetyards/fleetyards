@@ -286,7 +286,9 @@ module ScData
 
         installed_item = port_data["InstalledItem"]
 
-        if installed_item.present? && installed_item["ClassName"].include?("Mount_Gimbal")
+        if installed_item.present? &&
+            (installed_item["ClassName"].include?("Mount_Gimbal") ||
+              installed_item["ClassName"].include?("ARGO_SRV_MainTractorBeamArm"))
           installed_item = installed_item.dig("Ports", 0, "InstalledItem")
         end
 
