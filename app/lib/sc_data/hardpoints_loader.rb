@@ -259,6 +259,10 @@ module ScData
         }
       end
 
+      if component_data["ClassName"] == "ARGO_SRV_MainTractorBeamArm"
+        component_data = component_data.dig("Ports", 0, "InstalledItem", "Ports", 0, "InstalledItem")
+      end
+
       component = components_loader.extract_component!(component_data)
 
       if component_data["Ports"].present? && component_data.dig("Ports", 0, "PortName")&.exclude?("Consumable")
@@ -286,9 +290,7 @@ module ScData
 
         installed_item = port_data["InstalledItem"]
 
-        if installed_item.present? &&
-            (installed_item["ClassName"].include?("Mount_Gimbal") ||
-              installed_item["ClassName"].include?("ARGO_SRV_MainTractorBeamArm"))
+        if installed_item.present? && installed_item["ClassName"].include?("Mount_Gimbal")
           installed_item = installed_item.dig("Ports", 0, "InstalledItem")
         end
 
