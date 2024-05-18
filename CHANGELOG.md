@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.16](https://github.com/fleetyards/fleetyards/compare/v5.31.15...v5.31.16) (2024-05-18)
+
+
+### Bug Fixes
+
+* **sync:** update mapping for hornet heartseeker ([85129f1](https://github.com/fleetyards/fleetyards/commit/85129f115040612807868efa1067fc240b28b6a0))
+
 ### [5.31.15](https://github.com/fleetyards/fleetyards/compare/v5.31.14...v5.31.15) (2024-05-17)
 
 ### [5.31.14](https://github.com/fleetyards/fleetyards/compare/v5.31.13...v5.31.14) (2024-05-17)
