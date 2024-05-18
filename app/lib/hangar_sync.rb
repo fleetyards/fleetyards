@@ -370,6 +370,7 @@ class HangarSync < HangarImporter
       "Hercules Starlifter M2" => "M2 Hercules",
       "Genesis Starliner" => "Genesis",
       "Hornet F7C Mk I" => "F7C Hornet Mk I",
+      "F7C-M Hornet Heartseeker Mk I" => "F7C-M Super Hornet Heartseeker Mk I",
       "Hornet F7C-M Heartseeker Mk I" => "F7C-M Super Hornet Heartseeker Mk I",
       "Idris-M Frigate" => "Idris-M",
       "Idris-P Frigate" => "Idris-P",
