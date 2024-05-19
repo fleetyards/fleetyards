@@ -31,6 +31,17 @@ class ModelUpgrade < ApplicationRecord
   after_save :touch_shop_commodities
   after_save :touch_models
 
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "active", "created_at", "description", "hidden", "id", "id_value", "name", "pledge_price",
+      "slug", "store_image", "updated_at"
+    ]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["models", "shop_commodities", "upgrade_kits"]
+  end
+
   def self.ordered_by_name
     order(name: :asc)
   end

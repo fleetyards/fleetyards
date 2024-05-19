@@ -39,6 +39,20 @@ class ModelModule < ApplicationRecord
   after_save :touch_shop_commodities
   after_save :touch_models
 
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "active", "created_at", "description", "hidden", "id", "id_value", "manufacturer_id",
+      "model_id", "name", "pledge_price", "production_status", "slug", "store_image", "updated_at"
+    ]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    [
+      "manufacturer", "model_module_packge_items", "model_module_packges", "models",
+      "module_hardpoints", "shop_commodities"
+    ]
+  end
+
   def self.ordered_by_name
     order(name: :asc)
   end

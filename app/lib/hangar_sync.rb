@@ -187,7 +187,7 @@ class HangarSync < HangarImporter
         next
       end
 
-      component_query = generate_component_query(component_name)
+      component_query = generate_module_query(component_name)
       component = model.modules.where(component_query).first
       if component.blank?
         missing_components << item[:name]
@@ -247,7 +247,7 @@ class HangarSync < HangarImporter
     missing_upgrade_vehicles = []
 
     @upgrades.each do |item|
-      upgrade_query = generate_component_query(item[:name])
+      upgrade_query = generate_upgrade_query(item[:name])
       upgrade = ModelUpgrade.where(upgrade_query).first
       if upgrade.blank?
         missing_upgrades << item[:name]
@@ -312,10 +312,25 @@ class HangarSync < HangarImporter
     ]
   end
 
-  private def generate_component_query(item_name)
+  private def generate_module_query(item_name)
+    name = rsi_hangar_module_mapping(item_name)
+    normalized_name = normalize(name)
+
+    [
+      COMPONENT_FIND_QUERY.join(" OR "),
+      {
+        name: name.downcase,
+        slug: name.downcase,
+        normalized_name:,
+        search: "%#{normalized_name}%"
+      }
+    ]
+  end
+
+  private def generate_upgrade_query(item_name)
     name = item_name
     # Add mapping when needed
-    # name = rsi_hangar_mapping(item_name)
+    # name = rsi_hangar_upgrade_mapping(item_name)
     normalized_name = normalize(name)
 
     [
@@ -402,4 +417,31 @@ class HangarSync < HangarImporter
     mapping[name.strip]
   end
   # rubocop:enable Metrics/MethodLength
+
+  # rubocop:disable Metrics/MethodLength
+  private def rsi_hangar_module_mapping(name)
+    mapping = {
+      "RETALIATOR FRONT TORPEDO BAY" => "Front Torpedo Bay",
+      "RETALIATOR FRONT DROPSHIP MODULE" => "Front Dropship Module",
+      "RETALIATOR FRONT CARGO MODULE" => "Front Cargo Module",
+      "RETALIATOR FRONT LIVING MODULE" => "Front Dropship Module",
+      "RETALIATOR REAR TORPEDO BAY" => "Rear Torpedo Bay",
+      "RETALIATOR REAR CARGO MODULE" => "Rear Cargo Module",
+      "RETALIATOR REAR LIVING MODULE" => "Rear Living Module"
+    }
+
+    return name if mapping[name.strip].nil?
+
+    mapping[name.strip]
+  end
+  # rubocop:enable Metrics/MethodLength
+
+  # private def rsi_hangar_upgrade_mapping(name)
+  #   mapping = {
+  #   }
+
+  #   return name if mapping[name.strip].nil?
+
+  #   mapping[name.strip]
+  # end
 end
