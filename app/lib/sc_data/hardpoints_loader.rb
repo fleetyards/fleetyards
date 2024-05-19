@@ -165,13 +165,13 @@ module ScData
       hardpoint_ids = []
 
       ports_data["MannedTurrets"].reject do |port_data|
-        missile_turret?(port_data) || port_data["PortName"].include?("camera")
+        missile_turret?(port_data) || port_data["PortName"].include?("camera") || port_data["PortName"].include?("lighting")
       end.each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, "manned_turret")&.id
       end
 
       ports_data["RemoteTurrets"].reject do |port_data|
-        missile_turret?(port_data) || port_data["PortName"].include?("camera")
+        missile_turret?(port_data) || port_data["PortName"].include?("camera") || port_data["PortName"].include?("lighting")
       end.each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, "remote_turret")&.id
       end
