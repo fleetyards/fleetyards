@@ -421,13 +421,8 @@ class HangarSync < HangarImporter
   # rubocop:disable Metrics/MethodLength
   private def rsi_hangar_module_mapping(name)
     mapping = {
-      "RETALIATOR FRONT TORPEDO BAY" => "Front Torpedo Bay",
-      "RETALIATOR FRONT DROPSHIP MODULE" => "Front Dropship Module",
-      "RETALIATOR FRONT CARGO MODULE" => "Front Cargo Module",
-      "RETALIATOR FRONT LIVING MODULE" => "Front Dropship Module",
-      "RETALIATOR REAR TORPEDO BAY" => "Rear Torpedo Bay",
-      "RETALIATOR REAR CARGO MODULE" => "Rear Cargo Module",
-      "RETALIATOR REAR LIVING MODULE" => "Rear Living Module"
+      "RETALIATOR TORPEDO Module - Bow" => "Front Torpedo Bay",
+      "RETALIATOR TORPEDO Module - Stern" => "Rear Torpedo Bay"
     }
 
     return name if mapping[name.strip].nil?
@@ -436,12 +431,13 @@ class HangarSync < HangarImporter
   end
   # rubocop:enable Metrics/MethodLength
 
-  # private def rsi_hangar_upgrade_mapping(name)
-  #   mapping = {
-  #   }
+  private def rsi_hangar_upgrade_mapping(name)
+    mapping = {
+      "HURSTON DYNAMICS EXODUS LASER BEAM" => "Idris-K"
+    }
 
-  #   return name if mapping[name.strip].nil?
+    return name if mapping[name.strip].nil?
 
-  #   mapping[name.strip]
-  # end
+    mapping[name.strip]
+  end
 end
