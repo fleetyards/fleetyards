@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.22](https://github.com/fleetyards/fleetyards/compare/v5.31.21...v5.31.22) (2024-05-19)
+
+
+### Bug Fixes
+
+* **sync:** update mapping for modules and upgrades ([afda651](https://github.com/fleetyards/fleetyards/commit/afda651ecca5893a13ffc52cb6650775c44c11bb))
+* **sync:** update mapping for new Retaliator Modules ([f4cd6ec](https://github.com/fleetyards/fleetyards/commit/f4cd6ec4b51c6a481658f0b9c93803025c66f5ec))
+
 ### [5.31.21](https://github.com/fleetyards/fleetyards/compare/v5.31.20...v5.31.21) (2024-05-18)
 
 ### [5.31.20](https://github.com/fleetyards/fleetyards/compare/v5.31.19...v5.31.20) (2024-05-18)
