@@ -429,7 +429,16 @@ class HangarSync < HangarImporter
       "Retaliator Cargo Module - Stern" => "Rear Cargo Module",
       "Retaliator Personnel Module - Bow" => "Front Living Module",
       "Retaliator Personnel Module - Stern" => "Rear Living Module",
-      "Retaliator Drop Ship Module - Bow" => "Front Dropship Module"
+      "Retaliator Drop Ship Module - Bow" => "Front Dropship Module",
+      "TORPEDO Module - Bow" => "Front Torpedo Bay",
+      "Torpedo Module - Bow" => "Front Torpedo Bay",
+      "TORPEDO Module - Stern" => "Rear Torpedo Bay",
+      "Torpedo Module - Stern" => "Rear Torpedo Bay",
+      "Cargo Module - Bow" => "Front Cargo Module",
+      "Cargo Module - Stern" => "Rear Cargo Module",
+      "Personnel Module - Bow" => "Front Living Module",
+      "Personnel Module - Stern" => "Rear Living Module",
+      "Drop Ship Module - Bow" => "Front Dropship Module"
     }
 
     return name if mapping[name.strip].nil?
