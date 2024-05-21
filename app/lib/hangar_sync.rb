@@ -422,7 +422,14 @@ class HangarSync < HangarImporter
   private def rsi_hangar_module_mapping(name)
     mapping = {
       "RETALIATOR TORPEDO Module - Bow" => "Front Torpedo Bay",
-      "RETALIATOR TORPEDO Module - Stern" => "Rear Torpedo Bay"
+      "Retaliator Torpedo Module - Bow" => "Front Torpedo Bay",
+      "RETALIATOR TORPEDO Module - Stern" => "Rear Torpedo Bay",
+      "Retaliator Torpedo Module - Stern" => "Rear Torpedo Bay",
+      "Retaliator Cargo Module - Bow" => "Front Cargo Module",
+      "Retaliator Cargo Module - Stern" => "Rear Cargo Module",
+      "Retaliator Personnel Module - Bow" => "Front Living Module",
+      "Retaliator Personnel Module - Stern" => "Rear Living Module",
+      "Retaliator Drop Ship Module - Bow" => "Front Dropship Module"
     }
 
     return name if mapping[name.strip].nil?
