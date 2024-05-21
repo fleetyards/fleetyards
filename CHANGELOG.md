@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.24](https://github.com/fleetyards/fleetyards/compare/v5.31.23...v5.31.24) (2024-05-21)
+
+
+### Bug Fixes
+
+* **sync:** add mapping for tali modules ([b9c77df](https://github.com/fleetyards/fleetyards/commit/b9c77df78db508b4dc42f98c0ffea15e52a43c42))
+
 ### [5.31.23](https://github.com/fleetyards/fleetyards/compare/v5.31.22...v5.31.23) (2024-05-19)
 
 ### [5.31.22](https://github.com/fleetyards/fleetyards/compare/v5.31.21...v5.31.22) (2024-05-19)
