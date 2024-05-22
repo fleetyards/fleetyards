@@ -246,6 +246,7 @@ class PaintsImporter
     x1 = ["X1", "X1 Velocity", "X1 Force"]
     ursa = ["Ursa", "Ursa Medivac", "Ursa Fortuna", "Lynx"]
     mpuv = ["MPUV Cargo", "MPUV Personnel", "MPUV Tractor"]
+    sabre = ["Sabre", "Sabre Comet", "Sabre Raven", "Sabre Firebird"]
 
     models_map = {
       "Cutter" => cutter,
@@ -371,7 +372,8 @@ class PaintsImporter
       "600i 2954 Auspicious Red Dragon" => series_600,
       "X1 2954 Auspicious Red Dog" => x1,
       "X1 2954 Auspicious Red Dragon" => x1,
-      "Scorpius Stinger Black Orange" => scorpius
+      "Scorpius Stinger Black Orange" => scorpius,
+      "Sabre" => sabre
     }
 
     return models_map[name.strip] if models_map[name.strip].present?

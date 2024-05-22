@@ -107,7 +107,10 @@ module Rsi
         "X1 & Variants" => x1_variants,
         "X1 (+ Velocity, Force)" => x1_variants,
         "Reliant Variants" => ["Reliant Kore", "Reliant Mako", "Reliant Sen", "Reliant Tana"],
-        "Cyclone Variants" => %w[Cyclone Cyclone-TR Cyclone-RN Cyclone-RC Cyclone-AA]
+        "Cyclone Variants" => %w[Cyclone Cyclone-TR Cyclone-RN Cyclone-RC Cyclone-AA],
+        "Mole (all variants)" => ["MOLE"],
+        "MPUV-Tractor" => ["MPUV Tractor"],
+        "Pulse (+ LX)" => ["Pulse", "Pulse LX"]
       }
 
       return models_map[name] if models_map[name].present?
