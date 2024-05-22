@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.26](https://github.com/fleetyards/fleetyards/compare/v5.31.25...v5.31.26) (2024-05-22)
+
+
+### Bug Fixes
+
+* **sync:** update mapping for idris k kit ([22e09b6](https://github.com/fleetyards/fleetyards/commit/22e09b641c27a43da96da54b19ab89213f2efcc1))
+
 ### [5.31.25](https://github.com/fleetyards/fleetyards/compare/v5.31.24...v5.31.25) (2024-05-21)
 
 
