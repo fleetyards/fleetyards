@@ -449,7 +449,7 @@ class HangarSync < HangarImporter
 
   private def rsi_hangar_upgrade_mapping(name)
     mapping = {
-      "HURSTON DYNAMICS EXODUS LASER BEAM" => "Idris-K"
+      "Hurston Dynamics Exodus Laser Beam" => "Idris-K"
     }
 
     return name if mapping[name.strip].nil?
