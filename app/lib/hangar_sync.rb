@@ -361,6 +361,8 @@ class HangarSync < HangarImporter
 
   # rubocop:disable Metrics/MethodLength
   private def rsi_hangar_mapping(name)
+    name = name.tr("–", "-")
+
     mapping = {
       "GreyCat Estate Geotack Planetary Beacon" => "Geotack Planetary Beacon",
       "GreyCat Estate Geotack-X Planetary Beacon" => "Geotack-X Planetary Beacon",
@@ -420,6 +422,8 @@ class HangarSync < HangarImporter
 
   # rubocop:disable Metrics/MethodLength
   private def rsi_hangar_module_mapping(name)
+    name = name.tr("–", "-")
+
     mapping = {
       "RETALIATOR FRONT LIVING MODULE" => "Front Living Module",
       "Retaliator Front Living Module" => "Front Living Module",

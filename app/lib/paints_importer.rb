@@ -52,7 +52,9 @@ class PaintsImporter
     imported_data.filter_map do |item|
       next if item["type"] != "skin" || item["image"].blank?
 
-      name_parts = item["name"].split(" - ")
+      name = item["name"].tr("–", "-")
+      name_parts = name.split(" - ")
+
       {
         name: cleanup_name(name_parts.last),
         model_name: cleanup_name(name_parts.first),
@@ -128,6 +130,8 @@ class PaintsImporter
   end
 
   private def paint_mapping(name)
+    name = name.tr("–", "-")
+
     paint_map = {
       "2950 Invictus Constellation Blue and Gold" => "2950 Invictus Blue and Gold",
       "2950 Invictus Retaliator Midnight Blue and Gold" => "2950 Invictus Blue and Gold",
