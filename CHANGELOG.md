@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.29](https://github.com/fleetyards/fleetyards/compare/v5.31.28...v5.31.29) (2024-05-24)
+
+
+### Bug Fixes
+
+* **sync:** add mapping for F7A Mk I ([81887a4](https://github.com/fleetyards/fleetyards/commit/81887a48728d28502cf16298890958b562c90dde))
+
 ### [5.31.28](https://github.com/fleetyards/fleetyards/compare/v5.31.27...v5.31.28) (2024-05-24)
 
 
