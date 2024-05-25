@@ -242,7 +242,7 @@ class PaintsImporter
     scorpius = ["Scorpius", "Scorpius Antares"]
     hornet_mk1 = [
       "F7C-S Hornet Ghost Mk I", "F7C-R Hornet Tracker Mk I", "F7C-M Super Hornet Heartseeker Mk I",
-      "F7C-M Super Hornet Mk I", "F7C Hornet Wildfire Mk I", "F7C Hornet Mk I"
+      "F7C-M Super Hornet Mk I", "F7C Hornet Wildfire Mk I", "F7C Hornet Mk I", "F7A Hornet Mk I"
     ]
     hornet_mk2 = ["F7C Hornet Mk II", "F7A Hornet Mk II"]
     mercury = ["Mercury", "Mercury Star Runner"]
