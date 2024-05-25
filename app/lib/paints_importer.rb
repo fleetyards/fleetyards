@@ -53,6 +53,7 @@ class PaintsImporter
       next if item["type"] != "skin" || item["image"].blank?
 
       name = item["name"].tr("–", "-")
+      name = name.tr(" ", " ").strip
       name_parts = name.split(" - ")
 
       {
@@ -189,6 +190,7 @@ class PaintsImporter
       "Hercules Starlifter BIS 2951" => "Best in Show 2951",
       "Aurora SXSW 2015" => "SXSW 2015",
       "2950 Invictus Aurora Blue and Gold" => "Invictus Blue and Gold",
+      "Hornet Mk I Invictus Blue and Gold" => "Invictus Blue and Gold",
       "2950 Invictus Aurora Light and Dark Grey" => "Light and Dark Grey",
       "2950 Invictus Auora Green and Gold" => "Green and Gold",
       "2950 Invictus Aurora Green and Gold" => "Green and Gold",
@@ -197,6 +199,8 @@ class PaintsImporter
       "Crusader Ares Radiance" => "Radiance",
       "Crusader Ares Ember" => "Ember",
       "Freelancer - Black" => "Black",
+      "Freelancer - Black Paint" => "Black",
+      "Freelancer - Black Paint " => "Black",
       "600i 2953 Best in Show" => "Best in Show 2953",
       "Corsair 2953 Best in Show" => "Best in Show 2953",
       "Vulture 2953 Best in Show" => "Best in Show 2953",
@@ -283,6 +287,8 @@ class PaintsImporter
       "Freelancer Series" => freelancer,
       "Freelancer" => freelancer,
       "Freelancer - Black" => freelancer,
+      "Freelancer - Black Paint" => freelancer,
+      "Freelancer - Black Paint " => freelancer,
       "2950 Invictus Freelancer Storm Surge" => freelancer,
       "Anvil Hornet" => hornet_mk1,
       "F7 Hornet Mk I" => hornet_mk1,
@@ -358,6 +364,7 @@ class PaintsImporter
       "2950 Invictus Aurora Light and Dark Grey" => aurora,
       "2950 Invictus Aurora Green and Gold" => aurora,
       "2950 Invictus Auora Green and Gold" => aurora,
+      "Hornet Mk I Invictus Blue and Gold" => hornet_mk1,
       "Pisces" => ["C8 Pisces", "C8X Pisces Expedition", "C8R Pisces"],
       "Anvil Hawk" => ["Hawk"],
       "Tumbril Nova" => ["Nova"],
