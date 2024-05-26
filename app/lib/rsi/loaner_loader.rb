@@ -64,8 +64,11 @@ module Rsi
     private def models_mapping(name)
       x1_variants = ["X1", "X1 Velocity", "X1 Force"]
       zeus_variants = ["Zeus Mk II MR", "Zeus Mk II CL", "Zeus Mk II ES"]
+      pulse_variants = ["Pulse", "Pulse LX"]
+      ironclad_variants = ["Ironclad", "Ironclad Assault"]
 
       models_map = {
+        "315p (customized)" => ["315p"],
         "Carrack / Carrack Expedition" => ["Carrack"],
         "Carrack w/ C8X / Carrack Expedition w/C8X" => ["Carrack"],
         "Fury Variants" => ["Fury", "Fury MX", "Fury LX"],
@@ -110,7 +113,8 @@ module Rsi
         "Cyclone Variants" => %w[Cyclone Cyclone-TR Cyclone-RN Cyclone-RC Cyclone-AA],
         "Mole (all variants)" => ["MOLE"],
         "MPUV-Tractor" => ["MPUV Tractor"],
-        "Pulse (+ LX)" => ["Pulse", "Pulse LX"]
+        "Pulse (+ LX)" => pulse_variants,
+        "Ironclad (+ Assault)" => ironclad_variants
       }
 
       return models_map[name] if models_map[name].present?
@@ -131,7 +135,8 @@ module Rsi
         "Cyclone (Explorer only)" => "Cyclone",
         "Khartu-al (Xi'an Scout)" => "Khartu-Al",
         "Khartu-al" => "Khartu-Al",
-        "Mole" => "MOLE"
+        "Mole" => "MOLE",
+        "315p (non-customized; see known issue above)" => "315p"
       }
 
       return model_map[name] if model_map[name].present?
