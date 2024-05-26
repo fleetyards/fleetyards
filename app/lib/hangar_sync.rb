@@ -77,7 +77,7 @@ class HangarSync < HangarImporter
         if vehicle_with_ref.present?
           vehicle_with_ref.update!(
             rsi_pledge_synced_at: Time.current,
-            name: item[:customName]&.strip.presence || vehicle_with_ref.name,
+            name: item[:custom_name]&.strip.presence || vehicle_with_ref.name,
             wanted: false
           )
 
@@ -96,7 +96,7 @@ class HangarSync < HangarImporter
           vehicle.update!(
             rsi_pledge_id: item[:id],
             rsi_pledge_synced_at: Time.current,
-            name: item[:customName]&.strip.presence || vehicle.name,
+            name: item[:custom_name]&.strip.presence || vehicle.name,
             wanted: false
           )
           vehicle_ids << vehicle.id
@@ -120,7 +120,7 @@ class HangarSync < HangarImporter
         if vehicle_with_ref.present?
           vehicle_with_ref.update!(
             rsi_pledge_synced_at: Time.current,
-            name: item[:customName]&.strip.presence || vehicle_with_ref.name,
+            name: item[:custom_name]&.strip.presence || vehicle_with_ref.name,
             wanted: false
           )
 
@@ -138,7 +138,7 @@ class HangarSync < HangarImporter
           vehicle.update!(
             rsi_pledge_id: item[:id],
             rsi_pledge_synced_at: Time.current,
-            name: item[:customName]&.strip.presence || vehicle.name,
+            name: item[:custom_name]&.strip.presence || vehicle.name,
             wanted: false
           )
 
@@ -348,7 +348,7 @@ class HangarSync < HangarImporter
     {
       notify: false,
       user_id:,
-      name: item[:customName],
+      name: item[:custom_name],
       wanted: false,
       bought_via: :pledge_store,
       public: true,
