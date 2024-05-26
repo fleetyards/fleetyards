@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.33](https://github.com/fleetyards/fleetyards/compare/v5.31.32...v5.31.33) (2024-05-26)
+
+
+### Bug Fixes
+
+* **sync:** resolve issue with custom names ([1241102](https://github.com/fleetyards/fleetyards/commit/12411020c8e68b9035f79437eae3787aeb413cc1))
+
 ### [5.31.32](https://github.com/fleetyards/fleetyards/compare/v5.31.31...v5.31.32) (2024-05-26)
 
 ### [5.31.31](https://github.com/fleetyards/fleetyards/compare/v5.31.30...v5.31.31) (2024-05-25)
