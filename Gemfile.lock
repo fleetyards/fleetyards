@@ -263,8 +263,6 @@ GEM
     globalid (1.2.1)
       activesupport (>= 6.1)
     google-protobuf (3.25.2)
-    google-protobuf (3.25.2-arm64-darwin)
-    google-protobuf (3.25.2-x86_64-linux)
     griddler (1.5.2)
       htmlentities
       rails (>= 3.2.0)
@@ -887,7 +885,7 @@ DEPENDENCIES
   x (~> 0.14.0)
 
 RUBY VERSION
-   ruby 3.2.4
+   ruby 3.3.2p78
 
 BUNDLED WITH
    2.4.4
