@@ -22,11 +22,11 @@ module V1
                 properties: {
                   boughtAt: {
                     type: :array,
-                    items: {"$ref": "#/components/schemas/ShopCommodity"}
+                    items: {"$ref": "#/components/schemas/ItemPrice"}
                   },
                   soldAt: {
                     type: :array,
-                    items: {"$ref": "#/components/schemas/ShopCommodity"}
+                    items: {"$ref": "#/components/schemas/ItemPrice"}
                   }
                 },
                 additionalProperties: false,

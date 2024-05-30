@@ -16,21 +16,9 @@ module V1
             }, {
               "$ref": "#/components/schemas/Component"
             }, {
-              "$ref": "#/components/schemas/Commodity"
-            }, {
-              "$ref": "#/components/schemas/Equipment"
-            }, {
               "$ref": "#/components/schemas/ModelModule"
             }, {
               "$ref": "#/components/schemas/ModelPaint"
-            }, {
-              "$ref": "#/components/schemas/Shop"
-            }, {
-              "$ref": "#/components/schemas/Station"
-            }, {
-              "$ref": "#/components/schemas/CelestialObject"
-            }, {
-              "$ref": "#/components/schemas/Starsystem"
             }]
           }
         },

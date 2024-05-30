@@ -6,13 +6,10 @@ json.slug component.slug
 
 json.availability do
   json.bought_at do
-    json.array! component.bought_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
-  end
-  json.listed_at do
-    json.array! component.listed_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
+    json.array! component.bought_at, partial: "api/v1/item_prices/base", as: :item_price
   end
   json.sold_at do
-    json.array! component.sold_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
+    json.array! component.sold_at, partial: "api/v1/item_prices/base", as: :item_price
   end
 end
 

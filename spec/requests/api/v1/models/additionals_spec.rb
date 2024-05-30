@@ -13,8 +13,19 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
       parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
       parameter name: "perPage", in: :query, schema: {type: :string, default: Model.default_per_page}, required: false
+      parameter name: "q", in: :query,
+        schema: {
+          type: :object,
+          "$ref": "#/components/schemas/ModelQuery"
+        },
+        style: :deepObject,
+        explode: true,
+        required: false
+      parameter name: "cacheId", in: :query, type: :string, required: false
 
       response(200, "successful") do
+        schema "$ref": "#/components/schemas/Models"
+
         after do |example|
           example.metadata[:response][:content] = {
             "application/json" => {
@@ -23,7 +34,25 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
           }
         end
 
-        run_test!
+        run_test! do |response|
+          data = JSON.parse(response.body)
+          items = data["items"]
+
+          expect(items.count).to be > 0
+        end
+      end
+
+      response(200, "successful") do
+        schema "$ref": "#/components/schemas/Models"
+
+        let(:perPage) { 1 }
+
+        run_test! do |response|
+          data = JSON.parse(response.body)
+          items = data["items"]
+
+          expect(items.count).to eq(1)
+        end
       end
     end
   end
@@ -123,7 +152,12 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
       tags "Models"
       produces "application/json"
 
+      parameter name: :models, in: :query, schema: {type: :array, items: {type: :string}}, required: true
+
       response(200, "successful") do
+        schema type: :array,
+          items: {"$ref": "#/components/schemas/Model"}
+
         after do |example|
           example.metadata[:response][:content] = {
             "application/json" => {

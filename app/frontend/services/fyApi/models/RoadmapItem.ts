@@ -1,9 +1,10 @@
-/* generated using openapi-typescript-codegen -- do no edit */
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import type { MediaImage } from './MediaImage';
 import type { Model } from './Model';
+import type { RoadmapItemChangeset } from './RoadmapItemChangeset';
 export type RoadmapItem = {
     id: string;
     name: string;
@@ -25,7 +26,7 @@ export type RoadmapItem = {
     model?: Model;
     lastVersionChangedAt: string;
     lastVersionChangedAtLabel: string;
-    lastVersion?: string;
+    lastVersion?: RoadmapItemChangeset;
     /**
      * @deprecated
      */

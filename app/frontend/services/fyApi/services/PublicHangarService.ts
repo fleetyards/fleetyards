@@ -1,8 +1,9 @@
-/* generated using openapi-typescript-codegen -- do no edit */
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import type { HangarEmbedQuery } from '../models/HangarEmbedQuery';
+import type { HangarPublic } from '../models/HangarPublic';
 import type { HangarQuery } from '../models/HangarQuery';
 import type { VehiclePublic } from '../models/VehiclePublic';
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -29,7 +30,7 @@ export class PublicHangarService {
     }
     /**
      * Public Hangar
-     * @returns VehiclePublic successful
+     * @returns HangarPublic successful
      * @throws ApiError
      */
     public publicHangar({
@@ -42,7 +43,7 @@ export class PublicHangarService {
         page?: string,
         perPage?: string,
         q?: HangarQuery,
-    }): CancelablePromise<Array<VehiclePublic>> {
+    }): CancelablePromise<HangarPublic> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/public/hangars/{username}',

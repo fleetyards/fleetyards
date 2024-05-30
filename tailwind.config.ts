@@ -24,6 +24,13 @@ export default {
           grayBg: "#272B30",
           grayBgDark: "#1f1f1f",
           grayBorder: "#1e2226",
+          text: "#c8c8c8",
+          textdark: "#959595",
+        },
+        panel: {
+          borderOuter: "#6f6f6f",
+          borderInner: "#c8c8c8",
+          borderInnerOverlay: "#444444",
         },
         "litepie-primary": colors.sky, // color system for light mode
         "litepie-secondary": colors.gray, // color system for dark mode
@@ -32,6 +39,12 @@ export default {
       },
       fontFamily: {
         sans: ["Inter var", ...defaultTheme.fontFamily.sans],
+        opensans: [
+          "Open Sans",
+          "sans-serif",
+          "Inter var",
+          ...defaultTheme.fontFamily.sans,
+        ],
         hero: ["Orbitron", "Inter var", ...defaultTheme.fontFamily.sans],
       },
       borderWidth: {
@@ -44,6 +57,12 @@ export default {
       },
       height: {
         "3px": "3px",
+      },
+      transitionProperty: {
+        nav: "left, right, width",
+      },
+      screens: {
+        lg: "992px",
       },
     },
   },

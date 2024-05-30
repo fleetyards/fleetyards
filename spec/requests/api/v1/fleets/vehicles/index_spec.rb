@@ -35,13 +35,7 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
       parameter name: "cacheId", in: :query, type: :string, required: false
 
       response(200, "successful") do
-        schema type: :array,
-          items: {
-            oneOf: [
-              {"$ref": "#/components/schemas/Model"},
-              {"$ref": "#/components/schemas/VehiclePublic"}
-            ]
-          }
+        schema "$ref": "#/components/schemas/FleetVehicles"
 
         let(:fleetSlug) { fleet.slug }
         let(:user) { users :data }
@@ -56,20 +50,15 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to be > 0
-          expect(data.count).to eq(2)
+          expect(items.count).to be > 0
+          expect(items.count).to eq(2)
         end
       end
 
       response(200, "successful") do
-        schema type: :array,
-          items: {
-            oneOf: [
-              {"$ref": "#/components/schemas/Model"},
-              {"$ref": "#/components/schemas/VehiclePublic"}
-            ]
-          }
+        schema "$ref": "#/components/schemas/FleetVehicles"
 
         let(:fleetSlug) { fleet.slug }
         let(:user) { users :data }
@@ -81,20 +70,15 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to eq(1)
-          expect(data.first.dig("model", "name")).to eq("600i")
+          expect(items.count).to eq(1)
+          expect(items.first.dig("model", "name")).to eq("600i")
         end
       end
 
       response(200, "successful") do
-        schema type: :array,
-          items: {
-            oneOf: [
-              {"$ref": "#/components/schemas/Model"},
-              {"$ref": "#/components/schemas/VehiclePublic"}
-            ]
-          }
+        schema "$ref": "#/components/schemas/FleetVehicles"
 
         let(:fleetSlug) { fleet.slug }
         let(:user) { users :data }
@@ -102,19 +86,14 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to eq(1)
+          expect(items.count).to eq(1)
         end
       end
 
       response(200, "successful") do
-        schema type: :array,
-          items: {
-            oneOf: [
-              {"$ref": "#/components/schemas/Model"},
-              {"$ref": "#/components/schemas/VehiclePublic"}
-            ]
-          }
+        schema "$ref": "#/components/schemas/FleetVehicles"
 
         let(:fleetSlug) { fleet.slug }
         let(:user) { users :data }
@@ -122,8 +101,9 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to eq(2)
+          expect(items.count).to eq(2)
         end
       end
 

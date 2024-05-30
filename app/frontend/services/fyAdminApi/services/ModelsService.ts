@@ -1,7 +1,9 @@
-/* generated using openapi-typescript-codegen -- do no edit */
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { FilterOption } from '../models/FilterOption';
+import type { ModelExtended } from '../models/ModelExtended';
 import type { ModelQuery } from '../models/ModelQuery';
 import type { Models } from '../models/Models';
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -9,8 +11,18 @@ import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class ModelsService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**
+     * Model Production states
+     * @returns FilterOption successful
+     * @throws ApiError
+     */
+    public modelProductionStates(): CancelablePromise<Array<FilterOption>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/production-states',
+        });
+    }
+    /**
      * Models list
-     * Get a List of Models
      * @returns Models successful
      * @throws ApiError
      */
@@ -39,6 +51,31 @@ export class ModelsService {
             },
             errors: {
                 401: `unauthorized`,
+            },
+        });
+    }
+    /**
+     * Model Detail
+     * @returns ModelExtended successful
+     * @throws ApiError
+     */
+    public model({
+        id,
+    }: {
+        /**
+         * Model id
+         */
+        id: string,
+    }): CancelablePromise<ModelExtended> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/{id}',
+            path: {
+                'id': id,
+            },
+            errors: {
+                401: `unauthorized`,
+                404: `not found`,
             },
         });
     }

@@ -1,4 +1,4 @@
-/* generated using openapi-typescript-codegen -- do no edit */
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -14,7 +14,7 @@ export class HangarGroupsService {
      * @returns HangarGroup successful
      * @throws ApiError
      */
-    public hangarGroupCreate({
+    public create({
         requestBody,
     }: {
         requestBody: HangarGroupCreateInput,
@@ -48,7 +48,7 @@ export class HangarGroupsService {
      * @returns HangarGroup successful
      * @throws ApiError
      */
-    public hangarGroupDestroy({
+    public destroy({
         id,
     }: {
         /**
@@ -108,115 +108,6 @@ export class HangarGroupsService {
         return this.httpRequest.request({
             method: 'PUT',
             url: '/hangar/groups/sort',
-            errors: {
-                401: `unauthorized`,
-            },
-        });
-    }
-    /**
-     * @deprecated
-     * HangarGroup list
-     * @returns HangarGroup successful
-     * @throws ApiError
-     */
-    public deprecateDgetHangarGroups(): CancelablePromise<Array<HangarGroup>> {
-        return this.httpRequest.request({
-            method: 'GET',
-            url: '/hangar-groups',
-            errors: {
-                401: `unauthorized`,
-            },
-        });
-    }
-    /**
-     * @deprecated
-     * HangarGroup create
-     * @returns HangarGroup successful
-     * @throws ApiError
-     */
-    public deprecateDcreateHangarGroup({
-        requestBody,
-    }: {
-        requestBody: HangarGroupCreateInput,
-    }): CancelablePromise<HangarGroup> {
-        return this.httpRequest.request({
-            method: 'POST',
-            url: '/hangar-groups',
-            body: requestBody,
-            mediaType: 'application/json',
-            errors: {
-                401: `unauthorized`,
-            },
-        });
-    }
-    /**
-     * @deprecated
-     * HangarGroup Destroy
-     * @returns HangarGroup successful
-     * @throws ApiError
-     */
-    public deprecateDdestroyHangarGroup({
-        id,
-    }: {
-        /**
-         * HangarGroup ID
-         */
-        id: string,
-    }): CancelablePromise<HangarGroup> {
-        return this.httpRequest.request({
-            method: 'DELETE',
-            url: '/hangar-groups/{id}',
-            path: {
-                'id': id,
-            },
-            errors: {
-                401: `unauthorized`,
-                404: `not found`,
-            },
-        });
-    }
-    /**
-     * @deprecated
-     * HangarGroup Update
-     * @returns HangarGroup successful
-     * @throws ApiError
-     */
-    public deprecateDupdateHangarGroup({
-        id,
-        requestBody,
-    }: {
-        /**
-         * HangarGroup ID
-         */
-        id: string,
-        requestBody: HangarGroupUpdateInput,
-    }): CancelablePromise<HangarGroup> {
-        return this.httpRequest.request({
-            method: 'PUT',
-            url: '/hangar-groups/{id}',
-            path: {
-                'id': id,
-            },
-            body: requestBody,
-            mediaType: 'application/json',
-            errors: {
-                401: `unauthorized`,
-                404: `not found`,
-            },
-        });
-    }
-    /**
-     * @deprecated
-     * HangarGroup sort
-     * @returns any successful
-     * @throws ApiError
-     */
-    public deprecateDsortHangarGroups(): CancelablePromise<{
-        success?: boolean;
-    }> {
-        return this.httpRequest.request({
-            method: 'PUT',
-            url: '/hangar-groups/sort',
             errors: {
                 401: `unauthorized`,
             },

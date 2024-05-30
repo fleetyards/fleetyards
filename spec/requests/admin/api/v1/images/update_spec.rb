@@ -18,9 +18,10 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
 
     put("Image update") do
       operationId "updateImage"
+      tags "Images"
+
       consumes "application/json"
       produces "application/json"
-      tags "Images"
 
       parameter name: :image, in: :body, schema: {"$ref": "#/components/schemas/ImageInput"}
 

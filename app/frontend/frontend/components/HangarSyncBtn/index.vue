@@ -1,46 +1,63 @@
-<template>
-  <Btn
-    v-if="!mobile"
-    :size="size"
-    :variant="variant"
-    :aria-label="t('actions.import')"
-    :loading="loading"
-    @click.native="openModal"
-  >
-    <i class="fal fa-sync" />
-    <span>
-      {{ t("actions.syncRsiHangar") }}
-    </span>
-  </Btn>
-</template>
+<script lang="ts">
+export default {
+  name: "HangarSyncBtn",
+};
+</script>
 
 <script lang="ts" setup>
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import type {
-  Props as BtnProps,
-  BtnVariants,
-  BtnSizes,
-} from "@/frontend/core/components/Btn/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
-import { useComlink } from "@/frontend/composables/useComlink";
-import Store from "@/frontend/lib/Store";
-import { useRouter, useRoute } from "vue-router/composables";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useMobile } from "@/shared/composables/useMobile";
+import { useHangarStore } from "@/frontend/stores/hangar";
+import type { SpinnerAlignment } from "@/shared/components/SmallLoader/index.vue";
+import type { RouteLocationRaw } from "vue-router";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 
-interface Props extends BtnProps {
-  variant?: BtnVariants;
-  size?: BtnSizes;
-}
+type Props = {
+  variant?: BtnVariantsEnum;
+  size?: BtnSizesEnum;
+  inline?: boolean;
+  to?: RouteLocationRaw;
+  href?: string;
+  type?: "button" | "submit";
+  loading?: boolean;
+  spinner?: boolean | SpinnerAlignment;
+  exact?: boolean;
+  block?: boolean;
+  mobileBlock?: boolean;
+  textInline?: boolean;
+  active?: boolean;
+  disabled?: boolean;
+  routeActiveClass?: string;
+  inGroup?: boolean;
+};
 
 withDefaults(defineProps<Props>(), {
-  variant: "default",
-  size: "default",
+  variant: BtnVariantsEnum.DEFAULT,
+  size: BtnSizesEnum.DEFAULT,
+  inline: false,
+  to: undefined,
+  href: undefined,
+  type: "button",
+  loading: false,
+  spinner: false,
+  exact: false,
+  block: false,
+  mobileBlock: false,
+  textInline: false,
+  active: false,
+  disabled: false,
+  routeActiveClass: undefined,
+  inGroup: false,
 });
 
 const { t } = useI18n();
 
-const loading = ref(false);
-
-const mobile = computed(() => Store.getters.mobile);
+const mobile = useMobile();
 
 const router = useRouter();
 const route = useRoute();
@@ -64,6 +81,8 @@ onBeforeUnmount(() => {
   window.removeEventListener("message", handleExtensionMessage);
 });
 
+const hangarStore = useHangarStore();
+
 const handleExtensionMessage = (event: FleetyardsSyncEvent) => {
   if (event.data.direction === "fy-sync") {
     const message = JSON.parse(event.data.message);
@@ -71,10 +90,10 @@ const handleExtensionMessage = (event: FleetyardsSyncEvent) => {
     if (message.action === "health") {
       if (message.code === 200) {
         console.info("FY Extension: Ready");
-        Store.dispatch("hangar/updateExtensionReady", true);
+        hangarStore.extensionReady = true;
       } else {
         console.info("FY Extension: Unavailable");
-        Store.dispatch("hangar/updateExtensionReady", false);
+        hangarStore.extensionReady = false;
       }
     }
   }
@@ -87,7 +106,7 @@ const checkExtension = () => {
 const comlink = useComlink();
 
 const openModal = () => {
-  comlink.$emit("open-modal", {
+  comlink.emit("open-modal", {
     component: () =>
       import("@/frontend/components/HangarSyncBtn/Modal/index.vue"),
     fixed: true,
@@ -95,8 +114,18 @@ const openModal = () => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "HangarSyncBtn",
-};
-</script>
+<template>
+  <Btn
+    v-if="!mobile"
+    :size="size"
+    :variant="variant"
+    :aria-label="t('actions.import')"
+    :loading="loading"
+    @click="openModal"
+  >
+    <i class="fal fa-sync" />
+    <span>
+      {{ t("actions.syncRsiHangar") }}
+    </span>
+  </Btn>
+</template>

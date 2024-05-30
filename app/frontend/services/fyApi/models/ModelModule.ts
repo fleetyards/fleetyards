@@ -1,16 +1,16 @@
-/* generated using openapi-typescript-codegen -- do no edit */
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { ItemPrice } from './ItemPrice';
 import type { Manufacturer } from './Manufacturer';
 import type { MediaImage } from './MediaImage';
-import type { ShopCommodity } from './ShopCommodity';
 export type ModelModule = {
     id: string;
     name: string;
     availability: {
-        boughtAt: Array<ShopCommodity>;
-        soldAt: Array<ShopCommodity>;
+        boughtAt: Array<ItemPrice>;
+        soldAt: Array<ItemPrice>;
     };
     description?: string;
     media: {

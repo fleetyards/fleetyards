@@ -4,9 +4,6 @@ module Api
   module V1
     class ModelsController < ::Api::BaseController
       before_action :authenticate_user!, only: []
-      after_action -> { pagination_header(:models) }, only: %i[index with_docks cargo_options]
-      after_action -> { pagination_header(:variants) }, only: [:variants]
-      after_action -> { pagination_header(:loaners) }, only: [:loaners]
       after_action -> { pagination_header(:images) }, only: [:images]
       after_action -> { pagination_header(:videos) }, only: [:videos]
 
@@ -27,13 +24,15 @@ module Api
       def with_docks
         authorize! :index, :api_models
 
-        params[:withDock] = true
+        model_query_params[:with_dock] = true
 
         @q = index_scope
 
         @models = @q.result
           .page(params[:page])
           .per(per_page(Model))
+
+        render "api/v1/models/index"
       end
 
       def fleetchart
@@ -98,7 +97,7 @@ module Api
           filters << Model.focus_filters
           filters << Model.size_filters
           filters.flatten
-            .sort_by { |filter| [filter.category, filter.name] }
+            .sort_by { |filter| [filter.category, filter.label] }
         end
       end
 
@@ -130,8 +129,6 @@ module Api
         authorize! :index, :api_models
 
         @models = Model.visible.active.where(slug: params[:models]).order(name: :asc).all
-
-        render "api/v1/models/index"
       end
 
       def updated
@@ -205,9 +202,11 @@ module Api
 
         @q = scope.ransack(model_query_params)
 
-        @variants = @q.result
+        @models = @q.result
           .page(params[:page])
           .per(per_page(Model))
+
+        render "api/v1/models/index"
       end
 
       def loaners
@@ -231,9 +230,11 @@ module Api
 
         @q = scope.ransack(model_query_params)
 
-        @loaners = @q.result
+        @models = @q.result
           .page(params[:page])
           .per(per_page(Model))
+
+        render "api/v1/models/index"
       end
 
       def modules
@@ -366,7 +367,7 @@ module Api
           scope = scope.where(price: price_range)
         end
 
-        scope = scope.with_dock if params[:withDock]
+        scope = scope.with_dock if model_query_params.delete("with_dock")
         scope = will_it_fit?(scope) if model_query_params["will_it_fit"].present?
 
         model_query_params["sorts"] = sorting_params(Model)
@@ -456,10 +457,10 @@ module Api
 
       private def model_query_params
         @model_query_params ||= query_params(
-          :name_cont, :description_cont, :name_or_description_cont, :on_sale_eq, :sorts,
-          :length_gteq, :length_lteq, :beam_gteq, :beam_lteq, :height_gteq, :height_lteq,
+          :name_cont, :name_eq, :slug_eq, :description_cont, :name_or_description_cont, :on_sale_eq,
+          :sorts, :length_gteq, :length_lteq, :beam_gteq, :beam_lteq, :height_gteq, :height_lteq,
           :price_gteq, :price_lteq, :pledge_price_gteq, :pledge_price_lteq, :will_it_fit,
-          :search_cont,
+          :search_cont, :with_dock,
           name_in: [], manufacturer_in: [], classification_in: [], focus_in: [],
           production_status_in: [], price_in: [], pledge_price_in: [], size_in: [], sorts: [],
           id_not_in: [], id_in: []

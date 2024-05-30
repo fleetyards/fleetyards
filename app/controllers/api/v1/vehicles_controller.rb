@@ -5,6 +5,8 @@ module Api
     class VehiclesController < ::Api::BaseController
       include HangarFiltersConcern
 
+      before_action :authenticate_user!, except: %i[bought_via_filters]
+
       def create
         @vehicle = Vehicle.new(
           vehicle_params.merge(public: true)
@@ -97,11 +99,11 @@ module Api
       def check_serial
         authorize! :check_serial, :api_vehicles
 
-        render json: {serialTaken: current_user.vehicles.visible.purchased.exists?(serial: vehicle_params[:serial]&.upcase)}
+        render json: {taken: current_user.vehicles.visible.purchased.exists?(serial: params[:value]&.upcase)}
       end
 
       def bought_via_filters
-        authorize! :index, :api_hangar
+        authorize! :filters, :api_hangar
 
         @filters = Vehicle.bought_via_filters
 

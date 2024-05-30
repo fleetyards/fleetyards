@@ -31,6 +31,7 @@
 #
 class Component < ApplicationRecord
   paginates_per 50
+  max_paginates_per 240
 
   searchkick searchable: %i[name manufacturer_name manufacturer_code item_type item_class],
     word_start: %i[name manufacturer_name item_type],
@@ -47,16 +48,18 @@ class Component < ApplicationRecord
   end
 
   def should_index?
-    listed_at.present? || sold_at.present? || bought_at.present?
+    sold_at.present? || bought_at.present?
   end
 
   belongs_to :manufacturer, optional: true
-  has_many :shop_commodities, as: :commodity_item, dependent: :destroy
+
+  has_many :model_hardpoints, dependent: :nullify
+
+  has_many :item_prices, as: :item, dependent: :destroy
 
   validates :name, presence: true
 
   before_save :update_slugs
-  after_save :touch_shop_commodities
 
   mount_uploader :store_image, StoreImageUploader
 
@@ -65,6 +68,11 @@ class Component < ApplicationRecord
   serialize :power_connection, coder: YAML
   serialize :heat_connection, coder: YAML
   serialize :ammunition, coder: YAML
+
+  DEFAULT_SORTING_PARAMS = ["name asc", "created_at asc"]
+  ALLOWED_SORTING_PARAMS = [
+    "name asc", "name desc", "created_at asc", "created_at desc"
+  ]
 
   def self.ordered_by_name
     order(name: :asc)
@@ -79,8 +87,6 @@ class Component < ApplicationRecord
   ransacker :tracking_signal, formatter: proc { |v| Component.tracking_signals[v] } do |parent|
     parent.table[:tracking_signal]
   end
-
-  ransack_alias :name, :name_or_slug
 
   def self.ransackable_attributes(auth_object = nil)
     [
@@ -140,7 +146,7 @@ class Component < ApplicationRecord
     Component.item_types.map do |item|
       Filter.new(
         category: "item_type",
-        name: I18n.t("activerecord.attributes.component.item_types.#{item.downcase}"),
+        label: I18n.t("activerecord.attributes.component.item_types.#{item.downcase}"),
         value: item
       )
     end
@@ -150,22 +156,18 @@ class Component < ApplicationRecord
     Component.all.map(&:component_class).uniq.compact.map do |item|
       Filter.new(
         category: "class",
-        name: I18n.t("filter.component.class.items.#{item.downcase}"),
+        label: I18n.t("filter.component.class.items.#{item.downcase}"),
         value: item
       )
     end
   end
 
-  def listed_at
-    shop_commodities.where(sell_price: nil, buy_price: nil).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
-  end
-
   def sold_at
-    shop_commodities.where.not(sell_price: nil).order(sell_price: :asc).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
+    item_prices.sell.order(price: :asc).uniq(&:location)
   end
 
   def bought_at
-    shop_commodities.where.not(buy_price: nil).order(buy_price: :desc).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
+    item_prices.buy.order(price: :asc).uniq(&:location)
   end
 
   def item_class_label
@@ -182,11 +184,5 @@ class Component < ApplicationRecord
 
   def tracking_signal_label
     Component.human_enum_name(:tracking_signal, tracking_signal)
-  end
-
-  private def touch_shop_commodities
-    # rubocop:disable Rails/SkipsModelValidations
-    shop_commodities.update_all(updated_at: Time.zone.now)
-    # rubocop:enable Rails/SkipsModelValidations
   end
 end

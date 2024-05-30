@@ -1,4 +1,4 @@
-/* generated using openapi-typescript-codegen -- do no edit */
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -16,14 +16,17 @@ export class RoadmapService {
      */
     public roadmapItems({
         q,
+        changes,
     }: {
         q?: RoadmapItemQuery,
+        changes?: boolean,
     }): CancelablePromise<Array<RoadmapItem>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/roadmap',
             query: {
                 'q': q,
+                'changes': changes,
             },
         });
     }

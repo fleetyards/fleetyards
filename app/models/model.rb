@@ -183,6 +183,8 @@ class Model < ApplicationRecord
   has_many :vehicles, dependent: :destroy
   has_many :components, through: :model_hardpoints
 
+  has_many :model_prices, dependent: :destroy
+
   has_many :module_hardpoints, dependent: :destroy
   has_many :modules,
     through: :module_hardpoints,
@@ -226,7 +228,7 @@ class Model < ApplicationRecord
     through: :model_snub_crafts,
     source: :snub_craft
 
-  has_many :shop_commodities, as: :commodity_item, dependent: :destroy
+  has_many :item_prices, as: :item, dependent: :destroy
 
   has_many :docks, dependent: :destroy
 
@@ -258,7 +260,6 @@ class Model < ApplicationRecord
   before_save :update_from_hardpoints
   before_create :set_last_updated_at
 
-  after_save :touch_shop_commodities
   after_save :send_on_sale_notification, if: :saved_change_to_on_sale?
   after_save :broadcast_update
   after_save :send_new_model_notification
@@ -303,8 +304,8 @@ class Model < ApplicationRecord
   def self.ransackable_associations(auth_object = nil)
     [
       "addition", "components", "docks", "images", "loaners", "manufacturer", "model_hardpoints",
-      "model_loaners", "model_snub_crafts", "module_hardpoints", "module_packages", "modules",
-      "paints", "shop_commodities", "snub_crafts", "upgrade_kits", "upgrades", "vehicles",
+      "model_prices", "model_loaners", "model_snub_crafts", "module_hardpoints", "module_packages",
+      "modules", "paints", "snub_crafts", "upgrade_kits", "upgrades", "vehicles",
       "versions", "videos"
     ]
   end
@@ -313,11 +314,13 @@ class Model < ApplicationRecord
     order(name: :asc)
   end
 
+  PRODUCTION_STATUSES = ["in-concept", "in-production", "flight-ready"]
+
   def self.production_status_filters
-    Model.visible.active.all.map(&:production_status).compact_blank.compact.uniq.map do |item|
+    PRODUCTION_STATUSES.map do |item|
       Filter.new(
         category: "productionStatus",
-        name: item.humanize,
+        label: item.humanize,
         value: item
       )
     end
@@ -327,7 +330,7 @@ class Model < ApplicationRecord
     Model.classifications.map do |item|
       Filter.new(
         category: "classification",
-        name: item.humanize,
+        label: item.humanize,
         value: item
       )
     end
@@ -341,7 +344,7 @@ class Model < ApplicationRecord
     Model.visible.active.all.map(&:focus).compact_blank.compact.uniq.map do |item|
       Filter.new(
         category: "focus",
-        name: item.humanize,
+        label: item.humanize,
         value: item
       )
     end
@@ -351,7 +354,7 @@ class Model < ApplicationRecord
     %w[vehicle snub small medium large extra_large capital].map do |item|
       Filter.new(
         category: "size",
-        name: item.humanize,
+        label: item.humanize,
         value: item
       )
     end
@@ -414,19 +417,15 @@ class Model < ApplicationRecord
   end
 
   def sold_at
-    shop_commodities.where.not(sell_price: nil).order(sell_price: :asc).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
+    item_prices.sell.order(price: :asc).uniq(&:location)
   end
 
   def bought_at
-    shop_commodities.where.not(buy_price: nil).order(buy_price: :desc).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
-  end
-
-  def listed_at
-    shop_commodities.where(sell_price: nil, buy_price: nil).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
+    item_prices.buy.order(price: :asc).uniq(&:location)
   end
 
   def rental_at
-    shop_commodities.where.not(rental_price_1_day: nil).order(rental_price_1_day: :asc).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
+    item_prices.rental.order(price: :asc).uniq(&:location)
   end
 
   def dock_counts
@@ -566,12 +565,6 @@ class Model < ApplicationRecord
     Notifications::ModelOnSaleJob.perform_async(id)
 
     ActionCable.server.broadcast("on_sale", to_json)
-  end
-
-  private def touch_shop_commodities
-    # rubocop:disable Rails/SkipsModelValidations
-    shop_commodities.update_all(updated_at: Time.zone.now)
-    # rubocop:enable Rails/SkipsModelValidations
   end
 
   private def update_slugs

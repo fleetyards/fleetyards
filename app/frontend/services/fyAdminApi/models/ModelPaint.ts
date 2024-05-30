@@ -1,9 +1,9 @@
-/* generated using openapi-typescript-codegen -- do no edit */
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { ItemPrice } from './ItemPrice';
 import type { MediaImage } from './MediaImage';
-import type { ShopCommodity } from './ShopCommodity';
 import type { ViewImage } from './ViewImage';
 export type ModelPaint = {
     id: string;
@@ -13,8 +13,8 @@ export type ModelPaint = {
     lastUpdatedAt?: string;
     lastUpdatedAtLabel?: string;
     availability: {
-        boughtAt: Array<ShopCommodity>;
-        soldAt: Array<ShopCommodity>;
+        boughtAt: Array<ItemPrice>;
+        soldAt: Array<ItemPrice>;
     };
     media: {
         angledView?: ViewImage;

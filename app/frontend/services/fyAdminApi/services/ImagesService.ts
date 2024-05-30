@@ -1,4 +1,4 @@
-/* generated using openapi-typescript-codegen -- do no edit */
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -13,7 +13,6 @@ export class ImagesService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**
      * Image create
-     * Create a new Image
      * @returns Image successful
      * @throws ApiError
      */
@@ -71,7 +70,7 @@ export class ImagesService {
      * @returns void
      * @throws ApiError
      */
-    public destroy({
+    public destroyImage({
         id,
     }: {
         /**

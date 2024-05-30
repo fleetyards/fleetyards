@@ -1,12 +1,12 @@
-/* generated using openapi-typescript-codegen -- do no edit */
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { Hangar } from '../models/Hangar';
 import type { HangarImportResult } from '../models/HangarImportResult';
 import type { HangarQuery } from '../models/HangarQuery';
 import type { HangarSyncResult } from '../models/HangarSyncResult';
 import type { SyncRsiHangarInput } from '../models/SyncRsiHangarInput';
-import type { Vehicle } from '../models/Vehicle';
 import type { VehicleExport } from '../models/VehicleExport';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -28,7 +28,7 @@ export class HangarService {
     }
     /**
      * Your personal Hangar
-     * @returns Vehicle successful
+     * @returns Hangar successful
      * @throws ApiError
      */
     public hangar({
@@ -39,7 +39,7 @@ export class HangarService {
         page?: string,
         perPage?: string,
         q?: HangarQuery,
-    }): CancelablePromise<Array<Vehicle>> {
+    }): CancelablePromise<Hangar> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/hangar',
@@ -75,7 +75,9 @@ export class HangarService {
     public hangarImport({
         formData,
     }: {
-        formData: string,
+        formData: {
+            import?: Blob;
+        },
     }): CancelablePromise<HangarImportResult> {
         return this.httpRequest.request({
             method: 'PUT',

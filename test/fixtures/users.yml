@@ -67,6 +67,7 @@ DEFAULTS: &DEFAULTS
 
 data:
   email: "data@star.fleet"
+  normalized_email: "data@star.fleet"
   username: "data"
   normalized_username: "data"
   public_hangar: true
@@ -75,24 +76,28 @@ data:
 
 will:
   email: "will@star.fleet"
+  normalized_email: "will@star.fleet"
   username: "willriker"
   normalized_username: "willriker"
   <<: *DEFAULTS
 
 jeanluc:
   email: "jeanluc@star.fleet"
+  normalized_email: "jeanluc@star.fleet"
   username: "jeanluc"
   normalized_username: "jeanluc"
   <<: *DEFAULTS
 
 worf:
   email: "worf@star.fleet"
+  normalized_email: "worf@star.fleet"
   username: "worf"
   normalized_username: "worf"
   <<: *DEFAULTS
 
 troi:
   email: "troi@star.fleet"
+  normalized_email: "worf@star.fleet"
   username: "troi"
   normalized_username: "troi"
   public_hangar: false
@@ -100,12 +105,14 @@ troi:
 
 crusher:
   email: "crusher@star.fleet"
+  normalized_email: "crusher@star.fleet"
   username: "beverly"
   normalized_username: "beverly"
   <<: *DEFAULTS
 
 geordi:
   email: "geordi@star.fleet"
+  normalized_email: "geordi@star.fleet"
   username: "geordi"
   normalized_username: "geordi"
   <<: *DEFAULTS

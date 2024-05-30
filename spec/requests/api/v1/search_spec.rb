@@ -6,15 +6,8 @@ RSpec.describe "api/v1/search", type: :request, swagger_doc: "v1/schema.yaml" do
   fixtures :all
 
   before do
-    Shop.reindex
-    ShopCommodity.reindex
-    Commodity.reindex
     Model.reindex
-    Equipment.reindex
     Component.reindex
-    Station.reindex
-    CelestialObject.reindex
-    Starsystem.reindex
   end
 
   path "/search" do

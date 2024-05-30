@@ -1,4 +1,4 @@
-/* generated using openapi-typescript-codegen -- do no edit */
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -17,7 +17,7 @@ export type ModelHardpoint = {
     component?: Component;
     details?: string;
     group: ModelHardpointGroupEnum;
-    itemSlots?: string;
+    itemSlots?: number;
     key: string;
     loadoutIdentifier?: string;
     loadouts?: Array<ModelHardpointLoadout>;
