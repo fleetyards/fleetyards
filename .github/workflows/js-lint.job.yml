@@ -9,4 +9,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/workflows/js-setup-action
-      - run: yarn run lint:js
+      - run: pnpm run lint:js

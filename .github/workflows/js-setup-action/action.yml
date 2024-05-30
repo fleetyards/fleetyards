@@ -9,5 +9,5 @@ runs:
           "**/node_modules"
           "/home/runner/.cache/Cypress"
         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-    - run: yarn install
+    - run: pnpm install
       shell: bash

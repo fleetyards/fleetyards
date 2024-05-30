@@ -14,9 +14,9 @@ class Release < Thor
   option :push, type: :boolean, default: false, aliases: :p
   def new(name = nil)
     if name.nil?
-      run("yarn run standard-version")
+      run("pnpm run standard-version")
     else
-      run("yarn run standard-version --release-as major")
+      run("pnpm run standard-version --release-as major")
     end
 
     bump_version(name)
