@@ -3,11 +3,20 @@ description: JS Setup Tasks
 runs:
   using: "composite"
   steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: "20"
+    # Install pnpm globally
+    - name: Install pnpm
+      run: npm install -g pnpm@9.1.3
+      shell: bash
     - uses: actions/cache@v3
       with:
         path: |
           "**/node_modules"
+          "~/.pnpm-store"
           "/home/runner/.cache/Cypress"
-        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+        key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
     - run: pnpm install
       shell: bash
