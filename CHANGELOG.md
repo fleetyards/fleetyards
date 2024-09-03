@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.35](https://github.com/fleetyards/fleetyards/compare/v5.31.34...v5.31.35) (2024-09-03)
+
+
+### Bug Fixes
+
+* **mails:** update mailgun password ([ba1257d](https://github.com/fleetyards/fleetyards/commit/ba1257da576b269d887e94d93fe472b6d9274d8e))
+
 ### [5.31.34](https://github.com/fleetyards/fleetyards/compare/v5.31.33...v5.31.34) (2024-09-03)
 
 ### [5.31.33](https://github.com/fleetyards/fleetyards/compare/v5.31.32...v5.31.33) (2024-05-26)
