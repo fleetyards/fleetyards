@@ -1,10 +1,3 @@
-GIT
-  remote: https://github.com/r38y/griddler-postmark.git
-  revision: 55904355a44066d94c24b49613a22e1face387a5
-  specs:
-    griddler-postmark (1.0.0)
-      griddler
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -268,6 +261,8 @@ GEM
     griddler (1.5.2)
       htmlentities
       rails (>= 3.2.0)
+    griddler-mailgun (1.1.1)
+      griddler
     groupdate (6.4.0)
       activesupport (>= 6.1)
     haml (6.3.0)
@@ -430,11 +425,6 @@ GEM
       google-protobuf (>= 3.22.3)
     pghero (3.4.1)
       activerecord (>= 6)
-    postmark (1.25.0)
-      json
-    postmark-rails (0.22.1)
-      actionmailer (>= 3.0.0)
-      postmark (>= 1.21.3, < 2.0)
     premailer (1.21.0)
       addressable
       css_parser (>= 1.12.0)
@@ -799,7 +789,7 @@ DEPENDENCIES
   foundation_emails
   git
   griddler
-  griddler-postmark!
+  griddler-mailgun
   groupdate
   haml
   haml-rails
@@ -830,7 +820,6 @@ DEPENDENCIES
   pg (~> 1.0)
   pg_query (>= 0.9.0)
   pghero
-  postmark-rails
   premailer-rails
   progress_bar
   pry-byebug

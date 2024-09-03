@@ -45,8 +45,7 @@ gem "foundation_emails"
 gem "premailer-rails"
 
 gem "griddler"
-gem "griddler-postmark", github: "r38y/griddler-postmark"
-gem "postmark-rails"
+gem "griddler-mailgun"
 
 gem "cancancan"
 
