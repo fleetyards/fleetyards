@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.36](https://github.com/fleetyards/fleetyards/compare/v5.31.35...v5.31.36) (2024-09-28)
+
+
+### Bug Fixes
+
+* **sync:** add ATLS to mapping ([61823f9](https://github.com/fleetyards/fleetyards/commit/61823f994a38fc1314f5425822a8bf09e186ceea))
+
 ### [5.31.35](https://github.com/fleetyards/fleetyards/compare/v5.31.34...v5.31.35) (2024-09-03)
 
 
