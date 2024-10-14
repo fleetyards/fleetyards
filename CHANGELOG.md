@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.37](https://github.com/fleetyards/fleetyards/compare/v5.31.36...v5.31.37) (2024-10-14)
+
 ### [5.31.36](https://github.com/fleetyards/fleetyards/compare/v5.31.35...v5.31.36) (2024-09-28)
 
 
