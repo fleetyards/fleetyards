@@ -387,7 +387,7 @@ module Api
           query << "or" unless dock == parent.docks.last
         end
 
-        scope.where(query.join(" ")) if query.present?
+        scope = scope.where(query.join(" ")) if query.present?
 
         scope
       end
