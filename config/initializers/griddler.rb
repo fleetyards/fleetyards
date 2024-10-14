@@ -5,6 +5,6 @@ Rails.application.reloader.to_prepare do
     config.processor_class = EmailProcessor
     config.email_class = Griddler::Email
     config.processor_method = :process
-    config.email_service = :postmark
+    config.email_service = :mailgun
   end
 end

@@ -77,7 +77,7 @@ class HangarSync < HangarImporter
         if vehicle_with_ref.present?
           vehicle_with_ref.update!(
             rsi_pledge_synced_at: Time.current,
-            name: item[:customName]&.strip.presence || vehicle_with_ref.name,
+            name: item[:custom_name]&.strip.presence || vehicle_with_ref.name,
             wanted: false
           )
 
@@ -96,7 +96,7 @@ class HangarSync < HangarImporter
           vehicle.update!(
             rsi_pledge_id: item[:id],
             rsi_pledge_synced_at: Time.current,
-            name: item[:customName]&.strip.presence || vehicle.name,
+            name: item[:custom_name]&.strip.presence || vehicle.name,
             wanted: false
           )
           vehicle_ids << vehicle.id
@@ -120,7 +120,7 @@ class HangarSync < HangarImporter
         if vehicle_with_ref.present?
           vehicle_with_ref.update!(
             rsi_pledge_synced_at: Time.current,
-            name: item[:customName]&.strip.presence || vehicle_with_ref.name,
+            name: item[:custom_name]&.strip.presence || vehicle_with_ref.name,
             wanted: false
           )
 
@@ -138,7 +138,7 @@ class HangarSync < HangarImporter
           vehicle.update!(
             rsi_pledge_id: item[:id],
             rsi_pledge_synced_at: Time.current,
-            name: item[:customName]&.strip.presence || vehicle.name,
+            name: item[:custom_name]&.strip.presence || vehicle.name,
             wanted: false
           )
 
@@ -187,7 +187,7 @@ class HangarSync < HangarImporter
         next
       end
 
-      component_query = generate_component_query(component_name)
+      component_query = generate_module_query(component_name)
       component = model.modules.where(component_query).first
       if component.blank?
         missing_components << item[:name]
@@ -247,7 +247,7 @@ class HangarSync < HangarImporter
     missing_upgrade_vehicles = []
 
     @upgrades.each do |item|
-      upgrade_query = generate_component_query(item[:name])
+      upgrade_query = generate_upgrade_query(item[:name])
       upgrade = ModelUpgrade.where(upgrade_query).first
       if upgrade.blank?
         missing_upgrades << item[:name]
@@ -312,10 +312,25 @@ class HangarSync < HangarImporter
     ]
   end
 
-  private def generate_component_query(item_name)
+  private def generate_module_query(item_name)
+    name = rsi_hangar_module_mapping(item_name)
+    normalized_name = normalize(name)
+
+    [
+      COMPONENT_FIND_QUERY.join(" OR "),
+      {
+        name: name.downcase,
+        slug: name.downcase,
+        normalized_name:,
+        search: "%#{normalized_name}%"
+      }
+    ]
+  end
+
+  private def generate_upgrade_query(item_name)
     name = item_name
     # Add mapping when needed
-    # name = rsi_hangar_mapping(item_name)
+    # name = rsi_hangar_upgrade_mapping(item_name)
     normalized_name = normalize(name)
 
     [
@@ -333,7 +348,7 @@ class HangarSync < HangarImporter
     {
       notify: false,
       user_id:,
-      name: item[:customName],
+      name: item[:custom_name],
       wanted: false,
       bought_via: :pledge_store,
       public: true,
@@ -346,7 +361,10 @@ class HangarSync < HangarImporter
 
   # rubocop:disable Metrics/MethodLength
   private def rsi_hangar_mapping(name)
+    name = name.tr("–", "-")
+
     mapping = {
+      "A.T.L.S" => "ATLS",
       "GreyCat Estate Geotack Planetary Beacon" => "Geotack Planetary Beacon",
       "GreyCat Estate Geotack-X Planetary Beacon" => "Geotack-X Planetary Beacon",
       "X1 Base" => "X1",
@@ -370,6 +388,8 @@ class HangarSync < HangarImporter
       "Hercules Starlifter M2" => "M2 Hercules",
       "Genesis Starliner" => "Genesis",
       "Hornet F7C Mk I" => "F7C Hornet Mk I",
+      "F7A Hornet Mk 1" => "F7A Hornet Mk I",
+      "F7C-M Hornet Heartseeker Mk I" => "F7C-M Super Hornet Heartseeker Mk I",
       "Hornet F7C-M Heartseeker Mk I" => "F7C-M Super Hornet Heartseeker Mk I",
       "Idris-M Frigate" => "Idris-M",
       "Idris-P Frigate" => "Idris-P",
@@ -401,4 +421,61 @@ class HangarSync < HangarImporter
     mapping[name.strip]
   end
   # rubocop:enable Metrics/MethodLength
+
+  # rubocop:disable Metrics/MethodLength
+  private def rsi_hangar_module_mapping(name)
+    name = name.tr("–", "-")
+
+    mapping = {
+      "RETALIATOR FRONT LIVING MODULE" => "Front Living Module",
+      "Retaliator Front Living Module" => "Front Living Module",
+      "RETALIATOR REAR LIVING MODULE" => "Rear Living Module",
+      "Retaliator Rear Living Module" => "Rear Living Module",
+      "RETALIATOR FRONT DROP SHIP MODULE" => "Front Dropship Module",
+      "Retaliator Front Drop Ship Module" => "Front Dropship Module",
+      "RETALIATOR TORPEDO Module - Bow" => "Front Torpedo Bay",
+      "Retaliator Torpedo Module - Bow" => "Front Torpedo Bay",
+      "RETALIATOR TORPEDO Module - Stern" => "Rear Torpedo Bay",
+      "Retaliator Torpedo Module - Stern" => "Rear Torpedo Bay",
+      "RETALIATOR CARGO MODULE - BOW" => "Front Cargo Module",
+      "RETALIATOR CARGO MODULE - STERN" => "Rear Cargo Module",
+      "Retaliator Cargo Module - Bow" => "Front Cargo Module",
+      "Retaliator Cargo Module - Stern" => "Rear Cargo Module",
+      "Retaliator Personnel Module - Bow" => "Front Living Module",
+      "Retaliator Personnel Module - Stern" => "Rear Living Module",
+      "Retaliator Drop Ship Module - Bow" => "Front Dropship Module",
+      "FRONT LIVING MODULE" => "Front Living Module",
+      "Front Living Module" => "Front Living Module",
+      "REAR LIVING MODULE" => "Rear Living Module",
+      "Rear Living Module" => "Rear Living Module",
+      "FRONT DROP SHIP MODULE" => "Front Dropship Module",
+      "Front Drop Ship Module" => "Front Dropship Module",
+      "TORPEDO Module - Bow" => "Front Torpedo Bay",
+      "Torpedo Module - Bow" => "Front Torpedo Bay",
+      "TORPEDO Module - Stern" => "Rear Torpedo Bay",
+      "Torpedo Module - Stern" => "Rear Torpedo Bay",
+      "Cargo Module - Bow" => "Front Cargo Module",
+      "Cargo Module - Stern" => "Rear Cargo Module",
+      "CARGO MODULE - BOW" => "Front Cargo Module",
+      "CARGO MODULE - STERN" => "Rear Cargo Module",
+      "Personnel Module - Bow" => "Front Living Module",
+      "Personnel Module - Stern" => "Rear Living Module",
+      "Drop Ship Module - Bow" => "Front Dropship Module"
+    }
+
+    return name if mapping[name.strip].nil?
+
+    mapping[name.strip]
+  end
+  # rubocop:enable Metrics/MethodLength
+
+  private def rsi_hangar_upgrade_mapping(name)
+    mapping = {
+      "Hurston Dynamics Exodus Laser Beam" => "Idris-K"
+    }
+
+    return name if mapping[name.strip].nil?
+
+    mapping[name.strip]
+  end
 end

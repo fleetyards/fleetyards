@@ -74,6 +74,36 @@ module ScData
       hardpoint_ids.compact
     end
 
+    private def extract_utility_items(hardpoint_type, model_id, ports_data)
+      hardpoint_ids = []
+
+      ports_data["UtilityHardpoints"].reject do |port_data|
+        port_data["PortName"].include?("controller")
+      end.each_with_index.map do |port_data, index|
+        hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index)&.id
+      end
+
+      ports_data["UtilityTurrets"].reject do |port_data|
+        port_data["PortName"].include?("camera")
+      end.each_with_index.map do |port_data, index|
+        hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, "utility_turret")&.id
+      end
+
+      ports_data["MiningHardpoints"].reject do |port_data|
+        port_data["PortName"].include?("controller")
+      end.each_with_index.map do |port_data, index|
+        hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index)&.id
+      end
+
+      ports_data["MiningTurrets"].reject do |port_data|
+        port_data["PortName"].include?("camera")
+      end.each_with_index.map do |port_data, index|
+        hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, "mining_turret")&.id
+      end
+
+      hardpoint_ids.compact
+    end
+
     private def extract_power_plants(hardpoint_type, model_id, ports_data)
       hardpoint_ids = []
 
@@ -135,13 +165,13 @@ module ScData
       hardpoint_ids = []
 
       ports_data["MannedTurrets"].reject do |port_data|
-        missile_turret?(port_data) || port_data["PortName"] == "hardpoint_turret_torpedo_camera"
+        missile_turret?(port_data) || port_data["PortName"].include?("camera") || port_data["PortName"].include?("lighting")
       end.each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, "manned_turret")&.id
       end
 
       ports_data["RemoteTurrets"].reject do |port_data|
-        missile_turret?(port_data) || port_data["PortName"] == "hardpoint_turret_torpedo_camera"
+        missile_turret?(port_data) || port_data["PortName"].include?("camera") || port_data["PortName"].include?("lighting")
       end.each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, "remote_turret")&.id
       end
@@ -166,8 +196,14 @@ module ScData
     private def extract_qed(hardpoint_type, model_id, ports_data)
       hardpoint_ids = []
 
+      exclude_model_ids = [
+        "dc7f4408-c474-4d54-b105-227991ab64b3",
+        "b94e105b-8b8c-47f0-975c-5e6a3d1a3134",
+        "14b8dbc7-9f4d-42a0-9158-a9ecaa0795d7"
+      ]
+
       ports_data["InterdictionHardpoints"].reject do |port_data|
-        (port_data["Flags"] || []).include?("invisible") && model_id == "dc7f4408-c474-4d54-b105-227991ab64b3"
+        (port_data["Flags"] || []).include?("invisible") && exclude_model_ids.include?(model_id)
       end.select do |port_data|
         port_data["Types"].include?("QuantumInterdictionGenerator")
       end.each_with_index.map do |port_data, index|
@@ -223,9 +259,15 @@ module ScData
         }
       end
 
+      if component_data["ClassName"] == "ARGO_SRV_MainTractorBeamArm"
+        component_data = component_data.dig("Ports", 0, "InstalledItem", "Ports", 0, "InstalledItem")
+      end
+
       component = components_loader.extract_component!(component_data)
 
-      extract_loadout(hardpoint, component_data["Ports"]) if component_data["Ports"].present?
+      if component_data["Ports"].present? && component_data.dig("Ports", 0, "PortName")&.exclude?("Consumable")
+        extract_loadout(hardpoint, component_data["Ports"])
+      end
 
       hardpoint.update!(
         component_id: component&.id,
@@ -295,6 +337,7 @@ module ScData
     private def size_for_type(hardpoint_type, component, category = nil)
       component_size = component["Size"].to_i
       component_size = component.dig("InstalledItem", "Size").to_i if component_size.zero?
+      component_size = component.dig("InstalledItem", "Ports", 0, "InstalledItem", "Ports", 0, "InstalledItem", "Size").to_i if component.dig("InstalledItem", "ClassName") == "ARGO_SRV_MainTractorBeamArm"
       loadout_size = component.dig("InstalledItem", "Ports", 0, "Size").to_i
 
       return [component_size, loadout_size].max if [:turrets].include?(hardpoint_type) && loadout_size.present?

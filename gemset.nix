@@ -1019,19 +1019,6 @@
     };
     version = "1.5.2";
   };
-  griddler-postmark = {
-    dependencies = ["griddler"];
-    groups = ["default"];
-    platforms = [];
-    source = {
-      fetchSubmodules = false;
-      rev = "55904355a44066d94c24b49613a22e1face387a5";
-      sha256 = "0dyg14vszd02wsg5dmdpbk12q0h4715hhyha9wxcq63wd8jr24rz";
-      type = "git";
-      url = "https://github.com/r38y/griddler-postmark.git";
-    };
-    version = "1.0.0";
-  };
   groupdate = {
     dependencies = ["activesupport"];
     groups = ["default"];
@@ -1699,28 +1686,6 @@
       type = "gem";
     };
     version = "3.1.0";
-  };
-  postmark = {
-    dependencies = ["json"];
-    groups = ["default"];
-    platforms = [];
-    source = {
-      remotes = ["https://rubygems.org"];
-      sha256 = "1iy9m82vpdy5fvd0gja1jqlav1canr53b36d39nq0zcchwh6v6gs";
-      type = "gem";
-    };
-    version = "1.23.0";
-  };
-  postmark-rails = {
-    dependencies = ["actionmailer" "postmark"];
-    groups = ["default"];
-    platforms = [];
-    source = {
-      remotes = ["https://rubygems.org"];
-      sha256 = "13sx2f4nf3yx1aj202n1mjn4vps7akn24dkjswiq2hgplkfjgspw";
-      type = "gem";
-    };
-    version = "0.22.1";
   };
   premailer = {
     dependencies = ["addressable" "css_parser" "htmlentities"];

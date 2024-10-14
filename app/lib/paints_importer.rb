@@ -52,7 +52,10 @@ class PaintsImporter
     imported_data.filter_map do |item|
       next if item["type"] != "skin" || item["image"].blank?
 
-      name_parts = item["name"].split(" - ")
+      name = item["name"].tr("–", "-")
+      name = name.tr(" ", " ").strip
+      name_parts = name.split(" - ")
+
       {
         name: cleanup_name(name_parts.last),
         model_name: cleanup_name(name_parts.first),
@@ -128,6 +131,8 @@ class PaintsImporter
   end
 
   private def paint_mapping(name)
+    name = name.tr("–", "-")
+
     paint_map = {
       "2950 Invictus Constellation Blue and Gold" => "2950 Invictus Blue and Gold",
       "2950 Invictus Retaliator Midnight Blue and Gold" => "2950 Invictus Blue and Gold",
@@ -185,6 +190,8 @@ class PaintsImporter
       "Hercules Starlifter BIS 2951" => "Best in Show 2951",
       "Aurora SXSW 2015" => "SXSW 2015",
       "2950 Invictus Aurora Blue and Gold" => "Invictus Blue and Gold",
+      "Hornet Mk I Invictus Blue and Gold" => "Invictus Blue and Gold",
+      "Hornet Mk I - Invictus Blue and Gold" => "Invictus Blue and Gold",
       "2950 Invictus Aurora Light and Dark Grey" => "Light and Dark Grey",
       "2950 Invictus Auora Green and Gold" => "Green and Gold",
       "2950 Invictus Aurora Green and Gold" => "Green and Gold",
@@ -193,6 +200,8 @@ class PaintsImporter
       "Crusader Ares Radiance" => "Radiance",
       "Crusader Ares Ember" => "Ember",
       "Freelancer - Black" => "Black",
+      "Freelancer - Black Paint" => "Black",
+      "Freelancer - Black Paint " => "Black",
       "600i 2953 Best in Show" => "Best in Show 2953",
       "Corsair 2953 Best in Show" => "Best in Show 2953",
       "Vulture 2953 Best in Show" => "Best in Show 2953",
@@ -233,7 +242,7 @@ class PaintsImporter
     scorpius = ["Scorpius", "Scorpius Antares"]
     hornet_mk1 = [
       "F7C-S Hornet Ghost Mk I", "F7C-R Hornet Tracker Mk I", "F7C-M Super Hornet Heartseeker Mk I",
-      "F7C-M Super Hornet Mk I", "F7C Hornet Wildfire Mk I", "F7C Hornet Mk I"
+      "F7C-M Super Hornet Mk I", "F7C Hornet Wildfire Mk I", "F7C Hornet Mk I", "F7A Hornet Mk I"
     ]
     hornet_mk2 = ["F7C Hornet Mk II", "F7A Hornet Mk II"]
     mercury = ["Mercury", "Mercury Star Runner"]
@@ -244,6 +253,9 @@ class PaintsImporter
     starfarer = ["Starfarer", "Starfarer Gemini"]
     cutter = ["Cutter", "Cutter Scout", "Cutter Rambler"]
     x1 = ["X1", "X1 Velocity", "X1 Force"]
+    ursa = ["Ursa", "Ursa Medivac", "Ursa Fortuna", "Lynx"]
+    mpuv = ["MPUV Cargo", "MPUV Personnel", "MPUV Tractor"]
+    sabre = ["Sabre", "Sabre Comet", "Sabre Raven", "Sabre Firebird"]
 
     models_map = {
       "Cutter" => cutter,
@@ -256,6 +268,9 @@ class PaintsImporter
       "Retaliator Grey" => tali,
       "Fury Variants" => fury,
       "Fury" => fury,
+      "Ursa" => ursa,
+      "MPUV TRACTOR" => mpuv,
+      "MPUV" => mpuv,
       "Origin 100 series" => series_100,
       "100 Series Deck the Hull" => series_100,
       "100 Series IceBreak" => series_100,
@@ -273,6 +288,8 @@ class PaintsImporter
       "Freelancer Series" => freelancer,
       "Freelancer" => freelancer,
       "Freelancer - Black" => freelancer,
+      "Freelancer - Black Paint" => freelancer,
+      "Freelancer - Black Paint " => freelancer,
       "2950 Invictus Freelancer Storm Surge" => freelancer,
       "Anvil Hornet" => hornet_mk1,
       "F7 Hornet Mk I" => hornet_mk1,
@@ -348,6 +365,8 @@ class PaintsImporter
       "2950 Invictus Aurora Light and Dark Grey" => aurora,
       "2950 Invictus Aurora Green and Gold" => aurora,
       "2950 Invictus Auora Green and Gold" => aurora,
+      "Hornet Mk I Invictus Blue and Gold" => hornet_mk1,
+      "Hornet Mk I - Invictus Blue and Gold" => hornet_mk1,
       "Pisces" => ["C8 Pisces", "C8X Pisces Expedition", "C8R Pisces"],
       "Anvil Hawk" => ["Hawk"],
       "Tumbril Nova" => ["Nova"],
@@ -366,7 +385,8 @@ class PaintsImporter
       "600i 2954 Auspicious Red Dragon" => series_600,
       "X1 2954 Auspicious Red Dog" => x1,
       "X1 2954 Auspicious Red Dragon" => x1,
-      "Scorpius Stinger Black Orange" => scorpius
+      "Scorpius Stinger Black Orange" => scorpius,
+      "Sabre" => sabre
     }
 
     return models_map[name.strip] if models_map[name.strip].present?
