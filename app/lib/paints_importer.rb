@@ -256,6 +256,7 @@ class PaintsImporter
     ursa = ["Ursa", "Ursa Medivac", "Ursa Fortuna", "Lynx"]
     mpuv = ["MPUV Cargo", "MPUV Personnel", "MPUV Tractor"]
     sabre = ["Sabre", "Sabre Comet", "Sabre Raven", "Sabre Firebird"]
+    zeus = ["Zeus Mk II MR", "Zeus Mk II CL", "Zeus Mk II ES"]
 
     models_map = {
       "Cutter" => cutter,
@@ -313,7 +314,10 @@ class PaintsImporter
       "Cutlass" => cutlass,
       "Drake Cutlass Ghoulish Green" => cutlass,
       "Spirit" => ["A1 Spirit", "C1 Spirit", "E1 Spirit"],
-      "Zeus" => ["Zeus Mk II MR", "Zeus Mk II CL", "Zeus Mk II ES"],
+      "CSV" => ["CSV-SM", "CSV-FM"],
+      "Zeus" => zeus,
+      "Zeus Mk II" => zeus,
+      "Starlancer" => ["Starlancer MAX", "Starlancer TAC", "Starlancer BLD"],
       "Gladius Series" => gladius,
       "Gladius" => gladius,
       "Aegis Gladius" => gladius,
