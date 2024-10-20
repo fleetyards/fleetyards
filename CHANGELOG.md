@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.39](https://github.com/fleetyards/fleetyards/compare/v5.31.38...v5.31.39) (2024-10-20)
+
+
+### Bug Fixes
+
+* **paints:** update importer mapping for Starlancer, Zeus Mk II and CSV ([22ad7cf](https://github.com/fleetyards/fleetyards/commit/22ad7cf58500bc3f79f12f9da6d9b9d1a68fcaa5))
+
 ### [5.31.38](https://github.com/fleetyards/fleetyards/compare/v5.31.37...v5.31.38) (2024-10-14)
 
 ### [5.31.37](https://github.com/fleetyards/fleetyards/compare/v5.31.36...v5.31.37) (2024-10-14)
