@@ -364,7 +364,7 @@ class HangarSync < HangarImporter
     name = name.tr("–", "-")
 
     mapping = {
-      "A.T.L.S" => "ATLS",
+      "A.T.L.S." => "ATLS",
       "GreyCat Estate Geotack Planetary Beacon" => "Geotack Planetary Beacon",
       "GreyCat Estate Geotack-X Planetary Beacon" => "Geotack-X Planetary Beacon",
       "X1 Base" => "X1",
