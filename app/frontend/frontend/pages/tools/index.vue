@@ -48,6 +48,12 @@ const tools = [
     description: "Star Citizen Pledge/Ship Market Place",
     image: undefined,
   },
+  {
+    url: "https://shinytracker.app/",
+    name: "ShinyTracker",
+    description: "Star Citizen Progress Tracker",
+    image: undefined,
+  },
 ];
 </script>
 

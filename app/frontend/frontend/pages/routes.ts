@@ -1,7 +1,6 @@
 import type { RouteRecordRaw } from "vue-router";
 import { routes as fleetsRoutes } from "@/frontend/pages/fleets/routes";
 import { routes as hangarRoutes } from "@/frontend/pages/hangar/routes";
-import { routes as roadmapRoutes } from "@/frontend/pages/roadmap/routes";
 import { routes as settingsRoutes } from "@/frontend/pages/settings/routes";
 import { routes as shipsRoutes } from "@/frontend/pages/ships/routes";
 import { routes as toolsRoutes } from "@/frontend/pages/tools/routes";
@@ -100,12 +99,6 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/tools.vue"),
     children: toolsRoutes,
     redirect: { name: toolsRoutes[0].name },
-  },
-  {
-    path: "/roadmap/",
-    component: () => import("@/frontend/pages/roadmap.vue"),
-    children: roadmapRoutes,
-    redirect: { name: roadmapRoutes[0].name },
   },
   {
     path: "/settings/",

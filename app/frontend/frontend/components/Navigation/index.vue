@@ -38,14 +38,6 @@ const { filters } = storeToRefs(filtersStore);
 
 const route = useRoute();
 
-const isRoadmapRoute = computed(() => {
-  if (!route.name) {
-    return false;
-  }
-
-  return String(route.name).includes("roadmap");
-});
-
 const isToolsRoute = computed(() => {
   if (!route.name) {
     return false;
@@ -163,12 +155,6 @@ const settingsActive = computed(() => {
           :label="t('nav.tools.index')"
           icon="fad fa-toolbox"
           :active="isToolsRoute"
-        />
-        <NavItem
-          :to="{ name: 'roadmap' }"
-          :label="t('nav.roadmap.index')"
-          icon="fad fa-tasks-alt"
-          :active="isRoadmapRoute"
         />
         <NavItem
           :to="{ name: 'stats' }"
