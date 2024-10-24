@@ -86,7 +86,8 @@ class Vehicle < ApplicationRecord
   DEFAULT_SORTING_PARAMS = ["flagship desc", "name asc", "model_name asc"]
   ALLOWED_SORTING_PARAMS = [
     "flagship desc", "flagship asc", "name asc", "name desc", "model_name asc", "model_name desc",
-    "created_at asc", "created_at desc", "updated_at asc", "updated_at desc"
+    "created_at asc", "created_at desc", "updated_at asc", "updated_at desc",
+    "model_manufacturer_name asc", "model_manufacturer_name desc"
   ]
 
   ransack_alias :search, :name_or_model_name_or_model_slug

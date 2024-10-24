@@ -17,6 +17,8 @@ type Props = {
   variant?: LazyImageVariantsEnum;
   shadow?: boolean;
   contain?: boolean;
+  width?: number;
+  height?: number;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -27,6 +29,8 @@ const props = withDefaults(defineProps<Props>(), {
   variant: undefined,
   shadow: false,
   contain: false,
+  width: undefined,
+  height: undefined,
 });
 
 const uuid = ref<string>(uuidv4());
@@ -55,6 +59,10 @@ const componentProps = computed(() => {
   if (props.href) {
     return {
       href: props.href,
+      target: "_blank",
+      "data-pswp-src": props.src,
+      "data-pswp-width": props.width,
+      "data-pswp-height": props.height,
     };
   }
 

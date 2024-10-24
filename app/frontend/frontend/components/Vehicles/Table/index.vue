@@ -40,31 +40,46 @@ const deleting = ref(false);
 
 const updating = ref(false);
 
-const tableColumns: BaseTableColumn[] = [
-  {
-    name: "store_image",
-    label: "",
-    centered: true,
-    mobile: false,
-  },
-  {
-    name: "name",
-    label: "",
-    width: "40%",
-  },
-  {
-    name: "states",
-    label: "",
-    width: "10%",
-    mobile: false,
-  },
-  {
-    name: "groups",
-    label: t("labels.vehicle.hangarGroups"),
-    width: "10%",
-    mobile: false,
-  },
-];
+const extraColumns = computed(() => {
+  return [
+    {
+      name: "model_manufacturer_name",
+      label: t("labels.model.manufacturer"),
+      mobile: false,
+      sortable: true,
+    },
+  ];
+});
+
+const tableColumns = computed<BaseTableColumn[]>(() => {
+  return [
+    {
+      name: "store_image",
+      label: "",
+      centered: true,
+      mobile: false,
+    },
+    {
+      name: "name",
+      label: t("labels.vehicle.name"),
+      width: "40%",
+      sortable: true,
+    },
+    ...extraColumns.value,
+    {
+      name: "states",
+      label: t("labels.vehicle.states"),
+      width: "10%",
+      mobile: false,
+    },
+    {
+      name: "groups",
+      label: t("labels.vehicle.hangarGroups"),
+      width: "10%",
+      mobile: false,
+    },
+  ];
+});
 
 const comlink = useComlink();
 
@@ -111,7 +126,7 @@ const storeImage = (record: Vehicle) => {
 const addToWishlistBulk = async () => {
   updating.value = true;
 
-  await vehiclesCollection.addToWishlistBulk(selected.value);
+  await await vehiclesCollection.addToWishlistBulk(selected.value);
 
   resetSelected();
 
@@ -254,6 +269,9 @@ const resetSelected = () => {
           alt="storeImage"
           shadow
         />
+      </template>
+      <template #col-model_manufacturer_name="{ record }">
+        {{ record.model.manufacturer?.name }}
       </template>
       <template #col-name="{ record }">
         <div class="name">

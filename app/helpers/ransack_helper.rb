@@ -6,7 +6,7 @@ module RansackHelper
   end
 
   def sorting_params(model, fallback = nil)
-    sorting_params = query_params(:sorts, sorts: []).presence || params.permit(:s, :sorts, s: [], sorts: [])
+    sorting_params = query_params(:sorts, sorts: []).presence || query_params(:s, s: []) || params.permit(:s, :sorts, s: [], sorts: [])
 
     sorts = sorting_params[:s].presence || sorting_params[:sorts].presence
 

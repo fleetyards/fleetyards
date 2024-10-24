@@ -208,10 +208,6 @@ const cssClasses = computed(() => {
     cssClasses.push(`status-${model.value.productionStatus}`);
   }
 
-  if (props.showLabel) {
-    cssClasses.push("fleetchart-item-with-labels");
-  }
-
   return cssClasses;
 });
 
@@ -298,3 +294,7 @@ export default {
   name: "FleetchartListItem",
 };
 </script>
+
+<style lang="scss" scoped>
+@import "index.scss";
+</style>

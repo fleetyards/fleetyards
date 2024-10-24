@@ -41,6 +41,11 @@ namespace :frontend, **frontend_options do
   get "embed-v2-username-test" => "embed#test_v2_username"
   get "embed-v2-fleet-test" => "embed#test_v2_fleet"
 
+  get "settings/notifications" => "base#index"
+  get "settings/security" => "base#index"
+
+  get "privacy-policy" => "base#index"
+
   match "404", to: "base#not_found", via: :all
 
   match "*path", to: "base#index", via: :all, as: "catch_all"

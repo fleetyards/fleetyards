@@ -1,4 +1,12 @@
 .base-table {
+  &__outer-wrapper {
+    position: relative;
+  }
+
+  &__wrapper {
+    overflow: auto;
+  }
+
   td,
   th {
     padding: 10px;
@@ -14,6 +22,7 @@
 
   &__inner {
     width: 100%;
+    min-height: 50vh;
   }
 
   &__header th {
@@ -136,10 +145,11 @@
     justify-content: center;
   }
 
-  &__loader > &__column {
-    justify-content: center;
-    min-height: 80px;
+  &__loader {
+    top: 50%;
+    margin-top: -20px;
   }
+
   //   display: flex;
   //   flex-wrap: wrap;
   //   margin-right: -15px;
@@ -360,11 +370,6 @@
 
 @media (max-width: $desktop-breakpoint) {
   .base-table {
-    &__wrapper {
-      position: relative;
-      overflow: auto;
-    }
-
     &__inner {
       min-width: 600px;
     }

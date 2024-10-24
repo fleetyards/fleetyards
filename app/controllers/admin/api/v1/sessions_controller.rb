@@ -43,7 +43,7 @@ module Admin
 
           resource.remember_me = login_params[:remember_me]
 
-          sign_in(:user, resource)
+          sign_in(:admin_user, resource)
 
           render json: {code: :success, message: I18n.t("labels.success")}
         end

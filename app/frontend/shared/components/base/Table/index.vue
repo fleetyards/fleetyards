@@ -173,156 +173,159 @@ const resetSelected = () => {
     <PanelHeading v-if="title || slots.title" :level="titleLevel">
       <slot name="title">{{ title }}</slot>
     </PanelHeading>
-    <div class="base-table__wrapper w-full">
-      <table class="base-table__inner">
-        <transition-group
-          name="list"
-          :class="{
-            'base-table__loading': loading,
-          }"
-          tag="thead"
-          :appear="true"
-        >
-          <tr v-if="internalSelected.length > 0" key="selected-header">
-            <th :colspan="columnCount">
-              <div class="base-table__selected">
-                <div class="base-table__selected--count">
-                  <span>
-                    {{
-                      t("filteredTable.labels.selected", {
-                        count: internalSelected.length,
-                      })
-                    }}
-                  </span>
-                  <Btn
-                    v-tooltip="t('filteredTable.actions.unselect')"
-                    :size="BtnSizesEnum.SMALL"
-                    :variant="BtnVariantsEnum.LINK"
-                    inline
-                    @click="resetSelected"
-                  >
-                    <i class="fa fa-times" />
-                  </Btn>
+    <div class="base-table__outer-wrapper">
+      <div class="base-table__wrapper w-full">
+        <Loader
+          v-if="loading && !records.length"
+          :loading="loading"
+          class="base-table__loader"
+        />
+        <table class="base-table__inner">
+          <transition-group
+            name="list"
+            :class="{
+              'base-table__loading': loading,
+            }"
+            tag="thead"
+            :appear="true"
+          >
+            <tr v-if="internalSelected.length > 0" key="selected-header">
+              <th :colspan="columnCount">
+                <div class="base-table__selected">
+                  <div class="base-table__selected--count">
+                    <span>
+                      {{
+                        t("filteredTable.labels.selected", {
+                          count: internalSelected.length,
+                        })
+                      }}
+                    </span>
+                    <Btn
+                      v-tooltip="t('filteredTable.actions.unselect')"
+                      :size="BtnSizesEnum.SMALL"
+                      :variant="BtnVariantsEnum.LINK"
+                      inline
+                      @click="resetSelected"
+                    >
+                      <i class="fa fa-times" />
+                    </Btn>
+                  </div>
+                  <div class="base-table__selected--actions">
+                    <slot
+                      name="selected-actions"
+                      :selected="internalSelected"
+                    />
+                  </div>
                 </div>
-                <div class="base-table__selected--actions">
-                  <slot name="selected-actions" :selected="internalSelected" />
-                </div>
-              </div>
-            </th>
-          </tr>
-          <tr key="header" class="base-table__header">
-            <th v-if="selectable" class="base-table__column">
-              <Checkbox
-                v-if="!loading && !emptyBoxVisible"
-                name="all"
-                :model-value="allSelected"
-                inline
-                :partial="internalSelected.length > 0 && !allSelected"
-                @update:model-value="onAllSelectedChange"
-              />
-            </th>
-            <th
-              v-for="(column, index) in filteredColumns"
-              :key="`base-table__header-${uuid}-${index}-${column.name}`"
-              class="base-table__column"
-              :class="columnCssClasses(column)"
-              :style="{
-                'flex-grow': column.flexGrow,
-                width: column.width,
-                'min-width': column.minWidth,
-              }"
-            >
-              <router-link v-if="column.sortable" :to="sortableLink(column)">
-                {{ column.label }}
-                <i
-                  v-if="sortableDirection(column) === 'desc'"
-                  class="fad fa-sort-up"
+              </th>
+            </tr>
+            <tr key="header" class="base-table__header">
+              <th v-if="selectable" class="base-table__column">
+                <Checkbox
+                  v-if="!loading && !emptyBoxVisible"
+                  name="all"
+                  :model-value="allSelected"
+                  inline
+                  :partial="internalSelected.length > 0 && !allSelected"
+                  @update:model-value="onAllSelectedChange"
                 />
-                <i v-else class="fad fa-sort-down" />
-              </router-link>
-              <span v-else>
-                {{ column.label }}
-              </span>
-            </th>
-            <th
-              v-if="slots.actions"
-              class="base-table__column base-table__column-actions"
-            >
-              {{ t("labels.actions") }}
-            </th>
-          </tr>
-        </transition-group>
-        <transition-group
-          name="list"
-          :class="{
-            'base-table__loading': loading,
-          }"
-          tag="tbody"
-          :appear="true"
-        >
-          <tr
-            v-if="loading && !records.length"
-            key="loading-row"
-            class="base-table__loader"
+              </th>
+              <th
+                v-for="(column, index) in filteredColumns"
+                :key="`base-table__header-${uuid}-${index}-${column.name}`"
+                class="base-table__column"
+                :class="columnCssClasses(column)"
+                :style="{
+                  'flex-grow': column.flexGrow,
+                  width: column.width,
+                  'min-width': column.minWidth,
+                }"
+              >
+                <router-link v-if="column.sortable" :to="sortableLink(column)">
+                  {{ column.label }}
+                  <i
+                    v-if="sortableDirection(column) === 'desc'"
+                    class="fad fa-sort-up"
+                  />
+                  <i v-else class="fad fa-sort-down" />
+                </router-link>
+                <span v-else>
+                  {{ column.label }}
+                </span>
+              </th>
+              <th
+                v-if="slots.actions"
+                class="base-table__column base-table__column-actions"
+              >
+                {{ t("labels.actions") }}
+              </th>
+            </tr>
+          </transition-group>
+          <transition-group
+            name="list"
+            :class="{
+              'base-table__loading': loading,
+            }"
+            tag="tbody"
+            :appear="true"
           >
-            <td class="base-table__column" :colspan="columnCount">
-              <slot name="loader" :loading="loading">
-                <Loader :loading="loading" inline />
-              </slot>
-            </td>
-          </tr>
-          <tr v-if="emptyBoxVisible" key="empty-row" class="base-table__empty">
-            <td class="base-table__column" :colspan="columnCount">
-              <div class="base-table__empty-inner">
-                <slot name="empty">
-                  {{ t("filteredTable.empty.info") }}
-                </slot>
-              </div>
-            </td>
-          </tr>
-          <tr
-            v-for="record in records"
-            v-else
-            :id="String(primaryValue(record))"
-            :key="primaryValue(record)"
-            class="base-table__row"
-          >
-            <td v-if="selectable" class="base-table__column">
-              <Checkbox
-                v-model="internalSelected"
-                name="item"
-                inline
-                :checkbox-value="primaryValue(record)"
-              />
-            </td>
-            <td
-              v-for="column in filteredColumns"
-              :key="`base-table__item-${uuid}-${column.name}`"
-              class="base-table__column"
-              :class="{
-                [`${column.class}`]: !!column.class,
-                'base-table__column--centered': column.centered,
-              }"
-              :style="{
-                'flex-grow': column.flexGrow,
-                width: column.width,
-                'min-width': column.minWidth,
-              }"
+            <tr
+              v-if="emptyBoxVisible"
+              key="empty-row"
+              class="base-table__empty"
             >
-              <div class="base-table__column-inner">
-                <slot :record="record" :name="`col-${column.name}`">
-                  {{ record[fieldByColumn(column)] }}
-                </slot>
-              </div>
-            </td>
-            <td class="base-table__column base-table__column-actions">
-              <div class="base-table__column-inner">
-                <slot :record="record" name="actions" />
-              </div>
-            </td>
-          </tr>
-        </transition-group>
-      </table>
+              <td class="base-table__column" :colspan="columnCount">
+                <div class="base-table__empty-inner">
+                  <slot name="empty">
+                    {{ t("filteredTable.empty.info") }}
+                  </slot>
+                </div>
+              </td>
+            </tr>
+            <tr
+              v-for="record in records"
+              v-else
+              :id="String(primaryValue(record))"
+              :key="primaryValue(record)"
+              class="base-table__row"
+            >
+              <td v-if="selectable" class="base-table__column">
+                <Checkbox
+                  v-model="internalSelected"
+                  name="item"
+                  inline
+                  :checkbox-value="primaryValue(record)"
+                />
+              </td>
+              <td
+                v-for="column in filteredColumns"
+                :key="`base-table__item-${uuid}-${column.name}`"
+                class="base-table__column"
+                :class="{
+                  [`${column.class}`]: !!column.class,
+                  'base-table__column--centered': column.centered,
+                }"
+                :style="{
+                  'flex-grow': column.flexGrow,
+                  width: column.width,
+                  'min-width': column.minWidth,
+                }"
+              >
+                <div class="base-table__column-inner">
+                  <slot :record="record" :name="`col-${column.name}`">
+                    {{ record[fieldByColumn(column)] }}
+                  </slot>
+                </div>
+              </td>
+              <td class="base-table__column base-table__column-actions">
+                <div class="base-table__column-inner">
+                  <slot :record="record" name="actions" />
+                </div>
+              </td>
+            </tr>
+          </transition-group>
+        </table>
+      </div>
     </div>
   </Panel>
 </template>

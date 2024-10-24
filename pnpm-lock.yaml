@@ -102,8 +102,8 @@ importers:
         specifier: 5.4.1
         version: 5.4.1
       photoswipe:
-        specifier: 4.1.3
-        version: 4.1.3
+        specifier: 5.4.4
+        version: 5.4.4
       pinia:
         specifier: ^2.1.4
         version: 2.1.6(typescript@5.4.3)(vue@3.3.4)
@@ -229,8 +229,8 @@ importers:
         specifier: ^0.2.0
         version: 0.2.0
       '@types/photoswipe':
-        specifier: ^4.1.2
-        version: 4.1.2
+        specifier: ^4.1.6
+        version: 4.1.6
       '@types/qs':
         specifier: ^6.9.14
         version: 6.9.14
@@ -1491,8 +1491,8 @@ packages:
   '@types/nprogress@0.2.0':
     resolution: {integrity: sha512-1cYJrqq9GezNFPsWTZpFut/d4CjpZqA0vhqDUPFWYKF1oIyBz5qnoYMzR+0C/T96t3ebLAC1SSnwrVOm5/j74A==}
 
-  '@types/photoswipe@4.1.2':
-    resolution: {integrity: sha512-HA9TtCAQKToldgxRiyJ1DbsElg/cQV/SQ8COVjqIqghjy60Zxfh78E1WiFotthquqkS86nz13Za9wEbToe0svQ==}
+  '@types/photoswipe@4.1.6':
+    resolution: {integrity: sha512-6kN4KYjNF4sg79fSwZ46s4Pron4+YJxoW0DQOcHveUZc/3cWd8Q4B9OLlDmEYw9iI6fODU8kyyq8ZBy+8F/+zQ==}
 
   '@types/qs@6.9.14':
     resolution: {integrity: sha512-5khscbd3SwWMhFqylJBLQ0zIu7c1K6Vz0uBIt915BI3zV0q1nfjRQD3RqSBcPaO6PHEF4ov/t9y89fSiyThlPA==}
@@ -3782,9 +3782,9 @@ packages:
   performance-now@2.1.0:
     resolution: {integrity: sha512-7EAHlyLHI56VEIdK57uwHdHKIaAGbnXPiw0yWbarQZOKaKpvUIgW0jWRVLiatnM+XXlSwsanIBH/hzGMJulMow==}
 
-  photoswipe@4.1.3:
-    resolution: {integrity: sha512-89Z43IRUyw7ycTolo+AaiDn3W1EEIfox54hERmm9bI12IB9cvRfHSHez3XhAyU8XW2EAFrC+2sKMhh7SJwn0bA==}
-    engines: {node: '>= 0.8.0'}
+  photoswipe@5.4.4:
+    resolution: {integrity: sha512-WNFHoKrkZNnvFFhbHL93WDkW3ifwVOXSW3w1UuZZelSmgXpIGiZSNlZJq37rR8YejqME2rHs9EhH9ZvlvFH2NA==}
+    engines: {node: '>= 0.12.0'}
 
   picocolors@1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
@@ -6448,7 +6448,7 @@ snapshots:
 
   '@types/nprogress@0.2.0': {}
 
-  '@types/photoswipe@4.1.2': {}
+  '@types/photoswipe@4.1.6': {}
 
   '@types/qs@6.9.14': {}
 
@@ -9015,7 +9015,7 @@ snapshots:
 
   performance-now@2.1.0: {}
 
-  photoswipe@4.1.3: {}
+  photoswipe@5.4.4: {}
 
   picocolors@1.0.0: {}
 

@@ -1,6 +1,8 @@
 import { FyAdminApi } from "@/services/fyAdminApi";
+import axios from "axios";
 import { useI18n } from "@/shared/composables/useI18n";
 import { csrfToken } from "@/shared/utils/Meta";
+import { useSessionStore } from "@/admin/stores/session";
 
 const languageHeader = () => {
   const { currentLocale } = useI18n();
@@ -9,6 +11,25 @@ const languageHeader = () => {
     "Accept-Language": `${currentLocale()},en;q=0.8`,
   };
 };
+
+axios.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    const sessionStore = useSessionStore();
+
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      sessionStore.isAuthenticated
+    ) {
+      sessionStore.logout();
+    }
+
+    return Promise.reject(error);
+  },
+);
 
 const apiClient = new FyAdminApi({
   BASE: `${window.ADMIN_API_ENDPOINT}`,

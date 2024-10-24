@@ -351,6 +351,7 @@
       },
       "vehicle": {
         "name": "Name",
+        "states": "States",
         "serial": "Serial",
         "owner": "commanded by",
         "flagship": "Flagship",

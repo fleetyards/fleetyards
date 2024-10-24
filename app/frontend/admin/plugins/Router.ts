@@ -6,9 +6,9 @@ import { setupRouter, type FyRedirectRoute } from "@/shared/plugins/Router";
 const beforeResolve = (to: RouteLocation): FyRedirectRoute | undefined => {
   const sessionStore = useSessionStore();
 
-  if (to.name != "login" && !sessionStore.isAuthenticated) {
+  if (to.name != "admin-login" && !sessionStore.isAuthenticated) {
     return {
-      routeName: "login",
+      routeName: "admin-login",
       routeQuery: {
         redirectTo: String(to.fullPath),
       },

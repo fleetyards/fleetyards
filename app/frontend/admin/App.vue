@@ -88,7 +88,7 @@ watch(
 
       fetchCurrentUser();
     } else if (route.meta.needsAuthentication) {
-      router.push({ name: "login" });
+      router.push({ name: "admin-login" });
     }
   },
 );

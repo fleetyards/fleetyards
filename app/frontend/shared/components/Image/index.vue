@@ -1,37 +1,38 @@
 <template>
-  <LazyImage
-    :key="src"
-    :src="src"
-    :alt="alt"
-    :title="title || alt"
+  <a
     :href="href"
-    class="image gallery-image"
-    @click.ctrl.prevent="openInNewTab(href)"
-    @click.meta.prevent="openInNewTab(href)"
-  />
+    :data-pswp-src="href"
+    :data-pswp-width="width"
+    :data-pswp-height="height"
+    :data-pswp-cropped="true"
+    target="_blank"
+    class="image gallery-image lazy-image"
+  >
+    <img v-lazy="src" :alt="alt" :title="title || alt" />
+    <!-- eslint-disable-next-line -->
+    <div v-if="caption" class="hidden-caption-content" v-html="caption" />
+  </a>
 </template>
 
 <script lang="ts" setup>
-import LazyImage from "@/shared/components/LazyImage/index.vue";
-
 type Props = {
   src: string;
   alt?: string;
   title?: string;
   href?: string;
+  width?: number;
+  height?: number;
+  caption?: string;
 };
 
 withDefaults(defineProps<Props>(), {
   alt: "image",
   title: undefined,
   href: undefined,
+  width: undefined,
+  height: undefined,
+  caption: undefined,
 });
-
-const openInNewTab = (url?: string) => {
-  if (!url) return;
-
-  window.open(url, "_blank");
-};
 </script>
 
 <script lang="ts">

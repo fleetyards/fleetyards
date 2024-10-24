@@ -5,23 +5,17 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import Gallery from "@/shared/components/Gallery/index.vue";
 import GalleryImage from "@/shared/components/Image/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useGallery } from "@/shared/composables/useGallery";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useQuery } from "@tanstack/vue-query";
 import Paginator from "@/shared/components/Paginator/index.vue";
 
 const { t } = useI18n();
-
-const gallery = ref<InstanceType<typeof Gallery> | undefined>();
-
-const openGallery = (index: number) => {
-  gallery.value?.open(index);
-};
 
 const { images: imagesService } = useApiClient();
 
@@ -35,6 +29,8 @@ const { data: images, ...asyncStatus } = useQuery({
       perPage: perPage.value,
     }),
 });
+
+useGallery(".images");
 </script>
 
 <template>
@@ -63,13 +59,15 @@ const { data: images, ...asyncStatus } = useQuery({
         :filter-visible="filterVisible"
         primary-key="id"
       >
-        <template #default="{ record, index }">
+        <template #default="{ record }">
           <GalleryImage
             :src="record.smallUrl"
             :href="record.url"
             :alt="record.name"
-            :title="record.caption || record.name"
-            @click.prevent.exact="openGallery(index)"
+            :width="record.width"
+            :height="record.height"
+            :title="record.name"
+            :caption="record.caption"
           />
         </template>
       </Grid>
@@ -78,6 +76,4 @@ const { data: images, ...asyncStatus } = useQuery({
       <Paginator v-if="images" :query-result-ref="images" :per-page="perPage" />
     </template>
   </FilteredList>
-
-  <Gallery ref="gallery" :items="images?.items" />
 </template>

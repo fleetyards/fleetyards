@@ -1,0 +1,51 @@
+.fleetchart-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+  padding: 10px;
+  cursor: pointer;
+  filter: drop-shadow(2px 4px 6px black);
+
+  a {
+    display: block;
+  }
+
+  > span {
+    text-align: center;
+  }
+
+  .fleetchart-item-image-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex: 0;
+  }
+
+  .fleetchart-item-image {
+    width: auto;
+    height: auto;
+  }
+
+  .fleetchart-item-label {
+    margin-right: 20px;
+    color: darken($text-color, 10%);
+    font-size: 120%;
+    font-family: "Orbitron", sans-serif;
+    text-align: right;
+
+    > span {
+      white-space: nowrap;
+    }
+
+    small {
+      display: block;
+      color: darken($text-color, 30%);
+      white-space: nowrap;
+
+      > span {
+        white-space: nowrap;
+      }
+    }
+  }
+}

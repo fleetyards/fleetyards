@@ -7,8 +7,6 @@ module Admin
     include PrefetchHelper
 
     def index
-      authorize! :show, :admin
-
       route = request.fullpath.split("?").first.sub(%r{^/}, "").tr("/", "_")
       route = "dashboard" if route.blank?
 
