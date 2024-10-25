@@ -1100,7 +1100,6 @@ components:
       - fuel_tanks
       - jump_modules
       - quantum_fuel_tanks
-      - utility_items
       - power_plants
       - coolers
       - shield_generators
@@ -1112,6 +1111,7 @@ components:
       - missiles
       - qed
       - emp
+      - utility_items
       title: ModelHardpointTypeEnum
     ModelProductionStatusEnum:
       type: string
@@ -1386,6 +1386,8 @@ components:
       - created_at desc
       - updated_at asc
       - updated_at desc
+      - model_manufacturer_name asc
+      - model_manufacturer_name desc
       title: VehicleSortEnum
     StandardError:
       type: object

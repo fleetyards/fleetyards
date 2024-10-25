@@ -5,13 +5,12 @@ $color2: #3197ee;
   display: flex;
   margin-bottom: 20px;
   gap: 5px;
-  flex-wrap: wrap;
+  flex-direction: column;
   justify-content: space-between;
 
   &__wrapper {
     display: flex;
     gap: 15px;
-    justify-content: flex-end;
     align-items: center;
   }
 

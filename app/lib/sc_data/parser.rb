@@ -337,17 +337,42 @@ module ScData
         }
       end
 
-      if values.dig("Components", "SCItemBombParams")
-        item[:type_data] = values.dig("Components", "SCItemBombParams")
-      end
-
-      if values.dig("Components", "SCItemToolArmParams")
-        item[:type_data] = values.dig("Components", "SCItemToolArmParams")
-      end
-
       if values.dig("Components", "SCItemQuantumInterdictionGeneratorParams")
-        item[:type_data] = values.dig("Components", "SCItemQuantumInterdictionGeneratorParams")
+        item[:type_data] = {
+          base_power_draw_fraction: values.dig("Components", "SCItemQuantumInterdictionGeneratorParams", "basePowerDrawFraction").to_f,
+          pulse_power_fraction: values.dig("Components", "SCItemQuantumInterdictionGeneratorParams", "pulsePowerFraction").to_f,
+          jammer_power_fraction: values.dig("Components", "SCItemQuantumInterdictionGeneratorParams", "jammerPowerFraction").to_f,
+          jammer_settings: {
+            jammer_range: values.dig("Components", "SCItemQuantumInterdictionGeneratorParams", "jammerSettings", "SCItemQuantumJammerParams", "jammerRange").to_f,
+            max_power_draw: values.dig("Components", "SCItemQuantumInterdictionGeneratorParams", "jammerSettings", "SCItemQuantumJammerParams", "maxPowerDraw").to_f,
+            green_zone_check_range: values.dig("Components", "SCItemQuantumInterdictionGeneratorParams", "jammerSettings", "SCItemQuantumJammerParams", "greenZoneCheckRange").to_f
+          },
+          quantum_interdiction_pulse_settings: {
+            charge_time_secs: values.dig("Components", "SCItemQuantumInterdictionGeneratorParams", "quantumInterdictionPulseSettings", "SCItemQuantumInterdictionPulseParams", "chargeTimeSecs").to_f,
+            discharge_time_secs: values.dig("Components", "SCItemQuantumInterdictionGeneratorParams", "quantumInterdictionPulseSettings", "SCItemQuantumInterdictionPulseParams", "dischargeTimeSecs").to_f,
+            cooldown_time_secs: values.dig("Components", "SCItemQuantumInterdictionGeneratorParams", "quantumInterdictionPulseSettings", "SCItemQuantumInterdictionPulseParams", "cooldownTimeSecs").to_f,
+            radius_meters: values.dig("Components", "SCItemQuantumInterdictionGeneratorParams", "quantumInterdictionPulseSettings", "SCItemQuantumInterdictionPulseParams", "radiusMeters").to_f,
+            decrease_charge_rate_time_seconds: values.dig("Components", "SCItemQuantumInterdictionGeneratorParams", "quantumInterdictionPulseSettings", "SCItemQuantumInterdictionPulseParams", "decreaseChargeRateTimeSeconds").to_f,
+            increase_charge_rate_time_seconds: values.dig("Components", "SCItemQuantumInterdictionGeneratorParams", "quantumInterdictionPulseSettings", "SCItemQuantumInterdictionPulseParams", "increaseChargeRateTimeSeconds").to_f,
+            activation_phase_duration_seconds: values.dig("Components", "SCItemQuantumInterdictionGeneratorParams", "quantumInterdictionPulseSettings", "SCItemQuantumInterdictionPulseParams", "activationPhaseDuration_seconds").to_f,
+            disperse_charge_time_seconds: values.dig("Components", "SCItemQuantumInterdictionGeneratorParams", "quantumInterdictionPulseSettings", "SCItemQuantumInterdictionPulseParams", "disperseChargeTimeSeconds").to_f,
+            max_power_draw: values.dig("Components", "SCItemQuantumInterdictionGeneratorParams", "quantumInterdictionPulseSettings", "SCItemQuantumInterdictionPulseParams", "maxPowerDraw").to_f,
+            stop_charging_power_draw_fraction: values.dig("Components", "SCItemQuantumInterdictionGeneratorParams", "quantumInterdictionPulseSettings", "SCItemQuantumInterdictionPulseParams", "stopChargingPowerDrawFraction").to_f,
+            max_charge_rate_power_draw_fraction: values.dig("Components", "SCItemQuantumInterdictionGeneratorParams", "quantumInterdictionPulseSettings", "SCItemQuantumInterdictionPulseParams", "maxChargeRatePowerDrawFraction").to_f,
+            active_power_draw_fraction: values.dig("Components", "SCItemQuantumInterdictionGeneratorParams", "quantumInterdictionPulseSettings", "SCItemQuantumInterdictionPulseParams", "activePowerDrawFraction").to_f,
+            tethering_power_draw_fraction: values.dig("Components", "SCItemQuantumInterdictionGeneratorParams", "quantumInterdictionPulseSettings", "SCItemQuantumInterdictionPulseParams", "tetheringPowerDrawFraction").to_f,
+            green_zone_check_range: values.dig("Components", "SCItemQuantumInterdictionGeneratorParams", "quantumInterdictionPulseSettings", "SCItemQuantumInterdictionPulseParams", "greenZoneCheckRange").to_f
+          }
+        }
       end
+
+      # if values.dig("Components", "SCItemBombParams")
+      #   item[:type_data] = values.dig("Components", "SCItemBombParams")
+      # end
+
+      # if values.dig("Components", "SCItemToolArmParams")
+      #   item[:type_data] = values.dig("Components", "SCItemToolArmParams")
+      # end
 
       # if values.dig("Components", "SCItemMissileRackParams")
       #   item[:type_data] = values.dig("Components", "SCItemMissileRackParams")
@@ -362,9 +387,7 @@ module ScData
       # end
 
       # if values.dig("Components", "SCItemTurretParams")
-      #   item[:type_data] = {
-      #     values.dig("Components", "SCItemTurretParams")
-      #   }
+      #   item[:type_data] = values.dig("Components", "SCItemTurretParams")
       # end
 
       item

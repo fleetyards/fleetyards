@@ -78,7 +78,7 @@ export const useVehicleQueries = (vehicle?: Vehicle) => {
     return useMutation(
       {
         mutationFn: (requestBody: VehicleUpdateInput) => {
-          return vehiclesService.vehicleUpdate({
+          return vehiclesService.updateVehicle({
             id: vehicle.id,
             requestBody,
           });

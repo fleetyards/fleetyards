@@ -13,4 +13,6 @@ export enum VehicleSortEnum {
     CREATED_AT_DESC = 'created_at desc',
     UPDATED_AT_ASC = 'updated_at asc',
     UPDATED_AT_DESC = 'updated_at desc',
+    MODEL_MANUFACTURER_NAME_ASC = 'model_manufacturer_name asc',
+    MODEL_MANUFACTURER_NAME_DESC = 'model_manufacturer_name desc',
 }

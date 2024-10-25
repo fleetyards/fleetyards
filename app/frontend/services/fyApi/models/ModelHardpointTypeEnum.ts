@@ -9,7 +9,6 @@ export enum ModelHardpointTypeEnum {
     FUEL_TANKS = 'fuel_tanks',
     JUMP_MODULES = 'jump_modules',
     QUANTUM_FUEL_TANKS = 'quantum_fuel_tanks',
-    UTILITY_ITEMS = 'utility_items',
     POWER_PLANTS = 'power_plants',
     COOLERS = 'coolers',
     SHIELD_GENERATORS = 'shield_generators',
@@ -21,4 +20,5 @@ export enum ModelHardpointTypeEnum {
     MISSILES = 'missiles',
     QED = 'qed',
     EMP = 'emp',
+    UTILITY_ITEMS = 'utility_items',
 }
