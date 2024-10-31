@@ -135,7 +135,7 @@
 
 <script lang="ts" setup>
 import Btn from "@/docs/components/core/Btn/index.vue";
-import { useI18n } from "@/docs/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import CommunityLogo from "@/shared/components/CommunityLogo/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 

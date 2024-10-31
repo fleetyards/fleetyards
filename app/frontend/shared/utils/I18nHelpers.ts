@@ -22,6 +22,10 @@ export const i18nHelpers = (i18n: I18n) => {
       count = i18n.l("number", (value as number) / 1000);
     }
 
+    if (units === "cargo" && value) {
+      count = value;
+    }
+
     if (units === "people") {
       count = value || 1;
     }

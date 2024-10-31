@@ -10,6 +10,8 @@ import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
+import ModelsTable from "@/frontend/components/Models/Table/index.vue";
+import Empty from "@/shared/components/Empty/index.vue";
 import FilterForm from "@/frontend/components/Models/FilterForm/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import { useHangarItems } from "@/frontend/composables/useHangarItems";
@@ -27,6 +29,8 @@ import {
 } from "@/frontend/composables/useModelQueries";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useModelFilters } from "@/frontend/composables/useModelFilters";
+import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
+import { useComlink } from "@/shared/composables/useComlink";
 
 useHangarItems();
 useWishlistItems();
@@ -38,7 +42,7 @@ useMetaInfo();
 const modelsStore = useModelsStore();
 const fleetchartsStore = useFleetchartStore();
 
-const { detailsVisible } = storeToRefs(modelsStore);
+const { detailsVisible, gridView } = storeToRefs(modelsStore);
 
 const fleetchartVisible = computed(() => {
   return fleetchartsStore.isVisible("models");
@@ -46,6 +50,10 @@ const fleetchartVisible = computed(() => {
 
 const toggleDetails = () => {
   modelsStore.toggleDetails();
+};
+
+const toggleGridView = () => {
+  modelsStore.toggleGridView();
 };
 
 const toggleFleetchart = () => {
@@ -75,6 +83,22 @@ const toggleDetailsTooltip = computed(() => {
 
   return t("actions.showDetails");
 });
+
+const toggleGridViewTooltip = computed(() => {
+  if (gridView.value) {
+    return t("actions.showTableView");
+  }
+  return t("actions.showGridView");
+});
+
+const comlink = useComlink();
+
+const openTableConfiguration = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Models/Table/ConfigurationModal/index.vue"),
+  });
+};
 </script>
 
 <template>
@@ -100,12 +124,32 @@ const toggleDetailsTooltip = computed(() => {
   <FilteredList
     name="models"
     :hide-loading="fleetchartVisible"
+    :hide-empty-box="!gridView"
     :records="models?.items || []"
     :async-status="asyncStatus"
   >
     <template #actions-right>
+      <Btn
+        v-if="!gridView"
+        :aria-label="t('actions.models.openTableConfiguration')"
+        :size="BtnSizesEnum.SMALL"
+        @click="openTableConfiguration"
+      >
+        <i class="fad fa-cog" />
+      </Btn>
       <BtnDropdown :size="BtnSizesEnum.SMALL">
         <Btn
+          :aria-label="toggleGridView"
+          :size="BtnSizesEnum.SMALL"
+          @click="toggleGridView"
+        >
+          <i v-if="gridView" class="fad fa-list" />
+          <i v-else class="fas fa-th" />
+          <span>{{ toggleGridViewTooltip }}</span>
+        </Btn>
+
+        <Btn
+          v-if="gridView"
           :active="detailsVisible"
           :aria-label="toggleDetailsTooltip"
           :size="BtnSizesEnum.SMALL"
@@ -121,8 +165,18 @@ const toggleDetailsTooltip = computed(() => {
       <FilterForm />
     </template>
 
-    <template #default="{ records, loading, filterVisible }">
+    <template #pagination-top>
+      <Paginator
+        v-if="models"
+        :query-result-ref="models"
+        :per-page="perPage"
+        :update-per-page="updatePerPage"
+      />
+    </template>
+
+    <template #default="{ records, loading, filterVisible, emptyBoxVisible }">
       <Grid
+        v-if="gridView"
         :records="records"
         :filter-visible="filterVisible"
         primary-key="slug"
@@ -131,6 +185,13 @@ const toggleDetailsTooltip = computed(() => {
           <ModelPanel :model="record" :details="detailsVisible" />
         </template>
       </Grid>
+
+      <ModelsTable
+        v-else
+        :loading="loading"
+        :empty-box-visible="emptyBoxVisible"
+        :models="models?.items || []"
+      />
 
       <FleetchartApp
         :items="models?.items || []"
@@ -159,6 +220,14 @@ const toggleDetailsTooltip = computed(() => {
         :query-result-ref="models"
         :per-page="perPage"
         :update-per-page="updatePerPage"
+      />
+    </template>
+
+    <template #empty="{ hideEmptyBox, emptyBoxVisible }">
+      <Empty
+        v-if="!hideEmptyBox && emptyBoxVisible"
+        :name="t('models.name')"
+        :variant="EmptyVariantsEnum.BOX"
       />
     </template>
   </FilteredList>

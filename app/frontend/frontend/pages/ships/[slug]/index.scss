@@ -77,11 +77,13 @@
   max-width: 100%;
 }
 
+.headline {
+  display: flex;
+  justify-content: space-between;
+}
+
 .manufacturer {
   position: relative;
-  display: block;
-  float: right;
-  margin-bottom: 20px;
   margin-left: 20px;
   padding-right: 74px;
   color: $text-color;
@@ -89,6 +91,9 @@
   font-family: "Orbitron", sans-serif;
   line-height: 1.4;
   text-transform: uppercase;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 
   .manufacturer-prefix {
     margin-right: 10px;
@@ -142,8 +147,11 @@
 }
 
 @media (max-width: $desktop-breakpoint) {
+  .headline {
+    flex-direction: column;
+  }
+
   .manufacturer {
-    float: none;
     margin-top: 10px;
     margin-left: 0;
   }

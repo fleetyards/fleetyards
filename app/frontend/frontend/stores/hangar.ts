@@ -5,7 +5,6 @@ interface HangarState extends ShipListState {
   ships: string[];
   preview: boolean;
   starterGuideVisible: boolean;
-  gridView: boolean;
   money: boolean;
   extensionReady: boolean;
 }

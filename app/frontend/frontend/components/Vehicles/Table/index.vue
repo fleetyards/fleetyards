@@ -45,10 +45,16 @@ const extraColumns = computed(() => {
     {
       name: "model_manufacturer_name",
       label: t("labels.model.manufacturer"),
-      mobile: false,
       sortable: true,
+      mobile: false,
     },
   ];
+});
+
+const manufacturerColumnVisible = computed(() => {
+  return extraColumns.value.some(
+    (column) => column.name === "model_manufacturer_name",
+  );
 });
 
 const tableColumns = computed<BaseTableColumn[]>(() => {
@@ -57,7 +63,6 @@ const tableColumns = computed<BaseTableColumn[]>(() => {
       name: "store_image",
       label: "",
       centered: true,
-      mobile: false,
     },
     {
       name: "name",
@@ -293,7 +298,7 @@ const resetSelected = () => {
           <small>
             <!-- eslint-disable vue/no-v-html -->
             <span
-              v-if="record.model.manufacturer"
+              v-if="record.model.manufacturer && !manufacturerColumnVisible"
               v-html="record.model.manufacturer.name"
             />
             <template v-if="record.name">

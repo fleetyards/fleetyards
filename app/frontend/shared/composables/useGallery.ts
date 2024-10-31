@@ -7,9 +7,9 @@ export const useGallery = (
   id: string = "#pswp-galley",
   children: string = ".gallery-image",
 ) => {
-  const { displayAlert, displaySuccess } = useNoty();
-
   const { t } = useI18n();
+
+  const { displayAlert, displaySuccess } = useNoty();
 
   const lightbox = ref<PhotoSwipeLightbox>();
 

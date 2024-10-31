@@ -8,12 +8,11 @@
     data-test="add-to-hangar"
     @click="add"
   >
-    <span v-show="inHangar || onWishlist">
-      <i class="fa fa-bookmark" />
-    </span>
-    <span v-show="!inHangar && !onWishlist">
-      <i class="fal fa-bookmark" />
-    </span>
+    <i v-if="inHangar || onWishlist" class="fa fa-bookmark" />
+    <i v-else class="fal fa-bookmark" />
+    <slot name="label">
+      <span v-if="label">{{ t("labels.addToHangar") }}</span>
+    </slot>
   </Btn>
 </template>
 
@@ -34,6 +33,7 @@ import {
 type Props = {
   model: Model;
   variant?: "default" | "panel" | "menu";
+  label?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {

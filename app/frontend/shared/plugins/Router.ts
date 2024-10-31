@@ -54,15 +54,13 @@ export const setupRouter = (options: FyRouterOptions) => {
 
     scrollBehavior: (to, _from, savedPosition) =>
       new Promise((resolve) => {
-        setTimeout(() => {
-          if (to.hash) {
-            resolve({ el: to.hash, behavior: "smooth" });
-          } else if (savedPosition) {
-            resolve(savedPosition);
-          } else {
-            resolve({ left: 0, top: 0 });
-          }
-        }, 600);
+        if (to.hash) {
+          resolve({ el: to.hash, behavior: "smooth" });
+        } else if (savedPosition) {
+          resolve(savedPosition);
+        } else {
+          resolve({ left: 0, top: 0 });
+        }
       }),
 
     parseQuery(query) {

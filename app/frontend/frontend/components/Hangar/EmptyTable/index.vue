@@ -1,6 +1,8 @@
 <template>
   <div class="empty-table">
-    <h2>{{ t("headlines.empty") }}</h2>
+    <h2>
+      {{ t("headlines.empty", { name: t("headlines.emptyNames.model") }) }}
+    </h2>
     <template v-if="isQueryPresent">
       <p>{{ t("texts.empty.query") }}</p>
       <slot name="footer">
@@ -52,27 +54,13 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import HangarSyncBtn from "@/frontend/components/HangarSyncBtn/index.vue";
 import { useRoute, useRouter } from "vue-router";
 import { useComlink } from "@/shared/composables/useComlink";
+import { extensionUrls } from "@/types/extension";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useHangarStore } from "@/frontend/stores/hangar";
 
 const { t } = useI18n();
 
 const hangarStore = useHangarStore();
-
-const extensionUrls = computed(() => [
-  {
-    platform: "chrome",
-    url: "https://chrome.google.com/webstore/detail/fleetyards-sync/glchfaleieoljcimjjkdkeifnejbcokg",
-  },
-  {
-    platform: "firefox",
-    url: "https://addons.mozilla.org/de/firefox/addon/fleetyards-sync/",
-  },
-  {
-    platform: "github",
-    url: "https://github.com/fleetyards/sync/releases",
-  },
-]);
 
 const route = useRoute();
 

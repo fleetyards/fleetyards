@@ -49,10 +49,15 @@ import { useNavStore } from "@/docs/stores/nav";
 import AppFooter from "@/docs/components/core/AppFooter/index.vue";
 import { useNProgress } from "@/shared/composables/useNProgress";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
+import { useI18n } from "@/shared/composables/useI18n";
+
+const { t } = useI18n();
 
 useNProgress();
 
-useMetaInfo();
+useMetaInfo({
+  appTitle: t("title.defaultDocs"),
+});
 
 const navStore = useNavStore();
 

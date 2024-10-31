@@ -5,6 +5,8 @@
       "defaultShort": "FleetYards",
       "defaultAdmin": "FleetYards.net Command",
       "defaultAdminShort": "FltYrds Command",
+      "defaultDocs": "FleetYards.net Documentation",
+      "defaultDocsShort": "FleetYards Docs",
       "home": "Home",
       "search": "Search Results",
       "ships": {
@@ -17,6 +19,8 @@
       "stats": "Stats",
       "login": "Login",
       "signUp": "Sign Up",
+      "embed": "Embed Widget",
+      "apiV1": "API V1",
       "hangar": {
         "index": "My Hangar",
         "preview": "My Hangar Preview",

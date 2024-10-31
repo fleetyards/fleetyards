@@ -26,7 +26,8 @@
           "show": "Model",
           "images": "Images",
           "videos": "Videos",
-          "prices": "Prices"
+          "prices": "Prices",
+          "tableConfigurationModal": "Table Configuration"
         },
         "components": {
           "index": "Components",
@@ -180,6 +181,9 @@
         },
         "commodityPrice": {
           "create": "Submit Price"
+        },
+        "models": {
+          "tableConfigurationModal": "Table Configuration"
         }
       },
       "shoppingCart": "Shopping Cart"

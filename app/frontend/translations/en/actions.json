@@ -108,7 +108,8 @@
         "refresh": "Refresh Page"
       },
       "empty": {
-        "hangarGuide": "Need Help?"
+        "hangarGuide": "Need Help?",
+        "reset": "Clear Filters"
       },
       "fleet": {
         "join": "Join %{fleet}!",
@@ -140,7 +141,8 @@
       "models": {
         "sync": "Sync from RSI",
         "exchangeStoreImage": "Use RSI Image",
-        "images": "Images"
+        "images": "Images",
+        "openTableConfiguration": "Open Table Configuration"
       },
       "unselect": "Unselect all Selected",
       "openPriceModal": "Submit Price",

@@ -1,6 +1,7 @@
 {
   "de": {
     "models": {
+      "name": "Schiffe",
       "model": {
         "metrics": {
           "base": "Base",

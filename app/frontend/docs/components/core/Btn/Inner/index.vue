@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useI18n } from "@/docs/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import SmallLoader from "@/shared/components/SmallLoader/index.vue";
 import type { SpinnerAlignment } from "@/shared/components/SmallLoader/index.vue";
 

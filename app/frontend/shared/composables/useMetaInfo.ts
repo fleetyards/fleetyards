@@ -1,6 +1,6 @@
 import { useRoute } from "vue-router";
 import logo from "@/images/favicon.png";
-import { useI18n } from "./useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 
 type MetaType = "website" | "article";
 
@@ -9,9 +9,9 @@ type MetaInfoOptions = {
 };
 
 export const useMetaInfo = (options: MetaInfoOptions = {}) => {
-  const route = useRoute();
-
   const { t } = useI18n();
+
+  const route = useRoute();
 
   const appTitle = options.appTitle || t("title.default");
 

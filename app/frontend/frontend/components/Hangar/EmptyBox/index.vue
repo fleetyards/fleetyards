@@ -2,7 +2,9 @@
   <transition name="fade">
     <div v-if="visible" class="empty-box">
       <Box class="info" :large="true">
-        <h2>{{ t("headlines.empty") }}</h2>
+        <h2>
+          {{ t("headlines.empty", { name: t("headlines.emptyNames.model") }) }}
+        </h2>
         <template v-if="isQueryPresent">
           <p>{{ t("texts.empty.query") }}</p>
           <slot name="footer">

@@ -267,7 +267,12 @@ class Model < ApplicationRecord
   validates :name, presence: true, uniqueness: true
 
   DEFAULT_SORTING_PARAMS = "name asc"
-  ALLOWED_SORTING_PARAMS = ["name asc", "name desc", "created_at asc", "created_at desc"]
+  ALLOWED_SORTING_PARAMS = [
+    "name asc", "name desc", "created_at asc", "created_at desc", "length asc", "length desc",
+    "beam asc", "beam desc", "height asc", "height desc", "mass asc", "mass desc", "cargo asc",
+    "cargo desc", "manufacturer_name asc", "manufacturer_name desc", "pledge_price asc",
+    "pledge_price desc", "price asc", "price desc"
+  ]
 
   ransack_alias :manufacturer, :manufacturer_slug
   ransack_alias :search, :name_or_slug_or_manufacturer_slug

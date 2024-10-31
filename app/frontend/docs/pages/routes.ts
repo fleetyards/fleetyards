@@ -9,7 +9,7 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "/api",
+    path: "/api/",
     name: "api",
     redirect: {
       name: "api-v1",

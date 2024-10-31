@@ -16,6 +16,7 @@ type Props = {
   variant?: BtnVariantsEnum;
   expandLeft?: boolean;
   expandTop?: boolean;
+  expandBottom?: boolean;
   mobileBlock?: boolean;
   inline?: boolean;
   textInline?: boolean;
@@ -26,6 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
   variant: BtnVariantsEnum.DEFAULT,
   expandLeft: false,
   expandTop: false,
+  expandBottom: false,
   mobileBlock: false,
   inline: false,
   textInline: false,
@@ -63,7 +65,8 @@ const toggle = (event: MouseEvent) => {
     innerExpandLeft.value =
       props.expandLeft || window.innerWidth - bounding.left < 300;
     innerExpandTop.value =
-      props.expandTop || window.innerHeight - bounding.top < 300;
+      (props.expandTop || window.innerHeight - bounding.top < 300) &&
+      !props.expandBottom;
   }
 
   visible.value = !visible.value;

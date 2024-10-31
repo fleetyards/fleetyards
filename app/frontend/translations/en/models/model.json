@@ -1,6 +1,7 @@
 {
   "en": {
     "models": {
+      "name": "Ships",
       "model": {
         "metrics": {
           "base": "Base",

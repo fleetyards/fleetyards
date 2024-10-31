@@ -75,8 +75,8 @@
         <Btn
           :form="`vehicle-addons-${vehicle.id}`"
           :loading="mutation.isPending.value"
-          type="submit"
-          size="large"
+          :type="BtnTypesEnum.SUBMIT"
+          :size="BtnSizesEnum.SMALL"
           :inline="true"
         >
           {{ t("actions.save") }}
@@ -97,6 +97,7 @@ import { VehicleUpdateInput, type Vehicle } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useVehicleQueries } from "@/frontend/composables/useVehicleQueries";
 import { useModelQueries } from "@/frontend/composables/useModelQueries";
+import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
   vehicle: Vehicle;

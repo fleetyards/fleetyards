@@ -30,7 +30,7 @@ export const useModelQueries = () => {
   }) => {
     return useQuery<Models, ApiError>(
       {
-        queryKey: [QueryKeysEnum.MODELS, page, perPage, filters, sorts],
+        queryKey: [QueryKeysEnum.MODELS],
         queryFn: () =>
           modelsService.models({
             page: page.value,

@@ -190,6 +190,7 @@ const openAddonsModal = () => {
     class="panel-edit-menu"
     data-test="vehicle-menu"
     expand-left
+    expand-bottom
     inline
   >
     <Btn

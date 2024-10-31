@@ -73,6 +73,10 @@ h1,
   color: darken($text-color, 20%) !important;
 }
 
+.no-break {
+  white-space: nowrap;
+}
+
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */

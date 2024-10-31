@@ -1,7 +1,10 @@
 {
   "en": {
     "emptyBox": {
-      "headline": "There's nothing to see here...",
+      "headlines": {
+        "default": "There's nothing to see here...",
+        "forName": "No %{name} found"
+      },
       "actions": {
         "reset": "Reset Filters/Pages",
         "resetPage": "Go to First Page"

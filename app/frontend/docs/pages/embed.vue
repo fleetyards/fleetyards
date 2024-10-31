@@ -6,9 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import "highlight.js";
-import "highlight.js/styles/atom-one-dark.css";
 import copyText from "@/shared/utils/CopyText";
-import { useI18n } from "@/docs/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useNoty } from "@/shared/composables/useNoty";
 
 /* eslint-disable no-useless-escape */

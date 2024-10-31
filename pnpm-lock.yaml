@@ -74,6 +74,9 @@ importers:
       highcharts:
         specifier: 11.4.0
         version: 11.4.0
+      highlight.js:
+        specifier: ^11.10.0
+        version: 11.10.0
       html2canvas:
         specifier: 1.4.1
         version: 1.4.1
@@ -2974,8 +2977,8 @@ packages:
   highlight.js@10.7.3:
     resolution: {integrity: sha512-tzcUFauisWKNHaRkN4Wjl/ZA07gENAjFl3J/c480dprkGTg5EQstgaNFqBfUqCq54kZRIEcreTsAgF/m2quD7A==}
 
-  highlight.js@11.8.0:
-    resolution: {integrity: sha512-MedQhoqVdr0U6SSnWPzfiadUcDHfN/Wzq25AkXiQv9oiOO/sG0S7XkvpFIqWBl9Yq1UYyYOOVORs5UW2XlPyzg==}
+  highlight.js@11.10.0:
+    resolution: {integrity: sha512-SYVnVFswQER+zu1laSya563s+F8VDGt7o35d4utbamowvUNLLMovFqwCLSocpZTz3MgaSRA1IbqRWZv97dtErQ==}
     engines: {node: '>=12.0.0'}
 
   hosted-git-info@2.8.9:
@@ -8240,7 +8243,7 @@ snapshots:
 
   highlight.js@10.7.3: {}
 
-  highlight.js@11.8.0: {}
+  highlight.js@11.10.0: {}
 
   hosted-git-info@2.8.9: {}
 
@@ -10311,7 +10314,7 @@ snapshots:
 
   vue3-code-block@2.2.12:
     dependencies:
-      highlight.js: 11.8.0
+      highlight.js: 11.10.0
       prismjs: 1.29.0
       ua-parser-js: 1.0.36
       vue: 3.3.4

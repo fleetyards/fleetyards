@@ -139,10 +139,6 @@
       }
     }
 
-    &:not(:last-child):not(:first-child) {
-      // padding-inline: 1.5px;
-    }
-
     &:first-child {
       padding-right: 1.5px;
     }

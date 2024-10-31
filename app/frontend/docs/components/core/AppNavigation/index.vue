@@ -13,7 +13,7 @@
           <NavItem class="min-h-[60px]">
             <img v-lazy="logo" class="w-[40px]" alt="logo" />
             <span class="font-hero">
-              {{ t("shortTitle") }}
+              {{ t("title.defaultDocsShort") }}
             </span>
           </NavItem>
           <NavItem
@@ -34,7 +34,7 @@
 
 <script lang="ts" setup>
 import { useRoute } from "vue-router";
-import { useI18n } from "@/docs/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import logo from "@/images/favicon-small.png";
 import { useNavStore } from "@/docs/stores/nav";
 import { storeToRefs } from "pinia";

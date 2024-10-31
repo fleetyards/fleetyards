@@ -43,7 +43,7 @@
 <script lang="ts" setup>
 import { useNavStore } from "@/docs/stores/nav";
 import { storeToRefs } from "pinia";
-import { useI18n } from "@/docs/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import Btn from "@/docs/components/core/Btn/index.vue";
 
 const { t } = useI18n();

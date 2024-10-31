@@ -195,7 +195,7 @@ const toggleHoloviewer = () => {
       <div class="row">
         <div class="col-12">
           <BreadCrumbs :crumbs="crumbs" />
-          <h1>
+          <h1 class="headline">
             {{ model.name }}
             <small class="text-muted manufacturer">
               <span class="manufacturer-prefix">from</span>

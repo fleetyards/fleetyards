@@ -408,6 +408,7 @@ const openGuide = () => {
         </template>
 
         <Btn
+          :active="gridView"
           :aria-label="toggleGridView"
           :size="BtnSizesEnum.SMALL"
           @click="toggleGridView"

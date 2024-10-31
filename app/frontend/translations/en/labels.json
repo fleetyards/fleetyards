@@ -30,6 +30,7 @@
       "lastReload": "Last Reload",
       "createdAt": "Created at",
       "updatedAt": "Updated at",
+      "addToHangar": "Add to Hangar",
       "home": {
         "search": "Search for Ships..."
       },
@@ -274,6 +275,22 @@
           "ready": "Hangar Ready",
           "flight-ready": "Flight Ready",
           "announced": "Announced"
+        }
+      },
+      "models": {
+        "extraColumns": "Columns",
+        "table": {
+          "columns": {
+            "manufacturer_name": "Manufacturer",
+            "length": "Length",
+            "beam": "Beam",
+            "height": "Height",
+            "mass": "Mass",
+            "cargo": "Cargo",
+            "crew": "Crew",
+            "price": "Price",
+            "pledge_price": "Pledge Price"
+          }
         }
       },
       "metrics": {
