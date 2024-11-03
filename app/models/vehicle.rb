@@ -209,7 +209,7 @@ class Vehicle < ApplicationRecord
     existing_loaner = Vehicle.exists?(loaner: true, vehicle_id: id, model_id: model_loaner.id, wanted:, user_id:).first
 
     if existing_loaner.present?
-      existing_loaners.update(hidden: false)
+      existing_loaner.update(hidden: false)
 
       return
     end
