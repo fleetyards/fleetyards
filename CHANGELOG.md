@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.41](https://github.com/fleetyards/fleetyards/compare/v5.31.40...v5.31.41) (2024-11-03)
+
+
+### Bug Fixes
+
+* **loaners:** unhide loaners if no visible is left ([64b8159](https://github.com/fleetyards/fleetyards/commit/64b81594e093ce806fdc70dd2a9fb7fa3cc52cf5))
+
 ### [5.31.40](https://github.com/fleetyards/fleetyards/compare/v5.31.39...v5.31.40) (2024-10-24)
 
 
