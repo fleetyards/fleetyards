@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.42](https://github.com/fleetyards/fleetyards/compare/v5.31.41...v5.31.42) (2024-11-03)
+
+
+### Bug Fixes
+
+* **loaners:** remove typo ([fb3f168](https://github.com/fleetyards/fleetyards/commit/fb3f168c5eeeb609291c1058dc001d8d860a18bb))
+
 ### [5.31.41](https://github.com/fleetyards/fleetyards/compare/v5.31.40...v5.31.41) (2024-11-03)
 
 
