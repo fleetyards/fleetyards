@@ -49,12 +49,12 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router/composables";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
+import { useRoute } from "vue-router";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Loader from "@/frontend/core/components/Loader/index.vue";
 import Avatar from "@/frontend/core/components/Avatar/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import { sortBy } from "@/frontend/lib/Helpers";
 import { uniqByField as uniqByFieldArray } from "@/frontend/utils/Array";
 import { FleetVehiclesCollection } from "@/frontend/api/collections/FleetVehicles";

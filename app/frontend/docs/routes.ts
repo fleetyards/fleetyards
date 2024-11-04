@@ -1,6 +1,6 @@
-import type { RouteConfig } from "vue-router";
+import type { RouteRecordRaw } from "vue-router";
 
-export const routes: RouteConfig[] = [
+export const routes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "home",
@@ -18,18 +18,18 @@ export const routes: RouteConfig[] = [
   {
     path: "/api/v1/",
     name: "api-v1",
-    component: () => import("@/docs/pages/Api.vue"),
+    component: () => import("@/docs/pages/api/v1.vue"),
     props: {
       version: "v1",
     },
     meta: {
-      title: "api.v1",
+      title: "apiV1",
     },
   },
   {
     path: "/embed/",
     name: "embed",
-    component: () => import("@/docs/pages/Embed.vue"),
+    component: () => import("@/docs/pages/embed.vue"),
     meta: {
       title: "embed",
     },

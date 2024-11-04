@@ -15,10 +15,3 @@ end
 json.pledge_price model_upgrade.pledge_price&.to_f || nil
 
 json.partial! "api/shared/dates", record: model_upgrade
-
-# DEPRECATED
-
-json.store_image model_upgrade.store_image.url
-json.store_image_large model_upgrade.store_image.large.url
-json.store_image_medium model_upgrade.store_image.medium.url
-json.store_image_small model_upgrade.store_image.small.url

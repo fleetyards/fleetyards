@@ -16,6 +16,8 @@
 #  failed_attempts           :integer          default(0), not null
 #  last_sign_in_at           :datetime
 #  last_sign_in_ip           :string(255)
+#  normalized_email          :string
+#  normalized_username       :string
 #  otp_backup_codes          :string           is an Array
 #  otp_required_for_login    :boolean
 #  otp_secret                :string
@@ -36,8 +38,26 @@
 class AdminUser < ApplicationRecord
   devise :two_factor_authenticatable, :two_factor_backupable, :recoverable, :trackable,
     :validatable, :timeoutable, :rememberable,
-    authentication_keys: [:username], otp_secret_encryption_key: Rails.application.credentials.devise_admin_otp_secret!,
+    authentication_keys: [:login], otp_secret_encryption_key: Rails.application.credentials.devise_admin_otp_secret!,
     otp_backup_code_length: 32, otp_number_of_backup_codes: 10
+
+  before_validation :set_normalized_login_fields
+
+  def self.find_for_database_authentication(warden_conditions)
+    conditions = warden_conditions.dup
+    login = conditions.delete(:login)
+    if login.present?
+      where(conditions.to_h)
+        .find_by(["normalized_username = :value OR normalized_email = :value", {value: login.downcase}])
+    elsif conditions.key?(:username) || conditions.key?(:email)
+      find_by(conditions.to_h)
+    end
+  end
+
+  def set_normalized_login_fields
+    self.normalized_email = email.downcase
+    self.normalized_username = username.downcase
+  end
 
   def reset_otp
     # rubocop:disable Rails/SkipsModelValidations

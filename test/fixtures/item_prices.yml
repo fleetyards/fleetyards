@@ -1,0 +1,32 @@
+# == Schema Information
+#
+# Table name: item_prices
+#
+#  id           :uuid             not null, primary key
+#  item_type    :string           not null
+#  location     :string
+#  location_url :string
+#  price        :decimal(15, 2)
+#  price_type   :integer
+#  time_range   :integer
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  item_id      :uuid             not null
+#
+# Indexes
+#
+#  index_item_prices_on_item  (item_type,item_id)
+#
+andromeda_item_price:
+  price: 1000
+  item: andromeda
+  item_type: Model
+  price_type: :buy
+  location: Area 18
+
+explorer_item_price:
+  price: 2000
+  item: explorer
+  item_type: Model
+  price_type: :buy
+  location: Lorville

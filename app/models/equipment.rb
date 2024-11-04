@@ -60,7 +60,6 @@ class Equipment < ApplicationRecord
   validates :name, presence: true
 
   before_save :update_slugs
-  after_save :touch_shop_commodities
 
   mount_uploader :store_image, StoreImageUploader
 
@@ -120,7 +119,7 @@ class Equipment < ApplicationRecord
     Equipment.equipment_types.map do |(item, _index)|
       Filter.new(
         category: "equipment_type",
-        name: Equipment.human_enum_name(:equipment_type, item),
+        label: Equipment.human_enum_name(:equipment_type, item),
         value: item
       )
     end
@@ -130,7 +129,7 @@ class Equipment < ApplicationRecord
     Equipment.item_types.map do |(item, _index)|
       Filter.new(
         category: "item_type",
-        name: Equipment.human_enum_name(:item_type, item),
+        label: Equipment.human_enum_name(:item_type, item),
         value: item
       )
     end
@@ -140,7 +139,7 @@ class Equipment < ApplicationRecord
     Equipment.slots.map do |(item, _index)|
       Filter.new(
         category: "slot",
-        name: Equipment.human_enum_name(:slot, item),
+        label: Equipment.human_enum_name(:slot, item),
         value: item
       )
     end
@@ -180,11 +179,5 @@ class Equipment < ApplicationRecord
 
   def backpack_compatibility_label
     Equipment.human_enum_name(:backpack_compatibility, backpack_compatibility)
-  end
-
-  private def touch_shop_commodities
-    # rubocop:disable Rails/SkipsModelValidations
-    shop_commodities.update_all(updated_at: Time.zone.now)
-    # rubocop:enable Rails/SkipsModelValidations
   end
 end

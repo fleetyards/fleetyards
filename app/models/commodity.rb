@@ -58,11 +58,14 @@ class Commodity < ApplicationRecord
 
   mount_uploader :store_image, CommodityStoreImageUploader
 
+  DEFAULT_SORTING_PARAMS = "name asc"
+  ALLOWED_SORTING_PARAMS = ["name asc", "name desc", "created_at asc", "created_at desc"]
+
   def self.type_filters
     Commodity.commodity_types.map do |(item, _index)|
       Filter.new(
         category: "commodity_type",
-        name: Commodity.human_enum_name(:commodity_type, item),
+        label: Commodity.human_enum_name(:commodity_type, item),
         value: item
       )
     end

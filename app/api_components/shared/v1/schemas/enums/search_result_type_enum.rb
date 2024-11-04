@@ -9,7 +9,7 @@ module Shared
 
           schema({
             type: :string,
-            enum: %w[Model Component Shop Station CelestialObject Starsystem Equipment Commodity]
+            enum: %w[Model Component]
           })
         end
       end

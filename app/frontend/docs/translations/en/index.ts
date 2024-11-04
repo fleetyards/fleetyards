@@ -1,15 +1,7 @@
-export default {
-  title: "FleetYards.net Documentation",
-  shortTitle: "FleetYards Docs",
-  meta: {
-    description:
-      "FleetYards.net, Your Database for all Information related to Ships from “Star Citizen“.",
-    keywords:
-      "Star Citizen, Spaceships, Ships, Fighter, Database, Squadron, 42, Star, Citizen, English, Chris, Roberts, Online, Game, Space, Simulation",
-  },
-  nav: {
-    home: "Home",
-    apiV1: "API v1",
-    embed: "Embed Widget",
-  },
-};
+import { extractTranslations, type MessagesJSON } from "@/translations/utils";
+
+const files = import.meta.glob<Record<string, MessagesJSON>>("./**/*.json", {
+  eager: true,
+});
+
+export default extractTranslations("en", files);

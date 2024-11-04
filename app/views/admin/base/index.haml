@@ -19,8 +19,8 @@
           .col-12.col-md-6.col-lg-4
             = render 'quick_stats'
           .col-12.col-md-6.col-lg-8
-            .panel-wrapper.panel-outer-spacing
-              .panel
+            .panel-wrapper-rails.panel-outer-spacing
+              .panel-rails
                 .panel-inner
                   .panel-heading
                     %h2.panel-title
@@ -40,8 +40,8 @@
           .col-12.col-lg-12
             .row
               .col-12.col-md-5
-                .panel-wrapper.panel-outer-spacing
-                  .panel
+                .panel-wrapper-rails.panel-outer-spacing
+                  .panel-rails
                     .panel-inner
                       .panel-heading
                         %h2.panel-title
@@ -59,8 +59,8 @@
                         #most-viewed-pages-chart.chart(style="height: 344px;")
 
               .col-12.col-md-7
-                .panel-wrapper.panel-outer-spacing
-                  .panel
+                .panel-wrapper-rails.panel-outer-spacing
+                  .panel-rails
                     .panel-inner
                       .panel-heading
                         %h2.panel-title
@@ -94,8 +94,3 @@
             = render 'manufacturers_chart_panel'
           .col-12.col-md-6
             = render 'latest_manufacturers_panel'
-        .row
-          .col-12.col-md-6
-            = render 'latest_components_panel'
-          .col-12.col-md-6
-            = render 'components_chart_panel'

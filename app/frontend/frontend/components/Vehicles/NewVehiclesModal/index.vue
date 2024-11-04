@@ -1,9 +1,10 @@
 <template>
-  <Modal :title="$t('headlines.newVehicles')">
+  <Modal :title="t('headlines.newVehicles')">
     <form id="new-vehicles" class="new-vehicles" @submit.prevent="save">
       <div v-for="(item, index) in form.vehicles" :key="index" class="row">
         <div class="col-8 col-md-10">
           <TeaserPanel
+            v-if="item.model"
             :item="item.model"
             variant="text"
             :with-description="false"
@@ -11,26 +12,24 @@
         </div>
         <div class="col-4 col-md-2">
           <Btn
-            v-tooltip="$t('actions.remove')"
-            :aria-label="$t('actions.remove')"
-            @click.native="removeItem(index)"
+            v-tooltip="t('actions.remove')"
+            :aria-label="t('actions.remove')"
+            @click="removeItem(index)"
           >
             <i class="fa fa-trash" />
           </Btn>
         </div>
       </div>
 
-      <CollectionFilterGroup
+      <FilterGroup
+        :label="t('actions.findModel')"
+        :query-fn="fetch"
+        :query-response-formatter="formatter"
         name="model"
-        :search-label="$t('actions.findModel')"
-        :collection="modelsCollection"
-        value-attr="id"
-        translation-key="newVehicle"
-        :paginated="true"
         :searchable="true"
-        :return-object="true"
+        :paginated="true"
         :no-label="true"
-        @input="add"
+        @update:model-value="add"
       />
     </form>
     <template #footer>
@@ -42,82 +41,122 @@
           size="large"
           :inline="true"
         >
-          {{ $t("actions.add") }}
+          {{ t("actions.add") }}
         </Btn>
       </div>
     </template>
   </Modal>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import CollectionFilterGroup from "@/frontend/core/components/Form/CollectionFilterGroup/index.vue";
-import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
-import TeaserPanel from "@/frontend/core/components/TeaserPanel/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import vehiclesCollection from "@/frontend/api/collections/Vehicles";
-import modelsCollection from "@/frontend/api/collections/Models";
-import type { ModelsCollection } from "@/frontend/api/collections/Models";
+<script lang="ts" setup>
+import Modal from "@/shared/components/AppModal/Inner/index.vue";
+import TeaserPanel from "@/shared/components/TeaserPanel/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import {
+  type Vehicle,
+  type Model,
+  Models,
+  ModelQuery,
+  VehicleCreateInput,
+} from "@/services/fyApi";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+import { FilterGroupParams } from "@/shared/components/base/FilterGroup/index.vue";
+import { useVehicleQueries } from "@/frontend/composables/useVehicleQueries";
 
 type VehicleFormData = {
   vehicles: Partial<Vehicle>[];
 };
 
-@Component<NewVehiclesModal>({
-  components: {
-    Modal,
-    CollectionFilterGroup,
-    Btn,
-    TeaserPanel,
-  },
-})
-export default class NewVehiclesModal extends Vue {
-  @Prop({ default: false }) wanted: boolean;
+type Props = {
+  wanted?: boolean;
+};
 
-  submitting = false;
+const props = withDefaults(defineProps<Props>(), {
+  wanted: false,
+});
 
-  modelsCollection: ModelsCollection = modelsCollection;
+const { t } = useI18n();
 
-  form: VehicleFormData = {
+const submitting = ref(false);
+
+const form = ref<VehicleFormData>({
+  vehicles: [],
+});
+
+const add = (value: Model) => {
+  form.value.vehicles.push({
+    model: value,
+  });
+};
+
+const removeItem = (index: number) => {
+  form.value.vehicles.splice(index, 1);
+};
+
+onMounted(() => {
+  form.value = {
     vehicles: [],
   };
+});
 
-  add(value) {
-    this.form.vehicles.push({
-      model: value,
-    });
+const { models: modelsService } = useApiClient();
+
+const fetch = async (params: FilterGroupParams) => {
+  const q: ModelQuery = {};
+
+  if (params.search) {
+    q.nameCont = params.search;
   }
 
-  removeItem(index) {
-    this.form.vehicles.splice(index, 1);
+  if (params.missing) {
+    q.slugEq = params.missing as string;
   }
 
-  mounted() {
-    this.form = {
-      vehicles: [],
+  return modelsService.models({
+    page: String(params.page || 1),
+    q,
+  });
+};
+
+const formatter = (response: Models) => {
+  return response.items.map((model) => {
+    return {
+      label: model.name,
+      value: model.slug,
     };
-  }
+  });
+};
 
-  async save() {
-    this.submitting = true;
+const comlink = useComlink();
 
-    await this.form.vehicles.forEach(async (item) => {
-      if (!item.model) {
-        return;
-      }
+const { createBulkMutation } = useVehicleQueries();
 
-      await vehiclesCollection.create({
-        wanted: this.wanted,
-        modelId: item.model.id,
-      });
-    });
+const mutation = createBulkMutation();
 
-    vehiclesCollection.refresh();
+const newVehicles = computed(() => {
+  return form.value.vehicles.map((item) => {
+    return {
+      wanted: props.wanted,
+      modelId: item.model?.id,
+    } as VehicleCreateInput;
+  });
+});
 
-    this.submitting = false;
+const save = async () => {
+  submitting.value = true;
 
-    this.$comlink.$emit("close-modal");
-  }
-}
+  await mutation.mutateAsync(newVehicles.value);
+
+  submitting.value = false;
+
+  comlink.emit("close-modal");
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "NewVehiclesModal",
+};
 </script>

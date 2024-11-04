@@ -1,12 +1,12 @@
 <template>
   <Btn
-    v-tooltip="!withLabel && t('actions.saveScreenshot')"
+    v-tooltip="tooltip"
     :loading="downloading"
     :aria-label="t('actions.saveScreenshot')"
     :variant="variant"
     :size="size"
     :inline="inline"
-    @click.native="download"
+    @click="download"
   >
     <SmallLoader :loading="downloading" />
     <i class="fad fa-image" />
@@ -19,35 +19,42 @@
 <script lang="ts" setup>
 import html2canvas from "html2canvas";
 import downloadJs from "downloadjs";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import type {
-  Props as BtnProps,
-  BtnVariants,
-  BtnSizes,
-} from "@/frontend/core/components/Btn/index.vue";
-import SmallLoader from "@/frontend/core/components/SmallLoader/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import SmallLoader from "@/shared/components/SmallLoader/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 
-interface Props extends BtnProps {
+type Props = {
   element: string;
   withLabel?: boolean;
   filename?: string;
-  variant?: BtnVariants;
-  size?: BtnSizes;
+  variant?: BtnVariantsEnum;
+  size?: BtnSizesEnum;
   inline?: boolean;
-}
+};
 
 const props = withDefaults(defineProps<Props>(), {
   withLabel: true,
   filename: "fleetyards-screenshot",
-  variant: "default",
-  size: "default",
+  variant: BtnVariantsEnum.DEFAULT,
+  size: BtnSizesEnum.DEFAULT,
   inline: false,
 });
 
 const { t } = useI18n();
 
 const downloading = ref(false);
+
+const tooltip = computed(() => {
+  if (props.withLabel) {
+    return undefined;
+  }
+
+  return t("actions.saveScreenshot");
+});
 
 const download = async () => {
   downloading.value = true;

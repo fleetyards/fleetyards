@@ -35,6 +35,7 @@ one:
   hardpoint_type: 1
   group: 1
   category: 1
+  item_slots: 3
   sub_category: 1
   model: andromeda
 

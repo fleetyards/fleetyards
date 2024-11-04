@@ -47,7 +47,7 @@ class ModelPaint < ApplicationRecord
   belongs_to :model, optional: true, touch: true, counter_cache: true
 
   has_many :vehicles, dependent: :nullify
-  has_many :shop_commodities, as: :commodity_item, dependent: :destroy
+  has_many :item_prices, as: :item, dependent: :destroy
 
   mount_uploader :store_image, StoreImageUploader
   mount_uploader :rsi_store_image, StoreImageUploader
@@ -83,15 +83,11 @@ class ModelPaint < ApplicationRecord
   end
 
   def sold_at
-    shop_commodities.where.not(sell_price: nil).order(sell_price: :asc).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
+    item_prices.sell.order(price: :asc).uniq(&:location)
   end
 
   def bought_at
-    shop_commodities.where.not(buy_price: nil).order(buy_price: :desc).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
-  end
-
-  def listed_at
-    shop_commodities.where(sell_price: nil, buy_price: nil).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
+    item_prices.buy.order(price: :asc).uniq(&:location)
   end
 
   def name_with_model

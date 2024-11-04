@@ -1,0 +1,131 @@
+.no-scroll {
+  overflow: hidden !important;
+}
+
+.nav-visible {
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  overflow: hidden !important;
+
+  .main-wrapper {
+    position: fixed;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  position: relative;
+  min-width: 320px;
+  min-height: 100%;
+  font-family: "Open Sans", sans-serif;
+  background-color: $background;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  z-index: 500;
+}
+
+.sticky-left {
+  position: sticky;
+  left: 0;
+  z-index: 500;
+}
+
+.app-body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  .app-content {
+    display: flex;
+    align-items: stretch;
+  }
+
+  .main-wrapper {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    max-width: 100%;
+    min-width: 0;
+    height: 100%;
+  }
+
+  .main-inner {
+    min-height: 100vh;
+  }
+
+  .main {
+    position: relative;
+    left: 0;
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 50px;
+    padding-inline: 15px;
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  body {
+    padding-bottom: $navigation-mobile-height + $navigation-mobile-bottom-offset;
+  }
+
+  .app-body {
+    transition: ease $transition-base-speed;
+
+    .main-wrapper {
+      padding-top: env(safe-area-inset-top);
+      padding-right: env(safe-area-inset-right);
+      padding-left: env(safe-area-inset-left);
+    }
+
+    .main {
+      transition:
+        left ease 0.5s,
+        right ease 0.5s;
+    }
+  }
+
+  .nav-visible {
+    .app-body {
+      .main {
+        right: 300px;
+        left: -300px;
+      }
+    }
+  }
+
+  .sticky-left {
+    position: initial;
+    left: auto;
+    z-index: initial;
+  }
+}
+
+@media (max-width: 370px) {
+  .app-body {
+    padding-top: 70px;
+
+    .main-wrapper {
+      padding-top: 0;
+    }
+  }
+
+  .nav-visible {
+    .app-body {
+      .main {
+        right: 250px;
+        left: -250px;
+      }
+    }
+  }
+}

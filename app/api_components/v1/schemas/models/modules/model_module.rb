@@ -16,8 +16,14 @@ module V1
               availability: {
                 type: :object,
                 properties: {
-                  boughtAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}},
-                  soldAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}}
+                  boughtAt: {
+                    type: :array,
+                    items: {"$ref": "#/components/schemas/ItemPrice"}
+                  },
+                  soldAt: {
+                    type: :array,
+                    items: {"$ref": "#/components/schemas/ItemPrice"}
+                  }
                 },
                 additionalProperties: false,
                 required: %w[boughtAt soldAt]

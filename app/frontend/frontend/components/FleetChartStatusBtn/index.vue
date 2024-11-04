@@ -1,11 +1,11 @@
 <template>
   <Btn
-    v-tooltip="!withLabel && t('actions.showStatusColor')"
+    v-tooltip="tooltip"
     :aria-label="t('actions.showStatusColor')"
     :variant="variant"
     :size="size"
     :inline="inline"
-    @click.native="toggleStatus"
+    @click="toggleStatus"
   >
     <i
       class="fad"
@@ -26,28 +26,25 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import type {
-  Props as BtnProps,
-  BtnVariants,
-  BtnSizes,
-} from "@/frontend/core/components/Btn/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
-import { useComlink } from "@/frontend/composables/useComlink";
-import { useRoute } from "vue-router/composables";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 
-interface Props extends BtnProps {
+type Props = {
   withLabel?: boolean;
-  variant?: BtnVariants;
-  size?: BtnSizes;
+  variant?: BtnVariantsEnum;
+  size?: BtnSizesEnum;
   inline?: boolean;
-}
+};
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   withLabel: true,
-  filename: "fleetyards-screenshot",
-  variant: "default",
-  size: "default",
+  variant: BtnVariantsEnum.DEFAULT,
+  size: BtnSizesEnum.DEFAULT,
   inline: false,
 });
 
@@ -59,14 +56,22 @@ const route = useRoute();
 
 const comlink = useComlink();
 
+const tooltip = computed(() => {
+  if (props.withLabel) {
+    return undefined;
+  }
+
+  return t("actions.showStatusColor");
+});
+
 onMounted(() => {
   showStatus.value = !!route.query?.showStatus;
 
-  comlink.$on("fleetchart-toggle-status", setShowStatus);
+  comlink.on("fleetchart-toggle-status", setShowStatus);
 });
 
 onBeforeUnmount(() => {
-  comlink.$off("fleetchart-toggle-status");
+  comlink.off("fleetchart-toggle-status");
 });
 
 const setShowStatus = () => {
@@ -74,7 +79,7 @@ const setShowStatus = () => {
 };
 
 const toggleStatus = () => {
-  comlink.$emit("fleetchart-toggle-status");
+  comlink.emit("fleetchart-toggle-status");
 };
 </script>
 

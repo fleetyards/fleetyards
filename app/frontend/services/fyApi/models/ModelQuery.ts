@@ -1,4 +1,4 @@
-/* generated using openapi-typescript-codegen -- do no edit */
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -17,6 +17,8 @@ export type ModelQuery = {
     lengthLteq?: number;
     manufacturerIn?: Array<string>;
     nameCont?: string;
+    nameEq?: string;
+    slugEq?: string;
     nameIn?: Array<string>;
     nameOrDescriptionCont?: string;
     onSaleEq?: boolean;

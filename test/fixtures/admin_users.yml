@@ -14,6 +14,8 @@
 #  failed_attempts           :integer          default(0), not null
 #  last_sign_in_at           :datetime
 #  last_sign_in_ip           :string(255)
+#  normalized_email          :string
+#  normalized_username       :string
 #  otp_backup_codes          :string           is an Array
 #  otp_required_for_login    :boolean
 #  otp_secret                :string
@@ -36,5 +38,7 @@ DEFAULTS: &DEFAULTS
 
 jeanluc:
   email: "jeanluc@star.fleet"
+  normalized_email: "jeanluc@star.fleet"
   username: "jeanluc"
+  normalized_username: "jeanluc"
   <<: *DEFAULTS

@@ -1,0 +1,91 @@
+.panel-image {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.6);
+  transition: border-radius $transition-base-speed ease;
+
+  & > :first-child {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    animation-name: fadeIn;
+    animation-duration: 1s;
+    animation-fill-mode: both;
+  }
+
+  &:last-child {
+    border-bottom: none;
+    border-bottom-right-radius: $panelContentBorderRadius;
+    border-bottom-left-radius: $panelContentBorderRadius;
+
+    img {
+      border-bottom-right-radius: $panelContentBorderRadius;
+      border-bottom-left-radius: $panelContentBorderRadius;
+    }
+  }
+
+  &-size-auto {
+    width: 100%;
+    height: auto;
+    min-height: 100%;
+  }
+
+  &-rounded {
+    border-radius: $panelContentBorderRadius;
+
+    a {
+      overflow: hidden;
+      border-radius: $panelContentBorderRadius;
+    }
+  }
+
+  &-rounded-top {
+    border-top-left-radius: $panelContentBorderRadius;
+    border-top-right-radius: $panelContentBorderRadius;
+
+    a {
+      overflow: hidden;
+      border-top-left-radius: $panelContentBorderRadius;
+      border-top-right-radius: $panelContentBorderRadius;
+    }
+  }
+
+  &-rounded-right {
+    border-top-right-radius: $panelContentBorderRadius;
+    border-bottom-right-radius: $panelContentBorderRadius;
+
+    a {
+      overflow: hidden;
+      border-top-right-radius: $panelContentBorderRadius;
+      border-bottom-right-radius: $panelContentBorderRadius;
+    }
+  }
+
+  &-rounded-bottom {
+    border-bottom-left-radius: $panelContentBorderRadius;
+    border-bottom-right-radius: $panelContentBorderRadius;
+
+    a {
+      overflow: hidden;
+      border-bottom-left-radius: $panelContentBorderRadius;
+      border-bottom-right-radius: $panelContentBorderRadius;
+    }
+  }
+
+  &-rounded-left {
+    border-top-left-radius: $panelContentBorderRadius;
+    border-bottom-left-radius: $panelContentBorderRadius;
+
+    a {
+      overflow: hidden;
+      border-top-left-radius: $panelContentBorderRadius;
+      border-bottom-left-radius: $panelContentBorderRadius;
+    }
+  }
+}

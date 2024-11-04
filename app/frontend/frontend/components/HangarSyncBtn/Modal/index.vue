@@ -1,7 +1,7 @@
 <template>
   <Modal :title="t('headlines.syncExtension')">
     <transition name="fade" mode="out-in">
-      <div v-if="!extensionReady">
+      <div v-if="!hangarStore.extensionReady">
         <p>{{ t("texts.syncExtension.gettingStarted") }}</p>
         <div class="sync-extension-platforms">
           <a
@@ -34,7 +34,7 @@
             variant="link"
             :text-inline="true"
             :disabled="loadingIdentity"
-            @click.native="checkRSIIdentity"
+            @click="checkRSIIdentity"
           >
             <i class="fal fa-sync" />
           </Btn>
@@ -296,7 +296,7 @@
         size="small"
         :inline="true"
         data-test="close-sync"
-        @click.native="cancel"
+        @click="cancel"
       >
         {{ t("actions.syncExtension.close") }}
       </Btn>
@@ -306,17 +306,17 @@
           :inline="true"
           data-test="cancel-sync"
           :disabled="started && !finishedWithErrors"
-          @click.native="cancel"
+          @click="cancel"
         >
           {{ t("actions.syncExtension.cancel") }}
         </Btn>
         <Btn
-          v-if="extensionReady"
+          v-if="hangarStore.extensionReady"
           :inline="true"
           data-test="start-sync"
           :loading="started || loadingIdentity"
           :disabled="identityStatus !== 'connected'"
-          @click.native="start"
+          @click="start"
         >
           {{ t("actions.syncExtension.start") }}
         </Btn>
@@ -324,7 +324,7 @@
           v-else
           :inline="true"
           data-test="recheck-sync"
-          @click.native="refreshPage"
+          @click="refreshPage"
         >
           {{ t("actions.syncExtension.refresh") }}
         </Btn>
@@ -334,23 +334,22 @@
 </template>
 
 <script lang="ts" setup>
-import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import SmallLoader from "@/frontend/core/components/SmallLoader/index.vue";
-import {
-  displayInfo,
-  displaySuccess,
-  displayWarning,
-  displayAlert,
-} from "@/frontend/lib/Noty";
-import { useI18n } from "@/frontend/composables/useI18n";
-import { useComlink } from "@/frontend/composables/useComlink";
+import Modal from "@/shared/components/AppModal/Inner/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
 import { RSIHangarParser } from "@/frontend/lib/RSIHangarParser";
-import vehiclesCollection from "@/frontend/api/collections/Vehicles";
-import type { VehiclesCollection } from "@/frontend/api/collections/Vehicles";
-import Store from "@/frontend/lib/Store";
-import { useRouter, useRoute } from "vue-router/composables";
+import { useHangarStore } from "@/frontend/stores/hangar";
+import { useNoty } from "@/shared/composables/useNoty";
+import { useRouter, useRoute } from "vue-router";
 import { extensionUrls } from "@/types/extension";
+import SmallLoader from "@/shared/components/SmallLoader/index.vue";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
+
+const { t } = useI18n();
+
+const { displayInfo, displaySuccess, displayWarning, displayAlert } = useNoty();
 
 const started = ref(false);
 
@@ -360,9 +359,9 @@ const loadingIdentity = ref(false);
 
 const currentPage = ref(1);
 
-const extensionReady = computed(() => Store.getters["hangar/extensionReady"]);
+const hangarStore = useHangarStore();
 
-const pledges = ref<TRSIHangarItem[]>([]);
+const pledges = ref<RsiHangarItemInput[]>([]);
 
 const items = computed(() =>
   pledges.value.filter((pledge) =>
@@ -382,7 +381,7 @@ const upgrades = computed(() =>
   pledges.value.filter((pledge) => pledge.type === "upgrade"),
 );
 
-const result = ref<THangarSyncResult | null>(null);
+const result = ref<HangarSyncResult | undefined>();
 
 const importedVehicles = computed(() => result.value?.importedVehicles || []);
 const foundVehicles = computed(() => result.value?.foundVehicles || []);
@@ -405,7 +404,7 @@ const missingUpgradeVehicles = computed(
   () => result.value?.missingUpgradeVehicles || [],
 );
 
-const collection: VehiclesCollection = vehiclesCollection;
+// const collection: VehiclesCollection = vehiclesCollection;
 
 type ProcessStep = {
   name: string;
@@ -429,7 +428,7 @@ onMounted(() => {
 
   window.addEventListener("message", handleExtensionMessage);
 
-  if (extensionReady.value) {
+  if (hangarStore.extensionReady) {
     checkRSIIdentity();
   }
 });
@@ -465,9 +464,9 @@ const handleExtensionMessage = (event: FleetyardsSyncEvent) => {
 };
 
 watch(
-  () => extensionReady.value,
+  () => hangarStore.extensionReady,
   () => {
-    if (extensionReady.value) {
+    if (hangarStore.extensionReady) {
       checkRSIIdentity();
     }
   },
@@ -499,12 +498,10 @@ const finishedWithErrors = computed(() =>
   processSteps.value.some((step) => step.status === "failure"),
 );
 
-const { t } = useI18n();
-
 const comlink = useComlink();
 
 const cancel = async () => {
-  comlink.$emit("close-modal", true);
+  comlink.emit("close-modal", true);
 };
 
 const start = async () => {
@@ -542,17 +539,28 @@ const fetchRSIHangar = (htmlPage: string) => {
   }
 };
 
+const { hangar: hangarService } = useApiClient();
+
 const finishSync = async () => {
   updateStep("submitData", "processing");
 
-  result.value = await collection.syncRsiHangar(pledges.value);
+  try {
+    result.value = await hangarService.syncRsiHangar({
+      requestBody: {
+        items: pledges.value,
+      },
+    });
 
-  if (result.value) {
-    displaySuccess({ text: t("messages.syncExtension.success") });
-    updateStep("submitData", "success");
-    comlink.$emit("hangar-sync-finished");
-  } else {
+    if (result.value) {
+      displaySuccess({ text: t("messages.syncExtension.success") });
+      updateStep("submitData", "success");
+      comlink.emit("hangar-sync-finished");
+    } else {
+      updateStep("submitData", "failure");
+    }
+  } catch (error) {
     updateStep("submitData", "failure");
+    console.error(error);
   }
 };
 

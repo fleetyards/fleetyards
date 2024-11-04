@@ -7,19 +7,12 @@
             {{ countLabel }}{{ model.name }}
           </a>
           <br />
-          <small
-            v-if="model.manufacturer"
-            class="text-muted"
-            v-html="model.manufacturer.name"
-          />
+          <small v-if="model.manufacturer" class="text-muted">
+            {{ model.manufacturer.name }}
+          </small>
         </h2>
       </div>
-      <div
-        :class="{
-          'no-details': !details,
-        }"
-        class="panel-image text-center"
-      >
+      <PanelImage class="text-center" :rounded="details ? undefined : 'bottom'">
         <LazyImage
           v-if="model.media.storeImage?.medium"
           :href="url"
@@ -30,37 +23,39 @@
           :alt="model.name"
           class="image"
         />
-      </div>
-      <PanelDetails
+      </PanelImage>
+      <Collapsed
         :key="`details-${model.slug}-${uuid}-wrapper`"
         :visible="details"
       >
         <div class="production-status">
           <strong class="text-uppercase">
             <template v-if="model.productionStatus">
-              {{ t(`labels.model.productionStatus.${model.productionStatus}`) }}
+              {{ t(`model.productionStatuses.${model.productionStatus}`) }}
             </template>
             <template v-else>
-              {{ t(`labels.not-available`) }}
+              {{ t("model.productionStatuses.notAvailable") }}
             </template>
           </strong>
         </div>
         <ModelTopMetrics :model="model" padding />
         <hr class="dark slim-spacer" />
         <ModelBaseMetrics :model="model" padding />
-      </PanelDetails>
+      </Collapsed>
     </Panel>
   </div>
 </template>
 
 <script lang="ts" setup>
-import Panel from "@/embed/components/Panel/index.vue";
-import PanelDetails from "@/embed/components/Panel/PanelDetails/index.vue";
+import Panel from "@/shared/components/Panel/index.vue";
+import PanelImage from "@/shared/components/Panel/Image/index.vue";
+import Collapsed from "@/shared/components/Collapsed.vue";
 import ModelTopMetrics from "@/embed/components/Models/TopMetrics/index.vue";
 import ModelBaseMetrics from "@/embed/components/Models/BaseMetrics/index.vue";
-import LazyImage from "@/embed/components/LazyImage/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import LazyImage from "@/shared/components/LazyImage/index.vue";
+import { useI18n } from "@/embed/composables/useI18n";
 import { v4 as uuidv4 } from "uuid";
+import type { Model } from "@/services/fyApi";
 
 type Props = {
   model: Model;

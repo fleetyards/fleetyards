@@ -7,15 +7,13 @@ module Admin
     layout "admin/application"
 
     before_action :configure_permitted_parameters, if: :devise_controller?
-    before_action :authenticate_admin_user!, :set_default_nav
+    before_action :set_default_nav
 
     protect_from_forgery with: :exception
 
     skip_before_action :track_ahoy_visit
 
     add_flash_types :error, :warning
-
-    check_authorization unless: :unauthorized_controllers
 
     rescue_from ActionController::InvalidAuthenticityToken do
       @action_name = "unprocessable_entity"

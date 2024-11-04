@@ -17,25 +17,21 @@ module V1
             availability: {
               type: :object,
               properties: {
-                listedAt: {
-                  type: :array,
-                  items: {"$ref": "#/components/schemas/ShopCommodity"}
-                },
                 boughtAt: {
                   type: :array,
-                  items: {"$ref": "#/components/schemas/ShopCommodity"}
+                  items: {"$ref": "#/components/schemas/ItemPrice"}
                 },
                 soldAt: {
                   type: :array,
-                  items: {"$ref": "#/components/schemas/ShopCommodity"}
+                  items: {"$ref": "#/components/schemas/ItemPrice"}
                 },
                 rentalAt: {
                   type: :array,
-                  items: {"$ref": "#/components/schemas/ShopCommodity"}
+                  items: {"$ref": "#/components/schemas/ItemPrice"}
                 }
               },
               additionalProperties: false,
-              required: %w[listedAt boughtAt soldAt rentalAt]
+              required: %w[boughtAt soldAt rentalAt]
             },
 
             brochure: {type: :string},
@@ -62,7 +58,6 @@ module V1
             hasUpgrades: {type: :boolean},
             hasVideos: {type: :boolean},
             holo: {type: :string},
-            holoColored: {type: :boolean, deprecated: true},
             lastPledgePrice: {type: :number},
             lastPledgePriceLabel: {type: :string},
             lastUpdatedAt: {type: :string, format: "date-time"},
@@ -130,7 +125,7 @@ module V1
             price: {type: :number},
             priceLabel: {type: :string},
             productionNote: {type: :string},
-            productionStatus: {type: :string},
+            productionStatus: {"$ref": "#/components/schemas/ModelProductionStatusEnum"},
             rsiId: {type: :integer},
             rsiName: {type: :string},
             rsiSlug: {type: :string},
@@ -156,67 +151,7 @@ module V1
             },
 
             createdAt: {type: :string, format: "date-time"},
-            updatedAt: {type: :string, format: "date-time"},
-
-            # DEPRECATED
-
-            afterburnerGroundSpeed: {type: :number, deprecated: true},
-            afterburnerSpeed: {type: :number, deprecated: true},
-            angledView: {type: :string, deprecated: true},
-            angledViewHeight: {type: :number, deprecated: true},
-            angledViewLarge: {type: :string, deprecated: true},
-            angledViewMedium: {type: :string, deprecated: true},
-            angledViewSmall: {type: :string, deprecated: true},
-            angledViewWidth: {type: :number, deprecated: true},
-            angledViewXlarge: {type: :string, deprecated: true},
-            beam: {type: :number, deprecated: true},
-            beamLabel: {type: :string, deprecated: true},
-            cargo: {type: :number, deprecated: true},
-            cargoLabel: {type: :string, deprecated: true},
-            fleetchartImage: {type: :string, deprecated: true},
-            fleetchartLength: {type: :number, deprecated: true},
-            groundSpeed: {type: :number, deprecated: true},
-            height: {type: :number, deprecated: true},
-            heightLabel: {type: :string, deprecated: true},
-            hydrogenFuelTankSize: {type: :number, deprecated: true},
-            length: {type: :number, deprecated: true},
-            lengthLabel: {type: :string, deprecated: true},
-            mass: {type: :number, deprecated: true},
-            massLabel: {type: :number, deprecated: true},
-            maxCrew: {type: :integer, deprecated: true},
-            maxCrewLabel: {type: :string, deprecated: true},
-            minCrew: {type: :integer, deprecated: true},
-            minCrewLabel: {type: :string, deprecated: true},
-            pitchMax: {type: :number, deprecated: true},
-            quantumFuelTankSize: {type: :number, deprecated: true},
-            rollMax: {type: :number, deprecated: true},
-            salesPageUrl: {type: :string, deprecated: true},
-            scmSpeed: {type: :number, deprecated: true},
-            sideView: {type: :string, deprecated: true},
-            sideViewHeight: {type: :number, deprecated: true},
-            sideViewLarge: {type: :string, deprecated: true},
-            sideViewMedium: {type: :string, deprecated: true},
-            sideViewSmall: {type: :string, deprecated: true},
-            sideViewWidth: {type: :number, deprecated: true},
-            sideViewXlarge: {type: :string, deprecated: true},
-            size: {type: :string, deprecated: true},
-            sizeLabel: {type: :string, deprecated: true},
-            storeImage: {type: :string, deprecated: true},
-            storeImageLarge: {type: :string, deprecated: true},
-            storeImageMedium: {type: :string, deprecated: true},
-            storeImageSmall: {type: :string, deprecated: true},
-            storeUrl: {type: :string, deprecated: true},
-            topView: {type: :string, deprecated: true},
-            topViewHeight: {type: :number, deprecated: true},
-            topViewLarge: {type: :string, deprecated: true},
-            topViewMedium: {type: :string, deprecated: true},
-            topViewSmall: {type: :string, deprecated: true},
-            topViewWidth: {type: :number, deprecated: true},
-            topViewXlarge: {type: :string, deprecated: true},
-            xaxisAcceleration: {type: :number, deprecated: true},
-            yawMax: {type: :number, deprecated: true},
-            yaxisAcceleration: {type: :number, deprecated: true},
-            zaxisAcceleration: {type: :number, deprecated: true}
+            updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
           required: %w[

@@ -7,9 +7,10 @@
 <p>
   <%= I18n.t('mailer.security.info') %>
 </p>
-<spacer size="16"></spacer>
-<center>
-  <button href="<%= frontend_settings_security_url %>">
-    <%= I18n.t('mailer.security.action') %>
-  </button>
-</center>
+<% if %>
+  <spacer size="16"></spacer>
+  <center>
+    <button href="<%= frontend_settings_security_url %>">
+      <%= I18n.t('mailer.security.action') %>
+    </button>
+  </center>

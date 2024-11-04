@@ -127,11 +127,19 @@ class User < ApplicationRecord
 
   mount_uploader :avatar, AvatarUploader
 
+  DEFAULT_SORTING_PARAMS = "username asc"
+  ALLOWED_SORTING_PARAMS = [
+    "username asc", "username desc", "email asc", "email desc", "created_at asc", "created_at desc",
+    "last_active_at asc", "last_active_at desc", "last_sign_in_at asc", "last_sign_in_at desc"
+  ]
+
+  ransack_alias :search, :username_or_email
+
   def self.ransackable_attributes(auth_object = nil)
     [
       "avatar", "confirmed_at", "created_at", "current_sign_in_at", "discord", "email",
       "guilded", "hangar_updated_at", "homepage", "last_active_at", "last_sign_in_at", "locale",
-      "twitch", "updated_at", "username", "wanted_vehicles_count", "youtube"
+      "twitch", "updated_at", "username", "wanted_vehicles_count", "youtube", "search"
     ]
   end
 

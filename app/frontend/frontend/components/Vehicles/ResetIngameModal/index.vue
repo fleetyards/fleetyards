@@ -20,12 +20,12 @@
 </template>
 
 <script lang="ts" setup>
-import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Modal from "@/shared/components/AppModal/Inner/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
 import vehiclesCollection from "@/frontend/api/collections/Vehicles";
-import { useI18n } from "@/frontend/composables/useI18n";
-import { useComlink } from "@/frontend/composables/useComlink";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
 
 const { t } = useI18n();
 

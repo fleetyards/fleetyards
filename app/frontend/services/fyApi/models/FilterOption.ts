@@ -1,15 +1,15 @@
-/* generated using openapi-typescript-codegen -- do no edit */
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 export type FilterOption = {
-    category: string;
+    category?: string;
     icon?: string;
     /**
      * @deprecated
      */
-    name: string;
-    label?: string;
+    name?: string;
+    label: string;
     value: string;
 };
 

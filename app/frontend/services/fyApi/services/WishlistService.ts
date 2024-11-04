@@ -1,9 +1,9 @@
-/* generated using openapi-typescript-codegen -- do no edit */
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { Hangar } from '../models/Hangar';
 import type { HangarQuery } from '../models/HangarQuery';
-import type { Vehicle } from '../models/Vehicle';
 import type { VehicleExport } from '../models/VehicleExport';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -25,7 +25,7 @@ export class WishlistService {
     }
     /**
      * Your Wishlist
-     * @returns Vehicle successful
+     * @returns Hangar successful
      * @throws ApiError
      */
     public getWishlist({
@@ -36,7 +36,7 @@ export class WishlistService {
         page?: string,
         perPage?: string,
         q?: HangarQuery,
-    }): CancelablePromise<Array<Vehicle>> {
+    }): CancelablePromise<Hangar> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/wishlist',

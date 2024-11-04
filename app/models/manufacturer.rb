@@ -31,7 +31,8 @@ class Manufacturer < ApplicationRecord
 
   before_save :update_slugs
 
-  ransack_alias :name, :name_or_slug
+  DEFAULT_SORTING_PARAMS = "name asc"
+  ALLOWED_SORTING_PARAMS = ["name asc", "name desc", "created_at asc", "created_at desc"]
 
   def self.ransackable_attributes(auth_object = nil)
     [
@@ -67,7 +68,7 @@ class Manufacturer < ApplicationRecord
   def to_filter
     Filter.new(
       category: "manufacturer",
-      name:,
+      label: name_clean,
       icon: (logo.small.url if logo.present?),
       value: slug
     )
