@@ -1294,6 +1294,11 @@
     estree-walker "^2.0.2"
     picomatch "^2.3.1"
 
+"@scarf/scarf@=1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@scarf/scarf/-/scarf-1.3.0.tgz#f8c75560d0dace4452dee1e31995e6396e61f3ee"
+  integrity sha512-lHKK8M5CTcpFj2hZDB3wIjb0KAbEOgDmiJGDv1WBRfQgRm/a8/XMEkG/N1iM01xgbUDsPQwi42D+dFo1XPAKew==
+
 "@sentry-internal/feedback@7.108.0":
   version "7.108.0"
   resolved "https://registry.yarnpkg.com/@sentry-internal/feedback/-/feedback-7.108.0.tgz#7033352abd304f1383ec47640e056a0dfd5132b7"
@@ -6357,10 +6362,12 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
-swagger-ui-dist@^5.12.0:
-  version "5.12.0"
-  resolved "https://registry.yarnpkg.com/swagger-ui-dist/-/swagger-ui-dist-5.12.0.tgz#cc983711d38963aad1de8693fb19f9d8f7a74f80"
-  integrity sha512-Rt1xUpbHulJVGbiQjq9yy9/r/0Pg6TmpcG+fXTaMePDc8z5WUw4LfaWts5qcNv/8ewPvBIbY7DKq7qReIKNCCQ==
+swagger-ui-dist@^5.18.1:
+  version "5.18.1"
+  resolved "https://registry.yarnpkg.com/swagger-ui-dist/-/swagger-ui-dist-5.18.1.tgz#3a58ddf788ec514604331255c58d0a032310fbfd"
+  integrity sha512-nOUpYnU6HZ5Eq2+xmptFti4RX/Vcbe+6PDtQGnSiGT2j9ImgcrJsjsX3OEl8TZV+48y8Wfn0gcjxyoXsMFHr/w==
+  dependencies:
+    "@scarf/scarf" "=1.3.0"
 
 symbol-tree@^3.2.4:
   version "3.2.4"
