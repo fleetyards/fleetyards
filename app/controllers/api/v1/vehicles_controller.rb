@@ -8,12 +8,10 @@ module Api
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
         unless: :user_signed_in?,
-        only: %i[show check_serial fleetchart public_fleetchart hangar]
+        only: %i[check_serial fleetchart hangar]
       before_action -> { doorkeeper_authorize! "hangar", "hangar:write" },
         unless: :user_signed_in?,
-        except: %i[show check_serial fleetchart public_fleetchart hangar]
-
-      skip_authorization_check only: [:public_fleetchart]
+        except: %i[check_serial fleetchart hangar]
 
       def create
         @vehicle = Vehicle.new(

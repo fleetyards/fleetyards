@@ -6,10 +6,10 @@ module Api
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "fleet", "fleet:read" },
         unless: :user_signed_in?,
-        only: %i[invites current find_by_invite]
+        only: %i[invites my find_by_invite]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
-        except: %i[show check invites current find_by_invite]
+        except: %i[show check invites my find_by_invite]
 
       before_action :doorkeeper_authorize!, unless: :user_signed_in?, except: %i[show]
 

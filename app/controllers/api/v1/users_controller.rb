@@ -5,8 +5,8 @@ module Api
     class UsersController < ::Api::BaseController
       skip_authorization_check only: %i[signup confirm]
 
-      before_action :doorkeeper_authorize!, unless: :user_signed_in?, only: %i[current update]
-      before_action :authenticate_user!, except: %i[current update]
+      before_action :doorkeeper_authorize!, unless: :user_signed_in?, only: %i[me update]
+      before_action :authenticate_user!, except: %i[me update]
 
       def me
         authorize! :read, current_user
