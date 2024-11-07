@@ -4,6 +4,8 @@ import { useSessionStore } from "@/frontend/stores/session";
 import { type NavigationGuardNext, type RouteLocation } from "vue-router";
 import { routes } from "@/frontend/pages/routes";
 import { setupRouter, type FyRedirectRoute } from "@/shared/plugins/Router";
+import { useNoty } from "@/shared/composables/useNoty";
+import { useI18n } from "@/shared/composables/useI18n";
 
 const beforeEach = (
   to: RouteLocation,
@@ -40,6 +42,19 @@ const beforeResolve = (to: RouteLocation): FyRedirectRoute | undefined => {
       routeQuery: {
         redirectTo: String(to.fullPath),
       },
+    };
+  }
+
+  const { displayInfo } = useNoty();
+  const { t } = useI18n();
+
+  if (to.meta.needsNoAuthentication && sessionStore.isAuthenticated) {
+    displayInfo({
+      text: t("messages.session.alreadyLoggedIn"),
+    });
+
+    return {
+      routeName: "home",
     };
   }
 };

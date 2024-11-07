@@ -25,6 +25,7 @@ module V1
             nameEq: {type: :string},
             slugEq: {type: :string},
             nameIn: {type: :array, items: {type: :string}},
+            slugIn: {type: :array, items: {type: :string}},
             nameOrDescriptionCont: {type: :string},
             onSaleEq: {type: :boolean},
             pledgePriceGteq: {type: :number},
@@ -37,6 +38,7 @@ module V1
             searchCont: {type: :string},
             sizeIn: {type: :array, items: {type: :string}},
             willItFit: {type: :string, format: :uuid},
+            withCargo: {type: :boolean},
             sorts: {oneOf: [{
               type: :array, items: {"$ref": "#/components/schemas/ModelSortEnum"}
             }, {

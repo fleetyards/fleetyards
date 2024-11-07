@@ -14,11 +14,13 @@ import { EmptyVariantsEnum } from "./types";
 type Props = {
   variant?: EmptyVariantsEnum;
   name?: string;
+  title?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   variant: EmptyVariantsEnum.DEFAULT,
   name: undefined,
+  title: undefined,
 });
 
 const route = useRoute();
@@ -46,7 +48,9 @@ const cssClasses = computed(() => {
 <template>
   <div class="empty" :class="cssClasses">
     <Box v-if="variant === EmptyVariantsEnum.BOX" class="info" :large="true">
-      <EmptyHeadline :name="name" />
+      <EmptyHeadline :name="name">
+        <slot name="headline" :query-present="isQueryPresent" />
+      </EmptyHeadline>
       <slot name="info" :query-present="isQueryPresent">
         <EmptyInfo :query-present="isQueryPresent" />
       </slot>
@@ -55,7 +59,7 @@ const cssClasses = computed(() => {
           :query-present="isQueryPresent"
           :page-present="isPagePresent"
         >
-          <slot name="actions"></slot>
+          <slot name="actions" :query-present="isQueryPresent"></slot>
         </EmptyActions>
       </template>
     </Box>
@@ -68,7 +72,7 @@ const cssClasses = computed(() => {
         :query-present="isQueryPresent"
         :page-present="isPagePresent"
       >
-        <slot name="actions"></slot>
+        <slot name="actions" :query-present="isQueryPresent"></slot>
       </EmptyActions>
     </template>
   </div>

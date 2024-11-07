@@ -1,7 +1,9 @@
 {
   "zh-TW": {
     "emptyBox": {
-      "headline": "There's nothing to see here...",
+      "headlines": {
+        "default": "There's nothing to see here..."
+      },
       "actions": {
         "reset": "Reset Filters/Pages",
         "resetPage": "Go to First Page"

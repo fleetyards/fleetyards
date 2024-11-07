@@ -719,6 +719,42 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/vehicles":
+    get:
+      summary: Vehicles list
+      operationId: vehicles
+      tags:
+      - Vehicles
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/VehicleQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Vehicles"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
 components:
   parameters:
     PageParameter:
@@ -1350,6 +1386,22 @@ components:
       - name desc
       - created_at asc
       - created_at desc
+      - length asc
+      - length desc
+      - beam asc
+      - beam desc
+      - height asc
+      - height desc
+      - mass asc
+      - mass desc
+      - cargo asc
+      - cargo desc
+      - manufacturer_name asc
+      - manufacturer_name desc
+      - pledge_price asc
+      - pledge_price desc
+      - price asc
+      - price desc
       title: ModelSortEnum
     RoadmapItemSortEnum:
       type: string
@@ -1503,6 +1555,40 @@ components:
       - createdAt
       - updatedAt
       title: AdminUser
+    HangarGroup:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        color:
+          type: string
+        public:
+          type: boolean
+        sort:
+          type: integer
+        vehiclesCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - color
+      - public
+      - createdAt
+      - updatedAt
+      title: HangarGroup
     Image:
       type: object
       properties:
@@ -2281,6 +2367,131 @@ components:
       - items
       - meta
       title: Models
+    ModelModulePackage:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        pledgePrice:
+          type: number
+        modules:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelModule"
+        media:
+          type: object
+          properties:
+            angledView:
+              "$ref": "#/components/schemas/ViewImage"
+            sideView:
+              "$ref": "#/components/schemas/ViewImage"
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+            topView:
+              "$ref": "#/components/schemas/ViewImage"
+          additionalProperties: false
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        hasStoreImage:
+          type: boolean
+          deprecated: true
+        storeImage:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageLarge:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageMedium:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageSmall:
+          type: string
+          format: uri
+          deprecated: true
+        angledView:
+          type: string
+          deprecated: true
+        angledViewHeight:
+          type: number
+          deprecated: true
+        angledViewLarge:
+          type: string
+          deprecated: true
+        angledViewMedium:
+          type: string
+          deprecated: true
+        angledViewSmall:
+          type: string
+          deprecated: true
+        angledViewWidth:
+          type: number
+          deprecated: true
+        angledViewXlarge:
+          type: string
+          deprecated: true
+        sideView:
+          type: string
+          deprecated: true
+        sideViewHeight:
+          type: number
+          deprecated: true
+        sideViewLarge:
+          type: string
+          deprecated: true
+        sideViewMedium:
+          type: string
+          deprecated: true
+        sideViewSmall:
+          type: string
+          deprecated: true
+        sideViewWidth:
+          type: number
+          deprecated: true
+        sideViewXlarge:
+          type: string
+          deprecated: true
+        topView:
+          type: string
+          deprecated: true
+        topViewHeight:
+          type: number
+          deprecated: true
+        topViewLarge:
+          type: string
+          deprecated: true
+        topViewMedium:
+          type: string
+          deprecated: true
+        topViewSmall:
+          type: string
+          deprecated: true
+        topViewWidth:
+          type: number
+          deprecated: true
+        topViewXlarge:
+          type: string
+          deprecated: true
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - modules
+      - media
+      - createdAt
+      - updatedAt
+      title: ModelModulePackage
     ModelModule:
       type: object
       properties:
@@ -2522,6 +2733,54 @@ components:
       - createdAt
       - updatedAt
       title: ModelPaint
+    ModelUpgrade:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        pledgePrice:
+          type: number
+        media:
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+          additionalProperties: false
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        storeImage:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageLarge:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageMedium:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageSmall:
+          type: string
+          format: uri
+          deprecated: true
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - media
+      - createdAt
+      - updatedAt
+      title: ModelUpgrade
     ComponentQuery:
       type: object
       properties:
@@ -2671,6 +2930,8 @@ components:
           type: string
         usernameCont:
           type: string
+        usernameEq:
+          type: string
         emailCont:
           type: string
         rsiHandleCont:
@@ -2700,6 +2961,73 @@ components:
           - "$ref": "#/components/schemas/UserSortEnum"
       additionalProperties: false
       title: UserQuery
+    VehicleQuery:
+      type: object
+      properties:
+        searchCont:
+          type: string
+        idEq:
+          type: string
+        idIn:
+          type: array
+          items:
+            type: string
+        idNotIn:
+          type: array
+          items:
+            type: string
+        nameCont:
+          type: string
+        nameIn:
+          type: array
+          items:
+            type: string
+        userUsernameIn:
+          type: array
+          items:
+            type: string
+        modelSlugIn:
+          type: array
+          items:
+            type: string
+        manufacturerIn:
+          type: array
+          items:
+            type: string
+        modelIdEq:
+          type: string
+        modelIdIn:
+          type: array
+          items:
+            type: string
+        modelIdNotIn:
+          type: array
+          items:
+            type: string
+        modelNameCont:
+          type: string
+        modelNameIn:
+          type: array
+          items:
+            type: string
+        modelProductionStatusIn:
+          type: array
+          items:
+            type: string
+        modelSearchCont:
+          type: string
+        loanerEq:
+          type: boolean
+        wantedEq:
+          type: boolean
+        sorts:
+          oneOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/VehicleSortEnum"
+          - "$ref": "#/components/schemas/VehicleSortEnum"
+      additionalProperties: false
+      title: VehicleQuery
     Stats:
       type: object
       properties:
@@ -2810,6 +3138,111 @@ components:
       - items
       - meta
       title: Users
+    Vehicle:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        serial:
+          type: string
+        user:
+          "$ref": "#/components/schemas/User"
+        alternativeNames:
+          type: array
+          items:
+            type: string
+        boughtVia:
+          "$ref": "#/components/schemas/BoughtViaEnum"
+        boughtViaLabel:
+          type: string
+        flagship:
+          type: boolean
+        hangarGroupIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        hangarGroups:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarGroup"
+        loaner:
+          type: boolean
+        model:
+          "$ref": "#/components/schemas/Model"
+        modelModuleIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        modelUpgradeIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        modulePackage:
+          "$ref": "#/components/schemas/ModelModulePackage"
+        nameVisible:
+          type: boolean
+        paint:
+          "$ref": "#/components/schemas/ModelPaint"
+        public:
+          type: boolean
+        saleNotify:
+          type: boolean
+        upgrade:
+          "$ref": "#/components/schemas/ModelUpgrade"
+        wanted:
+          type: boolean
+        hidden:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - model
+      - user
+      - wanted
+      - hidden
+      - boughtVia
+      - loaner
+      - flagship
+      - public
+      - nameVisible
+      - saleNotify
+      - alternativeNames
+      - modelUpgradeIds
+      - hangarGroupIds
+      - hangarGroups
+      - modelModuleIds
+      - createdAt
+      - updatedAt
+      title: Vehicle
+    Vehicles:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            "$ref": "#/components/schemas/Vehicle"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: Vehicles
   securitySchemes:
     SessionCookie:
       type: apiKey

@@ -43,6 +43,9 @@
           "index": "Users",
           "edit": "Edit User"
         },
+        "vehicles": {
+          "index": "Vehicles"
+        },
         "admins": {
           "index": "Admins",
           "new": "New Admin",
@@ -183,7 +186,7 @@
           "create": "Submit Price"
         },
         "models": {
-          "tableConfigurationModal": "Table Configuration"
+          "displayOptions": "Display Options"
         }
       },
       "shoppingCart": "Shopping Cart"

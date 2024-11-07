@@ -1,58 +1,13 @@
-<template>
-  <div class="empty-table">
-    <h2>
-      {{ t("headlines.empty", { name: t("headlines.emptyNames.model") }) }}
-    </h2>
-    <template v-if="isQueryPresent">
-      <p>{{ t("texts.empty.query") }}</p>
-      <slot name="footer">
-        <div class="empty-table-actions">
-          <Btn @click="openGuide">
-            {{ t("actions.empty.hangarGuide") }}
-          </Btn>
-          <Btn v-if="isPagePresent" @click="resetPage">
-            {{ t("actions.empty.resetPage") }}
-          </Btn>
-          <Btn :to="{ name: String(route.name) }" :exact="true">
-            {{ t("actions.empty.reset") }}
-          </Btn>
-        </div>
-      </slot>
-    </template>
-    <template v-else>
-      <p>
-        {{ t("texts.empty.hangar.info") }}
-      </p>
-      <div v-if="!hangarStore.extensionReady">
-        <p>{{ t("texts.empty.hangar.extension") }}</p>
-        <div class="sync-extension-platforms">
-          <a
-            v-for="link in extensionUrls"
-            :key="`extension-link-${link.platform}`"
-            v-tooltip="t(`labels.syncExtension.platforms.${link.platform}`)"
-            :href="link.url"
-            target="_blank"
-          >
-            <i :class="`fab fa-${link.platform}`" />
-          </a>
-        </div>
-      </div>
-      <slot name="footer">
-        <div class="empty-table-actions">
-          <HangarSyncBtn />
-          <Btn @click="openGuide">
-            {{ t("actions.empty.hangarGuide") }}
-          </Btn>
-        </div>
-      </slot>
-    </template>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "HangarEmptyTable",
+};
+</script>
 
 <script lang="ts" setup>
+import Empty from "@/shared/components/Empty/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import HangarSyncBtn from "@/frontend/components/HangarSyncBtn/index.vue";
-import { useRoute, useRouter } from "vue-router";
+import HangarSyncBtn from "@/frontend/components/Hangar/SyncBtn/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import { extensionUrls } from "@/types/extension";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -62,51 +17,45 @@ const { t } = useI18n();
 
 const hangarStore = useHangarStore();
 
-const route = useRoute();
-
-const isPagePresent = computed(
-  () => !!route.query.page && Number(route.query.page) > 1,
-);
-
-const isQueryPresent = computed(
-  () => Object.keys(route.query?.q || {}).length > 0 || isPagePresent.value,
-);
-
-const router = useRouter();
-
-const resetPage = () => {
-  const query = {
-    ...JSON.parse(JSON.stringify(route.query)),
-  };
-
-  if (query.page) {
-    delete query.page;
-  }
-
-  router
-    .replace({
-      name: String(route.name),
-      query: {
-        ...query,
-        q: route.query.q || {},
-      },
-    })
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    .catch((_err) => {});
-};
-
 const comlink = useComlink();
 
 const openGuide = () => {
   comlink.emit("open-modal", {
     wide: true,
-    component: () => import("@/frontend/components/HangarGuideModal/index.vue"),
+    component: () =>
+      import("@/frontend/components/Hangar/GuideModal/index.vue"),
   });
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "HangarEmptyTable",
-};
-</script>
+<template>
+  <Empty>
+    <template #actions>
+      <HangarSyncBtn />
+      <Btn @click="openGuide">
+        {{ t("actions.empty.hangarGuide") }}
+      </Btn>
+    </template>
+    <template #info="{ queryPresent }">
+      <div v-if="queryPresent">
+        <p>
+          {{ t("texts.empty.hangar.info") }}
+        </p>
+        <div v-if="!hangarStore.extensionReady">
+          <p>{{ t("texts.empty.hangar.extension") }}</p>
+          <div class="sync-extension-platforms">
+            <a
+              v-for="link in extensionUrls"
+              :key="`extension-link-${link.platform}`"
+              v-tooltip="t(`labels.syncExtension.platforms.${link.platform}`)"
+              :href="link.url"
+              target="_blank"
+            >
+              <i :class="`fab fa-${link.platform}`" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </template>
+  </Empty>
+</template>

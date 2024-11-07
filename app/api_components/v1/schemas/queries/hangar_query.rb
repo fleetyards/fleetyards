@@ -41,6 +41,7 @@ module V1
             hangarGroupsIn: {type: :array, items: {type: :string}},
             hangarGroupsNotIn: {type: :array, items: {type: :string}},
             willItFit: {type: :string, format: :uuid},
+            withCargo: {type: :boolean},
             sorts: {oneOf: [{
               type: :array, items: {"$ref": "#/components/schemas/VehicleSortEnum"}
             }, {

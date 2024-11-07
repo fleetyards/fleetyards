@@ -21,12 +21,14 @@ const { t } = useI18n();
 
 <template>
   <Heading class="empty__headline">
-    <template v-if="name">
-      {{ t("emptyBox.headlines.forName", { name: name }) }}
-    </template>
-    <template v-else>
-      {{ t("emptyBox.headlines.default") }}
-    </template>
+    <slot>
+      <template v-if="name">
+        {{ t("emptyBox.headlines.forName", { name: name }) }}
+      </template>
+      <template v-else>
+        {{ t("emptyBox.headlines.default") }}
+      </template>
+    </slot>
   </Heading>
 </template>
 

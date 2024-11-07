@@ -123,7 +123,8 @@ const sortableDirection = (column: BaseTableColumn) => {
     return undefined;
   }
 
-  if (route.query.s && route.query.s.includes(sortableField(column))) {
+  const sortCol = ((route.query.s as string) || "").split(" ")[0];
+  if (sortCol === sortableField(column)) {
     return (route.query.s as string).split(" ")[1];
   } else if (
     props.defaultSort &&
@@ -138,10 +139,25 @@ const sortableField = (column: BaseTableColumn) => {
 };
 
 const sortableLink = (column: BaseTableColumn) => {
-  const direction = sortableDirection(column) === "asc" ? "desc" : "asc";
+  let direction: "asc" | "desc" | undefined;
+  if (sortableDirection(column) === "asc") {
+    direction = "desc";
+  } else if (!sortableDirection(column)) {
+    direction = "asc";
+  }
+
+  if (!direction) {
+    return {
+      query: {
+        ...route.query,
+        s: undefined,
+      },
+    } as RouteLocationRaw;
+  }
 
   return {
     query: {
+      ...route.query,
       s: `${sortableField(column)} ${direction}`,
     },
   } as RouteLocationRaw;
@@ -247,7 +263,11 @@ const resetSelected = () => {
                     v-if="sortableDirection(column) === 'desc'"
                     class="fad fa-sort-up"
                   />
-                  <i v-else class="fad fa-sort-down" />
+                  <i
+                    v-else-if="sortableDirection(column) === 'asc'"
+                    class="fad fa-sort-down"
+                  />
+                  <i v-else class="base-table__sortable-icon far fa-sort" />
                 </router-link>
                 <span v-else>
                   {{ column.label }}

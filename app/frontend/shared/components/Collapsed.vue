@@ -202,7 +202,7 @@ const leaveTransition = (element: Element, done: () => void) => {
     :on-before-leave="onBeforeLeave"
     :on-leave="leaveTransition"
   >
-    <component :is="as" v-if="visible" v-bind="$attrs">
+    <component :is="as" v-show="visible" v-bind="$attrs">
       <slot />
     </component>
   </transition>

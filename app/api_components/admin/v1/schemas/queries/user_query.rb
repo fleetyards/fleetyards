@@ -12,6 +12,7 @@ module Admin
             properties: {
               searchCont: {type: :string},
               usernameCont: {type: :string},
+              usernameEq: {type: :string},
               emailCont: {type: :string},
               rsiHandleCont: {type: :string},
               idIn: {type: :array, items: {type: :string, format: :uuid}},

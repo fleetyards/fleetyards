@@ -1,5 +1,23 @@
-import type { ShipListState } from "@/frontend/types";
+import { type ShipListState } from "@/frontend/types";
 import { defineStore } from "pinia";
+
+export enum HangarTableViewColsEnum {
+  MANUFACTURER_NAME = "model_manufacturer_name",
+  LENGTH = "model_length",
+  BEAM = "model_beam",
+  HEIGHT = "model_height",
+  MASS = "model_mass",
+  CARGO = "model_cargo",
+  MIN_CREW = "model_min_crew",
+  MAX_CREW = "model_max_crew",
+  SCM_SPEED = "model_scm_speed",
+  MAX_SPEED = "model_max_speed",
+  GROUND_MAX_SPEED = "model_ground_max_speed",
+  FOCUS = "model_focus",
+  PRODUCTION_STATUS = "model_production_status",
+  PRICE = "model_price",
+  PLEDGE_PRICE = "model_pledge_price",
+}
 
 interface HangarState extends ShipListState {
   ships: string[];
@@ -7,6 +25,7 @@ interface HangarState extends ShipListState {
   starterGuideVisible: boolean;
   money: boolean;
   extensionReady: boolean;
+  tableViewCols: HangarTableViewColsEnum[];
 }
 
 export const useHangarStore = defineStore("hangar", {
@@ -19,6 +38,7 @@ export const useHangarStore = defineStore("hangar", {
     starterGuideVisible: false,
     gridView: true,
     extensionReady: false,
+    tableViewCols: [HangarTableViewColsEnum.MANUFACTURER_NAME],
   }),
   getters: {
     empty(state) {
@@ -61,6 +81,9 @@ export const useHangarStore = defineStore("hangar", {
     enableStarterGuide() {
       this.starterGuideVisible = true;
     },
+    setTableViewCols(cols: HangarTableViewColsEnum[]) {
+      this.tableViewCols = cols;
+    },
   },
   persist: {
     paths: [
@@ -70,6 +93,7 @@ export const useHangarStore = defineStore("hangar", {
       "money",
       "starterGuideVisible",
       "gridView",
+      "tableViewCols",
     ],
   },
 });

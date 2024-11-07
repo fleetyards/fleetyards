@@ -74,7 +74,8 @@ const comlink = useComlink();
 const openGuide = () => {
   comlink.$emit("open-modal", {
     wide: true,
-    component: () => import("@/frontend/components/HangarGuideModal/index.vue"),
+    component: () =>
+      import("@/frontend/components/Hangar/GuideModal/index.vue"),
   });
 };
 </script>

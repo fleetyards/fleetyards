@@ -30,6 +30,7 @@ export const useModelFilters = (updateCallback?: () => void) => {
       "pledgePriceIn",
       "sizeIn",
       "fleetchart",
+      "withCargo",
     ],
     ignoreKeys: ["fleetchart"],
     updateCallback,

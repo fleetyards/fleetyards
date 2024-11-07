@@ -126,6 +126,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/login.vue"),
     meta: {
       title: "login",
+      needsNoAuthentication: true,
     },
   },
   {

@@ -35,6 +35,7 @@ export const useHangarFilters = (updateCallback?: () => void) => {
       "pledgePriceIn",
       "sizeIn",
       "fleetchart",
+      "withCargo",
     ],
     ignoreKeys: ["fleetchart"],
     updateCallback,

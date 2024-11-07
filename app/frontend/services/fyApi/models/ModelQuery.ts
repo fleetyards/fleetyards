@@ -20,6 +20,7 @@ export type ModelQuery = {
     nameEq?: string;
     slugEq?: string;
     nameIn?: Array<string>;
+    slugIn?: Array<string>;
     nameOrDescriptionCont?: string;
     onSaleEq?: boolean;
     pledgePriceGteq?: number;
@@ -32,6 +33,7 @@ export type ModelQuery = {
     searchCont?: string;
     sizeIn?: Array<string>;
     willItFit?: string;
+    withCargo?: boolean;
     sorts?: (Array<ModelSortEnum> | ModelSortEnum);
 };
 

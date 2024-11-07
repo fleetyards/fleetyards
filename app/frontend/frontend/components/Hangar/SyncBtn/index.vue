@@ -108,7 +108,7 @@ const comlink = useComlink();
 const openModal = () => {
   comlink.emit("open-modal", {
     component: () =>
-      import("@/frontend/components/HangarSyncBtn/Modal/index.vue"),
+      import("@/frontend/components/Hangar/SyncBtn/Modal/index.vue"),
     fixed: true,
   });
 };

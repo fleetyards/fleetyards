@@ -2,19 +2,9 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
+  gap: 5px;
   font-size: 150%;
-
-  > * {
-    margin: 0 5px;
-
-    &:last-child {
-      margin-right: 0;
-    }
-
-    &:first-child {
-      margin-left: 0;
-    }
-  }
+  width: 100%;
 
   .on-sale {
     color: $success;

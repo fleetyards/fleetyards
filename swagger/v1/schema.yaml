@@ -4337,6 +4337,22 @@ components:
       - name desc
       - created_at asc
       - created_at desc
+      - length asc
+      - length desc
+      - beam asc
+      - beam desc
+      - height asc
+      - height desc
+      - mass asc
+      - mass desc
+      - cargo asc
+      - cargo desc
+      - manufacturer_name asc
+      - manufacturer_name desc
+      - pledge_price asc
+      - pledge_price desc
+      - price asc
+      - price desc
       title: ModelSortEnum
     RoadmapItemSortEnum:
       type: string
@@ -6985,6 +7001,10 @@ components:
           type: array
           items:
             type: string
+        slugIn:
+          type: array
+          items:
+            type: string
         nameOrDescriptionCont:
           type: string
         onSaleEq:
@@ -7018,6 +7038,8 @@ components:
         willItFit:
           type: string
           format: uuid
+        withCargo:
+          type: boolean
         sorts:
           oneOf:
           - type: array

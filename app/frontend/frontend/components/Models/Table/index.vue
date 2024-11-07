@@ -17,8 +17,10 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { type BaseTableColumn } from "@/shared/components/base/Table/types";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
-import { useModelsStore } from "@/frontend/stores/models";
-import { TableViewColsEnum } from "@/frontend/types";
+import {
+  useModelsStore,
+  ModelTableViewColsEnum,
+} from "@/frontend/stores/models";
 
 type Props = {
   models: Model[];
@@ -39,56 +41,23 @@ const mobile = useMobile();
 const modelsStore = useModelsStore();
 
 type ShipTableCol = {
-  name: TableViewColsEnum;
+  name: ModelTableViewColsEnum;
   label: string;
   sortable?: boolean;
 };
 
 const extraColumns = computed<ShipTableCol[]>(() => {
-  return [
-    {
-      name: TableViewColsEnum.MANUFACTURER_NAME,
-      label: t("labels.model.manufacturer"),
-      sortable: true,
-    },
-    {
-      name: TableViewColsEnum.LENGTH,
-      label: t("model.length"),
-      sortable: true,
-    },
-    {
-      name: TableViewColsEnum.BEAM,
-      label: t("model.beam"),
-      sortable: true,
-    },
-    {
-      name: TableViewColsEnum.HEIGHT,
-      label: t("model.height"),
-      sortable: true,
-    },
-    {
-      name: TableViewColsEnum.MASS,
-      label: t("model.mass"),
-      sortable: true,
-    },
-    {
-      name: TableViewColsEnum.CARGO,
-      label: t("model.cargo"),
-      sortable: true,
-    },
-    {
-      name: TableViewColsEnum.PRICE,
-      label: t("model.price"),
-      sortable: true,
-    },
-    {
-      name: TableViewColsEnum.PLEDGE_PRICE,
-      label: t("model.pledgePrice"),
-      sortable: true,
-    },
-  ].filter((col) => {
-    return modelsStore.tableViewCols.includes(col.name);
-  });
+  return Object.values(ModelTableViewColsEnum)
+    .map((col) => {
+      return {
+        name: col,
+        label: t(`labels.models.table.columns.${col}`),
+        sortable: true,
+      };
+    })
+    .filter((col) => {
+      return modelsStore.tableViewCols.includes(col.name);
+    });
 });
 
 const manufacturerColumnVisible = computed(() => {
@@ -124,6 +93,7 @@ const storeImage = (record: Model) => {
     <BaseTable
       :records="models"
       primary-key="slug"
+      default-sort="name asc"
       :columns="tableColumns"
       :loading="loading"
       :empty-box-visible="emptyBoxVisible"
@@ -163,6 +133,34 @@ const storeImage = (record: Model) => {
         <span class="no-break">{{
           toNumber(record.metrics.cargo || "", "cargo")
         }}</span>
+      </template>
+      <template #col-min_crew="{ record }">
+        <span class="no-break">{{
+          toNumber(record.crew.min || "", "people")
+        }}</span>
+      </template>
+      <template #col-max_crew="{ record }">
+        <span class="no-break">{{
+          toNumber(record.crew.max || "", "people")
+        }}</span>
+      </template>
+      <template #col-ground_max_speed="{ record }">
+        <span class="no-break">{{
+          toNumber(record.speeds.groundMaxSpeed || "", "speed")
+        }}</span>
+      </template>
+      <template #col-scm_speed="{ record }">
+        <span class="no-break">{{
+          toNumber(record.speeds.scmSpeed || "", "speed")
+        }}</span>
+      </template>
+      <template #col-max_speed="{ record }">
+        <span class="no-break">{{
+          toNumber(record.speeds.maxSpeed || "", "speed")
+        }}</span>
+      </template>
+      <template #col-production_status="{ record }">
+        {{ t(`labels.model.productionStatus.${record.productionStatus}`) }}
       </template>
       <template #col-price="{ record }">
         <!-- eslint-disable vue/no-v-html -->

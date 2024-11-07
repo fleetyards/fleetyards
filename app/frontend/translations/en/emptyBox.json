@@ -3,7 +3,8 @@
     "emptyBox": {
       "headlines": {
         "default": "There's nothing to see here...",
-        "forName": "No %{name} found"
+        "forName": "No %{name} found",
+        "hangar": "Your Hangar is empty"
       },
       "actions": {
         "reset": "Reset Filters/Pages",

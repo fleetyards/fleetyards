@@ -14,11 +14,11 @@ import FocusFilterGroup from "@/frontend/components/base/ModelFocusFilterGroup/i
 import SizeFilterGroup from "@/frontend/components/base/ModelSizeFilterGroup/index.vue";
 import WillItFitFilterGroup from "@/frontend/components/base/ModelWillItFitFilterGroup/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import Checkbox from "@/shared/components/base/Checkbox/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 import { type ModelQuery } from "@/services/fyApi";
-import { Form } from "vee-validate";
 import { useModelFilters } from "@/frontend/composables/useModelFilters";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 
@@ -55,6 +55,7 @@ const prefillFormValues = () => {
     priceIn: filters.value.priceIn || [],
     pledgePriceIn: filters.value.pledgePriceIn || [],
     sizeIn: filters.value.sizeIn || [],
+    withCargo: filters.value.withCargo,
   };
 };
 
@@ -249,6 +250,12 @@ const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
       :reset-label="t('labels.all')"
       :options="booleanOptions"
       name="sale"
+    />
+
+    <Checkbox
+      v-model="form.withCargo"
+      :label="t('labels.filters.models.withCargo')"
+      name="withCargo"
     />
 
     <br />

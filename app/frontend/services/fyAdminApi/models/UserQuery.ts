@@ -6,6 +6,7 @@ import type { UserSortEnum } from './UserSortEnum';
 export type UserQuery = {
     searchCont?: string;
     usernameCont?: string;
+    usernameEq?: string;
     emailCont?: string;
     rsiHandleCont?: string;
     idIn?: Array<string>;

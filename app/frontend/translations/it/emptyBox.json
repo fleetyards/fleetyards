@@ -1,7 +1,9 @@
 {
   "it": {
     "emptyBox": {
-      "headline": "Non c'è niente da vedere qui...",
+      "headlines": {
+        "default": "Non c'è niente da vedere qui..."
+      },
       "actions": {
         "reset": "Resetta i filtri/pagine",
         "resetPage": "Vai alla prima pagina"

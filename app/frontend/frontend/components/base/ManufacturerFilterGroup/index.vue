@@ -79,7 +79,11 @@ const fetch = async (params: FilterGroupParams) => {
   }
 
   if (params.missing) {
-    q.slugEq = params.missing as string;
+    if (props.multiple) {
+      q.slugIn = params.missing as string[];
+    } else {
+      q.slugEq = params.missing as string;
+    }
   }
 
   return manufacturersService.manufacturers({

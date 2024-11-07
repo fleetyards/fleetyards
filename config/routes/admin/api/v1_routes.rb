@@ -34,6 +34,8 @@ v1_admin_api_routes = lambda do
     get :item_type_filters, on: :collection
   end
 
+  resources :vehicles, only: %i[index]
+
   resources :item_prices, path: "item-prices", only: %i[index show create update destroy]
 
   resource :stats, only: [] do

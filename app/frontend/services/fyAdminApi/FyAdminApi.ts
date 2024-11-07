@@ -15,6 +15,7 @@ import { ModelsService } from './services/ModelsService';
 import { SessionsService } from './services/SessionsService';
 import { StatsService } from './services/StatsService';
 import { UsersService } from './services/UsersService';
+import { VehiclesService } from './services/VehiclesService';
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 export class FyAdminApi {
     public readonly adminUsers: AdminUsersService;
@@ -27,6 +28,7 @@ export class FyAdminApi {
     public readonly sessions: SessionsService;
     public readonly stats: StatsService;
     public readonly users: UsersService;
+    public readonly vehicles: VehiclesService;
     public readonly request: BaseHttpRequest;
     constructor(config?: Partial<OpenAPIConfig>, HttpRequest: HttpRequestConstructor = AxiosHttpRequest) {
         this.request = new HttpRequest({
@@ -50,6 +52,7 @@ export class FyAdminApi {
         this.sessions = new SessionsService(this.request);
         this.stats = new StatsService(this.request);
         this.users = new UsersService(this.request);
+        this.vehicles = new VehiclesService(this.request);
     }
 }
 

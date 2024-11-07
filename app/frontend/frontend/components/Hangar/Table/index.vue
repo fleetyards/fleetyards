@@ -10,8 +10,8 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index.vue";
 import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue";
-import HangarEmptyTable from "@/frontend/components/HangarEmptyTable/index.vue";
-import WishlistEmptyTable from "@/frontend/components/WishlistEmptyTable/index.vue";
+import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
+import WishlistEmptyTable from "@/frontend/components/Wishlist/EmptyTable/index.vue";
 import { useNoty } from "@/shared/composables/useNoty";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type Vehicle } from "@/services/fyApi";
@@ -20,6 +20,10 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { type BaseTableColumn } from "@/shared/components/base/Table/types";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
+import {
+  useHangarStore,
+  HangarTableViewColsEnum,
+} from "@/frontend/stores/hangar";
 
 type Props = {
   vehicles: Vehicle[];
@@ -31,7 +35,8 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { t } = useI18n();
+const { t, toNumber, toUEC, toDollar } = useI18n();
+
 const { displayConfirm } = useNoty();
 
 const selected = ref<string[]>([]);
@@ -40,15 +45,20 @@ const deleting = ref(false);
 
 const updating = ref(false);
 
+const hangarStore = useHangarStore();
+
 const extraColumns = computed(() => {
-  return [
-    {
-      name: "model_manufacturer_name",
-      label: t("labels.model.manufacturer"),
-      sortable: true,
-      mobile: false,
-    },
-  ];
+  return Object.values(HangarTableViewColsEnum)
+    .map((col) => {
+      return {
+        name: col,
+        label: t(`labels.hangarTable.columns.${col}`),
+        sortable: true,
+      };
+    })
+    .filter((col) => {
+      return hangarStore.tableViewCols.includes(col.name);
+    });
 });
 
 const manufacturerColumnVisible = computed(() => {
@@ -275,9 +285,6 @@ const resetSelected = () => {
           shadow
         />
       </template>
-      <template #col-model_manufacturer_name="{ record }">
-        {{ record.model.manufacturer?.name }}
-      </template>
       <template #col-name="{ record }">
         <div class="name">
           <router-link
@@ -306,6 +313,79 @@ const resetSelected = () => {
             </template>
           </small>
         </div>
+      </template>
+      <template #col-model_manufacturer_name="{ record }">
+        {{ record.model.manufacturer?.name }}
+      </template>
+      <template #col-model_length="{ record }">
+        <span class="no-break">{{
+          toNumber(record.model.metrics.length || "", "distance")
+        }}</span>
+      </template>
+      <template #col-model_beam="{ record }">
+        <span class="no-break">{{
+          toNumber(record.model.metrics.beam || "", "distance")
+        }}</span>
+      </template>
+      <template #col-model_height="{ record }">
+        <span class="no-break">{{
+          toNumber(record.model.metrics.height || "", "distance")
+        }}</span>
+      </template>
+      <template #col-model_mass="{ record }">
+        <span class="no-break">{{
+          toNumber(record.model.metrics.mass || "", "weight")
+        }}</span>
+      </template>
+      <template #col-model_cargo="{ record }">
+        <span class="no-break">{{
+          toNumber(record.model.metrics.cargo || "", "cargo")
+        }}</span>
+      </template>
+      <template #col-model_min_crew="{ record }">
+        <span class="no-break">{{
+          toNumber(record.model.crew.min || "", "people")
+        }}</span>
+      </template>
+      <template #col-model_max_crew="{ record }">
+        <span class="no-break">{{
+          toNumber(record.model.crew.max || "", "people")
+        }}</span>
+      </template>
+      <template #col-model_ground_max_speed="{ record }">
+        <span class="no-break">{{
+          toNumber(record.model.speeds.groundMaxSpeed || "", "speed")
+        }}</span>
+      </template>
+      <template #col-model_scm_speed="{ record }">
+        <span class="no-break">{{
+          toNumber(record.model.speeds.scmSpeed || "", "speed")
+        }}</span>
+      </template>
+      <template #col-model_max_speed="{ record }">
+        <span class="no-break">{{
+          toNumber(record.model.speeds.maxSpeed || "", "speed")
+        }}</span>
+      </template>
+      <template #col-model_production_status="{ record }">
+        {{
+          t(`labels.model.productionStatus.${record.model.productionStatus}`)
+        }}
+      </template>
+      <template #col-model_focus="{ record }">
+        {{ record.model.focus }}
+      </template>
+      <template #col-model_price="{ record }">
+        <!-- eslint-disable vue/no-v-html -->
+        <div
+          v-tooltip="{ content: toUEC(record.model.price), html: true }"
+          class="no-break"
+          v-html="toUEC(record.model.price)"
+        />
+        <!-- eslint-enable vue/no-v-html -->
+      </template>
+      <template #col-model_pledge_price="{ record }">
+        <span class="no-break">{{ toDollar(record.model.pledgePrice) }}</span>
       </template>
       <template #col-states="{ record }">
         <div class="vehicle-states">
@@ -361,7 +441,7 @@ const resetSelected = () => {
       </template>
       <template #empty>
         <WishlistEmptyTable v-if="wishlist" />
-        <HangarEmptyTable v-else />
+        <HangarEmpty v-else />
       </template>
     </BaseTable>
   </div>

@@ -6,7 +6,6 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
@@ -48,14 +47,6 @@ const fleetchartVisible = computed(() => {
   return fleetchartsStore.isVisible("models");
 });
 
-const toggleDetails = () => {
-  modelsStore.toggleDetails();
-};
-
-const toggleGridView = () => {
-  modelsStore.toggleGridView();
-};
-
 const toggleFleetchart = () => {
   fleetchartsStore.toggleFleetchart("models");
 };
@@ -76,27 +67,12 @@ const {
   filters,
 });
 
-const toggleDetailsTooltip = computed(() => {
-  if (detailsVisible.value) {
-    return t("actions.hideDetails");
-  }
-
-  return t("actions.showDetails");
-});
-
-const toggleGridViewTooltip = computed(() => {
-  if (gridView.value) {
-    return t("actions.showTableView");
-  }
-  return t("actions.showGridView");
-});
-
 const comlink = useComlink();
 
-const openTableConfiguration = () => {
+const openDisplayOptionsModal = () => {
   comlink.emit("open-modal", {
     component: () =>
-      import("@/frontend/components/Models/Table/ConfigurationModal/index.vue"),
+      import("@/frontend/components/Models/DisplayOptionsModal/index.vue"),
   });
 };
 </script>
@@ -130,35 +106,12 @@ const openTableConfiguration = () => {
   >
     <template #actions-right>
       <Btn
-        v-if="!gridView"
         :aria-label="t('actions.models.openTableConfiguration')"
         :size="BtnSizesEnum.SMALL"
-        @click="openTableConfiguration"
+        @click="openDisplayOptionsModal"
       >
         <i class="fad fa-cog" />
       </Btn>
-      <BtnDropdown :size="BtnSizesEnum.SMALL">
-        <Btn
-          :aria-label="toggleGridView"
-          :size="BtnSizesEnum.SMALL"
-          @click="toggleGridView"
-        >
-          <i v-if="gridView" class="fad fa-list" />
-          <i v-else class="fas fa-th" />
-          <span>{{ toggleGridViewTooltip }}</span>
-        </Btn>
-
-        <Btn
-          v-if="gridView"
-          :active="detailsVisible"
-          :aria-label="toggleDetailsTooltip"
-          :size="BtnSizesEnum.SMALL"
-          @click="toggleDetails"
-        >
-          <i class="fad fa-info-square" />
-          <span>{{ toggleDetailsTooltip }}</span>
-        </Btn>
-      </BtnDropdown>
     </template>
 
     <template #filter>

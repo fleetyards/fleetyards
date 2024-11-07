@@ -61,6 +61,7 @@ const prefillFormValues = () => {
     priceIn: filters.value.priceIn || [],
     pledgePriceIn: filters.value.pledgePriceIn || [],
     sizeIn: filters.value.sizeIn || [],
+    withCargo: filters.value.withCargo,
   };
 };
 
@@ -246,6 +247,12 @@ const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
       :reset-label="t('labels.all')"
       :options="booleanOptions"
       name="public"
+    />
+
+    <Checkbox
+      v-model="form.withCargo"
+      :label="t('labels.filters.models.withCargo')"
+      name="withCargo"
     />
 
     <br />

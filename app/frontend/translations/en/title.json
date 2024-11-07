@@ -91,6 +91,9 @@
         "users": {
           "index": "Users",
           "edit": "Edit User"
+        },
+        "vehicles": {
+          "index": "Vehicles"
         }
       }
     }

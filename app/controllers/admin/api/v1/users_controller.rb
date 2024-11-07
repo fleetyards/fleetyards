@@ -22,7 +22,7 @@ module Admin
 
         private def user_query_params
           @user_query_params ||= query_params(
-            :search_cont, :username_cont, :email_cont, :rsi_handle_cont,
+            :search_cont, :username_cont, :username_eq, :email_cont, :rsi_handle_cont,
             id_in: [], username_in: [], email_in: [], rsi_handle_in: []
           )
         end

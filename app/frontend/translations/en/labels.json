@@ -170,6 +170,9 @@
         "totalCargo": "Total Cargo"
       },
       "selectModel": "Select a Ship",
+      "findModel": "Type to find a Ship",
+      "selectUser": "Select a User",
+      "findUser": "Type to find a User",
       "compare": {
         "removeModel": "Remove Ship",
         "addModel": {
@@ -287,7 +290,13 @@
             "height": "Height",
             "mass": "Mass",
             "cargo": "Cargo",
-            "crew": "Crew",
+            "min_crew": "Crew",
+            "max_crew": "Max. Crew",
+            "scm_speed": "SCM Speed",
+            "max_speed": "Max Speed",
+            "ground_max_speed": "Ground Speed",
+            "focus": "Focus",
+            "production_status": "Production Status",
             "price": "Price",
             "pledge_price": "Pledge Price"
           }
@@ -487,6 +496,7 @@
           "priceLt": "Price <=",
           "priceGt": "Price >=",
           "wanted": "Wanted",
+          "hidden": "Hidden",
           "public": "Public",
           "group": "Group",
           "loaner": "Loaners",
@@ -528,6 +538,7 @@
           "priceLt": "Price <=",
           "priceGt": "Price >=",
           "willItFit": "Will it Fit?",
+          "withCargo": "With Cargo?",
           "scIdentifierBlank": "Without SC Identifier?",
           "fleetchartImageBlank": "Without Fleetchart Image?",
           "holoBlank": "Without Holo?",
@@ -667,6 +678,26 @@
             "newShipsInYear": "New Ships in %{year}",
             "totalFleets": "Total Fleets"
           }
+        }
+      },
+      "hangarTable": {
+        "extraColumns": "Columns",
+        "columns": {
+          "model_manufacturer_name": "Manufacturer",
+          "model_length": "Length",
+          "model_beam": "Beam",
+          "model_height": "Height",
+          "model_mass": "Mass",
+          "model_cargo": "Cargo",
+          "model_min_crew": "Crew",
+          "model_max_crew": "Max. Crew",
+          "model_scm_speed": "SCM Speed",
+          "model_max_speed": "Max Speed",
+          "model_ground_max_speed": "Ground Speed",
+          "model_focus": "Focus",
+          "model_production_status": "Production Status",
+          "model_price": "Price",
+          "model_pledge_price": "Pledge Price"
         }
       }
     }

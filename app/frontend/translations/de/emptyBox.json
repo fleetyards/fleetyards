@@ -1,7 +1,9 @@
 {
   "de": {
     "emptyBox": {
-      "headline": "Keine Ergebnisse",
+      "headlines": {
+        "default": "Keine Ergebnisse"
+      },
       "actions": {
         "reset": "Filter/Seiten zurücksetzen",
         "resetPage": "Zur ersten Seite"

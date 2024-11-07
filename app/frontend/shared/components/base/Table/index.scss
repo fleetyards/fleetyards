@@ -35,6 +35,10 @@
     }
   }
 
+  &__sortable-icon {
+    color: darken($text-color, 30%);
+  }
+
   &__column {
     position: relative;
 

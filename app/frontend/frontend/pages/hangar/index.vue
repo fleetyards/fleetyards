@@ -7,13 +7,13 @@ export default {
 <script lang="ts" setup>
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
-import VehiclesTable from "@/frontend/components/Vehicles/Table/index.vue";
+import HangarTable from "@/frontend/components/Hangar/Table/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import PrimaryAction from "@/shared/components/PrimaryAction/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
-import HangarImportBtn from "@/frontend/components/HangarImportBtn/index.vue";
-import HangarSyncBtn from "@/frontend/components/HangarSyncBtn/index.vue";
+import HangarImportBtn from "@/frontend/components/Hangar/ImportBtn/index.vue";
+import HangarSyncBtn from "@/frontend/components/Hangar/SyncBtn/index.vue";
 import FilterForm from "@/frontend/components/Hangar/FilterForm/index.vue";
 import ModelClassLabels from "@/frontend/components/Models/ClassLabels/index.vue";
 import GroupLabels from "@/frontend/components/Vehicles/GroupLabels/index.vue";
@@ -21,7 +21,7 @@ import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { format } from "date-fns";
 import { debounce } from "ts-debounce";
-import HangarEmptyBox from "@/frontend/components/HangarEmptyBox/index.vue";
+import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { type HangarGroupMetric, HangarGroup } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -41,6 +41,7 @@ import {
   ChannelsEnum,
   useSubscription,
 } from "@/shared/composables/useSubscription";
+import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 
 const { t, toDollar, toUEC, toNumber } = useI18n();
 
@@ -103,20 +104,6 @@ const hangarGroupCounts = computed<HangarGroupMetric[]>(() => {
   return hangarStats.value.groups;
 });
 
-const toggleDetailsTooltip = computed(() => {
-  if (detailsVisible.value) {
-    return t("actions.hideDetails");
-  }
-  return t("actions.showDetails");
-});
-
-const toggleGridViewTooltip = computed(() => {
-  if (gridView.value) {
-    return t("actions.showTableView");
-  }
-  return t("actions.showGridView");
-});
-
 const shareUrl = computed(() => {
   if (!currentUser?.value) {
     return null;
@@ -150,16 +137,8 @@ onUnmounted(() => {
   comlink.off("hangar-sync-finished");
 });
 
-const toggleDetails = () => {
-  hangarStore.toggleDetails();
-};
-
 const toggleMoney = () => {
   hangarStore.toggleMoney();
-};
-
-const toggleGridView = () => {
-  hangarStore.toggleGridView();
 };
 
 const toggleFleetchart = () => {
@@ -248,7 +227,15 @@ const destroyAll = async () => {
 const openGuide = () => {
   comlink.emit("open-modal", {
     wide: true,
-    component: () => import("@/frontend/components/HangarGuideModal/index.vue"),
+    component: () =>
+      import("@/frontend/components/Hangar/GuideModal/index.vue"),
+  });
+};
+
+const openDisplayOptionsModal = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Hangar/DisplayOptionsModal/index.vue"),
   });
 };
 </script>
@@ -375,6 +362,13 @@ const openGuide = () => {
     :async-status="asyncStatus"
   >
     <template #actions-right>
+      <Btn
+        :aria-label="t('actions.models.openTableConfiguration')"
+        :size="BtnSizesEnum.SMALL"
+        @click="openDisplayOptionsModal"
+      >
+        <i class="fad fa-cog" />
+      </Btn>
       <HangarSyncBtn :size="BtnSizesEnum.SMALL" />
       <BtnDropdown :size="BtnSizesEnum.SMALL">
         <template v-if="mobile">
@@ -406,27 +400,6 @@ const openGuide = () => {
 
           <hr />
         </template>
-
-        <Btn
-          :active="gridView"
-          :aria-label="toggleGridView"
-          :size="BtnSizesEnum.SMALL"
-          @click="toggleGridView"
-        >
-          <i v-if="gridView" class="fad fa-list" />
-          <i v-else class="fas fa-th" />
-          <span>{{ toggleGridViewTooltip }}</span>
-        </Btn>
-
-        <Btn
-          v-if="gridView"
-          :aria-label="toggleDetailsTooltip"
-          :size="BtnSizesEnum.SMALL"
-          @click="toggleDetails"
-        >
-          <i class="fad fa-info-square" />
-          <span>{{ toggleDetailsTooltip }}</span>
-        </Btn>
 
         <Btn
           :aria-label="t('actions.showGuide')"
@@ -505,7 +478,7 @@ const openGuide = () => {
         </template>
       </Grid>
 
-      <VehiclesTable
+      <HangarTable
         v-else
         :loading="loading"
         :empty-box-visible="emptyBoxVisible"
@@ -544,7 +517,10 @@ const openGuide = () => {
     </template>
 
     <template #empty="{ hideEmptyBox, emptyBoxVisible }">
-      <HangarEmptyBox v-if="!hideEmptyBox" :visible="emptyBoxVisible" />
+      <HangarEmpty
+        v-if="!hideEmptyBox && emptyBoxVisible"
+        :variant="EmptyVariantsEnum.BOX"
+      />
     </template>
   </FilteredList>
 
