@@ -5,6 +5,14 @@ module Api
     class FleetInviteUrlsController < ::Api::BaseController
       after_action -> { pagination_header(:fleet_invite_urls) }, only: %i[index]
 
+      before_action :authenticate_user!, only: []
+      before_action -> { doorkeeper_authorize! "fleet", "fleet:read" },
+        unless: :user_signed_in?,
+        only: %i[index]
+      before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
+        unless: :user_signed_in?,
+        except: %i[index]
+
       def index
         authorize! :show, fleet
 

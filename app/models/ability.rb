@@ -45,10 +45,13 @@ class Ability
     can %i[check_serial], :api_vehicles
     can %i[index sort], :api_hangar_groups
     can %i[show update destroy index destroy_all update_bulk destroy_bulk], :api_hangar
-    can %i[create update destroy], Vehicle, user_id: user.id
+    can %i[read create update destroy], Vehicle, user_id: user.id
     can %i[create update destroy], HangarGroup, user_id: user.id
     can %i[read confirm_access update destroy], User, id: user.id
     can %i[create], CommodityPrice
+    can %i[index], :api_oauth_applications
+    can %i[read create update destroy], Oauth::Application, owner_id: user.id, owner_type: "User"
+    can %i[read create destroy], :oauth_authorizations
   end
 
   private def fleet_rules(user)

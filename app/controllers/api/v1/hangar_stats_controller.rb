@@ -6,6 +6,10 @@ module Api
       include HangarFiltersConcern
       include ChartHelper
 
+      before_action :authenticate_user!, only: []
+      before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
+        unless: :user_signed_in?
+
       # rubocop:disable Metrics/CyclomaticComplexity
       def show
         authorize! :show, :api_hangar

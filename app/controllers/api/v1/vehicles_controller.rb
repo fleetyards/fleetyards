@@ -5,7 +5,15 @@ module Api
     class VehiclesController < ::Api::BaseController
       include HangarFiltersConcern
 
-      before_action :authenticate_user!, except: %i[bought_via_filters]
+      before_action :authenticate_user!, only: []
+      before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
+        unless: :user_signed_in?,
+        only: %i[show check_serial fleetchart public_fleetchart hangar]
+      before_action -> { doorkeeper_authorize! "hangar", "hangar:write" },
+        unless: :user_signed_in?,
+        except: %i[show check_serial fleetchart public_fleetchart hangar]
+
+      skip_authorization_check only: [:public_fleetchart]
 
       def create
         @vehicle = Vehicle.new(
