@@ -132,7 +132,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/oauth/authorize/",
     name: "oauth-authorize",
-    component: () => import("@/frontend/pages/oAuth/authorize.vue"),
+    component: () => import("@/frontend/pages/oauth/authorize.vue"),
     meta: {
       needsAuthentication: true,
     },

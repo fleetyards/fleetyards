@@ -8,7 +8,7 @@
 #  owner_type   :string
 #  redirect_uri :text
 #  scopes       :string           default(""), not null
-#  secret       :string           not null
+#  secret       :string(512)      not null
 #  uid          :string           not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null

@@ -9,7 +9,7 @@
 #  redirect_uri          :text             not null
 #  revoked_at            :datetime
 #  scopes                :string           default(""), not null
-#  token                 :string           not null
+#  token                 :string(512)      not null
 #  created_at            :datetime         not null
 #  application_id        :uuid             not null
 #  resource_owner_id     :uuid             not null
