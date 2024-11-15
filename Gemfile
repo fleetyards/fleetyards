@@ -204,3 +204,5 @@ gem "x", "~> 0.14.0"
 gem "doorkeeper", "~> 5.6"
 
 gem "oauth2", "~> 2.0"
+
+gem "audited", "~> 5.8"

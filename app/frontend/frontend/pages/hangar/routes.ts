@@ -1,4 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
+import { routes as publicHangarRoutes } from "@/frontend/pages/hangar/[username]/routes";
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -53,26 +54,8 @@ export const routes: RouteRecordRaw[] = [
   },
   {
     path: ":username/",
-    name: "hangar-public",
     component: () => import("@/frontend/pages/hangar/[username].vue"),
-    meta: {
-      backgroundImage: "bg-5",
-    },
-  },
-  {
-    path: ":username/fleetchart/",
-    name: "hangar-public-fleetchart",
-    redirect: {
-      name: "hangar-public",
-      query: { fleetchart: "true" },
-    },
-  },
-  {
-    path: ":username/wishlist/",
-    name: "wishlist-public",
-    component: () => import("@/frontend/pages/hangar/[username]/wishlist.vue"),
-    meta: {
-      backgroundImage: "bg-5",
-    },
+    children: publicHangarRoutes,
+    redirect: { name: publicHangarRoutes[0].name },
   },
 ];

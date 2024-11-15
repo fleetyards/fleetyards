@@ -105,9 +105,7 @@ const loadQuickStats = async () => {
           <BreadCrumbs
             :crumbs="[{ to: { name: 'hangar' }, label: t('nav.hangar') }]"
           />
-          <h1>
-            {{ t("headlines.hangar.stats") }}
-          </h1>
+          <h1>{{ t("headlines.hangar.stats") }}</h1>
         </div>
       </div>
       <div class="row">

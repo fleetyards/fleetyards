@@ -17,6 +17,7 @@
     <h2>{{ t("sublines.hangarGuide.add") }}</h2>
     <div class="hangar-guide-topic">
       <div class="hangar-guide-text">
+        <!-- eslint-disable-next-line vue/no-v-html -->
         <p v-html="t('texts.hangarGuide.add')" />
         <div class="hangar-guide-highlight">
           {{ t("texts.hangarGuide.icon") }}
@@ -31,6 +32,7 @@
     <h2>{{ t("sublines.hangarGuide.edit") }}</h2>
     <div class="hangar-guide-topic">
       <div class="hangar-guide-text">
+        <!-- eslint-disable-next-line vue/no-v-html -->
         <p v-html="t('texts.hangarGuide.edit')" />
         <div class="hangar-guide-highlight">
           {{ t("texts.hangarGuide.icon") }}
@@ -45,6 +47,7 @@
     <h2>{{ t("sublines.hangarGuide.wishlist") }}</h2>
     <div class="hangar-guide-topic">
       <div class="hangar-guide-text">
+        <!-- eslint-disable-next-line vue/no-v-html -->
         <p v-html="t('texts.hangarGuide.wishlist')" />
         <div class="hangar-guide-highlight">
           {{ t("texts.hangarGuide.icon") }}
@@ -59,6 +62,7 @@
     <h2>{{ t("sublines.hangarGuide.public") }}</h2>
     <div class="hangar-guide-topic">
       <div class="hangar-guide-text">
+        <!-- eslint-disable-next-line vue/no-v-html -->
         <p v-html="t('texts.hangarGuide.public')" />
       </div>
       <div class="hangar-guide-video">
@@ -69,6 +73,7 @@
     <h2>{{ t("sublines.hangarGuide.fleetchart") }}</h2>
     <div class="hangar-guide-topic">
       <div class="hangar-guide-text">
+        <!-- eslint-disable-next-line vue/no-v-html -->
         <p v-html="t('texts.hangarGuide.fleetchart')" />
       </div>
       <div class="hangar-guide-video">
@@ -79,7 +84,9 @@
     <h2>{{ t("sublines.hangarGuide.groups") }}</h2>
     <div class="hangar-guide-topic">
       <div class="hangar-guide-text">
+        <!-- eslint-disable-next-line vue/no-v-html -->
         <p v-html="t('texts.hangarGuide.groups.add')" />
+        <!-- eslint-disable-next-line vue/no-v-html -->
         <p v-html="t('texts.hangarGuide.groups.edit')" />
       </div>
       <div class="hangar-guide-video">

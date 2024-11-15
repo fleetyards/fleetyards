@@ -29,6 +29,8 @@
 class FleetMembership < ApplicationRecord
   include AASM
 
+  audited
+
   belongs_to :fleet, touch: true
   belongs_to :user, touch: true
 

@@ -18,14 +18,14 @@ class Scdata2 < Thor
   end
 
   desc "parse", "Parse sc data files"
-  def parse(sc_version = "3.23.1-PTU", export_folder = EXPORT_FOLDER)
+  def parse(sc_version = "4.0.0-EPTU", export_folder = EXPORT_FOLDER)
     require "./config/environment"
 
     ScData::Parser.new(base_folder: EXPORT_FOLDER, version: sc_version).run
   end
 
   desc "upload", "Upload exported sc data files to s3"
-  def upload(sc_version = "3.23.1-PTU", export_folder = EXPORT_FOLDER, dry_run = false)
+  def upload(sc_version = "4.0.0-EPTU", export_folder = EXPORT_FOLDER, dry_run = false)
     system("s3cmd sync --delete-removed#{dry_run ? " --dry-run" : ""} #{EXPORT_FOLDER}/#{sc_version}/ s3://fleetyards/sc_data/")
 
     system("s3cmd setacl s3://fleetyards/sc_data/ --recursive --acl-public") unless dry_run

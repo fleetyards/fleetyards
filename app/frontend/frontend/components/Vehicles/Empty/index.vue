@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: "HangarEmpty",
+  name: "VehiclesEmpty",
 };
 </script>
 
@@ -16,10 +16,12 @@ import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 
 type Props = {
   variant?: EmptyVariantsEnum;
+  wishlist?: boolean;
 };
 
 withDefaults(defineProps<Props>(), {
   variant: EmptyVariantsEnum.DEFAULT,
+  wishlist: false,
 });
 
 const { t } = useI18n();
@@ -41,10 +43,15 @@ const openGuide = () => {
   <Empty :variant="variant" :name="t('models.name')">
     <template #headline="{ queryPresent }">
       <span v-if="!queryPresent">
-        {{ t("emptyBox.headlines.hangar") }}
+        <template v-if="wishlist">
+          {{ t("emptyBox.headlines.wishlist") }}
+        </template>
+        <template v-else>
+          {{ t("emptyBox.headlines.hangar") }}
+        </template>
       </span>
     </template>
-    <template #actions>
+    <template v-if="!wishlist" #actions>
       <HangarSyncBtn />
       <Btn @click="openGuide">
         {{ t("actions.empty.hangarGuide") }}
@@ -52,23 +59,30 @@ const openGuide = () => {
     </template>
     <template #info="{ queryPresent }">
       <div v-if="queryPresent">
-        <p>
-          {{ t("texts.empty.hangar.info") }}
-        </p>
-        <div v-if="!hangarStore.extensionReady">
-          <p>{{ t("texts.empty.hangar.extension") }}</p>
-          <div class="sync-extension-platforms">
-            <a
-              v-for="link in extensionUrls"
-              :key="`extension-link-${link.platform}`"
-              v-tooltip="t(`labels.syncExtension.platforms.${link.platform}`)"
-              :href="link.url"
-              target="_blank"
-            >
-              <i :class="`fab fa-${link.platform}`" />
-            </a>
+        <tempalte v-if="wishlist">
+          <p>
+            {{ t("emptyBox.info.wishlist") }}
+          </p>
+        </tempalte>
+        <template v-else>
+          <p>
+            {{ t("emptyBox.info.hangar") }}
+          </p>
+          <div v-if="!hangarStore.extensionReady">
+            <p>{{ t("emptyBox.info.extension") }}</p>
+            <div class="sync-extension-platforms">
+              <a
+                v-for="link in extensionUrls"
+                :key="`extension-link-${link.platform}`"
+                v-tooltip="t(`labels.syncExtension.platforms.${link.platform}`)"
+                :href="link.url"
+                target="_blank"
+              >
+                <i :class="`fab fa-${link.platform}`" />
+              </a>
+            </div>
           </div>
-        </div>
+        </template>
       </div>
     </template>
   </Empty>

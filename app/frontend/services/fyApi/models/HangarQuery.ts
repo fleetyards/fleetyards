@@ -37,6 +37,7 @@ export type HangarQuery = {
     hangarGroupsIn?: Array<string>;
     hangarGroupsNotIn?: Array<string>;
     willItFit?: string;
+    withCargo?: boolean;
     sorts?: (Array<VehicleSortEnum> | VehicleSortEnum);
 };
 

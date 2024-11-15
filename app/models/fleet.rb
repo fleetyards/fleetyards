@@ -32,6 +32,8 @@
 class Fleet < ApplicationRecord
   include UrlFieldHelper
 
+  audited
+
   has_many :fleet_memberships,
     dependent: :destroy
   has_many :fleet_invite_urls,

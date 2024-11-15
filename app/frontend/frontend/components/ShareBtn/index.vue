@@ -15,6 +15,7 @@ import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
+import { useMobile } from "@/shared/composables/useMobile";
 
 type Props = {
   url: string;
@@ -62,8 +63,14 @@ const { t } = useI18n();
 
 const { displayAlert, displaySuccess } = useNoty();
 
+const isMobile = useMobile();
+
 const share = () => {
-  if (navigator.canShare && navigator.canShare({ url: props.url })) {
+  if (
+    isMobile.value &&
+    navigator.canShare &&
+    navigator.canShare({ url: props.url })
+  ) {
     navigator
       .share({
         title: props.title,

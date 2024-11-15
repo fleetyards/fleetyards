@@ -4,6 +4,8 @@ import {
   type Vehicle,
   type VehicleCreateInput,
   type VehicleUpdateInput,
+  type VehicleBulkUpdateInput,
+  type VehicleBulkDestroyInput,
 } from "@/services/fyApi";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { QueryKeysEnum as HangarQueryKeysEnum } from "@/frontend/composables/useHangarQueries";
@@ -78,7 +80,7 @@ export const useVehicleQueries = (vehicle?: Vehicle) => {
     return useMutation(
       {
         mutationFn: (requestBody: VehicleUpdateInput) => {
-          return vehiclesService.updateVehicle({
+          return vehiclesService.vehicleUpdate({
             id: vehicle.id,
             requestBody,
           });
@@ -143,10 +145,50 @@ export const useVehicleQueries = (vehicle?: Vehicle) => {
     );
   };
 
+  const updateBulkMutation = () => {
+    return useMutation(
+      {
+        mutationFn: (requestBody: VehicleBulkUpdateInput) => {
+          return vehiclesService.vehicleUpdateBulk({ requestBody });
+        },
+        onSettled: () => {
+          queryClient.invalidateQueries({
+            queryKey: [HangarQueryKeysEnum.HANGAR],
+          });
+          queryClient.invalidateQueries({
+            queryKey: ["wishlist"],
+          });
+        },
+      },
+      queryClient,
+    );
+  };
+
+  const destroyBulkMutation = () => {
+    return useMutation(
+      {
+        mutationFn: (requestBody: VehicleBulkDestroyInput) => {
+          return vehiclesService.vehicleDestroyBulk({ requestBody });
+        },
+        onSettled: () => {
+          queryClient.invalidateQueries({
+            queryKey: [HangarQueryKeysEnum.HANGAR],
+          });
+          queryClient.invalidateQueries({
+            queryKey: ["wishlist"],
+          });
+        },
+      },
+      queryClient,
+    );
+  };
+
   return {
     createMutation,
     createBulkMutation,
     updateMutation,
     boughtViaFiltersQuery,
+    updateBulkMutation,
+    destroyBulkMutation,
   };
 };

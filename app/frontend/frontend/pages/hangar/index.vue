@@ -7,11 +7,12 @@ export default {
 <script lang="ts" setup>
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
-import HangarTable from "@/frontend/components/Hangar/Table/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import PrimaryAction from "@/shared/components/PrimaryAction/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
+import VehiclesTable from "@/frontend/components/Vehicles/Table/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
+import VehiclesEmpty from "@/frontend/components/Vehicles/Empty/index.vue";
 import HangarImportBtn from "@/frontend/components/Hangar/ImportBtn/index.vue";
 import HangarSyncBtn from "@/frontend/components/Hangar/SyncBtn/index.vue";
 import FilterForm from "@/frontend/components/Hangar/FilterForm/index.vue";
@@ -21,7 +22,6 @@ import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { format } from "date-fns";
 import { debounce } from "ts-debounce";
-import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { type HangarGroupMetric, HangarGroup } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -50,8 +50,6 @@ const comlink = useComlink();
 
 const deleting = ref(false);
 
-const updating = ref(false);
-
 const highlightedGroup = ref<string>("");
 
 const mobile = useMobile();
@@ -70,7 +68,13 @@ const fleetchartVisible = computed(() => fleetchartStore.isVisible("hangar"));
 
 const shareTitle = computed(() => t("title.hangar.index"));
 
-const { statsQuery, hangarQuery, groupsQuery } = useHangarQueries();
+const {
+  statsQuery,
+  hangarQuery,
+  groupsQuery,
+  exportQuery,
+  destroyAllMutation,
+} = useHangarQueries();
 
 const { filters } = useHangarFilters(() => refetch());
 
@@ -123,7 +127,7 @@ watch(
 
 onMounted(() => {
   comlink.on("vehicle-save", fetch);
-  comlink.on("vehicles-delete-all", fetch);
+  comlink.on("hangar-delete-all", fetch);
   comlink.on("hangar-group-delete", fetch);
   // comlink.on("hangar-group-save", groupsCollection.findAll);
   comlink.on("hangar-sync-finished", fetch);
@@ -131,7 +135,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   comlink.off("vehicle-save");
-  comlink.off("vehicles-delete-all");
+  comlink.off("hangar-delete-all");
   comlink.off("hangar-group-delete");
   // comlink.off("hangar-group-save");
   comlink.off("hangar-sync-finished");
@@ -171,7 +175,7 @@ const exportJson = async () => {
     return;
   }
 
-  const exportedData = await collection.export(filters.value);
+  const exportedData = await exportQuery(filters);
 
   if (!exportedData || !window.URL) {
     displayAlert({ text: t("messages.hangarExport.failure") });
@@ -202,7 +206,7 @@ const exportJson = async () => {
 const showResetIngameModal = () => {
   comlink.emit("open-modal", {
     component: () =>
-      import("@/frontend/components/Vehicles/ResetIngameModal/index.vue"),
+      import("@/frontend/components/Hangar/ResetIngameModal/index.vue"),
   });
 };
 
@@ -212,9 +216,9 @@ const destroyAll = async () => {
   displayConfirm({
     text: t("messages.confirm.hangar.destroyAll"),
     onConfirm: async () => {
-      await collection.destroyAll();
+      await destroyAllMutation.mutate();
 
-      comlink.emit("vehicles-delete-all");
+      comlink.emit("hangar-delete-all");
 
       deleting.value = false;
     },
@@ -241,15 +245,9 @@ const openDisplayOptionsModal = () => {
 </script>
 
 <template>
+  <Heading hidden>{{ t("headlines.hangar.index") }}</Heading>
   <div class="row">
     <div class="col-12 col-lg-12">
-      <div class="row">
-        <div class="col-12">
-          <h1 class="sr-only">
-            {{ t("headlines.hangar.index") }}
-          </h1>
-        </div>
-      </div>
       <div class="hangar-header">
         <div class="hangar-labels">
           <ModelClassLabels
@@ -478,7 +476,7 @@ const openDisplayOptionsModal = () => {
         </template>
       </Grid>
 
-      <HangarTable
+      <VehiclesTable
         v-else
         :loading="loading"
         :empty-box-visible="emptyBoxVisible"
@@ -517,7 +515,7 @@ const openDisplayOptionsModal = () => {
     </template>
 
     <template #empty="{ hideEmptyBox, emptyBoxVisible }">
-      <HangarEmpty
+      <VehiclesEmpty
         v-if="!hideEmptyBox && emptyBoxVisible"
         :variant="EmptyVariantsEnum.BOX"
       />

@@ -23,6 +23,7 @@ import { PasswordService } from './services/PasswordService';
 import { PublicHangarService } from './services/PublicHangarService';
 import { PublicHangarGroupsService } from './services/PublicHangarGroupsService';
 import { PublicHangarStatsService } from './services/PublicHangarStatsService';
+import { PublicUserService } from './services/PublicUserService';
 import { PublicWishlistService } from './services/PublicWishlistService';
 import { RoadmapService } from './services/RoadmapService';
 import { SearchService } from './services/SearchService';
@@ -52,6 +53,7 @@ export class FyApi {
     public readonly publicHangar: PublicHangarService;
     public readonly publicHangarGroups: PublicHangarGroupsService;
     public readonly publicHangarStats: PublicHangarStatsService;
+    public readonly publicUser: PublicUserService;
     public readonly publicWishlist: PublicWishlistService;
     public readonly roadmap: RoadmapService;
     public readonly search: SearchService;
@@ -92,6 +94,7 @@ export class FyApi {
         this.publicHangar = new PublicHangarService(this.request);
         this.publicHangarGroups = new PublicHangarGroupsService(this.request);
         this.publicHangarStats = new PublicHangarStatsService(this.request);
+        this.publicUser = new PublicUserService(this.request);
         this.publicWishlist = new PublicWishlistService(this.request);
         this.roadmap = new RoadmapService(this.request);
         this.search = new SearchService(this.request);

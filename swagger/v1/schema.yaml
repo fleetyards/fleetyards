@@ -1354,6 +1354,15 @@ paths:
       operationId: hangarExport
       tags:
       - Hangar
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/HangarQuery"
+        style: deepObject
+        explode: true
+        required: false
       responses:
         '200':
           description: successful
@@ -2943,6 +2952,31 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/public/users/{username}":
+    parameters:
+    - name: username
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Public User
+      operationId: publicUser
+      tags:
+      - PublicUser
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/UserPublic"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/public/wishlists/{username}":
     parameters:
     - name: username
@@ -4353,6 +4387,16 @@ components:
       - pledge_price desc
       - price asc
       - price desc
+      - scm_speed asc
+      - scm_speed desc
+      - max_speed asc
+      - max_speed desc
+      - ground_max_speed asc
+      - ground_max_speed desc
+      - production_status asc
+      - production_status desc
+      - focus asc
+      - focus desc
       title: ModelSortEnum
     RoadmapItemSortEnum:
       type: string
@@ -4391,6 +4435,30 @@ components:
       - updated_at desc
       - model_manufacturer_name asc
       - model_manufacturer_name desc
+      - model_length asc
+      - model_length desc
+      - model_beam asc
+      - model_beam desc
+      - model_height asc
+      - model_height desc
+      - model_mass asc
+      - model_mass desc
+      - model_cargo asc
+      - model_cargo desc
+      - model_pledge_price asc
+      - model_pledge_price desc
+      - model_price asc
+      - model_price desc
+      - model_scm_speed asc
+      - model_scm_speed desc
+      - model_max_speed asc
+      - model_max_speed desc
+      - model_ground_max_speed asc
+      - model_ground_max_speed desc
+      - model_production_status asc
+      - model_production_status desc
+      - model_focus asc
+      - model_focus desc
       title: VehicleSortEnum
     StandardError:
       type: object
@@ -6884,6 +6952,8 @@ components:
         willItFit:
           type: string
           format: uuid
+        withCargo:
+          type: boolean
         sorts:
           oneOf:
           - type: array
@@ -7319,6 +7389,35 @@ components:
       - createdAt
       - updatedAt
       title: User
+    UserPublic:
+      type: object
+      properties:
+        username:
+          type: string
+        avatar:
+          type: string
+        rsiHandle:
+          type: string
+        discord:
+          type: string
+        youtube:
+          type: string
+        twitch:
+          type: string
+        guilded:
+          type: string
+        homepage:
+          type: string
+        publicHangarLoaners:
+          type: boolean
+        publicWishlist:
+          type: boolean
+      additionalProperties: false
+      required:
+      - username
+      - publicHangarLoaners
+      - publicWishlist
+      title: UserPublic
     Vehicle:
       type: object
       properties:

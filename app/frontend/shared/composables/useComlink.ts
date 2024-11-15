@@ -17,7 +17,7 @@ type Events = {
   "access-confirmed": undefined;
   "access-confirmation-required": undefined;
   "vehicle-save": undefined;
-  "vehicles-delete-all": undefined;
+  "hangar-delete-all": undefined;
   "hangar-sync-finished": undefined;
   "hangar-group-save": undefined;
   "hangar-group-delete": undefined;

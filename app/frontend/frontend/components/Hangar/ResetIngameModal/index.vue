@@ -1,31 +1,17 @@
-<template>
-  <Modal :title="t('headlines.hangar.resetIngame')">
-    <div class="page-actions page-actions-block">
-      <Btn
-        :inline="true"
-        data-test="reset-ingame-modal-reset-to-wishlist"
-        @click.native="moveToWishlist"
-      >
-        {{ t("actions.hangar.resetIngame.moveToWishlist") }}
-      </Btn>
-      <Btn
-        :inline="true"
-        data-test="reset-ingame-modal-reset"
-        @click.native="removeAll"
-      >
-        {{ t("actions.hangar.resetIngame.removeAll") }}
-      </Btn>
-    </div>
-  </Modal>
-</template>
+<script lang="ts">
+export default {
+  name: "HangarResetIngameModal",
+};
+</script>
 
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
-import vehiclesCollection from "@/frontend/api/collections/Vehicles";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useNoty } from "@/shared/composables/useNoty";
+
+const { displaySuccess, displayAlert } = useNoty();
 
 const { t } = useI18n();
 
@@ -39,7 +25,7 @@ const moveToWishlist = async () => {
       text: t("messages.vehicle.resetIngame.moveToWishlist.success"),
     });
 
-    comlink.$emit("close-modal");
+    comlink.emit("close-modal");
   } else {
     displayAlert({
       text: t("messages.vehicle.resetIngame.moveToWishlist.failure"),
@@ -55,7 +41,7 @@ const removeAll = async () => {
       text: t("messages.vehicle.resetIngame.removeAll.success"),
     });
 
-    comlink.$emit("close-modal");
+    comlink.emit("close-modal");
   } else {
     displayAlert({
       text: t("messages.vehicle.resetIngame.removeAll.failure"),
@@ -64,8 +50,23 @@ const removeAll = async () => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "VehiclesResetIngameModal",
-};
-</script>
+<template>
+  <Modal :title="t('headlines.hangar.resetIngame')">
+    <div class="page-actions page-actions-block">
+      <Btn
+        :inline="true"
+        data-test="reset-ingame-modal-reset-to-wishlist"
+        @click="moveToWishlist"
+      >
+        {{ t("actions.hangar.resetIngame.moveToWishlist") }}
+      </Btn>
+      <Btn
+        :inline="true"
+        data-test="reset-ingame-modal-reset"
+        @click="removeAll"
+      >
+        {{ t("actions.hangar.resetIngame.removeAll") }}
+      </Btn>
+    </div>
+  </Modal>
+</template>

@@ -9,7 +9,6 @@ Rails.application.routes.draw do
   draw :docs_routes
   draw :api_routes
   draw :admin_routes
-  draw :frontend_routes
   draw :short_routes if Rails.configuration.app.short_domain.present?
 
   post "/emails/inbound" => "inbound_emails#create"
@@ -23,4 +22,6 @@ Rails.application.routes.draw do
   match "422" => "errors#unprocessable_entity", :via => :all
   match "406" => "errors#not_acceptable", :via => :all
   match "500" => "errors#server_error", :via => :all
+
+  draw :frontend_routes
 end

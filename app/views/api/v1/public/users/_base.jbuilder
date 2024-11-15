@@ -9,3 +9,4 @@ json.twitch user.twitch
 json.guilded user.guilded
 json.homepage user.homepage
 json.public_hangar_loaners user.public_hangar_loaners
+json.public_wishlist user.public_wishlist

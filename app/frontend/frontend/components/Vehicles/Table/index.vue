@@ -10,9 +10,8 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index.vue";
 import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue";
-import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
-import WishlistEmptyTable from "@/frontend/components/Wishlist/EmptyTable/index.vue";
-import { useNoty } from "@/shared/composables/useNoty";
+import VehiclesEmpty from "@/frontend/components/Vehicles/Empty/index.vue";
+import ListActions from "@/frontend/components/Vehicles/Table/ListActions.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type Vehicle } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -24,6 +23,10 @@ import {
   useHangarStore,
   HangarTableViewColsEnum,
 } from "@/frontend/stores/hangar";
+import {
+  useWishlistStore,
+  WishlistTableViewColsEnum,
+} from "@/frontend/stores/wishlist";
 
 type Props = {
   vehicles: Vehicle[];
@@ -37,17 +40,26 @@ const props = defineProps<Props>();
 
 const { t, toNumber, toUEC, toDollar } = useI18n();
 
-const { displayConfirm } = useNoty();
-
 const selected = ref<string[]>([]);
 
-const deleting = ref(false);
-
-const updating = ref(false);
-
 const hangarStore = useHangarStore();
+const wishlistStore = useWishlistStore();
 
 const extraColumns = computed(() => {
+  if (props.wishlist) {
+    return Object.values(WishlistTableViewColsEnum)
+      .map((col) => {
+        return {
+          name: col,
+          label: t(`labels.hangarTable.columns.${col}`),
+          sortable: true,
+        };
+      })
+      .filter((col) => {
+        return wishlistStore.tableViewCols.includes(col.name);
+      });
+  }
+
   return Object.values(HangarTableViewColsEnum)
     .map((col) => {
       return {
@@ -99,22 +111,12 @@ const tableColumns = computed<BaseTableColumn[]>(() => {
 const comlink = useComlink();
 
 onMounted(() => {
-  comlink.on("vehicles-delete-all", resetSelected);
+  comlink.on("hangar-delete-all", resetSelected);
 });
 
 onBeforeUnmount(() => {
-  comlink.off("vehicles-delete-all", resetSelected);
+  comlink.off("hangar-delete-all", resetSelected);
 });
-
-const openBulkGroupEditModal = () => {
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Vehicles/BulkGroupModal/index.vue"),
-    props: {
-      vehicleIds: selected.value,
-    },
-  });
-};
 
 const openEditModal = (vehicle: Vehicle) => {
   comlink.emit("open-modal", {
@@ -138,70 +140,8 @@ const storeImage = (record: Vehicle) => {
   return record.model.media.storeImage?.medium;
 };
 
-const addToWishlistBulk = async () => {
-  updating.value = true;
-
-  await await vehiclesCollection.addToWishlistBulk(selected.value);
-
-  resetSelected();
-
-  updating.value = false;
-};
-
-const addToHangarBulk = async () => {
-  updating.value = true;
-
-  await vehiclesCollection.addToHangarBulk(selected.value);
-
-  wishlistCollection.refresh();
-
-  resetSelected();
-
-  updating.value = false;
-};
-
-const hideFromPublicHangar = async () => {
-  updating.value = true;
-
-  await vehiclesCollection.hideFromPublicHangar(selected.value);
-
-  wishlistCollection.refresh();
-
-  updating.value = false;
-};
-
-const showOnPublicHangar = async () => {
-  updating.value = true;
-
-  await vehiclesCollection.showOnPublicHangar(selected.value);
-
-  wishlistCollection.refresh();
-
-  updating.value = false;
-};
-
-const onSelectedChange = (value) => {
+const onSelectedChange = (value: string[]) => {
   selected.value = value;
-};
-
-const destroyBulk = async () => {
-  deleting.value = true;
-
-  displayConfirm({
-    text: t("messages.confirm.hangar.destroySelected"),
-    onConfirm: async () => {
-      await vehiclesCollection.destroyBulk(selected.value);
-
-      wishlistCollection.refresh();
-
-      resetSelected();
-
-      deleting.value = false;
-    },
-    onClose: () => {
-      deleting.value = false;
-    },
-  });
 };
 
 const resetSelected = () => {
@@ -222,60 +162,7 @@ const resetSelected = () => {
       @selected-change="onSelectedChange"
     >
       <template #selected-actions>
-        <BtnGroup inline>
-          <span>{{ t("labels.public") }}</span>
-          <Btn
-            v-tooltip="t('actions.hangar.showOnPublicHangar')"
-            :size="BtnSizesEnum.SMALL"
-            :disabled="updating"
-            @click="showOnPublicHangar"
-          >
-            <i class="fad fa-eye" />
-          </Btn>
-          <Btn
-            v-tooltip="t('actions.hangar.hideFromPublicHangar')"
-            :size="BtnSizesEnum.SMALL"
-            :disabled="updating"
-            @click="hideFromPublicHangar"
-          >
-            <i class="fad fa-eye-slash" />
-          </Btn>
-        </BtnGroup>
-        <Btn
-          v-if="wishlist"
-          :size="BtnSizesEnum.SMALL"
-          :disabled="updating"
-          inline
-          @click="addToHangarBulk"
-        >
-          {{ t("actions.addToHangar") }}
-        </Btn>
-        <Btn
-          v-else
-          :size="BtnSizesEnum.SMALL"
-          :disabled="updating"
-          inline
-          @click="addToWishlistBulk"
-        >
-          {{ t("actions.addToWishlist") }}
-        </Btn>
-        <Btn
-          v-if="!wishlist"
-          :size="BtnSizesEnum.SMALL"
-          inline
-          @click="openBulkGroupEditModal"
-        >
-          {{ t("actions.hangar.editGroupsSelected") }}
-        </Btn>
-        <Btn
-          v-tooltip="t('actions.deleteSelected')"
-          :size="BtnSizesEnum.SMALL"
-          :disabled="deleting"
-          inline
-          @click="destroyBulk"
-        >
-          <i class="fal fa-trash" />
-        </Btn>
+        <ListActions :selected="selected" :wishlist="wishlist" />
       </template>
       <template #col-store_image="{ record }">
         <LazyImage
@@ -440,8 +327,7 @@ const resetSelected = () => {
         </BtnGroup>
       </template>
       <template #empty>
-        <WishlistEmptyTable v-if="wishlist" />
-        <HangarEmpty v-else />
+        <VehiclesEmpty :wishlist="wishlist" />
       </template>
     </BaseTable>
   </div>

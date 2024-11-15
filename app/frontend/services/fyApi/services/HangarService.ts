@@ -58,10 +58,17 @@ export class HangarService {
      * @returns VehicleExport successful
      * @throws ApiError
      */
-    public hangarExport(): CancelablePromise<Array<VehicleExport>> {
+    public hangarExport({
+        q,
+    }: {
+        q?: HangarQuery,
+    }): CancelablePromise<Array<VehicleExport>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/hangar/export',
+            query: {
+                'q': q,
+            },
             errors: {
                 401: `unauthorized`,
             },

@@ -11,15 +11,6 @@
       },
       "notFound": "You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space.",
       "serverError": "The server is currently experiencing technical difficulties. Please try again later.",
-      "empty": {
-        "hangar": {
-          "info": "You can add Ships to your Hangar by clicking on the bookmark icon in the top right corner of a Ship or by using the Plus Button in the bottom right corner.",
-          "extension": "Additionally you can import your Hangar from the RSI Website via the Fleetyards Sync Browser extension."
-        },
-        "wishlist": {
-          "info": "You can add Ships to your Wishlist by clicking on the bookmark icon in the top right corner of a Ship."
-        }
-      },
       "compare": {
         "ships": {
           "info": "To start select at least two and not more than eight Ships you want to compare."

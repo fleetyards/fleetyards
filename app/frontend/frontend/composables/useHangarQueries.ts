@@ -1,11 +1,7 @@
 import { useApiClient } from "@/frontend/composables/useApiClient";
-import {
-  type FilterOption,
-  type HangarGroup,
-  type HangarQuery,
-} from "@/services/fyApi";
+import { type HangarGroup, type HangarQuery } from "@/services/fyApi";
 import { type FilterGroupParams } from "@/shared/components/base/FilterGroup/index.vue";
-import { useQuery, useQueryClient } from "@tanstack/vue-query";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/vue-query";
 
 export enum QueryKeysEnum {
   HANGAR = "hangar",
@@ -86,6 +82,21 @@ export const useHangarQueries = () => {
     return vehiclesService.boughtViaFilters();
   };
 
+  const exportQuery = (filters: Ref<HangarQuery>) => {
+    return hangarService.hangarExport({
+      q: filters.value,
+    });
+  };
+
+  const destroyAllMutation = useMutation(
+    {
+      mutationFn: () => {
+        return hangarService.hangarDestroy();
+      },
+    },
+    queryClient,
+  );
+
   return {
     hangarQuery,
     statsQuery,
@@ -93,5 +104,7 @@ export const useHangarQueries = () => {
     groupsFilterQuery,
     groupsFilterFormatter,
     boughtViaFilterQuery,
+    exportQuery,
+    destroyAllMutation,
   };
 };

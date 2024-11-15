@@ -10,7 +10,7 @@ resources :users, only: [] do
     delete "me", to: "users#destroy"
     put "account", to: "users#update_account"
 
-    get ":username", to: "users#public"
+    get ":username", to: "public/users#show"
 
     resource :two_factor, path: "two-factor", only: [] do
       collection do
@@ -22,4 +22,8 @@ resources :users, only: [] do
       end
     end
   end
+end
+
+namespace :public do
+  resources :users, param: :username, only: %i[show]
 end
