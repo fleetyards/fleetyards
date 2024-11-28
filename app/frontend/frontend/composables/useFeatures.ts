@@ -1,18 +1,26 @@
-import featuresCollection from "@/frontend/api/collections/Features";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+import { useQuery, useQueryClient } from "@tanstack/vue-query";
+
+export enum QueryKeysEnum {
+  FEATURES = "features",
+}
 
 export const useFeatures = () => {
-  const features = ref<string[]>([]);
+  const { features: featuresService } = useApiClient();
 
-  onMounted(() => {
-    fetch();
-  });
+  const queryClient = useQueryClient();
 
-  const fetch = async () => {
-    features.value = await featuresCollection.findAll();
-  };
+  const { data: features } = useQuery(
+    {
+      queryKey: [QueryKeysEnum.FEATURES],
+      queryFn: () => featuresService.features(),
+      retry: false,
+    },
+    queryClient,
+  );
 
   const isFeatureEnabled = (feature: string) =>
-    features.value.includes(feature);
+    features.value?.includes(feature) || false;
 
   return {
     features,

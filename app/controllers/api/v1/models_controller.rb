@@ -153,11 +153,21 @@ module Api
 
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
-        scope = model.model_hardpoints.includes(:component).undeleted
+        scope = if Flipper.enabled?("hardpoints-v2")
+          model.hardpoints.includes(:component)
+        else
+          model.model_hardpoints.includes(:component).undeleted
+        end
 
         scope = scope.where(source: params[:source]) if params[:source].present?
 
         @hardpoints = scope
+
+        if Flipper.enabled?("hardpoints-v2")
+          render "api/v1/models/hardpoints"
+        else
+          render "api/v1/models/hardpoints_old"
+        end
       end
 
       def images

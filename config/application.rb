@@ -44,7 +44,7 @@ module Fleetyards
       # rubocop:enable Rails/OutputSafety
     }
 
-    config.active_record.yaml_column_permitted_classes = [Symbol, Date, Time]
+    config.active_record.yaml_column_permitted_classes = [Symbol, Date, Time, ActiveSupport::HashWithIndifferentAccess]
 
     # Hack to fix Zeitwerk issue
     Rails.autoloaders.main.ignore(Rails.root.join("app/frontend/images"))

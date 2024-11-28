@@ -59,13 +59,16 @@
 #  notified                   :boolean          default(FALSE)
 #  on_sale                    :boolean          default(FALSE)
 #  pitch                      :decimal(15, 2)
+#  pitch_boosted              :decimal(15, 2)
 #  pledge_price               :decimal(15, 2)
 #  price                      :decimal(15, 2)
 #  production_note            :string(255)
 #  production_status          :string(255)
 #  quantum_fuel_tank_size     :decimal(15, 2)
 #  quantum_fuel_tanks         :string
+#  reverse_speed_boosted      :decimal(15, 2)
 #  roll                       :decimal(15, 2)
+#  roll_boosted               :decimal(15, 2)
 #  rsi_beam                   :decimal(15, 2)   default(0.0), not null
 #  rsi_cargo                  :decimal(15, 2)
 #  rsi_classification         :string
@@ -93,6 +96,7 @@
 #  sc_length                  :decimal(15, 2)
 #  scm_speed                  :decimal(15, 2)
 #  scm_speed_acceleration     :decimal(15, 2)
+#  scm_speed_boosted          :decimal(15, 2)
 #  scm_speed_decceleration    :decimal(15, 2)
 #  side_view                  :string
 #  side_view_colored          :string
@@ -114,6 +118,7 @@
 #  upgrade_kits_count         :integer          default(0)
 #  videos_count               :integer          default(0)
 #  yaw                        :decimal(15, 2)
+#  yaw_boosted                :decimal(15, 2)
 #  created_at                 :datetime
 #  updated_at                 :datetime
 #  base_model_id              :uuid
@@ -128,8 +133,6 @@
 class Model < ApplicationRecord
   include ActionView::Helpers::NumberHelper
   include Routing
-
-  attr_accessor :update_reason, :update_reason_description, :author_id
 
   audited on: %i[update], only: %i[
     classification production_status production_note focus pledge_price length beam height mass
@@ -173,11 +176,14 @@ class Model < ApplicationRecord
 
   accepts_nested_attributes_for :addition, allow_destroy: true
 
+  has_many :hardpoints, as: :parent, dependent: :destroy, autosave: true
+  has_many :components, through: :hardpoints
+
   has_many :model_hardpoints,
     dependent: :destroy,
     autosave: true
+  has_many :hardpoint_components, through: :model_hardpoints
   has_many :vehicles, dependent: :destroy
-  has_many :components, through: :model_hardpoints
 
   has_many :model_prices, dependent: :destroy
 
@@ -388,8 +394,8 @@ class Model < ApplicationRecord
   def set_cargo_from_hardpoints
     return if cargo_holds.blank? || (cargo.present? && !cargo_holds_change_to_be_saved)
 
-    self.cargo = cargo_holds.sum do |item|
-      item[:scu]
+    self.cargo = cargo_holds.sum do |cargo_hold|
+      cargo_hold.dig("dimensions", "scu")&.to_f || 0
     end
   end
 
@@ -397,7 +403,7 @@ class Model < ApplicationRecord
     return if quantum_fuel_tanks.blank? || (quantum_fuel_tank_size.present? && !quantum_fuel_tanks_change_to_be_saved)
 
     self.quantum_fuel_tank_size = quantum_fuel_tanks.sum do |item|
-      item[:capacity]
+      item["capacity"]
     end
   end
 
@@ -405,7 +411,7 @@ class Model < ApplicationRecord
     return if hydrogen_fuel_tanks.blank? || (hydrogen_fuel_tank_size.present? && !hydrogen_fuel_tanks_change_to_be_saved)
 
     self.hydrogen_fuel_tank_size = hydrogen_fuel_tanks.sum do |item|
-      item[:capacity]
+      item["capacity"]
     end
   end
 

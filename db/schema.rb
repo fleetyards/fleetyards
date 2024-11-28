@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_14_222949) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_27_134349) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
@@ -189,6 +189,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_14_222949) do
     t.string "power_connection"
     t.string "heat_connection"
     t.string "ammunition"
+    t.boolean "hidden", default: false
+    t.string "sc_key"
+    t.string "sc_ref"
+    t.string "category"
+    t.string "component_type"
+    t.string "component_sub_type"
+    t.string "inventory_consumption"
     t.index ["manufacturer_id"], name: "index_components_on_manufacturer_id"
   end
 
@@ -356,6 +363,22 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_14_222949) do
     t.index ["user_id", "name"], name: "index_hangar_groups_on_user_id_and_name", unique: true
   end
 
+  create_table "hardpoints", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "sc_name"
+    t.integer "min_size"
+    t.integer "max_size"
+    t.string "types"
+    t.string "parent_type", null: false
+    t.uuid "parent_id", null: false
+    t.uuid "component_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "source"
+    t.integer "group"
+    t.index ["component_id"], name: "index_hardpoints_on_component_id"
+    t.index ["parent_type", "parent_id"], name: "index_hardpoints_on_parent"
+  end
+
   create_table "images", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", limit: 255
     t.uuid "gallery_id"
@@ -413,6 +436,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_14_222949) do
     t.string "code"
     t.string "long_name"
     t.string "code_mapping"
+    t.string "sc_ref"
   end
 
   create_table "message_attachments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -536,6 +560,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_14_222949) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.decimal "pledge_price", precision: 15, scale: 2
+    t.string "sc_key"
+    t.decimal "cargo", precision: 15, scale: 2
+    t.string "cargo_holds"
   end
 
   create_table "model_paints", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -711,6 +738,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_14_222949) do
     t.decimal "sc_length", precision: 15, scale: 2
     t.decimal "sc_beam", precision: 15, scale: 2
     t.decimal "sc_height", precision: 15, scale: 2
+    t.decimal "scm_speed_boosted", precision: 15, scale: 2
+    t.decimal "pitch_boosted", precision: 15, scale: 2
+    t.decimal "yaw_boosted", precision: 15, scale: 2
+    t.decimal "reverse_speed_boosted", precision: 15, scale: 2
+    t.decimal "roll_boosted", precision: 15, scale: 2
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 
@@ -1085,6 +1117,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_14_222949) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "hardpoints", "components"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_grants", "users", column: "resource_owner_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"

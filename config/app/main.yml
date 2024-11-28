@@ -26,6 +26,8 @@ shared:
 
   opensearch_url: <%= ENV["OPENSEARCH_URL"] || 'localhost:9200' %>
 
+  sc_data2_sc_version: "4.0.0-PTU"
+
 staging:
   on_subdomain?: true
 

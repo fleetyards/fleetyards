@@ -9,25 +9,26 @@ class Scdata2 < Thor
     true
   end
 
-  EXPORT_FOLDER = "./data/export"
+  EXPORT_FOLDER = "data/sc_data"
+  SC_VERSION = "4.0.0-PTU"
 
   desc "setup", "Setup sc data export symlink"
   def setup(source_folder, export_folder = EXPORT_FOLDER)
-    say("Creating symlink from #{source_folder} to #{export_folder}", :green)
-    system("ln -s #{source_folder} #{export_folder}")
+    say("Creating symlink from #{source_folder} to #{export_folder}/raw", :green)
+    system("ln -s #{source_folder} #{export_folder}/raw")
   end
 
-  desc "parse", "Parse sc data files"
-  def parse(sc_version = "4.0.0-EPTU", export_folder = EXPORT_FOLDER)
+  desc "parse", "Parse SC Data"
+  def parse(sc_version = SC_VERSION, export_folder = EXPORT_FOLDER)
     require "./config/environment"
 
-    ScData::Parser.new(base_folder: EXPORT_FOLDER, version: sc_version).run
+    ScData2::Parser::BaseParser.run_all(base_folder: Rails.root.join(export_folder), sc_version:)
   end
 
-  desc "upload", "Upload exported sc data files to s3"
-  def upload(sc_version = "4.0.0-EPTU", export_folder = EXPORT_FOLDER, dry_run = false)
-    system("s3cmd sync --delete-removed#{dry_run ? " --dry-run" : ""} #{EXPORT_FOLDER}/#{sc_version}/ s3://fleetyards/sc_data/")
+  desc "load_items", "Load Items from SC Data"
+  def load_items(sc_version = SC_VERSION, export_folder = EXPORT_FOLDER)
+    require "./config/environment"
 
-    system("s3cmd setacl s3://fleetyards/sc_data/ --recursive --acl-public") unless dry_run
+    ScData2::Loader::ItemsLoader.new(sc_version:).run
   end
 end

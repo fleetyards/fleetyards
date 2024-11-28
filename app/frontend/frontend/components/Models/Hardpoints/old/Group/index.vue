@@ -8,12 +8,34 @@
         <div v-for="hardpoint in hardpoints" :key="hardpoint.id">
           {{ hardpoint.name }}
         </div>
+        <div
+          v-for="(items, type) in groupByType(filteredHardpoints)"
+          :key="type"
+          class="hardpoint-type"
+        >
+          <div class="hardpoint-type-label">
+            <img
+              :src="icons[type as keyof typeof icons]"
+              class="hardpoint-type-icon"
+              :alt="`icon-${type}`"
+            />
+            {{ t(`labels.hardpoint.types.${type}`) }}
+          </div>
+          <div class="hardpoint-items">
+            <HardpointItems
+              v-for="(groupedItems, key) in groupByKey(items)"
+              :key="`${type}-${key}`"
+              :hardpoints="groupedItems"
+            />
+          </div>
+        </div>
       </div>
     </Panel>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { groupBy, sortBy } from "@/shared/utils/Array";
 import radarIconUrl from "@/images/hardpoints/radar.svg";
 import computersIconUrl from "@/images/hardpoints/computers.svg";
 import powerPlantsIconUrl from "@/images/hardpoints/power_plants.svg";
@@ -33,7 +55,9 @@ import utilityItemsIconUrl from "@/images/hardpoints/utility_items.svg";
 import qedIconUrl from "@/images/hardpoints/qed.svg";
 import empIconUrl from "@/images/hardpoints/emp.svg";
 import Panel from "@/shared/components/Panel/index.vue";
+import HardpointItems from "../Items/index.vue";
 import {
+  ModelHardpointSourceEnum,
   type ModelHardpoint,
   type ModelHardpointGroupEnum,
 } from "@/services/fyApi";
@@ -70,6 +94,29 @@ const icons = {
   utility_items: utilityItemsIconUrl,
   qed: qedIconUrl,
   emp: empIconUrl,
+};
+
+const filteredHardpoints = computed(() => {
+  return props.hardpoints.filter(
+    (hardpoint) => hardpoint.type !== "jump_modules" || !hasGameFileData.value,
+  );
+});
+
+const hasGameFileData = computed(() => {
+  return props.hardpoints.some(
+    (h) => h.source === ModelHardpointSourceEnum.GAME_FILES,
+  );
+});
+
+const groupByType = (hardpoints: ModelHardpoint[]) => {
+  return groupBy<ModelHardpoint>(
+    sortBy<ModelHardpoint>(hardpoints, "type"),
+    "type",
+  );
+};
+
+const groupByKey = (hardpoints: ModelHardpoint[]) => {
+  return groupBy(sortBy(hardpoints, "category"), "key");
 };
 </script>
 

@@ -4,26 +4,33 @@
 #
 # Table name: components
 #
-#  id               :uuid             not null, primary key
-#  ammunition       :string
-#  component_class  :string
-#  description      :text
-#  durability       :string
-#  grade            :string
-#  heat_connection  :string
-#  item_class       :integer
-#  item_type        :string
-#  name             :string(255)
-#  power_connection :string
-#  sc_identifier    :string
-#  size             :string(255)
-#  slug             :string
-#  store_image      :string
-#  tracking_signal  :integer
-#  type_data        :string
-#  created_at       :datetime
-#  updated_at       :datetime
-#  manufacturer_id  :uuid
+#  id                    :uuid             not null, primary key
+#  ammunition            :string
+#  category              :string
+#  component_class       :string
+#  component_sub_type    :string
+#  component_type        :string
+#  description           :text
+#  durability            :string
+#  grade                 :string
+#  heat_connection       :string
+#  hidden                :boolean          default(FALSE)
+#  inventory_consumption :string
+#  item_class            :integer
+#  item_type             :string
+#  name                  :string(255)
+#  power_connection      :string
+#  sc_identifier         :string
+#  sc_key                :string
+#  sc_ref                :string
+#  size                  :string(255)
+#  slug                  :string
+#  store_image           :string
+#  tracking_signal       :integer
+#  type_data             :string
+#  created_at            :datetime
+#  updated_at            :datetime
+#  manufacturer_id       :uuid
 #
 # Indexes
 #
@@ -53,11 +60,11 @@ class Component < ApplicationRecord
 
   belongs_to :manufacturer, optional: true
 
+  has_many :hardpoints, as: :parent, dependent: :destroy, autosave: true
+  has_many :hardpoint_loadouts, as: :component, dependent: :nullify
+
   has_many :model_hardpoints, dependent: :nullify
-
   has_many :item_prices, as: :item, dependent: :destroy
-
-  validates :name, presence: true
 
   before_save :update_slugs
 
@@ -68,6 +75,7 @@ class Component < ApplicationRecord
   serialize :power_connection, coder: YAML
   serialize :heat_connection, coder: YAML
   serialize :ammunition, coder: YAML
+  serialize :inventory_consumption, coder: YAML
 
   DEFAULT_SORTING_PARAMS = ["name asc", "created_at asc"]
   ALLOWED_SORTING_PARAMS = [

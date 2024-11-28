@@ -10,6 +10,7 @@
 #  logo         :string(255)
 #  long_name    :string
 #  name         :string(255)
+#  sc_ref       :string
 #  slug         :string(255)
 #  created_at   :datetime
 #  updated_at   :datetime
