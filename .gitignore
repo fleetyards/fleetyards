@@ -62,4 +62,4 @@ swagger/todo
 /app/assets/builds/*
 !/app/assets/builds/.keep
 
-data/sc_data/raw/*
+data/sc_data/raw
