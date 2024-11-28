@@ -69,7 +69,7 @@ module ScData2
         [
           "camera", "panel", "animated", "lightning", "light", "decal", "sensor", "button",
           "handle", "dashboard", "access", "seataccess", "screen", "ladder",
-          "hud", "helper"
+          "hud", "helper", "template"
         ].any? do |filter|
           key.downcase.split("_").any? { |part| part == filter }
         end

@@ -10,26 +10,24 @@ export type Component = {
     id: string;
     name: string;
     slug: string;
+    scKey?: string;
+    scRef?: string;
+    hidden: boolean;
+    category?: string;
+    type?: string;
+    subType?: string;
+    inventoryConsumption?: string;
+    grade?: string;
+    size?: string;
     availability: {
         boughtAt: Array<ItemPrice>;
         soldAt: Array<ItemPrice>;
     };
-    class?: string;
-    grade?: string;
-    itemClass?: string;
-    itemClassLabel?: string;
-    itemType?: string;
-    itemTypeLabel?: string;
     manufacturer?: Manufacturer;
     media: {
         storeImage?: MediaImage;
     };
     typeData?: ComponentQuantumDrive;
-    size?: string;
-    trackingSignal?: string;
-    trackingSignalLabel?: string;
-    type?: string;
-    typeLabel?: string;
     createdAt: string;
     updatedAt: string;
 };

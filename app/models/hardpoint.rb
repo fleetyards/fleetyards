@@ -30,29 +30,31 @@ class Hardpoint < ApplicationRecord
   has_many :hardpoints, as: :parent, dependent: :destroy, autosave: true
 
   enum source: {ship_matrix: 0, game_files: 1}
-  enum group: {avionic: 0, system: 1, propulsion: 2, thruster: 3, weapon: 4, seat: 5, auxiliary: 6}, _suffix: true
+  enum group: {avionic: 0, system: 1, propulsion: 2, thruster: 3, weapon: 4, seat: 5, auxiliary: 6, other: 999}, _suffix: true
 
   before_validation :set_group
 
   def set_group
     return if component.blank?
 
-    case component.category
+    self.group = case component.category
     when "thrusters"
-      self.group = :thruster
+      :thruster
     when "seat"
-      self.group = :seat
+      :seat
     when "selfdestruct", "lifesupport", "armor", "countermeasures", "batteries", "relay"
-      self.group = :auxiliary
+      :auxiliary
     when "radar", "computers", "scanners"
-      self.group = :avionic
+      :avionic
     when "powerplant", "cooler", "shieldgenerator", "module"
-      self.group = :system
+      :system
     when "turret", "weapon_mounts", "weapons", "missile_racks", "bombcompartments", "utility",
       "quantumenforcementdevice", "salvagemunching", "salvagefillerstation"
-      self.group = :weapon
+      :weapon
     when "fueltanks", "fuel_intakes", "quantumdrive"
-      self.group = :propulsion
+      :propulsion
+    else
+      :other
     end
   end
 end

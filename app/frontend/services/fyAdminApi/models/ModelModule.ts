@@ -2,17 +2,23 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { CargoHold } from './CargoHold';
 import type { ItemPrice } from './ItemPrice';
 import type { Manufacturer } from './Manufacturer';
 import type { MediaImage } from './MediaImage';
 export type ModelModule = {
     id: string;
     name: string;
+    description?: string;
+    scKey?: string;
+    metrics?: {
+        cargo?: number;
+    };
+    cargoHolds?: Array<CargoHold>;
     availability: {
         boughtAt: Array<ItemPrice>;
         soldAt: Array<ItemPrice>;
     };
-    description?: string;
     media: {
         storeImage?: MediaImage;
     };
@@ -21,25 +27,5 @@ export type ModelModule = {
     manufacturer?: Manufacturer;
     createdAt: string;
     updatedAt: string;
-    /**
-     * @deprecated
-     */
-    hasStoreImage?: boolean;
-    /**
-     * @deprecated
-     */
-    storeImage?: string;
-    /**
-     * @deprecated
-     */
-    storeImageLarge?: string;
-    /**
-     * @deprecated
-     */
-    storeImageMedium?: string;
-    /**
-     * @deprecated
-     */
-    storeImageSmall?: string;
 };
 

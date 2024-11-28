@@ -119,6 +119,8 @@ module V1
               additionalProperties: false
             },
 
+            cargoHolds: {type: :array, items: {"$ref": "#/components/schemas/CargoHold"}},
+
             onSale: {type: :boolean},
             pledgePrice: {type: :number},
             pledgePriceLabel: {type: :string},
@@ -138,14 +140,15 @@ module V1
                 groundMaxSpeed: {type: :number},
                 groundReverseSpeed: {type: :number},
                 maxSpeed: {type: :number},
-                maxSpeedAcceleration: {type: :number},
-                maxSpeedDecceleration: {type: :number},
                 pitch: {type: :number},
+                pitchBoosted: {type: :number},
                 roll: {type: :number},
+                rollBoosted: {type: :number},
                 scmSpeed: {type: :number},
-                scmSpeedAcceleration: {type: :number},
-                scmSpeedDecceleration: {type: :number},
-                yaw: {type: :number}
+                scmSpeedBoosted: {type: :number},
+                reverseSpeedBoosted: {type: :number},
+                yaw: {type: :number},
+                yawBoosted: {type: :number}
               },
               additionalProperties: false
             },

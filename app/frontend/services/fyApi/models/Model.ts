@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { CargoHold } from './CargoHold';
 import type { ItemPrice } from './ItemPrice';
 import type { Manufacturer } from './Manufacturer';
 import type { MediaImage } from './MediaImage';
@@ -76,6 +77,7 @@ export type Model = {
         size?: string;
         sizeLabel?: string;
     };
+    cargoHolds?: Array<CargoHold>;
     onSale: boolean;
     pledgePrice?: number;
     pledgePriceLabel?: string;
@@ -92,14 +94,15 @@ export type Model = {
         groundMaxSpeed?: number;
         groundReverseSpeed?: number;
         maxSpeed?: number;
-        maxSpeedAcceleration?: number;
-        maxSpeedDecceleration?: number;
         pitch?: number;
+        pitchBoosted?: number;
         roll?: number;
+        rollBoosted?: number;
         scmSpeed?: number;
-        scmSpeedAcceleration?: number;
-        scmSpeedDecceleration?: number;
+        scmSpeedBoosted?: number;
+        reverseSpeedBoosted?: number;
         yaw?: number;
+        yawBoosted?: number;
     };
     createdAt: string;
     updatedAt: string;

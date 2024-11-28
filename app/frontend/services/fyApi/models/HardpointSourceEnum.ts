@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export enum ModelHardpointSourceEnum {
+export enum HardpointSourceEnum {
     SHIP_MATRIX = 'ship_matrix',
     GAME_FILES = 'game_files',
 }

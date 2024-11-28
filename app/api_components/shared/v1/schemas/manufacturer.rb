@@ -14,6 +14,7 @@ module Shared
             code: {type: :string},
             logo: {type: :string},
             longName: {type: :string},
+            scRef: {type: :string},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },

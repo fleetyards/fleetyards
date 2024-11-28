@@ -8,6 +8,7 @@ export type Manufacturer = {
     code?: string;
     logo?: string;
     longName?: string;
+    scRef?: string;
     createdAt: string;
     updatedAt: string;
     id: string;

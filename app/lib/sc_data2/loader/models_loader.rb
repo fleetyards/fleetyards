@@ -72,6 +72,8 @@ module ScData2
 
         ifcs = ifcs.first if ifcs.is_a?(Array)
 
+        return update_params if ifcs.blank?
+
         update_params[:scm_speed] = ifcs.dig("scm_speed").to_f if ifcs.dig("scm_speed").present?
         update_params[:scm_speed_boosted] = ifcs.dig("scm_speed_boosted").to_f if ifcs.dig("scm_speed_boosted").present?
         update_params[:reverse_speed_boosted] = ifcs.dig("reverse_speed_boosted").to_f if ifcs.dig("reverse_speed_boosted").present?

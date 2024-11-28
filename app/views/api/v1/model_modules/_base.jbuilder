@@ -3,6 +3,15 @@
 json.id model_module.id
 json.name model_module.name
 
+json.description model_module.description
+
+json.sc_key model_module.sc_key
+
+json.metrics({})
+json.metrics do
+  json.cargo model_module.cargo.to_f
+end
+
 json.availability do
   json.bought_at do
     json.array! model_module.bought_at, partial: "api/v1/item_prices/base", as: :item_price
@@ -11,9 +20,6 @@ json.availability do
     json.array! model_module.sold_at, partial: "api/v1/item_prices/base", as: :item_price
   end
 end
-
-json.description model_module.description
-json.has_store_image model_module.store_image.present?
 
 json.media({})
 json.media do
@@ -24,11 +30,6 @@ end
 
 json.pledge_price model_module.pledge_price
 json.production_status model_module.production_status
-
-json.store_image model_module.store_image.url
-json.store_image_large model_module.store_image.large.url
-json.store_image_medium model_module.store_image.medium.url
-json.store_image_small model_module.store_image.small.url
 
 json.manufacturer do
   json.null! if model_module.manufacturer.blank?

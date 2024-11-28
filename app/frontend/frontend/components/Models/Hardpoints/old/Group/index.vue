@@ -5,9 +5,6 @@
     </h2>
     <Panel slim>
       <div class="hardpoint-group-inner">
-        <div v-for="hardpoint in hardpoints" :key="hardpoint.id">
-          {{ hardpoint.name }}
-        </div>
         <div
           v-for="(items, type) in groupByType(filteredHardpoints)"
           :key="type"
@@ -57,7 +54,7 @@ import empIconUrl from "@/images/hardpoints/emp.svg";
 import Panel from "@/shared/components/Panel/index.vue";
 import HardpointItems from "../Items/index.vue";
 import {
-  ModelHardpointSourceEnum,
+  HardpointSourceEnum,
   type ModelHardpoint,
   type ModelHardpointGroupEnum,
 } from "@/services/fyApi";
@@ -104,7 +101,7 @@ const filteredHardpoints = computed(() => {
 
 const hasGameFileData = computed(() => {
   return props.hardpoints.some(
-    (h) => h.source === ModelHardpointSourceEnum.GAME_FILES,
+    (h) => h.source === HardpointSourceEnum.GAME_FILES,
   );
 });
 

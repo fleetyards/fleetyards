@@ -3,11 +3,11 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { Component } from './Component';
+import type { HardpointSourceEnum } from './HardpointSourceEnum';
 import type { ModelHardpointCategoryEnum } from './ModelHardpointCategoryEnum';
 import type { ModelHardpointGroupEnum } from './ModelHardpointGroupEnum';
 import type { ModelHardpointLoadout } from './ModelHardpointLoadout';
 import type { ModelHardpointSizeEnum } from './ModelHardpointSizeEnum';
-import type { ModelHardpointSourceEnum } from './ModelHardpointSourceEnum';
 import type { ModelHardpointSubCategoryEnum } from './ModelHardpointSubCategoryEnum';
 import type { ModelHardpointTypeEnum } from './ModelHardpointTypeEnum';
 export type ModelHardpoint = {
@@ -25,7 +25,7 @@ export type ModelHardpoint = {
     name?: string;
     size?: ModelHardpointSizeEnum;
     sizeLabel?: string;
-    source?: ModelHardpointSourceEnum;
+    source?: HardpointSourceEnum;
     subCategory?: ModelHardpointSubCategoryEnum;
     subCategoryLabel?: string;
     type: ModelHardpointTypeEnum;

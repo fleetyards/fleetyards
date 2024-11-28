@@ -128,14 +128,14 @@ json.speeds do
   json.ground_max_speed model.ground_max_speed&.to_f
   json.ground_reverse_speed model.ground_reverse_speed&.to_f
   json.max_speed model.max_speed&.to_f
-  json.max_speed_acceleration model.max_speed_acceleration&.to_f
-  json.max_speed_decceleration model.max_speed_decceleration&.to_f
   json.pitch model.pitch&.to_f
+  json.pitch_boosted model.pitch_boosted&.to_f
   json.roll model.roll&.to_f
+  json.roll_boosted model.roll_boosted&.to_f
   json.scm_speed model.scm_speed&.to_f
-  json.scm_speed_acceleration model.scm_speed_acceleration&.to_f
-  json.scm_speed_decceleration model.scm_speed_decceleration&.to_f
+  json.scm_speed_boosted model.scm_speed_boosted&.to_f
   json.yaw model.yaw&.to_f
+  json.yaw_boosted model.yaw_boosted&.to_f
 end
 
 if local_assigns.fetch(:extended, false)

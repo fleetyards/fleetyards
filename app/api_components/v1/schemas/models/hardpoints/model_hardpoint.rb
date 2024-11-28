@@ -24,7 +24,7 @@ module V1
               name: {type: :string},
               size: {"$ref": "#/components/schemas/ModelHardpointSizeEnum"},
               sizeLabel: {type: :string},
-              source: {"$ref": "#/components/schemas/ModelHardpointSourceEnum"},
+              source: {"$ref": "#/components/schemas/HardpointSourceEnum"},
               subCategory: {"$ref": "#/components/schemas/ModelHardpointSubCategoryEnum"},
               subCategoryLabel: {type: :string},
               type: {"$ref": "#/components/schemas/ModelHardpointTypeEnum"},

@@ -11,7 +11,7 @@ import HardpointGroup from "./Group/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useQuery } from "@tanstack/vue-query";
 import { useApiClient } from "@/frontend/composables/useApiClient";
-import { ModelHardpointGroupEnum } from "@/services/fyApi";
+import { HardpointGroupEnum } from "@/services/fyApi";
 import type { Model } from "@/services/fyApi";
 
 type Props = {
@@ -30,7 +30,7 @@ const erkulUrl = computed(() => {
   return `https://www.erkul.games/ship/${props.model.erkulIdentifier}`;
 });
 
-const hardpointsForGroup = (group: ModelHardpointGroupEnum) => {
+const hardpointsForGroup = (group: HardpointGroupEnum) => {
   return (
     hardpoints.value?.filter((hardpoint) => hardpoint.group === group) || []
   );
@@ -75,8 +75,18 @@ const {
         <div class="col-12 col-md-6 col-lg-4">
           <HardpointGroup
             v-for="group in [
-              ModelHardpointGroupEnum.AVIONIC,
-              ModelHardpointGroupEnum.SYSTEM,
+              HardpointGroupEnum.AVIONIC,
+              HardpointGroupEnum.SYSTEM,
+            ]"
+            :key="group"
+            :group="group"
+            :hardpoints="hardpointsForGroup(group)"
+          />
+          <HardpointGroup
+            v-for="group in [
+              HardpointGroupEnum.AUXILIARY,
+              HardpointGroupEnum.SEAT,
+              HardpointGroupEnum.OTHER,
             ]"
             :key="group"
             :group="group"
@@ -86,8 +96,8 @@ const {
         <div class="col-12 col-md-6 col-lg-4">
           <HardpointGroup
             v-for="group in [
-              ModelHardpointGroupEnum.PROPULSION,
-              ModelHardpointGroupEnum.THRUSTER,
+              HardpointGroupEnum.PROPULSION,
+              HardpointGroupEnum.THRUSTER,
             ]"
             :key="group"
             :group="group"
@@ -96,7 +106,7 @@ const {
         </div>
         <div class="col-12 col-md-6 col-lg-4">
           <HardpointGroup
-            v-for="group in [ModelHardpointGroupEnum.WEAPON]"
+            v-for="group in [HardpointGroupEnum.WEAPON]"
             :key="group"
             :group="group"
             :hardpoints="hardpointsForGroup(group)"

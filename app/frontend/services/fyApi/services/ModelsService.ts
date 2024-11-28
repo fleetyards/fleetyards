@@ -4,11 +4,11 @@
 /* eslint-disable */
 import type { CargoOptions } from '../models/CargoOptions';
 import type { FilterOption } from '../models/FilterOption';
+import type { Hardpoint } from '../models/Hardpoint';
+import type { HardpointSourceEnum } from '../models/HardpointSourceEnum';
 import type { Images } from '../models/Images';
 import type { Model } from '../models/Model';
 import type { ModelExtended } from '../models/ModelExtended';
-import type { ModelHardpoint } from '../models/ModelHardpoint';
-import type { ModelHardpointSourceEnum } from '../models/ModelHardpointSourceEnum';
 import type { ModelModulePackages } from '../models/ModelModulePackages';
 import type { ModelModules } from '../models/ModelModules';
 import type { ModelPaint } from '../models/ModelPaint';
@@ -251,7 +251,7 @@ export class ModelsService {
     }
     /**
      * Model Hardpoints
-     * @returns ModelHardpoint successful
+     * @returns Hardpoint successful
      * @throws ApiError
      */
     public modelHardpoints({
@@ -262,8 +262,8 @@ export class ModelsService {
          * Model slug
          */
         slug: string,
-        source?: ModelHardpointSourceEnum,
-    }): CancelablePromise<Array<ModelHardpoint>> {
+        source?: HardpointSourceEnum,
+    }): CancelablePromise<Array<Hardpoint>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/{slug}/hardpoints',

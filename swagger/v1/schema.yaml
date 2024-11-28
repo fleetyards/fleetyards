@@ -2179,7 +2179,7 @@ paths:
       - name: source
         in: query
         schema:
-          "$ref": "#/components/schemas/ModelHardpointSourceEnum"
+          "$ref": "#/components/schemas/HardpointSourceEnum"
         required: false
       responses:
         '200':
@@ -2189,7 +2189,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/ModelHardpoint"
+                  "$ref": "#/components/schemas/Hardpoint"
         '404':
           description: not found
           content:
@@ -3792,6 +3792,20 @@ components:
       - items
       - meta
       title: BaseList
+    CargoHold:
+      type: object
+      properties:
+        dimensions:
+          "$ref": "#/components/schemas/Dimension"
+        minContainer:
+          "$ref": "#/components/schemas/Dimension"
+        maxContainer:
+          "$ref": "#/components/schemas/Dimension"
+      additionalProperties: false
+      required:
+      - dimensions
+      - minContainer
+      title: CargoHold
     Check:
       type: object
       properties:
@@ -3811,6 +3825,24 @@ components:
           type: string
         slug:
           type: string
+        scKey:
+          type: string
+        scRef:
+          type: string
+        hidden:
+          type: boolean
+        category:
+          type: string
+        type:
+          type: string
+        subType:
+          type: string
+        inventoryConsumption:
+          type: string
+        grade:
+          type: string
+        size:
+          type: string
         availability:
           type: object
           properties:
@@ -3826,18 +3858,6 @@ components:
           required:
           - boughtAt
           - soldAt
-        class:
-          type: string
-        grade:
-          type: string
-        itemClass:
-          type: string
-        itemClassLabel:
-          type: string
-        itemType:
-          type: string
-        itemTypeLabel:
-          type: string
         manufacturer:
           "$ref": "#/components/schemas/Manufacturer"
         media:
@@ -3849,16 +3869,6 @@ components:
         typeData:
           oneOf:
           - "$ref": "#/components/schemas/ComponentQuantumDrive"
-        size:
-          type: string
-        trackingSignal:
-          type: string
-        trackingSignalLabel:
-          type: string
-        type:
-          type: string
-        typeLabel:
-          type: string
         createdAt:
           type: string
           format: date-time
@@ -3870,6 +3880,7 @@ components:
       - id
       - name
       - slug
+      - hidden
       - availability
       - media
       - createdAt
@@ -3929,6 +3940,24 @@ components:
       - items
       - meta
       title: Components
+    Dimension:
+      type: object
+      properties:
+        x:
+          type: number
+        "y":
+          type: number
+        z:
+          type: number
+        scu:
+          type: number
+      additionalProperties: false
+      required:
+      - x
+      - "y"
+      - z
+      - scu
+      title: Dimension
     DockCount:
       type: object
       properties:
@@ -4012,6 +4041,24 @@ components:
       - Station
       - Album
       title: GalleryTypeEnum
+    HardpointGroupEnum:
+      type: string
+      enum:
+      - avionic
+      - system
+      - propulsion
+      - thruster
+      - weapon
+      - seat
+      - auxiliary
+      - other
+      title: HardpointGroupEnum
+    HardpointSourceEnum:
+      type: string
+      enum:
+      - ship_matrix
+      - game_files
+      title: HardpointSourceEnum
     ImportStatusEnum:
       type: string
       enum:
@@ -4101,12 +4148,6 @@ components:
       - capital
       - tbd
       title: ModelHardpointSizeEnum
-    ModelHardpointSourceEnum:
-      type: string
-      enum:
-      - ship_matrix
-      - game_files
-      title: ModelHardpointSourceEnum
     ModelHardpointSubCategoryEnum:
       type: string
       enum:
@@ -4222,6 +4263,41 @@ components:
       - name
       - slug
       title: Gallery
+    Hardpoint:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        component:
+          "$ref": "#/components/schemas/Component"
+        group:
+          "$ref": "#/components/schemas/HardpointGroupEnum"
+        name:
+          type: string
+        minSize:
+          type: integer
+        maxSize:
+          type: integer
+        source:
+          "$ref": "#/components/schemas/HardpointSourceEnum"
+        types:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - createdAt
+      - updatedAt
+      title: Hardpoint
     CheckInput:
       type: object
       properties:
@@ -4241,6 +4317,8 @@ components:
         logo:
           type: string
         longName:
+          type: string
+        scRef:
           type: string
         createdAt:
           type: string
@@ -5761,7 +5839,7 @@ components:
         sizeLabel:
           type: string
         source:
-          "$ref": "#/components/schemas/ModelHardpointSourceEnum"
+          "$ref": "#/components/schemas/HardpointSourceEnum"
         subCategory:
           "$ref": "#/components/schemas/ModelHardpointSubCategoryEnum"
         subCategoryLabel:
@@ -5962,6 +6040,10 @@ components:
             sizeLabel:
               type: string
           additionalProperties: false
+        cargoHolds:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CargoHold"
         onSale:
           type: boolean
         pledgePrice:
@@ -5995,21 +6077,23 @@ components:
               type: number
             maxSpeed:
               type: number
-            maxSpeedAcceleration:
-              type: number
-            maxSpeedDecceleration:
-              type: number
             pitch:
+              type: number
+            pitchBoosted:
               type: number
             roll:
               type: number
+            rollBoosted:
+              type: number
             scmSpeed:
               type: number
-            scmSpeedAcceleration:
+            scmSpeedBoosted:
               type: number
-            scmSpeedDecceleration:
+            reverseSpeedBoosted:
               type: number
             yaw:
+              type: number
+            yawBoosted:
               type: number
           additionalProperties: false
         createdAt:
@@ -6196,6 +6280,10 @@ components:
             sizeLabel:
               type: string
           additionalProperties: false
+        cargoHolds:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CargoHold"
         onSale:
           type: boolean
         pledgePrice:
@@ -6229,21 +6317,23 @@ components:
               type: number
             maxSpeed:
               type: number
-            maxSpeedAcceleration:
-              type: number
-            maxSpeedDecceleration:
-              type: number
             pitch:
+              type: number
+            pitchBoosted:
               type: number
             roll:
               type: number
+            rollBoosted:
+              type: number
             scmSpeed:
               type: number
-            scmSpeedAcceleration:
+            scmSpeedBoosted:
               type: number
-            scmSpeedDecceleration:
+            reverseSpeedBoosted:
               type: number
             yaw:
+              type: number
+            yawBoosted:
               type: number
           additionalProperties: false
         createdAt:
@@ -6441,6 +6531,20 @@ components:
           format: uuid
         name:
           type: string
+        description:
+          type: string
+        scKey:
+          type: string
+        metrics:
+          type: object
+          properties:
+            cargo:
+              type: number
+          additionalProperties: false
+        cargoHolds:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CargoHold"
         availability:
           type: object
           properties:
@@ -6456,8 +6560,6 @@ components:
           required:
           - boughtAt
           - soldAt
-        description:
-          type: string
         media:
           type: object
           properties:
@@ -6476,25 +6578,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-        hasStoreImage:
-          type: boolean
-          deprecated: true
-        storeImage:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageLarge:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageMedium:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageSmall:
-          type: string
-          format: uri
-          deprecated: true
       additionalProperties: false
       required:
       - id

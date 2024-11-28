@@ -3,6 +3,7 @@
 json.id component.id
 json.name component.name
 json.slug component.slug
+
 json.sc_key component.sc_key
 json.sc_ref component.sc_ref
 
@@ -10,27 +11,17 @@ json.category component.category
 json.type component.component_type
 json.sub_type component.component_sub_type
 
-# json.availability do
-#   json.bought_at do
-#     json.array! component.bought_at, partial: "api/v1/item_prices/base", as: :item_price
-#   end
-#   json.sold_at do
-#     json.array! component.sold_at, partial: "api/v1/item_prices/base", as: :item_price
-#   end
-# end
-
-# json.class component.component_class
-# json.item_class component.item_class
-# json.item_class_label component.item_class_label
-# json.item_type component.item_type
-# json.item_type_label component.item_type_label
+json.availability do
+  json.bought_at do
+    json.array! component.bought_at, partial: "api/v1/item_prices/base", as: :item_price
+  end
+  json.sold_at do
+    json.array! component.sold_at, partial: "api/v1/item_prices/base", as: :item_price
+  end
+end
 
 json.grade component.grade
 json.size component.size
-# json.tracking_signal component.tracking_signal
-# json.tracking_signal_label component.tracking_signal_label
-# json.type component.item_type
-# json.type_label component.item_type_label
 
 json.type_data component.type_data
 

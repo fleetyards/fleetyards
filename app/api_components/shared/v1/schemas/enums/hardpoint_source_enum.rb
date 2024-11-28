@@ -4,12 +4,12 @@ module Shared
   module V1
     module Schemas
       module Enums
-        class ModelHardpointSourceEnum
+        class HardpointSourceEnum
           include SchemaConcern
 
           schema({
             type: :string,
-            enum: ::ModelHardpoint.sources.keys
+            enum: ::Hardpoint.sources.keys
           })
         end
       end

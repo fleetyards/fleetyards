@@ -50,13 +50,13 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
       produces "application/json"
 
       parameter name: "source", in: :query,
-        schema: {"$ref": "#/components/schemas/ModelHardpointSourceEnum"}, required: false
+        schema: {"$ref": "#/components/schemas/HardpointSourceEnum"}, required: false
 
       response(200, "successful") do
         let(:slug) { model.slug }
 
         schema type: :array,
-          items: {"$ref": "#/components/schemas/ModelHardpoint"}
+          items: {"$ref": "#/components/schemas/Hardpoint"}
 
         after do |example|
           example.metadata[:response][:content] = {
@@ -69,7 +69,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
         run_test! do |response|
           data = JSON.parse(response.body)
 
-          expect(data.count).to eq(model.model_hardpoints.size)
+          expect(data.count).to eq(model.hardpoints.size)
           expect(data.count).to be > 0
         end
       end

@@ -12,6 +12,19 @@ module V1
             properties: {
               id: {type: :string, format: :uuid},
               name: {type: :string},
+              description: {type: :string},
+
+              scKey: {type: :string},
+
+              metrics: {
+                type: :object,
+                properties: {
+                  cargo: {type: :number}
+                },
+                additionalProperties: false
+              },
+
+              cargoHolds: {type: :array, items: {"$ref": "#/components/schemas/CargoHold"}},
 
               availability: {
                 type: :object,
@@ -28,7 +41,7 @@ module V1
                 additionalProperties: false,
                 required: %w[boughtAt soldAt]
               },
-              description: {type: :string},
+
               media: {
                 type: :object,
                 properties: {
@@ -42,15 +55,7 @@ module V1
               manufacturer: {"$ref": "#/components/schemas/Manufacturer"},
 
               createdAt: {type: :string, format: "date-time"},
-              updatedAt: {type: :string, format: "date-time"},
-
-              # DEPRECATED
-
-              hasStoreImage: {type: :boolean, deprecated: true},
-              storeImage: {type: :string, format: :uri, deprecated: true},
-              storeImageLarge: {type: :string, format: :uri, deprecated: true},
-              storeImageMedium: {type: :string, format: :uri, deprecated: true},
-              storeImageSmall: {type: :string, format: :uri, deprecated: true}
+              updatedAt: {type: :string, format: "date-time"}
             },
             additionalProperties: false,
             required: %w[id name availability media createdAt updatedAt]

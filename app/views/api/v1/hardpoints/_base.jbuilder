@@ -1,29 +1,15 @@
 # frozen_string_literal: true
 
 json.id hardpoint.id
-# json.type hardpoint.hardpoint_type
-json.group hardpoint.group
-
-json.source hardpoint.source
-
 json.name hardpoint.sc_name
 
-# json.category hardpoint.category
-# json.category_label hardpoint.category_label
-# json.sub_category hardpoint.sub_category
-# json.sub_category_label hardpoint.sub_category_label
+json.group hardpoint.group
+json.source hardpoint.source
 
-# json.size hardpoint.size
-# json.size_label hardpoint.size_label.to_s
+json.min_size hardpoint.min_size
+json.max_size hardpoint.max_size
 
-# json.name hardpoint.name
-# json.loadout_identifier hardpoint.loadout_identifier
-
-# json.key hardpoint.key
-
-# json.details hardpoint.details
-# json.mount hardpoint.mount
-# json.item_slots hardpoint.item_slots
+json.types hardpoint.types
 
 json.component do
   json.partial! "api/v1/components/base", component: hardpoint.component if hardpoint.component.present?
