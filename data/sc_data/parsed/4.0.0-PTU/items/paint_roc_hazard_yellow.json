@@ -1,0 +1,21 @@
+{
+  "key": "Paint_ROC_Hazard_Yellow",
+  "ref": "e81508c5-6c3e-4914-9192-7835c3025a7e",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "44c1d84a-fd9f-47ef-ba27-e7da7e9898f1",
+  "name": "ROC Hazard Livery",
+  "short_name": null,
+  "description": "Live bold with this high visibility ROC and ROC-DS Hazard livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

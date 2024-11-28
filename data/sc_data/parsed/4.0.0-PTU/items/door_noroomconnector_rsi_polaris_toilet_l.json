@@ -1,0 +1,38 @@
+{
+  "key": "Door_NoRoomConnector_RSI_Polaris_Toilet_L",
+  "ref": "9cc787e9-65b7-4883-83ac-ffa416948faa",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_tp",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_tp",
+      "key": "RSI_Com_TP",
+      "ref": null
+    }
+  ]
+}

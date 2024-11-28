@@ -1,0 +1,67 @@
+{
+  "key": "LFSP_TYDT_S02_ComfortAirPlus",
+  "ref": "c50917d3-f453-4ca6-b753-1c506a6710e0",
+  "category": "lifesupport",
+  "type": "LifeSupportGenerator",
+  "sub_type": null,
+  "size": "2",
+  "grade": "3",
+  "manufacturer_ref": "a2a97679-2a6e-4e89-80d8-439c88a01427",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "$slot_01",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_02",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_03",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "$slot_01",
+      "key": null,
+      "ref": "b44ec4bd-854d-48ef-9ac1-c4183edf1d0a"
+    },
+    {
+      "name": "$slot_02",
+      "key": null,
+      "ref": "b44ec4bd-854d-48ef-9ac1-c4183edf1d0a"
+    },
+    {
+      "name": "$slot_03",
+      "key": null,
+      "ref": "b44ec4bd-854d-48ef-9ac1-c4183edf1d0a"
+    }
+  ],
+  "durability": {
+    "health": 700.0
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Vulture_BIS2953_Purple_Blue_Cyan",
+  "ref": "ddcb5aa0-f3f7-4a18-80a1-840e13ba5b1c",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2dde570f-0dc4-4918-96fb-1a89a0a88d03",
+  "name": "Vulture 2953 Best in Show Livery",
+  "short_name": null,
+  "description": "Celebrate the Drake Vulture being voted a Best in Show finalist for 2953 with this pearlescent purple and cyan livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

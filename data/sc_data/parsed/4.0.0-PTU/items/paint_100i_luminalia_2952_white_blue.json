@@ -1,0 +1,21 @@
+{
+  "key": "Paint_100i_Luminalia_2952_White_Blue",
+  "ref": "4720718b-c902-4cbd-81cb-7e29aa686005",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "3ebc1d4a-cc16-4e91-ba22-304109012537",
+  "name": "100 Series IceBreak Livery",
+  "short_name": null,
+  "description": "Equip your 100 Series with a paint scheme cooler than a snow storm. The IceBreak livery mixes crisp, cool white with a frostbitten blue for an exciting look suitable for any season.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "key": "BEHR_LaserCannon_SF7E_PowerArray_S7",
+  "ref": "0004adde-8c6e-41b6-b053-49f7be705a81",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "PowerArray",
+  "size": "7",
+  "grade": "7",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1.0
+  }
+}

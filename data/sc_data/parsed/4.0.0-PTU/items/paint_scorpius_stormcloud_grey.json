@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Scorpius_Stormcloud_Grey",
+  "ref": "52bb79af-5f19-4af8-8e10-419bc98b3842",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "bc236a7b-2544-4e90-b33f-9f0d0cd988c5",
+  "name": "Scorpius Storm Cloud Livery",
+  "short_name": null,
+  "description": "Strike true and deliver justice with the Scorpius Storm Cloud livery featuring slate-teal panels with black trim and subtle orange highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

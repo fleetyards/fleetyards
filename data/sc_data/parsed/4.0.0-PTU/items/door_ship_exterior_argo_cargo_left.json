@@ -1,0 +1,56 @@
+{
+  "key": "Door_Ship_Exterior_ARGO_Cargo_Left",
+  "ref": "373c11a3-c8b3-4e50-a323-1957bf5fcd58",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_int",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_int",
+      "key": "ARGO_MPUV_Door_Int_Left",
+      "ref": null
+    }
+  ],
+  "durability": {
+    "health": 200.0
+  },
+  "power_connection": {
+    "power_base": 0.0,
+    "power_draw": 1.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 0.0,
+    "displayed_in_powered_item_list": 0.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.0,
+    "overclock_threshold_max": 0.0,
+    "overpower_performance": 0.0,
+    "overclock_performance": 0.0,
+    "power_to_em": 0.0,
+    "decay_rate_of_em": 0.15
+  }
+}

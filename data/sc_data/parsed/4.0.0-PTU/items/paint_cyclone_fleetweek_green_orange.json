@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Cyclone_Fleetweek_Green_Orange",
+  "ref": "3620c8f4-13ce-41a6-9045-95b53c80e639",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "5803a5bc-72c0-4f09-ac63-199828f3b780",
+  "name": "Cyclone Timberline Livery",
+  "short_name": null,
+  "description": "Customize your Cyclone with the Timberline livery that's olive green with orange accents.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

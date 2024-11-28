@@ -1,0 +1,140 @@
+{
+  "key": "MISC_Starfarer_Gemini_Derelict_Tail_Right",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "2",
+  "name": "Wreckage",
+  "description": "",
+  "career": "",
+  "role": "",
+  "insurance": {
+    "base_wait_time_minutes": "35.34",
+    "mandatory_wait_time_minutes": "11.78",
+    "base_expediting_fee": "15995"
+  },
+  "mass": 400000.0,
+  "metrics": {
+    "x": 48.5,
+    "y": 102.0,
+    "z": 24.5
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_thruster_top_RR",
+      "ref": null,
+      "key": "MISC_Starfarer_Gemini_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_RR",
+      "ref": null,
+      "key": "MISC_Starfarer_Gemini_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_side_RR",
+      "ref": null,
+      "key": "MISC_Starfarer_Gemini_Thruster_Mav_Fixed_01"
+    },
+    {
+      "name": "hardpoint_rear_right_turret",
+      "ref": "83a0c38e-83f6-4ebd-9d0e-6bc2e538fb7a",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_docking_collar",
+      "ref": null,
+      "key": "Door_Ship_Exterior_MISC_Starfarer_Airlock"
+    },
+    {
+      "name": "hardpoint_shield_generator_B",
+      "ref": null,
+      "key": "SHLD_BASL_S03_Stronghold_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator_C",
+      "ref": null,
+      "key": "SHLD_BASL_S03_Stronghold_SCItem"
+    },
+    {
+      "name": "hardpoint_relay_cargo_bay",
+      "ref": null,
+      "key": "RELAY_1slot"
+    },
+    {
+      "name": "hardpoint_relay_refueling_catwalk",
+      "ref": null,
+      "key": "RELAY_1slot"
+    },
+    {
+      "name": "hardpoint_relay_refuelling_arm_walkway_left",
+      "ref": null,
+      "key": "RELAY_1slot"
+    },
+    {
+      "name": "hardpoint_relay_refuelling_arm_walkway_right",
+      "ref": null,
+      "key": "RELAY_1slot"
+    },
+    {
+      "name": "hardpoint_relay_foyer",
+      "ref": null,
+      "key": "RELAY_1slot"
+    },
+    {
+      "name": "hardpoint_relay_bridge",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_relay_maintenance_left",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_relay_maintenance_right",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_relay_messhall",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_relay_engine_room",
+      "ref": null,
+      "key": "RELAY_3slot"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_TYDT_S03_ComfortAirMax"
+    }
+  ]
+}

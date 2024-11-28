@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Avenger_Kepler_Blue_Orange",
+  "ref": "c5d95f90-5523-436f-ba60-1ee3fc188736",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "bf399daa-bd59-4a4f-ac22-6a654e45b554",
+  "name": "Avenger Kepler Livery",
+  "short_name": null,
+  "description": "To honor the brave explorers that brought us to space and support those currently seeking new frontiers, the Interstellar Cartography Center (ICC) commissioned this special livery for the Avenger. Named in honor of famed astronomer Johannes Kepler, the livery mixes dark blue and orange with black highlights. All proceeds from the sale of the Kepler livery goes directly to the ICC to support their efforts in \"Charting the Way Ahead.\"",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "BEHR_BallisticGatling_Ventilation_S5",
+  "ref": "e690c340-e63a-41e9-907d-21a9d8027c9d",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "Ventilation",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

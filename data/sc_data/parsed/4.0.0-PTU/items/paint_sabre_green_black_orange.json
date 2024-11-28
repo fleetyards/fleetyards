@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Sabre_Green_Black_Orange",
+  "ref": "11440f75-f2ed-46c9-9485-6118999509fa",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "34357f50-eb42-42e0-8275-5c34a21bf681",
+  "name": "Sabre Windbreak Livery",
+  "short_name": null,
+  "description": "The Windbreak livery exudes style by giving the Sabre a green body, dark grey wings, and silver and orange highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "key": "Ship_TempItemCarryingCapacity_MISC_Starfarer",
+  "ref": "163a1a1e-95d9-46a4-baf5-bdf443d3e5d7",
+  "category": "inventory",
+  "type": "personal_storage",
+  "type_data": {
+    "storage": 295.0
+  }
+}

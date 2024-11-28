@@ -1,0 +1,24 @@
+{
+  "key": "HTNK_BANU_Defender",
+  "ref": "307a6531-2a98-4984-bec5-e4e95e4a718c",
+  "category": "fueltanks",
+  "type": "FuelTank",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2b5ba252-e826-4356-ac0d-8d88007ea386",
+  "name": "Internal Tank",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "capacity": 21.5
+  }
+}

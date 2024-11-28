@@ -1,0 +1,63 @@
+{
+  "key": "COOL_JSPN_S01_WinterStar_SCItem",
+  "ref": "ec636cbd-21c6-4b9c-a095-c8ef04f1a9fa",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "1",
+  "grade": "4",
+  "manufacturer_ref": "6cf93625-789a-4e8f-a857-325d64a58c93",
+  "name": "Winter-Star",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: J-Span \\nSize: 1\\nGrade: D\\nClass: Civilian\\n\\nJoin the J-Span family by snagging the Winter-Star cooler for your ship. This entry-level model lacks flash but its strong performance record and price point make it a popular choice for pilots across the UEE.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 330.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 1.3525,
+    "StartIRTemperature": 0.0,
+    "OverpowerHeat": 0.0,
+    "OverclockThresholdMinHeat": 0.0,
+    "OverclockThresholdMaxHeat": 0.0,
+    "ThermalEnergyBase": 10.0,
+    "ThermalEnergyDraw": 20.0,
+    "ThermalConductivity": 3.0,
+    "SpecificHeatCapacity": 13.0,
+    "Mass": 206.0,
+    "SurfaceArea": 50.0,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 1.0,
+    "MaxTemperature": 450.0,
+    "OverheatTemperature": 370.0,
+    "RecoveryTemperature": 350.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "power_connection": {
+    "power_base": 8.0,
+    "power_draw": 12.0,
+    "time_to_reach_draw_request": 15.0,
+    "safeguard_priority": 30.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.3502,
+    "overclock_threshold_max": 0.439,
+    "overpower_performance": 0.323,
+    "overclock_performance": 0.05,
+    "power_to_em": 8.25,
+    "decay_rate_of_em": 0.19
+  },
+  "type_data": {
+    "cooling_rate": 194000.0
+  }
+}

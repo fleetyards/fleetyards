@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Defender_Template",
+  "ref": "dcb3d917-4a00-4d0b-964c-86ce677008bb",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2b5ba252-e826-4356-ac0d-8d88007ea386",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

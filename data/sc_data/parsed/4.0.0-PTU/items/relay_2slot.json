@@ -1,0 +1,54 @@
+{
+  "key": "RELAY_2slot",
+  "ref": "609b087d-bdfe-401d-b9fe-526af4d52d09",
+  "category": "relay",
+  "type": "Relay",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "$slot_fuse_01",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_fuse_02",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "$slot_fuse_01",
+      "key": null,
+      "ref": "8cf8dd1b-756e-496c-a1ae-e88ebbf999f7"
+    },
+    {
+      "name": "$slot_fuse_02",
+      "key": null,
+      "ref": null
+    }
+  ],
+  "durability": {
+    "health": 600.0
+  }
+}

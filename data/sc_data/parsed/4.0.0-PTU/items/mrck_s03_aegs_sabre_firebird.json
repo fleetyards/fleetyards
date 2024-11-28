@@ -1,0 +1,254 @@
+{
+  "key": "MRCK_S03_AEGS_Sabre_Firebird",
+  "ref": "7c1f3841-1c73-445f-bf4e-ba2c628ceac8",
+  "category": "missile_racks",
+  "type": "MissileLauncher",
+  "sub_type": "MissileRack",
+  "size": "6",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Aegis Sabre Firebird 12xS3 Missile Rack",
+  "short_name": null,
+  "description": "Item Type: Missile Rack\\nManufacturer: Aegis \\nSize: 3\\nTorpedoes: 12xS3\\n\\nBespoke missile rack for the Aegis Sabre Firebird that fires twelve S3 missiles.",
+  "inventory_consumption": {
+    "micro_scu": 120000000.0,
+    "dimensions": {
+      "x": 3.796108,
+      "y": 30.95411,
+      "z": 4.81137
+    }
+  },
+  "loadout": [
+    {
+      "name": "missile_01_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_02_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_03_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_04_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_05_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_06_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_07_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_08_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_09_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_10_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_11_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_12_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_13_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_14_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_15_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_16_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_17_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_18_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_19_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_20_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_21_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_22_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_23_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_24_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 200.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 1.5,
+    "StartIRTemperature": 250.0,
+    "OverpowerHeat": 0.0,
+    "OverclockThresholdMinHeat": 0.0,
+    "OverclockThresholdMaxHeat": 0.0,
+    "ThermalEnergyBase": 10.0,
+    "ThermalEnergyDraw": 20.0,
+    "ThermalConductivity": 3.0,
+    "SpecificHeatCapacity": 13.0,
+    "Mass": 200.0,
+    "SurfaceArea": 50.0,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 1.0,
+    "MaxTemperature": 450.0,
+    "OverheatTemperature": 370.0,
+    "RecoveryTemperature": 350.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "power_connection": {
+    "power_base": 20.0,
+    "power_draw": 20.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 20.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.0,
+    "overclock_threshold_max": 0.0,
+    "overpower_performance": 0.0,
+    "overclock_performance": 0.0,
+    "power_to_em": 3.5,
+    "decay_rate_of_em": 0.15
+  }
+}

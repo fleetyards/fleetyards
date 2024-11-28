@@ -1,0 +1,24 @@
+{
+  "key": "ARMR_CNOU_HoverQuad",
+  "ref": "8a2eb89f-0d24-4474-abef-210e80a5ec76",
+  "category": "armor",
+  "type": "Armor",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ec227ef3-fb08-4897-abdb-579eb4e87c25",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  }
+}

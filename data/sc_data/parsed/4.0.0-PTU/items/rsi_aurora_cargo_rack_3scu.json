@@ -1,0 +1,41 @@
+{
+  "key": "RSI_Aurora_Cargo_Rack_3SCU",
+  "ref": "1b67c44b-1456-4cb5-afc0-3a68c9482354",
+  "category": "module",
+  "type": "Container",
+  "sub_type": "Cargo",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_cargo_grid",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "CargoGrid"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_cargo_grid",
+      "key": "RSI_Aurora_ES_CargoGrid_Main",
+      "ref": null
+    }
+  ],
+  "durability": {
+    "health": 250.0
+  }
+}

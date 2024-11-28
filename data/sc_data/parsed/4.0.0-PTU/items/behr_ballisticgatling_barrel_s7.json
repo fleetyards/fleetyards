@@ -1,0 +1,24 @@
+{
+  "key": "BEHR_BallisticGatling_Barrel_S7",
+  "ref": "d38823dd-9f28-40a1-a40b-9d10e9aec835",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "Barrel",
+  "size": "7",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1.0
+  }
+}

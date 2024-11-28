@@ -1,0 +1,26 @@
+{
+  "key": "RSI_Zeus_CargoGrid_Base_Main",
+  "ref": "19c42ffe-76ce-481b-92d9-28802f188a9d",
+  "category": "inventory",
+  "type": "cargo_grid",
+  "type_data": {
+    "dimensions": {
+      "x": 5.0,
+      "y": 5.0,
+      "z": 2.5,
+      "scu": 32.0
+    },
+    "min_container": {
+      "x": 1.25,
+      "y": 1.25,
+      "z": 1.25,
+      "scu": 1.0
+    },
+    "max_container": {
+      "x": 1.25,
+      "y": 1.25,
+      "z": 1.25,
+      "scu": 1.0
+    }
+  }
+}

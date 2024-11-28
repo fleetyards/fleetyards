@@ -1,0 +1,26 @@
+{
+  "key": "CRUS_Starlifter_CargoGrid_Large_C2",
+  "ref": "1701ba10-10d2-4750-a981-b64633fa31c8",
+  "category": "inventory",
+  "type": "cargo_grid",
+  "type_data": {
+    "dimensions": {
+      "x": 10.0,
+      "y": 18.75,
+      "z": 5.0,
+      "scu": 480.0
+    },
+    "min_container": {
+      "x": 1.25,
+      "y": 1.25,
+      "z": 1.25,
+      "scu": 1.0
+    },
+    "max_container": {
+      "x": 10.0,
+      "y": 10.0,
+      "z": 2.5,
+      "scu": 128.0
+    }
+  }
+}

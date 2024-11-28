@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Valkyrie_BIS2950",
+  "ref": "7d5de3f3-47be-4e2a-af46-40cc2abecf8c",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b19fbf6a-e3c6-45b5-b6c7-188d86bb5085",
+  "name": "Valkyrie 2950 Best In Show Livery",
+  "short_name": null,
+  "description": "Customize your Valkyrie with this special 2950 Best in Show livery that is white with grey and gold accents.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

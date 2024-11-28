@@ -1,0 +1,21 @@
+{
+  "key": "DRAK_Cutlass_Red_Switch_Docking",
+  "ref": "c6caadd6-0638-4731-852d-cc807214eb9f",
+  "category": "doors",
+  "type": "Usable",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

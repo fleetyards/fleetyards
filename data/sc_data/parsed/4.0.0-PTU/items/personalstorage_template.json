@@ -1,0 +1,9 @@
+{
+  "key": "PersonalStorage_Template",
+  "ref": "d8e8f8ab-cfcc-42da-bcce-a782905829f0",
+  "category": "inventory",
+  "type": "personal_storage",
+  "type_data": {
+    "storage": 0.0
+  }
+}

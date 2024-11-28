@@ -1,0 +1,21 @@
+{
+  "key": "Paint_FuryLX_White_Blue_Grey",
+  "ref": "edf108d5-3c32-4774-afff-758b3b5d0cdd",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "3e607fe1-9ed2-4282-b183-17319287ae41",
+  "name": "Fury Cloudburst Livery",
+  "short_name": null,
+  "description": "Go with the flow in your Fury with the Cloudburst livery, which blends blue and light grey for a distinct finish evoking the harmony between water and sky.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

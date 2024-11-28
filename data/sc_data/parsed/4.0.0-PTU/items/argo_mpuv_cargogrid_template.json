@@ -1,0 +1,21 @@
+{
+  "key": "ARGO_MPUV_CargoGrid_Template",
+  "ref": "d357bb6b-f05a-4dd7-af46-35b291804b62",
+  "category": "inventory",
+  "type": "cargo_grid",
+  "type_data": {
+    "dimensions": {
+      "x": 35.0,
+      "y": 35.0,
+      "z": 35.0,
+      "scu": 21952.0
+    },
+    "min_container": {
+      "x": 1.25,
+      "y": 1.25,
+      "z": 1.25,
+      "scu": 1.0
+    },
+    "max_container": null
+  }
+}

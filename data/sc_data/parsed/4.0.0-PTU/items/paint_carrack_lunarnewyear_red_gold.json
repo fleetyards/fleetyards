@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Carrack_LunarNewYear_Red_Gold",
+  "ref": "d5ddce8b-c147-4eaa-83e6-e7684da3dbf6",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "65e9b8a0-18aa-4f9b-8fb8-4ad9d8e5f241",
+  "name": "Carrack 2953 Auspicious Red Rooster Livery",
+  "short_name": null,
+  "description": "Seek peace and prosperity in the new year with the Auspicious Red Rooster livery. Outfit your ship with this bold red base paint complemented by gold accents and a stylized graphic of a rooster.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

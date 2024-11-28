@@ -1,0 +1,21 @@
+{
+  "key": "Paint_100i_Blue_Pink",
+  "ref": "3d92e380-e6c8-49f3-8ef4-465815452a30",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2058ea19-0f9f-4f54-9ce4-5db9f3541db2",
+  "name": "100 Series Melrose Livery",
+  "short_name": null,
+  "description": "Customize your Origin 100 series ship with this teal and pink livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

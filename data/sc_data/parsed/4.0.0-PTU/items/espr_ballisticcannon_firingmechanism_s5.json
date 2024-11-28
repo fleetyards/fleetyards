@@ -1,0 +1,21 @@
+{
+  "key": "ESPR_BallisticCannon_FiringMechanism_S5",
+  "ref": "f345bdce-1969-4da9-8178-bd83094d14eb",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "FiringMechanism",
+  "size": "5",
+  "grade": "5",
+  "manufacturer_ref": "4ecc1a24-d228-4dd5-8857-21ba6145a1d3",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

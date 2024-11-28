@@ -1,0 +1,21 @@
+{
+  "key": "Paint_325a_Green_Grey",
+  "ref": "f869a4da-b777-4cbb-9300-68ee55b3092e",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1e47a9ec-a3f0-431d-be0e-377712e1ed84",
+  "name": "Sagebrush Paint",
+  "short_name": null,
+  "description": "Sagebrush paint job for the Origin 325a.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,635 @@
+{
+  "key": "ORIG_400i_Unmanned_Salvage",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "3",
+  "name": "Origin 400i",
+  "description": "Manufacturer: Origin Jumpworks\\nFocus: Pathfinder\\n\\nTo explore the stars is a most noble endeavor, and Origin Jumpworks has risen to the occasion in crafting the 400i high-performance pathfinder. With class-leading range, substantial defensive capabilities, and a factory-equipped scanning array, the 400i is ready to take on the harshest corners of the galaxy while maintaining the comfort and elegance Origin is known for.",
+  "career": "Exploration",
+  "role": "Luxury",
+  "insurance": {
+    "base_wait_time_minutes": "22.5",
+    "mandatory_wait_time_minutes": "7.5",
+    "base_expediting_fee": "12027"
+  },
+  "mass": 430057.06,
+  "metrics": {
+    "x": 32.0,
+    "y": 56.0,
+    "z": 12.5
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": null,
+      "key": "ARMR_ORIG_400i"
+    },
+    {
+      "name": "hardpoint_cockpit_selfDestruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_60s"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_ORIG_400i"
+    },
+    {
+      "name": "hardpoint_controller_scanner",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_ORIG_400i"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_cooler_1",
+      "ref": null,
+      "key": "COOL_JUST_S02_Snowfall_SCItem"
+    },
+    {
+      "name": "hardpoint_countermeasures_1",
+      "ref": null,
+      "key": "JOKR_Defcon_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_countermeasures_2",
+      "ref": null,
+      "key": "JOKR_Defcon_CML_Flare"
+    },
+    {
+      "name": "hardpoint_fuel_intake_left",
+      "ref": null,
+      "key": "INTK_ORIG_400i"
+    },
+    {
+      "name": "hardpoint_fuel_intake_right",
+      "ref": null,
+      "key": "INTK_ORIG_400i"
+    },
+    {
+      "name": "hardpoint_fuel_tank_1",
+      "ref": null,
+      "key": "HTNK_ORIG_400i"
+    },
+    {
+      "name": "hardpoint_fuel_tank_2",
+      "ref": null,
+      "key": "HTNK_ORIG_400i"
+    },
+    {
+      "name": "hardpoint_ping",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_power_plant_1",
+      "ref": null,
+      "key": "POWR_JUST_S02_Sedulity_SCItem"
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_ARCC_S02_Torrent_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": null,
+          "key": "JDRV_TARS_S02_Excelsior_SCItem"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_shield_generator",
+      "ref": null,
+      "key": "SHLD_SECO_S03_GUARD_SCItem"
+    },
+    {
+      "name": "hardpoint_quantum_fuel",
+      "ref": null,
+      "key": "QTNK_ORIG_400i"
+    },
+    {
+      "name": "hardpoint_remote_turret_top",
+      "ref": "1ab8e549-9737-4698-87eb-45753a5fbacb",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_remote_turret_top_controller",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_remote_turret_bottom",
+      "ref": "cffe164c-f0ad-45f4-b3a1-324495b092a9",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_right",
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "turret_left",
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_remote_turret_bottom_controller",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_seat_copilot_right",
+      "ref": null,
+      "key": "ORIG_400i_Seat_Bridge_Right"
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "ORIG_400i_Seat_Pilot"
+    },
+    {
+      "name": "hardpoint_seat_copilot_left",
+      "ref": null,
+      "key": "ORIG_400i_Seat_Bridge_Left"
+    },
+    {
+      "name": "hardpoint_weapon_left",
+      "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_right",
+      "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_CHCO_S02_Surveyor"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_front_left",
+      "ref": null,
+      "key": "ORIG_400i_Thruster_Mav_VTOL"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_front_right",
+      "ref": null,
+      "key": "ORIG_400i_Thruster_Mav_VTOL"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_rear_left",
+      "ref": null,
+      "key": "ORIG_400i_Thruster_Mav_VTOL"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_rear_right",
+      "ref": null,
+      "key": "ORIG_400i_Thruster_Mav_VTOL"
+    },
+    {
+      "name": "hardpoint_thruster_side_front_left",
+      "ref": null,
+      "key": "ORIG_400i_Thruster_Mav_Side"
+    },
+    {
+      "name": "hardpoint_thruster_side_front_right",
+      "ref": null,
+      "key": "ORIG_400i_Thruster_Mav_Side"
+    },
+    {
+      "name": "hardpoint_thruster_nose_bottom",
+      "ref": null,
+      "key": "ORIG_400i_Thruster_Mav_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_nose_top",
+      "ref": null,
+      "key": "ORIG_400i_Thruster_Mav_Top"
+    },
+    {
+      "name": "hardpoint_thruster_side_rear_left",
+      "ref": null,
+      "key": "ORIG_400i_Thruster_Mav_Top"
+    },
+    {
+      "name": "hardpoint_thruster_side_rear_right",
+      "ref": null,
+      "key": "ORIG_400i_Thruster_Mav_Top"
+    },
+    {
+      "name": "hardpoint_thruster_top_front_left",
+      "ref": null,
+      "key": "ORIG_400i_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_thruster_top_front_right",
+      "ref": null,
+      "key": "ORIG_400i_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_thruster_top_rear_left",
+      "ref": null,
+      "key": "ORIG_400i_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_thruster_top_rear_right",
+      "ref": null,
+      "key": "ORIG_400i_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_thruster_retro_right",
+      "ref": null,
+      "key": "ORIG_400i_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_retro_left",
+      "ref": null,
+      "key": "ORIG_400i_Thruster_Retro_Left"
+    },
+    {
+      "name": "hardpoint_thruster_main",
+      "ref": null,
+      "key": "ORIG_400i_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_sub_left",
+      "ref": null,
+      "key": "ORIG_400i_Thruster_Main_Sub"
+    },
+    {
+      "name": "hardpoint_thruster_sub_right",
+      "ref": null,
+      "key": "ORIG_400i_Thruster_Main_Sub"
+    },
+    {
+      "name": "hardpoint_main_lift",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenClose_400i_Ramp"
+    },
+    {
+      "name": "hardpoint_Garage_Lift",
+      "ref": null,
+      "key": "ORIG_400i_Lift_Garage"
+    },
+    {
+      "name": "hardpoint_cargo_lift",
+      "ref": null,
+      "key": "ORIG_400i_Lift_Cargo"
+    },
+    {
+      "name": "hardpoint_gunrack",
+      "ref": null,
+      "key": "Weapon_Rack_400i_Armory"
+    },
+    {
+      "name": "hardpoint_missile_right",
+      "ref": null,
+      "key": "MRCK_S04_ORIG_400i_Octo_S02",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        },
+        {
+          "name": "missile_05_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        },
+        {
+          "name": "missile_06_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        },
+        {
+          "name": "missile_07_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        },
+        {
+          "name": "missile_08_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_left",
+      "ref": null,
+      "key": "MRCK_S04_ORIG_400i_Octo_S02_L",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        },
+        {
+          "name": "missile_05_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        },
+        {
+          "name": "missile_06_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        },
+        {
+          "name": "missile_07_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        },
+        {
+          "name": "missile_08_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_right_small",
+      "ref": null,
+      "key": "MRCK_S02_ORIG_400i_Octo_S01",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_05_attach",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_06_attach",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_07_attach",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_08_attach",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_small_left",
+      "ref": null,
+      "key": "MRCK_S02_ORIG_400i_Octo_S01_L",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_05_attach",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_06_attach",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_07_attach",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_08_attach",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_control_cover",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_captains_quarters",
+      "ref": null,
+      "key": "ORIG_400i_SCItem_Seat_Captain"
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": "Controller_Missile"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_ORIG_400i"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "ORIG_400i_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_door_airlock",
+      "ref": null,
+      "key": "Door_Ship_Exterior_400i_Exterior_Door"
+    },
+    {
+      "name": "hardpoint_cockpit_flair",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay",
+      "ref": null,
+      "key": "RELAY_2slot_slim"
+    },
+    {
+      "name": "hardpoint_relay_2",
+      "ref": null,
+      "key": "RELAY_2slot_slim"
+    },
+    {
+      "name": "hardpoint_relay_3",
+      "ref": null,
+      "key": "RELAY_3slot_slim"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_TYDT_S02_ComfortAirPlus"
+    }
+  ]
+}

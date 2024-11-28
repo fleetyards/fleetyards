@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Scorpius_Tiburon_Grey_Red",
+  "ref": "01684bc9-391d-431e-9c48-b5c0270778ff",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "0a55061e-f525-4006-bdec-5dc6fb42e7c6",
+  "name": "Scorpius Tiburon Livery",
+  "short_name": null,
+  "description": "As if the Scorpius and its rail-mounted turret isn't menacing enough, the exclusive Tiburon livery features two rows of sharpened teeth flanking the cockpit. The rest of the paint scheme features shades of grey intermixed with red and white highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

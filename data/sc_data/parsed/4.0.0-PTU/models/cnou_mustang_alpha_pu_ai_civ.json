@@ -1,0 +1,311 @@
+{
+  "key": "CNOU_Mustang_Alpha_PU_AI_CIV",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "C.O. Mustang Alpha",
+  "description": "Manufacturer: Consolidated Outland \\nFocus: Light Freight\\n\\nInspired by Consolidated Outland CEO Silas Koerner’s cutting edge vision, the Mustang Alpha is a sleek, stylish spacecraft that uses ultralight alloys to push power ratios to the limits, albeit sometimes unsafely. And now, with the optional Cargo Carrier, you can have the Alpha’s advantages without sacrificing carrying capacity.",
+  "career": "Multi-Role",
+  "role": "Starter / Light Freight",
+  "insurance": {
+    "base_wait_time_minutes": "0.675",
+    "mandatory_wait_time_minutes": "0",
+    "base_expediting_fee": "340"
+  },
+  "mass": 34221.0,
+  "metrics": {
+    "x": 18.0,
+    "y": 21.5,
+    "z": 9.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_pilot_seat",
+      "ref": null,
+      "key": "CNOU_Mustang_Seat_Pilot"
+    },
+    {
+      "name": "hardpoint_self_destruct_pilot",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_10s"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_power_plant",
+      "ref": null,
+      "key": "POWR_LPLT_S01_ZapJet_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_cooler_left",
+      "ref": null,
+      "key": "COOL_JSPN_S01_WinterStar_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_right",
+      "ref": null,
+      "key": "COOL_JSPN_S01_WinterStar_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_CNOU_Mustang"
+    },
+    {
+      "name": "hardpoint_shield_generator_left",
+      "ref": null,
+      "key": "SHLD_SECO_S01_INK_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator_right",
+      "ref": null,
+      "key": "SHLD_SECO_S01_INK_SCItem"
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": null,
+      "key": "ARMR_CNOU_Mustang_Alpha"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_CNOU_Mustang_Alpha"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_WLOP_S01_Capstan"
+    },
+    {
+      "name": "hardpoint_scanner",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_ping",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_main_thruster_left",
+      "ref": null,
+      "key": "CNOU_Mustang_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_main_thruster_right",
+      "ref": null,
+      "key": "CNOU_Mustang_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_retro_thruster_left",
+      "ref": null,
+      "key": "CNOU_Mustang_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_retro_thruster_right",
+      "ref": null,
+      "key": "CNOU_Mustang_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_mav_thruster_front_bottom",
+      "ref": null,
+      "key": "CNOU_Mustang_Thruster_Mav_Fixed_01_Up"
+    },
+    {
+      "name": "hardpoint_mav_thruster_front_upper_right",
+      "ref": null,
+      "key": "CNOU_Mustang_Thruster_Mav_Fixed_01"
+    },
+    {
+      "name": "hardpoint_mav_thruster_front_lower_right",
+      "ref": null,
+      "key": "CNOU_Mustang_Thruster_Mav_Fixed_01"
+    },
+    {
+      "name": "hardpoint_mav_thruster_front_upper_left",
+      "ref": null,
+      "key": "CNOU_Mustang_Thruster_Mav_Fixed_01"
+    },
+    {
+      "name": "hardpoint_mav_thruster_front_lower_left",
+      "ref": null,
+      "key": "CNOU_Mustang_Thruster_Mav_Fixed_01"
+    },
+    {
+      "name": "hardpoint_mav_thruster_rear_top",
+      "ref": null,
+      "key": "CNOU_Mustang_Thruster_Mav_Fixed_01_Down"
+    },
+    {
+      "name": "hardpoint_mav_thruster_rear_right_top",
+      "ref": null,
+      "key": "CNOU_Mustang_Thruster_Mav_Fixed_01_Down"
+    },
+    {
+      "name": "hardpoint_mav_thruster_rear_right_bottom",
+      "ref": null,
+      "key": "CNOU_Mustang_Thruster_Mav_Fixed_01_Up"
+    },
+    {
+      "name": "hardpoint_mav_thruster_rear_left_bottom",
+      "ref": null,
+      "key": "CNOU_Mustang_Thruster_Mav_Fixed_01_Up"
+    },
+    {
+      "name": "hardpoint_mav_thruster_rear_left_top",
+      "ref": null,
+      "key": "CNOU_Mustang_Thruster_Mav_Fixed_01_Down"
+    },
+    {
+      "name": "hardpoint_mav_thruster_rear_left_side",
+      "ref": null,
+      "key": "CNOU_Mustang_Thruster_Mav_Fixed_01"
+    },
+    {
+      "name": "hardpoint_mav_thruster_rear_right_side",
+      "ref": null,
+      "key": "CNOU_Mustang_Thruster_Mav_Fixed_01"
+    },
+    {
+      "name": "hardpoint_fuel_intake_left",
+      "ref": null,
+      "key": "INTK_CNOU_Mustang_Alpha"
+    },
+    {
+      "name": "hardpoint_fuel_intake_right",
+      "ref": null,
+      "key": "INTK_CNOU_Mustang_Alpha"
+    },
+    {
+      "name": "hardpoint_fuel_tank_left",
+      "ref": null,
+      "key": "HTNK_CNOU_Mustang_Alpha"
+    },
+    {
+      "name": "hardpoint_fuel_tank_right",
+      "ref": null,
+      "key": "HTNK_CNOU_Mustang_Alpha"
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_ARCC_S01_Rush_SCItem"
+    },
+    {
+      "name": "hardpoint_quantum_fuel_tank",
+      "ref": null,
+      "key": "QTNK_CNOU_Mustang_Alpha"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_weapon_nose",
+      "ref": "ebc7badd-40a4-4fda-9d80-7c3b33c492c0",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_1_left",
+          "ref": "5453a817-dfd4-4143-aa11-840ca428540c",
+          "key": null
+        },
+        {
+          "name": "hardpoint_class_1_right",
+          "ref": "5453a817-dfd4-4143-aa11-840ca428540c",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_wing_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_weapon_wing_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_countermeasure_left",
+      "ref": null,
+      "key": "CNOU_CML_Decoy_Small"
+    },
+    {
+      "name": "hardpoint_countermeasure_right",
+      "ref": null,
+      "key": "CNOU_CML_Noise_Small"
+    },
+    {
+      "name": "hardpoint_cargo_module",
+      "ref": null,
+      "key": "CNOU_Mustang_Cargo_Rack"
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_CNOU_Mustang"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "CNOU_Mustang_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_cockpit",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_TYDT_S01_ComfortAir"
+    }
+  ]
+}

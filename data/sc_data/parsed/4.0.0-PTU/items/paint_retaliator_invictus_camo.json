@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Retaliator_Invictus_Camo",
+  "ref": "6e761c1f-327b-4a67-af6e-bff5d1eab70c",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "10b80dbb-e9b7-439d-8dea-25c13f5d91d8",
+  "name": "Retaliator Twilight Livery",
+  "short_name": null,
+  "description": "Customize your Retaliator with this fragmented grey livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

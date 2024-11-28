@@ -1,0 +1,21 @@
+{
+  "key": "KRON_LaserCannon_FiringMechanism_S1",
+  "ref": "18908398-4f9d-44c6-90f4-243a3e636fe9",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "FiringMechanism",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2a64f92e-8f6d-47ac-a6ed-643465e91d4b",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

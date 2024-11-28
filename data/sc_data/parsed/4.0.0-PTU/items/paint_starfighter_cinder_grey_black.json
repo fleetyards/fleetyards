@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Starfighter_Cinder_Grey_Black",
+  "ref": "e68abc82-acb6-4036-9084-89c9e2302374",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a690f044-312a-48f1-bd80-ac6b44a7e776",
+  "name": "Ares Star Fighter Cinder Livery",
+  "short_name": null,
+  "description": "The Cinder livery for the Ares Star Fighter is predominantly grey with a black trim accenting the ship's lines and enwrapping the cockpit.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

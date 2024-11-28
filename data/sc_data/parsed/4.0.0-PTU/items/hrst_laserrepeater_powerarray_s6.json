@@ -1,0 +1,21 @@
+{
+  "key": "HRST_LaserRepeater_PowerArray_S6",
+  "ref": "d832c9b2-1040-410c-80bd-e8049f9d462a",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "PowerArray",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

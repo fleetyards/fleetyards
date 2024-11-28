@@ -1,0 +1,21 @@
+{
+  "key": "Paint_MPUV_1T_Lightgrey_grey",
+  "ref": "e884a62e-3ae3-4dc0-8fa4-8308897610b8",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a6d0f0c3-f91c-4900-8b74-69b97d20eca7",
+  "name": "MPUV-1T Storm Grey Livery",
+  "short_name": null,
+  "description": "The Storm Grey is an all grey livery for the MPUV-1T. Its subtle style is an ideal choice for those not wanting to draw too much attention.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

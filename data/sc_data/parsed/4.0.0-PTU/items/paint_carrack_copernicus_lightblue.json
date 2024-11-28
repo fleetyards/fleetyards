@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Carrack_Copernicus_LightBlue",
+  "ref": "0871c014-2813-4a61-8926-c5b9ab0d1d52",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "0e69c8b1-1a09-45c7-92d8-7237c1e44270",
+  "name": "Carrack Copernicus Livery",
+  "short_name": null,
+  "description": "To honor the brave explorers that brought us to space and support those currently seeking new frontiers, the Interstellar Cartography Center (ICC) commissioned this special livery for the Carrack. Named in honor of famed astronomer Nicolaus Copernicus, the livery mixes two shades of blue with black highlights. All proceeds from the sale of the Copernicus livery goes directly to the ICC to support their efforts in \"Charting the Way Ahead.\"",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

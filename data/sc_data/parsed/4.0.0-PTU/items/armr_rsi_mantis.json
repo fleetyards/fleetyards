@@ -1,0 +1,24 @@
+{
+  "key": "ARMR_RSI_Mantis",
+  "ref": "f9badbb2-4152-46fb-91c6-942842b0f036",
+  "category": "armor",
+  "type": "Armor",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  }
+}

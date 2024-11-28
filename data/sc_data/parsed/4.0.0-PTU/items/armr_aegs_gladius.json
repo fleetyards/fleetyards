@@ -1,0 +1,24 @@
+{
+  "key": "ARMR_AEGS_Gladius",
+  "ref": "a1bde463-b3ce-4959-9bc2-6ef0f6fb1494",
+  "category": "armor",
+  "type": "Armor",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Gladius Ship Armor",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  }
+}

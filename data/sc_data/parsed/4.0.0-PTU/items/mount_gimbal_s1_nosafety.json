@@ -1,0 +1,70 @@
+{
+  "key": "Mount_Gimbal_S1_NoSafety",
+  "ref": "2937fd28-b033-4d47-a8cc-7b470248f2f9",
+  "category": "weapon_mounts",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b9b97673-c585-4e0a-b229-a0a3c79668c3",
+  "name": "VariPuck S1 Gimbal Mount",
+  "short_name": null,
+  "description": "Manufacturer: Flashfire Systems\\nItem Type: Weapon Mount\\nSize: 1\\n\\nThe VariPuck fits between your weapon and the ship hardpoint to transform a fixed weapon mount into a gimballed mount, allowing the pilot to independently aim their weapon’s fire. This special VariPuck will accept any weapon the same size as the hardpoint it is mounting to.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_class_2",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponGun"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 525.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 0.1,
+    "StartIRTemperature": 250.0,
+    "OverpowerHeat": 0.0,
+    "OverclockThresholdMinHeat": 0.0,
+    "OverclockThresholdMaxHeat": 0.0,
+    "ThermalEnergyBase": 10.0,
+    "ThermalEnergyDraw": 20.0,
+    "ThermalConductivity": 3.0,
+    "SpecificHeatCapacity": 13.0,
+    "Mass": 200.0,
+    "SurfaceArea": 50.0,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 1.0,
+    "MaxTemperature": 450.0,
+    "OverheatTemperature": 370.0,
+    "RecoveryTemperature": 350.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "power_connection": {
+    "power_base": 0.0,
+    "power_draw": 10.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 0.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.1,
+    "overclock_threshold_max": 0.2,
+    "overpower_performance": 0.0,
+    "overclock_performance": 0.0,
+    "power_to_em": 0.0,
+    "decay_rate_of_em": 0.15
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "JOKR_DistortionCannon_PowerArray_S1",
+  "ref": "59f24a20-d9cf-4615-b0d2-2cb9c26fe08b",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "PowerArray",
+  "size": "3",
+  "grade": "3",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

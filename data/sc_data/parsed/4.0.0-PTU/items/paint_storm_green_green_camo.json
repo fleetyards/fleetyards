@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Storm_Green_Green_Camo",
+  "ref": "6b6bb110-e497-4d5e-807d-27e77a9f6682",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ecdbd49a-36c1-4776-9d85-e7cd5a3b0d8f",
+  "name": "Storm Landfall Livery",
+  "short_name": null,
+  "description": "Ready the Storm for adventures through forests and grasslands with the Landfall livery with its various shades of green.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_ARGO_RAFT",
+  "ref": "4b9d2970-91e2-4106-a9db-31dbdeb97bd5",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "9e1f5a35-edcc-4d19-bede-08e2730043c5",
+  "name": "SELF STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "scm_speed": 140.0,
+    "scm_speed_boosted": 340.0,
+    "reverse_speed_boosted": 150.0,
+    "max_speed": 990.0,
+    "angular_velocity": {
+      "pitch": 40.0,
+      "yaw": 40.0,
+      "roll": 117.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 48.0,
+      "yaw": 48.0,
+      "roll": 140.4
+    }
+  }
+}

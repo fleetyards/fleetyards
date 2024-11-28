@@ -1,0 +1,25 @@
+{
+  "key": "GRIN_ROC_DS_CargoGrid_Main",
+  "ref": "f1c3b5c1-76b6-46ec-9436-7cd44d93e010",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  },
+  "inventory_ref": "c766ff12-e7d0-4fbf-ab68-87c074b7601e"
+}

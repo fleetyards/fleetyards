@@ -1,0 +1,700 @@
+{
+  "key": "Door_RN_RoomConnector_Breachable_OpenClose_IP_Starrunner_Table",
+  "ref": "bb169152-970f-4a3d-9f41-fde1b1ba3874",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "$slot_a1",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_a2",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_a3",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_a4",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_a5",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_a6",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_a7",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+
+      ]
+    },
+    {
+      "name": "$slot_a8",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_b1",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_b2",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_b3",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_b4",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_b5",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_b6",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_b7",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_b8",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_c1",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_c2",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_c3",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_c4",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_c5",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_c6",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_c7",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_c8",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_d1",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_d2",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_d3",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_d4",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_d5",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_d6",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_d7",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_d8",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_e1",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_e2",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_e3",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_e4",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_e5",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_e6",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_e7",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+
+      ]
+    },
+    {
+      "name": "$slot_e8",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_f1",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_f2",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_f3",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_f4",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_f5",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_f6",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_f7",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_f8",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_g1",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_g2",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_g3",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_g4",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_g5",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_g6",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_g7",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_g8",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_h1",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_h2",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_h3",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_h4",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_h5",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_h6",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_h7",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "$slot_h8",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "$slot_a1",
+      "key": "CRUS_game_chess_1_rook_a",
+      "ref": null
+    },
+    {
+      "name": "$slot_b1",
+      "key": "CRUS_game_chess_1_knight_a",
+      "ref": null
+    },
+    {
+      "name": "$slot_c1",
+      "key": "CRUS_game_chess_1_bishop_a",
+      "ref": null
+    },
+    {
+      "name": "$slot_d1",
+      "key": "CRUS_game_chess_1_queen_a",
+      "ref": null
+    },
+    {
+      "name": "$slot_e1",
+      "key": "CRUS_game_chess_1_king_a",
+      "ref": null
+    },
+    {
+      "name": "$slot_f1",
+      "key": "CRUS_game_chess_1_bishop_a",
+      "ref": null
+    },
+    {
+      "name": "$slot_g1",
+      "key": "CRUS_game_chess_1_knight_a",
+      "ref": null
+    },
+    {
+      "name": "$slot_h1",
+      "key": "CRUS_game_chess_1_rook_a",
+      "ref": null
+    },
+    {
+      "name": "$slot_a8",
+      "key": "CRUS_game_chess_1_rook_b",
+      "ref": null
+    },
+    {
+      "name": "$slot_b8",
+      "key": "CRUS_game_chess_1_knight_b",
+      "ref": null
+    },
+    {
+      "name": "$slot_c8",
+      "key": "CRUS_game_chess_1_bishop_b",
+      "ref": null
+    },
+    {
+      "name": "$slot_d8",
+      "key": "CRUS_game_chess_1_queen_b",
+      "ref": null
+    },
+    {
+      "name": "$slot_e8",
+      "key": "CRUS_game_chess_1_king_b",
+      "ref": null
+    },
+    {
+      "name": "$slot_f8",
+      "key": "CRUS_game_chess_1_bishop_b",
+      "ref": null
+    },
+    {
+      "name": "$slot_g8",
+      "key": "CRUS_game_chess_1_knight_b",
+      "ref": null
+    },
+    {
+      "name": "$slot_h8",
+      "key": "CRUS_game_chess_1_rook_b",
+      "ref": null
+    },
+    {
+      "name": "$slot_a2",
+      "key": "CRUS_game_chess_1_pawn_a",
+      "ref": null
+    },
+    {
+      "name": "$slot_b2",
+      "key": "CRUS_game_chess_1_pawn_a",
+      "ref": null
+    },
+    {
+      "name": "$slot_c2",
+      "key": "CRUS_game_chess_1_pawn_a",
+      "ref": null
+    },
+    {
+      "name": "$slot_d2",
+      "key": "CRUS_game_chess_1_pawn_a",
+      "ref": null
+    },
+    {
+      "name": "$slot_e2",
+      "key": "CRUS_game_chess_1_pawn_a",
+      "ref": null
+    },
+    {
+      "name": "$slot_f2",
+      "key": "CRUS_game_chess_1_pawn_a",
+      "ref": null
+    },
+    {
+      "name": "$slot_g2",
+      "key": "CRUS_game_chess_1_pawn_a",
+      "ref": null
+    },
+    {
+      "name": "$slot_h2",
+      "key": "CRUS_game_chess_1_pawn_a",
+      "ref": null
+    },
+    {
+      "name": "$slot_a7",
+      "key": "CRUS_game_chess_1_pawn_b",
+      "ref": null
+    },
+    {
+      "name": "$slot_b7",
+      "key": "CRUS_game_chess_1_pawn_b",
+      "ref": null
+    },
+    {
+      "name": "$slot_c7",
+      "key": "CRUS_game_chess_1_pawn_b",
+      "ref": null
+    },
+    {
+      "name": "$slot_d7",
+      "key": "CRUS_game_chess_1_pawn_b",
+      "ref": null
+    },
+    {
+      "name": "$slot_e7",
+      "key": "CRUS_game_chess_1_pawn_b",
+      "ref": null
+    },
+    {
+      "name": "$slot_f7",
+      "key": "CRUS_game_chess_1_pawn_b",
+      "ref": null
+    },
+    {
+      "name": "$slot_g7",
+      "key": "CRUS_game_chess_1_pawn_b",
+      "ref": null
+    },
+    {
+      "name": "$slot_h7",
+      "key": "CRUS_game_chess_1_pawn_b",
+      "ref": null
+    }
+  ],
+  "durability": {
+    "health": 1000.0
+  }
+}

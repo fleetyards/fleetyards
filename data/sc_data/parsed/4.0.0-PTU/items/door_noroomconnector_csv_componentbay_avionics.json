@@ -1,0 +1,41 @@
+{
+  "key": "Door_NoRoomConnector_CSV_ComponentBay_Avionics",
+  "ref": "59e45c00-cc3e-46e0-b092-97d7f36f5c86",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "9e1f5a35-edcc-4d19-bede-08e2730043c5",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_computer",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_computer",
+      "key": null,
+      "ref": null
+    }
+  ],
+  "durability": {
+    "health": 1234.0
+  }
+}

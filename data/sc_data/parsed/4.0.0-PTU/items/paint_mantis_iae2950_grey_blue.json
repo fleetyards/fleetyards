@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Mantis_IAE2950_Grey_Blue",
+  "ref": "6f233c21-651a-4727-aee0-5526f6a6c929",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "20399ab4-1530-4bd8-87cb-e300a58fc3b4",
+  "name": "Mantis Stormbringer Livery",
+  "short_name": null,
+  "description": "This custom Mantis livery was created to celebrate the 2950 IAE on microTech. It blends black and electric blue to give the ship a cool new look.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

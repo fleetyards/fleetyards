@@ -1,0 +1,67 @@
+{
+  "key": "Door_RN_RoomConnector_Breachable_OpenClose_AEGS_Retaliator_Front_Module_Lift",
+  "ref": "d2dd78a7-511e-43c5-b0a2-ecc056f8e642",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_cargo_grid_b",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "CargoGrid"
+      ]
+    },
+    {
+      "name": "hardpoint_cargo_grid_c",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "CargoGrid"
+      ]
+    },
+    {
+      "name": "hardpoint_cargo_grid_a",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "CargoGrid"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_cargo_grid_b",
+      "key": "AEGS_Retaliator_CargoGrid_Front_Main",
+      "ref": null
+    },
+    {
+      "name": "hardpoint_cargo_grid_a",
+      "key": "AEGS_Retaliator_CargoGrid_Front_left",
+      "ref": null
+    },
+    {
+      "name": "hardpoint_cargo_grid_c",
+      "key": "AEGS_Retaliator_CargoGrid_Front_Right",
+      "ref": null
+    }
+  ],
+  "durability": {
+    "health": 1000.0
+  }
+}

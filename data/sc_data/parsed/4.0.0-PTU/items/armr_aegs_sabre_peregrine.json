@@ -1,0 +1,24 @@
+{
+  "key": "ARMR_AEGS_Sabre_Peregrine",
+  "ref": "d72da45f-12c8-4ca1-98d3-03d46fdeae36",
+  "category": "armor",
+  "type": "Armor",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Sabre Raven Ship Armor",
+  "short_name": null,
+  "description": "Sabre Raven Ship Armor",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  }
+}

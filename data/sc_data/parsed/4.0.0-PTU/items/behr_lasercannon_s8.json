@@ -1,0 +1,75 @@
+{
+  "key": "BEHR_LaserCannon_S8",
+  "ref": "6bf837a5-2763-4cd3-aa9c-869b0e798cb3",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "8",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "M9A Cannon",
+  "short_name": null,
+  "description": "Manufacturer: Behring\\nItem Type: Laser Cannon\\nSize: 7\\n\\nStrike at the very heart of your enemies with the devastating impact of Behring's M9A energy autocannon. When fully charged, the massive stopping power of this laser weapon has the potential to halt even capital ships in their tracks.",
+  "inventory_consumption": {
+    "micro_scu": 54600000.0,
+    "dimensions": {
+      "x": 2.902906,
+      "y": 22.11008,
+      "z": 4.009475
+    }
+  },
+  "loadout": [
+    {
+      "name": "magazine_attach",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+
+      ]
+    }
+  ],
+  "durability": {
+    "health": 10810.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 2.0,
+    "StartIRTemperature": 250.0,
+    "OverpowerHeat": 0.8,
+    "OverclockThresholdMinHeat": 0.52,
+    "OverclockThresholdMaxHeat": 0.76,
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.5,
+    "Mass": 1500.0,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 1344.017,
+    "MaxTemperature": 1000.0,
+    "OverheatTemperature": 900.0,
+    "RecoveryTemperature": 550.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  },
+  "power_connection": {
+    "power_base": 700.0,
+    "power_draw": 750.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 20.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.25,
+    "overclock_threshold_max": 0.53,
+    "overpower_performance": 0.3,
+    "overclock_performance": 0.24,
+    "power_to_em": 1.8,
+    "decay_rate_of_em": 0.2
+  }
+}

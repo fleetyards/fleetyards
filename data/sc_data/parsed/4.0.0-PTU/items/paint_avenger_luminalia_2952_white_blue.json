@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Avenger_Luminalia_2952_White_Blue",
+  "ref": "f6e13fd2-677f-4489-b9d6-cb54cc932f26",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "21fdb7fe-bf69-45ce-9a43-a709d5bcbf6d",
+  "name": "Avenger IceBreak Livery",
+  "short_name": null,
+  "description": "Equip your Avenger with a paint scheme cooler than a snow storm. The IceBreak livery mixes crisp, cool white with a frostbitten blue for an exciting look suitable for any season.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

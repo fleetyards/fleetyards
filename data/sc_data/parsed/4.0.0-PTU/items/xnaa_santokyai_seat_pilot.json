@@ -1,0 +1,21 @@
+{
+  "key": "XNAA_SanTokYai_Seat_Pilot",
+  "ref": "17a2b467-c221-492a-b25f-0ac752e6850c",
+  "category": "seat",
+  "type": "Seat",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "06370f79-4741-4781-be08-d5acc9e28047",
+  "name": "TRGT. STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

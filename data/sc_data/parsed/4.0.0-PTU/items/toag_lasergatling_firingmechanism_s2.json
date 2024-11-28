@@ -1,0 +1,21 @@
+{
+  "key": "TOAG_LaserGatling_FiringMechanism_S2",
+  "ref": "57dfbdf1-e62d-470b-a89f-5aa2f8dda06d",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "FiringMechanism",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a834198a-3465-4b02-86a5-887e922ec06d",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

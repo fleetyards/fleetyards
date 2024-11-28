@@ -1,0 +1,21 @@
+{
+  "key": "DRAK_Cutter_CargoGrid_Template",
+  "ref": "a71ac180-2a5d-4ebd-916e-3d618585f9df",
+  "category": "inventory",
+  "type": "cargo_grid",
+  "type_data": {
+    "dimensions": {
+      "x": 35.0,
+      "y": 35.0,
+      "z": 35.0,
+      "scu": 21952.0
+    },
+    "min_container": {
+      "x": 1.25,
+      "y": 1.25,
+      "z": 1.25,
+      "scu": 1.0
+    },
+    "max_container": null
+  }
+}

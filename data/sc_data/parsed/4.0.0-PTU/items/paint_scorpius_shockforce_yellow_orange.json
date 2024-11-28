@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Scorpius_Shockforce_Yellow_Orange",
+  "ref": "2d7b9652-e70e-4e58-b945-db996cd332a5",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ccc6e6cb-504f-4e39-83d5-e732207151ef",
+  "name": "Scorpius Shock Force Livery",
+  "short_name": null,
+  "description": "Featuring ferocious firepower and a bold bi-wing design, the Scorpius deserves a paint scheme to match. The eye-catching Shock Force livery pairs a blend of yellow and orange hues with a dark grey trim.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

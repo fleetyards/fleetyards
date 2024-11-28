@@ -1,0 +1,21 @@
+{
+  "key": "InstancedHangarGateway_Pyro",
+  "ref": "d13c08d1-ead1-4c68-8920-57ff1823c5ac",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": null,
+  "grade": null,
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  }
+}

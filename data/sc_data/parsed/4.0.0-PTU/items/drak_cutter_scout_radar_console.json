@@ -1,0 +1,70 @@
+{
+  "key": "DRAK_Cutter_Scout_Radar_Console",
+  "ref": "4707a311-d731-40d2-92d1-215189fd146c",
+  "category": "seat",
+  "type": "Seat",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6116471c-891d-4830-8968-650b6deafc00",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "radar",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Display"
+      ]
+    },
+    {
+      "name": "MFD_top",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Display"
+      ]
+    },
+    {
+      "name": "MFD_right",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Display"
+      ]
+    },
+    {
+      "name": "MFD_center",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Display"
+      ]
+    }
+  ],
+  "power_connection": {
+    "power_base": 1.0,
+    "power_draw": 1.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 50.0,
+    "displayed_in_powered_item_list": 0.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.0,
+    "overclock_threshold_max": 0.0,
+    "overpower_performance": 0.0,
+    "overclock_performance": 0.0,
+    "power_to_em": 0.0,
+    "decay_rate_of_em": 0.15
+  }
+}

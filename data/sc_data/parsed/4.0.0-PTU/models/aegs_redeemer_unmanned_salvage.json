@@ -1,0 +1,754 @@
+{
+  "key": "AEGS_Redeemer_Unmanned_Salvage",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "4",
+  "name": "Aegis Redeemer",
+  "description": "Manufacturer: Aegis Dynamics\\nFocus: Gunship \\n\\nDesigned by Aegis Dynamics, the Redeemer is a powerful fighting ship capable of holding its own in combat with a powerful weapons payload. Dotted with turrets and missiles, the Redeemer also doubles as an armored landing craft capable of delivering soldiers to the frontlines.",
+  "career": "Combat",
+  "role": "Gunship",
+  "insurance": {
+    "base_wait_time_minutes": "28.35",
+    "mandatory_wait_time_minutes": "9.45",
+    "base_expediting_fee": "13199"
+  },
+  "mass": 444270.26,
+  "metrics": {
+    "x": 25.0,
+    "y": 51.0,
+    "z": 14.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_battery_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_battery_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cockpit_selfDestruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_80s"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_AEGS_Redeemer"
+    },
+    {
+      "name": "hardpoint_controller_scanner",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_AEGS_Redeemer"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_cooler",
+      "ref": null,
+      "key": "COOL_AEGS_S03_Blizzard_SCItem"
+    },
+    {
+      "name": "hardpoint_countermeasures_left",
+      "ref": null,
+      "key": "JOKR_Defcon_CML_Flare"
+    },
+    {
+      "name": "hardpoint_countermeasures_right",
+      "ref": null,
+      "key": "JOKR_Defcon_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_fuel_intake_left",
+      "ref": null,
+      "key": "INTK_AEGS_Redeemer"
+    },
+    {
+      "name": "hardpoint_fuel_intake_right",
+      "ref": null,
+      "key": "INTK_AEGS_Redeemer"
+    },
+    {
+      "name": "hardpoint_fuel_tank_left",
+      "ref": null,
+      "key": "HTNK_AEGS_Redeemer"
+    },
+    {
+      "name": "hardpoint_fuel_tank_right",
+      "ref": null,
+      "key": "HTNK_AEGS_Redeemer"
+    },
+    {
+      "name": "hardpoint_missilerack_wing_left",
+      "ref": null,
+      "key": "MRCK_S04_AEGS_Redeemer",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        },
+        {
+          "name": "missile_05_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        },
+        {
+          "name": "missile_06_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        },
+        {
+          "name": "missile_07_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        },
+        {
+          "name": "missile_08_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missilerack_wing_right",
+      "ref": null,
+      "key": "MRCK_S04_AEGS_Redeemer",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        },
+        {
+          "name": "missile_05_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        },
+        {
+          "name": "missile_06_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        },
+        {
+          "name": "missile_07_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        },
+        {
+          "name": "missile_08_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_THCN_StrikeForce"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_ping",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_power_plant",
+      "ref": null,
+      "key": "POWR_AEGS_S03_Centurion_SCItem"
+    },
+    {
+      "name": "hardpoint_power_plant_2",
+      "ref": null,
+      "key": "POWR_AEGS_S03_Centurion_SCItem"
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_WETK_S02_Crossfield_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": "14cbe476-4050-4af5-8635-178519722f4b",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_fuel_tank",
+      "ref": null,
+      "key": "QTNK_AEGS_Redeemer"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_GRNP_S02_Epier"
+    },
+    {
+      "name": "hardpoint_ramp",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenClose_IP_Redeemer"
+    },
+    {
+      "name": "hardpoint_scanner",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "AEGS_Redeemer_SCItem_Seat_Pilot"
+    },
+    {
+      "name": "hardpoint_shield_generator_l",
+      "ref": null,
+      "key": "SHLD_GODI_S02_FullStop_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator_r",
+      "ref": null,
+      "key": "SHLD_GODI_S02_FullStop_SCItem"
+    },
+    {
+      "name": "hardpoint_thruster_front_bottom_left",
+      "ref": null,
+      "key": "AEGS_Redeemer_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_thruster_front_bottom_right",
+      "ref": null,
+      "key": "AEGS_Redeemer_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_thruster_front_top_left",
+      "ref": null,
+      "key": "AEGS_Redeemer_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_thruster_front_top_right",
+      "ref": null,
+      "key": "AEGS_Redeemer_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_thruster_mid_botom_left",
+      "ref": null,
+      "key": "AEGS_Redeemer_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_thruster_mid_bottom_right",
+      "ref": null,
+      "key": "AEGS_Redeemer_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_thruster_mid_top_left",
+      "ref": null,
+      "key": "AEGS_Redeemer_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_thruster_mid_top_right",
+      "ref": null,
+      "key": "AEGS_Redeemer_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_thruster_rear_main_left",
+      "ref": null,
+      "key": "AEGS_Redeemer_Thruster_Main_Left"
+    },
+    {
+      "name": "hardpoint_thruster_rear_main_right",
+      "ref": null,
+      "key": "AEGS_Redeemer_Thruster_Main_Right"
+    },
+    {
+      "name": "hardpoint_thruster_rear_side_left",
+      "ref": null,
+      "key": "AEGS_Redeemer_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_rear_side_right",
+      "ref": null,
+      "key": "AEGS_Redeemer_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_retro_left",
+      "ref": null,
+      "key": "AEGS_Redeemer_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_retro_right",
+      "ref": null,
+      "key": "AEGS_Redeemer_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_wing_top_main_left",
+      "ref": null,
+      "key": "AEGS_Redeemer_Thruster_Nutcracker",
+      "loadout": [
+        {
+          "name": "hardpoint_thruster_mav_wing_top",
+          "ref": null,
+          "key": "AEGS_Redeemer_Blankingplate_LT"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_thruster_wing_top_main_right",
+      "ref": null,
+      "key": "AEGS_Redeemer_Thruster_Nutcracker",
+      "loadout": [
+        {
+          "name": "hardpoint_thruster_mav_wing_top",
+          "ref": null,
+          "key": "AEGS_Redeemer_Blankingplate_RT"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_thruster_wing_bottom_main_left",
+      "ref": null,
+      "key": "AEGS_Redeemer_Thruster_Nutcracker",
+      "loadout": [
+        {
+          "name": "hardpoint_thruster_mav_wing_bottom",
+          "ref": null,
+          "key": "AEGS_Redeemer_Thruster_VTOL"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_thruster_wing_bottom_main_right",
+      "ref": null,
+      "key": "AEGS_Redeemer_Thruster_Nutcracker",
+      "loadout": [
+        {
+          "name": "hardpoint_thruster_mav_wing_bottom",
+          "ref": null,
+          "key": "AEGS_Redeemer_Thruster_VTOL"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_manned_front",
+      "ref": "6b804c16-ed74-4096-8571-860de6c00be6",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "Mount_Gimbal_S4",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "BEHR_BallisticGatling_S4"
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": null,
+          "key": "Mount_Gimbal_S4",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "BEHR_BallisticGatling_S4"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_manned_rear",
+      "ref": "3f3e91f6-cc1e-4616-9728-56459a122a6b",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "e4afc8b4-da61-4efb-af7e-f003d9900d96",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "e4afc8b4-da61-4efb-af7e-f003d9900d96",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_remote_front",
+      "ref": "776455b6-bf38-4418-a20c-5913f7539267",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": "f72ca643-b48c-4f6e-abb7-d5bc8eb261aa",
+          "key": null
+        },
+        {
+          "name": "turret_right",
+          "ref": "f72ca643-b48c-4f6e-abb7-d5bc8eb261aa",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_remote_front_controller",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_turret_remote_front_seat",
+      "ref": null,
+      "key": "AEGS_Redeemer_SCItem_Support_Seat_Front",
+      "loadout": [
+        {
+          "name": "monitor",
+          "ref": null,
+          "key": "Vehicle_Screen_MFD"
+        },
+        {
+          "name": "",
+          "ref": null,
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_remote_rear",
+      "ref": null,
+      "key": "AEGS_Redeemer_SCItem_Remote_Turret_Rear",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "f72ca643-b48c-4f6e-abb7-d5bc8eb261aa",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "f72ca643-b48c-4f6e-abb7-d5bc8eb261aa",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_remote_rear_controller",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_turret_remote_rear_seat",
+      "ref": null,
+      "key": "AEGS_Redeemer_SCItem_Support_Seat_Rear",
+      "loadout": [
+        {
+          "name": "monitor",
+          "ref": null,
+          "key": "Vehicle_Screen_MFD"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_gun_left",
+      "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "6635dc5f-dfcd-4b72-9d9d-8d3620820352",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_gun_right",
+      "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "6635dc5f-dfcd-4b72-9d9d-8d3620820352",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_armour",
+      "ref": null,
+      "key": "ARMR_AEGS_Redeemer"
+    },
+    {
+      "name": "hardpoint_avionics",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_gravity_generator",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_life_support",
+      "ref": null,
+      "key": "LFSP_TYDT_S21_ComfortAirPlus"
+    },
+    {
+      "name": "hardpoint_weaponlocker",
+      "ref": null,
+      "key": "Weapon_Rack_AEGS_Redeemer"
+    },
+    {
+      "name": "hardpoint_esc_pod_lower_left",
+      "ref": null,
+      "key": "AEGS_Redeemer_SCItem_Seat_Bed_Lower_Left",
+      "loadout": [
+        {
+          "name": "hardpoint_bedding",
+          "ref": null,
+          "key": "AEGS_Escpod_Bedding"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_esc_pod_lower_right",
+      "ref": null,
+      "key": "AEGS_Redeemer_SCItem_Seat_Bed_Lower_Right",
+      "loadout": [
+        {
+          "name": "hardpoint_bedding",
+          "ref": null,
+          "key": "AEGS_Escpod_Bedding"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_esc_pod_upper_left",
+      "ref": null,
+      "key": "AEGS_Redeemer_SCItem_Seat_Bed_Upper_Left",
+      "loadout": [
+        {
+          "name": "hardpoint_bedding",
+          "ref": null,
+          "key": "AEGS_Escpod_Bedding"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_esc_pod_upper_right",
+      "ref": null,
+      "key": "AEGS_Redeemer_SCItem_Seat_Bed_Upper_Right",
+      "loadout": [
+        {
+          "name": "hardpoint_bedding",
+          "ref": null,
+          "key": "AEGS_Escpod_Bedding"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": "Controller_Missile"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_cargogrid",
+      "ref": null,
+      "key": "AEGS_Redeemer_CargoGrid"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_AEGS_Redeemer"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_storage_1",
+      "ref": null,
+      "key": "PersonalStorage_Redeemer_01"
+    },
+    {
+      "name": "hardpoint_storage_2",
+      "ref": null,
+      "key": "PersonalStorage_Redeemer_02"
+    },
+    {
+      "name": "hardpoint_storage_3",
+      "ref": null,
+      "key": "PersonalStorage_Redeemer_03"
+    },
+    {
+      "name": "hardpoint_storage_4",
+      "ref": null,
+      "key": "PersonalStorage_Redeemer_04"
+    },
+    {
+      "name": "hardpoint_cockpit_flair",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay",
+      "ref": null,
+      "key": "RELAY_2slot_slim"
+    },
+    {
+      "name": "hardpoint_relay_2",
+      "ref": null,
+      "key": "RELAY_2slot_slim"
+    },
+    {
+      "name": "hardpoint_relay_3",
+      "ref": null,
+      "key": "RELAY_1slot_slim"
+    },
+    {
+      "name": "hardpoint_shield_generator_3",
+      "ref": null,
+      "key": "SHLD_GODI_S02_FullStop_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator_4",
+      "ref": null,
+      "key": "SHLD_GODI_S02_FullStop_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator_5",
+      "ref": null,
+      "key": "SHLD_GODI_S02_FullStop_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator_6",
+      "ref": null,
+      "key": "SHLD_GODI_S02_FullStop_SCItem"
+    },
+    {
+      "name": "",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "",
+      "ref": null,
+      "key": null
+    }
+  ]
+}

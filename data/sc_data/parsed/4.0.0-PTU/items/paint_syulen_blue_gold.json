@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Syulen_Blue_Gold",
+  "ref": "c6708253-bef5-480b-ad18-90a25c8f5f08",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a3d59000-2f3a-4344-aabc-b1c8d853058e",
+  "name": "Syulen Chui’ā Livery",
+  "short_name": null,
+  "description": "Make your Syulen stand out from the crowd with the Chui’ā livery that’s blue marbled with gold accents and evokes passing waves.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

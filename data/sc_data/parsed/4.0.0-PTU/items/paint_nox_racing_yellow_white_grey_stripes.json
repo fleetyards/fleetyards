@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Nox_Racing_Yellow_White_Grey_Stripes",
+  "ref": "d0858a9b-df0e-45be-93f1-a19eb4803fbb",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4dfb7195-2036-43fe-90d4-97ffb04c29dc",
+  "name": "Nox Finish Line Livery",
+  "short_name": null,
+  "description": "Give the Nox a classic racing design with the Finish Line livery. It features a yellow stripe across the front, a white one through the middle, and a grey one on the back.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

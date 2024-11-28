@@ -1,0 +1,397 @@
+{
+  "key": "ORIG_315p",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "Origin 315p",
+  "description": "Manufacturer: Origin Jumpworks\\nFocus: Pathfinder\\n\\nExploration is man's highest calling. Prepare to chart distant horizons with man's most sophisticated piece of technology, the Origin 315p. Featuring a more robust power plant and a custom scanning package, exclusively designed by Chimera Communications.",
+  "career": "Exploration",
+  "role": "Pathfinder",
+  "insurance": {
+    "base_wait_time_minutes": "5.18",
+    "mandatory_wait_time_minutes": "1.73",
+    "base_expediting_fee": "2579"
+  },
+  "mass": 80592.0,
+  "metrics": {
+    "x": 17.0,
+    "y": 27.0,
+    "z": 8.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": "Paint_315p_Base"
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": "df1e3725-0bfa-40f5-887f-cc1689908796",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_paint_seat",
+          "ref": null,
+          "key": "Paint_300_Seat_Black"
+        },
+        {
+          "name": "hardpoint_paint_trim",
+          "ref": null,
+          "key": "Paint_300_SeatTrim_Aluminum"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_selfdestruct",
+      "ref": "27875030-1290-4098-827f-f1a5b67c0615",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_power_plant",
+      "ref": null,
+      "key": "POWR_TYDT_S01_Slipstream_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_cooler_left",
+      "ref": null,
+      "key": "COOL_TYDT_S01_HeatSafe_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_right",
+      "ref": null,
+      "key": "COOL_TYDT_S01_HeatSafe_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_ORIG_300"
+    },
+    {
+      "name": "hardpoint_shield_generator_left",
+      "ref": null,
+      "key": "SHLD_ASAS_S01_Shimmer_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator_right",
+      "ref": null,
+      "key": "SHLD_ASAS_S01_Shimmer_SCItem"
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": null,
+      "key": "ARMR_ORIG_315p"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_ORIG_315p"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_WLOP_S01_Capstan"
+    },
+    {
+      "name": "hardpoint_scanner",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_ping",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuel_intake_left",
+      "ref": null,
+      "key": "INTK_ORIG_315p"
+    },
+    {
+      "name": "hardpoint_fuel_intake_right",
+      "ref": null,
+      "key": "INTK_ORIG_315p"
+    },
+    {
+      "name": "hardpoint_fuel_tank_left",
+      "ref": null,
+      "key": "HTNK_ORIG_315p"
+    },
+    {
+      "name": "hardpoint_fuel_tank_right",
+      "ref": null,
+      "key": "HTNK_ORIG_315p"
+    },
+    {
+      "name": "hardpoint_300i_Intake",
+      "ref": null,
+      "key": "ORIG_315p_Intake"
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_JUST_S01_Goliath_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": null,
+          "key": "JDRV_TARS_S01_Explorer_SCItem"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_fuel_tank",
+      "ref": null,
+      "key": "QTNK_ORIG_315p"
+    },
+    {
+      "name": "hardpoint_main_thruster",
+      "ref": null,
+      "key": "ORIG_300i_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_retro_left",
+      "ref": null,
+      "key": "ORIG_300i_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_retro_right",
+      "ref": null,
+      "key": "ORIG_300i_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_mav_thruster_tail_bottom_right",
+      "ref": null,
+      "key": "ORIG_300i_Thruster_Mav_Fixed_01_Bottom"
+    },
+    {
+      "name": "hardpoint_mav_thruster_tail_middle_right",
+      "ref": null,
+      "key": "ORIG_300i_Thruster_Mav_Fixed_01"
+    },
+    {
+      "name": "hardpoint_mav_thruster_tail_top_right",
+      "ref": null,
+      "key": "ORIG_300i_Thruster_Mav_Fixed_01_Top"
+    },
+    {
+      "name": "hardpoint_mav_thruster_tail_bottom_left",
+      "ref": null,
+      "key": "ORIG_300i_Thruster_Mav_Fixed_01_Bottom"
+    },
+    {
+      "name": "hardpoint_mav_thruster_tail_middle_left",
+      "ref": null,
+      "key": "ORIG_300i_Thruster_Mav_Fixed_01"
+    },
+    {
+      "name": "hardpoint_mav_thruster_tail_top_left",
+      "ref": null,
+      "key": "ORIG_300i_Thruster_Mav_Fixed_01_Top"
+    },
+    {
+      "name": "hardpoint_mav_thruster_nose_bottom_right",
+      "ref": null,
+      "key": "ORIG_300i_Thruster_Mav_Fixed_01_Bottom"
+    },
+    {
+      "name": "hardpoint_mav_thruster_nose_top_right",
+      "ref": null,
+      "key": "ORIG_300i_Thruster_Mav_Fixed_01_Top"
+    },
+    {
+      "name": "hardpoint_mav_thruster_nose_middle_right",
+      "ref": null,
+      "key": "ORIG_300i_Thruster_Mav_Fixed_02"
+    },
+    {
+      "name": "hardpoint_mav_thruster_nose_bottom_left",
+      "ref": null,
+      "key": "ORIG_300i_Thruster_Mav_Fixed_01_Bottom"
+    },
+    {
+      "name": "hardpoint_mav_thruster_nose_top_left",
+      "ref": null,
+      "key": "ORIG_300i_Thruster_Mav_Fixed_01_Top"
+    },
+    {
+      "name": "hardpoint_mav_thruster_nose_middle_left",
+      "ref": null,
+      "key": "ORIG_300i_Thruster_Mav_Fixed_02"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_weapon_wing_right",
+      "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_wing_left",
+      "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_missilerack_left",
+      "ref": null,
+      "key": "MRCK_S02_BEHR_Single_S02",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_FSKI_Tempest"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_missilerack_right",
+      "ref": null,
+      "key": "MRCK_S02_BEHR_Single_S02",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S02_CS_FSKI_Tempest"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_countermeasure_left",
+      "ref": null,
+      "key": "ORIG_CML_Decoy_Small"
+    },
+    {
+      "name": "hardpoint_countermeasure_right",
+      "ref": null,
+      "key": "ORIG_CML_Noise_Small"
+    },
+    {
+      "name": "hardpoint_cargo_door_front",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenReverse_300i_Cargodoor",
+      "loadout": [
+        {
+          "name": "hardpoint_cargo_grid_front",
+          "ref": null,
+          "key": "ORIG_300i_CargoGrid_Front"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_cargo_door_rear",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenReverse_300i_Cargodoor_Rear",
+      "loadout": [
+        {
+          "name": "hardpoint_cargo_grid_rear",
+          "ref": null,
+          "key": "ORIG_300i_CargoGrid_Rear"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_bed",
+      "ref": null,
+      "key": "ORIG_300i_Seat_Bed",
+      "loadout": [
+        {
+          "name": "hardpoint_bedding",
+          "ref": null,
+          "key": "orig_bedding_duvet_4_d"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": "Controller_Missile"
+    },
+    {
+      "name": "hardpoint_weapon_rack",
+      "ref": null,
+      "key": "Weapon_Rack_ORIG_300i_2_Slots"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_ORIG_300i"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "ORIG_300i_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_cockpit_flair",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_tractor",
+      "ref": "8c16ee3d-78fb-4fef-a369-b3d42952ec33",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_salvage",
+      "ref": null,
+      "key": "Controller_Salvage_TractorBeamOnly"
+    },
+    {
+      "name": "hardpoint_relay",
+      "ref": null,
+      "key": "RELAY_2slot_slim"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_TYDT_S01_ComfortAir"
+    }
+  ]
+}

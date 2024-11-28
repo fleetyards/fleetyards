@@ -1,0 +1,9 @@
+{
+  "key": "AEGS_Reclaimer_PersonalStorage",
+  "ref": "f2434268-bad3-49e6-958f-e15964855026",
+  "category": "inventory",
+  "type": "personal_storage",
+  "type_data": {
+    "storage": 0.0
+  }
+}

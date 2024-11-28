@@ -1,0 +1,124 @@
+{
+  "key": "TMBL_Cyclone_Module_MT",
+  "ref": "6655af14-7171-46e2-85d8-6028f291c18e",
+  "category": "module",
+  "type": "TurretBase",
+  "sub_type": "MannedTurret",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "bb1024bc-b82e-491c-820c-36662c36feb3",
+  "name": "Turret",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "turret_weapon",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponGun"
+      ]
+    },
+    {
+      "name": "hardpoint_door_ramp",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Door"
+      ]
+    },
+    {
+      "name": "hardpoint_radar_turret",
+      "min_size": "1",
+      "max_size": "2",
+      "types": [
+        "Radar"
+      ]
+    },
+    {
+      "name": "hardpoint_missilerack_left",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "MissileLauncher",
+        "WeaponGun"
+      ]
+    },
+    {
+      "name": "hardpoint_missilerack_right",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "MissileLauncher",
+        "WeaponGun"
+      ]
+    },
+    {
+      "name": "hardpoint_countermeasure_01",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponDefensive"
+      ]
+    },
+    {
+      "name": "hardpoint_countermeasure_02",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponDefensive"
+      ]
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+        "MissileController"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_door_ramp",
+      "key": "TMBL_Cyclone_Ramp_TR",
+      "ref": null
+    },
+    {
+      "name": "hardpoint_radar_turret",
+      "key": "RADR_Default",
+      "ref": null
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "key": "Controller_Missile",
+      "ref": null
+    }
+  ],
+  "durability": {
+    "health": 1000.0
+  },
+  "power_connection": {
+    "power_base": 0.0,
+    "power_draw": 1.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 0.0,
+    "displayed_in_powered_item_list": 0.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.0,
+    "overclock_threshold_max": 0.0,
+    "overpower_performance": 0.0,
+    "overclock_performance": 0.0,
+    "power_to_em": 0.0,
+    "decay_rate_of_em": 0.15
+  }
+}

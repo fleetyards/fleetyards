@@ -1,0 +1,24 @@
+{
+  "key": "Cargo_Mining_Pod",
+  "ref": "ca23670c-f690-4027-af9a-a5d6dda74c79",
+  "category": "utility",
+  "type": "Container",
+  "sub_type": "Cargo",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": "MISC Ore Pod",
+  "short_name": null,
+  "description": "Capacity: 8 SCU\\n\\nMade to work with any compatible mining ship, the MISC Ore Pod boasts several unique features, including anti-abrasion paint inside the pod that ensures it can withstand hefty payloads for years to come.",
+  "inventory_consumption": {
+    "micro_scu": 50036534.0,
+    "dimensions": {
+      "x": 0.75,
+      "y": 0.75,
+      "z": 0.75
+    }
+  },
+  "durability": {
+    "health": 5000.0
+  }
+}

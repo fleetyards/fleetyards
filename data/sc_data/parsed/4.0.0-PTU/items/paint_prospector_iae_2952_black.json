@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Prospector_IAE_2952_Black",
+  "ref": "d20a54f0-aa98-4e1f-876d-502368484eb7",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "090c8a87-7fd3-425b-a9bf-7e426243ac5a",
+  "name": "Prospector Nebula Livery",
+  "short_name": null,
+  "description": "Balancing black and white, the Nebula livery for the Prospector lets you blast rocks in style.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

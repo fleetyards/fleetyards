@@ -1,0 +1,21 @@
+{
+  "key": "ASAD_DistortionRepeater_PowerArray_S3",
+  "ref": "05223102-5a98-4a4a-b5f4-aad50ada7f9d",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "PowerArray",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

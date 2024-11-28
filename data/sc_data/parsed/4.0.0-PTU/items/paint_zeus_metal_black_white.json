@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Zeus_Metal_Black_White",
+  "ref": "cb3c6f8d-a856-4c65-86c0-7fa9271a5cfa",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f541caa7-0ef7-4ce5-b5f3-66760ce75004",
+  "name": "Zeus Mk II Obsidian Livery",
+  "short_name": null,
+  "description": "The Obsidian livery uses black, white, and a metallic finish to give the Zeus Mk II a distinctly bold look.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

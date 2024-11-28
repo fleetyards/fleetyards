@@ -1,0 +1,41 @@
+{
+  "key": "Door_RN_NoRoomConnector_RSI_Polaris_CargoRamp_Right",
+  "ref": "67f790cf-2f87-4694-ae64-da5d6f092e58",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_cargo_addon",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_cargo_addon",
+      "key": "RSI_Polaris_Cargo_Addon_Right",
+      "ref": null
+    }
+  ],
+  "durability": {
+    "health": 20000.0
+  }
+}

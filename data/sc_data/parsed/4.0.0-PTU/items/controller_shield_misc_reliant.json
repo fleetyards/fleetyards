@@ -1,0 +1,21 @@
+{
+  "key": "Controller_Shield_MISC_Reliant",
+  "ref": "6046efc9-f61a-4c70-94b7-bb4b50c88b74",
+  "category": "controller",
+  "type": "ShieldController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SHIELDS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

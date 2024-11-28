@@ -1,0 +1,54 @@
+{
+  "key": "AEGS_Retaliator_Module_Front_Base",
+  "ref": "1d9f2186-2465-4b62-a5cb-f1bc8e3dd390",
+  "category": "module",
+  "type": "Module",
+  "sub_type": null,
+  "size": "3",
+  "grade": "3",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Retaliator Unladen Front Module",
+  "short_name": null,
+  "description": "This empty front module comes equipped by default on the Retaliator's base chassis.",
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_module_oc",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_front_bay_door",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+        "Misc"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_module_oc",
+      "key": "AEGS_Retaliator_OC_Front_Base",
+      "ref": null
+    },
+    {
+      "name": "hardpoint_front_bay_door",
+      "key": "AEGS_Retaliator_Door_Cap_Front",
+      "ref": null
+    }
+  ],
+  "durability": {
+    "health": 200.0
+  }
+}

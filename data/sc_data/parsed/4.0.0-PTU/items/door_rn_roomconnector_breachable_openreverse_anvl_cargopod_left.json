@@ -1,0 +1,24 @@
+{
+  "key": "Door_RN_RoomConnector_Breachable_OpenReverse_ANVL_Cargopod_Left",
+  "ref": "201aff6c-168b-40a4-890e-0f4c1f75d2f5",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 2200.0
+  }
+}

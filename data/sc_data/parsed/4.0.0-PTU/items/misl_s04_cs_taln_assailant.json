@@ -1,0 +1,24 @@
+{
+  "key": "MISL_S04_CS_TALN_Assailant",
+  "ref": "ce8ef95e-edd9-45d7-8c21-5e644a8ba75e",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "Missile",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "587fcede-4fe9-4fb4-85ec-124abc8542b0",
+  "name": "Assailant IV Missile",
+  "short_name": "Asslnt IV",
+  "description": "Manufacturer: Talon\\nTracking Signal: Cross Section\\nSize: 4\\n\\nThe Assailant missile from Talon is a perfect weapon solution for precision strikes against motivated opponents.",
+  "inventory_consumption": {
+    "micro_scu": 62500.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 4.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 22.0
+  }
+}

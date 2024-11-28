@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Cutter_Black_Silver_Stripe",
+  "ref": "478afd37-2f19-42ee-b90e-df04aa57723f",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "37d2dc37-1592-431e-86b9-1355f36f7bdf",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

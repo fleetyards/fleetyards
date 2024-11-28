@@ -1,0 +1,21 @@
+{
+  "key": "OperatorSeat_Console_Sitting_Angled_BridgeSeat_Template",
+  "ref": "a2bd80e0-c3e9-4f15-8343-5f9d54a97745",
+  "category": "seat",
+  "type": "Seat",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "key": "Door_RN_RoomConnector_Breachable_OpenReverse_Intrepid_Entrance_Interior",
+  "ref": "d2c9e0dd-9826-4935-9258-4f6233d7dcbd",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_int_door",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_int_door",
+      "key": null,
+      "ref": null
+    }
+  ],
+  "durability": {
+    "health": 1000.0
+  }
+}

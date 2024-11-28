@@ -1,0 +1,9 @@
+{
+  "key": "ESPR_Talon_Shrike_Template",
+  "ref": "b14b3d31-7c82-42be-990e-cdb8935c8689",
+  "category": "inventory",
+  "type": "personal_storage",
+  "type_data": {
+    "storage": 0.65
+  }
+}

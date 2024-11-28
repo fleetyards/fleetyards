@@ -1,0 +1,138 @@
+{
+  "key": "MISC_Starfarer_Gemini_Derelict_Nose",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "2",
+  "name": "Wreckage",
+  "description": "",
+  "career": "",
+  "role": "",
+  "insurance": {
+    "base_wait_time_minutes": "35.34",
+    "mandatory_wait_time_minutes": "11.78",
+    "base_expediting_fee": "15995"
+  },
+  "mass": 200000.0,
+  "metrics": {
+    "x": 48.5,
+    "y": 102.0,
+    "z": 24.5
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_thruster_side_FL",
+      "ref": null,
+      "key": "MISC_Starfarer_Gemini_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_side_FR",
+      "ref": null,
+      "key": "MISC_Starfarer_Gemini_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_sidecannon_left",
+      "ref": "f10376d0-7068-4124-adf5-aabea4b69c43",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_01",
+          "ref": "52c1793e-5610-4daa-aafe-a8cf55e60283",
+          "key": null
+        },
+        {
+          "name": "hardpoint_weapon_02",
+          "ref": "52c1793e-5610-4daa-aafe-a8cf55e60283",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_sidecannon_right",
+      "ref": "f10376d0-7068-4124-adf5-aabea4b69c43",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_01",
+          "ref": "52c1793e-5610-4daa-aafe-a8cf55e60283",
+          "key": null
+        },
+        {
+          "name": "hardpoint_weapon_02",
+          "ref": "52c1793e-5610-4daa-aafe-a8cf55e60283",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_docking_collar",
+      "ref": null,
+      "key": "Door_Ship_Exterior_MISC_Starfarer_Airlock"
+    },
+    {
+      "name": "hardpoint_shield_generator_B",
+      "ref": null,
+      "key": "SHLD_BASL_S03_Stronghold_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator_C",
+      "ref": null,
+      "key": "SHLD_BASL_S03_Stronghold_SCItem"
+    },
+    {
+      "name": "hardpoint_relay_cargo_bay",
+      "ref": null,
+      "key": "RELAY_1slot"
+    },
+    {
+      "name": "hardpoint_relay_refueling_catwalk",
+      "ref": null,
+      "key": "RELAY_1slot"
+    },
+    {
+      "name": "hardpoint_relay_refuelling_arm_walkway_left",
+      "ref": null,
+      "key": "RELAY_1slot"
+    },
+    {
+      "name": "hardpoint_relay_refuelling_arm_walkway_right",
+      "ref": null,
+      "key": "RELAY_1slot"
+    },
+    {
+      "name": "hardpoint_relay_foyer",
+      "ref": null,
+      "key": "RELAY_1slot"
+    },
+    {
+      "name": "hardpoint_relay_bridge",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_relay_maintenance_left",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_relay_maintenance_right",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_relay_messhall",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_relay_engine_room",
+      "ref": null,
+      "key": "RELAY_3slot"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_TYDT_S03_ComfortAirMax"
+    }
+  ]
+}

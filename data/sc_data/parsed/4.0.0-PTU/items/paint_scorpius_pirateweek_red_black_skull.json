@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Scorpius_PirateWeek_Red_Black_Skull",
+  "ref": "4f74e487-6edf-401c-8e49-0735a874cec8",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cc90a5f1-42f2-4b83-8501-1919fb3e21c1",
+  "name": "Scorpius Skullcrusher Livery",
+  "short_name": null,
+  "description": "Exude attitude with the Skullcrusher livery for the Scorpius, which features a massive skull decal across the top.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

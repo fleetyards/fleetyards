@@ -1,0 +1,21 @@
+{
+  "key": "DRAK_Corsair_CargoGrid_Template",
+  "ref": "e2f16cb8-4aea-4383-a0a9-c4c0e037bae9",
+  "category": "inventory",
+  "type": "cargo_grid",
+  "type_data": {
+    "dimensions": {
+      "x": 35.0,
+      "y": 35.0,
+      "z": 35.0,
+      "scu": 21952.0
+    },
+    "min_container": {
+      "x": 1.25,
+      "y": 1.25,
+      "z": 1.25,
+      "scu": 1.0
+    },
+    "max_container": null
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Arrow_Invictus_Green_Grey",
+  "ref": "f0daa12b-9873-4cf6-a341-9b95fa93d776",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "81841c4a-2abd-42d2-aefc-982b540576ac",
+  "name": "Arrow Light Green and Grey Livery",
+  "short_name": null,
+  "description": "Customize your Arrow with this multi-tone green livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

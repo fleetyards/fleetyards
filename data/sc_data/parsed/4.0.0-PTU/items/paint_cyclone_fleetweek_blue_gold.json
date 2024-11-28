@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Cyclone_Fleetweek_Blue_Gold",
+  "ref": "925dc1e1-7b94-4799-b0c0-a050a30d1376",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "abe53599-feb8-4502-9c62-14d51ca80c7c",
+  "name": "Cyclone Invictus Blue and Gold Livery",
+  "short_name": null,
+  "description": "Featuring a vibrant blue base color and gold highlights, the Invictus Blue and Gold livery will give your Cyclone a striking style.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

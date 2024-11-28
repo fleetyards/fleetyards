@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hornet_F7CS_Mk2_Green_Gold",
+  "ref": "ffa18173-abfb-43e2-ab40-b066bc2454d9",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a645e196-f7f7-490c-93b1-31354161d87e",
+  "name": "Hornet Mk II Regalia Livery",
+  "short_name": null,
+  "description": "Not every pilot was meant to fly a Hornet Mk II. Mark your distinction with the Regalia livery's emerald green hull paired with eye-catching gold accents.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

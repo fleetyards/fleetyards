@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Starfighter_Ion_Radiance_White_Grey_Red",
+  "ref": "a93f7507-7173-4ec8-8f01-7c8ad7695f7a",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "c47274f8-436b-400c-8779-467ddc5b582b",
+  "name": "Ares Star Fighter Ion Radiance Livery",
+  "short_name": null,
+  "description": "White and grey with red trim, the Radiance livery makes the Ares Star Fighter Ion a sight to behold even when it's not blasting its massive laser cannon.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "key": "POWR_TYDT_S01_DeltaMax_SCItem",
+  "ref": "0a713a9d-7e70-4586-87a6-ce08c337a8ea",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "1",
+  "grade": "2",
+  "manufacturer_ref": "a2a97679-2a6e-4e89-80d8-439c88a01427",
+  "name": "DeltaMax",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Tyler Design & Tech\\nSize: 1\\nGrade: B\\nClass: Stealth\\n\\nExpert engineering made significant breakthroughs possible when designing the DeltaMax, resulting in a stealth signature even lower than originally estimated by the team at Tyler Design and Tech.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 570.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 1.75,
+    "StartIRTemperature": 14.0,
+    "OverpowerHeat": 0.08,
+    "OverclockThresholdMinHeat": 0.38,
+    "OverclockThresholdMaxHeat": 0.52,
+    "ThermalEnergyBase": 14850.0,
+    "ThermalEnergyDraw": 14900.5,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.5,
+    "Mass": 496.0,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 76.79487,
+    "MaxTemperature": 700.0,
+    "OverheatTemperature": 600.0,
+    "RecoveryTemperature": 670.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 300.0,
+    "MisfireMaxTemperature": 900.0
+  },
+  "power_connection": {
+    "power_base": 0.0,
+    "power_draw": 1577.63,
+    "time_to_reach_draw_request": 2.5,
+    "safeguard_priority": 100.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 1.0,
+    "is_overclockable": 1.0,
+    "overclock_threshold_min": 0.34,
+    "overclock_threshold_max": 0.43,
+    "overpower_performance": 0.374,
+    "overclock_performance": 0.05,
+    "power_to_em": 0.634,
+    "decay_rate_of_em": 0.22
+  }
+}

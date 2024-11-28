@@ -1,0 +1,629 @@
+{
+  "key": "TMBL_Storm_AA",
+  "ground": true,
+  "movement_class": "ArcadeWheeled",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "Tumbril Storm AA",
+  "description": "Manufacturer: Tumbril Land Systems\\nFocus: Combat\\n\\nOriginally introduced in 2606 during the Second Tevarin War, the Tumbril Storm single-operator mini-tank was built to blitz battlefields and take out enemy artillery. Reimagined from the ground up to be faster, stronger, and more impactful than ever, the Storm AA is a true force of nature, equipped with a barrage of missiles to provide cover against airborne and ground targets.",
+  "career": "Ground Combat",
+  "role": "Light Tank",
+  "insurance": {
+    "base_wait_time_minutes": "1",
+    "mandatory_wait_time_minutes": "0.25",
+    "base_expediting_fee": "430"
+  },
+  "mass": 54230.0,
+  "metrics": {
+    "x": 10.25,
+    "y": 7.65,
+    "z": 4.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": null,
+      "key": "ARMR_TMBL_Storm_AA"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_wheel",
+      "ref": null,
+      "key": "Controller_Wheel_TMBL_Storm"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_TMBL_Storm"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon_Vehicle"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": "Controller_Missile_TMBL_Storm_AA"
+    },
+    {
+      "name": "hardpoint_selfdestruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_20s"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_GRNP_S00_Prevenir"
+    },
+    {
+      "name": "hardpoint_cockpit_flair",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "TMBL_Storm_AA_SCItem_Seat_Pilot"
+    },
+    {
+      "name": "hardpoint_windshield",
+      "ref": "44767fcc-8afb-4eb2-9e8d-9e8226b9478e",
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuel_tank_01",
+      "ref": null,
+      "key": "HTNK_TMBL_Storm"
+    },
+    {
+      "name": "hardpoint_fuel_tank_02",
+      "ref": null,
+      "key": "HTNK_TMBL_Storm"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "TMBL_Storm_Ground_Refueling_Port"
+    },
+    {
+      "name": "hardpoint_powerplant",
+      "ref": null,
+      "key": "POWR_LPLT_S00_Radix_SCItem"
+    },
+    {
+      "name": "hardpoint_computer",
+      "ref": null,
+      "key": "COMP_WLOP_S00_Adze"
+    },
+    {
+      "name": "hardpoint_cooler",
+      "ref": null,
+      "key": "COOL_JSPN_S00_FrostStarSL_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator",
+      "ref": null,
+      "key": "SHLD_SECO_S00_PIN_SCItem"
+    },
+    {
+      "name": "hardpoint_primary_turret",
+      "ref": "7ef065cf-e830-48c1-836d-089ed6cb4574",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_missile_rack_s1_left",
+          "ref": "d83798e4-f4d5-4191-843f-f85b1b5e1d80",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_s1_missile_001",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_002",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_003",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_004",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_005",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_006",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_007",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_008",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_009",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_010",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_011",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_012",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_013",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_014",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_015",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_016",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_017",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_018",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_019",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_020",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_021",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_022",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_023",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_024",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_025",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_026",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_027",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_028",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_029",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_030",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_031",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_032",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_missile_rack_s1_right",
+          "ref": "d83798e4-f4d5-4191-843f-f85b1b5e1d80",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_s1_missile_001",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_002",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_003",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_004",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_005",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_006",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_007",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_008",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_009",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_010",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_011",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_012",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_013",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_014",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_015",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_016",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_017",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_018",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_019",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_020",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_021",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_022",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_023",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_024",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_025",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_026",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_027",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_028",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_029",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_030",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_031",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            },
+            {
+              "name": "hardpoint_s1_missile_032",
+              "ref": null,
+              "key": "MISL_S01_IR_BEHR_Marksman"
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_missile_rack_s2_left",
+          "ref": "12ddeb1a-8c7e-4cf6-abae-c8e1dba62b26",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_s2_missile_001",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "hardpoint_s2_missile_002",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "hardpoint_s2_missile_003",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "hardpoint_s2_missile_004",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "hardpoint_s2_missile_005",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "hardpoint_s2_missile_006",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "hardpoint_s2_missile_007",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "hardpoint_s2_missile_008",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_missile_rack_s2_right",
+          "ref": "12ddeb1a-8c7e-4cf6-abae-c8e1dba62b26",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_s2_missile_001",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "hardpoint_s2_missile_002",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "hardpoint_s2_missile_003",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "hardpoint_s2_missile_004",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "hardpoint_s2_missile_005",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "hardpoint_s2_missile_006",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "hardpoint_s2_missile_007",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "hardpoint_s2_missile_008",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_cm_launcher_right_rear",
+      "ref": null,
+      "key": "TMBL_Storm_CML_Noise_Small"
+    },
+    {
+      "name": "hardpoint_cm_launcher_right_front",
+      "ref": null,
+      "key": "TMBL_Storm_CML_Decoy_Small"
+    },
+    {
+      "name": "hardpoint_cm_launcher_left_rear",
+      "ref": null,
+      "key": "TMBL_Storm_CML_Noise_Small"
+    },
+    {
+      "name": "hardpoint_cm_launcher_left_front",
+      "ref": null,
+      "key": "TMBL_Storm_CML_Decoy_Small"
+    },
+    {
+      "name": "hardpoint_large_weapon_rack",
+      "ref": null,
+      "key": "Weapon_Rack_TMBL_Storm_LargeWeapon"
+    },
+    {
+      "name": "hardpoint_personal_storage",
+      "ref": null,
+      "key": "PersonalStorage_TMBL_Storm"
+    },
+    {
+      "name": "hardpoint_weapon_rack_geo",
+      "ref": null,
+      "key": "Weapon_Rack_TMBL_Storm_1Slot"
+    },
+    {
+      "name": "hardpoint_canopy",
+      "ref": null,
+      "key": "TMBL_Storm_Canopy"
+    },
+    {
+      "name": "hardpoint_relay_cockpit",
+      "ref": null,
+      "key": "RELAY_3slot"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": "b9c57c11-2e49-4098-9475-671b7788e318",
+      "key": null
+    }
+  ]
+}

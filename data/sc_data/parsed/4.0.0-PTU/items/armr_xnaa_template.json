@@ -1,0 +1,24 @@
+{
+  "key": "ARMR_XNAA_Template",
+  "ref": "cd2042a7-3d6e-49da-9841-e23b879936d4",
+  "category": "armor",
+  "type": "Armor",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "70ac7035-10a0-4bbb-90b0-9bddf047b504",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  }
+}

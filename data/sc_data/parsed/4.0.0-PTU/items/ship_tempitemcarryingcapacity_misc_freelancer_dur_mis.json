@@ -1,0 +1,9 @@
+{
+  "key": "Ship_TempItemCarryingCapacity_MISC_Freelancer_DUR_MIS",
+  "ref": "30c4c9d9-75e4-41bd-bc66-de2526ecd3df",
+  "category": "inventory",
+  "type": "personal_storage",
+  "type_data": {
+    "storage": 28.0
+  }
+}

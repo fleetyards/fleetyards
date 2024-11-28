@@ -1,0 +1,360 @@
+{
+  "key": "VNCL_Scythe_PU_AI_CIV",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "Vanduul Scythe",
+  "description": "Manufacturer: Esperia\\nFocus: Medium Fighter\\n\\nFast becoming the symbol of the Vanduul Race, the Scythe is the foot soldier in every raid and the target of every human fighter pilot. Featuring a hefty weapons payload, the Scythe's real asset is its maneuverability, found in the twin main and twelve maneuvering thrusters. This captured Vanduul-made Scythe has been modified by Esperia to be flyable by Human pilots.",
+  "career": "Combat",
+  "role": "Medium Fighter",
+  "insurance": {
+    "base_wait_time_minutes": "5.90625",
+    "mandatory_wait_time_minutes": "1.96875",
+    "base_expediting_fee": "2955"
+  },
+  "mass": 72091.0,
+  "metrics": {
+    "x": 24.0,
+    "y": 33.0,
+    "z": 9.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "VNCL_Scythe_SCItem_Seat_Pilot"
+    },
+    {
+      "name": "hardpoint_cockpit_radar",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cockpit_selfdestruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_10s"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_powerplant_left",
+      "ref": null,
+      "key": "POWR_AEGS_S01_FierellCascade_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_cooler_left",
+      "ref": null,
+      "key": "COOL_AEGS_S01_Bracer_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_right",
+      "ref": null,
+      "key": "COOL_AEGS_S01_Bracer_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_VNCL_Scythe"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_GRNP_S01_Ecouter"
+    },
+    {
+      "name": "hardpoint_scanner",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_ping",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuel_tank_left",
+      "ref": null,
+      "key": "HTNK_VNCL_Scythe"
+    },
+    {
+      "name": "hardpoint_fuel_tank_right",
+      "ref": null,
+      "key": "HTNK_VNCL_Scythe"
+    },
+    {
+      "name": "hardpoint_fuel_intake_left",
+      "ref": null,
+      "key": "INTK_VNCL_Scythe"
+    },
+    {
+      "name": "hardpoint_fuel_intake_right",
+      "ref": null,
+      "key": "INTK_VNCL_Scythe"
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_WETK_S01_Beacon_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": null,
+          "key": "JDRV_TARS_S01_Explorer_SCItem"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_fuel_tank",
+      "ref": null,
+      "key": "QTNK_VNCL_Scythe"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_VNCL_Scythe"
+    },
+    {
+      "name": "hardpoint_shield_generator",
+      "ref": null,
+      "key": "SHLD_GODI_S01_AllStop_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator_02",
+      "ref": null,
+      "key": "SHLD_GODI_S01_AllStop_SCItem"
+    },
+    {
+      "name": "hardpoint_armour",
+      "ref": null,
+      "key": "ARMR_VNCL_Scythe"
+    },
+    {
+      "name": "hardpoint_engine_left",
+      "ref": null,
+      "key": "VNCL_Scythe_Thruster_Main_Fixed"
+    },
+    {
+      "name": "hardpoint_engine_right",
+      "ref": null,
+      "key": "VNCL_Scythe_Thruster_Main_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_top_back_left_joint",
+      "ref": null,
+      "key": "VNCL_Scythe_Thruster_top_back"
+    },
+    {
+      "name": "hardpoint_thruster_top_back_right_joint",
+      "ref": null,
+      "key": "VNCL_Scythe_Thruster_top_back"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_back_left_joint",
+      "ref": null,
+      "key": "VNCL_Scythe_Thruster_Aux_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_back_right_joint",
+      "ref": null,
+      "key": "VNCL_Scythe_Thruster_Aux_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_front_left_joint",
+      "ref": null,
+      "key": "VNCL_Scythe_Thruster_Aux_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_front_right_joint",
+      "ref": null,
+      "key": "VNCL_Scythe_Thruster_Aux_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_top_front_left_fixed",
+      "ref": null,
+      "key": "VNCL_Scythe_Thruster_top_front"
+    },
+    {
+      "name": "hardpoint_thruster_top_front_right_fixed",
+      "ref": null,
+      "key": "VNCL_Scythe_Thruster_top_front"
+    },
+    {
+      "name": "hardpoint_thruster_side_front_left_fixed",
+      "ref": null,
+      "key": "VNCL_Scythe_Thruster_side_left"
+    },
+    {
+      "name": "hardpoint_thruster_side_front_right_fixed",
+      "ref": null,
+      "key": "VNCL_Scythe_Thruster_side_right"
+    },
+    {
+      "name": "hardpoint_thruster_side_back_left_fixed",
+      "ref": null,
+      "key": "VNCL_Scythe_Thruster_side_left"
+    },
+    {
+      "name": "hardpoint_thruster_side_back_right_fixed",
+      "ref": null,
+      "key": "VNCL_Scythe_Thruster_side_right"
+    },
+    {
+      "name": "hardpoint_thruster_retro_left",
+      "ref": null,
+      "key": "VNCL_Scythe_Thruster_Retro_Fixed_Left"
+    },
+    {
+      "name": "hardpoint_thruster_retro_right",
+      "ref": null,
+      "key": "VNCL_Scythe_Thruster_Retro_Fixed_Right"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_gun_nose_left",
+      "ref": "00ab31a0-7de2-44f7-a567-7ff88fdbad49",
+      "key": null
+    },
+    {
+      "name": "hardpoint_gun_nose_right",
+      "ref": "00ab31a0-7de2-44f7-a567-7ff88fdbad49",
+      "key": null
+    },
+    {
+      "name": "hardpoint_gun_wing_left",
+      "ref": "816aa854-7615-4add-a2ca-2d39ada7fea7",
+      "key": null
+    },
+    {
+      "name": "hardpoint_gun_wing_right",
+      "ref": "fde9335b-a9b7-4d7d-a4a4-69b1158de320",
+      "key": null
+    },
+    {
+      "name": "hardpoint_missile_rack_left",
+      "ref": null,
+      "key": "MRCK_S03_VNCL_Quad_S01",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S01_IR_VNCL_Arrow"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S01_IR_VNCL_Arrow"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S01_IR_VNCL_Arrow"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S01_IR_VNCL_Arrow"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_rack_right",
+      "ref": null,
+      "key": "MRCK_S03_VNCL_Quad_S01",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S01_IR_VNCL_Arrow"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S01_IR_VNCL_Arrow"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S01_IR_VNCL_Arrow"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S01_IR_VNCL_Arrow"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_blade_wing_right",
+      "ref": null,
+      "key": "VNCL_MissileRack_Blade"
+    },
+    {
+      "name": "hardpoint_countermeasures_right",
+      "ref": null,
+      "key": "VNCL_CML_Flare"
+    },
+    {
+      "name": "hardpoint_countermeasures_left",
+      "ref": null,
+      "key": "VNCL_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": "Controller_Missile"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_VNCL_Scythe"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "VNCL_Scythe_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_relay_cockpit",
+      "ref": null,
+      "key": "RELAY_3slot"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_TYDT_S01_ComfortAir"
+    }
+  ]
+}

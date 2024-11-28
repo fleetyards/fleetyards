@@ -1,0 +1,21 @@
+{
+  "key": "AEGS_Retaliator_Front_CargoGrid_Template",
+  "ref": "e45c47c8-de40-448f-8c07-9a747e978ba7",
+  "category": "inventory",
+  "type": "cargo_grid",
+  "type_data": {
+    "dimensions": {
+      "x": 2.5,
+      "y": 8.75,
+      "z": 2.5,
+      "scu": 28.0
+    },
+    "min_container": {
+      "x": 1.25,
+      "y": 1.25,
+      "z": 1.25,
+      "scu": 1.0
+    },
+    "max_container": null
+  }
+}

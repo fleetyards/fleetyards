@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hornet_F7A_Mk1_Green_Red_Green_Camo",
+  "ref": "45bfc8d0-6aee-4190-9601-13a8bd58b7a5",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "43dcbac6-9d2c-44d7-b829-d89a450abbe7",
+  "name": "Hornet Corin Camo Livery",
+  "short_name": null,
+  "description": "Show your support for the UEE's most elite fighting force with the Corin Camo livery for the Hornet Mk I. Commissioned in 2860 to celebrate the 300th anniversary of the Marines becoming their own branch of the military, the livery is a classic green camo with red highlights and the UEE logo.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

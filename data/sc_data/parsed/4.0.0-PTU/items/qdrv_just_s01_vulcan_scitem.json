@@ -1,0 +1,111 @@
+{
+  "key": "QDRV_JUST_S01_Vulcan_SCItem",
+  "ref": "ead4350a-695e-4d5d-86c3-e33f99d08217",
+  "category": "quantumdrive",
+  "type": "QuantumDrive",
+  "sub_type": null,
+  "size": "1",
+  "grade": "4",
+  "manufacturer_ref": "d7cc897f-b760-4a73-93c0-27e23c52db0a",
+  "name": "Vulcan",
+  "short_name": null,
+  "description": "Item Type: Quantum Drive\\nManufacturer: Juno Starwerk\\nSize: 1\\nGrade: D\\nClass: Industrial\\n\\nJuno Starwerk designed the Vulcan to be both cost efficient and durable. It won’t win any awards for its performance but can be trusted to get you to your destination.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_Jump_Drive",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "JumpDrive"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 470.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 2.5,
+    "StartIRTemperature": 290.0,
+    "OverpowerHeat": 0.0,
+    "OverclockThresholdMinHeat": 0.0,
+    "OverclockThresholdMaxHeat": 0.0,
+    "ThermalEnergyBase": 7152.0,
+    "ThermalEnergyDraw": 7152.0,
+    "ThermalConductivity": 0.0,
+    "SpecificHeatCapacity": 0.5,
+    "Mass": 711.36,
+    "SurfaceArea": 0.0,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 26.0,
+    "MaxTemperature": 700.0,
+    "OverheatTemperature": 650.0,
+    "RecoveryTemperature": 350.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "power_connection": {
+    "power_base": 0.4,
+    "power_draw": 100.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 5.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.34,
+    "overclock_threshold_max": 0.43,
+    "overpower_performance": 0.05,
+    "overclock_performance": 0.646,
+    "power_to_em": 75.0,
+    "decay_rate_of_em": 0.38
+  },
+  "type_data": {
+    "quantum_fuel_requirement": 0.006076,
+    "jump_range": 3.402823e+38,
+    "disconnect_range": 20646.0,
+    "drive_speed": 181500000.0,
+    "cooldown_time": 23.0,
+    "stage_one_accel_rate": 3000000.0,
+    "stage_two_accel_rate": 11250000.0,
+    "engage_speed": 1500.0,
+    "calibration_rate": 1000.0,
+    "min_calibration_requirement": 5000.0,
+    "max_calibration_requirement": 10000.0,
+    "calibration_process_angle_limit": 5.0,
+    "calibration_warning_angle_limit": 8.0,
+    "calibration_delay_in_seconds": 1.5,
+    "spool_up_time": 4.0,
+    "spline_jump_params": {
+      "drive_speed": 500000.0,
+      "cooldown_time": 10.0,
+      "stage_one_accel_rate": 250.0,
+      "stage_two_accel_rate": 50000.0,
+      "engage_speed": 1500.0,
+      "calibration_rate": 1000.0,
+      "min_calibration_requirement": 5000.0,
+      "max_calibration_requirement": 10000.0,
+      "calibration_process_angle_limit": 5.0,
+      "calibration_warning_angle_limit": 8.0,
+      "calibration_delay_in_seconds": 1.5,
+      "spool_up_time": 4.0
+    },
+    "quantum_boost_params": {
+      "max_boost_speed": 1000000.0,
+      "time_to_max_boost_speed": 3.0,
+      "boost_use_time": 40.0,
+      "boost_recharge_time": 25.0,
+      "stop_time": 2.0,
+      "min_jump_distance": 10000.0,
+      "ifcs_handover_down_time": 3.0,
+      "ifcs_handover_respool_time": 4.0
+    }
+  }
+}

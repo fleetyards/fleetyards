@@ -1,0 +1,21 @@
+{
+  "key": "ESPR_BallisticCannon_Ventilation_S5",
+  "ref": "6594c807-395c-4930-9aa5-9bbc912e7946",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "Ventilation",
+  "size": "5",
+  "grade": "5",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_RSI_Polaris",
+  "ref": "9de44e42-8ed1-40f7-961f-c208e864146a",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": "SELF STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "scm_speed": 145.0,
+    "scm_speed_boosted": 250.0,
+    "reverse_speed_boosted": 155.0,
+    "max_speed": 940.0,
+    "angular_velocity": {
+      "pitch": 15.0,
+      "yaw": 15.0,
+      "roll": 25.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 19.5,
+      "yaw": 18.0,
+      "roll": 35.0
+    }
+  }
+}

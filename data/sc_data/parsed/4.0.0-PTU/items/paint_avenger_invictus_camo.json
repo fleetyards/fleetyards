@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Avenger_Invictus_Camo",
+  "ref": "23a086bb-cb67-4fe4-914d-ac1a4e1e8cc7",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cfa84c3a-39e9-47cd-aba6-db54c8856559",
+  "name": "Avenger Splinter Livery",
+  "short_name": null,
+  "description": "Customize your Avenger with this fragmented green livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

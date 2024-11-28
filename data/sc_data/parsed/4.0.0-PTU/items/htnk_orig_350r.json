@@ -1,0 +1,24 @@
+{
+  "key": "HTNK_ORIG_350r",
+  "ref": "0f71ac68-f37e-40ef-b08b-113ed889845f",
+  "category": "fueltanks",
+  "type": "FuelTank",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Internal Tank",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "capacity": 9.0
+  }
+}

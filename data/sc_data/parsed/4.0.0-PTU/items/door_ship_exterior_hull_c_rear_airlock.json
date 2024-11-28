@@ -1,0 +1,39 @@
+{
+  "key": "Door_Ship_Exterior_Hull_C_Rear_Airlock",
+  "ref": "d2497c30-4729-4e8c-b334-ed74218af967",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 200.0
+  },
+  "power_connection": {
+    "power_base": 0.0,
+    "power_draw": 1.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 0.0,
+    "displayed_in_powered_item_list": 0.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.0,
+    "overclock_threshold_max": 0.0,
+    "overpower_performance": 0.0,
+    "overclock_performance": 0.0,
+    "power_to_em": 0.0,
+    "decay_rate_of_em": 0.15
+  }
+}

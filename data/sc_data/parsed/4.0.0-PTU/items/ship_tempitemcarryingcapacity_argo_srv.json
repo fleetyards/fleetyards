@@ -1,0 +1,9 @@
+{
+  "key": "Ship_TempItemCarryingCapacity_ARGO_SRV",
+  "ref": "d7ce34cb-8ac1-4f4a-bb34-2be3ac6b9419",
+  "category": "inventory",
+  "type": "personal_storage",
+  "type_data": {
+    "storage": 12.0
+  }
+}

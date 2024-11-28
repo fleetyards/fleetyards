@@ -1,0 +1,299 @@
+{
+  "key": "ORIG_X1",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "1",
+  "min_crew": "1",
+  "name": "Origin X1",
+  "description": "Manufacturer: Origin Jumpworks\\nFocus: Touring\\n\\nWelcome to the next level with the X1, Origin Jumpworks' high performance open-canopy vehicle. Built from lightweight polymers, the X1 takes speed and agility to the next level thanks to seamlessly integrated engine technology and joint vector thruster placement. Innovative design and high-quality engineering weave together to create a flight experience like no other.",
+  "career": "Personal Transport",
+  "role": "Transport",
+  "insurance": {
+    "base_wait_time_minutes": "0.15",
+    "mandatory_wait_time_minutes": "0.05",
+    "base_expediting_fee": "75"
+  },
+  "mass": 4730.0,
+  "metrics": {
+    "x": 5.19,
+    "y": 1.55,
+    "z": 1.87
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": null,
+      "key": "ARMR_ORIG_X1"
+    },
+    {
+      "name": "hardpoint_cockpit_selfdestruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_20s"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_ORIG_X1"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_ORIG_X1"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon_ORIG_X1"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "ORIG_X1_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_fuel_intake",
+      "ref": null,
+      "key": "INTK_ORIG_X1"
+    },
+    {
+      "name": "hardpoint_refuel_port",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuel_tank",
+      "ref": null,
+      "key": "HTNK_ORIG_X1"
+    },
+    {
+      "name": "hardpoint_powerplant",
+      "ref": null,
+      "key": "POWR_LPLT_S00_Radix_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler",
+      "ref": null,
+      "key": "COOL_WCPR_S00_Fridan_SCItem"
+    },
+    {
+      "name": "hardpoint_computer",
+      "ref": null,
+      "key": "COMP_WLOP_S00_Adze"
+    },
+    {
+      "name": "hardpoint_cockpit_flair",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_WLOP_S00_Denning"
+    },
+    {
+      "name": "hardpoint_pilot_seat",
+      "ref": null,
+      "key": "ORIG_X1_SCItem_Seat_Pilot"
+    },
+    {
+      "name": "hardpoint_thruster_main_right",
+      "ref": null,
+      "key": "ORIG_X1_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_main_left",
+      "ref": null,
+      "key": "ORIG_X1_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_retro_right",
+      "ref": null,
+      "key": "ORIG_X1_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_retro_left",
+      "ref": null,
+      "key": "ORIG_X1_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_mav_rear_top_right_side",
+      "ref": null,
+      "key": "ORIG_X1_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_mav_rear_top_right",
+      "ref": null,
+      "key": "ORIG_X1_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_mav_rear_top_left_side",
+      "ref": null,
+      "key": "ORIG_X1_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_mav_rear_top_left",
+      "ref": null,
+      "key": "ORIG_X1_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_mav_rear_bottom_right_side",
+      "ref": null,
+      "key": "ORIG_X1_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_mav_rear_bottom_right",
+      "ref": null,
+      "key": "ORIG_X1_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_mav_rear_bottom_left_side",
+      "ref": null,
+      "key": "ORIG_X1_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_mav_rear_bottom_left",
+      "ref": null,
+      "key": "ORIG_X1_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_mav_front_top_right_side",
+      "ref": null,
+      "key": "ORIG_X1_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_mav_front_top_right",
+      "ref": null,
+      "key": "ORIG_X1_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_mav_front_bottom_right_side",
+      "ref": null,
+      "key": "ORIG_X1_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_mav_front_bottom_right",
+      "ref": null,
+      "key": "ORIG_X1_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_mav_front_top_left_side",
+      "ref": null,
+      "key": "ORIG_X1_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_mav_front_top_left",
+      "ref": null,
+      "key": "ORIG_X1_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_mav_front_bottom_left_side",
+      "ref": null,
+      "key": "ORIG_X1_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_mav_front_bottom_left",
+      "ref": null,
+      "key": "ORIG_X1_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_gravlev_front_right",
+      "ref": null,
+      "key": "ORIG_X1_Thruster_Aux"
+    },
+    {
+      "name": "hardpoint_gravlev_front_left",
+      "ref": null,
+      "key": "ORIG_X1_Thruster_Aux"
+    },
+    {
+      "name": "hardpoint_gravlev_center_right",
+      "ref": null,
+      "key": "ORIG_X1_Thruster_Aux"
+    },
+    {
+      "name": "hardpoint_gravlev_center_left",
+      "ref": null,
+      "key": "ORIG_X1_Thruster_Aux"
+    },
+    {
+      "name": "hardpoint_gravlev_rear_right",
+      "ref": null,
+      "key": "ORIG_X1_Thruster_Aux"
+    },
+    {
+      "name": "hardpoint_gravlev_rear_left",
+      "ref": null,
+      "key": "ORIG_X1_Thruster_Aux"
+    },
+    {
+      "name": "hardpoint_cm_left",
+      "ref": null,
+      "key": "ORIG_X1_CML_Flare"
+    },
+    {
+      "name": "hardpoint_cm_right",
+      "ref": null,
+      "key": "ORIG_X1_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_weapon",
+      "ref": null,
+      "key": "BEHR_LaserCannon_S1"
+    },
+    {
+      "name": "hardpoint_personal_storage",
+      "ref": null,
+      "key": "PersonalStorage_ORIG_X1"
+    },
+    {
+      "name": "hardpoint_shield_generator",
+      "ref": null,
+      "key": "ORIG_X1_ShieldFluff"
+    },
+    {
+      "name": "hardpoint_relay",
+      "ref": null,
+      "key": "RELAY_1slot_slim"
+    }
+  ]
+}

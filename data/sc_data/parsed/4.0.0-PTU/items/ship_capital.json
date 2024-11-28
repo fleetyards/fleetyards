@@ -1,0 +1,9 @@
+{
+  "key": "Ship_Capital",
+  "ref": "8f4f7045-703a-4932-98c1-e2d56b0f89b1",
+  "category": "inventory",
+  "type": "personal_storage",
+  "type_data": {
+    "storage": 32.0
+  }
+}

@@ -1,0 +1,997 @@
+{
+  "key": "AEGS_Hammerhead_Unmanned_Salvage",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "2",
+  "name": "Aegis Hammerhead",
+  "description": "Manufacturer: Aegis Dynamics \\nFocus: Heavy Gunship\\n\\nA fast patrol ship with multiple turrets designed to combat fighters, the Hammerhead is equally suited to support larger capital ships in a fleet or act as a flagship for fighter groups.",
+  "career": "Combat",
+  "role": "Corvette",
+  "insurance": {
+    "base_wait_time_minutes": "48.6",
+    "mandatory_wait_time_minutes": "16.2",
+    "base_expediting_fee": "24582"
+  },
+  "mass": 4617511.0,
+  "metrics": {
+    "x": 72.0,
+    "y": 120.0,
+    "z": 16.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "AEGS_Hammerhead_SCItem_Pilot_Seat",
+      "loadout": [
+        {
+          "name": "pilot_TargetingMFD",
+          "ref": null,
+          "key": "Vehicle_Screen_MFD"
+        },
+        {
+          "name": "pilot_OwnShipMFD",
+          "ref": null,
+          "key": "Vehicle_Screen_MFD"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_seat_copilot",
+      "ref": null,
+      "key": "AEGS_Hammerhead_SCItem_Copilot_Seat",
+      "loadout": [
+        {
+          "name": "copilot_OwnShipMFD",
+          "ref": null,
+          "key": "Vehicle_Screen_MFD"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_seat_captains_quarters",
+      "ref": null,
+      "key": "AEGS_Hammerhead_SCItem_Seat_Captain_Room"
+    },
+    {
+      "name": "hardpoint_cargo_bay_engineer_console",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_component_room_left_engineer_console",
+      "ref": null,
+      "key": "AEGS_Hammerhead_SCItem_Engineer_Console",
+      "loadout": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_component_room_right_engineer_console",
+      "ref": null,
+      "key": "AEGS_Hammerhead_SCItem_Engineer_Console",
+      "loadout": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_cockpit_selfdestruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_60s"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_CHCO_S02_Surveyor"
+    },
+    {
+      "name": "hardpoint_controller_scanner",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_ping",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_AEGS_Hammerhead"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_power_plant_l",
+      "ref": null,
+      "key": "POWR_AMRS_S03_SuperDrive_SCItem"
+    },
+    {
+      "name": "hardpoint_power_plant_r",
+      "ref": null,
+      "key": "POWR_AMRS_S03_SuperDrive_SCItem"
+    },
+    {
+      "name": "hardpoint_fuel_tank_1",
+      "ref": null,
+      "key": "HTNK_AEGS_Hammerhead"
+    },
+    {
+      "name": "hardpoint_fuel_tank_2",
+      "ref": null,
+      "key": "HTNK_AEGS_Hammerhead"
+    },
+    {
+      "name": "hardpoint_fuel_intake_1",
+      "ref": null,
+      "key": "INTK_AEGS_Hammerhead"
+    },
+    {
+      "name": "hardpoint_fuel_intake_2",
+      "ref": null,
+      "key": "INTK_AEGS_Hammerhead"
+    },
+    {
+      "name": "hardpoint_cooler_l",
+      "ref": null,
+      "key": "COOL_AEGS_S03_Mercury_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_r",
+      "ref": null,
+      "key": "COOL_AEGS_S03_Mercury_SCItem"
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_JUST_S03_Kama_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": "59346c37-671d-4aae-9eff-d38e13caa9c0",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_fuel",
+      "ref": null,
+      "key": "QTNK_AEGS_Hammerhead"
+    },
+    {
+      "name": "hardpoint_shield_generator_l",
+      "ref": null,
+      "key": "SHLD_BASL_S03_Stronghold_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator_r",
+      "ref": null,
+      "key": "SHLD_BASL_S03_Stronghold_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_AEGS_Hammerhead"
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": null,
+      "key": "ARMR_AEGS_Hammerhead"
+    },
+    {
+      "name": "hardpoint_thruster_main_top_left",
+      "ref": null,
+      "key": "AEGS_Hammerhead_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_main_bottom_left",
+      "ref": null,
+      "key": "AEGS_Hammerhead_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_main_top_right",
+      "ref": null,
+      "key": "AEGS_Hammerhead_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_main_bottom_right",
+      "ref": null,
+      "key": "AEGS_Hammerhead_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_top_front_left",
+      "ref": null,
+      "key": "AEGS_Hammerhead_Thruster_Mav_Fixed_Top"
+    },
+    {
+      "name": "hardpoint_thruster_side_front_left",
+      "ref": null,
+      "key": "AEGS_Hammerhead_Thruster_Mav_Fixed_Left"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_front_left",
+      "ref": null,
+      "key": "AEGS_Hammerhead_Thruster_Mav_Fixed_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_top_front_right",
+      "ref": null,
+      "key": "AEGS_Hammerhead_Thruster_Mav_Fixed_Top"
+    },
+    {
+      "name": "hardpoint_thruster_side_front_right",
+      "ref": null,
+      "key": "AEGS_Hammerhead_Thruster_Mav_Fixed_Right"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_front_right",
+      "ref": null,
+      "key": "AEGS_Hammerhead_Thruster_Mav_Fixed_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_retro_left",
+      "ref": null,
+      "key": "AEGS_Hammerhead_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_retro_right",
+      "ref": null,
+      "key": "AEGS_Hammerhead_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_top_rear_left",
+      "ref": null,
+      "key": "AEGS_Hammerhead_Thruster_Mav_Fixed_Top"
+    },
+    {
+      "name": "hardpoint_thruster_side_rear_left",
+      "ref": null,
+      "key": "AEGS_Hammerhead_Thruster_Mav_Fixed_Left"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_rear_left",
+      "ref": null,
+      "key": "AEGS_Hammerhead_Thruster_Mav_Fixed_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_top_rear_right",
+      "ref": null,
+      "key": "AEGS_Hammerhead_Thruster_Mav_Fixed_Top"
+    },
+    {
+      "name": "hardpoint_thruster_side_rear_right",
+      "ref": null,
+      "key": "AEGS_Hammerhead_Thruster_Mav_Fixed_Right"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_rear_right",
+      "ref": null,
+      "key": "AEGS_Hammerhead_Thruster_Mav_Fixed_Bottom"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "Turret_Side_Front_Left",
+      "ref": "c2d1b008-c900-4d59-bc8f-b10f5b46cdf0",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left_upper",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_left_lower",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right_upper",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right_lower",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_OC",
+          "ref": null,
+          "key": "AEGS_Hammerhead_Side_Turret_Lighting"
+        }
+      ]
+    },
+    {
+      "name": "Turret_Side_Front_Right",
+      "ref": "982ce3ab-41f4-40bf-a833-6237e7a97893",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left_upper",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_left_lower",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right_upper",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right_lower",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_OC",
+          "ref": null,
+          "key": "AEGS_Hammerhead_Side_Turret_Lighting"
+        }
+      ]
+    },
+    {
+      "name": "Turret_Side_Back_Left",
+      "ref": "b497e796-4633-4093-a53d-494bdd24ab53",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left_upper",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_left_lower",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right_upper",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right_lower",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_OC",
+          "ref": null,
+          "key": "AEGS_Hammerhead_Side_Turret_Lighting"
+        }
+      ]
+    },
+    {
+      "name": "Turret_Side_Back_Right",
+      "ref": "3614ff8a-d24d-4d56-84db-8efac6b6c70f",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left_upper",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_left_lower",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right_upper",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right_lower",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_OC",
+          "ref": null,
+          "key": "AEGS_Hammerhead_Side_Turret_Lighting"
+        }
+      ]
+    },
+    {
+      "name": "Turret_Top",
+      "ref": "2228584b-0def-4713-8b40-1a9685f9a444",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left_upper",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_left_lower",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right_upper",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right_lower",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Turret_Rear",
+      "ref": "7de3c63f-a8ef-4d7b-8022-97e189d33449",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left_upper",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_left_lower",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right_upper",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right_lower",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_top_left_01",
+      "ref": null,
+      "key": "MRCK_S05_BEHR_Quad_S03",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_top_left_02",
+      "ref": null,
+      "key": "MRCK_S05_BEHR_Quad_S03",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_bottom_left_01",
+      "ref": null,
+      "key": "MRCK_S05_BEHR_Quad_S03",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S03_IR_NOVP_Viper"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S03_IR_NOVP_Viper"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S03_IR_NOVP_Viper"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S03_IR_NOVP_Viper"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_bottom_left_02",
+      "ref": null,
+      "key": "MRCK_S05_BEHR_Quad_S03",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S03_IR_NOVP_Viper"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S03_IR_NOVP_Viper"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S03_IR_NOVP_Viper"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S03_IR_NOVP_Viper"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_top_right_01",
+      "ref": null,
+      "key": "MRCK_S05_BEHR_Quad_S03",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_top_right_02",
+      "ref": null,
+      "key": "MRCK_S05_BEHR_Quad_S03",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_bottom_right_01",
+      "ref": null,
+      "key": "MRCK_S05_BEHR_Quad_S03",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S03_IR_NOVP_Viper"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S03_IR_NOVP_Viper"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S03_IR_NOVP_Viper"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S03_IR_NOVP_Viper"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_bottom_right_02",
+      "ref": null,
+      "key": "MRCK_S05_BEHR_Quad_S03",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S03_IR_NOVP_Viper"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S03_IR_NOVP_Viper"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S03_IR_NOVP_Viper"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S03_IR_NOVP_Viper"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_countermeasures_left",
+      "ref": null,
+      "key": "AEGS_Hammerhead_CML_Flare"
+    },
+    {
+      "name": "hardpoint_countermeasures_left_2",
+      "ref": null,
+      "key": "AEGS_Hammerhead_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_countermeasures_right",
+      "ref": null,
+      "key": "AEGS_Hammerhead_CML_Flare"
+    },
+    {
+      "name": "hardpoint_countermeasures_right_2",
+      "ref": null,
+      "key": "AEGS_Hammerhead_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_door_cargo",
+      "ref": null,
+      "key": "Door_Ship_AEGS_Hammerhead_Elevator_Cargo"
+    },
+    {
+      "name": "hardpoint_door_cargo_02",
+      "ref": null,
+      "key": "Door_Ship_Exterior_AEGS_Hammerhead_Cargo"
+    },
+    {
+      "name": "hardpoint_door_left",
+      "ref": null,
+      "key": "Door_Ship_AEGS_Hammerhead_Elevator_Left"
+    },
+    {
+      "name": "hardpoint_door_left_02",
+      "ref": null,
+      "key": "Door_Ship_Exterior_AEGS_Hammerhead_Left"
+    },
+    {
+      "name": "hardpoint_door_right",
+      "ref": null,
+      "key": "Door_Ship_AEGS_Hammerhead_Elevator_Right"
+    },
+    {
+      "name": "hardpoint_door_right_02",
+      "ref": null,
+      "key": "Door_Ship_Exterior_AEGS_Hammerhead_Right"
+    },
+    {
+      "name": "hardpoint_door_nose_airlock",
+      "ref": null,
+      "key": "Door_Ship_Exterior_AEGS_Hammerhead_Airlock"
+    },
+    {
+      "name": "turret_door_front_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "turret_door_front_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "turret_door_rear_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "turret_door_rear_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_docking_collar",
+      "ref": null,
+      "key": "AEGS_Hammerhead_Front_DockingTube"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "AEGS_Hammerhead_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": "Controller_Missile"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_AEGS_Hammerhead"
+    },
+    {
+      "name": "hardpoint_cockpit_flair",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_airlock_door_front",
+      "ref": null,
+      "key": "Door_Ship_Exterior_AEGS_Hammerhead_Airlock_Door"
+    },
+    {
+      "name": "hardpoint_relay_cockpit",
+      "ref": null,
+      "key": "RELAY_1slot"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_TYDT_S03_ComfortAirMax"
+    }
+  ]
+}

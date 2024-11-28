@@ -1,0 +1,21 @@
+{
+  "key": "Controller_Shield_ARGO_MPUV",
+  "ref": "934007a1-4603-4bb9-801a-d097177e3b00",
+  "category": "controller",
+  "type": "ShieldController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SHIELDS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

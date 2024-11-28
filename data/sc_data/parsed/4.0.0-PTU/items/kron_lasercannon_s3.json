@@ -1,0 +1,121 @@
+{
+  "key": "KRON_LaserCannon_S3",
+  "ref": "3a5bd643-3c3e-42fb-87ce-2a44b976555d",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "2a64f92e-8f6d-47ac-a6ed-643465e91d4b",
+  "name": "FL-33 Cannon",
+  "short_name": "FL-33",
+  "description": "Manufacturer: Kroneg\\nItem Type: Laser Cannon\\nSize: 3\\n\\nDeliver massive damage from a distance with Kroneg's FL line of laser cannons. Embodying Kroneg's practical design philosophy, the FL-33 remains one of the most reliable and destructive size three laser cannons currently available.",
+  "inventory_consumption": {
+    "micro_scu": 756000.0,
+    "dimensions": {
+      "x": 0.6699014,
+      "y": 4.422015,
+      "z": 1.202842
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "BAR1",
+      "key": "KRON_LaserCannon_Barrel_S3",
+      "ref": null
+    },
+    {
+      "name": "MEC",
+      "key": "KRON_LaserCannon_FiringMechanism_S3",
+      "ref": null
+    },
+    {
+      "name": "POW",
+      "key": "KRON_LaserCannon_PowerArray_S3",
+      "ref": null
+    },
+    {
+      "name": "VEN",
+      "key": "KRON_LaserCannon_Ventilation_S3",
+      "ref": null
+    }
+  ],
+  "durability": {
+    "health": 1024.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 2.0,
+    "StartIRTemperature": 250.0,
+    "OverpowerHeat": 0.56,
+    "OverclockThresholdMinHeat": 0.44,
+    "OverclockThresholdMaxHeat": 0.56,
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.5,
+    "Mass": 320.0,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 145.0,
+    "MaxTemperature": 700.0,
+    "OverheatTemperature": 650.0,
+    "RecoveryTemperature": 550.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  },
+  "power_connection": {
+    "power_base": 240.0,
+    "power_draw": 240.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 20.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.35,
+    "overclock_threshold_max": 0.6,
+    "overpower_performance": 0.23,
+    "overclock_performance": 0.3,
+    "power_to_em": 1.8,
+    "decay_rate_of_em": 0.25
+  }
+}

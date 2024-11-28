@@ -1,0 +1,24 @@
+{
+  "key": "HTNK_RSI_Aurora_LN",
+  "ref": "b4c950a4-c49e-4b62-8a60-d6bd99c0ff4c",
+  "category": "fueltanks",
+  "type": "FuelTank",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Internal Tank",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "capacity": 2.25
+  }
+}

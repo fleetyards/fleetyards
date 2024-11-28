@@ -1,0 +1,78 @@
+{
+  "key": "Mining_Laser_SHIN_Hofstede_S2",
+  "ref": "b422bcf8-b553-4b09-b2be-e92ab2f80e9a",
+  "category": "weapons",
+  "type": "WeaponMining",
+  "sub_type": "Gun",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "ab35f85f-919f-4457-8d58-4e885ea6c5c0",
+  "name": "Hofstede-S2 Mining Laser",
+  "short_name": null,
+  "description": "Manufacturer: Shubin Interstellar\\nItem Type: Mining Laser \\nSize: 2\\n\\nOptimal Range: 60m\\nMaximum Range: 180m\\n\\nMining Laser Power: 336 - 3360\\nExtraction Laser Power: 1295\\n\\nModule Slots: 2\\n\\nResistance: -30%\\nOptimal Charge Window Rate: +20%\\nInert Material Level: -40%\\n\\nLaser Instability: +10%\\n\\nThe Hofstede-S2 was designed with a patented crystal lattice structure that dampens a deposit's natural resistance while mining and gathers less inert materials when extracting. Most effective at short and medium range, an accompanying increase in instability means the laser should be managed carefully.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "BONE_ItemPort_Consumable_1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "MiningModifier"
+      ]
+    },
+    {
+      "name": "BONE_ItemPort_Consumable_2",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "MiningModifier"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 8000.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 6.0,
+    "StartIRTemperature": 250.0,
+    "OverpowerHeat": 0.0,
+    "OverclockThresholdMinHeat": 0.0,
+    "OverclockThresholdMaxHeat": 0.0,
+    "ThermalEnergyBase": 11.0,
+    "ThermalEnergyDraw": 22.0,
+    "ThermalConductivity": 3.0,
+    "SpecificHeatCapacity": 13.0,
+    "Mass": 200.0,
+    "SurfaceArea": 50.0,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 1.0,
+    "MaxTemperature": 450.0,
+    "OverheatTemperature": 370.0,
+    "RecoveryTemperature": 350.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "power_connection": {
+    "power_base": 2000.0,
+    "power_draw": 2400.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 20.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.25,
+    "overclock_threshold_max": 0.53,
+    "overpower_performance": 0.3,
+    "overclock_performance": 0.24,
+    "power_to_em": 2.0,
+    "decay_rate_of_em": 0.15
+  }
+}

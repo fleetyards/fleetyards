@@ -1,0 +1,54 @@
+{
+  "key": "Door_RN_RoomConnector_Breachable_OpenReverse_Lynx_SideDoor",
+  "ref": "f961188f-ec17-4067-9eab-797feea032ad",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "IP_Exterior",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+
+      ]
+    },
+    {
+      "name": "IP_Interior",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "IP_Exterior",
+      "key": "ControlPanel_Screen_DoorControl_9x16_Small_RSI_Lynx",
+      "ref": null
+    },
+    {
+      "name": "IP_Interior",
+      "key": "ControlPanel_Screen_DoorControl_9x16_Small_RSI_Lynx",
+      "ref": null
+    }
+  ],
+  "durability": {
+    "health": 1000.0
+  }
+}

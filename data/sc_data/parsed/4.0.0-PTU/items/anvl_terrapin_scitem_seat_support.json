@@ -1,0 +1,34 @@
+{
+  "key": "ANVL_Terrapin_SCItem_Seat_Support",
+  "ref": "4cbb0194-a946-da9a-e179-4b7f5b98ce98",
+  "category": "seat",
+  "type": "Seat",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": "Manned Turret",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_scanner",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "UNDEFINED"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 2500.0
+  }
+}

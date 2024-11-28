@@ -1,0 +1,24 @@
+{
+  "key": "ARMR_ANVL_Carrack",
+  "ref": "df022e28-9394-45f5-aa23-a38dd92391f5",
+  "category": "armor",
+  "type": "Armor",
+  "sub_type": "Medium",
+  "size": "3",
+  "grade": "3",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "key": "KLWE_LaserRepeater_S4",
+  "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "1aa076d5-ac29-4c61-a905-d3ea39cf167a",
+  "name": "CF-447 Rhino Repeater",
+  "short_name": "Rhino",
+  "description": "Manufacturer: Klaus & Werner\\nItem Type: Laser Repeater\\nSize: 4\\n\\nWhen a ship comes charging at you with a CF-447 Rhino strapped on, it is an experience few pilots will ever forget. This formidable size four laser repeater from Klaus & Werner is well suited for medium-range engagements, but packs a wallop up close.",
+  "inventory_consumption": {
+    "micro_scu": 2100000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1650.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 3.0,
+    "StartIRTemperature": 250.0,
+    "OverpowerHeat": 0.9,
+    "OverclockThresholdMinHeat": 0.59,
+    "OverclockThresholdMaxHeat": 0.86,
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.5,
+    "Mass": 440.0,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 248.974,
+    "MaxTemperature": 700.0,
+    "OverheatTemperature": 650.0,
+    "RecoveryTemperature": 550.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  },
+  "power_connection": {
+    "power_base": 220.0,
+    "power_draw": 220.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 20.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.0,
+    "overclock_threshold_max": 0.0,
+    "overpower_performance": 0.0,
+    "overclock_performance": 0.0,
+    "power_to_em": 1.5,
+    "decay_rate_of_em": 0.2
+  }
+}

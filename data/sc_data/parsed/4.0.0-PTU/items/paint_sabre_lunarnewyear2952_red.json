@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Sabre_LunarNewYear2952_Red",
+  "ref": "963d7a97-a4a3-4ab1-8e49-cde15f90728c",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f2250922-4418-49f4-abdb-ba7d8b977532",
+  "name": "Sabre 2952 Auspicious Red Monkey Livery",
+  "short_name": null,
+  "description": "Seek peace and prosperity in the new year with the Auspicious Red Monkey livery. Outfit your ship with this bold red base paint complemented by gold accents and a stylized graphic of a monkey's head.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

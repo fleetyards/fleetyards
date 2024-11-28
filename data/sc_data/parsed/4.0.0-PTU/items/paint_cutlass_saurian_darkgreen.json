@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Cutlass_Saurian_DarkGreen",
+  "ref": "be30eb09-9de0-4806-a491-68d74e22633a",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b332d6d2-6371-4ead-bf22-83073bf7283b",
+  "name": "Cutlass Saurian Livery",
+  "short_name": null,
+  "description": "Enwrap your Cutlass in the Saurian livery, which blends several shades of dark green.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

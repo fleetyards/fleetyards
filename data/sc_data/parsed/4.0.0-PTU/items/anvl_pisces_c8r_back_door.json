@@ -1,0 +1,93 @@
+{
+  "key": "ANVL_Pisces_C8R_Back_Door",
+  "ref": "bfb98d31-1f5f-4d88-9d3d-3e367bcb17ce",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_ext_bot",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_ext",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_frame",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+
+      ]
+    },
+    {
+      "name": "IP_Exterior",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "ControlPanel"
+      ]
+    },
+    {
+      "name": "IP_Interior",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "ControlPanel"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "IP_Exterior",
+      "key": "ControlPanel_Screen_DoorControl_9x16_Small_ANVL_Pisces",
+      "ref": null
+    },
+    {
+      "name": "IP_Interior",
+      "key": "ControlPanel_Screen_DoorControl_9x16_Small_ANVL_Pisces",
+      "ref": null
+    }
+  ],
+  "durability": {
+    "health": 6000.0
+  },
+  "power_connection": {
+    "power_base": 0.0,
+    "power_draw": 1.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 0.0,
+    "displayed_in_powered_item_list": 0.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.0,
+    "overclock_threshold_max": 0.0,
+    "overpower_performance": 0.0,
+    "overclock_performance": 0.0,
+    "power_to_em": 0.0,
+    "decay_rate_of_em": 0.15
+  }
+}

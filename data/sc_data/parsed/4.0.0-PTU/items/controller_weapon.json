@@ -1,0 +1,21 @@
+{
+  "key": "Controller_Weapon",
+  "ref": "c78851f1-ded8-4e8d-91ec-905e3dae075e",
+  "category": "controller",
+  "type": "WeaponController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "WEAPONS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

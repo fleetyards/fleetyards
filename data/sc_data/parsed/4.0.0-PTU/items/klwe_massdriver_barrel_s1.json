@@ -1,0 +1,21 @@
+{
+  "key": "KLWE_MassDriver_Barrel_S1",
+  "ref": "f1af3301-9a3c-4f9b-9a12-a1046b5dc944",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "Barrel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1aa076d5-ac29-4c61-a905-d3ea39cf167a",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

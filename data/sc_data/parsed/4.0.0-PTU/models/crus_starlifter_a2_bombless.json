@@ -1,0 +1,864 @@
+{
+  "key": "CRUS_Starlifter_A2_Bombless",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "8",
+  "name": "Crusader A2 Hercules Starlifter",
+  "description": "Manufacturer: Crusader Industries\\nFocus: Medium Freight / Gunship\\n\\nThe A2 gunship has been used to devastating effect in airborne assaults, search and rescue operations, and landing initiatives. With more than double the firepower of the M2, and a custom bomb bay capable of delivering a staggering payload, the A2 caters to anyone hauling massive amounts of cargo through potentially unfriendly skies.",
+  "career": "Combat",
+  "role": "Bomber",
+  "insurance": {
+    "base_wait_time_minutes": "39.24",
+    "mandatory_wait_time_minutes": "13.08",
+    "base_expediting_fee": "20200"
+  },
+  "mass": 3139240.06,
+  "metrics": {
+    "x": 94.0,
+    "y": 70.0,
+    "z": 23.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": "399d52af-8841-45d8-bac6-aa53ac87c843",
+      "key": null
+    },
+    {
+      "name": "hardpoint_cockpit_selfDestruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_60s"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_CRUS_Starlifter_A2"
+    },
+    {
+      "name": "hardpoint_controller_scanner",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_CRUS_Starlifter"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_cooler_l",
+      "ref": "335e94ef-d8e9-4ac3-8966-655881c1ea14",
+      "key": null
+    },
+    {
+      "name": "hardpoint_cooler_r",
+      "ref": "335e94ef-d8e9-4ac3-8966-655881c1ea14",
+      "key": null
+    },
+    {
+      "name": "hardpoint_countermeasures_3",
+      "ref": null,
+      "key": "CRUS_Starlifter_CML_Flare_Top_Left"
+    },
+    {
+      "name": "hardpoint_countermeasures_4",
+      "ref": null,
+      "key": "CRUS_Starlifter_CML_Chaff_Top_Right"
+    },
+    {
+      "name": "hardpoint_countermeasures_5",
+      "ref": null,
+      "key": "CRUS_Starlifter_CML_Flare_Under_Left"
+    },
+    {
+      "name": "hardpoint_countermeasures_6",
+      "ref": null,
+      "key": "CRUS_Starlifter_CML_Chaff_Under_Right"
+    },
+    {
+      "name": "hardpoint_fuel_intake_l",
+      "ref": null,
+      "key": "INTK_CRUS_Starlifter"
+    },
+    {
+      "name": "hardpoint_fuel_intake_r",
+      "ref": null,
+      "key": "INTK_CRUS_Starlifter"
+    },
+    {
+      "name": "hardpoint_fuel_tank_1",
+      "ref": null,
+      "key": "HTNK_CRUS_Starlifter"
+    },
+    {
+      "name": "hardpoint_fuel_tank_2",
+      "ref": null,
+      "key": "HTNK_CRUS_Starlifter"
+    },
+    {
+      "name": "hardpoint_ping",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": "419bff00-12eb-43f7-b284-f8850519b9c6",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": null,
+          "key": "JDRV_TARS_S03_Exodus_SCItem"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_fuel",
+      "ref": null,
+      "key": "QTNK_CRUS_Starlifter"
+    },
+    {
+      "name": "hardpoint_remote_turret_bottom",
+      "ref": "07842740-cfcf-420f-ba8c-0750fbc193b4",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "52c1793e-5610-4daa-aafe-a8cf55e60283",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "52c1793e-5610-4daa-aafe-a8cf55e60283",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_power_plant_l",
+      "ref": "202db33c-6b87-4210-9392-6d5368bc3436",
+      "key": null
+    },
+    {
+      "name": "hardpoint_power_plant_r",
+      "ref": "202db33c-6b87-4210-9392-6d5368bc3436",
+      "key": null
+    },
+    {
+      "name": "hardpoint_remote_turret_rear",
+      "ref": "6ff7b8e2-5dfc-4a5a-918f-69e8d2422a12",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_right",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "turret_left",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_remote_turret_rear_controller",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_seat_copilot",
+      "ref": null,
+      "key": "CRUS_Starlifter_SCItem_Seat_CoPilot"
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "CRUS_Starlifter_SCItem_Seat_Pilot"
+    },
+    {
+      "name": "hardpoint_shield_generator_l",
+      "ref": "6a4d4eb2-dacd-4b04-b17f-e7a02ea7e744",
+      "key": null
+    },
+    {
+      "name": "hardpoint_shield_generator_r",
+      "ref": "6a4d4eb2-dacd-4b04-b17f-e7a02ea7e744",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_bottom_front_left",
+      "ref": null,
+      "key": "CRUS_Starlifter_Thruster_Mav_Front_A2"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_front_right",
+      "ref": null,
+      "key": "CRUS_Starlifter_Thruster_Mav_Front_A2"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_rear_left",
+      "ref": null,
+      "key": "CRUS_Starlifter_Thruster_Mav_A2"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_rear_right",
+      "ref": null,
+      "key": "CRUS_Starlifter_Thruster_Mav_A2"
+    },
+    {
+      "name": "hardpoint_thruster_main_left_1",
+      "ref": null,
+      "key": "CRUS_Starlifter_Thruster_Main_A2"
+    },
+    {
+      "name": "hardpoint_thruster_main_left_2",
+      "ref": null,
+      "key": "CRUS_Starlifter_Thruster_Main_A2"
+    },
+    {
+      "name": "hardpoint_thruster_main_right_1",
+      "ref": null,
+      "key": "CRUS_Starlifter_Thruster_Main_A2"
+    },
+    {
+      "name": "hardpoint_thruster_main_right_2",
+      "ref": null,
+      "key": "CRUS_Starlifter_Thruster_Main_A2"
+    },
+    {
+      "name": "hardpoint_thruster_main_small_left",
+      "ref": null,
+      "key": "CRUS_Starlifter_Thruster_Main_Aux"
+    },
+    {
+      "name": "hardpoint_thruster_main_small_right",
+      "ref": null,
+      "key": "CRUS_Starlifter_Thruster_Main_Aux"
+    },
+    {
+      "name": "hardpoint_thruster_main_smaller_left",
+      "ref": null,
+      "key": "CRUS_Starlifter_Thruster_Main_Aux_1"
+    },
+    {
+      "name": "hardpoint_thruster_main_smaller_right",
+      "ref": null,
+      "key": "CRUS_Starlifter_Thruster_Main_Aux_1"
+    },
+    {
+      "name": "hardpoint_thruster_retro_left",
+      "ref": null,
+      "key": "CRUS_Starlifter_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_retro_right",
+      "ref": null,
+      "key": "CRUS_Starlifter_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_side_front_left",
+      "ref": null,
+      "key": "CRUS_Starlifter_Thruster_Mav_A2"
+    },
+    {
+      "name": "hardpoint_thruster_side_front_right",
+      "ref": null,
+      "key": "CRUS_Starlifter_Thruster_Mav_A2"
+    },
+    {
+      "name": "hardpoint_thruster_side_rear_left",
+      "ref": null,
+      "key": "CRUS_Starlifter_Thruster_Mav_A2"
+    },
+    {
+      "name": "hardpoint_thruster_side_rear_right",
+      "ref": null,
+      "key": "CRUS_Starlifter_Thruster_Mav_A2"
+    },
+    {
+      "name": "hardpoint_thruster_top_front_left",
+      "ref": null,
+      "key": "CRUS_Starlifter_Thruster_Mav_Front_A2"
+    },
+    {
+      "name": "hardpoint_thruster_top_front_right",
+      "ref": null,
+      "key": "CRUS_Starlifter_Thruster_Mav_Front_A2"
+    },
+    {
+      "name": "hardpoint_thruster_top_mid_left",
+      "ref": null,
+      "key": "CRUS_Starlifter_Thruster_Mav_A2"
+    },
+    {
+      "name": "hardpoint_thruster_top_mid_right",
+      "ref": null,
+      "key": "CRUS_Starlifter_Thruster_Mav_A2"
+    },
+    {
+      "name": "hardpoint_thruster_top_rear_left",
+      "ref": null,
+      "key": "CRUS_Starlifter_Thruster_Mav_A2"
+    },
+    {
+      "name": "hardpoint_thruster_top_rear_right",
+      "ref": null,
+      "key": "CRUS_Starlifter_Thruster_Mav_A2"
+    },
+    {
+      "name": "hardpoint_thruster_VTOL_wing_left",
+      "ref": null,
+      "key": "CRUS_Starlifter_Thruster_VTOL_Wing_Left"
+    },
+    {
+      "name": "hardpoint_thruster_VTOL_wing_right",
+      "ref": null,
+      "key": "CRUS_Starlifter_Thruster_VTOL_Wing_Right"
+    },
+    {
+      "name": "hardpoint_thruster_VTOL_side_left",
+      "ref": null,
+      "key": "CRUS_Starlifter_Thruster_VTOL_Side_Left"
+    },
+    {
+      "name": "hardpoint_thruster_VTOL_side_right",
+      "ref": null,
+      "key": "CRUS_Starlifter_Thruster_VTOL_Side"
+    },
+    {
+      "name": "hardpoint_weapon_top_left",
+      "ref": "99e0ea17-45fc-4700-8607-ab879d05a284",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "b94c54b2-a70e-4f41-bc02-ed76be87e493",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_top_right",
+      "ref": "99e0ea17-45fc-4700-8607-ab879d05a284",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "b94c54b2-a70e-4f41-bc02-ed76be87e493",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_rear_ramp",
+      "ref": null,
+      "key": "Door_Ship_Exterior_CRUS_Starlifter_Rear_Ramp_A2"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": "3260e018-64ca-42e9-b85a-8b80d24d5375",
+      "key": null
+    },
+    {
+      "name": "hardpoint_bridge_weapon_locker",
+      "ref": null,
+      "key": "Weapon_Rack_CRUS_Starlifter_Bridge_Weapon_Locker"
+    },
+    {
+      "name": "hardpoint_bridge_remote_turret_seat",
+      "ref": null,
+      "key": "CRUS_Starlifter_SCItem_Turret_Seat_Bridge",
+      "loadout": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_bridge_remote_turret",
+      "ref": "b22c5a8d-3f04-43e2-8268-8233a2fca65d",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "52c1793e-5610-4daa-aafe-a8cf55e60283",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "52c1793e-5610-4daa-aafe-a8cf55e60283",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_bridge_remote_turret_controller",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_forward_left_remote_turret_seat",
+      "ref": null,
+      "key": "CRUS_Starlifter_SCItem_Turret_Seat_Left",
+      "loadout": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_forward_left_remote_turret",
+      "ref": "65fc908e-b7e3-432d-ac9d-aef6906906e4",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_gun",
+          "ref": "99e0ea17-45fc-4700-8607-ab879d05a284",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "c778d7c0-116a-4597-a32e-2bbf7f6b7c17",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_forward_left_remote_turret_controller",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_forward_right_remote_turret_seat",
+      "ref": null,
+      "key": "CRUS_Starlifter_SCItem_Turret_Seat_Right",
+      "loadout": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_forward_right_remote_turret",
+      "ref": "d3e70cd0-1052-4d46-b910-efd8f6f3795c",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_gun",
+          "ref": "99e0ea17-45fc-4700-8607-ab879d05a284",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "c778d7c0-116a-4597-a32e-2bbf7f6b7c17",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_forward_right_remote_turret_controller",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_rear_left_remote_turret_seat",
+      "ref": null,
+      "key": "CRUS_Starlifter_SCItem_Turret_Seat_Left",
+      "loadout": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_rear_left_remote_turret",
+      "ref": "31ee9a74-3f52-48d2-8b31-fbb4e4535822",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": "99e0ea17-45fc-4700-8607-ab879d05a284",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "b94c54b2-a70e-4f41-bc02-ed76be87e493",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": "99e0ea17-45fc-4700-8607-ab879d05a284",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "b94c54b2-a70e-4f41-bc02-ed76be87e493",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_rear_left_remote_turret_controller",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_rear_right_remote_turret_seat",
+      "ref": null,
+      "key": "CRUS_Starlifter_SCItem_Turret_Seat_Right",
+      "loadout": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_rear_right_remote_turret",
+      "ref": "ddef5a65-6ba0-458a-8345-077de298cd15",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": "99e0ea17-45fc-4700-8607-ab879d05a284",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "4170fcb0-0cef-4228-a3d5-7efc41ba4ea3",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": "99e0ea17-45fc-4700-8607-ab879d05a284",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "4170fcb0-0cef-4228-a3d5-7efc41ba4ea3",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_rear_right_remote_turret_controller",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_bomb_bay",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_chin_turret_cap",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_front_door_left",
+      "ref": null,
+      "key": "Door_Ship_Exterior_CRUS_Starlifter_Front_Door_Left"
+    },
+    {
+      "name": "hardpoint_front_door_right",
+      "ref": null,
+      "key": "Door_Ship_Exterior_CRUS_Starlifter_Front_Door_Right"
+    },
+    {
+      "name": "hardpoint_front_door_bottom",
+      "ref": null,
+      "key": "Door_Ship_Exterior_CRUS_Starlifter_Door_Bottom"
+    },
+    {
+      "name": "hardpoint_front_ramp",
+      "ref": null,
+      "key": "Door_Ship_Exterior_CRUS_Starlifter_Front_Ramp"
+    },
+    {
+      "name": "hardpoint_Elevator_Exterior_Door",
+      "ref": null,
+      "key": "Door_Ship_Exterior_CRUS_Starlifter_Elevator_Door"
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": "Controller_Missile_A2_Bomber"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_turret_cap",
+      "ref": null,
+      "key": "CRUS_Starlifter_Turret_Cap"
+    },
+    {
+      "name": "hardpoint_weapon_rack_rifle_1",
+      "ref": null,
+      "key": "Weapon_Rack_Starlifter_Armory_Large_Alt"
+    },
+    {
+      "name": "hardpoint_weapon_rack_rifle_2",
+      "ref": null,
+      "key": "Weapon_Rack_Starlifter_Armory_Large_Alt"
+    },
+    {
+      "name": "hardpoint_cockpit_flair",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_cockpit",
+      "ref": "609b087d-bdfe-401d-b9fe-526af4d52d09",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_neck",
+      "ref": "609b087d-bdfe-401d-b9fe-526af4d52d09",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_central",
+      "ref": "d046b6a3-84ba-4a9b-bc51-952ecb40224d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_rear_left",
+      "ref": "d046b6a3-84ba-4a9b-bc51-952ecb40224d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_rear_right",
+      "ref": "d046b6a3-84ba-4a9b-bc51-952ecb40224d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_habitation",
+      "ref": "609b087d-bdfe-401d-b9fe-526af4d52d09",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_turrets",
+      "ref": "609b087d-bdfe-401d-b9fe-526af4d52d09",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_cargo",
+      "ref": "609b087d-bdfe-401d-b9fe-526af4d52d09",
+      "key": null
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_TYDT_S02_ComfortAirPlus"
+    },
+    {
+      "name": "hardpoint_engineeringscreen",
+      "ref": "26cd663d-9c7b-4ef6-8d08-e75ef0c43695",
+      "key": null
+    },
+    {
+      "name": "hardpoint_battery_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_battery_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_weapon_rack_special_1",
+      "ref": null,
+      "key": "Weapon_Rack_Starlifter_Armory_Large_Special"
+    },
+    {
+      "name": "hardpoint_weapon_rack_special_2",
+      "ref": null,
+      "key": "Weapon_Rack_Starlifter_Armory_Large_Special"
+    },
+    {
+      "name": "hardpoint_armory_cargo_01",
+      "ref": null,
+      "key": "CRUS_Starlifter_CargoGrid_Personal_Armory_Large"
+    },
+    {
+      "name": "hardpoint_armory_cargo_02",
+      "ref": null,
+      "key": "CRUS_Starlifter_CargoGrid_Personal_Armory_Large"
+    },
+    {
+      "name": "hardpoint_armory_cargo_03",
+      "ref": null,
+      "key": "CRUS_Starlifter_CargoGrid_Personal_Armory_Small"
+    },
+    {
+      "name": "hardpoint_bombrack_left",
+      "ref": null,
+      "key": "BMBRCK_CRUS_STARL_Left",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "BOMB_S10_FSKI_Colossus"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "BOMB_S10_FSKI_Colossus"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_bombrack_right",
+      "ref": null,
+      "key": "BMBRCK_CRUS_STARL_Right",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "BOMB_S10_FSKI_Colossus"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "BOMB_S10_FSKI_Colossus"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_bomb_console",
+      "ref": null,
+      "key": "CRUS_Starlifter_SCItem_Bomb_Console"
+    },
+    {
+      "name": "hardpoint_bomb_turret",
+      "ref": null,
+      "key": "CRUS_Starlifter_Bomb_Turret",
+      "loadout": [
+        {
+          "name": "hardpoint_missile_rack1",
+          "ref": null,
+          "key": null
+        },
+        {
+          "name": "hardpoint_missile_rack2",
+          "ref": null,
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_bomb_turret_controller",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_cargo_small_A2",
+      "ref": null,
+      "key": "CRUS_Starlifter_CargoGrid_Small_A2"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_CRUS_Starlifter"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "CRUS_Starlifter_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_shield_generator_c",
+      "ref": "6a4d4eb2-dacd-4b04-b17f-e7a02ea7e744",
+      "key": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "key": "CNOU_Mustang_CargoGrid",
+  "ref": "3690b182-8bae-4b44-98ad-059eade61046",
+  "category": "inventory",
+  "type": "cargo_grid",
+  "type_data": {
+    "dimensions": {
+      "x": 5.0,
+      "y": 1.25,
+      "z": 1.25,
+      "scu": 4.0
+    },
+    "min_container": {
+      "x": 1.25,
+      "y": 1.25,
+      "z": 1.25,
+      "scu": 1.0
+    },
+    "max_container": {
+      "x": 2.5,
+      "y": 1.25,
+      "z": 1.25,
+      "scu": 2.0
+    }
+  }
+}

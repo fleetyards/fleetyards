@@ -1,0 +1,21 @@
+{
+  "key": "Paint_400i_IAE2951_Grey_White",
+  "ref": "8b2969cc-defb-46ee-a801-6d44a05ae4ee",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6f5941aa-ab59-4441-936b-17c9f706d8fd",
+  "name": "400i Polar Livery",
+  "short_name": null,
+  "description": "Modify your 400i with this white and grey livery specifically designed for the 2951 IAE.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

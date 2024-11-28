@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Starlifter_Fleetweek_Gold",
+  "ref": "e5382652-80ce-4e07-8a66-d267c4e17ad2",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "7abf1921-dcb8-4b6d-b5b5-ec36954cef87",
+  "name": "Hercules Starlifter Draco Livery",
+  "short_name": null,
+  "description": "Customize your Hercules Starlifter with the exquisite Draco livery that's gold with black highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

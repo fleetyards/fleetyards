@@ -1,0 +1,24 @@
+{
+  "key": "Mining_Modules_Active_Brandt",
+  "ref": "18a62ae8-e1aa-453f-8631-df928a71abda",
+  "category": "utility",
+  "type": "MiningModifier",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": "Brandt Module",
+  "short_name": null,
+  "description": "Manufacturer: Shubin Interstellar\\nItem Type: Mining Module (Active)\\n\\nShatter Damage: -30%\\nMining Laser Power: 135%\\n\\nResistance: +15%\\n\\nDuration: 60 seconds\\nUses: 5\\n\\nStrategically use the Brandt to boost a mining laser's power for sixty seconds. The modulated beam also has the benefit of helping make rocks that shatter less hazardous, though the deposit will be more resistant to the laser's affect overall.",
+  "inventory_consumption": {
+    "micro_scu": 5998.0,
+    "dimensions": {
+      "x": 0.1914791,
+      "y": 0.2477143,
+      "z": 0.158066
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Reliant_Tana",
+  "ref": "3a174a93-5264-4b5e-9491-e1eb419f02e6",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": "Reliant Tana Livery",
+  "short_name": null,
+  "description": "Standard livery for the MISC Reliant Tana.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "key": "BEHR_LaserCannon_SF7E_Ventilation_S7",
+  "ref": "f796a210-e6cd-4aae-a63f-4d681cb947e7",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "Ventilation",
+  "size": "7",
+  "grade": "7",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1.0
+  }
+}

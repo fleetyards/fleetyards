@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Prowler",
+  "ref": "e162275e-69da-453f-9be3-c06ae447286d",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4ecc1a24-d228-4dd5-8857-21ba6145a1d3",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

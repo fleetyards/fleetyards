@@ -1,0 +1,371 @@
+{
+  "key": "MISC_Hull_A_PU_AI_CIV",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "MISC Hull A",
+  "description": "Manufacturer: MISC\\nFocus: Medium Freight\\n\\nThe smallest, most affordable Hull. The Hull A is great for those just striking out in the galaxy on their own. The Hull A is most similar to the Aurora and Mustang, but lacks the ‘jack of all trades’ nature. Where the others trade cargo capacity for firepower or speed, the Hull A is 100% on-mission transport.",
+  "career": "Transporter",
+  "role": "Light Freight",
+  "insurance": {
+    "base_wait_time_minutes": "5.95",
+    "mandatory_wait_time_minutes": "1.98",
+    "base_expediting_fee": "2700"
+  },
+  "mass": 122650.0,
+  "metrics": {
+    "x": 12.5,
+    "y": 30.0,
+    "z": 8.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "MISC_Hull_A_Seat_Pilot"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_MISC_Hull_A"
+    },
+    {
+      "name": "hardpoint_controller_scanner",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_MISC_Hull_A"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_cockpit_radar",
+      "ref": null,
+      "key": "RADR_CHCO_S01_SurveyorLite"
+    },
+    {
+      "name": "hardpoint_selfdestruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_30s"
+    },
+    {
+      "name": "hardpoint_airlock",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_power_plant",
+      "ref": null,
+      "key": "POWR_LPLT_S01_IonBurst_SCItem"
+    },
+    {
+      "name": "hardpoint_fuel_tank",
+      "ref": null,
+      "key": "HTNK_MISC_Hull_A"
+    },
+    {
+      "name": "hardpoint_fuel_intake",
+      "ref": null,
+      "key": "INTK_MISC_Hull_A"
+    },
+    {
+      "name": "hardpoint_cooler_1",
+      "ref": null,
+      "key": "COOL_LPLT_S01_ArcticStorm_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_2",
+      "ref": null,
+      "key": "COOL_LPLT_S01_ArcticStorm_SCItem"
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_JUST_S01_Goliath_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": null,
+          "key": "JDRV_TARS_S01_Explorer_SCItem"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_fuel",
+      "ref": null,
+      "key": "QTNK_MISC_Hull_A"
+    },
+    {
+      "name": "hardpoint_shield_generator_1",
+      "ref": null,
+      "key": "SHLD_BASL_S02_Armada_SCItem"
+    },
+    {
+      "name": "hardpoint_armour",
+      "ref": null,
+      "key": "ARMR_MISC_Hull_A"
+    },
+    {
+      "name": "hardpoint_turret_nose",
+      "ref": "920c89a5-30e2-403a-88bf-9e3d33a3f8f9",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_left",
+          "ref": "c9c2bb19-3298-448e-a117-043e082a1c74",
+          "key": null
+        },
+        {
+          "name": "hardpoint_right",
+          "ref": "c9c2bb19-3298-448e-a117-043e082a1c74",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_CML_left",
+      "ref": "9435f4fd-d09f-44f3-a72b-27b20b28c1f8",
+      "key": null
+    },
+    {
+      "name": "hardpoint_CML_right",
+      "ref": "389d4ae7-ec1c-40c9-96c9-1c97d8ce394e",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_MISC_Hull_A"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "MISC_Hull_A_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_thruster_main",
+      "ref": null,
+      "key": "MISC_Hull_A_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_aux_left",
+      "ref": null,
+      "key": "MISC_Hull_A_Thruster_Aux"
+    },
+    {
+      "name": "hardpoint_thruster_aux_right",
+      "ref": null,
+      "key": "MISC_Hull_A_Thruster_Aux"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_rear_left",
+      "ref": null,
+      "key": "MISC_Hull_A_Thruster_VTOL"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_rear_right",
+      "ref": null,
+      "key": "MISC_Hull_A_Thruster_VTOL"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_front_left",
+      "ref": null,
+      "key": "MISC_Hull_A_Thruster_VTOL"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_front_right",
+      "ref": null,
+      "key": "MISC_Hull_A_Thruster_VTOL"
+    },
+    {
+      "name": "hardpoint_thruster_retro_left",
+      "ref": null,
+      "key": "MISC_Hull_A_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_retro_right",
+      "ref": null,
+      "key": "MISC_Hull_A_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_mav_rear_top_left",
+      "ref": null,
+      "key": "MISC_Hull_A_Thruster_Mav_Roll"
+    },
+    {
+      "name": "hardpoint_thruster_mav_rear_top_right",
+      "ref": null,
+      "key": "MISC_Hull_A_Thruster_Mav_Roll"
+    },
+    {
+      "name": "hardpoint_thruster_mav_rear_side_left",
+      "ref": null,
+      "key": "MISC_Hull_A_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_mav_rear_side_right",
+      "ref": null,
+      "key": "MISC_Hull_A_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_mav_rear_bottom_left",
+      "ref": null,
+      "key": "MISC_Hull_A_Thruster_Mav_Roll"
+    },
+    {
+      "name": "hardpoint_thruster_mav_rear_bottom_right",
+      "ref": null,
+      "key": "MISC_Hull_A_Thruster_Mav_Roll"
+    },
+    {
+      "name": "hardpoint_thruster_mav_front_top_left",
+      "ref": null,
+      "key": "MISC_Hull_A_Thruster_Mav_Roll"
+    },
+    {
+      "name": "hardpoint_thruster_mav_front_top_right",
+      "ref": null,
+      "key": "MISC_Hull_A_Thruster_Mav_Roll"
+    },
+    {
+      "name": "hardpoint_thruster_mav_front_side_left",
+      "ref": null,
+      "key": "MISC_Hull_A_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_mav_front_side_right",
+      "ref": null,
+      "key": "MISC_Hull_A_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_mav_front_bottom_left",
+      "ref": null,
+      "key": "MISC_Hull_A_Thruster_Mav_Roll"
+    },
+    {
+      "name": "hardpoint_thruster_mav_front_bottom_right",
+      "ref": null,
+      "key": "MISC_Hull_A_Thruster_Mav_Roll"
+    },
+    {
+      "name": "hardpoint_weapon_locker",
+      "ref": null,
+      "key": "Weapon_Rack_MISC_Hull_A"
+    },
+    {
+      "name": "hardpoint_cargoplate_bot_left",
+      "ref": null,
+      "key": "MISC_Hull_A_CargoPlate",
+      "loadout": [
+        {
+          "name": "Hardpoint_Cargo",
+          "ref": null,
+          "key": "MISC_Hull_A_CargoGrid"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_cargoplate_top_left",
+      "ref": null,
+      "key": "MISC_Hull_A_CargoPlate",
+      "loadout": [
+        {
+          "name": "Hardpoint_Cargo",
+          "ref": null,
+          "key": "MISC_Hull_A_CargoGrid"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_cargoplate_bot_right",
+      "ref": null,
+      "key": "MISC_Hull_A_CargoPlate",
+      "loadout": [
+        {
+          "name": "Hardpoint_Cargo",
+          "ref": null,
+          "key": "MISC_Hull_A_CargoGrid"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_cargoplate_top_right",
+      "ref": null,
+      "key": "MISC_Hull_A_CargoPlate",
+      "loadout": [
+        {
+          "name": "Hardpoint_Cargo",
+          "ref": null,
+          "key": "MISC_Hull_A_CargoGrid"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_cockpit_flair",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_cockpit",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_TYDT_S01_ComfortAir"
+    },
+    {
+      "name": "hardpoint_gravitygenerator",
+      "ref": null,
+      "key": null
+    }
+  ]
+}

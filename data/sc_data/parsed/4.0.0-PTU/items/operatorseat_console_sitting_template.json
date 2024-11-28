@@ -1,0 +1,21 @@
+{
+  "key": "OperatorSeat_Console_Sitting_Template",
+  "ref": "b8ff781d-0f1d-4891-8b6a-09bb3425a6c9",
+  "category": "seat",
+  "type": "Seat",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

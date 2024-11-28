@@ -1,0 +1,21 @@
+{
+  "key": "LT_DoorPanelScreen",
+  "ref": "ef9a0788-8306-435d-a7d7-fcc3cf0437ec",
+  "category": "doors",
+  "type": "Misc",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "e6ba6e48-e801-45a9-b07f-6a6c206bb4ba",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

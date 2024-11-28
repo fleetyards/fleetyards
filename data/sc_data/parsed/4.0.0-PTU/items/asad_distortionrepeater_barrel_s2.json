@@ -1,0 +1,21 @@
+{
+  "key": "ASAD_DistortionRepeater_Barrel_S2",
+  "ref": "748bba37-0b33-4d68-a7d9-5c39bc87ffd1",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "Barrel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

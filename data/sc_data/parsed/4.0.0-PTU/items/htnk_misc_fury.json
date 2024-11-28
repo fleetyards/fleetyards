@@ -1,0 +1,24 @@
+{
+  "key": "HTNK_MISC_Fury",
+  "ref": "2d9a37a3-e49e-4eab-8c37-bfd97b68880b",
+  "category": "fueltanks",
+  "type": "FuelTank",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Internal Tank",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "capacity": 2.75
+  }
+}

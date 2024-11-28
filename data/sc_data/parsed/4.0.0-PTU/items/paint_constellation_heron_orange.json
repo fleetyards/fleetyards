@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Constellation_Heron_Orange",
+  "ref": "a15d45ae-7bd5-4058-bd38-a199ccf723e3",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "920a9ddf-7dca-4f9b-836d-cbc579342b31",
+  "name": "Constellation Orange Heron Livery",
+  "short_name": null,
+  "description": "Mixing orange with black and white highlights, the Orange Heron livery will help you blaze your own path through the universe.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_X1_Red_White_Black",
+  "ref": "725b2bc7-57b5-49cd-806c-0110433eab65",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "be6128f4-ef23-48b6-bb75-afe27f38287c",
+  "name": "X1 Scarlet Livery",
+  "short_name": null,
+  "description": "Infinity Custom worked closely with Origin to develop the exclusive Scarlet livery, which enhances the striking look of the X1 with bold red accents.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

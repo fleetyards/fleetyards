@@ -1,0 +1,9 @@
+{
+  "key": "Ship_TempItemCarryingCapacity_DRAK_Caterpillar",
+  "ref": "e0cafaf3-c07a-451d-b003-ef8a3effe1d4",
+  "category": "inventory",
+  "type": "personal_storage",
+  "type_data": {
+    "storage": 576.0
+  }
+}

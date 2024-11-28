@@ -1,0 +1,9 @@
+{
+  "key": "Ship_TempItemCarryingCapacity_ANVL_Pisces",
+  "ref": "5899fde0-573c-4f52-9de0-ed352533b4c8",
+  "category": "inventory",
+  "type": "personal_storage",
+  "type_data": {
+    "storage": 4.0
+  }
+}

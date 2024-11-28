@@ -1,0 +1,9 @@
+{
+  "key": "PersonalStorage_Locker_RSI_Polaris_MedLocker",
+  "ref": "e0d3a2b8-ea5a-4da7-af9d-0cd06c415160",
+  "category": "inventory",
+  "type": "personal_storage",
+  "type_data": {
+    "storage": 2.0
+  }
+}

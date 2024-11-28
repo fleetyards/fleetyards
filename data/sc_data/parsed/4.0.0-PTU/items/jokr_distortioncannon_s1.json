@@ -1,0 +1,121 @@
+{
+  "key": "JOKR_DistortionCannon_S1",
+  "ref": "d195eb47-24b8-45c0-a4d0-1771d60dc1a8",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "19fbaf6d-d6dc-4e15-8fdf-67101934ff3c",
+  "name": "Suckerpunch Cannon",
+  "short_name": "SCKRPNCH",
+  "description": "Manufacturer: Joker Engineering\\nItem Type: Distortion Cannon\\nSize: 1\\n\\nThe geniuses over at Joker have done it again. The Suckerpunch Distortion autocannon is a long-range weapon that drains your target's power supply rather than damaging the physical body of the ship, making it ideal for law-enforcement or other applications.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 0.801895,
+      "z": 1.105504
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "BAR1",
+      "key": "JOKR_DistortionCannon_Barrel_S1",
+      "ref": null
+    },
+    {
+      "name": "MEC",
+      "key": "JOKR_DistortionCannon_FiringMechanism_S1",
+      "ref": null
+    },
+    {
+      "name": "POW",
+      "key": "JOKR_DistortionCannon_PowerArray_S1",
+      "ref": null
+    },
+    {
+      "name": "VEN",
+      "key": "JOKR_DistortionCannon_Ventilation_S1",
+      "ref": null
+    }
+  ],
+  "durability": {
+    "health": 550.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 1.0,
+    "StartIRTemperature": 250.0,
+    "OverpowerHeat": 0.56,
+    "OverclockThresholdMinHeat": 0.44,
+    "OverclockThresholdMaxHeat": 0.56,
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.5,
+    "Mass": 210.0,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 58.57,
+    "MaxTemperature": 700.0,
+    "OverheatTemperature": 650.0,
+    "RecoveryTemperature": 550.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  },
+  "power_connection": {
+    "power_base": 220.0,
+    "power_draw": 220.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 20.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.35,
+    "overclock_threshold_max": 0.6,
+    "overpower_performance": 0.23,
+    "overclock_performance": 0.3,
+    "power_to_em": 1.5,
+    "decay_rate_of_em": 0.25
+  }
+}

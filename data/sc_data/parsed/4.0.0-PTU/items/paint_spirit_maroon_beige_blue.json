@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Spirit_Maroon_Beige_Blue",
+  "ref": "c7a87df1-5372-4060-a504-dccab04f987f",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "79d33f59-dde7-4b6e-a65c-22ec1a235cd0",
+  "name": "Spirit Ruby Livery",
+  "short_name": null,
+  "description": "The deep red of this livery enhances the already bold lines of the Crusader Spirit, while the subtle taupe and navy highlights give it extra panache.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}
