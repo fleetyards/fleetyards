@@ -1,0 +1,21 @@
+{
+  "key": "Paint_100i_Fleetweek_White_Camo",
+  "ref": "d8ae58b1-4bff-4294-95e6-44879ffe2f73",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "358fa1a1-b6e7-4f24-877a-6bbbf4da4370",
+  "name": "100 Series Frostbite Camo Livery",
+  "short_name": null,
+  "description": "Soar like the winter winds with the Frostbite Camo livery for your 100 series ship.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

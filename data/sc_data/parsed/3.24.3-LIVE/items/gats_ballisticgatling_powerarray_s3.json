@@ -1,0 +1,21 @@
+{
+  "key": "GATS_BallisticGatling_PowerArray_S3",
+  "ref": "e4f958c0-f276-4afe-989d-4b9f1fcf19ef",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "PowerArray",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a834198a-3465-4b02-86a5-887e922ec06d",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

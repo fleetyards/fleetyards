@@ -1,0 +1,21 @@
+{
+  "key": "InstancedHangarGateway_Stanton_MediumTop_Area18",
+  "ref": "d9a541b5-3091-4bc0-8ba9-2b2742c56a98",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": null,
+  "grade": null,
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  }
+}

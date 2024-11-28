@@ -1,0 +1,9 @@
+{
+  "key": "PersonalStorage_Locker_RAFT",
+  "ref": "e9a8140f-12be-4ec0-abb2-c121dde203d8",
+  "category": "inventory",
+  "type": "personal_storage",
+  "type_data": {
+    "storage": 0.4
+  }
+}

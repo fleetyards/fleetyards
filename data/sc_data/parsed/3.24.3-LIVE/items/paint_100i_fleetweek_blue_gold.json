@@ -1,0 +1,21 @@
+{
+  "key": "Paint_100i_Fleetweek_Blue_Gold",
+  "ref": "57f14363-ce4b-4b48-968e-451709a69ede",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1244444d-b901-4e2e-b8e1-77838fd563d2",
+  "name": "100 Series Invictus Blue and Gold Livery",
+  "short_name": null,
+  "description": "Featuring a vibrant blue base color and gold highlights, the Invictus Blue and Gold livery will give your 100 series ship a striking style.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

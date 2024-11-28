@@ -1,0 +1,21 @@
+{
+  "key": "Pushable_Trolley_1scu_x_2scu_x_1scu",
+  "ref": "a3c2fa5b-ddad-4036-bb69-beeb11301f45",
+  "category": "inventory",
+  "type": "cargo_grid",
+  "type_data": {
+    "dimensions": {
+      "x": 1.25,
+      "y": 3.0,
+      "z": 1.25,
+      "scu": 2.4
+    },
+    "min_container": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "scu": 0.0
+    },
+    "max_container": null
+  }
+}

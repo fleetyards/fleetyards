@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Defender_Silver_Red",
+  "ref": "5ccd4753-7127-48f6-9699-867ea22f6817",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "37f705b2-b12d-4688-8055-787e8cd82330",
+  "name": "Defender Platinum Livery",
+  "short_name": null,
+  "description": "The Platinum livery uses several shades of silver to accentuate the Defender's unique look.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

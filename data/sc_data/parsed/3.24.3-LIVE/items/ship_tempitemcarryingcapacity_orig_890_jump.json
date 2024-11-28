@@ -1,0 +1,9 @@
+{
+  "key": "Ship_TempItemCarryingCapacity_ORIG_890_Jump",
+  "ref": "59278bb4-e72f-4498-80f4-709da7e4e4c5",
+  "category": "inventory",
+  "type": "personal_storage",
+  "type_data": {
+    "storage": 460.0
+  }
+}

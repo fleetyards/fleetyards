@@ -1,0 +1,83 @@
+{
+  "key": "TMBL_Cyclone_Module_AntiAir",
+  "ref": "30d9c6da-a116-45ea-b321-33ccdddfedf8",
+  "category": "module",
+  "type": "Container",
+  "sub_type": "Cargo",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "bb1024bc-b82e-491c-820c-36662c36feb3",
+  "name": "Turret",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_countermeasure_01",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponDefensive"
+      ]
+    },
+    {
+      "name": "hardpoint_countermeasure_02",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponDefensive"
+      ]
+    },
+    {
+      "name": "hardpoint_missilerack_left",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "MissileLauncher",
+        "WeaponGun"
+      ]
+    },
+    {
+      "name": "hardpoint_missilerack_right",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "MissileLauncher",
+        "WeaponGun"
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_emp",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "EMP"
+      ]
+    },
+    {
+      "name": "hardpoint_door_ramp",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Door"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_door_ramp",
+      "key": "TMBL_Cyclone_Ramp_Locked",
+      "ref": null
+    }
+  ],
+  "durability": {
+    "health": 1.0
+  }
+}

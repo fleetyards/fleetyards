@@ -1,0 +1,9 @@
+{
+  "key": "RSI_Ursa_Rover_CargoGrid_Template",
+  "ref": "fad610d2-f086-4ac9-ac06-743538035e59",
+  "category": "inventory",
+  "type": "personal_storage",
+  "type_data": {
+    "storage": 1.0
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_RSI_Constellation_Andromeda_MM_322",
+  "ref": "f0e43ba1-b299-422e-9b91-a228d6481451",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SELF STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "scm_speed": 200.0,
+    "scm_speed_boosted": 400.0,
+    "reverse_speed_boosted": 205.0,
+    "max_speed": 1000.0,
+    "angular_velocity": {
+      "pitch": 30.0,
+      "yaw": 30.0,
+      "roll": 60.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 36.0,
+      "yaw": 36.0,
+      "roll": 72.0
+    }
+  }
+}

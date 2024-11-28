@@ -1,0 +1,63 @@
+{
+  "key": "COOL_TYDT_S01_SnowBlind_SCItem",
+  "ref": "f50cc3fd-dd83-4aec-b74a-270428f22797",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a2a97679-2a6e-4e89-80d8-439c88a01427",
+  "name": "SnowBlind",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Tyler Design & Tech\\nSize: 1\\nGrade: A\\nClass: Stealth\\n\\nAn IR signature that is running hot is a surefire way to alert the entire sector to your whereabouts and can often potentially prove to be dangerous. With the Tyler Design & Tech Snowblind cooling system onboard you can significantly reduce your heat emissions while keeping your ship running within optimal thermal conditions.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 420.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 1.3525,
+    "StartIRTemperature": 0.0,
+    "OverpowerHeat": 0.0,
+    "OverclockThresholdMinHeat": 0.0,
+    "OverclockThresholdMaxHeat": 0.0,
+    "ThermalEnergyBase": 10.0,
+    "ThermalEnergyDraw": 20.0,
+    "ThermalConductivity": 3.0,
+    "SpecificHeatCapacity": 13.0,
+    "Mass": 347.0,
+    "SurfaceArea": 50.0,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 1.0,
+    "MaxTemperature": 450.0,
+    "OverheatTemperature": 370.0,
+    "RecoveryTemperature": 350.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "power_connection": {
+    "power_base": 8.0,
+    "power_draw": 12.0,
+    "time_to_reach_draw_request": 7.5,
+    "safeguard_priority": 30.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.34,
+    "overclock_threshold_max": 0.43,
+    "overpower_performance": 0.408,
+    "overclock_performance": 0.05,
+    "power_to_em": 8.25,
+    "decay_rate_of_em": 0.28
+  },
+  "type_data": {
+    "cooling_rate": 170000.0
+  }
+}

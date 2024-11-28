@@ -1,0 +1,21 @@
+{
+  "key": "TOAG_LaserRepeater_PowerArray_S3",
+  "ref": "6f39210f-f5c9-4cd7-bafe-bebb8c27d3fa",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "PowerArray",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Spirit_White_Black_Red",
+  "ref": "07470862-1827-4fe9-bd9b-6e109b2994b5",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "c1c78245-1ee3-47be-ae2f-7829f5cfb4b2",
+  "name": "Spirit Allegiant Livery",
+  "short_name": null,
+  "description": "The Allegiant livery for the Spirit is a crisp white with black and red highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

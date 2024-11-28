@@ -1,0 +1,21 @@
+{
+  "key": "ORIG_300i_CargoGrid_Template",
+  "ref": "48c39aee-e5c5-47c9-9217-9f8f523076a9",
+  "category": "inventory",
+  "type": "cargo_grid",
+  "type_data": {
+    "dimensions": {
+      "x": 35.0,
+      "y": 35.0,
+      "z": 35.0,
+      "scu": 21952.0
+    },
+    "min_container": {
+      "x": 1.25,
+      "y": 1.25,
+      "z": 1.25,
+      "scu": 1.0
+    },
+    "max_container": null
+  }
+}

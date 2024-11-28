@@ -1,0 +1,21 @@
+{
+  "key": "Paint_FuryLX_StellaFortuna2954_Green",
+  "ref": "0c7d0309-7731-4171-a707-20c001a0510a",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "3e213a23-cc49-43e0-af73-7f6444dd23ab",
+  "name": "Fury Fortuna Livery",
+  "short_name": null,
+  "description": "Make luck your co-pilot. Boldly set your sights on the stars and adventure forth in style with the Fortuna livery. This Stella Fortuna themed paint scheme is primarily green with grey accents.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

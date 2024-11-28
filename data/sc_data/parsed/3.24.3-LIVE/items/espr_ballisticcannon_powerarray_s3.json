@@ -1,0 +1,21 @@
+{
+  "key": "ESPR_BallisticCannon_PowerArray_S3",
+  "ref": "aba67d74-1e55-4248-9c7a-6c3cb960b85e",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "PowerArray",
+  "size": "3",
+  "grade": "3",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

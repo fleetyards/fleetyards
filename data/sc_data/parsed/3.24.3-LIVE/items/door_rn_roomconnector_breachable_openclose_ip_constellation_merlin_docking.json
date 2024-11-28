@@ -1,0 +1,24 @@
+{
+  "key": "Door_RN_RoomConnector_Breachable_OpenClose_IP_Constellation_Merlin_Docking",
+  "ref": "9463e0e4-7d09-4ea7-b27b-280cc56d4961",
+  "category": "doors",
+  "type": "DockingAnimator",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  }
+}

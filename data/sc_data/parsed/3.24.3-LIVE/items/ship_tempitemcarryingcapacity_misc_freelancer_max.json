@@ -1,0 +1,9 @@
+{
+  "key": "Ship_TempItemCarryingCapacity_MISC_Freelancer_MAX",
+  "ref": "78ef7544-efb0-4c91-95af-0e91f51c78c1",
+  "category": "inventory",
+  "type": "personal_storage",
+  "type_data": {
+    "storage": 122.0
+  }
+}

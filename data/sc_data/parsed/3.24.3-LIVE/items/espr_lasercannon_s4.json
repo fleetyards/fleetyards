@@ -1,0 +1,121 @@
+{
+  "key": "ESPR_LaserCannon_S4",
+  "ref": "060aac99-514a-4689-b6f9-4a1461723427",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "4ecc1a24-d228-4dd5-8857-21ba6145a1d3",
+  "name": "Lightstrike IV Cannon",
+  "short_name": "LGHTSTRK-4",
+  "description": "Manufacturer: Esperia\\nItem Type: Laser Cannon \\nSize: 4\\n\\nThe Lightstrike IV takes the attack to distant targets by delivering focused, high damage blasts that will make any aggressor think twice before coming too close. Capable of providing powerful overwatch options during troop deployments or engaging targets in outer space, it's easy to see why the Lightstrike IV was feared by UPE forces during the First Tevarin War.",
+  "inventory_consumption": {
+    "micro_scu": 2100000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "BAR1",
+      "key": "ESPR_LaserCannon_Barrel_S4",
+      "ref": null
+    },
+    {
+      "name": "MEC",
+      "key": "ESPR_LaserCannon_FiringMechanism_S4",
+      "ref": null
+    },
+    {
+      "name": "POW",
+      "key": "ESPR_LaserCannon_PowerArray_S4",
+      "ref": null
+    },
+    {
+      "name": "VEN",
+      "key": "ESPR_LaserCannon_Ventilation_S4",
+      "ref": null
+    }
+  ],
+  "durability": {
+    "health": 550.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 2.0,
+    "StartIRTemperature": 250.0,
+    "OverpowerHeat": 0.8,
+    "OverclockThresholdMinHeat": 0.52,
+    "OverclockThresholdMaxHeat": 0.76,
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.5,
+    "Mass": 400.0,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 248.947,
+    "MaxTemperature": 700.0,
+    "OverheatTemperature": 650.0,
+    "RecoveryTemperature": 550.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  },
+  "power_connection": {
+    "power_base": 250.0,
+    "power_draw": 250.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 20.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.25,
+    "overclock_threshold_max": 0.46,
+    "overpower_performance": 0.3,
+    "overclock_performance": 0.25,
+    "power_to_em": 1.8,
+    "decay_rate_of_em": 0.5
+  }
+}

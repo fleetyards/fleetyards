@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Lynx_Purple_Black_Gold",
+  "ref": "574031b7-06d5-4ff3-97f5-2185e9df0f48",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "26bfc3ec-426d-4651-90c3-67f8253563d3",
+  "name": "Lynx Nebula Livery",
+  "short_name": null,
+  "description": "The Nebula livery brings a striking metallic purple finish to the Lynx.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

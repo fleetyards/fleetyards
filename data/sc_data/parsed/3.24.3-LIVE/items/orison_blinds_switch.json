@@ -1,0 +1,21 @@
+{
+  "key": "Orison_Blinds_Switch",
+  "ref": "99c6f7a2-e142-4e52-8f0f-62d4bebbe90b",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Blinds Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

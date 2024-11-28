@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Talon_Blue",
+  "ref": "5b31eacf-b3dd-492c-acd3-c1b3d0adfdb5",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "0d72fe4b-e18c-4988-9612-c25ec2553880",
+  "name": "Talon Cobalt Livery",
+  "short_name": "Talon Cobalt Livery",
+  "description": "Standout with this cool blue livery custom designed for the Esperia Talon and its Shrike variant.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

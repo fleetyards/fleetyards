@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Freelancer_LunarNewYear2951",
+  "ref": "c0de1fbb-e8ff-4d97-96c4-329b05dac742",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "81d604c4-be65-4eda-83a7-31f63e150be5",
+  "name": "Freelancer 2951 Auspicious Red Ram Livery",
+  "short_name": null,
+  "description": "Seek peace and prosperity in the new year with the 2951 Auspicious Red Ram livery. Outfit your ship with this bold red base paint complimented by gold accents and a silhouette of a ram's head.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

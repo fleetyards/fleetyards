@@ -1,0 +1,24 @@
+{
+  "key": "Cargo_Mining_Pod_Mole",
+  "ref": "f4aebc6d-ab66-4b7a-93ce-69bdd928ca99",
+  "category": "utility",
+  "type": "Container",
+  "sub_type": "Cargo",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "9e1f5a35-edcc-4d19-bede-08e2730043c5",
+  "name": "Argo Ore Pod",
+  "short_name": null,
+  "description": "Capacity: 12 SCU\\n\\nFeaturing a simple yet sturdy construction that ensures the easy flow of materials into and out of the container, the Argo Ore Pod is an industry standard designed to work with any compatible mining ship.\\n",
+  "inventory_consumption": {
+    "micro_scu": 50036534.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  }
+}

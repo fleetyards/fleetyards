@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hammerhead_StellaFortuna_Green",
+  "ref": "53128752-7863-4a3c-858a-6ca6324b0544",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2ae83233-250e-407c-b5e4-fdb55b0a351c",
+  "name": "Hammerhead Fortuna Livery",
+  "short_name": null,
+  "description": "Make luck your co-pilot. Boldly set your sights on the stars and adventure forth in style with the Fortuna livery. This Stella Fortuna themed paint scheme is primarily green with grey accents.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

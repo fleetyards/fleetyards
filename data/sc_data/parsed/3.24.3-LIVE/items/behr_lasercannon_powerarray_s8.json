@@ -1,0 +1,21 @@
+{
+  "key": "BEHR_LaserCannon_PowerArray_S8",
+  "ref": "0df46d87-1877-448d-b58f-67690aa31097",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "PowerArray",
+  "size": "3",
+  "grade": "3",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

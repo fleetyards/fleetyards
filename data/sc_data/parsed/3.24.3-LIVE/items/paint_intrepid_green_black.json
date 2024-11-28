@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Intrepid_Green_Black",
+  "ref": "9eaab991-f532-471a-9def-e399f7726f82",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "7fcaeea8-aeda-4275-8852-f5b56ed5635d",
+  "name": "Intrepid Fusion Livery",
+  "short_name": null,
+  "description": "Sporting two distinct and vibrant shades of green with black highlights, the Fusion livery gives the Intrepid an utterly unique look.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

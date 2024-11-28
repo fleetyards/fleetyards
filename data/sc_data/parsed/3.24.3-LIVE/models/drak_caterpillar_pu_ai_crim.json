@@ -1,0 +1,697 @@
+{
+  "key": "DRAK_Caterpillar_PU_AI_CRIM",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "Drake Caterpillar",
+  "description": "Manufacturer: Drake Interplanetary\\nFocus: Transport\\n\\nFirst introduced in 2871, Drake Interplanetary's Caterpillar has long proven to be a reliable, cost-effective multi-role vessel, capable of being outfitted for everything from mercantile operations to combat support. Long hailed as a hard-fought alternative to the ubiquitous Hull series, the Caterpillar is a freighter that doesn't skimp on weaponry or customization.",
+  "career": "Transporter",
+  "role": "Medium Freight",
+  "insurance": {
+    "base_wait_time_minutes": "18.63",
+    "mandatory_wait_time_minutes": "6.21",
+    "base_expediting_fee": "7730"
+  },
+  "mass": 1660063.0,
+  "metrics": {
+    "x": 39.5,
+    "y": 13.4,
+    "z": 111.5
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "DRAK_Caterpillar_SCItem_Seat_Pilot"
+    },
+    {
+      "name": "hardpoint_seat_copilot",
+      "ref": null,
+      "key": "DRAK_Caterpillar_SCItem_Seat_Copilot"
+    },
+    {
+      "name": "hardpoint_seat_support_left",
+      "ref": null,
+      "key": "DRAK_Caterpillar_SCItem_Seat_SupportLeft"
+    },
+    {
+      "name": "hardpoint_seat_support_right",
+      "ref": null,
+      "key": "DRAK_Caterpillar_SCItem_Seat_SupportRight"
+    },
+    {
+      "name": "hardpoint_seat_engineering",
+      "ref": null,
+      "key": "DRAK_Caterpillar_SCItem_Seat_Engineering",
+      "loadout": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_seat_tractorbeam_left",
+      "ref": null,
+      "key": "DRAK_Caterpillar_SCItem_Seat_TractorBeam",
+      "loadout": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_seat_tractorbeam_right",
+      "ref": null,
+      "key": "DRAK_Caterpillar_SCItem_Seat_TractorBeam",
+      "loadout": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_self_destruct_pilot",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_60s"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_power_plant",
+      "ref": null,
+      "key": "POWR_JUST_S03_Ginzel_SCItem"
+    },
+    {
+      "name": "hardpoint_power_plant_commandmodule",
+      "ref": null,
+      "key": "POWR_JUST_S03_Ginzel_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_cooler_left",
+      "ref": null,
+      "key": "COOL_JUST_S03_ThermalCore_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_right",
+      "ref": null,
+      "key": "COOL_JUST_S03_ThermalCore_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_DRAK_Caterpillar"
+    },
+    {
+      "name": "hardpoint_shield_generator_left",
+      "ref": null,
+      "key": "SHLD_BASL_S03_Stronghold_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator_right",
+      "ref": null,
+      "key": "SHLD_BASL_S03_Stronghold_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator",
+      "ref": null,
+      "key": "SHLD_BASL_S03_Stronghold_SCItem"
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": null,
+      "key": "ARMR_DRAK_Caterpillar"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_DRAK_Caterpillar"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_WLOP_S02_Chernykh"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_scanner",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_ping",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_main_left",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_main_right",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_main_center_left",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Aux"
+    },
+    {
+      "name": "hardpoint_thruster_main_center_right",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Aux"
+    },
+    {
+      "name": "hardpoint_thruster_set1_bottom_A",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Mav_Fixed_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_set1_bottom_B",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Mav_Fixed_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_set1_bottom_right",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_set1_bottom_left",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_set1_top",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Mav_Fixed_Top"
+    },
+    {
+      "name": "hardpoint_thruster_set1_top_right",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_set1_top_left",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_set1_retro_top_left",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_set1_retro_top_right",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_set1_retro_bottom",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_set2_bottom_A",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Mav_Fixed_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_set2_bottom_B",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Mav_Fixed_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_set2_bottom_right",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_set2_bottom_left",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_set2_top",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Mav_Fixed_Top"
+    },
+    {
+      "name": "hardpoint_thruster_set2_top_right",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_set2_top_left",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_set2_retro_top_left",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_set2_retro_top_right",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_set2_retro_bottom",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_set3_bottom_A",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Mav_Fixed_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_set3_bottom_B",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Mav_Fixed_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_set3_bottom_right",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_set3_bottom_left",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_set3_top",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Mav_Fixed_Top"
+    },
+    {
+      "name": "hardpoint_thruster_set3_top_right",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_set3_top_left",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_set4_bottom_A",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Mav_Fixed_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_set4_bottom_B",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Mav_Fixed_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_set4_bottom_right",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_set4_bottom_left",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_set4_top",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Mav_Fixed_Top"
+    },
+    {
+      "name": "hardpoint_thruster_set4_top_right",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_set4_top_left",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_fuel_intake_left",
+      "ref": null,
+      "key": "INTK_DRAK_Caterpillar"
+    },
+    {
+      "name": "hardpoint_fuel_intake_right",
+      "ref": null,
+      "key": "INTK_DRAK_Caterpillar"
+    },
+    {
+      "name": "hardpoint_fuel_tank",
+      "ref": null,
+      "key": "HTNK_DRAK_Caterpillar"
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_WETK_S03_Pontes_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": null,
+          "key": "JDRV_TARS_S03_C_Explorer"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_fuel_tank",
+      "ref": null,
+      "key": "QTNK_DRAK_Caterpillar"
+    },
+    {
+      "name": "hardpoint_cargogrid_nose",
+      "ref": null,
+      "key": "DRAK_Caterpillar_CargoGrid_Nose"
+    },
+    {
+      "name": "hardpoint_cargogrid_module_01",
+      "ref": null,
+      "key": "DRAK_Caterpillar_CargoGrid_Module"
+    },
+    {
+      "name": "hardpoint_cargogrid_module_01_walkway",
+      "ref": null,
+      "key": "DRAK_Caterpillar_CargoGrid_Module_Walkway"
+    },
+    {
+      "name": "hardpoint_cargogrid_module_02",
+      "ref": null,
+      "key": "DRAK_Caterpillar_CargoGrid_Module"
+    },
+    {
+      "name": "hardpoint_cargogrid_module_02_walkway",
+      "ref": null,
+      "key": "DRAK_Caterpillar_CargoGrid_Module_Walkway"
+    },
+    {
+      "name": "hardpoint_cargogrid_module_03",
+      "ref": null,
+      "key": "DRAK_Caterpillar_CargoGrid_Module"
+    },
+    {
+      "name": "hardpoint_cargogrid_module_03_walkway",
+      "ref": null,
+      "key": "DRAK_Caterpillar_CargoGrid_Module_Walkway"
+    },
+    {
+      "name": "hardpoint_cargogrid_module_04",
+      "ref": null,
+      "key": "DRAK_Caterpillar_CargoGrid_Module"
+    },
+    {
+      "name": "hardpoint_cargogrid_module_04_walkway",
+      "ref": null,
+      "key": "DRAK_Caterpillar_CargoGrid_Module_Walkway"
+    },
+    {
+      "name": "Hardpoint_LandingSystem",
+      "ref": null,
+      "key": "Default_LandingSystem"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_door_MainElevator",
+      "ref": null,
+      "key": "DRAK_Caterpillar_MainElevator"
+    },
+    {
+      "name": "hardpoint_door_FrontElevator",
+      "ref": null,
+      "key": "DRAK_Caterpillar_FrontElevator"
+    },
+    {
+      "name": "hardpoint_door_Room1_Left",
+      "ref": null,
+      "key": "DRAK_Caterpillar_SideElevator_Room1_Left"
+    },
+    {
+      "name": "hardpoint_door_Room1_Right",
+      "ref": null,
+      "key": "DRAK_Caterpillar_SideElevator_Room1_Right"
+    },
+    {
+      "name": "hardpoint_door_Room2_Left",
+      "ref": null,
+      "key": "DRAK_Caterpillar_SideElevator_Room2_Left"
+    },
+    {
+      "name": "hardpoint_door_Room2_Right",
+      "ref": null,
+      "key": "DRAK_Caterpillar_SideElevator_Room2_Right"
+    },
+    {
+      "name": "hardpoint_door_Room3_Left",
+      "ref": null,
+      "key": "DRAK_Caterpillar_SideElevator_Room3_Left"
+    },
+    {
+      "name": "hardpoint_door_Room3_Right",
+      "ref": null,
+      "key": "DRAK_Caterpillar_SideElevator_Room3_Right"
+    },
+    {
+      "name": "hardpoint_door_Room4_Left",
+      "ref": null,
+      "key": "DRAK_Caterpillar_SideElevator_Room4_Left"
+    },
+    {
+      "name": "hardpoint_door_Room4_Right",
+      "ref": null,
+      "key": "DRAK_Caterpillar_SideElevator_Room4_Right"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_weapon_right",
+      "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "f72ca643-b48c-4f6e-abb7-d5bc8eb261aa",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_left",
+      "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "f72ca643-b48c-4f6e-abb7-d5bc8eb261aa",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_top",
+      "ref": "31f31a22-aea8-4805-ac25-1f19b5740646",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_01",
+          "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+          "key": null
+        },
+        {
+          "name": "hardpoint_weapon_02",
+          "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_top",
+      "ref": "5df90b86-bfdd-40ec-8041-88de76a04434",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_bottom",
+      "ref": "072d286f-046b-49db-8230-ab21777249f3",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_countermeasure_flare_1",
+      "ref": null,
+      "key": "JOKR_Defcon_CML_Flare"
+    },
+    {
+      "name": "hardpoint_countermeasure_chaff_1",
+      "ref": null,
+      "key": "JOKR_Defcon_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_DRAK_Caterpillar"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "DRAK_Caterpillar_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_cockpit_flair",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_door_state_relay",
+      "ref": null,
+      "key": "ChipSet_Relay_TEMPLATE"
+    },
+    {
+      "name": "hardpoint_tractorbeam_left",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Remote_Turret_Left",
+      "loadout": [
+        {
+          "name": "turret_weapon",
+          "ref": "8c16ee3d-78fb-4fef-a369-b3d42952ec33",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_tractorbeam_right",
+      "ref": null,
+      "key": "DRAK_Caterpillar_Remote_Turret_Right",
+      "loadout": [
+        {
+          "name": "turret_weapon",
+          "ref": "8c16ee3d-78fb-4fef-a369-b3d42952ec33",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_weapon_tractorbeam_left",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_controller_weapon_tractorbeam_right",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_controller_salvage_left",
+      "ref": null,
+      "key": "Controller_Salvage_TractorBeamOnly"
+    },
+    {
+      "name": "hardpoint_controller_salvage_right",
+      "ref": null,
+      "key": "Controller_Salvage_TractorBeamOnly"
+    },
+    {
+      "name": "hardpoint_relay",
+      "ref": null,
+      "key": "RELAY_3slot"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_TYDT_S03_ComfortAirMax"
+    }
+  ]
+}

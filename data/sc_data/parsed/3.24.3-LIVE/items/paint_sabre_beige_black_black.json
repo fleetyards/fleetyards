@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Sabre_Beige_Black_Black",
+  "ref": "ff5452f3-731f-481e-94aa-e095f6b148ea",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "310b0369-16b7-4d53-8fd0-8dd7f3308951",
+  "name": "Sabre Landslide Livery",
+  "short_name": null,
+  "description": "The Landslide livery for the Sabre features a tan fuselage with grey wings and subtle silver highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

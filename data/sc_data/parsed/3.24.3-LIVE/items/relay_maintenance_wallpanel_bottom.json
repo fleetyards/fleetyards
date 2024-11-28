@@ -1,0 +1,64 @@
+{
+  "key": "Relay_Maintenance_Wallpanel_Bottom",
+  "ref": "e85be7c5-7e22-4adc-a700-468802bb9652",
+  "category": "relay",
+  "type": "Usable",
+  "sub_type": null,
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "$slot_subi_4",
+      "min_size": "1",
+      "max_size": "2",
+      "types": [
+
+      ]
+    },
+    {
+      "name": "$slot_subi_5",
+      "min_size": "1",
+      "max_size": "2",
+      "types": [
+
+      ]
+    },
+    {
+      "name": "$slot_subi_6",
+      "min_size": "1",
+      "max_size": "2",
+      "types": [
+
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "$slot_subi_4",
+      "key": "Wallpanel_1H_Fuses",
+      "ref": null
+    },
+    {
+      "name": "$slot_subi_5",
+      "key": "Wallpanel_1H_Fuses",
+      "ref": null
+    },
+    {
+      "name": "$slot_subi_6",
+      "key": "Wallpanel_1H_Fuses",
+      "ref": null
+    }
+  ]
+}

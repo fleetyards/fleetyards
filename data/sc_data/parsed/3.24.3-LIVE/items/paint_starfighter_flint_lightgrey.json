@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Starfighter_Flint_LightGrey",
+  "ref": "d2a71f8e-c7bf-4db0-b87b-beb2867e8ed5",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2bc5f0e0-2d28-4e77-a0b7-3f4f44ff840e",
+  "name": "Ares Star Fighter Flint Livery",
+  "short_name": null,
+  "description": "Cut through the clouds with the Flint livery for the Ares Star Fighter. The livery uses several shades of grey and dark blue accent lines to give the ship its sharp look.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

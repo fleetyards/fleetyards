@@ -1,0 +1,937 @@
+{
+  "key": "AEGS_Idris_M",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "Aegis Idris",
+  "description": "Manufacturer: Aegis Dynamics\\nFocus: Frigate\\n\\nA mark two 'peacekeeper' variant developed for the UEE patrol services, the Idris-P strips the standard ship's ship-to-ship gun and spinal mount in favor of additional cargo capacity and superior speed.",
+  "career": "Frigate",
+  "role": "Frigate",
+  "insurance": {
+    "base_wait_time_minutes": "112.5",
+    "mandatory_wait_time_minutes": "37.5",
+    "base_expediting_fee": "56250"
+  },
+  "mass": 37854373.0,
+  "metrics": {
+    "x": 127.0,
+    "y": 243.0,
+    "z": 57.5
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_door_front",
+      "ref": null,
+      "key": "Door_Ship_Exterior_Idris_Front"
+    },
+    {
+      "name": "hardpoint_door_rear",
+      "ref": null,
+      "key": "Door_Ship_Exterior_Idris_Rear"
+    },
+    {
+      "name": "hardpoint_door_argo",
+      "ref": null,
+      "key": "Door_Ship_Exterior_Idris_ARGO"
+    },
+    {
+      "name": "hardpoint_seat_captain",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_Seat_Captain"
+    },
+    {
+      "name": "hardpoint_seat_pilot_left",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_Seat_Pilot"
+    },
+    {
+      "name": "hardpoint_seat_copilot_right",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_Seat_CoPilot"
+    },
+    {
+      "name": "hardpoint_seat_bridge_mid_left",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_Seat_Comms"
+    },
+    {
+      "name": "hardpoint_seat_bridge_mid_right",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_Seat_Tactical"
+    },
+    {
+      "name": "hardpoint_seat_bridge_rear_left",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_Seat_Science"
+    },
+    {
+      "name": "hardpoint_seat_bridge_rear_right",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_Seat_Security"
+    },
+    {
+      "name": "hardpoint_seat_rear_bridge_front_left",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_Seat_Bridge_Rear_Left"
+    },
+    {
+      "name": "hardpoint_seat_rear_bridge_front_right",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_Seat_Bridge_Rear_Right"
+    },
+    {
+      "name": "hardpoint_seat_rear_bridge_back_left",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_Seat_Bridge_Rear_Left_Back"
+    },
+    {
+      "name": "hardpoint_seat_rear_bridge_back_right",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_Seat_Bridge_Rear_Right_Back"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_GNRP_S03_Idris_TEMP"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_AEGS_Idris"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_AEGS_Idris"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_weapon_remote_RLB",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_controller_weapon_remote_RLF",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_controller_weapon_remote_RRB",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_controller_weapon_remote_RRF",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_powerplant_01",
+      "ref": null,
+      "key": "POWR_AEGS_S04_Idris_SCItem"
+    },
+    {
+      "name": "hardpoint_powerplant_02",
+      "ref": null,
+      "key": "POWR_AEGS_S04_Idris_SCItem"
+    },
+    {
+      "name": "hardpoint_fuel_tank_left_001",
+      "ref": null,
+      "key": "HTNK_AEGS_Idris"
+    },
+    {
+      "name": "hardpoint_fuel_tank_left_002",
+      "ref": null,
+      "key": "HTNK_AEGS_Idris"
+    },
+    {
+      "name": "hardpoint_fuel_tank_right_001",
+      "ref": null,
+      "key": "HTNK_AEGS_Idris"
+    },
+    {
+      "name": "hardpoint_fuel_tank_right_002",
+      "ref": null,
+      "key": "HTNK_AEGS_Idris"
+    },
+    {
+      "name": "hardpoint_fuel_intake_left",
+      "ref": null,
+      "key": "INTK_AEGS_Idris"
+    },
+    {
+      "name": "hardpoint_fuel_intake_right",
+      "ref": null,
+      "key": "INTK_AEGS_Idris"
+    },
+    {
+      "name": "hardpoint_cooler_left",
+      "ref": null,
+      "key": "COOL_AEGS_S04_Idris_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_right",
+      "ref": null,
+      "key": "COOL_AEGS_S04_Idris_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_shield_generator_left",
+      "ref": null,
+      "key": "SHLD_GODI_S04_Idris_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator_right",
+      "ref": null,
+      "key": "SHLD_GODI_S04_Idris_SCItem"
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": null,
+      "key": "ARMR_AEGS_Idris"
+    },
+    {
+      "name": "hardpoint_selfdestruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_120s"
+    },
+    {
+      "name": "hardpoint_engine_left_1",
+      "ref": null,
+      "key": "AEGS_Idris_Thruster_Main_02"
+    },
+    {
+      "name": "hardpoint_engine_right_1",
+      "ref": null,
+      "key": "AEGS_Idris_Thruster_Main_02"
+    },
+    {
+      "name": "hardpoint_engine_left_2",
+      "ref": null,
+      "key": "AEGS_Idris_Thruster_Main_Fixed_01"
+    },
+    {
+      "name": "hardpoint_engine_right_2",
+      "ref": null,
+      "key": "AEGS_Idris_Thruster_Main_Fixed_01"
+    },
+    {
+      "name": "hardpoint_engine_left_3",
+      "ref": null,
+      "key": "AEGS_Idris_Thruster_Main_01"
+    },
+    {
+      "name": "hardpoint_engine_right_3",
+      "ref": null,
+      "key": "AEGS_Idris_Thruster_Main_01"
+    },
+    {
+      "name": "hardpoint_thruster_top_front_middle",
+      "ref": null,
+      "key": "AEGS_Idris_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_top_middle_right",
+      "ref": null,
+      "key": "AEGS_Idris_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_top_middle_left",
+      "ref": null,
+      "key": "AEGS_Idris_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_top_rear_right",
+      "ref": null,
+      "key": "AEGS_Idris_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_top_rear_left",
+      "ref": null,
+      "key": "AEGS_Idris_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_side_front_right",
+      "ref": null,
+      "key": "AEGS_Idris_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_side_front_left",
+      "ref": null,
+      "key": "AEGS_Idris_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_side_rear_right",
+      "ref": null,
+      "key": "AEGS_Idris_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_side_rear_left",
+      "ref": null,
+      "key": "AEGS_Idris_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_front_right",
+      "ref": null,
+      "key": "AEGS_Idris_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_front_left",
+      "ref": null,
+      "key": "AEGS_Idris_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_rear_right",
+      "ref": null,
+      "key": "AEGS_Idris_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_rear_left",
+      "ref": null,
+      "key": "AEGS_Idris_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_retro_left",
+      "ref": null,
+      "key": "AEGS_Idris_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_retro_right",
+      "ref": null,
+      "key": "AEGS_Idris_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_WETK_S04_Idris_TEMP",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": null,
+          "key": "JDRV_WETK_S04_Idris_SCItem"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_fuel_tank",
+      "ref": null,
+      "key": "QTNK_AEGS_Idris"
+    },
+    {
+      "name": "hardpoint_front_turret",
+      "ref": "88a05104-18bc-4e2d-80ee-796691162c7c",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left",
+          "ref": "af019617-94ee-4a91-b62b-124c93f2a45e",
+          "key": null
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "ref": "af019617-94ee-4a91-b62b-124c93f2a45e",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_left_turret",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_Turret_Upper_Front_Left",
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left",
+          "ref": null,
+          "key": "KLWE_LaserRepeater_S5"
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "ref": null,
+          "key": "KLWE_LaserRepeater_S5"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_right_turret",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_Turret_Upper_Front_Right",
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left",
+          "ref": null,
+          "key": "KLWE_LaserRepeater_S5"
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "ref": null,
+          "key": "KLWE_LaserRepeater_S5"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_right_lower_turret",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_Turret_Lower_Short_Right",
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left",
+          "ref": null,
+          "key": "KLWE_LaserRepeater_S5"
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "ref": null,
+          "key": "KLWE_LaserRepeater_S5"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_left_lower_turret",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_Turret_Lower_Short_Left",
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left",
+          "ref": null,
+          "key": "KLWE_LaserRepeater_S5"
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "ref": null,
+          "key": "KLWE_LaserRepeater_S5"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_rear_upper_turret_left",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_Turret_Upper_Rear_Left",
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left",
+          "ref": null,
+          "key": "KLWE_LaserRepeater_S5"
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "ref": null,
+          "key": "KLWE_LaserRepeater_S5"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_rear_upper_turret_right",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_Turret_Upper_Rear_Right",
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left",
+          "ref": null,
+          "key": "KLWE_LaserRepeater_S5"
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "ref": null,
+          "key": "KLWE_LaserRepeater_S5"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_rear_turret_tail",
+      "ref": null,
+      "key": "Door_Ship_Exterior_Idris_Turret_Cover"
+    },
+    {
+      "name": "hardpoint_front_left_turret",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_AI_Turret_Top_Left",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "APAR_BallisticGatling_S4"
+        },
+        {
+          "name": "turret_right",
+          "ref": null,
+          "key": "APAR_BallisticGatling_S4"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_front_right_turret",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_AI_Turret_Top_Right",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "APAR_BallisticGatling_S4"
+        },
+        {
+          "name": "turret_right",
+          "ref": null,
+          "key": "APAR_BallisticGatling_S4"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_rear_tail_turret_right",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_AI_Turret_Bottom_Right",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "APAR_BallisticGatling_S4"
+        },
+        {
+          "name": "turret_right",
+          "ref": null,
+          "key": "APAR_BallisticGatling_S4"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_rear_tail_turret_left",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_AI_Turret_Bottom_Left",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "APAR_BallisticGatling_S4"
+        },
+        {
+          "name": "turret_right",
+          "ref": null,
+          "key": "APAR_BallisticGatling_S4"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_launcher",
+      "ref": "d5a0f8c8-a60b-43ac-8d2a-e71ce1ad47fa",
+      "key": null,
+      "loadout": [
+        {
+          "name": "missile_attach_01",
+          "ref": "9d2d7b0d-9f54-4fe1-8bff-c6ea2a5af5d3",
+          "key": null
+        },
+        {
+          "name": "missile_attach_02",
+          "ref": "9d2d7b0d-9f54-4fe1-8bff-c6ea2a5af5d3",
+          "key": null
+        },
+        {
+          "name": "missile_attach_03",
+          "ref": "9d2d7b0d-9f54-4fe1-8bff-c6ea2a5af5d3",
+          "key": null
+        },
+        {
+          "name": "missile_attach_04",
+          "ref": "9d2d7b0d-9f54-4fe1-8bff-c6ea2a5af5d3",
+          "key": null
+        },
+        {
+          "name": "missile_attach_05",
+          "ref": "9d2d7b0d-9f54-4fe1-8bff-c6ea2a5af5d3",
+          "key": null
+        },
+        {
+          "name": "missile_attach_06",
+          "ref": "9d2d7b0d-9f54-4fe1-8bff-c6ea2a5af5d3",
+          "key": null
+        },
+        {
+          "name": "missile_attach_07",
+          "ref": "9d2d7b0d-9f54-4fe1-8bff-c6ea2a5af5d3",
+          "key": null
+        },
+        {
+          "name": "missile_attach_08",
+          "ref": "9d2d7b0d-9f54-4fe1-8bff-c6ea2a5af5d3",
+          "key": null
+        },
+        {
+          "name": "missile_attach_09",
+          "ref": "9d2d7b0d-9f54-4fe1-8bff-c6ea2a5af5d3",
+          "key": null
+        },
+        {
+          "name": "missile_attach_10",
+          "ref": "9d2d7b0d-9f54-4fe1-8bff-c6ea2a5af5d3",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_nose_railgun",
+      "ref": "26298097-2f16-4f25-b652-9c72170b5529",
+      "key": null
+    },
+    {
+      "name": "hardpoint_countermeasures_left",
+      "ref": null,
+      "key": "AEGS_Idris_CML_Flare"
+    },
+    {
+      "name": "hardpoint_countermeasures_left_2",
+      "ref": null,
+      "key": "AEGS_Idris_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_countermeasures_right",
+      "ref": null,
+      "key": "AEGS_Idris_CML_Flare"
+    },
+    {
+      "name": "hardpoint_countermeasures_right_2",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_hangar_weapon_locker_01",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_hangar_weapon_locker_02",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_rstairwell_weapon_locker_01",
+      "ref": null,
+      "key": "Weapon_Rack_AEGS_Idris_8_Slot"
+    },
+    {
+      "name": "hardpoint_rstairwell_weapon_locker_02",
+      "ref": null,
+      "key": "Weapon_Rack_Single_AEGS_tec_wall"
+    },
+    {
+      "name": "hardpoint_rstairwell_weapon_locker_03",
+      "ref": null,
+      "key": "Weapon_Rack_Single_AEGS_tec_wall"
+    },
+    {
+      "name": "hardpoint_rstairwell_weapon_locker_04",
+      "ref": null,
+      "key": "Weapon_Rack_Single_AEGS_tec_wall"
+    },
+    {
+      "name": "hardpoint_rstairwell_weapon_locker_05",
+      "ref": null,
+      "key": "Weapon_Rack_Single_AEGS_tec_wall"
+    },
+    {
+      "name": "hardpoint_rstairwell_weapon_locker_06",
+      "ref": null,
+      "key": "Weapon_Rack_Single_AEGS_tec_wall"
+    },
+    {
+      "name": "hardpoint_rstairwell_weapon_locker_07",
+      "ref": null,
+      "key": "Weapon_Rack_Single_AEGS_tec_wall"
+    },
+    {
+      "name": "hardpoint_rstairwell_weapon_locker_08",
+      "ref": null,
+      "key": "Weapon_Rack_Single_AEGS_tec_wall"
+    },
+    {
+      "name": "hardpoint_rstairwell_weapon_locker_09",
+      "ref": null,
+      "key": "Weapon_Rack_Single_AEGS_tec_wall"
+    },
+    {
+      "name": "hardpoint_rstairwell_weapon_locker_10",
+      "ref": null,
+      "key": "Weapon_Rack_Single_AEGS_tec_wall"
+    },
+    {
+      "name": "hardpoint_door_front_left",
+      "ref": null,
+      "key": "Door_Ship_Exterior_Idris_Front_Left"
+    },
+    {
+      "name": "hardpoint_door_front_right",
+      "ref": null,
+      "key": "Door_Ship_Exterior_Idris_Front_Right"
+    },
+    {
+      "name": "hardpoint_door_airlock_front_left",
+      "ref": null,
+      "key": "Door_Ship_Exterior_Idris_Airlock"
+    },
+    {
+      "name": "hardpoint_door_airlock_front_right",
+      "ref": null,
+      "key": "Door_Ship_Exterior_Idris_Airlock"
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": "Controller_Missile"
+    },
+    {
+      "name": "hardpoint_brig_controller_chair",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_Seat_Brig"
+    },
+    {
+      "name": "hardpoint_docking_collar_mpuv",
+      "ref": null,
+      "key": "AEGS_Idris_MPUV_DockingTube",
+      "loadout": [
+        {
+          "name": "itemport_vehicle_attach",
+          "ref": null,
+          "key": "ARGO_MPUV"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_AEGS_Idris"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "AEGS_Idris_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_S04_AEGS_Idris"
+    },
+    {
+      "name": "hardpoint_controller_weapon_missiles",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_docking_collar_left",
+      "ref": null,
+      "key": "AEGS_Idris_M_PU_DockingTube_Template"
+    },
+    {
+      "name": "hardpoint_docking_collar_right",
+      "ref": null,
+      "key": "AEGS_Idris_M_PU_DockingTube_Template"
+    },
+    {
+      "name": "hardpoint_pdc_01",
+      "ref": null,
+      "key": "Turret_PDC_BEHR_A"
+    },
+    {
+      "name": "hardpoint_pdc_02",
+      "ref": null,
+      "key": "Turret_PDC_BEHR_A"
+    },
+    {
+      "name": "hardpoint_pdc_03",
+      "ref": null,
+      "key": "Turret_PDC_BEHR_A"
+    },
+    {
+      "name": "hardpoint_pdc_04",
+      "ref": null,
+      "key": "Turret_PDC_BEHR_A"
+    },
+    {
+      "name": "hardpoint_pdc_05",
+      "ref": null,
+      "key": "Turret_PDC_BEHR_A"
+    },
+    {
+      "name": "hardpoint_pdc_06",
+      "ref": null,
+      "key": "Turret_PDC_BEHR_A"
+    },
+    {
+      "name": "hardpoint_pdc_07",
+      "ref": null,
+      "key": "Turret_PDC_BEHR_A"
+    },
+    {
+      "name": "hardpoint_pdc_08",
+      "ref": null,
+      "key": "Turret_PDC_BEHR_A"
+    },
+    {
+      "name": "hardpoint_pdc_09",
+      "ref": null,
+      "key": "Turret_PDC_BEHR_A"
+    },
+    {
+      "name": "hardpoint_pdc_10",
+      "ref": null,
+      "key": "Turret_PDC_BEHR_A"
+    },
+    {
+      "name": "hardpoint_pdc_11",
+      "ref": null,
+      "key": "Turret_PDC_BEHR_A"
+    },
+    {
+      "name": "hardpoint_pdc_01_wc",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_02_wc",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_03_wc",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_04_wc",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_05_wc",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_06_wc",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_07_wc",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_08_wc",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_09_wc",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_10_wc",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_11_wc",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_01_aim",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_02_aim",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_03_aim",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_04_aim",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_05_aim",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_06_aim",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_07_aim",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_08_aim",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_09_aim",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_10_aim",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_11_aim",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_engineering_screen2",
+      "ref": "26cd663d-9c7b-4ef6-8d08-e75ef0c43695",
+      "key": null
+    }
+  ]
+}

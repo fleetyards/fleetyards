@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Defender_Teal_Red",
+  "ref": "a780540a-0371-4e5f-9924-54cfa13c349e",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2f1876f4-1749-4670-98af-ebf465f18255",
+  "name": "Defender Harmony Livery",
+  "short_name": null,
+  "description": "The Harmony livery is meant to showcase Humanity's peaceful relationship with aliens with a semi-pearlescent blue main coat marked with organic reflective red to suggest the coming together of disparate species and cultures. The Harmony livery has been designed and produced by the UEE's Diplomatic Corps and freely licensed to all spacecraft manufacturers. Now Banu Defender owners can celebrate the UEE's intentions of working toward a peaceful galaxy.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

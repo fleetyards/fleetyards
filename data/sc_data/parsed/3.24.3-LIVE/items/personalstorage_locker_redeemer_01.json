@@ -1,0 +1,9 @@
+{
+  "key": "PersonalStorage_Locker_Redeemer_01",
+  "ref": "2d0cd990-293d-461a-9ea9-74fe2786b61e",
+  "category": "inventory",
+  "type": "personal_storage",
+  "type_data": {
+    "storage": 1.0
+  }
+}

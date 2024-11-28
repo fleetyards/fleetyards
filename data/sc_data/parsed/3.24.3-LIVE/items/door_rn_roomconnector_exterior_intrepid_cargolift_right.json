@@ -1,0 +1,38 @@
+{
+  "key": "Door_RN_RoomConnector_Exterior_Intrepid_CargoLift_right",
+  "ref": "ac17dc73-0262-4ebc-9631-2746a0eacbab",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_cargo_grid",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_cargo_grid",
+      "key": "CRUS_Intrepid_CargoGrid",
+      "ref": null
+    }
+  ]
+}

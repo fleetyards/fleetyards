@@ -1,0 +1,25 @@
+{
+  "key": "EAObjectiveDestructable_Satellite",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "Radar Dish",
+  "description": "Manufacturer: Chimera Communications \\nFocus: Recon\\n\\nThe Auris, from manufacturer Chimera Communications, allows you to easily collect and store transmissions, making it ideal for short-range activity monitoring. Designed to be virtually invisible while operating, this low-powered Passive Data Collection (PDC) Monitor is perfect for providing extra security to any station or facility with detailed logging of data transmissions and local ship traffic records. Plus, the included backup burst transmitter allows for the datastores to be transferred in the case of an emergency, providing extra peace of mind.",
+  "career": "Transporter",
+  "role": "Light Freight",
+  "insurance": {
+    "base_wait_time_minutes": "33.33",
+    "mandatory_wait_time_minutes": "3.33",
+    "base_expediting_fee": "333"
+  },
+  "mass": 200000.0,
+  "metrics": {
+    "x": 40.0,
+    "y": 18.0,
+    "z": 13.0
+  },
+  "loadout": [
+
+  ]
+}

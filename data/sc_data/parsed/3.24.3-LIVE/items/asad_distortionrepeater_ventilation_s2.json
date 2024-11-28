@@ -1,0 +1,21 @@
+{
+  "key": "ASAD_DistortionRepeater_Ventilation_S2",
+  "ref": "a007f0bf-ab4b-43dc-9fc7-aae884a32c9c",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "Ventilation",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

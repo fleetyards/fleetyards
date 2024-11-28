@@ -1,0 +1,86 @@
+{
+  "key": "WEP_Mining_Laser_Template",
+  "ref": "6f89e2b0-1943-4646-a2a3-8883afcf9506",
+  "category": "weapons",
+  "type": "WeaponMining",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": "Arbor MH1 Mining Laser",
+  "short_name": null,
+  "description": "Manufacturer: Greycat Industrial\\nItem Type: Mining Laser \\nSize: 1\\n\\nOptimal Range: 60m\\nMaximum Range: 180m\\n\\nMining Laser Power: 189 - 1890\\nExtraction Laser Power: 1850\\n\\nModule Slots: 1\\n\\nLaser Instability: -35%\\nOptimal Charge Window Size: +40%\\nInert Material Level: -30%\\n\\nResistance: +25%\\n\\nThe Arbor MH1 became the universe's most heralded mining laser thanks to Greycat Industrial's exacting standards and business prowess. The laser found favor among industrial and solo operations for balancing speed and safety while also featuring a special filtration system that reduces the amount of inert material collected. Greycat capitalized on this reputation by securing exclusive contracts that made the Arbor MH1 the standard laser head on most mining ships.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "BONE_ItemPort_Consumable_1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "MiningModifier"
+      ]
+    },
+    {
+      "name": "BONE_ItemPort_Consumable_2",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "MiningModifier"
+      ]
+    },
+    {
+      "name": "BONE_ItemPort_Consumable_3",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "MiningModifier"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 8000.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 6.0,
+    "StartIRTemperature": 250.0,
+    "OverpowerHeat": 0.0,
+    "OverclockThresholdMinHeat": 0.0,
+    "OverclockThresholdMaxHeat": 0.0,
+    "ThermalEnergyBase": 10.0,
+    "ThermalEnergyDraw": 20.0,
+    "ThermalConductivity": 3.0,
+    "SpecificHeatCapacity": 13.0,
+    "Mass": 200.0,
+    "SurfaceArea": 50.0,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 1.0,
+    "MaxTemperature": 450.0,
+    "OverheatTemperature": 370.0,
+    "RecoveryTemperature": 350.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "power_connection": {
+    "power_base": 2500.0,
+    "power_draw": 3000.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 20.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.25,
+    "overclock_threshold_max": 0.53,
+    "overpower_performance": 0.3,
+    "overclock_performance": 0.24,
+    "power_to_em": 2.0,
+    "decay_rate_of_em": 0.15
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_MISC_Hull_A",
+  "ref": "213afa92-08c7-400c-b4b4-8a5c26b500ab",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SELF STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "scm_speed": 140.0,
+    "scm_speed_boosted": 340.0,
+    "reverse_speed_boosted": 150.0,
+    "max_speed": 950.0,
+    "angular_velocity": {
+      "pitch": 35.0,
+      "yaw": 35.0,
+      "roll": 100.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 42.0,
+      "yaw": 42.0,
+      "roll": 120.0
+    }
+  }
+}

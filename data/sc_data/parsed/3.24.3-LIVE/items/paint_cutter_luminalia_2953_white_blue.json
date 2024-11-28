@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Cutter_Luminalia_2953_White_Blue",
+  "ref": "23ab7122-cb35-4126-888f-f4a32ea744fc",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "57b0275d-7444-4b5b-b188-fe21366e2983",
+  "name": "Cutter IceBreak Livery",
+  "short_name": null,
+  "description": "Equip your Cutter with a paint scheme cooler than a snow storm. The IceBreak livery mixes crisp, cool white with a frostbitten blue for an exciting look suitable for any season.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

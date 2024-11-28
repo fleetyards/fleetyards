@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Nomad_IAE2950_Grey_White_Camo",
+  "ref": "e43bdee6-419e-4a23-8fe6-d0373829695f",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dfc8ddb1-808c-4a4f-8cff-1cdae68bc5fb",
+  "name": "Nomad Polar Camo Livery",
+  "short_name": null,
+  "description": "Modify your Nomad with this white and grey camo livery specifically designed for the 2950 IAE event on microTech.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

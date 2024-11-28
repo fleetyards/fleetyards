@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Zeus_Black_Steel_Orange",
+  "ref": "2d8be48b-0cb7-4402-b7b6-20b46dc187f5",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f89cbc88-07ca-4de2-a6a0-f03a8fa09ff5",
+  "name": "Zeus MK II Starscape Livery",
+  "short_name": null,
+  "description": "The subtle style of the Starscape livery features black and steel-colored panels with orange highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

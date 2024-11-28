@@ -1,0 +1,24 @@
+{
+  "key": "MISL_S12_IR_BEHR_Torpedo",
+  "ref": "840aa4bb-1e3f-46ca-a2d9-7ccb44b39379",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "Torpedo",
+  "size": "12",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "PX-T12 \"Apex\" Torpedo",
+  "short_name": "PX-T12",
+  "description": "Manufacturer: Behring\\nTracking Signal: Infrared\\nSize: 12\\n\\nBehring precision meets devastating stopping power with the PX-T12 \"Apex\". Designed as an anti-ship and anti-installation weapon, Behring engineers worked tirelessly to ensure this torpedo was a bold strategic statement. The PX-T12 \"Apex\" features a wide blast radius ideal for when the ultimate defense is an overwhelming offensive attack.",
+  "inventory_consumption": {
+    "micro_scu": 140625.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 12.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 100.0
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "key": "PersonalStorage_Locker_ANVL_Terrapin",
+  "ref": "45c14f49-1a40-49a9-bf87-fb558dcf4cda",
+  "category": "inventory",
+  "type": "personal_storage",
+  "type_data": {
+    "storage": 0.5
+  }
+}

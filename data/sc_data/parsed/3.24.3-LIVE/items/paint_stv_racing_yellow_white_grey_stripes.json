@@ -1,0 +1,21 @@
+{
+  "key": "Paint_STV_Racing_Yellow_White_Grey_Stripes",
+  "ref": "66033ed4-504c-4824-bf45-be6cfc5ac40e",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "223edb3a-c91d-4775-9309-5f812d76240c",
+  "name": "STV Finish Line Livery",
+  "short_name": null,
+  "description": "Give the STV a classic racing design with the Finish Line livery. It features a yellow stripe across the front, a grey one on the back, and white highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

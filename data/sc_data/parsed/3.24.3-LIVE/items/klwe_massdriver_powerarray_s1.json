@@ -1,0 +1,21 @@
+{
+  "key": "KLWE_MassDriver_PowerArray_S1",
+  "ref": "f745dc02-c36d-419a-99ff-966852c596b5",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "PowerArray",
+  "size": "3",
+  "grade": "3",
+  "manufacturer_ref": "1aa076d5-ac29-4c61-a905-d3ea39cf167a",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

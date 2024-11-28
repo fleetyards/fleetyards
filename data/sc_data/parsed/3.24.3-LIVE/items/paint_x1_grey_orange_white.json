@@ -1,0 +1,21 @@
+{
+  "key": "Paint_X1_Grey_Orange_White",
+  "ref": "4acefded-90e4-4308-a923-1f364dc135f9",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "2",
+  "manufacturer_ref": "16e0d292-712e-45f3-b18b-482e27f42a9c",
+  "name": "X1 Supersonic Livery",
+  "short_name": null,
+  "description": "Infinity Custom worked with Origin to design the Supersonic livery for the X1. It is grey with orange highlights to accent the vehicle's streamlined design.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

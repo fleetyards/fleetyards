@@ -1,0 +1,21 @@
+{
+  "key": "Paint_400i_Black_White",
+  "ref": "ba6d5257-39c7-480a-878b-e5ca64d0dc3c",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ee99e82b-3ece-4f60-8590-1a831a80811e",
+  "name": "400i Calacatta Livery",
+  "short_name": null,
+  "description": "Balancing black and white, the Calacatta livery for the 400i accentuates the unique shape of the ship.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

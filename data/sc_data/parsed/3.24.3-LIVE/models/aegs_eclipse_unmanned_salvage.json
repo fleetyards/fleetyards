@@ -1,0 +1,312 @@
+{
+  "key": "AEGS_Eclipse_Unmanned_Salvage",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "Aegis Eclipse",
+  "description": "Manufacturer: Aegis Dynamics\\nFocus: Stealth Bomber\\n\\nThe Aegis Eclipse is a bomber designed to get in and strike before it's ever even spotted. After extensive service with the UEE, this high-tech military equipment made its civilian market debut in 2947.",
+  "career": "Combat",
+  "role": "Stealth Bomber",
+  "insurance": {
+    "base_wait_time_minutes": "16.54",
+    "mandatory_wait_time_minutes": "5.51",
+    "base_expediting_fee": "17643"
+  },
+  "mass": 55920.0,
+  "metrics": {
+    "x": 24.5,
+    "y": 24.5,
+    "z": 5.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "AEGS_Eclipse_SCItem_Seat_Pilot"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_selfdestruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_10s"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_AEGS_Eclipse"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_AEGS_Eclipse"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": "Controller_Missile"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_GRNP_S01_Ecouter"
+    },
+    {
+      "name": "hardpoint_powerplant",
+      "ref": null,
+      "key": "POWR_TYDT_S01_DeltaMax_SCItem"
+    },
+    {
+      "name": "hardpoint_fuel_tank_left",
+      "ref": null,
+      "key": "HTNK_AEGS_Eclipse"
+    },
+    {
+      "name": "hardpoint_fuel_tank_right",
+      "ref": null,
+      "key": "HTNK_AEGS_Eclipse"
+    },
+    {
+      "name": "hardpoint_fuel_intake_left",
+      "ref": null,
+      "key": "INTK_AEGS_Eclipse"
+    },
+    {
+      "name": "hardpoint_fuel_intake_right",
+      "ref": null,
+      "key": "INTK_AEGS_Eclipse"
+    },
+    {
+      "name": "hardpoint_cooler",
+      "ref": null,
+      "key": "COOL_TYDT_S01_VaporBlock_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_2",
+      "ref": null,
+      "key": "COOL_TYDT_S01_VaporBlock_SCItem"
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_RACO_S01_Drift_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": null,
+          "key": "JDRV_TARS_S01_C_Explorer"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_fuel_tank_left",
+      "ref": null,
+      "key": "QTNK_AEGS_Eclipse"
+    },
+    {
+      "name": "hardpoint_quantum_fuel_tank_right",
+      "ref": null,
+      "key": "QTNK_AEGS_Eclipse"
+    },
+    {
+      "name": "hardpoint_armour",
+      "ref": null,
+      "key": "ARMR_AEGS_Eclipse"
+    },
+    {
+      "name": "hardpoint_shield_generator_A",
+      "ref": null,
+      "key": "SHLD_ASAS_S01_Veil_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator_B",
+      "ref": null,
+      "key": "SHLD_ASAS_S01_Veil_SCItem"
+    },
+    {
+      "name": "hardpoint_engine_left",
+      "ref": null,
+      "key": "AEGS_Eclipse_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_engine_right",
+      "ref": null,
+      "key": "AEGS_Eclipse_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_retro_left",
+      "ref": null,
+      "key": "AEGS_Eclipse_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_retro_right",
+      "ref": null,
+      "key": "AEGS_Eclipse_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_bottomFL",
+      "ref": null,
+      "key": "AEGS_Eclipse_Thruster_Mav_Ball"
+    },
+    {
+      "name": "hardpoint_thruster_bottomFR",
+      "ref": null,
+      "key": "AEGS_Eclipse_Thruster_Mav_Ball"
+    },
+    {
+      "name": "hardpoint_thruster_topFL",
+      "ref": null,
+      "key": "AEGS_Eclipse_Thruster_Mav_Ball"
+    },
+    {
+      "name": "hardpoint_thruster_topFR",
+      "ref": null,
+      "key": "AEGS_Eclipse_Thruster_Mav_Ball"
+    },
+    {
+      "name": "hardpoint_thruster_bottomRL",
+      "ref": null,
+      "key": "AEGS_Eclipse_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_bottomRR",
+      "ref": null,
+      "key": "AEGS_Eclipse_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_topRL",
+      "ref": null,
+      "key": "AEGS_Eclipse_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_topRR",
+      "ref": null,
+      "key": "AEGS_Eclipse_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_weapon_left",
+      "ref": "7fedca61-dfeb-4ecb-b421-e7c3ba55a584",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "5453a817-dfd4-4143-aa11-840ca428540c",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_right",
+      "ref": "7fedca61-dfeb-4ecb-b421-e7c3ba55a584",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "5453a817-dfd4-4143-aa11-840ca428540c",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_torpedorack",
+      "ref": null,
+      "key": "MRCK_S09_AEGS_Eclipse",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S09_CS_TALN_Argos"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S09_CS_TALN_Argos"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S09_CS_TALN_Argos"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_countermeasure_launcher_left",
+      "ref": null,
+      "key": "AEGS_Eclipse_CML_Flare"
+    },
+    {
+      "name": "hardpoint_countermeasure_launcher_right",
+      "ref": null,
+      "key": "AEGS_Eclipse_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_AEGS_Eclipse"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "AEGS_Eclipse_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_cockpit_flair",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay",
+      "ref": null,
+      "key": "RELAY_2slot_slim"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_TYDT_S01_ComfortAir"
+    }
+  ]
+}

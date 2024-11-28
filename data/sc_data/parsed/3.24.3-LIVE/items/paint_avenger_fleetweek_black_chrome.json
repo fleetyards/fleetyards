@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Avenger_Fleetweek_Black_Chrome",
+  "ref": "e1500841-3547-4708-a6f6-1b1eb75e2a05",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "90acbefd-cdf5-447b-806d-60fdf5698d42",
+  "name": "Avenger Ironweave Livery",
+  "short_name": null,
+  "description": "The Ironweave livery gives the Avenger a black hull with chrome highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Cutter_Sand_Orange_Hurston",
+  "ref": "a2b48d42-5798-4e2f-b610-198538a70b6e",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "74bd07c6-3aec-4400-84cf-1995aee5686a",
+  "name": "Cutter Central Tower Livery",
+  "short_name": null,
+  "description": "Give the Cutter a dramatic new look with the Central Tower livery. The orange and black color scheme is inspired by the furnaces of industry powering Lorville, and also features a representation of the landing zone's iconic Central Headquarters and Shared Services Center, aka Central Tower.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_DRAK_Caterpillar",
+  "ref": "278e5e83-f74f-4cd2-8b02-306675bdce0a",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SELF STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "scm_speed": 130.0,
+    "scm_speed_boosted": 300.0,
+    "reverse_speed_boosted": 120.0,
+    "max_speed": 900.0,
+    "angular_velocity": {
+      "pitch": 16.0,
+      "yaw": 16.0,
+      "roll": 25.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 19.2,
+      "yaw": 19.2,
+      "roll": 30.0
+    }
+  }
+}

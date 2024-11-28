@@ -1,0 +1,21 @@
+{
+  "key": "NONE_LaserRepeater_FiringMechanism_S3",
+  "ref": "a0c5c42a-4aa2-4784-83d3-f06d1adfaa12",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "FiringMechanism",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

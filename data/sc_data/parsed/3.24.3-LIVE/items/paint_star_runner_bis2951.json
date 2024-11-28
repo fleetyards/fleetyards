@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Star_Runner_BIS2951",
+  "ref": "e4b52fb2-c14c-4763-95d5-42ea8d1911d8",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "af6719f1-382a-43cc-92e8-49e3e00e6b06",
+  "name": "Mercury Star Runner 2951 Best in Show Livery",
+  "short_name": null,
+  "description": "Celebrate the Star Runner being voted a Best in Show finalist for 2951 with this special blue and black livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

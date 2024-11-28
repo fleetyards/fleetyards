@@ -1,0 +1,9 @@
+{
+  "key": "ANVL_C8X_PersonalStorage",
+  "ref": "345d54af-ebeb-4d73-b352-76d192b4017f",
+  "category": "inventory",
+  "type": "personal_storage",
+  "type_data": {
+    "storage": 0.0
+  }
+}

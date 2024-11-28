@@ -1,0 +1,21 @@
+{
+  "key": "Paint_SanTokYai_White_White_Red",
+  "ref": "be03db26-d0ec-42db-8bee-a919bbf27ddc",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "25ceeb02-e767-4b4c-87e7-a724ec078104",
+  "name": "San'tok.yāi Tuiping Livery",
+  "short_name": null,
+  "description": "Make the San'tok.yāi pristine white with red trim with the Tuiping livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

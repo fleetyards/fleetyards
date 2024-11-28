@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Starlancer_Blue_Black_White",
+  "ref": "2ea2b311-ec4a-479f-9540-8dc07277b221",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "99dc08db-37b5-48c7-88c8-0a3d78d9f425",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

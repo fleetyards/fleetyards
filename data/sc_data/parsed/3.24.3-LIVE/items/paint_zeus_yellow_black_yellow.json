@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Zeus_Yellow_Black_Yellow",
+  "ref": "bc38563b-284d-4437-8095-9088073236ad",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "0c89f331-cb4a-4215-b973-f1bcdd5abe05",
+  "name": "Zeus Mk II Sunswept Livery",
+  "short_name": null,
+  "description": "Proclaim your presence with the Sunswept livery for the Zeus Mk II, which features a vibrant yellow with black highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

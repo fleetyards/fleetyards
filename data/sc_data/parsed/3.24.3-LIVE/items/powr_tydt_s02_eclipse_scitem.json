@@ -1,0 +1,60 @@
+{
+  "key": "POWR_TYDT_S02_Eclipse_SCItem",
+  "ref": "277e2f9c-d899-442d-a999-23368b3bdb6c",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "a2a97679-2a6e-4e89-80d8-439c88a01427",
+  "name": "Eclipse",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Tyler Design & Tech\\nSize: 2\\nGrade: A\\nClass: Stealth \\n\\nCompeting medium power plants struggle to match the heat and signature reduction of the Eclipse. Tyler Design & Tech’s mastery of stealth tech makes this component a must own by those who prefer to go unnoticed.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 5.0,
+    "StartIRTemperature": 140.0,
+    "OverpowerHeat": 0.3,
+    "OverclockThresholdMinHeat": 0.64,
+    "OverclockThresholdMaxHeat": 0.77,
+    "ThermalEnergyBase": 40545.45,
+    "ThermalEnergyDraw": 50000.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.4,
+    "Mass": 1560.0,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 77.0979,
+    "MaxTemperature": 700.0,
+    "OverheatTemperature": 600.0,
+    "RecoveryTemperature": 670.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 300.0,
+    "MisfireMaxTemperature": 900.0
+  },
+  "power_connection": {
+    "power_base": 0.0,
+    "power_draw": 5312.5,
+    "time_to_reach_draw_request": 1.25,
+    "safeguard_priority": 100.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 1.0,
+    "is_overclockable": 1.0,
+    "overclock_threshold_min": 0.34,
+    "overclock_threshold_max": 0.43,
+    "overpower_performance": 0.05,
+    "overclock_performance": 0.408,
+    "power_to_em": 0.55,
+    "decay_rate_of_em": 0.63
+  }
+}

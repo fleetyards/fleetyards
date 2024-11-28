@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Corsair_Yellow_Grey_Black",
+  "ref": "ac7edfb7-a475-41d8-9403-e5d7607ba9ea",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "409ec917-e1f8-4255-b502-14cd662745bb",
+  "name": "Corsair Hinterland Livery",
+  "short_name": null,
+  "description": "Style yourself to explore the far reaches of the 'verse with the Hinterland livery for the Corsair, which is sand-colored with black and grey highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

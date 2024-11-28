@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Vanguard_TalkLikeAPirate_Metal_Red",
+  "ref": "5b4e5231-1e81-4914-b096-a0c1861034d6",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b80b5e7e-0030-4396-a51a-99bc12f2b0fd",
+  "name": "Vanguard Solar Winds Livery",
+  "short_name": null,
+  "description": "Fly in style with the Solar Winds livery that gives the Vanguard a metallic silver finish with maroon highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

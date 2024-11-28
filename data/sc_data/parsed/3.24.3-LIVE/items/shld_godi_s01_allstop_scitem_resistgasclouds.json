@@ -1,0 +1,130 @@
+{
+  "key": "SHLD_GODI_S01_AllStop_SCItem_ResistGasclouds",
+  "ref": "bbd925a4-2699-4d8c-b513-5a97d4f9ca7c",
+  "category": "shieldgenerator",
+  "type": "Shield",
+  "sub_type": null,
+  "size": "1",
+  "grade": "3",
+  "manufacturer_ref": "57bfcf3d-13f6-4c2c-b7c7-6bf8eacb8a24",
+  "name": "AllStop",
+  "short_name": null,
+  "description": "Item Type: Shield Generator\\nManufacturer: Gorgon Defender Industries\\nSize: 1\\nGrade: C\\nClass: Military\\n\\nGorgon Defender Industries first created the AllStop shield generator to hold off the Vanduul. They worked so well that many military crafts were known to prefer the AllStop. Just one of the many reasons to have one on your ship.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 630.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 4.0,
+    "StartIRTemperature": 340.0,
+    "OverpowerHeat": 0.0,
+    "OverclockThresholdMinHeat": 0.0,
+    "OverclockThresholdMaxHeat": 0.0,
+    "ThermalEnergyBase": 20116.67,
+    "ThermalEnergyDraw": 21200.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.5,
+    "Mass": 487.5,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 350.0,
+    "MaxCoolingRate": 86.08547,
+    "MaxTemperature": 700.0,
+    "OverheatTemperature": 650.0,
+    "RecoveryTemperature": 550.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 300.0,
+    "MisfireMaxTemperature": 900.0
+  },
+  "power_connection": {
+    "power_base": 200.0,
+    "power_draw": 250.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 10.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 1.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.0,
+    "overclock_threshold_max": 0.0,
+    "overpower_performance": 0.0,
+    "overclock_performance": 0.0,
+    "power_to_em": 3.0,
+    "decay_rate_of_em": 0.2
+  },
+  "type_data": {
+    "max_health": 1730.0,
+    "max_regen": 115.0,
+    "decay_ratio": 0.25,
+    "reserve_pool_initial_health_ratio": 1.0,
+    "reserve_pool_max_health_ratio": 1.0,
+    "reserve_pool_regen_rate_ratio": 1.0,
+    "reserve_pool_drain_rate_ratio": 2.5,
+    "downed_regen_delay": 10.0,
+    "damaged_regen_delay": 5.0,
+    "electrical_charge_damage_resistance": 0.0,
+    "stun_params": {
+      "min_alpha_damage_ratio": 0.005,
+      "max_alpha_damage_ratio": 0.15,
+      "min_stun_time": 0.0,
+      "max_stun_time": 12.0
+    },
+    "resistance": [
+      {
+        "max": 0.25,
+        "min": 0.0
+      },
+      {
+        "max": 0.5,
+        "min": 0.0
+      },
+      {
+        "max": 0.95,
+        "min": 0.75
+      },
+      {
+        "max": 0.0,
+        "min": 0.0
+      },
+      {
+        "max": 0.0,
+        "min": 0.0
+      },
+      {
+        "max": 0.0,
+        "min": 0.0
+      }
+    ],
+    "absorption": [
+      {
+        "max": 0.3,
+        "min": 0.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      }
+    ]
+  }
+}

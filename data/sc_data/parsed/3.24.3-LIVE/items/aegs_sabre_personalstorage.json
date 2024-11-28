@@ -1,0 +1,9 @@
+{
+  "key": "AEGS_Sabre_PersonalStorage",
+  "ref": "cdfed4c6-8ae9-4c63-909d-88438f23a1d2",
+  "category": "inventory",
+  "type": "personal_storage",
+  "type_data": {
+    "storage": 0.0
+  }
+}

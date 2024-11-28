@@ -1,0 +1,21 @@
+{
+  "key": "ControlPanel_LightSwitch_Hull_C_Beds",
+  "ref": "f777cd48-12db-4c3c-a6bf-3da35e990574",
+  "category": "doors",
+  "type": "ControlPanel",
+  "sub_type": "DoorPart",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

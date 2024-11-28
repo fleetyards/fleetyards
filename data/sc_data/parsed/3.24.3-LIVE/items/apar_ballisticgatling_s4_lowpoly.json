@@ -1,0 +1,78 @@
+{
+  "key": "APAR_BallisticGatling_S4_LowPoly",
+  "ref": "83671df2-63e6-4683-8125-bdccd7d1cd7e",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "77f7999a-b23b-4812-94c2-09b5e15e1b0e",
+  "name": "Revenant Gatling",
+  "short_name": "Revenant",
+  "description": "Manufacturer: Apocalypse Arms\\nItem Type: Ballistic Gatling\\nSize: 4\\n\\nIf it ain’t broke, don’t fix it. And if you want it broke, aim a Revenant at it. Solidly built on a foundation of centuries-old tech, Apocalypse Arms puts an innovative spin on battle-tested designs to create a rugged ballistic Gatling that can steadily hurtle death across the void. Though it’s slow to spin up and cool down, the Revenant’s dependability makes it a favorite for those expecting to find trouble.",
+  "inventory_consumption": {
+    "micro_scu": 2100000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1650.0
+  },
+  "ammunition": {
+    "max_ammo_count": 2000.0,
+    "initial_ammo_count": 2000.0,
+    "max_restock_count": 3.0
+  },
+  "power_connection": {
+    "power_base": 73.0,
+    "power_draw": 283.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 20.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.33,
+    "overclock_threshold_max": 0.52,
+    "overpower_performance": 0.5,
+    "overclock_performance": 0.3,
+    "power_to_em": 1.75,
+    "decay_rate_of_em": 0.5
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "AEGS_Sabre_CargoGrid_Template",
+  "ref": "9835e4ac-c2c8-46e3-8ad7-ad0db3b0ce83",
+  "category": "inventory",
+  "type": "cargo_grid",
+  "type_data": {
+    "dimensions": {
+      "x": 35.0,
+      "y": 35.0,
+      "z": 35.0,
+      "scu": 21952.0
+    },
+    "min_container": {
+      "x": 1.25,
+      "y": 1.25,
+      "z": 1.25,
+      "scu": 1.0
+    },
+    "max_container": null
+  }
+}

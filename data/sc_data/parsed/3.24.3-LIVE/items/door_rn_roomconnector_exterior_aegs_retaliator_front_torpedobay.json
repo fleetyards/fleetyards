@@ -1,0 +1,24 @@
+{
+  "key": "Door_RN_RoomConnector_Exterior_AEGS_Retaliator_Front_TorpedoBay",
+  "ref": "c86d2aa5-e826-45b1-bc92-02a657fb791c",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1.0
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "MXOX_NeutronRepeater_Ventilation_S3",
+  "ref": "f053a264-c6c8-4383-8140-d8dc980583ea",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "Ventilation",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

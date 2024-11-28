@@ -1,0 +1,531 @@
+{
+  "key": "GAMA_Syulen",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "Gatac Syulen",
+  "description": "Manufacturer: Gatac Manufacture\\nFocus: Cargo\\n\\nThe Syulen cargo vessel has been artfully crafted by the renowned House Gatac to be well suited for both Human and Xi’an pilots. With a refined agile frame, the Syulen lends itself to ferrying important deliveries across the universe, or as the ideal ship for those making their transport career debut.",
+  "career": "Starter",
+  "role": "Starter",
+  "insurance": {
+    "base_wait_time_minutes": "2.95",
+    "mandatory_wait_time_minutes": "1.1",
+    "base_expediting_fee": "2000"
+  },
+  "mass": 86877.0,
+  "metrics": {
+    "x": 0.0,
+    "y": 0.0,
+    "z": 0.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_GAMA_Syulen"
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": "Controller_Missile_Gama_Syulen"
+    },
+    {
+      "name": "hardpoint_controller_scanner",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_GAMA_Syulen"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": null,
+      "key": "ARMR_GAMA_Syulen"
+    },
+    {
+      "name": "hardpoint_cooler",
+      "ref": null,
+      "key": "COOL_LPLT_S01_BlastChill_SCItem"
+    },
+    {
+      "name": "hardpoint_fuel_intake",
+      "ref": null,
+      "key": "INTK_GAMA_Syulen"
+    },
+    {
+      "name": "hardpoint_fuel_tank_hydrogen_1",
+      "ref": null,
+      "key": "HTNK_GAMA_Syulen"
+    },
+    {
+      "name": "hardpoint_fuel_tank_hydrogen_2",
+      "ref": null,
+      "key": "HTNK_GAMA_Syulen"
+    },
+    {
+      "name": "hardpoint_fuel_tank_quantum_1",
+      "ref": null,
+      "key": "QTNK_GAMA_Syulen"
+    },
+    {
+      "name": "hardpoint_fuel_tank_quantum_2",
+      "ref": null,
+      "key": "QTNK_GAMA_Syulen"
+    },
+    {
+      "name": "hardpoint_ping",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_power_plant",
+      "ref": null,
+      "key": "POWR_SASU_S01_LightBlossom_SCItem"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_GRNP_S01_Ecouter"
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "GAMA_Syulen_Pilot_Seat",
+      "loadout": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_shield_generator_1",
+      "ref": null,
+      "key": "SHLD_SECO_S01_HEX_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator_2",
+      "ref": null,
+      "key": "SHLD_SECO_S01_HEX_SCItem"
+    },
+    {
+      "name": "hardpoint_body_top_thruster_retro",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_body_left_thruster_retro",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_body_right_thruster_retro",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_wings_large_top_thruster_main",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mains_Large"
+    },
+    {
+      "name": "hardpoint_wings_large_top_thruster_mav_left",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_wings_large_top_thruster_mav_right",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_wings_large_left_thruster_main",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mains_Large"
+    },
+    {
+      "name": "hardpoint_wings_large_left_thruster_mav_left",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mav_Bottom"
+    },
+    {
+      "name": "hardpoint_wings_large_left_thruster_mav_right",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_wings_large_right_thruster_main",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mains_Large"
+    },
+    {
+      "name": "hardpoint_wings_large_right_thruster_mav_left",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_wings_large_right_thruster_mav_right",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mav_Bottom"
+    },
+    {
+      "name": "hardpoint_wings_small_bottom_thruster_main",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mains_Small"
+    },
+    {
+      "name": "hardpoint_wings_small_left_thruster_main",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mains_Small"
+    },
+    {
+      "name": "hardpoint_wings_small_right_thruster_main",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mains_Small"
+    },
+    {
+      "name": "hardpoint_cargo_bottom",
+      "ref": null,
+      "key": "GAMA_Syulen_CargoArm"
+    },
+    {
+      "name": "hardpoint_cargo_left",
+      "ref": null,
+      "key": "GAMA_Syulen_CargoArm"
+    },
+    {
+      "name": "hardpoint_cargo_right",
+      "ref": null,
+      "key": "GAMA_Syulen_CargoArm"
+    },
+    {
+      "name": "hardpoint_wings_large_left_missile_rack",
+      "ref": null,
+      "key": "MRCK_S04_GAMA_Quad_S02",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S02_IR_FSKI_Ignite"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S02_IR_FSKI_Ignite"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S02_IR_FSKI_Ignite"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S02_IR_FSKI_Ignite"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_wings_large_right_missile_rack",
+      "ref": null,
+      "key": "MRCK_S04_GAMA_Quad_S02",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S02_IR_FSKI_Ignite"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S02_IR_FSKI_Ignite"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S02_IR_FSKI_Ignite"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S02_IR_FSKI_Ignite"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_wings_large_top_missile_rack",
+      "ref": null,
+      "key": "MRCK_S04_GAMA_Quad_S02",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S02_IR_FSKI_Ignite"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S02_IR_FSKI_Ignite"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S02_IR_FSKI_Ignite"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S02_IR_FSKI_Ignite"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_bottom",
+      "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_Left",
+      "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_right",
+      "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_body_mid_left_bottom_thruster_mav",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mav_Bottom"
+    },
+    {
+      "name": "hardpoint_body_mid_left_mid_thruster_mav",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_body_mid_left_top_thruster_mav",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_body_mid_right_bottom_thruster_mav",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mav_Bottom"
+    },
+    {
+      "name": "hardpoint_body_mid_right_mid_thruster_mav",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_body_mid_right_top_thruster_mav",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_body_rear_left_bottom_thruster_mav",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mav_Bottom"
+    },
+    {
+      "name": "hardpoint_body_rear_left_mid_thruster_mav",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mav_Top"
+    },
+    {
+      "name": "hardpoint_body_rear_left_top_thruster_mav",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_body_rear_right_bottom_thruster_mav",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_body_rear_right_mid_thruster_mav",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mav_Top"
+    },
+    {
+      "name": "hardpoint_body_rear_right_top_thruster_mav",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_body_front_left_bottom_thruster_mav",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mav_Bottom"
+    },
+    {
+      "name": "hardpoint_body_front_left_mid_thruster_mav",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_body_front_left_top_thruster_mav",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mav_Top"
+    },
+    {
+      "name": "hardpoint_body_front_right_bottom_thruster_mav",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mav_Bottom"
+    },
+    {
+      "name": "hardpoint_body_front_right_mid_thruster_mav",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_body_front_right_top_thruster_mav",
+      "ref": null,
+      "key": "GAMA_Syulen_Thruster_Mav_Top"
+    },
+    {
+      "name": "hardpoint_countermeasure_left_01",
+      "ref": null,
+      "key": "GAMA_Syulen_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_countermeasure_left_02",
+      "ref": null,
+      "key": "GAMA_Syulen_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_countermeasure_right_01",
+      "ref": null,
+      "key": "GAMA_Syulen_CML_Flare"
+    },
+    {
+      "name": "hardpoint_airlock_ramp",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenReverse_Gama_Syulen_Entrance"
+    },
+    {
+      "name": "hardpoint_fuel_ground",
+      "ref": null,
+      "key": "Door_NoRoomConnector_Syulen_Ground_FuelPort"
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_ACAS_S01_FoxFire_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": null,
+          "key": "JDRV_TARS_S01_C_Explorer"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_cockpit_selfDestruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_45s"
+    },
+    {
+      "name": "hardpoint_controller_Door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_ATC_controller",
+      "ref": null,
+      "key": "GAMA_Syulen_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "Door_NoRoomConnector_Syulen_Ground_FuelPort"
+    },
+    {
+      "name": "Headlight_Top",
+      "ref": null,
+      "key": "GAMA_Syulen_Headlight"
+    },
+    {
+      "name": "Headlight_Left",
+      "ref": null,
+      "key": "GAMA_Syulen_Headlight"
+    },
+    {
+      "name": "Headlight_Right",
+      "ref": null,
+      "key": "GAMA_Syulen_Headlight"
+    },
+    {
+      "name": "hardpoint_extinguisher",
+      "ref": "c2a8a6dc-45be-42e1-bacf-45c035a4aedc",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay",
+      "ref": null,
+      "key": "RELAY_2slot_slim"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_TYDT_S01_ComfortAir"
+    }
+  ]
+}

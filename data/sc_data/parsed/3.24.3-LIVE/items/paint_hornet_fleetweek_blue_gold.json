@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hornet_Fleetweek_Blue_Gold",
+  "ref": "3022847b-ddfd-4442-a067-9ddfa2f47404",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "bb29e019-c2ed-4afd-9bf4-15b079a09939",
+  "name": "Hornet Invictus Blue and Gold Livery",
+  "short_name": null,
+  "description": "Featuring a vibrant blue base color and gold highlights, the Invictus Blue and Gold livery will give your Hornet a striking style.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

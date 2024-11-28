@@ -1,0 +1,44 @@
+{
+  "key": "KRIG_P72_Archimedes_WingTip_Left",
+  "ref": "280421ce-bd97-4592-a98a-fcc1a4d34f14",
+  "category": "module",
+  "type": "AttachedPart",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "7b5d1ed3-11e7-49e6-9ed3-9d0cb52a3dc2",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_weapon_gun_left_wing",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_gun_InnerLeft_wing",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 750.0
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "key": "Ship_TempItemCarryingCapacity_MISC_Reliant_Kore",
+  "ref": "20f73600-cd9a-44f8-9538-80537d7f531e",
+  "category": "inventory",
+  "type": "personal_storage",
+  "type_data": {
+    "storage": 6.0
+  }
+}

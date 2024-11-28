@@ -1,0 +1,21 @@
+{
+  "key": "BEHR_JavelinBallisticCannon_PowerArray_S7",
+  "ref": "ccb31270-96cc-40df-9e6d-77893acb48cf",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "PowerArray",
+  "size": "7",
+  "grade": "3",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

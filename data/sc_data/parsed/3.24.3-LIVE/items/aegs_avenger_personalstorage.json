@@ -1,0 +1,9 @@
+{
+  "key": "AEGS_Avenger_PersonalStorage",
+  "ref": "cd85816c-d4be-4e06-9312-c41149dd046f",
+  "category": "inventory",
+  "type": "personal_storage",
+  "type_data": {
+    "storage": 0.0
+  }
+}

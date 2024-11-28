@@ -1,0 +1,21 @@
+{
+  "key": "ControlPanel_LightSwitch_ANVL",
+  "ref": "99c123b6-3fd2-41e7-81ff-6f85e9158935",
+  "category": "doors",
+  "type": "ControlPanel",
+  "sub_type": "DoorPart",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

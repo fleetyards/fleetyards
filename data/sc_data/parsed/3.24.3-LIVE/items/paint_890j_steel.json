@@ -1,0 +1,21 @@
+{
+  "key": "Paint_890J_Steel",
+  "ref": "511ff0e3-8983-4862-b971-38283d0e1909",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d8b9ddde-2e7c-4e4c-9cac-ee77c806e70c",
+  "name": "890 Jump Meridian Livery",
+  "short_name": null,
+  "description": "The Meridian livery gives the 890 Jump a simple yet stylish metallic silver finish.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

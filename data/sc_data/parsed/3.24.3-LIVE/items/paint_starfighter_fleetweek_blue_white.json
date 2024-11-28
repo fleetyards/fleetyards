@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Starfighter_Fleetweek_Blue_White",
+  "ref": "d8ceef63-559d-4011-9a31-0993e2095d64",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a6783597-262a-4dae-8645-b8002ba70e93",
+  "name": "Ares Star Fighter Celestial Blue Livery",
+  "short_name": null,
+  "description": "A beautiful light blue base and grey highlights makes the Celestial Blue livery a stunning choice for the Ares Star Fighter.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

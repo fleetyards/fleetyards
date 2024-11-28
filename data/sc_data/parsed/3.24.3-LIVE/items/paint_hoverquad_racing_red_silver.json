@@ -1,0 +1,21 @@
+{
+  "key": "Paint_HoverQuad_Racing_Red_Silver",
+  "ref": "56c37c31-0886-4fb8-a49f-1c2f37f056af",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cdb62349-a9f0-43a2-8d5b-c1dcea982b06",
+  "name": "HoverQuad Overdrive Livery",
+  "short_name": null,
+  "description": "Blast past other racers in your HoverQuad with the Overdrive livery, which features a stylish blend red and silver coloring.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

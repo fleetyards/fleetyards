@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Nomad_Luminalia_2952_Green_Red",
+  "ref": "592a7168-6b35-4cc5-b0bf-e2a75ff0f50a",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "0d5fe366-eb95-4e52-babd-17c3e56a367d",
+  "name": "Nomad Deck the Hull Livery",
+  "short_name": null,
+  "description": "Express your holiday spirit with the Deck the Hull livery, which uses the traditional Luminalia colors of green and red to celebrate the popular Banu festival that's become beloved by Humans.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

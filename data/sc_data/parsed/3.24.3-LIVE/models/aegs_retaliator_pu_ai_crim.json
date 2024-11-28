@@ -1,0 +1,601 @@
+{
+  "key": "AEGS_Retaliator_PU_AI_CRIM",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "Aegis Retaliator",
+  "description": "Manufacturer: Aegis Dynamics\\nFocus: Heavy Gunship\\n\\nThis civilian refit of the Retaliator updates the military ship's chassis with unladen space able to be fitted with various modules to suit your needs.",
+  "career": "Combat",
+  "role": "Gunship",
+  "insurance": {
+    "base_wait_time_minutes": "25.74",
+    "mandatory_wait_time_minutes": "8.58",
+    "base_expediting_fee": "32116"
+  },
+  "mass": 343270.29,
+  "metrics": {
+    "x": 44.0,
+    "y": 70.5,
+    "z": 13.5
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_pilot_seat",
+      "ref": null,
+      "key": "AEGS_Retaliator_SCItem_Seat_Pilot"
+    },
+    {
+      "name": "hardpoint_bed_captain",
+      "ref": null,
+      "key": "Bed_Single_Captain_Retaliator_AEGS"
+    },
+    {
+      "name": "hardpoint_selfdestruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_30s"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_AEGS_Retaliator"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_WLOP_S02_Chernykh"
+    },
+    {
+      "name": "hardpoint_scanner",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_ping",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_powerplant_left",
+      "ref": null,
+      "key": "POWR_AEGS_S02_Maelstrom_SCItem"
+    },
+    {
+      "name": "hardpoint_powerplant_right",
+      "ref": null,
+      "key": "POWR_AEGS_S02_Maelstrom_SCItem"
+    },
+    {
+      "name": "hardpoint_fueltank_left",
+      "ref": null,
+      "key": "HTNK_AEGS_Retaliator"
+    },
+    {
+      "name": "hardpoint_fueltank_right",
+      "ref": null,
+      "key": "HTNK_AEGS_Retaliator"
+    },
+    {
+      "name": "hardpoint_fuel_intake_frontleft",
+      "ref": null,
+      "key": "INTK_AEGS_Retaliator"
+    },
+    {
+      "name": "hardpoint_fuel_intake_frontright",
+      "ref": null,
+      "key": "INTK_AEGS_Retaliator"
+    },
+    {
+      "name": "hardpoint_fuel_intake_rearleft",
+      "ref": null,
+      "key": "INTK_AEGS_Retaliator"
+    },
+    {
+      "name": "hardpoint_fuel_intake_rearright",
+      "ref": null,
+      "key": "INTK_AEGS_Retaliator"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_cooler_left",
+      "ref": null,
+      "key": "COOL_AEGS_S02_Arctic_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_right",
+      "ref": null,
+      "key": "COOL_AEGS_S02_Arctic_SCItem"
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_WETK_S02_Crossfield_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": null,
+          "key": "JDRV_TARS_S02_C_Explorer"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_fuel_tank",
+      "ref": null,
+      "key": "QTNK_AEGS_Retaliator"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_AEGS_Retaliator"
+    },
+    {
+      "name": "hardpoint_shieldgenerator_right_top",
+      "ref": null,
+      "key": "SHLD_GODI_S02_FullStop_SCItem"
+    },
+    {
+      "name": "hardpoint_shieldgenerator_right_bottom",
+      "ref": null,
+      "key": "SHLD_GODI_S02_FullStop_SCItem"
+    },
+    {
+      "name": "hardpoint_armour",
+      "ref": null,
+      "key": "ARMR_AEGS_Retaliator"
+    },
+    {
+      "name": "hardpoint_mainthruster_left",
+      "ref": null,
+      "key": "AEGS_Retaliator_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_mainthruster_right",
+      "ref": null,
+      "key": "AEGS_Retaliator_Thruster_Main_Right"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_frontleft",
+      "ref": null,
+      "key": "AEGS_Retaliator_Thruster_Mav_Joint_01"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_frontright",
+      "ref": null,
+      "key": "AEGS_Retaliator_Thruster_Mav_Joint_01"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_rearleft1",
+      "ref": null,
+      "key": "AEGS_Retaliator_Thruster_Mav_Joint_02"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_rearleft2",
+      "ref": null,
+      "key": "AEGS_Retaliator_Thruster_Mav_Joint_02"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_rearright1",
+      "ref": null,
+      "key": "AEGS_Retaliator_Thruster_Mav_Joint_02"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_rearright2",
+      "ref": null,
+      "key": "AEGS_Retaliator_Thruster_Mav_Joint_02"
+    },
+    {
+      "name": "hardpoint_thruster_maneuver_frontrightretro",
+      "ref": null,
+      "key": "AEGS_Retaliator_Thruster_Retro_Right"
+    },
+    {
+      "name": "hardpoint_thruster_maneuver_frontleftretro",
+      "ref": null,
+      "key": "AEGS_Retaliator_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_maneuver_frontright",
+      "ref": null,
+      "key": "AEGS_Retaliator_Thruster_Mav_Fixed_Lateral"
+    },
+    {
+      "name": "hardpoint_thruster_maneuver_frontleft",
+      "ref": null,
+      "key": "AEGS_Retaliator_Thruster_Mav_Fixed_Lateral"
+    },
+    {
+      "name": "hardpoint_thruster_maneuver_fronttopright",
+      "ref": null,
+      "key": "AEGS_Retaliator_Thruster_Mav_Fixed_Top"
+    },
+    {
+      "name": "hardpoint_thruster_maneuver_fronttopleft",
+      "ref": null,
+      "key": "AEGS_Retaliator_Thruster_Mav_Fixed_Top"
+    },
+    {
+      "name": "hardpoint_thruster_maneuver_frontbottomright",
+      "ref": null,
+      "key": "AEGS_Retaliator_Thruster_Mav_Fixed_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_maneuver_frontbottomleft",
+      "ref": null,
+      "key": "AEGS_Retaliator_Thruster_Mav_Fixed_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_maneuver_backright",
+      "ref": null,
+      "key": "AEGS_Retaliator_Thruster_Mav_Fixed_Lateral"
+    },
+    {
+      "name": "hardpoint_thruster_maneuver_backleft",
+      "ref": null,
+      "key": "AEGS_Retaliator_Thruster_Mav_Fixed_Lateral"
+    },
+    {
+      "name": "hardpoint_thruster_maneuver_backtopright",
+      "ref": null,
+      "key": "AEGS_Retaliator_Thruster_Mav_Fixed_Top"
+    },
+    {
+      "name": "hardpoint_thruster_maneuver_backtopleft",
+      "ref": null,
+      "key": "AEGS_Retaliator_Thruster_Mav_Fixed_Top"
+    },
+    {
+      "name": "hardpoint_thruster_maneuver_backbottomright",
+      "ref": null,
+      "key": "AEGS_Retaliator_Thruster_Mav_Fixed_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_maneuver_backbottomleft",
+      "ref": null,
+      "key": "AEGS_Retaliator_Thruster_Mav_Fixed_Bottom"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_turret_fronttop",
+      "ref": null,
+      "key": "AEGS_Retaliator_SCItem_Turret_Upper",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "Mount_Gimbal_S3",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "KLWE_LaserRepeater_S3"
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": null,
+          "key": "Mount_Gimbal_S3",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "KLWE_LaserRepeater_S3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_frontbottom",
+      "ref": null,
+      "key": "AEGS_Retaliator_SCItem_Turret_Lower",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "Mount_Gimbal_S3",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "KLWE_LaserRepeater_S3"
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": null,
+          "key": "Mount_Gimbal_S3",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "KLWE_LaserRepeater_S3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_backtopright",
+      "ref": null,
+      "key": "AEGS_Retaliator_SCItem_Turret_Upper_Rear_Right",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "Mount_Gimbal_S3",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "KLWE_LaserRepeater_S3"
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": null,
+          "key": "Mount_Gimbal_S3",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "KLWE_LaserRepeater_S3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_backtopleft",
+      "ref": null,
+      "key": "AEGS_Retaliator_SCItem_Turret_Upper_Rear_Left",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "Mount_Gimbal_S3",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "KLWE_LaserRepeater_S3"
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": null,
+          "key": "Mount_Gimbal_S3",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "KLWE_LaserRepeater_S3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_backbottom",
+      "ref": null,
+      "key": "AEGS_Retaliator_SCItem_Turret_Lower_Rear",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "Mount_Gimbal_S3",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "KLWE_LaserRepeater_S3"
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": null,
+          "key": "Mount_Gimbal_S3",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "KLWE_LaserRepeater_S3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_countermeasurelauncher_left1",
+      "ref": null,
+      "key": "AEGS_Retaliator_CML_Flare"
+    },
+    {
+      "name": "hardpoint_countermeasurelauncher_left2",
+      "ref": null,
+      "key": "AEGS_Retaliator_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_countermeasurelauncher_right1",
+      "ref": null,
+      "key": "AEGS_Retaliator_CML_Flare"
+    },
+    {
+      "name": "hardpoint_countermeasurelauncher_right2",
+      "ref": null,
+      "key": "AEGS_Retaliator_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": "Controller_Missile"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_AEGS_Retaliator"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "AEGS_Retaliator_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_front_module",
+      "ref": null,
+      "key": "AEGS_Retaliator_Module_Front_Base"
+    },
+    {
+      "name": "hardpoint_rear_module",
+      "ref": null,
+      "key": "AEGS_Retaliator_Module_Rear_Base"
+    },
+    {
+      "name": "hardpoint_shieldgenerator_left_bottom",
+      "ref": null,
+      "key": "SHLD_GODI_S02_FullStop_SCItem"
+    },
+    {
+      "name": "hardpoint_shieldgenerator_left_top",
+      "ref": null,
+      "key": "SHLD_GODI_S02_FullStop_SCItem"
+    },
+    {
+      "name": "hardpoint_shieldgenerator_middle_bottom",
+      "ref": null,
+      "key": "SHLD_GODI_S02_FullStop_SCItem"
+    },
+    {
+      "name": "hardpoint_shieldgenerator_middle_top",
+      "ref": null,
+      "key": "SHLD_GODI_S02_FullStop_SCItem"
+    },
+    {
+      "name": "hardpoint_esc_pod_upper_left",
+      "ref": null,
+      "key": "AEGS_Retaliator_SCItem_Seat_Bed_Upper_Left"
+    },
+    {
+      "name": "hardpoint_esc_pod_upper_right",
+      "ref": null,
+      "key": "AEGS_Retaliator_SCItem_Seat_Bed_Upper_Right"
+    },
+    {
+      "name": "hardpoint_esc_pod_lower_left",
+      "ref": null,
+      "key": "AEGS_Retaliator_SCItem_Seat_Bed_Lower_Left"
+    },
+    {
+      "name": "hardpoint_esc_pod_lower_right",
+      "ref": null,
+      "key": "AEGS_Retaliator_SCItem_Seat_Bed_Lower_Right"
+    },
+    {
+      "name": "hardpoint_esc_pod_rear_left",
+      "ref": null,
+      "key": "AEGS_Retaliator_SCItem_Seat_Bed_Rear_Left"
+    },
+    {
+      "name": "hardpoint_esc_pod_rear_right",
+      "ref": null,
+      "key": "AEGS_Retaliator_SCItem_Seat_Bed_Rear_Right"
+    },
+    {
+      "name": "hardpoint_ground_fuel_port",
+      "ref": null,
+      "key": "Door_NoRoomConnector_retaliator_Ground_FuelPort"
+    },
+    {
+      "name": "hardpoint_interior_docking_door",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenClose_AEGS_Retaliator_Interior_Docking"
+    },
+    {
+      "name": "hardpoint_exterior_docking_door",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenClose_AEGS_Retaliator_External_Docking"
+    },
+    {
+      "name": "hardpoint_avionics_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_avionics_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_front",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_relay_engineering",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_relay_rear_turret_left",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_relay_rear_turret_right",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_TYDT_S02_ComfortAirPlus"
+    }
+  ]
+}

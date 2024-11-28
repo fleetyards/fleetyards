@@ -1,0 +1,41 @@
+{
+  "key": "Door_NoRoomConnector_CSV_ComponentBay_Radar",
+  "ref": "b3ee5d7d-3be4-4df0-9b3f-7668854a73a2",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_radar",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_radar",
+      "key": "RADR_WLOP_S00_Denning",
+      "ref": null
+    }
+  ],
+  "durability": {
+    "health": 1234.0
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "key": "TMBL_Nova_CargoGrid_Template",
+  "ref": "42fead44-8fbf-41d7-8474-e131f9a476af",
+  "category": "inventory",
+  "type": "personal_storage",
+  "type_data": {
+    "storage": 1.0
+  }
+}

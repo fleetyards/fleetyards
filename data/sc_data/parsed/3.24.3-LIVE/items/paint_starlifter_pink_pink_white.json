@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Starlifter_Pink_Pink_White",
+  "ref": "935ebeaf-9394-4d09-9b21-27e7d67815e9",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "3bc88f90-16ae-44b8-abcd-ad1e1d44e667",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

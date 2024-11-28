@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Gladius_Luminalia_2954_White_Blue_Blue",
+  "ref": "11a6e31d-02df-403d-8d92-49d24c71d79f",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4a76c0bf-1a83-45f8-b8f9-1bd532f1c9e2",
+  "name": "Gladius IceBreak Livery",
+  "short_name": null,
+  "description": "Equip your Gladius with a paint scheme cooler than a snow storm. The IceBreak livery mixes crisp, cool white with a frostbitten blue for an exciting look suitable for any season.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

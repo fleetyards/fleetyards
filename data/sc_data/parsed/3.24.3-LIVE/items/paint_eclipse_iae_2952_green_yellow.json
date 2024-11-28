@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Eclipse_IAE_2952_Green_Yellow",
+  "ref": "1e1e8ef2-964d-4868-9068-c759edcbc9cc",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6792beec-e658-4096-a9a5-c24df26514a2",
+  "name": "Eclipse Knockout Livery",
+  "short_name": null,
+  "description": "The Knockout livery gives the Eclipse a green tint to make it less visible when in verdant landscapes.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

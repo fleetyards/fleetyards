@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hawk_Fleetweek_Blue_Gold",
+  "ref": "9c9da622-ff3f-4d62-b322-681fc6e6ceb0",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "48fa8a86-e5ea-4682-a2ac-367996eeab7c",
+  "name": "Hawk Invictus Blue and Gold Livery",
+  "short_name": null,
+  "description": "Featuring a vibrant blue base color and gold highlights, the Invictus Blue and Gold livery will give your Hawk a striking style.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

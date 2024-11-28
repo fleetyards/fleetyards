@@ -1,0 +1,9 @@
+{
+  "key": "PersonalStorage_Locker_RSI_Polaris_Captain",
+  "ref": "5eea8a39-f854-497c-8b79-37b2802716e3",
+  "category": "inventory",
+  "type": "personal_storage",
+  "type_data": {
+    "storage": 1.6
+  }
+}

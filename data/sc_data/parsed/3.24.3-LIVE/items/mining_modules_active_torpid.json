@@ -1,0 +1,24 @@
+{
+  "key": "Mining_Modules_Active_Torpid",
+  "ref": "47ba04b0-010b-47cd-9f7d-209e2ec190b9",
+  "category": "utility",
+  "type": "MiningModifier",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "name": "Torpid Module",
+  "short_name": null,
+  "description": "Manufacturer: Greycat Industrial\\nItem Type: Mining Module (Active)\\n\\nOptimal Charge Rate: +60%\\nCatastrophic Charge Rate: -60%\\n\\nShatter Damage: +40%\\n\\nDuration: 60 seconds\\nUses: 5\\n\\nThe Torpid Module is a must for any ambitious miner. It makes mining more efficient by dramatically increasing the optimal charge rate while also reducing the catastrophic charge rate. The module does have a downside as a shattering deposit may prove more hazardous.",
+  "inventory_consumption": {
+    "micro_scu": 5699.0,
+    "dimensions": {
+      "x": 0.1704287,
+      "y": 0.3127302,
+      "z": 0.1336606
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

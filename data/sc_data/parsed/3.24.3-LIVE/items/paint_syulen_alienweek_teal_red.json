@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Syulen_AlienWeek_Teal_Red",
+  "ref": "351db7bd-7a74-4be9-be02-49708063860b",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2db42214-0df2-4a7f-b240-2af55583d6b3",
+  "name": "Syulen Ocellus Livery",
+  "short_name": null,
+  "description": "The Ocellus livery adapts and updates the iconic colors and design used on some Tevarin ships to bring a striking new look to the Syulen. The livery features red markings circling the cockpit and shimmering green across the rest of the wings. Grey lines cut through both colors to break up the pattern and silhouette of the ship.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

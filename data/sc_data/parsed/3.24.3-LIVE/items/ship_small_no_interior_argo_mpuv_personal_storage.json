@@ -1,0 +1,9 @@
+{
+  "key": "Ship_Small_No_Interior_Argo_MPUV_Personal_Storage",
+  "ref": "ab5b5c73-b68a-423a-af98-9e3ed5a265eb",
+  "category": "inventory",
+  "type": "personal_storage",
+  "type_data": {
+    "storage": 0.71
+  }
+}

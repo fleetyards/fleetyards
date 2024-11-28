@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Constellation_Heron_White",
+  "ref": "87f0516e-a734-4c6c-aad3-55cb8b902630",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1842c9ea-2067-409d-91ac-5723548582e4",
+  "name": "Constellation White Heron Livery",
+  "short_name": null,
+  "description": "The White Heron Livery combines white with dark blue and orange highlights to provide your Constellation a stylish spacefaring look.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

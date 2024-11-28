@@ -1,0 +1,100 @@
+{
+  "key": "ESPR_BallisticCannon_S3",
+  "ref": "370e4728-924a-4791-9297-a71b25ff08e9",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "4ecc1a24-d228-4dd5-8857-21ba6145a1d3",
+  "name": "Deadbolt III Cannon",
+  "short_name": "Deadbolt-3",
+  "description": "Manufacturer: Esperia\\nItem Type: Ballistic Cannon \\nSize: 3\\n\\nSpread dread with the Deadbolt III ballistic cannon. Feared for its firepower at short range, this notorious Tevarin weapon earned its intimidating reputation during the First Tevarin War as part of the Tevarin fleet's devastating arsenal. Esperia has painstakingly recreated the Deadbolt III out of respect to the original weapon and warriors who used it so effectively.",
+  "inventory_consumption": {
+    "micro_scu": 756000.0,
+    "dimensions": {
+      "x": 0.6699014,
+      "y": 4.422015,
+      "z": 1.202842
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "BAR1",
+      "key": "ESPR_BallisticCannon_Barrel_S3",
+      "ref": null
+    },
+    {
+      "name": "MEC",
+      "key": "ESPR_BallisticCannon_FiringMechanism_S3",
+      "ref": null
+    },
+    {
+      "name": "POW",
+      "key": "ESPR_BallisticCannon_PowerArray_S3",
+      "ref": null
+    },
+    {
+      "name": "VEN",
+      "key": "ESPR_BallisticCannon_Ventilation_S3",
+      "ref": null
+    }
+  ],
+  "durability": {
+    "health": 550.0
+  },
+  "ammunition": {
+    "max_ammo_count": 250.0,
+    "initial_ammo_count": 250.0,
+    "max_restock_count": 3.0
+  },
+  "power_connection": {
+    "power_base": 50.0,
+    "power_draw": 70.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 20.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.25,
+    "overclock_threshold_max": 0.46,
+    "overpower_performance": 0.3,
+    "overclock_performance": 0.25,
+    "power_to_em": 1.8,
+    "decay_rate_of_em": 0.5
+  }
+}

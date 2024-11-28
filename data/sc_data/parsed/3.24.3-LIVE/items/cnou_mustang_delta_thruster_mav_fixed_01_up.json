@@ -1,0 +1,65 @@
+{
+  "key": "CNOU_Mustang_Delta_Thruster_Mav_Fixed_01_Up",
+  "ref": "51226f6c-fd81-4347-b6f3-4ae5399ab708",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ec227ef3-fb08-4897-abdb-579eb4e87c25",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 8150.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 0.6,
+    "StartIRTemperature": 100.0,
+    "OverpowerHeat": 1.0,
+    "OverclockThresholdMinHeat": 1.0,
+    "OverclockThresholdMaxHeat": 1.0,
+    "ThermalEnergyBase": 500.0,
+    "ThermalEnergyDraw": 1250.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.5,
+    "Mass": 650.0,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 42.0,
+    "MaxTemperature": 1000.0,
+    "OverheatTemperature": 850.0,
+    "RecoveryTemperature": 800.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 400.0,
+    "MisfireMaxTemperature": 1100.0
+  },
+  "power_connection": {
+    "power_base": 20.0,
+    "power_draw": 24.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 0.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 1.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 1.0,
+    "overclock_threshold_max": 1.0,
+    "overpower_performance": 0.0,
+    "overclock_performance": 0.0,
+    "power_to_em": 5.0,
+    "decay_rate_of_em": 0.15
+  },
+  "type_data": {
+    "thrust_capacity": 310000.0,
+    "fuel_burn_rate_per10_k_newton": "0.03125",
+    "thruster_type": "Maneuver"
+  }
+}

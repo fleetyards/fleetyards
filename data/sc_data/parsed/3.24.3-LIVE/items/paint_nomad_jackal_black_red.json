@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Nomad_Jackal_Black_Red",
+  "ref": "934be226-4f96-4d6a-a84d-97750e6f98d5",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "9f163dd4-9fea-4e9b-a2bb-6f9666c59a07",
+  "name": "Nomad Jackal Livery",
+  "short_name": null,
+  "description": "Discreetly roam the stars with this custom Nomad livery featuring a jet black paint scheme with red accents.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

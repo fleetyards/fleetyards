@@ -1,0 +1,21 @@
+{
+  "key": "Controller_Salvage_AEGS_Reclaimer_ArmOperator",
+  "ref": "70c1c943-a363-420f-9e97-92d240f34a82",
+  "category": "controller",
+  "type": "SalvageController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

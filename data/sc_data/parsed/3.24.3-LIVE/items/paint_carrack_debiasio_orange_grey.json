@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Carrack_DeBiasio_Orange_Grey",
+  "ref": "64b7c197-993a-4fb3-b4ec-ee19e48b9e53",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8c8be9b5-8f65-4fa7-9398-32683661afa8",
+  "name": "Carrack De Biasio Livery",
+  "short_name": null,
+  "description": "To honor the brave explorers that brought us to space and support those currently seeking new frontiers, the Interstellar Cartography Center (ICC) commissioned this special livery for the Carrack. Named in honor of former ICC Director Loretta De Biasio, this livery mixes orange and grey with black highlights. All proceeds from the sale of the De Biasio livery goes directly to the ICC to support their efforts in \"Charting the Way Ahead.\"",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

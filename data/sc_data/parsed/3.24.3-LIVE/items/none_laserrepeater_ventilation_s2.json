@@ -1,0 +1,21 @@
+{
+  "key": "NONE_LaserRepeater_Ventilation_S2",
+  "ref": "c60c218a-685c-4768-8ada-190b8e29ddb1",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "Ventilation",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "key": "Ship_Large",
+  "ref": "4b2dbad4-ca1c-4016-9d1c-7850f565a160",
+  "category": "inventory",
+  "type": "personal_storage",
+  "type_data": {
+    "storage": 8.0
+  }
+}

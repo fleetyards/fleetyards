@@ -1,0 +1,21 @@
+{
+  "key": "InstancedHangarGateway_Stanton_SmallFront_Lorville",
+  "ref": "18ab154a-5b53-43a4-b0a4-9cc027f2b391",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": null,
+  "grade": null,
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  }
+}

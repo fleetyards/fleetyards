@@ -1,0 +1,78 @@
+{
+  "key": "CNOU_Mustang_Cargo_Rack",
+  "ref": "3ddc7e07-ae82-4b32-85c2-f09868177522",
+  "category": "module",
+  "type": "Container",
+  "sub_type": "Cargo",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "ec227ef3-fb08-4897-abdb-579eb4e87c25",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_cargo_grid",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Cargo"
+      ]
+    },
+    {
+      "name": "hardpoint_cargo_box_01",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Cargo"
+      ]
+    },
+    {
+      "name": "hardpoint_cargo_box_02",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Cargo"
+      ]
+    },
+    {
+      "name": "hardpoint_cargo_box_03",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Cargo"
+      ]
+    },
+    {
+      "name": "hardpoint_cargo_box_04",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Cargo"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_cargo_grid",
+      "key": "CNOU_Mustang_CargoGrid_Main",
+      "ref": null
+    },
+    {
+      "name": "hardpoint_cargo_box_01",
+      "key": "CNOU_Mustang_Cargo_Box_Fake",
+      "ref": null
+    }
+  ],
+  "durability": {
+    "health": 350.0
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Talon_Red",
+  "ref": "2fc900c8-625b-4cff-b634-ef9e221aec86",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1c6457ff-1c25-4cde-84dc-d73d9e144328",
+  "name": "Talon Crimson Livery",
+  "short_name": "Talon Crimson Livery",
+  "description": "Standout with this striking red livery custom designed for the Esperia Talon and its Shrike variant.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

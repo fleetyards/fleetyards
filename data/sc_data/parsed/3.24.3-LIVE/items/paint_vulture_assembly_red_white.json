@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Vulture_Assembly_Red_White",
+  "ref": "31013aa3-8656-4974-a2ae-fa2ae34dacee",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "7f3ede92-24f1-4697-9112-1a0743ecd766",
+  "name": "Vulture Assembly Livery",
+  "short_name": null,
+  "description": "Make them see red! The Assembly livery is a full fuselage red design with black and silver accents that makes sure your spacecraft is easily identifiable during salvage operations.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

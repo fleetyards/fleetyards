@@ -1,0 +1,21 @@
+{
+  "key": "ESPR_LaserCannon_PowerArray_S6",
+  "ref": "ec2c660c-74d1-41f5-b169-c2b9bdd478e2",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "PowerArray",
+  "size": "6",
+  "grade": "6",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

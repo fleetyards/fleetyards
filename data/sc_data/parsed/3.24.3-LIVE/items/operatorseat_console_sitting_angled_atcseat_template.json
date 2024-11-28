@@ -1,0 +1,21 @@
+{
+  "key": "OperatorSeat_Console_Sitting_Angled_ATCSeat_Template",
+  "ref": "5448a141-d2a3-41eb-9c99-929a636817a3",
+  "category": "seat",
+  "type": "Seat",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

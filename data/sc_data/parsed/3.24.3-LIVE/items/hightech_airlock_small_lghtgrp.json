@@ -1,0 +1,21 @@
+{
+  "key": "hightech_airlock_small_lghtgrp",
+  "ref": "fcb3cf0c-8674-4b8a-96cb-c41c46d26aa5",
+  "category": "doors",
+  "type": "Lightgroup",
+  "sub_type": "AirlockPart",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

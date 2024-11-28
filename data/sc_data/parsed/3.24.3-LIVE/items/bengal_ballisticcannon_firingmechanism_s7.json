@@ -1,0 +1,21 @@
+{
+  "key": "Bengal_BallisticCannon_FiringMechanism_S7",
+  "ref": "443d5e57-bc52-49a0-872e-e81f664b7be1",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "FiringMechanism",
+  "size": "7",
+  "grade": "1",
+  "manufacturer_ref": "a834198a-3465-4b02-86a5-887e922ec06d",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

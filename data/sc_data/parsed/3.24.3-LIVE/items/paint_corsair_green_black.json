@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Corsair_Green_Black",
+  "ref": "0b4bb4f0-d204-419c-8c8b-6cb3914ee1bc",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "206a763c-fc2d-42dd-93e9-445c783979d2",
+  "name": "Corsair Ghoulish Green Livery",
+  "short_name": null,
+  "description": "Embrace Day of the Vara mischievousness and mayhem any time of the year with this custom Corsair livery. It combines metallic green and black for a striking look that highlights the holiday's classic colors.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

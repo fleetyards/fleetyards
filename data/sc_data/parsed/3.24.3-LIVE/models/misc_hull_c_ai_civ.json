@@ -1,0 +1,907 @@
+{
+  "key": "MISC_Hull_C_AI_Civ",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "MISC Hull C",
+  "description": "Manufacturer: MISC\\nFocus: Heavy Freight\\n\\nOften called the most common ship in the galaxy, the Hull C is the most-produced of the range and is considered by many to be the most versatile. Intended to hit the ‘sweet spot’ between the smaller single-person transports and the massive superfreighters that make up the rest of the range, the Hull C offers the expansive modularity of the larger ships while still retaining a modicum of the maneuverability allowed the low end of the range.",
+  "career": "Transporter",
+  "role": "Heavy Freight",
+  "insurance": {
+    "base_wait_time_minutes": "45",
+    "mandatory_wait_time_minutes": "15",
+    "base_expediting_fee": "22500"
+  },
+  "mass": 886930.0,
+  "metrics": {
+    "x": 36.05,
+    "y": 91.17,
+    "z": 26.28
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "MISC_Hull_C_SCItem_Pilot_Seat"
+    },
+    {
+      "name": "hardpoint_seat_copilot",
+      "ref": null,
+      "key": "MISC_Hull_C_SCItem_Copilot_Seat"
+    },
+    {
+      "name": "hardpoint_seat_captain",
+      "ref": null,
+      "key": "MISC_Hull_C_SCItem_Seat_Captain"
+    },
+    {
+      "name": "hardpoint_seat_crane",
+      "ref": null,
+      "key": "MISC_Hull_C_SCItem_Tractor_Seat"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_MISC_Hull_C"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_MISC_Hull_C"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_target_selector_pilot",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cockpit_selfdestruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_60s"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_CHCO_S02_Surveyor"
+    },
+    {
+      "name": "hardpoint_fuel_tank01",
+      "ref": null,
+      "key": "HTNK_MISC_Hull_C"
+    },
+    {
+      "name": "hardpoint_fuel_tank02",
+      "ref": null,
+      "key": "HTNK_MISC_Hull_C"
+    },
+    {
+      "name": "hardpoint_fuel_intake01",
+      "ref": null,
+      "key": "INTK_MISC_Hull_C"
+    },
+    {
+      "name": "hardpoint_fuel_intake02",
+      "ref": null,
+      "key": "INTK_MISC_Hull_C"
+    },
+    {
+      "name": "hardpoint_quantum_fuel",
+      "ref": null,
+      "key": "QTNK_MISC_Hull_C"
+    },
+    {
+      "name": "hardpoint_shield_generator01",
+      "ref": null,
+      "key": "SHLD_BASL_S03_Stronghold_SCItem"
+    },
+    {
+      "name": "hardpoint_cargo_strut_1",
+      "ref": null,
+      "key": "MISC_Hull_C_FoldingStrut_1A",
+      "loadout": [
+        {
+          "name": "Hardpoint_Cargo",
+          "ref": null,
+          "key": "MISC_Hull_C_CargoGrid"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_cargo_strut_2",
+      "ref": null,
+      "key": "MISC_Hull_C_FoldingStrut_1B",
+      "loadout": [
+        {
+          "name": "Hardpoint_Cargo",
+          "ref": null,
+          "key": "MISC_Hull_C_CargoGrid"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_cargo_strut_3",
+      "ref": null,
+      "key": "MISC_Hull_C_FoldingStrut_1C",
+      "loadout": [
+        {
+          "name": "Hardpoint_Cargo",
+          "ref": null,
+          "key": "MISC_Hull_C_CargoGrid"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_cargo_strut_4",
+      "ref": null,
+      "key": "MISC_Hull_C_FoldingStrut_1D",
+      "loadout": [
+        {
+          "name": "Hardpoint_Cargo",
+          "ref": null,
+          "key": "MISC_Hull_C_CargoGrid"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_cargo_strut_5",
+      "ref": null,
+      "key": "MISC_Hull_C_FoldingStrut_2A",
+      "loadout": [
+        {
+          "name": "Hardpoint_Cargo",
+          "ref": null,
+          "key": "MISC_Hull_C_CargoGrid"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_cargo_strut_6",
+      "ref": null,
+      "key": "MISC_Hull_C_FoldingStrut_2B",
+      "loadout": [
+        {
+          "name": "Hardpoint_Cargo",
+          "ref": null,
+          "key": "MISC_Hull_C_CargoGrid"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_cargo_strut_7",
+      "ref": null,
+      "key": "MISC_Hull_C_FoldingStrut_2C",
+      "loadout": [
+        {
+          "name": "Hardpoint_Cargo",
+          "ref": null,
+          "key": "MISC_Hull_C_CargoGrid"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_cargo_strut_8",
+      "ref": null,
+      "key": "MISC_Hull_C_FoldingStrut_2D",
+      "loadout": [
+        {
+          "name": "Hardpoint_Cargo",
+          "ref": null,
+          "key": "MISC_Hull_C_CargoGrid"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_cargo_strut_outer_1",
+      "ref": null,
+      "key": "MISC_Hull_C_FoldingStrut_1A_Outer",
+      "loadout": [
+        {
+          "name": "Hardpoint_Cargo2",
+          "ref": null,
+          "key": "MISC_Hull_C_CargoGrid_Outer"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_cargo_strut_outer_2",
+      "ref": null,
+      "key": "MISC_Hull_C_FoldingStrut_1B_Outer",
+      "loadout": [
+        {
+          "name": "Hardpoint_Cargo2",
+          "ref": null,
+          "key": "MISC_Hull_C_CargoGrid_Outer"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_cargo_strut_outer_3",
+      "ref": null,
+      "key": "MISC_Hull_C_FoldingStrut_1C_Outer",
+      "loadout": [
+        {
+          "name": "Hardpoint_Cargo2",
+          "ref": null,
+          "key": "MISC_Hull_C_CargoGrid_Outer"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_cargo_strut_outer_4",
+      "ref": null,
+      "key": "MISC_Hull_C_FoldingStrut_1D_Outer",
+      "loadout": [
+        {
+          "name": "Hardpoint_Cargo2",
+          "ref": null,
+          "key": "MISC_Hull_C_CargoGrid_Outer"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_cargo_strut_outer_5",
+      "ref": null,
+      "key": "MISC_Hull_C_FoldingStrut_2A_Outer",
+      "loadout": [
+        {
+          "name": "Hardpoint_Cargo2",
+          "ref": null,
+          "key": "MISC_Hull_C_CargoGrid_Outer"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_cargo_strut_outer_6",
+      "ref": null,
+      "key": "MISC_Hull_C_FoldingStrut_2B_Outer",
+      "loadout": [
+        {
+          "name": "Hardpoint_Cargo2",
+          "ref": null,
+          "key": "MISC_Hull_C_CargoGrid_Outer"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_cargo_strut_outer_7",
+      "ref": null,
+      "key": "MISC_Hull_C_FoldingStrut_2C_Outer",
+      "loadout": [
+        {
+          "name": "Hardpoint_Cargo2",
+          "ref": null,
+          "key": "MISC_Hull_C_CargoGrid_Outer"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_cargo_strut_outer_8",
+      "ref": null,
+      "key": "MISC_Hull_C_FoldingStrut_2D_Outer",
+      "loadout": [
+        {
+          "name": "Hardpoint_Cargo2",
+          "ref": null,
+          "key": "MISC_Hull_C_CargoGrid_Outer"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_thruster_main_top_left",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_main_bottom_left",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_main_top_middle",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_main_bottom_middle",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_main_top_right",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_main_bottom_right",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_top_front_left",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_Mav_Fixed_Small_Top"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_front_left",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_Mav_Fixed_Small"
+    },
+    {
+      "name": "hardpoint_thruster_top_front_right",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_Mav_Fixed_Small_Top"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_front_right",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_Mav_Fixed_Small"
+    },
+    {
+      "name": "hardpoint_thruster_side_front_left",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_Mav_Fixed_Quad"
+    },
+    {
+      "name": "hardpoint_thruster_side_front_right",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_Mav_Fixed_Quad"
+    },
+    {
+      "name": "hardpoint_thruster_retro_top_left",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_retro_top_right",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_retro_bottom_left",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_Retro_Small"
+    },
+    {
+      "name": "hardpoint_thruster_retro_bottom_right",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_Retro_Small"
+    },
+    {
+      "name": "hardpoint_thruster_top_rear_left",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_Mav_Fixed_Top"
+    },
+    {
+      "name": "hardpoint_thruster_side_rear_left",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_rear_left",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_Mav_Fixed_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_top_rear_right",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_Mav_Fixed_Top"
+    },
+    {
+      "name": "hardpoint_thruster_side_rear_right",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_rear_right",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_Mav_Fixed_Bottom"
+    },
+    {
+      "name": "hardpoint_CML_Rear_1",
+      "ref": null,
+      "key": "MISC_Hull_C_CML_Flare"
+    },
+    {
+      "name": "hardpoint_CML_Rear_2",
+      "ref": null,
+      "key": "MISC_Hull_C_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_CentralWalkway",
+      "ref": null,
+      "key": "MISC_Hull_C_CentralWalkway"
+    },
+    {
+      "name": "hardpoint_CentralWalkway_PHYSICS",
+      "ref": null,
+      "key": "MISC_Hull_C_CentralWalkway_PHYSICS"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_MISC_Hull_C"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "MISC_Hull_C_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_body_int_rear",
+      "ref": null,
+      "key": "MISC_Hull_C_Int_Rear",
+      "loadout": [
+        {
+          "name": "hardpoint_rear_cooler_01",
+          "ref": null,
+          "key": "COOL_AEGS_S03_Blizzard_SCItem"
+        },
+        {
+          "name": "hardpoint_rear_cooler_02",
+          "ref": null,
+          "key": "COOL_AEGS_S03_Blizzard_SCItem"
+        },
+        {
+          "name": "hardpoint_rear_power_plant",
+          "ref": null,
+          "key": "POWR_AEGS_S03_Centurion_SCItem"
+        },
+        {
+          "name": "hardpoint_rear_shield_generator02",
+          "ref": null,
+          "key": "SHLD_BASL_S03_Stronghold_SCItem"
+        },
+        {
+          "name": "hardpoint_rear_quantum_drive",
+          "ref": null,
+          "key": "QDRV_JUST_S03_Kama_SCItem",
+          "loadout": [
+            {
+              "name": "hardpoint_jump_drive",
+              "ref": null,
+              "key": "JDRV_TARS_S03_C_Explorer"
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_rear_extinguisher_rear1",
+          "ref": "c2a8a6dc-45be-42e1-bacf-45c035a4aedc",
+          "key": null
+        },
+        {
+          "name": "hardpoint_rear_extinguisher_rear2",
+          "ref": "c2a8a6dc-45be-42e1-bacf-45c035a4aedc",
+          "key": null
+        },
+        {
+          "name": "hardpoint_rear_extinguisher_rear3",
+          "ref": null,
+          "key": null
+        },
+        {
+          "name": "hardpoint_rear_battery",
+          "ref": null,
+          "key": null
+        },
+        {
+          "name": "hardpoint_rear_seat_engineer",
+          "ref": null,
+          "key": "MISC_Hull_C_Engineer_Console"
+        },
+        {
+          "name": "hardpoint_rear_quantum_tank",
+          "ref": null,
+          "key": "QTNK_MISC_Hull_C"
+        },
+        {
+          "name": "hardpoint_door_airlock_rear",
+          "ref": null,
+          "key": "Door_Ship_Exterior_Hull_C_Rear_Airlock"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_front_top",
+      "ref": "9cb8e69c-5250-4671-b683-748c40f869c7",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_rear_top",
+      "ref": "8e3362ae-2831-405c-8fdf-fa5b09679b25",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_nose",
+      "ref": "975fb594-5a96-4f42-bb79-554668e9e0a6",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_left",
+          "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+          "key": null
+        },
+        {
+          "name": "hardpoint_right",
+          "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_turret_front",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_controller_turret_rear",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_CML_Front_1",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_CML_Front_2",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_turret_tractor_beam_top_front",
+      "ref": "26bc2fed-566e-4cf6-97c2-f0230ed0f57f",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": "8c16ee3d-78fb-4fef-a369-b3d42952ec33",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_salvage_controller_turret_tractor",
+      "ref": null,
+      "key": "Controller_Salvage_TractorBeamOnly"
+    },
+    {
+      "name": "hardpoint_aimable_controller_turret_tractor",
+      "ref": "c78851f1-ded8-4e8d-91ec-905e3dae075e",
+      "key": null
+    },
+    {
+      "name": "hardpoint_turret_tractor_beam_bottom_front",
+      "ref": "4819cdf3-9b11-49ea-aab3-b8c44c796157",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": "8c16ee3d-78fb-4fef-a369-b3d42952ec33",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_tractor_beam_top_rear",
+      "ref": "8bfe26ff-7855-4791-8c90-c0a0a8d8613a",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": "8c16ee3d-78fb-4fef-a369-b3d42952ec33",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_tractor_beam_bottom_rear",
+      "ref": "de0cf016-d36f-4a8c-9ab6-0d9ebad6ec89",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": "8c16ee3d-78fb-4fef-a369-b3d42952ec33",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_docking_collar",
+      "ref": null,
+      "key": "MISC_Hull_C_DockingTube"
+    },
+    {
+      "name": "hardpoint_airlock_door",
+      "ref": null,
+      "key": "Door_Ship_Exterior_MISC_Hull_C_Airlock"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_inner_front_left",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_VTOL_Front"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_outer_front_left",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_VTOL_Front"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_inner_front_right",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_VTOL_Front"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_outer_front_right",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_VTOL_Front"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_mid_left",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_Mav_Fixed_Small"
+    },
+    {
+      "name": "hardpoint_thruster_top_mid_left",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_Mav_Fixed_Small_Top"
+    },
+    {
+      "name": "hardpoint_thruster_top_mid_right",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_Mav_Fixed_Small_Top"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_mid_right",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_Mav_Fixed_Small"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_inner_rear_left",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_VTOL_Rear"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_outer_rear_left",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_VTOL_Rear"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_inner_rear_right",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_VTOL_Rear"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_outer_rear_right",
+      "ref": null,
+      "key": "MISC_Hull_C_Thruster_VTOL_Rear"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_front_lift",
+      "ref": null,
+      "key": "Hull_C_Front_Lift"
+    },
+    {
+      "name": "hardpoint_lift_door",
+      "ref": null,
+      "key": "Door_Ship_Exterior_Hull_C_Exterior_Door"
+    },
+    {
+      "name": "hardpoint_airlock_door_interior",
+      "ref": null,
+      "key": "Door_Ship_Exterior_Hull_C_Airlock_Interior"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_cockpit_flair",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_personal_storage_01",
+      "ref": null,
+      "key": "PersonalStorage_Hull_C"
+    },
+    {
+      "name": "hardpoint_personal_storage_02",
+      "ref": null,
+      "key": "PersonalStorage_Hull_C"
+    },
+    {
+      "name": "hardpoint_personal_storage_03",
+      "ref": null,
+      "key": "PersonalStorage_Hull_C"
+    },
+    {
+      "name": "hardpoint_personal_storage_04",
+      "ref": null,
+      "key": "PersonalStorage_Hull_C"
+    },
+    {
+      "name": "hardpoint_extinguisher_bridge",
+      "ref": "c2a8a6dc-45be-42e1-bacf-45c035a4aedc",
+      "key": null
+    },
+    {
+      "name": "hardpoint_avionics01",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_avionics02",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_extinguisher_crew",
+      "ref": "c2a8a6dc-45be-42e1-bacf-45c035a4aedc",
+      "key": null
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": null,
+      "key": "ARMR_MISC_Hull_C"
+    },
+    {
+      "name": "hardpoint_weapons_locker",
+      "ref": null,
+      "key": "Weapon_Rack_MISC_Hull_C"
+    },
+    {
+      "name": "hardpoint_shield_generator03",
+      "ref": null,
+      "key": "SHLD_BASL_S03_Stronghold_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator04",
+      "ref": null,
+      "key": "SHLD_BASL_S03_Stronghold_SCItem"
+    },
+    {
+      "name": "hardpoint_rear_power_plant_B",
+      "ref": null,
+      "key": "POWR_AEGS_S03_Centurion_SCItem"
+    },
+    {
+      "name": "hardpoint_relay_cockpit",
+      "ref": null,
+      "key": "RELAY_1slot"
+    },
+    {
+      "name": "hardpoint_relay_tractorbeam",
+      "ref": null,
+      "key": "RELAY_1slot"
+    },
+    {
+      "name": "hardpoint_relay_airlock",
+      "ref": null,
+      "key": "RELAY_1slot"
+    },
+    {
+      "name": "hardpoint_relay_airlock_rear",
+      "ref": null,
+      "key": "RELAY_1slot"
+    },
+    {
+      "name": "hardpoint_relay_escape_pod_room",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_relay_upper_engine_room",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_relay_mess_hall",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_relay_engine_room",
+      "ref": null,
+      "key": "RELAY_3slot"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_TYDT_S03_ComfortAirMax"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "key": "GRIN_PTV_Template",
+  "ref": "cda4d69a-43cc-4d29-8e99-f8c5260913af",
+  "category": "inventory",
+  "type": "personal_storage",
+  "type_data": {
+    "storage": 2.15
+  }
+}

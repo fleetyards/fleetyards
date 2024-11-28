@@ -1,0 +1,21 @@
+{
+  "key": "ANVL_Hornet_F7C_Mk2_CargoGrid",
+  "ref": "0502e435-5268-40de-addd-ec8a36114177",
+  "category": "inventory",
+  "type": "cargo_grid",
+  "type_data": {
+    "dimensions": {
+      "x": 2.5,
+      "y": 1.25,
+      "z": 1.25,
+      "scu": 2.0
+    },
+    "min_container": {
+      "x": 1.25,
+      "y": 1.25,
+      "z": 1.25,
+      "scu": 1.0
+    },
+    "max_container": null
+  }
+}

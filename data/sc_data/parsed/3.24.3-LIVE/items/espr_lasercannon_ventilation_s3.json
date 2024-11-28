@@ -1,0 +1,21 @@
+{
+  "key": "ESPR_LaserCannon_Ventilation_S3",
+  "ref": "9622a76d-b284-48f5-bf96-aad10b03039b",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "Ventilation",
+  "size": "3",
+  "grade": "3",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

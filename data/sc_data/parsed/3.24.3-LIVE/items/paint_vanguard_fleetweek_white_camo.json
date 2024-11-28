@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Vanguard_Fleetweek_White_Camo",
+  "ref": "422759f7-0db9-41bf-83ae-eb818565e26a",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "35e47568-2239-4994-ab94-ee6538120345",
+  "name": "Vanguard Frostbite Camo Livery",
+  "short_name": null,
+  "description": "Soar like the winter winds with the Frostbite Camo livery for your Vanguard.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

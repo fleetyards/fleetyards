@@ -1,0 +1,21 @@
+{
+  "key": "BEHR_JavelinBallisticCannon_Ventilation_S7",
+  "ref": "b3899836-534d-44aa-966c-ce38758485d7",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "Ventilation",
+  "size": "7",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

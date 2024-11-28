@@ -1,0 +1,398 @@
+{
+  "key": "BANU_Defender",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "Banu Defender",
+  "description": "Manufacturer: Banu \\nFocus: Light Fighter\\n\\nMeet the Banu Defender, a multi-crew fighter whose patchwork design highlights technology from a variety of species. Featuring modest accommodations for its crew and easy access to components, the Defender gets its name from the role it serves: the first line of defense against enemy attacks. That's why the Defender makes the ideal companion to the Merchantman: one to do the heavy hauling and the other to perform the deadly dogfighting.",
+  "career": "Combat",
+  "role": "Light Fighter",
+  "insurance": {
+    "base_wait_time_minutes": "13.61",
+    "mandatory_wait_time_minutes": "4.54",
+    "base_expediting_fee": "6168"
+  },
+  "mass": 122930.0,
+  "metrics": {
+    "x": 24.5,
+    "y": 24.5,
+    "z": 5.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "BANU_Defender_Seat"
+    },
+    {
+      "name": "hardpoint_seat_copilot",
+      "ref": null,
+      "key": "BANU_Defender_Seat_Right"
+    },
+    {
+      "name": "hardpoint_target_selector",
+      "ref": null,
+      "key": "Controller_TargetSelector"
+    },
+    {
+      "name": "hardpoint_self_destruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_30s"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_powerplant_01",
+      "ref": null,
+      "key": "POWR_LPLT_S01_IonBurst_SCItem"
+    },
+    {
+      "name": "hardpoint_powerplant_02",
+      "ref": null,
+      "key": "POWR_LPLT_S01_IonBurst_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_cooler_left",
+      "ref": null,
+      "key": "COOL_AEGS_S01_Polar_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_right",
+      "ref": null,
+      "key": "COOL_AEGS_S01_Polar_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_BANU_Defender"
+    },
+    {
+      "name": "hardpoint_shield_generator",
+      "ref": null,
+      "key": "SHLD_BANU_S02_Placeholder_SCItem"
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": null,
+      "key": "ARMR_BANU_Defender"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_BANU_Defender"
+    },
+    {
+      "name": "hardpoint_radar_right",
+      "ref": null,
+      "key": "RADR_GRNP_S01_Ecouter"
+    },
+    {
+      "name": "hardpoint_controller_scanner",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_ping",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_main_left",
+      "ref": null,
+      "key": "BANU_Defender_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_main_right",
+      "ref": null,
+      "key": "BANU_Defender_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_retro_left",
+      "ref": null,
+      "key": "BANU_Defender_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_retro_right",
+      "ref": null,
+      "key": "BANU_Defender_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_rear_left_top",
+      "ref": null,
+      "key": "BANU_Defender_Thruster_Mav_Top"
+    },
+    {
+      "name": "hardpoint_thruster_rear_left_side",
+      "ref": null,
+      "key": "BANU_Defender_Thruster_Mav_Lateral"
+    },
+    {
+      "name": "hardpoint_thruster_rear_left_bottom",
+      "ref": null,
+      "key": "BANU_Defender_Thruster_Mav_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_rear_right_top",
+      "ref": null,
+      "key": "BANU_Defender_Thruster_Mav_Top"
+    },
+    {
+      "name": "hardpoint_thruster_rear_right_side",
+      "ref": null,
+      "key": "BANU_Defender_Thruster_Mav_Lateral"
+    },
+    {
+      "name": "hardpoint_thruster_rear_right_bottom",
+      "ref": null,
+      "key": "BANU_Defender_Thruster_Mav_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_wing_left_top",
+      "ref": null,
+      "key": "BANU_Defender_Thruster_Mav_Top"
+    },
+    {
+      "name": "hardpoint_thruster_wing_left_side",
+      "ref": null,
+      "key": "BANU_Defender_Thruster_Mav_Lateral"
+    },
+    {
+      "name": "hardpoint_thruster_wing_left_bottom",
+      "ref": null,
+      "key": "BANU_Defender_Thruster_Mav_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_wing_right_top",
+      "ref": null,
+      "key": "BANU_Defender_Thruster_Mav_Top"
+    },
+    {
+      "name": "hardpoint_thruster_wing_right_side",
+      "ref": null,
+      "key": "BANU_Defender_Thruster_Mav_Lateral"
+    },
+    {
+      "name": "hardpoint_thruster_wing_right_bottom",
+      "ref": null,
+      "key": "BANU_Defender_Thruster_Mav_Bottom"
+    },
+    {
+      "name": "hardpoint_fuel_intake_left",
+      "ref": null,
+      "key": "INTK_BANU_Defender"
+    },
+    {
+      "name": "hardpoint_fuel_intake_right",
+      "ref": null,
+      "key": "INTK_BANU_Defender"
+    },
+    {
+      "name": "hardpoint_fuel_tank_left",
+      "ref": null,
+      "key": "HTNK_BANU_Defender"
+    },
+    {
+      "name": "hardpoint_fuel_tank_right",
+      "ref": null,
+      "key": "HTNK_BANU_Defender"
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_WETK_S01_Beacon_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": null,
+          "key": "JDRV_TARS_S01_C_Explorer"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_fuel_tank",
+      "ref": null,
+      "key": "QTNK_BANU_Defender"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_weapon_nose_left",
+      "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "f15b742b-1457-4eb7-b7aa-078816297d29",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_nose_right",
+      "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "f15b742b-1457-4eb7-b7aa-078816297d29",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_wing_left",
+      "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "f15b742b-1457-4eb7-b7aa-078816297d29",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_wing_right",
+      "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "f15b742b-1457-4eb7-b7aa-078816297d29",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missilerack_left",
+      "ref": null,
+      "key": "MRCK_S03_BEHR_Dual_S02",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S02_IR_FSKI_Ignite"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S02_IR_FSKI_Ignite"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missilerack_right",
+      "ref": null,
+      "key": "MRCK_S03_BEHR_Dual_S02",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S02_IR_FSKI_Ignite"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S02_IR_FSKI_Ignite"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_countermeasure_launcher_left",
+      "ref": null,
+      "key": "ANVL_Hurricane_CML_Flare"
+    },
+    {
+      "name": "hardpoint_countermeasure_launcher_right",
+      "ref": null,
+      "key": "ANVL_Hurricane_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_door_exterior",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenClose_IP_Defender"
+    },
+    {
+      "name": "hardpoint_bed_left",
+      "ref": null,
+      "key": "Bed_Single_Defender_BANU_Right"
+    },
+    {
+      "name": "hardpoint_bed_right",
+      "ref": null,
+      "key": "Bed_Single_Defender_BANU_Left"
+    },
+    {
+      "name": "hardpoint_weapon_rack",
+      "ref": null,
+      "key": "Weapon_Rack_BANU_Defender_2_Slots"
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": "Controller_Missile"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_BANU_Defender"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "BANU_Defender_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay",
+      "ref": null,
+      "key": "RELAY_3slot"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_TYDT_S01_ComfortAir"
+    }
+  ]
+}

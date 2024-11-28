@@ -1,0 +1,63 @@
+{
+  "key": "COOL_LPLT_S02_FullFrost_SCItem",
+  "ref": "572580a2-c164-4f99-beaa-d71cd1bd99a7",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "2",
+  "grade": "2",
+  "manufacturer_ref": "60d0f346-0c22-4869-81d3-1168b526a258",
+  "name": "FullFrost",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Lightning Power Ltd.\\nSize: 2\\nGrade: B\\nClass: Civilian\\n\\nProper thermal management and heat distribution is a concern for any pilot who cares about the longevity and performance of their ship. Now you can fly easy knowing you have the advanced FullFrost cooler by Lightning Power aboard.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 680.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 15.0,
+    "StartIRTemperature": 250.0,
+    "OverpowerHeat": 0.06,
+    "OverclockThresholdMinHeat": 0.43,
+    "OverclockThresholdMaxHeat": 0.51,
+    "ThermalEnergyBase": 10.0,
+    "ThermalEnergyDraw": 20.0,
+    "ThermalConductivity": 3.0,
+    "SpecificHeatCapacity": 13.0,
+    "Mass": 790.0,
+    "SurfaceArea": 50.0,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 1.0,
+    "MaxTemperature": 450.0,
+    "OverheatTemperature": 370.0,
+    "RecoveryTemperature": 350.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "power_connection": {
+    "power_base": 16.0,
+    "power_draw": 24.0,
+    "time_to_reach_draw_request": 15.0,
+    "safeguard_priority": 30.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.34,
+    "overclock_threshold_max": 0.43,
+    "overpower_performance": 0.374,
+    "overclock_performance": 0.05,
+    "power_to_em": 10.0,
+    "decay_rate_of_em": 0.28
+  },
+  "type_data": {
+    "cooling_rate": 4400000.0
+  }
+}

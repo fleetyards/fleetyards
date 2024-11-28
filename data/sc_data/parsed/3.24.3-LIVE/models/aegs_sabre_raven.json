@@ -1,0 +1,329 @@
+{
+  "key": "AEGS_Sabre_Raven",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "Aegis Sabre Raven",
+  "description": "Manufacturer: Aegis Dynamics \\nFocus: Interdiction\\n\\nAegis Dynamics have raised the bar yet again with their Raven variant, maintaining all the speed and maneuverability of its Sabre forebear, but with a lower ship signature, making it a fast, stealthy infiltrator.",
+  "career": "Combat",
+  "role": "Interceptor",
+  "insurance": {
+    "base_wait_time_minutes": "7.56",
+    "mandatory_wait_time_minutes": "2.52",
+    "base_expediting_fee": "3934"
+  },
+  "mass": 70811.32,
+  "metrics": {
+    "x": 24.5,
+    "y": 24.5,
+    "z": 5.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "AEGS_Sabre_Raven_SCItem_Seat_Pilot"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_selfdestruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_20s"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_AEGS_Sabre"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_AEGS_Sabre_Raven"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_GRNP_S01_Ecouter"
+    },
+    {
+      "name": "hardpoint_powerplant_01",
+      "ref": null,
+      "key": "POWR_AEGS_S01_Charger_SCItem"
+    },
+    {
+      "name": "hardpoint_powerplant_02",
+      "ref": null,
+      "key": "POWR_TYDT_S01_SonicLite_SCItem"
+    },
+    {
+      "name": "hardpoint_fuel_tank_left",
+      "ref": null,
+      "key": "HTNK_AEGS_Sabre_Raven"
+    },
+    {
+      "name": "hardpoint_fuel_tank_right",
+      "ref": null,
+      "key": "HTNK_AEGS_Sabre_Raven"
+    },
+    {
+      "name": "hardpoint_fuel_intake_left",
+      "ref": null,
+      "key": "INTK_AEGS_Sabre_Raven"
+    },
+    {
+      "name": "hardpoint_fuel_intake_right",
+      "ref": null,
+      "key": "INTK_AEGS_Sabre_Raven"
+    },
+    {
+      "name": "hardpoint_cooler_left",
+      "ref": null,
+      "key": "COOL_AEGS_S01_Bracer_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_right",
+      "ref": null,
+      "key": "COOL_AEGS_S01_Bracer_SCItem"
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_RACO_S01_Drift_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": null,
+          "key": "JDRV_TARS_S01_C_Explorer"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_fuel_tank",
+      "ref": null,
+      "key": "QTNK_AEGS_Sabre"
+    },
+    {
+      "name": "hardpoint_armour",
+      "ref": null,
+      "key": "ARMR_AEGS_SabreRaven"
+    },
+    {
+      "name": "hardpoint_shield_generator_A",
+      "ref": null,
+      "key": "SHLD_ASAS_S01_Shimmer_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator_B",
+      "ref": null,
+      "key": "SHLD_ASAS_S01_Shimmer_SCItem"
+    },
+    {
+      "name": "hardpoint_engine",
+      "ref": null,
+      "key": "AEGS_Sabre_Raven_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_retro_left",
+      "ref": null,
+      "key": "AEGS_Sabre_Raven_Thruster_Retro_Left"
+    },
+    {
+      "name": "hardpoint_thruster_retro_right",
+      "ref": null,
+      "key": "AEGS_Sabre_Raven_Thruster_Retro_Right"
+    },
+    {
+      "name": "hardpoint_thruster_bottomFL",
+      "ref": null,
+      "key": "AEGS_Sabre_Raven_Thruster_Mav_Joint_01"
+    },
+    {
+      "name": "hardpoint_thruster_bottomFR",
+      "ref": null,
+      "key": "AEGS_Sabre_Raven_Thruster_Mav_Joint_01"
+    },
+    {
+      "name": "hardpoint_thruster_topFL",
+      "ref": null,
+      "key": "AEGS_Sabre_Raven_Thruster_Mav_Joint_01"
+    },
+    {
+      "name": "hardpoint_thruster_topFR",
+      "ref": null,
+      "key": "AEGS_Sabre_Raven_Thruster_Mav_Joint_01"
+    },
+    {
+      "name": "hardpoint_thruster_bottomRL",
+      "ref": null,
+      "key": "AEGS_Sabre_Raven_Thruster_Mav_Joint_02"
+    },
+    {
+      "name": "hardpoint_thruster_bottomRR",
+      "ref": null,
+      "key": "AEGS_Sabre_Raven_Thruster_Mav_Joint_02"
+    },
+    {
+      "name": "hardpoint_thruster_topRL",
+      "ref": null,
+      "key": "AEGS_Sabre_Raven_Thruster_Mav_Joint_02"
+    },
+    {
+      "name": "hardpoint_thruster_topRR",
+      "ref": null,
+      "key": "AEGS_Sabre_Raven_Thruster_Mav_Joint_02"
+    },
+    {
+      "name": "hardpoint_weapon_left_wing",
+      "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "cfacea3e-afbc-405c-b220-2d1d3b6e20b1",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_right_wing",
+      "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "cfacea3e-afbc-405c-b220-2d1d3b6e20b1",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_missilerack_left",
+      "ref": null,
+      "key": "MXOX_EMP_Device_S2",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": null
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_missilerack_right",
+      "ref": null,
+      "key": "MXOX_EMP_Device_S2",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": null
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_countermeasure_launcher_left",
+      "ref": null,
+      "key": "AEGS_Raven_CML_Flare"
+    },
+    {
+      "name": "hardpoint_countermeasure_launcher_right",
+      "ref": null,
+      "key": "AEGS_Raven_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_TYDT_S01_ComfortAir"
+    },
+    {
+      "name": "hardpoint_avionics",
+      "ref": null,
+      "key": "COMP_BEHR_S01_CSR-RP"
+    },
+    {
+      "name": "hardpoint_weapon_rack",
+      "ref": null,
+      "key": "Weapon_Rack_AEGS_Sabre_Raven"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_AEGS_Sabre_Raven"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "AEGS_Sabre_Raven_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_cockpit_flair",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_cockpit",
+      "ref": null,
+      "key": "RELAY_3slot"
+    },
+    {
+      "name": "hardpoint_thruster_sideRL",
+      "ref": null,
+      "key": "AEGS_Sabre_Raven_Thruster_Mav_Joint_03"
+    },
+    {
+      "name": "hardpoint_thruster_sideRR",
+      "ref": null,
+      "key": "AEGS_Sabre_Raven_Thruster_Mav_Joint_03"
+    }
+  ]
+}
