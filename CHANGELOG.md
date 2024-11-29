@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.47](///compare/v5.31.46...v5.31.47) (2024-11-29)
+
+
+### Bug Fixes
+
+* **sync:** check paints after models b96efdc
+
 ### [5.31.46](///compare/v5.31.45...v5.31.46) (2024-11-28)
 
 ### [5.31.45](https://github.com/fleetyards/fleetyards/compare/v5.31.44...v5.31.45) (2024-11-04)
