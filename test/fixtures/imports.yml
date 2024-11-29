@@ -22,4 +22,4 @@ model_andromeda:
   type: "::Imports::ModelImport"
 
 sc_data:
-  type: "::Imports::ScDataImport"
+  type: "::Imports::ScData::AllImport"

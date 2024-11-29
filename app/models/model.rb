@@ -31,6 +31,7 @@
 #  front_view_colored_width   :integer
 #  front_view_height          :integer
 #  front_view_width           :integer
+#  fuel_consumption           :decimal(15, 2)
 #  ground                     :boolean          default(FALSE)
 #  ground_acceleration        :decimal(15, 2)
 #  ground_decceleration       :decimal(15, 2)
@@ -412,6 +413,18 @@ class Model < ApplicationRecord
 
     self.hydrogen_fuel_tank_size = hydrogen_fuel_tanks.sum do |item|
       item["capacity"]
+    end
+  end
+
+  def set_fuel_consumption_from_hardpoints
+    thrusters = hardpoints.includes(:component).where(group: :thruster).filter_map do |hardpoint|
+      next if hardpoint.component.blank?
+
+      hardpoint.component.type_data
+    end
+
+    self.fuel_consumption = thrusters.sum do |thruster|
+      thruster.dig("fuel_burn_rate_per10_k_newton").to_f || 0
     end
   end
 

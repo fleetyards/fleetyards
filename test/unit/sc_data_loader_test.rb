@@ -3,7 +3,7 @@
 require "test_helper"
 
 class ScDataLoaderTest < ActiveSupport::TestCase
-  let(:loader) { ::ScData::ShipsLoader.new }
+  let(:loader) { ::ScData::ModelsLoader.new }
 
   before do
     Timecop.freeze("2017-01-01 14:00:00")

@@ -10,8 +10,9 @@ module Shared
           schema({
             type: :string,
             enum: %w[
-              ::Imports::ModelImport ::Imports::ModelsImport ::Imports::ScDataImport
-              ::Imports::ScDataShipImport ::Imports::HangarSync ::Imports::HangarImport
+              ::Imports::ModelImport ::Imports::ModelsImport ::Imports::ScData::AllImport
+              ::Imports::ScData::ModelsImport ::Imports::ScData::ModelImport ::Imports::HangarSync
+              ::Imports::HangarImport
             ]
           })
         end

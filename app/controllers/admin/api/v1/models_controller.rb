@@ -114,7 +114,7 @@ module Admin
         def reload_scdata
           authorize! :reload, :admin_api_models
 
-          Loaders::ScDataShipsJob.perform_async(load_version_from_s3)
+          Loaders::ScData::ModelsJob.perform_async
 
           render json: {message: "Jobs enqueued"}, status: :ok
         end
@@ -139,7 +139,7 @@ module Admin
           authorize! :reload, @model
 
           Loaders::ModelJob.perform_async(@model.rsi_id)
-          Loaders::ScDataShipJob.perform_async(@model.id) if @model.sc_identifier.present?
+          Loaders::ScData::ModelJob.perform_async(@model.id) if @model.sc_identifier.present?
 
           render json: {message: "Jobs enqueued"}, status: :ok
         end

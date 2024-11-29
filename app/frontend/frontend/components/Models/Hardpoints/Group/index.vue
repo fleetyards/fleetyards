@@ -9,6 +9,28 @@
           {{ hardpoint.name }}
         </div>
       </div>
+      <!-- <div class="hardpoint-group-inner">
+        <div
+          v-for="hardpoint in hardpoints" :key="hardpoint.id"
+          class="hardpoint-type"
+        >
+          <div class="hardpoint-type-label">
+            <img
+              :src="icons[type as keyof typeof icons]"
+              class="hardpoint-type-icon"
+              :alt="`icon-${type}`"
+            />
+            {{ t(`labels.hardpoint.types.${type}`) }}
+          </div>
+          <div class="hardpoint-items">
+            <HardpointItems
+              v-for="(groupedItems, key) in groupByKey(items)"
+              :key="`${type}-${key}`"
+              :hardpoints="groupedItems"
+            />
+          </div>
+        </div>
+      </div> -->
     </Panel>
   </div>
 </template>

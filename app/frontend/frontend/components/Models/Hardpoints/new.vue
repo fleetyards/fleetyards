@@ -82,16 +82,6 @@ const {
             :group="group"
             :hardpoints="hardpointsForGroup(group)"
           />
-          <HardpointGroup
-            v-for="group in [
-              HardpointGroupEnum.AUXILIARY,
-              HardpointGroupEnum.SEAT,
-              HardpointGroupEnum.OTHER,
-            ]"
-            :key="group"
-            :group="group"
-            :hardpoints="hardpointsForGroup(group)"
-          />
         </div>
         <div class="col-12 col-md-6 col-lg-4">
           <HardpointGroup
@@ -107,6 +97,17 @@ const {
         <div class="col-12 col-md-6 col-lg-4">
           <HardpointGroup
             v-for="group in [HardpointGroupEnum.WEAPON]"
+            :key="group"
+            :group="group"
+            :hardpoints="hardpointsForGroup(group)"
+          />
+          <HardpointGroup
+            v-for="group in [
+              HardpointGroupEnum.AUXILIARY,
+              HardpointGroupEnum.SEAT,
+              HardpointGroupEnum.RELAY,
+              HardpointGroupEnum.OTHER,
+            ]"
             :key="group"
             :group="group"
             :hardpoints="hardpointsForGroup(group)"

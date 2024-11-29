@@ -29,6 +29,7 @@
 #  front_view_colored_width   :integer
 #  front_view_height          :integer
 #  front_view_width           :integer
+#  fuel_consumption           :decimal(15, 2)
 #  ground                     :boolean          default(FALSE)
 #  ground_acceleration        :decimal(15, 2)
 #  ground_decceleration       :decimal(15, 2)

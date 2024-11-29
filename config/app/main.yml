@@ -21,12 +21,11 @@ shared:
   mailer_default_admin_to: <%= ENV["MAILER_DEFAULT_ADMIN_TO"] %>
 
   s3_endpoint: <%= ENV["S3_ENDPOINT"] || "https://fleetyards.fra1.digitaloceanspaces.com" %>
-  s3_sc_data_bucket: <%= ENV["S3_SC_DATA_BUCKET"] || "sc_data" %>
   s3_seeds_fleetchart_bucket: <%= ENV["S3_SEEDS_FLEETCHART_BUCKET"] || "seeds_fleetchart" %>
 
   opensearch_url: <%= ENV["OPENSEARCH_URL"] || 'localhost:9200' %>
 
-  sc_data2_sc_version: "4.0.0-PTU"
+  sc_data_sc_version: "3.24.3-live.9423704"
 
 staging:
   on_subdomain?: true

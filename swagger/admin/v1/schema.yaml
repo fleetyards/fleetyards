@@ -1060,8 +1060,9 @@ components:
       - propulsion
       - thruster
       - weapon
-      - seat
       - auxiliary
+      - seat
+      - relay
       - other
       title: HardpointGroupEnum
     HardpointSourceEnum:
@@ -1083,8 +1084,9 @@ components:
       enum:
       - "::Imports::ModelImport"
       - "::Imports::ModelsImport"
-      - "::Imports::ScDataImport"
-      - "::Imports::ScDataShipImport"
+      - "::Imports::ScData::AllImport"
+      - "::Imports::ScData::ModelsImport"
+      - "::Imports::ScData::ModelImport"
       - "::Imports::HangarSync"
       - "::Imports::HangarImport"
       title: ImportTypeEnum

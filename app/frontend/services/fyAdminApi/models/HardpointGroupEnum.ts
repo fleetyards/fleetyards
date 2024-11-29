@@ -8,7 +8,8 @@ export enum HardpointGroupEnum {
     PROPULSION = 'propulsion',
     THRUSTER = 'thruster',
     WEAPON = 'weapon',
-    SEAT = 'seat',
     AUXILIARY = 'auxiliary',
+    SEAT = 'seat',
+    RELAY = 'relay',
     OTHER = 'other',
 }

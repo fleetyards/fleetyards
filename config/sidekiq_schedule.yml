@@ -25,7 +25,7 @@ production: &production
     class: 'PricesJob'
   sc_data_check_job:
     cron: '0 22 */1 * *' # Daily at 22:00
-    class: 'ScDataCheckJob'
+    class: 'ScData::CheckJob'
     queue: 'loaders'
   metrics_job:
     cron: '0 1 */1 * *' # Daily at 1:00
