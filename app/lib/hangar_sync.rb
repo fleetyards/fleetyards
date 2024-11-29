@@ -66,50 +66,6 @@ class HangarSync < HangarImporter
       query = generate_model_query(item[:name])
       params = default_params(user_id, item)
 
-      model_paint = ModelPaint.where(query).first
-      if model_paint.present?
-        vehicle_with_ref = vehicle_scope.where.not(id: vehicle_ids).find_by(
-          model_id: model_paint.model_id,
-          model_paint_id: model_paint.id,
-          rsi_pledge_id: item[:id]
-        )
-
-        if vehicle_with_ref.present?
-          vehicle_with_ref.update!(
-            rsi_pledge_synced_at: Time.current,
-            name: item[:custom_name]&.strip.presence || vehicle_with_ref.name,
-            wanted: false
-          )
-
-          vehicle_ids << vehicle_with_ref.id
-          found_vehicles << vehicle_with_ref.id
-
-          next
-        end
-
-        vehicle = vehicle_scope.where.not(id: vehicle_ids).find_by(
-          model_id: model_paint.model_id,
-          model_paint_id: model_paint.id
-        )
-
-        if vehicle.present?
-          vehicle.update!(
-            rsi_pledge_id: item[:id],
-            rsi_pledge_synced_at: Time.current,
-            name: item[:custom_name]&.strip.presence || vehicle.name,
-            wanted: false
-          )
-          vehicle_ids << vehicle.id
-          found_vehicles << vehicle.id
-          next
-        end
-
-        vehicle = vehicle_scope.create!(params.merge(model_id: model_paint.model_id, model_paint_id: model_paint.id))
-        vehicle_ids << vehicle.id
-        imported_vehicles << vehicle.id
-        next
-      end
-
       model = Model.where(query).first
       if model.present?
         vehicle_with_ref = vehicle_scope.where.not(id: vehicle_ids).find_by(
@@ -149,6 +105,50 @@ class HangarSync < HangarImporter
         end
 
         vehicle = vehicle_scope.create!(params.merge(model_id: model.id))
+        vehicle_ids << vehicle.id
+        imported_vehicles << vehicle.id
+        next
+      end
+
+      model_paint = ModelPaint.where(query).first
+      if model_paint.present?
+        vehicle_with_ref = vehicle_scope.where.not(id: vehicle_ids).find_by(
+          model_id: model_paint.model_id,
+          model_paint_id: model_paint.id,
+          rsi_pledge_id: item[:id]
+        )
+
+        if vehicle_with_ref.present?
+          vehicle_with_ref.update!(
+            rsi_pledge_synced_at: Time.current,
+            name: item[:custom_name]&.strip.presence || vehicle_with_ref.name,
+            wanted: false
+          )
+
+          vehicle_ids << vehicle_with_ref.id
+          found_vehicles << vehicle_with_ref.id
+
+          next
+        end
+
+        vehicle = vehicle_scope.where.not(id: vehicle_ids).find_by(
+          model_id: model_paint.model_id,
+          model_paint_id: model_paint.id
+        )
+
+        if vehicle.present?
+          vehicle.update!(
+            rsi_pledge_id: item[:id],
+            rsi_pledge_synced_at: Time.current,
+            name: item[:custom_name]&.strip.presence || vehicle.name,
+            wanted: false
+          )
+          vehicle_ids << vehicle.id
+          found_vehicles << vehicle.id
+          next
+        end
+
+        vehicle = vehicle_scope.create!(params.merge(model_id: model_paint.model_id, model_paint_id: model_paint.id))
         vehicle_ids << vehicle.id
         imported_vehicles << vehicle.id
         next
