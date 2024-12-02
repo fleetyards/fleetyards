@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.48](///compare/v5.31.47...v5.31.48) (2024-12-02)
+
+
+### Bug Fixes
+
+* **loaders:** update loaner and paints mapping for new IAE ships 64a6fdf
+
 ### [5.31.47](///compare/v5.31.46...v5.31.47) (2024-11-29)
 
 
