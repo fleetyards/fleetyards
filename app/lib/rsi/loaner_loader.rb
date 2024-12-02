@@ -66,6 +66,7 @@ module Rsi
       zeus_variants = ["Zeus Mk II MR", "Zeus Mk II CL", "Zeus Mk II ES"]
       pulse_variants = ["Pulse", "Pulse LX"]
       ironclad_variants = ["Ironclad", "Ironclad Assault"]
+      terrapin_variants = ["Terrapin", "Terrapin Medic"]
 
       models_map = {
         "315p (customized)" => ["315p"],
@@ -114,7 +115,8 @@ module Rsi
         "Mole (all variants)" => ["MOLE"],
         "MPUV-Tractor" => ["MPUV Tractor"],
         "Pulse (+ LX)" => pulse_variants,
-        "Ironclad (+ Assault)" => ironclad_variants
+        "Ironclad (+ Assault)" => ironclad_variants,
+        "Terrapin (+ Medic)" => terrapin_variants
       }
 
       return models_map[name] if models_map[name].present?
