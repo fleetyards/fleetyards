@@ -244,7 +244,10 @@ class PaintsImporter
       "F7C-S Hornet Ghost Mk I", "F7C-R Hornet Tracker Mk I", "F7C-M Super Hornet Heartseeker Mk I",
       "F7C-M Super Hornet Mk I", "F7C Hornet Wildfire Mk I", "F7C Hornet Mk I", "F7A Hornet Mk I"
     ]
-    hornet_mk2 = ["F7C Hornet Mk II", "F7A Hornet Mk II"]
+    hornet_mk2 = [
+      "F7C Hornet Mk II", "F7A Hornet Mk II", "F7C-R Hornet Tracker Mk II",
+      "F7C-S Hornet Ghost Mk II"
+    ]
     mercury = ["Mercury", "Mercury Star Runner"]
     roc = %w[ROC ROC-DS]
     prospector = ["Prospector"]
@@ -257,6 +260,9 @@ class PaintsImporter
     mpuv = ["MPUV Cargo", "MPUV Personnel", "MPUV Tractor"]
     sabre = ["Sabre", "Sabre Comet", "Sabre Raven", "Sabre Firebird"]
     zeus = ["Zeus Mk II MR", "Zeus Mk II CL", "Zeus Mk II ES"]
+    terrapin = ["Terrapin", "Terrapin Medic"]
+    spirit = ["A1 Spirit", "C1 Spirit", "E1 Spirit"]
+    f8c = ["F8C Lightning", "F8C Lightning Executive Edition"]
 
     models_map = {
       "Cutter" => cutter,
@@ -295,6 +301,8 @@ class PaintsImporter
       "Anvil Hornet" => hornet_mk1,
       "F7 Hornet Mk I" => hornet_mk1,
       "F7 Hornet Mk II" => hornet_mk2,
+      "F7A Hornet Mk II" => hornet_mk2,
+      "F7C Hornet Mk II" => hornet_mk2,
       "MOLE Dolivine" => ["MOLE"],
       "MOLE Aphorite" => ["MOLE"],
       "MOLE Hadanite" => ["MOLE"],
@@ -348,10 +356,11 @@ class PaintsImporter
       "Khartu-al" => ["Khartu-Al"],
       "Tumbril Cyclone" => cyclone,
       "Tumrbil Cyclone" => cyclone,
-      "F8C" => ["F8C Lightning", "F8C Lightning Executive Edition"],
+      "F8C" => f8c,
       "Aegis Vanguard" => vanguard,
       "Vanguard Series" => vanguard,
       "Vanguard" => vanguard,
+      "Terrapin" => terrapin,
       "Mustang" => ["Mustang Omega", "Mustang Gamma", "Mustang Delta", "Mustang Beta", "Mustang Alpha"],
       "2950 Invictus Valkyrie Light Grey" => ["Valkyrie"],
       "2950 Invictus Valkyrie Sage" => ["Valkyrie"],
@@ -390,7 +399,9 @@ class PaintsImporter
       "X1 2954 Auspicious Red Dog" => x1,
       "X1 2954 Auspicious Red Dragon" => x1,
       "Scorpius Stinger Black Orange" => scorpius,
-      "Sabre" => sabre
+      "Sabre" => sabre,
+      "C1 Spirit 2954 Best In Show" => spirit,
+      "F8C Lightning 2954 Best In Show" => f8c
     }
 
     return models_map[name.strip] if models_map[name.strip].present?
