@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.49](///compare/v5.31.48...v5.31.49) (2024-12-04)
+
+
+### Bug Fixes
+
+* **paints:** update mapping 5ff84a2
+
 ### [5.31.48](///compare/v5.31.47...v5.31.48) (2024-12-02)
 
 
