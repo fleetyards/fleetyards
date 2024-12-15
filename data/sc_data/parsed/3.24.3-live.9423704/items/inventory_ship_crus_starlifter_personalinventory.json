@@ -1,0 +1,9 @@
+{
+  "key": "Ship_CRUS_Starlifter_PersonalInventory",
+  "ref": "22910161-b338-43d5-a9e4-03cb598ff5a8",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 3.0
+  }
+}

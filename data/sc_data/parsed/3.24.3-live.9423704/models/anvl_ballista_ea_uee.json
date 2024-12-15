@@ -39,6 +39,16 @@
       ]
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "ANVL_Ballista_SCItem_SeatAccess"
+    },
+    {
+      "name": "hardpoint_seat_access_support",
+      "ref": null,
+      "key": "ANVL_Ballista_SCItem_SeatAccess_Support"
+    },
+    {
       "name": "hardpoint_controller_wheel",
       "ref": null,
       "key": "Controller_Wheel"

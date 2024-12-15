@@ -43,6 +43,11 @@
       ]
     },
     {
+      "name": "hardpoint_seat_access_pilot",
+      "ref": null,
+      "key": "AEGS_Hammerhead_SCItem_SeatAccess_Pilot"
+    },
+    {
       "name": "hardpoint_seat_copilot",
       "ref": null,
       "key": "AEGS_Hammerhead_SCItem_Copilot_Seat",
@@ -53,6 +58,11 @@
           "key": "Vehicle_Screen_MFD"
         }
       ]
+    },
+    {
+      "name": "hardpoint_seat_access_copilot",
+      "ref": null,
+      "key": "AEGS_Hammerhead_SCItem_SeatAccess_Copilot"
     },
     {
       "name": "hardpoint_seat_captains_quarters",
@@ -79,6 +89,11 @@
       "loadout": [
 
       ]
+    },
+    {
+      "name": "hardpoint_seat_access_captains_quarters",
+      "ref": null,
+      "key": "AEGS_Hammerhead_SCItem_SeatAccess_Captain_Room"
     },
     {
       "name": "hardpoint_cockpit_selfdestruct",
@@ -349,13 +364,13 @@
               "key": null
             }
           ]
-        },
-        {
-          "name": "hardpoint_OC",
-          "ref": null,
-          "key": "AEGS_Hammerhead_Side_Turret_Lighting"
         }
       ]
+    },
+    {
+      "name": "hardpoint_seat_access_turret_front_left",
+      "ref": null,
+      "key": "AEGS_Hammerhead_SCItem_SeatAccess_Turret_Side_FrontLeft"
     },
     {
       "name": "Turret_Side_Front_Right",
@@ -409,13 +424,13 @@
               "key": null
             }
           ]
-        },
-        {
-          "name": "hardpoint_OC",
-          "ref": null,
-          "key": "AEGS_Hammerhead_Side_Turret_Lighting"
         }
       ]
+    },
+    {
+      "name": "hardpoint_seat_access_turret_front_right",
+      "ref": null,
+      "key": "AEGS_Hammerhead_SCItem_SeatAccess_Turret_Side_FrontRight"
     },
     {
       "name": "Turret_Side_Back_Left",
@@ -469,13 +484,13 @@
               "key": null
             }
           ]
-        },
-        {
-          "name": "hardpoint_OC",
-          "ref": null,
-          "key": "AEGS_Hammerhead_Side_Turret_Lighting"
         }
       ]
+    },
+    {
+      "name": "hardpoint_seat_access_turret_back_left",
+      "ref": null,
+      "key": "AEGS_Hammerhead_SCItem_SeatAccess_Turret_Side_BackLeft"
     },
     {
       "name": "Turret_Side_Back_Right",
@@ -529,13 +544,13 @@
               "key": null
             }
           ]
-        },
-        {
-          "name": "hardpoint_OC",
-          "ref": null,
-          "key": "AEGS_Hammerhead_Side_Turret_Lighting"
         }
       ]
+    },
+    {
+      "name": "hardpoint_seat_access_turret_back_right",
+      "ref": null,
+      "key": "AEGS_Hammerhead_SCItem_SeatAccess_Turret_Side_BackRight"
     },
     {
       "name": "Turret_Top",
@@ -593,6 +608,11 @@
       ]
     },
     {
+      "name": "hardpoint_seat_access_turret_top",
+      "ref": null,
+      "key": "AEGS_Hammerhead_SCItem_SeatAccess_Turret_Top"
+    },
+    {
       "name": "Turret_Rear",
       "ref": "7de3c63f-a8ef-4d7b-8022-97e189d33449",
       "key": null,
@@ -646,6 +666,11 @@
           ]
         }
       ]
+    },
+    {
+      "name": "hardpoint_seat_access_turret_rear",
+      "ref": null,
+      "key": "AEGS_Hammerhead_SCItem_SeatAccess_Turret_Bottom"
     },
     {
       "name": "hardpoint_missile_top_left_01",

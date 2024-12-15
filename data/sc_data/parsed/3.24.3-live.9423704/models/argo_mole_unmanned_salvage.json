@@ -76,6 +76,11 @@
       "key": "ARGO_MOLE_SCItem_Seat"
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "ARGO_MOLE_SCItem_SeatAccess"
+    },
+    {
       "name": "hardpoint_self_destruct_pilot",
       "ref": null,
       "key": "VHCL_SelfDestruct_45s"
@@ -84,6 +89,11 @@
       "name": "hardpoint_seat_copilot",
       "ref": null,
       "key": "ARGO_MOLE_SCItem_CoPilot_Seat"
+    },
+    {
+      "name": "hardpoint_seat_access_copilot",
+      "ref": null,
+      "key": "ARGO_MOLE_SCItem_SeatAccess_Copilot"
     },
     {
       "name": "hardpoint_radar",
@@ -209,6 +219,11 @@
       ]
     },
     {
+      "name": "hardpoint_mining_cab_front_access",
+      "ref": null,
+      "key": "ARGO_MOLE_TurretFront_SeatAccess"
+    },
+    {
       "name": "hardpoint_mining_cab_left",
       "ref": null,
       "key": "ARGO_MOLE_Turret_Left",
@@ -231,6 +246,11 @@
       ]
     },
     {
+      "name": "hardpoint_mining_cab_left_access",
+      "ref": null,
+      "key": "ARGO_MOLE_TurretLeft_SeatAccess"
+    },
+    {
       "name": "hardpoint_mining_cab_right",
       "ref": null,
       "key": "ARGO_MOLE_Turret_Right",
@@ -251,6 +271,11 @@
           "key": "Vehicle_Screen_MFD"
         }
       ]
+    },
+    {
+      "name": "hardpoint_mining_cab_right_access",
+      "ref": null,
+      "key": "ARGO_MOLE_TurretRight_SeatAccess"
     },
     {
       "name": "hardpoint_thruster_main_left_top",

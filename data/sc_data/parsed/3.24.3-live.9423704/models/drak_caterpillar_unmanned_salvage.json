@@ -26,6 +26,51 @@
       "key": null
     },
     {
+      "name": "hardpoint_seat_access_pilot",
+      "ref": null,
+      "key": "DRAK_Caterpillar_SeatAccess_Pilot"
+    },
+    {
+      "name": "hardpoint_seat_access_copilot",
+      "ref": null,
+      "key": "DRAK_Caterpillar_SeatAccess_Copilot"
+    },
+    {
+      "name": "hardpoint_seat_access_engineering",
+      "ref": null,
+      "key": "DRAK_Caterpillar_SeatAccess_Engineering"
+    },
+    {
+      "name": "hardpoint_seat_access_ssleft",
+      "ref": null,
+      "key": "DRAK_Caterpillar_SeatAccess_SupportSeatLeft"
+    },
+    {
+      "name": "hardpoint_seat_access_ssright",
+      "ref": null,
+      "key": "DRAK_Caterpillar_SeatAccess_SupportSeatRight"
+    },
+    {
+      "name": "hardpoint_seat_access_tbleft",
+      "ref": null,
+      "key": "DRAK_Caterpillar_SeatAccess_TractorBeamLeft"
+    },
+    {
+      "name": "hardpoint_seat_access_tbright",
+      "ref": null,
+      "key": "DRAK_Caterpillar_SeatAccess_TractorBeamRight"
+    },
+    {
+      "name": "hardpoint_seat_access_topturret",
+      "ref": null,
+      "key": "DRAK_Caterpillar_SeatAccess_TurretTop"
+    },
+    {
+      "name": "hardpoint_seat_access_bottomturret",
+      "ref": null,
+      "key": "DRAK_Caterpillar_SeatAccess_TurretBottom"
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": null,
       "key": "DRAK_Caterpillar_SCItem_Seat_Pilot"
@@ -382,6 +427,11 @@
       "key": "DRAK_Caterpillar_CargoGrid_Nose"
     },
     {
+      "name": "hardpoint_cargogrid_nose_access",
+      "ref": null,
+      "key": "DRAK_Caterpillar_CargoGrid_Nose_Access"
+    },
+    {
       "name": "hardpoint_cargogrid_module_01",
       "ref": null,
       "key": "DRAK_Caterpillar_CargoGrid_Module"
@@ -390,6 +440,11 @@
       "name": "hardpoint_cargogrid_module_01_walkway",
       "ref": null,
       "key": "DRAK_Caterpillar_CargoGrid_Module_Walkway"
+    },
+    {
+      "name": "hardpoint_cargogrid_module_01_ladder",
+      "ref": null,
+      "key": "DRAK_Caterpillar_CargoGrid_Module_Ladder"
     },
     {
       "name": "hardpoint_cargogrid_module_02",
@@ -402,6 +457,11 @@
       "key": "DRAK_Caterpillar_CargoGrid_Module_Walkway"
     },
     {
+      "name": "hardpoint_cargogrid_module_02_ladder",
+      "ref": null,
+      "key": "DRAK_Caterpillar_CargoGrid_Module_Ladder"
+    },
+    {
       "name": "hardpoint_cargogrid_module_03",
       "ref": null,
       "key": "DRAK_Caterpillar_CargoGrid_Module"
@@ -412,6 +472,11 @@
       "key": "DRAK_Caterpillar_CargoGrid_Module_Walkway"
     },
     {
+      "name": "hardpoint_cargogrid_module_03_ladder",
+      "ref": null,
+      "key": "DRAK_Caterpillar_CargoGrid_Module_Ladder"
+    },
+    {
       "name": "hardpoint_cargogrid_module_04",
       "ref": null,
       "key": "DRAK_Caterpillar_CargoGrid_Module"
@@ -420,6 +485,11 @@
       "name": "hardpoint_cargogrid_module_04_walkway",
       "ref": null,
       "key": "DRAK_Caterpillar_CargoGrid_Module_Walkway"
+    },
+    {
+      "name": "hardpoint_cargogrid_module_04_ladder",
+      "ref": null,
+      "key": "DRAK_Caterpillar_CargoGrid_Module_Ladder"
     },
     {
       "name": "Hardpoint_LandingSystem",

@@ -1,0 +1,9 @@
+{
+  "key": "Ship_TempItemCarryingCapacity_CRUS_Hercules_M2",
+  "ref": "8ca0ba49-527c-4837-ad4d-3a682eccf676",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 468.0
+  }
+}

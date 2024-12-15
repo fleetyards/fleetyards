@@ -34,6 +34,21 @@
       ]
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "DRAK_Herald_SeatAccess"
+    },
+    {
+      "name": "hardpoint_seat_access_ship_enter",
+      "ref": null,
+      "key": "DRAK_Herald_SeatAccess_Ship_Enter"
+    },
+    {
+      "name": "hardpoint_seat_access_support",
+      "ref": null,
+      "key": "DRAK_Herald_SeatAccess_Support"
+    },
+    {
       "name": "hardpoint_seat_station",
       "ref": null,
       "key": "DRAK_Herald_SCItem_Seat_Support"
@@ -354,6 +369,11 @@
       "name": "hardpoint_bed_body",
       "ref": null,
       "key": "Bed_Single_Herald_DRAK"
+    },
+    {
+      "name": "hardpoint_ladder",
+      "ref": null,
+      "key": "Door_Ship_Exterior_Herald_Ladder_Attachable"
     },
     {
       "name": "hardpoint_controller_missile",

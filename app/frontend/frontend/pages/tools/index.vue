@@ -54,6 +54,12 @@ const tools = [
     description: "Star Citizen Progress Tracker",
     image: undefined,
   },
+  {
+    url: "https://uexcorp.space/",
+    name: "UEX Corp",
+    description: "Star Citizen Commodity and Item Finder",
+    image: undefined,
+  },
 ];
 </script>
 

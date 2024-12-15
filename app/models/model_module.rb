@@ -48,6 +48,7 @@ class ModelModule < ApplicationRecord
   accepts_nested_attributes_for :module_hardpoints, allow_destroy: true
 
   before_save :update_slugs
+  before_save :update_from_hardpoints
 
   after_save :touch_models
 
@@ -83,6 +84,18 @@ class ModelModule < ApplicationRecord
 
   def bought_at
     item_prices.buy.order(price: :asc).uniq(&:location)
+  end
+
+  def update_from_hardpoints
+    set_cargo_from_hardpoints
+  end
+
+  def set_cargo_from_hardpoints
+    return if cargo_holds.blank? || (cargo.present? && !cargo_holds_change_to_be_saved)
+
+    self.cargo = cargo_holds.sum do |cargo_hold|
+      cargo_hold.dig("dimensions", "scu")&.to_f || 0
+    end
   end
 
   private def touch_models

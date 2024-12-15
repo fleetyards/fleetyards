@@ -26,6 +26,11 @@
       "key": null
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "ESPR_Talon_SeatAccess"
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": null,
       "key": "ESPR_Talon_Pilot_Seat",

@@ -423,12 +423,22 @@
       ]
     },
     {
+      "name": "hardpoint_turret_console_left_access",
+      "ref": null,
+      "key": "ANVL_Valkyrie_SCItem_Turret_Left_Access"
+    },
+    {
       "name": "hardpoint_turret_console_right",
       "ref": null,
       "key": "ANVL_Valkyrie_Turret_Console_Right",
       "loadout": [
 
       ]
+    },
+    {
+      "name": "hardpoint_turret_console_right_access",
+      "ref": null,
+      "key": "ANVL_Valkyrie_SCItem_Turret_Right_Access"
     },
     {
       "name": "hardpoint_turret_door_right",

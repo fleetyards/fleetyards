@@ -26,6 +26,11 @@
       "key": null
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "KRIG_P52_Merlin_SeatAccess"
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": null,
       "key": "KRIG_P52_Merlin_Seat_Pilot"

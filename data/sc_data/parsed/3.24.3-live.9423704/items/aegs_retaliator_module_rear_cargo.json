@@ -20,14 +20,6 @@
   },
   "loadout": [
     {
-      "name": "hardpoint_module_oc",
-      "min_size": "0",
-      "max_size": "0",
-      "types": [
-
-      ]
-    },
-    {
       "name": "hardpoint_lift",
       "min_size": "0",
       "max_size": "0",
@@ -37,11 +29,6 @@
     }
   ],
   "default_loadout": [
-    {
-      "name": "hardpoint_module_oc",
-      "key": "AEGS_Retaliator_OC_Rear_Cargo",
-      "ref": null
-    },
     {
       "name": "hardpoint_lift",
       "key": "Door_RN_RoomConnector_Breachable_OpenClose_AEGS_Retaliator_Rear_Module_Lift",

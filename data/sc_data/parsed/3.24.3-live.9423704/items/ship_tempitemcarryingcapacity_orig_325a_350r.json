@@ -1,9 +1,0 @@
-{
-  "key": "Ship_TempItemCarryingCapacity_ORIG_325A_350R",
-  "ref": "341ccbfc-2605-42d1-a6d6-f26a32673014",
-  "category": "inventory",
-  "type": "personal_storage",
-  "type_data": {
-    "storage": 4.0
-  }
-}

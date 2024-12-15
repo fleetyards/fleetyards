@@ -26,6 +26,11 @@
       "key": "ANVL_Spartan_SCItem_Seat_Driver"
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "ANVL_Ballista_SCItem_SeatAccess"
+    },
+    {
       "name": "hardpoint_controller_wheel",
       "ref": null,
       "key": "Controller_Wheel"

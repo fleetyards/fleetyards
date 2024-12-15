@@ -263,12 +263,22 @@
       "key": null
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": "245da94c-bb7f-4606-97d0-14ebf5762d7e",
+      "key": null
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": "da44c54e-9b10-4205-926d-c28319d48690",
       "key": null,
       "loadout": [
 
       ]
+    },
+    {
+      "name": "hardpoint_seat_copilot_access_l",
+      "ref": "7c334921-1347-44cd-a983-65fed6b86e48",
+      "key": null
     },
     {
       "name": "hardpoint_seat_copilot_l",
@@ -279,12 +289,22 @@
       ]
     },
     {
+      "name": "hardpoint_seat_copilot_access_r",
+      "ref": "71c40387-c53f-4d2e-acbd-393036f3e6c7",
+      "key": null
+    },
+    {
       "name": "hardpoint_seat_copilot_r",
       "ref": "02e461f4-6f2a-449a-bd34-b1dca7d92d18",
       "key": null,
       "loadout": [
 
       ]
+    },
+    {
+      "name": "hardpoint_seat_access_bridge_l",
+      "ref": "40f1dcd2-2ec1-441a-a0b1-06b295ed627a",
+      "key": null
     },
     {
       "name": "hardpoint_seat_bridge_l",
@@ -295,6 +315,11 @@
       ]
     },
     {
+      "name": "hardpoint_seat_access_bridge_r",
+      "ref": "05dde69e-edf4-432b-947b-0c2d96ca3adb",
+      "key": null
+    },
+    {
       "name": "hardpoint_seat_bridge_r",
       "ref": "b717a51f-bf61-4797-925f-a2e14cee3f8f",
       "key": null,
@@ -303,12 +328,22 @@
       ]
     },
     {
+      "name": "hardpoint_console_access",
+      "ref": "3953b356-d809-47f7-88cd-e98cea84f1b3",
+      "key": null
+    },
+    {
       "name": "hardpoint_console",
       "ref": "2edc20db-08f3-4db3-85aa-e4931a6b9bbc",
       "key": null,
       "loadout": [
 
       ]
+    },
+    {
+      "name": "hardpoint_turret_left_seat_access",
+      "ref": "c178a712-98ff-4d18-a54f-2ed3c2e98fea",
+      "key": null
     },
     {
       "name": "hardpoint_turret_left",
@@ -342,6 +377,11 @@
       ]
     },
     {
+      "name": "hardpoint_turret_right_seat_access",
+      "ref": "95fdbfe1-ecc0-4cbe-8b0c-de36fa6377fb",
+      "key": null
+    },
+    {
       "name": "hardpoint_turret_right",
       "ref": "be1bce53-447b-42ce-9990-5a3053ab7e95",
       "key": null,
@@ -371,6 +411,11 @@
           ]
         }
       ]
+    },
+    {
+      "name": "hardpoint_turret_back_rear_access",
+      "ref": "9af78fd3-64e3-482c-99da-bfe2ad1485cf",
+      "key": null
     },
     {
       "name": "hardpoint_turret_back_rear",
@@ -404,6 +449,11 @@
       ]
     },
     {
+      "name": "hardpoint_cart_console_access",
+      "ref": "d912bd40-348e-464c-8141-a143990234f9",
+      "key": null
+    },
+    {
       "name": "hardpoint_cart_console",
       "ref": "14dc4406-18a6-4056-9ca3-061da42f24e9",
       "key": null,
@@ -412,12 +462,22 @@
       ]
     },
     {
+      "name": "hardpoint_seat_drone_access_l",
+      "ref": "0a273c88-62fa-4fea-898b-55e7e95e1893",
+      "key": null
+    },
+    {
       "name": "hardpoint_seat_drone_l",
       "ref": "4d10317a-83e6-4fa8-a3d9-259bc3db85db",
       "key": null,
       "loadout": [
 
       ]
+    },
+    {
+      "name": "hardpoint_seat_drone_access_r",
+      "ref": "a2620922-a83f-47bf-a3af-21a81a09a69e",
+      "key": null
     },
     {
       "name": "hardpoint_seat_drone_r",

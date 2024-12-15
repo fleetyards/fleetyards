@@ -46,6 +46,11 @@
       ]
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "MISC_Reliant_SCItem_SeatAccess"
+    },
+    {
       "name": "hardpoint_selfdestruct",
       "ref": null,
       "key": "VHCL_SelfDestruct_30s"

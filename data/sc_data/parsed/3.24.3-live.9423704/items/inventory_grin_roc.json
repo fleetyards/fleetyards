@@ -1,0 +1,9 @@
+{
+  "key": "grin_roc",
+  "ref": "e56a8a93-0006-4ffa-aed0-f961bae01c41",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 0.00015625
+  }
+}

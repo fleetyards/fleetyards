@@ -26,6 +26,11 @@
       "key": "VNCL_Scythe_SCItem_Seat_Pilot"
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "VNCL_Scythe_SeatAccess"
+    },
+    {
       "name": "hardpoint_cockpit_radar",
       "ref": null,
       "key": null

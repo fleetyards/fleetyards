@@ -1,0 +1,37 @@
+{
+  "key": "RSI_Polaris_CargoGrid_Main",
+  "ref": "2a3bd9ef-70b6-409a-a3be-5f7f69535fdb",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 7.5,
+      "y": 15.0,
+      "z": 5.0,
+      "scu": 288.0,
+      "max_container_size": {
+        "size": 32,
+        "dimensions": {
+          "x": 10.0,
+          "y": 2.5,
+          "z": 2.5
+        }
+      }
+    },
+    "min_container": {
+      "x": 1.25,
+      "y": 1.25,
+      "z": 1.25,
+      "scu": 1.0,
+      "max_container_size": {
+        "size": 1,
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        }
+      }
+    },
+    "max_container": null
+  }
+}

@@ -39,6 +39,11 @@
       "key": "GRIN_Greycat_SCItem_Seat_Passenger"
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "GRIN_Greycat_SCItem_SeatAccess"
+    },
+    {
       "name": "hardpoint_controller_wheel",
       "ref": null,
       "key": "Controller_Wheel_GRIN_PTV"

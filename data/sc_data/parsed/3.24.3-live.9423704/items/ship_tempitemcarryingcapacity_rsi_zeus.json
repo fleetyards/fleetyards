@@ -1,9 +1,0 @@
-{
-  "key": "Ship_TempItemCarryingCapacity_RSI_Zeus",
-  "ref": "7f13116b-e1e6-47a1-8fce-1d597bf0baa5",
-  "category": "inventory",
-  "type": "personal_storage",
-  "type_data": {
-    "storage": 2.143347050754458e-05
-  }
-}

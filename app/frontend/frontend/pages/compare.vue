@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Box from "@/shared/components/base/Box/index.vue";
+import { type FilterGroupOption } from "@/shared/components/base/FilterGroup/index.vue";
 import ModelFilterGroup from "@/frontend/components/base/ModelFilterGroup/index.vue";
 import TopViewRows from "@/frontend/components/Compare/Models/TopView/index.vue";
 import BaseRows from "@/frontend/components/Compare/Models/Base/index.vue";
@@ -27,7 +28,7 @@ const { t } = useI18n();
 
 const navStore = useNavStore();
 
-const newModel = ref<string>();
+const newModel = ref<FilterGroupOption<Model>>();
 
 const models = ref<Model[]>([]);
 
@@ -109,12 +110,10 @@ watch(
 );
 
 const add = async () => {
-  if (newModel.value && !form.value.models?.includes(newModel.value)) {
-    const model = await fetchModel(newModel.value);
+  if (newModel.value && !form.value.models?.includes(newModel.value.value)) {
+    models.value.push(newModel.value.object);
 
-    models.value.push(model);
-
-    form.value.models?.push(newModel.value);
+    form.value.models?.push(newModel.value.value);
 
     update();
   }
@@ -180,7 +179,7 @@ const fetchModel = async (slug: string) => {
                   v-model="newModel"
                   v-tooltip="disabledTooltip"
                   :disabled="selectDisabled"
-                  :return-object="true"
+                  return-object
                   name="new-model"
                 />
                 <Btn :href="erkulUrl" :block="true" class="erkul-link">

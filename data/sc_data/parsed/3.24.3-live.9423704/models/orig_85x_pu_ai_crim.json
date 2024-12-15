@@ -31,6 +31,11 @@
       "key": "ORIG_85X_SCItem_Seat_Copilot"
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "ORIG_85X_SCItem_SeatAccess"
+    },
+    {
       "name": "hardpoint_controller_comms",
       "ref": null,
       "key": "Controller_Comms"

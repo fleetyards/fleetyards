@@ -201,9 +201,19 @@
       "key": "SHLD_BASL_S02_Aspis_SCItem"
     },
     {
+      "name": "hardpoint_seat_pilot_seat_access",
+      "ref": null,
+      "key": "ARGO_RAFT_SCItem_SeatAccess"
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": null,
       "key": "ARGO_RAFT_SCItem_Seat_Pilot"
+    },
+    {
+      "name": "hardpoint_seat_copilot_seat_access",
+      "ref": null,
+      "key": "ARGO_RAFT_SCItem_SeatAccess_CoPilot"
     },
     {
       "name": "hardpoint_seat_copilot",
@@ -352,6 +362,11 @@
       "name": "hardpoint_armor",
       "ref": null,
       "key": "ARMR_ARGO_RAFT"
+    },
+    {
+      "name": "hardpoint_seat_cargo_seat_access",
+      "ref": null,
+      "key": "ARGO_RAFT_SCItem_SeatAccess_Cargo"
     },
     {
       "name": "hardpoint_seat_cargo",

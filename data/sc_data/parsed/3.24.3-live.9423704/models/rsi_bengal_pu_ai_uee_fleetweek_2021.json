@@ -46,6 +46,11 @@
       "key": "RSI_Bengal_SCItem_Seat_Pilot"
     },
     {
+      "name": "hardpoint_seat_access_pilot",
+      "ref": null,
+      "key": "RSI_Bengal_SeatAccess_Pilot"
+    },
+    {
       "name": "hardpoint_radar",
       "ref": null,
       "key": "RADR_Default"
@@ -1433,9 +1438,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_AA_turret_seat_access_01",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_01"
+    },
+    {
       "name": "hardpoint_AA_turret_seat_02",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_02",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_02"
     },
     {
       "name": "hardpoint_AA_turret_seat_03",
@@ -1443,9 +1458,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_AA_turret_seat_access_03",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_03"
+    },
+    {
       "name": "hardpoint_AA_turret_seat_04",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_04",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_04"
     },
     {
       "name": "hardpoint_AA_turret_seat_05",
@@ -1453,9 +1478,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_AA_turret_seat_access_05",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_05"
+    },
+    {
       "name": "hardpoint_AA_turret_seat_06",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_06",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_06"
     },
     {
       "name": "hardpoint_AA_turret_seat_07",
@@ -1463,9 +1498,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_AA_turret_seat_access_07",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_07"
+    },
+    {
       "name": "hardpoint_AA_turret_seat_08",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_08",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_08"
     },
     {
       "name": "hardpoint_AA_turret_seat_09",
@@ -1473,9 +1518,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_AA_turret_seat_access_09",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_09"
+    },
+    {
       "name": "hardpoint_AA_turret_seat_10",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_10",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_10"
     },
     {
       "name": "hardpoint_AA_turret_seat_11",
@@ -1483,9 +1538,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_AA_turret_seat_access_11",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_11"
+    },
+    {
       "name": "hardpoint_AA_turret_seat_12",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_12",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_12"
     },
     {
       "name": "hardpoint_AA_turret_seat_13",
@@ -1493,9 +1558,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_AA_turret_seat_access_13",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_13"
+    },
+    {
       "name": "hardpoint_AA_turret_seat_14",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_14",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_14"
     },
     {
       "name": "hardpoint_AA_turret_seat_15",
@@ -1503,9 +1578,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_AA_turret_seat_access_15",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_15"
+    },
+    {
       "name": "hardpoint_AA_turret_seat_16",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_16",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_16"
     },
     {
       "name": "hardpoint_AA_turret_seat_17",
@@ -1513,9 +1598,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_AA_turret_seat_access_17",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_17"
+    },
+    {
       "name": "hardpoint_AA_turret_seat_18",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_18",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_18"
     },
     {
       "name": "hardpoint_AA_turret_seat_19",
@@ -1523,9 +1618,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_AA_turret_seat_access_19",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_19"
+    },
+    {
       "name": "hardpoint_AA_turret_seat_20",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_20",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_20"
     },
     {
       "name": "hardpoint_AA_turret_seat_21",
@@ -1533,9 +1638,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_AA_turret_seat_access_21",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_21"
+    },
+    {
       "name": "hardpoint_AA_turret_seat_22",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_22",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_22"
     },
     {
       "name": "hardpoint_AA_turret_seat_23",
@@ -1543,9 +1658,19 @@
       "key": "AIModule_Probe_Comms"
     },
     {
+      "name": "hardpoint_AA_turret_seat_access_23",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_23"
+    },
+    {
       "name": "hardpoint_AA_turret_seat_24",
       "ref": null,
       "key": "AIModule_Probe_Comms"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_24",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_24"
     },
     {
       "name": "hardpoint_AA_turret_seat_25",
@@ -1553,9 +1678,19 @@
       "key": "AIModule_Probe_Comms"
     },
     {
+      "name": "hardpoint_AA_turret_seat_access_25",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_25"
+    },
+    {
       "name": "hardpoint_AA_turret_seat_26",
       "ref": null,
       "key": "AIModule_Probe_Comms"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_26",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_26"
     },
     {
       "name": "hardpoint_AA_turret_seat_29",
@@ -1563,9 +1698,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_AA_turret_seat_access_29",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_29"
+    },
+    {
       "name": "hardpoint_AA_turret_seat_30",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_30",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_30"
     },
     {
       "name": "hardpoint_AA_turret_seat_31",
@@ -1573,9 +1718,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_AA_turret_seat_access_31",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_31"
+    },
+    {
       "name": "hardpoint_AA_turret_seat_32",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_32",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_32"
     },
     {
       "name": "hardpoint_AA_turret_seat_33",
@@ -1583,9 +1738,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_AA_turret_seat_access_33",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_33"
+    },
+    {
       "name": "hardpoint_AA_turret_seat_34",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_34",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_34"
     },
     {
       "name": "hardpoint_AA_turret_seat_35",
@@ -1593,9 +1758,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_AA_turret_seat_access_35",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_35"
+    },
+    {
       "name": "hardpoint_AA_turret_seat_36",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_36",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_36"
     },
     {
       "name": "hardpoint_AA_turret_seat_37",
@@ -1603,9 +1778,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_AA_turret_seat_access_37",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_37"
+    },
+    {
       "name": "hardpoint_AA_turret_seat_38",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_38",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_38"
     },
     {
       "name": "hardpoint_AI_turret_seat_01",
@@ -1613,9 +1798,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_AI_turret_seat_access_01",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_01"
+    },
+    {
       "name": "hardpoint_AI_turret_seat_02",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_02",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_02"
     },
     {
       "name": "hardpoint_AI_turret_seat_03",
@@ -1623,9 +1818,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_AI_turret_seat_access_03",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_03"
+    },
+    {
       "name": "hardpoint_AI_turret_seat_04",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_04",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_04"
     },
     {
       "name": "hardpoint_AI_turret_seat_05",
@@ -1633,9 +1838,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_AI_turret_seat_access_05",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_05"
+    },
+    {
       "name": "hardpoint_AI_turret_seat_06",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_06",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_06"
     },
     {
       "name": "hardpoint_AI_turret_seat_07",
@@ -1643,9 +1858,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_AI_turret_seat_access_07",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_07"
+    },
+    {
       "name": "hardpoint_AI_turret_seat_08",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_08",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_08"
     },
     {
       "name": "hardpoint_AI_turret_seat_09",
@@ -1653,9 +1878,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_AI_turret_seat_access_09",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_09"
+    },
+    {
       "name": "hardpoint_AI_turret_seat_10",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_10",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_10"
     },
     {
       "name": "hardpoint_AI_turret_seat_11",
@@ -1663,9 +1898,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_AI_turret_seat_access_11",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_11"
+    },
+    {
       "name": "hardpoint_AI_turret_seat_12",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_12",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_12"
     },
     {
       "name": "hardpoint_AI_turret_seat_13",
@@ -1673,9 +1918,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_AI_turret_seat_access_13",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_13"
+    },
+    {
       "name": "hardpoint_AI_turret_seat_14",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_14",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_14"
     },
     {
       "name": "hardpoint_AI_turret_seat_15",
@@ -1683,9 +1938,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_AI_turret_seat_access_15",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_15"
+    },
+    {
       "name": "hardpoint_AI_turret_seat_16",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_16",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_16"
     },
     {
       "name": "hardpoint_AI_turret_seat_17",
@@ -1693,9 +1958,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_AI_turret_seat_access_17",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_17"
+    },
+    {
       "name": "hardpoint_AI_turret_seat_18",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_18",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_18"
     },
     {
       "name": "hardpoint_AI_turret_seat_19",
@@ -1703,9 +1978,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_AI_turret_seat_access_19",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_19"
+    },
+    {
       "name": "hardpoint_AI_turret_seat_20",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_20",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_20"
     },
     {
       "name": "hardpoint_AI_turret_seat_21",
@@ -1713,9 +1998,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_AI_turret_seat_access_21",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_21"
+    },
+    {
       "name": "hardpoint_AI_turret_seat_22",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_22",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_22"
     },
     {
       "name": "hardpoint_phalanx_turret_seat_01",
@@ -1723,9 +2018,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_phalanx_turret_seat_access_01",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_01"
+    },
+    {
       "name": "hardpoint_phalanx_turret_seat_02",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_access_02",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_02"
     },
     {
       "name": "hardpoint_phalanx_turret_seat_03",
@@ -1733,9 +2038,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_phalanx_turret_seat_access_03",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_03"
+    },
+    {
       "name": "hardpoint_phalanx_turret_seat_04",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_access_04",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_04"
     },
     {
       "name": "hardpoint_phalanx_turret_seat_05",
@@ -1743,9 +2058,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_phalanx_turret_seat_access_05",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_05"
+    },
+    {
       "name": "hardpoint_phalanx_turret_seat_06",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_access_06",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_06"
     },
     {
       "name": "hardpoint_phalanx_turret_seat_07",
@@ -1753,9 +2078,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_phalanx_turret_seat_access_07",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_07"
+    },
+    {
       "name": "hardpoint_phalanx_turret_seat_08",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_access_08",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_08"
     },
     {
       "name": "hardpoint_phalanx_turret_seat_09",
@@ -1763,9 +2098,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_phalanx_turret_seat_access_09",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_09"
+    },
+    {
       "name": "hardpoint_phalanx_turret_seat_10",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_access_10",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_10"
     },
     {
       "name": "hardpoint_phalanx_turret_seat_11",
@@ -1773,9 +2118,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_phalanx_turret_seat_access_11",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_11"
+    },
+    {
       "name": "hardpoint_phalanx_turret_seat_12",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_access_12",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_12"
     },
     {
       "name": "hardpoint_phalanx_turret_seat_13",
@@ -1783,9 +2138,19 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_phalanx_turret_seat_access_13",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_13"
+    },
+    {
       "name": "hardpoint_phalanx_turret_seat_14",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_access_14",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_14"
     },
     {
       "name": "hardpoint_phalanx_turret_seat_15",
@@ -1793,14 +2158,29 @@
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_phalanx_turret_seat_access_15",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_15"
+    },
+    {
       "name": "hardpoint_phalanx_turret_seat_16",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
     },
     {
+      "name": "hardpoint_phalanx_turret_seat_access_16",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_16"
+    },
+    {
       "name": "hardpoint_main_turret_seat_01",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_main_turret_seat_access_01",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Main_Turret_Seat_Access_01"
     },
     {
       "name": "hardpoint_armor",
@@ -2101,6 +2481,36 @@
       "name": "hardpoint_medium_turret_seat_06",
       "ref": null,
       "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_medium_turret_seat_access_01",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_medium_turret_seat_access_02",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_medium_turret_seat_access_03",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_medium_turret_seat_access_04",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_medium_turret_seat_access_05",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_medium_turret_seat_access_06",
+      "ref": null,
+      "key": null
     },
     {
       "name": "hardpoint_controller_missile",

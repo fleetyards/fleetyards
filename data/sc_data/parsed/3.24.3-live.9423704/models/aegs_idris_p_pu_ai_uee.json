@@ -96,6 +96,61 @@
       "key": "AEGS_Idris_SCItem_Seat_Bridge_Rear_Right_Back"
     },
     {
+      "name": "hardpoint_seat_access_captain",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_SeatAccess_Captain"
+    },
+    {
+      "name": "hardpoint_seat_access_pilot",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_SeatAccess_Pilot"
+    },
+    {
+      "name": "hardpoint_seat_access_copilot",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_SeatAccess_CoPilot"
+    },
+    {
+      "name": "hardpoint_seat_access_bridge_mid_left",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_SeatAccess_Comms"
+    },
+    {
+      "name": "hardpoint_seat_access_bridge_mid_right",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_SeatAccess_Tactical"
+    },
+    {
+      "name": "hardpoint_seat_access_bridge_rear_left",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_SeatAccess_Science"
+    },
+    {
+      "name": "hardpoint_seat_access_bridge_rear_right",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_SeatAccess_Security"
+    },
+    {
+      "name": "hardpoint_seat_access_rear_bridge_front_left",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_SeatAccess_Bridge_Rear_Left"
+    },
+    {
+      "name": "hardpoint_seat_access_rear_bridge_front_right",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_SeatAccess_Bridge_Rear_Right"
+    },
+    {
+      "name": "hardpoint_seat_access_rear_bridge_back_left",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_SeatAccess_Rear_Bridge_Rear_Left"
+    },
+    {
+      "name": "hardpoint_seat_access_rear_bridge_back_right",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_SeatAccess_Rear_Bridge_Rear_Right"
+    },
+    {
       "name": "hardpoint_radar",
       "ref": null,
       "key": "RADR_GNRP_S03_Idris_TEMP"
@@ -660,6 +715,11 @@
       "name": "hardpoint_brig_controller_chair",
       "ref": null,
       "key": "AEGS_Idris_SCItem_Seat_Brig"
+    },
+    {
+      "name": "hardpoint_seat_access_brig",
+      "ref": null,
+      "key": "AEGS_Idris_SCItem_SeatAccess_Brig"
     },
     {
       "name": "hardpoint_docking_collar_mpuv",

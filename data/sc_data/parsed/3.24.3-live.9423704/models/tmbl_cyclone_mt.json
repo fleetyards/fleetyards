@@ -36,6 +36,16 @@
       "key": "TMBL_Cyclone_SCItem_Seat_Passenger"
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "TMBL_Cyclone_SCItem_SeatAccess"
+    },
+    {
+      "name": "hardpoint_seat_access_copilot",
+      "ref": null,
+      "key": "TMBL_Cyclone_SCItem_SeatAccess_CoPilot"
+    },
+    {
       "name": "hardpoint_controller_wheel",
       "ref": null,
       "key": "Controller_Wheel_TMBL_Cyclone"

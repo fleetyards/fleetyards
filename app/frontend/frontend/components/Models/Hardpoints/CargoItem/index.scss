@@ -1,0 +1,86 @@
+.hardpoint-item {
+  display: flex;
+  width: 100%;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 15px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.hardpoint-item__wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.hardpoint-item__list {
+  display: flex;
+  align-items: center;
+}
+
+.hardpoint-item__list-icon {
+  width: 20px;
+}
+
+.hardpoint-item__loadout {
+  display: flex;
+  width: 100%;
+}
+
+.hardpoint-item__inner {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap-reverse;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 6px 10px;
+  border: $panel-border-width solid $panel-inner-border;
+  border-radius: 10px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &::before {
+    position: absolute;
+    top: -$panel-border-width;
+    right: 14px;
+    left: 14px;
+    height: $panel-border-width;
+    background-color: #444;
+    content: "";
+  }
+
+  &::after {
+    position: absolute;
+    right: 14px;
+    bottom: -$panel-border-width;
+    left: 14px;
+    height: $panel-border-width;
+    background-color: #444;
+    content: "";
+  }
+}
+
+.hardpoint-item__cargo-container {
+  padding-right: 10px;
+  color: $gray-light;
+  white-space: nowrap;
+}
+
+.hardpoint-item__cargo {
+  padding-right: 10px;
+  white-space: nowrap;
+}
+
+.hardpoint-item__component {
+  width: 100%;
+  flex-grow: 1;
+  margin-right: 5px;
+  text-transform: capitalize;
+}

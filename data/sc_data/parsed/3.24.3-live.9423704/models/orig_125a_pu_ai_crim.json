@@ -158,6 +158,11 @@
       "key": "Door_RN_NoRoomConnector_Breachable_OpenClose_IP_ORIG_100i_Radar"
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "ORIG_100i_SCItem_SeatAccess"
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": null,
       "key": "ORIG_100i_SCItem_Seat_Pilot"

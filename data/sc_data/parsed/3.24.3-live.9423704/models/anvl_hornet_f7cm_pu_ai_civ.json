@@ -26,6 +26,11 @@
       "key": null
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "ANVL_Hornet_F7CM_SeatAccess"
+    },
+    {
       "name": "hardpoint_self_destruct_pilot",
       "ref": null,
       "key": "VHCL_SelfDestruct_20s"

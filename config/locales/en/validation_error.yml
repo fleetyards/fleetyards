@@ -7,6 +7,10 @@ en:
       destroy: Price could not be destroyed
       update: Price could not be updated
     confirmation: Confirmation failed.
+    vehicle:
+      create: Ship could not be added.
+      destroy: Ship could not be removed.
+      update: Ship could not be updated.
     fleet:
       create: Fleet could not be created.
       destroy: Fleet could not be destroyed.

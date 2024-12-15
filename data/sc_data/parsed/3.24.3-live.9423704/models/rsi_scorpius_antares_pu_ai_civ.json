@@ -212,6 +212,11 @@
       "key": "RSI_Scorpius_Antares_SCItem_Seat_CoPilot"
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "RSI_Scorpius_SCItem_SeatAccess"
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": null,
       "key": "RSI_Scorpius_SCItem_Seat_Pilot"

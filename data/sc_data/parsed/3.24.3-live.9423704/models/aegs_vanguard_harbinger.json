@@ -41,6 +41,11 @@
       "key": "AEGS_Vanguard_SCItem_Seat_Pilot"
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "AEGS_Vanguard_SCItem_SeatAccess"
+    },
+    {
       "name": "hardpoint_controller_door",
       "ref": null,
       "key": "Controller_Door"

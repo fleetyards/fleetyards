@@ -26,6 +26,11 @@
       "key": "Paint_Mustang_Delta_NineTails"
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "CNOU_Mustang_SeatAccess"
+    },
+    {
       "name": "hardpoint_pilot_seat",
       "ref": null,
       "key": "CNOU_Mustang_Seat_Pilot"

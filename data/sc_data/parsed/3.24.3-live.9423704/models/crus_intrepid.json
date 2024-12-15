@@ -91,6 +91,11 @@
       "key": "ARMR_CRUS_Intrepid"
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "CRUS_Intrepid_Seat_Access_Pilot"
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": null,
       "key": "CRUS_Intrepid_Seat_Pilot"

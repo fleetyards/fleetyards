@@ -39,6 +39,11 @@
       ]
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "ANVL_Ballista_SCItem_SeatAccess"
+    },
+    {
       "name": "hardpoint_controller_wheel",
       "ref": null,
       "key": "Controller_Wheel"
@@ -178,6 +183,11 @@
       "key": "POWR_AMRS_S01_OverDrive_SCItem"
     },
     {
+      "name": "hardpoint_exterior_seat_access",
+      "ref": null,
+      "key": "ANVL_Centurion_SCItem_Exterior_SeatAccess"
+    },
+    {
       "name": "hardpoint_personal_storage",
       "ref": null,
       "key": "PersonalStorage_SPARTAN"
@@ -211,6 +221,11 @@
       "name": "hardpoint_relay",
       "ref": null,
       "key": "RELAY_3slot_slim"
+    },
+    {
+      "name": "hardpoint_seat_access_support",
+      "ref": null,
+      "key": "ANVL_Centurion_SCItem_SeatAccess_Support"
     }
   ]
 }

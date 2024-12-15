@@ -31,6 +31,11 @@
       "key": "AEGS_Retaliator_SCItem_Seat_Pilot"
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "AEGS_Retaliator_SCItem_SeatAccess_Pilot"
+    },
+    {
       "name": "hardpoint_bed_captain",
       "ref": null,
       "key": "Bed_Single_Captain_Retaliator_AEGS"
@@ -314,6 +319,11 @@
       ]
     },
     {
+      "name": "hardpoint_turret_fronttop_seat_access",
+      "ref": null,
+      "key": "AEGS_Retaliator_SCItem_SeatAccess_Turret_FrontTop"
+    },
+    {
       "name": "hardpoint_turret_frontbottom",
       "ref": null,
       "key": "AEGS_Retaliator_SCItem_Turret_Lower",
@@ -343,6 +353,11 @@
           ]
         }
       ]
+    },
+    {
+      "name": "hardpoint_turret_frontbottom_seat_access",
+      "ref": null,
+      "key": "AEGS_Retaliator_SCItem_SeatAccess_Turret_FrontBottom"
     },
     {
       "name": "hardpoint_turret_backtopright",
@@ -376,6 +391,11 @@
       ]
     },
     {
+      "name": "hardpoint_turret_backtopright_seat_access",
+      "ref": null,
+      "key": "AEGS_Retaliator_SCItem_SeatAccess_Turret_BackTopRight"
+    },
+    {
       "name": "hardpoint_turret_backtopleft",
       "ref": null,
       "key": "AEGS_Retaliator_SCItem_Turret_Upper_Rear_Left",
@@ -407,6 +427,11 @@
       ]
     },
     {
+      "name": "hardpoint_turret_backtopleft_seat_access",
+      "ref": null,
+      "key": "AEGS_Retaliator_SCItem_SeatAccess_Turret_BackTopLeft"
+    },
+    {
       "name": "hardpoint_turret_backbottom",
       "ref": null,
       "key": "AEGS_Retaliator_SCItem_Turret_Lower_Rear",
@@ -436,6 +461,11 @@
           ]
         }
       ]
+    },
+    {
+      "name": "hardpoint_turret_backbottom_seat_access",
+      "ref": null,
+      "key": "AEGS_Retaliator_SCItem_SeatAccess_Turret_BackBottom"
     },
     {
       "name": "hardpoint_countermeasurelauncher_left1",

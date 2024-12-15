@@ -235,9 +235,19 @@
       "key": "CRUS_Starlifter_SCItem_Seat_CoPilot"
     },
     {
+      "name": "hardpoint_seat_copilot_seat_access",
+      "ref": null,
+      "key": "CRUS_Starlifter_SCItem_SeatAccess_Copilot"
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": null,
       "key": "CRUS_Starlifter_SCItem_Seat_Pilot"
+    },
+    {
+      "name": "hardpoint_seat_pilot_seat_access",
+      "ref": null,
+      "key": "CRUS_Starlifter_SCItem_SeatAccess_Pilot"
     },
     {
       "name": "hardpoint_shield_generator_l",
@@ -437,6 +447,11 @@
       ]
     },
     {
+      "name": "hardpoint_bridge_remote_turret_seat_access",
+      "ref": null,
+      "key": "CRUS_Starlifter_SCItem_SeatAccess_Turret_Bridge"
+    },
+    {
       "name": "hardpoint_bridge_remote_turret",
       "ref": "b22c5a8d-3f04-43e2-8268-8233a2fca65d",
       "key": null,
@@ -481,6 +496,11 @@
       ]
     },
     {
+      "name": "hardpoint_forward_left_remote_turret_seat_access",
+      "ref": null,
+      "key": "CRUS_Starlifter_SCItem_SeatAccess_Turret_Forward_Left"
+    },
+    {
       "name": "hardpoint_forward_left_remote_turret",
       "ref": "65fc908e-b7e3-432d-ac9d-aef6906906e4",
       "key": null,
@@ -513,6 +533,11 @@
       ]
     },
     {
+      "name": "hardpoint_forward_right_remote_turret_seat_access",
+      "ref": null,
+      "key": "CRUS_Starlifter_SCItem_SeatAccess_Turret_Forward_Right"
+    },
+    {
       "name": "hardpoint_forward_right_remote_turret",
       "ref": "d3e70cd0-1052-4d46-b910-efd8f6f3795c",
       "key": null,
@@ -543,6 +568,11 @@
       "loadout": [
 
       ]
+    },
+    {
+      "name": "hardpoint_rear_left_remote_turret_seat_access",
+      "ref": null,
+      "key": "CRUS_Starlifter_SCItem_SeatAccess_Turret_Rear_Left"
     },
     {
       "name": "hardpoint_rear_left_remote_turret",
@@ -587,6 +617,11 @@
       "loadout": [
 
       ]
+    },
+    {
+      "name": "hardpoint_rear_right_remote_turret_seat_access",
+      "ref": null,
+      "key": "CRUS_Starlifter_SCItem_SeatAccess_Turret_Rear_Right"
     },
     {
       "name": "hardpoint_rear_right_remote_turret",
@@ -817,6 +852,11 @@
       "name": "hardpoint_bomb_console",
       "ref": null,
       "key": "CRUS_Starlifter_SCItem_Bomb_Console"
+    },
+    {
+      "name": "hardpoint_bomb_console_access",
+      "ref": null,
+      "key": "CRUS_Starlifter_SCItem_Bomb_Console_SeatAccess"
     },
     {
       "name": "hardpoint_bomb_turret",

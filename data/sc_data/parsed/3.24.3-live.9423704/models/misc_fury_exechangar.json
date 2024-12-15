@@ -86,6 +86,11 @@
       "key": "Controller_Comms"
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "MISC_Fury_SeatAccess"
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": null,
       "key": "MISC_Fury_SCItem_SeatDashboard",

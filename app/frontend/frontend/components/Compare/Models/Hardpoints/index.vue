@@ -32,7 +32,7 @@
               class="col-12 compare-row-label text-right metrics-label sticky-left"
             />
             <div
-              v-for="model in models"
+              v-for="model in hardpoints"
               :key="`${model.slug}-${group}`"
               class="col-6 compare-row-item"
             >
@@ -56,7 +56,9 @@
 import Collapsed from "@/shared/components/Collapsed.vue";
 import HardpointGroup from "@/frontend/components/Models/Hardpoints/Group/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { Model, ModelHardpoint } from "@/services/fyApi";
+import { Model, Hardpoint } from "@/services/fyApi";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+import { HardpointGroupEnum } from "@/services/fyAdminApi";
 
 type Props = {
   models: Model[];
@@ -66,7 +68,15 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 
-const groups = ["avionic", "system", "propulsion", "thruster", "weapon"];
+const hardpoints = ref<{ slug: string; hardpoints: Hardpoint[] }[]>([]);
+
+const groups = [
+  HardpointGroupEnum.AVIONIC,
+  HardpointGroupEnum.SYSTEM,
+  HardpointGroupEnum.PROPULSION,
+  HardpointGroupEnum.THRUSTER,
+  HardpointGroupEnum.WEAPON,
+];
 
 const avionicVisible = ref(false);
 
@@ -80,14 +90,37 @@ const weaponVisible = ref(false);
 
 watch(
   () => props.models,
-  () => {
+  async () => {
     setupVisibles();
+    await fetch();
   },
 );
 
-onMounted(() => {
+onMounted(async () => {
+  await fetch();
   setupVisibles();
 });
+
+const { models: modelsService } = useApiClient();
+
+const fetch = async () => {
+  const promises = props.models.map((model) => {
+    return fetchHardpoints(model.slug);
+  });
+
+  hardpoints.value = await Promise.all(promises);
+};
+
+const fetchHardpoints = async (slug: string) => {
+  const hardpoints = await modelsService.modelHardpoints({
+    slug: slug,
+  });
+
+  return {
+    slug,
+    hardpoints,
+  };
+};
 
 const setupVisibles = () => {
   avionicVisible.value = props.models.length > 0;
@@ -135,8 +168,10 @@ const toggle = (group: string) => {
   }
 };
 
-const hardpointsForGroup = (group: string, hardpoints: ModelHardpoint[]) =>
-  (hardpoints || []).filter((hardpoint) => hardpoint.group === group);
+const hardpointsForGroup = (
+  group: HardpointGroupEnum,
+  hardpoints: Hardpoint[],
+) => (hardpoints || []).filter((hardpoint) => hardpoint.group === group);
 </script>
 
 <script lang="ts">

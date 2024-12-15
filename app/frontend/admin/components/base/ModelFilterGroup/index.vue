@@ -1,22 +1,13 @@
-<template>
-  <FilterGroup
-    v-model="internalValue"
-    :label="t('labels.selectModel')"
-    :search-label="t('labels.findModel')"
-    :query-fn="fetch"
-    :query-response-formatter="formatter"
-    :name="name"
-    :paginated="true"
-    :searchable="true"
-    :multiple="multiple"
-    :no-label="noLabel"
-  />
-</template>
+<script lang="ts">
+export default {
+  name: "ModelFilterGroup",
+};
+</script>
 
 <script lang="ts" setup>
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type ModelQuery, type Models } from "@/services/fyApi";
+import { type ModelQuery, type Models, type Model } from "@/services/fyApi";
 import FilterGroup, {
   type FilterGroupParams,
 } from "@/shared/components/base/FilterGroup/index.vue";
@@ -71,7 +62,7 @@ const formatter = (response: Models) => {
 
 const { models: modelsService } = useApiClient();
 
-const fetch = async (params: FilterGroupParams) => {
+const fetch = async (params: FilterGroupParams<Model>) => {
   const q: ModelQuery = {};
 
   if (params.search) {
@@ -93,8 +84,18 @@ const fetch = async (params: FilterGroupParams) => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "ModelFilterGroup",
-};
-</script>
+<template>
+  <FilterGroup
+    v-model="internalValue"
+    :label="t('labels.selectModel')"
+    :search-label="t('labels.findModel')"
+    :query-fn="fetch"
+    :query-response-formatter="formatter"
+    :name="name"
+    :paginated="true"
+    :searchable="true"
+    :multiple="multiple"
+    :no-label="noLabel"
+    :return-object="returnObject"
+  />
+</template>

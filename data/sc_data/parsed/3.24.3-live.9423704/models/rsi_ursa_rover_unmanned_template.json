@@ -42,6 +42,11 @@
       ]
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "RSI_Ursa_Rover_SCItem_SeatAccess"
+    },
+    {
       "name": "hardpoint_controller_wheel",
       "ref": null,
       "key": "Controller_Wheel_RSI_Ursa_Rover"

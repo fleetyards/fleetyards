@@ -880,6 +880,11 @@ components:
         typeData:
           oneOf:
           - "$ref": "#/components/schemas/ComponentQuantumDrive"
+          - "$ref": "#/components/schemas/ComponentCargoGrid"
+        hardpoints:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Hardpoint"
         createdAt:
           type: string
           format: date-time
@@ -897,6 +902,59 @@ components:
       - createdAt
       - updatedAt
       title: Component
+    ComponentCargoGrid:
+      type: object
+      properties:
+        dimensions:
+          "$ref": "#/components/schemas/ComponentCargoGridDimensions"
+        minContainer:
+          "$ref": "#/components/schemas/ComponentCargoGridDimensions"
+        maxContainer:
+          "$ref": "#/components/schemas/ComponentCargoGridDimensions"
+      additionalProperties: false
+      required:
+      - dimensions
+      - minContainer
+      title: ComponentCargoGrid
+    ComponentCargoGridContainer:
+      type: object
+      properties:
+        size:
+          type: number
+        x:
+          type: number
+        "y":
+          type: number
+        z:
+          type: number
+      additionalProperties: false
+      required:
+      - size
+      - x
+      - "y"
+      - z
+      title: ComponentCargoGridContainer
+    ComponentCargoGridDimensions:
+      type: object
+      properties:
+        x:
+          type: number
+        "y":
+          type: number
+        z:
+          type: number
+        scu:
+          type: number
+        maxContainerSize:
+          "$ref": "#/components/schemas/ComponentCargoGridContainer"
+      additionalProperties: false
+      required:
+      - x
+      - "y"
+      - z
+      - scu
+      - maxContainerSize
+      title: ComponentCargoGridDimensions
     ComponentQuantumDrive:
       type: object
       properties:
@@ -1052,6 +1110,46 @@ components:
       - Station
       - Album
       title: GalleryTypeEnum
+    HardpointCategoryEnum:
+      type: string
+      enum:
+      - radar
+      - computers
+      - scanners
+      - powerplant
+      - cooler
+      - shieldgenerator
+      - module
+      - salvagefillerstation
+      - fueltanks
+      - fuel_intakes
+      - quantumdrive
+      - jumpdrive
+      - main_thrusters
+      - maneuvering_thrusters
+      - weapons
+      - weapon_mounts
+      - turret
+      - missile_racks
+      - bombcompartments
+      - quantumenforcementdevice
+      - emp
+      - salvagemunching
+      - armor
+      - countermeasures
+      - selfdestruct
+      - lifesupport
+      - batteries
+      - utility
+      - seat
+      - relay
+      - paints
+      - doors
+      - cargogrid
+      - inventory
+      - controller
+      - unknown
+      title: HardpointCategoryEnum
     HardpointGroupEnum:
       type: string
       enum:
@@ -1060,6 +1158,7 @@ components:
       - propulsion
       - thruster
       - weapon
+      - defense
       - auxiliary
       - seat
       - relay
@@ -1245,13 +1344,13 @@ components:
           type: string
         icon:
           type: string
-        name:
-          type: string
-          deprecated: true
         label:
           type: string
         value:
           type: string
+        name:
+          type: string
+          deprecated: true
       additionalProperties: false
       required:
       - label
@@ -1282,10 +1381,12 @@ components:
         id:
           type: string
           format: uuid
-        component:
-          "$ref": "#/components/schemas/Component"
         group:
           "$ref": "#/components/schemas/HardpointGroupEnum"
+        groupKey:
+          type: string
+        category:
+          "$ref": "#/components/schemas/HardpointCategoryEnum"
         name:
           type: string
         minSize:
@@ -1298,6 +1399,12 @@ components:
           type: array
           items:
             type: string
+        component:
+          "$ref": "#/components/schemas/Component"
+        hardpoints:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Hardpoint"
         createdAt:
           type: string
           format: date-time

@@ -1,9 +1,0 @@
-{
-  "key": "Ship_TempItemCarryingCapacity_ORIG_600i_Touring",
-  "ref": "032a1adc-8462-427b-89aa-79023e1499a0",
-  "category": "inventory",
-  "type": "personal_storage",
-  "type_data": {
-    "storage": 16.0
-  }
-}

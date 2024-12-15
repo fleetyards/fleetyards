@@ -46,6 +46,11 @@
       "key": "MISC_Hull_C_SCItem_Tractor_Seat"
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "MISC_Hull_C_SCItem_SeatAccess"
+    },
+    {
       "name": "hardpoint_controller_flight",
       "ref": null,
       "key": "Controller_Flight_MISC_Hull_C"
@@ -520,6 +525,11 @@
           "key": "MISC_Hull_C_Engineer_Console"
         },
         {
+          "name": "hardpoint_rear_seat_access_engineer",
+          "ref": null,
+          "key": null
+        },
+        {
           "name": "hardpoint_rear_quantum_tank",
           "ref": null,
           "key": "QTNK_MISC_Hull_C"
@@ -777,6 +787,11 @@
       "name": "hardpoint_airlock_door_interior",
       "ref": null,
       "key": "Door_Ship_Exterior_Hull_C_Airlock_Interior"
+    },
+    {
+      "name": "hardpoint_seat_access_crane",
+      "ref": null,
+      "key": "MISC_Hull_C_SCItem_SeatAccess_Crane"
     },
     {
       "name": "hardpoint_controller_door",

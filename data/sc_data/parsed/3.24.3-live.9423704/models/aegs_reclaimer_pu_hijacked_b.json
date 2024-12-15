@@ -31,6 +31,26 @@
       "key": "Controller_Flight_AEGS_Reclaimer"
     },
     {
+      "name": "hardpoint_seat_access_pilot",
+      "ref": null,
+      "key": "AEGS_Reclaimer_SeatAccess_Pilot"
+    },
+    {
+      "name": "hardpoint_seat_access_copilot",
+      "ref": null,
+      "key": "AEGS_Reclaimer_SeatAccess_Copilot"
+    },
+    {
+      "name": "hardpoint_seat_access_tractorbeam_left",
+      "ref": null,
+      "key": "AEGS_Reclaimer_SeatAccess_TractorBeam_Left"
+    },
+    {
+      "name": "hardpoint_seat_access_tractorbeam_right",
+      "ref": null,
+      "key": "AEGS_Reclaimer_SeatAccess_TractorBeam_Right"
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": "f3e98f85-ae23-4931-880c-a11f35de20e8",
       "key": "AEGS_Reclaimer_Seat_Pilot"
@@ -39,6 +59,16 @@
       "name": "hardpoint_seat_copilot",
       "ref": "f1b57c3b-8443-4dac-a7fc-5af7ed1b8c3c",
       "key": null
+    },
+    {
+      "name": "hardpoint_seat_access_drone_left",
+      "ref": null,
+      "key": "AEGS_Reclaimer_DroneRoom_SeatAccess_Left"
+    },
+    {
+      "name": "hardpoint_seat_access_drone_right",
+      "ref": null,
+      "key": "AEGS_Reclaimer_DroneRoom_SeatAccess_Right"
     },
     {
       "name": "hardpoint_seat_drone_left",
@@ -69,12 +99,27 @@
       ]
     },
     {
+      "name": "hardpoint_eng_console_front_access",
+      "ref": null,
+      "key": "AEGS_Reclaimer_SCItem_Engineer_Access_Hijacked_b"
+    },
+    {
       "name": "hardpoint_eng_console_rear",
       "ref": null,
       "key": "AEGS_Reclaimer_SCItem_Engineer_Console",
       "loadout": [
 
       ]
+    },
+    {
+      "name": "hardpoint_eng_console_rear_access",
+      "ref": null,
+      "key": "AEGS_Reclaimer_SCItem_Engineer_Access_Rear_Hijacked_b"
+    },
+    {
+      "name": "hardpoint_console_station_access",
+      "ref": null,
+      "key": "AEGS_Reclaimer_Console_Station_Access"
     },
     {
       "name": "hardpoint_scanner_console_01",
@@ -127,6 +172,16 @@
       "name": "hardpoint_top_airlock",
       "ref": null,
       "key": "Door_RN_RoomConnector_Breachable_OpenClose_IP_Reclaimer_Airlock_DockingCollar"
+    },
+    {
+      "name": "hardpoint_Ladder_Lift",
+      "ref": null,
+      "key": "Door_Ship_AEGS_Reclaimer_Elevator_Ladder_Lift"
+    },
+    {
+      "name": "hardpoint_Ladder_Lift_Door",
+      "ref": null,
+      "key": "Door_Ship_Exterior_AEGS_Reclaimer_Ladder_Lift"
     },
     {
       "name": "hardpoint_selfdestruct",

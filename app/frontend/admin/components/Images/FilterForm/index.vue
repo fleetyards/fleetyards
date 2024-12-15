@@ -26,7 +26,12 @@ import type { FilterGroupParams } from "@/shared/components/base/FilterGroup/ind
 import { useRoute } from "vue-router";
 import { useFilters } from "@/shared/composables/useFilters";
 import { useI18n } from "@/shared/composables/useI18n";
-import type { ImageQuery, Models, ModelQuery } from "@/services/fyAdminApi";
+import type {
+  ImageQuery,
+  Models,
+  ModelQuery,
+  Model,
+} from "@/services/fyAdminApi";
 import { useApiClient } from "@/admin/composables/useApiClient";
 
 const { t } = useI18n();
@@ -119,7 +124,7 @@ const modelsFormatter = (response: Models) => {
   });
 };
 
-const fetchModels = async (params: FilterGroupParams) => {
+const fetchModels = async (params: FilterGroupParams<Model>) => {
   const q: ModelQuery = {};
 
   if (params.search) {

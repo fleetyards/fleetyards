@@ -5,11 +5,11 @@
 export type FilterOption = {
     category?: string;
     icon?: string;
+    label: string;
+    value: string;
     /**
      * @deprecated
      */
     name?: string;
-    label: string;
-    value: string;
 };
 

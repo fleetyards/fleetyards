@@ -1,0 +1,9 @@
+{
+  "key": "Ship_Small_NoInterior",
+  "ref": "07b72e0c-74a4-4f62-81b5-da31c2afcb86",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 0.25
+  }
+}

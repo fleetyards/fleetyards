@@ -598,6 +598,11 @@
       "key": "Controller_CapacitorAssignment"
     },
     {
+      "name": "hardpoint_ladder",
+      "ref": null,
+      "key": "ESPR_Prowler_Door_Ladder_Int"
+    },
+    {
       "name": "hardpoint_controller_fuel",
       "ref": null,
       "key": "Controller_Fuel"

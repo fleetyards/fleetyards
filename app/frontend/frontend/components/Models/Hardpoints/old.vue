@@ -66,7 +66,7 @@ const {
 </script>
 
 <template>
-  <div id="hardpoints" class="row components">
+  <div id="hardpoints" class="row components hardpoints-legacy">
     <div class="col-12">
       <div v-if="erkulUrl" class="d-flex justify-content-center">
         <Btn :href="erkulUrl" mobile-block class="erkul-link">

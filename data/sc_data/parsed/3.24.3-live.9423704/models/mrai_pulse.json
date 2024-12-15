@@ -21,6 +21,11 @@
   },
   "loadout": [
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "MRAI_Pulse_SeatAccess"
+    },
+    {
       "name": "hardpoint_paint",
       "ref": null,
       "key": null

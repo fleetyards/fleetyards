@@ -89,40 +89,6 @@ module ScData
 
         update_params
       end
-
-      # private def extract_hydrogen_fuel_tanks(components_data, update_params)
-      #   fuel_tanks.filter_map do |fuel_tank|
-      #     installed_item = fuel_tank["InstalledItem"]
-
-      #     next if installed_item.blank?
-
-      #     fuel_tank_data = installed_item["HydrogenFuelTank"]
-
-      #     next if fuel_tank_data.blank?
-
-      #     {
-      #       name: installed_item["Name"],
-      #       capacity: fuel_tank_data["Capacity"]
-      #     }
-      #   end
-      # end
-
-      # private def extract_quantum_fuel_tanks(components_data, update_params)
-      #   fuel_tanks.filter_map do |fuel_tank|
-      #     installed_item = fuel_tank["InstalledItem"]
-
-      #     next if installed_item.blank?
-
-      #     fuel_tank_data = installed_item["QuantumFuelTank"]
-
-      #     next if fuel_tank_data.blank?
-
-      #     {
-      #       name: installed_item["Name"],
-      #       capacity: fuel_tank_data["Capacity"]
-      #     }
-      #   end
-      # end
     end
   end
 end

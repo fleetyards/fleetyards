@@ -1,9 +1,0 @@
-{
-  "key": "Ship_TempItemCarryingCapacity_CNOU_Nomad",
-  "ref": "9a84ab49-8ec1-422c-af47-403d42687fb6",
-  "category": "inventory",
-  "type": "personal_storage",
-  "type_data": {
-    "storage": 24.0
-  }
-}

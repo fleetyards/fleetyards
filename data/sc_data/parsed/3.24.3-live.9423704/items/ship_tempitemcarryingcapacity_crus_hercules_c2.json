@@ -1,9 +1,0 @@
-{
-  "key": "Ship_TempItemCarryingCapacity_CRUS_Hercules_C2",
-  "ref": "484d2897-e12a-4b32-993a-aba97002cc26",
-  "category": "inventory",
-  "type": "personal_storage",
-  "type_data": {
-    "storage": 672.0
-  }
-}

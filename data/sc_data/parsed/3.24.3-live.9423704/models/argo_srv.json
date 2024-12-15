@@ -31,6 +31,11 @@
       "key": "ARGO_SRV_SCItem_Seat"
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "ARGO_SRV_SCItem_SeatAccess"
+    },
+    {
       "name": "hardpoint_ping",
       "ref": null,
       "key": null

@@ -31,9 +31,19 @@
       "key": "MISC_Starlancer_Pilot_Seat"
     },
     {
+      "name": "hardpoint_seat_pilot_access",
+      "ref": null,
+      "key": "MISC_Starlancer_Seat_Access_Pilot"
+    },
+    {
       "name": "hardpoint_seat_copilot",
       "ref": null,
       "key": "MISC_Starlancer_Copilot_Seat"
+    },
+    {
+      "name": "hardpoint_seat_copilot_access",
+      "ref": null,
+      "key": "MISC_Starlancer_Seat_Access_Copilot"
     },
     {
       "name": "hardpoint_seat_support_left",
@@ -41,9 +51,19 @@
       "key": "MISC_Starlancer_Support_Seat"
     },
     {
+      "name": "hardpoint_seat_support_left_access",
+      "ref": null,
+      "key": "MISC_Starlancer_Seat_Access_Support_Left"
+    },
+    {
       "name": "hardpoint_seat_support_right",
       "ref": null,
       "key": "MISC_Starlancer_Support_Seat"
+    },
+    {
+      "name": "hardpoint_seat_support_right_access",
+      "ref": null,
+      "key": "MISC_Starlancer_Seat_Access_Support_Right"
     },
     {
       "name": "hardpoint_controller_door",
@@ -593,6 +613,11 @@
     },
     {
       "name": "hardpoint_drone_seat",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_drone_seat_access",
       "ref": null,
       "key": null
     },

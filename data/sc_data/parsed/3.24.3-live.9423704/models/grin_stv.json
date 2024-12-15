@@ -31,6 +31,11 @@
       "key": "GRIN_STV_Seat_Driver"
     },
     {
+      "name": "hardpoint_seat_access_driver",
+      "ref": null,
+      "key": "GRIN_STV_SCItem_SeatAccess_Driver"
+    },
+    {
       "name": "hardpoint_controller_wheel",
       "ref": null,
       "key": "Controller_Wheel_GRIN_STV"
@@ -104,6 +109,11 @@
       "name": "hardpoint_weapon_rack_left",
       "ref": null,
       "key": "Weapon_Rack_GRIN_STV_1Slot_Left"
+    },
+    {
+      "name": "hardpoint_seat_access_passenger",
+      "ref": null,
+      "key": "GRIN_STV_SCItem_SeatAccess_Passenger"
     },
     {
       "name": "hardpoint_cockpit_flair",

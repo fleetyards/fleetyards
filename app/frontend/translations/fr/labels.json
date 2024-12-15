@@ -12,6 +12,8 @@
       "unavailable": "indisponible",
       "selected": "Sélectionné",
       "actions": "Actions",
+      "findModel": "Trouver un vaisseau",
+      "find": "Saisissez votre recherche",
       "enabled": "Activé",
       "disabled": "Désactivé",
       "collapse": "Réduire",

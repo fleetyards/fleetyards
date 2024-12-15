@@ -168,6 +168,11 @@
       "key": "ANVL_Lightning_F8_SCItem_Seat_Pilot"
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "ANVL_Lightning_F8_SCItem_SeatAccess"
+    },
+    {
       "name": "hardpoint_engine_mid",
       "ref": null,
       "key": "ANVL_Lightning_F8_Thruster_Main"

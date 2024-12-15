@@ -31,6 +31,16 @@
       "key": "DRAK_Dragonfly_SCItem_Seat_Pilot_YellowJacket"
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "DRAK_Dragonfly_SCItem_SeatAccess"
+    },
+    {
+      "name": "hardpoint_seat_access_pilot",
+      "ref": null,
+      "key": "DRAK_Dragonfly_SCItem_SeatAccess_Pilot"
+    },
+    {
       "name": "hardpoint_seat_copilot",
       "ref": null,
       "key": "DRAK_Dragonfly_SCItem_Seat_CoPilot"

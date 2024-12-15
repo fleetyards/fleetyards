@@ -26,6 +26,11 @@
       "key": null
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "ANVL_Hornet_SeatAccess"
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": null,
       "key": "ANVL_Hornet_F7A_Mk1_Seat_Pilot"

@@ -1,0 +1,9 @@
+{
+  "key": "ARGO_MOLE_Template",
+  "ref": "ec7e4c46-cd7f-4cda-b3b3-92594f830265",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 4.57
+  }
+}

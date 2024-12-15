@@ -26,6 +26,11 @@
       "key": null
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": "3bf4f175-ceb3-4f40-9032-28d3145ddbbe",
+      "key": null
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": "17a2b467-c221-492a-b25f-0ac752e6850c",
       "key": null
@@ -406,6 +411,21 @@
     {
       "name": "hardpoint_ground_refuel",
       "ref": "8733e85a-4f6c-4801-bf25-da915859fdbd",
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_access_nacelle_left",
+      "ref": "440c7115-680d-417b-b398-19463b2aa189",
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_access_nacelle_right",
+      "ref": "cfdb0f91-23cd-4e0b-96da-ca34c859add6",
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_access_tail",
+      "ref": "f9c75e54-917c-4fa7-86f6-95a1f0ae739c",
       "key": null
     },
     {

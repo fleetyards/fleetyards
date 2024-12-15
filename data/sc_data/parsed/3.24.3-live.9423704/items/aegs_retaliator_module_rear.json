@@ -18,23 +18,6 @@
       "z": 0.15
     }
   },
-  "loadout": [
-    {
-      "name": "hardpoint_module_oc",
-      "min_size": "0",
-      "max_size": "0",
-      "types": [
-
-      ]
-    }
-  ],
-  "default_loadout": [
-    {
-      "name": "hardpoint_module_oc",
-      "key": null,
-      "ref": null
-    }
-  ],
   "durability": {
     "health": 200.0
   }

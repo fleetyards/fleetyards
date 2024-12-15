@@ -1,41 +1,11 @@
-<template>
-  <div v-if="hardpoints.length" class="hardpoint-group">
-    <h2 v-if="!withoutTitle" class="hardpoint-group-label">
-      {{ t(`labels.hardpoint.groups.${group.toLowerCase()}`) }}
-    </h2>
-    <Panel slim>
-      <div class="hardpoint-group-inner">
-        <div v-for="hardpoint in hardpoints" :key="hardpoint.id">
-          {{ hardpoint.name }}
-        </div>
-      </div>
-      <!-- <div class="hardpoint-group-inner">
-        <div
-          v-for="hardpoint in hardpoints" :key="hardpoint.id"
-          class="hardpoint-type"
-        >
-          <div class="hardpoint-type-label">
-            <img
-              :src="icons[type as keyof typeof icons]"
-              class="hardpoint-type-icon"
-              :alt="`icon-${type}`"
-            />
-            {{ t(`labels.hardpoint.types.${type}`) }}
-          </div>
-          <div class="hardpoint-items">
-            <HardpointItems
-              v-for="(groupedItems, key) in groupByKey(items)"
-              :key="`${type}-${key}`"
-              :hardpoints="groupedItems"
-            />
-          </div>
-        </div>
-      </div> -->
-    </Panel>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "HardpointGroup",
+};
+</script>
 
 <script lang="ts" setup>
+import { groupBy, sortBy } from "@/shared/utils/Array";
 import radarIconUrl from "@/images/hardpoints/radar.svg";
 import computersIconUrl from "@/images/hardpoints/computers.svg";
 import powerPlantsIconUrl from "@/images/hardpoints/power_plants.svg";
@@ -55,10 +25,17 @@ import utilityItemsIconUrl from "@/images/hardpoints/utility_items.svg";
 import qedIconUrl from "@/images/hardpoints/qed.svg";
 import empIconUrl from "@/images/hardpoints/emp.svg";
 import Panel from "@/shared/components/Panel/index.vue";
-import { type Hardpoint, type HardpointGroupEnum } from "@/services/fyApi";
+import {
+  type Model,
+  type Hardpoint,
+  type HardpointGroupEnum,
+} from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import HardpointItems from "@/frontend/components/Models/Hardpoints/Items/index.vue";
+import { HardpointCategoryEnum } from "@/services/fyAdminApi";
 
 type Props = {
+  model: Model;
   group: HardpointGroupEnum;
   hardpoints: Hardpoint[];
   withoutTitle?: boolean;
@@ -73,27 +50,95 @@ const { t } = useI18n();
 const icons = {
   radar: radarIconUrl,
   computers: computersIconUrl,
-  power_plants: powerPlantsIconUrl,
-  coolers: coolersIconUrl,
-  shield_generators: shieldGeneratorsIconUrl,
+  powerplant: powerPlantsIconUrl,
+  cooler: coolersIconUrl,
+  shieldgenerator: shieldGeneratorsIconUrl,
   fuel_intakes: fuelIntakesIconUrl,
-  fuel_tanks: fuelTanksIconUrl,
-  quantum_drives: quantumDrivesIconUrl,
+  fueltanks: fuelTanksIconUrl,
+  quantumdrive: quantumDrivesIconUrl,
   jump_modules: jumpModulesIconUrl,
   quantum_fuel_tanks: quantumFuelTanksIconUrl,
   main_thrusters: mainThrustersIconUrl,
   maneuvering_thrusters: maneuveringThrustersIconUrl,
   weapons: weaponsIconUrl,
-  turrets: turretsIconUrl,
+  weapon_mounts: weaponsIconUrl,
+  turret: turretsIconUrl,
   missiles: missilesIconUrl,
+  missile_racks: missilesIconUrl,
   utility_items: utilityItemsIconUrl,
-  qed: qedIconUrl,
+  quantumenforcementdevice: qedIconUrl,
   emp: empIconUrl,
+};
+
+const categories = computed(() => {
+  const items = groupByCategory(props.hardpoints);
+
+  const availableCategories: Record<string, Hardpoint[]> = {};
+
+  Object.keys(items).forEach((category) => {
+    if (
+      [
+        HardpointCategoryEnum.CONTROLLER,
+        HardpointCategoryEnum.UNKNOWN,
+      ].includes(category as HardpointCategoryEnum)
+    ) {
+      return;
+    }
+
+    availableCategories[category as HardpointCategoryEnum] = items[category];
+  });
+
+  return availableCategories;
+});
+
+const groupByCategory = (items: Hardpoint[]) => {
+  return groupBy<Hardpoint>(sortBy<Hardpoint>(items, "category"), "category");
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "HardpointGroup",
-};
-</script>
+<template>
+  <div v-if="hardpoints.length" class="hardpoint-group">
+    <h2 v-if="!withoutTitle" class="hardpoint-group-label">
+      {{ t(`labels.hardpoint.groups.${group.toLowerCase()}`) }}
+    </h2>
+    <Panel slim>
+      <div class="hardpoint-group__inner">
+        <div
+          v-for="(items, category) in categories"
+          :key="category"
+          class="hardpoint-category"
+        >
+          <div class="hardpoint-category__label">
+            <span
+              v-if="category === HardpointCategoryEnum.CARGOGRID"
+              class="hardpoint-category__icon"
+            >
+              <i class="fad fa-boxes fa-lg" />
+            </span>
+            <span
+              v-else-if="category === HardpointCategoryEnum.SEAT"
+              class="hardpoint-category__icon"
+            >
+              <i class="fad fa-person-seat-reclined fa-lg" />
+            </span>
+            <img
+              v-else
+              :src="icons[category as keyof typeof icons]"
+              class="hardpoint-category__icon"
+              :alt="`icon-${category}`"
+            />
+            {{ t(`labels.hardpoint.categories.${category}`) }}
+          </div>
+          <HardpointItems
+            :hardpoints="items"
+            :category="category as HardpointCategoryEnum"
+          />
+        </div>
+      </div>
+    </Panel>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+@import "index";
+</style>

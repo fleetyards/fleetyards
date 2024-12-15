@@ -32,6 +32,7 @@
             :key="`${model.slug}-manufacturer`"
             class="col-6 text-center compare-row-item"
           >
+            <!-- eslint-disable-next-line vue/no-v-html -->
             <span class="metrics-value" v-html="model.manufacturer?.name" />
           </div>
         </div>
@@ -95,7 +96,7 @@
             class="col-6 text-center compare-row-item"
           >
             <span class="metrics-value">
-              {{ model.sizeLabel }}
+              {{ model.metrics.sizeLabel }}
             </span>
           </div>
         </div>
@@ -111,7 +112,7 @@
             class="col-6 text-center compare-row-item"
           >
             <span class="metrics-value">
-              {{ toNumber(model.length, "distance") }}
+              {{ toNumber(model.metrics.length, "distance") }}
             </span>
           </div>
         </div>
@@ -127,7 +128,7 @@
             class="col-6 text-center compare-row-item"
           >
             <span class="metrics-value">
-              {{ toNumber(model.beam, "distance") }}
+              {{ toNumber(model.metrics.beam, "distance") }}
             </span>
           </div>
         </div>
@@ -143,7 +144,7 @@
             class="col-6 text-center compare-row-item"
           >
             <span class="metrics-value">
-              {{ toNumber(model.height, "distance") }}
+              {{ toNumber(model.metrics.height, "distance") }}
             </span>
           </div>
         </div>
@@ -159,7 +160,7 @@
             class="col-6 text-center compare-row-item"
           >
             <span class="metrics-value">
-              {{ toNumber(model.mass, "weight") }}
+              {{ toNumber(model.metrics.mass, "weight") }}
             </span>
           </div>
         </div>
@@ -175,7 +176,7 @@
             class="col-6 text-center compare-row-item"
           >
             <span class="metrics-value">
-              {{ toNumber(model.cargo, "cargo") }}
+              {{ toNumber(model.metrics.cargo, "cargo") }}
             </span>
           </div>
         </div>
@@ -190,6 +191,7 @@
             :key="`${model.slug}-cargo`"
             class="col-6 text-center compare-row-item"
           >
+            <!-- eslint-disable-next-line vue/no-v-html -->
             <span class="metrics-value" v-html="toUEC(model.price)" />
           </div>
         </div>

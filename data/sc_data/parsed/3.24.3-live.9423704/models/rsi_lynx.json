@@ -46,6 +46,16 @@
       ]
     },
     {
+      "name": "hardpoint_seat_access_pilot",
+      "ref": null,
+      "key": "RSI_Lynx_SeatAccess"
+    },
+    {
+      "name": "hardpoint_seat_access_copilot",
+      "ref": null,
+      "key": "RSI_Lynx_CoPilot_SeatAccess"
+    },
+    {
       "name": "hardpoint_controller_wheel",
       "ref": null,
       "key": "Controller_Wheel_RSI_Lynx"

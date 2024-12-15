@@ -31,6 +31,11 @@
       "key": "ARGO_MPUV_SCItem_Seat_Pilot"
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "ARGO_MPUV_SCItem_SeatAccess"
+    },
+    {
       "name": "hardpoint_controller_energy",
       "ref": null,
       "key": "Controller_Energy"
@@ -251,6 +256,11 @@
       "key": "Controller_CapacitorAssignment"
     },
     {
+      "name": "hardpoint_seat_access_leg_right",
+      "ref": null,
+      "key": "ARGO_MPUV_SCItem_SeatAccess_Leg_Right"
+    },
+    {
       "name": "hardpoint_arm",
       "ref": null,
       "key": null
@@ -269,6 +279,11 @@
       "name": "hardpoint_lifesupport",
       "ref": null,
       "key": "LFSP_TYDT_S01_ComfortAir"
+    },
+    {
+      "name": "hardpoint_seat_access_leg_left",
+      "ref": null,
+      "key": "ARGO_MPUV_SCItem_SeatAccess_Leg_Left"
     },
     {
       "name": "hardpoint_cockpit_flair_hang",

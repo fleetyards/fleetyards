@@ -86,6 +86,11 @@
       "key": "Controller_Comms"
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "DRAK_Cutter_SeatAccess_Pilot"
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": null,
       "key": "DRAK_Cutter_SCItem_Seat_Pilot"
@@ -434,6 +439,11 @@
           "key": "Vehicle_Screen_MFD"
         }
       ]
+    },
+    {
+      "name": "hardpoint_scout_console_seat_access",
+      "ref": null,
+      "key": "DRAK_Cutter_SeatAccess_Scout_Console"
     },
     {
       "name": "hardpoint_geo_wing_addon_left",

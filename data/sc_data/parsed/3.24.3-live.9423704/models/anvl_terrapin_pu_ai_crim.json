@@ -203,8 +203,18 @@
       "key": null
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": "c569cb0f-ce10-49e1-8a7b-65f31719f05f",
+      "key": null
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": "7b34c656-dbc9-438d-a20d-b65e484b11b1",
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_access_support",
+      "ref": "c59e98c6-556e-4feb-a3fb-3815d56a64ca",
       "key": null
     },
     {

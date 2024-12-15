@@ -26,6 +26,11 @@
       "key": null
     },
     {
+      "name": "hardpoint_seat_access_pilot",
+      "ref": null,
+      "key": "ORIG_890J_Pilot_SeatAccess"
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": null,
       "key": "ORIG_890J_Seat_Pilot",
@@ -34,12 +39,22 @@
       ]
     },
     {
+      "name": "hardpoint_seat_access_bridge_left",
+      "ref": null,
+      "key": "ORIG_890J_Bridge_Left_SeatAccess"
+    },
+    {
       "name": "hardpoint_seat_bridge_left",
       "ref": null,
       "key": "ORIG_890J_Seat_Bridge_Left",
       "loadout": [
 
       ]
+    },
+    {
+      "name": "hardpoint_seat_access_bridge_right",
+      "ref": null,
+      "key": "ORIG_890J_Bridge_Right_SeatAccess"
     },
     {
       "name": "hardpoint_seat_bridge_right",

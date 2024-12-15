@@ -62,7 +62,7 @@ const {
 </script>
 
 <template>
-  <div id="hardpoints" class="row components">
+  <div id="hardpoints" class="row hardpoints">
     <div class="col-12">
       <div v-if="erkulUrl" class="d-flex justify-content-center">
         <Btn :href="erkulUrl" mobile-block class="erkul-link">
@@ -77,9 +77,11 @@ const {
             v-for="group in [
               HardpointGroupEnum.AVIONIC,
               HardpointGroupEnum.SYSTEM,
+              HardpointGroupEnum.OTHER,
             ]"
             :key="group"
             :group="group"
+            :model="model"
             :hardpoints="hardpointsForGroup(group)"
           />
         </div>
@@ -91,6 +93,7 @@ const {
             ]"
             :key="group"
             :group="group"
+            :model="model"
             :hardpoints="hardpointsForGroup(group)"
           />
         </div>
@@ -99,17 +102,14 @@ const {
             v-for="group in [HardpointGroupEnum.WEAPON]"
             :key="group"
             :group="group"
+            :model="model"
             :hardpoints="hardpointsForGroup(group)"
           />
           <HardpointGroup
-            v-for="group in [
-              HardpointGroupEnum.AUXILIARY,
-              HardpointGroupEnum.SEAT,
-              HardpointGroupEnum.RELAY,
-              HardpointGroupEnum.OTHER,
-            ]"
+            v-for="group in [HardpointGroupEnum.SEAT]"
             :key="group"
             :group="group"
+            :model="model"
             :hardpoints="hardpointsForGroup(group)"
           />
         </div>

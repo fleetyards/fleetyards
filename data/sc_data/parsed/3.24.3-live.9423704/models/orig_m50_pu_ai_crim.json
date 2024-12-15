@@ -26,6 +26,11 @@
       "key": null
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "ORIG_m50_SeatAccess"
+    },
+    {
       "name": "hardpoint_pilot_chair",
       "ref": null,
       "key": "ORIG_m50_Seat_Pilot"

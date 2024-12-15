@@ -208,6 +208,11 @@
       "key": null
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": "22e4ff27-5645-4b91-bdad-3c988f3ab624",
+      "key": null
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": "70e94efa-7a36-47d2-95c9-ab357b30fe7d",
       "key": null,
@@ -216,12 +221,22 @@
       ]
     },
     {
+      "name": "hardpoint_seat_access_copilot",
+      "ref": "f16d4c69-fee1-46b5-bc6d-8613245f5a57",
+      "key": null
+    },
+    {
       "name": "hardpoint_copilot_seat",
       "ref": "7d9b1780-6a74-44c9-b14e-781b9a6b98a3",
       "key": null,
       "loadout": [
 
       ]
+    },
+    {
+      "name": "hardpoint_seat_access_mannedturret",
+      "ref": "7080f4fe-cda5-43bb-9f83-8aa42d8e8d22",
+      "key": null
     },
     {
       "name": "hardpoint_turret",

@@ -220,14 +220,29 @@
       "key": "ORIG_400i_Seat_Bridge_Right"
     },
     {
+      "name": "hardpoint_seat_copilot_right_seat_access",
+      "ref": null,
+      "key": "ORIG_400i_Bridge_Right_SeatAccess"
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": null,
       "key": "ORIG_400i_Seat_Pilot"
     },
     {
+      "name": "hardpoint_seat_pilot_seat_access",
+      "ref": null,
+      "key": "ORIG_400i_SCItem_SeatAccess_Pilot"
+    },
+    {
       "name": "hardpoint_seat_copilot_left",
       "ref": null,
       "key": "ORIG_400i_Seat_Bridge_Left"
+    },
+    {
+      "name": "hardpoint_seat_copilot_left_seat_access",
+      "ref": null,
+      "key": "ORIG_400i_Bridge_Left_SeatAccess"
     },
     {
       "name": "hardpoint_weapon_left",
@@ -570,6 +585,11 @@
       "name": "hardpoint_seat_captains_quarters",
       "ref": null,
       "key": "ORIG_400i_SCItem_Seat_Captain"
+    },
+    {
+      "name": "hardpoint_seat_access_captains_quarters",
+      "ref": null,
+      "key": "ORIG_400i_SCItem_SeatAccess_Captain_Room"
     },
     {
       "name": "hardpoint_controller_missile",

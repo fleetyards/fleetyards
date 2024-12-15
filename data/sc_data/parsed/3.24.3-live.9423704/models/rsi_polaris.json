@@ -859,11 +859,6 @@
               "key": "KLWE_LaserRepeater_S3"
             }
           ]
-        },
-        {
-          "name": "hardpoint_oc",
-          "ref": null,
-          "key": "RSI_Polaris_Turret_Lighting_OC"
         }
       ]
     },
@@ -919,11 +914,6 @@
               "key": "KLWE_LaserRepeater_S3"
             }
           ]
-        },
-        {
-          "name": "hardpoint_oc",
-          "ref": null,
-          "key": "RSI_Polaris_Turret_Lighting_OC"
         }
       ]
     },
@@ -979,11 +969,6 @@
               "key": "AMRS_LaserCannon_S4"
             }
           ]
-        },
-        {
-          "name": "hardpoint_oc",
-          "ref": null,
-          "key": "RSI_Polaris_Turret_Lighting_OC"
         }
       ]
     },
@@ -1039,11 +1024,6 @@
               "key": "AMRS_LaserCannon_S4"
             }
           ]
-        },
-        {
-          "name": "hardpoint_oc",
-          "ref": null,
-          "key": "RSI_Polaris_Turret_Lighting_OC"
         }
       ]
     },
@@ -1075,11 +1055,6 @@
               "key": "RSI_Bespoke_BallisticCannon_A"
             }
           ]
-        },
-        {
-          "name": "hardpoint_oc",
-          "ref": null,
-          "key": "RSI_Polaris_Turret_Lighting_OC"
         }
       ]
     },

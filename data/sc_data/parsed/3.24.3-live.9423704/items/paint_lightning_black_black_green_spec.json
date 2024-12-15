@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Lightning_Black_Black_Green_Spec",
+  "ref": "8078adce-1b5b-48b6-a8fa-c3a1ae83e592",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "40078910-20c6-4f7d-9698-8665b4ae0d70",
+  "name": "F8C Lightning Shock Wave Livery",
+  "short_name": null,
+  "description": "Turn heads and the tides of battle with the Shock Wave livery for the F8C Lightning. Featuring a striking green color with black highlights, the livery provides a dramatic and distinct look to a ship that's both a beauty and a beast.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

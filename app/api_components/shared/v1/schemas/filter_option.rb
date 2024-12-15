@@ -11,9 +11,9 @@ module Shared
           properties: {
             category: {type: :string},
             icon: {type: :string},
-            name: {type: :string, deprecated: true},
             label: {type: :string},
-            value: {type: :string}
+            value: {type: :string},
+            name: {type: :string, deprecated: true}
           },
           additionalProperties: false,
           required: %w[label value]

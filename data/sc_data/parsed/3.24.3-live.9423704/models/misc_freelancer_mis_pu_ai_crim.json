@@ -41,9 +41,19 @@
       "key": "Controller_Flight_MISC_Freelancer_MIS"
     },
     {
+      "name": "hardpoint_seat_access_sidedoor",
+      "ref": null,
+      "key": "MISC_Freelancer_Base_SCItem_SeatAccess_Sidedoor"
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": null,
       "key": "MISC_Freelancer_Base_SCItem_Seat_Pilot"
+    },
+    {
+      "name": "hardpoint_seat_access_pilot",
+      "ref": null,
+      "key": "MISC_Freelancer_Base_SCItem_SeatAccess_Pilot"
     },
     {
       "name": "hardpoint_seat_copilot",
@@ -51,14 +61,29 @@
       "key": "MISC_Freelancer_Base_SCItem_Seat_CoPilot"
     },
     {
+      "name": "hardpoint_seat_access_copilot",
+      "ref": null,
+      "key": "MISC_Freelancer_Base_SCItem_SeatAccess_Copilot"
+    },
+    {
       "name": "hardpoint_seat_rear_left",
       "ref": null,
       "key": "MISC_Freelancer_Base_SCItem_Seat_Passenger_Left"
     },
     {
+      "name": "hardpoint_seat_access_rear_left",
+      "ref": null,
+      "key": "MISC_Freelancer_Base_SCItem_SeatAccess_Passenger_Left"
+    },
+    {
       "name": "hardpoint_seat_rear_right",
       "ref": null,
       "key": "MISC_Freelancer_Base_SCItem_Seat_Passenger_Right"
+    },
+    {
+      "name": "hardpoint_seat_access_rear_right",
+      "ref": null,
+      "key": "MISC_Freelancer_Base_SCItem_SeatAccess_Passenger_Right"
     },
     {
       "name": "hardpoint_esc_pod_upper_left",

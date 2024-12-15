@@ -13,7 +13,7 @@
               :key="`modules-${item.id}`"
               class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4 fade-list-item"
             >
-              <TeaserPanel :item="item" level="h3" />
+              <TeaserPanel :item="item" level="h3" slim />
             </div>
           </transition-group>
         </div>

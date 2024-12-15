@@ -31,6 +31,16 @@
       "key": "ANVL_Hurricane_SCItem_Seat_Pilot"
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "ANVL_Hurricane_SCItem_SeatAccess"
+    },
+    {
+      "name": "hardpoint_seat_access_gunner",
+      "ref": null,
+      "key": "ANVL_Hurricane_SCItem_SeatAccess_Gunner"
+    },
+    {
       "name": "hardpoint_selfdestruct",
       "ref": null,
       "key": "VHCL_SelfDestruct_10s"

@@ -26,6 +26,11 @@
       "key": null
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "CNOU_Nomad_SeatAccess_Pilot"
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": null,
       "key": "CNOU_Nomad_Seat_Pilot"

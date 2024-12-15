@@ -96,6 +96,21 @@
       "key": null
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": "782cb016-3aa3-4e89-ab5f-07e6e46b5f82",
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_access_copilot",
+      "ref": "aa9c22a5-a09f-4175-b054-05409c47efd2",
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_access_gunner",
+      "ref": "b8be4134-cbca-4d45-a3ea-d70808702ddd",
+      "key": null
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": "9b5673db-661f-4a6f-98fd-e61e47772a92",
       "key": null,
@@ -346,6 +361,16 @@
     {
       "name": "hardpoint_ramp",
       "ref": "0ad693c8-8923-4a58-83bc-d8ffe22242c7",
+      "key": null
+    },
+    {
+      "name": "hardpoint_entrance_ladder",
+      "ref": "87f7ad10-125b-4fe8-9296-30ca94ef1df9",
+      "key": null
+    },
+    {
+      "name": "hardpoint_entrance_ladder_gate",
+      "ref": "3ccfbee4-babd-48a3-ad22-5bdafe5731bd",
       "key": null
     },
     {

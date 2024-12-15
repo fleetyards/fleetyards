@@ -11,7 +11,7 @@ module ScData
           parse_inventory(item[:key], item[:values])
         end
 
-        save_items(cargogrids, folder: "items")
+        save_items(cargogrids, folder: "items", prefix: "inventory")
       end
 
       def load_items
@@ -35,7 +35,7 @@ module ScData
           armor batteries computers missile_racks bombcompartments cooler module powerplant
           quantumdrive quantumenforcementdevice shieldgenerator turret utility weapon_mounts weapons
           lifesupport thrusters radar scanners fueltanks fuel_intakes countermeasures seat relay
-          salvagemunching salvagefillerstation selfdestruct paints controller cargogrid
+          salvagemunching salvagefillerstation selfdestruct paints controller cargogrid jumpdrive
         ]
       end
 
@@ -458,11 +458,11 @@ module ScData
 
       private def parse_inventory(key, values)
         type = if values.dig("inventoryType", "InventoryOpenContainerType").present?
-          :cargo_grid
+          "CargoGrid"
         elsif values.dig("inventoryType", "InventoryClosedContainerType").present?
-          :personal_storage
+          "PersonalStorage"
         else
-          :unknown
+          "Unknown"
         end
 
         return if type == :unknown
@@ -476,7 +476,7 @@ module ScData
 
         type_data = {}
 
-        if type == :cargo_grid
+        if type == "CargoGrid"
           if values.dig("interiorDimensions", "x").present?
             x = values.dig("interiorDimensions", "x").to_f
             y = values.dig("interiorDimensions", "y").to_f
@@ -504,7 +504,7 @@ module ScData
           end
         end
 
-        if type == :personal_storage
+        if type == "PersonalStorage"
           capacity = values.dig("inventoryType", "InventoryClosedContainerType", "capacity")
           type_data[:storage] = if capacity.dig("SStandardCargoUnit").present?
             capacity.dig("SStandardCargoUnit", "standardCargoUnits").to_f
@@ -525,8 +525,23 @@ module ScData
           x:,
           y:,
           z:,
-          scu: (x * y * z) / (SCU_DIMENSIONS * SCU_DIMENSIONS * SCU_DIMENSIONS)
+          scu: [
+            [x, y, z].reduce(:*), # x * y * z
+            SCU_DIMENSIONS**3
+          ].reduce(:/),
+          max_container_size: max_container_size(x, y, z)
         }
+      end
+
+      private def max_container_size(x, y, z)
+        CARGO_CONTAINER_DIMENSIONS.find do |container_dimensions|
+          container_x = container_dimensions.dig(:dimensions, :x)
+          container_y = container_dimensions.dig(:dimensions, :y)
+          container_z = container_dimensions.dig(:dimensions, :z)
+
+          (container_x <= x && container_y <= y && container_z <= z) ||
+            (container_x <= y && container_y <= x && container_z <= z)
+        end
       end
     end
   end

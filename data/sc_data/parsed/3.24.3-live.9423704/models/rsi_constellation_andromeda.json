@@ -26,6 +26,21 @@
       "key": null
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "RSI_Constellation_SCItem_Seat_Access_Pilot"
+    },
+    {
+      "name": "hardpoint_seat_access_copilot_left",
+      "ref": null,
+      "key": "RSI_Constellation_SCItem_Seat_Access_CoPilot_Left"
+    },
+    {
+      "name": "hardpoint_seat_access_copilot_right",
+      "ref": null,
+      "key": "RSI_Constellation_SCItem_Seat_Access_CoPilot_Right"
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": "ee972b18-d67a-4bb3-9ea2-71efe8119b45",
       "key": null,

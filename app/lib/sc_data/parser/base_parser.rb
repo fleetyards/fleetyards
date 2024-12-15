@@ -7,6 +7,65 @@ module ScData
 
       SCU_DIMENSIONS = 1.25
 
+      CARGO_CONTAINER_DIMENSIONS = [
+        {
+          size: 32,
+          dimensions: {
+            x: 8 * SCU_DIMENSIONS,
+            y: 2 * SCU_DIMENSIONS,
+            z: 2 * SCU_DIMENSIONS
+          }
+        },
+        {
+          size: 24,
+          dimensions: {
+            x: 6 * SCU_DIMENSIONS,
+            y: 2 * SCU_DIMENSIONS,
+            z: 2 * SCU_DIMENSIONS
+          }
+        },
+        {
+          size: 16,
+          dimensions: {
+            x: 4 * SCU_DIMENSIONS,
+            y: 2 * SCU_DIMENSIONS,
+            z: 2 * SCU_DIMENSIONS
+          }
+        },
+        {
+          size: 8,
+          dimensions: {
+            x: 2 * SCU_DIMENSIONS,
+            y: 2 * SCU_DIMENSIONS,
+            z: 2 * SCU_DIMENSIONS
+          }
+        },
+        {
+          size: 4,
+          dimensions: {
+            x: 2 * SCU_DIMENSIONS,
+            y: 2 * SCU_DIMENSIONS,
+            z: 1 * SCU_DIMENSIONS
+          }
+        },
+        {
+          size: 2,
+          dimensions: {
+            x: 2 * SCU_DIMENSIONS,
+            y: 1 * SCU_DIMENSIONS,
+            z: 1 * SCU_DIMENSIONS
+          }
+        },
+        {
+          size: 1,
+          dimensions: {
+            x: 1 * SCU_DIMENSIONS,
+            y: 1 * SCU_DIMENSIONS,
+            z: 1 * SCU_DIMENSIONS
+          }
+        }
+      ]
+
       def self.run_all(base_folder:, sc_version:)
         ::ScData::Parser::ItemsParser.new(base_folder:, sc_version:).run
         ::ScData::Parser::ManufacturersParser.new(base_folder:, sc_version:).run
@@ -49,7 +108,7 @@ module ScData
         nil
       end
 
-      private def save_items(items, folder:, key: :key)
+      private def save_items(items, folder:, key: :key, prefix: nil)
         return if items.blank?
 
         items_path = "#{export_path}/#{folder}"
@@ -57,7 +116,11 @@ module ScData
         FileUtils.mkdir_p(items_path) unless File.directory?(items_path)
 
         items.each do |item|
-          File.write("#{items_path}/#{item[key].downcase}.json", JSON.pretty_generate(item))
+          file_name = [prefix, item[key].downcase].compact.join("_")
+
+          p "Duplicate key: #{file_name}" if File.exist?("#{items_path}/#{file_name}.json")
+
+          File.write("#{items_path}/#{file_name}.json", JSON.pretty_generate(item))
         end
       end
 
@@ -68,8 +131,7 @@ module ScData
       private def blacklisted_item_key?(key)
         [
           "camera", "panel", "animated", "light", "decal", "sensor", "button",
-          "handle", "dashboard", "access", "seataccess", "screen", "ladder",
-          "hud", "helper"
+          "handle", "dashboard", "seataccess", "screen", "hud", "helper", "oc"
         ].any? do |filter|
           key.downcase.split("_").any? { |part| part == filter }
         end

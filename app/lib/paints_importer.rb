@@ -258,7 +258,7 @@ class PaintsImporter
     x1 = ["X1", "X1 Velocity", "X1 Force"]
     ursa = ["Ursa", "Ursa Medivac", "Ursa Fortuna", "Lynx"]
     mpuv = ["MPUV Cargo", "MPUV Personnel", "MPUV Tractor"]
-    sabre = ["Sabre", "Sabre Comet", "Sabre Raven", "Sabre Firebird"]
+    sabre = ["Sabre", "Sabre Comet", "Sabre Raven", "Sabre Firebird", "Sabre Peregrine"]
     zeus = ["Zeus Mk II MR", "Zeus Mk II CL", "Zeus Mk II ES"]
     terrapin = ["Terrapin", "Terrapin Medic"]
     spirit = ["A1 Spirit", "C1 Spirit", "E1 Spirit"]

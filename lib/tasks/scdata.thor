@@ -10,7 +10,6 @@ class Scdata < Thor
   end
 
   EXPORT_FOLDER = "data/sc_data"
-  SC_VERSION = "4.0.0-PTU"
 
   desc "setup", "Setup sc data export symlink"
   def setup(source_folder, export_folder = EXPORT_FOLDER)
@@ -19,15 +18,19 @@ class Scdata < Thor
   end
 
   desc "parse", "Parse SC Data"
-  def parse(sc_version = SC_VERSION, export_folder = EXPORT_FOLDER)
+  def parse(sc_version = nil, export_folder = EXPORT_FOLDER)
     require "./config/environment"
+
+    sc_version ||= Rails.configuration.app.sc_data_sc_version
 
     ScData::Parser::BaseParser.run_all(base_folder: Rails.root.join(export_folder), sc_version:)
   end
 
   desc "load_items", "Load Items from SC Data"
-  def load_items(sc_version = SC_VERSION, export_folder = EXPORT_FOLDER)
+  def load_items(sc_version = nil, export_folder = EXPORT_FOLDER)
     require "./config/environment"
+
+    sc_version ||= Rails.configuration.app.sc_data_sc_version
 
     ScData::Loader::ItemsLoader.new(sc_version:).run
   end

@@ -54,9 +54,12 @@ module Shared
 
             typeData: {
               oneOf: [
-                {"$ref": "#/components/schemas/ComponentQuantumDrive"}
+                {"$ref": "#/components/schemas/ComponentQuantumDrive"},
+                {"$ref": "#/components/schemas/ComponentCargoGrid"}
               ]
             },
+
+            hardpoints: {type: :array, items: {"$ref": "#/components/schemas/Hardpoint"}},
 
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}

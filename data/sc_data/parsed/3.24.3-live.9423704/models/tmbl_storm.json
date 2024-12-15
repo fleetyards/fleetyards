@@ -101,6 +101,11 @@
       "key": null
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "TMBL_Storm_SCItem_SeatAccess"
+    },
+    {
       "name": "hardpoint_fuel_tank_01",
       "ref": null,
       "key": "HTNK_TMBL_Storm"

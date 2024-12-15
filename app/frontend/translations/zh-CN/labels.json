@@ -14,6 +14,8 @@
       "actions": "Actions",
       "enabled": "Enabled",
       "disabled": "Disabled",
+      "findModel": "Type to find a Ship",
+      "find": "Type to search",
       "collapse": "Collapse",
       "price": "Price",
       "expand": "Expand",

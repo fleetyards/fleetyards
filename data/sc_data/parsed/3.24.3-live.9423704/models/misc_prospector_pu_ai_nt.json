@@ -43,6 +43,11 @@
       ]
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "MISC_Prospector_SCItem_SeatAccess"
+    },
+    {
       "name": "hardpoint_controller_comms",
       "ref": null,
       "key": "Controller_Comms"

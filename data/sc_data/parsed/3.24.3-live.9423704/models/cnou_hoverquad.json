@@ -71,6 +71,11 @@
       "key": "Controller_CapacitorAssignment"
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "CNOU_HoverQuad_SCItem_SeatAccess"
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": null,
       "key": "CNOU_HoverQuad_SCItem_Seat_Pilot"

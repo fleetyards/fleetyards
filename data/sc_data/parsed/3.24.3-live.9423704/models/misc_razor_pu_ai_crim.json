@@ -31,6 +31,11 @@
       "key": "MISC_Razor_Seat_Pilot"
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "MISC_Razor_SeatAccess"
+    },
+    {
       "name": "hardpoint_controller_door",
       "ref": null,
       "key": "Controller_Door"

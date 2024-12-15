@@ -31,6 +31,11 @@
       "key": "AEGS_Sabre_Firebird_SCItem_Seat_Pilot"
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "AEGS_Sabre_Firebird_SCItem_SeatAccess"
+    },
+    {
       "name": "hardpoint_controller_comms",
       "ref": null,
       "key": "Controller_Comms"

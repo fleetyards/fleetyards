@@ -54,14 +54,6 @@
         "WeaponGun",
         "Turret"
       ]
-    },
-    {
-      "name": "hardpoint_OC",
-      "min_size": "0",
-      "max_size": "1",
-      "types": [
-        "Room"
-      ]
     }
   ],
   "durability": {

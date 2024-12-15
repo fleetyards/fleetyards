@@ -1,29 +1,21 @@
-<template>
-  <FilterGroup
-    v-model="internalValue"
-    :label="t('labels.selectModel')"
-    :search-label="t('labels.findModel')"
-    :query-fn="fetch"
-    :query-response-formatter="formatter"
-    :name="name"
-    :paginated="true"
-    :searchable="true"
-    :multiple="multiple"
-    :no-label="noLabel"
-  />
-</template>
+<script lang="ts">
+export default {
+  name: "ModelFilterGroup",
+};
+</script>
 
 <script lang="ts" setup>
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type ModelQuery, type Models } from "@/services/fyApi";
+import { type ModelQuery, type Models, type Model } from "@/services/fyApi";
 import FilterGroup, {
   type FilterGroupParams,
+  type ValueType,
 } from "@/shared/components/base/FilterGroup/index.vue";
 
 type Props = {
   name: string;
-  modelValue?: string | string[];
+  modelValue?: ValueType<Model>;
   multiple?: boolean;
   noLabel?: boolean;
   returnObject?: boolean;
@@ -38,7 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const internalValue = ref<string | string[] | undefined>(props.modelValue);
+const internalValue = ref<ValueType<Model> | undefined>(props.modelValue);
 
 onMounted(() => {
   internalValue.value = props.modelValue;
@@ -55,7 +47,7 @@ const emit = defineEmits(["update:modelValue"]);
 
 watch(
   () => internalValue.value,
-  () => {
+  async () => {
     emit("update:modelValue", internalValue.value);
   },
 );
@@ -65,13 +57,14 @@ const formatter = (response: Models) => {
     return {
       label: model.name,
       value: model.slug,
+      object: model,
     };
   });
 };
 
 const { models: modelsService } = useApiClient();
 
-const fetch = async (params: FilterGroupParams) => {
+const fetch = async (params: FilterGroupParams<Model>) => {
   const q: ModelQuery = {};
 
   if (params.search) {
@@ -93,8 +86,18 @@ const fetch = async (params: FilterGroupParams) => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "ModelFilterGroup",
-};
-</script>
+<template>
+  <FilterGroup
+    v-model="internalValue"
+    :label="t('labels.selectModel')"
+    :search-label="t('labels.findModel')"
+    :query-fn="fetch"
+    :query-response-formatter="formatter"
+    :name="name"
+    :paginated="true"
+    :searchable="true"
+    :multiple="multiple"
+    :no-label="noLabel"
+    :return-object="returnObject"
+  />
+</template>

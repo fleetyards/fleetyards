@@ -1,9 +1,0 @@
-{
-  "key": "Ship_TempItemCarryingCapacity_ORIG_400i",
-  "ref": "bd7c49f4-9d7c-4ae2-88ca-b4e46553475c",
-  "category": "inventory",
-  "type": "personal_storage",
-  "type_data": {
-    "storage": 42.0
-  }
-}

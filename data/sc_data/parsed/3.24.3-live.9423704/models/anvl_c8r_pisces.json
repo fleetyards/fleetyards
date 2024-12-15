@@ -96,6 +96,11 @@
       "key": "RADR_GRNP_S01_Ecouter"
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "ANVL_Pisces_C8R_SeatAccess"
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": null,
       "key": "ANVL_Pisces_C8R_Seat_Pilot"

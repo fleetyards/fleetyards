@@ -59,7 +59,7 @@
   },
   "type_data": {
     "thrust_capacity": 1740000.0,
-    "fuel_burn_rate_per10_k_newton": "0.03125",
+    "fuel_burn_rate_per10_k_newton": 0.03125,
     "thruster_type": "Maneuver"
   }
 }

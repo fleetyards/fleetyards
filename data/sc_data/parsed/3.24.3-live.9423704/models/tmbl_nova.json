@@ -26,6 +26,11 @@
       "key": null
     },
     {
+      "name": "hardpoint_seat_access_gunner",
+      "ref": null,
+      "key": "TMBL_Nova_SCItem_SeatAccess_Gunner"
+    },
+    {
       "name": "hardpoint_seat_driver",
       "ref": null,
       "key": "TMBL_Nova_SCItem_Seat_Driver"
@@ -327,6 +332,11 @@
       "name": "hardpoint_rear_door",
       "ref": null,
       "key": "Door_RN_RoomConnector_Breachable_OpenReverse_IP_Nova"
+    },
+    {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "TMBL_Nova_SCItem_SeatAccess"
     },
     {
       "name": "hardpoint_weapon_rack",

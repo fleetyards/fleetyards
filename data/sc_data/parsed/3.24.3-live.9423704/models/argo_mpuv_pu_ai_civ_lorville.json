@@ -31,6 +31,11 @@
       "key": "ARGO_MPUV_SCItem_Seat_Pilot"
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "ARGO_MPUV_SCItem_SeatAccess"
+    },
+    {
       "name": "hardpoint_controller_energy",
       "ref": null,
       "key": "Controller_Energy"
@@ -244,6 +249,16 @@
       "name": "hardpoint_air_traffic_controller",
       "ref": null,
       "key": "ARGO_MPUV_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_seat_access_leg_left",
+      "ref": null,
+      "key": "ARGO_MPUV_SCItem_SeatAccess_Leg_Left"
+    },
+    {
+      "name": "hardpoint_seat_access_leg_right",
+      "ref": null,
+      "key": "ARGO_MPUV_SCItem_SeatAccess_Leg_Temp_Right"
     },
     {
       "name": "hardpoint_arm",

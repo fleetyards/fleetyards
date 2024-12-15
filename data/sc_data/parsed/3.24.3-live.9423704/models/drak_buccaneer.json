@@ -31,6 +31,11 @@
       "key": "DRAK_Buccaneer_SCItem_Seat_Pilot"
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "DRAK_Buccaneer_SCItem_SeatAccess"
+    },
+    {
       "name": "hardpoint_controller_door",
       "ref": null,
       "key": "Controller_Door"

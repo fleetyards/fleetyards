@@ -4,7 +4,7 @@ export default {
 };
 </script>
 
-<script lang="ts" setup>
+<script lang="ts" setup generic="T">
 import Collapsed from "@/shared/components/Collapsed.vue";
 import SmallLoader from "@/shared/components/SmallLoader/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -22,24 +22,36 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { InputVariantsEnum } from "@/shared/components/base/FormInput/types";
 
-export type ValueType = string[] | string | number[] | number | boolean | null;
+export interface FilterGroupOption<T> extends FilterOption {
+  object: T;
+}
 
-export type FilterGroupParams = {
+export type ValueType<T> =
+  | FilterGroupOption<T>
+  | FilterGroupOption<T>[]
+  | string[]
+  | string
+  | number[]
+  | number
+  | boolean
+  | null;
+
+export type FilterGroupParams<T> = {
   search?: string;
-  missing?: ValueType;
+  missing?: ValueType<T>;
   page?: number;
 };
 
 type Props = {
   name: string;
   query?: (
-    params: FilterGroupParams,
+    params: FilterGroupParams<T>,
   ) => UseQueryReturnType<FilterOption[], Error>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  queryFn?: (params: FilterGroupParams) => Promise<any>;
+  queryFn?: (params: FilterGroupParams<T>) => Promise<any>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   queryResponseFormatter?: (response: any) => FilterOption[];
-  modelValue?: ValueType;
+  modelValue?: ValueType<T>;
   options?: FilterOption[];
   error?: string;
   label?: string;
@@ -87,7 +99,7 @@ const fetchMoreVisible = ref(props.paginated);
 
 const search = ref<string | undefined>();
 
-const missing = ref<ValueType | undefined>();
+const missing = ref<ValueType<T> | undefined>();
 
 const page = ref(1);
 
@@ -129,7 +141,7 @@ const { isLoading, isFetching, data, refetch } = useQuery({
     props.name,
     page.value,
     search.value,
-    missing.value,
+    missing.value as string,
   ],
   queryFn: async () => {
     if (!props.queryFn) {

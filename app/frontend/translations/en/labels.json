@@ -171,6 +171,7 @@
       },
       "selectModel": "Select a Ship",
       "findModel": "Type to find a Ship",
+      "find": "Type to search",
       "selectUser": "Select a User",
       "findUser": "Type to find a User",
       "compare": {
@@ -325,12 +326,15 @@
         "details": "Details",
         "group": "Group",
         "jumpDrive": "Jump Drive",
+        "maxContainerSize": "Max. Container Size",
         "groups": {
           "avionic": "Avionics",
           "system": "Systems",
           "propulsion": "Propulsion",
           "thruster": "Thruster",
-          "weapon": "Weapons"
+          "weapon": "Weapons",
+          "other": "Other",
+          "seat": "Seats"
         },
         "types": {
           "radar": "Radar",
@@ -351,6 +355,31 @@
           "utility_items": "Utility Items",
           "emp": "EMP",
           "qed": "QED"
+        },
+        "categories": {
+          "radar": "Radar",
+          "computers": "Computers",
+          "powerplant": "Power Plants",
+          "cooler": "Coolers",
+          "module": "Modules",
+          "shieldgenerator": "Shield Generators",
+          "fuel_intakes": "Fuel Intakes",
+          "fueltanks": "Fuel Tanks",
+          "quantumdrive": "Quantum Drives",
+          "jump_modules": "Jump Modules",
+          "quantum_fuel_tanks": "Quantum Fuel Tanks",
+          "main_thrusters": "Main Thrusters",
+          "maneuvering_thrusters": "Maneuvering Thrusters",
+          "weapons": "Weapons",
+          "weapon_mounts": "Weapon Mounts",
+          "turret": "Turrets",
+          "missiles": "Missiles",
+          "missile_racks": "Missile Racks",
+          "utility_items": "Utility Items",
+          "emp": "EMP",
+          "quantumenforcementdevice": "QED",
+          "cargogrid": "Cargo Grid",
+          "seat": "Seats"
         }
       },
       "blank": {

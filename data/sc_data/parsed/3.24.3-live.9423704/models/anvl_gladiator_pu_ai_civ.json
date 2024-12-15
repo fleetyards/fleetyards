@@ -21,6 +21,11 @@
   },
   "loadout": [
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "ANVL_Gladiator_SCItem_SeatAccess"
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": null,
       "key": "ANVL_Gladiator_SCItem_Seat_Pilot"

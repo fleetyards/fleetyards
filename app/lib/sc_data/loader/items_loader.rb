@@ -36,7 +36,7 @@ module ScData
           end
 
           if item[:inventory_ref].present?
-            cargo_grid = find_item_by_ref("items", item[:inventory_ref])&.dig(:cargo_grid)
+            cargo_grid = find_item_by_ref("items", item[:inventory_ref])&.dig(:type_data)
             update_params[:type_data] = cargo_grid if cargo_grid.present?
           end
 
@@ -133,7 +133,7 @@ module ScData
           armor batteries computers missile_racks bombcompartments cooler module powerplant
           quantumdrive quantumenforcementdevice shieldgenerator turret utility weapon_mounts weapons
           lifesupport thrusters radar scanners fueltanks fuel_intakes countermeasures seat relay
-          salvagemunching salvagefillerstation selfdestruct paints controller cargogrid
+          salvagemunching salvagefillerstation selfdestruct paints controller cargogrid jumpdrive
         ]
       end
     end

@@ -61,9 +61,11 @@ module ScData
         end.flatten
       end
 
-      private def update_loadout(parent, loadout, default_loadout = nil)
+      private def update_loadout(parent, loadout, default_loadout = nil, cleanup: true)
+        hardpoint_ids = []
+
         loadout.each do |item|
-          hardpoint = parent.hardpoints.find_or_create_by(sc_name: item["name"].downcase)
+          hardpoint = parent.hardpoints.find_or_initialize_by(sc_name: item["name"].downcase)
 
           if item["key"].blank? && default_loadout.present?
             dl = default_loadout.find { |dl| dl["name"] == item["name"] }
@@ -88,7 +90,7 @@ module ScData
                 }
               end
 
-              update_loadout(parent, hardpoint_data) if hardpoint_data.present?
+              hardpoint_ids += update_loadout(parent, hardpoint_data, nil, cleanup: false) if hardpoint_data.present?
             else
               hardpoint.update!(
                 source: :game_files,
@@ -96,6 +98,8 @@ module ScData
                 min_size: component.size,
                 max_size: component.size
               )
+
+              hardpoint_ids << hardpoint.id
             end
           else
             hardpoint.update!(
@@ -105,9 +109,15 @@ module ScData
           end
 
           if item["loadout"].present?
-            update_loadout(hardpoint, item["loadout"])
+            update_loadout(hardpoint, item["loadout"]) if hardpoint.persisted?
           end
+
+          hardpoint_ids << hardpoint.id if hardpoint.persisted?
         end
+
+        parent.hardpoints.where(source: :game_files).where.not(id: hardpoint_ids).destroy_all if cleanup
+
+        hardpoint_ids
       end
     end
   end

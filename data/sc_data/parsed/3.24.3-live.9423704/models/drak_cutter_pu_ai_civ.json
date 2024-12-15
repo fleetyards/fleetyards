@@ -86,6 +86,11 @@
       "key": "Controller_Comms"
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "DRAK_Cutter_SeatAccess_Pilot"
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": null,
       "key": "DRAK_Cutter_SCItem_Seat_Pilot"

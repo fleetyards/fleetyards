@@ -26,6 +26,11 @@
       "key": "Paint_Mantis_Procyon"
     },
     {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "RSI_Mantis_SeatAccess"
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": null,
       "key": "RSI_Mantis_Seat_Pilot",

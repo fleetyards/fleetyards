@@ -253,13 +253,28 @@
       "key": null
     },
     {
+      "name": "hardpoint_seat_access_pilot",
+      "ref": "485533a9-f4af-43a8-89a7-af102ea1f996",
+      "key": null
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": "3b5df413-26e7-4663-a3fe-b00f258646c1",
       "key": null
     },
     {
+      "name": "hardpoint_seat_access_copilot",
+      "ref": "525d581e-6fc4-48de-92bf-d94e49d67793",
+      "key": null
+    },
+    {
       "name": "hardpoint_seat_copilot",
       "ref": "7caed731-eaba-42cd-8011-933c2137c5e2",
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_access_turret_bottom",
+      "ref": "8878a977-42e2-4b89-b5e6-4637c227e369",
       "key": null
     },
     {
@@ -292,6 +307,11 @@
           ]
         }
       ]
+    },
+    {
+      "name": "hardpoint_seat_access_turret_top",
+      "ref": "1e397b62-635f-477a-85f7-3af47e32c11d",
+      "key": null
     },
     {
       "name": "hardpoint_turret_top_seat",

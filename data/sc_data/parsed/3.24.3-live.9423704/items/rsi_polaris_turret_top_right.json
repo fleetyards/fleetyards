@@ -50,14 +50,6 @@
       "types": [
         "Turret"
       ]
-    },
-    {
-      "name": "hardpoint_oc",
-      "min_size": "1",
-      "max_size": "1",
-      "types": [
-        "Room"
-      ]
     }
   ],
   "durability": {

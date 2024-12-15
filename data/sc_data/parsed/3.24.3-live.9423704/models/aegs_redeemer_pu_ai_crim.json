@@ -262,6 +262,11 @@
       "key": null
     },
     {
+      "name": "hardpoint_seat_access_pilot",
+      "ref": null,
+      "key": "AEGS_Redeemer_SCItem_SeatAccess"
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": null,
       "key": "AEGS_Redeemer_SCItem_Seat_Pilot"
@@ -426,6 +431,11 @@
       ]
     },
     {
+      "name": "hardpoint_turret_manned_front_seat_access",
+      "ref": null,
+      "key": "AEGS_Redeemer_SCItem_SeatAccess_Turret_Manned_Front"
+    },
+    {
       "name": "hardpoint_turret_manned_rear",
       "ref": "3f3e91f6-cc1e-4616-9728-56459a122a6b",
       "key": null,
@@ -455,6 +465,11 @@
           ]
         }
       ]
+    },
+    {
+      "name": "hardpoint_turret_manned_rear_seat_access",
+      "ref": null,
+      "key": "AEGS_Redeemer_SCItem_SeatAccess_Turret_Manned_Rear"
     },
     {
       "name": "hardpoint_turret_remote_front",
@@ -494,6 +509,11 @@
           "key": null
         }
       ]
+    },
+    {
+      "name": "hardpoint_turret_remote_front_seat_access",
+      "ref": null,
+      "key": "AEGS_Redeemer_SCItem_SeatAccess_Front_Remote_Turret"
     },
     {
       "name": "hardpoint_turret_remote_rear",
@@ -542,6 +562,11 @@
           "key": "Vehicle_Screen_MFD"
         }
       ]
+    },
+    {
+      "name": "hardpoint_turret_remote_rear_seat_access",
+      "ref": null,
+      "key": "AEGS_Redeemer_SCItem_SeatAccess_Rear_Remote_Turret"
     },
     {
       "name": "hardpoint_weapon_gun_left",

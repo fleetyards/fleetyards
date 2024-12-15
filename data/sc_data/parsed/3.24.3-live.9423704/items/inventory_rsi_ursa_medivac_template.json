@@ -1,0 +1,9 @@
+{
+  "key": "RSI_Ursa_Medivac_Template",
+  "ref": "9d1a1cbc-580f-425d-acc9-179c6b74cb3a",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 2.46
+  }
+}

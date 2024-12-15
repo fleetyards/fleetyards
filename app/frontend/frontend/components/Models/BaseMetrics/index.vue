@@ -1,3 +1,25 @@
+<script lang="ts">
+export default {
+  name: "ModelBaseMetrics",
+};
+</script>
+
+<script lang="ts" setup>
+import type { Model } from "@/services/fyApi";
+import { useI18n } from "@/shared/composables/useI18n";
+
+const { t, toNumber, toDollar, toUEC } = useI18n();
+
+type Props = {
+  model: Model;
+};
+
+const props = defineProps<Props>();
+
+const soldAt = computed(() => props.model.availability.soldAt);
+const rentalAt = computed(() => props.model.availability.rentalAt);
+</script>
+
 <template>
   <div class="row base-metrics metrics-padding">
     <div class="col-12 col-lg-3">
@@ -144,25 +166,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import type { Model } from "@/services/fyApi";
-import { useI18n } from "@/shared/composables/useI18n";
-
-const { t, toNumber, toDollar, toUEC } = useI18n();
-
-type Props = {
-  model: Model;
-};
-
-const props = defineProps<Props>();
-
-const soldAt = computed(() => props.model.availability.soldAt);
-const rentalAt = computed(() => props.model.availability.rentalAt);
-</script>
-
-<script lang="ts">
-export default {
-  name: "ModelBaseMetrics",
-};
-</script>

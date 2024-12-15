@@ -1,30 +1,8 @@
-<template>
-  <Panel :alignment="PanelAlignmentsEnum.LEFT" :slim="slim">
-    <PanelImage
-      :image="image"
-      image-size="auto"
-      rounded="left"
-      :alt="item.name"
-    />
-    <div>
-      <PanelHeading level="h2">
-        <router-link v-if="to" :to="to">
-          {{ title }}
-        </router-link>
-        <template v-else>
-          {{ title }}
-        </template>
-      </PanelHeading>
-      <PanelBody no-min-height no-padding-top>
-        <div v-if="!fullscreen" class="teaser-panel-body teaser-panel-item">
-          <p v-if="withDescription">
-            {{ item.description }}
-          </p>
-        </div>
-      </PanelBody>
-    </div>
-  </Panel>
-</template>
+<script lang="ts">
+export default {
+  name: "TeaserPanel",
+};
+</script>
 
 <script lang="ts" setup>
 import Panel from "@/shared/components/Panel/index.vue";
@@ -34,6 +12,7 @@ import PanelImage from "@/shared/components/Panel/Image/index.vue";
 import type { MediaImage } from "@/services/fyApi";
 import type { RouteLocationNamedRaw } from "vue-router";
 import { PanelAlignmentsEnum } from "@/shared/components/Panel/types";
+import { PanelHeadingLevelEnum } from "@/shared/components/Panel/Heading/types";
 
 type TeaserItem = {
   name: string;
@@ -77,12 +56,34 @@ const title = computed(() => {
 });
 </script>
 
-<script lang="ts">
-export default {
-  name: "TeaserPanel",
-};
-</script>
+<template>
+  <Panel :alignment="PanelAlignmentsEnum.LEFT" :slim="slim">
+    <PanelImage
+      :image="image"
+      image-size="auto"
+      rounded="left"
+      :alt="item.name"
+    />
+    <div>
+      <PanelHeading :level="PanelHeadingLevelEnum.H2">
+        <router-link v-if="to" :to="to">
+          {{ title }}
+        </router-link>
+        <template v-else>
+          {{ title }}
+        </template>
+      </PanelHeading>
+      <PanelBody no-min-height no-padding-top>
+        <div v-if="!fullscreen" class="teaser-panel-body teaser-panel-item">
+          <p v-if="withDescription">
+            {{ item.description }}
+          </p>
+        </div>
+      </PanelBody>
+    </div>
+  </Panel>
+</template>
 
 <style lang="scss" scoped>
-@import "./index.scss";
+@import "index";
 </style>

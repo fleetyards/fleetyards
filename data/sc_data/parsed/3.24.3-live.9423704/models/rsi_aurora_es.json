@@ -31,6 +31,16 @@
       "key": "RSI_Aurora_SCItem_Seat_Pilot"
     },
     {
+      "name": "Hardpoint_Seat_Access",
+      "ref": null,
+      "key": "RSI_Aurora_SCItem_SeatAccess"
+    },
+    {
+      "name": "Hardpoint_Seat_Access_Door",
+      "ref": null,
+      "key": "RSI_Aurora_SCItem_SeatAccess_Door"
+    },
+    {
       "name": "Hardpoint_Cockpit_SelfDestruct",
       "ref": null,
       "key": "VHCL_SelfDestruct_30s"

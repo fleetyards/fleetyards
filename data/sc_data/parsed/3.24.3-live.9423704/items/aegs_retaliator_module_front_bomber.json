@@ -20,14 +20,6 @@
   },
   "loadout": [
     {
-      "name": "hardpoint_module_oc",
-      "min_size": "0",
-      "max_size": "0",
-      "types": [
-
-      ]
-    },
-    {
       "name": "hardpoint_torpedo_launcher_fore",
       "min_size": "9",
       "max_size": "9",
@@ -45,11 +37,6 @@
     }
   ],
   "default_loadout": [
-    {
-      "name": "hardpoint_module_oc",
-      "key": "AEGS_Retaliator_OC_Front_Bomber",
-      "ref": null
-    },
     {
       "name": "hardpoint_torpedo_launcher_fore",
       "key": "MRCK_S09_AEGS_Retaliator_Fore",

@@ -235,9 +235,19 @@
       "key": "CRUS_Starlifter_SCItem_Seat_CoPilot"
     },
     {
+      "name": "hardpoint_seat_copilot_seat_access",
+      "ref": null,
+      "key": "CRUS_Starlifter_SCItem_SeatAccess_Copilot"
+    },
+    {
       "name": "hardpoint_seat_pilot",
       "ref": null,
       "key": "CRUS_Starlifter_SCItem_Seat_Pilot"
+    },
+    {
+      "name": "hardpoint_seat_pilot_seat_access",
+      "ref": null,
+      "key": "CRUS_Starlifter_SCItem_SeatAccess_Pilot"
     },
     {
       "name": "hardpoint_shield_generator_l",
@@ -445,6 +455,11 @@
       "loadout": [
 
       ]
+    },
+    {
+      "name": "hardpoint_bridge_remote_turret_seat_access",
+      "ref": null,
+      "key": "CRUS_Starlifter_SCItem_SeatAccess_Turret_Bridge"
     },
     {
       "name": "hardpoint_bridge_remote_turret",
