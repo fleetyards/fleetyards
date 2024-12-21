@@ -25,6 +25,7 @@ export type User = {
     twoFactorQrCodeUrl?: string;
     twoFactorProvisioningUrl?: string;
     hangarUpdatedAt?: string;
+    resourceAccess?: Array<string>;
     createdAt: string;
     updatedAt: string;
 };

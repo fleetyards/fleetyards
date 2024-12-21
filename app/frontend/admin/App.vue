@@ -26,15 +26,20 @@ import { useOverlayStore } from "@/shared/stores/overlay";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useNoty } from "@/shared/composables/useNoty";
 import { useImportUpdates } from "@/admin/composables/useImportUpdates";
+import { useFlash } from "@/shared/composables/useFlash";
+import CheckAccess from "@/shared/components/CheckAccess/index.vue";
 
 const { t } = useI18n();
 
 useNProgress();
+
 useMetaInfo({
   appTitle: t("title.defaultAdmin"),
 });
 
 useImportUpdates("ModelsImport");
+
+useFlash();
 
 const route = useRoute();
 
@@ -155,6 +160,10 @@ const checkSessionReload = async () => {
     sessionStore.login();
   }
 };
+
+const routeName = computed(() => {
+  return route.name;
+});
 </script>
 
 <template>
@@ -177,22 +186,32 @@ const checkSessionReload = async () => {
       <div class="main-wrapper">
         <div class="main-inner">
           <AppNavigationHeader />
+
           <router-view v-slot="{ Component, route: viewRoute }">
             <transition name="fade" mode="out-in">
-              <section
-                class="container main"
-                :class="{
-                  [route.name || '']: true,
-                }"
+              <CheckAccess
+                v-if="routeName"
+                :check="sessionStore.hasAccessTo"
+                :resource="route.meta.access"
               >
-                <component
-                  :is="Component"
-                  :key="`${locale}-${viewRoute.path}`"
-                />
-              </section>
+                <template #granted>
+                  <section
+                    class="container main"
+                    :class="{
+                      [route.name || '']: true,
+                    }"
+                  >
+                    <component
+                      :is="Component"
+                      :key="`${locale}-${viewRoute.path}`"
+                    />
+                  </section>
+                </template>
+              </CheckAccess>
             </transition>
           </router-view>
         </div>
+
         <AppEnvironment :git-revision="appStore.gitRevision" />
 
         <AppFooter

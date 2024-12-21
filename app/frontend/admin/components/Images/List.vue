@@ -1,36 +1,8 @@
-<template>
-  <FilteredList
-    :id="name"
-    :name="name"
-    :records="data?.items || []"
-    :async-status="asyncStatus"
-    primary-key="id"
-    class="images"
-  >
-    <template v-if="filterable" #filter>
-      <FilterForm />
-    </template>
-
-    <template #default="{ loading }">
-      <ImageUploader
-        :loading="loading"
-        :images="data?.items || []"
-        :gallery-id="internalGalleryId"
-        :gallery-type="internalGalleryType"
-        @image-deleted="refetch"
-        @image-uploaded="refetch"
-      />
-    </template>
-    <template #pagination-bottom>
-      <Paginator
-        v-if="data"
-        :query-result-ref="data"
-        :per-page="perPage"
-        :update-per-page="updatePerPage"
-      />
-    </template>
-  </FilteredList>
-</template>
+<script lang="ts">
+export default {
+  name: "AdminImagesList",
+};
+</script>
 
 <script lang="ts" setup>
 import ImageUploader from "@/admin/components/ImageUploader/index.vue";
@@ -39,8 +11,9 @@ import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useQuery } from "@tanstack/vue-query";
 import { useApiClient } from "@/admin/composables/useApiClient";
-import type { ImageQuery, BaseList } from "@/services/fyAdminApi";
+import type { ImageQuery } from "@/services/fyAdminApi";
 import { usePagination } from "@/shared/composables/usePagination";
+import { useImageFilters } from "@/admin/composables/useImageFilters";
 
 type Props = {
   name?: string;
@@ -48,6 +21,8 @@ type Props = {
   galleryType?: string;
   filterable?: boolean;
 };
+
+const { isFilterSelected } = useImageFilters();
 
 const props = withDefaults(defineProps<Props>(), {
   name: "admin-images",
@@ -97,15 +72,40 @@ watch(
   { deep: true },
 );
 
-const { perPage, page, pagination, updatePerPage } = usePagination(
-  props.name,
-  data as Ref<BaseList>,
-  refetch,
-);
+const { perPage, page, updatePerPage } = usePagination(props.name);
 </script>
 
-<script lang="ts">
-export default {
-  name: "AdminImagesList",
-};
-</script>
+<template>
+  <FilteredList
+    :id="name"
+    :name="name"
+    :records="data?.items || []"
+    :async-status="asyncStatus"
+    primary-key="id"
+    class="images"
+    :is-filter-selected="isFilterSelected"
+  >
+    <template v-if="filterable" #filter>
+      <FilterForm />
+    </template>
+
+    <template #default="{ loading }">
+      <ImageUploader
+        :loading="loading"
+        :images="data?.items || []"
+        :gallery-id="internalGalleryId"
+        :gallery-type="internalGalleryType"
+        @image-deleted="refetch"
+        @image-uploaded="refetch"
+      />
+    </template>
+    <template #pagination-bottom>
+      <Paginator
+        v-if="data"
+        :query-result-ref="data"
+        :per-page="perPage"
+        :update-per-page="updatePerPage"
+      />
+    </template>
+  </FilteredList>
+</template>

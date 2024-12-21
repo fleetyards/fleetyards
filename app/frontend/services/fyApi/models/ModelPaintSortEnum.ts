@@ -1,0 +1,14 @@
+/* generated using openapi-typescript-codegen -- do not edit */
+/* istanbul ignore file */
+/* tslint:disable */
+/* eslint-disable */
+export enum ModelPaintSortEnum {
+    NAME_ASC = 'name asc',
+    NAME_DESC = 'name desc',
+    CREATED_AT_ASC = 'created_at asc',
+    CREATED_AT_DESC = 'created_at desc',
+    UPDATED_AT_ASC = 'updated_at asc',
+    UPDATED_AT_DESC = 'updated_at desc',
+    MODEL_SLUG_ASC = 'model_slug asc',
+    MODEL_SLUG_DESC = 'model_slug desc',
+}

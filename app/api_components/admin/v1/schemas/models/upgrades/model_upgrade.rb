@@ -24,6 +24,8 @@ module Admin
                   additionalProperties: false
                 },
 
+                model: {"$ref": "#/components/schemas/Model"},
+
                 createdAt: {type: :string, format: "date-time"},
                 updatedAt: {type: :string, format: "date-time"},
 
@@ -35,7 +37,7 @@ module Admin
                 storeImageSmall: {type: :string, format: :uri, deprecated: true}
               },
               additionalProperties: false,
-              required: %w[id name media createdAt updatedAt]
+              required: %w[id name media model createdAt updatedAt]
             })
           end
         end

@@ -49,6 +49,9 @@ export const useSessionStore = defineStore("session", {
     resetConfirmAccess() {
       this.accessConfirmed = undefined;
     },
+    hasAccessTo(resource: string) {
+      return this.currentUser?.resourceAccess?.includes(resource) || false;
+    },
   },
   persist: {
     paths: ["authenticated", "accessConfirmed"],

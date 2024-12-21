@@ -25,7 +25,10 @@ shared:
 
   opensearch_url: <%= ENV["OPENSEARCH_URL"] || 'localhost:9200' %>
 
-  sc_data_sc_version: "3.24.3-live.9423704"
+  sc_data:
+    sc_version: "4.0.0-live.9470730"
+    environment: "live-preview"
+
 
 staging:
   on_subdomain?: true

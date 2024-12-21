@@ -9,7 +9,6 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import EmptyBox from "@/shared/components/EmptyBox/index.vue";
 import { useFiltersStore } from "@/shared/stores/filters";
-import { useFilters } from "@/shared/composables/useFilters";
 import { type AsyncStatus } from "@/shared/components/AsyncData.types";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -21,12 +20,14 @@ type Props = {
   staticFilters?: boolean;
   hideEmptyBox?: boolean;
   hideLoading?: boolean;
+  isFilterSelected?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   staticFilters: false,
   hideEmptyBox: false,
   hideLoading: false,
+  isFilterSelected: false,
 });
 
 const loading = computed(() => {
@@ -46,8 +47,6 @@ const filtersStore = useFiltersStore();
 const filterVisible = computed(() => {
   return filtersStore.isVisible(props.name);
 });
-
-const { isFilterSelected } = useFilters();
 
 const route = useRoute();
 
@@ -108,7 +107,7 @@ const checkMobile = () => {
 };
 
 const saveFilters = () => {
-  if (isFilterSelected.value) {
+  if (props.isFilterSelected) {
     filtersStore.setFilter(props.name, {
       ...filters.value,
     });

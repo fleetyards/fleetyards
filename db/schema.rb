@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_11_022852) do
+ActiveRecord::Schema[7.1].define(version: 2024_12_16_073323) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
@@ -41,6 +41,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_11_022852) do
     t.string "otp_secret"
     t.string "normalized_username"
     t.string "normalized_email"
+    t.boolean "super_admin", default: false
+    t.string "resource_access"
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
     t.index ["username"], name: "index_admin_users_on_username", unique: true

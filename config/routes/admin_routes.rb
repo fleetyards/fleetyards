@@ -3,6 +3,12 @@
 namespace :admin, path: (Rails.configuration.app.on_subdomain? ? "" : "admin"), constraints: ->(req) { !Rails.configuration.app.on_subdomain? || req.subdomain == "admin" } do
   draw "admin/api_routes"
 
+  authenticate :admin_user, ->(u) { u.present? } do
+    mount Sidekiq::Web => "/workers"
+    mount PgHero::Engine => "/pghero"
+    mount Flipper::UI.app(Flipper) => "/features", :as => :features
+  end
+
   # devise_for :admin_users,
   #   singular: :admin_user, path: "", skip: %i[registration],
   #   path_names: {
@@ -36,33 +42,6 @@ namespace :admin, path: (Rails.configuration.app.on_subdomain? ? "" : "admin"), 
   # resources :vehicles, only: [:index]
 
   # resources :settings, except: %i[index show]
-
-  authenticate :admin_user, ->(u) { u.present? } do
-    mount Sidekiq::Web => "/workers"
-    mount PgHero::Engine => "/pghero"
-    mount Flipper::UI.app(Flipper) => "/features", :as => :features
-  end
-
-  # resources :models, except: [:show] do
-  #   collection do
-  #     get :name_diff
-  #     get :price_diff
-  #     put "reload"
-  #     put "reload_data"
-  #     resources :loaner_uploads, only: %i[new create]
-  #   end
-
-  #   member do
-  #     get "images"
-  #     put "reload_one"
-  #     put "use_rsi_image"
-  #   end
-  # end
-
-  # resources :model_modules, path: "model-modules", except: [:show]
-  # resources :model_module_packages, path: "model-module-packages", except: [:show]
-  # resources :model_upgrades, path: "model-upgrades", except: [:show]
-  # resources :model_paints, path: "model-paints", except: [:show]
 
   # resources :manufacturers, except: [:show]
 

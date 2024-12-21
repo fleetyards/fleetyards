@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { MediaImage } from './MediaImage';
+import type { Model } from './Model';
 export type ModelUpgrade = {
     id: string;
     name: string;
@@ -11,6 +12,7 @@ export type ModelUpgrade = {
     media: {
         storeImage?: MediaImage;
     };
+    model: Model;
     createdAt: string;
     updatedAt: string;
     /**

@@ -17,8 +17,11 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useApiClient } from "@/admin/composables/useApiClient";
 import { useApiClient as useFrontendApiClient } from "@/frontend/composables/useApiClient";
 import { useQuery } from "@tanstack/vue-query";
+import { useSessionStore } from "@/admin/stores/session";
 
 const { t, lUtc: l } = useI18n();
+
+const sessionStore = useSessionStore();
 
 const { components: componentsService } = useApiClient();
 const { stats: frontendStatsService } = useFrontendApiClient();
@@ -36,6 +39,7 @@ const { data: components, ...componentsStatus } = useQuery({
       page: "1",
       s: ["updated_at desc", "name asc"],
     }),
+  enabled: () => sessionStore.hasAccessTo("components"),
 });
 
 const columns: BaseTableColumn[] = [
@@ -51,62 +55,59 @@ const columns: BaseTableColumn[] = [
 </script>
 
 <template>
-  <div class="row">
-    <div class="col-12 col-md-6">
-      <BaseTable
-        v-if="components"
-        :records="components?.items"
-        :columns="columns"
-        :async-status="componentsStatus"
-        primary-key="id"
-      >
-        <template #title>
-          <router-link :to="{ name: 'admin-components' }">
-            {{ t("headlines.admin.dashboard.components") }}
-          </router-link>
-        </template>
-        <template #col-name="{ record }">
-          <router-link
-            :to="{
-              name: 'admin-component-edit',
-              params: { id: record.id },
-            }"
-          >
-            {{ record.name }}
-          </router-link>
-        </template>
-        <template #col-updatedAt="{ record }">
-          {{ l(record.updatedAt, "datetime.formats.short") }}
-        </template>
-        <template #actions="{ record }">
-          <Btn
-            :size="BtnSizesEnum.SMALL"
-            inline
-            :to="{
-              name: 'admin-component-edit',
-              params: { id: record.id },
-            }"
-          >
-            <i class="fad fa-pen" />
-          </Btn>
-        </template>
-      </BaseTable>
-    </div>
-    <div class="col-12 col-md-6">
-      <Panel>
-        <PanelHeading>
-          {{ t("headlines.admin.dashboard.componentsByClass") }}
-        </PanelHeading>
-        <PanelBody>
-          <Chart
-            name="components-by-class"
-            type="pie"
-            :options="componentsByClass"
-            :async-status="componentsByClassStatus"
-            tooltip-type="component-pie"
-          />
-        </PanelBody>
-      </Panel>
-    </div>
+  <div v-if="components" class="col-12 col-md-6">
+    <BaseTable
+      :records="components?.items"
+      :columns="columns"
+      :async-status="componentsStatus"
+      primary-key="id"
+    >
+      <template #title>
+        <router-link :to="{ name: 'admin-components' }">
+          {{ t("headlines.admin.dashboard.components") }}
+        </router-link>
+      </template>
+      <template #col-name="{ record }">
+        <router-link
+          :to="{
+            name: 'admin-component-edit',
+            params: { id: record.id },
+          }"
+        >
+          {{ record.name }}
+        </router-link>
+      </template>
+      <template #col-updatedAt="{ record }">
+        {{ l(record.updatedAt, "datetime.formats.short") }}
+      </template>
+      <template #actions="{ record }">
+        <Btn
+          :size="BtnSizesEnum.SMALL"
+          inline
+          :to="{
+            name: 'admin-component-edit',
+            params: { id: record.id },
+          }"
+        >
+          <i class="fad fa-pen" />
+        </Btn>
+      </template>
+    </BaseTable>
+  </div>
+  <div class="col-12 col-md-6">
+    <Panel>
+      <PanelHeading>
+        {{ t("headlines.admin.dashboard.componentsByClass") }}
+      </PanelHeading>
+      <PanelBody>
+        <Chart
+          name="components-by-class"
+          type="pie"
+          :options="componentsByClass"
+          :async-status="componentsByClassStatus"
+          tooltip-type="component-pie"
+        />
+      </PanelBody>
+    </Panel>
   </div>
 </template>

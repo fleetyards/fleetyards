@@ -9,6 +9,13 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
+// import CelestialObjectsPanel from "@/frontend/components/CelestialObjects/Panel/index.vue";
+// import ShopCommodityPanel from "@/frontend/components/ShopCommodities/Panel/index.vue";
+// import ComponentPanel from "@/frontend/components/Components/Panel/index.vue";
+// import StationPanel from "@/frontend/components/Stations/Panel/index.vue";
+// import ShopPanel from "@/frontend/components/Shops/Panel/index.vue";
+// import CommodityPanel from "@/frontend/components/Commodities/Panel/index.vue";
+// import EquipmentPanel from "@/frontend/components/Equipment/Panel/index.vue";
 import SearchPanel from "@/frontend/components/Search/Panel/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import SearchHistory from "@/frontend/components/Search/History/index.vue";
@@ -124,11 +131,12 @@ const restoreSearch = (search: string) => {
                   :clearable="true"
                   translation-key="search.default"
                   :no-label="true"
+                  inline
                 />
 
                 <Btn
                   id="search-submit"
-                  :aria-label="t('labels.search')"
+                  :aria-label="t('labels.search.default')"
                   :size="BtnSizesEnum.LARGE"
                   :inline="true"
                   :type="BtnTypesEnum.SUBMIT"
@@ -153,7 +161,7 @@ const restoreSearch = (search: string) => {
       :name="route.name?.toString() || ''"
       :async-status="asyncStatus"
     >
-      <template #actions>
+      <template #actions-right>
         <ShareBtn :url="shareUrl" :title="shareTitle" />
       </template>
       <template #default>
@@ -168,6 +176,37 @@ const restoreSearch = (search: string) => {
               :model="result.item as Model"
               details
             />
+
+            <!--
+            //   <StationPanel
+            //   v-else-if="result.type === 'Station'"
+            //   :station="result.item"
+            // />
+            // <ShopPanel v-else-if="result.type === 'Shop'" :shop="result.item" />
+            // <CelestialObjectsPanel
+            //   v-else-if="
+            //     ['CelestialObject', 'Starsystem'].includes(result.type)
+            //   "
+            //   :celestial-object="result.item"
+            // />
+            // <ShopCommodityPanel
+            //   v-else-if="result.type === 'ShopCommodity'"
+            //   :item="result.item"
+            // />
+            // <ComponentPanel
+            //   v-else-if="result.type === 'Component'"
+            //   :component="result.item"
+            // />
+            // <CommodityPanel
+            //   v-else-if="result.type === 'Commodity'"
+            //   :commodity="result.item"
+            // />
+            // <EquipmentPanel
+            //   v-else-if="result.type === 'Equipment'"
+            //   :equipment="result.item"
+            // />
+            -->
+
             <SearchPanel v-else :item="result" />
           </div>
         </transition-group>

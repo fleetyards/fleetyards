@@ -313,7 +313,8 @@
         "missileOptions": "Missle Options (if available)"
       },
       "component": {
-        "size": "Size: %{size}"
+        "size": "Size: %{size}",
+        "grade": "grade"
       },
       "hardpoint": {
         "legend": {
@@ -573,6 +574,10 @@
           "holoBlank": "Without Holo?",
           "frontViewBlank": "Without Front View Image?",
           "topViewColoredBlank": "Without Top View Colored Image?"
+        },
+        "manufacturers": {
+          "withModels": "With Models",
+          "logoBlank": "Without Logo"
         },
         "images": {
           "station": "Station",

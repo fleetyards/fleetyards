@@ -55,7 +55,7 @@ const { modelsQuery } = useModelQueries();
 
 const { perPage, page, updatePerPage } = usePagination(QueryKeysEnum.MODELS);
 
-const { filters } = useModelFilters(() => refetch());
+const { filters, isFilterSelected } = useModelFilters(() => refetch());
 
 const {
   data: models,
@@ -103,6 +103,7 @@ const openDisplayOptionsModal = () => {
     :hide-empty-box="!gridView"
     :records="models?.items || []"
     :async-status="asyncStatus"
+    :is-filter-selected="isFilterSelected"
   >
     <template #actions-right>
       <Btn

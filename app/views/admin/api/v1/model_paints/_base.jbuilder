@@ -37,6 +37,10 @@ json.media do
   end
 end
 
+json.model do
+  json.partial! "api/v1/models/base", model: model_paint.model
+end
+
 json.name_with_model model_paint.name_with_model
 json.rsi_id model_paint.rsi_id
 json.rsi_name model_paint.rsi_name

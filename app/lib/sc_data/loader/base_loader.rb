@@ -1,23 +1,23 @@
 module ScData
   module Loader
     class BaseLoader
-      attr_accessor :sc_version
+      attr_accessor :sc_environment
 
-      def self.run_all(sc_version: nil)
-        sc_version ||= Rails.configuration.app.sc_data_sc_version
+      def self.run_all(sc_environment: nil)
+        sc_environment ||= Rails.configuration.app.sc_data.sc_environment
 
-        ::ScData::Loader::ManufacturersLoader.new(sc_version:).run
-        ::ScData::Loader::ItemsLoader.new(sc_version:).run
-        ::ScData::Loader::ModelsLoader.new(sc_version:).run
-        ::ScData::Loader::ModelModulesLoader.new(sc_version:).run
+        ::ScData::Loader::ManufacturersLoader.new(sc_environment:).run
+        ::ScData::Loader::ItemsLoader.new(sc_environment:).run
+        ::ScData::Loader::ModelsLoader.new(sc_environment:).run
+        ::ScData::Loader::ModelModulesLoader.new(sc_environment:).run
       end
 
-      def initialize(sc_verison: nil)
-        self.sc_version = sc_version || Rails.configuration.app.sc_data_sc_version
+      def initialize(sc_environment: nil)
+        self.sc_environment = sc_environment || Rails.configuration.app.sc_data.sc_environment
       end
 
       def load_item(path)
-        JSON.parse(Rails.root.join("data/sc_data/parsed/#{sc_version}/#{path}.json").read)
+        JSON.parse(Rails.root.join("data/sc_data/parsed/#{sc_environment}/#{path}.json").read)
       end
 
       def find_item_by_ref(path, ref)
@@ -29,7 +29,7 @@ module ScData
       end
 
       def load_items(path)
-        Dir.glob(Rails.root.join("data/sc_data/parsed/#{sc_version}/#{path}/**/*.json")).map do |file|
+        Dir.glob(Rails.root.join("data/sc_data/parsed/#{sc_environment}/#{path}/**/*.json")).map do |file|
           JSON.parse(File.read(file)).with_indifferent_access
         end
       end

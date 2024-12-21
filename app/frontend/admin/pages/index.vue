@@ -17,17 +17,19 @@ import DashboardModels from "@/admin/components/Dashboard/Models.vue";
 import DashboardManufacturers from "@/admin/components/Dashboard/Manufacturers.vue";
 import DashboardComponents from "@/admin/components/Dashboard/Components.vue";
 import { useApiClient } from "@/admin/composables/useApiClient";
-import { useApiClient as useFrontendApiClient } from "@/frontend/composables/useApiClient";
 import { useQuery } from "@tanstack/vue-query";
+import { useSessionStore } from "@/admin/stores/session";
 
 const { t } = useI18n();
 
+const sessionStore = useSessionStore();
+
 const { stats: statsService } = useApiClient();
-const { stats: frontendStatsService } = useFrontendApiClient();
 
 const { data: quickStats, refetch } = useQuery({
   queryKey: ["quickstats"],
   queryFn: () => statsService.stats(),
+  enabled: () => sessionStore.hasAccessTo("stats"),
 });
 
 onMounted(() => {
@@ -39,55 +41,25 @@ onMounted(() => {
 const { data: visitsPerDay, ...visitsPerDayStatus } = useQuery({
   queryKey: ["charts", "visits-per-day"],
   queryFn: () => statsService.visitsPerDay(),
+  enabled: () => sessionStore.hasAccessTo("stats"),
 });
 
 const { data: mostViewedPages, ...mostViewedPagesStatus } = useQuery({
   queryKey: ["charts", "most-viewed-pages"],
   queryFn: () => statsService.mostViewedPages(),
+  enabled: () => sessionStore.hasAccessTo("stats"),
 });
 
 const { data: visitsPerMonth, ...visitsPerMonthStatus } = useQuery({
   queryKey: ["charts", "visits-per-month"],
   queryFn: () => statsService.visitsPerMonth(),
-});
-
-const { data: registrationsPerMonth, ...registrationsPerMonthStatus } =
-  useQuery({
-    queryKey: ["charts", "registrations-per-month"],
-    queryFn: () => statsService.registrationsPerMonth(),
-  });
-
-const { data: modelsBySize, ...modelsBySizeStatus } = useQuery({
-  queryKey: ["charts", "models-by-size"],
-  queryFn: () => frontendStatsService.modelsBySize(),
-});
-
-const { data: modelsByProductionStatus, ...modelsByProductionStatusStatus } =
-  useQuery({
-    queryKey: ["charts", "models-by-production-status"],
-    queryFn: () => frontendStatsService.modelsByProductionStatus(),
-  });
-
-const { data: modelsPerMonth, ...modelsPerMonthStatus } = useQuery({
-  queryKey: ["charts", "models-per-month"],
-  queryFn: () => frontendStatsService.modelsPerMonth(),
+  enabled: () => sessionStore.hasAccessTo("stats"),
 });
 </script>
 
 <template>
   <Teleport to="#header-left">
     <Heading>{{ t("headlines.admin.dashboard.title") }}</Heading>
-  </Teleport>
-
-  <Teleport to="#header-right">
-    <Btn>
-      <i class="fa fa-rotate" />
-      {{ t("actions.admin.dashboard.reloadModels") }}
-    </Btn>
-    <Btn>
-      <i class="fa fa-rotate" />
-      {{ t("actions.admin.dashboard.reloadScData") }}
-    </Btn>
   </Teleport>
 
   <section>
@@ -129,7 +101,7 @@ const { data: modelsPerMonth, ...modelsPerMonthStatus } = useQuery({
           </div>
         </div>
       </div>
-      <div class="col-12 col-md-6 col-lg-8">
+      <div v-if="visitsPerDay" class="col-12 col-md-6 col-lg-8">
         <Panel>
           <PanelHeading>
             {{ t("headlines.admin.dashboard.visitsPerDay") }}
@@ -149,7 +121,7 @@ const { data: modelsPerMonth, ...modelsPerMonthStatus } = useQuery({
       </div>
     </div>
     <div class="row">
-      <div class="col-12 col-md-5">
+      <div v-if="mostViewedPages" class="col-12 col-md-5">
         <Panel>
           <PanelHeading>
             {{ t("headlines.admin.dashboard.mostViewedPages") }}
@@ -167,7 +139,7 @@ const { data: modelsPerMonth, ...modelsPerMonthStatus } = useQuery({
           </PanelBody>
         </Panel>
       </div>
-      <div class="col-12 col-md-7">
+      <div v-if="visitsPerMonth" class="col-12 col-md-7">
         <Panel>
           <PanelHeading>
             {{ t("headlines.admin.dashboard.visitsPerMonth") }}
@@ -186,62 +158,11 @@ const { data: modelsPerMonth, ...modelsPerMonthStatus } = useQuery({
         </Panel>
       </div>
     </div>
-    <DashboardUsers />
-    <DashboardModels />
     <div class="row">
-      <div class="col-12 col-md-6">
-        <Panel>
-          <PanelHeading>
-            {{ t("headlines.admin.dashboard.modelsByStatus") }}
-          </PanelHeading>
-          <PanelBody>
-            <Chart
-              name="models-by-status"
-              type="pie"
-              :options="modelsByProductionStatus"
-              :async-status="modelsByProductionStatusStatus"
-              tooltip-type="ship-pie"
-            />
-          </PanelBody>
-        </Panel>
-      </div>
-      <div class="col-12 col-md-6">
-        <Panel>
-          <PanelHeading>
-            {{ t("headlines.admin.dashboard.modelsBySize") }}
-          </PanelHeading>
-          <PanelBody>
-            <Chart
-              name="models-by-size"
-              type="pie"
-              :options="modelsBySize"
-              :async-status="modelsBySizeStatus"
-              tooltip-type="ship-pie"
-            />
-          </PanelBody>
-        </Panel>
-      </div>
+      <DashboardUsers />
+      <DashboardModels />
+      <DashboardManufacturers />
+      <DashboardComponents />
     </div>
-    <div class="row">
-      <div class="col-12">
-        <Panel>
-          <PanelHeading>
-            {{ t("headlines.admin.dashboard.modelsPerMonth") }}
-          </PanelHeading>
-          <PanelBody>
-            <Chart
-              name="models-per-month"
-              type="column"
-              :options="modelsPerMonth"
-              :async-status="modelsPerMonthStatus"
-              tooltip-type="ship"
-              :height="344"
-            />
-          </PanelBody>
-        </Panel>
-      </div>
-    </div>
-    <DashboardManufacturers />
-    <DashboardComponents />
   </section>
 </template>

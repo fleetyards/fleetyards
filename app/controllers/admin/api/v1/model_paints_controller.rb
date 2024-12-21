@@ -5,9 +5,9 @@ module Admin
     module V1
       class ModelPaintsController < ::Admin::Api::BaseController
         def index
-          authorize! :index, :admin_api_model_paints
+          authorize! :read, ModelPaint
 
-          model_paint_query_params["sorts"] = "name asc"
+          model_paint_query_params["sorts"] ||= sorting_params(ModelPaint)
 
           @q = ModelPaint.ransack(model_paint_query_params)
 

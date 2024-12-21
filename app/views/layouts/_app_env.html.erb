@@ -15,6 +15,7 @@
   window.RSI_ENDPOINT = '<%= Rails.configuration.rsi.endpoint %>'
   window.SENTRY_DSN = '<%= Rails.application.credentials.sentry_frontend_dsn %>'
   window.DATA_PREFETCH = <%= @data_prefetch.to_json.html_safe %>
+  window.FLASH = <%= flash.to_hash.to_json.html_safe %>
   window.MAINTAINER_NAME = '<%= Rails.configuration.maintainer.name %>'
   window.MAINTAINER_MAIL = '<%= Rails.configuration.maintainer.mail %>'
   window.MAINTAINER_ADDRESS_STREET = '<%= Rails.configuration.maintainer.address[:street] %>'

@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { MediaImage } from './MediaImage';
+import type { Model } from './Model';
 import type { ModelModule } from './ModelModule';
 import type { ViewImage } from './ViewImage';
 export type ModelModulePackage = {
@@ -11,6 +12,7 @@ export type ModelModulePackage = {
     description?: string;
     pledgePrice?: number;
     modules: Array<ModelModule>;
+    model: Model;
     media: {
         angledView?: ViewImage;
         sideView?: ViewImage;

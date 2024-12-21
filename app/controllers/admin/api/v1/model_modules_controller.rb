@@ -5,7 +5,7 @@ module Admin
     module V1
       class ModelModulesController < ::Admin::Api::BaseController
         def index
-          authorize! :index, :admin_api_model_modules
+          authorize! :read, ModelModule
 
           model_module_query_params["sorts"] = "name asc"
 

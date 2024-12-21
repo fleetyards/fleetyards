@@ -11,6 +11,7 @@ module Admin
             type: :object,
             properties: {
               withModels: {type: :boolean},
+              logoBlank: {type: :boolean},
               nameEq: {type: :string},
               nameCont: {type: :string},
               nameIn: {type: :array, items: {type: :string}},

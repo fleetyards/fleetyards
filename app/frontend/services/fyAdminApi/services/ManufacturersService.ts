@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { Manufacturer } from '../models/Manufacturer';
 import type { ManufacturerQuery } from '../models/ManufacturerQuery';
 import type { Manufacturers } from '../models/Manufacturers';
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -41,6 +42,31 @@ export class ManufacturersService {
             },
             errors: {
                 401: `unauthorized`,
+            },
+        });
+    }
+    /**
+     * Manufacturer Detail
+     * @returns Manufacturer successful
+     * @throws ApiError
+     */
+    public manufacturer({
+        id,
+    }: {
+        /**
+         * Manufacturer id
+         */
+        id: string,
+    }): CancelablePromise<Manufacturer> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/manufacturers/{id}',
+            path: {
+                'id': id,
+            },
+            errors: {
+                401: `unauthorized`,
+                404: `not found`,
             },
         });
     }

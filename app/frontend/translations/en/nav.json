@@ -68,6 +68,19 @@
           "index": "Models",
           "create": "Create Model"
         },
+        "modelPaints": {
+          "index": "Paints",
+          "create": "Create Paint"
+        },
+
+        "modelModules": {
+          "index": "Modules",
+          "create": "Create Module"
+        },
+        "modelModulePackages": {
+          "index": "Module Packages",
+          "create": "Create Module Package"
+        },
         "components": {
           "index": "Components"
         },

@@ -30,6 +30,7 @@ module V1
           twoFactorQrCodeUrl: {type: :string},
           twoFactorProvisioningUrl: {type: :string},
           hangarUpdatedAt: {type: :string, format: "date-time"},
+          resourceAccess: {type: :array, items: {type: :string}},
           createdAt: {type: :string, format: "date-time"},
           updatedAt: {type: :string, format: "date-time"}
         },

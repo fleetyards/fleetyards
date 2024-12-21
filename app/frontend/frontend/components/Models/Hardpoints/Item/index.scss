@@ -81,4 +81,9 @@
 .hardpoint-item__component {
   flex-grow: 1;
   margin-right: 5px;
+
+  span {
+    color: $gray-light;
+    font-size: 80%;
+  }
 }

@@ -10,6 +10,7 @@ declare module "vue-router" {
     icon?: string;
     exact?: boolean;
     activeRoute?: string;
+    access?: string;
     nav?: "main" | "footer" | "hidden";
     mobileNav?: number;
   }
@@ -27,6 +28,7 @@ declare global {
     API_OAS_VERSION: string;
     API_ENDPOINT: string;
     DATA_PREFETCH: KeyValuePair;
+    FLASH: KeyValuePair;
     FRONTEND_ENDPOINT: string;
     CABLE_ENDPOINT: string;
     ON_SUBDOMAIN: boolean;

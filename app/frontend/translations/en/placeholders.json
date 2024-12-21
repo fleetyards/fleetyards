@@ -74,6 +74,9 @@
           "onSale": "Yes or No",
           "productionStatus": "Announced, Flight Ready, In Concept..."
         },
+        "manufacturers": {
+          "name": "Origin, Robert Space Industries, Aegis..."
+        },
         "users": {
           "search": "Username or Email",
           "username": "Username",

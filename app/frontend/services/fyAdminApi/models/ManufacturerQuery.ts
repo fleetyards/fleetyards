@@ -4,6 +4,7 @@
 /* eslint-disable */
 export type ManufacturerQuery = {
     withModels?: boolean;
+    logoBlank?: boolean;
     nameEq?: string;
     nameCont?: string;
     nameIn?: Array<string>;

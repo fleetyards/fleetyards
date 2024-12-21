@@ -17,6 +17,7 @@ module Admin
                 pledgePrice: {type: :number},
 
                 modules: {type: :array, items: {"$ref": "#/components/schemas/ModelModule"}},
+                model: {"$ref": "#/components/schemas/Model"},
 
                 media: {
                   type: :object,
@@ -62,7 +63,7 @@ module Admin
                 topViewXlarge: {type: :string, deprecated: true}
               },
               additionalProperties: false,
-              required: %w[id name modules media createdAt updatedAt]
+              required: %w[id name modules model media createdAt updatedAt]
             })
           end
         end

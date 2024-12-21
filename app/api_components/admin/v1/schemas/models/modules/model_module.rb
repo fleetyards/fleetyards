@@ -9,7 +9,10 @@ module Admin
             include SchemaConcern
 
             schema({
-              properties: {}
+              properties: {
+                model: {"$ref": "#/components/schemas/Model"},
+              },
+              required: %w[model]
             })
           end
         end

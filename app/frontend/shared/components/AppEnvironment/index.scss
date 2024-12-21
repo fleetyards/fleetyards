@@ -2,10 +2,11 @@
   position: sticky;
   z-index: 1000;
   bottom: 0;
+  left: 100%;
   display: flex;
-  justify-content: flex-end;
   gap: 5px;
   padding: 20px 15px;
+  width: 276px;
 
   &.spacing-right {
     right: 230px;

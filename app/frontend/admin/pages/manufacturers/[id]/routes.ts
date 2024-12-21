@@ -7,7 +7,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/manufacturers/[id]/edit.vue"),
     meta: {
       title: "admin.manufacturers.edit",
-      activeRoute: "manufacturers",
+      activeRoute: "admin-manufacturers",
       needsAuthentication: true,
     },
   },

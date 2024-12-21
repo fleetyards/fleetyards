@@ -24,7 +24,10 @@ module Shared
             inventoryConsumption: {type: :string},
 
             grade: {type: :string},
+            gradeLabel: {type: :string},
             size: {type: :string},
+            itemClass: {"$ref": "#/components/schemas/ComponentItemClassEnum"},
+            itemClassLabel: {type: :string},
 
             availability: {
               type: :object,

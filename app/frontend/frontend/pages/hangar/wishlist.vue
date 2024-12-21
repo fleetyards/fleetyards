@@ -59,7 +59,7 @@ const fleetchartVisible = computed(() => fleetchartStore.isVisible("wishlist"));
 
 const { wishlistQuery } = useWishlistQueries();
 
-const { filters } = useHangarFilters(() => refetch());
+const { filters, isFilterSelected } = useHangarFilters(() => refetch());
 
 const { perPage, page, updatePerPage } = usePagination("hangar");
 
@@ -212,6 +212,7 @@ const openDisplayOptionsModal = () => {
     :records="vehicles?.items || []"
     :name="route.name?.toString() || ''"
     :async-status="asyncStatus"
+    :is-filter-selected="isFilterSelected"
   >
     <template #actions-right>
       <Btn

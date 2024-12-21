@@ -57,7 +57,9 @@ export const useFilters = <T>({
 
     Object.keys(query)
       .filter((key) => {
-        return (ignoreKeys || []).includes(key as keyof T);
+        return [...(ignoreKeys || []), ...defaultAllowedKeys].includes(
+          key as keyof T,
+        );
       })
       .forEach((key) => delete query[key]);
 

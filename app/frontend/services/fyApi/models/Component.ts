@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { ComponentCargoGrid } from './ComponentCargoGrid';
+import type { ComponentItemClassEnum } from './ComponentItemClassEnum';
 import type { ComponentQuantumDrive } from './ComponentQuantumDrive';
 import type { Hardpoint } from './Hardpoint';
 import type { ItemPrice } from './ItemPrice';
@@ -20,7 +21,10 @@ export type Component = {
     subType?: string;
     inventoryConsumption?: string;
     grade?: string;
+    gradeLabel?: string;
     size?: string;
+    itemClass?: ComponentItemClassEnum;
+    itemClassLabel?: string;
     availability: {
         boughtAt: Array<ItemPrice>;
         soldAt: Array<ItemPrice>;

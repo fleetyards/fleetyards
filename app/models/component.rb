@@ -67,6 +67,7 @@ class Component < ApplicationRecord
   has_many :item_prices, as: :item, dependent: :destroy
 
   before_save :update_slugs
+  before_save :extract_data_from_description
 
   mount_uploader :store_image, StoreImageUploader
 
@@ -170,12 +171,38 @@ class Component < ApplicationRecord
     end
   end
 
+  def extract_data_from_description
+    return if description.blank?
+
+    cleaned_description, data = description.gsub("\\n", "\n").split("\n\n", 2).reverse
+
+    self.description = cleaned_description.gsub("\n", "").gsub(/[[:space:]]+/, "").chomp
+
+    return if data.blank?
+
+    data.split("\n").each do |line|
+      key, value = line.split(":", 2)
+
+      case key.strip
+      when "Class"
+        self.item_class = value.gsub(/[[:space:]]+/, "").downcase
+      end
+    end
+  end
+
   def sold_at
     item_prices.sell.order(price: :asc).uniq(&:location)
   end
 
   def bought_at
     item_prices.buy.order(price: :asc).uniq(&:location)
+  end
+
+  def grade_label
+    return if grade.blank?
+    return if grade.to_i > 4 || grade.to_i < 1
+
+    grade.to_s.tr("1234", "ABCD")
   end
 
   def item_class_label

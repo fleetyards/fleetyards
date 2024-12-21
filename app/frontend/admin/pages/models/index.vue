@@ -38,7 +38,7 @@ watch(
 
 const { perPage, page, updatePerPage } = usePagination(QueryKeysEnum.MODELS);
 
-const { filters } = useModelFilters(() => refetch());
+const { filters, isFilterSelected } = useModelFilters(() => refetch());
 
 const { modelsQuery } = useModelQueries();
 
@@ -94,9 +94,21 @@ const columns: BaseTableColumn[] = [
     mobile: false,
     sortable: true,
   },
+  {
+    name: "createdAt",
+    label: "created at?",
+    mobile: false,
+    sortable: true,
+  },
+  {
+    name: "updatedAt",
+    label: "updated at?",
+    mobile: false,
+    sortable: true,
+  },
 ];
 
-const { t } = useI18n();
+const { t, l } = useI18n();
 </script>
 
 <template>
@@ -113,7 +125,19 @@ const { t } = useI18n();
   </Heading>
 
   <Teleport to="#header-right">
+    <Btn>
+      <i class="fa fa-rotate" />
+      {{ t("actions.admin.dashboard.reloadModels") }}
+    </Btn>
+    <Btn>
+      <i class="fa fa-rotate" />
+      {{ t("actions.admin.dashboard.reloadScData") }}
+    </Btn>
     <Btn :to="{ name: 'admin-model-create' }">
+      <i class="fa fa-plus" />
+      {{ t("actions.create") }}
+    </Btn>
+    <Btn :to="{ name: 'admin-components' }">
       <i class="fa fa-plus" />
       {{ t("actions.create") }}
     </Btn>
@@ -125,6 +149,7 @@ const { t } = useI18n();
     :async-status="asyncStatus"
     hide-loading
     hide-empty-box
+    :is-filter-selected="isFilterSelected"
   >
     <template #filter>
       <FilterForm />
@@ -150,9 +175,9 @@ const { t } = useI18n();
         </template>
         <template #col-rsiStoreImage="{ record }">
           <LazyImage
-            v-if="record.media.storeImage"
+            v-if="record.media.rsiStoreImage"
             :variant="LazyImageVariantsEnum.WIDE_SMALL"
-            :src="record.media.storeImage.small"
+            :src="record.media.rsiStoreImage.small"
             alt="Model rsiStoreImage"
             shadow
           />
@@ -188,6 +213,12 @@ const { t } = useI18n();
         <template #col-active="{ record }">
           <i v-if="record.active" class="fad fa-check" />
           <i v-else class="fad fa-times" />
+        </template>
+        <template #col-createdAt="{ record }">
+          {{ l(record.createdAt, "datetime.formats.short") }}
+        </template>
+        <template #col-updatedAt="{ record }">
+          {{ l(record.updatedAt, "datetime.formats.short") }}
         </template>
         <template #actions="{ record }">
           <ModelActions :model="record" />

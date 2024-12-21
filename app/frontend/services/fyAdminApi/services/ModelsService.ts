@@ -4,6 +4,8 @@
 /* eslint-disable */
 import type { FilterOption } from '../models/FilterOption';
 import type { ModelExtended } from '../models/ModelExtended';
+import type { ModelPaintQuery } from '../models/ModelPaintQuery';
+import type { ModelPaints } from '../models/ModelPaints';
 import type { ModelQuery } from '../models/ModelQuery';
 import type { Models } from '../models/Models';
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -43,6 +45,39 @@ export class ModelsService {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models',
+            query: {
+                'page': page,
+                'perPage': perPage,
+                's': s,
+                'q': q,
+            },
+            errors: {
+                401: `unauthorized`,
+            },
+        });
+    }
+    /**
+     * Paints list
+     * @returns ModelPaints successful
+     * @throws ApiError
+     */
+    public paints({
+        page = '1',
+        perPage = '30',
+        s,
+        q,
+    }: {
+        page?: string,
+        perPage?: string,
+        /**
+         * Sorting
+         */
+        s?: Array<string>,
+        q?: ModelPaintQuery,
+    }): CancelablePromise<ModelPaints> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/model-paints',
             query: {
                 'page': page,
                 'perPage': perPage,

@@ -5,7 +5,7 @@
         "dashboard": {
           "title": "Dashboard",
           "modelsByClassification": "Models by Classification",
-          "models": "Models",
+          "models": "Reloaded Models",
           "modelsByManufacturer": "Models by Manufacturer",
           "manufacturers": "Manufacturers",
           "modelsByStatus": "Models by Status",
@@ -33,6 +33,16 @@
           "index": "Components",
           "new": "New Component",
           "edit": "Edit Component"
+        },
+        "modelPaints": {
+          "index": "Paints",
+          "new": "New Paint",
+          "edit": "Edit Paint"
+        },
+        "modelModules": {
+          "index": "Modules",
+          "new": "New Module",
+          "edit": "Edit Module"
         },
         "manufacturers": {
           "index": "Manufacturers",
@@ -63,6 +73,7 @@
       "images": "Images Index",
       "stats": "Stats",
       "notFound": "Navigation Error",
+      "accessDenied": "Access Denied",
       "serverError": "Server Error",
       "comments": "Comments",
       "login": "Login",

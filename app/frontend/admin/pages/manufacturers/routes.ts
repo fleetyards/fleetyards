@@ -9,6 +9,7 @@ export const routes: RouteRecordRaw[] = [
     strict: true,
     meta: {
       needsAuthentication: true,
+      access: "manufacturers",
     },
   },
   {
@@ -18,6 +19,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       needsAuthentication: true,
       nav: "hidden",
+      activeRoute: "admin-manufacturers",
     },
   },
   {
@@ -28,6 +30,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       needsAuthentication: true,
       nav: "hidden",
+      activeRoute: "admin-manufacturers",
     },
   },
 ];

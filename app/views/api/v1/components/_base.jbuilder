@@ -21,7 +21,10 @@ json.availability do
 end
 
 json.grade component.grade
+json.grade_label component.grade_label
 json.size component.size
+json.item_class component.item_class
+json.item_class_label component.item_class_label
 
 json.type_data component.type_data
 

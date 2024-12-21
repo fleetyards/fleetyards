@@ -24,6 +24,17 @@ export const useSessionStore = defineStore("session", {
       this.authenticated = false;
       this.currentUser = undefined;
     },
+    hasAccessTo(resource?: string) {
+      if (!resource || resource === "all") {
+        return true;
+      }
+
+      return (
+        this.currentUser?.resourceAccess?.includes(resource) ||
+        this.currentUser?.superAdmin ||
+        false
+      );
+    },
   },
   persist: {
     paths: ["authenticated"],

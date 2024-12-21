@@ -9,6 +9,8 @@ export type AdminUser = {
     twoFactorRequired: boolean;
     twoFactorQrCodeUrl?: string;
     twoFactorProvisioningUrl?: string;
+    resourceAccess: Array<string>;
+    superAdmin: boolean;
     createdAt: string;
     updatedAt: string;
 };

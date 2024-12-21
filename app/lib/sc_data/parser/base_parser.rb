@@ -66,15 +66,15 @@ module ScData
         }
       ]
 
-      def self.run_all(base_folder:, sc_version:)
-        ::ScData::Parser::ItemsParser.new(base_folder:, sc_version:).run
-        ::ScData::Parser::ManufacturersParser.new(base_folder:, sc_version:).run
-        ::ScData::Parser::ModelsParser.new(base_folder:, sc_version:).run
+      def self.run_all(base_folder:, sc_version:, sc_environment:)
+        ::ScData::Parser::ItemsParser.new(base_folder:, sc_version:, sc_environment:).run
+        ::ScData::Parser::ManufacturersParser.new(base_folder:, sc_version:, sc_environment:).run
+        ::ScData::Parser::ModelsParser.new(base_folder:, sc_version:, sc_environment:).run
       end
 
-      def initialize(base_folder:, sc_version:)
+      def initialize(base_folder:, sc_version:, sc_environment:)
         self.base_path = "#{base_folder}/raw/#{sc_version}"
-        self.export_path = "#{base_folder}/parsed/#{sc_version}"
+        self.export_path = "#{base_folder}/parsed/#{sc_environment}"
         self.import_path = "#{base_path}/#{FOUNDRY_PATH}"
         self.definition_path = "#{base_path}/Data"
         self.translations = parse_translations

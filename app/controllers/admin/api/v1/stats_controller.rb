@@ -5,7 +5,7 @@ module Admin
     module V1
       class StatsController < ::Admin::Api::BaseController
         def quick_stats
-          authorize! :stats, :admin
+          authorize! :read, :admin_stats
 
           @quick_stats = {
             online_count:,
@@ -17,7 +17,7 @@ module Admin
         end
 
         def most_viewed_pages
-          authorize! :stats, :admin
+          authorize! :read, :admin_stats
 
           most_viewed_pages = Ahoy::Event.one_month.where(name: "$view").to_a.group_by do |event|
             event.properties["page"]
@@ -33,7 +33,7 @@ module Admin
         end
 
         def visits_per_day
-          authorize! :stats, :admin
+          authorize! :read, :admin_stats
 
           visits_per_day = Ahoy::Visit.without_users(tracking_blocklist).one_month
             .group_by_day(:started_at).count
@@ -49,7 +49,7 @@ module Admin
         end
 
         def visits_per_month
-          authorize! :stats, :admin
+          authorize! :read, :admin_stats
 
           visits_per_month = Rollup.where("time > ?", 1.year.ago).series("Visits", interval: :month).map do |started_at, count|
             {
@@ -63,7 +63,7 @@ module Admin
         end
 
         def registrations_per_month
-          authorize! :stats, :admin
+          authorize! :read, :admin_stats
 
           registrations_per_month = Rollup.where("time > ?", 1.year.ago).series("Registrations", interval: :month).map do |created_at, count|
             {

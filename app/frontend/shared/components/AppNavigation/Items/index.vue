@@ -17,35 +17,84 @@ type Props = {
   routes: RouteRecordRaw[];
   currentRoute: RouteLocationNormalizedLoaded;
   authenticated: boolean;
+  hasAccessTo?: (access: string) => boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  hasAccessTo: undefined,
+});
 
 const { t } = useI18n();
 
 const filteredRoutes = computed(() => {
-  if (props.authenticated) {
-    return props.routes.filter((route) => !route.meta?.hideWhenAuthenticated);
-  } else {
-    return props.routes.filter((route) => !route.meta?.needsAuthentication);
-  }
+  return props.routes
+    .filter((route) => {
+      if (props.authenticated) {
+        return !route.meta?.hideWhenAuthenticated;
+      }
+
+      return !route.meta?.needsAuthentication;
+    })
+    .filter((route) => {
+      if (!props.hasAccessTo) {
+        return true;
+      }
+
+      if (route.meta?.access) {
+        return (
+          props.hasAccessTo(route.meta.access) || route.meta.access == "all"
+        );
+      }
+
+      return false;
+    });
 });
 
 const filteredChildRoutes = (
   children: RouteRecordRaw[],
   nav: NavTypes = "main",
 ) => {
-  return children.filter(
-    (child) =>
-      !child.children &&
-      (child.meta?.nav === nav || (!child.meta?.nav && nav === "main")),
-  );
+  return children
+    .filter(
+      (child) =>
+        child.meta?.nav === nav || (!child.meta?.nav && nav === "main"),
+    )
+    .filter((child) => {
+      if (!props.hasAccessTo) {
+        return true;
+      }
+
+      if (child.meta?.access) {
+        return (
+          props.hasAccessTo(child.meta.access) || child.meta.access == "all"
+        );
+      }
+
+      return false;
+    })
+    .map((child) => {
+      if (child.children) {
+        return {
+          ...child.children[0],
+          path: `${child.path}/${child.children[0].path}`,
+        };
+      }
+
+      return child;
+    });
 };
 
 const isActive = (route: RouteRecordRaw) => {
-  return [props.currentRoute.name, props.currentRoute.meta?.activeRoute]
-    .filter((item) => item)
-    .includes(route.name);
+  const activeRoutes = [
+    props.currentRoute.name,
+    props.currentRoute.meta?.activeRoute,
+  ].filter((item) => item);
+
+  if (route.children) {
+    return activeRoutes.includes(route.children[0].name);
+  }
+
+  return activeRoutes.includes(route.name);
 };
 
 const isSubmenuActive = (route: RouteRecordRaw): boolean => {

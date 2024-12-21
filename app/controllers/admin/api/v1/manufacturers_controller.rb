@@ -9,7 +9,7 @@ module Admin
         end
 
         def index
-          authorize! :index, :admin_api_manufacturers
+          authorize! :read, Manufacturer
 
           scope = Manufacturer.with_name
 
@@ -26,7 +26,8 @@ module Admin
 
         private def manufacturer_query_params
           @manufacturer_query_params ||= query_params(
-            :with_models, :name_eq, :name_cont, :slug_eq, :slug_cont, name_in: [], slug_in: []
+            :with_models, :name_eq, :name_cont, :slug_eq, :slug_cont, :logo_blank,
+            name_in: [], slug_in: []
           )
         end
       end

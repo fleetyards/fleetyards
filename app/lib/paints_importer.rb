@@ -263,6 +263,7 @@ class PaintsImporter
     terrapin = ["Terrapin", "Terrapin Medic"]
     spirit = ["A1 Spirit", "C1 Spirit", "E1 Spirit"]
     f8c = ["F8C Lightning", "F8C Lightning Executive Edition"]
+    merlin = ["P-52 Merlin", "P-72 Archimedes"]
 
     models_map = {
       "Cutter" => cutter,
@@ -284,6 +285,7 @@ class PaintsImporter
       "100 Series" => series_100,
       "Origin 100 Series" => series_100,
       "600i" => series_600,
+      "Archimedes & Merlin" => merlin,
       "600i BIS 2951" => series_600,
       "MPUV BIS 2951" => ["MPUV Personnel", "MPUV Cargo"],
       "Origin X1 Scarlet" => x1,

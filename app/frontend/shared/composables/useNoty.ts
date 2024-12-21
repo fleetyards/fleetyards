@@ -273,6 +273,7 @@ export const useNoty = () => {
     displayWarning,
     displayAlert,
     displayConfirm,
+    displayNotification,
     requestBrowserPermission,
   };
 };

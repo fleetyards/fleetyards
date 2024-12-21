@@ -24,7 +24,9 @@
 #  remember_created_at       :datetime
 #  reset_password_sent_at    :datetime
 #  reset_password_token      :string(255)
+#  resource_access           :string
 #  sign_in_count             :integer          default(0), not null
+#  super_admin               :boolean          default(FALSE)
 #  username                  :string(255)      default(""), not null
 #  created_at                :datetime
 #  updated_at                :datetime
@@ -43,6 +45,8 @@ class AdminUser < ApplicationRecord
 
   before_validation :set_normalized_login_fields
 
+  serialize :resource_access, coder: YAML
+
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     login = conditions.delete(:login)
@@ -57,6 +61,10 @@ class AdminUser < ApplicationRecord
   def set_normalized_login_fields
     self.normalized_email = email.downcase
     self.normalized_username = username.downcase
+  end
+
+  def access_to?(resource)
+    super_admin? || resource_access&.include?(resource)
   end
 
   def reset_otp

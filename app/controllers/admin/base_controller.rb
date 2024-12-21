@@ -16,9 +16,10 @@ module Admin
     end
 
     def model
-      authorize! :show, :admin
-
       @model = model_record.first
+
+      authorize! :read, @model
+
       if @model.present?
         @title = "#{@model.name} - #{@model.manufacturer.name}"
         @description = @model.description

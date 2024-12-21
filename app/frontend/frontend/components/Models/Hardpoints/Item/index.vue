@@ -68,6 +68,11 @@ const loadout = computed(() => {
         <div class="hardpoint-item__component">
           <template v-if="hardpoint.component">
             {{ hardpoint.component.name }}
+            <span v-if="hardpoint.component.itemClass">
+              {{ hardpoint.component.itemClassLabel }}
+              {{ t("labels.component.grade") }}
+              {{ hardpoint.component.gradeLabel }}
+            </span>
           </template>
           <template v-else>TBD</template>
         </div>

@@ -72,6 +72,12 @@ class ModelPaint < ApplicationRecord
     ["model", "shop_commodities", "vehicles"]
   end
 
+  DEFAULT_SORTING_PARAMS = "name asc"
+  ALLOWED_SORTING_PARAMS = [
+    "name asc", "name desc", "created_at asc", "created_at desc", "updated_at asc",
+    "updated_at desc", "model_slug asc", "model_slug desc"
+  ]
+
   before_save :update_slugs
 
   def self.visible

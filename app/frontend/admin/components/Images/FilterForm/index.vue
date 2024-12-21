@@ -1,30 +1,15 @@
-<template>
-  <form @submit.prevent="submit">
-    <FilterGroup
-      key="admin-images-filter-model"
-      v-model="modelIdEq"
-      :label="t('labels.filters.images.model')"
-      :query-fn="fetchModels"
-      :query-response-formatter="modelsFormatter"
-      name="model"
-      :searchable="true"
-      :paginated="true"
-      :no-label="true"
-    />
-
-    <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
-      <i class="fal fa-times" />
-      {{ t("actions.resetFilter") }}
-    </Btn>
-  </form>
-</template>
+<script lang="ts">
+export default {
+  name: "ImagesFilterForm",
+};
+</script>
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import type { FilterGroupParams } from "@/shared/components/base/FilterGroup/index.vue";
 import { useRoute } from "vue-router";
-import { useFilters } from "@/shared/composables/useFilters";
+import { useImageFilters } from "@/admin/composables/useImageFilters";
 import { useI18n } from "@/shared/composables/useI18n";
 import type {
   ImageQuery,
@@ -40,7 +25,7 @@ const modelIdEq = ref<string | undefined>(undefined);
 
 const stationIdEq = ref<string | undefined>(undefined);
 
-const { filter, isFilterSelected, resetFilter } = useFilters<ImageQuery>();
+const { filter, isFilterSelected, resetFilter } = useImageFilters();
 
 const route = useRoute();
 
@@ -147,8 +132,23 @@ const fetchModels = async (params: FilterGroupParams<Model>) => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "ImagesFilterForm",
-};
-</script>
+<template>
+  <form @submit.prevent="submit">
+    <FilterGroup
+      key="admin-images-filter-model"
+      v-model="modelIdEq"
+      :label="t('labels.filters.images.model')"
+      :query-fn="fetchModels"
+      :query-response-formatter="modelsFormatter"
+      name="model"
+      :searchable="true"
+      :paginated="true"
+      :no-label="true"
+    />
+
+    <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
+      <i class="fal fa-times" />
+      {{ t("actions.resetFilter") }}
+    </Btn>
+  </form>
+</template>

@@ -11,14 +11,22 @@ module Api
 
         @results = Searchkick.search(
           search_query_params[:search],
-          models: [Model, Component],
+          models: [Model, Component, Shop, Station, CelestialObject, Starsystem, Equipment, Commodity],
           fields: [
             {"name^5": :word_start}, {manufacturer_name: :word_start}, {item_type: :word_start},
-            "manufacturer_code", "item_class"
+            {equipment_type: :word_start}, {commodity_type: :word_start},
+            "manufacturer_code", "station", "shop", "celestial_object", "starsystem", "shop_type",
+            "station_type", "refinery", "cargo_hub", "item_class", "slot"
           ],
           indices_boost: {
             Model => 10,
-            Component => 4
+            Station => 8,
+            CelestialObject => 6,
+            Starsystem => 6,
+            Component => 4,
+            Shop => 4,
+            Commodity => 4,
+            Equipment => 4
           },
           misspellings: {below: 5},
           page: params[:page],

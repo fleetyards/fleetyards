@@ -6,6 +6,7 @@ import type { CargoHold } from './CargoHold';
 import type { ItemPrice } from './ItemPrice';
 import type { Manufacturer } from './Manufacturer';
 import type { MediaImage } from './MediaImage';
+import type { Model } from './Model';
 export type ModelModule = {
     id: string;
     name: string;
@@ -27,5 +28,6 @@ export type ModelModule = {
     manufacturer?: Manufacturer;
     createdAt: string;
     updatedAt: string;
+    model: Model;
 };
 

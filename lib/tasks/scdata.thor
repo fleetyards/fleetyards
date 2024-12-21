@@ -18,20 +18,22 @@ class Scdata < Thor
   end
 
   desc "parse", "Parse SC Data"
-  def parse(sc_version = nil, export_folder = EXPORT_FOLDER)
+  def parse(sc_version = nil, sc_environment = nil, export_folder = EXPORT_FOLDER)
     require "./config/environment"
 
-    sc_version ||= Rails.configuration.app.sc_data_sc_version
+    sc_version ||= Rails.configuration.app.sc_data.sc_version
+    sc_environment ||= Rails.configuration.app.sc_data.sc_environment
 
-    ScData::Parser::BaseParser.run_all(base_folder: Rails.root.join(export_folder), sc_version:)
+    ScData::Parser::BaseParser.run_all(base_folder: Rails.root.join(export_folder), sc_version:, sc_environment:)
   end
 
   desc "load_items", "Load Items from SC Data"
-  def load_items(sc_version = nil, export_folder = EXPORT_FOLDER)
+  def load_items(sc_version = nil, sc_environment = nil, export_folder = EXPORT_FOLDER)
     require "./config/environment"
 
-    sc_version ||= Rails.configuration.app.sc_data_sc_version
+    sc_version ||= Rails.configuration.app.sc_data.sc_version
+    sc_environment ||= Rails.configuration.app.sc_data.sc_environment
 
-    ScData::Loader::ItemsLoader.new(sc_version:).run
+    ScData::Loader::ItemsLoader.new(sc_version:, sc_environment:).run
   end
 end

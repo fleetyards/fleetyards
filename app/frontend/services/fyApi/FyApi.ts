@@ -5,6 +5,8 @@
 import type { BaseHttpRequest } from './core/BaseHttpRequest';
 import type { OpenAPIConfig } from './core/OpenAPI';
 import { AxiosHttpRequest } from './core/AxiosHttpRequest';
+import { CelestialObjectsService } from './services/CelestialObjectsService';
+import { CommoditiesService } from './services/CommoditiesService';
 import { ComponentsService } from './services/ComponentsService';
 import { FeaturesService } from './services/FeaturesService';
 import { FleetInviteUrlsService } from './services/FleetInviteUrlsService';
@@ -28,13 +30,19 @@ import { PublicWishlistService } from './services/PublicWishlistService';
 import { RoadmapService } from './services/RoadmapService';
 import { SearchService } from './services/SearchService';
 import { SessionsService } from './services/SessionsService';
+import { ShopsService } from './services/ShopsService';
+import { StarsystemsService } from './services/StarsystemsService';
+import { StationsService } from './services/StationsService';
 import { StatsService } from './services/StatsService';
+import { TradeRoutesService } from './services/TradeRoutesService';
 import { UsersService } from './services/UsersService';
 import { VehiclesService } from './services/VehiclesService';
 import { VersionsService } from './services/VersionsService';
 import { WishlistService } from './services/WishlistService';
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 export class FyApi {
+    public readonly celestialObjects: CelestialObjectsService;
+    public readonly commodities: CommoditiesService;
     public readonly components: ComponentsService;
     public readonly features: FeaturesService;
     public readonly fleetInviteUrls: FleetInviteUrlsService;
@@ -58,7 +66,11 @@ export class FyApi {
     public readonly roadmap: RoadmapService;
     public readonly search: SearchService;
     public readonly sessions: SessionsService;
+    public readonly shops: ShopsService;
+    public readonly starsystems: StarsystemsService;
+    public readonly stations: StationsService;
     public readonly stats: StatsService;
+    public readonly tradeRoutes: TradeRoutesService;
     public readonly users: UsersService;
     public readonly vehicles: VehiclesService;
     public readonly versions: VersionsService;
@@ -76,6 +88,8 @@ export class FyApi {
             HEADERS: config?.HEADERS,
             ENCODE_PATH: config?.ENCODE_PATH,
         });
+        this.celestialObjects = new CelestialObjectsService(this.request);
+        this.commodities = new CommoditiesService(this.request);
         this.components = new ComponentsService(this.request);
         this.features = new FeaturesService(this.request);
         this.fleetInviteUrls = new FleetInviteUrlsService(this.request);
@@ -99,7 +113,11 @@ export class FyApi {
         this.roadmap = new RoadmapService(this.request);
         this.search = new SearchService(this.request);
         this.sessions = new SessionsService(this.request);
+        this.shops = new ShopsService(this.request);
+        this.starsystems = new StarsystemsService(this.request);
+        this.stations = new StationsService(this.request);
         this.stats = new StatsService(this.request);
+        this.tradeRoutes = new TradeRoutesService(this.request);
         this.users = new UsersService(this.request);
         this.vehicles = new VehiclesService(this.request);
         this.versions = new VersionsService(this.request);

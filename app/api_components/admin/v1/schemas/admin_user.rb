@@ -15,12 +15,14 @@ module Admin
             twoFactorRequired: {type: :boolean},
             twoFactorQrCodeUrl: {type: :string},
             twoFactorProvisioningUrl: {type: :string},
+            resourceAccess: {type: :array, items: {type: :string}},
+            superAdmin: {type: :boolean},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
           required: %w[
-            username email twoFactorRequired createdAt updatedAt
+            username email twoFactorRequired superAdmin resourceAccess createdAt updatedAt
           ]
         })
       end

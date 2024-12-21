@@ -10,7 +10,7 @@ module Admin
         end
 
         def index
-          authorize! :index, :admin_api_models
+          authorize! :read, Model
 
           @q = index_scope
 
@@ -24,7 +24,7 @@ module Admin
         end
 
         def options
-          authorize! :index, :admin_api_models
+          authorize! :read, Model
 
           @q = index_scope
 
@@ -34,13 +34,13 @@ module Admin
         end
 
         def production_states
-          authorize! :index, :admin_api_models
+          authorize! :read, Model
 
           @production_states = Model.production_status_filters
         end
 
         def name_diff
-          authorize! :index, :admin_api_models
+          authorize! :read, Model
 
           @q = Model.where("name != rsi_name AND rsi_id IS NOT NULL").ransack(params[:q])
 
@@ -52,7 +52,7 @@ module Admin
         end
 
         def price_diff
-          authorize! :index, :admin_api_models
+          authorize! :read, Model
 
           @q = Model.where("pledge_price != last_pledge_price AND rsi_id IS NOT NULL").ransack(params[:q])
 
@@ -64,7 +64,7 @@ module Admin
         end
 
         def create
-          authorize! :create, :admin_api_models
+          authorize! :create, Model
 
           @model = Model.new(model_params)
 
@@ -112,7 +112,7 @@ module Admin
         end
 
         def reload_scdata
-          authorize! :reload, :admin_api_models
+          authorize! :manage, Model
 
           Loaders::ScData::ModelsJob.perform_async
 
@@ -120,7 +120,7 @@ module Admin
         end
 
         def reload_loaners
-          authorize! :reload, :admin_api_models
+          authorize! :manage, Model
 
           Loaders::LoanerJob.perform_async
 
@@ -128,7 +128,7 @@ module Admin
         end
 
         def reload_paints
-          authorize! :reload, :admin_api_models
+          authorize! :manage, Model
 
           Loaders::PaintsImportJob.perform_async
 

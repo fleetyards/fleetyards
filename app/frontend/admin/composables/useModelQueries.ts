@@ -4,12 +4,15 @@ import {
   type Models,
   type ModelQuery,
   type ModelExtended,
+  type ModelPaintQuery,
+  type ModelPaints,
 } from "@/services/fyAdminApi";
 import { useQuery, useQueryClient } from "@tanstack/vue-query";
 
 export enum QueryKeysEnum {
   MODELS = "models",
   MODEL = "model",
+  PAINTS = "paints",
 }
 
 export const useModelQueries = () => {
@@ -56,8 +59,35 @@ export const useModelQueries = () => {
     );
   };
 
+  const paintsQuery = ({
+    page,
+    perPage,
+    filters,
+    sorts,
+  }: {
+    page: ComputedRef<string>;
+    perPage: ComputedRef<string | undefined>;
+    filters: ComputedRef<ModelPaintQuery | undefined>;
+    sorts: ComputedRef<string[] | undefined>;
+  }) => {
+    return useQuery<ModelPaints, ApiError>(
+      {
+        queryKey: [QueryKeysEnum.PAINTS],
+        queryFn: () =>
+          modelsService.paints({
+            page: page.value,
+            perPage: perPage.value,
+            q: filters.value,
+            s: sorts.value,
+          }),
+      },
+      queryClient,
+    );
+  };
+
   return {
     modelsQuery,
     modelQuery,
+    paintsQuery,
   };
 };

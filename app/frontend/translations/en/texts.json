@@ -10,6 +10,7 @@
         "subline": "or you can support us directly via:"
       },
       "notFound": "You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space.",
+      "accessDenied": "You are not authorized to view this page.",
       "serverError": "The server is currently experiencing technical difficulties. Please try again later.",
       "compare": {
         "ships": {

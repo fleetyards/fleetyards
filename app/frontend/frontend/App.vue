@@ -30,6 +30,8 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useAhoy } from "@/frontend/composables/useAhoy";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useNProgress } from "@/shared/composables/useNProgress";
+import { useFlash } from "@/shared/composables/useFlash";
+import CheckAccess from "@/shared/components/CheckAccess/index.vue";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
@@ -42,6 +44,8 @@ const mobile = useMobile();
 useUpdates();
 
 useAhoy();
+
+useFlash();
 
 const appStore = useAppStore();
 
@@ -285,10 +289,18 @@ const setLocale = (locale: string) => {
                   [route.name || '']: true,
                 }"
               >
-                <component
-                  :is="Component"
-                  :key="`${locale}-${viewRoute.path}`"
-                />
+                <CheckAccess
+                  v-if="viewRoute.meta"
+                  :check="sessionStore.hasAccessTo"
+                  :resource="viewRoute.meta.access"
+                >
+                  <template #granted>
+                    <component
+                      :is="Component"
+                      :key="`${locale}-${viewRoute.path}`"
+                    />
+                  </template>
+                </CheckAccess>
               </section>
             </transition>
           </router-view>

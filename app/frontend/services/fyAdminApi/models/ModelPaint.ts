@@ -4,6 +4,7 @@
 /* eslint-disable */
 import type { ItemPrice } from './ItemPrice';
 import type { MediaImage } from './MediaImage';
+import type { Model } from './Model';
 import type { ViewImage } from './ViewImage';
 export type ModelPaint = {
     id: string;
@@ -22,6 +23,12 @@ export type ModelPaint = {
         sideView?: ViewImage;
         storeImage?: MediaImage;
         topView?: ViewImage;
+        angledViewColored?: ViewImage;
+        frontView?: ViewImage;
+        frontViewColored?: ViewImage;
+        sideViewColored?: ViewImage;
+        rsiStoreImage?: MediaImage;
+        topViewColored?: ViewImage;
     };
     nameWithModel?: string;
     rsiId?: number;
@@ -134,5 +141,8 @@ export type ModelPaint = {
      * @deprecated
      */
     topViewXlarge?: string;
+    hidden: boolean;
+    active: boolean;
+    model: Model;
 };
 

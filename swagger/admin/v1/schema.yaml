@@ -451,6 +451,39 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/manufacturers/{id}":
+    parameters:
+    - name: id
+      in: path
+      format: uuid
+      description: Manufacturer id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Manufacturer Detail
+      operationId: manufacturer
+      tags:
+      - Manufacturers
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Manufacturer"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/models/production-states":
     get:
       summary: Model Production states
@@ -496,6 +529,42 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Models"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/model-paints":
+    get:
+      summary: Paints list
+      operationId: paints
+      tags:
+      - Models
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ModelPaintQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelPaints"
         '401':
           description: unauthorized
           content:
@@ -826,6 +895,82 @@ components:
       required:
       - taken
       title: Check
+    Commodity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        type:
+          "$ref": "#/components/schemas/CommodityTypeEnum"
+        typeLabel:
+          type: string
+        availability:
+          type: object
+          properties:
+            listedAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ShopCommodity"
+            boughtAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ShopCommodity"
+            soldAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ShopCommodity"
+          additionalProperties: false
+          required:
+          - listedAt
+          - boughtAt
+          - soldAt
+        media:
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+          additionalProperties: false
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        storeImage:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageIsFallback:
+          type: boolean
+          format: uri
+          deprecated: true
+        storeImageLarge:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageMedium:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageSmall:
+          type: string
+          format: uri
+          deprecated: true
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - availability
+      - media
+      - createdAt
+      - updatedAt
+      title: Commodity
     Component:
       type: object
       properties:
@@ -852,7 +997,13 @@ components:
           type: string
         grade:
           type: string
+        gradeLabel:
+          type: string
         size:
+          type: string
+        itemClass:
+          "$ref": "#/components/schemas/ComponentItemClassEnum"
+        itemClassLabel:
           type: string
         availability:
           type: object
@@ -1027,6 +1178,29 @@ components:
       - z
       - scu
       title: Dimension
+    Dock:
+      type: object
+      properties:
+        name:
+          type: string
+        group:
+          type: string
+        size:
+          "$ref": "#/components/schemas/DockShipSizeEnum"
+        sizeLabel:
+          type: string
+        type:
+          "$ref": "#/components/schemas/DockTypeEnum"
+        typeLabel:
+          type: string
+      additionalProperties: false
+      required:
+      - name
+      - size
+      - sizeLabel
+      - type
+      - typeLabel
+      title: Dock
     DockCount:
       type: object
       properties:
@@ -1051,6 +1225,23 @@ components:
       - pledge_store
       - ingame
       title: BoughtViaEnum
+    CommodityTypeEnum:
+      type: string
+      enum:
+      - gas
+      - metal
+      - mineral
+      - non_metals
+      - agricultural_supply
+      - food
+      - medical_supply
+      - processed_goods
+      - waste
+      - scrap
+      - vice
+      - harvestable
+      - consumer_goods
+      title: CommodityTypeEnum
     ComponentClassEnum:
       type: string
       enum:
@@ -1060,6 +1251,15 @@ components:
       - RSIPropulsion
       - RSIThruster
       title: ComponentClassEnum
+    ComponentItemClassEnum:
+      type: string
+      enum:
+      - stealth
+      - civilian
+      - industrial
+      - military
+      - competition
+      title: ComponentItemClassEnum
     DockShipSizeEnum:
       type: string
       enum:
@@ -1080,6 +1280,18 @@ components:
       - dockingport
       - hangar
       title: DockTypeEnum
+    EquipmentTypeEnum:
+      type: string
+      enum:
+      - undersuit
+      - armor
+      - weapon
+      - tool
+      - clothing
+      - medical
+      - weapon_attachment
+      - hacking_tool
+      title: EquipmentTypeEnum
     FleetMembershipRoleEnum:
       type: string
       enum:
@@ -1110,6 +1322,15 @@ components:
       - Station
       - Album
       title: GalleryTypeEnum
+    HabitationTypeEnum:
+      type: string
+      enum:
+      - container
+      - small_apartment
+      - medium_apartment
+      - large_apartment
+      - suite
+      title: HabitationTypeEnum
     HardpointCategoryEnum:
       type: string
       enum:
@@ -1317,12 +1538,216 @@ components:
       enum:
       - Model
       - Component
+      - Shop
+      - Station
+      - CelestialObject
+      - Starsystem
+      - Equipment
+      - Commodity
       title: SearchResultTypeEnum
+    ShopCommodityCategoryEnum:
+      type: string
+      enum:
+      - model
+      - equipment
+      - commodity
+      - component
+      - modelmodule
+      - modelpaint
+      title: ShopCommodityCategoryEnum
+    ShopCommodityItemTypeEnum:
+      type: string
+      enum:
+      - Model
+      - Equipment
+      - Commodity
+      - Component
+      - ModelModule
+      - ModelPaint
+      title: ShopCommodityItemTypeEnum
+    ShopTypeEnum:
+      type: string
+      enum:
+      - clothing
+      - armor
+      - weapons
+      - components
+      - armor_and_weapons
+      - superstore
+      - ships
+      - admin
+      - bar
+      - hospital
+      - salvage
+      - resources
+      - rental
+      - computers
+      - blackmarket
+      - mining_equipment
+      - equipment
+      - courier
+      - refinery
+      - pharmacy
+      - cargo
+      - souvenirs
+      - kiosk
+      - ship_customizations
+      title: ShopTypeEnum
+    StationClassificationEnum:
+      type: string
+      enum:
+      - city
+      - trading
+      - mining
+      - salvaging
+      - farming
+      - science
+      - security
+      - rest_stop
+      - settlement
+      - town
+      - drug_lab
+      - cargo
+      - derelict
+      - prison
+      - spaceport
+      title: StationClassificationEnum
+    StationSizeEnum:
+      type: string
+      enum:
+      - small
+      - medium
+      - large
+      title: StationSizeEnum
+    StationTypeEnum:
+      type: string
+      enum:
+      - landing_zone
+      - station
+      - asteroid_station
+      - district
+      - outpost
+      - aid_shelter
+      - ugf
+      title: StationTypeEnum
     VideoTypeEnum:
       type: string
       enum:
       - youtube
       title: VideoTypeEnum
+    Equipment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        availability:
+          type: object
+          properties:
+            listedAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ShopCommodity"
+            boughtAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ShopCommodity"
+            soldAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ShopCommodity"
+          additionalProperties: false
+          required:
+          - listedAt
+          - boughtAt
+          - soldAt
+        backpackCompatibility:
+          type: string
+        coreCompatibility:
+          type: string
+        damageReduction:
+          type: string
+        description:
+          type: string
+        extras:
+          type: string
+        grade:
+          type: string
+        itemType:
+          type: string
+        itemTypeLabel:
+          type: string
+        manufacturer:
+          "$ref": "#/components/schemas/Manufacturer"
+        media:
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+          additionalProperties: false
+        range:
+          type: string
+        rateOfFire:
+          type: string
+        size:
+          type: string
+        slot:
+          type: string
+        slotLabel:
+          type: string
+        storage:
+          type: string
+        temperatureRating:
+          type: string
+        type:
+          type: string
+        typeLabel:
+          type: string
+        volume:
+          type: string
+        weaponClass:
+          type: string
+        weaponClassLabel:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        storeImage:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageIsFallback:
+          type: boolean
+          deprecated: true
+        storeImageLarge:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageMedium:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageSmall:
+          type: string
+          format: uri
+          deprecated: true
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - availability
+      - media
+      - createdAt
+      - updatedAt
+      title: Equipment
     FieldError:
       type: object
       properties:
@@ -1375,6 +1800,38 @@ components:
       - name
       - slug
       title: Gallery
+    Habitation:
+      type: object
+      properties:
+        name:
+          type: string
+        habitationName:
+          type: string
+        type:
+          "$ref": "#/components/schemas/HabitationTypeEnum"
+        typeLabel:
+          type: string
+      additionalProperties: false
+      required:
+      - name
+      - type
+      - typeLabel
+      title: Habitation
+    HabitationCount:
+      type: object
+      properties:
+        count:
+          type: integer
+        type:
+          type: string
+        typeLabel:
+          type: string
+      additionalProperties: false
+      required:
+      - count
+      - type
+      - typeLabel
+      title: HabitationCount
     Hardpoint:
       type: object
       properties:
@@ -1544,6 +2001,94 @@ components:
           "$ref": "#/components/schemas/Pagination"
       additionalProperties: false
       title: Session
+    Shop:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        buying:
+          type: boolean
+        location:
+          type: string
+        locationLabel:
+          type: string
+        media:
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+          additionalProperties: false
+        refineryTerminal:
+          type: boolean
+        rental:
+          type: boolean
+        selling:
+          type: boolean
+        station:
+          "$ref": "#/components/schemas/StationShop"
+        stationLabel:
+          type: string
+        type:
+          "$ref": "#/components/schemas/ShopTypeEnum"
+        typeLabel:
+          type: string
+        celestialObject:
+          "$ref": "#/components/schemas/CelestialObject"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        storeImage:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageSmall:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageMedium:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageLarge:
+          type: string
+          format: uri
+          deprecated: true
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - type
+      - typeLabel
+      - stationLabel
+      - locationLabel
+      - rental
+      - buying
+      - selling
+      - media
+      - refineryTerminal
+      - station
+      - createdAt
+      - updatedAt
+      title: Shop
+    CelestialObjectSortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - parent_id asc
+      - parent_id desc
+      - designation asc
+      - designation desc
+      title: CelestialObjectSortEnum
     FleetMembershipSortEnum:
       type: string
       enum:
@@ -1566,6 +2111,18 @@ components:
       - updated_at asc
       - updated_at desc
       title: FleetVehicleSortEnum
+    ModelPaintSortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - created_at asc
+      - created_at desc
+      - updated_at asc
+      - updated_at desc
+      - model_slug asc
+      - model_slug desc
+      title: ModelPaintSortEnum
     ModelSortEnum:
       type: string
       enum:
@@ -1608,6 +2165,30 @@ components:
       - rsi_category_id asc
       - rsi_category_id desc
       title: RoadmapItemSortEnum
+    StationSortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - station_type asc
+      - station_type desc
+      title: StationSortEnum
+    TradeRouteSortEnum:
+      type: string
+      enum:
+      - average_profit_per_unit_percent asc
+      - average_profit_per_unit_percent desc
+      - profit_per_unit_percent asc
+      - profit_per_unit_percent desc
+      - average_profit_per_unit asc
+      - average_profit_per_unit desc
+      - profit_per_unit asc
+      - profit_per_unit desc
+      - origin_shop_station_name asc
+      - origin_shop_station_name desc
+      - created_at asc
+      - created_at desc
+      title: TradeRouteSortEnum
     UserSortEnum:
       type: string
       enum:
@@ -1686,6 +2267,18 @@ components:
       - code
       - message
       title: StandardMessage
+    StationShop:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      title: StationShop
     ValidationError:
       type: object
       properties:
@@ -1762,6 +2355,12 @@ components:
           type: string
         twoFactorProvisioningUrl:
           type: string
+        resourceAccess:
+          type: array
+          items:
+            type: string
+        superAdmin:
+          type: boolean
         createdAt:
           type: string
           format: date-time
@@ -1773,9 +2372,96 @@ components:
       - username
       - email
       - twoFactorRequired
+      - superAdmin
+      - resourceAccess
       - createdAt
       - updatedAt
       title: AdminUser
+    CelestialObject:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        designation:
+          type: string
+        description:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
+        habitable:
+          type: boolean
+          nullable: true
+        fairchanceact:
+          type: boolean
+          nullable: true
+        subType:
+          type: string
+          nullable: true
+        size:
+          type: string
+          nullable: true
+        danger:
+          type: integer
+          nullable: true
+        economy:
+          type: integer
+          nullable: true
+        population:
+          type: integer
+          nullable: true
+        locationLabel:
+          type: string
+          nullable: true
+        media:
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+          additionalProperties: false
+        starsystem:
+          "$ref": "#/components/schemas/Starsystem"
+        parent:
+          "$ref": "#/components/schemas/CelestialObject"
+        moons:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CelestialObject"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        storeImage:
+          type: string
+          format: url
+          deprecated: true
+        storeImageLarge:
+          type: string
+          deprecated: true
+        storeImageMedium:
+          type: string
+          deprecated: true
+        storeImageSmall:
+          type: string
+          deprecated: true
+        id:
+          type: string
+          format: uuid
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      - designation
+      - starsystem
+      - media
+      - createdAt
+      - updatedAt
+      title: CelestialObject
     HangarGroup:
       type: object
       properties:
@@ -2616,6 +3302,8 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/ModelModule"
+        model:
+          "$ref": "#/components/schemas/Model"
         media:
           type: object
           properties:
@@ -2721,6 +3409,7 @@ components:
       - id
       - name
       - modules
+      - model
       - media
       - createdAt
       - updatedAt
@@ -2780,6 +3469,8 @@ components:
         updatedAt:
           type: string
           format: date-time
+        model:
+          "$ref": "#/components/schemas/Model"
       additionalProperties: false
       required:
       - id
@@ -2788,6 +3479,7 @@ components:
       - media
       - createdAt
       - updatedAt
+      - model
       title: ModelModule
     ModelPaint:
       type: object
@@ -2833,6 +3525,18 @@ components:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
             topView:
+              "$ref": "#/components/schemas/ViewImage"
+            angledViewColored:
+              "$ref": "#/components/schemas/ViewImage"
+            frontView:
+              "$ref": "#/components/schemas/ViewImage"
+            frontViewColored:
+              "$ref": "#/components/schemas/ViewImage"
+            sideViewColored:
+              "$ref": "#/components/schemas/ViewImage"
+            rsiStoreImage:
+              "$ref": "#/components/schemas/MediaImage"
+            topViewColored:
               "$ref": "#/components/schemas/ViewImage"
           additionalProperties: false
         nameWithModel:
@@ -2949,6 +3653,12 @@ components:
           type: string
           format: uri
           deprecated: true
+        hidden:
+          type: boolean
+        active:
+          type: boolean
+        model:
+          "$ref": "#/components/schemas/Model"
       additionalProperties: false
       required:
       - id
@@ -2958,7 +3668,25 @@ components:
       - media
       - createdAt
       - updatedAt
+      - hidden
+      - active
+      - model
       title: ModelPaint
+    ModelPaints:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            "$ref": "#/components/schemas/ModelPaint"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: ModelPaints
     ModelUpgrade:
       type: object
       properties:
@@ -2977,6 +3705,8 @@ components:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
           additionalProperties: false
+        model:
+          "$ref": "#/components/schemas/Model"
         createdAt:
           type: string
           format: date-time
@@ -3004,6 +3734,7 @@ components:
       - id
       - name
       - media
+      - model
       - createdAt
       - updatedAt
       title: ModelUpgrade
@@ -3084,6 +3815,8 @@ components:
       properties:
         withModels:
           type: boolean
+        logoBlank:
+          type: boolean
         nameEq:
           type: string
         nameCont:
@@ -3102,6 +3835,41 @@ components:
             type: string
       additionalProperties: false
       title: ManufacturerQuery
+    ModelPaintQuery:
+      type: object
+      properties:
+        nameEq:
+          type: string
+        nameCont:
+          type: string
+        idEq:
+          type: string
+        nameIn:
+          type: array
+          items:
+            type: string
+        idIn:
+          type: array
+          items:
+            type: string
+        idNotIn:
+          type: array
+          items:
+            type: string
+        modelSlugIn:
+          type: array
+          items:
+            type: string
+        modelSlugEq:
+          type: string
+        sorts:
+          oneOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/ModelPaintSortEnum"
+          - "$ref": "#/components/schemas/ModelPaintSortEnum"
+      additionalProperties: false
+      title: ModelPaintQuery
     ModelQuery:
       type: object
       properties:
@@ -3254,6 +4022,351 @@ components:
           - "$ref": "#/components/schemas/VehicleSortEnum"
       additionalProperties: false
       title: VehicleQuery
+    ShopCommodities:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            "$ref": "#/components/schemas/ShopCommodity"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: ShopCommodities
+    ShopCommodity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        media:
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+          additionalProperties: false
+        category:
+          "$ref": "#/components/schemas/ShopCommodityCategoryEnum"
+        subCategory:
+          anyOf:
+          - type: string
+          - "$ref": "#/components/schemas/ComponentClassEnum"
+          - "$ref": "#/components/schemas/EquipmentTypeEnum"
+          - "$ref": "#/components/schemas/CommodityTypeEnum"
+        subCategoryLabel:
+          type: string
+        prices:
+          type: object
+          properties:
+            averageBuyPrice:
+              type: number
+            averageRentalPrice1Day:
+              type: number
+            averageRentalPrice30Days:
+              type: number
+            averageRentalPrice3Days:
+              type: number
+            averageRentalPrice7Days:
+              type: number
+            averageSellPrice:
+              type: number
+            buyPrice:
+              type: number
+            rentalPrice1Day:
+              type: number
+            rentalPrice30Days:
+              type: number
+            rentalPrice3Days:
+              type: number
+            rentalPrice7Days:
+              type: number
+            sellPrice:
+              type: number
+            pricePerUnit:
+              type: boolean
+          additionalProperties: false
+          required:
+          - pricePerUnit
+        locationLabel:
+          type: string
+        confirmed:
+          type: boolean
+        commodityItemType:
+          "$ref": "#/components/schemas/ShopCommodityItemTypeEnum"
+        commodityItemId:
+          type: string
+          format: uuid
+        shop:
+          "$ref": "#/components/schemas/Shop"
+        item:
+          oneOf:
+          - "$ref": "#/components/schemas/Model"
+          - "$ref": "#/components/schemas/Component"
+          - "$ref": "#/components/schemas/Commodity"
+          - "$ref": "#/components/schemas/Equipment"
+          - "$ref": "#/components/schemas/ModelModule"
+          - "$ref": "#/components/schemas/ModelPaint"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        storeImage:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageSmall:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageMedium:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageLarge:
+          type: string
+          format: uri
+          deprecated: true
+        submitter:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            username:
+              type: string
+          required:
+          - id
+          - username
+          additionalProperties: false
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - prices
+      - confirmed
+      - commodityItemType
+      - commodityItemId
+      - shop
+      - media
+      - prices
+      - createdAt
+      - updatedAt
+      title: ShopCommodity
+    Starsystem:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        danger:
+          type: string
+        description:
+          type: string
+        economy:
+          type: string
+        locationLabel:
+          type: string
+        mapX:
+          type: string
+        mapY:
+          type: string
+        population:
+          type: string
+        size:
+          type: string
+        status:
+          type: string
+        type:
+          type: string
+        media:
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+          additionalProperties: false
+        celestialObjects:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CelestialObject"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        storeImage:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageLarge:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageMedium:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageSmall:
+          type: string
+          format: uri
+          deprecated: true
+        id:
+          type: string
+          format: uuid
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      - media
+      - createdAt
+      - updatedAt
+      - id
+      title: Starsystem
+    Station:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        cargoHub:
+          type: boolean
+        type:
+          "$ref": "#/components/schemas/StationTypeEnum"
+        typeLabel:
+          type: string
+        size:
+          "$ref": "#/components/schemas/StationSizeEnum"
+        sizeLabel:
+          type: string
+        classification:
+          "$ref": "#/components/schemas/StationClassificationEnum"
+        classificationLabel:
+          type: string
+        description:
+          type: string
+        dockCounts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/DockCount"
+        habitable:
+          type: boolean
+        habitationCounts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HabitationCount"
+        hasImages:
+          type: boolean
+        locationLabel:
+          type: string
+        location:
+          type: string
+        media:
+          type: object
+          properties:
+            backgroundImage:
+              type: string
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+          additionalProperties: false
+        refinery:
+          type: boolean
+        shopListLabel:
+          type: string
+        celestialObject:
+          "$ref": "#/components/schemas/CelestialObject"
+        starsystem:
+          "$ref": "#/components/schemas/Starsystem"
+        shops:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Shop"
+        docks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Dock"
+        habitations:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Habitation"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        backgroundImage:
+          type: string
+          format: uri
+          deprecated: true
+        storeImage:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageLarge:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageMedium:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageSmall:
+          type: string
+          format: uri
+          deprecated: true
+        id:
+          type: string
+          format: uuid
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      - type
+      - typeLabel
+      - size
+      - sizeLabel
+      - classification
+      - classificationLabel
+      - habitable
+      - hasImages
+      - media
+      - refinery
+      - cargoHub
+      - celestialObject
+      - createdAt
+      - updatedAt
+      - id
+      title: Station
+    Stations:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            "$ref": "#/components/schemas/Station"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: Stations
     Stats:
       type: object
       properties:

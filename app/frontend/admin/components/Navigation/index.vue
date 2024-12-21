@@ -19,6 +19,8 @@ const { t } = useI18n();
 
 const currentRoute = useRoute();
 
+const sessionStore = useSessionStore();
+
 const mainRoutes = computed(() => {
   return routes.filter(
     (route) => route.meta?.nav === "main" || !route.meta?.nav,
@@ -28,8 +30,6 @@ const mainRoutes = computed(() => {
 const footerRoutes = computed(() => {
   return routes.filter((route) => route.meta?.nav === "footer");
 });
-
-const sessionStore = useSessionStore();
 
 const { isAuthenticated, currentUser } = storeToRefs(sessionStore);
 
@@ -49,6 +49,7 @@ const logout = async () => {
         :routes="mainRoutes"
         :current-route="currentRoute"
         :authenticated="isAuthenticated"
+        :has-access-to="sessionStore.hasAccessTo"
       />
     </template>
     <template #footer>
@@ -56,6 +57,7 @@ const logout = async () => {
         :routes="footerRoutes"
         :current-route="currentRoute"
         :authenticated="isAuthenticated"
+        :has-access-to="sessionStore.hasAccessTo"
       />
       <template v-if="isAuthenticated && currentUser">
         <NavItem
