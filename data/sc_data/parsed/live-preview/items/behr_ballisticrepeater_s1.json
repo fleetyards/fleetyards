@@ -1,0 +1,100 @@
+{
+  "key": "BEHR_BallisticRepeater_S1",
+  "ref": "631884a6-7e06-4612-986c-1b3e556aecac",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "SW16BR1 “Buzzsaw” Repeater",
+  "short_name": "Buzzsaw",
+  "description": "Manufacturer: Behring\\nItem Type: Ballistic Repeater\\nSize: 1\\n\\nFiring from two barrels, the SW16BR1 \"Buzzsaw\" can overwhelm aggressors at medium to close range. Behring's expert craftsmanship allows the weapon to engage in sustained firefights before needing a cooldown, making it an excellent entry level ballistic repeater.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 0.801895,
+      "z": 1.105504
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "BAR1",
+      "key": "BEHR_BallisticRepeater_Barrel_S1",
+      "ref": null
+    },
+    {
+      "name": "MEC",
+      "key": "BEHR_BallisticRepeater_FiringMechanism_S1",
+      "ref": null
+    },
+    {
+      "name": "POW",
+      "key": "BEHR_BallisticRepeater_PowerArray_S1",
+      "ref": null
+    },
+    {
+      "name": "VEN",
+      "key": "BEHR_BallisticRepeater_Ventilation_S1",
+      "ref": null
+    }
+  ],
+  "durability": {
+    "health": 525.0
+  },
+  "ammunition": {
+    "max_ammo_count": 833.0,
+    "initial_ammo_count": 833.0,
+    "max_restock_count": 3.0
+  },
+  "power_connection": {
+    "power_base": 30.0,
+    "power_draw": 50.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 20.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.0,
+    "overclock_threshold_max": 0.0,
+    "overpower_performance": 0.0,
+    "overclock_performance": 0.0,
+    "power_to_em": 0.25,
+    "decay_rate_of_em": 0.5
+  }
+}

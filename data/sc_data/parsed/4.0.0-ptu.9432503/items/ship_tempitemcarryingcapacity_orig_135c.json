@@ -1,9 +1,0 @@
-{
-  "key": "Ship_TempItemCarryingCapacity_ORIG_135C",
-  "ref": "385d32ab-f4ae-45a9-9ad0-10b5dc507482",
-  "category": "inventory",
-  "type": "personal_storage",
-  "type_data": {
-    "storage": 6.0
-  }
-}

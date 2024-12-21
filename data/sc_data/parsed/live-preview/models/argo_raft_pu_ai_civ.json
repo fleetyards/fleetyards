@@ -1,0 +1,439 @@
+{
+  "key": "ARGO_RAFT_PU_AI_CIV",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "2",
+  "name": "Argo RAFT",
+  "description": "Manufacturer: Argo Astronautics\\nFocus: Cargo\\n\\nThe Argo RAFT features a hefty 96 SCU cargo hold, and is capable of carrying up to three standardized 32 SCU cargo containers. Perfect for entry-level haulers and old pros alike, the RAFT is an ideal solution for reliable local freight transport.",
+  "career": "Industrial",
+  "role": "Light Freight",
+  "insurance": {
+    "base_wait_time_minutes": "14",
+    "mandatory_wait_time_minutes": "2",
+    "base_expediting_fee": "2050"
+  },
+  "mass": 669686.0,
+  "metrics": {
+    "x": 23.0,
+    "y": 39.5,
+    "z": 12.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_quantum_fuel_1",
+      "ref": null,
+      "key": "QTNK_ARGO_RAFT_Large"
+    },
+    {
+      "name": "hardpoint_thruster_VTOL_rear_left",
+      "ref": null,
+      "key": "ARGO_RAFT_Thruster_VTOL"
+    },
+    {
+      "name": "hardpoint_thruster_VTOL_rear_right",
+      "ref": null,
+      "key": "ARGO_RAFT_Thruster_VTOL"
+    },
+    {
+      "name": "hardpoint_thruster_VTOL_front_right",
+      "ref": null,
+      "key": "ARGO_RAFT_Thruster_VTOL"
+    },
+    {
+      "name": "hardpoint_thruster_VTOL_front_left",
+      "ref": null,
+      "key": "ARGO_RAFT_Thruster_VTOL"
+    },
+    {
+      "name": "hardpoint_thruster_side_rear_left",
+      "ref": null,
+      "key": "ARGO_RAFT_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_thruster_side_rear_right",
+      "ref": null,
+      "key": "ARGO_RAFT_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_thruster_side_front_right",
+      "ref": null,
+      "key": "ARGO_RAFT_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_thruster_side_front_left",
+      "ref": null,
+      "key": "ARGO_RAFT_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_thruster_top_rear_left",
+      "ref": null,
+      "key": "ARGO_RAFT_Thruster_Mav_Top"
+    },
+    {
+      "name": "hardpoint_thruster_top_rear_right",
+      "ref": null,
+      "key": "ARGO_RAFT_Thruster_Mav_Top"
+    },
+    {
+      "name": "hardpoint_thruster_top_front_right",
+      "ref": null,
+      "key": "ARGO_RAFT_Thruster_Mav_Top"
+    },
+    {
+      "name": "hardpoint_thruster_top_front_left",
+      "ref": null,
+      "key": "ARGO_RAFT_Thruster_Mav_Top"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_rear_left",
+      "ref": null,
+      "key": "ARGO_RAFT_Thruster_Mav_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_rear_right",
+      "ref": null,
+      "key": "ARGO_RAFT_Thruster_Mav_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_front_right",
+      "ref": null,
+      "key": "ARGO_RAFT_Thruster_Mav_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_front_left",
+      "ref": null,
+      "key": "ARGO_RAFT_Thruster_Mav_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_main_right_2",
+      "ref": null,
+      "key": "ARGO_RAFT_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_main_right_1",
+      "ref": null,
+      "key": "ARGO_RAFT_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_main_left_2",
+      "ref": null,
+      "key": "ARGO_RAFT_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_main_left_1",
+      "ref": null,
+      "key": "ARGO_RAFT_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_retro_right",
+      "ref": null,
+      "key": "ARGO_RAFT_Thruster_Retro_Right"
+    },
+    {
+      "name": "hardpoint_thruster_retro_left",
+      "ref": null,
+      "key": "ARGO_RAFT_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_fuel_tank_1",
+      "ref": null,
+      "key": "HTNK_ARGO_RAFT_Large"
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_airlock",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenClose_RAFT"
+    },
+    {
+      "name": "hardpoint_weapon_locker",
+      "ref": null,
+      "key": "Weapon_Rack_RAFT_Weapon_Rack"
+    },
+    {
+      "name": "hardpoint_weapon_right",
+      "ref": "80ae6d83-7d8a-4357-b109-a0154418bae5",
+      "key": null
+    },
+    {
+      "name": "hardpoint_weapon_left",
+      "ref": "80ae6d83-7d8a-4357-b109-a0154418bae5",
+      "key": null
+    },
+    {
+      "name": "hardpoint_shield_generator_2",
+      "ref": null,
+      "key": "SHLD_BASL_S02_Aspis_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator_1",
+      "ref": null,
+      "key": "SHLD_BASL_S02_Aspis_SCItem"
+    },
+    {
+      "name": "hardpoint_seat_pilot_seat_access",
+      "ref": null,
+      "key": "ARGO_RAFT_SCItem_SeatAccess"
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "ARGO_RAFT_SCItem_Seat_Pilot"
+    },
+    {
+      "name": "hardpoint_seat_copilot_seat_access",
+      "ref": null,
+      "key": "ARGO_RAFT_SCItem_SeatAccess_CoPilot"
+    },
+    {
+      "name": "hardpoint_seat_copilot",
+      "ref": null,
+      "key": "ARGO_RAFT_SCItem_Seat_CoPilot"
+    },
+    {
+      "name": "hardpoint_power_plant_2",
+      "ref": null,
+      "key": "POWR_JUST_S02_Diligence_SCItem"
+    },
+    {
+      "name": "hardpoint_power_plant_1",
+      "ref": null,
+      "key": "POWR_JUST_S02_Diligence_SCItem"
+    },
+    {
+      "name": "hardpoint_remote_turret_controller",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_remote_turret",
+      "ref": "bbde5f53-3923-4b20-b40f-cdc17cacf053",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_right",
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "f72ca643-b48c-4f6e-abb7-d5bc8eb261aa",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "turret_left",
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "f72ca643-b48c-4f6e-abb7-d5bc8eb261aa",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_JUST_S02_Bolon_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": "14cbe476-4050-4af5-8635-178519722f4b",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_ping",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuel_intake_r",
+      "ref": null,
+      "key": "INTK_ARGO_RAFT"
+    },
+    {
+      "name": "hardpoint_fuel_intake_l",
+      "ref": null,
+      "key": "INTK_ARGO_RAFT"
+    },
+    {
+      "name": "hardpoint_countermeasures_2",
+      "ref": null,
+      "key": "ARGO_RAFT_CML_Chaff_Small"
+    },
+    {
+      "name": "hardpoint_countermeasures_1",
+      "ref": null,
+      "key": "ARGO_RAFT_CML_Decoy_Small"
+    },
+    {
+      "name": "hardpoint_cooler_2",
+      "ref": null,
+      "key": "COOL_JUST_S02_CoolCore_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_1",
+      "ref": null,
+      "key": "COOL_JUST_S02_CoolCore_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_ARGO_RAFT"
+    },
+    {
+      "name": "hardpoint_controller_scanner",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_ARGO_RAFT"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_cockpit_selfDestruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_45s"
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": null,
+      "key": "ARMR_ARGO_RAFT"
+    },
+    {
+      "name": "hardpoint_seat_cargo_seat_access",
+      "ref": null,
+      "key": "ARGO_RAFT_SCItem_SeatAccess_Cargo"
+    },
+    {
+      "name": "hardpoint_seat_cargo",
+      "ref": null,
+      "key": "ARGO_RAFT_SCItem_Seat_Cargo",
+      "loadout": [
+        {
+          "name": "MFD_Centre",
+          "ref": null,
+          "key": "Vehicle_Screen_MFD"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_GRNP_S01_Ecouter"
+    },
+    {
+      "name": "hardpoint_cargo_01",
+      "ref": null,
+      "key": "ARGO_RAFT_CargoGrid_Main"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_ARGO_RAFT"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_01",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_relay_02",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_shield_generator_3",
+      "ref": null,
+      "key": "SHLD_BASL_S02_Aspis_SCItem"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_TYDT_S01_ComfortAir"
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cargo_02",
+      "ref": null,
+      "key": "ARGO_RAFT_CargoGrid_Main"
+    },
+    {
+      "name": "hardpoint_cargo_03",
+      "ref": null,
+      "key": "ARGO_RAFT_CargoGrid_Main"
+    },
+    {
+      "name": "",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "",
+      "ref": null,
+      "key": null
+    }
+  ]
+}

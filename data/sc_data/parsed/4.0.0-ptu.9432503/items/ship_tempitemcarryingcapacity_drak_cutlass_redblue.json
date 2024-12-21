@@ -1,9 +1,0 @@
-{
-  "key": "Ship_TempItemCarryingCapacity_DRAK_Cutlass_RedBlue",
-  "ref": "985ee07f-df9c-412e-b28a-3b22d7306fe7",
-  "category": "inventory",
-  "type": "personal_storage",
-  "type_data": {
-    "storage": 12.0
-  }
-}

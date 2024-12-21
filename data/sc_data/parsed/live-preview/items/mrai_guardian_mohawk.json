@@ -1,0 +1,24 @@
+{
+  "key": "MRAI_Guardian_Mohawk",
+  "ref": "4afada5b-8efa-4e43-905c-c8f036a5484a",
+  "category": "module",
+  "type": "Misc",
+  "sub_type": null,
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "cdf6ea1e-7de3-4b58-bf9d-13c5fbafc49a",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

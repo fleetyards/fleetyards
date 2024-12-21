@@ -1,0 +1,9 @@
+{
+  "key": "RSI_Zeus_ES_Template",
+  "ref": "b1d596cd-e55b-4173-8487-e7664b4bd823",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 3.81
+  }
+}

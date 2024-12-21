@@ -1,9 +1,0 @@
-{
-  "key": "GroundVehicle_Small_NoInterior",
-  "ref": "868e7e70-0ac9-451d-9863-f1ff178925a2",
-  "category": "inventory",
-  "type": "personal_storage",
-  "type_data": {
-    "storage": 0.1
-  }
-}

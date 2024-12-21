@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Guardian_Red_Grey_White",
+  "ref": "de52e8a4-f5b9-4cc6-b7d8-7b2214949cab",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8482a093-b8e4-44b8-a9ab-0f77dd355f34",
+  "name": "Guardian Red Skies Livery",
+  "short_name": null,
+  "description": "Soar into the setting sun with this sharp collection of reds and whites in the Guardian Red Skies livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

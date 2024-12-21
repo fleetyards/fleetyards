@@ -1,9 +1,0 @@
-{
-  "key": "Ship_TempItemCarryingCapacity_DRAK_Corsair",
-  "ref": "ce47f448-b0d6-415f-96e3-8ac31d7dcd9f",
-  "category": "inventory",
-  "type": "personal_storage",
-  "type_data": {
-    "storage": 72.0
-  }
-}

@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_ORIG_400i",
+  "ref": "305dac41-ee59-46b0-8d14-ad3684b56efe",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1e47a9ec-a3f0-431d-be0e-377712e1ed84",
+  "name": "SELF STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "scm_speed": 215.0,
+    "scm_speed_boosted": 450.0,
+    "reverse_speed_boosted": 210.0,
+    "max_speed": 1150.0,
+    "angular_velocity": {
+      "pitch": 35.0,
+      "yaw": 35.0,
+      "roll": 70.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 42.0,
+      "yaw": 42.0,
+      "roll": 84.0
+    }
+  }
+}

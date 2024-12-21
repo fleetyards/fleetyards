@@ -1,9 +1,0 @@
-{
-  "key": "PersonalStorage_Locker_RSI_Com_Suit_Locker_Overhead",
-  "ref": "0cc7d8e3-e9b4-46ac-a03d-b881c4802ddd",
-  "category": "inventory",
-  "type": "personal_storage",
-  "type_data": {
-    "storage": 0.8
-  }
-}

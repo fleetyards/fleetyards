@@ -1,0 +1,475 @@
+{
+  "key": "AEGS_Vanguard_PU_AI_Xenothreat",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "Aegis Vanguard Warden",
+  "description": "Manufacturer: Aegis Dynamics\\nFocus: Heavy Fighter\\n\\nA hard-charging bulldog of a fighter which features extensive forward-mounted weaponry designed to tear through the shields and armor of other spacecraft. So-named because their multiple-jump range allows them to form the vanguard of any military expedition, Vanguards have seen extensive service against the Vanduul.",
+  "career": "Combat",
+  "role": "Heavy Fighter",
+  "insurance": {
+    "base_wait_time_minutes": "18.22",
+    "mandatory_wait_time_minutes": "6.07",
+    "base_expediting_fee": "9113"
+  },
+  "mass": 244270.26,
+  "metrics": {
+    "x": 40.0,
+    "y": 48.0,
+    "z": 9.5
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_door_rear",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenReverse_IP_Vanguard_Ramp"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_AEGS_Vanguard"
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "AEGS_Vanguard_SCItem_Seat_Pilot"
+    },
+    {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "AEGS_Vanguard_SCItem_SeatAccess"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_esc_pod_upper",
+      "ref": null,
+      "key": "AEGS_Vanguard_SCItem_Seat_Bed_Upper"
+    },
+    {
+      "name": "hardpoint_esc_pod_lower",
+      "ref": null,
+      "key": "AEGS_Vanguard_SCItem_Seat_Bed_Lower"
+    },
+    {
+      "name": "hardpoint_engineer_console",
+      "ref": null,
+      "key": "AEGS_Vanguard_SCItem_Engineer_Console",
+      "loadout": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_engineer_console_access",
+      "ref": null,
+      "key": "AEGS_Vanguard_SCItem_Engineer_Console_SeatAccess"
+    },
+    {
+      "name": "hardpoint_selfdestruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_30s"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_WLOP_S02_Chernykh"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_powerplant_middle",
+      "ref": null,
+      "key": "POWR_AEGS_S02_Maelstrom_SCItem"
+    },
+    {
+      "name": "hardpoint_fuel_tank_left",
+      "ref": null,
+      "key": "HTNK_AEGS_Vanguard_Warden"
+    },
+    {
+      "name": "hardpoint_fuel_tank_right",
+      "ref": null,
+      "key": "HTNK_AEGS_Vanguard_Warden"
+    },
+    {
+      "name": "hardpoint_fuel_intake_left",
+      "ref": null,
+      "key": "INTK_AEGS_Vanguard_Warden"
+    },
+    {
+      "name": "hardpoint_fuel_intake_right",
+      "ref": null,
+      "key": "INTK_AEGS_Vanguard_Warden"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_cooler_left",
+      "ref": null,
+      "key": "COOL_AEGS_S02_Arctic_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_right",
+      "ref": null,
+      "key": "COOL_AEGS_S02_Arctic_SCItem"
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_WETK_S02_Crossfield_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": "14cbe476-4050-4af5-8635-178519722f4b",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_fuel_tank",
+      "ref": null,
+      "key": "QTNK_AEGS_Vanguard_Warden"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_AEGS_Vanguard"
+    },
+    {
+      "name": "hardpoint_shield_generator_001",
+      "ref": null,
+      "key": "SHLD_GODI_S02_FullStop_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator_002",
+      "ref": null,
+      "key": "SHLD_GODI_S02_FullStop_SCItem"
+    },
+    {
+      "name": "hardpoint_armour",
+      "ref": null,
+      "key": "ARMR_AEGS_Vanguard"
+    },
+    {
+      "name": "hardpoint_engine_left",
+      "ref": null,
+      "key": "AEGS_Vanguard_Thruster_Main_01"
+    },
+    {
+      "name": "hardpoint_engine_right",
+      "ref": null,
+      "key": "AEGS_Vanguard_Thruster_Main_01"
+    },
+    {
+      "name": "hardpoint_engine_middle_left",
+      "ref": null,
+      "key": "AEGS_Vanguard_Thruster_Main_02"
+    },
+    {
+      "name": "hardpoint_engine_middle_right",
+      "ref": null,
+      "key": "AEGS_Vanguard_Thruster_Main_02"
+    },
+    {
+      "name": "hardpoint_thruster_retro_left",
+      "ref": null,
+      "key": "AEGS_Vanguard_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_retro_right",
+      "ref": null,
+      "key": "AEGS_Vanguard_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_top_FL",
+      "ref": null,
+      "key": "AEGS_Vanguard_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_top_FR",
+      "ref": null,
+      "key": "AEGS_Vanguard_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_FL",
+      "ref": null,
+      "key": "AEGS_Vanguard_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_FR",
+      "ref": null,
+      "key": "AEGS_Vanguard_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_top_RL",
+      "ref": null,
+      "key": "AEGS_Vanguard_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_top_RR",
+      "ref": null,
+      "key": "AEGS_Vanguard_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_side_RL",
+      "ref": null,
+      "key": "AEGS_Vanguard_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_side_RR",
+      "ref": null,
+      "key": "AEGS_Vanguard_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_RL",
+      "ref": null,
+      "key": "AEGS_Vanguard_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_RR",
+      "ref": null,
+      "key": "AEGS_Vanguard_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_weapon_gun_nose",
+      "ref": "99e0ea17-45fc-4700-8607-ab879d05a284",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "76775574-fcf2-493d-859e-337f1267a7ef",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_gun_nose_fixed_001",
+      "ref": "febc4b3a-09d7-446e-99a4-0f6be2387346",
+      "key": null
+    },
+    {
+      "name": "hardpoint_weapon_gun_nose_fixed_002",
+      "ref": "febc4b3a-09d7-446e-99a4-0f6be2387346",
+      "key": null
+    },
+    {
+      "name": "hardpoint_weapon_gun_nose_fixed_003",
+      "ref": "febc4b3a-09d7-446e-99a4-0f6be2387346",
+      "key": null
+    },
+    {
+      "name": "hardpoint_weapon_gun_nose_fixed_004",
+      "ref": "febc4b3a-09d7-446e-99a4-0f6be2387346",
+      "key": null
+    },
+    {
+      "name": "hardpoint_turret",
+      "ref": "171c3bcf-ec19-4a36-b60a-701dbfebc17b",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": "7fedca61-dfeb-4ecb-b421-e7c3ba55a584",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "d4ebab35-1d86-4259-82dc-cda6a7167c90",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": "7fedca61-dfeb-4ecb-b421-e7c3ba55a584",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "d4ebab35-1d86-4259-82dc-cda6a7167c90",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_baydoor",
+      "ref": null,
+      "key": "AEGS_Vanguard_Baydoor"
+    },
+    {
+      "name": "hardpoint_weapon_missilerack_left_inner",
+      "ref": null,
+      "key": "MRCK_S04_AEGS_Vanguard",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S02_IR_FSKI_Ignite"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S02_IR_FSKI_Ignite"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S02_IR_FSKI_Ignite"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S02_IR_FSKI_Ignite"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_missilerack_left_rear",
+      "ref": null,
+      "key": "MRCK_S04_BEHR_Dual_S03",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_missilerack_right_inner",
+      "ref": null,
+      "key": "MRCK_S04_AEGS_Vanguard",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S02_EM_TALN_Dominator"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S02_EM_TALN_Dominator"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S02_EM_TALN_Dominator"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S02_EM_TALN_Dominator"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_missilerack_right_rear",
+      "ref": null,
+      "key": "MRCK_S04_BEHR_Dual_S03",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_countermeasure_launcher_left",
+      "ref": null,
+      "key": "AEGS_Eclipse_CML_Flare"
+    },
+    {
+      "name": "hardpoint_countermeasure_launcher_right",
+      "ref": null,
+      "key": "AEGS_Eclipse_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_weapon_locker_warden",
+      "ref": null,
+      "key": "Weapon_Rack_AEGS_Vanguard"
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": "Controller_Missile"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_AEGS_Vanguard"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "AEGS_Vanguard_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay",
+      "ref": null,
+      "key": "RELAY_2slot_slim"
+    },
+    {
+      "name": "hardpoint_relay_2",
+      "ref": null,
+      "key": "RELAY_2slot_slim"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_TYDT_S01_ComfortAir"
+    }
+  ]
+}

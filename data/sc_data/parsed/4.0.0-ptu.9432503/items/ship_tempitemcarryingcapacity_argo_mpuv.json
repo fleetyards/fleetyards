@@ -1,9 +1,0 @@
-{
-  "key": "Ship_TempItemCarryingCapacity_ARGO_MPUV",
-  "ref": "2e35bd8c-c53b-425f-9f4b-3e30a08f2217",
-  "category": "inventory",
-  "type": "personal_storage",
-  "type_data": {
-    "storage": 2.0
-  }
-}

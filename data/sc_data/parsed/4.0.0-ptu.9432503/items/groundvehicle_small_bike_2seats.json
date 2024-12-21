@@ -1,9 +1,0 @@
-{
-  "key": "GroundVehicle_Small_Bike_2Seats",
-  "ref": "d2379397-9f5c-45a7-94b9-c554cab7ca11",
-  "category": "inventory",
-  "type": "personal_storage",
-  "type_data": {
-    "storage": 0.125
-  }
-}

@@ -1,9 +1,0 @@
-{
-  "key": "GRIN_PTV_CargoGrid_Template",
-  "ref": "6fa80ddc-4ae5-4f51-99a4-8ea3de15dc80",
-  "category": "inventory",
-  "type": "personal_storage",
-  "type_data": {
-    "storage": 1.0
-  }
-}

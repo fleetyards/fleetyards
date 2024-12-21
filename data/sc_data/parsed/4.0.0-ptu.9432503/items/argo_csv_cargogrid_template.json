@@ -1,9 +1,0 @@
-{
-  "key": "ARGO_CSV_CargoGrid_Template",
-  "ref": "10f318e6-dd40-47f3-a4a4-204ebd1fc78b",
-  "category": "inventory",
-  "type": "personal_storage",
-  "type_data": {
-    "storage": 0.73
-  }
-}

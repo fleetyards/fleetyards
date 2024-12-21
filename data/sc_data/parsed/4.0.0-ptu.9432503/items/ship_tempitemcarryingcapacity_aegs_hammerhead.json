@@ -1,9 +1,0 @@
-{
-  "key": "Ship_TempItemCarryingCapacity_AEGS_Hammerhead",
-  "ref": "345d5b45-f84c-4984-bd0c-5373fa1b0f08",
-  "category": "inventory",
-  "type": "personal_storage",
-  "type_data": {
-    "storage": 40.0
-  }
-}

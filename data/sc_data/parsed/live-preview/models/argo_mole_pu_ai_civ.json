@@ -1,0 +1,541 @@
+{
+  "key": "ARGO_MOLE_PU_AI_CIV",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "5",
+  "name": "Argo MOLE",
+  "description": "Manufacturer: Argo Astronautics\\nFocus: Mining\\n\\nArgo’s iconic multi-operator laser extractor, more commonly referred to as the MOLE, lets you work faster and more effectively than ever before, thanks to its patented trilateral mining system. Three independently controlled articulated extraction stations allow for maximum power and near-limitless versatility. The MOLE lives by the adage \"many hands make for light work\".",
+  "career": "Industrial",
+  "role": "Medium Mining",
+  "insurance": {
+    "base_wait_time_minutes": "13.5",
+    "mandatory_wait_time_minutes": "4.5",
+    "base_expediting_fee": "5715"
+  },
+  "mass": 869686.0,
+  "metrics": {
+    "x": 26.0,
+    "y": 45.0,
+    "z": 15.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_ARGO_MOLE"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_ARGO_MOLE"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_controller_scanner",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_mining_cab_left",
+      "ref": null,
+      "key": "Controller_Mining"
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "ARGO_MOLE_SCItem_Seat"
+    },
+    {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "ARGO_MOLE_SCItem_SeatAccess"
+    },
+    {
+      "name": "hardpoint_self_destruct_pilot",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_45s"
+    },
+    {
+      "name": "hardpoint_seat_copilot",
+      "ref": null,
+      "key": "ARGO_MOLE_SCItem_CoPilot_Seat"
+    },
+    {
+      "name": "hardpoint_seat_access_copilot",
+      "ref": null,
+      "key": "ARGO_MOLE_SCItem_SeatAccess_Copilot"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_CHCO_S02_Surveyor"
+    },
+    {
+      "name": "hardpoint_ping",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_power_plant",
+      "ref": null,
+      "key": "POWR_JUST_S03_Ginzel_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler",
+      "ref": null,
+      "key": "COOL_JUST_S03_ThermalCore_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator_left",
+      "ref": null,
+      "key": "SHLD_BEHR_S03_5CA_SCItem"
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": null,
+      "key": "ARMR_ARGO_MOLE"
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_JUST_S02_Huracan_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": "14cbe476-4050-4af5-8635-178519722f4b",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_fuel_tank",
+      "ref": null,
+      "key": "QTNK_ARGO_MOLE"
+    },
+    {
+      "name": "hardpoint_fuel_intake_left",
+      "ref": null,
+      "key": "INTK_ARGO_MOLE"
+    },
+    {
+      "name": "hardpoint_fuel_intake_right",
+      "ref": null,
+      "key": "INTK_ARGO_MOLE"
+    },
+    {
+      "name": "hardpoint_fuel_tank_left",
+      "ref": null,
+      "key": "HTNK_ARGO_MOLE"
+    },
+    {
+      "name": "hardpoint_fuel_tank_right",
+      "ref": null,
+      "key": "HTNK_ARGO_MOLE"
+    },
+    {
+      "name": "hardpoint_gun_left",
+      "ref": "7fedca61-dfeb-4ecb-b421-e7c3ba55a584",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "5453a817-dfd4-4143-aa11-840ca428540c",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_gun_right",
+      "ref": "7fedca61-dfeb-4ecb-b421-e7c3ba55a584",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "5453a817-dfd4-4143-aa11-840ca428540c",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_countermeasure_launcher_left",
+      "ref": null,
+      "key": "MISC_Prospector_CML_Flare"
+    },
+    {
+      "name": "hardpoint_countermeasure_launcher_right",
+      "ref": null,
+      "key": "MISC_Prospector_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_mining_cab_front",
+      "ref": null,
+      "key": "ARGO_MOLE_Turret_Front",
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_mining",
+          "ref": "4435898e-a6cc-4f51-ab2a-805d0cf1a44a",
+          "key": null
+        },
+        {
+          "name": "MFD_Right",
+          "ref": null,
+          "key": "Vehicle_Screen_MFD"
+        },
+        {
+          "name": "MFD_Left",
+          "ref": null,
+          "key": "Vehicle_Screen_MFD"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_mining_cab_front_access",
+      "ref": null,
+      "key": "ARGO_MOLE_TurretFront_SeatAccess"
+    },
+    {
+      "name": "hardpoint_mining_cab_left",
+      "ref": null,
+      "key": "ARGO_MOLE_Turret_Left",
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_mining",
+          "ref": "4435898e-a6cc-4f51-ab2a-805d0cf1a44a",
+          "key": null
+        },
+        {
+          "name": "MFD_Right",
+          "ref": null,
+          "key": "Vehicle_Screen_MFD"
+        },
+        {
+          "name": "MFD_Left",
+          "ref": null,
+          "key": "Vehicle_Screen_MFD"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_mining_cab_left_access",
+      "ref": null,
+      "key": "ARGO_MOLE_TurretLeft_SeatAccess"
+    },
+    {
+      "name": "hardpoint_mining_cab_right",
+      "ref": null,
+      "key": "ARGO_MOLE_Turret_Right",
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_mining",
+          "ref": "4435898e-a6cc-4f51-ab2a-805d0cf1a44a",
+          "key": null
+        },
+        {
+          "name": "MFD_Right",
+          "ref": null,
+          "key": "Vehicle_Screen_MFD"
+        },
+        {
+          "name": "MFD_Left",
+          "ref": null,
+          "key": "Vehicle_Screen_MFD"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_mining_cab_right_access",
+      "ref": null,
+      "key": "ARGO_MOLE_TurretRight_SeatAccess"
+    },
+    {
+      "name": "hardpoint_thruster_main_left_top",
+      "ref": null,
+      "key": "ARGO_MOLE_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_main_left_bottom",
+      "ref": null,
+      "key": "ARGO_MOLE_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_main_right_top",
+      "ref": null,
+      "key": "ARGO_MOLE_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_main_right_bottom",
+      "ref": null,
+      "key": "ARGO_MOLE_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_retro_left",
+      "ref": null,
+      "key": "ARGO_MOLE_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_retro_right",
+      "ref": null,
+      "key": "ARGO_MOLE_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_front_top_left",
+      "ref": null,
+      "key": "ARGO_MOLE_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_front_top_right",
+      "ref": null,
+      "key": "ARGO_MOLE_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_rear_top_left",
+      "ref": null,
+      "key": "ARGO_MOLE_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_rear_top_right",
+      "ref": null,
+      "key": "ARGO_MOLE_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_front_bottom_left",
+      "ref": null,
+      "key": "ARGO_MOLE_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_front_bottom_right",
+      "ref": null,
+      "key": "ARGO_MOLE_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_rear_bottom_left",
+      "ref": null,
+      "key": "ARGO_MOLE_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_rear_bottom_right",
+      "ref": null,
+      "key": "ARGO_MOLE_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_front_vtol_left",
+      "ref": null,
+      "key": "ARGO_MOLE_Thruster_VTOL"
+    },
+    {
+      "name": "hardpoint_thruster_front_vtol_right",
+      "ref": null,
+      "key": "ARGO_MOLE_Thruster_VTOL"
+    },
+    {
+      "name": "hardpoint_thruster_rear_vtol_left",
+      "ref": null,
+      "key": "ARGO_MOLE_Thruster_VTOL_Rear"
+    },
+    {
+      "name": "hardpoint_thruster_rear_vtol_right",
+      "ref": null,
+      "key": "ARGO_MOLE_Thruster_VTOL_Rear"
+    },
+    {
+      "name": "hardpoint_controller_mining_cab_right",
+      "ref": null,
+      "key": "Controller_Mining"
+    },
+    {
+      "name": "hardpoint_controller_mining_cab_front",
+      "ref": null,
+      "key": "Controller_Mining"
+    },
+    {
+      "name": "hardpoint_controller_scanner_cab_front",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_scanner_cab_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_scanner_cab_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_ping_cab_front",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_ping_cab_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_ping_cab_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_mining_pod_1",
+      "ref": null,
+      "key": "Cargo_Mining_Pod_Mole"
+    },
+    {
+      "name": "hardpoint_mining_pod_2",
+      "ref": null,
+      "key": "Cargo_Mining_Pod_Mole"
+    },
+    {
+      "name": "hardpoint_mining_pod_3",
+      "ref": null,
+      "key": "Cargo_Mining_Pod_Mole"
+    },
+    {
+      "name": "hardpoint_mining_pod_4",
+      "ref": null,
+      "key": "Cargo_Mining_Pod_Mole"
+    },
+    {
+      "name": "hardpoint_mining_pod_5",
+      "ref": null,
+      "key": "Cargo_Mining_Pod_Mole"
+    },
+    {
+      "name": "hardpoint_mining_pod_6",
+      "ref": null,
+      "key": "Cargo_Mining_Pod_Mole"
+    },
+    {
+      "name": "hardpoint_mining_pod_8",
+      "ref": null,
+      "key": "Cargo_Mining_Pod_Mole"
+    },
+    {
+      "name": "hardpoint_mining_pod_7",
+      "ref": null,
+      "key": "Cargo_Mining_Pod_Mole"
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_ARGO_MOLE"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "ARGO_MOLE_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_elevator",
+      "ref": null,
+      "key": "Door_Ship_Exterior_ARGO_MOLE_Elevator"
+    },
+    {
+      "name": "hardpoint_elevator_door",
+      "ref": null,
+      "key": "Door_Ship_Exterior_ARGO_MOLE_Elevator_Door"
+    },
+    {
+      "name": "hardpoint_controller_mining_pilot",
+      "ref": null,
+      "key": "Controller_Mining"
+    },
+    {
+      "name": "hardpoint_relay_bridge",
+      "ref": null,
+      "key": "RELAY_1slot"
+    },
+    {
+      "name": "hardpoint_relay_engines",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_relay_habitation",
+      "ref": null,
+      "key": "RELAY_1slot"
+    },
+    {
+      "name": "hardpoint_relay_mining_turret",
+      "ref": null,
+      "key": "RELAY_1slot"
+    },
+    {
+      "name": "hardpoint_relay_engineering",
+      "ref": null,
+      "key": "RELAY_3slot"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_TYDT_S01_ComfortAir"
+    },
+    {
+      "name": "hardpoint_radar_cab_front",
+      "ref": null,
+      "key": "RADR_S02_Fake"
+    },
+    {
+      "name": "hardpoint_radar_cab_left",
+      "ref": null,
+      "key": "RADR_S02_Fake"
+    },
+    {
+      "name": "hardpoint_radar_cab_right",
+      "ref": null,
+      "key": "RADR_S02_Fake"
+    }
+  ]
+}

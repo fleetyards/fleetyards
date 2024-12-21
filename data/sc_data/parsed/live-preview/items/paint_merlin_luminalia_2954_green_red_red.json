@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Merlin_Luminalia_2954_Green_Red_Red",
+  "ref": "272eb5f9-dc9d-42ee-ba47-f166d34fdf36",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "85d78c40-c573-4102-b0c9-cdf30eb089f0",
+  "name": "P-52 Merlin Deck the Hull Livery",
+  "short_name": null,
+  "description": "Express your holiday spirit with the Deck the Hull livery, which uses the traditional Luminalia colors of green and red to celebrate the popular Banu festival that's become beloved by Humans.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

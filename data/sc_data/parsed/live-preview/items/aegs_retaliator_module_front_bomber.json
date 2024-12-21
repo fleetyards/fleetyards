@@ -1,0 +1,54 @@
+{
+  "key": "AEGS_Retaliator_Module_Front_Bomber",
+  "ref": "e336f444-1d23-4707-8ec1-570b7205e83b",
+  "category": "module",
+  "type": "Module",
+  "sub_type": null,
+  "size": "3",
+  "grade": "3",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Retaliator Torpedo Front Module",
+  "short_name": null,
+  "description": "Standard equipment for most UEE military Retaliators, this front module can carry 4x S9 torpedoes.",
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_torpedo_launcher_fore",
+      "min_size": "9",
+      "max_size": "9",
+      "types": [
+        "MissileLauncher"
+      ]
+    },
+    {
+      "name": "hardpoint_front_bay_door",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+        "Door"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_torpedo_launcher_fore",
+      "key": "MRCK_S09_AEGS_Retaliator_Fore",
+      "ref": null
+    },
+    {
+      "name": "hardpoint_front_bay_door",
+      "key": "Door_RN_RoomConnector_Exterior_AEGS_Retaliator_Front_TorpedoBay",
+      "ref": null
+    }
+  ],
+  "durability": {
+    "health": 200.0
+  }
+}

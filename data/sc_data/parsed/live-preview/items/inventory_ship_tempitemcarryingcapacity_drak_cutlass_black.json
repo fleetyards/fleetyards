@@ -1,0 +1,9 @@
+{
+  "key": "Ship_TempItemCarryingCapacity_DRAK_Cutlass_Black",
+  "ref": "043aeb47-6617-4ae7-bbc1-37b614c2597c",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 46.0
+  }
+}

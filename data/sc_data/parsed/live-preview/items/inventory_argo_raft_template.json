@@ -1,0 +1,9 @@
+{
+  "key": "ARGO_RAFT_Template",
+  "ref": "84b5eac3-e074-49b4-ad35-d17d2877d6c4",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 2.46
+  }
+}

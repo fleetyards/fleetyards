@@ -1,0 +1,9 @@
+{
+  "key": "AEGS_Vanguard_PersonalStorage",
+  "ref": "6449f425-88b6-4d9a-8de1-6b4bb8d6bfbd",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 0.0
+  }
+}

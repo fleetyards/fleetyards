@@ -1,0 +1,50 @@
+{
+  "key": "RSI_Constellation_Taurus_CargoGrid_Tail",
+  "ref": "65e694a2-c544-4205-9524-3b4bb66fae83",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 2.5,
+      "y": 3.75,
+      "z": 1.25,
+      "scu": 6.0,
+      "max_container_size": {
+        "size": 4,
+        "dimensions": {
+          "x": 2.5,
+          "y": 2.5,
+          "z": 1.25
+        }
+      }
+    },
+    "min_container": {
+      "x": 1.25,
+      "y": 1.25,
+      "z": 1.25,
+      "scu": 1.0,
+      "max_container_size": {
+        "size": 1,
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        }
+      }
+    },
+    "max_container": {
+      "x": 1.25,
+      "y": 1.25,
+      "z": 1.25,
+      "scu": 1.0,
+      "max_container_size": {
+        "size": 1,
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        }
+      }
+    }
+  }
+}

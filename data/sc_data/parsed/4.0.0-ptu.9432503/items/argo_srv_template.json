@@ -1,9 +1,0 @@
-{
-  "key": "ARGO_SRV_Template",
-  "ref": "f970d216-3d90-4566-83d6-b0df6b4275d0",
-  "category": "inventory",
-  "type": "personal_storage",
-  "type_data": {
-    "storage": 0.93
-  }
-}

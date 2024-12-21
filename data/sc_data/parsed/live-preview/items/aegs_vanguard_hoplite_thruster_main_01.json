@@ -1,0 +1,65 @@
+{
+  "key": "AEGS_Vanguard_Hoplite_Thruster_Main_01",
+  "ref": "ce6d387b-b3eb-41bc-a754-4a9a92e89ddb",
+  "category": "thrusters",
+  "type": "MainThruster",
+  "sub_type": "FixedThruster",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 16500.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 11.0,
+    "StartIRTemperature": 187.5,
+    "OverpowerHeat": 1.05,
+    "OverclockThresholdMinHeat": 1.0,
+    "OverclockThresholdMaxHeat": 1.0,
+    "ThermalEnergyBase": 500.0,
+    "ThermalEnergyDraw": 1250.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.65,
+    "Mass": 2000.0,
+    "SurfaceArea": 0.25,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 45.0,
+    "MaxTemperature": 1000.0,
+    "OverheatTemperature": 850.0,
+    "RecoveryTemperature": 800.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 400.0,
+    "MisfireMaxTemperature": 1100.0
+  },
+  "power_connection": {
+    "power_base": 20.0,
+    "power_draw": 24.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 0.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 1.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 1.0,
+    "overclock_threshold_max": 1.0,
+    "overpower_performance": 0.0,
+    "overclock_performance": 0.0,
+    "power_to_em": 50.0,
+    "decay_rate_of_em": 0.15
+  },
+  "type_data": {
+    "thrust_capacity": 7265403.0,
+    "fuel_burn_rate_per10_k_newton": 0.06125,
+    "thruster_type": "Main"
+  }
+}

@@ -1,9 +1,0 @@
-{
-  "key": "Ship_TempItemCarryingCapacity_MISC_Hull_A",
-  "ref": "7ea2b3b2-29cd-4af7-9b81-fad9032eb95c",
-  "category": "inventory",
-  "type": "personal_storage",
-  "type_data": {
-    "storage": 48.0
-  }
-}

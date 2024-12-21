@@ -1,9 +1,0 @@
-{
-  "key": "Ship_Small",
-  "ref": "8b90dcb9-41cf-41a0-af8f-4ee7c7130195",
-  "category": "inventory",
-  "type": "personal_storage",
-  "type_data": {
-    "storage": 0.65
-  }
-}

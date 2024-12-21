@@ -1,9 +1,0 @@
-{
-  "key": "Ship_TempItemCarryingCapacity_RSI_Aurora_CL",
-  "ref": "59fd1dc2-f708-4a51-bcef-fce84414e612",
-  "category": "inventory",
-  "type": "personal_storage",
-  "type_data": {
-    "storage": 6.0
-  }
-}

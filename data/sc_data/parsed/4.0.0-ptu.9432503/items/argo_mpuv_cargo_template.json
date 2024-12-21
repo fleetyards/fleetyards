@@ -1,9 +1,0 @@
-{
-  "key": "ARGO_MPUV_Cargo_Template",
-  "ref": "718eab56-f705-45f3-bb36-c1f571160892",
-  "category": "inventory",
-  "type": "personal_storage",
-  "type_data": {
-    "storage": 0.8
-  }
-}

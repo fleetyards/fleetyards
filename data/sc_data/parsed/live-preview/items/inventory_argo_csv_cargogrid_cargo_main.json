@@ -1,0 +1,50 @@
+{
+  "key": "ARGO_CSV_CargoGrid_Cargo_Main",
+  "ref": "180d4b6c-c62e-4ca8-80d7-0ca0c17d6672",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 2.5,
+      "y": 2.5,
+      "z": 1.25,
+      "scu": 4.0,
+      "max_container_size": {
+        "size": 4,
+        "dimensions": {
+          "x": 2.5,
+          "y": 2.5,
+          "z": 1.25
+        }
+      }
+    },
+    "min_container": {
+      "x": 2.5,
+      "y": 2.5,
+      "z": 1.25,
+      "scu": 4.0,
+      "max_container_size": {
+        "size": 4,
+        "dimensions": {
+          "x": 2.5,
+          "y": 2.5,
+          "z": 1.25
+        }
+      }
+    },
+    "max_container": {
+      "x": 2.5,
+      "y": 2.5,
+      "z": 1.25,
+      "scu": 4.0,
+      "max_container_size": {
+        "size": 4,
+        "dimensions": {
+          "x": 2.5,
+          "y": 2.5,
+          "z": 1.25
+        }
+      }
+    }
+  }
+}

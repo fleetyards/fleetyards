@@ -1,0 +1,688 @@
+{
+  "key": "MISC_Starfarer_AI_CIV_ShipBoarded_NoCargoGridMarkup",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "MISC Starfarer",
+  "description": "Manufacturer: MISC\\nFocus: Heavy Refueling\\n\\nThe Starfarer differs from traditional bulk freighters in one key way: it is a dedicated fuel platform. The Starfarer is designed not only to load, store and protect fuel stasis units, it is designed to take in spaceborne gases and refine them for use without landing. And while it excels at this, the Starfarer can also be used to ferry traditional bulk cargo pods.",
+  "career": "Support",
+  "role": "Heavy Refuelling",
+  "insurance": {
+    "base_wait_time_minutes": "18",
+    "mandatory_wait_time_minutes": "6",
+    "base_expediting_fee": "9000"
+  },
+  "mass": 3555606.0,
+  "metrics": {
+    "x": 48.5,
+    "y": 102.0,
+    "z": 24.5
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "MISC_Starfarer_Base_SCItem_SeatAccess"
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "MISC_Starfarer_SCItem_Seat_Pilot"
+    },
+    {
+      "name": "hardpoint_seat_co_pilot",
+      "ref": null,
+      "key": "MISC_Starfarer_SCItem_Seat_CoPilot"
+    },
+    {
+      "name": "hardpoint_seat_captain",
+      "ref": null,
+      "key": "MISC_Starfarer_SCItem_Seat_Captain"
+    },
+    {
+      "name": "hardpoint_seat_support_right",
+      "ref": null,
+      "key": "MISC_Starfarer_SCItem_Seat_Sup_Right"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_bed_captain",
+      "ref": null,
+      "key": "Bed_Single_Starfarer_Captain"
+    },
+    {
+      "name": "hardpoint_bed_crew_1",
+      "ref": null,
+      "key": "Bed_Single_Starfarer_Crew"
+    },
+    {
+      "name": "hardpoint_bed_crew_2",
+      "ref": null,
+      "key": "Bed_Single_Starfarer_Crew"
+    },
+    {
+      "name": "hardpoint_bed_crew_3",
+      "ref": null,
+      "key": "Bed_Single_Starfarer_Crew"
+    },
+    {
+      "name": "hardpoint_bed_crew_4",
+      "ref": null,
+      "key": "Bed_Single_Starfarer_Crew"
+    },
+    {
+      "name": "hardpoint_bed_crew_5",
+      "ref": null,
+      "key": "Bed_Single_Starfarer_Crew"
+    },
+    {
+      "name": "hardpoint_bed_crew_6",
+      "ref": null,
+      "key": "Bed_Single_Starfarer_Crew"
+    },
+    {
+      "name": "hardpoint_cockpit_self_destruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_45s"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_MISC_Starfarer"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_WLOP_S02_Chernykh"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_powerplant",
+      "ref": null,
+      "key": "POWR_JUST_S03_Ginzel_SCItem"
+    },
+    {
+      "name": "hardpoint_fuel_intake",
+      "ref": null,
+      "key": "INTK_MISC_Starfarer_Nose_SCItem"
+    },
+    {
+      "name": "hardpoint_fuel_intake_front_left",
+      "ref": null,
+      "key": "INTK_MISC_Starfarer"
+    },
+    {
+      "name": "hardpoint_fuel_intake_front_right",
+      "ref": null,
+      "key": "INTK_MISC_Starfarer"
+    },
+    {
+      "name": "hardpoint_fuel_tank",
+      "ref": null,
+      "key": "HTNK_MISC_Starfarer"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_cooler_left",
+      "ref": null,
+      "key": "COOL_JUST_S03_ThermalCore_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_right",
+      "ref": null,
+      "key": "COOL_JUST_S03_ThermalCore_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_MISC_Starfarer"
+    },
+    {
+      "name": "hardpoint_shield_generator",
+      "ref": null,
+      "key": "SHLD_BASL_S03_Stronghold_SCItem"
+    },
+    {
+      "name": "hardpoint_armour",
+      "ref": null,
+      "key": "ARMR_MISC_Starfarer"
+    },
+    {
+      "name": "hardpoint_cargo_door",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenReverse_Starfarer_CargoDoor"
+    },
+    {
+      "name": "hardpoint_ramp",
+      "ref": null,
+      "key": "Door_RN_NoRoomConnector_Breachable_OpenReverse_Starfarer_Ramp"
+    },
+    {
+      "name": "hardpoint_engine_main",
+      "ref": null,
+      "key": "MISC_Starfarer_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_engine_left",
+      "ref": null,
+      "key": "MISC_Starfarer_Thruster_Aux"
+    },
+    {
+      "name": "hardpoint_engine_right",
+      "ref": null,
+      "key": "MISC_Starfarer_Thruster_Aux"
+    },
+    {
+      "name": "hardpoint_thruster_retro_left",
+      "ref": null,
+      "key": "MISC_Starfarer_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_retro_right",
+      "ref": null,
+      "key": "MISC_Starfarer_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_top_FL",
+      "ref": null,
+      "key": "MISC_Starfarer_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_top_FR",
+      "ref": null,
+      "key": "MISC_Starfarer_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_top_RL",
+      "ref": null,
+      "key": "MISC_Starfarer_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_top_RR",
+      "ref": null,
+      "key": "MISC_Starfarer_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_FL",
+      "ref": null,
+      "key": "MISC_Starfarer_Thruster_Mav_Joint_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_FR",
+      "ref": null,
+      "key": "MISC_Starfarer_Thruster_Mav_Joint_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_RL",
+      "ref": null,
+      "key": "MISC_Starfarer_Thruster_Mav_Joint_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_RR",
+      "ref": null,
+      "key": "MISC_Starfarer_Thruster_Mav_Joint_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_side_FL",
+      "ref": null,
+      "key": "MISC_Starfarer_Thruster_Mav_Fixed_01"
+    },
+    {
+      "name": "hardpoint_thruster_side_FR",
+      "ref": null,
+      "key": "MISC_Starfarer_Thruster_Mav_Fixed_01"
+    },
+    {
+      "name": "hardpoint_thruster_side_RL",
+      "ref": null,
+      "key": "MISC_Starfarer_Thruster_Mav_Fixed_01"
+    },
+    {
+      "name": "hardpoint_thruster_side_RR",
+      "ref": null,
+      "key": "MISC_Starfarer_Thruster_Mav_Fixed_01"
+    },
+    {
+      "name": "hardpoint_thruster_VTOL_FL",
+      "ref": null,
+      "key": "MISC_Starfarer_Thruster_Mav_Fixed_02"
+    },
+    {
+      "name": "hardpoint_thruster_VTOL_FR",
+      "ref": null,
+      "key": "MISC_Starfarer_Thruster_Mav_Fixed_02"
+    },
+    {
+      "name": "hardpoint_thruster_VTOL_RL",
+      "ref": null,
+      "key": "MISC_Starfarer_Thruster_Mav_Fixed_03"
+    },
+    {
+      "name": "hardpoint_thruster_VTOL_RR",
+      "ref": null,
+      "key": "MISC_Starfarer_Thruster_Mav_Fixed_03"
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_JUST_S03_Kama_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": null,
+          "key": "JDRV_TARS_S03_Exodus_SCItem"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_fuel_tank",
+      "ref": null,
+      "key": "QTNK_MISC_Starfarer"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_sidecannon_left",
+      "ref": "f10376d0-7068-4124-adf5-aabea4b69c43",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_01",
+          "ref": "52c1793e-5610-4daa-aafe-a8cf55e60283",
+          "key": null
+        },
+        {
+          "name": "hardpoint_weapon_02",
+          "ref": "52c1793e-5610-4daa-aafe-a8cf55e60283",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_sidecannon_right",
+      "ref": "f10376d0-7068-4124-adf5-aabea4b69c43",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_01",
+          "ref": "52c1793e-5610-4daa-aafe-a8cf55e60283",
+          "key": null
+        },
+        {
+          "name": "hardpoint_weapon_02",
+          "ref": "52c1793e-5610-4daa-aafe-a8cf55e60283",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_front_turret",
+      "ref": "a3fdce87-3b21-40a5-97ab-d26dfe51302c",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_rear_left_turret",
+      "ref": "87908c36-95a1-4610-955f-24b229ee83cf",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_rear_right_turret",
+      "ref": "caf52861-3d27-4778-97d2-c5e5bf16b935",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_countermeasures_left",
+      "ref": null,
+      "key": "JOKR_Defcon_CML_Flare"
+    },
+    {
+      "name": "hardpoint_countermeasures_left_2",
+      "ref": null,
+      "key": "JOKR_Defcon_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_countermeasures_right",
+      "ref": null,
+      "key": "JOKR_Defcon_CML_Flare"
+    },
+    {
+      "name": "hardpoint_countermeasures_right_2",
+      "ref": null,
+      "key": "JOKR_Defcon_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_cargogrid_center",
+      "ref": null,
+      "key": "MISC_Starfarer_CargoGrid_Center"
+    },
+    {
+      "name": "hardpoint_cargogrid_left",
+      "ref": null,
+      "key": "MISC_Starfarer_CargoGrid_Side"
+    },
+    {
+      "name": "hardpoint_cargogrid_left_alcove",
+      "ref": null,
+      "key": "MISC_Starfarer_CargoGrid_Side_Alcove"
+    },
+    {
+      "name": "hardpoint_cargogrid_right",
+      "ref": null,
+      "key": "MISC_Starfarer_CargoGrid_Side"
+    },
+    {
+      "name": "hardpoint_cargogrid_right_alcove",
+      "ref": null,
+      "key": "MISC_Starfarer_CargoGrid_Side_Alcove"
+    },
+    {
+      "name": "hardpoint_fuel_refinery_left",
+      "ref": null,
+      "key": "MISC_FuelRefinery_L"
+    },
+    {
+      "name": "hardpoint_fuel_refinery_right",
+      "ref": null,
+      "key": "MISC_FuelRefinery_R"
+    },
+    {
+      "name": "hardpoint_fuel_pod_L1",
+      "ref": null,
+      "key": "FuelPod_MISC_Standard"
+    },
+    {
+      "name": "hardpoint_fuel_pod_L2",
+      "ref": null,
+      "key": "FuelPod_MISC_Standard"
+    },
+    {
+      "name": "hardpoint_fuel_pod_L3",
+      "ref": null,
+      "key": "FuelPod_MISC_Standard"
+    },
+    {
+      "name": "hardpoint_fuel_pod_R1",
+      "ref": null,
+      "key": "FuelPod_MISC_Standard"
+    },
+    {
+      "name": "hardpoint_fuel_pod_R2",
+      "ref": null,
+      "key": "FuelPod_MISC_Standard"
+    },
+    {
+      "name": "hardpoint_fuel_pod_R3",
+      "ref": null,
+      "key": "FuelPod_MISC_Standard"
+    },
+    {
+      "name": "hardpoint_door_catwalk",
+      "ref": null,
+      "key": "Door_Ship_Exterior_MISC_Starfarer_Catwalk"
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": "Controller_Missile"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_MISC_Starfarer"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "MISC_Starfarer_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_refuel_arm",
+      "ref": null,
+      "key": "Nozzle_FuelGiver_MISC_NozzleStandard"
+    },
+    {
+      "name": "hardpoint_refuel_console",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuelpod_1_console",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuelpod_2_console",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuelpod_3_console",
+      "ref": null,
+      "key": "SoftLock_Terminal_Standard_Starfarer_Fuel_Pods_Ship_R1"
+    },
+    {
+      "name": "hardpoint_fuelpod_4_console",
+      "ref": null,
+      "key": "SoftLock_Terminal_Standard_Starfarer_Fuel_Pods_Ship_L1"
+    },
+    {
+      "name": "hardpoint_fuelpod_5_console",
+      "ref": null,
+      "key": "SoftLock_Terminal_Standard_Starfarer_Fuel_Pods_Ship_R2"
+    },
+    {
+      "name": "hardpoint_fuelpod_6_console",
+      "ref": null,
+      "key": "SoftLock_Terminal_Standard_Starfarer_Fuel_Pods_Ship_L2"
+    },
+    {
+      "name": "hardpoint_fuelpod_7_console",
+      "ref": null,
+      "key": "SoftLock_Terminal_Standard_Starfarer_Fuel_Pods_Ship_R3"
+    },
+    {
+      "name": "hardpoint_fuelpod_8_console",
+      "ref": null,
+      "key": "SoftLock_Terminal_Standard_Starfarer_Fuel_Pods_Ship_L3"
+    },
+    {
+      "name": "hardpoint_cockpit_flair",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_console_catwalk",
+      "ref": null,
+      "key": "SoftLock_Terminal_Standard_Refueling_Starfarer_Catwalk"
+    },
+    {
+      "name": "hardpoint_docking_collar",
+      "ref": null,
+      "key": "Door_Ship_Exterior_MISC_Starfarer_Airlock"
+    },
+    {
+      "name": "hardpoint_shield_generator_B",
+      "ref": null,
+      "key": "SHLD_BASL_S03_Stronghold_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator_C",
+      "ref": null,
+      "key": "SHLD_BASL_S03_Stronghold_SCItem"
+    },
+    {
+      "name": "hardpoint_relay_cargo_bay",
+      "ref": null,
+      "key": "RELAY_1slot"
+    },
+    {
+      "name": "hardpoint_relay_refueling_catwalk",
+      "ref": null,
+      "key": "RELAY_1slot"
+    },
+    {
+      "name": "hardpoint_relay_refuelling_arm_walkway_left",
+      "ref": null,
+      "key": "RELAY_1slot"
+    },
+    {
+      "name": "hardpoint_relay_refuelling_arm_walkway_right",
+      "ref": null,
+      "key": "RELAY_1slot"
+    },
+    {
+      "name": "hardpoint_relay_foyer",
+      "ref": null,
+      "key": "RELAY_1slot"
+    },
+    {
+      "name": "hardpoint_relay_bridge",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_relay_maintenance_left",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_relay_maintenance_right",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_relay_engine_room",
+      "ref": null,
+      "key": "RELAY_3slot"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_TYDT_S03_ComfortAirMax"
+    },
+    {
+      "name": "hardpoint_powerplant_B",
+      "ref": "202db33c-6b87-4210-9392-6d5368bc3436",
+      "key": null
+    }
+  ]
+}

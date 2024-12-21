@@ -1,0 +1,9 @@
+{
+  "key": "Ship_TempItemCarryingCapacity_DRAK_Cutter",
+  "ref": "aa4ed5ae-30d1-40cf-b6f4-fab09a37b25c",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 4.0
+  }
+}
