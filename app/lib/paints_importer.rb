@@ -210,14 +210,14 @@ class PaintsImporter
       "Corsair 2953 Best in Show" => "Best in Show 2953",
       "Vulture 2953 Best in Show" => "Best in Show 2953",
       "Redeemer 2953 Best in Show" => "Best in Show 2953",
-      "100i 2954 Auspicious Red Dog" => "2954 Auspicious Red Dog",
-      "100i 2954 Auspicious Red Dragon" => "2954 Auspicious Red Dragon",
-      "400i 2954 Auspicious Red Dog" => "2954 Auspicious Red Dog",
-      "400i 2954 Auspicious Red Dragon" => "2954 Auspicious Red Dragon",
-      "600i 2954 Auspicious Red Dog" => "2954 Auspicious Red Dog",
-      "600i 2954 Auspicious Red Dragon" => "2954 Auspicious Red Dragon",
-      "X1 2954 Auspicious Red Dog" => "2954 Auspicious Red Dog",
-      "X1 2954 Auspicious Red Dragon" => "2954 Auspicious Red Dragon",
+      "100i 2954 Auspicious Red Dog" => "Auspicious Red Dog",
+      "100i 2954 Auspicious Red Dragon" => "Auspicious Red Dragon",
+      "400i 2954 Auspicious Red Dog" => "Auspicious Red Dog",
+      "400i 2954 Auspicious Red Dragon" => "Auspicious Red Dragon",
+      "600i 2954 Auspicious Red Dog" => "Auspicious Red Dog",
+      "600i 2954 Auspicious Red Dragon" => "Auspicious Red Dragon",
+      "X1 2954 Auspicious Red Dog" => "Auspicious Red Dog",
+      "X1 2954 Auspicious Red Dragon" => "Auspicious Red Dragon",
       "Scorpius Stinger Black Orange" => "Stinger"
     }
 
