@@ -14,17 +14,21 @@ import BaseRows from "@/frontend/components/Compare/Models/Base/index.vue";
 import CrewRows from "@/frontend/components/Compare/Models/Crew/index.vue";
 import SpeedRows from "@/frontend/components/Compare/Models/Speed/index.vue";
 import HardpointRows from "@/frontend/components/Compare/Models/Hardpoints/index.vue";
+import HardpointRowsOld from "@/frontend/components/Compare/Models/HardpointsOld/index.vue";
 import Starship42Btn from "@/frontend/components/Starship42Btn/index.vue";
 import { type Model } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useNavStore } from "@/shared/stores/nav";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 
 type CompareForm = {
   models?: string[];
 };
 
 const { t } = useI18n();
+
+const { isFeatureEnabled } = useFeatures();
 
 const navStore = useNavStore();
 
@@ -241,7 +245,11 @@ const fetchModel = async (slug: string) => {
               <BaseRows :models="sortedModels" />
               <CrewRows :models="sortedModels" />
               <SpeedRows :models="sortedModels" />
-              <HardpointRows :models="sortedModels" />
+              <HardpointRows
+                v-if="isFeatureEnabled('hardpoints-v2')"
+                :models="sortedModels"
+              />
+              <HardpointRowsOld v-else :models="sortedModels" />
             </div>
           </div>
         </div>

@@ -1,14 +1,16 @@
 import type { RouteRecordRaw } from "vue-router";
+import { routes as modelEditRoutes } from "@/admin/pages/models/[id]/edit/routes";
 
 export const routes: RouteRecordRaw[] = [
   {
-    path: "edit",
-    name: "admin-model-edit",
+    path: "edit/",
     component: () => import("@/admin/pages/models/[id]/edit.vue"),
+    children: modelEditRoutes,
+    redirect: { name: modelEditRoutes[0].name },
     meta: {
-      title: "admin.models.edit",
-      activeRoute: "models",
       needsAuthentication: true,
+      nav: "hidden",
+      activeRoute: "admin-models",
     },
   },
   {
@@ -17,7 +19,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/models/[id]/images.vue"),
     meta: {
       title: "admin.models.images",
-      activeRoute: "models",
+      activeRoute: "admin-models",
       needsAuthentication: true,
     },
   },
@@ -27,7 +29,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/models/[id]/videos.vue"),
     meta: {
       title: "admin.models.videos",
-      activeRoute: "models",
+      activeRoute: "admin-models",
       needsAuthentication: true,
     },
   },
@@ -37,7 +39,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/models/[id]/prices.vue"),
     meta: {
       title: "admin.models.prices",
-      activeRoute: "models",
+      activeRoute: "admin-models",
       needsAuthentication: true,
     },
   },

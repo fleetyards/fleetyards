@@ -14,7 +14,7 @@ import FocusFilterGroup from "@/frontend/components/base/ModelFocusFilterGroup/i
 import SizeFilterGroup from "@/frontend/components/base/ModelSizeFilterGroup/index.vue";
 import WillItFitFilterGroup from "@/frontend/components/base/ModelWillItFitFilterGroup/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import Checkbox from "@/shared/components/base/Checkbox/index.vue";
+import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
@@ -252,7 +252,7 @@ const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
       name="sale"
     />
 
-    <Checkbox
+    <FormCheckbox
       v-model="form.withCargo"
       :label="t('labels.filters.models.withCargo')"
       name="withCargo"

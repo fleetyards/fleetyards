@@ -9,6 +9,7 @@ import type { HardpointSourceEnum } from '../models/HardpointSourceEnum';
 import type { Images } from '../models/Images';
 import type { Model } from '../models/Model';
 import type { ModelExtended } from '../models/ModelExtended';
+import type { ModelHardpoint } from '../models/ModelHardpoint';
 import type { ModelModulePackages } from '../models/ModelModulePackages';
 import type { ModelModules } from '../models/ModelModules';
 import type { ModelPaint } from '../models/ModelPaint';
@@ -178,6 +179,17 @@ export class ModelsService {
         });
     }
     /**
+     * Model Dock Sizes
+     * @returns FilterOption successful
+     * @throws ApiError
+     */
+    public modelDockSizes(): CancelablePromise<Array<FilterOption>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/dock-sizes',
+        });
+    }
+    /**
      * Model Cargo options
      * @returns CargoOptions successful
      * @throws ApiError
@@ -251,7 +263,7 @@ export class ModelsService {
     }
     /**
      * Model Hardpoints
-     * @returns Hardpoint successful
+     * @returns any successful
      * @throws ApiError
      */
     public modelHardpoints({
@@ -263,7 +275,7 @@ export class ModelsService {
          */
         slug: string,
         source?: HardpointSourceEnum,
-    }): CancelablePromise<Array<Hardpoint>> {
+    }): CancelablePromise<Array<(Hardpoint | ModelHardpoint)>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/{slug}/hardpoints',

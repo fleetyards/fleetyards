@@ -60,6 +60,7 @@
   "type_data": {
     "thrust_capacity": 46500000.0,
     "fuel_burn_rate_per10_k_newton": 0.05102124,
-    "thruster_type": "Retro"
+    "thruster_type": "Retro",
+    "thruster_class": "retro"
   }
 }

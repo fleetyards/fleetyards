@@ -56,22 +56,34 @@
     {
       "name": "BAR1",
       "key": "BEHR_BallisticRepeater_Barrel_S2",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "MEC",
       "key": "BEHR_BallisticRepeater_FiringMechanism_S2",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "POW",
       "key": "BEHR_BallisticRepeater_PowerArray_S2",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "VEN",
       "key": "BEHR_BallisticRepeater_Ventilation_S2",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

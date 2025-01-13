@@ -11,8 +11,11 @@ import HardpointGroup from "./old/Group/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useQuery } from "@tanstack/vue-query";
 import { useApiClient } from "@/frontend/composables/useApiClient";
-import { ModelHardpointGroupEnum } from "@/services/fyApi";
-import type { Model } from "@/services/fyApi";
+import {
+  ModelHardpointGroupEnum,
+  type ModelHardpoint,
+  type Model,
+} from "@/services/fyApi";
 
 type Props = {
   model: Model;
@@ -35,9 +38,8 @@ const erkulUrl = computed(() => {
 });
 
 const hardpointsForGroup = (group: ModelHardpointGroupEnum) => {
-  return (
-    hardpoints.value?.filter((hardpoint) => hardpoint.group === group) || []
-  );
+  return (hardpoints.value?.filter((hardpoint) => hardpoint.group === group) ||
+    []) as ModelHardpoint[];
 };
 
 watch(

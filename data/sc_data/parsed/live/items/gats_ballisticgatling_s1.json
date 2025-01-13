@@ -56,22 +56,34 @@
     {
       "name": "BAR1",
       "key": "GATS_BallisticGatling_Barrel_S1",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "MEC",
       "key": "GATS_BallisticGatling_FiringMechanism_S1",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "POW",
       "key": "GATS_BallisticGatling_PowerArray_S1",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "VEN",
       "key": "GATS_BallisticGatling_Ventilation_S1",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

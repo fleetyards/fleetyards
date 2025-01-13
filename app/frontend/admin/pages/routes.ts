@@ -144,6 +144,18 @@ export const routes: RouteRecordRaw[] = [
       title: "notFound",
       backgroundImage: "bg-404",
       nav: "hidden",
+      access: "all",
+    },
+  },
+  {
+    path: "/403/",
+    name: "403",
+    component: () => import("@/admin/pages/403.vue"),
+    meta: {
+      title: "notAuthorized",
+      backgroundImage: "bg-404",
+      nav: "hidden",
+      access: "all",
     },
   },
   {
@@ -153,6 +165,7 @@ export const routes: RouteRecordRaw[] = [
       title: "notFound",
       backgroundImage: "bg-404",
       nav: "hidden",
+      access: "all",
     },
   },
 ];

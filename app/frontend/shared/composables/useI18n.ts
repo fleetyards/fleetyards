@@ -31,6 +31,7 @@ export const useI18n = () => {
     t: (scope: Scope, options?: TranslateOptions) => i18n.t(scope, options),
     currentLocale: () => i18n.locale,
     availableLocales: () => i18n.availableLocales,
+    tExists: (key: string) => !!i18n.get(key),
     ...i18nHelpers(i18n),
   };
 };

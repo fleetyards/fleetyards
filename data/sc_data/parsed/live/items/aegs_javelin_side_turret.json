@@ -50,14 +50,6 @@
       "types": [
         "WeaponGun"
       ]
-    },
-    {
-      "name": "hardpoint_interior",
-      "min_size": "4",
-      "max_size": "4",
-      "types": [
-        "Room"
-      ]
     }
   ],
   "durability": {

@@ -8,7 +8,7 @@ export default {
 import { useForm } from "vee-validate";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import Checkbox from "@/shared/components/base/Checkbox/index.vue";
+import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import { useNoty } from "@/shared/composables/useNoty";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -24,7 +24,7 @@ import {
 
 const { t } = useI18n();
 
-const { displayAlert, displayInfo } = useNoty();
+const { displayAlert } = useNoty();
 
 const submitting = ref(false);
 
@@ -134,7 +134,7 @@ const onSubmit = handleSubmit(async (values) => {
             :hide-label-on-empty="true"
             :clearable="true"
           />
-          <Checkbox
+          <FormCheckbox
             v-model="rememberMe"
             v-bind="rememberMeProps"
             name="rememberMe"

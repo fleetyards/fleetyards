@@ -5,9 +5,12 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { groupBy, sortBy } from "@/shared/utils/Array";
-import HardpointItem from "@/frontend/components/Models/Hardpoints/Item/index.vue";
+import { groupBy } from "@/shared/utils/Array";
+import HardpointBaseItem from "@/frontend/components/Models/Hardpoints/BaseItem/index.vue";
 import HardpointCargoItem from "@/frontend/components/Models/Hardpoints/CargoItem/index.vue";
+import HardpointFuelItem from "@/frontend/components/Models/Hardpoints/FuelItem/index.vue";
+import HardpointThrusterItem from "@/frontend/components/Models/Hardpoints/ThrusterItem/index.vue";
+import HardpointSeatItem from "@/frontend/components/Models/Hardpoints/SeatItem/index.vue";
 import { type Hardpoint } from "@/services/fyApi";
 import { HardpointCategoryEnum } from "@/services/fyAdminApi";
 
@@ -18,46 +21,30 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const groupByKey = (items: Hardpoint[]) => {
-  return groupBy<Hardpoint>(items, "groupKey");
-};
-
 const groupedHardpoints = computed(() => {
-  if (
-    [
-      HardpointCategoryEnum.MAIN_THRUSTERS,
-      HardpointCategoryEnum.MANEUVERING_THRUSTERS,
-    ].includes(props.category)
-  ) {
-    return groupByComponent(props.hardpoints);
-  } else if ([HardpointCategoryEnum.CARGOGRID].includes(props.category)) {
-    return groupBy<Hardpoint>(
-      sortBy<Hardpoint>(props.hardpoints, "name"),
-      "category",
-    );
-  } else {
-    return groupByKey(props.hardpoints);
-  }
+  return groupBy<Hardpoint>(props.hardpoints, "groupKey");
 });
 
 const itemComponent = computed(() => {
   if (props.category === HardpointCategoryEnum.CARGOGRID) {
     return HardpointCargoItem;
   }
-  return HardpointItem;
+  if (props.category === HardpointCategoryEnum.FUELTANKS) {
+    return HardpointFuelItem;
+  }
+  if (
+    props.category === HardpointCategoryEnum.MAIN_THRUSTERS ||
+    props.category === HardpointCategoryEnum.MANEUVERING_THRUSTERS ||
+    props.category === HardpointCategoryEnum.RETRO_THRUSTERS ||
+    props.category === HardpointCategoryEnum.VTOL_THRUSTERS
+  ) {
+    return HardpointThrusterItem;
+  }
+  if (props.category === HardpointCategoryEnum.SEAT) {
+    return HardpointSeatItem;
+  }
+  return HardpointBaseItem;
 });
-
-const groupByComponent = (list: Hardpoint[]) => {
-  return list.reduce(
-    (result, item) => {
-      const group = item.component?.id as string;
-      result[group] = [...(result[group] || [])];
-      result[group].push(item);
-      return result;
-    },
-    {} as Record<string, Hardpoint[]>,
-  );
-};
 </script>
 
 <template>

@@ -10,12 +10,19 @@
       "units": {
         "au": "AU",
         "uec": "aUEC",
-        "uecPerUnit": "aUEC / Unit"
+        "currency": "$",
+        "uecPerUnit": "aUEC / Unit",
+        "distance": "m",
+        "weight": "t",
+        "speed": "m/s",
+        "cargo": "SCU",
+        "person": "person"
       },
       "uec": "%{count} <span class=\"text-muted\">aUEC</span>",
       "uecPerUnit": "%{count} <span class=\"text-muted\">aUEC/unit</span>",
       "percent": "%{count} %",
       "distance": "%{count} m",
+      "newton": "%{count} KN",
       "weight": "%{count} t",
       "speed": "%{count} m/s",
       "seconds": "%{count} s",

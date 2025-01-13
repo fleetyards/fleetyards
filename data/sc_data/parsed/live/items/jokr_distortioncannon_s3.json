@@ -56,22 +56,34 @@
     {
       "name": "BAR1",
       "key": "JOKR_DistortionCannon_Barrel_S3",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "MEC",
       "key": "JOKR_DistortionCannon_FiringMechanism_S3",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "POW",
       "key": "JOKR_DistortionCannon_PowerArray_S3",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "VEN",
       "key": "JOKR_DistortionCannon_Ventilation_S3",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

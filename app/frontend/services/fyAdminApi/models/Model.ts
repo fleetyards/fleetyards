@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CargoHold } from './CargoHold';
+import type { FuelTank } from './FuelTank';
 import type { ItemPrice } from './ItemPrice';
 import type { Manufacturer } from './Manufacturer';
 import type { MediaImage } from './MediaImage';
@@ -77,8 +78,11 @@ export type Model = {
         quantumFuelTankSize?: number;
         size?: string;
         sizeLabel?: string;
+        dockSize?: string;
     };
     cargoHolds?: Array<CargoHold>;
+    hydrogenFuelTanks?: Array<FuelTank>;
+    quantumFuelTanks?: Array<FuelTank>;
     onSale: boolean;
     pledgePrice?: number;
     pledgePriceLabel?: string;
@@ -109,5 +113,8 @@ export type Model = {
     updatedAt: string;
     hidden: boolean;
     active: boolean;
+    scLength?: number;
+    scBeam?: number;
+    scHeight?: number;
 };
 

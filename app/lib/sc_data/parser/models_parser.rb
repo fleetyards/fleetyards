@@ -1,7 +1,7 @@
 module ScData
   module Parser
     class ModelsParser < ::ScData::Parser::BaseParser
-      def run
+      def all
         parse_ships
         parse_vehicles
       end

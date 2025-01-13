@@ -6,11 +6,11 @@
     <title><%= admin_title %></title>
     <link rel="shortcut icon" type="image/png" href="<%= asset_path('admin/favicon.png') %>">
     <meta name="theme-color" content="#333333"/>
-    <meta name="application-name" content="<%= I18n.t(:"title.admin") %>">
+    <meta name="application-name" content="<%= I18n.t(:"title.default_admin") %>">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-title" content="<%= I18n.t(:"title.admin") %>">
+    <meta name="mobile-web-app-title" content="<%= I18n.t(:"title.default_admin") %>">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="FleetYards.net">
+    <meta name="apple-mobile-web-app-title" content="<%= I18n.t(:"title.default_admin") %>">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="<%= asset_path('admin/manifest.json') %>" />
     <%= favicon_link_tag 'admin/icon-iphone.png', rel: "apple-touch-icon", type: 'image/png' %>

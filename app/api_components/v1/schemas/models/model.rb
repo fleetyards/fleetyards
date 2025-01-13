@@ -114,12 +114,15 @@ module V1
                 massLabel: {type: :string},
                 quantumFuelTankSize: {type: :number},
                 size: {type: :string},
-                sizeLabel: {type: :string}
+                sizeLabel: {type: :string},
+                dockSize: {type: :string}
               },
               additionalProperties: false
             },
 
             cargoHolds: {type: :array, items: {"$ref": "#/components/schemas/CargoHold"}},
+            hydrogenFuelTanks: {type: :array, items: {"$ref": "#/components/schemas/FuelTank"}},
+            quantumFuelTanks: {type: :array, items: {"$ref": "#/components/schemas/FuelTank"}},
 
             onSale: {type: :boolean},
             pledgePrice: {type: :number},

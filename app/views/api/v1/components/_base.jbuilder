@@ -28,6 +28,8 @@ json.item_class_label component.item_class_label
 
 json.type_data component.type_data
 
+json.hidden component.hidden
+
 json.hardpoints do
   json.array! component.hardpoints, partial: "api/v1/hardpoints/base", as: :hardpoint
 end

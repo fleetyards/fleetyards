@@ -115,7 +115,7 @@
               :name="$t('labels.fleet.public')"
               :slim="true"
             >
-              <Checkbox
+              <FormCheckbox
                 id="publicFleet"
                 v-model="form.publicFleet"
                 :label="$t('labels.fleet.public')"
@@ -131,7 +131,7 @@
               :name="$t('labels.fleet.publicStats')"
               :slim="true"
             >
-              <Checkbox
+              <FormCheckbox
                 id="publicFleetStats"
                 v-model="form.publicFleetStats"
                 :label="$t('labels.fleet.publicStats')"
@@ -278,7 +278,7 @@ import { fleetRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";
 import fleetsCollection from "@/frontend/api/collections/Fleets";
 import { transformErrors } from "@/frontend/api/helpers";
 import Avatar from "@/frontend/core/components/Avatar/index.vue";
-import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
+import FormCheckbox from "@/frontend/core/components/Form/FormCheckbox/index.vue";
 import FormTextarea from "@/frontend/core/components/Form/FormTextarea/index.vue";
 
 @Component<FleetSettings>({

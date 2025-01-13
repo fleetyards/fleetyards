@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup generic="T">
 import { uniq as uniqArray } from "@/shared/utils/Array";
-import Checkbox from "@/shared/components/base/Checkbox/index.vue";
+import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import { v4 as uuidv4 } from "uuid";
 import Panel from "@/shared/components/Panel/index.vue";
 import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
@@ -237,11 +237,12 @@ const resetSelected = () => {
             </tr>
             <tr key="header" class="base-table__header">
               <th v-if="selectable" class="base-table__column">
-                <Checkbox
+                <FormCheckbox
                   v-if="!loading && !emptyBoxVisible"
                   name="all"
                   :model-value="allSelected"
                   inline
+                  no-label
                   :partial="internalSelected.length > 0 && !allSelected"
                   @update:model-value="onAllSelectedChange"
                 />
@@ -310,9 +311,10 @@ const resetSelected = () => {
               class="base-table__row"
             >
               <td v-if="selectable" class="base-table__column">
-                <Checkbox
+                <FormCheckbox
                   v-model="internalSelected"
                   name="item"
+                  no-label
                   inline
                   :checkbox-value="primaryValue(record)"
                 />

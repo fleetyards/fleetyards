@@ -6,8 +6,10 @@ import {
   type ModelExtended,
   type ModelPaintQuery,
   type ModelPaints,
+  type Model,
+  type ModelUpdateInput,
 } from "@/services/fyAdminApi";
-import { useQuery, useQueryClient } from "@tanstack/vue-query";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/vue-query";
 
 export enum QueryKeysEnum {
   MODELS = "models",
@@ -85,9 +87,70 @@ export const useModelQueries = () => {
     );
   };
 
+  const updateMutation = (model: Model) => {
+    return useMutation(
+      {
+        mutationFn: (requestBody: ModelUpdateInput) => {
+          return modelsService.modelUpdate({
+            id: model.id,
+            requestBody,
+          });
+        },
+        onMutate: async (input: ModelUpdateInput) => {
+          const updatedModel = {
+            ...model,
+            ...input,
+          };
+          await queryClient.cancelQueries({
+            queryKey: [QueryKeysEnum.MODELS],
+          });
+
+          const previousModels = queryClient.getQueryData([
+            QueryKeysEnum.MODELS,
+          ]) as Models;
+
+          if (!previousModels) {
+            return;
+          }
+
+          queryClient.setQueryData([QueryKeysEnum.MODELS], {
+            ...previousModels,
+            items: previousModels.items.map((model) => {
+              if (model.id === updatedModel.id) {
+                return updatedModel;
+              }
+
+              return model;
+            }),
+          });
+
+          return { previousModels };
+        },
+        onError: (_error, _updatedModel, context) => {
+          if (context?.previousModels) {
+            queryClient.setQueryData(
+              [QueryKeysEnum.MODELS],
+              context?.previousModels,
+            );
+          }
+        },
+        onSettled: (updatedModel) => {
+          queryClient.invalidateQueries({
+            queryKey: [QueryKeysEnum.MODEL, updatedModel?.id],
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QueryKeysEnum.MODELS],
+          });
+        },
+      },
+      queryClient,
+    );
+  };
+
   return {
     modelsQuery,
     modelQuery,
+    updateMutation,
     paintsQuery,
   };
 };

@@ -10,14 +10,7 @@
       'panel-image-rounded-left': rounded === 'left',
     }"
   >
-    <LazyImage
-      v-if="image"
-      :to="to"
-      :aria-label="alt"
-      :src="image"
-      :alt="alt"
-      class="image"
-    >
+    <LazyImage v-if="image" :to="to" :aria-label="alt" :src="image" :alt="alt">
       <slot />
     </LazyImage>
   </div>

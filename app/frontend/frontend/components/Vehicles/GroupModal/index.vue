@@ -40,7 +40,7 @@
             </ValidationProvider>
           </div>
           <div class="col-12 col-md-6">
-            <Checkbox
+            <FormCheckbox
               id="public"
               v-model="form.public"
               :label="$t('labels.hangarGroup.public')"
@@ -84,7 +84,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import { displayAlert, displayConfirm } from "@/frontend/lib/Noty";
 import hangarGroupsCollection from "@/frontend/api/collections/HangarGroups";
-import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
+import FormCheckbox from "@/frontend/core/components/Form/FormCheckbox/index.vue";
 import VSwatches from "vue-swatches";
 
 @Component<GroupModal>({

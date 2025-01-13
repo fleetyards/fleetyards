@@ -16,6 +16,8 @@ export enum HardpointCategoryEnum {
     QUANTUMDRIVE = 'quantumdrive',
     JUMPDRIVE = 'jumpdrive',
     MAIN_THRUSTERS = 'main_thrusters',
+    RETRO_THRUSTERS = 'retro_thrusters',
+    VTOL_THRUSTERS = 'vtol_thrusters',
     MANEUVERING_THRUSTERS = 'maneuvering_thrusters',
     WEAPONS = 'weapons',
     WEAPON_MOUNTS = 'weapon_mounts',

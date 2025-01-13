@@ -249,7 +249,7 @@ const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
       name="public"
     />
 
-    <Checkbox
+    <FormCheckbox
       v-model="form.withCargo"
       :label="t('labels.filters.models.withCargo')"
       name="withCargo"

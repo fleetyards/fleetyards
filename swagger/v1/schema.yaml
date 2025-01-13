@@ -2197,6 +2197,21 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/FilterOption"
+  "/models/dock-sizes":
+    get:
+      summary: Model Dock Sizes
+      operationId: modelDockSizes
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
   "/models/cargo-options":
     get:
       summary: Model Cargo options
@@ -2315,7 +2330,9 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/Hardpoint"
+                  oneOf:
+                  - "$ref": "#/components/schemas/Hardpoint"
+                  - "$ref": "#/components/schemas/ModelHardpoint"
         '404':
           description: not found
           content:
@@ -4341,16 +4358,67 @@ components:
       type: object
       properties:
         dimensions:
-          "$ref": "#/components/schemas/Dimension"
-        minContainer:
-          "$ref": "#/components/schemas/Dimension"
-        maxContainer:
-          "$ref": "#/components/schemas/Dimension"
+          "$ref": "#/components/schemas/CargoHoldDimension"
+        capacity:
+          type: integer
+        maxContainerSize:
+          "$ref": "#/components/schemas/CargoHoldContainerSize"
+        limits:
+          type: object
+          properties:
+            min:
+              "$ref": "#/components/schemas/CargoHoldLimit"
+            max:
+              "$ref": "#/components/schemas/CargoHoldLimit"
+          additionalProperties: false
+          required:
+          - min
       additionalProperties: false
       required:
       - dimensions
-      - minContainer
+      - capacity
+      - maxContainerSize
+      - limits
       title: CargoHold
+    CargoHoldContainerSize:
+      type: object
+      properties:
+        size:
+          type: integer
+        dimensions:
+          "$ref": "#/components/schemas/CargoHoldDimension"
+      additionalProperties: false
+      required:
+      - size
+      - dimensions
+      title: CargoHoldContainerSize
+    CargoHoldDimension:
+      type: object
+      properties:
+        x:
+          type: number
+        "y":
+          type: number
+        z:
+          type: number
+      additionalProperties: false
+      required:
+      - x
+      - "y"
+      - z
+      title: CargoHoldDimension
+    CargoHoldLimit:
+      type: object
+      properties:
+        dimensions:
+          "$ref": "#/components/schemas/CargoHoldDimension"
+        capacity:
+          type: integer
+      additionalProperties: false
+      required:
+      - dimensions
+      - capacity
+      title: CargoHoldLimit
     Check:
       type: object
       properties:
@@ -4496,7 +4564,9 @@ components:
         typeData:
           oneOf:
           - "$ref": "#/components/schemas/ComponentQuantumDrive"
-          - "$ref": "#/components/schemas/ComponentCargoGrid"
+          - "$ref": "#/components/schemas/CargoHold"
+          - "$ref": "#/components/schemas/FuelTank"
+          - "$ref": "#/components/schemas/ComponentThruster"
         hardpoints:
           type: array
           items:
@@ -4518,59 +4588,6 @@ components:
       - createdAt
       - updatedAt
       title: Component
-    ComponentCargoGrid:
-      type: object
-      properties:
-        dimensions:
-          "$ref": "#/components/schemas/ComponentCargoGridDimensions"
-        minContainer:
-          "$ref": "#/components/schemas/ComponentCargoGridDimensions"
-        maxContainer:
-          "$ref": "#/components/schemas/ComponentCargoGridDimensions"
-      additionalProperties: false
-      required:
-      - dimensions
-      - minContainer
-      title: ComponentCargoGrid
-    ComponentCargoGridContainer:
-      type: object
-      properties:
-        size:
-          type: number
-        x:
-          type: number
-        "y":
-          type: number
-        z:
-          type: number
-      additionalProperties: false
-      required:
-      - size
-      - x
-      - "y"
-      - z
-      title: ComponentCargoGridContainer
-    ComponentCargoGridDimensions:
-      type: object
-      properties:
-        x:
-          type: number
-        "y":
-          type: number
-        z:
-          type: number
-        scu:
-          type: number
-        maxContainerSize:
-          "$ref": "#/components/schemas/ComponentCargoGridContainer"
-      additionalProperties: false
-      required:
-      - x
-      - "y"
-      - z
-      - scu
-      - maxContainerSize
-      title: ComponentCargoGridDimensions
     ComponentQuantumDrive:
       type: object
       properties:
@@ -4610,6 +4627,23 @@ components:
       - spoolUpTime
       - cooldown
       title: ComponentQuantumDriveJump
+    ComponentThruster:
+      type: object
+      properties:
+        thrustCapacity:
+          type: number
+        thrusterType:
+          type: string
+        thrusterClass:
+          "$ref": "#/components/schemas/ThrusterClassEnum"
+        fuelBurnRatePer10KNewton:
+          type: number
+      additionalProperties: false
+      required:
+      - capacity
+      - thrusterType
+      - fuelBurnRatePer10KNewton
+      title: ComponentThruster
     Components:
       type: object
       properties:
@@ -4625,24 +4659,6 @@ components:
       - items
       - meta
       title: Components
-    Dimension:
-      type: object
-      properties:
-        x:
-          type: number
-        "y":
-          type: number
-        z:
-          type: number
-        scu:
-          type: number
-      additionalProperties: false
-      required:
-      - x
-      - "y"
-      - z
-      - scu
-      title: Dimension
     Dock:
       type: object
       properties:
@@ -4812,6 +4828,8 @@ components:
       - quantumdrive
       - jumpdrive
       - main_thrusters
+      - retro_thrusters
+      - vtol_thrusters
       - maneuvering_thrusters
       - weapons
       - weapon_mounts
@@ -4849,6 +4867,7 @@ components:
       - seat
       - relay
       - other
+      - unknown
       title: HardpointGroupEnum
     HardpointSourceEnum:
       type: string
@@ -5095,6 +5114,14 @@ components:
       - aid_shelter
       - ugf
       title: StationTypeEnum
+    ThrusterClassEnum:
+      type: string
+      enum:
+      - main
+      - retro
+      - vtol
+      - mav
+      title: ThrusterClassEnum
     VideoTypeEnum:
       type: string
       enum:
@@ -5246,6 +5273,15 @@ components:
       - label
       - value
       title: FilterOption
+    FuelTank:
+      type: object
+      properties:
+        capacity:
+          type: number
+      additionalProperties: false
+      required:
+      - capacity
+      title: FuelTank
     Gallery:
       type: object
       properties:
@@ -5307,6 +5343,8 @@ components:
           "$ref": "#/components/schemas/HardpointGroupEnum"
         groupKey:
           type: string
+        matrixKey:
+          type: string
         category:
           "$ref": "#/components/schemas/HardpointCategoryEnum"
         name:
@@ -5321,6 +5359,8 @@ components:
           type: array
           items:
             type: string
+        details:
+          type: string
         component:
           "$ref": "#/components/schemas/Component"
         hardpoints:
@@ -7314,11 +7354,21 @@ components:
               type: string
             sizeLabel:
               type: string
+            dockSize:
+              type: string
           additionalProperties: false
         cargoHolds:
           type: array
           items:
             "$ref": "#/components/schemas/CargoHold"
+        hydrogenFuelTanks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FuelTank"
+        quantumFuelTanks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FuelTank"
         onSale:
           type: boolean
         pledgePrice:
@@ -7554,11 +7604,21 @@ components:
               type: string
             sizeLabel:
               type: string
+            dockSize:
+              type: string
           additionalProperties: false
         cargoHolds:
           type: array
           items:
             "$ref": "#/components/schemas/CargoHold"
+        hydrogenFuelTanks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FuelTank"
+        quantumFuelTanks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FuelTank"
         onSale:
           type: boolean
         pledgePrice:
@@ -7806,6 +7866,8 @@ components:
           format: uuid
         name:
           type: string
+        slug:
+          type: string
         description:
           type: string
         scKey:
@@ -7847,6 +7909,10 @@ components:
           type: string
         manufacturer:
           "$ref": "#/components/schemas/Manufacturer"
+        hardpoints:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Hardpoint"
         createdAt:
           type: string
           format: date-time

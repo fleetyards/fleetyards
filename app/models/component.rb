@@ -28,6 +28,7 @@
 #  store_image           :string
 #  tracking_signal       :integer
 #  type_data             :string
+#  version               :string
 #  created_at            :datetime
 #  updated_at            :datetime
 #  manufacturer_id       :uuid
@@ -61,7 +62,7 @@ class Component < ApplicationRecord
   belongs_to :manufacturer, optional: true
 
   has_many :hardpoints, as: :parent, dependent: :destroy, autosave: true
-  has_many :hardpoint_loadouts, as: :component, dependent: :nullify
+  has_many :hardpoint_loadouts, class_name: "Hardpoint", dependent: :nullify
 
   has_many :model_hardpoints, dependent: :nullify
   has_many :item_prices, as: :item, dependent: :destroy
@@ -176,7 +177,7 @@ class Component < ApplicationRecord
 
     cleaned_description, data = description.gsub("\\n", "\n").split("\n\n", 2).reverse
 
-    self.description = cleaned_description.gsub("\n", "").gsub(/[[:space:]]+/, "").chomp
+    self.description = cleaned_description.delete("\n").gsub(/[[:space:]]+/, "").chomp
 
     return if data.blank?
 

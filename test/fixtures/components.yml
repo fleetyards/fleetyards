@@ -26,6 +26,7 @@
 #  store_image           :string
 #  tracking_signal       :integer
 #  type_data             :string
+#  version               :string
 #  created_at            :datetime
 #  updated_at            :datetime
 #  manufacturer_id       :uuid

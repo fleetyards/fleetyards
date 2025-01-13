@@ -32,7 +32,10 @@
     {
       "name": "hardpoint_cargo_grid",
       "key": "RSI_Aurora_CL_CargoGrid_Main",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

@@ -32,7 +32,10 @@
     {
       "name": "hardpoint_int",
       "key": "ARGO_MPUV_Door_Int_Rear",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

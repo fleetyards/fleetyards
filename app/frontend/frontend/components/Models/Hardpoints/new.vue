@@ -7,12 +7,18 @@ export default {
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
+import Empty from "@/shared/components/Empty/index.vue";
 import HardpointGroup from "./Group/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useQuery } from "@tanstack/vue-query";
 import { useApiClient } from "@/frontend/composables/useApiClient";
-import { HardpointGroupEnum } from "@/services/fyApi";
-import type { Model } from "@/services/fyApi";
+import {
+  HardpointGroupEnum,
+  HardpointSourceEnum,
+  type Hardpoint,
+  type Model,
+} from "@/services/fyApi";
+import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 
 type Props = {
   model: Model;
@@ -30,10 +36,9 @@ const erkulUrl = computed(() => {
   return `https://www.erkul.games/ship/${props.model.erkulIdentifier}`;
 });
 
-const hardpointsForGroup = (group: HardpointGroupEnum) => {
-  return (
-    hardpoints.value?.filter((hardpoint) => hardpoint.group === group) || []
-  );
+const hardpointsForGroup = (group: HardpointGroupEnum): Hardpoint[] => {
+  return (hardpoints.value?.filter((hardpoint) => hardpoint.group === group) ||
+    []) as Hardpoint[];
 };
 
 watch(
@@ -41,6 +46,12 @@ watch(
   () => {
     refetch();
   },
+);
+
+const source = ref(
+  props.model.scIdentifier
+    ? HardpointSourceEnum.GAME_FILES
+    : HardpointSourceEnum.SHIP_MATRIX,
 );
 
 const { models: modelsService } = useApiClient();
@@ -51,10 +62,11 @@ const {
   data: hardpoints,
   refetch,
 } = useQuery({
-  queryKey: ["model-hardpoints", props.model.slug],
+  queryKey: ["model-hardpoints", props.model.slug, source],
   queryFn: () => {
     return modelsService.modelHardpoints({
       slug: props.model.slug,
+      source: source.value,
     });
   },
   enabled: !!props.model,
@@ -71,7 +83,28 @@ const {
           {{ t("labels.erkul.link") }}
         </Btn>
       </div>
-      <div class="row">
+      <div class="d-flex justify-content-end">
+        <BtnGroup>
+          <Btn
+            :active="source === HardpointSourceEnum.GAME_FILES"
+            :disabled="!model.scIdentifier"
+            @click="source = HardpointSourceEnum.GAME_FILES"
+          >
+            {{
+              t(`labels.hardpoint.sources.${HardpointSourceEnum.GAME_FILES}`)
+            }}
+          </Btn>
+          <Btn
+            :active="source === HardpointSourceEnum.SHIP_MATRIX"
+            @click="source = HardpointSourceEnum.SHIP_MATRIX"
+          >
+            {{
+              t(`labels.hardpoint.sources.${HardpointSourceEnum.SHIP_MATRIX}`)
+            }}
+          </Btn>
+        </BtnGroup>
+      </div>
+      <div v-if="hardpoints?.length" class="row">
         <div class="col-12 col-md-6 col-lg-4">
           <HardpointGroup
             v-for="group in [
@@ -81,7 +114,6 @@ const {
             ]"
             :key="group"
             :group="group"
-            :model="model"
             :hardpoints="hardpointsForGroup(group)"
           />
         </div>
@@ -93,28 +125,40 @@ const {
             ]"
             :key="group"
             :group="group"
-            :model="model"
             :hardpoints="hardpointsForGroup(group)"
           />
         </div>
         <div class="col-12 col-md-6 col-lg-4">
           <HardpointGroup
-            v-for="group in [HardpointGroupEnum.WEAPON]"
+            v-for="group in [
+              HardpointGroupEnum.WEAPON,
+              HardpointGroupEnum.AUXILIARY,
+            ]"
             :key="group"
             :group="group"
-            :model="model"
             :hardpoints="hardpointsForGroup(group)"
           />
           <HardpointGroup
             v-for="group in [HardpointGroupEnum.SEAT]"
             :key="group"
             :group="group"
-            :model="model"
             :hardpoints="hardpointsForGroup(group)"
           />
         </div>
       </div>
-      <Loader :loading="isLoading || isFetching" :fixed="true" />
+      <div v-else-if="!isLoading && !isFetching" class="row">
+        <div class="col-12">
+          <Empty
+            :name="t('resources.hardpoints')"
+            :variant="EmptyVariantsEnum.BOX"
+          />
+        </div>
+      </div>
+      <Loader :loading="isLoading || isFetching" fixed />
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+@import "new";
+</style>

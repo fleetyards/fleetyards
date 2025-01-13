@@ -32,7 +32,10 @@
     {
       "name": "hardpoint_class_2",
       "key": null,
-      "ref": "0e3f4b37-8085-4641-a360-40e4e372cd15"
+      "ref": "0e3f4b37-8085-4641-a360-40e4e372cd15",
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

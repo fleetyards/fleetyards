@@ -32,7 +32,10 @@
     {
       "name": "hardpoint_cargo",
       "key": "ORIG_890Jump_CargoGrid_Rear",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

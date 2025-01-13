@@ -548,44 +548,9 @@
       "key": "SHLD_GODI_S02_FullStop_SCItem"
     },
     {
-      "name": "hardpoint_esc_pod_upper_left",
-      "ref": null,
-      "key": "AEGS_Retaliator_SCItem_Seat_Bed_Upper_Left"
-    },
-    {
-      "name": "hardpoint_esc_pod_upper_right",
-      "ref": null,
-      "key": "AEGS_Retaliator_SCItem_Seat_Bed_Upper_Right"
-    },
-    {
-      "name": "hardpoint_esc_pod_lower_left",
-      "ref": null,
-      "key": "AEGS_Retaliator_SCItem_Seat_Bed_Lower_Left"
-    },
-    {
-      "name": "hardpoint_esc_pod_lower_right",
-      "ref": null,
-      "key": "AEGS_Retaliator_SCItem_Seat_Bed_Lower_Right"
-    },
-    {
-      "name": "hardpoint_esc_pod_rear_left",
-      "ref": null,
-      "key": "AEGS_Retaliator_SCItem_Seat_Bed_Rear_Left"
-    },
-    {
-      "name": "hardpoint_esc_pod_rear_right",
-      "ref": null,
-      "key": "AEGS_Retaliator_SCItem_Seat_Bed_Rear_Right"
-    },
-    {
       "name": "hardpoint_ground_fuel_port",
       "ref": null,
       "key": "Door_NoRoomConnector_retaliator_Ground_FuelPort"
-    },
-    {
-      "name": "hardpoint_interior_docking_door",
-      "ref": null,
-      "key": "Door_RN_RoomConnector_Breachable_OpenClose_AEGS_Retaliator_Interior_Docking"
     },
     {
       "name": "hardpoint_exterior_docking_door",

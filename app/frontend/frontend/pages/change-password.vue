@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { type PasswordInput } from "@/services/fyApi";

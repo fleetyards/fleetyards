@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import GalleryImage from "@/shared/components/Image/index.vue";
+import LazyImage from "@/shared/components/LazyImage/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -60,7 +60,7 @@ useGallery(".images");
         primary-key="id"
       >
         <template #default="{ record }">
-          <GalleryImage
+          <LazyImage
             :src="record.smallUrl"
             :href="record.url"
             :alt="record.name"
@@ -68,6 +68,7 @@ useGallery(".images");
             :height="record.height"
             :title="record.name"
             :caption="record.caption"
+            shadow
           />
         </template>
       </Grid>

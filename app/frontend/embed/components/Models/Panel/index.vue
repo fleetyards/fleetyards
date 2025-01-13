@@ -21,7 +21,6 @@
           :aria-label="model.name"
           :src="model.media.storeImage.medium"
           :alt="model.name"
-          class="image"
         />
       </PanelImage>
       <Collapsed

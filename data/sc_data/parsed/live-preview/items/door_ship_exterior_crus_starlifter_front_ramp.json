@@ -20,14 +20,12 @@
   },
   "default_loadout": [
     {
-      "name": "IP_Interior",
-      "key": null,
-      "ref": null
-    },
-    {
       "name": "IP_Exterior",
       "key": null,
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

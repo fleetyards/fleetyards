@@ -40,12 +40,18 @@
     {
       "name": "Hardpoint_cargo_1",
       "key": "GAMA_Syulen_CargoGrid_Main",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "Hardpoint_cargo_2",
       "key": "GAMA_Syulen_CargoGrid_Main",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

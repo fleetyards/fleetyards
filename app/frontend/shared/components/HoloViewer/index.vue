@@ -20,10 +20,14 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 type Props = {
   holo: string;
   colored?: boolean;
+  controllable?: boolean;
+  inline?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   colored: false,
+  controllable: true,
+  inline: false,
 });
 
 const { t } = useI18n();
@@ -284,7 +288,13 @@ const loadModel = () => {
 
         const maxValue = Math.max(size.x, size.y);
 
-        camera?.position.set(0, 40, Math.max(maxValue * 1.2, size.y * 2));
+        const cameraAngle = props.inline ? 15 : 30;
+
+        camera?.position.set(
+          0,
+          cameraAngle,
+          Math.max(maxValue * 1.5, size.y * 2),
+        );
 
         camera?.add(setupDirectionalLight(model));
 
@@ -326,8 +336,12 @@ const toggleAutoRotate = () => {
 </script>
 
 <template>
-  <div ref="modelViewer" class="holo-viewer">
-    <BtnGroup class="actions" inline>
+  <div
+    ref="modelViewer"
+    class="holo-viewer"
+    :class="{ 'holo-viewer--inline': inline }"
+  >
+    <BtnGroup v-if="controllable" class="actions" inline>
       <Btn
         v-tooltip="autoRotateTooltip"
         :size="BtnSizesEnum.SMALL"

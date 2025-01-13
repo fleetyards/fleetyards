@@ -10,7 +10,7 @@
       <form v-if="fleet && form" @submit.prevent="handleSubmit(submit)">
         <div class="row">
           <div class="col-lg-12 col-xl-6">
-            <Checkbox
+            <FormCheckbox
               id="primary"
               v-model="form.primary"
               :label="$t('labels.fleet.members.primary')"
@@ -83,7 +83,7 @@ import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
+import FormCheckbox from "@/frontend/core/components/Form/FormCheckbox/index.vue";
 import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
 import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
 import fleetMembersCollection from "@/frontend/api/collections/FleetMembers";

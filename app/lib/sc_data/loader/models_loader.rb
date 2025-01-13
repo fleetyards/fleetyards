@@ -1,14 +1,18 @@
 module ScData
   module Loader
     class ModelsLoader < ::ScData::Loader::BaseLoader
-      def run
+      def all
         Model.where.not(sc_identifier: nil).find_each do |model|
           load_model(model)
         end
+
+        Hardpoint.find_each(&:save) # hack to generate correct group_keys
       end
 
-      def run_single(model)
+      def one(model)
         load_model(model)
+
+        model.hardpoints.find_each(&:save) # hack to generate correct group_keys
       end
 
       def load_model(model)
@@ -16,9 +20,7 @@ module ScData
 
         model_data = load_model_data(model.sc_identifier)
 
-        loadout = model_data.dig("loadout")
-
-        update_loadout(model, loadout)
+        update_loadout(model, model_data)
 
         model.reload
 
@@ -32,7 +34,7 @@ module ScData
         update_params = update_hydrogen_fuel_tanks(model.hardpoints, update_params)
         update_params = update_speeds(model.hardpoints, update_params)
 
-        model.update!(update_params.merge(audit_comment: :sc_loader))
+        model.update!(update_params.merge(update_reason: :sc_data_loader))
       end
 
       private def load_model_data(sc_identifier)

@@ -32,7 +32,10 @@
     {
       "name": "hardpoint_ext_door",
       "key": null,
-      "ref": "d6a5eac5-83ca-4628-9bce-652ac29d0a88"
+      "ref": "d6a5eac5-83ca-4628-9bce-652ac29d0a88",
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

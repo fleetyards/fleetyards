@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import Checkbox from "@/shared/components/base/Checkbox/index.vue";
+import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
@@ -93,7 +93,7 @@ const displayAsList = () => {
     <hr />
     <div v-if="modelsStore.gridView" class="row">
       <div class="col-12">
-        <Checkbox
+        <FormCheckbox
           v-model="modelsStore.detailsVisible"
           name="detailsVisible"
           :label="t('actions.showDetails')"
@@ -112,7 +112,7 @@ const displayAsList = () => {
               :key="option"
               class="col-12 col-md-6"
             >
-              <Checkbox
+              <FormCheckbox
                 v-model="form.columns"
                 :checkbox-value="option"
                 :name="option"

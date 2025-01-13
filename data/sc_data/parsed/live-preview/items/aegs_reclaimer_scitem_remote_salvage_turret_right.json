@@ -26,14 +26,6 @@
       "types": [
         "SalvageHead"
       ]
-    },
-    {
-      "name": "hardpoint_interior",
-      "min_size": "1",
-      "max_size": "4",
-      "types": [
-        "Room"
-      ]
     }
   ],
   "durability": {

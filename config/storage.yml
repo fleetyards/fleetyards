@@ -13,6 +13,7 @@ digitalocean:
   secret_access_key: <%= Rails.application.credentials.s3_secret %>
   bucket: <%= Rails.application.credentials.s3_bucket %>
   region: unused
+  public: true
 
 # Remember not to checkin your GCS keyfile to a repository
 # google:

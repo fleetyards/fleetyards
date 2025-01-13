@@ -9,6 +9,11 @@
         "nullablePrompt": "No Option selected",
         "prompt": "Please select an Option",
         "removeTooltip": "Click to remove Option"
+      },
+      "model": {
+        "baseModel": {
+          "label": "Base Model"
+        }
       }
     }
   }

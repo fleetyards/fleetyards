@@ -3,6 +3,9 @@
 require "test_helper"
 
 class HangarImporterStarship42Test < ActiveSupport::TestCase
+  let(:pledge_response_stub) { File.read("test/fixtures/rsi/300i_pledge_page.html") }
+  let(:matrix_response_stub) { File.read("test/fixtures/rsi/matrix.json") }
+
   let(:loader) { ::Rsi::ModelsLoader.new }
   let(:importer) { ::HangarImporter.new }
   let(:import) { ::Imports::HangarImport.create!(user_id: user.id, import: import_file) }
@@ -71,15 +74,15 @@ class HangarImporterStarship42Test < ActiveSupport::TestCase
       "Dragonfly Yellowjacket",
       "Eclipse",
       "Endeavor",
-      "F7A Hornet",
-      "F7C Hornet",
-      "F7C Hornet Wildfire",
-      "F7C-M Super Hornet",
-      "F7C-M Super Hornet Heartseeker",
-      "F7C-R Hornet Tracker",
-      "F7C-S Hornet Ghost",
-      "F8C",
-      "F8C Lightning Executive-Edition",
+      "F7A Hornet Mk I",
+      "F7C Hornet Mk I",
+      "F7C Hornet Wildfire Mk I",
+      "F7C-M Super Hornet Heartseeker Mk I",
+      "F7C-M Super Hornet Mk I",
+      "F7C-R Hornet Tracker Mk I",
+      "F7C-S Hornet Ghost Mk I",
+      "F8C Lightning",
+      "F8C Lightning Executive Edition",
       "Freelancer",
       "Freelancer DUR",
       "Freelancer MAX",
@@ -151,7 +154,7 @@ class HangarImporterStarship42Test < ActiveSupport::TestCase
       "Reliant Sen",
       "Reliant Tana",
       "Retaliator",
-      "Retaliator Bomber",
+      "Retaliator",
       "SRV",
       "Sabre",
       "Sabre Comet",
@@ -161,8 +164,8 @@ class HangarImporterStarship42Test < ActiveSupport::TestCase
       "Starfarer",
       "Starfarer Gemini",
       "Terrapin",
-      "Ursa Rover",
-      "Ursa Rover Fortuna",
+      "Ursa",
+      "Ursa Fortuna",
       "Valkyrie",
       "Valkyrie Liberator Edition",
       "Vanguard Harbinger",
@@ -179,13 +182,20 @@ class HangarImporterStarship42Test < ActiveSupport::TestCase
   let(:import_file) { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/imports/starship42.json")) }
 
   before do
-    VCR.use_cassette("rsi_models_loader_all") do
-      loader.all
-    end
+    Timecop.freeze("2017-01-01 14:00:00")
+
+    stub_request(:get, %r{\Ahttps://robertsspaceindustries.com/pledge/ships/.*/.*})
+      .to_return(status: 200, body: pledge_response_stub)
+
+    stub_request(:get, %r{\Ahttps://robertsspaceindustries.com/ship-matrix/index.*})
+      .to_return(status: 200, body: matrix_response_stub)
+
+    loader.all
   end
 
   after do
     Import.destroy_all
+    Timecop.return
   end
 
   it "imports all data" do

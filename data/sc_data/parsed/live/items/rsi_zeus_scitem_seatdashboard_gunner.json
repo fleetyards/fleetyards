@@ -18,24 +18,6 @@
       "z": 0.15
     }
   },
-  "loadout": [
-    {
-      "name": "mfd_left_01",
-      "min_size": "1",
-      "max_size": "1",
-      "types": [
-        "Display"
-      ]
-    },
-    {
-      "name": "mfd_left_02",
-      "min_size": "1",
-      "max_size": "1",
-      "types": [
-        "Display"
-      ]
-    }
-  ],
   "durability": {
     "health": 1.0
   },

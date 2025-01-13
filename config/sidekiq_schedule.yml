@@ -30,10 +30,10 @@ production: &production
   metrics_job:
     cron: '0 1 */1 * *' # Daily at 1:00
     class: 'MetricsJob'
-  loaders_locations_job:
-    cron: '0 3 * * 0' # Weekly on Sunday 3:00
-    class: 'Loaders::LocationsJob'
-    queue: 'loaders'
+  cleanup_unattached_check_job:
+    cron: '0 2 */1 * *' # Daily at 2:00
+    class: 'Cleanup::UnattachedCheckJob'
+    queue: 'cleanup'
   loaders_paints_import_job:
     cron: '0 19 * * 0' # Weekly on Sunday 19:00
     class: 'Loaders::PaintsImportJob'

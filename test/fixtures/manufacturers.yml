@@ -17,11 +17,11 @@
 #  rsi_id       :integer
 #
 origin:
-  name: "Origin"
+  name: "Origin Jumpworks"
   slug: "origin"
 
 rsi:
-  name: "RSI"
+  name: "Roberts Space Industries"
   slug: "rsi"
 
 kastak:
@@ -43,3 +43,4 @@ aegis:
 kruger:
   name: "Kruger Intergalactic"
   slug: "kruger"
+  code: "KRI"

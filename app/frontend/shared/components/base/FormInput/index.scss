@@ -9,9 +9,12 @@
 
   &__prefix,
   &__suffix {
+    min-width: 40px;
+    width: auto;
     display: flex;
     align-items: center;
-    padding: 0 6px;
+    justify-content: center;
+    padding: 0 10px;
     background-color: lighten($input-bg, 10%);
     border: 1px solid $input-border;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -27,6 +30,11 @@
     border-left: none;
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
+  }
+
+  &__subline {
+    display: block;
+    margin-top: 5px;
   }
 
   &__clear {
@@ -47,8 +55,7 @@
     position: relative;
     display: flex;
 
-    input,
-    textarea {
+    input {
       display: block;
       width: 100%;
       height: 43px;
@@ -85,21 +92,15 @@
       }
     }
 
-    textarea {
-      height: auto;
-    }
-
     &--with-prefix {
-      input,
-      textarea {
+      input {
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
       }
     }
 
     &--with-suffix {
-      input,
-      textarea {
+      input {
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
       }
@@ -107,15 +108,13 @@
   }
 
   &--clearable {
-    input,
-    textarea {
+    input {
       padding-right: 50px;
     }
   }
 
   &--disabled {
-    input,
-    textarea {
+    input {
       color: darken($input-color, 10%);
       cursor: not-allowed;
       opacity: 0.9;
@@ -123,8 +122,7 @@
   }
 
   &--large {
-    input,
-    textarea {
+    input {
       height: 55px;
       padding: 10px 16px;
       font-size: 19px;
@@ -136,8 +134,7 @@
   &--clean {
     margin-bottom: 0;
 
-    input,
-    textarea {
+    input {
       border: none;
       border-radius: 0;
     }
@@ -168,8 +165,7 @@
   }
 
   &--with-error {
-    input,
-    textarea {
+    input {
       border-color: darken($danger, 15%);
       box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
     }
@@ -184,15 +180,13 @@
 
     .base-input__wrapper {
       &--with-prefix {
-        input,
-        textarea {
+        input {
           border-left: none;
         }
       }
 
       &--with-suffix {
-        input,
-        textarea {
+        input {
           border-right: none;
         }
       }

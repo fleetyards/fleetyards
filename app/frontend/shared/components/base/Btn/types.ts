@@ -1,5 +1,6 @@
 export enum BtnTypesEnum {
   BUTTON = "button",
+  RESET = "reset",
   SUBMIT = "submit",
 }
 

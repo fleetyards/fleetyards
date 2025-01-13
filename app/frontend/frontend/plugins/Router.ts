@@ -57,6 +57,12 @@ const beforeResolve = (to: RouteLocation): FyRedirectRoute | undefined => {
       routeName: "home",
     };
   }
+
+  if (to.meta.access && !sessionStore.hasAccessTo(to.meta.access)) {
+    return {
+      routeName: "403",
+    };
+  }
 };
 
 const router = setupRouter({

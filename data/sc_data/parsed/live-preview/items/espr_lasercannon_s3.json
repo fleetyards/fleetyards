@@ -56,22 +56,34 @@
     {
       "name": "BAR1",
       "key": "ESPR_LaserCannon_Barrel_S3",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "MEC",
       "key": "ESPR_LaserCannon_FiringMechanism_S3",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "POW",
       "key": "ESPR_LaserCannon_PowerArray_S3",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "VEN",
       "key": "ESPR_LaserCannon_Ventilation_S3",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

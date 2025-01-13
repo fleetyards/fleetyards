@@ -13,4 +13,5 @@ export enum HardpointGroupEnum {
     SEAT = 'seat',
     RELAY = 'relay',
     OTHER = 'other',
+    UNKNOWN = 'unknown',
 }

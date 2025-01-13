@@ -11,6 +11,9 @@ module Admin
             properties: {
               hidden: {type: :boolean},
               active: {type: :boolean},
+              scLength: {type: :number},
+              scBeam: {type: :number},
+              scHeight: {type: :number},
               media: {
                 type: :object,
                 properties: {

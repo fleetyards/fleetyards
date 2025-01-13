@@ -56,22 +56,34 @@
     {
       "name": "hardpoint_mav_thruster_left",
       "key": null,
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "hardpoint_mav_thruster_right",
       "key": null,
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "hardpoint_mav_hatch_left",
       "key": null,
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "hardpoint_mav_hatch_right",
       "key": null,
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {
@@ -116,6 +128,7 @@
   "type_data": {
     "thrust_capacity": 199279900.0,
     "fuel_burn_rate_per10_k_newton": 0.125,
-    "thruster_type": "Main"
+    "thruster_type": "Main",
+    "thruster_class": "main"
   }
 }

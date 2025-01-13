@@ -56,22 +56,34 @@
     {
       "name": "BAR1",
       "key": "MXOX_NeutronRepeater_Barrel_S1",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "MEC",
       "key": "MXOX_NeutronRepeater_FiringMechanism_S1",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "POW",
       "key": "MXOX_NeutronRepeater_PowerArray_S1",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "VEN",
       "key": "MXOX_NeutronRepeater_Ventilation_S1",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

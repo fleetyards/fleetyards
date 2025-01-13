@@ -25,11 +25,6 @@
   width: 20px;
 }
 
-.hardpoint-item__loadout {
-  display: flex;
-  width: 100%;
-}
-
 .hardpoint-item__inner {
   position: relative;
   display: flex;
@@ -64,26 +59,5 @@
     height: $panel-border-width;
     background-color: #444;
     content: "";
-  }
-}
-
-.hardpoint-item__size {
-  padding-right: 10px;
-  color: $gray-light;
-  white-space: nowrap;
-}
-
-.hardpoint-item__component-manufacturer {
-  color: $gray-light;
-  font-size: 80%;
-}
-
-.hardpoint-item__component {
-  flex-grow: 1;
-  margin-right: 5px;
-
-  span {
-    color: $gray-light;
-    font-size: 80%;
   }
 }

@@ -554,11 +554,6 @@
           "name": "hardpoint_gimbal_right",
           "ref": null,
           "key": "APAR_BallisticGatling_S4_test_inf_ammo_Dummy"
-        },
-        {
-          "name": "hardpoint_interior",
-          "ref": null,
-          "key": "AEGS_Javelin_Side_Turret_Interior"
         }
       ]
     },
@@ -586,11 +581,6 @@
           "name": "hardpoint_gimbal_right",
           "ref": null,
           "key": "APAR_BallisticGatling_S4_test_inf_ammo_Dummy"
-        },
-        {
-          "name": "hardpoint_interior",
-          "ref": null,
-          "key": "AEGS_Javelin_Side_Turret_Interior"
         }
       ]
     },
@@ -618,11 +608,6 @@
           "name": "hardpoint_gimbal_right",
           "ref": null,
           "key": "APAR_BallisticGatling_S4_test_inf_ammo_Dummy"
-        },
-        {
-          "name": "hardpoint_interior",
-          "ref": null,
-          "key": "AEGS_Javelin_Side_Turret_Interior"
         }
       ]
     },
@@ -650,11 +635,6 @@
           "name": "hardpoint_gimbal_right",
           "ref": null,
           "key": "APAR_BallisticGatling_S4_test_inf_ammo"
-        },
-        {
-          "name": "hardpoint_interior",
-          "ref": null,
-          "key": "AEGS_Javelin_Side_Turret_Interior"
         }
       ]
     },
@@ -682,11 +662,6 @@
           "name": "hardpoint_gimbal_right",
           "ref": null,
           "key": "APAR_BallisticGatling_S4_test_inf_ammo"
-        },
-        {
-          "name": "hardpoint_interior",
-          "ref": null,
-          "key": "AEGS_Javelin_Side_Turret_Interior"
         }
       ]
     },
@@ -714,11 +689,6 @@
           "name": "hardpoint_gimbal_right",
           "ref": null,
           "key": "APAR_BallisticGatling_S4_test_inf_ammo"
-        },
-        {
-          "name": "hardpoint_interior",
-          "ref": null,
-          "key": "AEGS_Javelin_Side_Turret_Interior"
         }
       ]
     },

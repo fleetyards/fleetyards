@@ -40,12 +40,18 @@
     {
       "name": "hardpoint_cargo_grid",
       "key": "TMBL_Cyclone_CargoGrid_Main",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "hardpoint_door_ramp",
       "key": "TMBL_Cyclone_Ramp",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

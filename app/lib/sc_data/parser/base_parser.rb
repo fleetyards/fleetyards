@@ -66,10 +66,10 @@ module ScData
         }
       ]
 
-      def self.run_all(base_folder:, sc_version:, sc_environment:)
-        ::ScData::Parser::ItemsParser.new(base_folder:, sc_version:, sc_environment:).run
-        ::ScData::Parser::ManufacturersParser.new(base_folder:, sc_version:, sc_environment:).run
-        ::ScData::Parser::ModelsParser.new(base_folder:, sc_version:, sc_environment:).run
+      def self.all(base_folder:, sc_version:, sc_environment:)
+        ::ScData::Parser::ItemsParser.new(base_folder:, sc_version:, sc_environment:).all
+        ::ScData::Parser::ManufacturersParser.new(base_folder:, sc_version:, sc_environment:).all
+        ::ScData::Parser::ModelsParser.new(base_folder:, sc_version:, sc_environment:).all
       end
 
       def initialize(base_folder:, sc_version:, sc_environment:)
@@ -131,7 +131,8 @@ module ScData
       private def blacklisted_item_key?(key)
         [
           "camera", "panel", "animated", "light", "decal", "sensor", "button",
-          "handle", "dashboard", "seataccess", "screen", "hud", "helper", "oc"
+          "handle", "dashboard", "seataccess", "screen", "hud", "helper", "oc", "escape", "esc",
+          "barrel", "firingmechanism", "powerarray", "ventilation", "interior", "mfd"
         ].any? do |filter|
           key.downcase.split("_").any? { |part| part == filter }
         end

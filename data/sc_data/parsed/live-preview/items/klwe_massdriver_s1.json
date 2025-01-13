@@ -56,22 +56,34 @@
     {
       "name": "BAR1",
       "key": "KLWE_MassDriver_Barrel_S1",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "MEC",
       "key": "KLWE_MassDriver_FiringMechanism_S1",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "POW",
       "key": "KLWE_MassDriver_PowerArray_S1",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "VEN",
       "key": "KLWE_MassDriver_Ventilation_S1",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

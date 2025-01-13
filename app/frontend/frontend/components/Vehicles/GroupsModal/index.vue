@@ -11,7 +11,7 @@
             :key="group.id"
             class="col-12 col-md-6"
           >
-            <Checkbox
+            <FormCheckbox
               :label="group.name"
               :value="selected(group.id)"
               @input="changeGroup(group)"
@@ -44,7 +44,7 @@ import { Component, Prop, Watch } from "vue-property-decorator";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
-import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
+import FormCheckbox from "@/frontend/core/components/Form/FormCheckbox/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import vehiclesCollection from "@/frontend/api/collections/Vehicles";
 import hangarGroupsCollection from "@/frontend/api/collections/HangarGroups";

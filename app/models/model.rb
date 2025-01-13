@@ -135,7 +135,9 @@ class Model < ApplicationRecord
   include ActionView::Helpers::NumberHelper
   include Routing
 
-  audited on: %i[update], only: %i[
+  attr_accessor :update_reason, :update_reason_description, :author_id
+
+  has_paper_trail on: %i[update], only: %i[
     classification production_status production_note focus pledge_price length beam height mass
     cargo size min_crew max_crew scm_speed max_speed ground_max_speed ground_reverse_speed
     ground_acceleration ground_decceleration scm_speed_acceleration scm_speed_decceleration
@@ -143,7 +145,11 @@ class Model < ApplicationRecord
     store_url hydrogen_fuel_tank_size quantum_fuel_tank_size cargo_holds hydrogen_fuel_tanks
     quantum_fuel_tanks holo sales_page_url top_view side_view angled_view front_view
     angled_view_colored side_view_colored top_view_colored front_view_colored
-  ]
+  ], meta: {
+    author_id: :author_id,
+    reason: :update_reason,
+    reason_description: :update_reason_description
+  }
 
   paginates_per 30
   max_paginates_per 240
@@ -244,7 +250,9 @@ class Model < ApplicationRecord
   accepts_nested_attributes_for :videos, allow_destroy: true
   accepts_nested_attributes_for :docks, allow_destroy: true
 
+  has_one_attached :store_image_new
   mount_uploader :store_image, StoreImageUploader
+
   mount_uploader :rsi_store_image, StoreImageUploader
   mount_uploader :fleetchart_image, FleetchartImageUploader
   mount_uploader :top_view, FleetchartImageUploader
@@ -341,6 +349,16 @@ class Model < ApplicationRecord
       Filter.new(
         category: "classification",
         label: item.humanize,
+        value: item
+      )
+    end
+  end
+
+  def self.dock_size_filters
+    Model.dock_sizes.map do |key, item|
+      Filter.new(
+        category: "dock_size",
+        label: key.humanize,
         value: item
       )
     end

@@ -32,7 +32,10 @@
     {
       "name": "hardpoint_lifesupport",
       "key": "LFSP_TYDT_S00_ComfortAirLite",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

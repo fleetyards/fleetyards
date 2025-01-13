@@ -7,6 +7,8 @@ json.slug model.slug
 json.hidden model.hidden
 json.active model.active
 
+json.base_model_id model.base_model_id
+
 json.availability do
   json.bought_at do
     json.array! model.bought_at, partial: "api/v1/item_prices/base", as: :item_price
@@ -32,7 +34,7 @@ json.crew do
 end
 
 json.description model.description
-json.erkul_identifier(model.erkul_identifier.presence || model.sc_identifier)
+json.erkul_identifier model.erkul_identifier
 json.focus model.focus
 json.has_images model.images_count.positive?
 json.has_modules model.module_hardpoints_count.positive?
@@ -112,7 +114,13 @@ json.metrics do
   json.quantum_fuel_tank_size model.quantum_fuel_tank_size&.to_f
   json.size model.size
   json.size_label model.size&.humanize
+  json.dock_size model.dock_size
 end
+
+json.cargo_holds model.cargo_holds
+json.hydrogen_fuel_tanks model.hydrogen_fuel_tanks
+json.quantum_fuel_tanks model.quantum_fuel_tanks
+
 json.on_sale model.on_sale
 json.pledge_price((model.pledge_price.to_f if model.pledge_price.present?))
 json.pledge_price_label model.pledge_price_label
@@ -123,6 +131,9 @@ json.production_status model.production_status
 json.rsi_id model.rsi_id
 json.rsi_name model.rsi_name
 json.rsi_slug model.rsi_slug
+json.sc_length model.sc_length&.to_f
+json.sc_beam model.sc_beam&.to_f
+json.sc_height model.sc_height&.to_f
 
 json.speeds({})
 json.speeds do
@@ -131,14 +142,14 @@ json.speeds do
   json.ground_max_speed model.ground_max_speed&.to_f
   json.ground_reverse_speed model.ground_reverse_speed&.to_f
   json.max_speed model.max_speed&.to_f
-  json.max_speed_acceleration model.max_speed_acceleration&.to_f
-  json.max_speed_decceleration model.max_speed_decceleration&.to_f
   json.pitch model.pitch&.to_f
+  json.pitch_boosted model.pitch_boosted&.to_f
   json.roll model.roll&.to_f
+  json.roll_boosted model.roll_boosted&.to_f
   json.scm_speed model.scm_speed&.to_f
-  json.scm_speed_acceleration model.scm_speed_acceleration&.to_f
-  json.scm_speed_decceleration model.scm_speed_decceleration&.to_f
+  json.scm_speed_boosted model.scm_speed_boosted&.to_f
   json.yaw model.yaw&.to_f
+  json.yaw_boosted model.yaw_boosted&.to_f
 end
 
 if local_assigns.fetch(:extended, false)

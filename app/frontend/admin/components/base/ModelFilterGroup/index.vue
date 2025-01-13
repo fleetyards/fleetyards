@@ -18,10 +18,12 @@ type Props = {
   multiple?: boolean;
   noLabel?: boolean;
   returnObject?: boolean;
+  translationKey?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: undefined,
+  translationKey: undefined,
   multiple: false,
   noLabel: true,
   returnObject: false,
@@ -87,10 +89,11 @@ const fetch = async (params: FilterGroupParams<Model>) => {
 <template>
   <FilterGroup
     v-model="internalValue"
-    :label="t('labels.selectModel')"
-    :search-label="t('labels.findModel')"
+    :label="translationKey ? undefined : t('labels.selectModel')"
+    :search-label="translationKey ? undefined : t('labels.findModel')"
     :query-fn="fetch"
     :query-response-formatter="formatter"
+    :translation-key="translationKey"
     :name="name"
     :paginated="true"
     :searchable="true"

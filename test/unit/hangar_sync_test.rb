@@ -3,6 +3,9 @@
 require "test_helper"
 
 class HangarSyncTest < ActiveSupport::TestCase
+  let(:pledge_response_stub) { File.read("test/fixtures/rsi/300i_pledge_page.html") }
+  let(:matrix_response_stub) { File.read("test/fixtures/rsi/matrix.json") }
+
   let(:loader) { ::Rsi::ModelsLoader.new }
   let(:user) { users :troi }
   let(:input) { JSON.parse(Rails.root.join("test/fixtures/sync/rsi_hangar.json").read) }
@@ -10,9 +13,19 @@ class HangarSyncTest < ActiveSupport::TestCase
   let(:pirate_ship) { vehicles :pirate_troi }
 
   before do
-    VCR.use_cassette("rsi_models_loader_all") do
-      loader.all
-    end
+    Timecop.freeze("2017-01-01 14:00:00")
+
+    stub_request(:get, %r{\Ahttps://robertsspaceindustries.com/pledge/ships/.*/.*})
+      .to_return(status: 200, body: pledge_response_stub)
+
+    stub_request(:get, %r{\Ahttps://robertsspaceindustries.com/ship-matrix/index.*})
+      .to_return(status: 200, body: matrix_response_stub)
+
+    loader.all
+  end
+
+  after do
+    Timecop.return
   end
 
   test "syncs all data" do
@@ -24,13 +37,13 @@ class HangarSyncTest < ActiveSupport::TestCase
     )
     assert_equal(["3d543e17-aefe-5392-973b-2c2806eb9aa6"], result[:moved_vehicles_to_wanted])
     assert_equal(47, result[:imported_vehicles].size)
-    assert(result[:missing_components].size.zero?)
-    assert(result[:missing_models].size.zero?)
-    assert(result[:imported_components].size.zero?)
-    assert(result[:found_components].size.zero?)
-    assert(result[:missing_component_vehicles].size.zero?)
-    assert(result[:imported_upgrades].size.zero?)
-    assert(result[:found_upgrades].size.zero?)
+    assert_equal([], result[:missing_components])
+    assert_equal([], result[:missing_models])
+    assert_equal([], result[:imported_components])
+    assert_equal([], result[:found_components])
+    assert_equal([], result[:missing_component_vehicles])
+    assert_equal([], result[:imported_upgrades])
+    assert_equal([], result[:found_upgrades])
 
     assert("USS Troi", andromeda_ship.reload.name)
     assert("Contorta", pirate_ship.reload.name)

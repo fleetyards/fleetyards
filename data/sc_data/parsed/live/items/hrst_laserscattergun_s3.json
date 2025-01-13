@@ -56,22 +56,34 @@
     {
       "name": "BAR1",
       "key": "HRST_LaserScatterGun_Barrel_S3",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "MEC",
       "key": "HRST_LaserScatterGun_FiringMechanism_S3",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "POW",
       "key": "HRST_LaserScatterGun_PowerArray_S3",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "VEN",
       "key": "HRST_LaserScatterGun_Ventilation_S3",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

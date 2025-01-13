@@ -48,17 +48,26 @@
     {
       "name": "hardpoint_cargogrid",
       "key": "RSI_Constellation_Taurus_CargoGrid_Main",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "hardpoint_cargowall_right",
       "key": "RSI_Constellation_TA_BayWall_Right",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "hardpoint_cargowall_left",
       "key": "RSI_Constellation_TA_BayWall_Left",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

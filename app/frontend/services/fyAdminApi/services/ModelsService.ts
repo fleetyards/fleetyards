@@ -8,6 +8,7 @@ import type { ModelPaintQuery } from '../models/ModelPaintQuery';
 import type { ModelPaints } from '../models/ModelPaints';
 import type { ModelQuery } from '../models/ModelQuery';
 import type { Models } from '../models/Models';
+import type { ModelUpdateInput } from '../models/ModelUpdateInput';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class ModelsService {
@@ -108,6 +109,35 @@ export class ModelsService {
             path: {
                 'id': id,
             },
+            errors: {
+                401: `unauthorized`,
+                404: `not found`,
+            },
+        });
+    }
+    /**
+     * Update Model
+     * @returns ModelExtended successful
+     * @throws ApiError
+     */
+    public modelUpdate({
+        id,
+        requestBody,
+    }: {
+        /**
+         * Model id
+         */
+        id: string,
+        requestBody: ModelUpdateInput,
+    }): CancelablePromise<ModelExtended> {
+        return this.httpRequest.request({
+            method: 'PUT',
+            url: '/models/{id}',
+            path: {
+                'id': id,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
             errors: {
                 401: `unauthorized`,
                 404: `not found`,

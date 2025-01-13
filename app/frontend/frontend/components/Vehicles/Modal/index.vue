@@ -8,7 +8,7 @@ export default {
 import { useForm } from "vee-validate";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
-import Checkbox from "@/shared/components/base/Checkbox/index.vue";
+import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -120,7 +120,7 @@ const { paintsFilterQuery, paintsFilterFormatter } = useModelQueries(
     <form :id="`vehicle-${vehicle.id}`" @submit.prevent="onSubmit">
       <div class="row">
         <div class="col-12 col-md-6">
-          <Checkbox
+          <FormCheckbox
             v-if="!wishlist"
             v-model="flagship"
             v-bind="flagshipProps"
@@ -147,14 +147,14 @@ const { paintsFilterQuery, paintsFilterFormatter } = useModelQueries(
           <hr class="dark slim-spacer" />
         </div>
         <div class="col-12 col-md-6">
-          <Checkbox
+          <FormCheckbox
             v-if="wishlist"
             v-model="saleNotify"
             v-bind="saleNotifyProps"
             name="saleNotify"
             :label="t('labels.vehicle.saleNotify')"
           />
-          <Checkbox
+          <FormCheckbox
             v-model="publicVisible"
             v-bind="publicVisibleProps"
             name="public"

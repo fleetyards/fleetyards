@@ -40,12 +40,18 @@
     {
       "name": "hardpoint_cargogrid_ramp",
       "key": "ORIG_135c_CargoGrid",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "hardpoint_cargogrid_135",
       "key": "ORIG_100i_CargoGrid",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

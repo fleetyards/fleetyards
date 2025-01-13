@@ -47,6 +47,10 @@ module Api
       @current_ability ||= Ability.new(current_resource_owner)
     end
 
+    def feature_enabled?(feature)
+      Flipper.enabled?(feature, current_resource_owner)
+    end
+
     def access_cookie_valid?
       access_cookie = cookies.encrypted["#{Rails.configuration.cookie_prefix}_ACCESS_CONFIRMED"]
 

@@ -7,7 +7,7 @@ export const routes: RouteRecordRaw[] = [
     name: "settings-profile",
     component: () => import("@/frontend/pages/settings/profile.vue"),
     meta: {
-      title: "settings.index",
+      title: "settings.profile",
       needsAuthentication: true,
     },
   },
@@ -44,6 +44,7 @@ export const routes: RouteRecordRaw[] = [
     name: "settings-security",
     component: () => import("@/frontend/pages/settings/security.vue"),
     meta: {
+      title: "settings.security",
       needsAuthentication: true,
     },
     redirect: {

@@ -2,6 +2,7 @@
 
 json.id model_module.id
 json.name model_module.name
+json.slug model_module.slug
 
 json.description model_module.description
 
@@ -34,6 +35,10 @@ json.production_status model_module.production_status
 json.manufacturer do
   json.null! if model_module.manufacturer.blank?
   json.partial! "api/v1/manufacturers/base", manufacturer: model_module.manufacturer if model_module.manufacturer.present?
+end
+
+json.hardpoints do
+  json.array! model_module.hardpoints, partial: "api/v1/hardpoints/hardpoint", as: :hardpoint
 end
 
 json.partial! "api/shared/dates", record: model_module

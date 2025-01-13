@@ -1077,16 +1077,6 @@
       "key": "Door_Ship_Ext_Dam_RSI_Polaris_Airlock_Exterior_Right"
     },
     {
-      "name": "hardpoint_door_interior_airlock_left",
-      "ref": null,
-      "key": "Door_RN_RoomConnector_Breachable_OpenReverse_Polaris_Airlock_Interior"
-    },
-    {
-      "name": "hardpoint_door_interior_airlock_right",
-      "ref": null,
-      "key": "Door_RN_RoomConnector_Breachable_OpenReverse_Polaris_Airlock_Interior"
-    },
-    {
       "name": "hardpoint_dockingcollar_left",
       "ref": null,
       "key": null
@@ -1192,26 +1182,6 @@
       "name": "hardpoint_dummy_power_state",
       "ref": null,
       "key": "RSI_Polaris_Dummy_Power_Checker"
-    },
-    {
-      "name": "hardpoint_remote_turret_interior_tractor",
-      "ref": null,
-      "key": "RSI_Polaris_SCItem_Remote_Turret_Tractor",
-      "loadout": [
-        {
-          "name": "turret_left",
-          "ref": "8c16ee3d-78fb-4fef-a369-b3d42952ec33",
-          "key": null
-        }
-      ]
-    },
-    {
-      "name": "hardpoint_console_interior_tractor",
-      "ref": null,
-      "key": "RSI_Polaris_Tractor_Console",
-      "loadout": [
-
-      ]
     },
     {
       "name": "hardpoint_controller_weapon_tractor_turret",

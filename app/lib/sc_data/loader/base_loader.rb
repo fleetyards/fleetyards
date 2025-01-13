@@ -1,19 +1,21 @@
 module ScData
   module Loader
     class BaseLoader
-      attr_accessor :sc_environment
+      attr_accessor :sc_version, :sc_environment
 
-      def self.run_all(sc_environment: nil)
-        sc_environment ||= Rails.configuration.app.sc_data.sc_environment
+      def self.all(sc_environment: nil, sc_version: nil)
+        sc_version ||= Rails.configuration.app.sc_data[:version]
+        sc_environment ||= Rails.configuration.app.sc_data[:environment]
 
-        ::ScData::Loader::ManufacturersLoader.new(sc_environment:).run
-        ::ScData::Loader::ItemsLoader.new(sc_environment:).run
-        ::ScData::Loader::ModelsLoader.new(sc_environment:).run
-        ::ScData::Loader::ModelModulesLoader.new(sc_environment:).run
+        ::ScData::Loader::ManufacturersLoader.new(sc_environment:, sc_version:).all
+        ::ScData::Loader::ItemsLoader.new(sc_environment:, sc_version:).all
+        ::ScData::Loader::ModelsLoader.new(sc_environment:, sc_version:).all
+        ::ScData::Loader::ModelModulesLoader.new(sc_environment:, sc_version:).all
       end
 
-      def initialize(sc_environment: nil)
-        self.sc_environment = sc_environment || Rails.configuration.app.sc_data.sc_environment
+      def initialize(sc_environment: nil, sc_version: nil)
+        self.sc_environment = sc_environment || Rails.configuration.app.sc_data[:environment]
+        self.sc_version = sc_version || Rails.configuration.app.sc_data[:version]
       end
 
       def load_item(path)
@@ -61,36 +63,43 @@ module ScData
         end.flatten
       end
 
-      private def update_loadout(parent, loadout, default_loadout = nil, cleanup: true)
+      private def update_loadout(parent, loadout, cleanup: true)
         hardpoint_ids = []
 
-        loadout.each do |item|
+        (loadout["loadout"] || loadout["default_loadout"]).each do |item|
+          default_loadout = loadout["default_loadout"]&.find { |dl| dl["name"] == item["name"] }
+
+          next if loadout_name_blacklisted?(item["name"], default_loadout)
+
           hardpoint = parent.hardpoints.find_or_initialize_by(sc_name: item["name"].downcase)
 
           if item["key"].blank? && default_loadout.present?
-            dl = default_loadout.find { |dl| dl["name"] == item["name"] }
-            item["key"] = dl["key"] if dl.present?
-            item["ref"] = dl["ref"] if dl.present?
+            item["key"] = default_loadout["key"]
+            item["ref"] = default_loadout["ref"]
+            item["default_loadout"] = default_loadout["default_loadout"] if default_loadout["default_loadout"].present?
           end
 
           component = if item["key"].present?
-            Component.find_by(sc_key: item["key"]&.downcase)
+            Component.find_by(sc_key: item["key"]&.downcase, version: sc_version)
           elsif item["ref"].present?
-            Component.find_by(sc_ref: item["ref"])
+            Component.find_by(sc_ref: item["ref"], version: sc_version)
           end
 
           if component.present?
             if component.hidden?
-              hardpoint_data = component.hardpoints.filter_map do |hp|
-                next if hp.component.blank?
+              hardpoint_data = {
+                "loadout" => component.hardpoints.filter_map do |hp|
+                               next if hp.component.blank?
+                               next if loadout_name_blacklisted?(hp.component.sc_key)
 
-                {
-                  "name" => "#{item["name"]}-#{hp.sc_name}",
-                  "key" => hp.component.sc_key
-                }
-              end
+                               {
+                                 "name" => "#{item["name"]}-#{hp.sc_name}",
+                                 "key" => hp.component.sc_key
+                               }
+                             end
+              }
 
-              hardpoint_ids += update_loadout(parent, hardpoint_data, nil, cleanup: false) if hardpoint_data.present?
+              hardpoint_ids += update_loadout(parent, hardpoint_data, cleanup: false) if hardpoint_data["loadout"].present?
             else
               hardpoint.update!(
                 source: :game_files,
@@ -108,8 +117,10 @@ module ScData
             )
           end
 
-          if item["loadout"].present?
-            update_loadout(hardpoint, item["loadout"]) if hardpoint.persisted?
+          p item
+          if item["loadout"].present? || item["default_loadout"].present?
+            p item
+            update_loadout(hardpoint, item) if hardpoint.persisted?
           end
 
           hardpoint_ids << hardpoint.id if hardpoint.persisted?
@@ -118,6 +129,20 @@ module ScData
         parent.hardpoints.where(source: :game_files).where.not(id: hardpoint_ids).destroy_all if cleanup
 
         hardpoint_ids
+      end
+
+      private def loadout_name_blacklisted?(name, default_loadout = nil)
+        blacklist = [
+          "aegs_retaliator_door_cap_rear", "aegs_retaliator_door_cap_front", # Retaliator door caps
+          "rsi_constellation_ph_baywall_right", "rsi_constellation_ph_baywall_left", # Constellation Pheonix bay walls
+          "rsi_constellation_base_baywall_right", "rsi_constellation_base_baywall_left" # Constellation Base bay walls
+        ]
+
+        if default_loadout.present?
+          return blacklist.include?(default_loadout["key"]&.downcase) || blacklist.include?(default_loadout["ref"])
+        end
+
+        blacklist.include?(name&.downcase)
       end
     end
   end

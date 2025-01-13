@@ -43,4 +43,5 @@ jeanluc:
   normalized_email: "jeanluc@star.fleet"
   username: "jeanluc"
   normalized_username: "jeanluc"
+  super_admin: true
   <<: *DEFAULTS

@@ -536,162 +536,258 @@
     {
       "name": "$slot_a1",
       "key": "CRUS_game_chess_1_rook_a",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_b1",
       "key": "CRUS_game_chess_1_knight_a",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_c1",
       "key": "CRUS_game_chess_1_bishop_a",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_d1",
       "key": "CRUS_game_chess_1_queen_a",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_e1",
       "key": "CRUS_game_chess_1_king_a",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_f1",
       "key": "CRUS_game_chess_1_bishop_a",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_g1",
       "key": "CRUS_game_chess_1_knight_a",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_h1",
       "key": "CRUS_game_chess_1_rook_a",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_a8",
       "key": "CRUS_game_chess_1_rook_b",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_b8",
       "key": "CRUS_game_chess_1_knight_b",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_c8",
       "key": "CRUS_game_chess_1_bishop_b",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_d8",
       "key": "CRUS_game_chess_1_queen_b",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_e8",
       "key": "CRUS_game_chess_1_king_b",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_f8",
       "key": "CRUS_game_chess_1_bishop_b",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_g8",
       "key": "CRUS_game_chess_1_knight_b",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_h8",
       "key": "CRUS_game_chess_1_rook_b",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_a2",
       "key": "CRUS_game_chess_1_pawn_a",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_b2",
       "key": "CRUS_game_chess_1_pawn_a",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_c2",
       "key": "CRUS_game_chess_1_pawn_a",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_d2",
       "key": "CRUS_game_chess_1_pawn_a",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_e2",
       "key": "CRUS_game_chess_1_pawn_a",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_f2",
       "key": "CRUS_game_chess_1_pawn_a",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_g2",
       "key": "CRUS_game_chess_1_pawn_a",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_h2",
       "key": "CRUS_game_chess_1_pawn_a",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_a7",
       "key": "CRUS_game_chess_1_pawn_b",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_b7",
       "key": "CRUS_game_chess_1_pawn_b",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_c7",
       "key": "CRUS_game_chess_1_pawn_b",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_d7",
       "key": "CRUS_game_chess_1_pawn_b",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_e7",
       "key": "CRUS_game_chess_1_pawn_b",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_f7",
       "key": "CRUS_game_chess_1_pawn_b",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_g7",
       "key": "CRUS_game_chess_1_pawn_b",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_h7",
       "key": "CRUS_game_chess_1_pawn_b",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "power_connection": {

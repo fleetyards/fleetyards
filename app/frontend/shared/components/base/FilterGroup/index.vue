@@ -89,7 +89,7 @@ const props = withDefaults(defineProps<Props>(), {
   bigIcon: false,
 });
 
-const { t } = useI18n();
+const { t, tExists } = useI18n();
 
 const id = ref<string>(uuidv4());
 
@@ -112,10 +112,18 @@ const prompt = computed(() => {
 
   if (props.translationKey) {
     if (props.nullable) {
-      return t(`.labels.filterGroup.${props.translationKey}.nullablePrompt`);
+      if (tExists(`filterGroup.${props.translationKey}.nullablePrompt`)) {
+        return t(`filterGroup.${props.translationKey}.nullablePrompt`);
+      } else {
+        return t(`filterGroup.labels.nullablePrompt`);
+      }
     }
 
-    return t(`labels.filterGroup.${props.translationKey}.prompt`);
+    if (tExists(`filterGroup.${props.translationKey}.prompt`)) {
+      return t(`filterGroup.${props.translationKey}.prompt`);
+    } else {
+      return t(`filterGroup.labels.prompt`);
+    }
   }
 
   if (props.noLabel && props.label) {
@@ -199,10 +207,10 @@ const innerLabel = computed(() => {
   }
 
   if (props.translationKey) {
-    return t(`labels.filterGroup.${props.translationKey}.label`);
+    return t(`filterGroup.${props.translationKey}.label`);
   }
 
-  return t(`labels.filterGroup.${props.name}.label`);
+  return t(`filterGroup.${props.name}.label`);
 });
 
 const labelFor = computed(() => {

@@ -3,6 +3,8 @@
 json.id model_paint.id
 json.name model_paint.name
 json.slug model_paint.slug
+json.hidden model_paint.hidden
+json.active model_paint.active
 
 json.availability do
   json.bought_at do
@@ -38,7 +40,7 @@ json.media do
 end
 
 json.model do
-  json.partial! "api/v1/models/base", model: model_paint.model
+  json.partial! "admin/api/v1/models/base", model: model_paint.model
 end
 
 json.name_with_model model_paint.name_with_model

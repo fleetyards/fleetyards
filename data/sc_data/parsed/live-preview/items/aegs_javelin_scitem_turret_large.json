@@ -56,22 +56,34 @@
     {
       "name": "turret_left",
       "key": "BEHR_LaserCannon_S9",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "turret_right",
       "key": "BEHR_LaserCannon_S9",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "turret_right_top",
       "key": "BEHR_LaserCannon_S9",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "turret_left_top",
       "key": "BEHR_LaserCannon_S9",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

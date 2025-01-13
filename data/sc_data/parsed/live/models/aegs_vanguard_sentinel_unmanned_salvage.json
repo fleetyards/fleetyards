@@ -51,16 +51,6 @@
       "key": "Controller_Door"
     },
     {
-      "name": "hardpoint_esc_pod_upper",
-      "ref": null,
-      "key": null
-    },
-    {
-      "name": "hardpoint_esc_pod_lower",
-      "ref": null,
-      "key": null
-    },
-    {
       "name": "hardpoint_selfdestruct",
       "ref": null,
       "key": "VHCL_SelfDestruct_30s"
@@ -479,16 +469,6 @@
       "name": "hardpoint_lifesupport",
       "ref": null,
       "key": "LFSP_TYDT_S01_ComfortAir"
-    },
-    {
-      "name": "hardpoint_esc_pod_upper_sentinel",
-      "ref": null,
-      "key": "AEGS_Vanguard_SCItem_Seat_Bed_Upper_Sentinel"
-    },
-    {
-      "name": "hardpoint_esc_pod_lower_sentinel",
-      "ref": null,
-      "key": "AEGS_Vanguard_SCItem_Seat_Bed_Lower_Sentinel"
     },
     {
       "name": "hardpoint_weapon_emp",

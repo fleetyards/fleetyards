@@ -5,45 +5,73 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { useField } from "vee-validate";
 import { v4 as uuidv4 } from "uuid";
+import {
+  InputTypesEnum,
+  InputVariantsEnum,
+  InputSizesEnum,
+  InputAlignmentsEnum,
+} from "@/shared/components/base/FormInput/types";
 import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
-  id: string;
+  name: string;
   icon?: string;
-  modelValue?: string;
-  error?: string;
+  modelValue?: string | number;
+  type?: InputTypesEnum;
   translationKey?: string;
   autofocus?: boolean;
+  autocomplete?: string;
   hideLabelOnEmpty?: boolean;
   label?: string;
+  min?: number;
+  max?: number;
   noLabel?: boolean;
   noPlaceholder?: boolean;
   placeholder?: string;
-  clearable?: boolean;
   disabled?: boolean;
+  inline?: boolean;
+  variant?: InputVariantsEnum;
+  size?: InputSizesEnum;
+  alignment?: InputAlignmentsEnum;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   icon: undefined,
   modelValue: undefined,
-  error: undefined,
+  type: InputTypesEnum.TEXT,
   translationKey: undefined,
   autofocus: false,
+  autocomplete: undefined,
   hideLabelOnEmpty: false,
   label: undefined,
+  min: undefined,
+  max: undefined,
   noLabel: false,
   noPlaceholder: false,
   placeholder: undefined,
-  clearable: false,
   disabled: false,
+  inline: false,
+  variant: InputVariantsEnum.DEFAULT,
+  size: InputSizesEnum.DEFAULT,
+  alignment: InputAlignmentsEnum.LEFT,
 });
 
-const inputValue = ref<string | undefined>();
-
-const uuid = ref(`${props.id}-${uuidv4()}`);
+watch(
+  () => props.modelValue,
+  () => {
+    resetField({
+      value: props.modelValue,
+    });
+  },
+);
 
 const { t } = useI18n();
+
+const inputElement = ref<HTMLTextAreaElement | undefined>();
+
+const id = ref(`${props.name}-${uuidv4()}`);
 
 const innerLabel = computed(() => {
   if (props.label) {
@@ -54,7 +82,24 @@ const innerLabel = computed(() => {
     return t(`labels.${props.translationKey}`);
   }
 
-  return t(`labels.${props.id}`);
+  return t(`labels.${props.name}`);
+});
+
+const {
+  value: inputValue,
+  errorMessage,
+  errors,
+  handleChange,
+  handleBlur,
+  handleReset,
+  resetField,
+} = useField(props.name, undefined, {
+  initialValue: props.modelValue,
+  label: innerLabel.value,
+});
+
+const hasErrors = computed(() => {
+  return errors.value.length;
 });
 
 const innerPlaceholder = computed(() => {
@@ -70,46 +115,40 @@ const innerPlaceholder = computed(() => {
     return t(`placeholders.${props.translationKey}`);
   }
 
-  return t(`placeholders.${props.id}`);
+  return t(`placeholders.${props.name}`);
 });
 
 const cssClasses = computed(() => {
   return {
-    "has-error has-feedback": props.error,
-    "form-input-clearable": props.clearable,
+    "base-textarea--with-error": hasErrors.value,
+    "base-textarea--large": props.size === InputSizesEnum.LARGE,
+    "base-textarea--clean": props.variant === InputVariantsEnum.CLEAN,
+    "base-textarea--disabled": props.disabled,
+    "base-textarea--inline": props.inline,
+    "base-textarea--align-left": props.alignment === InputAlignmentsEnum.LEFT,
+    "base-textarea--align-right": props.alignment === InputAlignmentsEnum.RIGHT,
+    [`base-textarea--${props.type}`]: true,
   };
 });
 
-watch(
-  () => props.modelValue,
-  () => {
-    inputValue.value = props.modelValue;
-  },
-);
-
-const inputElement = ref<HTMLInputElement | null>(null);
-
 onMounted(() => {
-  uuid.value = `${props.id}-${uuidv4()}`;
-  inputValue.value = props.modelValue;
+  id.value = `${props.name}-${uuidv4()}`;
 
   if (props.autofocus) {
     inputElement.value?.focus();
   }
 });
 
-const emit = defineEmits(["update:modelValue", "clear"]);
-
-const update = () => {
-  emit("update:modelValue", inputValue.value);
-};
+const emit = defineEmits(["update:modelValue"]);
 
 const clear = () => {
-  inputValue.value = undefined;
+  handleReset();
+  emit("update:modelValue", undefined);
+};
 
-  update();
-
-  emit("clear");
+const onChange = (event: Event) => {
+  handleChange(event);
+  emit("update:modelValue", inputValue.value);
 };
 
 const setFocus = () => {
@@ -123,7 +162,7 @@ defineExpose({
 </script>
 
 <template>
-  <div :key="uuid" class="form-input" :class="cssClasses">
+  <div :key="id" class="base-textarea" :class="cssClasses">
     <transition name="fade">
       <label
         v-show="!hideLabelOnEmpty || inputValue"
@@ -134,21 +173,29 @@ defineExpose({
         {{ innerLabel }}
       </label>
     </transition>
-    <div class="form-input-wrapper">
+    <div class="base-textarea__wrapper">
       <textarea
-        :id="uuid"
-        v-model="inputValue"
-        v-tooltip.right="error"
+        :id="id"
+        ref="inputElement"
+        v-tooltip.right="hasErrors && errorMessage"
+        :value="inputValue"
         :placeholder="innerPlaceholder"
-        :data-test="`input-${id}`"
+        :type="type"
+        :data-test="`input-${name}`"
         :aria-label="innerLabel"
         :autofocus="autofocus"
+        :autocomplete="autocomplete"
         :disabled="disabled"
-        :name="id"
-        :rows="inputValue ? 10 : 5"
-        @input="update"
-        @blur="update"
+        :name="name"
+        :min="min"
+        :max="max"
+        @input="onChange"
+        @blur="handleBlur"
       />
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+@import "index";
+</style>

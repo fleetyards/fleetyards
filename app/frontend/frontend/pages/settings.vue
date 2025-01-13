@@ -1,87 +1,40 @@
 <script lang="ts" setup>
+import TabNavView from "@/shared/components/TabNavView/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { routes as settingsRoutes } from "./settings/routes";
+import { type RouteRecordName } from "vue-router";
 
 const { t } = useI18n();
+
+const route = useRoute();
+
+const activeRoute = (routeName?: RouteRecordName) => {
+  return routeName === route.name;
+};
 </script>
 
 <template>
-  <div class="row">
-    <div class="col-12 col-md-3 order-md-12">
-      <ul class="tabs">
-        <router-link
-          v-slot="{ href: linkHref, navigate, isActive }"
-          :to="{ name: 'settings-profile' }"
-          :custom="true"
+  <TabNavView>
+    <template #nav>
+      <router-link
+        v-for="settingsRoute in settingsRoutes"
+        :key="settingsRoute.name"
+        v-slot="{ href: linkHref, navigate }"
+        :to="{ name: settingsRoute.name }"
+        :custom="true"
+      >
+        <li
+          role="link"
+          :class="{ active: activeRoute(settingsRoute.name) }"
+          @click="navigate"
+          @keypress.enter="() => navigate"
         >
-          <li
-            role="link"
-            :class="{ active: isActive }"
-            @click="navigate"
-            @keypress.enter="() => navigate"
-          >
-            <a :href="linkHref">{{ t("nav.settings.profile") }}</a>
-          </li>
-        </router-link>
-        <router-link
-          v-slot="{ href: linkHref, navigate, isActive }"
-          :to="{ name: 'settings-account' }"
-          :custom="true"
-        >
-          <li
-            role="link"
-            :class="{ active: isActive }"
-            @click="navigate"
-            @keypress.enter="() => navigate"
-          >
-            <a :href="linkHref">{{ t("nav.settings.account") }}</a>
-          </li>
-        </router-link>
-        <router-link
-          v-slot="{ href: linkHref, navigate, isActive }"
-          :to="{ name: 'settings-security' }"
-          :custom="true"
-        >
-          <li
-            role="link"
-            :class="{ active: isActive }"
-            @click="navigate"
-            @keypress.enter="() => navigate"
-          >
-            <a :href="linkHref">{{ t("nav.settings.security") }}</a>
-          </li>
-        </router-link>
-        <router-link
-          v-slot="{ href: linkHref, navigate, isActive }"
-          :to="{ name: 'settings-notifications' }"
-          :custom="true"
-        >
-          <li
-            role="link"
-            :class="{ active: isActive }"
-            @click="navigate"
-            @keypress.enter="() => navigate"
-          >
-            <a :href="linkHref">{{ t("nav.settings.notifications") }}</a>
-          </li>
-        </router-link>
-        <router-link
-          v-slot="{ href: linkHref, navigate, isActive }"
-          :to="{ name: 'settings-hangar' }"
-          :custom="true"
-        >
-          <li
-            role="link"
-            :class="{ active: isActive }"
-            @click="navigate"
-            @keypress.enter="() => navigate"
-          >
-            <a :href="linkHref">{{ t("nav.settings.hangar") }}</a>
-          </li>
-        </router-link>
-      </ul>
-    </div>
-    <div class="col-12 col-md-9 order-md-1">
+          <a :href="linkHref">{{ t(`nav.${settingsRoute.meta?.title}`) }}</a>
+        </li>
+      </router-link>
+    </template>
+    <template #content>
       <router-view />
-    </div>
-  </div>
+    </template>
+  </TabNavView>
 </template>

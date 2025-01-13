@@ -1,0 +1,40 @@
+.model-panel {
+  &--add-to-hangar-button {
+    font-size: 18px;
+
+    > :first-child {
+      font-size: 18px;
+    }
+  }
+
+  .model-panel-body {
+    flex: 1;
+  }
+
+  &-on-sale {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $primary;
+    border-radius: 0 10px 10px 0;
+
+    i,
+    svg {
+      color: #fff;
+    }
+  }
+
+  &-production-status {
+    padding: 4px 6px;
+    color: $gray-light;
+    font-size: 75%;
+    line-height: 1;
+    text-align: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.6);
+  }
+}

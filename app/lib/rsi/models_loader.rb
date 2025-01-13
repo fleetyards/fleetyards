@@ -2,12 +2,11 @@ module Rsi
   class ModelsLoader < ::Rsi::BaseLoader
     REFRENCE_MODEL_PRICE = 60
 
-    attr_accessor :json_file_path, :vat_percent, :hardpoints_loader, :manufacturers_loader, :currency_factor
+    attr_accessor :vat_percent, :hardpoints_loader, :manufacturers_loader, :currency_factor
 
     def initialize(options = {})
       super
 
-      self.json_file_path = "public/models.json"
       self.vat_percent = options[:vat_percent] || 19
       self.manufacturers_loader = ::Rsi::ManufacturersLoader.new
       self.hardpoints_loader = ::Rsi::HardpointsLoader.new
@@ -16,7 +15,7 @@ module Rsi
     def all
       setup_currency_factor
 
-      models = load_models
+      models = load_data
 
       models.each do |data|
         next if blocked(data["id"])
@@ -30,7 +29,7 @@ module Rsi
     def one(rsi_id)
       setup_currency_factor
 
-      models = load_models
+      models = load_data
 
       model_data = models.find { |model| model["id"].to_s == rsi_id.to_s }
 
@@ -42,8 +41,6 @@ module Rsi
     end
 
     def setup_currency_factor
-      return if prevent_extra_server_requests?
-
       response = fetch_remote("#{base_url}/pledge/ships/origin-300/300i?#{Time.zone.now.to_i}")
 
       return unless response.success?
@@ -60,24 +57,6 @@ module Rsi
       self.currency_factor = prices.first / REFRENCE_MODEL_PRICE if prices.present?
     end
 
-    def load_models
-      return JSON.parse(File.read(json_file_path))["data"] if prevent_extra_server_requests? && File.exist?(json_file_path)
-
-      response = fetch_remote("#{base_url}/ship-matrix/index?#{Time.zone.now.to_i}")
-
-      return [] unless response.success?
-
-      begin
-        model_data = JSON.parse(response.body)
-        File.write(json_file_path, model_data.to_json)
-        model_data["data"]
-      rescue JSON::ParserError => e
-        Sentry.capture_exception(e)
-        Rails.logger.error "Model Data could not be parsed: #{response.body}"
-        []
-      end
-    end
-
     def sync_model(data)
       model_for_paint = find_model_for_paint(data)
       model = if model_for_paint.present?
@@ -86,11 +65,11 @@ module Rsi
         create_or_update_model(data)
       end
 
-      load_buying_options(model) unless prevent_extra_server_requests?
+      load_buying_options(model)
 
       unless paint?(data)
-        manufacturers_loader.run(data["manufacturer"], model)
-        hardpoints_loader.run(data["compiled"], model)
+        model.manufacturer = manufacturers_loader.one(data["manufacturer"]) if model.manufacturer.blank?
+        hardpoints_loader.all(model, data["compiled"])
       end
 
       model.hidden = false
@@ -99,9 +78,7 @@ module Rsi
     end
 
     def load_buying_options(model)
-      return if prevent_extra_server_requests?
-
-      sleep 5
+      sleep 5 unless Rails.env.test?
 
       response = fetch_remote("#{base_url}#{model.store_url}?#{Time.zone.now.to_i}")
 
@@ -150,6 +127,7 @@ module Rsi
 
         model = Model.find_by(sc_identifier: sc_identifier) if sc_identifier.present?
       end
+      model = Model.find_by(rsi_id: nil, name: strip_name(data["name"]), sc_identifier: nil) if model.blank?
       model = Model.create!(rsi_id: data["id"], name: strip_name(data["name"])) if model.blank?
 
       updates = {
@@ -255,7 +233,7 @@ module Rsi
       store_image_url = media_data["images"]["store_hub_large"]
       store_image_url = "#{base_url}#{store_image_url}" unless store_image_url.starts_with?("https")
 
-      return if store_image_url.blank? || prevent_extra_server_requests?
+      return if store_image_url.blank?
 
       image_url = store_image_url.gsub("store_hub_large", "source")
 

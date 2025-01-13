@@ -9,6 +9,7 @@ module Admin
 
           schema({
             properties: {
+              baseModelId: {type: :string, format: :uuid},
               dockCounts: {
                 type: :array,
                 items: {"$ref": "#/components/schemas/DockCount"}
@@ -18,7 +19,8 @@ module Admin
                 properties: {
                   self: {type: :string, format: :uri},
                   frontend: {type: :string, format: :uri}
-                }
+                },
+                additionalProperties: false
               }
             },
             required: %w[dockCounts links]

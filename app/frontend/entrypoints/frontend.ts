@@ -10,7 +10,10 @@ import FloatingVue from "floating-vue";
 import "floating-vue/dist/style.css";
 import VueLazyload from "vue-lazyload";
 import veeValidate from "@/frontend/plugins/VeeValidate";
-import { VueQueryPlugin } from "@tanstack/vue-query";
+import {
+  VueQueryPlugin,
+  type VueQueryPluginOptions,
+} from "@tanstack/vue-query";
 
 document.addEventListener("DOMContentLoaded", () => {
   if ("serviceWorker" in navigator) {
@@ -39,7 +42,18 @@ pinia.use(piniaPluginPersistedstate);
 
 const app = createApp(App);
 
-app.use(VueQueryPlugin);
+const vueQueryPluginOptions: VueQueryPluginOptions = {
+  queryClientConfig: {
+    defaultOptions: {
+      queries: {
+        retry: 1,
+        refetchOnWindowFocus: false,
+      },
+    },
+  },
+};
+
+app.use(VueQueryPlugin, vueQueryPluginOptions);
 app.use(router);
 app.use(pinia);
 app.use(sentry, router);

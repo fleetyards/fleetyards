@@ -9,12 +9,21 @@ module Shared
         schema({
           type: :object,
           properties: {
-            dimensions: {"$ref": "#/components/schemas/Dimension"},
-            minContainer: {"$ref": "#/components/schemas/Dimension"},
-            maxContainer: {"$ref": "#/components/schemas/Dimension"}
+            dimensions: {"$ref": "#/components/schemas/CargoHoldDimension"},
+            capacity: {type: :integer},
+            maxContainerSize: {"$ref": "#/components/schemas/CargoHoldContainerSize"},
+            limits: {
+              type: :object,
+              properties: {
+                min: {"$ref": "#/components/schemas/CargoHoldLimit"},
+                max: {"$ref": "#/components/schemas/CargoHoldLimit"}
+              },
+              additionalProperties: false,
+              required: %w[min]
+            }
           },
           additionalProperties: false,
-          required: %w[dimensions minContainer]
+          required: %w[dimensions capacity maxContainerSize limits]
         })
       end
     end

@@ -11,6 +11,7 @@ resources :models, param: :slug, only: %i[index show] do
     get "production-states" => "models#production_states"
     get :focus
     get :sizes
+    get "dock-sizes" => "models#dock_sizes"
     get "cargo-options" => "models#cargo_options"
     get :embed
   end

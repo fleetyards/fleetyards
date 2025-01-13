@@ -32,7 +32,10 @@
     {
       "name": "turret_centre",
       "key": "Bengal_BallisticGatling_S6",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

@@ -32,7 +32,10 @@
     {
       "name": "Cargo_Grid",
       "key": "ARGO_SRV_CargoGrid_Main",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

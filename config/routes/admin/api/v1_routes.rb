@@ -15,7 +15,7 @@ v1_admin_api_routes = lambda do
     end
   end
 
-  resources :models, only: %i[index show] do
+  resources :models, only: %i[index show create update destroy] do
     collection do
       get :options
       get "production-states" => "models#production_states"

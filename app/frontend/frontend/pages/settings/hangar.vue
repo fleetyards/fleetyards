@@ -9,7 +9,7 @@ import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useSessionStore } from "@/frontend/stores/session";
 import { type UserUpdateInput } from "@/services/fyApi";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import Checkbox from "@/shared/components/base/Checkbox/index.vue";
+import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useNoty } from "@/shared/composables/useNoty";
@@ -98,7 +98,7 @@ const onSubmit = handleSubmit(async (values) => {
     </div>
     <div class="row">
       <div class="col-12 col-md-6">
-        <Checkbox
+        <FormCheckbox
           v-model="publicHangar"
           v-bind="publicHangarProps"
           name="publicHangar"
@@ -106,7 +106,7 @@ const onSubmit = handleSubmit(async (values) => {
         />
       </div>
       <div class="col-12 col-md-6">
-        <Checkbox
+        <FormCheckbox
           v-model="publicHangarLoaners"
           name="publicHangarLoaners"
           v-bind="publicHangarLoanersProps"
@@ -114,7 +114,7 @@ const onSubmit = handleSubmit(async (values) => {
         />
       </div>
       <div class="col-12 col-md-6">
-        <Checkbox
+        <FormCheckbox
           v-model="publicWishlist"
           name="publicWishlist"
           v-bind="publicWishlistProps"
@@ -122,7 +122,7 @@ const onSubmit = handleSubmit(async (values) => {
         />
       </div>
       <div class="col-12 col-md-6">
-        <Checkbox
+        <FormCheckbox
           v-model="hideOwner"
           name="hideOwner"
           v-bind="hideOwnerProps"

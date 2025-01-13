@@ -169,6 +169,15 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "/403/",
+    name: "403",
+    component: () => import("@/admin/pages/403.vue"),
+    meta: {
+      title: "notAuthorized",
+      backgroundImage: "bg-404",
+    },
+  },
+  {
     path: "/:pathMatch(.*)*",
     component: () => import("@/frontend/pages/404.vue"),
     meta: {

@@ -86,26 +86,6 @@
       "key": "MISC_Freelancer_Base_SCItem_SeatAccess_Passenger_Right"
     },
     {
-      "name": "hardpoint_esc_pod_upper_left",
-      "ref": null,
-      "key": "MISC_Freelancer_SCItem_Seat_Bed_Upper_Left"
-    },
-    {
-      "name": "hardpoint_esc_pod_upper_right",
-      "ref": null,
-      "key": "MISC_Freelancer_SCItem_Seat_Bed_Upper_Right"
-    },
-    {
-      "name": "hardpoint_esc_pod_lower_left",
-      "ref": null,
-      "key": "MISC_Freelancer_SCItem_Seat_Bed_Lower_Left"
-    },
-    {
-      "name": "hardpoint_esc_pod_lower_right",
-      "ref": null,
-      "key": "MISC_Freelancer_SCItem_Seat_Bed_Lower_Right"
-    },
-    {
       "name": "hardpoint_controller_door",
       "ref": null,
       "key": "Controller_Door"

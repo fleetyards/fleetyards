@@ -48,17 +48,26 @@
     {
       "name": "$slot_01",
       "key": null,
-      "ref": "b44ec4bd-854d-48ef-9ac1-c4183edf1d0a"
+      "ref": "b44ec4bd-854d-48ef-9ac1-c4183edf1d0a",
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_02",
       "key": null,
-      "ref": "b44ec4bd-854d-48ef-9ac1-c4183edf1d0a"
+      "ref": "b44ec4bd-854d-48ef-9ac1-c4183edf1d0a",
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_03",
       "key": null,
-      "ref": "b44ec4bd-854d-48ef-9ac1-c4183edf1d0a"
+      "ref": "b44ec4bd-854d-48ef-9ac1-c4183edf1d0a",
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

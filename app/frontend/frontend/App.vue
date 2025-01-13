@@ -31,7 +31,6 @@ import { useAhoy } from "@/frontend/composables/useAhoy";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useNProgress } from "@/shared/composables/useNProgress";
 import { useFlash } from "@/shared/composables/useFlash";
-import CheckAccess from "@/shared/components/CheckAccess/index.vue";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
@@ -289,18 +288,10 @@ const setLocale = (locale: string) => {
                   [route.name || '']: true,
                 }"
               >
-                <CheckAccess
-                  v-if="viewRoute.meta"
-                  :check="sessionStore.hasAccessTo"
-                  :resource="viewRoute.meta.access"
-                >
-                  <template #granted>
-                    <component
-                      :is="Component"
-                      :key="`${locale}-${viewRoute.path}`"
-                    />
-                  </template>
-                </CheckAccess>
+                <component
+                  :is="Component"
+                  :key="`${locale}-${viewRoute.path}`"
+                />
               </section>
             </transition>
           </router-view>

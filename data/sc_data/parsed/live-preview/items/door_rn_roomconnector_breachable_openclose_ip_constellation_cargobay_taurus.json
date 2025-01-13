@@ -48,17 +48,26 @@
     {
       "name": "hardpoint_cargogrid",
       "key": null,
-      "ref": "f2701031-8df7-49cb-8f74-ea88bdc536e8"
+      "ref": "f2701031-8df7-49cb-8f74-ea88bdc536e8",
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "hardpoint_cargowall_right",
       "key": null,
-      "ref": "256dfe18-7b89-413d-82d3-4c068990386f"
+      "ref": "256dfe18-7b89-413d-82d3-4c068990386f",
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "hardpoint_cargowall_left",
       "key": null,
-      "ref": "6079a4f9-df9b-43ab-8443-8b32550bdb7e"
+      "ref": "6079a4f9-df9b-43ab-8443-8b32550bdb7e",
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

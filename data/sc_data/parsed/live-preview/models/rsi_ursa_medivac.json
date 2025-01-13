@@ -149,11 +149,6 @@
       "key": null
     },
     {
-      "name": "hardpoint_relay_interior",
-      "ref": null,
-      "key": "RELAY_3slot"
-    },
-    {
       "name": "hardpoint_bed",
       "ref": null,
       "key": "Bed_Single_Medical_Ursa_Medivac"

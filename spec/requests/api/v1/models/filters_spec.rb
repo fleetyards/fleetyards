@@ -115,6 +115,28 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
     end
   end
 
+  path "/models/dock-sizes" do
+    get("Model Dock Sizes") do
+      operationId "modelDockSizes"
+      tags "Models"
+      produces "application/json"
+
+      response(200, "successful") do
+        schema type: :array, items: {"$ref": "#/components/schemas/FilterOption"}
+
+        after do |example|
+          example.metadata[:response][:content] = {
+            "application/json" => {
+              example: JSON.parse(response.body, symbolize_names: true)
+            }
+          }
+        end
+
+        run_test!
+      end
+    end
+  end
+
   path "/models/cargo-options" do
     get("Model Cargo options") do
       operationId "cargoOptions"

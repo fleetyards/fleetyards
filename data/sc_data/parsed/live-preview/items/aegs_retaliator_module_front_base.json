@@ -32,7 +32,10 @@
     {
       "name": "hardpoint_front_bay_door",
       "key": "AEGS_Retaliator_Door_Cap_Front",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

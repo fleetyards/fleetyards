@@ -1,7 +1,7 @@
 module ScData
   module Parser
     class ItemsParser < ScData::Parser::BaseParser
-      def run
+      def all
         load_cargogrids
         load_items
       end
@@ -70,8 +70,10 @@ module ScData
         loadout = extract_item_loadout(values)
         item[:loadout] = loadout if loadout.present?
 
-        default_loadout = extract_item_default_loadout(values)
-        item[:default_loadout] = default_loadout if default_loadout.present?
+        if values.dig("Components", "SEntityComponentDefaultLoadoutParams")
+          default_loadout = extract_item_default_loadout(values.dig("Components", "SEntityComponentDefaultLoadoutParams"))
+          item[:default_loadout] = default_loadout if default_loadout.present?
+        end
 
         if values.dig("Components", "SInventoryParams")
           capacity = values.dig("Components", "SInventoryParams", "capacity")
@@ -279,10 +281,23 @@ module ScData
         end
 
         if values.dig("Components", "SCItemThrusterParams")
+          thruster_class = if key.downcase.include?("vtol") || key.downcase.include?("turbine")
+            :vtol
+          elsif key.downcase.include?("retro")
+            :retro
+          elsif key.downcase.include?("mav")
+            :mav
+          elsif key.downcase.include?("aux")
+            :aux
+          elsif key.downcase.include?("main")
+            :main
+          end
+
           item[:type_data] = {
             thrust_capacity: values.dig("Components", "SCItemThrusterParams", "thrustCapacity").to_f,
             fuel_burn_rate_per10_k_newton: values.dig("Components", "SCItemThrusterParams", "fuelBurnRatePer10KNewton").to_f,
-            thruster_type: values.dig("Components", "SCItemThrusterParams", "thrusterType")
+            thruster_type: values.dig("Components", "SCItemThrusterParams", "thrusterType"),
+            thruster_class:
           }
         end
 
@@ -348,9 +363,11 @@ module ScData
           }
         end
 
-        # if values.dig("Components", "SCItemBombParams")
-        #   item[:type_data] = values.dig("Components", "SCItemBombParams")
-        # end
+        if values.dig("Components", "ResourceContainer")
+          item[:type_data] = {
+            capacity: values.dig("Components", "ResourceContainer", "capacity", "SStandardCargoUnit", "standardCargoUnits")&.to_f
+          }
+        end
 
         # if values.dig("Components", "SCItemToolArmParams")
         #   item[:type_data] = values.dig("Components", "SCItemToolArmParams")
@@ -406,11 +423,7 @@ module ScData
         end
       end
 
-      private def extract_item_default_loadout(values)
-        default_loadout_params = values.dig("Components", "SEntityComponentDefaultLoadoutParams")
-
-        return if default_loadout_params.blank?
-
+      private def extract_item_default_loadout(default_loadout_params)
         loadout = (default_loadout_params.dig("loadout").is_a?(String) ? {} : default_loadout_params.dig("loadout")) || {}
         loadout_params = loadout.dig("SItemPortLoadoutManualParams", "entries", "SItemPortLoadoutEntryParams")
         loadout_params = loadout_from_xml(loadout) if loadout_params.blank?
@@ -425,7 +438,8 @@ module ScData
           {
             name:,
             key: value_or_nil(entry["entityClassName"]),
-            ref: value_or_nil(entry["entityClassReference"])
+            ref: value_or_nil(entry["entityClassReference"]),
+            default_loadout: extract_item_default_loadout(entry)
           }
         end
       end
@@ -483,6 +497,8 @@ module ScData
             z = values.dig("interiorDimensions", "z").to_f
 
             type_data[:dimensions] = extract_dimensions(x, y, z)
+            type_data[:capacity] = scu_for_dimensions(x, y, z)&.to_i
+            type_data[:max_container_size] = max_container_size(x, y, z)
           end
 
           if values.dig("inventoryType", "InventoryOpenContainerType", "minPermittedItemSize", "x").present?
@@ -490,7 +506,11 @@ module ScData
             y = values.dig("inventoryType", "InventoryOpenContainerType", "minPermittedItemSize", "y").to_f
             z = values.dig("inventoryType", "InventoryOpenContainerType", "minPermittedItemSize", "z").to_f
 
-            type_data[:min_container] = extract_dimensions(x, y, z)
+            type_data[:limits] ||= {}
+            type_data[:limits][:min] = {
+              dimensions: extract_dimensions(x, y, z),
+              capacity: scu_for_dimensions(x, y, z)&.to_i
+            }
           end
 
           if values.dig("inventoryType", "InventoryOpenContainerType", "maxPermittedItemSize", "x").present?
@@ -498,8 +518,12 @@ module ScData
             y = values.dig("inventoryType", "InventoryOpenContainerType", "maxPermittedItemSize", "y").to_f
             z = values.dig("inventoryType", "InventoryOpenContainerType", "maxPermittedItemSize", "z").to_f
 
-            type_data[:max_container] = if x > 0 && y > 0 && z > 0
-              extract_dimensions(x, y, z)
+            if x > 0 && y > 0 && z > 0
+              type_data[:limits] ||= {}
+              type_data[:limits][:max] = {
+                dimensions: extract_dimensions(x, y, z),
+                capacity: scu_for_dimensions(x, y, z)&.to_i
+              }
             end
           end
         end
@@ -524,13 +548,15 @@ module ScData
         {
           x:,
           y:,
-          z:,
-          scu: [
-            [x, y, z].reduce(:*), # x * y * z
-            SCU_DIMENSIONS**3
-          ].reduce(:/),
-          max_container_size: max_container_size(x, y, z)
+          z:
         }
+      end
+
+      private def scu_for_dimensions(x, y, z)
+        [
+          [x, y, z].reduce(:*), # x * y * z
+          SCU_DIMENSIONS**3
+        ].reduce(:/)
       end
 
       private def max_container_size(x, y, z)

@@ -18,6 +18,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import {
   type ManufacturerQuery,
   type Manufacturers,
+  type Manufacturer,
 } from "@/services/fyAdminApi";
 import FilterGroup, {
   type FilterGroupParams,
@@ -28,12 +29,14 @@ type Props = {
   modelValue?: string | string[];
   multiple?: boolean;
   noLabel?: boolean;
+  valueAttr?: "slug" | "id";
 };
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: undefined,
   multiple: true,
   noLabel: true,
+  valueAttr: "slug",
 });
 
 const { t } = useI18n();
@@ -65,14 +68,14 @@ const formatter = (response: Manufacturers) => {
     return {
       icon: manufacturer.logo,
       label: manufacturer.name,
-      value: manufacturer.slug,
+      value: manufacturer[props.valueAttr],
     };
   });
 };
 
 const { manufacturers: manufacturersService } = useApiClient();
 
-const fetch = async (params: FilterGroupParams) => {
+const fetch = async (params: FilterGroupParams<Manufacturer>) => {
   const q: ManufacturerQuery = {
     withModels: true,
   };

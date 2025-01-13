@@ -2,9 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { ComponentCargoGrid } from './ComponentCargoGrid';
+import type { CargoHold } from './CargoHold';
 import type { ComponentItemClassEnum } from './ComponentItemClassEnum';
 import type { ComponentQuantumDrive } from './ComponentQuantumDrive';
+import type { ComponentThruster } from './ComponentThruster';
+import type { FuelTank } from './FuelTank';
 import type { Hardpoint } from './Hardpoint';
 import type { ItemPrice } from './ItemPrice';
 import type { Manufacturer } from './Manufacturer';
@@ -33,7 +35,7 @@ export type Component = {
     media: {
         storeImage?: MediaImage;
     };
-    typeData?: (ComponentQuantumDrive | ComponentCargoGrid);
+    typeData?: (ComponentQuantumDrive | CargoHold | FuelTank | ComponentThruster);
     hardpoints?: Array<Hardpoint>;
     createdAt: string;
     updatedAt: string;

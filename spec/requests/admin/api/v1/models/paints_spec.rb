@@ -36,7 +36,7 @@ RSpec.describe "admin/api/v1/models", type: :request, swagger_doc: "admin/v1/sch
         run_test! do |response|
           data = JSON.parse(response.body)
 
-          expect(data["items"].count).to be > 0
+          expect(data["items"].count).to eq(3)
         end
       end
 
@@ -45,7 +45,7 @@ RSpec.describe "admin/api/v1/models", type: :request, swagger_doc: "admin/v1/sch
 
         let(:q) do
           {
-            "nameCont" => "Andromeda"
+            "nameCont" => "White Heron"
           }
         end
 
@@ -65,7 +65,7 @@ RSpec.describe "admin/api/v1/models", type: :request, swagger_doc: "admin/v1/sch
           data = JSON.parse(response.body)
 
           expect(data["items"].count).to eq(2)
-          expect(data.dig("meta", "pagination", "totalPages")).to eq(7)
+          expect(data.dig("meta", "pagination", "totalPages")).to eq(2)
         end
       end
 

@@ -40,12 +40,18 @@
     {
       "name": "hardpoint_Ext_Door_Left_Lg_HACK",
       "key": "CRUS_Starlifter_Ext_Door_Left_Lg_HACK",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "hardpoint_Ext_Door_Left_Sm_HACK",
       "key": "CRUS_Starlifter_Ext_Door_Left_Sm_HACK",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

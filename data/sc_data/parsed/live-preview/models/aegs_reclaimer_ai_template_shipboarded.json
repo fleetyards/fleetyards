@@ -738,11 +738,6 @@
       "key": "AEGS_Reclaimer_SCItem_Remote_Salvage_Turret_Left",
       "loadout": [
         {
-          "name": "hardpoint_interior",
-          "ref": null,
-          "key": "AEGS_Reclaimer_Salvage_Turret_Lighting"
-        },
-        {
           "name": "hardpoint_weapon_salvage",
           "ref": null,
           "key": "Salvage_Head_standard",
@@ -766,11 +761,6 @@
       "ref": null,
       "key": "AEGS_Reclaimer_SCItem_Remote_Salvage_Turret_Right",
       "loadout": [
-        {
-          "name": "hardpoint_interior",
-          "ref": null,
-          "key": "AEGS_Reclaimer_Salvage_Turret_Lighting"
-        },
         {
           "name": "hardpoint_weapon_salvage",
           "ref": null,

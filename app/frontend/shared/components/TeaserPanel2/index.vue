@@ -37,17 +37,18 @@ import {
 } from "@/services/fyApi";
 import { type RouteLocationRaw } from "vue-router";
 import { PanelAlignmentsEnum } from "@/shared/components/Panel/types";
+import { PanelHeadingLevelEnum } from "@/shared/components/Panel/Heading/types";
 
 type Props = {
   item: Model | ModelModule | ModelUpgrade;
   to?: RouteLocationRaw;
-  level?: "h2" | "h3" | "h4";
+  level?: PanelHeadingLevelEnum;
   slim?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   to: undefined,
-  level: "h2",
+  level: PanelHeadingLevelEnum.H2,
   slim: false,
 });
 

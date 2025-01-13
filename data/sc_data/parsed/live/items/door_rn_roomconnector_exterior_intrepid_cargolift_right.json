@@ -32,7 +32,10 @@
     {
       "name": "hardpoint_cargo_grid",
       "key": "CRUS_Intrepid_CargoGrid",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ]
 }

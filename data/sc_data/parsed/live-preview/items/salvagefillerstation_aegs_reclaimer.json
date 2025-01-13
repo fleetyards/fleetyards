@@ -48,7 +48,10 @@
     {
       "name": "hardpoint_control_compacter",
       "key": "Salvage_Fillerstation_Screen_Template",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ]
 }

@@ -40,12 +40,18 @@
     {
       "name": "Lock1",
       "key": "Door_Deadbolt_Cuttable",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "Lock2",
       "key": "Door_Deadbolt_Cuttable",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "power_connection": {

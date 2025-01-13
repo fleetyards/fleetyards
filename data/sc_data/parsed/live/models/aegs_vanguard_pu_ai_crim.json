@@ -51,16 +51,6 @@
       "key": null
     },
     {
-      "name": "hardpoint_esc_pod_upper",
-      "ref": null,
-      "key": null
-    },
-    {
-      "name": "hardpoint_esc_pod_lower",
-      "ref": null,
-      "key": null
-    },
-    {
       "name": "hardpoint_engineer_console",
       "ref": null,
       "key": null,

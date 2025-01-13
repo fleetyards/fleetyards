@@ -64,12 +64,18 @@
     {
       "name": "hardpoint_cargo_grid",
       "key": "CNOU_Mustang_CargoGrid_Main",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "hardpoint_cargo_box_01",
       "key": "CNOU_Mustang_Cargo_Box_Fake",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

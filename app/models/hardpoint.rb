@@ -2,21 +2,22 @@
 #
 # Table name: hardpoints
 #
-#  id             :uuid             not null, primary key
-#  category       :integer
-#  group          :integer
-#  group_key      :string
-#  hardpoint_type :integer
-#  max_size       :integer
-#  min_size       :integer
-#  parent_type    :string           not null
-#  sc_name        :string
-#  source         :integer
-#  types          :string
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  component_id   :uuid
-#  parent_id      :uuid             not null
+#  id           :uuid             not null, primary key
+#  category     :integer
+#  details      :string
+#  group        :integer
+#  group_key    :string
+#  matrix_key   :string
+#  max_size     :integer
+#  min_size     :integer
+#  parent_type  :string           not null
+#  sc_name      :string
+#  source       :integer
+#  types        :string
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  component_id :uuid
+#  parent_id    :uuid             not null
 #
 # Indexes
 #
@@ -34,20 +35,21 @@ class Hardpoint < ApplicationRecord
     radar computers fuel_intakes
   ].freeze
 
-  belongs_to :parent, polymorphic: true
+  belongs_to :parent, polymorphic: true, touch: true
   belongs_to :component, optional: true
   has_many :hardpoints, as: :parent, dependent: :destroy, autosave: true
 
   enum source: {ship_matrix: 0, game_files: 1}
   enum group: {
     avionic: 0, system: 1, propulsion: 2, thruster: 3, weapon: 4, defense: 5, auxiliary: 6, seat: 7, relay: 8,
-    other: 9
+    other: 9,
+    unknown: 99
   }, _suffix: true
   enum category: {
     radar: 1, computers: 2, scanners: 3,
     powerplant: 10, cooler: 11, shieldgenerator: 12, module: 13, salvagefillerstation: 14,
     fueltanks: 20, fuel_intakes: 21, quantumdrive: 22, jumpdrive: 23,
-    main_thrusters: 30, maneuvering_thrusters: 31,
+    main_thrusters: 30, retro_thrusters: 31, vtol_thrusters: 32, maneuvering_thrusters: 33,
     weapons: 40, weapon_mounts: 41, turret: 42, missile_racks: 43, bombcompartments: 44,
     quantumenforcementdevice: 45, emp: 46, salvagemunching: 47,
     armor: 50, countermeasures: 51,
@@ -61,53 +63,88 @@ class Hardpoint < ApplicationRecord
   before_validation :set_group, :set_category, :set_group_key
 
   def set_group
+    return if group.present? && source == "ship_matrix"
+
     self.group = case component&.category
     when "thrusters"
       :thruster
     when "seat"
       :seat
-    when "selfdestruct", "lifesupport", "armor", "countermeasures", "batteries", "relay", "utility"
+    when "lifesupport", "armor", "countermeasures", "utility" # , "salvagemunching"
       :auxiliary
     when "radar", "computers", "scanners"
       :avionic
-    when "powerplant", "cooler", "shieldgenerator", "module", "salvagefillerstation"
+    when "powerplant", "cooler", "shieldgenerator"
       :system
     when "turret", "weapon_mounts", "weapons", "missile_racks", "bombcompartments",
-      "quantumenforcementdevice", "salvagemunching"
+      "quantumenforcementdevice"
       :weapon
     when "fueltanks", "fuel_intakes", "quantumdrive"
       :propulsion
-    else
+    when "cargogrid", "module", "salvagefillerstation"
       :other
+    when "relay", "batteries"
+      :relay
+    else
+      :unknown
     end
 
-    if sc_name.start_with?("hardpoint_engineering")
+    if sc_name&.start_with?("hardpoint_engineering") || sc_name&.start_with?("hardpoint_engineeringscreen")
       self.group = :seat
     end
 
-    if sc_name.start_with?("hardpoint_relay_")
+    if sc_name&.start_with?("hardpoint_mining_pod")
+      self.group = :other
+    end
+
+    if sc_name&.start_with?("hardpoint_relay_")
       self.group = :relay
     end
   end
 
   def set_category
-    self.category = case component&.component_type
-    when "EMP"
-      :emp
-    when "MainThruster"
-      :main_thrusters
-    when "ManneuverThruster"
-      :maneuvering_thrusters
+    return if category.present? && source == "ship_matrix"
+
+    self.category = if thruster_group?
+      case component&.type_data&.dig(:thruster_class)
+      when "main", "aux"
+        :main_thrusters
+      when "retro"
+        :retro_thrusters
+      when "vtol"
+        :vtol_thrusters
+      else
+        :maneuvering_thrusters
+      end
+    elsif sc_name&.start_with?("hardpoint_engineeringscreen")
+      :seat
+    elsif sc_name&.start_with?("hardpoint_mining_pod")
+      :cargogrid
     else
-      component&.category || :unknown
+      case component&.component_type
+      when "EMP"
+        :emp
+      else
+        component&.category || :unknown
+      end
     end
   end
 
   def set_group_key
+    return if group_key.present? && source == "ship_matrix"
+
     self.group_key = group_keys.flatten.uniq.join("-").presence || group_keys(with_component: true).flatten.uniq.join("-")
   end
 
   def group_keys(with_component: false)
+    if thruster_group?
+      return [
+        category,
+        component&.type_data&.dig(:thruster_class),
+        component&.type_data&.dig(:thrust_capacity)
+      ].compact
+    end
+
     [
       (component_id if with_component),
       (hardpoints.count if hardpoints.present? && hardpoints.count > 1),

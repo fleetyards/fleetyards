@@ -56,22 +56,34 @@
     {
       "name": "BAR1",
       "key": "BEHR_LaserCannon_SF7E_Barrel_S7",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "MEC",
       "key": "BEHR_LaserCannon_SF7E_FiringMechanism_S7",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "POW",
       "key": "BEHR_LaserCannon_SF7E_PowerArray_S7",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "VEN",
       "key": "BEHR_LaserCannon_SF7E_Ventilation_S7",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

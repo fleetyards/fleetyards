@@ -4,6 +4,7 @@
 /* eslint-disable */
 import type { CargoHold } from './CargoHold';
 import type { DockCount } from './DockCount';
+import type { FuelTank } from './FuelTank';
 import type { ItemPrice } from './ItemPrice';
 import type { Manufacturer } from './Manufacturer';
 import type { MediaImage } from './MediaImage';
@@ -80,8 +81,11 @@ export type ModelExtended = {
         quantumFuelTankSize?: number;
         size?: string;
         sizeLabel?: string;
+        dockSize?: string;
     };
     cargoHolds?: Array<CargoHold>;
+    hydrogenFuelTanks?: Array<FuelTank>;
+    quantumFuelTanks?: Array<FuelTank>;
     onSale: boolean;
     pledgePrice?: number;
     pledgePriceLabel?: string;
@@ -112,6 +116,10 @@ export type ModelExtended = {
     updatedAt: string;
     hidden: boolean;
     active: boolean;
+    scLength?: number;
+    scBeam?: number;
+    scHeight?: number;
+    baseModelId?: string;
     dockCounts: Array<DockCount>;
 };
 

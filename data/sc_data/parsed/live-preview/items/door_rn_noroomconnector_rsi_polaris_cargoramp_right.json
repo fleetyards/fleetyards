@@ -32,7 +32,10 @@
     {
       "name": "hardpoint_cargo_addon",
       "key": "RSI_Polaris_Cargo_Addon_Right",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

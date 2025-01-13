@@ -32,7 +32,10 @@
     {
       "name": "hardpoint_door_switch_exterior",
       "key": "Door_Ship_Switch_Exterior",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

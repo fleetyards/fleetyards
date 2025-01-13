@@ -56,22 +56,34 @@
     {
       "name": "BAR1",
       "key": "HRST_LaserRepeater_Barrel_S2",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "MEC",
       "key": "HRST_LaserRepeater_FiringMechanism_S2",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "POW",
       "key": "HRST_LaserRepeater_PowerArray_S2",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "VEN",
       "key": "HRST_LaserRepeater_Ventilation_S2",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

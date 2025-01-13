@@ -60,6 +60,7 @@
   "type_data": {
     "thrust_capacity": 748500.0,
     "fuel_burn_rate_per10_k_newton": 0.093625,
-    "thruster_type": "Main"
+    "thruster_type": "Main",
+    "thruster_class": "main"
   }
 }

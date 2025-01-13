@@ -51,7 +51,7 @@ const route = useRoute();
 watch(
   () => route.path,
   () => {
-    close();
+    closeNav();
   },
 );
 
@@ -62,7 +62,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   document.removeEventListener("click", documentClick);
 
-  close();
+  closeNav();
 });
 
 const navigation = ref<HTMLElement | null>(null);
@@ -72,11 +72,11 @@ const documentClick = (event: Event) => {
   const { target } = event;
 
   if (element !== target && !element?.contains(target as Node)) {
-    close();
+    closeNav();
   }
 };
 
-const close = () => {
+const closeNav = () => {
   // Store.commit("app/closeNav");
 };
 </script>

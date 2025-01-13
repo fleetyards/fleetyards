@@ -273,6 +273,12 @@ const toggleHoloviewer = () => {
           </blockquote>
         </div>
         <div class="col-12 col-lg-4">
+          <!-- <HoloViewer
+            v-if="model.holo"
+            :holo="model.holo"
+            :controllable="false"
+            inline
+          /> -->
           <Panel slim>
             <ModelBaseMetrics :model="model" />
           </Panel>

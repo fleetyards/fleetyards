@@ -249,7 +249,7 @@ ptv:
   videos_count: 0
 
 f8c:
-  name: 'F8C'
+  name: 'F8C Lightning'
   slug: 'f8c-lightning'
   images_count: 0
   model_paints_count: 0
@@ -261,7 +261,7 @@ f8c:
   videos_count: 0
 
 f8c-executive:
-  name: 'F8C Lightning Executive-Edition'
+  name: 'F8C Lightning Executive Edition'
   slug: 'f8c-lightning-executive-edition'
   images_count: 0
   model_paints_count: 0

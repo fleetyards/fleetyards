@@ -26,26 +26,16 @@
       "types": [
         "ControlPanel"
       ]
-    },
-    {
-      "name": "IP_Interior",
-      "min_size": "0",
-      "max_size": "1",
-      "types": [
-        "ControlPanel"
-      ]
     }
   ],
   "default_loadout": [
     {
       "name": "IP_Exterior",
       "key": "ControlPanel_Screen_DoorControl_400i_Ramp",
-      "ref": null
-    },
-    {
-      "name": "IP_Interior",
-      "key": "ControlPanel_Screen_DoorControl_400i_Ramp_Int",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

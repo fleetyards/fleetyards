@@ -172,6 +172,8 @@ const setFocus = () => {
   inputElement.value?.focus();
 };
 
+const slots = useSlots();
+
 defineExpose({
   clear,
   setFocus,
@@ -242,9 +244,12 @@ defineExpose({
         />
       </div>
     </div>
+    <div v-if="slots.subline" class="base-input__subline">
+      <slot name="subline"></slot>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-@import "./index.scss";
+@import "index";
 </style>

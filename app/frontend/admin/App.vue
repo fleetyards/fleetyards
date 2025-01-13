@@ -27,7 +27,6 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useNoty } from "@/shared/composables/useNoty";
 import { useImportUpdates } from "@/admin/composables/useImportUpdates";
 import { useFlash } from "@/shared/composables/useFlash";
-import CheckAccess from "@/shared/components/CheckAccess/index.vue";
 
 const { t } = useI18n();
 
@@ -160,10 +159,6 @@ const checkSessionReload = async () => {
     sessionStore.login();
   }
 };
-
-const routeName = computed(() => {
-  return route.name;
-});
 </script>
 
 <template>
@@ -189,25 +184,17 @@ const routeName = computed(() => {
 
           <router-view v-slot="{ Component, route: viewRoute }">
             <transition name="fade" mode="out-in">
-              <CheckAccess
-                v-if="routeName"
-                :check="sessionStore.hasAccessTo"
-                :resource="route.meta.access"
+              <section
+                class="container main"
+                :class="{
+                  [route.name || '']: true,
+                }"
               >
-                <template #granted>
-                  <section
-                    class="container main"
-                    :class="{
-                      [route.name || '']: true,
-                    }"
-                  >
-                    <component
-                      :is="Component"
-                      :key="`${locale}-${viewRoute.path}`"
-                    />
-                  </section>
-                </template>
-              </CheckAccess>
+                <component
+                  :is="Component"
+                  :key="`${locale}-${viewRoute.path}`"
+                />
+              </section>
             </transition>
           </router-view>
         </div>

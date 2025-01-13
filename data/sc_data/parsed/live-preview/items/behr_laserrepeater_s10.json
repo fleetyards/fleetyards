@@ -56,22 +56,34 @@
     {
       "name": "BAR1",
       "key": "BEHR_LaserRepeater_Barrel_S10",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "MEC",
       "key": "BEHR_LaserRepeater_FiringMechanism_S10",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "POW",
       "key": "BEHR_LaserRepeater_PowerArray_S10",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "VEN",
       "key": "BEHR_LaserRepeater_Ventilation_S10",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

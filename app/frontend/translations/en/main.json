@@ -117,6 +117,7 @@
     },
     "resources": {
       "models": "Ships",
+      "hardpoints": "Hardpoints",
       "images": "Images"
     },
     "pagination": {

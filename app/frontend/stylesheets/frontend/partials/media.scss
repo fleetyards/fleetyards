@@ -1,37 +1,37 @@
-.lazy {
-  &[lazy="loading"]::before {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 50px;
-    height: 50px;
-    margin-top: -25px;
-    margin-left: -25px;
-    background-image: url("@/images/loading.svg");
-    background-position: center;
-    background-size: 100%;
-    content: "";
-  }
+// .lazy {
+//   &[lazy="loading"]::before {
+//     position: absolute;
+//     top: 50%;
+//     left: 50%;
+//     width: 50px;
+//     height: 50px;
+//     margin-top: -25px;
+//     margin-left: -25px;
+//     background-image: url("@/images/loading.svg");
+//     background-position: center;
+//     background-size: 100%;
+//     content: "";
+//   }
 
-  &[lazy="error"] {
-    background-image: url("@/images/store_image.jpg") !important;
-  }
-}
+//   &[lazy="error"] {
+//     background-image: url("@/images/store_image.jpg") !important;
+//   }
+// }
 
-.images {
-  margin-bottom: 20px;
+// .images {
+//   margin-bottom: 20px;
 
-  .image {
-    position: relative;
-    display: block;
-    margin-bottom: 20px;
-    background-color: black;
-    background-position: center;
-    background-size: cover;
-    border-radius: $border-radius-base;
-    box-shadow: 0 0 5px black;
-  }
-}
+//   .image {
+//     position: relative;
+//     display: block;
+//     margin-bottom: 20px;
+//     background-color: black;
+//     background-position: center;
+//     background-size: cover;
+//     border-radius: $border-radius-base;
+//     box-shadow: 0 0 5px black;
+//   }
+// }
 
 .videos {
   margin-bottom: 20px;

@@ -74,26 +74,6 @@
       "key": "VHCL_SelfDestruct_30s"
     },
     {
-      "name": "hardpoint_escape_pod_left_bottom",
-      "ref": null,
-      "key": "RSI_Constellation_Phoenix_Seat_EscapePod_LeftLower"
-    },
-    {
-      "name": "hardpoint_escape_pod_left_top",
-      "ref": null,
-      "key": "RSI_Constellation_Phoenix_Seat_EscapePod_LeftUpper"
-    },
-    {
-      "name": "hardpoint_escape_pod_right_bottom",
-      "ref": null,
-      "key": "RSI_Constellation_Phoenix_Seat_EscapePod_RightLower"
-    },
-    {
-      "name": "hardpoint_escape_pod_right_top",
-      "ref": null,
-      "key": "RSI_Constellation_Phoenix_Seat_EscapePod_RightUpper"
-    },
-    {
       "name": "hardpoint_controller_door",
       "ref": null,
       "key": "Controller_Door"

@@ -6,6 +6,7 @@
   background-position: center;
   background-size: cover;
   position: relative;
+  display: flex;
 
   &--contain {
     background-size: contain;
@@ -53,4 +54,9 @@
     border-radius: $border-radius-base;
     box-shadow: 0 0 5px black;
   }
+}
+
+.gallery-image {
+  height: 250px !important;
+  margin-bottom: 20px;
 }

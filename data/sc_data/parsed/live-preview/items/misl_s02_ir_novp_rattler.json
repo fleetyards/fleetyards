@@ -80,37 +80,58 @@
     {
       "name": "cluster1",
       "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "cluster2",
       "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "cluster3",
       "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "cluster4",
       "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "cluster5",
       "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "cluster6",
       "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "cluster7",
       "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

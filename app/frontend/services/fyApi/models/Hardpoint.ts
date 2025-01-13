@@ -10,12 +10,14 @@ export type Hardpoint = {
     id: string;
     group?: HardpointGroupEnum;
     groupKey?: string;
+    matrixKey?: string;
     category?: HardpointCategoryEnum;
     name: string;
     minSize?: number;
     maxSize?: number;
     source?: HardpointSourceEnum;
     types?: Array<string>;
+    details?: string;
     component?: Component;
     hardpoints?: Array<Hardpoint>;
     createdAt: string;

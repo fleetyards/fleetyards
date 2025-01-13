@@ -115,16 +115,7 @@
       "ref": "9b5673db-661f-4a6f-98fd-e61e47772a92",
       "key": null,
       "loadout": [
-        {
-          "name": "mfd_left_01",
-          "ref": null,
-          "key": "Vehicle_Screen_MFD"
-        },
-        {
-          "name": "mfd_right_01",
-          "ref": null,
-          "key": "Vehicle_Screen_MFD"
-        }
+
       ]
     },
     {
@@ -132,16 +123,7 @@
       "ref": "798fcb2e-3785-4ec4-a37f-bff388a24747",
       "key": null,
       "loadout": [
-        {
-          "name": "mfd_right_01",
-          "ref": null,
-          "key": "Vehicle_Screen_MFD"
-        },
-        {
-          "name": "mfd_right_02",
-          "ref": null,
-          "key": "Vehicle_Screen_MFD"
-        }
+
       ]
     },
     {
@@ -149,16 +131,7 @@
       "ref": "d5623c7c-7f1e-464e-aa15-3a7b37cf2e05",
       "key": null,
       "loadout": [
-        {
-          "name": "mfd_left_01",
-          "ref": null,
-          "key": "Vehicle_Screen_MFD"
-        },
-        {
-          "name": "mfd_left_02",
-          "ref": null,
-          "key": "Vehicle_Screen_MFD"
-        }
+
       ]
     },
     {
@@ -379,11 +352,6 @@
       "key": null
     },
     {
-      "name": "hardpoint_airlock_door_interior",
-      "ref": "3de96637-bec3-4106-ad19-0e2ddaadb902",
-      "key": null
-    },
-    {
       "name": "hardpoint_shield_generator_1",
       "ref": null,
       "key": "SHLD_BEHR_S02_5MA_SCItem"
@@ -561,42 +529,6 @@
       "name": "hardpoint_wing_bottom_right",
       "ref": "43b6e209-9f2d-4d57-8c22-463c60febf0c",
       "key": null
-    },
-    {
-      "name": "hardpoint_esc_pod_lower_left",
-      "ref": "bc6be4a4-c80d-461e-82ab-19298b4b24f2",
-      "key": null,
-      "loadout": [
-        {
-          "name": "hardpoint_bedding",
-          "ref": "7bcd0d78-64d5-4ca3-a19b-5e08038c2228",
-          "key": null
-        }
-      ]
-    },
-    {
-      "name": "hardpoint_esc_pod_lower_right",
-      "ref": "0605ed02-097c-4abb-b574-079667aa78ab",
-      "key": null,
-      "loadout": [
-        {
-          "name": "hardpoint_bedding",
-          "ref": "7bcd0d78-64d5-4ca3-a19b-5e08038c2228",
-          "key": null
-        }
-      ]
-    },
-    {
-      "name": "hardpoint_esc_pod_upper_right",
-      "ref": "5041a360-beed-4ca4-862e-4ccf208c499f",
-      "key": null,
-      "loadout": [
-        {
-          "name": "hardpoint_bedding",
-          "ref": "7bcd0d78-64d5-4ca3-a19b-5e08038c2228",
-          "key": null
-        }
-      ]
     },
     {
       "name": "hardpoint_extinguisher_cockpit",

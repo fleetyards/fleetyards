@@ -19,6 +19,7 @@ type Props = {
   contain?: boolean;
   width?: number;
   height?: number;
+  caption?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -31,6 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
   contain: false,
   width: undefined,
   height: undefined,
+  caption: undefined,
 });
 
 const uuid = ref<string>(uuidv4());
@@ -54,19 +56,18 @@ const componentProps = computed(() => {
     return {
       to: props.to,
     };
-  }
-
-  if (props.href) {
+  } else if (props.href) {
     return {
       href: props.href,
       target: "_blank",
       "data-pswp-src": props.src,
       "data-pswp-width": props.width,
       "data-pswp-height": props.height,
+      "data-pswp-cropped": true,
     };
+  } else {
+    return {};
   }
-
-  return {};
 });
 
 const cssClasses = computed(() => {
@@ -74,6 +75,7 @@ const cssClasses = computed(() => {
     [`lazy-image--${props.variant}`]: !!props.variant,
     "lazy-image--shadow": props.shadow,
     "lazy-image--contain": props.contain,
+    "gallery-image": !!props.href,
   };
 });
 </script>
@@ -83,12 +85,14 @@ const cssClasses = computed(() => {
     :is="componentType"
     v-if="src"
     :key="`${src}-${uuid}`"
-    v-lazy:background-image="src"
     v-bind="componentProps"
+    v-lazy:background-image="src"
     class="lazy-image"
     :class="cssClasses"
   >
     <slot />
+    <!-- eslint-disable-next-line vue/no-v-html -->
+    <div v-if="caption" class="hidden-caption-content" v-html="caption" />
   </component>
 </template>
 

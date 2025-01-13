@@ -40,12 +40,18 @@
     {
       "name": "turret_right",
       "key": null,
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "turret_left",
       "key": null,
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

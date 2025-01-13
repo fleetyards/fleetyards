@@ -1,13 +1,13 @@
 module ScData
   module Loader
     class ModelModulesLoader < ::ScData::Loader::BaseLoader
-      def run
+      def all
         ModelModule.where.not(sc_key: nil).find_each do |model_module|
           load_model_module(model_module)
         end
       end
 
-      def run_single(model_module)
+      def one(model_module)
         load_model_module(model_module)
       end
 
@@ -16,13 +16,11 @@ module ScData
 
         module_data = load_module_data(model_module.sc_key)
 
-        loadout = module_data.dig("loadout")
-        default_loadout = module_data.dig("default_loadout")
-
-        update_loadout(model_module, loadout, default_loadout)
+        update_loadout(model_module, module_data)
 
         update_params = {}
 
+        update_params = update_metrics(module_data, update_params)
         update_params = update_cargo_holds(model_module.hardpoints, update_params)
 
         model_module.update!(update_params.merge(audit_comment: :sc_loader))
@@ -30,6 +28,12 @@ module ScData
 
       private def load_module_data(sc_key)
         load_item("items/#{sc_key.downcase}")
+      end
+
+      private def update_metrics(module_data, update_params)
+        update_params[:description] = module_data.dig("description") if module_data.dig("description").present?
+
+        update_params
       end
     end
   end

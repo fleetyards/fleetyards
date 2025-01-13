@@ -48,17 +48,26 @@
     {
       "name": "hardpoint_cargo_grid_b",
       "key": "AEGS_Retaliator_CargoGrid_Front_Main",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "hardpoint_cargo_grid_a",
       "key": "AEGS_Retaliator_CargoGrid_Front_left",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "hardpoint_cargo_grid_c",
       "key": "AEGS_Retaliator_CargoGrid_Front_Right",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

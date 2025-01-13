@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import Checkbox from "@/shared/components/base/Checkbox/index.vue";
+import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useNoty } from "@/shared/composables/useNoty";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -87,7 +87,7 @@ const onSubmit = handleSubmit(async (values) => {
     </div>
     <div class="row">
       <div class="col-12 col-md-6">
-        <Checkbox
+        <FormCheckbox
           v-model="saleNotify"
           v-bind="saleNotifyProps"
           :label="t('labels.user.saleNotify')"

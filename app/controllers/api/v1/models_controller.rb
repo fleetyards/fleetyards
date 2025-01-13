@@ -86,6 +86,12 @@ module Api
         @sizes = Model.size_filters
       end
 
+      def dock_sizes
+        authorize! :index, :api_models
+
+        @dock_sizes = Model.dock_size_filters
+      end
+
       def filters
         authorize! :index, :api_models
 
@@ -153,7 +159,7 @@ module Api
 
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
-        scope = if Flipper.enabled?("hardpoints-v2")
+        scope = if feature_enabled?("hardpoints-v2")
           model.hardpoints.includes(:component)
         else
           model.model_hardpoints.includes(:component).undeleted
@@ -163,7 +169,7 @@ module Api
 
         @hardpoints = scope
 
-        if Flipper.enabled?("hardpoints-v2")
+        if feature_enabled?("hardpoints-v2")
           render "api/v1/models/hardpoints"
         else
           render "api/v1/models/hardpoints_old"

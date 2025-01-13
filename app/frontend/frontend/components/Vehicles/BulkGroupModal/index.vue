@@ -1,53 +1,14 @@
-<template>
-  <Modal :title="t('headlines.vehicle.bulkGroupEdit')">
-    <p class="hint">
-      <i class="fal fa-info-circle" />
-      {{ t("labels.vehicle.bulkGroupEdit.hint") }}
-    </p>
-
-    <form id="vehicle-bulk" @submit.prevent="save">
-      <div class="row">
-        <div v-if="hangarGroups.length" class="col-12">
-          <h3>Groups:</h3>
-          <div class="row">
-            <div
-              v-for="group in hangarGroups"
-              :key="group.id"
-              class="col-12 col-md-6"
-            >
-              <Checkbox
-                :name="group.name"
-                :label="group.name"
-                :value="selected(group.id)"
-                @input="changeGroup(group)"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </form>
-
-    <template #footer>
-      <div class="float-sm-right">
-        <Btn
-          form="vehicle-bulk"
-          :loading="submitting"
-          type="submit"
-          size="large"
-          data-test="vehicle-save"
-          :inline="true"
-        >
-          {{ t("actions.save") }}
-        </Btn>
-      </div>
-    </template>
-  </Modal>
-</template>
+<script lang="ts">
+export default {
+  name: "VehiclesBulkGroupModal",
+};
+</script>
 
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import Checkbox from "@/shared/components/base/Checkbox/index.vue";
+import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
 // import vehiclesCollection from "@/frontend/api/collections/Vehicles";
 // import hangarGroupsCollection from "@/frontend/api/collections/HangarGroups";
 import type { HangarGroup } from "@/services/fyApi";
@@ -105,11 +66,51 @@ const save = async () => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "VehiclesBulkGroupModal",
-};
-</script>
+<template>
+  <Modal :title="t('headlines.vehicle.bulkGroupEdit')">
+    <p class="hint">
+      <i class="fal fa-info-circle" />
+      {{ t("labels.vehicle.bulkGroupEdit.hint") }}
+    </p>
+
+    <form id="vehicle-bulk" @submit.prevent="save">
+      <div class="row">
+        <div v-if="hangarGroups.length" class="col-12">
+          <h3>Groups:</h3>
+          <div class="row">
+            <div
+              v-for="group in hangarGroups"
+              :key="group.id"
+              class="col-12 col-md-6"
+            >
+              <FormCheckbox
+                :name="group.name"
+                :label="group.name"
+                :value="selected(group.id)"
+                @input="changeGroup(group)"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <template #footer>
+      <div class="float-sm-right">
+        <Btn
+          form="vehicle-bulk"
+          :loading="submitting"
+          :type="BtnTypesEnum.SUBMIT"
+          :size="BtnSizesEnum.LARGE"
+          data-test="vehicle-save"
+          :inline="true"
+        >
+          {{ t("actions.save") }}
+        </Btn>
+      </div>
+    </template>
+  </Modal>
+</template>
 
 <style lang="scss" scoped>
 @import "./index.scss";

@@ -32,7 +32,10 @@
     {
       "name": "hardpoint_scu",
       "key": "ANVL_Hornet_CargoGrid_F7C_Mk2",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

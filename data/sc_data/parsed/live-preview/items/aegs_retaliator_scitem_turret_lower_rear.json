@@ -48,17 +48,26 @@
     {
       "name": "turret_left",
       "key": null,
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "turret_right",
       "key": null,
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "room_lighting",
       "key": "AEGS_Retaliator_Turret_Lights_Lower",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

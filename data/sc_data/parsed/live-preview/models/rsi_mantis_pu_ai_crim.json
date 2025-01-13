@@ -336,11 +336,6 @@
       "name": "hardpoint_cockpit_flair_hang",
       "ref": null,
       "key": null
-    },
-    {
-      "name": "hardpoint_relay_interior",
-      "ref": null,
-      "key": "RELAY_2slot"
     }
   ]
 }

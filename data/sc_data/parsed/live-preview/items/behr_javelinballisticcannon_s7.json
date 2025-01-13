@@ -64,22 +64,34 @@
     {
       "name": "BAR1",
       "key": "BEHR_JavelinBallisticCannon_Barrel_S7",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "MEC",
       "key": "BEHR_JavelinBallisticCannon_FiringMechanism_S7",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "POW",
       "key": "BEHR_JavelinBallisticCannon_PowerArray_S7",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "VEN",
       "key": "BEHR_JavelinBallisticCannon_Ventilation_S7",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

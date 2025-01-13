@@ -11,7 +11,7 @@ declare module "vue-router" {
     exact?: boolean;
     activeRoute?: string;
     access?: string;
-    nav?: "main" | "footer" | "hidden";
+    nav?: "main" | "footer" | "editTabs" | "hidden";
     mobileNav?: number;
   }
 }
@@ -42,6 +42,7 @@ declare global {
     MAINTAINER_ADDRESS_CITY: string;
     MAINTAINER_ADDRESS_COUNTRY: string;
     RSI_ENDPOINT: string;
+    DIRECT_UPLOAD_URL: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     SwaggerUIBundle: any;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

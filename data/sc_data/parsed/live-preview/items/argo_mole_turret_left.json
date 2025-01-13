@@ -26,22 +26,6 @@
       "types": [
         "WeaponMining"
       ]
-    },
-    {
-      "name": "MFD_Right",
-      "min_size": "1",
-      "max_size": "1",
-      "types": [
-        "Display"
-      ]
-    },
-    {
-      "name": "MFD_Left",
-      "min_size": "1",
-      "max_size": "1",
-      "types": [
-        "Display"
-      ]
     }
   ],
   "durability": {

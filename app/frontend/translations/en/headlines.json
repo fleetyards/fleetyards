@@ -21,7 +21,16 @@
         },
         "models": {
           "index": "Models",
-          "edit": "Edit Model",
+          "edit": {
+            "index": "Edit Model",
+            "fleetchart": "Fleetchart Images",
+            "hardpoints": "Hardpoints",
+            "cargoAndFuel": "Cargo & Fuel",
+            "metrics": "Metrics",
+            "prices": "Prices",
+            "docks": "Docks",
+            "videos": "Videos"
+          },
           "new": "New Model",
           "show": "Model",
           "images": "Images",

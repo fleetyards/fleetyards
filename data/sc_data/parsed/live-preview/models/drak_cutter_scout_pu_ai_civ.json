@@ -414,21 +414,6 @@
           "name": "radar",
           "ref": null,
           "key": "Radar_Display_Screen_Template"
-        },
-        {
-          "name": "MFD_right",
-          "ref": null,
-          "key": "Vehicle_Screen_MFD"
-        },
-        {
-          "name": "MFD_center",
-          "ref": null,
-          "key": "Vehicle_Screen_MFD"
-        },
-        {
-          "name": "MFD_top",
-          "ref": null,
-          "key": "Vehicle_Screen_MFD"
         }
       ]
     },

@@ -48,7 +48,11 @@ namespace :frontend, **frontend_options do
 
   match "404", to: "base#not_found", via: :all
 
-  match "*path", to: "base#index", via: :all, as: "catch_all"
-
   root to: "base#index"
+end
+
+Rails.application.routes.append do
+  namespace :frontend, **frontend_options do
+    match "*path", to: "base#index", via: :all, as: "catch_all"
+  end
 end

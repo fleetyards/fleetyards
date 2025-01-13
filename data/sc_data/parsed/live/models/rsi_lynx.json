@@ -181,11 +181,6 @@
       "name": "hardpoint_fuelport",
       "ref": null,
       "key": "Door_Ship_Exterior_RSI_Lynx_Fuelport"
-    },
-    {
-      "name": "hardpoint_relay_interior",
-      "ref": "609b087d-bdfe-401d-b9fe-526af4d52d09",
-      "key": null
     }
   ]
 }

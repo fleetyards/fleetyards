@@ -56,22 +56,34 @@
     {
       "name": "BAR1",
       "key": "BEHR_BallisticGatling_Barrel_S7",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "MEC",
       "key": "BEHR_BallisticGatling_FiringMechanism_S7",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "POW",
       "key": "BEHR_BallisticGatling_PowerArray_S7",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "VEN",
       "key": "BEHR_BallisticGatling_Ventilation_S7",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

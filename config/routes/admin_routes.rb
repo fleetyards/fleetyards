@@ -1,11 +1,20 @@
 # frozen_string_literal: true
 
-namespace :admin, path: (Rails.configuration.app.on_subdomain? ? "" : "admin"), constraints: ->(req) { !Rails.configuration.app.on_subdomain? || req.subdomain == "admin" } do
+admin_options = {
+  path: (Rails.configuration.app.on_subdomain? ? "" : "admin"),
+  constraints: ->(req) { !Rails.configuration.app.on_subdomain? || req.subdomain == "admin" }
+}.compact
+
+namespace :admin, **admin_options do
   draw "admin/api_routes"
 
-  authenticate :admin_user, ->(u) { u.present? } do
+  authenticate :admin_user, ->(u) { u.present? && u.access_to?(:workers) } do
     mount Sidekiq::Web => "/workers"
+  end
+  authenticate :admin_user, ->(u) { u.present? && u.access_to?(:pghero) } do
     mount PgHero::Engine => "/pghero"
+  end
+  authenticate :admin_user, ->(u) { u.present? && u.access_to?(:features) } do
     mount Flipper::UI.app(Flipper) => "/features", :as => :features
   end
 
@@ -51,6 +60,8 @@ namespace :admin, path: (Rails.configuration.app.on_subdomain? ? "" : "admin"), 
   #   get "rsi-api-status" => "maintenance#rsi_api_status", :as => :rsi_api_status
   # end
 
+  get "models/paints", to: "base#index"
+  get "models/modules", to: "base#index"
   get "models/:id", to: "base#model", as: :model
   get "models/:id/edit", to: "base#model", as: :model_edit
   get "models/:id/images", to: "base#model", as: :model_images
@@ -58,7 +69,11 @@ namespace :admin, path: (Rails.configuration.app.on_subdomain? ? "" : "admin"), 
 
   get "worker/:name/check" => "worker#check_state", :as => :check_worker_state
 
-  match "*path", to: "base#index", via: :all, as: "catch_all"
-
   root to: "base#index"
+end
+
+Rails.application.routes.append do
+  namespace :admin, **admin_options do
+    match "*path", to: "base#index", via: :all, as: "catch_all"
+  end
 end

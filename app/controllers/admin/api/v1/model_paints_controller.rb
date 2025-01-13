@@ -7,7 +7,7 @@ module Admin
         def index
           authorize! :read, ModelPaint
 
-          model_paint_query_params["sorts"] ||= sorting_params(ModelPaint)
+          model_paint_query_params["sorts"] ||= sorting_params(ModelPaint, "created_at desc")
 
           @q = ModelPaint.ransack(model_paint_query_params)
 

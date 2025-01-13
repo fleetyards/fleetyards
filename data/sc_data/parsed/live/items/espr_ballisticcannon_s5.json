@@ -56,22 +56,34 @@
     {
       "name": "BAR1",
       "key": "ESPR_BallisticCannon_Barrel_S5",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "MEC",
       "key": "ESPR_BallisticCannon_FiringMechanism_S5",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "POW",
       "key": "ESPR_BallisticCannon_PowerArray_S5",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "VEN",
       "key": "ESPR_BallisticCannon_Ventilation_S5",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

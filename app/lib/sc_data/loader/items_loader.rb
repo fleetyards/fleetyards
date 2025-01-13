@@ -1,8 +1,10 @@
 module ScData
   module Loader
     class ItemsLoader < ::ScData::Loader::BaseLoader
-      def run
+      def all
         load_items("items").each do |item|
+          next if item["category"] == "inventory"
+
           normalized_key = item["key"].downcase
           name = item["name"]
           component = find_or_create_component(normalized_key, item["key"], item["ref"], name)
@@ -71,6 +73,10 @@ module ScData
         hardpoint_ids = []
 
         item["loadout"].each do |loadout|
+          default_loadout = item["default_loadout"]&.find { |dl| dl["name"] == loadout["name"] }
+
+          next if loadout_name_blacklisted?(loadout["name"], default_loadout)
+
           hardpoint = component.hardpoints.find_or_create_by!(sc_name: loadout["name"].downcase)
           hardpoint_ids << hardpoint.id
 
@@ -81,9 +87,9 @@ module ScData
             types: loadout["types"]
           }
 
-          if item["default_loadout"].present?
+          if default_loadout.present?
             update_params = add_default_loadout(
-              item["default_loadout"],
+              default_loadout,
               loadout["name"],
               update_params
             )
@@ -95,12 +101,10 @@ module ScData
         component.hardpoints.where.not(id: hardpoint_ids).destroy_all
       end
 
-      private def add_default_loadout(default_loadouts, name, update_params)
-        default_loadout = default_loadouts.find { |dl| dl["name"] == name }
-
+      private def add_default_loadout(default_loadout, name, update_params)
         return update_params if default_loadout.blank?
 
-        loadout_component = find_component(default_loadout["key"]&.downcase, default_loadout["key"])
+        loadout_component = find_component(default_loadout["key"]&.downcase, default_loadout["key"], default_loadout["ref"])
 
         update_params[:component_id] = loadout_component&.id
 
@@ -110,10 +114,10 @@ module ScData
       private def find_component(normalized_key, key, ref = nil, name = nil)
         return if normalized_key.blank? && ref.blank?
 
-        component = Component.find_by(sc_key: normalized_key)
-        component = Component.find_by(sc_ref: ref) if component.blank? && ref.present?
-        component = Component.find_by(sc_identifier: key) if component.blank?
-        component = Component.where(name: name, sc_key: nil, sc_ref: nil).first if component.blank? && name.present?
+        component = Component.find_by(sc_key: normalized_key, version: sc_version) if normalized_key.present?
+        component = Component.find_by(sc_ref: ref, version: sc_version) if component.blank? && ref.present?
+        component = Component.find_by(sc_identifier: key, version: sc_version) if component.blank? && key.present?
+        component = Component.where(name: name, sc_key: nil, sc_ref: nil, version: sc_version).first if component.blank? && name.present?
 
         component
       end
@@ -123,7 +127,7 @@ module ScData
 
         component = find_component(normalized_key, key, ref, name)
 
-        component = Component.create!(sc_key: normalized_key, sc_ref: ref) if component.blank?
+        component = Component.create!(sc_key: normalized_key, sc_ref: ref, version: sc_version) if component.blank?
 
         component
       end

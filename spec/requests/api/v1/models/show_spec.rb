@@ -56,7 +56,12 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
         let(:slug) { model.slug }
 
         schema type: :array,
-          items: {"$ref": "#/components/schemas/Hardpoint"}
+          items: {
+            oneOf: [
+              {"$ref": "#/components/schemas/Hardpoint"},
+              {"$ref": "#/components/schemas/ModelHardpoint"}
+            ]
+          }
 
         after do |example|
           example.metadata[:response][:content] = {

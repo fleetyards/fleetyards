@@ -26,30 +26,6 @@
       "types": [
         "Display"
       ]
-    },
-    {
-      "name": "MFD_top",
-      "min_size": "1",
-      "max_size": "1",
-      "types": [
-        "Display"
-      ]
-    },
-    {
-      "name": "MFD_right",
-      "min_size": "1",
-      "max_size": "1",
-      "types": [
-        "Display"
-      ]
-    },
-    {
-      "name": "MFD_center",
-      "min_size": "1",
-      "max_size": "1",
-      "types": [
-        "Display"
-      ]
     }
   ],
   "power_connection": {

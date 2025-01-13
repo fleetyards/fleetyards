@@ -34,6 +34,33 @@
       "home": {
         "search": "Search for Ships..."
       },
+      "model": {
+        "length": "Length",
+        "beam": "Beam",
+        "height": "Height",
+        "price": "Price",
+        "pledgePrice": "Pledge Price",
+        "lastPledgePrice": "Last Pledge Price",
+        "mass": "Mass",
+        "minCrew": "Min. Crew",
+        "maxCrew": "Max. Crew",
+        "storeUrl": "Store URL",
+        "salesPageUrl": "Sales Page URL",
+        "rsiId": "RSI ID",
+        "scIdentifier": "SC Identifier",
+        "erkulIdentifier": "Erkul Identifier",
+        "productionNote": "Production Note",
+        "scmSpeed": "SCM Speed",
+        "scmSpeedBoosted": "SCM Speed Boosted",
+        "maxSpeed": "Max Speed",
+        "reverseSpeedBoosted": "Reverse Speed Boosted",
+        "yaw": "Yaw",
+        "pitch": "Pitch",
+        "roll": "Roll",
+        "yawBoosted": "Yaw Boosted",
+        "pitchBoosted": "Pitch Boosted",
+        "rollBoosted": "Roll Boosted"
+      },
       "fleet": {
         "fid": "Fleet ID",
         "rsiSid": "RSI SID",

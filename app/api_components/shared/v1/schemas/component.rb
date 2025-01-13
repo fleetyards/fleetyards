@@ -58,7 +58,9 @@ module Shared
             typeData: {
               oneOf: [
                 {"$ref": "#/components/schemas/ComponentQuantumDrive"},
-                {"$ref": "#/components/schemas/ComponentCargoGrid"}
+                {"$ref": "#/components/schemas/CargoHold"},
+                {"$ref": "#/components/schemas/FuelTank"},
+                {"$ref": "#/components/schemas/ComponentThruster"}
               ]
             },
 

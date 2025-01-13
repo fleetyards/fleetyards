@@ -618,54 +618,6 @@
       "key": "Weapon_Rack_AEGS_Redeemer"
     },
     {
-      "name": "hardpoint_esc_pod_lower_left",
-      "ref": null,
-      "key": "AEGS_Redeemer_SCItem_Seat_Bed_Lower_Left",
-      "loadout": [
-        {
-          "name": "hardpoint_bedding",
-          "ref": null,
-          "key": "AEGS_Escpod_Bedding"
-        }
-      ]
-    },
-    {
-      "name": "hardpoint_esc_pod_lower_right",
-      "ref": null,
-      "key": "AEGS_Redeemer_SCItem_Seat_Bed_Lower_Right",
-      "loadout": [
-        {
-          "name": "hardpoint_bedding",
-          "ref": null,
-          "key": "AEGS_Escpod_Bedding"
-        }
-      ]
-    },
-    {
-      "name": "hardpoint_esc_pod_upper_left",
-      "ref": null,
-      "key": "AEGS_Redeemer_SCItem_Seat_Bed_Upper_Left",
-      "loadout": [
-        {
-          "name": "hardpoint_bedding",
-          "ref": null,
-          "key": "AEGS_Escpod_Bedding"
-        }
-      ]
-    },
-    {
-      "name": "hardpoint_esc_pod_upper_right",
-      "ref": null,
-      "key": "AEGS_Redeemer_SCItem_Seat_Bed_Upper_Right",
-      "loadout": [
-        {
-          "name": "hardpoint_bedding",
-          "ref": null,
-          "key": "AEGS_Escpod_Bedding"
-        }
-      ]
-    },
-    {
       "name": "hardpoint_controller_missile",
       "ref": null,
       "key": "Controller_Missile"

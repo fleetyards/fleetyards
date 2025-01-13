@@ -7,31 +7,26 @@
     "dimensions": {
       "x": 3.75,
       "y": 7.5,
-      "z": 2.5,
-      "scu": 36.0,
-      "max_container_size": {
-        "size": 24,
-        "dimensions": {
-          "x": 7.5,
-          "y": 2.5,
-          "z": 2.5
-        }
+      "z": 2.5
+    },
+    "capacity": 36.0,
+    "max_container_size": {
+      "size": 24,
+      "dimensions": {
+        "x": 7.5,
+        "y": 2.5,
+        "z": 2.5
       }
     },
-    "min_container": {
-      "x": 1.25,
-      "y": 1.25,
-      "z": 1.25,
-      "scu": 1.0,
-      "max_container_size": {
-        "size": 1,
+    "limits": {
+      "min": {
         "dimensions": {
           "x": 1.25,
           "y": 1.25,
           "z": 1.25
-        }
+        },
+        "capacity": 1.0
       }
-    },
-    "max_container": null
+    }
   }
 }

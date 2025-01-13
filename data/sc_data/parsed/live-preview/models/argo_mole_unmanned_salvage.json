@@ -205,16 +205,6 @@
           "name": "hardpoint_weapon_mining",
           "ref": "4435898e-a6cc-4f51-ab2a-805d0cf1a44a",
           "key": null
-        },
-        {
-          "name": "MFD_Right",
-          "ref": null,
-          "key": "Vehicle_Screen_MFD"
-        },
-        {
-          "name": "MFD_Left",
-          "ref": null,
-          "key": "Vehicle_Screen_MFD"
         }
       ]
     },
@@ -232,16 +222,6 @@
           "name": "hardpoint_weapon_mining",
           "ref": "4435898e-a6cc-4f51-ab2a-805d0cf1a44a",
           "key": null
-        },
-        {
-          "name": "MFD_Right",
-          "ref": null,
-          "key": "Vehicle_Screen_MFD"
-        },
-        {
-          "name": "MFD_Left",
-          "ref": null,
-          "key": "Vehicle_Screen_MFD"
         }
       ]
     },
@@ -259,16 +239,6 @@
           "name": "hardpoint_weapon_mining",
           "ref": "4435898e-a6cc-4f51-ab2a-805d0cf1a44a",
           "key": null
-        },
-        {
-          "name": "MFD_Right",
-          "ref": null,
-          "key": "Vehicle_Screen_MFD"
-        },
-        {
-          "name": "MFD_Left",
-          "ref": null,
-          "key": "Vehicle_Screen_MFD"
         }
       ]
     },

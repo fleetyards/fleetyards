@@ -40,12 +40,33 @@
     {
       "name": "hardpoint_torpedo_launcher_rear",
       "key": "MRCK_S09_AEGS_Retaliator_Rear",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+        {
+          "name": "missile_01_attach",
+          "key": "MISL_S09_CS_TALN_Argos",
+          "ref": null,
+          "default_loadout": [
+
+          ]
+        },
+        {
+          "name": "missile_02_attach",
+          "key": "MISL_S09_CS_TALN_Argos",
+          "ref": null,
+          "default_loadout": [
+
+          ]
+        }
+      ]
     },
     {
       "name": "hardpoint_rear_bay_door",
       "key": "Door_RN_RoomConnector_Exterior_AEGS_Retaliator_Rear_TorpedoBay",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

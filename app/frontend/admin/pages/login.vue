@@ -8,7 +8,7 @@ export default {
 import { useForm } from "vee-validate";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import Checkbox from "@/shared/components/base/Checkbox/index.vue";
+import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import { useNoty } from "@/shared/composables/useNoty";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -18,6 +18,10 @@ import { useApiClient } from "@/admin/composables/useApiClient";
 import { type SessionInput, type ApiError } from "@/services/fyAdminApi";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import { BtnTypesEnum, BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import {
+  HeadingLevelEnum,
+  HeadingAlignmentEnum,
+} from "@/shared/components/base/Heading/types";
 
 const { t } = useI18n();
 
@@ -98,7 +102,10 @@ const onSubmit = handleSubmit(async (values) => {
   <div class="row">
     <div class="col-12">
       <form @submit.prevent="onSubmit">
-        <Heading level="h1" alignment="center">
+        <Heading
+          :level="HeadingLevelEnum.H1"
+          :alignment="HeadingAlignmentEnum.CENTER"
+        >
           <router-link to="/" exact>
             {{ t("title.defaultAdmin") }}
           </router-link>
@@ -131,7 +138,7 @@ const onSubmit = handleSubmit(async (values) => {
             :hide-label-on-empty="true"
             :clearable="true"
           />
-          <Checkbox
+          <FormCheckbox
             v-model="rememberMe"
             v-bind="rememberMeProps"
             name="rememberMe"

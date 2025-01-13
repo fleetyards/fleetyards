@@ -72,22 +72,34 @@
     {
       "name": "hardpoint_weapon_right_outer",
       "key": "BEHR_MassDriver_S12",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "hardpoint_weapon_right_inner",
       "key": "BEHR_MassDriver_S12",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "hardpoint_weapon_left_inner",
       "key": "BEHR_MassDriver_S12",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "hardpoint_weapon_left_outer",
       "key": "BEHR_MassDriver_S12",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

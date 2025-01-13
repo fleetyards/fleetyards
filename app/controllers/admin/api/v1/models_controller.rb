@@ -162,6 +162,19 @@ module Admin
             manufacturer_in: []
           )
         end
+
+        private def model_params
+          @model_params ||= params.permit(
+            :name, :description, :hidden, :active, :ground, :mass, :min_crew, :max_crew,
+            :scm_speed, :scm_speed_boosted, :max_speed, :reverse_speed_boosted, :yaw, :yaw_boosted,
+            :pitch, :pitch_boosted, :roll, :roll_boosted, :sc_identifier, :erkul_identifier,
+            :manufacturer_id, :rsi_id, :base_model_id, :production_status, :production_note,
+            :classification, :focus, :size, :dock_size, :length, :beam, :height, :on_sale,
+            :store_url, :sales_page_url, :price, :pledge_price, :last_pledge_price, :cargo,
+            :cargo_holds, :hydrogen_fuel_tank_size, :hydrogen_fuel_tanks, :quantum_fuel_tank_size,
+            :quantum_fuel_tanks, :store_image_new
+          )
+        end
       end
     end
   end

@@ -48,17 +48,26 @@
     {
       "name": "$slot_fuse_01",
       "key": null,
-      "ref": "8cf8dd1b-756e-496c-a1ae-e88ebbf999f7"
+      "ref": "8cf8dd1b-756e-496c-a1ae-e88ebbf999f7",
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_fuse_02",
       "key": null,
-      "ref": "8cf8dd1b-756e-496c-a1ae-e88ebbf999f7"
+      "ref": "8cf8dd1b-756e-496c-a1ae-e88ebbf999f7",
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "$slot_fuse_03",
       "key": null,
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

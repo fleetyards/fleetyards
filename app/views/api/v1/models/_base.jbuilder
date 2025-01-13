@@ -108,7 +108,12 @@ json.metrics do
   json.quantum_fuel_tank_size model.quantum_fuel_tank_size&.to_f
   json.size model.size
   json.size_label model.size&.humanize
+  json.dock_size model.dock_size
 end
+
+json.cargo_holds model.cargo_holds
+json.hydrogen_fuel_tanks model.hydrogen_fuel_tanks
+json.quantum_fuel_tanks model.quantum_fuel_tanks
 
 json.on_sale model.on_sale
 json.pledge_price(model.pledge_price.to_f) if model.pledge_price.present?

@@ -56,22 +56,34 @@
     {
       "name": "BAR1",
       "key": "ASAD_DistortionRepeater_Barrel_S2",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "MEC",
       "key": "ASAD_DistortionRepeater_FiringMechanism_S2",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "POW",
       "key": "ASAD_DistortionRepeater_PowerArray_S2",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "VEN",
       "key": "ASAD_DistortionRepeater_Ventilation_S2",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

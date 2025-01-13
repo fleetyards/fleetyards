@@ -17,13 +17,12 @@ class AdminAbility
     can :manage, Component if admin_user.access_to?(:components)
     can :manage, Station if admin_user.access_to?(:stations)
     can :manage, CelestialObject if admin_user.access_to?(:celestial_objects)
-    can :manage, StarSystem if admin_user.access_to?(:star_systems)
+    can :manage, Starsystem if admin_user.access_to?(:star_systems)
     can :manage, Manufacturer if admin_user.access_to?(:manufacturers)
     can :manage, Image if admin_user.access_to?(:images)
     can :manage, Fleet if admin_user.access_to?(:fleets)
     can :manage, User if admin_user.access_to?(:users)
     can :manage, Oauth::Application if admin_user.access_to?(:oauth_applications)
-    can :manage, Oauth::Authorization if admin_user.access_to?(:oauth_authorizations)
     can :manage, Vehicle if admin_user.access_to?(:vehicles)
   end
 end

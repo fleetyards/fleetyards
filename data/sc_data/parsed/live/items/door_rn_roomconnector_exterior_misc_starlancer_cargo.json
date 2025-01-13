@@ -40,12 +40,18 @@
     {
       "name": "cargo_grid_l",
       "key": "MISC_Starlancer_CargoGrid_Max",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "cargo_grid_r",
       "key": "MISC_Starlancer_CargoGrid_Max",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

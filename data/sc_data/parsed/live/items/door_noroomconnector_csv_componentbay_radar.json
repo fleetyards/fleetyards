@@ -32,7 +32,10 @@
     {
       "name": "hardpoint_radar",
       "key": "RADR_WLOP_S00_Denning",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

@@ -32,7 +32,10 @@
     {
       "name": "FuelPort",
       "key": "DockingTube_Fuel_Ports_GAMA_Syulen",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "power_connection": {

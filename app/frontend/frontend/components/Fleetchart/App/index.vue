@@ -175,7 +175,7 @@ watch(
     if (visible.value) {
       open();
     } else {
-      close();
+      closeFleetchart();
     }
   },
 );
@@ -265,7 +265,7 @@ const setMode = (mode: FleetchartModes) => {
   fleetchartStore.updateMode({ namespace: props.namespace, mode });
 };
 
-const close = () => {
+const closeFleetchart = () => {
   isOpen.value = false;
 
   overlayStore.hide();

@@ -373,11 +373,7 @@
       "ref": null,
       "key": "ARGO_RAFT_SCItem_Seat_Cargo",
       "loadout": [
-        {
-          "name": "MFD_Centre",
-          "ref": null,
-          "key": "Vehicle_Screen_MFD"
-        }
+
       ]
     },
     {

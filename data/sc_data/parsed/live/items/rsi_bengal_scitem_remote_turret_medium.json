@@ -40,12 +40,18 @@
     {
       "name": "turret_right",
       "key": "Bengal_Turret_BallisticCannon_S8",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "turret_left",
       "key": "Bengal_Turret_BallisticCannon_S8",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

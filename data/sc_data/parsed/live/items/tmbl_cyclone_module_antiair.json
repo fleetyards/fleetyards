@@ -74,7 +74,10 @@
     {
       "name": "hardpoint_door_ramp",
       "key": "TMBL_Cyclone_Ramp_Locked",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

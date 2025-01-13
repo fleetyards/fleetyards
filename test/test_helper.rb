@@ -35,11 +35,7 @@ require "active_record/fixtures"
 require "sidekiq/testing"
 Sidekiq::Testing.fake!
 
-require "vcr"
-VCR.configure do |config|
-  config.cassette_library_dir = "test/vcr_cassettes"
-  config.hook_into :webmock # or :fakeweb
-end
+require "webmock/minitest"
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|

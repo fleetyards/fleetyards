@@ -64,13 +64,6 @@ const isHangarRoute = computed(() => {
   return String(route.name).includes("hangar");
 });
 
-watch(
-  () => route.path,
-  () => {
-    close();
-  },
-);
-
 const filterFor = (routeName: string) => {
   if (!filters.value[routeName]) {
     return undefined;

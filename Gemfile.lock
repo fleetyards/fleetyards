@@ -99,6 +99,22 @@ GEM
     audited (5.8.0)
       activerecord (>= 5.2, < 8.2)
       activesupport (>= 5.2, < 8.2)
+    aws-eventstream (1.3.0)
+    aws-partitions (1.1031.0)
+    aws-sdk-core (3.214.1)
+      aws-eventstream (~> 1, >= 1.3.0)
+      aws-partitions (~> 1, >= 1.992.0)
+      aws-sigv4 (~> 1.9)
+      jmespath (~> 1, >= 1.6.1)
+    aws-sdk-kms (1.96.0)
+      aws-sdk-core (~> 3, >= 3.210.0)
+      aws-sigv4 (~> 1.5)
+    aws-sdk-s3 (1.177.0)
+      aws-sdk-core (~> 3, >= 3.210.0)
+      aws-sdk-kms (~> 1)
+      aws-sigv4 (~> 1.5)
+    aws-sigv4 (1.10.1)
+      aws-eventstream (~> 1, >= 1.0.2)
     base64 (0.2.0)
     bcrypt (3.1.20)
     bcrypt_pbkdf (1.1.0)
@@ -314,6 +330,7 @@ GEM
     jbuilder (2.12.0)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
+    jmespath (1.6.2)
     jquery-rails (4.6.0)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
@@ -726,7 +743,6 @@ GEM
     url_plumber (0.1.2)
       activesupport (>= 3.0.0)
     useragent (0.16.10)
-    vcr (6.2.0)
     version_gem (1.1.3)
     vite_rails (3.0.17)
       railties (>= 5.1, < 8)
@@ -770,6 +786,7 @@ DEPENDENCIES
   annotate
   appsignal
   audited (~> 5.8)
+  aws-sdk-s3
   bcrypt_pbkdf
   bootsnap (>= 1.1.0)
   bourbon
@@ -887,7 +904,6 @@ DEPENDENCIES
   uniform_notifier
   url_plumber
   useragent
-  vcr
   vite_rails
   web-console
   webmock

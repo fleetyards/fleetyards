@@ -26,26 +26,16 @@
       "types": [
 
       ]
-    },
-    {
-      "name": "IP_Interior",
-      "min_size": "0",
-      "max_size": "0",
-      "types": [
-
-      ]
     }
   ],
   "default_loadout": [
     {
       "name": "IP_Exterior",
       "key": "ControlPanel_Screen_DoorControl_9x16_Small_RSI_Lynx",
-      "ref": null
-    },
-    {
-      "name": "IP_Interior",
-      "key": "ControlPanel_Screen_DoorControl_9x16_Small_RSI_Lynx",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {

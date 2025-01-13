@@ -839,11 +839,6 @@
       "key": "Door_Ship_Exterior_Hull_C_Exterior_Door"
     },
     {
-      "name": "hardpoint_airlock_door_interior",
-      "ref": null,
-      "key": "Door_Ship_Exterior_Hull_C_Airlock_Interior"
-    },
-    {
       "name": "hardpoint_seat_access_crane",
       "ref": null,
       "key": "MISC_Hull_C_SCItem_SeatAccess_Crane"
@@ -947,11 +942,6 @@
       "name": "hardpoint_relay_airlock_rear",
       "ref": null,
       "key": "RELAY_1slot"
-    },
-    {
-      "name": "hardpoint_relay_escape_pod_room",
-      "ref": null,
-      "key": "RELAY_2slot"
     },
     {
       "name": "hardpoint_relay_upper_engine_room",

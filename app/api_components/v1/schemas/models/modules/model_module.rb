@@ -12,6 +12,7 @@ module V1
             properties: {
               id: {type: :string, format: :uuid},
               name: {type: :string},
+              slug: {type: :string},
               description: {type: :string},
 
               scKey: {type: :string},
@@ -53,6 +54,8 @@ module V1
               productionStatus: {type: :string},
 
               manufacturer: {"$ref": "#/components/schemas/Manufacturer"},
+
+              hardpoints: {type: :array, items: {"$ref": "#/components/schemas/Hardpoint"}},
 
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"}

@@ -97,20 +97,20 @@ const close = (force = false) => {
     noty?.displayConfirm({
       text: t("appModal.messages.confirm.dirty"),
       onConfirm: () => {
-        internalClose();
+        internalHide();
       },
     });
   } else {
-    internalClose();
+    internalHide();
   }
 };
 
-const internalClose = () => {
+const internalHide = () => {
   isOpen.value = false;
 
   overlayStore.hide();
 
-  nextTick(function onClose() {
+  nextTick(function onHide() {
     setTimeout(() => {
       isShow.value = false;
       component.value = undefined;

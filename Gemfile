@@ -177,7 +177,6 @@ group :test do
   gem "simplecov-console", require: false
   gem "simplecov-html", require: false
   gem "timecop"
-  gem "vcr"
   gem "webmock", require: false
 end
 
@@ -206,3 +205,5 @@ gem "doorkeeper", "~> 5.6"
 gem "oauth2", "~> 2.0"
 
 gem "audited", "~> 5.8"
+
+gem "aws-sdk-s3", require: false

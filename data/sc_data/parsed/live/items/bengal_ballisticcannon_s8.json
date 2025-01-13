@@ -56,22 +56,34 @@
     {
       "name": "BAR1",
       "key": "Bengal_BallisticCannon_Barrel_S8",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "MEC",
       "key": "Bengal_BallisticCannon_FiringMechanism_S8",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "POW",
       "key": "Bengal_BallisticCannon_PowerArray_S8",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     },
     {
       "name": "VEN",
       "key": "Bengal_BallisticCannon_Ventilation_S8",
-      "ref": null
+      "ref": null,
+      "default_loadout": [
+
+      ]
     }
   ],
   "durability": {
