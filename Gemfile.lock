@@ -262,9 +262,9 @@ GEM
       rchardet (~> 1.8)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    google-protobuf (3.25.2)
-    google-protobuf (3.25.2-arm64-darwin)
-    google-protobuf (3.25.2-x86_64-linux)
+    google-protobuf (3.25.5)
+    google-protobuf (3.25.5-arm64-darwin)
+    google-protobuf (3.25.5-x86_64-linux)
     griddler (1.5.2)
       htmlentities
       rails (>= 3.2.0)
