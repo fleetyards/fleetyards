@@ -268,6 +268,7 @@ class PaintsImporter
     spirit = ["A1 Spirit", "C1 Spirit", "E1 Spirit"]
     f8c = ["F8C Lightning", "F8C Lightning Executive Edition"]
     merlin = ["P-52 Merlin", "P-72 Archimedes"]
+    guardian = ["Guardian", "Guardian QI"]
 
     models_map = {
       "Cutter" => cutter,
@@ -409,7 +410,8 @@ class PaintsImporter
       "Sabre" => sabre,
       "C1 Spirit 2954 Best In Show" => spirit,
       "F8C Lightning 2954 Best In Show" => f8c,
-      "Archimedes & Merlin" => merlin
+      "Archimedes & Merlin" => merlin,
+      "Guardian" => guardian
     }
 
     return models_map[name.strip] if models_map[name.strip].present?
