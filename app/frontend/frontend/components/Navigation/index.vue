@@ -12,6 +12,7 @@ import AppNavigation from "@/shared/components/AppNavigation/index.vue";
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
 import FleetNav from "./FleetNav/index.vue";
 import FleetsNav from "./FleetsNav/index.vue";
+import VisualTestsNav from "./VisualTestsNav/index.vue";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { useFiltersStore } from "@/shared/stores/filters";
@@ -37,6 +38,18 @@ const filtersStore = useFiltersStore();
 const { filters } = storeToRefs(filtersStore);
 
 const route = useRoute();
+
+const isVisualTestsRoute = computed(() => {
+  if (process.env.NODE_ENV !== "production") {
+    return false;
+  }
+
+  if (!route.name) {
+    return false;
+  }
+
+  return String(route.name).includes("visual-tests");
+});
 
 const isToolsRoute = computed(() => {
   if (!route.name) {
@@ -100,6 +113,7 @@ const settingsActive = computed(() => {
 <template>
   <AppNavigation :title="t('title.default')" :logo="favicon">
     <template #main>
+      <VisualTestsNav v-if="isVisualTestsRoute" />
       <FleetNav v-if="isFleetRoute" />
       <template v-else>
         <NavItem
