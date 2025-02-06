@@ -18,6 +18,7 @@ export function useDirectUpload() {
   ): Promise<void> {
     const callbacks = {
       directUploadWillStoreFileWithXHR(xhr: XMLHttpRequest) {
+        xhr.setRequestHeader("x-amz-acl", "public-read");
         xhr.upload.addEventListener("progress", (event) =>
           progressHandler((event.loaded / event.total) * 100),
         );

@@ -6,11 +6,11 @@ local:
   service: Disk
   root: <%= Rails.root.join("storage") %>
 
-digitalocean:
+cloud:
   service: S3
-  endpoint: <%= Rails.application.credentials.s3_endpoint %>
-  access_key_id: <%= Rails.application.credentials.s3_key %>
-  secret_access_key: <%= Rails.application.credentials.s3_secret %>
+  endpoint: <%= Rails.application.credentials.s3_protocol %>://<%= Rails.application.credentials.s3_endpoint %>
+  access_key_id: <%= Rails.application.credentials.s3_access_key %>
+  secret_access_key: <%= Rails.application.credentials.s3_secret_key %>
   bucket: <%= Rails.application.credentials.s3_bucket %>
   region: unused
   public: true

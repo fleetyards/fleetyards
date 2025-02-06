@@ -114,6 +114,7 @@ const upload = () => {
         emit("upload:progress", progress);
       },
       errorHandler: (error) => {
+        clear();
         displayAlert({
           text: (error as string) || t("errors.upload.generic"),
         });

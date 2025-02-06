@@ -15,6 +15,12 @@ Rails.application.configure do
     admin_uri = URI.parse(ADMIN_ENDPOINT)
     admin_endpoint = "#{admin_uri.scheme}://#{admin_uri.host}"
     cdn_endpoint = Rails.application.credentials.carrierwave_cloud_cdn_endpoint
+    s3_endpoint = [
+      "#{Rails.application.credentials.s3_protocol}://",
+      Rails.application.credentials.s3_bucket,
+      ".",
+      Rails.application.credentials.s3_endpoint
+    ].compact.join("")
 
     connect_src = [
       :self, :data, cable_endpoint, api_endpoint, admin_endpoint, cdn_endpoint,
@@ -22,7 +28,7 @@ Rails.application.configure do
       "https://fonts.gstatic.com", "https://pro.fontawesome.com", Rails.configuration.rsi.endpoint,
       "https://kit.fontawesome.com", "https://kit-pro.fontawesome.com",
       "https://kit-free.fontawesome.com", "https://ka-p.fontawesome.com", "https://starship42.com",
-      "https://www.gstatic.com"
+      "https://www.gstatic.com", s3_endpoint
     ].compact
 
     connect_src.push("ws://#{ViteRuby.config.host_with_port}") if Rails.env.development?

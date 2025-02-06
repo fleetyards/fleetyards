@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "discord/roadmap_update"
+# require "discord/roadmap_update"
 
 module Loaders
   class RoadmapJob < ::Loaders::BaseJob
