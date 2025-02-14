@@ -250,7 +250,7 @@ class PaintsImporter
     ]
     hornet_mk2 = [
       "F7C Hornet Mk II", "F7A Hornet Mk II", "F7C-R Hornet Tracker Mk II",
-      "F7C-S Hornet Ghost Mk II"
+      "F7C-S Hornet Ghost Mk II", "Hornet Mk II"
     ]
     mercury = ["Mercury", "Mercury Star Runner"]
     roc = %w[ROC ROC-DS]
@@ -305,7 +305,11 @@ class PaintsImporter
       "Freelancer - Black Paint " => freelancer,
       "2950 Invictus Freelancer Storm Surge" => freelancer,
       "Anvil Hornet" => hornet_mk1,
+      "Hornet Mk I" => hornet_mk1,
       "F7 Hornet Mk I" => hornet_mk1,
+      "Hornet Mk I Invictus Blue and Gold" => hornet_mk1,
+      "Hornet Mk I - Invictus Blue and Gold" => hornet_mk1,
+      "Hornet Mk II" => hornet_mk2,
       "F7 Hornet Mk II" => hornet_mk2,
       "F7A Hornet Mk II" => hornet_mk2,
       "F7C Hornet Mk II" => hornet_mk2,
@@ -386,8 +390,6 @@ class PaintsImporter
       "2950 Invictus Aurora Light and Dark Grey" => aurora,
       "2950 Invictus Aurora Green and Gold" => aurora,
       "2950 Invictus Auora Green and Gold" => aurora,
-      "Hornet Mk I Invictus Blue and Gold" => hornet_mk1,
-      "Hornet Mk I - Invictus Blue and Gold" => hornet_mk1,
       "Pisces" => ["C8 Pisces", "C8X Pisces Expedition", "C8R Pisces"],
       "Anvil Hawk" => ["Hawk"],
       "Tumbril Nova" => ["Nova"],
