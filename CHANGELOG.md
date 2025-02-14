@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.53](///compare/v5.31.52...v5.31.53) (2025-02-14)
+
+
+### Bug Fixes
+
+* **sync:** check extension on modal open call 8482a45
+
 ### [5.31.52](///compare/v5.31.51...v5.31.52) (2024-12-22)
 
 ### [5.31.51](///compare/v5.31.50...v5.31.51) (2024-12-22)
