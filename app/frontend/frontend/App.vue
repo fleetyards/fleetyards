@@ -28,13 +28,17 @@ import { useRoute } from "vue-router";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAhoy } from "@/frontend/composables/useAhoy";
-import { useApiClient } from "@/frontend/composables/useApiClient";
+import { useMe as useMeQuery } from "@/services/fyApi";
+import { useVersion as useVersionQuery } from "@/services/fyApi";
 import { useNProgress } from "@/shared/composables/useNProgress";
 import { useFlash } from "@/shared/composables/useFlash";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
+import { useAxiosInterceptors } from "@/frontend/composables/useAxiosInterceptors";
+
+useAxiosInterceptors();
 
 useNProgress();
 
@@ -93,8 +97,6 @@ watch(
   () => {
     if (isAuthenticated.value) {
       requestBrowserPermission();
-
-      fetchCurrentUser();
     } else if (route.meta.needsAuthentication) {
       router.push({ name: "login" });
     }
@@ -139,20 +141,16 @@ onMounted(async () => {
 
   if (isAuthenticated.value) {
     requestBrowserPermission();
-
-    fetchCurrentUser();
   }
 
-  checkVersion();
-
   setInterval(() => {
-    checkVersion();
+    refetchVersion();
   }, CHECK_VERSION_INTERVAL);
 
   comlink.on("open-privacy-settings", openPrivacySettings);
-  comlink.on("user-update", fetchCurrentUser);
-  comlink.on("fleet-create", fetchCurrentUser);
-  comlink.on("fleet-update", fetchCurrentUser);
+  comlink.on("user-update", refetchCurrentUser);
+  comlink.on("fleet-create", refetchCurrentUser);
+  comlink.on("fleet-update", refetchCurrentUser);
 
   setupLocale();
 });
@@ -205,25 +203,31 @@ const checkSessionReload = async () => {
   }
 };
 
-const { users: usersService, versions: versionsService } = useApiClient();
+const { data: user, refetch: refetchCurrentUser } = useMeQuery({
+  query: {
+    enabled: isAuthenticated,
+  },
+});
 
-const fetchCurrentUser = async () => {
-  try {
-    const user = await usersService.me();
-    sessionStore.currentUser = user;
-  } catch (error) {
-    console.error(error);
-  }
-};
+watch(
+  () => user.value,
+  () => {
+    if (user.value) {
+      sessionStore.currentUser = user.value;
+    }
+  },
+);
 
-const checkVersion = async () => {
-  try {
-    const version = await versionsService.version();
-    appStore.updateVersion(version);
-  } catch (error) {
-    console.error(error);
-  }
-};
+const { data: version, refetch: refetchVersion } = useVersionQuery();
+
+watch(
+  () => version.value,
+  () => {
+    if (version.value) {
+      appStore.updateVersion(version.value);
+    }
+  },
+);
 
 const localeMapping = {
   de: "Deutsch",

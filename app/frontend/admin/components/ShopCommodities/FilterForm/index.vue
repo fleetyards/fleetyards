@@ -1,3 +1,79 @@
+<script lang="ts">
+export default {
+  name: "ShopCommoditiesFilterForm",
+};
+</script>
+
+<script lang="ts" setup>
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { useRoute } from "vue-router";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import type { FilterGroupParams } from "@/shared/components/base/FilterGroup/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useFilters } from "@/shared/composables/useFilters";
+// import type { ShopCommodityQuery } from "@/services/fyAdminApi/models";
+// import { useApiClient } from "@/admin/composables/useApiClient";
+
+const { filter, isFilterSelected, resetFilter } =
+  useFilters<ShopCommodityQuery>();
+
+const { t } = useI18n();
+
+const route = useRoute();
+
+const query = computed(() => (route.query.q || {}) as ShopCommodityQuery);
+
+const form = ref<ShopCommodityQuery>({
+  search: query.value.search,
+  componentItemType: query.value.componentItemType,
+  equipmentItemType: query.value.equipmentItemType,
+  equipmentType: query.value.equipmentType,
+  equipmentSlot: query.value.equipmentSlot,
+});
+
+const setupForm = () => {
+  form.value = {
+    search: query.value.search,
+    componentItemType: query.value.componentItemType,
+    equipmentItemType: query.value.equipmentItemType,
+    equipmentType: query.value.equipmentType,
+    equipmentSlot: query.value.equipmentSlot,
+  };
+};
+
+watch(
+  () => form,
+  () => {
+    filter(form.value);
+  },
+  {
+    deep: true,
+  },
+);
+
+const submit = () => {
+  filter(form.value);
+};
+
+onMounted(() => {
+  setupForm();
+});
+
+watch(
+  () => route.query,
+  () => {
+    setupForm();
+  },
+);
+
+const { componentsFilters: componentFiltersService } = useApiClient();
+
+const fetchComponentItemTypeFilters = async (_params: FilterGroupParams) => {
+  return componentFiltersService.itemTypes();
+};
+</script>
+
 <template>
   <form @submit.prevent="submit">
     <FormInput
@@ -68,79 +144,3 @@
     </Btn>
   </form>
 </template>
-
-<script lang="ts" setup>
-import Btn from "@/shared/components/base/Btn/index.vue";
-import { useRoute } from "vue-router";
-import FormInput from "@/shared/components/base/FormInput/index.vue";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
-import type { FilterGroupParams } from "@/shared/components/base/FilterGroup/index.vue";
-import { useI18n } from "@/shared/composables/useI18n";
-import { useFilters } from "@/shared/composables/useFilters";
-import type { ShopCommodityQuery } from "@/services/fyAdminApi";
-import { useApiClient } from "@/admin/composables/useApiClient";
-
-const { filter, isFilterSelected, resetFilter } =
-  useFilters<ShopCommodityQuery>();
-
-const { t } = useI18n();
-
-const route = useRoute();
-
-const query = computed(() => (route.query.q || {}) as ShopCommodityQuery);
-
-const form = ref<ShopCommodityQuery>({
-  search: query.value.search,
-  componentItemType: query.value.componentItemType,
-  equipmentItemType: query.value.equipmentItemType,
-  equipmentType: query.value.equipmentType,
-  equipmentSlot: query.value.equipmentSlot,
-});
-
-const setupForm = () => {
-  form.value = {
-    search: query.value.search,
-    componentItemType: query.value.componentItemType,
-    equipmentItemType: query.value.equipmentItemType,
-    equipmentType: query.value.equipmentType,
-    equipmentSlot: query.value.equipmentSlot,
-  };
-};
-
-watch(
-  () => form,
-  () => {
-    filter(form.value);
-  },
-  {
-    deep: true,
-  },
-);
-
-const submit = () => {
-  filter(form.value);
-};
-
-onMounted(() => {
-  setupForm();
-});
-
-watch(
-  () => route.query,
-  () => {
-    setupForm();
-  },
-);
-
-const { componentsFilters: componentFiltersService } = useApiClient();
-
-const fetchComponentItemTypeFilters = async (_params: FilterGroupParams) => {
-  return componentFiltersService.itemTypes();
-};
-</script>
-
-<script lang="ts">
-export default {
-  name: "ShopCommoditiesFilterForm",
-};
-</script>

@@ -30,9 +30,15 @@
 #  index_fleets_on_fid  (fid) UNIQUE
 #
 class Fleet < ApplicationRecord
-  include UrlFieldHelper
+  include UrlFieldConcern
 
-  audited
+  attr_accessor :update_reason, :update_reason_description, :author_id
+
+  has_paper_trail meta: {
+    author_id: :author_id,
+    reason: :update_reason,
+    reason_description: :update_reason_description
+  }
 
   has_many :fleet_memberships,
     dependent: :destroy
@@ -134,6 +140,6 @@ class Fleet < ApplicationRecord
   end
 
   private def update_slugs
-    self.slug = SlugHelper.generate_slug(fid)
+    self.slug = generate_slug(fid)
   end
 end

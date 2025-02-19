@@ -14,7 +14,7 @@ RSpec.describe "admin/api/v1/models", type: :request, swagger_doc: "admin/v1/sch
   end
 
   path "/models/{id}" do
-    parameter name: "id", in: :path, type: :string, format: :uuid, description: "Model id", required: true
+    parameter name: "id", in: :path, schema: {type: :string, format: :uuid}, description: "Model id", required: true
 
     get("Model Detail") do
       operationId "model"

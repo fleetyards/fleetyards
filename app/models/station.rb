@@ -232,6 +232,6 @@ class Station < ApplicationRecord
   end
 
   private def update_slugs
-    self.slug = SlugHelper.generate_slug(name)
+    self.slug = generate_slug(name)
   end
 end

@@ -12,8 +12,8 @@ RSpec.describe "admin/api/v1/sessions", type: :request, swagger_doc: "admin/v1/s
   end
 
   path "/sessions" do
-    delete("delete session") do
-      operationId "deleteSession"
+    delete("Destroy Session") do
+      operationId "destroySession"
       tags "Sessions"
       produces "application/json"
 

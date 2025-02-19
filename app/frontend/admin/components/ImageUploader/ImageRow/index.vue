@@ -1,3 +1,176 @@
+<script lang="ts">
+export default {
+  name: "ImageRow",
+};
+</script>
+
+<script lang="ts" setup>
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { debounce } from "ts-debounce";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import { v4 as uuidv4 } from "uuid";
+import { formatSize } from "@/shared/utils/Format";
+import { useI18n } from "@/shared/composables/useI18n";
+import type { Image } from "@/services/fyAdminApi";
+import type { VueUploadItem } from "vue-upload-component";
+import { useUpdateImage as useUpdateImageMutation } from "@/services/fyAdminApi";
+import { useDestroyImage as useDestroyImageMutation } from "@/services/fyAdminApi";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
+export interface UploadImage extends Image {
+  progress?: string;
+  active?: boolean;
+  success?: boolean;
+  error?: boolean;
+  speed?: number;
+}
+
+type Props = {
+  image: Image | VueUploadItem;
+};
+
+const props = defineProps<Props>();
+
+const { t } = useI18n();
+
+const deleting = ref(false);
+
+const updating = ref(false);
+
+const internalImage = ref<Image | VueUploadItem | undefined>();
+
+const uuid = ref(uuidv4());
+
+const uploaded = computed(() => {
+  return !!internalImage.value?.url;
+});
+
+const speed = computed(() => {
+  if (!(internalImage.value as VueUploadItem).speed) {
+    return undefined;
+  }
+
+  return (internalImage.value as VueUploadItem).speed;
+});
+
+watch(
+  () => props.image,
+  () => {
+    internalImage.value = props.image;
+  },
+);
+
+onMounted(() => {
+  uuid.value = uuidv4();
+  internalImage.value = props.image;
+});
+
+const emit = defineEmits(["start", "cancel", "image-deleted"]);
+
+const start = () => {
+  emit("start", internalImage.value);
+};
+
+const cancel = () => {
+  emit("cancel", internalImage.value);
+};
+
+const mutation = useUpdateImageMutation();
+
+const toggleEnabled = async () => {
+  if (!internalImage.value) {
+    return;
+  }
+
+  updating.value = true;
+
+  internalImage.value.enabled = !internalImage.value.enabled;
+
+  try {
+    await mutation.mutate({
+      id: internalImage.value.id,
+      data: {
+        enabled: internalImage.value.enabled,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    internalImage.value.enabled = !internalImage.value.enabled;
+  }
+
+  updating.value = false;
+};
+
+const toggleGlobal = async () => {
+  if (!internalImage.value) {
+    return;
+  }
+
+  updating.value = true;
+
+  internalImage.value.global = !internalImage.value.global;
+
+  try {
+    await mutation.mutate({
+      id: internalImage.value.id,
+      data: {
+        global: internalImage.value.global,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    internalImage.value.global = !internalImage.value.global;
+  }
+
+  updating.value = false;
+};
+
+const destroyMutation = useDestroyImageMutation();
+
+const deleteImage = async () => {
+  if (!internalImage.value) {
+    return;
+  }
+
+  deleting.value = true;
+
+  try {
+    await destroyMutation.mutate({
+      id: internalImage.value.id,
+    });
+
+    emit("image-deleted", internalImage.value);
+  } catch (error) {
+    console.error(error);
+  }
+
+  deleting.value = false;
+};
+
+const debouncedUpdateCaption = async () => {
+  if (!internalImage.value) {
+    return;
+  }
+
+  updating.value = true;
+
+  try {
+    await mutation.mutate({
+      id: internalImage.value.id,
+      data: {
+        caption: internalImage.value.caption,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+  }
+
+  updating.value = false;
+};
+
+const updateCaption = debounce(debouncedUpdateCaption, 500);
+</script>
+
 <template>
   <div v-if="internalImage" class="flex-list-row">
     <div class="store-image wide">
@@ -82,7 +255,11 @@
     </div>
     <div class="actions">
       <template v-if="uploaded">
-        <Btn :disabled="updating" size="small" @click="toggleEnabled">
+        <Btn
+          :disabled="updating"
+          :size="BtnSizesEnum.SMALL"
+          @click="toggleEnabled"
+        >
           <span v-show="internalImage.enabled">
             <i class="fa fa-check-square" />
           </span>
@@ -90,7 +267,7 @@
             <i class="far fa-square" />
           </span>
         </Btn>
-        <Btn :disabled="updating" size="small" @click="toggleGlobal">
+        <Btn :disabled="updating" @click="toggleGlobal">
           <span v-show="internalImage.global">
             <i class="fas fa-globe" />
           </span>
@@ -98,7 +275,11 @@
             <i class="fal fa-globe icon-disabled" />
           </span>
         </Btn>
-        <Btn :disabled="deleting" size="small" @click="deleteImage">
+        <Btn
+          :disabled="deleting"
+          :size="BtnSizesEnum.SMALL"
+          @click="deleteImage"
+        >
           <i class="fa fa-trash" />
           {{ t("models.image.delete") }}
         </Btn>
@@ -116,175 +297,6 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import Btn from "@/shared/components/base/Btn/index.vue";
-import { debounce } from "ts-debounce";
-import FormInput from "@/shared/components/base/FormInput/index.vue";
-import { v4 as uuidv4 } from "uuid";
-import { formatSize } from "@/shared/utils/Format";
-import { useI18n } from "@/shared/composables/useI18n";
-import type { Image } from "@/services/fyAdminApi";
-import type { VueUploadItem } from "vue-upload-component";
-import { useApiClient } from "@/admin/composables/useApiClient";
-
-export interface UploadImage extends Image {
-  progress?: string;
-  active?: boolean;
-  success?: boolean;
-  error?: boolean;
-  speed?: number;
-}
-
-type Props = {
-  image: Image | VueUploadItem;
-};
-
-const props = defineProps<Props>();
-
-const { t } = useI18n();
-
-const deleting = ref(false);
-
-const updating = ref(false);
-
-const internalImage = ref<Image | VueUploadItem | undefined>();
-
-const uuid = ref(uuidv4());
-
-const uploaded = computed(() => {
-  return !!internalImage.value?.url;
-});
-
-const speed = computed(() => {
-  if (!(internalImage.value as VueUploadItem).speed) {
-    return undefined;
-  }
-
-  return (internalImage.value as VueUploadItem).speed;
-});
-
-watch(
-  () => props.image,
-  () => {
-    internalImage.value = props.image;
-  },
-);
-
-onMounted(() => {
-  uuid.value = uuidv4();
-  internalImage.value = props.image;
-});
-
-const emit = defineEmits(["start", "cancel", "image-deleted"]);
-
-const start = () => {
-  emit("start", internalImage.value);
-};
-
-const cancel = () => {
-  emit("cancel", internalImage.value);
-};
-
-const { images: imagesService } = useApiClient();
-
-const toggleEnabled = async () => {
-  if (!internalImage.value) {
-    return;
-  }
-
-  updating.value = true;
-
-  internalImage.value.enabled = !internalImage.value.enabled;
-
-  try {
-    await imagesService.updateImage({
-      id: internalImage.value.id,
-      requestBody: {
-        enabled: internalImage.value.enabled,
-      },
-    });
-  } catch (error) {
-    console.error(error);
-    internalImage.value.enabled = !internalImage.value.enabled;
-  }
-
-  updating.value = false;
-};
-
-const toggleGlobal = async () => {
-  if (!internalImage.value) {
-    return;
-  }
-
-  updating.value = true;
-
-  internalImage.value.global = !internalImage.value.global;
-
-  try {
-    await imagesService.updateImage({
-      id: internalImage.value.id,
-      requestBody: {
-        global: internalImage.value.global,
-      },
-    });
-  } catch (error) {
-    console.error(error);
-    internalImage.value.global = !internalImage.value.global;
-  }
-
-  updating.value = false;
-};
-
-const deleteImage = async () => {
-  if (!internalImage.value) {
-    return;
-  }
-
-  deleting.value = true;
-
-  try {
-    await imagesService.destroy({
-      id: internalImage.value.id,
-    });
-
-    emit("image-deleted", internalImage.value);
-  } catch (error) {
-    console.error(error);
-  }
-
-  deleting.value = false;
-};
-
-const debouncedUpdateCaption = async () => {
-  if (!internalImage.value) {
-    return;
-  }
-
-  updating.value = true;
-
-  try {
-    await imagesService.updateImage({
-      id: internalImage.value.id,
-      requestBody: {
-        caption: internalImage.value.caption,
-      },
-    });
-  } catch (error) {
-    console.error(error);
-  }
-
-  updating.value = false;
-};
-
-const updateCaption = debounce(debouncedUpdateCaption, 500);
-</script>
-
-<script lang="ts">
-export default {
-  name: "ImageRow",
-};
-</script>
 
 <style lang="scss" scoped>
 @import "index";

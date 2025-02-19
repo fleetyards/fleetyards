@@ -26,7 +26,7 @@
 import AsyncData from "@/shared/components/AsyncData.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import ModulePanel from "@/frontend/components/Modules/Panel/index.vue";
-import { useModelQueries } from "@/frontend/composables/useModelQueries";
+import { useModelModules as useModelModulesQuery } from "@/services/fyApi";
 
 type Props = {
   modelSlug: string;
@@ -34,9 +34,7 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { modulesQuery } = useModelQueries(props.modelSlug);
-
-const { data: modules, ...asyncStatus } = modulesQuery();
+const { data: modules, ...asyncStatus } = useModelModulesQuery(props.modelSlug);
 
 const { t } = useI18n();
 </script>

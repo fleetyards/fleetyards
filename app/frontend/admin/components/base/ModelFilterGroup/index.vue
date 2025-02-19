@@ -5,9 +5,11 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { useApiClient } from "@/frontend/composables/useApiClient";
+import { models as fetchModels } from "@/services/fyApi/services/models/models";
+import { type ModelQuery } from "@/services/fyApi/models/modelQuery";
+import { type Models } from "@/services/fyApi/models/models";
+import { type Model } from "@/services/fyApi/models/model";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type ModelQuery, type Models, type Model } from "@/services/fyApi";
 import FilterGroup, {
   type FilterGroupParams,
 } from "@/shared/components/base/FilterGroup/index.vue";
@@ -62,8 +64,6 @@ const formatter = (response: Models) => {
   });
 };
 
-const { models: modelsService } = useApiClient();
-
 const fetch = async (params: FilterGroupParams<Model>) => {
   const q: ModelQuery = {};
 
@@ -79,7 +79,7 @@ const fetch = async (params: FilterGroupParams<Model>) => {
     }
   }
 
-  return modelsService.models({
+  return fetchModels({
     page: String(params.page || 1),
     q,
   });

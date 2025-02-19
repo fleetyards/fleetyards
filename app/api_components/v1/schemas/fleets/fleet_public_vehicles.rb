@@ -9,7 +9,7 @@ module V1
         schema({
           properties: {
             items: {type: :array, items: {
-              oneOf: [
+              anyOf: [
                 {"$ref": "#/components/schemas/Model"},
                 {"$ref": "#/components/schemas/VehiclePublic"}
               ]

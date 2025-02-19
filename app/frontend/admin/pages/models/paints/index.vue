@@ -14,14 +14,14 @@ import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import ModelPaintActions from "@/admin/components/ModelPaints/Actions/index.vue";
 import FilterForm from "@/admin/components/ModelPaints/FilterForm/index.vue";
-import {
-  QueryKeysEnum,
-  useModelQueries,
-} from "@/admin/composables/useModelQueries";
 import { useModelPaintFilters } from "@/admin/composables/useModelPaintFilters";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import {
+  getPaintsQueryKey,
+  usePaints as usePaintsQuery,
+} from "@/services/fyAdminApi";
 
 const route = useRoute();
 
@@ -36,22 +36,28 @@ watch(
   },
 );
 
-const { perPage, page, updatePerPage } = usePagination(QueryKeysEnum.MODELS);
+const paintsQueryParams = computed(() => {
+  return {
+    page: page.value,
+    perPage: perPage.value,
+    q: filters.value,
+    s: sorts.value,
+  };
+});
+
+const paintsQueryKey = computed(() => {
+  return getPaintsQueryKey(paintsQueryParams);
+});
+
+const { perPage, page, updatePerPage } = usePagination(paintsQueryKey);
 
 const { filters, isFilterSelected } = useModelPaintFilters(() => refetch());
-
-const { paintsQuery } = useModelQueries();
 
 const {
   data: paints,
   refetch,
   ...asyncStatus
-} = paintsQuery({
-  page,
-  perPage,
-  filters,
-  sorts,
-});
+} = usePaintsQuery(paintsQueryParams);
 
 const columns: BaseTableColumn[] = [
   {

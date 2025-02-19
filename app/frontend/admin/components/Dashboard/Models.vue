@@ -14,34 +14,32 @@ import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/Panel/Body/index.vue";
 import Chart from "@/shared/components/Chart/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useApiClient } from "@/admin/composables/useApiClient";
-import { useApiClient as useFrontendApiClient } from "@/frontend/composables/useApiClient";
-import { useQuery } from "@tanstack/vue-query";
+import { useModelsByClassification as useModelsByClassificationQuery } from "@/services/fyApi";
+import { useModelsBySize as useModelsBySizeQuery } from "@/services/fyApi";
+import { useModelsByProductionStatus as useModelsByProductionStatusQuery } from "@/services/fyApi";
+import { useModelsPerMonth as useModelsPerMonthQuery } from "@/services/fyApi";
+import { useModels } from "@/services/fyAdminApi";
 import { useSessionStore } from "@/admin/stores/session";
 
 const { t, lUtc: l } = useI18n();
 
 const sessionStore = useSessionStore();
 
-const { models: modelsSerivce } = useApiClient();
-const { stats: frontendStatsService } = useFrontendApiClient();
-
 const { data: modelsByClassification, ...modelsByClassificationStatus } =
-  useQuery({
-    queryKey: ["charts", "models-by-manufacturer"],
-    queryFn: () => frontendStatsService.modelsByClassification(),
-  });
+  useModelsByClassificationQuery();
 
-const { data: models, ...modelsStatus } = useQuery({
-  queryKey: ["dashboard", "models"],
-  queryFn: () =>
-    modelsSerivce.models({
-      perPage: "6",
-      page: "1",
-      s: ["updated_at desc", "name asc"],
-    }),
-  enabled: () => sessionStore.hasAccessTo("models"),
-});
+const { data: models, ...modelsStatus } = useModels(
+  {
+    perPage: "6",
+    page: "1",
+    s: ["updated_at desc", "name asc"],
+  },
+  {
+    query: {
+      enabled: () => sessionStore.hasAccessTo("models"),
+    },
+  },
+);
 
 const columns: BaseTableColumn[] = [
   {
@@ -54,21 +52,13 @@ const columns: BaseTableColumn[] = [
   },
 ];
 
-const { data: modelsBySize, ...modelsBySizeStatus } = useQuery({
-  queryKey: ["charts", "models-by-size"],
-  queryFn: () => frontendStatsService.modelsBySize(),
-});
+const { data: modelsBySize, ...modelsBySizeStatus } = useModelsBySizeQuery();
 
 const { data: modelsByProductionStatus, ...modelsByProductionStatusStatus } =
-  useQuery({
-    queryKey: ["charts", "models-by-production-status"],
-    queryFn: () => frontendStatsService.modelsByProductionStatus(),
-  });
+  useModelsByProductionStatusQuery();
 
-const { data: modelsPerMonth, ...modelsPerMonthStatus } = useQuery({
-  queryKey: ["charts", "models-per-month"],
-  queryFn: () => frontendStatsService.modelsPerMonth(),
-});
+const { data: modelsPerMonth, ...modelsPerMonthStatus } =
+  useModelsPerMonthQuery();
 </script>
 
 <template>

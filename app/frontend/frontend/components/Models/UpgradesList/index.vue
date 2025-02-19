@@ -26,7 +26,7 @@
 import AsyncData from "@/shared/components/AsyncData.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import TeaserPanel from "@/shared/components/TeaserPanel/index.vue";
-import { useModelQueries } from "@/frontend/composables/useModelQueries";
+import { useModelUpgrades as useModelUpgradesQuery } from "@/services/fyApi";
 
 type Props = {
   modelSlug: string;
@@ -34,9 +34,9 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { upgradesQuery } = useModelQueries(props.modelSlug);
-
-const { data: upgrades, ...asyncStatus } = upgradesQuery();
+const { data: upgrades, ...asyncStatus } = useModelUpgradesQuery(
+  props.modelSlug,
+);
 
 const { t } = useI18n();
 </script>

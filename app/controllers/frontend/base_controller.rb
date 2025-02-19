@@ -163,6 +163,17 @@ module Frontend
       end
     end
 
+    def manifest
+      respond_to do |format|
+        format.json do
+          render "frontend/manifest", status: :ok, layout: false
+        end
+        format.all do
+          redirect_to "/404"
+        end
+      end
+    end
+
     private def render_frontend
       respond_to do |format|
         format.html do

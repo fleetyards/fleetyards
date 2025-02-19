@@ -11,7 +11,7 @@ module V1
           properties: {
             username: {type: :string},
             email: {type: :string, format: :email},
-            password: {type: :string, min: 8},
+            password: {type: :string},
             passwordConfirmation: {type: :string},
             saleNotify: {type: :boolean},
             fleetInviteToken: {type: :string}

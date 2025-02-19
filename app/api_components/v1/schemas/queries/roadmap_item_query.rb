@@ -20,7 +20,7 @@ module V1
             rsiReleaseIdGteq: {type: :string, format: "date-time"},
             rsiCategoryIdIn: {type: :array, items: {type: :string}},
             activeIn: {type: :array, items: {type: :boolean}},
-            sorts: {oneOf: [{
+            sorts: {anyOf: [{
               type: :array, items: {"$ref": "#/components/schemas/RoadmapItemSortEnum"}
             }, {
               "$ref": "#/components/schemas/RoadmapItemSortEnum"

@@ -14,9 +14,13 @@
 </template>
 
 <script lang="ts" setup>
-import { useApiClient } from "@/admin/composables/useApiClient";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type UserQuery, type Users } from "@/services/fyAdminApi";
+import {
+  users as fetchUsers,
+  type UserQuery,
+  type Users,
+  type User,
+} from "@/services/fyAdminApi";
 import FilterGroup, {
   type FilterGroupParams,
 } from "@/shared/components/base/FilterGroup/index.vue";
@@ -69,9 +73,7 @@ const formatter = (response: Users) => {
   });
 };
 
-const { users: usersService } = useApiClient();
-
-const fetch = async (params: FilterGroupParams) => {
+const fetch = async (params: FilterGroupParams<User>) => {
   const q: UserQuery = {};
 
   if (params.search) {
@@ -86,7 +88,7 @@ const fetch = async (params: FilterGroupParams) => {
     }
   }
 
-  return usersService.users({
+  return fetchUsers({
     page: String(params.page || 1),
     q,
   });

@@ -28,7 +28,7 @@ module Admin
               modelSearchCont: {type: :string},
               loanerEq: {type: :boolean},
               wantedEq: {type: :boolean},
-              sorts: {oneOf: [{
+              sorts: {anyOf: [{
                 type: :array, items: {"$ref": "#/components/schemas/VehicleSortEnum"}
               }, {
                 "$ref": "#/components/schemas/VehicleSortEnum"

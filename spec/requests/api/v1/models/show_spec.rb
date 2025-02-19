@@ -57,7 +57,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
         schema type: :array,
           items: {
-            oneOf: [
+            anyOf: [
               {"$ref": "#/components/schemas/Hardpoint"},
               {"$ref": "#/components/schemas/ModelHardpoint"}
             ]

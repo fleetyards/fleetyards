@@ -64,7 +64,7 @@
 #  index_users_on_username              (username) UNIQUE
 #
 class User < ApplicationRecord
-  include UrlFieldHelper
+  include UrlFieldConcern
   include Rails.application.routes.url_helpers
 
   devise :two_factor_authenticatable, :two_factor_backupable, :recoverable, :trackable,

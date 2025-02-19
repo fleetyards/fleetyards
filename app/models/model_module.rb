@@ -24,9 +24,15 @@
 class ModelModule < ApplicationRecord
   paginates_per 30
 
-  audited on: %i[update], only: %i[
+  attr_accessor :update_reason, :update_reason_description, :author_id
+
+  has_paper_trail on: %i[update], only: %i[
     min_size max_size component_id cargo cargo_holds
-  ]
+  ], meta: {
+    author_id: :author_id,
+    reason: :update_reason,
+    reason_description: :update_reason_description
+  }
 
   belongs_to :manufacturer, optional: true
 

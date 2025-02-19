@@ -133,7 +133,7 @@
 #
 class Model < ApplicationRecord
   include ActionView::Helpers::NumberHelper
-  include Routing
+  include RoutingConcern
 
   attr_accessor :update_reason, :update_reason_description, :author_id
 
@@ -609,7 +609,7 @@ class Model < ApplicationRecord
 
   private def update_slugs
     super
-    self.rsi_slug = SlugHelper.generate_slug(rsi_name)
+    self.rsi_slug = generate_slug(rsi_name)
   end
 
   private def set_last_updated_at

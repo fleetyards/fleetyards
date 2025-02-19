@@ -5,12 +5,12 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { useApiClient } from "@/frontend/composables/useApiClient";
+import { modelDockSizes as fetchModelDockSizes } from "@/services/fyApi/services/models/models";
+import { type FilterOption } from "@/services/fyApi/models/filterOption";
 import { useI18n } from "@/shared/composables/useI18n";
 import FilterGroup, {
   type FilterGroupParams,
 } from "@/shared/components/base/FilterGroup/index.vue";
-import { type FilterOption } from "@/services/fyApi";
 
 type Props = {
   name: string;
@@ -49,10 +49,8 @@ watch(
   },
 );
 
-const { models: modelsService } = useApiClient();
-
 const fetch = async (_params: FilterGroupParams<FilterOption>) => {
-  return modelsService.modelDockSizes();
+  return fetchModelDockSizes();
 };
 </script>
 

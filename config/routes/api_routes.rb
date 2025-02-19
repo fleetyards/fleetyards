@@ -11,6 +11,8 @@ namespace :api, **api_options do
 
   draw "api/v1_routes"
 
+  draw "api_oauth_routes"
+
   get "docs", to: redirect(DOCS_ENDPOINT, allow_other_host: true)
 
   scope format: true, constraints: {format: "yaml"} do

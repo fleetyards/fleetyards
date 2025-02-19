@@ -1,21 +1,21 @@
 <template>
   <AsyncData :async-status="asyncStatus" hide-error>
     <template #resolved>
-      <div v-if="paints?.length" id="paints" class="row">
+      <div v-if="paints?.items?.length" id="paints" class="row">
         <hr />
         <div class="col-12">
-          <h2 v-if="paints?.length" id="paints" class="text-uppercase">
+          <h2 v-if="paints?.items?.length" id="paints" class="text-uppercase">
             {{ t("labels.model.paints") }}
           </h2>
 
           <transition-group name="fade-list" class="row" tag="div" appear>
             <div
-              v-for="item in paints"
+              v-for="item in paints.items"
               :key="`paints-${item.id}`"
               class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4 fade-list-item"
             >
               <Panel :bg-image="storeImage(item)">
-                <PanelHeading level="h3">
+                <PanelHeading :level="PanelHeadingLevelEnum.H3">
                   {{ item.name }}
                 </PanelHeading>
               </Panel>
@@ -37,7 +37,8 @@ import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 import { useMobile } from "@/shared/composables/useMobile";
-import { useModelQueries } from "@/frontend/composables/useModelQueries";
+import { usePaints as usePaintsQuery } from "@/services/fyAdminApi";
+import { PanelHeadingLevelEnum } from "@/shared/components/Panel/Heading/types";
 
 type Props = {
   modelSlug: string;
@@ -47,9 +48,11 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 
-const { paintsQuery } = useModelQueries(props.modelSlug);
-
-const { data: paints, ...asyncStatus } = paintsQuery();
+const { data: paints, ...asyncStatus } = usePaintsQuery({
+  q: {
+    modelSlugEq: props.modelSlug,
+  },
+});
 
 const { supported: webpSupported } = useWebpCheck();
 

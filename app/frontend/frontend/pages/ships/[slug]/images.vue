@@ -10,10 +10,10 @@ import Grid from "@/shared/components/base/Grid/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Gallery from "@/shared/components/Gallery/index.vue";
 import GalleryImage from "@/shared/components/Image/index.vue";
-import { useModelQueries } from "@/frontend/composables/useModelQueries";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { type Model } from "@/services/fyApi";
+import { useModelImages as useModelImagesQuery } from "@/services/fyApi";
 
 type Props = {
   model: Model;
@@ -73,9 +73,9 @@ const crumbs = computed(() => {
   ];
 });
 
-const { imagesQuery } = useModelQueries(route.params.slug as string);
+const modelSlug = computed(() => route.params.slug as string);
 
-const { data, ...asyncStatus } = imagesQuery({});
+const { data, ...asyncStatus } = useModelImagesQuery(modelSlug);
 
 onMounted(() => {
   updateTitle();
@@ -127,12 +127,12 @@ const openGallery = (index: number) => {
     primary-key="id"
     class="images"
   >
-    <template #default="{ records, loading, filterVisible, primaryKey }">
+    <template #default="{ records, loading, filterVisible }">
       <Grid
         :records="records"
         :loading="loading"
         :filter-visible="filterVisible"
-        :primary-key="primaryKey"
+        primary-key="id"
       >
         <template #default="{ record, index }">
           <GalleryImage

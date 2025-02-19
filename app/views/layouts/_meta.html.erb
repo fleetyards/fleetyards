@@ -1,0 +1,27 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no, viewport-fit=cover">
+<title><%= title %></title>
+<meta content="<%= description %>" name="description">
+<meta content="<%= keywords %>" name="keywords">
+<meta property="og:site_name" content="<%= I18n.t(:"title.default") %>">
+<meta property="og:title" content="<%= og_title %>">
+<meta property="og:description" content="<%= og_description %>">
+<meta property="og:type" content="<%= og_type %>">
+<meta property="og:url" content="<%= og_url %>">
+<meta property="og:image" content="<%= og_image %>">
+<link rel="shortcut icon" type="image/png" href="<%= vite_asset_path('images/favicons/favicon.png') %>">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#333333"/>
+<meta name="application-name" content="<%= I18n.t("title.default") %>">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-title" content="<%= I18n.t("title.default") %>">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="<%= I18n.t("title.default") %>">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="<%= frontend_manifest_path(format: :json, digest: manifest_digest) %>" />
+<%= favicon_link_tag vite_asset_path('images/favicons/icon-iphone.png'), rel: "apple-touch-icon", type: 'image/png' %>
+<%= favicon_link_tag vite_asset_path('images/favicons/icon-ipad.png'), rel: "apple-touch-icon", sizes: "76x76", type: 'image/png' %>
+<%= favicon_link_tag vite_asset_path('images/favicons/icon-iphone-retina.png'), rel: "apple-touch-icon", sizes: "120x120", type: 'image/png' %>
+<%= favicon_link_tag vite_asset_path('images/favicons/icon-ipad-retina.png'), rel: "apple-touch-icon", sizes: "152x152", type: 'image/png' %>
+<%= favicon_link_tag vite_asset_path('images/favicons/icon-ipad-retina.png'), rel: "apple-touch-startup-image", type: 'image/png' %>
+<link rel="preconnect" href="<%= API_ENDPOINT %>">

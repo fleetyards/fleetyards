@@ -1,14 +1,12 @@
 <script lang="ts" setup>
-import { useModelQueries } from "@/admin/composables/useModelQueries";
+import { useModel as useModelQuery } from "@/services/fyAdminApi";
 import AsyncData from "@/shared/components/AsyncData.vue";
 
 const route = useRoute();
 
-const { modelQuery } = useModelQueries();
-
-const { data: model, ...asyncStatus } = modelQuery({
-  id: route.params.id as string,
-});
+const { data: model, ...asyncStatus } = useModelQuery(
+  route.params.id as string,
+);
 </script>
 
 <template>

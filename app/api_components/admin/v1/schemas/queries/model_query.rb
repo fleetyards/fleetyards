@@ -23,7 +23,7 @@ module Admin
               holoBlank: {type: :boolean},
               topViewColoredBlank: {type: :boolean},
               frontViewBlank: {type: :boolean},
-              sorts: {oneOf: [{
+              sorts: {anyOf: [{
                 type: :array, items: {"$ref": "#/components/schemas/ModelSortEnum"}
               }, {
                 "$ref": "#/components/schemas/ModelSortEnum"

@@ -27,10 +27,5 @@
     "app/frontend/**/*.d.ts",
     "app/frontend/**/*.vue",
     "cypress/**/*.ts"
-  ],
-  "exclude": [
-    "app/frontend/services/fyAdminApi/*",
-    "app/frontend/services/fyApi/*",
-    "app/frontend/services/request.template.ts"
   ]
 }

@@ -11,7 +11,7 @@ module V1
           id: {type: :string, format: :uuid},
           type: {"$ref": "#/components/schemas/SearchResultTypeEnum"},
           item: {
-            oneOf: [{
+            anyOf: [{
               "$ref": "#/components/schemas/Model"
             }, {
               "$ref": "#/components/schemas/Component"

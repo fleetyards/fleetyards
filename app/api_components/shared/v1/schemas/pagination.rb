@@ -17,7 +17,7 @@ module Shared
             perPageSteps: {
               type: :array,
               items: {
-                oneOf: [
+                anyOf: [
                   {type: :string},
                   {type: :integer}
                 ]

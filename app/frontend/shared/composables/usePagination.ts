@@ -1,23 +1,29 @@
 import { useRoute } from "vue-router";
 import { usePaginationStore } from "@/shared/stores/pagination";
 import { useQueryClient } from "@tanstack/vue-query";
+import type { QueryKey } from "@tanstack/vue-query";
+import type { MaybeRef } from "vue";
 
-export const usePagination = (key: string) => {
+export const usePagination = (queryKey: MaybeRef<QueryKey | undefined>) => {
   const paginationStore = usePaginationStore();
 
+  const route = useRoute();
+
+  const key = computed(() => {
+    return (route.name as string) || "";
+  });
+
   const perPage = computed(() => {
-    if (!paginationStore.findByKey(key)) {
+    if (!paginationStore.findByKey(key.value)) {
       return undefined;
     }
 
-    return paginationStore.findByKey(key) as string;
+    return paginationStore.findByKey(key.value) as string;
   });
 
   const updatePerPage = (newPerPage: string | number) => {
-    paginationStore.setBykey(key, newPerPage);
+    paginationStore.setBykey(key.value, newPerPage);
   };
-
-  const route = useRoute();
 
   const page = computed(() => (route.query.page as string) || "1");
 
@@ -27,7 +33,7 @@ export const usePagination = (key: string) => {
     () => page.value,
     () => {
       queryClient.invalidateQueries({
-        queryKey: [key],
+        queryKey,
       });
     },
   );
@@ -36,7 +42,7 @@ export const usePagination = (key: string) => {
     () => perPage.value,
     () => {
       queryClient.invalidateQueries({
-        queryKey: [key],
+        queryKey,
       });
     },
   );

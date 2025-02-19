@@ -22,7 +22,7 @@ RSpec.describe "admin/api/v1/models", type: :request, swagger_doc: "admin/v1/sch
     parameter name: "id", in: :path, description: "Model id", schema: {type: :string, format: :uuid}
 
     put("Update Model") do
-      operationId "modelUpdate"
+      operationId "updateModel"
       tags "Models"
       consumes "application/json"
       produces "application/json"

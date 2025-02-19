@@ -47,6 +47,15 @@ module Admin
       end
     end
 
+    def manifest
+      format.json do
+        render "admin/manifest", status: :ok
+      end
+      format.all do
+        redirect_to "/404"
+      end
+    end
+
     private def render_frontend
       respond_to do |format|
         format.html do

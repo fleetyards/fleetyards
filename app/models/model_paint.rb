@@ -102,6 +102,6 @@ class ModelPaint < ApplicationRecord
 
   private def update_slugs
     super
-    self.rsi_slug = SlugHelper.generate_slug(rsi_name)
+    self.rsi_slug = generate_slug(rsi_name)
   end
 end

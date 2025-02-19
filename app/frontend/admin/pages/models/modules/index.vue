@@ -14,14 +14,14 @@ import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import ModelActions from "@/admin/components/Models/Actions/index.vue";
 import FilterForm from "@/admin/components/Models/FilterForm/index.vue";
-import {
-  QueryKeysEnum,
-  useModelQueries,
-} from "@/admin/composables/useModelQueries";
 import { useModelFilters } from "@/admin/composables/useModelFilters";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import {
+  getModelsQueryKey,
+  useModels as useModelsQuery,
+} from "@/services/fyAdminApi";
 
 const route = useRoute();
 
@@ -36,22 +36,28 @@ watch(
   },
 );
 
-const { perPage, page, updatePerPage } = usePagination(QueryKeysEnum.MODELS);
+const modelsQueryParams = computed(() => {
+  return {
+    page: page.value,
+    perPage: perPage.value,
+    q: filters.value,
+    s: sorts.value,
+  };
+});
+
+const modelsQueryKey = computed(() => {
+  return getModelsQueryKey(modelsQueryParams);
+});
+
+const { perPage, page, updatePerPage } = usePagination(modelsQueryKey);
 
 const { filters, isFilterSelected } = useModelFilters(() => refetch());
-
-const { modelsQuery } = useModelQueries();
 
 const {
   data: models,
   refetch,
   ...asyncStatus
-} = modelsQuery({
-  page,
-  perPage,
-  filters,
-  sorts,
-});
+} = useModelsQuery(modelsQueryParams);
 
 const columns: BaseTableColumn[] = [
   {

@@ -14,10 +14,6 @@ import { type BaseTableColumn } from "@/shared/components/base/Table/types";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import FilterForm from "@/admin/components/Vehicles/FilterForm/index.vue";
-import {
-  QueryKeysEnum,
-  useVehicleQueries,
-} from "@/admin/composables/useVehicleQueries";
 import { useVehicleFilters } from "@/admin/composables/useVehicleFilters";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
@@ -25,6 +21,10 @@ import { Vehicle } from "@/services/fyApi";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
+import {
+  useVehicles as useVehiclesQuery,
+  getVehiclesQueryKey,
+} from "@/services/fyAdminApi";
 
 const { t } = useI18n();
 
@@ -41,22 +41,28 @@ watch(
   },
 );
 
-const { perPage, page, updatePerPage } = usePagination(QueryKeysEnum.VEHICLES);
-
 const { filters } = useVehicleFilters(() => refetch());
 
-const { vehiclesQuery } = useVehicleQueries();
+const vehiclesQueryParams = computed(() => {
+  return {
+    page: page.value,
+    perPage: perPage.value,
+    q: filters.value,
+    s: sorts.value,
+  };
+});
+
+const vehiclesQueryKey = computed(() => {
+  return getVehiclesQueryKey(vehiclesQueryParams);
+});
+
+const { perPage, page, updatePerPage } = usePagination(vehiclesQueryKey);
 
 const {
   data: vehicles,
   refetch,
   ...asyncStatus
-} = vehiclesQuery({
-  page,
-  perPage,
-  filters,
-  sorts,
-});
+} = useVehiclesQuery(vehiclesQueryParams);
 
 const columns: BaseTableColumn[] = [
   {

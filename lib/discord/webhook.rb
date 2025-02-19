@@ -5,7 +5,7 @@ require "discordrb/webhooks"
 # rubocop:disable Naming/AccessorMethodName
 module Discord
   class Webhook
-    include Routing
+    include RoutingConcern
 
     attr_accessor :webhook_endpoint, :options, :title, :message, :url
 

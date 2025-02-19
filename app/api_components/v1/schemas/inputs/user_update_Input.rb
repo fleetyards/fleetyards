@@ -9,7 +9,7 @@ module V1
         schema({
           type: :object,
           properties: {
-            avatar: {type: :file},
+            avatar: {type: :string},
             removeAvatar: {type: :boolean},
             rsiHandle: {type: :string},
             homepage: {type: :string},

@@ -12,9 +12,13 @@ import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type VehicleUpdateInput, type Vehicle } from "@/services/fyApi";
+import {
+  modelPaints as fetchModelPaints,
+  type VehicleUpdateInput,
+  type Vehicle,
+  type ModelPaint,
+} from "@/services/fyApi";
 import { useVehicleQueries } from "@/frontend/composables/useVehicleQueries";
-import { useModelQueries } from "@/frontend/composables/useModelQueries";
 import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
@@ -96,9 +100,16 @@ const onSubmit = handleSubmit(async (values) => {
 
 const { data: boughtViaFilters } = boughtViaFiltersQuery();
 
-const { paintsFilterQuery, paintsFilterFormatter } = useModelQueries(
-  props.vehicle.model.slug,
-);
+const paintsFilterQuery = () => {
+  return fetchModelPaints(props.vehicle.model.slug);
+};
+
+const paintsFilterFormatter = (paints: ModelPaint[]) => {
+  return paints.map((paint) => ({
+    label: paint.name,
+    value: paint.id,
+  }));
+};
 </script>
 
 <template>

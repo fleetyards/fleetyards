@@ -12,9 +12,10 @@ import { type BaseList } from "@/services/fyApi";
 import { useRoute } from "vue-router";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import type { MaybeRef } from "vue";
 
 type Props = {
-  queryResultRef: BaseList;
+  queryResultRef: MaybeRef<BaseList>;
   updatePerPage?: (perPage: number | string) => void;
   perPage?: number | string;
   size?: BtnSizesEnum;
@@ -30,7 +31,11 @@ const props = withDefaults(defineProps<Props>(), {
   hash: undefined,
 });
 
-const pagination = computed(() => props.queryResultRef.meta.pagination);
+const pagination = computed(() => {
+  const result = unref(props.queryResultRef);
+
+  return result.meta.pagination;
+});
 
 const perPageSelectable = computed(
   () => !!pagination.value?.perPageSteps && !!props.updatePerPage,

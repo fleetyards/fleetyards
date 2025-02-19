@@ -19,7 +19,6 @@ import AppEnvironment from "@/shared/components/AppEnvironment/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useApiClient } from "@/admin/composables/useApiClient";
 import { useSessionStore } from "@/admin/stores/session";
 import { useNavStore } from "@/shared/stores/nav";
 import { useOverlayStore } from "@/shared/stores/overlay";
@@ -27,8 +26,12 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useNoty } from "@/shared/composables/useNoty";
 import { useImportUpdates } from "@/admin/composables/useImportUpdates";
 import { useFlash } from "@/shared/composables/useFlash";
+import { useAxiosInterceptors } from "@/frontend/composables/useAxiosInterceptors";
+import { useMe as useMeQuery } from "@/services/fyAdminApi";
 
 const { t } = useI18n();
+
+useAxiosInterceptors();
 
 useNProgress();
 
@@ -64,8 +67,6 @@ const sessionStore = useSessionStore();
 
 const { isAuthenticated } = storeToRefs(sessionStore);
 
-const { adminUsers: adminUsersService } = useApiClient();
-
 const { requestBrowserPermission } = useNoty();
 
 watch(
@@ -90,7 +91,7 @@ watch(
     if (isAuthenticated.value) {
       requestBrowserPermission();
 
-      fetchCurrentUser();
+      refetchCurrentUser();
     } else if (route.meta.needsAuthentication) {
       router.push({ name: "admin-login" });
     }
@@ -112,8 +113,6 @@ onMounted(async () => {
 
   if (isAuthenticated.value) {
     requestBrowserPermission();
-
-    fetchCurrentUser();
   }
 
   // checkVersion();
@@ -122,7 +121,7 @@ onMounted(async () => {
   //   checkVersion();
   // }, CHECK_VERSION_INTERVAL);
 
-  comlink.on("user-update", fetchCurrentUser);
+  comlink.on("user-update", refetchCurrentUser);
 
   // setupLocale();
 });
@@ -131,14 +130,20 @@ onUnmounted(() => {
   comlink.off("user-update");
 });
 
-const fetchCurrentUser = async () => {
-  try {
-    const user = await adminUsersService.me();
-    sessionStore.currentUser = user;
-  } catch (error) {
-    console.error(error);
-  }
-};
+const { data: user, refetch: refetchCurrentUser } = useMeQuery({
+  query: {
+    enabled: isAuthenticated,
+  },
+});
+
+watch(
+  () => user.value,
+  () => {
+    if (user.value) {
+      sessionStore.currentUser = user.value;
+    }
+  },
+);
 
 const setNoScroll = () => {
   if (!navCollapsed.value) {

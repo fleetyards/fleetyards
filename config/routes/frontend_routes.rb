@@ -25,26 +25,28 @@ namespace :frontend, **frontend_options do
   get "fleets/:slug:", to: "fleets#show", as: :fleet
   get "fleets/:slug/ships", to: "fleets#show"
   get "fleets/:slug/fleetchart", to: "fleets#show"
-  get "fleets/:slug/members" => "fleets#members", :as => :fleet_members
-  get "fleets/:slug/stats" => "fleets#stats"
-  get "fleets/:slug/settings" => "fleets#settings"
-  get "fleets/:slug/settings/fleet" => "fleets#settings"
-  get "fleets/:slug/settings/membership" => "fleets#settings"
+  get "fleets/:slug/members", to: "fleets#members", as: :fleet_members
+  get "fleets/:slug/stats", to: "fleets#stats"
+  get "fleets/:slug/settings", to: "fleets#settings"
+  get "fleets/:slug/settings/fleet", to: "fleets#settings"
+  get "fleets/:slug/settings/membership", to: "fleets#settings"
 
-  get "password/update/:token" => "base#password", :as => :password_reset
-  get "confirm/:token" => "base#confirm", :as => :confirm
+  get "password/update/:token", to: "base#password", as: :password_reset
+  get "confirm/:token", to: "base#confirm", as: :confirm
 
-  get "embed" => "embed#index"
-  get "embed-v2" => "embed#index_v2"
-  get "embed-test" => "embed#test"
-  get "embed-v2-test" => "embed#test_v2"
-  get "embed-v2-username-test" => "embed#test_v2_username"
-  get "embed-v2-fleet-test" => "embed#test_v2_fleet"
+  get "embed", to: "embed#index"
+  get "embed-v2", to: "embed#index_v2"
+  get "embed-test", to: "embed#test"
+  get "embed-v2-test", to: "embed#test_v2"
+  get "embed-v2-username-test", to: "embed#test_v2_username"
+  get "embed-v2-fleet-test", to: "embed#test_v2_fleet"
 
-  get "settings/notifications" => "base#index"
-  get "settings/security" => "base#index"
+  get "settings/notifications", to: "base#index"
+  get "settings/security", to: "base#index"
 
-  get "privacy-policy" => "base#index"
+  get "privacy-policy", to: "base#index"
+
+  get "manifest-:digest", to: "base#manifest", as: :manifest
 
   match "404", to: "base#not_found", via: :all
 
@@ -53,6 +55,6 @@ end
 
 Rails.application.routes.append do
   namespace :frontend, **frontend_options do
-    match "*path", to: "base#index", via: :all, as: "catch_all"
+    match "*path", to: "base#index", via: :all
   end
 end

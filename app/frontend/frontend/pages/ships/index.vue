@@ -22,14 +22,14 @@ import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-import {
-  QueryKeysEnum,
-  useModelQueries,
-} from "@/frontend/composables/useModelQueries";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useModelFilters } from "@/frontend/composables/useModelFilters";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import { useComlink } from "@/shared/composables/useComlink";
+import {
+  getModelsQueryKey,
+  useModels as useModelsQuery,
+} from "@/services/fyApi";
 
 useHangarItems();
 useWishlistItems();
@@ -51,9 +51,19 @@ const toggleFleetchart = () => {
   fleetchartsStore.toggleFleetchart("models");
 };
 
-const { modelsQuery } = useModelQueries();
+const modelsQueryParams = computed(() => {
+  return {
+    page: page.value,
+    perPage: perPage.value,
+    q: filters.value,
+  };
+});
 
-const { perPage, page, updatePerPage } = usePagination(QueryKeysEnum.MODELS);
+const modelsQueryKey = computed(() => {
+  return getModelsQueryKey(modelsQueryParams);
+});
+
+const { perPage, page, updatePerPage } = usePagination(modelsQueryKey);
 
 const { filters, isFilterSelected } = useModelFilters(() => refetch());
 
@@ -61,11 +71,7 @@ const {
   data: models,
   refetch,
   ...asyncStatus
-} = modelsQuery({
-  page,
-  perPage,
-  filters,
-});
+} = useModelsQuery(modelsQueryParams);
 
 const comlink = useComlink();
 

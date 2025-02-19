@@ -14,7 +14,7 @@ RSpec.describe "admin/api/v1/manufacturers", type: :request, swagger_doc: "admin
   end
 
   path "/manufacturers/{id}" do
-    parameter name: "id", in: :path, type: :string, format: :uuid, description: "Manufacturer id", required: true
+    parameter name: "id", in: :path, schema: {type: :string, format: :uuid}, description: "Manufacturer id", required: true
 
     get("Manufacturer Detail") do
       operationId "manufacturer"

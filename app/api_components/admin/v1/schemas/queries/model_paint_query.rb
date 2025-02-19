@@ -18,7 +18,7 @@ module Admin
               idNotIn: {type: :array, items: {type: :string}},
               modelSlugIn: {type: :array, items: {type: :string}},
               modelSlugEq: {type: :string},
-              sorts: {oneOf: [{
+              sorts: {anyOf: [{
                 type: :array, items: {"$ref": "#/components/schemas/ModelPaintSortEnum"}
               }, {
                 "$ref": "#/components/schemas/ModelPaintSortEnum"

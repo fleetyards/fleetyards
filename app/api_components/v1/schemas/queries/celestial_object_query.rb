@@ -16,7 +16,7 @@ module V1
             parentEq: {type: :string},
             parentIdNull: {type: :boolean},
             main: {type: :boolean, deprecated: true},
-            sorts: {oneOf: [{
+            sorts: {anyOf: [{
               type: :array, items: {"$ref": "#/components/schemas/CelestialObjectSortEnum"}
             }, {
               "$ref": "#/components/schemas/CelestialObjectSortEnum"

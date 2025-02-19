@@ -10,7 +10,7 @@ module Admin
 
             schema({
               properties: {
-                model: {"$ref": "#/components/schemas/Model"},
+                model: {"$ref": "#/components/schemas/Model"}
               },
               required: %w[model]
             })

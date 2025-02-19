@@ -17,7 +17,7 @@ import type {
   ModelQuery,
   Model,
 } from "@/services/fyAdminApi";
-import { useApiClient } from "@/admin/composables/useApiClient";
+import { models } from "@/services/fyAdminApi";
 
 const { t } = useI18n();
 
@@ -98,8 +98,6 @@ const submit = () => {
   filter(form.value);
 };
 
-const { models: modelsService } = useApiClient();
-
 const modelsFormatter = (response: Models) => {
   return response.items.map((model) => {
     return {
@@ -124,7 +122,7 @@ const fetchModels = async (params: FilterGroupParams<Model>) => {
     }
   }
 
-  return modelsService.models({
+  return models({
     page: String(params.page || 1),
     s: ["name asc"],
     q,

@@ -13,7 +13,11 @@
               :key="`variants-${item.slug}`"
               class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4 fade-list-item"
             >
-              <ModelPanel :model="item" :details="true" level="h3" />
+              <ModelPanel
+                :model="item"
+                :details="true"
+                :level="PanelHeadingLevelEnum.H3"
+              />
             </div>
           </transition-group>
         </div>
@@ -26,7 +30,8 @@
 import AsyncData from "@/shared/components/AsyncData.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
-import { useModelQueries } from "@/frontend/composables/useModelQueries";
+import { useModelVariants as useModelVariantsQuery } from "@/services/fyApi";
+import { PanelHeadingLevelEnum } from "@/shared/components/Panel/Heading/types";
 
 type Props = {
   modelSlug: string;
@@ -34,9 +39,9 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { variantsQuery } = useModelQueries(props.modelSlug);
-
-const { data: variants, ...asyncStatus } = variantsQuery();
+const { data: variants, ...asyncStatus } = useModelVariantsQuery(
+  props.modelSlug,
+);
 
 const { t } = useI18n();
 </script>

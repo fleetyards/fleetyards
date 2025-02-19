@@ -455,11 +455,11 @@ paths:
     parameters:
     - name: id
       in: path
-      format: uuid
-      description: Manufacturer id
-      required: true
       schema:
         type: string
+        format: uuid
+      description: Manufacturer id
+      required: true
     get:
       summary: Manufacturer Detail
       operationId: manufacturer
@@ -606,7 +606,7 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
     put:
       summary: Update Model
-      operationId: modelUpdate
+      operationId: updateModel
       tags:
       - Models
       parameters: []
@@ -662,8 +662,8 @@ paths:
               "$ref": "#/components/schemas/SessionInput"
         required: true
     delete:
-      summary: delete session
-      operationId: deleteSession
+      summary: Destroy Session
+      operationId: destroySession
       tags:
       - Sessions
       responses:
@@ -892,10 +892,6 @@ components:
     BaseList:
       type: object
       properties:
-        items:
-          type: array
-          items:
-            type: object
         meta:
           "$ref": "#/components/schemas/Meta"
       additionalProperties: false
@@ -1111,7 +1107,7 @@ components:
               "$ref": "#/components/schemas/MediaImage"
           additionalProperties: false
         typeData:
-          oneOf:
+          anyOf:
           - "$ref": "#/components/schemas/ComponentQuantumDrive"
           - "$ref": "#/components/schemas/CargoHold"
           - "$ref": "#/components/schemas/FuelTank"
@@ -1196,13 +1192,12 @@ components:
     Components:
       type: object
       properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
-            type: object
             "$ref": "#/components/schemas/Component"
-        meta:
-          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -2013,7 +2008,7 @@ components:
         perPageSteps:
           type: array
           items:
-            oneOf:
+            anyOf:
             - type: string
             - type: integer
       additionalProperties: false
@@ -2608,13 +2603,12 @@ components:
     Images:
       type: object
       properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
-            type: object
             "$ref": "#/components/schemas/Image"
-        meta:
-          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -2667,13 +2661,12 @@ components:
     Imports:
       type: object
       properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
-            type: object
             "$ref": "#/components/schemas/Import"
-        meta:
-          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -2985,13 +2978,12 @@ components:
     ItemPrices:
       type: object
       properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
-            type: object
             "$ref": "#/components/schemas/ItemPrice"
-        meta:
-          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -3000,13 +2992,12 @@ components:
     Manufacturers:
       type: object
       properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
-            type: object
             "$ref": "#/components/schemas/Manufacturer"
-        meta:
-          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -3557,13 +3548,12 @@ components:
     Models:
       type: object
       properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
-            type: object
             "$ref": "#/components/schemas/Model"
-        meta:
-          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -3964,13 +3954,12 @@ components:
     ModelPaints:
       type: object
       properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
-            type: object
             "$ref": "#/components/schemas/ModelPaint"
-        meta:
-          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -4152,7 +4141,7 @@ components:
         modelSlugEq:
           type: string
         sorts:
-          oneOf:
+          anyOf:
           - type: array
             items:
               "$ref": "#/components/schemas/ModelPaintSortEnum"
@@ -4199,7 +4188,7 @@ components:
         frontViewBlank:
           type: boolean
         sorts:
-          oneOf:
+          anyOf:
           - type: array
             items:
               "$ref": "#/components/schemas/ModelSortEnum"
@@ -4237,7 +4226,7 @@ components:
           items:
             type: string
         sorts:
-          oneOf:
+          anyOf:
           - type: array
             items:
               "$ref": "#/components/schemas/UserSortEnum"
@@ -4304,7 +4293,7 @@ components:
         wantedEq:
           type: boolean
         sorts:
-          oneOf:
+          anyOf:
           - type: array
             items:
               "$ref": "#/components/schemas/VehicleSortEnum"
@@ -4314,13 +4303,12 @@ components:
     ShopCommodities:
       type: object
       properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
-            type: object
             "$ref": "#/components/schemas/ShopCommodity"
-        meta:
-          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -4398,7 +4386,7 @@ components:
         shop:
           "$ref": "#/components/schemas/Shop"
         item:
-          oneOf:
+          anyOf:
           - "$ref": "#/components/schemas/Model"
           - "$ref": "#/components/schemas/Component"
           - "$ref": "#/components/schemas/Commodity"
@@ -4450,7 +4438,6 @@ components:
       - commodityItemId
       - shop
       - media
-      - prices
       - createdAt
       - updatedAt
       title: ShopCommodity
@@ -4644,13 +4631,12 @@ components:
     Stations:
       type: object
       properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
-            type: object
             "$ref": "#/components/schemas/Station"
-        meta:
-          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -4754,13 +4740,12 @@ components:
     Users:
       type: object
       properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
-            type: object
             "$ref": "#/components/schemas/User"
-        meta:
-          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -4859,19 +4844,40 @@ components:
     Vehicles:
       type: object
       properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
-            type: object
             "$ref": "#/components/schemas/Vehicle"
-        meta:
-          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
       - meta
       title: Vehicles
   securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+    Oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://fleetyards.net/oauth/authorize
+          tokenUrl: https://fleetyards.net/oauth/token
+          scopes:
+            public: Public Access
+            profile:read: Read Profile
+            profile:write: Manage Profile
+            hangar: Full Hangar Access
+            hangar:read: Read Hangar
+            hangar:write: Manage Hangar
+            fleet: Full Fleet Access
+            fleet:read: Read Fleet
+            fleet:write: Manage Fleet
+    OpenId:
+      type: openIdConnect
+      openIdConnectUrl: https://fleetyards.net/.well-known/openid-configuration
     SessionCookie:
       type: apiKey
       description: Session Cookie

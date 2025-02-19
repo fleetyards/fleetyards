@@ -14,33 +14,33 @@ import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/Panel/Body/index.vue";
 import Chart from "@/shared/components/Chart/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useApiClient } from "@/admin/composables/useApiClient";
-import { useQuery } from "@tanstack/vue-query";
+import { useRegistrationsPerMonth } from "@/services/fyAdminApi";
+import { useUsers as useUsersQuery } from "@/services/fyAdminApi";
 import { useSessionStore } from "@/admin/stores/session";
 
 const { t, lUtc: l, timeDistance } = useI18n();
 
 const sessionStore = useSessionStore();
 
-const { stats: statsService, users: usersService } = useApiClient();
-
 const { data: registrationsPerMonth, ...registrationsPerMonthStatus } =
-  useQuery({
-    queryKey: ["charts", "registration-per-month"],
-    queryFn: () => statsService.registrationsPerMonth(),
-    enabled: () => sessionStore.hasAccessTo("stats"),
+  useRegistrationsPerMonth({
+    query: {
+      enabled: () => sessionStore.hasAccessTo("stats"),
+    },
   });
 
-const { data: users, ...usersStatus } = useQuery({
-  queryKey: ["dashboard", "users"],
-  queryFn: () =>
-    usersService.users({
-      perPage: "6",
-      page: "1",
-      s: ["last_active_at desc", "created_at desc", "name asc"],
-    }),
-  enabled: () => sessionStore.hasAccessTo("users"),
-});
+const { data: users, ...usersStatus } = useUsersQuery(
+  {
+    perPage: "6",
+    page: "1",
+    s: ["last_active_at desc", "created_at desc", "name asc"],
+  },
+  {
+    query: {
+      enabled: () => sessionStore.hasAccessTo("users"),
+    },
+  },
+);
 
 const columns: BaseTableColumn[] = [
   {

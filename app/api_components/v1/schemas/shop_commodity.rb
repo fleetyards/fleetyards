@@ -64,7 +64,7 @@ module V1
           shop: {"$ref": "#/components/schemas/Shop"},
 
           item: {
-            oneOf: [{
+            anyOf: [{
               "$ref": "#/components/schemas/Model"
             }, {
               "$ref": "#/components/schemas/Component"
@@ -91,7 +91,7 @@ module V1
         },
         additionalProperties: false,
         required: %w[
-          id name slug prices confirmed commodityItemType commodityItemId shop media prices
+          id name slug prices confirmed commodityItemType commodityItemId shop media
           createdAt updatedAt
         ]
       })

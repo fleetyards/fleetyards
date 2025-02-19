@@ -96,8 +96,12 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { VehicleUpdateInput, type Vehicle } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useVehicleQueries } from "@/frontend/composables/useVehicleQueries";
-import { useModelQueries } from "@/frontend/composables/useModelQueries";
 import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
+import {
+  useModelModules as useModelModulesQuery,
+  useModelModulePackages as useModelModulePackagesQuery,
+  useModelUpgrades as useModelUpgradesQuery,
+} from "@/services/fyApi";
 
 type Props = {
   vehicle: Vehicle;
@@ -133,16 +137,16 @@ const setupForm = () => {
   };
 };
 
-const { modulePackagesQuery, modulesQuery, upgradesQuery } = useModelQueries(
+const { data: modulePackages, ...modulePackagesAsyncStatus } =
+  useModelModulePackagesQuery(props.vehicle.model.slug);
+
+const { data: modules, ...modulesAsyncStatus } = useModelModulesQuery(
   props.vehicle.model.slug,
 );
 
-const { data: modulePackages, ...modulePackagesAsyncStatus } =
-  modulePackagesQuery();
-
-const { data: modules, ...modulesAsyncStatus } = modulesQuery();
-
-const { data: upgrades, ...upgradesAsyncStatus } = upgradesQuery();
+const { data: upgrades, ...upgradesAsyncStatus } = useModelUpgradesQuery(
+  props.vehicle.model.slug,
+);
 
 const comlink = useComlink();
 

@@ -55,7 +55,12 @@ RSpec.configure do |config|
         }
       },
       servers: api_servers,
-      security: [],
+      security: [
+        SessionCookie: [],
+        BearerAuth: [],
+        Oauth2: [],
+        OpenId: []
+      ],
       paths: {},
       components: {
         parameters: shared_v1_components_loader.parameters.merge(v1_components_loader.parameters),

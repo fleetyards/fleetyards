@@ -13,13 +13,13 @@
 </template>
 
 <script lang="ts" setup>
-import { useApiClient } from "@/admin/composables/useApiClient";
-import { useI18n } from "@/shared/composables/useI18n";
 import {
-  type ManufacturerQuery,
-  type Manufacturers,
+  manufacturers as fetchManufacturers,
   type Manufacturer,
+  type Manufacturers,
+  type ManufacturerQuery,
 } from "@/services/fyAdminApi";
+import { useI18n } from "@/shared/composables/useI18n";
 import FilterGroup, {
   type FilterGroupParams,
 } from "@/shared/components/base/FilterGroup/index.vue";
@@ -73,8 +73,6 @@ const formatter = (response: Manufacturers) => {
   });
 };
 
-const { manufacturers: manufacturersService } = useApiClient();
-
 const fetch = async (params: FilterGroupParams<Manufacturer>) => {
   const q: ManufacturerQuery = {
     withModels: true,
@@ -92,7 +90,7 @@ const fetch = async (params: FilterGroupParams<Manufacturer>) => {
     }
   }
 
-  return manufacturersService.manufacturers({
+  return fetchManufacturers({
     page: String(params.page || 1),
     q,
   });

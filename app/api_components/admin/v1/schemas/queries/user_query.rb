@@ -19,7 +19,7 @@ module Admin
               usernameIn: {type: :array, items: {type: :string}},
               emailIn: {type: :array, items: {type: :string}},
               rsihandleIn: {type: :array, items: {type: :string}},
-              sorts: {oneOf: [{
+              sorts: {anyOf: [{
                 type: :array, items: {"$ref": "#/components/schemas/UserSortEnum"}
               }, {
                 "$ref": "#/components/schemas/UserSortEnum"

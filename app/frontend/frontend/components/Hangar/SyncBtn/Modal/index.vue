@@ -1,5 +1,5 @@
 <template>
-  <Modal :title="t('headlines.syncExtension')">
+  <Modal :title="t('headlines.syncExtension')" :fixed="true">
     <transition name="fade" mode="out-in">
       <div v-if="!hangarStore.extensionReady">
         <p>{{ t("texts.syncExtension.gettingStarted") }}</p>

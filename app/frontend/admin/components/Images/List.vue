@@ -9,8 +9,7 @@ import ImageUploader from "@/admin/components/ImageUploader/index.vue";
 import FilterForm from "@/admin/components/Images/FilterForm/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import { useQuery } from "@tanstack/vue-query";
-import { useApiClient } from "@/admin/composables/useApiClient";
+import { useImages as useImagesQuery } from "@/services/fyAdminApi";
 import type { ImageQuery } from "@/services/fyAdminApi";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useImageFilters } from "@/admin/composables/useImageFilters";
@@ -52,16 +51,12 @@ const internalGalleryType = computed(() => {
   return props.galleryType || routeQuery.value.galleryTypeEq;
 });
 
-const { images: imagesService } = useApiClient();
+const { perPage, page, updatePerPage } = usePagination(props.name);
 
-const { data, refetch, ...asyncStatus } = useQuery({
-  queryKey: [props.name],
-  queryFn: () =>
-    imagesService.images({
-      page: page.value,
-      perPage: perPage.value,
-      q: routeQuery.value,
-    }),
+const { data, refetch, ...asyncStatus } = useImagesQuery({
+  page: page.value,
+  perPage: perPage.value,
+  q: routeQuery.value,
 });
 
 watch(
@@ -71,8 +66,6 @@ watch(
   },
   { deep: true },
 );
-
-const { perPage, page, updatePerPage } = usePagination(props.name);
 </script>
 
 <template>

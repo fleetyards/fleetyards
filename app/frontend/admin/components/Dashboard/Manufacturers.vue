@@ -14,33 +14,29 @@ import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/Panel/Body/index.vue";
 import Chart from "@/shared/components/Chart/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useApiClient } from "@/admin/composables/useApiClient";
-import { useApiClient as useFrontendApiClient } from "@/frontend/composables/useApiClient";
-import { useQuery } from "@tanstack/vue-query";
+import { useManufacturers } from "@/services/fyAdminApi";
+import { useModelsByManufacturer } from "@/services/fyApi";
 import { useSessionStore } from "@/admin/stores/session";
 
 const { t, lUtc: l } = useI18n();
 
 const sessionStore = useSessionStore();
 
-const { manufacturers: manufacturersService } = useApiClient();
-const { stats: frontendStatsService } = useFrontendApiClient();
+const { data: modelsByManufacturer, ...modelsByManufacturerStatus } =
+  useModelsByManufacturer();
 
-const { data: modelsByManufacturer, ...modelsByManufacturerStatus } = useQuery({
-  queryKey: ["charts", "models-by-manufacturer"],
-  queryFn: () => frontendStatsService.modelsByManufacturer(),
-});
-
-const { data: manufacturers, ...manufacturersStatus } = useQuery({
-  queryKey: ["dashboard", "manufacturers"],
-  queryFn: () =>
-    manufacturersService.manufacturers({
-      perPage: "6",
-      page: "1",
-      s: ["updated_at desc", "name asc"],
-    }),
-  enabled: () => sessionStore.hasAccessTo("manufacturers"),
-});
+const { data: manufacturers, ...manufacturersStatus } = useManufacturers(
+  {
+    perPage: "6",
+    page: "1",
+    s: ["updated_at desc", "name asc"],
+  },
+  {
+    query: {
+      enabled: () => sessionStore.hasAccessTo("manufacturers"),
+    },
+  },
+);
 
 const columns: BaseTableColumn[] = [
   {

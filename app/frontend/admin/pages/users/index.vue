@@ -17,9 +17,9 @@ import { BaseTableColumn } from "@/shared/components/base/Table/types";
 import { usePagination } from "@/shared/composables/usePagination";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import {
-  QueryKeysEnum,
-  useUserQueries,
-} from "@/admin/composables/useUserQueries";
+  useUsers as useUsersQuery,
+  getUsersQueryKey,
+} from "@/services/fyAdminApi";
 import { useUserFilters } from "@/admin/composables/useUserFilters";
 
 const { t, lUtc: l, timeDistance } = useI18n();
@@ -37,22 +37,28 @@ watch(
   },
 );
 
-const { perPage, page, updatePerPage } = usePagination(QueryKeysEnum.USERS);
+const usersQueryParams = computed(() => {
+  return {
+    page: page.value,
+    perPage: perPage.value,
+    q: filters.value,
+    s: sorts.value,
+  };
+});
+
+const usersQueryKey = computed(() => {
+  return getUsersQueryKey(usersQueryParams);
+});
+
+const { perPage, page, updatePerPage } = usePagination(usersQueryKey);
 
 const { filters } = useUserFilters(() => refetch());
-
-const { usersQuery } = useUserQueries();
 
 const {
   data: users,
   refetch,
   ...asyncStatus
-} = usersQuery({
-  page: page,
-  perPage: perPage,
-  q: filters,
-  s: sorts,
-});
+} = useUsersQuery(usersQueryParams);
 
 const columns: BaseTableColumn[] = [
   {

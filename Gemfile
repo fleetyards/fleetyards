@@ -13,18 +13,12 @@ gem "sidekiq-cron"
 
 gem "paper_trail"
 
-gem "haml"
-gem "haml-rails"
-gem "slim-rails"
-
 gem "data_migrate"
 
 gem "opensearch-ruby"
 gem "searchkick"
 
 gem "discordrb-webhooks"
-
-gem "selectize-rails"
 
 gem "vite_rails"
 
@@ -34,14 +28,9 @@ gem "rollups"
 
 gem "accept_language"
 gem "i18n"
-gem "i18n-js", "< 4.0"
 gem "rails-i18n", "~> 7.0"
 
-gem "js_cookie_rails"
-
 gem "inky-rb", require: "inky"
-# Stylesheet inlining for email **
-gem "foundation_emails"
 gem "premailer-rails"
 
 gem "griddler"
@@ -71,25 +60,11 @@ gem "dalli"
 gem "kaminari"
 gem "url_plumber"
 
-gem "dynamic_fields_for_rails"
-
-gem "bourbon"
-gem "coffee-rails"
-gem "sass-rails"
-gem "sprockets-rails"
-
-gem "jquery-rails"
-gem "js-routes"
-
-gem "uglifier"
-
 gem "metadown"
 gem "redcarpet"
 
 gem "puma"
 gem "rack-attack"
-
-gem "bower-rails"
 
 gem "highline"
 gem "thor"
@@ -198,12 +173,8 @@ gem "enum_attributes_validation", "~> 0.1.7"
 
 gem "bskyrb", "~> 0.5.3"
 
-gem "x", "~> 0.14.0"
-
 gem "doorkeeper", "~> 5.6"
 
 gem "oauth2", "~> 2.0"
-
-gem "audited", "~> 5.8"
 
 gem "aws-sdk-s3", require: false

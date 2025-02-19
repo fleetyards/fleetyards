@@ -39,7 +39,7 @@ module V1
             sizeIn: {type: :array, items: {type: :string}},
             willItFit: {type: :string, format: :uuid},
             withCargo: {type: :boolean},
-            sorts: {oneOf: [{
+            sorts: {anyOf: [{
               type: :array, items: {"$ref": "#/components/schemas/ModelSortEnum"}
             }, {
               "$ref": "#/components/schemas/ModelSortEnum"

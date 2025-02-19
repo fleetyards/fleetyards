@@ -13,7 +13,7 @@ import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
 import routes from "@/admin/pages/routes";
 import { storeToRefs } from "pinia";
 import { useSessionStore } from "@/admin/stores/session";
-import { useApiClient } from "@/admin/composables/useApiClient";
+import { useDestroySession as useDestroySessionMutation } from "@/services/fyAdminApi";
 
 const { t } = useI18n();
 
@@ -33,10 +33,10 @@ const footerRoutes = computed(() => {
 
 const { isAuthenticated, currentUser } = storeToRefs(sessionStore);
 
-const { sessions: sessionsService } = useApiClient();
+const mutation = useDestroySessionMutation();
 
 const logout = async () => {
-  await sessionsService.deleteSession();
+  await mutation.mutate();
 
   sessionStore.logout();
 };

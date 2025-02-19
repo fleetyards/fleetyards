@@ -106,6 +106,8 @@ const checkExtension = () => {
 const comlink = useComlink();
 
 const openModal = () => {
+  checkExtension();
+
   comlink.emit("open-modal", {
     component: () =>
       import("@/frontend/components/Hangar/SyncBtn/Modal/index.vue"),

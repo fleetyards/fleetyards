@@ -14,10 +14,7 @@ import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import ManufacturerActions from "@/admin/components/Manufacturers/Actions/index.vue";
 import FilterForm from "@/admin/components/Manufacturers/FilterForm/index.vue";
-import {
-  QueryKeysEnum,
-  useManufacturerQueries,
-} from "@/admin/composables/useManufacturerQueries";
+import { useManufacturers, getManufacturersQueryKey } from "@/services/fyApi";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -36,24 +33,28 @@ watch(
   },
 );
 
-const { perPage, page, updatePerPage } = usePagination(
-  QueryKeysEnum.MANUFACTURERS,
-);
+const manufacturersQueryKey = computed(() => {
+  return getManufacturersQueryKey(manufacturersQueryParams.value);
+});
+
+const { perPage, page, updatePerPage } = usePagination(manufacturersQueryKey);
 
 const { filters, isFilterSelected } = useManufacturerFilters(() => refetch());
 
-const { manufacturersQuery } = useManufacturerQueries();
+const manufacturersQueryParams = computed(() => {
+  return {
+    page: page.value,
+    perPage: perPage.value,
+    q: filters.value,
+    s: sorts.value,
+  };
+});
 
 const {
   data: manufacturers,
   refetch,
   ...asyncStatus
-} = manufacturersQuery({
-  page,
-  perPage,
-  filters,
-  sorts,
-});
+} = useManufacturers(manufacturersQueryParams);
 
 const columns: BaseTableColumn[] = [
   {

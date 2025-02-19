@@ -1,14 +1,12 @@
 <script lang="ts" setup>
 import AsyncData from "@/shared/components/AsyncData.vue";
-import { useModelQueries } from "@/frontend/composables/useModelQueries";
+import { useModel as useModelQuery } from "@/services/fyApi";
 
 const route = useRoute();
 
 const slug = computed(() => route.params.slug as string);
 
-const { modelQuery } = useModelQueries(slug.value);
-
-const { data: model, ...asyncStatus } = modelQuery();
+const { data: model, ...asyncStatus } = useModelQuery(slug.value);
 </script>
 
 <template>

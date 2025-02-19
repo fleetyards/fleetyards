@@ -67,13 +67,15 @@ namespace :admin, **admin_options do
   get "models/:id/images", to: "base#model", as: :model_images
   get "models/:id/videos", to: "base#model", as: :model_videos
 
-  get "worker/:name/check" => "worker#check_state", :as => :check_worker_state
+  get "worker/:name/check", to: "worker#check_state", as: :check_worker_state
+
+  get "manifest-:digest", to: "base#manifest", as: :manifest
 
   root to: "base#index"
 end
 
 Rails.application.routes.append do
   namespace :admin, **admin_options do
-    match "*path", to: "base#index", via: :all, as: "catch_all"
+    match "*path", to: "base#index", via: :all
   end
 end

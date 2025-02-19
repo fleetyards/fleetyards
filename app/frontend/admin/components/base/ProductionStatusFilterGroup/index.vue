@@ -10,7 +10,10 @@
 </template>
 
 <script lang="ts" setup>
-import { useApiClient } from "@/admin/composables/useApiClient";
+import {
+  modelProductionStates as fetchModelProductionStates,
+  type FilterOption,
+} from "@/services/fyAdminApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import FilterGroup, {
   type FilterGroupParams,
@@ -53,10 +56,8 @@ watch(
   },
 );
 
-const { models: modelsService } = useApiClient();
-
-const fetch = async (_params: FilterGroupParams) => {
-  return modelsService.modelProductionStates();
+const fetch = async (_params: FilterGroupParams<FilterOption>) => {
+  return fetchModelProductionStates();
 };
 </script>
 

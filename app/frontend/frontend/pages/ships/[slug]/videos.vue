@@ -9,10 +9,10 @@ import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import VideoEmbed from "@/shared/components/Video/index.vue";
-import { useModelQueries } from "@/frontend/composables/useModelQueries";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { type Model } from "@/services/fyApi";
+import { useModelVideos as useModelVideosQuery } from "@/services/fyApi";
 
 type Props = {
   model: Model;
@@ -72,9 +72,9 @@ const crumbs = computed(() => {
   ];
 });
 
-const { videosQuery } = useModelQueries(route.params.slug as string);
+const modelSlug = computed(() => route.params.slug as string);
 
-const { data, ...asyncStatus } = videosQuery({});
+const { data, ...asyncStatus } = useModelVideosQuery(modelSlug);
 
 onMounted(() => {
   updateTitle();
@@ -120,12 +120,12 @@ const updateTitle = () => {
     primary-key="id"
     class="videos"
   >
-    <template #default="{ records, loading, filterVisible, primaryKey }">
+    <template #default="{ records, loading, filterVisible }">
       <Grid
         :records="records"
         :loading="loading"
         :filter-visible="filterVisible"
-        :primary-key="primaryKey"
+        primary-key="id"
         grid-base="2"
       >
         <template #default="{ record }">

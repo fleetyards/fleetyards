@@ -23,7 +23,7 @@ import ProductionStatusFilterGroup from "@/admin/components/base/ProductionStatu
 import ModelClassificationFilterGroup from "@/frontend/components/base/ModelClassificationFilterGroup/index.vue";
 import ModelFocusFilterGroup from "@/frontend/components/base/ModelFocusFilterGroup/index.vue";
 import DirectUpload from "@/shared/components/DirectUpload/index.vue";
-import { useModelQueries } from "@/admin/composables/useModelQueries";
+import { useModelUpdateMutation } from "@/admin/composables/useModelUpdateMutation";
 // import { useNoty } from "@/shared/composables/useNoty";
 
 type Props = {
@@ -82,14 +82,15 @@ const [classification, classificationProps] = defineField("classification");
 const [focus, focusProps] = defineField("focus");
 const [storeImageNew, storeImageNewProps] = defineField("storeImageNew");
 
-const { updateMutation } = useModelQueries();
-
-const mutation = updateMutation(props.model);
+const { updateMutation: mutation } = useModelUpdateMutation(props.model);
 
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
-  await mutation.mutateAsync(values);
+  await mutation.mutateAsync({
+    id: props.model.id,
+    data: values,
+  });
 
   submitting.value = false;
 });
