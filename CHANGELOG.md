@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.54](///compare/v5.31.53...v5.31.54) (2025-02-19)
+
+
+### Bug Fixes
+
+* **sync:** update Reclaimer BIS mapping 1f54523
+
 ### [5.31.53](///compare/v5.31.52...v5.31.53) (2025-02-14)
 
 
