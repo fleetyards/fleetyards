@@ -405,7 +405,7 @@ class HangarSync < HangarImporter
       "Nova Tank" => "Nova",
       "Pisces" => "C8 Pisces",
       "Pisces - Expedition" => "C8X Pisces Expedition",
-      "Reclaimer 2949 Best in Show" => "reclaimer best in show edition",
+      "Reclaimer 2949 Best in Show" => "reclaimer best in show edition 2949",
       "Reliant Kore - Mini Hauler" => "Reliant Kore",
       "Reliant Mako - News Van" => "Reliant Mako",
       "Reliant Sen - Researcher" => "Reliant Sen",
