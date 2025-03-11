@@ -25,14 +25,8 @@ class Ability
     can :read, :api_stats
     can %i[index show], :api_models
     can %i[index], :api_manufacturers
-    can %i[index show], :api_stations
-    can %i[show index], :api_celestial_objects
-    can %i[show index], :api_starsystems
     can %i[index], :api_images
     can %i[public], :api_hangar_groups
-    can %i[show create], :api_commodity_prices
-    can %i[index], :api_roadmap
-    can %i[index], :api_search
     can %i[read], :api_fleet
     can %i[filters], :api_hangar
 
@@ -44,11 +38,10 @@ class Ability
 
     can %i[check_serial], :api_vehicles
     can %i[index sort], :api_hangar_groups
-    can %i[show update destroy index destroy_all update_bulk destroy_bulk], :api_hangar
+    can %i[show update destroy index destroy_all create_bulk update_bulk destroy_bulk], :api_hangar
     can %i[read create update destroy], Vehicle, user_id: user.id
     can %i[create update destroy], HangarGroup, user_id: user.id
     can %i[read confirm_access update destroy], User, id: user.id
-    can %i[create], CommodityPrice
     can %i[index], :api_oauth_applications
     can %i[read create update destroy], Oauth::Application, owner_id: user.id, owner_type: "User"
     can %i[read create destroy], :oauth_authorizations

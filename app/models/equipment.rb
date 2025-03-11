@@ -78,34 +78,50 @@ class Equipment < ApplicationRecord
     ["manufacturer", "shop_commodities"]
   end
 
-  enum equipment_type: {undersuit: 0, armor: 1, weapon: 2, tool: 3, clothing: 4, medical: 5, weapon_attachment: 6, hacking_tool: 7}
+  enum :equipment_type,
+    {
+      undersuit: 0, armor: 1, weapon: 2, tool: 3, clothing: 4, medical: 5,
+      weapon_attachment: 6, hacking_tool: 7
+    }
   ransacker :equipment_type, formatter: proc { |v| Equipment.equipment_types[v] } do |parent|
     parent.table[:equipment_type]
   end
 
-  enum slot: {undersuit: 0, arms: 1, helmet: 2, torso: 3, legs: 4, footwear: 5, hat: 6, gloves: 7, pants: 8, shirt: 9, jacket: 10, backpack: 11}, _suffix: true
+  enum :slot,
+    {
+      undersuit: 0, arms: 1, helmet: 2, torso: 3, legs: 4, footwear: 5, hat: 6, gloves: 7,
+      pants: 8, shirt: 9, jacket: 10, backpack: 11
+    },
+    suffix: true
   ransacker :slot, formatter: proc { |v| Equipment.slots[v] } do |parent|
     parent.table[:slot]
   end
 
-  enum item_type: {
-    flightsuit: 0, light_armor: 1, medium_armor: 2, heavy_armor: 3, magazine: 4, battery: 5,
-    pistol: 6, grenade: 7, smg: 8, rifle: 9, shotgun: 10, lmg: 11, sniper_rifle: 12,
-    special_railgun: 13, assault_rifle: 14, weapon_scope: 15, utility: 16, rocket_launcher: 17,
-    grenade_launcher: 18, knife: 19, backpack: 20, light_backpack: 21, medium_backpack: 22,
-    heavy_backpack: 23
-  }
+  enum :item_type,
+    {
+      flightsuit: 0, light_armor: 1, medium_armor: 2, heavy_armor: 3, magazine: 4, battery: 5,
+      pistol: 6, grenade: 7, smg: 8, rifle: 9, shotgun: 10, lmg: 11, sniper_rifle: 12,
+      special_railgun: 13, assault_rifle: 14, weapon_scope: 15, utility: 16, rocket_launcher: 17,
+      grenade_launcher: 18, knife: 19, backpack: 20, light_backpack: 21, medium_backpack: 22,
+      heavy_backpack: 23
+    }
   ransacker :item_type, formatter: proc { |v| Equipment.item_types[v] } do |parent|
     parent.table[:item_type]
   end
 
-  enum weapon_class: {energy: 0, ballistic: 1, frag: 2}
+  enum :weapon_class,
+    {energy: 0, ballistic: 1, frag: 2}
   ransacker :weapon_class, formatter: proc { |v| Equipment.weapon_classes[v] } do |parent|
     parent.table[:weapon_class]
   end
 
-  enum core_compatibility: {all: 0, medium_heavy: 1, heavy: 2}, _suffix: true
-  enum backpack_compatibility: {all: 0, light_medium: 1, light: 2}, _suffix: true
+  enum :core_compatibility,
+    {all: 0, medium_heavy: 1, heavy: 2},
+    suffix: true
+
+  enum :backpack_compatibility,
+    {all: 0, light_medium: 1, light: 2},
+    suffix: true
 
   def self.visible
     where(hidden: false)

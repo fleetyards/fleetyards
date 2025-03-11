@@ -20,9 +20,9 @@ import type { MaybeRef } from "vue";
 import type {
   FleetInviteUrl,
   FleetInviteUrlCreateInput,
+  FleetInviteUrlsParams,
   FleetMember,
   FleetMembershipCreateInput,
-  InviteUrlsParams,
   StandardError,
   ValidationError,
 } from "../models";
@@ -30,9 +30,9 @@ import { axiosClient } from "../axiosClient";
 import type { ErrorType } from "../axiosClient";
 
 /**
- * @summary Create Invite Url
+ * @summary Create Fleet Invite Url
  */
-export const createInviteUrl = (
+export const createFleetInviteUrl = (
   fleetSlug: MaybeRef<string>,
   fleetInviteUrlCreateInput: MaybeRef<FleetInviteUrlCreateInput>,
   signal?: AbortSignal,
@@ -49,23 +49,23 @@ export const createInviteUrl = (
   });
 };
 
-export const getCreateInviteUrlMutationOptions = <
+export const getCreateFleetInviteUrlMutationOptions = <
   TError = ErrorType<ValidationError | StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createInviteUrl>>,
+    Awaited<ReturnType<typeof createFleetInviteUrl>>,
     TError,
     { fleetSlug: string; data: FleetInviteUrlCreateInput },
     TContext
   >;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof createInviteUrl>>,
+  Awaited<ReturnType<typeof createFleetInviteUrl>>,
   TError,
   { fleetSlug: string; data: FleetInviteUrlCreateInput },
   TContext
 > => {
-  const mutationKey = ["createInviteUrl"];
+  const mutationKey = ["createFleetInviteUrl"];
   const { mutation: mutationOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -75,54 +75,54 @@ export const getCreateInviteUrlMutationOptions = <
     : { mutation: { mutationKey } };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof createInviteUrl>>,
+    Awaited<ReturnType<typeof createFleetInviteUrl>>,
     { fleetSlug: string; data: FleetInviteUrlCreateInput }
   > = (props) => {
     const { fleetSlug, data } = props ?? {};
 
-    return createInviteUrl(fleetSlug, data);
+    return createFleetInviteUrl(fleetSlug, data);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type CreateInviteUrlMutationResult = NonNullable<
-  Awaited<ReturnType<typeof createInviteUrl>>
+export type CreateFleetInviteUrlMutationResult = NonNullable<
+  Awaited<ReturnType<typeof createFleetInviteUrl>>
 >;
-export type CreateInviteUrlMutationBody = FleetInviteUrlCreateInput;
-export type CreateInviteUrlMutationError = ErrorType<
+export type CreateFleetInviteUrlMutationBody = FleetInviteUrlCreateInput;
+export type CreateFleetInviteUrlMutationError = ErrorType<
   ValidationError | StandardError
 >;
 
 /**
- * @summary Create Invite Url
+ * @summary Create Fleet Invite Url
  */
-export const useCreateInviteUrl = <
+export const useCreateFleetInviteUrl = <
   TError = ErrorType<ValidationError | StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createInviteUrl>>,
+    Awaited<ReturnType<typeof createFleetInviteUrl>>,
     TError,
     { fleetSlug: string; data: FleetInviteUrlCreateInput },
     TContext
   >;
 }): UseMutationReturnType<
-  Awaited<ReturnType<typeof createInviteUrl>>,
+  Awaited<ReturnType<typeof createFleetInviteUrl>>,
   TError,
   { fleetSlug: string; data: FleetInviteUrlCreateInput },
   TContext
 > => {
-  const mutationOptions = getCreateInviteUrlMutationOptions(options);
+  const mutationOptions = getCreateFleetInviteUrlMutationOptions(options);
 
   return useMutation(mutationOptions);
 };
 /**
  * @summary Fleet Invite Urls List
  */
-export const inviteUrls = (
+export const fleetInviteUrls = (
   fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<InviteUrlsParams>,
+  params?: MaybeRef<FleetInviteUrlsParams>,
   signal?: AbortSignal,
 ) => {
   fleetSlug = unref(fleetSlug);
@@ -136,9 +136,9 @@ export const inviteUrls = (
   });
 };
 
-export const getInviteUrlsQueryKey = (
+export const getFleetInviteUrlsQueryKey = (
   fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<InviteUrlsParams>,
+  params?: MaybeRef<FleetInviteUrlsParams>,
 ) => {
   return [
     "fleets",
@@ -148,56 +148,72 @@ export const getInviteUrlsQueryKey = (
   ] as const;
 };
 
-export const getInviteUrlsQueryOptions = <
-  TData = Awaited<ReturnType<typeof inviteUrls>>,
+export const getFleetInviteUrlsQueryOptions = <
+  TData = Awaited<ReturnType<typeof fleetInviteUrls>>,
   TError = ErrorType<StandardError>,
 >(
   fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<InviteUrlsParams>,
+  params?: MaybeRef<FleetInviteUrlsParams>,
   options?: {
     query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof inviteUrls>>, TError, TData>
+      UseQueryOptions<
+        Awaited<ReturnType<typeof fleetInviteUrls>>,
+        TError,
+        TData
+      >
     >;
   },
 ) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey = getInviteUrlsQueryKey(fleetSlug, params);
+  const queryKey = getFleetInviteUrlsQueryKey(fleetSlug, params);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof inviteUrls>>> = ({
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof fleetInviteUrls>>> = ({
     signal,
-  }) => inviteUrls(fleetSlug, params, signal);
+  }) => fleetInviteUrls(fleetSlug, params, signal);
 
   return {
     queryKey,
     queryFn,
     enabled: computed(() => !!unref(fleetSlug)),
     ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof inviteUrls>>, TError, TData>;
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof fleetInviteUrls>>,
+    TError,
+    TData
+  >;
 };
 
-export type InviteUrlsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof inviteUrls>>
+export type FleetInviteUrlsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof fleetInviteUrls>>
 >;
-export type InviteUrlsQueryError = ErrorType<StandardError>;
+export type FleetInviteUrlsQueryError = ErrorType<StandardError>;
 
 /**
  * @summary Fleet Invite Urls List
  */
 
-export function useInviteUrls<
-  TData = Awaited<ReturnType<typeof inviteUrls>>,
+export function useFleetInviteUrls<
+  TData = Awaited<ReturnType<typeof fleetInviteUrls>>,
   TError = ErrorType<StandardError>,
 >(
   fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<InviteUrlsParams>,
+  params?: MaybeRef<FleetInviteUrlsParams>,
   options?: {
     query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof inviteUrls>>, TError, TData>
+      UseQueryOptions<
+        Awaited<ReturnType<typeof fleetInviteUrls>>,
+        TError,
+        TData
+      >
     >;
   },
 ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = getInviteUrlsQueryOptions(fleetSlug, params, options);
+  const queryOptions = getFleetInviteUrlsQueryOptions(
+    fleetSlug,
+    params,
+    options,
+  );
 
   const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
     queryKey: DataTag<QueryKey, TData>;
@@ -210,9 +226,9 @@ export function useInviteUrls<
 
 /**
  * You are not the owner of this Fleet
- * @summary Remove Invite Url
+ * @summary Remove Fleet Invite Url
  */
-export const removeInviteUrl = (
+export const destroyFleetInviteUrl = (
   fleetSlug: MaybeRef<string>,
   token: MaybeRef<string>,
 ) => {
@@ -225,23 +241,23 @@ export const removeInviteUrl = (
   });
 };
 
-export const getRemoveInviteUrlMutationOptions = <
+export const getDestroyFleetInviteUrlMutationOptions = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof removeInviteUrl>>,
+    Awaited<ReturnType<typeof destroyFleetInviteUrl>>,
     TError,
     { fleetSlug: string; token: string },
     TContext
   >;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof removeInviteUrl>>,
+  Awaited<ReturnType<typeof destroyFleetInviteUrl>>,
   TError,
   { fleetSlug: string; token: string },
   TContext
 > => {
-  const mutationKey = ["removeInviteUrl"];
+  const mutationKey = ["destroyFleetInviteUrl"];
   const { mutation: mutationOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -251,51 +267,51 @@ export const getRemoveInviteUrlMutationOptions = <
     : { mutation: { mutationKey } };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof removeInviteUrl>>,
+    Awaited<ReturnType<typeof destroyFleetInviteUrl>>,
     { fleetSlug: string; token: string }
   > = (props) => {
     const { fleetSlug, token } = props ?? {};
 
-    return removeInviteUrl(fleetSlug, token);
+    return destroyFleetInviteUrl(fleetSlug, token);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type RemoveInviteUrlMutationResult = NonNullable<
-  Awaited<ReturnType<typeof removeInviteUrl>>
+export type DestroyFleetInviteUrlMutationResult = NonNullable<
+  Awaited<ReturnType<typeof destroyFleetInviteUrl>>
 >;
 
-export type RemoveInviteUrlMutationError = ErrorType<StandardError>;
+export type DestroyFleetInviteUrlMutationError = ErrorType<StandardError>;
 
 /**
- * @summary Remove Invite Url
+ * @summary Remove Fleet Invite Url
  */
-export const useRemoveInviteUrl = <
+export const useDestroyFleetInviteUrl = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof removeInviteUrl>>,
+    Awaited<ReturnType<typeof destroyFleetInviteUrl>>,
     TError,
     { fleetSlug: string; token: string },
     TContext
   >;
 }): UseMutationReturnType<
-  Awaited<ReturnType<typeof removeInviteUrl>>,
+  Awaited<ReturnType<typeof destroyFleetInviteUrl>>,
   TError,
   { fleetSlug: string; token: string },
   TContext
 > => {
-  const mutationOptions = getRemoveInviteUrlMutationOptions(options);
+  const mutationOptions = getDestroyFleetInviteUrlMutationOptions(options);
 
   return useMutation(mutationOptions);
 };
 /**
  * User is already a member of this fleet
- * @summary Create Membership by Invite
+ * @summary Create Fleet Membership by Invite
  */
-export const useInvite = (
+export const useFleetInvite = (
   fleetMembershipCreateInput: MaybeRef<FleetMembershipCreateInput>,
   signal?: AbortSignal,
 ) => {
@@ -310,23 +326,23 @@ export const useInvite = (
   });
 };
 
-export const getUseInviteMutationOptions = <
+export const getUseFleetInviteMutationOptions = <
   TError = ErrorType<ValidationError | StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof useInvite>>,
+    Awaited<ReturnType<typeof useFleetInvite>>,
     TError,
     { data: FleetMembershipCreateInput },
     TContext
   >;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof useInvite>>,
+  Awaited<ReturnType<typeof useFleetInvite>>,
   TError,
   { data: FleetMembershipCreateInput },
   TContext
 > => {
-  const mutationKey = ["useInvite"];
+  const mutationKey = ["useFleetInvite"];
   const { mutation: mutationOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -336,43 +352,45 @@ export const getUseInviteMutationOptions = <
     : { mutation: { mutationKey } };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof useInvite>>,
+    Awaited<ReturnType<typeof useFleetInvite>>,
     { data: FleetMembershipCreateInput }
   > = (props) => {
     const { data } = props ?? {};
 
-    return useInvite(data);
+    return useFleetInvite(data);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type UseInviteMutationResult = NonNullable<
-  Awaited<ReturnType<typeof useInvite>>
+export type UseFleetInviteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof useFleetInvite>>
 >;
-export type UseInviteMutationBody = FleetMembershipCreateInput;
-export type UseInviteMutationError = ErrorType<ValidationError | StandardError>;
+export type UseFleetInviteMutationBody = FleetMembershipCreateInput;
+export type UseFleetInviteMutationError = ErrorType<
+  ValidationError | StandardError
+>;
 
 /**
- * @summary Create Membership by Invite
+ * @summary Create Fleet Membership by Invite
  */
-export const useUseInvite = <
+export const useUseFleetInvite = <
   TError = ErrorType<ValidationError | StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof useInvite>>,
+    Awaited<ReturnType<typeof useFleetInvite>>,
     TError,
     { data: FleetMembershipCreateInput },
     TContext
   >;
 }): UseMutationReturnType<
-  Awaited<ReturnType<typeof useInvite>>,
+  Awaited<ReturnType<typeof useFleetInvite>>,
   TError,
   { data: FleetMembershipCreateInput },
   TContext
 > => {
-  const mutationOptions = getUseInviteMutationOptions(options);
+  const mutationOptions = getUseFleetInviteMutationOptions(options);
 
   return useMutation(mutationOptions);
 };

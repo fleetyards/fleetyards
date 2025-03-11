@@ -1,20 +1,18 @@
-<template>
-  <FilterGroup
-    v-model="internalValue"
-    :label="t('labels.filters.models.productionStatus')"
-    :query-fn="fetch"
-    :name="name"
-    :multiple="multiple"
-    :no-label="noLabel"
-  />
-</template>
+<script lang="ts">
+export default {
+  name: "ProductionStatusFilterGroup",
+};
+</script>
 
 <script lang="ts" setup>
-import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useI18n } from "@/shared/composables/useI18n";
 import FilterGroup, {
   type FilterGroupParams,
 } from "@/shared/components/base/FilterGroup/index.vue";
+import {
+  modelProductionStatesFilters as fetchModelProductionStatesFilters,
+  type FilterOption,
+} from "@/services/fyApi";
 
 type Props = {
   name: string;
@@ -53,15 +51,18 @@ watch(
   },
 );
 
-const { models: modelsService } = useApiClient();
-
-const fetch = async (_params: FilterGroupParams) => {
-  return modelsService.modelProductionStates();
+const fetch = async (_params: FilterGroupParams<FilterOption>) => {
+  return fetchModelProductionStatesFilters();
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "ProductionStatusFilterGroup",
-};
-</script>
+<template>
+  <FilterGroup
+    v-model="internalValue"
+    :label="t('labels.filters.models.productionStatus')"
+    :query-fn="fetch"
+    :name="name"
+    :multiple="multiple"
+    :no-label="noLabel"
+  />
+</template>

@@ -241,7 +241,8 @@ class Model < ApplicationRecord
 
   has_many :docks, dependent: :destroy
 
-  enum dock_size: Dock.ship_sizes.keys.map(&:to_sym)
+  enum :dock_size,
+    Dock.ship_sizes.keys.map(&:to_sym)
 
   serialize :cargo_holds, coder: YAML
   serialize :quantum_fuel_tanks, coder: YAML

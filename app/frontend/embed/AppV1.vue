@@ -13,6 +13,7 @@
 import { useI18nStore } from "@/shared/stores/i18n";
 import { useEmbedStore } from "@/embed/stores/embed";
 import { storeToRefs } from "pinia";
+import { useCheckStoreVersion } from "@/shared/composables/useCheckStoreVersion";
 
 const config = window.fleetyards_config ? window.fleetyards_config() : {};
 
@@ -40,18 +41,7 @@ const { locale } = storeToRefs(i18nStore);
 
 const embedStore = useEmbedStore();
 
-const checkStoreVersion = () => {
-  if (embedStore.storeVersion !== window.STORE_VERSION) {
-    console.info("Updating Store Version and resetting Store");
-
-    embedStore.$reset();
-    embedStore.storeVersion = window.STORE_VERSION;
-  }
-};
-
-onBeforeMount(() => {
-  checkStoreVersion();
-});
+useCheckStoreVersion(embedStore);
 
 defineExpose({
   updateShips,

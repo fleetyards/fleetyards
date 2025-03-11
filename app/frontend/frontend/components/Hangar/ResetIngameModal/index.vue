@@ -9,9 +9,9 @@ import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useNoty } from "@/shared/composables/useNoty";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
-const { displaySuccess, displayAlert } = useNoty();
+const { displaySuccess, displayAlert } = useAppNotifications();
 
 const { t } = useI18n();
 

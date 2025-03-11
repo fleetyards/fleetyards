@@ -22,7 +22,7 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
     parameter name: "username", in: :path, type: :string, description: "Username"
 
     put("Decline Member") do
-      operationId "declineMember"
+      operationId "declineFleetMember"
       tags "FleetMembers"
       consumes "application/json"
       produces "application/json"

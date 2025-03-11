@@ -325,6 +325,8 @@
             "height": "Height",
             "mass": "Mass",
             "cargo": "Cargo",
+            "quantum_fuel_tank_size": "Quantum Fuel",
+            "hydrogen_fuel_tank_size": "Hydrogen Fuel",
             "min_crew": "Crew",
             "max_crew": "Max. Crew",
             "scm_speed": "SCM Speed",

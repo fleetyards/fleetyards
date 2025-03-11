@@ -10,6 +10,7 @@ export default defineConfig({
       client: "vue-query",
       mock: false,
       prettier: true,
+      clean: true,
       override: {
         mutator: {
           path: "./axiosClient.ts",
@@ -30,6 +31,7 @@ export default defineConfig({
       client: "vue-query",
       mock: false,
       prettier: true,
+      clean: true,
       override: {
         mutator: {
           path: "./axiosClient.ts",

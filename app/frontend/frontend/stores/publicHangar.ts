@@ -10,6 +10,7 @@ export const usePublicHangarStore = defineStore("publicHangar", {
     detailsVisible: false,
     filterVisible: true,
     ships: [],
+    gridView: true,
   }),
   getters: {
     empty(state) {

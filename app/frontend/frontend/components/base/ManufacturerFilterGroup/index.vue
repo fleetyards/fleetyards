@@ -1,24 +1,19 @@
-<template>
-  <FilterGroup
-    v-model="internalValue"
-    :label="t('labels.filters.manufacturer')"
-    :query-fn="fetch"
-    :query-response-formatter="formatter"
-    :name="name"
-    :paginated="true"
-    :searchable="true"
-    :multiple="multiple"
-    :no-label="noLabel"
-  />
-</template>
+<script lang="ts">
+export default {
+  name: "ManufacturerFilterGroup",
+};
+</script>
 
 <script lang="ts" setup>
-import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type ManufacturerQuery, type Manufacturers } from "@/services/fyApi";
 import FilterGroup, {
   type FilterGroupParams,
 } from "@/shared/components/base/FilterGroup/index.vue";
+import {
+  manufacturers as fetchManufacturers,
+  type Manufacturer,
+} from "@/services/fyApi";
 
 type Props = {
   name: string;
@@ -67,9 +62,7 @@ const formatter = (response: Manufacturers) => {
   });
 };
 
-const { manufacturers: manufacturersService } = useApiClient();
-
-const fetch = async (params: FilterGroupParams) => {
+const fetch = async (params: FilterGroupParams<Manufacturer>) => {
   const q: ManufacturerQuery = {
     withModels: true,
   };
@@ -86,15 +79,23 @@ const fetch = async (params: FilterGroupParams) => {
     }
   }
 
-  return manufacturersService.manufacturers({
+  return fetchManufacturers({
     page: String(params.page || 1),
     q,
   });
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "ManufacturerFilterGroup",
-};
-</script>
+<template>
+  <FilterGroup
+    v-model="internalValue"
+    :label="t('labels.filters.manufacturer')"
+    :query-fn="fetch"
+    :query-response-formatter="formatter"
+    :name="name"
+    :paginated="true"
+    :searchable="true"
+    :multiple="multiple"
+    :no-label="noLabel"
+  />
+</template>

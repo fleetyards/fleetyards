@@ -1,12 +1,8 @@
 import { type HangarQuery } from "@/services/fyApi";
 import { useFilters } from "@/shared/composables/useFilters";
 
-interface AllowedFilters extends HangarQuery {
-  fleetchart?: boolean;
-}
-
 export const useHangarFilters = (updateCallback?: () => void) => {
-  return useFilters<AllowedFilters>({
+  return useFilters<HangarQuery>({
     allowedKeys: [
       "searchCont",
       "nameCont",
@@ -34,7 +30,6 @@ export const useHangarFilters = (updateCallback?: () => void) => {
       "priceIn",
       "pledgePriceIn",
       "sizeIn",
-      "fleetchart",
       "withCargo",
     ],
     ignoreKeys: ["fleetchart"],

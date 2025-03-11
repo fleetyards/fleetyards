@@ -9,7 +9,6 @@ import { defineAsyncComponent } from "vue";
 import type { Component, Raw } from "vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useOverlayStore } from "@/shared/stores/overlay";
-import type { NotyPluginOptions } from "@/shared/plugins/Noty";
 import { useI18n } from "@/shared/composables/useI18n";
 
 export type AppModalOptions = {
@@ -83,8 +82,6 @@ const open = (options: AppModalOptions) => {
     }, 100);
   });
 };
-
-const noty = inject<NotyPluginOptions>("noty");
 
 const { t } = useI18n();
 

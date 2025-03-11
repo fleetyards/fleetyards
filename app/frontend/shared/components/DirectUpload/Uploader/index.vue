@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
-import { useNoty } from "@/shared/composables/useNoty";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import PreviewImage from "@/shared/components/DirectUpload/Image/index.vue";
 import { type Blob } from "@rails/activestorage";
@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const { displayAlert } = useNoty();
+const { displayAlert } = useAppNotifications();
 
 const files = ref<File[]>([]);
 const input = ref<HTMLInputElement | undefined>();

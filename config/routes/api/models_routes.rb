@@ -6,13 +6,6 @@ resources :models, param: :slug, only: %i[index show] do
     get :latest
     get :slugs
     get :updated
-    get :filters
-    get :classifications
-    get "production-states" => "models#production_states"
-    get :focus
-    get :sizes
-    get "dock-sizes" => "models#dock_sizes"
-    get "cargo-options" => "models#cargo_options"
     get :embed
   end
   member do
@@ -32,3 +25,16 @@ resources :models, param: :slug, only: %i[index show] do
 end
 
 resources :model_paints, path: "model-paints", only: %i[index]
+
+namespace :filters do
+  resources :models, only: [:index] do
+    collection do
+      get :classifications
+      get "production-states" => "models#production_states"
+      get :focus
+      get :sizes
+      get "dock-sizes" => "models#dock_sizes"
+      get "cargo-options" => "models#cargo_options"
+    end
+  end
+end

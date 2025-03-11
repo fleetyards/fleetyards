@@ -7,18 +7,19 @@ export default {
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useApiClient } from "@/frontend/composables/useApiClient";
 import { type PasswordInput } from "@/services/fyApi";
-import { useNoty } from "@/shared/composables/useNoty";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useSessionStore } from "@/frontend/stores/session";
 import { storeToRefs } from "pinia";
 import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import { useForm } from "vee-validate";
+import { useUpdatePasswordWithToken as useUpdatePasswordWithTokenMutation } from "@/services/fyApi";
 
 const { t } = useI18n();
 
-const { displaySuccess, displayAlert } = useNoty();
+const { displaySuccess, displayAlert } = useAppNotifications();
 
 const submitting = ref(false);
 
@@ -50,7 +51,7 @@ onMounted(() => {
 
 const route = useRoute();
 
-const { password: passwordService } = useApiClient();
+const mutation = useUpdatePasswordWithTokenMutation();
 
 const onSubmit = handleSubmit(async (values) => {
   if (!route.params.token) {
@@ -61,25 +62,27 @@ const onSubmit = handleSubmit(async (values) => {
 
   submitting.value = true;
 
-  try {
-    await passwordService.updatePasswordWithToken({
+  await mutation
+    .mutateAsync({
       token: String(route.params.token),
-      requestBody: values,
-    });
+      data: values,
+    })
+    .then(async () => {
+      displaySuccess({
+        text: t("messages.changePassword.success"),
+      });
 
-    displaySuccess({
-      text: t("messages.changePassword.success"),
+      await router.push("/").catch(() => {});
+    })
+    .catch((error) => {
+      console.error(error);
+      displayAlert({
+        text: t("messages.changePassword.failure"),
+      });
+    })
+    .finally(() => {
+      submitting.value = false;
     });
-
-    router.push("/");
-  } catch (error) {
-    console.error(error);
-    displayAlert({
-      text: t("messages.changePassword.failure"),
-    });
-  }
-
-  submitting.value = false;
 });
 </script>
 
@@ -96,7 +99,7 @@ const onSubmit = handleSubmit(async (values) => {
           v-model="password"
           name="password"
           :label="t('labels.password')"
-          type="password"
+          :type="InputTypesEnum.PASSWORD"
           :autofocus="true"
           v-bind="passwordProps"
           :hide-label-on-empty="true"
@@ -107,7 +110,7 @@ const onSubmit = handleSubmit(async (values) => {
           name="passwordConfirmation"
           :label="t('labels.passwordConfirmation')"
           v-bind="passwordConfirmationProps"
-          type="password"
+          :type="InputTypesEnum.PASSWORD"
           :hide-label-on-empty="true"
         />
 

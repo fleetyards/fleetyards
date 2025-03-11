@@ -10,7 +10,7 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import { type ModelExtended, type ModelInput } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
-// import { useNoty } from "@/shared/composables/useNoty";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 type Props = {
   model: ModelExtended;
@@ -20,7 +20,7 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 
-// const { displayAlert } = useNoty();
+// const { displayAlert } = useAppNotifications();
 
 const submitting = ref(false);
 

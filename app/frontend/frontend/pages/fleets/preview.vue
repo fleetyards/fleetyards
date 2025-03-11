@@ -1,3 +1,36 @@
+<script lang="ts">
+export default {
+  name: "FleetPreviewPage",
+};
+</script>
+
+<script lang="ts" setup>
+import Btn from "@/shared/components/base/Btn/index.vue";
+import Panel from "@/shared/components/Panel/index.vue";
+import { PanelTransparenciesEnum } from "@/shared/components/Panel/types";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useFleetStore } from "@/frontend/stores/fleet";
+import { useRedirectBackStore } from "@/shared/stores/redirectBack";
+
+const { t } = useI18n();
+
+const fleetStore = useFleetStore();
+
+const redirectBackStore = useRedirectBackStore();
+
+const setBackRoute = () => {
+  redirectBackStore.backRoute = {
+    name: "fleet-add",
+  };
+};
+
+const handleLogin = () => {
+  fleetStore.preview = false;
+
+  setBackRoute();
+};
+</script>
+
 <template>
   <section class="container fleet">
     <div class="row">
@@ -32,37 +65,49 @@
 
         <div class="row">
           <div class="col-12 col-lg-4">
-            <Panel class="info-box" transparency="more">
+            <Panel
+              class="info-box"
+              :transparency="PanelTransparenciesEnum.MORE"
+            >
               <div class="panel-heading">
                 <h2 class="panel-title text-center">
                   {{ t("texts.fleetPreview.notified.headline") }}
                 </h2>
               </div>
               <div class="panel-body text-center">
+                <!-- eslint-disable-next-line vue/no-v-html -->
                 <p v-html="t('texts.fleetPreview.notified.text')" />
               </div>
             </Panel>
           </div>
           <div class="col-12 col-lg-4">
-            <Panel class="info-box" transparency="more">
+            <Panel
+              class="info-box"
+              :transparency="PanelTransparenciesEnum.MORE"
+            >
               <div class="panel-heading">
                 <h2 class="panel-title text-center">
                   {{ t("texts.fleetPreview.overview.headline") }}
                 </h2>
               </div>
               <div class="panel-body text-center">
+                <!-- eslint-disable-next-line vue/no-v-html -->
                 <p v-html="t('texts.fleetPreview.overview.text')" />
               </div>
             </Panel>
           </div>
           <div class="col-12 col-lg-4">
-            <Panel class="info-box" transparency="more">
+            <Panel
+              class="info-box"
+              :transparency="PanelTransparenciesEnum.MORE"
+            >
               <div class="panel-heading">
                 <h2 class="panel-title text-center">
                   {{ t("texts.fleetPreview.fleetchart.headline") }}
                 </h2>
               </div>
               <div class="panel-body text-center">
+                <!-- eslint-disable-next-line vue/no-v-html -->
                 <p v-html="t('texts.fleetPreview.fleetchart.text')" />
               </div>
             </Panel>
@@ -76,13 +121,11 @@
             <Btn
               :to="{
                 name: 'signup',
-                params: {
-                  redirectToRoute: 'fleet-add',
-                },
               }"
               data-test="signup"
               size="large"
               :block="true"
+              @click="setBackRoute"
             >
               {{ t("actions.signUp") }}
             </Btn>
@@ -94,24 +137,12 @@
             </p>
 
             <Btn
-              v-if="fleetPreview"
               data-test="login"
-              :block="true"
-              @click="hidePreview"
-            >
-              {{ t("actions.login") }}
-            </Btn>
-            <Btn
-              v-else
               :to="{
                 name: 'login',
-                params: {
-                  redirectToRoute: 'fleet-add',
-                },
               }"
-              data-test="login"
               :block="true"
-              @click="hidePreview"
+              @click="handleLogin"
             >
               {{ t("actions.login") }}
             </Btn>
@@ -121,39 +152,6 @@
     </div>
   </section>
 </template>
-
-<script lang="ts" setup>
-import Btn from "@/shared/components/base/Btn/index.vue";
-import Panel from "@/shared/components/Panel/index.vue";
-import { useI18n } from "@/shared/composables/useI18n";
-import { useFleetStore } from "@/frontend/stores/fleet";
-import { storeToRefs } from "pinia";
-
-const { t } = useI18n();
-
-const router = useRouter();
-
-const fleetStore = useFleetStore();
-
-const { preview: fleetPreview } = storeToRefs(fleetStore);
-
-const hidePreview = () => {
-  fleetStore.preview = false;
-
-  router.push({
-    name: "login",
-    params: {
-      redirectToRoute: "fleet-add",
-    },
-  });
-};
-</script>
-
-<script lang="ts">
-export default {
-  name: "FleetPreviewPage",
-};
-</script>
 
 <style lang="scss" scoped>
 @import "preview";

@@ -10,22 +10,26 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
-import { useNoty } from "@/shared/composables/useNoty";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useSessionStore } from "@/admin/stores/session";
-import type { RouteParamsRaw, LocationQueryRaw } from "vue-router";
-import { useApiClient } from "@/admin/composables/useApiClient";
-import { type SessionInput, type ApiError } from "@/services/fyAdminApi";
+import {
+  useCreateSession as useCreateSessionMutation,
+  type ValidationError,
+  type SessionInput,
+} from "@/services/fyAdminApi";
+import { type ErrorType } from "@/services/fyAdminApi/axiosClient";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import { BtnTypesEnum, BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
   HeadingLevelEnum,
   HeadingAlignmentEnum,
 } from "@/shared/components/base/Heading/types";
+import { useRedirectBack } from "@/shared/composables/useRedirectBack";
 
 const { t } = useI18n();
 
-const { displayAlert } = useNoty();
+const { displayAlert } = useAppNotifications();
 
 const submitting = ref(false);
 
@@ -56,45 +60,36 @@ const [rememberMe, rememberMeProps] = defineField("rememberMe");
 
 const sessionStore = useSessionStore();
 
-const route = useRoute();
-const router = useRouter();
+const mutation = useCreateSessionMutation();
 
-const { sessions: sessionsService } = useApiClient();
+const { handleRedirect } = useRedirectBack();
 
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
-  try {
-    await sessionsService.createSession({
-      requestBody: values,
+  await mutation
+    .mutateAsync({
+      data: values,
+    })
+    .then(async () => {
+      sessionStore.login();
+
+      handleRedirect();
+    })
+    .catch((error) => {
+      const response = error as unknown as ErrorType<ValidationError>;
+
+      if (response?.code === "session.create.two_factor_required") {
+        twoFactorRequired.value = true;
+      } else {
+        displayAlert({
+          text: response.response?.data?.message || t("errors.generic"),
+        });
+      }
+    })
+    .finally(() => {
+      submitting.value = false;
     });
-
-    sessionStore.login();
-
-    if (route.params.redirectToRoute) {
-      await router.replace({
-        name: route.params.redirectToRoute as string,
-        params: route.params.redirectToRouteParams as unknown as RouteParamsRaw,
-        query: route.params.redirectToRouteQuery as unknown as LocationQueryRaw,
-      });
-    } else if (route.params.redirectTo) {
-      await router.replace(route.params.redirectTo as string);
-    } else {
-      await router.push("/").catch(() => {});
-    }
-  } catch (error) {
-    const body = (error as unknown as ApiError).body;
-
-    if (body?.code === "session.create.two_factor_required") {
-      twoFactorRequired.value = true;
-    } else {
-      displayAlert({
-        text: body?.message || t("errors.generic"),
-      });
-    }
-  } finally {
-    submitting.value = false;
-  }
 });
 </script>
 

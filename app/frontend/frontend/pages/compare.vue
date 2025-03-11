@@ -18,9 +18,12 @@ import HardpointRowsOld from "@/frontend/components/Compare/Models/HardpointsOld
 import Starship42Btn from "@/frontend/components/Starship42Btn/index.vue";
 import { type Model } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useNavStore } from "@/shared/stores/nav";
 import { useFeatures } from "@/frontend/composables/useFeatures";
+import {
+  model as fetchModel,
+  modelHardpoints as fetchModelHardpoints,
+} from "@/services/fyApi";
 
 type CompareForm = {
   models?: string[];
@@ -73,7 +76,7 @@ const disabledTooltip = computed(() => {
 onMounted(() => {
   setupForm();
   form.value.models?.forEach(async (slug) => {
-    const model = await fetchModel(slug);
+    const model = await fetch(slug);
 
     models.value.push(model);
   });
@@ -114,10 +117,14 @@ watch(
 );
 
 const add = async () => {
-  if (newModel.value && !form.value.models?.includes(newModel.value.value)) {
+  const existingModel = unref(newModel);
+  if (
+    existingModel &&
+    !form.value.models?.includes(String(existingModel.value || ""))
+  ) {
     models.value.push(newModel.value.object);
 
-    form.value.models?.push(newModel.value.value);
+    form.value.models?.push(newModel.value);
 
     update();
   }
@@ -141,16 +148,10 @@ const remove = (model: Model) => {
   update();
 };
 
-const { models: modelsService } = useApiClient();
+const fetch = async (slug: string) => {
+  const model = await fetchModel(slug);
 
-const fetchModel = async (slug: string) => {
-  const model = await modelsService.model({
-    slug: slug,
-  });
-
-  const hardpoints = await modelsService.modelHardpoints({
-    slug: slug,
-  });
+  const hardpoints = await fetchModelHardpoints(slug);
 
   return {
     ...model,

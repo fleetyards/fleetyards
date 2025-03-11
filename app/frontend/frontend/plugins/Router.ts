@@ -1,10 +1,11 @@
 import { useAppStore } from "@/frontend/stores/app";
 import { useFleetStore } from "@/frontend/stores/fleet";
 import { useSessionStore } from "@/frontend/stores/session";
+import { useRedirectBackStore } from "@/shared/stores/redirectBack";
 import { type NavigationGuardNext, type RouteLocation } from "vue-router";
 import { routes } from "@/frontend/pages/routes";
 import { setupRouter, type FyRedirectRoute } from "@/shared/plugins/Router";
-import { useNoty } from "@/shared/composables/useNoty";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useI18n } from "@/shared/composables/useI18n";
 
 const beforeEach = (
@@ -37,15 +38,16 @@ const beforeResolve = (to: RouteLocation): FyRedirectRoute | undefined => {
   const sessionStore = useSessionStore();
 
   if (to.meta.needsAuthentication && !sessionStore.isAuthenticated) {
+    const redirectBackStore = useRedirectBackStore();
+    redirectBackStore.backRoute = to;
+
     return {
       routeName: "login",
-      routeQuery: {
-        redirectTo: String(to.fullPath),
-      },
     };
   }
 
-  const { displayInfo } = useNoty();
+  const { displayInfo } = useAppNotifications();
+
   const { t } = useI18n();
 
   if (to.meta.needsNoAuthentication && sessionStore.isAuthenticated) {

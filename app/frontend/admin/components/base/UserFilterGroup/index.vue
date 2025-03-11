@@ -1,17 +1,8 @@
-<template>
-  <FilterGroup
-    v-model="internalValue"
-    :label="t('labels.selectUser')"
-    :search-label="t('labels.findUser')"
-    :query-fn="fetch"
-    :query-response-formatter="formatter"
-    :name="name"
-    :paginated="true"
-    :searchable="true"
-    :multiple="multiple"
-    :no-label="noLabel"
-  />
-</template>
+<script lang="ts">
+export default {
+  name: "UserFilterGroup",
+};
+</script>
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
@@ -95,8 +86,17 @@ const fetch = async (params: FilterGroupParams<User>) => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "UserFilterGroup",
-};
-</script>
+<template>
+  <FilterGroup
+    v-model="internalValue"
+    :label="t('labels.selectUser')"
+    :search-label="t('labels.findUser')"
+    :query-fn="fetch"
+    :query-response-formatter="formatter"
+    :name="name"
+    :paginated="true"
+    :searchable="true"
+    :multiple="multiple"
+    :no-label="noLabel"
+  />
+</template>

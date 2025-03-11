@@ -9,17 +9,15 @@
 <script lang="ts" setup>
 import { useComlink } from "@/shared/composables/useComlink";
 import AsyncData from "@/shared/components/AsyncData.vue";
-import { useFleetQueries } from "@/frontend/composables/useFleetQueries";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
+import { useFleet as useFleetQuery } from "@/services/fyApi";
 
 const route = useRoute();
 
 const slug = computed(() => route.params.slug as string);
 
-const { fleetQuery } = useFleetQueries(slug.value);
-
-const { data: fleet, refetch, ...asyncStatus } = fleetQuery();
+const { data: fleet, refetch, ...asyncStatus } = useFleetQuery(slug);
 
 const { t } = useI18n();
 

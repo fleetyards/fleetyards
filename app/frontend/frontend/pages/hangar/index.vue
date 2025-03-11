@@ -26,7 +26,7 @@ import Paginator from "@/shared/components/Paginator/index.vue";
 import { type HangarGroupMetric, HangarGroup } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useNoty } from "@/shared/composables/useNoty";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useMobile } from "@/shared/composables/useMobile";
 import { storeToRefs } from "pinia";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -34,7 +34,6 @@ import { useHangarStore } from "@/frontend/stores/hangar";
 import rsiLogo from "@/images/rsi_logo.png";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
-import { useHangarQueries } from "@/frontend/composables/useHangarQueries";
 import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
@@ -42,10 +41,19 @@ import {
   useSubscription,
 } from "@/shared/composables/useSubscription";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
+import {
+  useHangarStats as useHangarStatsQuery,
+  useHangar as useHangarQuery,
+  useHangarGroups as useHangarGroupsQuery,
+  hangarExport as fetchHangarExport,
+  useDestroyHangar as useDestroyHangarMutation,
+  getHangarQueryKey,
+} from "@/services/fyApi";
 
 const { t, toDollar, toUEC, toNumber } = useI18n();
 
-const { displayAlert, displayConfirm } = useNoty();
+const { displayAlert } = useAppNotifications();
+
 const comlink = useComlink();
 
 const deleting = ref(false);
@@ -68,31 +76,30 @@ const fleetchartVisible = computed(() => fleetchartStore.isVisible("hangar"));
 
 const shareTitle = computed(() => t("title.hangar.index"));
 
-const {
-  statsQuery,
-  hangarQuery,
-  groupsQuery,
-  exportQuery,
-  destroyAllMutation,
-} = useHangarQueries();
-
 const { filters, isFilterSelected } = useHangarFilters(() => refetch());
 
-const { perPage, page, updatePerPage } = usePagination("hangar");
+const hangarQueryParams = computed(() => ({
+  page: page.value,
+  perPage: perPage.value,
+  q: filters.value,
+}));
+
+const hangarQueryKey = computed(() => {
+  return getHangarQueryKey(hangarQueryParams);
+});
+
+const { perPage, page, updatePerPage } = usePagination(hangarQueryKey);
 
 const {
   data: vehicles,
   refetch,
   ...asyncStatus
-} = hangarQuery({
-  page,
-  perPage,
-  filters,
-});
+} = useHangarQuery(hangarQueryParams);
 
-const { data: hangarStats, refetch: refetchStats } = statsQuery(filters);
+const { data: hangarStats, refetch: refetchStats } =
+  useHangarStatsQuery(hangarQueryParams);
 
-const { data: hangarGroups, refetch: refetchGroups } = groupsQuery();
+const { data: hangarGroups, refetch: refetchGroups } = useHangarGroupsQuery();
 
 const fetch = () => {
   refetch();
@@ -175,7 +182,7 @@ const exportJson = async () => {
     return;
   }
 
-  const exportedData = await exportQuery(filters);
+  const exportedData = await fetchHangarExport(hangarQueryParams);
 
   if (!exportedData || !window.URL) {
     displayAlert({ text: t("messages.hangarExport.failure") });
@@ -210,17 +217,22 @@ const showResetIngameModal = () => {
   });
 };
 
+const destroyMutation = useDestroyHangarMutation();
+
 const destroyAll = async () => {
   deleting.value = true;
 
   displayConfirm({
     text: t("messages.confirm.hangar.destroyAll"),
     onConfirm: async () => {
-      await destroyAllMutation.mutate();
-
-      comlink.emit("hangar-delete-all");
-
-      deleting.value = false;
+      await destroyMutation
+        .mutateAsync()
+        .then(() => {
+          comlink.emit("hangar-delete-all");
+        })
+        .finally(() => {
+          deleting.value = false;
+        });
     },
     onClose: () => {
       deleting.value = false;

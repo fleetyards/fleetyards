@@ -24,7 +24,7 @@ import { useHangarStore } from "@/frontend/stores/hangar";
 import { useWishlistStore } from "@/frontend/stores/wishlist";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useNoty } from "@/shared/composables/useNoty";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
@@ -42,7 +42,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const { displayWarning } = useNoty();
+const { displayWarning } = useAppNotifications();
 
 const sessionStore = useSessionStore();
 
@@ -89,7 +89,7 @@ const add = async () => {
 
   comlink.emit("open-modal", {
     component: () =>
-      import("@/frontend/components/Models/AddToHangarModal/index.vue"),
+      import("@/frontend/components/Models/AddToHangar/Modal/index.vue"),
     props: {
       model: props.model,
     },

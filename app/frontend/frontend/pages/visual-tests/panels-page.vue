@@ -8,19 +8,22 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
 import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
+import { PanelHeadingLevelEnum } from "@/shared/components/Panel/Heading/types";
 import PanelImage from "@/shared/components/Panel/Image/index.vue";
 import PanelBody from "@/shared/components/Panel/Body/index.vue";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
 import SearchPanel from "@/frontend/components/Search/Panel/index.vue";
 import { BoughtViaEnum } from "@/services/fyApi";
-import { useApiClient } from "@/frontend/composables/useApiClient";
-import { useQuery } from "@tanstack/vue-query";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
   PanelAlignmentsEnum,
   PanelVariantsEnum,
 } from "@/shared/components/Panel/types";
+import {
+  useModel as useModelQuery,
+  useSearch as useSearchQuery,
+} from "@/services/fyApi";
 
 const modelPanelDetails = ref(false);
 
@@ -45,28 +48,16 @@ const internalModel = computed(() => {
   };
 });
 
-const { models: modelsService, search: searchService } = useApiClient();
-
-const { data: model } = useQuery({
-  queryKey: ["models", "galaxy"],
-  queryFn: () =>
-    modelsService.model({
-      slug: "galaxy",
-    }),
-});
+const { data: model } = useModelQuery("galaxy");
 
 const modelImage = computed(() => {
   return model.value?.media?.storeImage?.medium;
 });
 
-const { data: searchResult } = useQuery({
-  queryKey: ["search", "600i"],
-  queryFn: () =>
-    searchService.search({
-      q: {
-        search: "600i",
-      },
-    }),
+const { data: searchResult } = useSearchQuery({
+  q: {
+    search: "600i",
+  },
 });
 
 const vehiclePanelDetails = ref(false);
@@ -112,7 +103,7 @@ const vehicle = computed(() => {
 
   return {
     id: "1",
-    boughtVia: BoughtViaEnum.PLEDGE_STORE,
+    boughtVia: BoughtViaEnum.pledge_store,
     wanted: false,
     flagship: vehiclePanelFlagship.value,
     name: "My Awesome Ship",
@@ -161,7 +152,7 @@ const vehicle = computed(() => {
     <div class="row">
       <div class="col-12 col-md-4">
         <Panel>
-          <PanelHeading level="h2">Panel</PanelHeading>
+          <PanelHeading :level="PanelHeadingLevelEnum.H2">Panel</PanelHeading>
           <PanelImage :image="modelImage" alt="Odyssey" />
           <PanelBody no-min-height>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus
@@ -175,7 +166,9 @@ const vehicle = computed(() => {
         <Panel>
           <PanelImage :image="modelImage" rounded="top" alt="Odyssey" />
           <div>
-            <PanelHeading level="h2">Panel Image Top</PanelHeading>
+            <PanelHeading :level="PanelHeadingLevelEnum.H2"
+              >Panel Image Top</PanelHeading
+            >
             <PanelBody no-min-height no-padding-top>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
               Accusamus laborum necessitatibus obcaecati exercitationem
@@ -188,7 +181,9 @@ const vehicle = computed(() => {
       <div class="col-12 col-md-4">
         <Panel>
           <div>
-            <PanelHeading level="h2">Panel Image Bottom</PanelHeading>
+            <PanelHeading :level="PanelHeadingLevelEnum.H2"
+              >Panel Image Bottom</PanelHeading
+            >
             <PanelBody no-min-height no-padding-top>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
               Accusamus laborum necessitatibus obcaecati exercitationem
@@ -210,7 +205,9 @@ const vehicle = computed(() => {
             alt="Odyssey"
           />
           <div>
-            <PanelHeading level="h2">Panel Image Left</PanelHeading>
+            <PanelHeading :level="PanelHeadingLevelEnum.H2"
+              >Panel Image Left</PanelHeading
+            >
             <PanelBody no-min-height no-padding-top>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
               Accusamus laborum necessitatibus obcaecati exercitationem
@@ -223,7 +220,9 @@ const vehicle = computed(() => {
       <div class="col-12 col-md-4">
         <Panel :alignment="PanelAlignmentsEnum.RIGHT" slim>
           <div>
-            <PanelHeading level="h2">Panel Image Right</PanelHeading>
+            <PanelHeading :level="PanelHeadingLevelEnum.H2"
+              >Panel Image Right</PanelHeading
+            >
             <PanelBody no-min-height no-padding-top>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
               Accusamus laborum necessitatibus obcaecati exercitationem
@@ -245,7 +244,9 @@ const vehicle = computed(() => {
     <div class="row">
       <div class="col-12 col-md-4">
         <Panel :variant="PanelVariantsEnum.ERROR" slim>
-          <PanelHeading level="h2">Panel Error</PanelHeading>
+          <PanelHeading :level="PanelHeadingLevelEnum.H2"
+            >Panel Error</PanelHeading
+          >
           <PanelBody no-min-height>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus
             laborum necessitatibus obcaecati exercitationem perferendis ad
@@ -257,7 +258,9 @@ const vehicle = computed(() => {
       <div class="col-12 col-md-4">
         <Panel :variant="PanelVariantsEnum.SUCCESS" slim>
           <div>
-            <PanelHeading level="h2">Panel Success</PanelHeading>
+            <PanelHeading :level="PanelHeadingLevelEnum.H2"
+              >Panel Success</PanelHeading
+            >
             <PanelBody no-min-height no-padding-top>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
               Accusamus laborum necessitatibus obcaecati exercitationem
@@ -270,7 +273,9 @@ const vehicle = computed(() => {
       <div class="col-12 col-md-4">
         <Panel :variant="PanelVariantsEnum.PRIMARY" slim>
           <div>
-            <PanelHeading level="h2">Panel Primary</PanelHeading>
+            <PanelHeading :level="PanelHeadingLevelEnum.H2"
+              >Panel Primary</PanelHeading
+            >
             <PanelBody no-min-height no-padding-top>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
               Accusamus laborum necessitatibus obcaecati exercitationem
@@ -283,7 +288,9 @@ const vehicle = computed(() => {
       <div class="col-12 col-md-4">
         <Panel highlight slim>
           <div>
-            <PanelHeading level="h2">Panel Highlight</PanelHeading>
+            <PanelHeading :level="PanelHeadingLevelEnum.H2"
+              >Panel Highlight</PanelHeading
+            >
             <PanelBody no-min-height no-padding-top>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
               Accusamus laborum necessitatibus obcaecati exercitationem
@@ -296,7 +303,9 @@ const vehicle = computed(() => {
       <div class="col-12 col-md-4">
         <Panel :variant="PanelVariantsEnum.PRIMARY" highlight slim>
           <div>
-            <PanelHeading level="h2">Panel Primary Highlight</PanelHeading>
+            <PanelHeading :level="PanelHeadingLevelEnum.H2"
+              >Panel Primary Highlight</PanelHeading
+            >
             <PanelBody no-min-height no-padding-top>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
               Accusamus laborum necessitatibus obcaecati exercitationem

@@ -1,3 +1,62 @@
+<script lang="ts">
+export default {
+  name: "AppNavigationFleetsNav",
+};
+</script>
+
+<script lang="ts" setup>
+import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
+import { useFleetStore } from "@/frontend/stores/fleet";
+import { storeToRefs } from "pinia";
+import { useSessionStore } from "@/frontend/stores/session";
+import { useI18n } from "@/shared/composables/useI18n";
+import {
+  useMyFleets as useMyFleetsQuery,
+  useFleetInvites as useFleetInvitesQuery,
+} from "@/services/fyApi";
+
+const { t } = useI18n();
+
+const fleetStore = useFleetStore();
+
+const { preview: fleetPreview } = storeToRefs(fleetStore);
+
+const sessionStore = useSessionStore();
+
+const { isAuthenticated } = storeToRefs(sessionStore);
+
+const route = useRoute();
+
+const active = computed(() => {
+  return ["fleets", "fleet-add", "fleet-preview", "fleet-invites"].includes(
+    String(route.name),
+  );
+});
+
+const { data: fleets, refetch: refetchMyFleets } = useMyFleetsQuery({
+  query: {
+    refetchOnWindowFocus: false,
+    enabled: isAuthenticated.value,
+  },
+});
+
+const { data: fleetInvites, refetch: refetchInvites } = useFleetInvitesQuery({
+  query: {
+    enabled: isAuthenticated.value && active.value,
+  },
+});
+
+watch(
+  () => isAuthenticated.value,
+  () => {
+    if (isAuthenticated.value) {
+      refetchMyFleets();
+      refetchInvites();
+    }
+  },
+);
+</script>
+
 <template>
   <NavItem
     :label="t('nav.fleets.index')"
@@ -36,65 +95,6 @@
     </template>
   </NavItem>
 </template>
-
-<script lang="ts" setup>
-import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
-import { useFleetStore } from "@/frontend/stores/fleet";
-import { storeToRefs } from "pinia";
-import { useSessionStore } from "@/frontend/stores/session";
-import { useI18n } from "@/shared/composables/useI18n";
-import { useApiClient } from "@/frontend/composables/useApiClient";
-import { useQuery } from "@tanstack/vue-query";
-
-const { t } = useI18n();
-
-const fleetStore = useFleetStore();
-
-const { preview: fleetPreview } = storeToRefs(fleetStore);
-
-const sessionStore = useSessionStore();
-
-const { isAuthenticated } = storeToRefs(sessionStore);
-
-const route = useRoute();
-
-const active = computed(() => {
-  return ["fleets", "fleet-add", "fleet-preview", "fleet-invites"].includes(
-    String(route.name),
-  );
-});
-
-const { fleets: fleetsService } = useApiClient();
-
-const { data: fleets, refetch: refetchMyFleets } = useQuery({
-  refetchOnWindowFocus: false,
-  queryKey: ["myFleets"],
-  queryFn: () => fleetsService.myFleets(),
-  enabled: isAuthenticated.value,
-});
-
-const { data: fleetInvites, refetch: refetchInvites } = useQuery({
-  queryKey: ["myFleetInvites"],
-  queryFn: () => fleetsService.fleetInvites(),
-  enabled: isAuthenticated.value && active.value,
-});
-
-watch(
-  () => isAuthenticated.value,
-  () => {
-    if (isAuthenticated.value) {
-      refetchMyFleets();
-      refetchInvites();
-    }
-  },
-);
-</script>
-
-<script lang="ts">
-export default {
-  name: "AppNavigationFleetsNav",
-};
-</script>
 
 <style lang="scss" scoped>
 @import "index";

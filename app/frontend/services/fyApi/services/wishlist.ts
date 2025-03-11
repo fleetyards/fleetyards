@@ -18,10 +18,10 @@ import type {
 import { unref } from "vue";
 import type { MaybeRef } from "vue";
 import type {
-  GetWishlistParams,
   Hangar,
   StandardError,
   VehicleExport,
+  WishlistParams,
 } from "../models";
 import { axiosClient } from "../axiosClient";
 import type { ErrorType } from "../axiosClient";
@@ -100,8 +100,8 @@ export const useDestroyWishlist = <
 /**
  * @summary Your Wishlist
  */
-export const getWishlist = (
-  params?: MaybeRef<GetWishlistParams>,
+export const wishlist = (
+  params?: MaybeRef<WishlistParams>,
   signal?: AbortSignal,
 ) => {
   params = unref(params);
@@ -114,59 +114,57 @@ export const getWishlist = (
   });
 };
 
-export const getGetWishlistQueryKey = (
-  params?: MaybeRef<GetWishlistParams>,
-) => {
+export const getWishlistQueryKey = (params?: MaybeRef<WishlistParams>) => {
   return ["wishlist", ...(params ? [params] : [])] as const;
 };
 
-export const getGetWishlistQueryOptions = <
-  TData = Awaited<ReturnType<typeof getWishlist>>,
+export const getWishlistQueryOptions = <
+  TData = Awaited<ReturnType<typeof wishlist>>,
   TError = ErrorType<StandardError>,
 >(
-  params?: MaybeRef<GetWishlistParams>,
+  params?: MaybeRef<WishlistParams>,
   options?: {
     query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getWishlist>>, TError, TData>
+      UseQueryOptions<Awaited<ReturnType<typeof wishlist>>, TError, TData>
     >;
   },
 ) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey = getGetWishlistQueryKey(params);
+  const queryKey = getWishlistQueryKey(params);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getWishlist>>> = ({
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof wishlist>>> = ({
     signal,
-  }) => getWishlist(params, signal);
+  }) => wishlist(params, signal);
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getWishlist>>,
+    Awaited<ReturnType<typeof wishlist>>,
     TError,
     TData
   >;
 };
 
-export type GetWishlistQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getWishlist>>
+export type WishlistQueryResult = NonNullable<
+  Awaited<ReturnType<typeof wishlist>>
 >;
-export type GetWishlistQueryError = ErrorType<StandardError>;
+export type WishlistQueryError = ErrorType<StandardError>;
 
 /**
  * @summary Your Wishlist
  */
 
-export function useGetWishlist<
-  TData = Awaited<ReturnType<typeof getWishlist>>,
+export function useWishlist<
+  TData = Awaited<ReturnType<typeof wishlist>>,
   TError = ErrorType<StandardError>,
 >(
-  params?: MaybeRef<GetWishlistParams>,
+  params?: MaybeRef<WishlistParams>,
   options?: {
     query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getWishlist>>, TError, TData>
+      UseQueryOptions<Awaited<ReturnType<typeof wishlist>>, TError, TData>
     >;
   },
 ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = getGetWishlistQueryOptions(params, options);
+  const queryOptions = getWishlistQueryOptions(params, options);
 
   const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
     queryKey: DataTag<QueryKey, TData>;

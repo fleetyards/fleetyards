@@ -18,7 +18,7 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
     parameter name: "username", in: :path, type: :string, description: "username"
 
     delete("Remove Fleet Member") do
-      operationId "removeMember"
+      operationId "destroyFleetMember"
       tags "FleetMembers"
       produces "application/json"
 

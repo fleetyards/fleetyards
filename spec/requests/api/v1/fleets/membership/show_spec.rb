@@ -18,7 +18,7 @@ RSpec.describe "api/v1/fleets/membership", type: :request, swagger_doc: "v1/sche
     parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
 
     get("Fleet Membership Detail") do
-      operationId "membership"
+      operationId "fleetMembership"
       tags "FleetMembership"
       produces "application/json"
 

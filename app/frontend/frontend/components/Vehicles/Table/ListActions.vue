@@ -8,8 +8,7 @@ export default {
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useNoty } from "@/shared/composables/useNoty";
-import { useVehicleQueries } from "@/frontend/composables/useVehicleQueries";
+import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 
 type Props = {
   selected: string[];
@@ -23,8 +22,6 @@ const props = withDefaults(defineProps<Props>(), {
 const { t } = useI18n();
 
 const comlink = useComlink();
-
-const { displayConfirm } = useNoty();
 
 const deleting = ref(false);
 
@@ -46,54 +43,77 @@ const openBulkGroupEditModal = () => {
   });
 };
 
-const { updateBulkMutation, destroyBulkMutation } = useVehicleQueries();
+const { useUpdateBulkMutation, useDestroyBulkMutation } = useVehicleMutations();
+
+const updateBulkMutation = useUpdateBulkMutation();
 
 const addToWishlistBulk = async () => {
   updating.value = true;
 
-  await updateBulkMutation().mutate({
-    ids: props.selected,
-    wanted: true,
-  });
-
-  resetSelected();
-
-  updating.value = false;
+  await updateBulkMutation
+    .mutateAsync({
+      data: {
+        ids: props.selected,
+        wanted: true,
+      },
+    })
+    .then(() => {
+      resetSelected();
+    })
+    .finally(() => {
+      updating.value = false;
+    });
 };
 
 const addToHangarBulk = async () => {
   updating.value = true;
 
-  await updateBulkMutation().mutate({
-    ids: props.selected,
-    wanted: false,
-  });
-
-  resetSelected();
-
-  updating.value = false;
+  await updateBulkMutation
+    .mutateAsync({
+      data: {
+        ids: props.selected,
+        wanted: false,
+      },
+    })
+    .then(() => {
+      resetSelected();
+    })
+    .finally(() => {
+      updating.value = false;
+    });
 };
 
 const hideFromPublicHangar = async () => {
   updating.value = true;
 
-  await destroyBulkMutation().mutate({
-    ids: props.selected,
-  });
-
-  updating.value = false;
+  await updateBulkMutation
+    .mutateAsync({
+      data: {
+        ids: props.selected,
+        public: false,
+      },
+    })
+    .finally(() => {
+      updating.value = false;
+    });
 };
 
 const showOnPublicHangar = async () => {
   updating.value = true;
 
-  await updateBulkMutation().mutate({
-    ids: props.selected,
-    public: true,
-  });
-
-  updating.value = false;
+  await updateBulkMutation
+    .mutateAsync({
+      data: {
+        ids: props.selected,
+        public: true,
+      },
+    })
+    .finally(() => {
+      updating.value = false;
+    });
 };
+
+const destroyBulkMutation = useDestroyBulkMutation();
 
 const destroyBulk = async () => {
   deleting.value = true;
@@ -101,13 +121,21 @@ const destroyBulk = async () => {
   displayConfirm({
     text: t("messages.confirm.hangar.destroySelected"),
     onConfirm: async () => {
-      await destroyBulkMutation().mutate({
-        ids: props.selected,
-      });
-
-      resetSelected();
-
-      deleting.value = false;
+      await destroyBulkMutation
+        .mutateAsync({
+          data: {
+            ids: props.selected,
+          },
+        })
+        .then(() => {
+          resetSelected();
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          deleting.value = false;
+        });
     },
     onClose: () => {
       deleting.value = false;

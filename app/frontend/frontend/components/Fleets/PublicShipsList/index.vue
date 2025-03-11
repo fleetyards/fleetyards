@@ -7,7 +7,7 @@
       primary-key="id"
       :hide-loading="fleetchartVisible"
     >
-      <template #actions>
+      <template #actions-right>
         <BtnDropdown :size="BtnSizesEnum.SMALL">
           <template v-if="mobile">
             <Btn
@@ -47,11 +47,11 @@
       <template #filter>
         <PublicFleetVehiclesFilterForm />
       </template>
-      <template #default="{ records, loading, filterVisible, primaryKey }">
+      <template #default="{ records, loading, filterVisible }">
         <Grid
           :records="records"
           :filter-visible="filterVisible"
-          :primary-key="primaryKey"
+          primary-key="id"
         >
           <template #default="{ record }">
             <FleetVehiclePanel
@@ -93,16 +93,19 @@ import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import PublicFleetVehiclesFilterForm from "@/frontend/components/Fleets/PublicFilterForm/index.vue";
 import type { Fleet, FleetVehicleQuery } from "@/services/fyApi";
-import { useQuery } from "@tanstack/vue-query";
 import { useMobile } from "@/shared/composables/useMobile";
 import { usePublicFleetStore } from "@/frontend/stores/publicFleet";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
-import { useApiClient } from "@/frontend/composables/useApiClient";
 import { storeToRefs } from "pinia";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFilters } from "@/shared/composables/useFilters";
 import { usePagination } from "@/shared/composables/usePagination";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import {
+  getPublicFleetVehiclesQueryKey,
+  usePublicFleetStatsModelCounts as usePublicFleetStatsModelCountsQuery,
+  usePublicFleetVehicles as usePublicFleetVehiclesQuery,
+} from "@/services/fyApi";
 
 type Props = {
   fleet: Fleet;
@@ -146,40 +149,37 @@ watch(
   () => refetch,
 );
 
-const { fleets: fleetService } = useApiClient();
-
-const { data: modelCounts, refetch: refetchModelCounts } = useQuery({
-  queryKey: ["public-fleet-ships-counts", props.fleet.slug],
-  queryFn: () =>
-    fleetService.publicFleetStatsModelCounts({
-      fleetSlug: props.fleet.slug,
-      q: filters.value,
-    }),
+const vehiclesQueryParams = computed(() => {
+  return {
+    page: page.value,
+    perPage: perPage.value,
+    q: filters.value,
+  };
 });
+
+const { data: modelCounts, refetch: refetchModelCounts } =
+  usePublicFleetStatsModelCountsQuery(props.fleet.slug, vehiclesQueryParams);
 
 const refetch = () => {
   refetchVehicles();
   refetchModelCounts();
 };
 
+const vehiclesQueryKey = computed(() => {
+  return getPublicFleetVehiclesQueryKey(props.fleet.slug, vehiclesQueryParams);
+});
+
 const {
   data: fleetVehicles,
   refetch: refetchVehicles,
   ...asyncStatus
-} = useQuery({
-  queryKey: ["public-fleet-ships", props.fleet.slug],
-  queryFn: () =>
-    fleetService.publicFleetVehicles({
-      fleetSlug: props.fleet.slug,
-      page: page.value,
-      perPage: perPage.value,
-      q: filters.value,
-    }),
+} = usePublicFleetVehiclesQuery(props.fleet.slug, vehiclesQueryParams);
+
+const { filters } = useFilters<FleetVehicleQuery>({
+  updateCallback: refetch,
 });
 
-const { filters } = useFilters<FleetVehicleQuery>(refetch);
-
-const { perPage, page, updatePerPage } = usePagination("fleet-ships");
+const { perPage, page, updatePerPage } = usePagination(vehiclesQueryKey);
 </script>
 
 <script lang="ts">

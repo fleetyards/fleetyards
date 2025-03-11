@@ -35,27 +35,27 @@ import type { ErrorType } from "../axiosClient";
 /**
  * @summary Clear your personal Hangar
  */
-export const hangarDestroy = () => {
+export const destroyHangar = () => {
   return axiosClient<void>({ url: `/hangar`, method: "DELETE" });
 };
 
-export const getHangarDestroyMutationOptions = <
+export const getDestroyHangarMutationOptions = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof hangarDestroy>>,
+    Awaited<ReturnType<typeof destroyHangar>>,
     TError,
     void,
     TContext
   >;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof hangarDestroy>>,
+  Awaited<ReturnType<typeof destroyHangar>>,
   TError,
   void,
   TContext
 > => {
-  const mutationKey = ["hangarDestroy"];
+  const mutationKey = ["destroyHangar"];
   const { mutation: mutationOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -65,41 +65,41 @@ export const getHangarDestroyMutationOptions = <
     : { mutation: { mutationKey } };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof hangarDestroy>>,
+    Awaited<ReturnType<typeof destroyHangar>>,
     void
   > = () => {
-    return hangarDestroy();
+    return destroyHangar();
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type HangarDestroyMutationResult = NonNullable<
-  Awaited<ReturnType<typeof hangarDestroy>>
+export type DestroyHangarMutationResult = NonNullable<
+  Awaited<ReturnType<typeof destroyHangar>>
 >;
 
-export type HangarDestroyMutationError = ErrorType<StandardError>;
+export type DestroyHangarMutationError = ErrorType<StandardError>;
 
 /**
  * @summary Clear your personal Hangar
  */
-export const useHangarDestroy = <
+export const useDestroyHangar = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof hangarDestroy>>,
+    Awaited<ReturnType<typeof destroyHangar>>,
     TError,
     void,
     TContext
   >;
 }): UseMutationReturnType<
-  Awaited<ReturnType<typeof hangarDestroy>>,
+  Awaited<ReturnType<typeof destroyHangar>>,
   TError,
   void,
   TContext
 > => {
-  const mutationOptions = getHangarDestroyMutationOptions(options);
+  const mutationOptions = getDestroyHangarMutationOptions(options);
 
   return useMutation(mutationOptions);
 };

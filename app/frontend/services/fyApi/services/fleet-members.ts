@@ -32,7 +32,7 @@ import type { ErrorType } from "../axiosClient";
  * No Member found
  * @summary Accept Member
  */
-export const acceptMember = (
+export const acceptFleetMember = (
   fleetSlug: MaybeRef<string>,
   username: MaybeRef<string>,
 ) => {
@@ -45,23 +45,23 @@ export const acceptMember = (
   });
 };
 
-export const getAcceptMemberMutationOptions = <
+export const getAcceptFleetMemberMutationOptions = <
   TError = ErrorType<ValidationError | StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof acceptMember>>,
+    Awaited<ReturnType<typeof acceptFleetMember>>,
     TError,
     { fleetSlug: string; username: string },
     TContext
   >;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof acceptMember>>,
+  Awaited<ReturnType<typeof acceptFleetMember>>,
   TError,
   { fleetSlug: string; username: string },
   TContext
 > => {
-  const mutationKey = ["acceptMember"];
+  const mutationKey = ["acceptFleetMember"];
   const { mutation: mutationOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -71,45 +71,45 @@ export const getAcceptMemberMutationOptions = <
     : { mutation: { mutationKey } };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof acceptMember>>,
+    Awaited<ReturnType<typeof acceptFleetMember>>,
     { fleetSlug: string; username: string }
   > = (props) => {
     const { fleetSlug, username } = props ?? {};
 
-    return acceptMember(fleetSlug, username);
+    return acceptFleetMember(fleetSlug, username);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type AcceptMemberMutationResult = NonNullable<
-  Awaited<ReturnType<typeof acceptMember>>
+export type AcceptFleetMemberMutationResult = NonNullable<
+  Awaited<ReturnType<typeof acceptFleetMember>>
 >;
 
-export type AcceptMemberMutationError = ErrorType<
+export type AcceptFleetMemberMutationError = ErrorType<
   ValidationError | StandardError
 >;
 
 /**
  * @summary Accept Member
  */
-export const useAcceptMember = <
+export const useAcceptFleetMember = <
   TError = ErrorType<ValidationError | StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof acceptMember>>,
+    Awaited<ReturnType<typeof acceptFleetMember>>,
     TError,
     { fleetSlug: string; username: string },
     TContext
   >;
 }): UseMutationReturnType<
-  Awaited<ReturnType<typeof acceptMember>>,
+  Awaited<ReturnType<typeof acceptFleetMember>>,
   TError,
   { fleetSlug: string; username: string },
   TContext
 > => {
-  const mutationOptions = getAcceptMemberMutationOptions(options);
+  const mutationOptions = getAcceptFleetMemberMutationOptions(options);
 
   return useMutation(mutationOptions);
 };
@@ -117,7 +117,7 @@ export const useAcceptMember = <
  * You are not the owner of this Fleet
  * @summary Create Member
  */
-export const createMember = (
+export const createFleetMember = (
   fleetSlug: MaybeRef<string>,
   fleetMemberCreateInput: MaybeRef<FleetMemberCreateInput>,
   signal?: AbortSignal,
@@ -134,23 +134,23 @@ export const createMember = (
   });
 };
 
-export const getCreateMemberMutationOptions = <
+export const getCreateFleetMemberMutationOptions = <
   TError = ErrorType<ValidationError | StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createMember>>,
+    Awaited<ReturnType<typeof createFleetMember>>,
     TError,
     { fleetSlug: string; data: FleetMemberCreateInput },
     TContext
   >;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof createMember>>,
+  Awaited<ReturnType<typeof createFleetMember>>,
   TError,
   { fleetSlug: string; data: FleetMemberCreateInput },
   TContext
 > => {
-  const mutationKey = ["createMember"];
+  const mutationKey = ["createFleetMember"];
   const { mutation: mutationOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -160,45 +160,45 @@ export const getCreateMemberMutationOptions = <
     : { mutation: { mutationKey } };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof createMember>>,
+    Awaited<ReturnType<typeof createFleetMember>>,
     { fleetSlug: string; data: FleetMemberCreateInput }
   > = (props) => {
     const { fleetSlug, data } = props ?? {};
 
-    return createMember(fleetSlug, data);
+    return createFleetMember(fleetSlug, data);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type CreateMemberMutationResult = NonNullable<
-  Awaited<ReturnType<typeof createMember>>
+export type CreateFleetMemberMutationResult = NonNullable<
+  Awaited<ReturnType<typeof createFleetMember>>
 >;
-export type CreateMemberMutationBody = FleetMemberCreateInput;
-export type CreateMemberMutationError = ErrorType<
+export type CreateFleetMemberMutationBody = FleetMemberCreateInput;
+export type CreateFleetMemberMutationError = ErrorType<
   ValidationError | StandardError
 >;
 
 /**
  * @summary Create Member
  */
-export const useCreateMember = <
+export const useCreateFleetMember = <
   TError = ErrorType<ValidationError | StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createMember>>,
+    Awaited<ReturnType<typeof createFleetMember>>,
     TError,
     { fleetSlug: string; data: FleetMemberCreateInput },
     TContext
   >;
 }): UseMutationReturnType<
-  Awaited<ReturnType<typeof createMember>>,
+  Awaited<ReturnType<typeof createFleetMember>>,
   TError,
   { fleetSlug: string; data: FleetMemberCreateInput },
   TContext
 > => {
-  const mutationOptions = getCreateMemberMutationOptions(options);
+  const mutationOptions = getCreateFleetMemberMutationOptions(options);
 
   return useMutation(mutationOptions);
 };
@@ -292,7 +292,7 @@ export function useFleetMembers<
  * No Member found
  * @summary Decline Member
  */
-export const declineMember = (
+export const declineFleetMember = (
   fleetSlug: MaybeRef<string>,
   username: MaybeRef<string>,
 ) => {
@@ -305,23 +305,23 @@ export const declineMember = (
   });
 };
 
-export const getDeclineMemberMutationOptions = <
+export const getDeclineFleetMemberMutationOptions = <
   TError = ErrorType<ValidationError | StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof declineMember>>,
+    Awaited<ReturnType<typeof declineFleetMember>>,
     TError,
     { fleetSlug: string; username: string },
     TContext
   >;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof declineMember>>,
+  Awaited<ReturnType<typeof declineFleetMember>>,
   TError,
   { fleetSlug: string; username: string },
   TContext
 > => {
-  const mutationKey = ["declineMember"];
+  const mutationKey = ["declineFleetMember"];
   const { mutation: mutationOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -331,45 +331,45 @@ export const getDeclineMemberMutationOptions = <
     : { mutation: { mutationKey } };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof declineMember>>,
+    Awaited<ReturnType<typeof declineFleetMember>>,
     { fleetSlug: string; username: string }
   > = (props) => {
     const { fleetSlug, username } = props ?? {};
 
-    return declineMember(fleetSlug, username);
+    return declineFleetMember(fleetSlug, username);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type DeclineMemberMutationResult = NonNullable<
-  Awaited<ReturnType<typeof declineMember>>
+export type DeclineFleetMemberMutationResult = NonNullable<
+  Awaited<ReturnType<typeof declineFleetMember>>
 >;
 
-export type DeclineMemberMutationError = ErrorType<
+export type DeclineFleetMemberMutationError = ErrorType<
   ValidationError | StandardError
 >;
 
 /**
  * @summary Decline Member
  */
-export const useDeclineMember = <
+export const useDeclineFleetMember = <
   TError = ErrorType<ValidationError | StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof declineMember>>,
+    Awaited<ReturnType<typeof declineFleetMember>>,
     TError,
     { fleetSlug: string; username: string },
     TContext
   >;
 }): UseMutationReturnType<
-  Awaited<ReturnType<typeof declineMember>>,
+  Awaited<ReturnType<typeof declineFleetMember>>,
   TError,
   { fleetSlug: string; username: string },
   TContext
 > => {
-  const mutationOptions = getDeclineMemberMutationOptions(options);
+  const mutationOptions = getDeclineFleetMemberMutationOptions(options);
 
   return useMutation(mutationOptions);
 };
@@ -377,7 +377,7 @@ export const useDeclineMember = <
  * No Member found
  * @summary Demote Member
  */
-export const demoteMember = (
+export const demoteFleetMember = (
   fleetSlug: MaybeRef<string>,
   username: MaybeRef<string>,
 ) => {
@@ -390,23 +390,23 @@ export const demoteMember = (
   });
 };
 
-export const getDemoteMemberMutationOptions = <
+export const getDemoteFleetMemberMutationOptions = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof demoteMember>>,
+    Awaited<ReturnType<typeof demoteFleetMember>>,
     TError,
     { fleetSlug: string; username: string },
     TContext
   >;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof demoteMember>>,
+  Awaited<ReturnType<typeof demoteFleetMember>>,
   TError,
   { fleetSlug: string; username: string },
   TContext
 > => {
-  const mutationKey = ["demoteMember"];
+  const mutationKey = ["demoteFleetMember"];
   const { mutation: mutationOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -416,43 +416,43 @@ export const getDemoteMemberMutationOptions = <
     : { mutation: { mutationKey } };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof demoteMember>>,
+    Awaited<ReturnType<typeof demoteFleetMember>>,
     { fleetSlug: string; username: string }
   > = (props) => {
     const { fleetSlug, username } = props ?? {};
 
-    return demoteMember(fleetSlug, username);
+    return demoteFleetMember(fleetSlug, username);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type DemoteMemberMutationResult = NonNullable<
-  Awaited<ReturnType<typeof demoteMember>>
+export type DemoteFleetMemberMutationResult = NonNullable<
+  Awaited<ReturnType<typeof demoteFleetMember>>
 >;
 
-export type DemoteMemberMutationError = ErrorType<StandardError>;
+export type DemoteFleetMemberMutationError = ErrorType<StandardError>;
 
 /**
  * @summary Demote Member
  */
-export const useDemoteMember = <
+export const useDemoteFleetMember = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof demoteMember>>,
+    Awaited<ReturnType<typeof demoteFleetMember>>,
     TError,
     { fleetSlug: string; username: string },
     TContext
   >;
 }): UseMutationReturnType<
-  Awaited<ReturnType<typeof demoteMember>>,
+  Awaited<ReturnType<typeof demoteFleetMember>>,
   TError,
   { fleetSlug: string; username: string },
   TContext
 > => {
-  const mutationOptions = getDemoteMemberMutationOptions(options);
+  const mutationOptions = getDemoteFleetMemberMutationOptions(options);
 
   return useMutation(mutationOptions);
 };
@@ -460,7 +460,7 @@ export const useDemoteMember = <
  * You are not the owner of this Fleet
  * @summary Remove Fleet Member
  */
-export const removeMember = (
+export const destroyFleetMember = (
   fleetSlug: MaybeRef<string>,
   username: MaybeRef<string>,
 ) => {
@@ -473,23 +473,23 @@ export const removeMember = (
   });
 };
 
-export const getRemoveMemberMutationOptions = <
+export const getDestroyFleetMemberMutationOptions = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof removeMember>>,
+    Awaited<ReturnType<typeof destroyFleetMember>>,
     TError,
     { fleetSlug: string; username: string },
     TContext
   >;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof removeMember>>,
+  Awaited<ReturnType<typeof destroyFleetMember>>,
   TError,
   { fleetSlug: string; username: string },
   TContext
 > => {
-  const mutationKey = ["removeMember"];
+  const mutationKey = ["destroyFleetMember"];
   const { mutation: mutationOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -499,43 +499,43 @@ export const getRemoveMemberMutationOptions = <
     : { mutation: { mutationKey } };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof removeMember>>,
+    Awaited<ReturnType<typeof destroyFleetMember>>,
     { fleetSlug: string; username: string }
   > = (props) => {
     const { fleetSlug, username } = props ?? {};
 
-    return removeMember(fleetSlug, username);
+    return destroyFleetMember(fleetSlug, username);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type RemoveMemberMutationResult = NonNullable<
-  Awaited<ReturnType<typeof removeMember>>
+export type DestroyFleetMemberMutationResult = NonNullable<
+  Awaited<ReturnType<typeof destroyFleetMember>>
 >;
 
-export type RemoveMemberMutationError = ErrorType<StandardError>;
+export type DestroyFleetMemberMutationError = ErrorType<StandardError>;
 
 /**
  * @summary Remove Fleet Member
  */
-export const useRemoveMember = <
+export const useDestroyFleetMember = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof removeMember>>,
+    Awaited<ReturnType<typeof destroyFleetMember>>,
     TError,
     { fleetSlug: string; username: string },
     TContext
   >;
 }): UseMutationReturnType<
-  Awaited<ReturnType<typeof removeMember>>,
+  Awaited<ReturnType<typeof destroyFleetMember>>,
   TError,
   { fleetSlug: string; username: string },
   TContext
 > => {
-  const mutationOptions = getRemoveMemberMutationOptions(options);
+  const mutationOptions = getDestroyFleetMemberMutationOptions(options);
 
   return useMutation(mutationOptions);
 };
@@ -543,7 +543,7 @@ export const useRemoveMember = <
  * No Member found
  * @summary Promote Member
  */
-export const promoteMember = (
+export const promoteFleetMember = (
   fleetSlug: MaybeRef<string>,
   username: MaybeRef<string>,
 ) => {
@@ -556,23 +556,23 @@ export const promoteMember = (
   });
 };
 
-export const getPromoteMemberMutationOptions = <
+export const getPromoteFleetMemberMutationOptions = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof promoteMember>>,
+    Awaited<ReturnType<typeof promoteFleetMember>>,
     TError,
     { fleetSlug: string; username: string },
     TContext
   >;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof promoteMember>>,
+  Awaited<ReturnType<typeof promoteFleetMember>>,
   TError,
   { fleetSlug: string; username: string },
   TContext
 > => {
-  const mutationKey = ["promoteMember"];
+  const mutationKey = ["promoteFleetMember"];
   const { mutation: mutationOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -582,43 +582,43 @@ export const getPromoteMemberMutationOptions = <
     : { mutation: { mutationKey } };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof promoteMember>>,
+    Awaited<ReturnType<typeof promoteFleetMember>>,
     { fleetSlug: string; username: string }
   > = (props) => {
     const { fleetSlug, username } = props ?? {};
 
-    return promoteMember(fleetSlug, username);
+    return promoteFleetMember(fleetSlug, username);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PromoteMemberMutationResult = NonNullable<
-  Awaited<ReturnType<typeof promoteMember>>
+export type PromoteFleetMemberMutationResult = NonNullable<
+  Awaited<ReturnType<typeof promoteFleetMember>>
 >;
 
-export type PromoteMemberMutationError = ErrorType<StandardError>;
+export type PromoteFleetMemberMutationError = ErrorType<StandardError>;
 
 /**
  * @summary Promote Member
  */
-export const usePromoteMember = <
+export const usePromoteFleetMember = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof promoteMember>>,
+    Awaited<ReturnType<typeof promoteFleetMember>>,
     TError,
     { fleetSlug: string; username: string },
     TContext
   >;
 }): UseMutationReturnType<
-  Awaited<ReturnType<typeof promoteMember>>,
+  Awaited<ReturnType<typeof promoteFleetMember>>,
   TError,
   { fleetSlug: string; username: string },
   TContext
 > => {
-  const mutationOptions = getPromoteMemberMutationOptions(options);
+  const mutationOptions = getPromoteFleetMemberMutationOptions(options);
 
   return useMutation(mutationOptions);
 };

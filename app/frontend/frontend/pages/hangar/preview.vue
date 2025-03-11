@@ -7,28 +7,28 @@ export default {
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
+import { PanelTransparenciesEnum } from "@/shared/components/Panel/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useHangarStore } from "@/frontend/stores/hangar";
-import { storeToRefs } from "pinia";
+import { useRedirectBackStore } from "@/shared/stores/redirectBack";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 const { t } = useI18n();
 
-const router = useRouter();
-
 const hangarStore = useHangarStore();
 
-const { preview: hangarPreview } = storeToRefs(hangarStore);
+const redirectBackStore = useRedirectBackStore();
 
-const hidePreview = () => {
+const setBackRoute = () => {
+  redirectBackStore.backRoute = {
+    name: "hangar",
+  };
+};
+
+const handleLogin = () => {
   hangarStore.hidePreview();
 
-  router.push({
-    name: "login",
-    params: {
-      redirectToRoute: "fleet-add",
-    },
-  });
+  setBackRoute();
 };
 </script>
 
@@ -65,40 +65,52 @@ const hidePreview = () => {
 
       <div class="row">
         <div class="col-12 col-lg-4">
-          <Panel class="info-box" transparency="more" inset>
+          <Panel
+            class="info-box"
+            :transparency="PanelTransparenciesEnum.MORE"
+            inset
+          >
             <div class="panel-heading">
               <h2 class="panel-title text-center">
                 {{ t("texts.hangarPreview.notified.headline") }}
               </h2>
             </div>
             <div class="panel-body text-center">
-              <!-- eslint-disable vue/no-v-html -->
+              <!-- eslint-disable-next-line vue/no-v-html -->
               <p v-html="t('texts.hangarPreview.notified.text')" />
             </div>
           </Panel>
         </div>
         <div class="col-12 col-lg-4">
-          <Panel class="info-box" transparency="more" inset>
+          <Panel
+            class="info-box"
+            :transparency="PanelTransparenciesEnum.MORE"
+            inset
+          >
             <div class="panel-heading">
               <h2 class="panel-title text-center">
                 {{ t("texts.hangarPreview.manage.headline") }}
               </h2>
             </div>
             <div class="panel-body text-center">
-              <!-- eslint-disable vue/no-v-html -->
+              <!-- eslint-disable-next-line vue/no-v-html -->
               <p v-html="t('texts.hangarPreview.manage.text')" />
             </div>
           </Panel>
         </div>
         <div class="col-12 col-lg-4">
-          <Panel class="info-box" transparency="more" inset>
+          <Panel
+            class="info-box"
+            :transparency="PanelTransparenciesEnum.MORE"
+            inset
+          >
             <div class="panel-heading">
               <h2 class="panel-title text-center">
                 {{ t("texts.hangarPreview.fleetchart.headline") }}
               </h2>
             </div>
             <div class="panel-body text-center">
-              <!-- eslint-disable vue/no-v-html -->
+              <!-- eslint-disable-next-line vue/no-v-html -->
               <p v-html="t('texts.hangarPreview.fleetchart.text')" />
             </div>
           </Panel>
@@ -112,13 +124,11 @@ const hidePreview = () => {
           <Btn
             :to="{
               name: 'signup',
-              params: {
-                redirectToRoute: 'hangar',
-              },
             }"
             data-test="signup"
             :size="BtnSizesEnum.LARGE"
             :block="true"
+            @click="setBackRoute"
           >
             {{ t("actions.signUp") }}
           </Btn>
@@ -130,24 +140,12 @@ const hidePreview = () => {
           </p>
 
           <Btn
-            v-if="hangarPreview"
             data-test="login"
             :block="true"
-            @click="hidePreview"
-          >
-            {{ t("actions.login") }}
-          </Btn>
-          <Btn
-            v-else
             :to="{
               name: 'login',
-              params: {
-                redirectToRoute: 'hangar',
-              },
             }"
-            data-test="login"
-            :block="true"
-            @click="hidePreview"
+            @click="handleLogin"
           >
             {{ t("actions.login") }}
           </Btn>

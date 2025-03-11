@@ -1,23 +1,19 @@
-<template>
-  <FilterGroup
-    v-model="internalValue"
-    :label="t('labels.filters.models.willItFit')"
-    :query-fn="fetch"
-    :query-response-formatter="formatter"
-    :name="name"
-    :searchable="searchable"
-    :multiple="multiple"
-    :no-label="noLabel"
-  />
-</template>
+<script lang="ts">
+export default {
+  name: "ModelWillItFitFilterGroup",
+};
+</script>
 
 <script lang="ts" setup>
-import { useApiClient } from "@/frontend/composables/useApiClient";
 import { type ModelQuery, type Models } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import FilterGroup, {
   type FilterGroupParams,
 } from "@/shared/components/base/FilterGroup/index.vue";
+import {
+  modelsWithDocks as fetchModelsWithDocks,
+  type Model,
+} from "@/services/fyApi";
 
 type Props = {
   name: string;
@@ -67,9 +63,7 @@ const formatter = (response: Models) => {
   });
 };
 
-const { models: modelsService } = useApiClient();
-
-const fetch = async (params: FilterGroupParams) => {
+const fetch = async (params: FilterGroupParams<Model>) => {
   const q: ModelQuery = {};
 
   if (params.search) {
@@ -80,15 +74,22 @@ const fetch = async (params: FilterGroupParams) => {
     q.slugEq = params.missing as string;
   }
 
-  return modelsService.modelsWithDocks({
+  return fetchModelsWithDocks({
     page: String(params.page || 1),
     q,
   });
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "ModelWillItFitFilterGroup",
-};
-</script>
+<template>
+  <FilterGroup
+    v-model="internalValue"
+    :label="t('labels.filters.models.willItFit')"
+    :query-fn="fetch"
+    :query-response-formatter="formatter"
+    :name="name"
+    :searchable="searchable"
+    :multiple="multiple"
+    :no-label="noLabel"
+  />
+</template>

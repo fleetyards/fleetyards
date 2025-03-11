@@ -5,10 +5,10 @@
 #  id                     :uuid             not null, primary key
 #  expires_in             :integer
 #  previous_refresh_token :string           default(""), not null
-#  refresh_token          :string(512)
+#  refresh_token          :text
 #  revoked_at             :datetime
 #  scopes                 :string
-#  token                  :string(512)      not null
+#  token                  :text             not null
 #  created_at             :datetime         not null
 #  application_id         :uuid             not null
 #  resource_owner_id      :uuid

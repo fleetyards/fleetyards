@@ -20,8 +20,13 @@
 class ItemPrice < ApplicationRecord
   belongs_to :item, polymorphic: true
 
-  enum :price_type, {buy: 0, sell: 1, rental: 2}, validate: true
-  enum :time_range, {"1-day": 0, "3-days": 1, "7-days": 2, "30-days": 3}, validate: {allow_nil: true}
+  enum :price_type,
+    {buy: 0, sell: 1, rental: 2},
+    validate: true
+
+  enum :time_range,
+    {"1-day": 0, "3-days": 1, "7-days": 2, "30-days": 3},
+    validate: {allow_nil: true}
 
   validates :time_range, presence: true, if: -> { rental? }
   validates :price, presence: true

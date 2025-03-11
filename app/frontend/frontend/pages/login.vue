@@ -9,22 +9,26 @@ import { useForm } from "vee-validate";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
-import { useNoty } from "@/shared/composables/useNoty";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useSessionStore } from "@/frontend/stores/session";
-import type { RouteParamsRaw, LocationQueryRaw } from "vue-router";
-import { useApiClient } from "@/frontend/composables/useApiClient";
-import { SessionInput, ApiError } from "@/services/fyApi";
+import {
+  useCreateSession as useCreateSessionMutation,
+  type SessionInput,
+  type ValidationError,
+} from "@/services/fyApi";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import {
   BtnTypesEnum,
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
+import { type AxiosError } from "axios";
+import { useRedirectBack } from "@/shared/composables/useRedirectBack";
 
 const { t } = useI18n();
 
-const { displayAlert } = useNoty();
+const { displayAlert } = useAppNotifications();
 
 const submitting = ref(false);
 
@@ -55,45 +59,49 @@ const [rememberMe, rememberMeProps] = defineField("rememberMe");
 
 const sessionStore = useSessionStore();
 
-const route = useRoute();
-const router = useRouter();
+const mutation = useCreateSessionMutation();
 
-const { sessions: sessionsService } = useApiClient();
+const { handleRedirect } = useRedirectBack();
 
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
-  try {
-    await sessionsService.createSession({
-      requestBody: values,
+  await mutation
+    .mutateAsync({
+      data: values,
+    })
+    .then(async () => {
+      sessionStore.login();
+
+      handleRedirect();
+    })
+    .catch((error) => {
+      const response = (error as AxiosError).response;
+
+      if (response) {
+        const data = response.data as ValidationError;
+        if (data.code === "session.create.two_factor_required") {
+          twoFactorRequired.value = true;
+        } else {
+          displayAlert({
+            text: data.message || t("errors.generic"),
+          });
+        }
+      } else {
+        displayAlert({
+          text: t("errors.generic"),
+        });
+      }
+    })
+    .finally(() => {
+      submitting.value = false;
     });
+});
 
-    sessionStore.login();
-
-    if (route.params.redirectToRoute) {
-      await router.replace({
-        name: route.params.redirectToRoute as string,
-        params: route.params.redirectToRouteParams as unknown as RouteParamsRaw,
-        query: route.params.redirectToRouteQuery as unknown as LocationQueryRaw,
-      });
-    } else if (route.params.redirectTo) {
-      await router.replace(route.params.redirectTo as string);
-    } else {
-      await router.push("/").catch(() => {});
-    }
-  } catch (error) {
-    const body = (error as unknown as ApiError).body;
-
-    if (body?.code === "session.create.two_factor_required") {
-      twoFactorRequired.value = true;
-    } else {
-      displayAlert({
-        text: body?.message || t("errors.generic"),
-      });
-    }
-  } finally {
-    submitting.value = false;
-  }
+const signupRoute = computed(() => {
+  return {
+    name: "signup",
+  };
 });
 </script>
 
@@ -166,7 +174,7 @@ const onSubmit = handleSubmit(async (values) => {
           </p>
           <Btn
             data-test="signup-link"
-            :to="{ name: 'signup' }"
+            :to="signupRoute"
             :size="BtnSizesEnum.SMALL"
             :block="true"
           >

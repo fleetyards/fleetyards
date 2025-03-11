@@ -17,7 +17,7 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
     parameter name: "token", in: :path, type: :string, description: "Fleet Invite Token"
 
     post("Find Fleet by Invite") do
-      operationId "findByInvite"
+      operationId "findFleetByInvite"
       tags "Fleets"
       produces "application/json"
 

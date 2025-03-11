@@ -8,15 +8,15 @@ export default {
 import VueUploadComponent, { VueUploadItem } from "vue-upload-component";
 import Avatar from "@/shared/components/Avatar/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useNoty } from "@/shared/composables/useNoty";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useSessionStore } from "@/frontend/stores/session";
-import { useApiClient } from "@/frontend/composables/useApiClient";
 import { UserUpdateInput } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useUpdateProfile as useUpdateProfileMutation } from "@/services/fyApi";
 
 const { t } = useI18n();
 
-const { displaySuccess, displayAlert } = useNoty();
+const { displaySuccess, displayAlert } = useAppNotifications();
 
 const acceptedMimeTypes = "image/png,image/jpeg,image/webp";
 
@@ -60,9 +60,9 @@ const inputFilter = (
   return null;
 };
 
-const { users: usersService } = useApiClient();
-
 const comlink = useComlink();
+
+const mutation = useUpdateProfileMutation();
 
 const add = async () => {
   if (!newAvatar.value) {
@@ -72,47 +72,47 @@ const add = async () => {
   const uploadData = new FormData();
   uploadData.append("avatar", newAvatar.value.file as Blob);
 
-  try {
-    await usersService.updateProfile({
-      formData: uploadData as UserUpdateInput,
-    });
+  await mutation
+    .mutateAsync({
+      data: uploadData as UserUpdateInput,
+    })
+    .then(() => {
+      comlink.emit("user-update");
 
-    comlink.emit("user-update");
-
-    displaySuccess({
-      text: t("messages.avatarUpload.create.success"),
+      displaySuccess({
+        text: t("messages.avatarUpload.create.success"),
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+      displayAlert({
+        text: t("messages.avatarUpload.create.failure"),
+      });
     });
-  } catch (error) {
-    console.error(error);
-
-    displayAlert({
-      text: t("messages.avatarUpload.create.failure"),
-    });
-  }
 };
 
 const remove = async () => {
   files.value = [];
 
-  try {
-    await usersService.updateProfile({
-      formData: {
+  await mutation
+    .mutateAsync({
+      data: {
         removeAvatar: true,
       },
-    });
+    })
+    .then(() => {
+      comlink.emit("user-update");
 
-    comlink.emit("user-update");
-
-    displaySuccess({
-      text: t("messages.avatarUpload.destroy.success"),
+      displaySuccess({
+        text: t("messages.avatarUpload.destroy.success"),
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+      displayAlert({
+        text: t("messages.avatarUpload.destroy.failure"),
+      });
     });
-  } catch (error) {
-    console.error(error);
-
-    displayAlert({
-      text: t("messages.avatarUpload.destroy.failure"),
-    });
-  }
 };
 
 const sessionStore = useSessionStore();

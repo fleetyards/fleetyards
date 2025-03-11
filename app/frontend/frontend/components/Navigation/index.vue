@@ -18,7 +18,7 @@ import { useHangarStore } from "@/frontend/stores/hangar";
 import { useFiltersStore } from "@/shared/stores/filters";
 import { storeToRefs } from "pinia";
 import rsiLogo from "@/images/rsi_logo.png";
-import { useApiClient } from "@/frontend/composables/useApiClient";
+import { useDestroySession as useDestroySessionMutation } from "@/services/fyApi";
 import favicon from "@/images/favicon-small.png";
 
 const { t } = useI18n();
@@ -40,7 +40,7 @@ const { filters } = storeToRefs(filtersStore);
 const route = useRoute();
 
 const isVisualTestsRoute = computed(() => {
-  if (process.env.NODE_ENV !== "production") {
+  if (process.env.NODE_ENV === "production") {
     return false;
   }
 
@@ -87,10 +87,10 @@ const filterFor = (routeName: string) => {
   } as unknown as LocationQueryRaw;
 };
 
-const { sessions: sessionsService } = useApiClient();
+const mutation = useDestroySessionMutation();
 
 const logout = async () => {
-  await sessionsService.deleteSession();
+  await mutation.mutateAsync();
 
   sessionStore.logout();
 };
@@ -114,7 +114,7 @@ const settingsActive = computed(() => {
   <AppNavigation :title="t('title.default')" :logo="favicon">
     <template #main>
       <VisualTestsNav v-if="isVisualTestsRoute" />
-      <FleetNav v-if="isFleetRoute" />
+      <FleetNav v-else-if="isFleetRoute" />
       <template v-else>
         <NavItem
           :to="{ name: 'home' }"

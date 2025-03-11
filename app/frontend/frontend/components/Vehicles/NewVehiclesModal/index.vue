@@ -9,10 +9,10 @@ import ModelFilterGroup from "@/frontend/components/base/ModelFilterGroup/index.
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import TeaserPanel from "@/shared/components/TeaserPanel/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { type Model, VehicleCreateInput } from "@/services/fyApi";
+import { type Model } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useVehicleQueries } from "@/frontend/composables/useVehicleQueries";
+import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import { type FilterGroupOption } from "@/shared/components/base/FilterGroup/index.vue";
 
@@ -36,9 +36,9 @@ const newModel = ref<FilterGroupOption<Model>>();
 
 const comlink = useComlink();
 
-const { createBulkMutation } = useVehicleQueries();
+const { useCreateBulkMutation } = useVehicleMutations();
 
-const mutation = createBulkMutation();
+const mutation = useCreateBulkMutation();
 
 const models = ref<Model[]>([]);
 
@@ -74,18 +74,23 @@ const newVehicles = computed(() => {
     return {
       wanted: props.wanted,
       modelId: model.id,
-    } as VehicleCreateInput;
+    };
   });
 });
 
 const save = async () => {
   submitting.value = true;
 
-  await mutation.mutateAsync(newVehicles.value);
-
-  submitting.value = false;
-
-  comlink.emit("close-modal");
+  await mutation
+    .mutateAsync({
+      data: {
+        vehicles: newVehicles.value,
+      },
+    })
+    .finally(() => {
+      submitting.value = false;
+      comlink.emit("close-modal");
+    });
 };
 </script>
 

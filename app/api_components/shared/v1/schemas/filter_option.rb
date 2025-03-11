@@ -12,7 +12,12 @@ module Shared
             category: {type: :string},
             icon: {type: :string},
             label: {type: :string},
-            value: {type: :string},
+            value: {
+              anyOf: [
+                {type: :string, nullable: true},
+                {type: :number, nullable: true}
+              ]
+            },
             name: {type: :string, deprecated: true}
           },
           additionalProperties: false,

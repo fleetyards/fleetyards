@@ -13,7 +13,6 @@ import {
   ErrorTypesEnum,
 } from "@/shared/components/AsyncData.types";
 import { isAxiosError } from "axios";
-import { type ApiError } from "@/services/fyApi";
 
 type Props = {
   asyncStatus: AsyncStatus;
@@ -31,15 +30,9 @@ const error = computed(() => {
 });
 
 const status = computed(() => {
-  if (!error.value) return;
+  if (!error.value || !isAxiosError(error.value)) return;
 
-  // AxiosError
-  if (isAxiosError(error.value)) {
-    return error.value.response?.status;
-  }
-
-  // ApiError
-  return (error.value as ApiError).status;
+  return error.value.response?.status;
 });
 
 const errorType = computed(() => {

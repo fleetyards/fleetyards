@@ -1,3 +1,177 @@
+<script lang="ts">
+export default {
+  name: "InviteUrlModal",
+};
+</script>
+
+<script lang="ts" setup>
+import copyText from "@/frontend/utils/CopyText";
+import Modal from "@/shared/components/AppModal/Inner/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import {
+  useFleetInviteUrls as useFleetInviteUrlsQuery,
+  useCreateFleetInviteUrl as useCreateFleetInviteUrlMutation,
+  useDestroyFleetInviteUrl as useDestroyFleetInviteUrlMutation,
+} from "@/services/fyApi";
+
+import {
+  Fleet,
+  FleetInviteUrl,
+  FleetInviteUrlCreateInput,
+} from "@/services/fyApi";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
+type Props = {
+  fleet: Fleet;
+};
+
+const props = defineProps<Props>();
+
+const { t } = useI18n();
+
+const { displaySuccess, displayAlert } = useAppNotifications();
+
+const form = ref<FleetInviteUrlCreateInput>({});
+
+const expiresAfterOptions = [
+  {
+    label: t("labels.fleet.inviteUrls.expiresAfterOptions.infinite"),
+    value: null,
+  },
+  {
+    label: t("labels.fleet.inviteUrls.expiresAfterOptions.30_minutes"),
+    value: 30,
+  },
+  {
+    label: t("labels.fleet.inviteUrls.expiresAfterOptions.1_hour"),
+    value: 60,
+  },
+  {
+    label: t("labels.fleet.inviteUrls.expiresAfterOptions.6_hours"),
+    value: 6 * 60,
+  },
+  {
+    label: t("labels.fleet.inviteUrls.expiresAfterOptions.12_hours"),
+    value: 12 * 60,
+  },
+  {
+    label: t("labels.fleet.inviteUrls.expiresAfterOptions.1_day"),
+    value: 24 * 60,
+  },
+  {
+    label: t("labels.fleet.inviteUrls.expiresAfterOptions.7_days"),
+    value: 24 * 60 * 7,
+  },
+];
+
+const limitOptions = [
+  {
+    label: t("labels.fleet.inviteUrls.limitOptions.infinite"),
+    value: null,
+  },
+  {
+    label: t("labels.fleet.inviteUrls.limitOptions.1"),
+    value: 1,
+  },
+  {
+    label: t("labels.fleet.inviteUrls.limitOptions.5"),
+    value: 5,
+  },
+  {
+    label: t("labels.fleet.inviteUrls.limitOptions.10"),
+    value: 10,
+  },
+  {
+    label: t("labels.fleet.inviteUrls.limitOptions.25"),
+    value: 25,
+  },
+  {
+    label: t("labels.fleet.inviteUrls.limitOptions.50"),
+    value: 50,
+  },
+  {
+    label: t("labels.fleet.inviteUrls.limitOptions.100"),
+    value: 100,
+  },
+];
+
+onMounted(() => {
+  setupForm();
+});
+
+const setupForm = () => {
+  form.value = {
+    expiresAfterMinutes: undefined,
+    limit: undefined,
+  };
+};
+
+const { data: inviteUrls, refetch } = useFleetInviteUrlsQuery(props.fleet.slug);
+
+const createMutation = useCreateFleetInviteUrlMutation();
+
+const create = async () => {
+  await createMutation
+    .mutateAsync({
+      fleetSlug: props.fleet.slug,
+      data: form.value,
+    })
+    .then(() => {
+      refetch();
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+const destroyMutation = useDestroyFleetInviteUrlMutation();
+
+const remove = async (inviteUrl: FleetInviteUrl) => {
+  await destroyMutation
+    .mutateAsync({
+      fleetSlug: props.fleet.slug,
+      token: inviteUrl.token,
+    })
+    .then(() => {
+      refetch();
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+const usesLeft = (inviteUrl: FleetInviteUrl) => {
+  if (!inviteUrl.limit && inviteUrl.limit !== 0) {
+    return t("labels.fleet.inviteUrls.noLimit");
+  }
+
+  return t("labels.fleet.inviteUrls.usesLeft", {
+    count: inviteUrl.limit,
+  });
+};
+
+const copy = (inviteUrl: FleetInviteUrl) => {
+  copyText(inviteUrl.url).then(
+    () => {
+      displaySuccess({
+        text: t("messages.copyInviteUrl.success", {
+          url: inviteUrl.url,
+        }),
+      });
+    },
+    () => {
+      displayAlert({
+        text: t("messages.copyInviteUrl.failure"),
+      });
+    },
+  );
+};
+</script>
+
 <template>
   <Modal v-if="fleet" :title="t('headlines.fleets.inviteUrls')">
     <div
@@ -9,16 +183,21 @@
         <FormInput
           :id="inviteUrl.token"
           v-model="inviteUrl.url"
+          name="token"
           :disabled="true"
           :no-label="true"
           :inline="true"
           class="url-input"
           @click="copy(inviteUrl)"
         />
-        <Btn size="small" :inline="true" @click="copy(inviteUrl)">
+        <Btn :size="BtnSizesEnum.SMALL" :inline="true" @click="copy(inviteUrl)">
           <i class="fad fa-copy" />
         </Btn>
-        <Btn size="small" :inline="true" @click="remove(inviteUrl)">
+        <Btn
+          :size="BtnSizesEnum.SMALL"
+          :inline="true"
+          @click="remove(inviteUrl)"
+        >
           <i class="fad fa-trash" />
         </Btn>
       </div>
@@ -60,178 +239,6 @@
     </template>
   </Modal>
 </template>
-
-<script lang="ts" setup>
-import copyText from "@/frontend/utils/CopyText";
-import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import Btn from "@/shared/components/base/Btn/index.vue";
-import FormInput from "@/shared/components/base/FormInput/index.vue";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
-import { useI18n } from "@/shared/composables/useI18n";
-import { useNoty } from "@/shared/composables/useNoty";
-import { useApiClient } from "@/frontend/composables/useApiClient";
-import { useQuery } from "@tanstack/vue-query";
-
-import {
-  Fleet,
-  FleetInviteUrl,
-  FleetInviteUrlCreateInput,
-} from "@/services/fyApi";
-
-type Props = {
-  fleet: Fleet;
-};
-
-const props = defineProps<Props>();
-
-const { t } = useI18n();
-
-const { displaySuccess, displayAlert } = useNoty();
-
-const { fleetInviteUrls: fleetInviteUrlsService } = useApiClient();
-
-const form = ref<FleetInviteUrlCreateInput>({});
-
-const expiresAfterOptions = [
-  {
-    name: t("labels.fleet.inviteUrls.expiresAfterOptions.infinite"),
-    value: null,
-  },
-  {
-    name: t("labels.fleet.inviteUrls.expiresAfterOptions.30_minutes"),
-    value: 30,
-  },
-  {
-    name: t("labels.fleet.inviteUrls.expiresAfterOptions.1_hour"),
-    value: 60,
-  },
-  {
-    name: t("labels.fleet.inviteUrls.expiresAfterOptions.6_hours"),
-    value: 6 * 60,
-  },
-  {
-    name: t("labels.fleet.inviteUrls.expiresAfterOptions.12_hours"),
-    value: 12 * 60,
-  },
-  {
-    name: t("labels.fleet.inviteUrls.expiresAfterOptions.1_day"),
-    value: 24 * 60,
-  },
-  {
-    name: t("labels.fleet.inviteUrls.expiresAfterOptions.7_days"),
-    value: 24 * 60 * 7,
-  },
-];
-
-const limitOptions = [
-  {
-    name: t("labels.fleet.inviteUrls.limitOptions.infinite"),
-    value: null,
-  },
-  {
-    name: t("labels.fleet.inviteUrls.limitOptions.1"),
-    value: 1,
-  },
-  {
-    name: t("labels.fleet.inviteUrls.limitOptions.5"),
-    value: 5,
-  },
-  {
-    name: t("labels.fleet.inviteUrls.limitOptions.10"),
-    value: 10,
-  },
-  {
-    name: t("labels.fleet.inviteUrls.limitOptions.25"),
-    value: 25,
-  },
-  {
-    name: t("labels.fleet.inviteUrls.limitOptions.50"),
-    value: 50,
-  },
-  {
-    name: t("labels.fleet.inviteUrls.limitOptions.100"),
-    value: 100,
-  },
-];
-
-onMounted(() => {
-  setupForm();
-});
-
-const setupForm = () => {
-  form.value = {
-    expiresAfterMinutes: undefined,
-    limit: undefined,
-  };
-};
-
-const { data: inviteUrls, refetch } = useQuery({
-  queryKey: ["fleet-invite-urls", props.fleet.slug],
-  queryFn: () =>
-    fleetInviteUrlsService.inviteUrls({
-      fleetSlug: props.fleet.slug,
-    }),
-});
-
-const create = async () => {
-  try {
-    await fleetInviteUrlsService.createInviteUrl({
-      fleetSlug: props.fleet.slug,
-      requestBody: form.value,
-    });
-
-    refetch();
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-const remove = async (inviteUrl: FleetInviteUrl) => {
-  try {
-    await fleetInviteUrlsService.removeInviteUrl({
-      fleetSlug: props.fleet.slug,
-      token: inviteUrl.token,
-    });
-
-    refetch();
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-const usesLeft = (inviteUrl: FleetInviteUrl) => {
-  if (!inviteUrl.limit && inviteUrl.limit !== 0) {
-    return t("labels.fleet.inviteUrls.noLimit");
-  }
-
-  return t("labels.fleet.inviteUrls.usesLeft", {
-    count: inviteUrl.limit,
-  });
-};
-
-const copy = (inviteUrl: FleetInviteUrl) => {
-  copyText(inviteUrl.url).then(
-    () => {
-      displaySuccess({
-        text: t("messages.copyInviteUrl.success", {
-          url: inviteUrl.url,
-        }),
-      });
-    },
-    () => {
-      displayAlert({
-        text: t("messages.copyInviteUrl.failure"),
-      });
-    },
-  );
-};
-</script>
-
-<script lang="ts">
-export default {
-  name: "InviteUrlModal",
-};
-</script>
 
 <style lang="scss" scoped>
 @import "./index.scss";

@@ -4,7 +4,9 @@ import { useQueryClient } from "@tanstack/vue-query";
 import type { QueryKey } from "@tanstack/vue-query";
 import type { MaybeRef } from "vue";
 
-export const usePagination = (queryKey: MaybeRef<QueryKey | undefined>) => {
+export const usePagination = (
+  queryKey: MaybeRef<QueryKey | string | undefined>,
+) => {
   const paginationStore = usePaginationStore();
 
   const route = useRoute();

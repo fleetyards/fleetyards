@@ -8,6 +8,8 @@ export enum ModelTableViewColsEnum {
   HEIGHT = "height",
   MASS = "mass",
   CARGO = "cargo",
+  QUANTUM_FUEL = "quantum_fuel_tank_size",
+  HYDROGEN_FUEL = "hydrogen_fuel_tank_size",
   MIN_CREW = "min_crew",
   MAX_CREW = "max_crew",
   SCM_SPEED = "scm_speed",

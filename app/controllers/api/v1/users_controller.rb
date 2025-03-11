@@ -3,20 +3,19 @@
 module Api
   module V1
     class UsersController < ::Api::BaseController
-      skip_authorization_check only: %i[signup confirm]
+      skip_authorization_check only: %i[signup confirm check_email check_username]
 
-      before_action :doorkeeper_authorize!, unless: :user_signed_in?, only: %i[me update]
-      before_action :authenticate_user!, except: %i[me update]
+      before_action :doorkeeper_authorize!, unless: :user_signed_in?, only: %i[
+        me update
+      ]
+      before_action :authenticate_user!, except: %i[
+        me update check_email check_username confirm signup
+      ]
 
       def me
         authorize! :read, current_user
 
         @user = current_user
-      end
-
-      def public
-        authorize! :read_public, :api_user
-        @user = User.find_by!(normalized_username: params[:username].downcase, public_hangar: true)
       end
 
       def update
@@ -86,7 +85,7 @@ module Api
       end
 
       def confirm
-        user = User.confirm_by_token(params[:token])
+        user = User.confirm_by_token(user_confirm_params[:token])
         if user.present? && user.errors.blank?
           render json: {code: "confirmation", message: I18n.t("devise.confirmations.confirmed")}
         else
@@ -95,13 +94,11 @@ module Api
       end
 
       def check_email
-        authorize! :check, :api_users
-        render json: {taken: User.exists?(normalized_email: (params[:value] || "").downcase)}
+        render json: {taken: User.exists?(normalized_email: (user_check_params[:value] || "").downcase)}
       end
 
       def check_username
-        authorize! :check, :api_users
-        render json: {taken: User.exists?(normalized_username: (params[:value] || "").downcase)}
+        render json: {taken: User.exists?(normalized_username: (user_check_params[:value] || "").downcase)}
       end
 
       def destroy
@@ -132,6 +129,16 @@ module Api
       private def user_account_params
         @user_account_params ||= params.transform_keys(&:underscore)
           .permit(:username, :email)
+      end
+
+      private def user_confirm_params
+        @user_confirm_params ||= params.transform_keys(&:underscore)
+          .permit(:token)
+      end
+
+      private def user_check_params
+        @user_check_params ||= params.transform_keys(&:underscore)
+          .permit(:value)
       end
 
       private def blocked(email)

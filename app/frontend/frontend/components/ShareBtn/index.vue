@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import copyText from "@/frontend/utils/CopyText";
-import { useNoty } from "@/shared/composables/useNoty";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useI18n } from "@/shared/composables/useI18n";
 import type { SpinnerAlignment } from "@/shared/components/SmallLoader/index.vue";
 import type { RouteLocationRaw } from "vue-router";
@@ -61,7 +61,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const { displayAlert, displaySuccess } = useNoty();
+const { displayAlert, displaySuccess } = useAppNotifications();
 
 const isMobile = useMobile();
 

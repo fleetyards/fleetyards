@@ -70,7 +70,9 @@ class Vehicle < ApplicationRecord
 
   NULL_ATTRS = %w[name serial].freeze
 
-  enum bought_via: {pledge_store: 0, ingame: 1}, _prefix: true
+  enum :bought_via,
+    {pledge_store: 0, ingame: 1},
+    prefix: true
 
   before_validation :normalize_serial
   before_save :nil_if_blank

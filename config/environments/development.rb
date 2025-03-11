@@ -87,9 +87,11 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
+  config.action_controller.asset_host = endpoints.frontend_endpoint
 
   config.action_cable.url = endpoints.cable_endpoint
   config.action_cable.allowed_request_origins = [
+    "http://localhost:#{ENV["PORT"]}",
     endpoints.frontend_endpoint,
     endpoints.admin_endpoint
   ]

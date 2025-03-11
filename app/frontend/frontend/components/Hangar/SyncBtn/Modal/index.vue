@@ -1,3 +1,256 @@
+<script lang="ts">
+export default {
+  name: "VehiclesResetIngameModal",
+};
+</script>
+
+<script lang="ts" setup>
+import Modal from "@/shared/components/AppModal/Inner/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
+import { RSIHangarParser } from "@/frontend/lib/RSIHangarParser";
+import { useHangarStore } from "@/frontend/stores/hangar";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useRouter, useRoute } from "vue-router";
+import { extensionUrls } from "@/types/extension";
+import SmallLoader from "@/shared/components/SmallLoader/index.vue";
+import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
+import { useSyncRsiHangar as useSyncRsiHangarMutation } from "@/services/fyApi";
+
+const { t } = useI18n();
+
+const { displayInfo, displaySuccess, displayWarning, displayAlert } =
+  useAppNotifications();
+
+const started = ref(false);
+
+const identityStatus = ref<"pending" | "connected" | "notFound">("pending");
+
+const loadingIdentity = ref(false);
+
+const currentPage = ref(1);
+
+const hangarStore = useHangarStore();
+
+const pledges = ref<RsiHangarItemInput[]>([]);
+
+const items = computed(() =>
+  pledges.value.filter((pledge) =>
+    ["ship", "component", "upgrade"].includes(pledge.type),
+  ),
+);
+
+const ships = computed(() =>
+  pledges.value.filter((pledge) => pledge.type === "ship"),
+);
+
+const components = computed(() =>
+  pledges.value.filter((pledge) => pledge.type === "component"),
+);
+
+const upgrades = computed(() =>
+  pledges.value.filter((pledge) => pledge.type === "upgrade"),
+);
+
+const result = ref<HangarSyncResult | undefined>();
+
+const importedVehicles = computed(() => result.value?.importedVehicles || []);
+const foundVehicles = computed(() => result.value?.foundVehicles || []);
+const movedVehiclesToWanted = computed(
+  () => result.value?.movedVehiclesToWanted || [],
+);
+const missingModels = computed(() => result.value?.missingModels || []);
+const importedComponents = computed(
+  () => result.value?.importedComponents || [],
+);
+const foundComponents = computed(() => result.value?.foundComponents || []);
+const missingComponents = computed(() => result.value?.missingComponents || []);
+const missingComponentVehicles = computed(
+  () => result.value?.missingComponentVehicles || [],
+);
+const importedUpgrades = computed(() => result.value?.importedUpgrades || []);
+const foundUpgrades = computed(() => result.value?.foundUpgrades || []);
+const missingUpgrades = computed(() => result.value?.missingUpgrades || []);
+const missingUpgradeVehicles = computed(
+  () => result.value?.missingUpgradeVehicles || [],
+);
+
+// const collection: VehiclesCollection = vehiclesCollection;
+
+type ProcessStep = {
+  name: string;
+  status: "pending" | "processing" | "success" | "failure";
+};
+
+const processSteps = ref<ProcessStep[]>([
+  {
+    name: "fetchHangar",
+    status: "pending",
+  },
+  {
+    name: "submitData",
+    status: "pending",
+  },
+]);
+
+onMounted(() => {
+  started.value = false;
+  currentPage.value = 1;
+
+  window.addEventListener("message", handleExtensionMessage);
+
+  if (hangarStore.extensionReady) {
+    checkRSIIdentity();
+  }
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("message", handleExtensionMessage);
+});
+
+const handleExtensionMessage = (event: FleetyardsSyncEvent) => {
+  if (event.data.direction === "fy-sync") {
+    const message = JSON.parse(event.data.message);
+
+    if (message.action === "sync") {
+      if (message.code === 200) {
+        fetchRSIHangar(message.payload);
+      } else {
+        displayAlert({ text: t("messages.syncExtension.failure") });
+        updateStep("fetchHangar", "failure");
+      }
+    }
+
+    if (message.action === "identify") {
+      loadingIdentity.value = false;
+      if (message.code !== 200 || !message.payload?.handle) {
+        console.info("FY Extension: No RSI Session found");
+        displayWarning({ text: t("messages.syncExtension.notLoggedIn") });
+        identityStatus.value = "notFound";
+      } else {
+        identityStatus.value = "connected";
+      }
+    }
+  }
+};
+
+watch(
+  () => hangarStore.extensionReady,
+  () => {
+    if (hangarStore.extensionReady) {
+      checkRSIIdentity();
+    }
+  },
+);
+
+const checkRSIIdentity = () => {
+  identityStatus.value = "pending";
+  loadingIdentity.value = true;
+
+  window.postMessage({
+    direction: "fy",
+    message: '{ "action": "identify" }',
+  });
+};
+
+const updateStep = (step: string, status: ProcessStep["status"]) => {
+  const index = processSteps.value.findIndex((s) => s.name === step);
+
+  if (index !== -1) {
+    processSteps.value[index].status = status;
+  }
+};
+
+const finished = computed(() =>
+  processSteps.value.every((step) => step.status === "success"),
+);
+
+const finishedWithErrors = computed(() =>
+  processSteps.value.some((step) => step.status === "failure"),
+);
+
+const comlink = useComlink();
+
+const cancel = async () => {
+  comlink.emit("close-modal", true);
+};
+
+const start = async () => {
+  started.value = true;
+  pledges.value = [];
+  currentPage.value = 1;
+
+  fetchPage();
+
+  displayInfo({ text: t("messages.syncExtension.started") });
+};
+
+const fetchPage = () => {
+  window.postMessage({
+    direction: "fy",
+    message: `{ "action": "sync", "page": ${currentPage.value} }`,
+  });
+};
+
+const fetchRSIHangar = (htmlPage: string) => {
+  updateStep("fetchHangar", "processing");
+
+  const items = new RSIHangarParser().extractPage(htmlPage);
+
+  if (items) {
+    pledges.value = [...pledges.value, ...items];
+
+    currentPage.value += 1;
+
+    fetchPage();
+  } else {
+    updateStep("fetchHangar", "success");
+
+    finishSync();
+  }
+};
+
+const mutation = useSyncRsiHangarMutation();
+
+const finishSync = async () => {
+  updateStep("submitData", "processing");
+
+  await mutation
+    .mutateAsync({
+      data: {
+        items: pledges.value,
+      },
+    })
+    .then((response) => {
+      result.value = response;
+
+      displaySuccess({ text: t("messages.syncExtension.success") });
+      updateStep("submitData", "success");
+      comlink.emit("hangar-sync-finished");
+    })
+    .catch((error) => {
+      updateStep("submitData", "failure");
+      console.error(error);
+    });
+};
+
+const router = useRouter();
+const route = useRoute();
+
+const refreshPage = () => {
+  router.replace({
+    name: "hangar",
+    query: { ...route.query, openSync: "1" },
+  });
+  window.location.reload();
+};
+</script>
+
 <template>
   <Modal :title="t('headlines.syncExtension')" :fixed="true">
     <transition name="fade" mode="out-in">
@@ -30,8 +283,8 @@
           <Btn
             v-if="identityStatus === 'notFound'"
             v-tooltip="t('labels.syncExtension.checkIdentity')"
-            size="small"
-            variant="link"
+            :size="BtnSizesEnum.SMALL"
+            :variant="BtnVariantsEnum.LINK"
             :text-inline="true"
             :disabled="loadingIdentity"
             @click="checkRSIIdentity"
@@ -293,7 +546,7 @@
     <div class="page-actions page-actions-block">
       <Btn
         v-if="finished"
-        size="small"
+        :size="BtnSizesEnum.SMALL"
         :inline="true"
         data-test="close-sync"
         @click="cancel"
@@ -302,7 +555,7 @@
       </Btn>
       <template v-else>
         <Btn
-          size="small"
+          :size="BtnSizesEnum.SMALL"
           :inline="true"
           data-test="cancel-sync"
           :disabled="started && !finishedWithErrors"
@@ -332,255 +585,6 @@
     </div>
   </Modal>
 </template>
-
-<script lang="ts" setup>
-import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import Btn from "@/shared/components/base/Btn/index.vue";
-import { useI18n } from "@/shared/composables/useI18n";
-import { useComlink } from "@/shared/composables/useComlink";
-import { RSIHangarParser } from "@/frontend/lib/RSIHangarParser";
-import { useHangarStore } from "@/frontend/stores/hangar";
-import { useNoty } from "@/shared/composables/useNoty";
-import { useRouter, useRoute } from "vue-router";
-import { extensionUrls } from "@/types/extension";
-import SmallLoader from "@/shared/components/SmallLoader/index.vue";
-import { useApiClient } from "@/frontend/composables/useApiClient";
-import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
-
-const { t } = useI18n();
-
-const { displayInfo, displaySuccess, displayWarning, displayAlert } = useNoty();
-
-const started = ref(false);
-
-const identityStatus = ref<"pending" | "connected" | "notFound">("pending");
-
-const loadingIdentity = ref(false);
-
-const currentPage = ref(1);
-
-const hangarStore = useHangarStore();
-
-const pledges = ref<RsiHangarItemInput[]>([]);
-
-const items = computed(() =>
-  pledges.value.filter((pledge) =>
-    ["ship", "component", "upgrade"].includes(pledge.type),
-  ),
-);
-
-const ships = computed(() =>
-  pledges.value.filter((pledge) => pledge.type === "ship"),
-);
-
-const components = computed(() =>
-  pledges.value.filter((pledge) => pledge.type === "component"),
-);
-
-const upgrades = computed(() =>
-  pledges.value.filter((pledge) => pledge.type === "upgrade"),
-);
-
-const result = ref<HangarSyncResult | undefined>();
-
-const importedVehicles = computed(() => result.value?.importedVehicles || []);
-const foundVehicles = computed(() => result.value?.foundVehicles || []);
-const movedVehiclesToWanted = computed(
-  () => result.value?.movedVehiclesToWanted || [],
-);
-const missingModels = computed(() => result.value?.missingModels || []);
-const importedComponents = computed(
-  () => result.value?.importedComponents || [],
-);
-const foundComponents = computed(() => result.value?.foundComponents || []);
-const missingComponents = computed(() => result.value?.missingComponents || []);
-const missingComponentVehicles = computed(
-  () => result.value?.missingComponentVehicles || [],
-);
-const importedUpgrades = computed(() => result.value?.importedUpgrades || []);
-const foundUpgrades = computed(() => result.value?.foundUpgrades || []);
-const missingUpgrades = computed(() => result.value?.missingUpgrades || []);
-const missingUpgradeVehicles = computed(
-  () => result.value?.missingUpgradeVehicles || [],
-);
-
-// const collection: VehiclesCollection = vehiclesCollection;
-
-type ProcessStep = {
-  name: string;
-  status: "pending" | "processing" | "success" | "failure";
-};
-
-const processSteps = ref<ProcessStep[]>([
-  {
-    name: "fetchHangar",
-    status: "pending",
-  },
-  {
-    name: "submitData",
-    status: "pending",
-  },
-]);
-
-onMounted(() => {
-  started.value = false;
-  currentPage.value = 1;
-
-  window.addEventListener("message", handleExtensionMessage);
-
-  if (hangarStore.extensionReady) {
-    checkRSIIdentity();
-  }
-});
-
-onBeforeUnmount(() => {
-  window.removeEventListener("message", handleExtensionMessage);
-});
-
-const handleExtensionMessage = (event: FleetyardsSyncEvent) => {
-  if (event.data.direction === "fy-sync") {
-    const message = JSON.parse(event.data.message);
-
-    if (message.action === "sync") {
-      if (message.code === 200) {
-        fetchRSIHangar(message.payload);
-      } else {
-        displayAlert({ text: t("messages.syncExtension.failure") });
-        updateStep("fetchHangar", "failure");
-      }
-    }
-
-    if (message.action === "identify") {
-      loadingIdentity.value = false;
-      if (message.code !== 200 || !message.payload?.handle) {
-        console.info("FY Extension: No RSI Session found");
-        displayWarning({ text: t("messages.syncExtension.notLoggedIn") });
-        identityStatus.value = "notFound";
-      } else {
-        identityStatus.value = "connected";
-      }
-    }
-  }
-};
-
-watch(
-  () => hangarStore.extensionReady,
-  () => {
-    if (hangarStore.extensionReady) {
-      checkRSIIdentity();
-    }
-  },
-);
-
-const checkRSIIdentity = () => {
-  identityStatus.value = "pending";
-  loadingIdentity.value = true;
-
-  window.postMessage({
-    direction: "fy",
-    message: '{ "action": "identify" }',
-  });
-};
-
-const updateStep = (step: string, status: ProcessStep["status"]) => {
-  const index = processSteps.value.findIndex((s) => s.name === step);
-
-  if (index !== -1) {
-    processSteps.value[index].status = status;
-  }
-};
-
-const finished = computed(() =>
-  processSteps.value.every((step) => step.status === "success"),
-);
-
-const finishedWithErrors = computed(() =>
-  processSteps.value.some((step) => step.status === "failure"),
-);
-
-const comlink = useComlink();
-
-const cancel = async () => {
-  comlink.emit("close-modal", true);
-};
-
-const start = async () => {
-  started.value = true;
-  pledges.value = [];
-  currentPage.value = 1;
-
-  fetchPage();
-
-  displayInfo({ text: t("messages.syncExtension.started") });
-};
-
-const fetchPage = () => {
-  window.postMessage({
-    direction: "fy",
-    message: `{ "action": "sync", "page": ${currentPage.value} }`,
-  });
-};
-
-const fetchRSIHangar = (htmlPage: string) => {
-  updateStep("fetchHangar", "processing");
-
-  const items = new RSIHangarParser().extractPage(htmlPage);
-
-  if (items) {
-    pledges.value = [...pledges.value, ...items];
-
-    currentPage.value += 1;
-
-    fetchPage();
-  } else {
-    updateStep("fetchHangar", "success");
-
-    finishSync();
-  }
-};
-
-const { hangar: hangarService } = useApiClient();
-
-const finishSync = async () => {
-  updateStep("submitData", "processing");
-
-  try {
-    result.value = await hangarService.syncRsiHangar({
-      requestBody: {
-        items: pledges.value,
-      },
-    });
-
-    if (result.value) {
-      displaySuccess({ text: t("messages.syncExtension.success") });
-      updateStep("submitData", "success");
-      comlink.emit("hangar-sync-finished");
-    } else {
-      updateStep("submitData", "failure");
-    }
-  } catch (error) {
-    updateStep("submitData", "failure");
-    console.error(error);
-  }
-};
-
-const router = useRouter();
-const route = useRoute();
-
-const refreshPage = () => {
-  router.replace({
-    name: "hangar",
-    query: { ...route.query, openSync: "1" },
-  });
-  window.location.reload();
-};
-</script>
-
-<script lang="ts">
-export default {
-  name: "VehiclesResetIngameModal",
-};
-</script>
 
 <style lang="scss" scoped>
 @import "index";

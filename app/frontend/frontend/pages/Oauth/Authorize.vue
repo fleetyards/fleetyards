@@ -17,8 +17,6 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router/composables";
-
 const route = useRoute();
 </script>
 

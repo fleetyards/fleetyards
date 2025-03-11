@@ -3,7 +3,7 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
+  fixtures :users
 
   let(:user) { users :data }
   let(:input) do

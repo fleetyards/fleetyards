@@ -46,11 +46,11 @@
 import { useComlink } from "@/shared/composables/useComlink";
 import { type Fleet } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useNoty } from "@/shared/composables/useNoty";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 const { t } = useI18n();
 
-const { displayAlert, displayConfirm, displaySuccess } = useNoty();
+const { displayAlert, displaySuccess } = useAppNotifications();
 
 type Props = {
   fleet: Fleet;

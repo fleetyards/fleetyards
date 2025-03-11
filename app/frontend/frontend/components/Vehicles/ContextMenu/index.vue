@@ -8,14 +8,14 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useNoty } from "@/shared/composables/useNoty";
 import type { Vehicle } from "@/services/fyApi";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useApiClient } from "@/frontend/composables/useApiClient";
+import { useDestroyVehicle as useDestroyVehicleMutation } from "@/services/fyApi";
+import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 
 type Props = {
   vehicle: Vehicle;
@@ -37,8 +37,6 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
-
-const { displayConfirm } = useNoty();
 
 const deleting = ref(false);
 
@@ -65,7 +63,11 @@ const upgradable = computed(() => {
   );
 });
 
-const { vehicles: vehiclesService } = useApiClient();
+const { useUpdateMutation } = useVehicleMutations();
+
+const vehicle = computed(() => props.vehicle);
+
+const updateMutation = useUpdateMutation(vehicle);
 
 const addToWishlist = async () => {
   if (!props.vehicle) {
@@ -74,18 +76,19 @@ const addToWishlist = async () => {
 
   updating.value = true;
 
-  try {
-    await vehiclesService.vehicleUpdate({
+  await updateMutation
+    .mutateAsync({
       id: props.vehicle.id,
-      requestBody: {
+      data: {
         wanted: true,
       },
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+    .finally(() => {
+      updating.value = false;
     });
-  } catch (error) {
-    console.error(error);
-  }
-
-  updating.value = false;
 };
 
 const addToHangar = async () => {
@@ -95,18 +98,19 @@ const addToHangar = async () => {
 
   updating.value = true;
 
-  try {
-    await vehiclesService.vehicleUpdate({
+  await updateMutation
+    .mutateAsync({
       id: props.vehicle.id,
-      requestBody: {
+      data: {
         wanted: false,
       },
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+    .finally(() => {
+      updating.value = false;
     });
-  } catch (error) {
-    console.error(error);
-  }
-
-  updating.value = false;
 };
 
 const remove = () => {
@@ -123,20 +127,23 @@ const remove = () => {
   });
 };
 
+const destroyMutation = useDestroyVehicleMutation();
+
 const destroy = async () => {
   if (!props.vehicle) {
     return;
   }
 
-  try {
-    await vehiclesService.vehicleDestroy({
+  await destroyMutation
+    .mutateAsync({
       id: props.vehicle.id,
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+    .finally(() => {
+      deleting.value = false;
     });
-  } catch (error) {
-    console.error(error);
-  }
-
-  deleting.value = false;
 };
 
 const comlink = useComlink();

@@ -9,13 +9,6 @@ production: &production
     cron: '*/15 * * * *' # Every 15 Minutes
     class: 'Loaders::RsiNewsJob'
     queue: 'loaders'
-  loaders_roadmap_job:
-    cron: '0 */2 * * *' # Every 2 Hours
-    class: 'Loaders::RoadmapJob'
-    queue: 'loaders'
-  trade_routes_job:
-    cron: '0 */2 * * *' # Every 2 Hours
-    class: 'TradeRoutesJob'
   loaders_models_job:
     cron: '0 20 */1 * *' # Daily at 20:00
     class: 'Loaders::ModelsJob'

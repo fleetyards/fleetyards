@@ -8,17 +8,17 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useNoty } from "@/shared/composables/useNoty";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useForm } from "vee-validate";
-import { useApiClient } from "@/frontend/composables/useApiClient";
 import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import { UserUpdateInput } from "@/services/fyApi";
+import { useUpdateProfile as useUpdateProfileMutation } from "@/services/fyApi";
 
 const { t } = useI18n();
 
-const { displaySuccess } = useNoty();
+const { displaySuccess } = useAppNotifications();
 
 const sessionStore = useSessionStore();
 
@@ -55,26 +55,28 @@ const { defineField, handleSubmit } = useForm({
 
 const [saleNotify, saleNotifyProps] = defineField("saleNotify");
 
-const { users: usersService } = useApiClient();
+const mutation = useUpdateProfileMutation();
 
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
-  try {
-    await usersService.updateProfile({
-      formData: values,
+  await mutation
+    .mutateAsync({
+      data: values,
+    })
+    .then(() => {
+      comlink.emit("user-update");
+
+      displaySuccess({
+        text: t("messages.updateNotifications.success"),
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+    .finally(() => {
+      submitting.value = false;
     });
-
-    comlink.emit("user-update");
-
-    displaySuccess({
-      text: t("messages.updateNotifications.success"),
-    });
-  } catch (error) {
-    console.error(error);
-  }
-
-  submitting.value = false;
 });
 </script>
 

@@ -11,9 +11,9 @@ import FrontendNavigationMobile from "@/frontend/components/Navigation/Mobile/in
 import AppFooter from "@/shared/components/AppFooter/index.vue";
 import AppEnvironment from "@/frontend/components/core/AppEnvironment/index.vue";
 import AppModal from "@/shared/components/AppModal/index.vue";
+import AppNotifications from "@/shared/components/AppNotifications/index.vue";
 import SecurePage from "@/frontend/components/core/SecurePage/index.vue";
 import BackgroundImage from "@/shared/components/BackgroundImage/index.vue";
-import { useNoty } from "@/shared/composables/useNoty";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useUpdates } from "@/frontend/composables/useUpdates";
@@ -31,12 +31,13 @@ import { useAhoy } from "@/frontend/composables/useAhoy";
 import { useMe as useMeQuery } from "@/services/fyApi";
 import { useVersion as useVersionQuery } from "@/services/fyApi";
 import { useNProgress } from "@/shared/composables/useNProgress";
-import { useFlash } from "@/shared/composables/useFlash";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 import { useAxiosInterceptors } from "@/frontend/composables/useAxiosInterceptors";
+import { useCheckStoreVersion } from "@/shared/composables/useCheckStoreVersion";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 useAxiosInterceptors();
 
@@ -48,7 +49,7 @@ useUpdates();
 
 useAhoy();
 
-useFlash();
+const { requestBrowserPermission } = useAppNotifications();
 
 const appStore = useAppStore();
 
@@ -73,8 +74,6 @@ const CHECK_VERSION_INTERVAL = 1800 * 1000; // 30 mins
 const { t, availableLocales, currentLocale } = useI18n();
 
 useMetaInfo();
-
-const { requestBrowserPermission } = useNoty();
 
 watch(
   () => navCollapsed.value,
@@ -122,18 +121,7 @@ watch(
   },
 );
 
-const checkStoreVersion = () => {
-  if (appStore.storeVersion !== window.STORE_VERSION) {
-    console.info("Updating Store Version and resetting Store");
-
-    appStore.$reset();
-    appStore.storeVersion = window.STORE_VERSION;
-  }
-};
-
-onBeforeMount(() => {
-  checkStoreVersion();
-});
+useCheckStoreVersion(appStore);
 
 onMounted(async () => {
   checkSessionReload();
@@ -355,5 +343,6 @@ const setLocale = (locale: string) => {
     </div>
 
     <AppModal />
+    <AppNotifications />
   </div>
 </template>

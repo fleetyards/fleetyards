@@ -1808,7 +1808,11 @@ components:
         label:
           type: string
         value:
-          type: string
+          anyOf:
+          - type: string
+            nullable: true
+          - type: number
+            nullable: true
         name:
           type: string
           deprecated: true
@@ -1931,6 +1935,13 @@ components:
           type: string
       additionalProperties: false
       title: CheckInput
+    SetupOtpInput:
+      type: object
+      properties:
+        otpCode:
+          type: string
+      additionalProperties: false
+      title: SetupOtpInput
     Manufacturer:
       type: object
       properties:
@@ -1992,6 +2003,18 @@ components:
           "$ref": "#/components/schemas/Pagination"
       additionalProperties: false
       title: Meta
+    OtpBackupCodes:
+      type: object
+      properties:
+        codes:
+          type: array
+          items:
+            type: string
+          additionalProperties: false
+      additionalProperties: false
+      required:
+      - codes
+      title: OtpBackupCodes
     Pagination:
       type: object
       properties:
@@ -4875,9 +4898,10 @@ components:
             fleet: Full Fleet Access
             fleet:read: Read Fleet
             fleet:write: Manage Fleet
+            openid: Authenticate your account
     OpenId:
       type: openIdConnect
-      openIdConnectUrl: https://fleetyards.net/.well-known/openid-configuration
+      openIdConnectUrl: http://fleetyards.test/.well-known/openid-configuration
     SessionCookie:
       type: apiKey
       description: Session Cookie

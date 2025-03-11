@@ -39,26 +39,33 @@ class Hardpoint < ApplicationRecord
   belongs_to :component, optional: true
   has_many :hardpoints, as: :parent, dependent: :destroy, autosave: true
 
-  enum source: {ship_matrix: 0, game_files: 1}
-  enum group: {
-    avionic: 0, system: 1, propulsion: 2, thruster: 3, weapon: 4, defense: 5, auxiliary: 6, seat: 7, relay: 8,
-    other: 9,
-    unknown: 99
-  }, _suffix: true
-  enum category: {
-    radar: 1, computers: 2, scanners: 3,
-    powerplant: 10, cooler: 11, shieldgenerator: 12, module: 13, salvagefillerstation: 14,
-    fueltanks: 20, fuel_intakes: 21, quantumdrive: 22, jumpdrive: 23,
-    main_thrusters: 30, retro_thrusters: 31, vtol_thrusters: 32, maneuvering_thrusters: 33,
-    weapons: 40, weapon_mounts: 41, turret: 42, missile_racks: 43, bombcompartments: 44,
-    quantumenforcementdevice: 45, emp: 46, salvagemunching: 47,
-    armor: 50, countermeasures: 51,
-    selfdestruct: 60, lifesupport: 61, batteries: 62, utility: 63,
-    seat: 70,
-    relay: 80,
-    paints: 90, doors: 91, cargogrid: 92, inventory: 93, controller: 94,
-    unknown: 999
-  }, _suffix: true
+  enum :source,
+    {ship_matrix: 0, game_files: 1}
+
+  enum :group,
+    {
+      avionic: 0, system: 1, propulsion: 2, thruster: 3, weapon: 4, defense: 5, auxiliary: 6,
+      seat: 7, relay: 8,
+      other: 9,
+      unknown: 99
+    },
+    suffix: true
+
+  enum :category,
+    {
+      radar: 1, computers: 2, scanners: 3,
+      powerplant: 10, cooler: 11, shieldgenerator: 12, module: 13, salvagefillerstation: 14,
+      fueltanks: 20, fuel_intakes: 21, quantumdrive: 22, jumpdrive: 23,
+      main_thrusters: 30, retro_thrusters: 31, vtol_thrusters: 32, maneuvering_thrusters: 33,
+      weapons: 40, weapon_mounts: 41, turret: 42, missile_racks: 43, bombcompartments: 44,
+      quantumenforcementdevice: 45, emp: 46, salvagemunching: 47,
+      armor: 50, countermeasures: 51,
+      selfdestruct: 60, lifesupport: 61, batteries: 62, utility: 63,
+      seat: 70,
+      relay: 80,
+      paints: 90, doors: 91, cargogrid: 92, inventory: 93, controller: 94,
+      unknown: 999
+    }, suffix: true
 
   before_validation :set_group, :set_category, :set_group_key
 

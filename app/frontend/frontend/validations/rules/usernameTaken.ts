@@ -1,27 +1,25 @@
-import { useApiClient } from "@/frontend/composables/useApiClient";
+import { checkUsername } from "@/services/fyApi";
 import { debounce } from "ts-debounce";
 import type { I18nPluginOptions } from "@/shared/plugins/I18n";
 
 export const useRule = (t: I18nPluginOptions["t"]) => {
-  const { users: usersService } = useApiClient();
-
   const errorMessage = t("messages.error.usernameTaken");
 
   const validate = debounce(async (value: string) => {
-    return usersService
-      .checkUsername({
-        requestBody: {
-          value,
-        },
-      })
-      .then((response) => {
-        if (!response.taken) {
-          return true;
-        }
+    try {
+      const response = await checkUsername({
+        value,
+      });
+
+      if (response.taken) {
         return errorMessage;
-      })
-      .catch(() => t("messages.error.usernameTaken"));
-  }, 100) as (value: string) => Promise<boolean | string>;
+      }
+
+      return true;
+    } catch (error) {
+      return errorMessage;
+    }
+  }, 100);
 
   return validate;
 };

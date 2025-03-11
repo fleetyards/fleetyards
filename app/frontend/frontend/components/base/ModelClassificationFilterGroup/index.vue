@@ -1,21 +1,18 @@
-<template>
-  <FilterGroup
-    v-model="internalValue"
-    :label="t('labels.filters.models.classification')"
-    :query-fn="fetch"
-    :name="name"
-    :searchable="searchable"
-    :multiple="multiple"
-    :no-label="noLabel"
-  />
-</template>
+<script lang="ts">
+export default {
+  name: "ModelClassificationFilterGroup",
+};
+</script>
 
 <script lang="ts" setup>
-import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useI18n } from "@/shared/composables/useI18n";
 import FilterGroup, {
   type FilterGroupParams,
 } from "@/shared/components/base/FilterGroup/index.vue";
+import {
+  modelClassificationsFilters as fetchModelClassifications,
+  type FilterOption,
+} from "@/services/fyApi";
 
 type Props = {
   name: string;
@@ -56,18 +53,17 @@ watch(
   },
 );
 
-const { models: modelsService } = useApiClient();
-
-const fetch = async (params: FilterGroupParams) => {
-  const response = await modelsService.modelClassifications();
+const fetch = async (params: FilterGroupParams<FilterOption>) => {
+  const response = await fetchModelClassifications();
 
   if (params.search && props.searchable) {
     return response.filter((item) => {
+      const value = `${item.value}`.toLowerCase();
       return (
         item.label
           ?.toLowerCase()
           .includes(params.search?.toLowerCase() || "") ||
-        item.value?.toLowerCase().includes(params.search?.toLowerCase() || "")
+        value.includes(params.search?.toLowerCase() || "")
       );
     });
   }
@@ -76,8 +72,14 @@ const fetch = async (params: FilterGroupParams) => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "ModelClassificationFilterGroup",
-};
-</script>
+<template>
+  <FilterGroup
+    v-model="internalValue"
+    :label="t('labels.filters.models.classification')"
+    :query-fn="fetch"
+    :name="name"
+    :searchable="searchable"
+    :multiple="multiple"
+    :no-label="noLabel"
+  />
+</template>

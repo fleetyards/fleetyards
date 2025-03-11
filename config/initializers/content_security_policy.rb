@@ -23,7 +23,8 @@ Rails.application.configure do
     ].compact.join("")
 
     connect_src = [
-      :self, :data, cable_endpoint, api_endpoint, admin_endpoint, cdn_endpoint,
+      :self, :data, FRONTEND_ENDPOINT, DOCS_ENDPOINT, cable_endpoint, api_endpoint,
+      admin_endpoint, cdn_endpoint,
       "https://img.youtube.com", "https://sentry.io", "https://fonts.googleapis.com",
       "https://fonts.gstatic.com", "https://pro.fontawesome.com", Rails.configuration.rsi.endpoint,
       "https://kit.fontawesome.com", "https://kit-pro.fontawesome.com",
@@ -40,19 +41,20 @@ Rails.application.configure do
     connect_src.push("ws://admin.fleetyards.test:3035", "http://admin.fleetyards.test:3035", "ws://admin.fleetyards.test:3136") if Rails.env.development?
 
     script_src = [
-      :self, :unsafe_inline, :unsafe_eval, :blob, "https://www.youtube.com/iframe_api",
-      "https://s.ytimg.com", "https://kit.fontawesome.com", "https://kit-pro.fontawesome.com",
-      "https://kit-free.fontawesome.com", "https://code.jquery.com", "https://cdn.jsdelivr.net",
-      "https://stackpath.bootstrapcdn.com", "https://starship42.com", "https://www.gstatic.com",
-      "https://unpkg.com"
+      :self, :unsafe_inline, :unsafe_eval, :blob, FRONTEND_ENDPOINT,
+      "https://www.youtube.com/iframe_api", "https://s.ytimg.com", "https://kit.fontawesome.com",
+      "https://kit-pro.fontawesome.com", "https://kit-free.fontawesome.com",
+      "https://code.jquery.com", "https://cdn.jsdelivr.net", "https://stackpath.bootstrapcdn.com",
+      "https://starship42.com", "https://www.gstatic.com", "https://unpkg.com"
     ]
     script_src << "http://#{ViteRuby.config.host_with_port}" if Rails.env.development?
 
     worker_src = [:self, :blob, FRONTEND_ENDPOINT]
 
     style_src = [
-      :self, :unsafe_inline, "https://fonts.googleapis.com", "https://pro.fontawesome.com",
-      "https://kit-pro.fontawesome.com", "https://kit-free.fontawesome.com", "https://ka-p.fontawesome.com"
+      :self, :unsafe_inline, FRONTEND_ENDPOINT, "https://fonts.googleapis.com",
+      "https://pro.fontawesome.com", "https://kit-pro.fontawesome.com",
+      "https://kit-free.fontawesome.com", "https://ka-p.fontawesome.com"
     ]
 
     img_src = [
@@ -62,13 +64,15 @@ Rails.application.configure do
     ].compact
 
     font_src = [
-      :self, :data, "https://fonts.gstatic.com", "https://pro.fontawesome.com",
+      :self, :data, FRONTEND_ENDPOINT, "https://fonts.gstatic.com", "https://pro.fontawesome.com",
       "https://kit-pro.fontawesome.com", "https://kit-free.fontawesome.com",
       "https://ka-p.fontawesome.com"
     ]
 
     frame_src = [
-      :self, :blob, FRONTEND_ENDPOINT, "https://youtu.be", "https://www.youtube.com", "https://www.youtube-nocookie.com", "https://starship42.com", "https://starship42.fleetyards.net"
+      :self, :blob, FRONTEND_ENDPOINT, "https://youtu.be", "https://www.youtube.com",
+      "https://www.youtube-nocookie.com", "https://starship42.com",
+      "https://starship42.fleetyards.net"
     ]
 
     form_src = [

@@ -1,26 +1,24 @@
 import { useRoute } from "vue-router";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useWishlistStore } from "@/frontend/stores/wishlist";
-import { useApiClient } from "@/frontend/composables/useApiClient";
-import { useI18n } from "@/shared/composables/useI18n";
+import { wishlistItems } from "@/services/fyApi";
 
 export const useWishlistItems = () => {
   const sessionStore = useSessionStore();
   const wishlistStore = useWishlistStore();
-
-  const { currentLocale } = useI18n();
-  const { wishlist: wishlistService } = useApiClient();
 
   const fetchWishlistItems = async () => {
     if (!sessionStore.isAuthenticated) {
       return;
     }
 
-    try {
-      wishlistStore.ships = await wishlistService.wishlistItems();
-    } catch (error) {
-      console.error(error);
-    }
+    await wishlistItems()
+      .then((response) => {
+        wishlistStore.save(response);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   fetchWishlistItems();

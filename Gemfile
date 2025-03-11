@@ -4,7 +4,7 @@ source "https://rubygems.org"
 
 ruby file: ".tool-versions"
 
-gem "rails", "7.1.3.2"
+gem "rails", "7.2.2.1"
 
 gem "pg", "~> 1.0"
 
@@ -162,7 +162,7 @@ group :development, :test do
   gem "bundler-audit"
 
   gem "factory_bot_rails", "~> 6.4.2"
-
+  gem "debug", ">= 1.0.0", platforms: %i[mri mingw x64_mingw]
   gem "byebug", platform: :mri
   gem "pry-byebug"
 
@@ -174,6 +174,8 @@ gem "enum_attributes_validation", "~> 0.1.7"
 gem "bskyrb", "~> 0.5.3"
 
 gem "doorkeeper", "~> 5.6"
+gem "doorkeeper-jwt"
+gem "doorkeeper-openid_connect"
 
 gem "oauth2", "~> 2.0"
 

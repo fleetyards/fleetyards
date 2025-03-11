@@ -13,7 +13,7 @@ RSpec.describe "api/v1/wishlist", type: :request, swagger_doc: "v1/schema.yaml" 
 
   path "/wishlist" do
     get("Your Wishlist") do
-      operationId "getWishlist"
+      operationId "wishlist"
       tags "Wishlist"
       produces "application/json"
 

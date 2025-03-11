@@ -6,23 +6,18 @@ import { useOverlayStore } from "@/shared/stores/overlay";
 import { useNavStore } from "@/shared/stores/nav";
 import { useFleetStore } from "./fleet";
 import { useHangarStore } from "./hangar";
-// import { useModelsStore } from "./Models";
-// import { usePublicFleetStore } from "./PublicFleet";
-// import { usePublicHangarStore } from "./PublicHangar";
-// import { usePublicWishlistStore } from "./PublicWishlist";
-// import { useSearchStore } from "./Search";
+import { useModelsStore } from "./models";
+import { usePublicFleetStore } from "./publicFleet";
+import { usePublicHangarStore } from "./publicHangar";
+import { usePublicWishlistStore } from "./publicWishlist";
 import { useSessionStore } from "./session";
-import { useShoppingCartStore } from "./shoppingCart";
-// import { useShopStore } from "./Shop";
-// import { useShopsStore } from "./Shops";
-// import { useStationsStore } from "./Stations";
-// import { useWishlistStore } from "./Wishlist";
+import { useWishlistStore } from "./wishlist";
 
 interface AppState {
   version: string;
   codename: string;
   gitRevision: string;
-  storeVersion: string | null;
+  storeVersion?: string;
   online: boolean;
 }
 
@@ -31,7 +26,7 @@ export const useAppStore = defineStore("app", {
     version: window.APP_VERSION,
     codename: window.APP_CODENAME,
     gitRevision: window.GIT_REVISION,
-    storeVersion: null,
+    storeVersion: undefined,
     online: true,
   }),
   getters: {
@@ -45,17 +40,12 @@ export const useAppStore = defineStore("app", {
       const cookiesStore = useCookiesStore();
       const fleetStore = useFleetStore();
       const navStore = useNavStore();
-      const shoppingCartStore = useShoppingCartStore();
-      // const publicFleetStore = usePublicFleetStore();
+      const publicFleetStore = usePublicFleetStore();
       const hangarStore = useHangarStore();
-      // const publicHangarStore = usePublicHangarStore();
-      // const modelsStore = useModelsStore();
-      // const searchStore = useSearchStore();
-      // const shopStore = useShopStore();
-      // const shopsStore = useShopsStore();
-      // const stationsStore = useStationsStore();
-      // const wishlistStore = useWishlistStore();
-      // const publicWishlistStore = usePublicWishlistStore();
+      const publicHangarStore = usePublicHangarStore();
+      const modelsStore = useModelsStore();
+      const wishlistStore = useWishlistStore();
+      const publicWishlistStore = usePublicWishlistStore();
       const filtersStore = useFiltersStore();
       const overlayStore = useOverlayStore();
 
@@ -68,17 +58,12 @@ export const useAppStore = defineStore("app", {
       }
 
       fleetStore.$reset();
-      // publicFleetStore.$reset();
+      publicFleetStore.$reset();
       hangarStore.$reset();
-      // publicHangarStore.$reset();
-      // modelsStore.$reset();
-      // searchStore.$reset();
-      // shopStore.$reset();
-      shoppingCartStore.$reset();
-      // shopsStore.$reset();
-      // stationsStore.$reset();
-      // wishlistStore.$reset();
-      // publicWishlistStore.$reset();
+      publicHangarStore.$reset();
+      modelsStore.$reset();
+      wishlistStore.$reset();
+      publicWishlistStore.$reset();
       filtersStore.$reset();
       overlayStore.$reset();
     },

@@ -27,7 +27,7 @@ json.hide_owner user.hide_owner
 
 json.two_factor_required user.otp_required_for_login?
 unless user.otp_required_for_login?
-  json.two_factor_qr_code_url qrcode_api_v1_two_factor_url
+  json.two_factor_qr_code_url qrcode_api_v1_otp_url
   json.two_factor_provisioning_url user.otp_provisioning_uri(user.email, issuer: Rails.configuration.app.name)
 end
 

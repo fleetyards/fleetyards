@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { modelDockSizes as fetchModelDockSizes } from "@/services/fyApi/services/models/models";
+import { modelDockSizesFilters as fetchModelDockSizeFilters } from "@/services/fyApi";
 import { type FilterOption } from "@/services/fyApi/models/filterOption";
 import { useI18n } from "@/shared/composables/useI18n";
 import FilterGroup, {
@@ -50,7 +50,7 @@ watch(
 );
 
 const fetch = async (_params: FilterGroupParams<FilterOption>) => {
-  return fetchModelDockSizes();
+  return fetchModelDockSizeFilters();
 };
 </script>
 

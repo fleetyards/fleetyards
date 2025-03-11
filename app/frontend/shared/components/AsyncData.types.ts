@@ -1,4 +1,4 @@
-import { type ApiError } from "@/services/fyApi";
+import { type ValidationError, type StandardError } from "@/services/fyApi";
 import { type AxiosError } from "axios";
 
 export type AsyncStatus = {
@@ -8,7 +8,7 @@ export type AsyncStatus = {
   isFetching: Ref<boolean>;
   isRefetching: Ref<boolean>;
   refetch?: () => void;
-  error: Ref<AxiosError | ApiError | Error | null>;
+  error: Ref<AxiosError<ValidationError | StandardError> | Error | null>;
 };
 
 export enum ErrorTypesEnum {

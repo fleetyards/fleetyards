@@ -1,17 +1,14 @@
-<template>
-  <FilterGroup
-    v-model="internalValue"
-    :label="t('labels.filters.models.focus')"
-    :query-fn="fetch"
-    :name="name"
-    :searchable="searchable"
-    :multiple="multiple"
-    :no-label="noLabel"
-  />
-</template>
+<script lang="ts">
+export default {
+  name: "ModelFocusFilterGroup",
+};
+</script>
 
 <script lang="ts" setup>
-import { useApiClient } from "@/frontend/composables/useApiClient";
+import {
+  modelFocusFilters as fetchModelFocus,
+  type Model,
+} from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import FilterGroup, {
   type FilterGroupParams,
@@ -56,18 +53,17 @@ watch(
   },
 );
 
-const { models: modelsService } = useApiClient();
-
-const fetch = async (params: FilterGroupParams) => {
-  const response = await modelsService.modelFocus();
+const fetch = async (params: FilterGroupParams<Model>) => {
+  const response = await fetchModelFocus();
 
   if (params.search && props.searchable) {
     return response.filter((item) => {
+      const value = `${item.value}`.toLowerCase();
       return (
         item.label
           ?.toLowerCase()
           .includes(params.search?.toLowerCase() || "") ||
-        item.value?.toLowerCase().includes(params.search?.toLowerCase() || "")
+        value.includes(params.search?.toLowerCase() || "")
       );
     });
   }
@@ -76,8 +72,14 @@ const fetch = async (params: FilterGroupParams) => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "ModelFocusFilterGroup",
-};
-</script>
+<template>
+  <FilterGroup
+    v-model="internalValue"
+    :label="t('labels.filters.models.focus')"
+    :query-fn="fetch"
+    :name="name"
+    :searchable="searchable"
+    :multiple="multiple"
+    :no-label="noLabel"
+  />
+</template>

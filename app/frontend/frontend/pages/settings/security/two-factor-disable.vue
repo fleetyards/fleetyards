@@ -1,3 +1,71 @@
+<script lang="ts">
+import { enabledRouteGuard } from "@/frontend/utils/RouteGuards/TwoFactor";
+
+export default {
+  name: "TwoFactorDisable",
+  beforeRouteEnter: enabledRouteGuard,
+};
+</script>
+
+<script lang="ts" setup>
+import Btn from "@/shared/components/base/Btn/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
+
+const { displaySuccess, displayAlert } = useAppNotifications();
+
+const { t } = useI18n();
+
+const comlink = useComlink();
+
+const submitting = ref(false);
+
+const form = ref<TwoFactorForm>();
+
+onMounted(() => {
+  setupForm();
+});
+
+const setupForm = () => {
+  form.value = {
+    twoFactorCode: null,
+  };
+};
+
+const router = useRouter();
+
+const disable = async () => {
+  submitting.value = true;
+
+  const response = await twoFactorCollection.disable(this.form.twoFactorCode);
+
+  submitting.value = false;
+
+  setupForm();
+
+  if (!response.error) {
+    comlink.emit("user-update");
+
+    displaySuccess({
+      text: t("messages.twoFactor.disable.success"),
+    });
+
+    await router
+      .push({ name: "settings-security", hash: "#two-factor" })
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      .catch(() => {});
+  } else if (response.error === "requires_access_confirmation") {
+    comlink.emit("access-confirmation-required");
+  } else {
+    displayAlert({
+      text: t("messages.twoFactor.disable.failure"),
+    });
+  }
+};
+</script>
+
 <template>
   <div v-if="currentUser" class="row">
     <div class="col-12">
@@ -53,72 +121,6 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import { Getter } from "vuex-class";
-import Btn from "@/shared/components/base/Btn/index.vue";
-import FormInput from "@/shared/components/base/FormInput/index.vue";
-import { enabledRouteGuard } from "@/frontend/utils/RouteGuards/TwoFactor";
-import twoFactorCollection from "@/frontend/api/collections/TwoFactor";
-import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
-
-@Component<TwoFactorDisable>({
-  beforeRouteEnter: enabledRouteGuard,
-  components: {
-    SecurePage,
-    Btn,
-    FormInput,
-  },
-})
-export default class TwoFactorDisable extends Vue {
-  @Getter("currentUser", { namespace: "session" }) currentUser;
-
-  submitting = false;
-
-  form: TwoFactorForm | null = null;
-
-  mounted() {
-    this.setupForm();
-  }
-
-  setupForm() {
-    this.form = {
-      twoFactorCode: null,
-    };
-  }
-
-  async disable() {
-    this.submitting = true;
-
-    const response = await twoFactorCollection.disable(this.form.twoFactorCode);
-
-    this.submitting = false;
-
-    this.setupForm();
-
-    if (!response.error) {
-      this.$comlink.$emit("user-update");
-
-      displaySuccess({
-        text: this.$t("messages.twoFactor.disable.success"),
-      });
-
-      this.$router
-        .push({ name: "settings-security", hash: "#two-factor" })
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        .catch(() => {});
-    } else if (response.error === "requires_access_confirmation") {
-      this.$comlink.$emit("access-confirmation-required");
-    } else {
-      displayAlert({
-        text: this.$t("messages.twoFactor.disable.failure"),
-      });
-    }
-  }
-}
-</script>
 
 <style lang="scss" scoped>
 .two-factor-form {

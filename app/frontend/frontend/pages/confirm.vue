@@ -4,12 +4,12 @@
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
-import { useNoty } from "@/shared/composables/useNoty";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useRoute, useRouter } from "vue-router";
 
 const { t } = useI18n();
 
-const { displaySuccess, displayAlert } = useNoty();
+const { displaySuccess, displayAlert } = useAppNotifications();
 
 onMounted(() => {
   fetch();

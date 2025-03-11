@@ -16,11 +16,7 @@ servers:
   description: Production Server
 - url: https://api.fleetyards.dev/v1
   description: Staging Server
-security:
-- SessionCookie: []
-  BearerAuth: []
-  Oauth2: []
-  OpenId: []
+security: []
 paths:
   "/celestial-objects":
     get:
@@ -202,6 +198,141 @@ paths:
                 type: array
                 items:
                   type: string
+  "/filters/components/item-types":
+    get:
+      summary: Components Item Types Filters
+      operationId: componentItemTypesFilters
+      tags:
+      - ComponentsFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+  "/filters/components/classes":
+    get:
+      summary: Components Classes Filters
+      operationId: componentClassesFilters
+      tags:
+      - ComponentsFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+  "/filters/models/classifications":
+    get:
+      summary: Model classifications Filters
+      operationId: modelClassificationsFilters
+      tags:
+      - ModelsFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+  "/filters/models/dock-sizes":
+    get:
+      summary: Model Dock Sizes Filters
+      operationId: modelDockSizesFilters
+      tags:
+      - ModelsFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+  "/filters/models/focus":
+    get:
+      summary: Model focus Filters
+      operationId: modelFocusFilters
+      tags:
+      - ModelsFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+  "/filters/models":
+    get:
+      summary: Models Filters
+      operationId: modelFilters
+      tags:
+      - ModelsFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+  "/filters/models/production-states":
+    get:
+      summary: Model Production states Filters
+      operationId: modelProductionStatesFilters
+      tags:
+      - ModelsFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+  "/filters/models/sizes":
+    get:
+      summary: Model Sizes Filters
+      operationId: modelSizesFilters
+      tags:
+      - ModelsFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+  "/filters/vehicles/bought-via":
+    get:
+      summary: Vehicles Bought Via Filters
+      operationId: vehicleBoughtViaFilters
+      tags:
+      - VehicleFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
   "/fleets/check":
     post:
       summary: Check Fleet FID Availability
@@ -361,7 +492,7 @@ paths:
         type: string
     post:
       summary: Find Fleet by Invite
-      operationId: findByInvite
+      operationId: findFleetByInvite
       tags:
       - Fleets
       responses:
@@ -386,8 +517,8 @@ paths:
       schema:
         type: string
     post:
-      summary: Create Invite Url
-      operationId: createInviteUrl
+      summary: Create Fleet Invite Url
+      operationId: createFleetInviteUrl
       tags:
       - FleetInviteUrls
       parameters: []
@@ -430,7 +561,7 @@ paths:
         required: true
     get:
       summary: Fleet Invite Urls List
-      operationId: inviteUrls
+      operationId: fleetInviteUrls
       tags:
       - fleetInviteUrls
       parameters:
@@ -482,8 +613,8 @@ paths:
       schema:
         type: string
     delete:
-      summary: Remove Invite Url
-      operationId: removeInviteUrl
+      summary: Remove Fleet Invite Url
+      operationId: destroyFleetInviteUrl
       tags:
       - FleetInviteUrls
       description: You are not the owner of this Fleet
@@ -510,8 +641,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
   "/fleets/use-invite":
     post:
-      summary: Create Membership by Invite
-      operationId: useInvite
+      summary: Create Fleet Membership by Invite
+      operationId: useFleetInvite
       tags:
       - FleetInviteUrls
       parameters: []
@@ -584,7 +715,7 @@ paths:
         type: string
     put:
       summary: Accept Member
-      operationId: acceptMember
+      operationId: acceptFleetMember
       tags:
       - FleetMembers
       description: No Member found
@@ -629,7 +760,7 @@ paths:
         type: string
     post:
       summary: Create Member
-      operationId: createMember
+      operationId: createFleetMember
       tags:
       - FleetMembers
       parameters: []
@@ -739,7 +870,7 @@ paths:
         type: string
     put:
       summary: Decline Member
-      operationId: declineMember
+      operationId: declineFleetMember
       tags:
       - FleetMembers
       description: No Member found
@@ -790,7 +921,7 @@ paths:
         type: string
     put:
       summary: Demote Member
-      operationId: demoteMember
+      operationId: demoteFleetMember
       tags:
       - FleetMembers
       description: No Member found
@@ -835,7 +966,7 @@ paths:
         type: string
     delete:
       summary: Remove Fleet Member
-      operationId: removeMember
+      operationId: destroyFleetMember
       tags:
       - FleetMembers
       description: You are not the owner of this Fleet
@@ -876,7 +1007,7 @@ paths:
         type: string
     put:
       summary: Promote Member
-      operationId: promoteMember
+      operationId: promoteFleetMember
       tags:
       - FleetMembers
       description: No Member found
@@ -915,7 +1046,7 @@ paths:
         type: string
     put:
       summary: Accept Membership
-      operationId: acceptMembership
+      operationId: acceptFleetMembership
       tags:
       - FleetMembership
       description: No Membership found
@@ -954,7 +1085,7 @@ paths:
         type: string
     put:
       summary: Decline Membership
-      operationId: declineMembership
+      operationId: declineFleetMembership
       tags:
       - FleetMembership
       description: No Membership found
@@ -1013,7 +1144,7 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
     get:
       summary: Fleet Membership Detail
-      operationId: membership
+      operationId: fleetMembership
       tags:
       - FleetMembership
       description: Membership for this slug and user does not exist
@@ -1038,7 +1169,7 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
     put:
       summary: Update Membership
-      operationId: updateMembership
+      operationId: updateFleetMembership
       tags:
       - FleetMembership
       parameters: []
@@ -1425,7 +1556,7 @@ paths:
   "/hangar":
     delete:
       summary: Clear your personal Hangar
-      operationId: hangarDestroy
+      operationId: destroyHangar
       tags:
       - Hangar
       responses:
@@ -2012,101 +2143,10 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/ModelPaint"
-  "/models/with-docks":
-    get:
-      summary: Models with Docks
-      operationId: modelsWithDocks
-      tags:
-      - Models
-      parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 30
-        required: false
-      - name: q
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/ModelQuery"
-        style: deepObject
-        explode: true
-        required: false
-      - name: cacheId
-        in: query
-        required: false
-        schema:
-          type: string
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Models"
-  "/models/unscheduled":
-    get:
-      summary: Unscheduled Models
-      operationId: modelsUnschduled
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-  "/models/latest":
-    get:
-      summary: Latest Models
-      operationId: modelsLatest
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-  "/models/slugs":
-    get:
-      summary: Available Model-Slugs
-      operationId: modelsSlugs
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-  "/models/updated":
-    get:
-      summary: Updated Models
-      operationId: modelsUpdated
-      tags:
-      - Models
-      parameters:
-      - name: from
-        in: query
-        schema:
-          type: string
-          format: datetime
-        required: false
-      - name: to
-        in: query
-        schema:
-          type: string
-          default: now
-          format: datetime
-        required: false
-      responses:
-        '200':
-          description: successful
-        '304':
-          description: not modified
   "/models/embed":
     get:
       summary: Embed Models
-      operationId: embed
+      operationId: modelsEmbed
       tags:
       - Models
       parameters:
@@ -2126,122 +2166,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Model"
-  "/models/filters":
-    get:
-      summary: Model Filters
-      operationId: modelFilters
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
-  "/models/classifications":
-    get:
-      summary: Model classifications
-      operationId: modelClassifications
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
-  "/models/production-states":
-    get:
-      summary: Model Production states
-      operationId: modelProductionStates
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
-  "/models/focus":
-    get:
-      summary: Model focus
-      operationId: modelFocus
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
-  "/models/sizes":
-    get:
-      summary: Model Sizes
-      operationId: modelSizes
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
-  "/models/dock-sizes":
-    get:
-      summary: Model Dock Sizes
-      operationId: modelDockSizes
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
-  "/models/cargo-options":
-    get:
-      summary: Model Cargo options
-      operationId: cargoOptions
-      tags:
-      - Models
-      parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 30
-        required: false
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/CargoOptions"
   "/models":
     get:
       summary: Models List
@@ -2281,6 +2205,21 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Models"
+  "/models/latest":
+    get:
+      summary: Latest Models
+      operationId: modelsLatest
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Model"
   "/models/{slug}":
     parameters:
     - name: slug
@@ -2697,6 +2636,202 @@ paths:
           description: successful
         '404':
           description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/slugs":
+    get:
+      summary: Available Model-Slugs
+      operationId: modelsSlugs
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+  "/models/unscheduled":
+    get:
+      summary: Unscheduled Models
+      operationId: modelsUnschduled
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+  "/models/updated":
+    get:
+      summary: Updated Models
+      operationId: modelsUpdated
+      tags:
+      - Models
+      parameters:
+      - name: from
+        in: query
+        schema:
+          type: string
+          format: datetime
+        required: false
+      - name: to
+        in: query
+        schema:
+          type: string
+          default: now
+          format: datetime
+        required: false
+      responses:
+        '200':
+          description: successful
+        '304':
+          description: not modified
+  "/models/with-docks":
+    get:
+      summary: Models with Docks
+      operationId: modelsWithDocks
+      tags:
+      - Models
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ModelQuery"
+        style: deepObject
+        explode: true
+        required: false
+      - name: cacheId
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Models"
+  "/otp/disable":
+    post:
+      summary: Disable OTP Setup
+      operationId: disableOtpSetup
+      tags:
+      - OTP
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardMessage"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SetupOtpInput"
+        required: true
+  "/otp/enable":
+    post:
+      summary: Enable OTP Setup
+      operationId: enableOtpSetup
+      tags:
+      - OTP
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OtpBackupCodes"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SetupOtpInput"
+        required: true
+  "/otp/generate-backup-codes":
+    post:
+      summary: Generate OTP Backup Codes
+      operationId: generateOtpBackupCodes
+      tags:
+      - OTP
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OtpBackupCodes"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/otp/start":
+    post:
+      summary: Start OTP Setup
+      operationId: startOtpSetup
+      tags:
+      - OTP
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardMessage"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -3885,6 +4020,32 @@ paths:
             schema:
               "$ref": "#/components/schemas/CheckInput"
         required: true
+  "/users/confirm":
+    post:
+      summary: Confirm Account
+      operationId: confirmAccount
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardMessage"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ConfirmAccountInput"
+        required: true
   "/users/signup":
     post:
       summary: Create new User
@@ -3975,7 +4136,7 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
       requestBody:
         content:
-          multipart/form-data:
+          application/json:
             schema:
               "$ref": "#/components/schemas/UserUpdateInput"
         required: true
@@ -4011,54 +4172,10 @@ paths:
             schema:
               "$ref": "#/components/schemas/AccountUpdateInput"
         required: true
-  "/vehicles/bulk":
-    put:
-      summary: Update multiple vehicles
-      operationId: vehicleUpdateBulk
-      tags:
-      - Vehicles
-      parameters: []
-      responses:
-        '204':
-          description: successful
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/VehicleBulkUpdateInput"
-        required: true
-  "/vehicles/destroy-bulk":
-    put:
-      summary: Destroy multiple Vehicles
-      operationId: vehicleDestroyBulk
-      tags:
-      - Vehicles
-      parameters: []
-      responses:
-        '204':
-          description: successful
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/VehicleBulkDestroyInput"
-        required: true
   "/vehicles/check-serial":
     post:
       summary: Check Vehicle Serial
-      operationId: vehicleCheckSerial
+      operationId: checkSerialVehicle
       tags:
       - Vehicles
       parameters: []
@@ -4081,10 +4198,58 @@ paths:
             schema:
               "$ref": "#/components/schemas/CheckInput"
         required: true
+  "/vehicles/bulk":
+    post:
+      summary: Create multiple vehicles
+      operationId: createBulkVehicle
+      tags:
+      - Vehicles
+      parameters: []
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleCreateBulkInput"
+        required: true
+    put:
+      summary: Update multiple vehicles
+      operationId: updateBulkVehicle
+      tags:
+      - Vehicles
+      parameters: []
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleUpdateBulkInput"
+        required: true
   "/vehicles":
     post:
       summary: Create new Vehicle
-      operationId: vehicleCreate
+      operationId: createVehicle
       tags:
       - Vehicles
       parameters: []
@@ -4110,7 +4275,7 @@ paths:
   "/vehicles/destroy-all-ingame":
     delete:
       summary: Delete all ingame bought Vehicles
-      operationId: destroyAllIngame
+      operationId: destroyAllIngameVehicles
       tags:
       - Vehicles
       responses:
@@ -4122,6 +4287,28 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/vehicles/destroy-bulk":
+    put:
+      summary: Destroy multiple Vehicles
+      operationId: destroyBulkVehicle
+      tags:
+      - Vehicles
+      parameters: []
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleDestroyBulkInput"
+        required: true
   "/vehicles/{id}":
     parameters:
     - name: id
@@ -4133,7 +4320,7 @@ paths:
       required: true
     delete:
       summary: Delete Vehicle
-      operationId: vehicleDestroy
+      operationId: destroyVehicle
       tags:
       - Vehicles
       responses:
@@ -4157,7 +4344,7 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
     put:
       summary: Update Vehicle
-      operationId: vehicleUpdate
+      operationId: updateVehicle
       tags:
       - Vehicles
       parameters: []
@@ -4186,21 +4373,6 @@ paths:
             schema:
               "$ref": "#/components/schemas/VehicleUpdateInput"
         required: true
-  "/vehicles/filters/bought-via":
-    get:
-      summary: Bought Via Filters
-      operationId: boughtViaFilters
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
   "/version":
     get:
       summary: Version of Fleetyards
@@ -4231,7 +4403,7 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
     get:
       summary: Your Wishlist
-      operationId: getWishlist
+      operationId: wishlist
       tags:
       - Wishlist
       parameters:
@@ -5263,7 +5435,11 @@ components:
         label:
           type: string
         value:
-          type: string
+          anyOf:
+          - type: string
+            nullable: true
+          - type: number
+            nullable: true
         name:
           type: string
           deprecated: true
@@ -5386,6 +5562,13 @@ components:
           type: string
       additionalProperties: false
       title: CheckInput
+    SetupOtpInput:
+      type: object
+      properties:
+        otpCode:
+          type: string
+      additionalProperties: false
+      title: SetupOtpInput
     Manufacturer:
       type: object
       properties:
@@ -5443,6 +5626,18 @@ components:
           "$ref": "#/components/schemas/Pagination"
       additionalProperties: false
       title: Meta
+    OtpBackupCodes:
+      type: object
+      properties:
+        codes:
+          type: array
+          items:
+            type: string
+          additionalProperties: false
+      additionalProperties: false
+      required:
+      - codes
+      title: OtpBackupCodes
     Pagination:
       type: object
       properties:
@@ -5839,35 +6034,6 @@ components:
       - width
       - height
       title: ViewImage
-    CargoOption:
-      type: object
-      properties:
-        name:
-          type: string
-        value:
-          type: string
-        cargo:
-          type: number
-      additionalProperties: false
-      required:
-      - name
-      - value
-      - cargo
-      title: CargoOption
-    CargoOptions:
-      type: object
-      properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
-        items:
-          type: array
-          items:
-            "$ref": "#/components/schemas/CargoOption"
-      additionalProperties: false
-      required:
-      - items
-      - meta
-      title: CargoOptions
     CelestialObject:
       type: object
       properties:
@@ -6656,6 +6822,15 @@ components:
       required:
       - password
       title: ConfirmAccessInput
+    ConfirmAccountInput:
+      type: object
+      properties:
+        token:
+          type: string
+      additionalProperties: false
+      required:
+      - token
+      title: ConfirmAccountInput
     FleetCheckInput:
       type: object
       properties:
@@ -6903,42 +7078,6 @@ components:
           type: boolean
       additionalProperties: false
       title: UserUpdateInput
-    VehicleBulkDestroyInput:
-      type: object
-      properties:
-        ids:
-          type: array
-          items:
-            type: string
-            format: uuid
-      additionalProperties: false
-      required:
-      - ids
-      title: VehicleBulkDestroyInput
-    VehicleBulkUpdateInput:
-      type: object
-      properties:
-        ids:
-          type: array
-          items:
-            type: string
-            format: uuid
-        wanted:
-          type: boolean
-          nullable: true
-        public:
-          type: boolean
-          nullable: true
-        hangarGroupIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-          nullable: true
-      additionalProperties: false
-      required:
-      - ids
-      title: VehicleBulkUpdateInput
     VehicleCheckSerialInput:
       type: object
       properties:
@@ -6948,6 +7087,28 @@ components:
       required:
       - serial
       title: VehicleCheckSerialInput
+    VehicleCreateBulkInput:
+      type: object
+      properties:
+        vehicles:
+          type: array
+          items:
+            type: object
+            properties:
+              modelId:
+                type: string
+                format: uuid
+              wanted:
+                type: boolean
+              public:
+                type: boolean
+            additionalProperties: false
+            required:
+            - modelId
+      additionalProperties: false
+      required:
+      - vehicles
+      title: VehicleCreateBulkInput
     VehicleCreateInput:
       type: object
       properties:
@@ -7009,6 +7170,42 @@ components:
       required:
       - modelId
       title: VehicleCreateInput
+    VehicleDestroyBulkInput:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+      additionalProperties: false
+      required:
+      - ids
+      title: VehicleDestroyBulkInput
+    VehicleUpdateBulkInput:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+        wanted:
+          type: boolean
+          nullable: true
+        public:
+          type: boolean
+          nullable: true
+        hangarGroupIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          nullable: true
+      additionalProperties: false
+      required:
+      - ids
+      title: VehicleUpdateBulkInput
     VehicleUpdateInput:
       type: object
       properties:
@@ -9805,9 +10002,10 @@ components:
             fleet: Full Fleet Access
             fleet:read: Read Fleet
             fleet:write: Manage Fleet
+            openid: Authenticate your account
     OpenId:
       type: openIdConnect
-      openIdConnectUrl: https://fleetyards.net/.well-known/openid-configuration
+      openIdConnectUrl: http://fleetyards.test/.well-known/openid-configuration
     SessionCookie:
       type: apiKey
       description: Session Cookie

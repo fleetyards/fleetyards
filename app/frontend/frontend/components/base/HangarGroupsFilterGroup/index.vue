@@ -6,10 +6,14 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
-import { useHangarQueries } from "@/frontend/composables/useHangarQueries";
-
-const { groupsFilterQuery, groupsFilterFormatter } = useHangarQueries();
+import FilterGroup, {
+  type FilterGroupParams,
+} from "@/shared/components/base/FilterGroup/index.vue";
+import {
+  hangarGroups as fetchHangarGroups,
+  type FilterOption,
+  type HangarGroup,
+} from "@/services/fyApi";
 
 type Props = {
   name: string;
@@ -47,14 +51,25 @@ watch(
     emit("update:modelValue", internalValue.value);
   },
 );
+
+const fetch = (_params: FilterGroupParams<FilterOption>) => {
+  return fetchHangarGroups();
+};
+
+const formatter = (groups: HangarGroup[]) => {
+  return groups.map((group) => ({
+    label: group.name,
+    value: group.id,
+  }));
+};
 </script>
 
 <template>
   <FilterGroup
     v-model="internalValue"
     :label="t('labels.filters.vehicles.group')"
-    :query-fn="groupsFilterQuery"
-    :query-response-formatter="groupsFilterFormatter"
+    :query-fn="fetch"
+    :query-response-formatter="formatter"
     :name="name"
     :paginated="false"
     :searchable="false"

@@ -28,7 +28,6 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useMobile } from "@/shared/composables/useMobile";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
-import { usePublicHangarQueries } from "@/frontend/composables/usePublicHangarQueries";
 import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
@@ -36,6 +35,10 @@ import {
   useSubscription,
 } from "@/shared/composables/useSubscription";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
+import {
+  usePublicHangar as usePublicHangarQuery,
+  getPublicHangarQueryKey,
+} from "@/services/fyApi";
 
 const { t } = useI18n();
 
@@ -75,21 +78,27 @@ const fleetchartStore = useFleetchartStore();
 
 const fleetchartVisible = computed(() => fleetchartStore.isVisible("hangar"));
 
-const { publicHangarQuery } = usePublicHangarQueries(username.value);
-
 const { filters } = useHangarFilters(() => refetch());
 
-const { perPage, page, updatePerPage } = usePagination("hangar");
+const publicHangarQueryParams = computed(() => {
+  return {
+    page: page.value,
+    perPage: perPage.value,
+    q: filters.value,
+  };
+});
+
+const publicHangarQueryKey = computed(() => {
+  return getPublicHangarQueryKey(username.value, publicHangarQueryParams.value);
+});
+
+const { perPage, page, updatePerPage } = usePagination(publicHangarQueryKey);
 
 const {
   data: vehicles,
   refetch,
   ...asyncStatus
-} = publicHangarQuery({
-  page,
-  perPage,
-  filters,
-});
+} = usePublicHangarQuery(username, publicHangarQueryParams);
 
 // const { data: hangarStats, refetch: refetchStats } = publicStatsQuery(filters);
 

@@ -1,61 +1,8 @@
-<template>
-  <div class="row">
-    <div class="col-12">
-      <div class="row">
-        <div class="col-12">
-          <div class="page-actions page-actions-right">
-            <Btn
-              v-show="groupedButton"
-              data-test="fleetview-grouped-button"
-              size="small"
-              @click="toggleGrouping"
-            >
-              <template v-if="grouping">
-                {{ t("actions.disableGrouping") }}
-              </template>
-              <template v-else>
-                {{ t("actions.enableGrouping") }}
-              </template>
-            </Btn>
-            <Btn
-              v-show="!fleetchart"
-              :active="details"
-              data-test="fleetview-details-button"
-              size="small"
-              @click="toggleDetails"
-            >
-              <template v-if="details">
-                {{ t("actions.hideDetails") }}
-              </template>
-              <template v-else>
-                {{ t("actions.showDetails") }}
-              </template>
-            </Btn>
-            <Btn
-              size="small"
-              data-test="fleetview-fleetchart-button"
-              @click="toggleFleetchart"
-            >
-              <template v-if="fleetchart">
-                {{ t("actions.hideFleetchart") }}
-              </template>
-              <template v-else>
-                {{ t("actions.showFleetchart") }}
-              </template>
-            </Btn>
-          </div>
-        </div>
-      </div>
-      <FleetchartList
-        v-if="fleetchart"
-        :models="models"
-        :slider="fleetchartSlider"
-      />
-      <ModelList v-else :models="models" />
-      <Loader :loading="loading" :fixed="true" />
-    </div>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "HomePage",
+};
+</script>
 
 <script lang="ts" setup>
 import ModelList from "@/embed/components/Models/List/index.vue";
@@ -64,17 +11,21 @@ import Loader from "@/shared/components/Loader/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useEmbedStore } from "@/embed/stores/embed";
 import { storeToRefs } from "pinia";
-import { useApiClient } from "@/embed/composables/useApiClient";
 import type { Model } from "@/services/fyApi";
 import { useI18n } from "@/embed/composables/useI18n";
+import {
+  modelsEmbed as fetchModelsEmbed,
+  publicHangarEmbed as fetchPublicHangarEmbed,
+  publicFleetVehiclesEmbed as fetchPublicFleetVehiclesEmbed,
+  type VehiclePublic,
+} from "@/services/fyApi";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 export interface EnhancedModelMinimal extends Model {
   count: number;
 }
 
 const { t } = useI18n();
-
-const { models: modelsService, publicHangar: hangarService } = useApiClient();
 
 type Props = {
   ships?: string[];
@@ -188,7 +139,7 @@ const fetchModels = async () => {
   loading.value = true;
 
   try {
-    const models = await modelsService.embed({
+    const models = await fetchModelsEmbed({
       models: props.ships?.filter((v, i, a) => a.indexOf(v) === i),
     });
 
@@ -208,31 +159,38 @@ const fetchModels = async () => {
 };
 
 const fetchFleetVehicles = async () => {
-  // if (!props.fleetId) {
-  //   return;
-  // }
-  // loading.value = true;
-  // const response = await this.$api.get(`fleets/${props.fleetId}/embed`);
-  // loading.value = false;
-  // if (!response.error) {
-  //   const models = response.data.map((vehicle: Vehicle) => vehicle.model);
-  //   groupedModels.value = [...models]
-  //     .filter((item, pos) => groupModels(models, item, pos))
-  //     .map((model) =>
-  //       enhanceGroupedModel(
-  //         models.map((item: Model) => item.slug),
-  //         model
-  //       )
-  //     );
-  //   ungroupedModels.value = [...models].sort(sortByName);
-  // }
+  if (!props.fleetId) {
+    return;
+  }
+
+  loading.value = true;
+
+  try {
+    const vehicles = await fetchPublicFleetVehiclesEmbed(props.fleetId);
+
+    const models = vehicles.map((vehicle: VehiclePublic) => vehicle.model);
+
+    groupedModels.value = [...models]
+      .filter((item, pos) => groupModels(models, item, pos))
+      .map((model) =>
+        enhanceGroupedModel(
+          models.map((item: Model) => item.slug),
+          model,
+        ),
+      );
+    ungroupedModels.value = [...models].sort(sortByName);
+  } catch (error) {
+    console.error(error);
+  } finally {
+    loading.value = false;
+  }
 };
 
 const fetchHangarVehicles = async () => {
   loading.value = true;
 
   try {
-    const vehicles = await hangarService.publicHangarEmbed({
+    const vehicles = await fetchPublicHangarEmbed({
       usernames: props.users,
     });
 
@@ -255,8 +213,61 @@ const fetchHangarVehicles = async () => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "HomePage",
-};
-</script>
+<template>
+  <div class="row">
+    <div class="col-12">
+      <div class="row">
+        <div class="col-12">
+          <div class="page-actions page-actions-right">
+            <Btn
+              v-show="groupedButton"
+              data-test="fleetview-grouped-button"
+              :size="BtnSizesEnum.SMALL"
+              @click="toggleGrouping"
+            >
+              <template v-if="grouping">
+                {{ t("actions.disableGrouping") }}
+              </template>
+              <template v-else>
+                {{ t("actions.enableGrouping") }}
+              </template>
+            </Btn>
+            <Btn
+              v-show="!fleetchart"
+              :active="details"
+              data-test="fleetview-details-button"
+              :size="BtnSizesEnum.SMALL"
+              @click="toggleDetails"
+            >
+              <template v-if="details">
+                {{ t("actions.hideDetails") }}
+              </template>
+              <template v-else>
+                {{ t("actions.showDetails") }}
+              </template>
+            </Btn>
+            <Btn
+              :size="BtnSizesEnum.SMALL"
+              data-test="fleetview-fleetchart-button"
+              @click="toggleFleetchart"
+            >
+              <template v-if="fleetchart">
+                {{ t("actions.hideFleetchart") }}
+              </template>
+              <template v-else>
+                {{ t("actions.showFleetchart") }}
+              </template>
+            </Btn>
+          </div>
+        </div>
+      </div>
+      <FleetchartList
+        v-if="fleetchart"
+        :models="models"
+        :slider="fleetchartSlider"
+      />
+      <ModelList v-else :models="models" />
+      <Loader :loading="loading" :fixed="true" />
+    </div>
+  </div>
+</template>

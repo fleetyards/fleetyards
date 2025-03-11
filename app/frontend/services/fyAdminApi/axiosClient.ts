@@ -1,8 +1,14 @@
 import Axios, { type AxiosRequestConfig, type AxiosError } from "axios";
+import Qs from "qs";
 
 export const AXIOS_INSTANCE = Axios.create({
   baseURL: `${window.ADMIN_API_ENDPOINT}`,
   withCredentials: true,
+  paramsSerializer: (params) =>
+    Qs.stringify(params, {
+      arrayFormat: "brackets",
+      encode: false,
+    }),
 });
 
 export const axiosClient = <T>(config: AxiosRequestConfig): Promise<T> => {

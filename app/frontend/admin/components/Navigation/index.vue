@@ -36,7 +36,7 @@ const { isAuthenticated, currentUser } = storeToRefs(sessionStore);
 const mutation = useDestroySessionMutation();
 
 const logout = async () => {
-  await mutation.mutate();
+  await mutation.mutateAsync();
 
   sessionStore.logout();
 };

@@ -1,3 +1,103 @@
+<script lang="ts">
+export default {
+  name: "VehicleNamingModal",
+};
+</script>
+
+<script lang="ts">
+import Modal from "@/shared/components/AppModal/Inner/index.vue";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
+import FormCheckbox from "@/frontend/core/components/Form/FormCheckbox/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { transformErrors } from "@/frontend/api/helpers";
+
+type VehicleNamingFormData = {
+  name: string;
+  serial: string;
+  nameVisible: boolean;
+  alternativeNames: string[];
+};
+
+type Props = {
+  vehicle: Vehicle;
+}
+
+defineProps<Props>();
+
+  const submitting = ref(false);
+
+  const deleting = ref(false);
+
+  const dirty = computed(() => {
+    return (
+      !this.submitting &&
+      Object.keys(this.$refs.form.fields).some(
+        (field) => this.$refs.form.fields[field].dirty,
+      )
+    );
+  })
+
+  onMounted(() => {
+    setupForm();
+  })
+
+  watch(
+    () => props.vehicle,
+    () => {
+      setupForm();
+    },
+  )
+
+  const addName = () => {
+    form.alternativeNames.push("");
+  }
+
+  const removeName = (index) => {
+    form.alternativeNames.splice(index, 1);
+  }
+
+  const useName = (index) => {
+    const newName = form.alternativeNames[index];
+    form.alternativeNames[index] = form.name;
+    form.name = newName;
+  }
+
+  const setupForm = () => {
+    const initialData = JSON.parse(JSON.stringify(this.vehicle || {}));
+
+    this.form = {
+      name: initialData.name,
+      serial: initialData.serial,
+      nameVisible: initialData.nameVisible,
+      alternativeNames: initialData.alternativeNames,
+    };
+  }
+
+  async save() {
+    this.submitting = true;
+
+    const response = await vehiclesCollection.update(
+      this.vehicle.id,
+      this.form,
+    );
+
+    if (!response.error) {
+      this.$comlink.$emit("close-modal");
+    } else {
+      const { error } = response;
+      if (error.response && error.response.data) {
+        const { data: errorData } = error.response;
+
+        this.$refs.form.setErrors(transformErrors(errorData.errors));
+      }
+    }
+
+    this.submitting = false;
+  }
+}
+</script>
+
 <template>
   <Modal
     v-if="vehicle && form"
@@ -14,8 +114,8 @@
                 :slim="true"
               >
                 <FormInput
-                  id="vehicle-name"
                   v-model="form.name"
+                  name="vehicle-name"
                   :placeholder="vehicle.model.name"
                   translation-key="name"
                   :no-label="true"
@@ -133,109 +233,6 @@
     </template>
   </Modal>
 </template>
-
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
-import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
-import FormCheckbox from "@/frontend/core/components/Form/FormCheckbox/index.vue";
-import Btn from "@/shared/components/base/Btn/index.vue";
-import vehiclesCollection from "@/frontend/api/collections/Vehicles";
-import { transformErrors } from "@/frontend/api/helpers";
-
-type VehicleNamingFormData = {
-  name: string;
-  serial: string;
-  nameVisible: boolean;
-  alternativeNames: string[];
-};
-
-@Component<VehicleNamingModal>({
-  components: {
-    Modal,
-    Checkbox,
-    FormInput,
-    FilterGroup,
-    Btn,
-  },
-})
-export default class VehicleNamingModal extends Vue {
-  @Prop({ required: true }) vehicle!: Vehicle;
-
-  submitting = false;
-
-  deleting = false;
-
-  form: VehicleNamingFormData | null = null;
-
-  public get dirty() {
-    return (
-      !this.submitting &&
-      Object.keys(this.$refs.form.fields).some(
-        (field) => this.$refs.form.fields[field].dirty,
-      )
-    );
-  }
-
-  mounted() {
-    this.setupForm();
-  }
-
-  @Watch("vehicle")
-  onVehicleChange() {
-    this.setupForm();
-  }
-
-  addName() {
-    this.form.alternativeNames.push("");
-  }
-
-  removeName(index) {
-    this.form.alternativeNames.splice(index, 1);
-  }
-
-  useName(index) {
-    const newName = this.form.alternativeNames[index];
-    this.form.alternativeNames[index] = this.form.name;
-    this.form.name = newName;
-  }
-
-  setupForm() {
-    const initialData = JSON.parse(JSON.stringify(this.vehicle || {}));
-
-    this.form = {
-      name: initialData.name,
-      serial: initialData.serial,
-      nameVisible: initialData.nameVisible,
-      alternativeNames: initialData.alternativeNames,
-    };
-  }
-
-  async save() {
-    this.submitting = true;
-
-    const response = await vehiclesCollection.update(
-      this.vehicle.id,
-      this.form,
-    );
-
-    if (!response.error) {
-      this.$comlink.$emit("close-modal");
-    } else {
-      const { error } = response;
-      if (error.response && error.response.data) {
-        const { data: errorData } = error.response;
-
-        this.$refs.form.setErrors(transformErrors(errorData.errors));
-      }
-    }
-
-    this.submitting = false;
-  }
-}
-</script>
 
 <style lang="scss" scoped>
 @import "index";

@@ -1,0 +1,42 @@
+.app-notifications {
+  &__message {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-items: flex-start;
+    justify-content: center;
+    margin-bottom: 10px;
+    width: 325px;
+    max-width: 90vw;
+    color: #fff;
+    background-color: #333;
+    border-radius: $border-radius-base;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    overflow: hidden;
+
+    &--info {
+      background-color: $primary;
+    }
+
+    &--success {
+      background-color: $success;
+    }
+
+    &--error {
+      background-color: $danger;
+    }
+
+    &--warning {
+      background-color: $warning;
+    }
+  }
+}
+
+@media (max-width: $tablet-breakpoint) {
+  .app-notifications {
+    &__message {
+      width: 90vw;
+    }
+  }
+}

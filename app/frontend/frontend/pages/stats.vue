@@ -8,50 +8,39 @@ export default {
 import Chart from "@/shared/components/Chart/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
 import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
+import { PanelHeadingLevelEnum } from "@/shared/components/Panel/Heading/types";
 import PanelBody from "@/shared/components/Panel/Body/index.vue";
 import StatsPanel from "@/shared/components/StatsPanel/index.vue";
-import { useApiClient } from "@/frontend/composables/useApiClient";
-import { useQuery } from "@tanstack/vue-query";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-
-const { stats: statsService } = useApiClient();
+import {
+  useStats as useStatsQuery,
+  useModelsByClassification as useModelsByClassificationQuery,
+  useModelsBySize as useModelsBySizeQuery,
+  useModelsByProductionStatus as useModelsByProductionStatusQuery,
+  useModelsPerMonth as useModelsPerMonthQuery,
+  useModelsByManufacturer as useModelsByManufacturerQuery,
+} from "@/services/fyApi";
 
 const { t } = useI18n();
 
 useMetaInfo();
 
-const { data: quickStats } = useQuery({
-  queryKey: ["quickstats"],
-  queryFn: () => statsService.stats(),
-});
+const { data: quickStats } = useStatsQuery();
 
 const { data: modelsByClassification, ...modelsByClassificationStatus } =
-  useQuery({
-    queryKey: ["charts", "models-by-classification"],
-    queryFn: () => statsService.modelsByClassification(),
-  });
+  useModelsByClassificationQuery();
 
-const { data: modelsBySize, ...modelsBySizeStatus } = useQuery({
-  queryKey: ["charts", "models-by-size"],
-  queryFn: () => statsService.modelsBySize(),
-});
+const { data: modelsBySize, ...modelsBySizeStatus } = useModelsBySizeQuery();
 
 const { data: modelsByProductionStatus, ...modelsByProductionStatusStatus } =
-  useQuery({
-    queryKey: ["charts", "models-by-production-status"],
-    queryFn: () => statsService.modelsByProductionStatus(),
-  });
+  useModelsByProductionStatusQuery();
 
-const { data: modelsPerMonth, ...modelsPerMonthStatus } = useQuery({
-  queryKey: ["charts", "models-per-month"],
-  queryFn: () => statsService.modelsPerMonth(),
-});
+const { data: modelsPerMonth, ...modelsPerMonthStatus } =
+  useModelsPerMonthQuery();
 
-const { data: modelsByManufacturer, ...modelsByManufacturerStatus } = useQuery({
-  queryKey: ["charts", "models-by-manufacturer"],
-  queryFn: () => statsService.modelsByManufacturer(),
-});
+const { data: modelsByManufacturer, ...modelsByManufacturerStatus } =
+  useModelsByManufacturerQuery();
 </script>
 
 <template>
@@ -87,7 +76,7 @@ const { data: modelsByManufacturer, ...modelsByManufacturerStatus } = useQuery({
       <div class="row">
         <div class="col-12 col-md-6">
           <Panel>
-            <PanelHeading level="h2">
+            <PanelHeading :level="PanelHeadingLevelEnum.H2">
               {{ t("labels.stats.modelsByClassification") }}
             </PanelHeading>
             <PanelBody>
@@ -105,7 +94,7 @@ const { data: modelsByManufacturer, ...modelsByManufacturerStatus } = useQuery({
         </div>
         <div class="col-12 col-md-6">
           <Panel>
-            <PanelHeading level="h2">
+            <PanelHeading :level="PanelHeadingLevelEnum.H2">
               {{ t("labels.stats.modelsBySize") }}
             </PanelHeading>
             <PanelBody>
@@ -124,7 +113,7 @@ const { data: modelsByManufacturer, ...modelsByManufacturerStatus } = useQuery({
       <div class="row">
         <div class="col-12 col-md-5">
           <Panel>
-            <PanelHeading level="h2">
+            <PanelHeading :level="PanelHeadingLevelEnum.H2">
               {{ t("labels.stats.modelsByProductionStatus") }}
             </PanelHeading>
             <PanelBody>
@@ -141,7 +130,7 @@ const { data: modelsByManufacturer, ...modelsByManufacturerStatus } = useQuery({
         </div>
         <div class="col-12 col-md-7">
           <Panel>
-            <PanelHeading level="h2">
+            <PanelHeading :level="PanelHeadingLevelEnum.H2">
               {{ t("labels.stats.modelsPerMonth") }}
             </PanelHeading>
             <PanelBody>
@@ -160,7 +149,7 @@ const { data: modelsByManufacturer, ...modelsByManufacturerStatus } = useQuery({
       <div class="row">
         <div class="col-12 col-lg-6">
           <Panel>
-            <PanelHeading level="h2">
+            <PanelHeading :level="PanelHeadingLevelEnum.H2">
               {{ t("labels.stats.modelsByManufacturer") }}
             </PanelHeading>
             <PanelBody>

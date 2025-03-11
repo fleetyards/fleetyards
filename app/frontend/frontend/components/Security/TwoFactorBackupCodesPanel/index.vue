@@ -24,7 +24,7 @@
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import copyText from "@/frontend/utils/CopyText";
-import { useNoty } from "@/shared/composables/useNoty";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import Panel from "@/shared/components/Panel/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
@@ -37,7 +37,7 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 
-const { displaySuccess, displayAlert } = useNoty();
+const { displaySuccess, displayAlert } = useAppNotifications();
 
 const copyCodes = () => {
   copyText(props.codes.join("\n")).then(

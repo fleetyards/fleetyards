@@ -10,25 +10,29 @@ import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useGallery } from "@/shared/composables/useGallery";
-import { useApiClient } from "@/frontend/composables/useApiClient";
 import { usePagination } from "@/shared/composables/usePagination";
-import { useQuery } from "@tanstack/vue-query";
 import Paginator from "@/shared/components/Paginator/index.vue";
+import {
+  useImages as useImagesQuery,
+  getImagesQueryKey,
+} from "@/services/fyApi";
 
 const { t } = useI18n();
 
-const { images: imagesService } = useApiClient();
-
-const { page, perPage } = usePagination("images");
-
-const { data: images, ...asyncStatus } = useQuery({
-  queryKey: ["images"],
-  queryFn: () =>
-    imagesService.images({
-      page: page.value,
-      perPage: perPage.value,
-    }),
+const imagesQueryParams = computed(() => {
+  return {
+    page: page.value,
+    perPage: perPage.value,
+  };
 });
+
+const imagesQueryKey = computed(() => {
+  return getImagesQueryKey(imagesQueryParams);
+});
+
+const { page, perPage } = usePagination(imagesQueryKey);
+
+const { data: images, ...asyncStatus } = useImagesQuery(imagesQueryParams);
 
 useGallery(".images");
 </script>

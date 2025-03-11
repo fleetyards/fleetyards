@@ -1,27 +1,25 @@
-import { useApiClient } from "@/frontend/composables/useApiClient";
+import { checkSerialVehicle } from "@/services/fyApi";
 import { debounce } from "ts-debounce";
 import type { I18nPluginOptions } from "@/shared/plugins/I18n";
 
 export const useRule = (t: I18nPluginOptions["t"]) => {
-  const { vehicles: vehiclesService } = useApiClient();
-
   const errorMessage = t("messages.error.serialTaken");
 
   const validate = debounce(async (value: string) => {
-    return vehiclesService
-      .vehicleCheckSerial({
-        requestBody: {
-          value,
-        },
-      })
-      .then((response) => {
-        if (!response.taken) {
-          return true;
-        }
+    try {
+      const response = await checkSerialVehicle({
+        value,
+      });
+
+      if (response.taken) {
         return errorMessage;
-      })
-      .catch(() => errorMessage);
-  }, 100) as (value: string) => Promise<boolean | string>;
+      }
+
+      return true;
+    } catch (error) {
+      return errorMessage;
+    }
+  }, 100);
 
   return validate;
 };

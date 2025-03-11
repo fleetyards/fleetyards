@@ -9,12 +9,12 @@ import VueUploadComponent from "vue-upload-component";
 import type { VueUploadItem } from "vue-upload-component";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useNoty } from "@/shared/composables/useNoty";
-import { useApiClient } from "@/frontend/composables/useApiClient";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
+import { hangarImport } from "@/services/fyApi";
 
 type Props = {
   variant?: BtnVariantsEnum;
@@ -28,8 +28,7 @@ withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const { displayWarning, displayAlert, displaySuccess, displayConfirm } =
-  useNoty();
+const { displayWarning, displayAlert, displaySuccess } = useAppNotifications();
 
 const fileExtensions = "json";
 const acceptedMimeTypes = "application/json";
@@ -90,8 +89,6 @@ const inputFilter = (
 
 const emit = defineEmits(["finished"]);
 
-const { hangar: hangarService } = useApiClient();
-
 const importJson = async (value: VueUploadItem) => {
   const importFile = (value && value[0]) || {};
 
@@ -100,10 +97,8 @@ const importJson = async (value: VueUploadItem) => {
   }
 
   try {
-    const result = await hangarService.hangarImport({
-      formData: {
-        import: importFile.file,
-      },
+    const result = await hangarImport({
+      import: importFile.file,
     });
 
     if (result.missing.length) {

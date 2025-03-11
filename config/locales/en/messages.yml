@@ -56,7 +56,10 @@ en:
       no_data: No Data found to sync
     user:
       requires_access_confirmation: Access confirmation pending
-      two_factor_setup:
-        active: Two-factor Authentication already active
-        enable:
-          failure: Could not activate Two-factor Authentication
+    otp:
+      active: Two-factor Authentication already active
+      inactive: Two-factor Authentication already inactive
+      disable:
+        failure: Could not deactivate Two-factor Authentication
+      enable:
+        failure: Could not activate Two-factor Authentication

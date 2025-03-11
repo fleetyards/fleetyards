@@ -182,7 +182,7 @@ const hideInfo = () => {
             <fieldset>
               <legend>{{ t("privacySettings.functional") }}</legend>
               <div class="form-item">
-                <Checkbox
+                <FormCheckbox
                   v-model="form.ahoy"
                   name="ahoy"
                   :label="t('privacySettings.ahoy')"
@@ -193,7 +193,7 @@ const hideInfo = () => {
                 />
               </div>
               <div class="form-item">
-                <Checkbox
+                <FormCheckbox
                   v-model="form.youtube"
                   name="youtube"
                   :label="t('privacySettings.youtube')"

@@ -13,8 +13,8 @@ import {
   type Hardpoint,
   HardpointSourceEnum,
 } from "@/services/fyApi";
-import { useApiClient } from "@/frontend/composables/useApiClient";
-import { HardpointGroupEnum } from "@/services/fyAdminApi";
+import { HardpointGroupEnum } from "@/services/fyApi";
+import { modelHardpoints as fetchModelHardpoints } from "@/services/fyApi";
 
 type Props = {
   models: Model[];
@@ -27,13 +27,13 @@ const { t } = useI18n();
 const hardpoints = ref<{ slug: string; hardpoints: Hardpoint[] }[]>([]);
 
 const groups = [
-  HardpointGroupEnum.AVIONIC,
-  HardpointGroupEnum.SYSTEM,
-  HardpointGroupEnum.PROPULSION,
-  HardpointGroupEnum.THRUSTER,
-  HardpointGroupEnum.WEAPON,
-  HardpointGroupEnum.AUXILIARY,
-  HardpointGroupEnum.OTHER,
+  HardpointGroupEnum.avionic,
+  HardpointGroupEnum.system,
+  HardpointGroupEnum.propulsion,
+  HardpointGroupEnum.thruster,
+  HardpointGroupEnum.weapon,
+  HardpointGroupEnum.auxiliary,
+  HardpointGroupEnum.other,
 ];
 
 const avionicVisible = ref(false);
@@ -63,8 +63,6 @@ onMounted(async () => {
   setupVisibles();
 });
 
-const { models: modelsService } = useApiClient();
-
 const fetch = async () => {
   const promises = props.models.map((model) => {
     return fetchHardpoints(model);
@@ -74,11 +72,10 @@ const fetch = async () => {
 };
 
 const fetchHardpoints = async (model: Model) => {
-  const hardpoints = await modelsService.modelHardpoints({
-    slug: model.slug,
+  const hardpoints = await fetchModelHardpoints(model.slug, {
     source: model.scIdentifier
-      ? HardpointSourceEnum.GAME_FILES
-      : HardpointSourceEnum.SHIP_MATRIX,
+      ? HardpointSourceEnum.game_files
+      : HardpointSourceEnum.ship_matrix,
   });
 
   return {
@@ -98,25 +95,25 @@ const setupVisibles = () => {
 };
 
 const isVisible = (group: HardpointGroupEnum) => {
-  if (group === HardpointGroupEnum.AVIONIC) {
+  if (group === HardpointGroupEnum.avionic) {
     return avionicVisible.value;
   }
-  if (group === HardpointGroupEnum.SYSTEM) {
+  if (group === HardpointGroupEnum.system) {
     return systemVisible.value;
   }
-  if (group === HardpointGroupEnum.PROPULSION) {
+  if (group === HardpointGroupEnum.propulsion) {
     return propulsionVisible.value;
   }
-  if (group === HardpointGroupEnum.THRUSTER) {
+  if (group === HardpointGroupEnum.thruster) {
     return thrusterVisible.value;
   }
-  if (group === HardpointGroupEnum.WEAPON) {
+  if (group === HardpointGroupEnum.weapon) {
     return weaponVisible.value;
   }
-  if (group === HardpointGroupEnum.AUXILIARY) {
+  if (group === HardpointGroupEnum.auxiliary) {
     return auxiliaryVisible.value;
   }
-  if (group === HardpointGroupEnum.OTHER) {
+  if (group === HardpointGroupEnum.other) {
     return otherVisible.value;
   }
 
@@ -124,25 +121,25 @@ const isVisible = (group: HardpointGroupEnum) => {
 };
 
 const toggle = (group: HardpointGroupEnum) => {
-  if (group === HardpointGroupEnum.AVIONIC) {
+  if (group === HardpointGroupEnum.avionic) {
     avionicVisible.value = !avionicVisible.value;
   }
-  if (group === HardpointGroupEnum.SYSTEM) {
+  if (group === HardpointGroupEnum.system) {
     systemVisible.value = !systemVisible.value;
   }
-  if (group === HardpointGroupEnum.PROPULSION) {
+  if (group === HardpointGroupEnum.propulsion) {
     propulsionVisible.value = !propulsionVisible.value;
   }
-  if (group === HardpointGroupEnum.THRUSTER) {
+  if (group === HardpointGroupEnum.thruster) {
     thrusterVisible.value = !thrusterVisible.value;
   }
-  if (group === HardpointGroupEnum.WEAPON) {
+  if (group === HardpointGroupEnum.weapon) {
     weaponVisible.value = !weaponVisible.value;
   }
-  if (group === HardpointGroupEnum.AUXILIARY) {
+  if (group === HardpointGroupEnum.auxiliary) {
     auxiliaryVisible.value = !auxiliaryVisible.value;
   }
-  if (group === HardpointGroupEnum.OTHER) {
+  if (group === HardpointGroupEnum.other) {
     otherVisible.value = !otherVisible.value;
   }
 };

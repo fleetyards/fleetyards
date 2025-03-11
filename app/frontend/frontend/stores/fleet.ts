@@ -16,6 +16,7 @@ export const useFleetStore = defineStore("fleet", {
     grouped: true,
     preview: true,
     inviteToken: undefined,
+    gridView: true,
   }),
   actions: {
     toggleDetails() {

@@ -1,3 +1,48 @@
+<script lang="ts">
+export default {
+  name: "AppNavigationFleetNav",
+};
+</script>
+
+<script lang="ts" setup>
+import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useFleet as useFleetQuery } from "@/services/fyApi";
+
+const { t } = useI18n();
+
+const currentFleet = computed(() => {
+  if (!fleet.value) {
+    return;
+  }
+  return fleet.value;
+});
+
+const route = useRoute();
+
+const fleetSlug = computed(() => {
+  return route.params.slug as string;
+});
+
+const { data: fleet, refetch } = useFleetQuery(fleetSlug, {
+  query: {
+    retry: false,
+    enabled: route.params.slug !== undefined,
+  },
+});
+
+const shipsNavActive = computed(() => {
+  return ["fleet-ships", "fleet-fleetchart"].includes(String(route.name));
+});
+
+const comlink = useComlink();
+
+onMounted(() => {
+  comlink.on("fleet-update", refetch);
+});
+</script>
+
 <template>
   <div>
     <NavItem
@@ -47,49 +92,3 @@
     </template>
   </div>
 </template>
-
-<script lang="ts" setup>
-import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
-import { useI18n } from "@/shared/composables/useI18n";
-import { useApiClient } from "@/frontend/composables/useApiClient";
-import { useQuery } from "@tanstack/vue-query";
-import { useComlink } from "@/shared/composables/useComlink";
-
-const { t } = useI18n();
-const currentFleet = computed(() => {
-  if (!fleet.value) {
-    return;
-  }
-  return fleet.value;
-});
-
-const { fleets: fleetsService } = useApiClient();
-
-const route = useRoute();
-
-const { data: fleet, refetch } = useQuery({
-  queryKey: ["fleet", route.params.slug],
-  retry: false,
-  queryFn: () =>
-    fleetsService.fleet({
-      slug: String(route.params.slug),
-    }),
-  enabled: route.params.slug !== undefined,
-});
-
-const shipsNavActive = computed(() => {
-  return ["fleet-ships", "fleet-fleetchart"].includes(String(route.name));
-});
-
-const comlink = useComlink();
-
-onMounted(() => {
-  comlink.on("fleet-update", refetch);
-});
-</script>
-
-<script lang="ts">
-export default {
-  name: "AppNavigationFleetNav",
-};
-</script>

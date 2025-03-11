@@ -77,8 +77,12 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
+export default {
+  name: "VehiclesGroupModal",
+};
+</script>
+
+<script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
@@ -87,16 +91,6 @@ import hangarGroupsCollection from "@/frontend/api/collections/HangarGroups";
 import FormCheckbox from "@/frontend/core/components/Form/FormCheckbox/index.vue";
 import VSwatches from "vue-swatches";
 
-@Component<GroupModal>({
-  components: {
-    Modal,
-    Btn,
-    FormInput,
-    VSwatches,
-    Checkbox,
-  },
-})
-export default class GroupModal extends Vue {
   @Prop({
     default() {
       return {};

@@ -27,7 +27,6 @@ import { useSessionStore } from "@/frontend/stores/session";
 import { useWishlistStore } from "@/frontend/stores/wishlist";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
-import { useWishlistQueries } from "@/frontend/composables/useWishlistQueries";
 import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
@@ -35,11 +34,17 @@ import {
   useSubscription,
 } from "@/shared/composables/useSubscription";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
-import { useNoty } from "@/shared/composables/useNoty";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import {
+  useWishlist as useWishlistQuery,
+  exportWishlist,
+  useDestroyWishlist as useDestroyWishlistMutation,
+  getWishlistQueryKey,
+} from "@/services/fyApi";
 
 const { t } = useI18n();
 
-const { displayAlert, displayConfirm } = useNoty();
+const { displayAlert } = useAppNotifications();
 
 const comlink = useComlink();
 
@@ -57,21 +62,25 @@ const fleetchartStore = useFleetchartStore();
 
 const fleetchartVisible = computed(() => fleetchartStore.isVisible("wishlist"));
 
-const { wishlistQuery } = useWishlistQueries();
-
 const { filters, isFilterSelected } = useHangarFilters(() => refetch());
 
-const { perPage, page, updatePerPage } = usePagination("hangar");
+const wishlistQueryParams = computed(() => ({
+  page: page.value,
+  perPage: perPage.value,
+  q: filters.value,
+}));
+
+const wishlistQueryKey = computed(() => {
+  return getWishlistQueryKey(wishlistQueryParams.value);
+});
+
+const { perPage, page, updatePerPage } = usePagination(wishlistQueryKey);
 
 const {
   data: vehicles,
   refetch,
   ...asyncStatus
-} = wishlistQuery({
-  page,
-  perPage,
-  filters,
-});
+} = useWishlistQuery(wishlistQueryParams);
 
 const fetch = () => {
   refetch();
@@ -121,14 +130,12 @@ useSubscription({
   received: () => debounce(fetch, 500),
 });
 
-const { exportQuery, destroyAllMutation } = useWishlistQueries();
-
 const exportJson = async () => {
   if (!currentUser?.value) {
     return;
   }
 
-  const exportedData = await exportQuery();
+  const exportedData = await exportWishlist();
 
   if (!exportedData || !window.URL) {
     displayAlert({ text: t("messages.hangarExport.failure") });
@@ -158,17 +165,22 @@ const exportJson = async () => {
 
 const deleting = ref(false);
 
+const destroyMutation = useDestroyWishlistMutation();
+
 const destroyAll = async () => {
   deleting.value = true;
 
   displayConfirm({
     text: t("messages.confirm.hangar.destroyAll"),
     onConfirm: async () => {
-      await destroyAllMutation.mutate();
-
-      comlink.emit("hangar-delete-all");
-
-      deleting.value = false;
+      await destroyMutation
+        .mutateAsync()
+        .then(() => {
+          comlink.emit("hangar-delete-all");
+        })
+        .finally(() => {
+          deleting.value = false;
+        });
     },
     onClose: () => {
       deleting.value = false;

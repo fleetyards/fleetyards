@@ -86,19 +86,22 @@ const toggleEnabled = async () => {
 
   internalImage.value.enabled = !internalImage.value.enabled;
 
-  try {
-    await mutation.mutate({
+  await mutation
+    .mutateAsync({
       id: internalImage.value.id,
       data: {
         enabled: internalImage.value.enabled,
       },
+    })
+    .catch((error) => {
+      console.error(error);
+      if (internalImage.value) {
+        internalImage.value.enabled = !internalImage.value?.enabled;
+      }
+    })
+    .finally(() => {
+      updating.value = false;
     });
-  } catch (error) {
-    console.error(error);
-    internalImage.value.enabled = !internalImage.value.enabled;
-  }
-
-  updating.value = false;
 };
 
 const toggleGlobal = async () => {
@@ -110,19 +113,22 @@ const toggleGlobal = async () => {
 
   internalImage.value.global = !internalImage.value.global;
 
-  try {
-    await mutation.mutate({
+  await mutation
+    .mutateAsync({
       id: internalImage.value.id,
       data: {
         global: internalImage.value.global,
       },
+    })
+    .catch((error) => {
+      console.error(error);
+      if (internalImage.value) {
+        internalImage.value.global = !internalImage.value.global;
+      }
+    })
+    .finally(() => {
+      updating.value = false;
     });
-  } catch (error) {
-    console.error(error);
-    internalImage.value.global = !internalImage.value.global;
-  }
-
-  updating.value = false;
 };
 
 const destroyMutation = useDestroyImageMutation();
@@ -134,17 +140,19 @@ const deleteImage = async () => {
 
   deleting.value = true;
 
-  try {
-    await destroyMutation.mutate({
+  await destroyMutation
+    .mutateAsync({
       id: internalImage.value.id,
+    })
+    .then(() => {
+      emit("image-deleted", internalImage.value);
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+    .finally(() => {
+      deleting.value = false;
     });
-
-    emit("image-deleted", internalImage.value);
-  } catch (error) {
-    console.error(error);
-  }
-
-  deleting.value = false;
 };
 
 const debouncedUpdateCaption = async () => {
@@ -154,18 +162,19 @@ const debouncedUpdateCaption = async () => {
 
   updating.value = true;
 
-  try {
-    await mutation.mutate({
+  await mutation
+    .mutateAsync({
       id: internalImage.value.id,
       data: {
         caption: internalImage.value.caption,
       },
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+    .finally(() => {
+      updating.value = false;
     });
-  } catch (error) {
-    console.error(error);
-  }
-
-  updating.value = false;
 };
 
 const updateCaption = debounce(debouncedUpdateCaption, 500);

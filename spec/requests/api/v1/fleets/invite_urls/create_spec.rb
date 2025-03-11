@@ -17,8 +17,8 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/sch
   path "/fleets/{fleetSlug}/invite-urls" do
     parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
 
-    post("Create Invite Url") do
-      operationId "createInviteUrl"
+    post("Create Fleet Invite Url") do
+      operationId "createFleetInviteUrl"
       tags "FleetInviteUrls"
       consumes "application/json"
       produces "application/json"

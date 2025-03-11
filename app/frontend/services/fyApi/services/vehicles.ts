@@ -4,201 +4,32 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import { useMutation, useQuery } from "@tanstack/vue-query";
+import { useMutation } from "@tanstack/vue-query";
 import type {
-  DataTag,
   MutationFunction,
-  QueryFunction,
-  QueryKey,
   UseMutationOptions,
   UseMutationReturnType,
-  UseQueryOptions,
-  UseQueryReturnType,
 } from "@tanstack/vue-query";
 import { unref } from "vue";
 import type { MaybeRef } from "vue";
 import type {
   Check,
   CheckInput,
-  FilterOption,
   StandardError,
   Vehicle,
-  VehicleBulkDestroyInput,
-  VehicleBulkUpdateInput,
+  VehicleCreateBulkInput,
   VehicleCreateInput,
+  VehicleDestroyBulkInput,
+  VehicleUpdateBulkInput,
   VehicleUpdateInput,
 } from "../models";
 import { axiosClient } from "../axiosClient";
 import type { ErrorType } from "../axiosClient";
 
 /**
- * @summary Update multiple vehicles
- */
-export const vehicleUpdateBulk = (
-  vehicleBulkUpdateInput: MaybeRef<VehicleBulkUpdateInput>,
-) => {
-  vehicleBulkUpdateInput = unref(vehicleBulkUpdateInput);
-
-  return axiosClient<void>({
-    url: `/vehicles/bulk`,
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    data: vehicleBulkUpdateInput,
-  });
-};
-
-export const getVehicleUpdateBulkMutationOptions = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof vehicleUpdateBulk>>,
-    TError,
-    { data: VehicleBulkUpdateInput },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof vehicleUpdateBulk>>,
-  TError,
-  { data: VehicleBulkUpdateInput },
-  TContext
-> => {
-  const mutationKey = ["vehicleUpdateBulk"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof vehicleUpdateBulk>>,
-    { data: VehicleBulkUpdateInput }
-  > = (props) => {
-    const { data } = props ?? {};
-
-    return vehicleUpdateBulk(data);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type VehicleUpdateBulkMutationResult = NonNullable<
-  Awaited<ReturnType<typeof vehicleUpdateBulk>>
->;
-export type VehicleUpdateBulkMutationBody = VehicleBulkUpdateInput;
-export type VehicleUpdateBulkMutationError = ErrorType<StandardError>;
-
-/**
- * @summary Update multiple vehicles
- */
-export const useVehicleUpdateBulk = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof vehicleUpdateBulk>>,
-    TError,
-    { data: VehicleBulkUpdateInput },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof vehicleUpdateBulk>>,
-  TError,
-  { data: VehicleBulkUpdateInput },
-  TContext
-> => {
-  const mutationOptions = getVehicleUpdateBulkMutationOptions(options);
-
-  return useMutation(mutationOptions);
-};
-/**
- * @summary Destroy multiple Vehicles
- */
-export const vehicleDestroyBulk = (
-  vehicleBulkDestroyInput: MaybeRef<VehicleBulkDestroyInput>,
-) => {
-  vehicleBulkDestroyInput = unref(vehicleBulkDestroyInput);
-
-  return axiosClient<void>({
-    url: `/vehicles/destroy-bulk`,
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    data: vehicleBulkDestroyInput,
-  });
-};
-
-export const getVehicleDestroyBulkMutationOptions = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof vehicleDestroyBulk>>,
-    TError,
-    { data: VehicleBulkDestroyInput },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof vehicleDestroyBulk>>,
-  TError,
-  { data: VehicleBulkDestroyInput },
-  TContext
-> => {
-  const mutationKey = ["vehicleDestroyBulk"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof vehicleDestroyBulk>>,
-    { data: VehicleBulkDestroyInput }
-  > = (props) => {
-    const { data } = props ?? {};
-
-    return vehicleDestroyBulk(data);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type VehicleDestroyBulkMutationResult = NonNullable<
-  Awaited<ReturnType<typeof vehicleDestroyBulk>>
->;
-export type VehicleDestroyBulkMutationBody = VehicleBulkDestroyInput;
-export type VehicleDestroyBulkMutationError = ErrorType<StandardError>;
-
-/**
- * @summary Destroy multiple Vehicles
- */
-export const useVehicleDestroyBulk = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof vehicleDestroyBulk>>,
-    TError,
-    { data: VehicleBulkDestroyInput },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof vehicleDestroyBulk>>,
-  TError,
-  { data: VehicleBulkDestroyInput },
-  TContext
-> => {
-  const mutationOptions = getVehicleDestroyBulkMutationOptions(options);
-
-  return useMutation(mutationOptions);
-};
-/**
  * @summary Check Vehicle Serial
  */
-export const vehicleCheckSerial = (
+export const checkSerialVehicle = (
   checkInput: MaybeRef<CheckInput>,
   signal?: AbortSignal,
 ) => {
@@ -213,23 +44,23 @@ export const vehicleCheckSerial = (
   });
 };
 
-export const getVehicleCheckSerialMutationOptions = <
+export const getCheckSerialVehicleMutationOptions = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof vehicleCheckSerial>>,
+    Awaited<ReturnType<typeof checkSerialVehicle>>,
     TError,
     { data: CheckInput },
     TContext
   >;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof vehicleCheckSerial>>,
+  Awaited<ReturnType<typeof checkSerialVehicle>>,
   TError,
   { data: CheckInput },
   TContext
 > => {
-  const mutationKey = ["vehicleCheckSerial"];
+  const mutationKey = ["checkSerialVehicle"];
   const { mutation: mutationOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -239,50 +70,216 @@ export const getVehicleCheckSerialMutationOptions = <
     : { mutation: { mutationKey } };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof vehicleCheckSerial>>,
+    Awaited<ReturnType<typeof checkSerialVehicle>>,
     { data: CheckInput }
   > = (props) => {
     const { data } = props ?? {};
 
-    return vehicleCheckSerial(data);
+    return checkSerialVehicle(data);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type VehicleCheckSerialMutationResult = NonNullable<
-  Awaited<ReturnType<typeof vehicleCheckSerial>>
+export type CheckSerialVehicleMutationResult = NonNullable<
+  Awaited<ReturnType<typeof checkSerialVehicle>>
 >;
-export type VehicleCheckSerialMutationBody = CheckInput;
-export type VehicleCheckSerialMutationError = ErrorType<StandardError>;
+export type CheckSerialVehicleMutationBody = CheckInput;
+export type CheckSerialVehicleMutationError = ErrorType<StandardError>;
 
 /**
  * @summary Check Vehicle Serial
  */
-export const useVehicleCheckSerial = <
+export const useCheckSerialVehicle = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof vehicleCheckSerial>>,
+    Awaited<ReturnType<typeof checkSerialVehicle>>,
     TError,
     { data: CheckInput },
     TContext
   >;
 }): UseMutationReturnType<
-  Awaited<ReturnType<typeof vehicleCheckSerial>>,
+  Awaited<ReturnType<typeof checkSerialVehicle>>,
   TError,
   { data: CheckInput },
   TContext
 > => {
-  const mutationOptions = getVehicleCheckSerialMutationOptions(options);
+  const mutationOptions = getCheckSerialVehicleMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+/**
+ * @summary Create multiple vehicles
+ */
+export const createBulkVehicle = (
+  vehicleCreateBulkInput: MaybeRef<VehicleCreateBulkInput>,
+  signal?: AbortSignal,
+) => {
+  vehicleCreateBulkInput = unref(vehicleCreateBulkInput);
+
+  return axiosClient<void>({
+    url: `/vehicles/bulk`,
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    data: vehicleCreateBulkInput,
+    signal,
+  });
+};
+
+export const getCreateBulkVehicleMutationOptions = <
+  TError = ErrorType<StandardError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createBulkVehicle>>,
+    TError,
+    { data: VehicleCreateBulkInput },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof createBulkVehicle>>,
+  TError,
+  { data: VehicleCreateBulkInput },
+  TContext
+> => {
+  const mutationKey = ["createBulkVehicle"];
+  const { mutation: mutationOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof createBulkVehicle>>,
+    { data: VehicleCreateBulkInput }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return createBulkVehicle(data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type CreateBulkVehicleMutationResult = NonNullable<
+  Awaited<ReturnType<typeof createBulkVehicle>>
+>;
+export type CreateBulkVehicleMutationBody = VehicleCreateBulkInput;
+export type CreateBulkVehicleMutationError = ErrorType<StandardError>;
+
+/**
+ * @summary Create multiple vehicles
+ */
+export const useCreateBulkVehicle = <
+  TError = ErrorType<StandardError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createBulkVehicle>>,
+    TError,
+    { data: VehicleCreateBulkInput },
+    TContext
+  >;
+}): UseMutationReturnType<
+  Awaited<ReturnType<typeof createBulkVehicle>>,
+  TError,
+  { data: VehicleCreateBulkInput },
+  TContext
+> => {
+  const mutationOptions = getCreateBulkVehicleMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+/**
+ * @summary Update multiple vehicles
+ */
+export const updateBulkVehicle = (
+  vehicleUpdateBulkInput: MaybeRef<VehicleUpdateBulkInput>,
+) => {
+  vehicleUpdateBulkInput = unref(vehicleUpdateBulkInput);
+
+  return axiosClient<void>({
+    url: `/vehicles/bulk`,
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    data: vehicleUpdateBulkInput,
+  });
+};
+
+export const getUpdateBulkVehicleMutationOptions = <
+  TError = ErrorType<StandardError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateBulkVehicle>>,
+    TError,
+    { data: VehicleUpdateBulkInput },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof updateBulkVehicle>>,
+  TError,
+  { data: VehicleUpdateBulkInput },
+  TContext
+> => {
+  const mutationKey = ["updateBulkVehicle"];
+  const { mutation: mutationOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof updateBulkVehicle>>,
+    { data: VehicleUpdateBulkInput }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return updateBulkVehicle(data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type UpdateBulkVehicleMutationResult = NonNullable<
+  Awaited<ReturnType<typeof updateBulkVehicle>>
+>;
+export type UpdateBulkVehicleMutationBody = VehicleUpdateBulkInput;
+export type UpdateBulkVehicleMutationError = ErrorType<StandardError>;
+
+/**
+ * @summary Update multiple vehicles
+ */
+export const useUpdateBulkVehicle = <
+  TError = ErrorType<StandardError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateBulkVehicle>>,
+    TError,
+    { data: VehicleUpdateBulkInput },
+    TContext
+  >;
+}): UseMutationReturnType<
+  Awaited<ReturnType<typeof updateBulkVehicle>>,
+  TError,
+  { data: VehicleUpdateBulkInput },
+  TContext
+> => {
+  const mutationOptions = getUpdateBulkVehicleMutationOptions(options);
 
   return useMutation(mutationOptions);
 };
 /**
  * @summary Create new Vehicle
  */
-export const vehicleCreate = (
+export const createVehicle = (
   vehicleCreateInput: MaybeRef<VehicleCreateInput>,
   signal?: AbortSignal,
 ) => {
@@ -297,23 +294,23 @@ export const vehicleCreate = (
   });
 };
 
-export const getVehicleCreateMutationOptions = <
+export const getCreateVehicleMutationOptions = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof vehicleCreate>>,
+    Awaited<ReturnType<typeof createVehicle>>,
     TError,
     { data: VehicleCreateInput },
     TContext
   >;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof vehicleCreate>>,
+  Awaited<ReturnType<typeof createVehicle>>,
   TError,
   { data: VehicleCreateInput },
   TContext
 > => {
-  const mutationKey = ["vehicleCreate"];
+  const mutationKey = ["createVehicle"];
   const { mutation: mutationOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -323,73 +320,73 @@ export const getVehicleCreateMutationOptions = <
     : { mutation: { mutationKey } };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof vehicleCreate>>,
+    Awaited<ReturnType<typeof createVehicle>>,
     { data: VehicleCreateInput }
   > = (props) => {
     const { data } = props ?? {};
 
-    return vehicleCreate(data);
+    return createVehicle(data);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type VehicleCreateMutationResult = NonNullable<
-  Awaited<ReturnType<typeof vehicleCreate>>
+export type CreateVehicleMutationResult = NonNullable<
+  Awaited<ReturnType<typeof createVehicle>>
 >;
-export type VehicleCreateMutationBody = VehicleCreateInput;
-export type VehicleCreateMutationError = ErrorType<StandardError>;
+export type CreateVehicleMutationBody = VehicleCreateInput;
+export type CreateVehicleMutationError = ErrorType<StandardError>;
 
 /**
  * @summary Create new Vehicle
  */
-export const useVehicleCreate = <
+export const useCreateVehicle = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof vehicleCreate>>,
+    Awaited<ReturnType<typeof createVehicle>>,
     TError,
     { data: VehicleCreateInput },
     TContext
   >;
 }): UseMutationReturnType<
-  Awaited<ReturnType<typeof vehicleCreate>>,
+  Awaited<ReturnType<typeof createVehicle>>,
   TError,
   { data: VehicleCreateInput },
   TContext
 > => {
-  const mutationOptions = getVehicleCreateMutationOptions(options);
+  const mutationOptions = getCreateVehicleMutationOptions(options);
 
   return useMutation(mutationOptions);
 };
 /**
  * @summary Delete all ingame bought Vehicles
  */
-export const destroyAllIngame = () => {
+export const destroyAllIngameVehicles = () => {
   return axiosClient<void>({
     url: `/vehicles/destroy-all-ingame`,
     method: "DELETE",
   });
 };
 
-export const getDestroyAllIngameMutationOptions = <
+export const getDestroyAllIngameVehiclesMutationOptions = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof destroyAllIngame>>,
+    Awaited<ReturnType<typeof destroyAllIngameVehicles>>,
     TError,
     void,
     TContext
   >;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof destroyAllIngame>>,
+  Awaited<ReturnType<typeof destroyAllIngameVehicles>>,
   TError,
   void,
   TContext
 > => {
-  const mutationKey = ["destroyAllIngame"];
+  const mutationKey = ["destroyAllIngameVehicles"];
   const { mutation: mutationOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -399,70 +396,152 @@ export const getDestroyAllIngameMutationOptions = <
     : { mutation: { mutationKey } };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof destroyAllIngame>>,
+    Awaited<ReturnType<typeof destroyAllIngameVehicles>>,
     void
   > = () => {
-    return destroyAllIngame();
+    return destroyAllIngameVehicles();
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type DestroyAllIngameMutationResult = NonNullable<
-  Awaited<ReturnType<typeof destroyAllIngame>>
+export type DestroyAllIngameVehiclesMutationResult = NonNullable<
+  Awaited<ReturnType<typeof destroyAllIngameVehicles>>
 >;
 
-export type DestroyAllIngameMutationError = ErrorType<StandardError>;
+export type DestroyAllIngameVehiclesMutationError = ErrorType<StandardError>;
 
 /**
  * @summary Delete all ingame bought Vehicles
  */
-export const useDestroyAllIngame = <
+export const useDestroyAllIngameVehicles = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof destroyAllIngame>>,
+    Awaited<ReturnType<typeof destroyAllIngameVehicles>>,
     TError,
     void,
     TContext
   >;
 }): UseMutationReturnType<
-  Awaited<ReturnType<typeof destroyAllIngame>>,
+  Awaited<ReturnType<typeof destroyAllIngameVehicles>>,
   TError,
   void,
   TContext
 > => {
-  const mutationOptions = getDestroyAllIngameMutationOptions(options);
+  const mutationOptions = getDestroyAllIngameVehiclesMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+/**
+ * @summary Destroy multiple Vehicles
+ */
+export const destroyBulkVehicle = (
+  vehicleDestroyBulkInput: MaybeRef<VehicleDestroyBulkInput>,
+) => {
+  vehicleDestroyBulkInput = unref(vehicleDestroyBulkInput);
+
+  return axiosClient<void>({
+    url: `/vehicles/destroy-bulk`,
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    data: vehicleDestroyBulkInput,
+  });
+};
+
+export const getDestroyBulkVehicleMutationOptions = <
+  TError = ErrorType<StandardError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof destroyBulkVehicle>>,
+    TError,
+    { data: VehicleDestroyBulkInput },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof destroyBulkVehicle>>,
+  TError,
+  { data: VehicleDestroyBulkInput },
+  TContext
+> => {
+  const mutationKey = ["destroyBulkVehicle"];
+  const { mutation: mutationOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof destroyBulkVehicle>>,
+    { data: VehicleDestroyBulkInput }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return destroyBulkVehicle(data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DestroyBulkVehicleMutationResult = NonNullable<
+  Awaited<ReturnType<typeof destroyBulkVehicle>>
+>;
+export type DestroyBulkVehicleMutationBody = VehicleDestroyBulkInput;
+export type DestroyBulkVehicleMutationError = ErrorType<StandardError>;
+
+/**
+ * @summary Destroy multiple Vehicles
+ */
+export const useDestroyBulkVehicle = <
+  TError = ErrorType<StandardError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof destroyBulkVehicle>>,
+    TError,
+    { data: VehicleDestroyBulkInput },
+    TContext
+  >;
+}): UseMutationReturnType<
+  Awaited<ReturnType<typeof destroyBulkVehicle>>,
+  TError,
+  { data: VehicleDestroyBulkInput },
+  TContext
+> => {
+  const mutationOptions = getDestroyBulkVehicleMutationOptions(options);
 
   return useMutation(mutationOptions);
 };
 /**
  * @summary Delete Vehicle
  */
-export const vehicleDestroy = (id: MaybeRef<string>) => {
+export const destroyVehicle = (id: MaybeRef<string>) => {
   id = unref(id);
 
   return axiosClient<Vehicle>({ url: `/vehicles/${id}`, method: "DELETE" });
 };
 
-export const getVehicleDestroyMutationOptions = <
+export const getDestroyVehicleMutationOptions = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof vehicleDestroy>>,
+    Awaited<ReturnType<typeof destroyVehicle>>,
     TError,
     { id: string },
     TContext
   >;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof vehicleDestroy>>,
+  Awaited<ReturnType<typeof destroyVehicle>>,
   TError,
   { id: string },
   TContext
 > => {
-  const mutationKey = ["vehicleDestroy"];
+  const mutationKey = ["destroyVehicle"];
   const { mutation: mutationOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -472,50 +551,50 @@ export const getVehicleDestroyMutationOptions = <
     : { mutation: { mutationKey } };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof vehicleDestroy>>,
+    Awaited<ReturnType<typeof destroyVehicle>>,
     { id: string }
   > = (props) => {
     const { id } = props ?? {};
 
-    return vehicleDestroy(id);
+    return destroyVehicle(id);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type VehicleDestroyMutationResult = NonNullable<
-  Awaited<ReturnType<typeof vehicleDestroy>>
+export type DestroyVehicleMutationResult = NonNullable<
+  Awaited<ReturnType<typeof destroyVehicle>>
 >;
 
-export type VehicleDestroyMutationError = ErrorType<StandardError>;
+export type DestroyVehicleMutationError = ErrorType<StandardError>;
 
 /**
  * @summary Delete Vehicle
  */
-export const useVehicleDestroy = <
+export const useDestroyVehicle = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof vehicleDestroy>>,
+    Awaited<ReturnType<typeof destroyVehicle>>,
     TError,
     { id: string },
     TContext
   >;
 }): UseMutationReturnType<
-  Awaited<ReturnType<typeof vehicleDestroy>>,
+  Awaited<ReturnType<typeof destroyVehicle>>,
   TError,
   { id: string },
   TContext
 > => {
-  const mutationOptions = getVehicleDestroyMutationOptions(options);
+  const mutationOptions = getDestroyVehicleMutationOptions(options);
 
   return useMutation(mutationOptions);
 };
 /**
  * @summary Update Vehicle
  */
-export const vehicleUpdate = (
+export const updateVehicle = (
   id: MaybeRef<string>,
   vehicleUpdateInput: MaybeRef<VehicleUpdateInput>,
 ) => {
@@ -530,23 +609,23 @@ export const vehicleUpdate = (
   });
 };
 
-export const getVehicleUpdateMutationOptions = <
+export const getUpdateVehicleMutationOptions = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof vehicleUpdate>>,
+    Awaited<ReturnType<typeof updateVehicle>>,
     TError,
     { id: string; data: VehicleUpdateInput },
     TContext
   >;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof vehicleUpdate>>,
+  Awaited<ReturnType<typeof updateVehicle>>,
   TError,
   { id: string; data: VehicleUpdateInput },
   TContext
 > => {
-  const mutationKey = ["vehicleUpdate"];
+  const mutationKey = ["updateVehicle"];
   const { mutation: mutationOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -556,108 +635,43 @@ export const getVehicleUpdateMutationOptions = <
     : { mutation: { mutationKey } };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof vehicleUpdate>>,
+    Awaited<ReturnType<typeof updateVehicle>>,
     { id: string; data: VehicleUpdateInput }
   > = (props) => {
     const { id, data } = props ?? {};
 
-    return vehicleUpdate(id, data);
+    return updateVehicle(id, data);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type VehicleUpdateMutationResult = NonNullable<
-  Awaited<ReturnType<typeof vehicleUpdate>>
+export type UpdateVehicleMutationResult = NonNullable<
+  Awaited<ReturnType<typeof updateVehicle>>
 >;
-export type VehicleUpdateMutationBody = VehicleUpdateInput;
-export type VehicleUpdateMutationError = ErrorType<StandardError>;
+export type UpdateVehicleMutationBody = VehicleUpdateInput;
+export type UpdateVehicleMutationError = ErrorType<StandardError>;
 
 /**
  * @summary Update Vehicle
  */
-export const useVehicleUpdate = <
+export const useUpdateVehicle = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof vehicleUpdate>>,
+    Awaited<ReturnType<typeof updateVehicle>>,
     TError,
     { id: string; data: VehicleUpdateInput },
     TContext
   >;
 }): UseMutationReturnType<
-  Awaited<ReturnType<typeof vehicleUpdate>>,
+  Awaited<ReturnType<typeof updateVehicle>>,
   TError,
   { id: string; data: VehicleUpdateInput },
   TContext
 > => {
-  const mutationOptions = getVehicleUpdateMutationOptions(options);
+  const mutationOptions = getUpdateVehicleMutationOptions(options);
 
   return useMutation(mutationOptions);
 };
-/**
- * @summary Bought Via Filters
- */
-export const boughtViaFilters = (signal?: AbortSignal) => {
-  return axiosClient<FilterOption[]>({
-    url: `/vehicles/filters/bought-via`,
-    method: "GET",
-    signal,
-  });
-};
-
-export const getBoughtViaFiltersQueryKey = () => {
-  return ["vehicles", "filters", "bought-via"] as const;
-};
-
-export const getBoughtViaFiltersQueryOptions = <
-  TData = Awaited<ReturnType<typeof boughtViaFilters>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof boughtViaFilters>>, TError, TData>
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
-
-  const queryKey = getBoughtViaFiltersQueryKey();
-
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof boughtViaFilters>>
-  > = ({ signal }) => boughtViaFilters(signal);
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof boughtViaFilters>>,
-    TError,
-    TData
-  >;
-};
-
-export type BoughtViaFiltersQueryResult = NonNullable<
-  Awaited<ReturnType<typeof boughtViaFilters>>
->;
-export type BoughtViaFiltersQueryError = ErrorType<unknown>;
-
-/**
- * @summary Bought Via Filters
- */
-
-export function useBoughtViaFilters<
-  TData = Awaited<ReturnType<typeof boughtViaFilters>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof boughtViaFilters>>, TError, TData>
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = getBoughtViaFiltersQueryOptions(options);
-
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
-
-  query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
-
-  return query;
-}

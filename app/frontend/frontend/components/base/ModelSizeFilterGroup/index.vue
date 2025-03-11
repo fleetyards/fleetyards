@@ -1,20 +1,18 @@
-<template>
-  <FilterGroup
-    v-model="internalValue"
-    :label="t('labels.filters.models.size')"
-    :query-fn="fetch"
-    :name="name"
-    :multiple="multiple"
-    :no-label="noLabel"
-  />
-</template>
+<script lang="ts">
+export default {
+  name: "ModelSizeFilterGroup",
+};
+</script>
 
 <script lang="ts" setup>
-import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useI18n } from "@/shared/composables/useI18n";
 import FilterGroup, {
   type FilterGroupParams,
 } from "@/shared/components/base/FilterGroup/index.vue";
+import {
+  modelSizesFilters as fetchModelSizesFilters,
+  type FilterOption,
+} from "@/services/fyApi";
 
 type Props = {
   name: string;
@@ -53,15 +51,18 @@ watch(
   },
 );
 
-const { models: modelsService } = useApiClient();
-
-const fetch = async (_params: FilterGroupParams) => {
-  return modelsService.modelSizes();
+const fetch = async (_params: FilterGroupParams<FilterOption>) => {
+  return fetchModelSizesFilters();
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "ModelSizeFilterGroup",
-};
-</script>
+<template>
+  <FilterGroup
+    v-model="internalValue"
+    :label="t('labels.filters.models.size')"
+    :query-fn="fetch"
+    :name="name"
+    :multiple="multiple"
+    :no-label="noLabel"
+  />
+</template>

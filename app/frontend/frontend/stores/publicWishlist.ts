@@ -10,6 +10,7 @@ export const usePublicWishlistStore = defineStore("publicWishlist", {
     detailsVisible: false,
     filterVisible: true,
     ships: [],
+    gridView: true,
   }),
   getters: {
     empty(state) {

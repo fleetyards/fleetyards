@@ -10,6 +10,7 @@ export const usePublicFleetStore = defineStore("publicFleet", {
     detailsVisible: false,
     filterVisible: true,
     grouped: true,
+    gridView: true,
   }),
   actions: {
     toggleDetails() {

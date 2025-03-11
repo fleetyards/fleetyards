@@ -13,7 +13,7 @@ import type { Mesh } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { useNoty } from "@/shared/composables/useNoty";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useI18n } from "@/shared/composables/useI18n";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
@@ -32,7 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const { displayAlert } = useNoty();
+const { displayAlert } = useAppNotifications();
 
 const modelColor = ref(0x428bca);
 

@@ -11,16 +11,6 @@ resources :users, only: [] do
     put "account", to: "users#update_account"
 
     get ":username", to: "public/users#show"
-
-    resource :two_factor, path: "two-factor", only: [] do
-      collection do
-        get :qrcode
-        post :start
-        post :enable
-        post :disable
-        post "generate-backup-codes" => "two_factors#generate_backup_codes"
-      end
-    end
   end
 end
 

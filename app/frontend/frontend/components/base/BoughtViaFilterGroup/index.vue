@@ -6,10 +6,13 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
-import { useHangarQueries } from "@/frontend/composables/useHangarQueries";
-
-const { boughtViaFilterQuery } = useHangarQueries();
+import FilterGroup, {
+  type FilterGroupParams,
+} from "@/shared/components/base/FilterGroup/index.vue";
+import {
+  vehicleBoughtViaFilters as fetchBoughtViaFilters,
+  FilterOption,
+} from "@/services/fyApi";
 
 type Props = {
   name: string;
@@ -47,13 +50,17 @@ watch(
     emit("update:modelValue", internalValue.value);
   },
 );
+
+const fetch = (_params: FilterGroupParams<FilterOption>) => {
+  return fetchBoughtViaFilters();
+};
 </script>
 
 <template>
   <FilterGroup
     v-model="internalValue"
     :label="t('labels.filters.vehicles.boughtVia')"
-    :query-fn="boughtViaFilterQuery"
+    :query-fn="fetch"
     :name="name"
     :paginated="false"
     :searchable="false"

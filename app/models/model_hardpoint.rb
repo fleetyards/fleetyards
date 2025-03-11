@@ -36,7 +36,8 @@ class ModelHardpoint < ApplicationRecord
 
   validates :source, :key, :hardpoint_type, :group, presence: true
 
-  enum source: {ship_matrix: 0, game_files: 1}
+  enum :source,
+    ship_matrix: 0, game_files: 1
 
   after_save :update_model
 
@@ -53,27 +54,35 @@ class ModelHardpoint < ApplicationRecord
     fuel_intakes: 20, fuel_tanks: 21, jump_modules: 23, quantum_fuel_tanks: 24
   }.freeze
 
-  enum hardpoint_type: SHIP_MATRIX_HARDPOINT_TYPES.merge(GAME_FILE_HARDPOINT_TYPES), _suffix: true
+  enum :hardpoint_type,
+    SHIP_MATRIX_HARDPOINT_TYPES.merge(GAME_FILE_HARDPOINT_TYPES),
+    suffix: true
 
-  enum group: {avionic: 0, system: 1, propulsion: 2, thruster: 3, weapon: 4}, _suffix: true
+  enum :group,
+    {avionic: 0, system: 1, propulsion: 2, thruster: 3, weapon: 4},
+    suffix: true
 
-  enum category: {
-    main: 0, retro: 1, vtol: 2,
-    fixed: 3, gimbal: 4, joint: 5,
-    manned_turret: 20, remote_turret: 21, missile_turret: 22,
-    missile_rack: 30,
-    qed: 40, emp: 41
-  }
+  enum :category,
+    {
+      main: 0, retro: 1, vtol: 2,
+      fixed: 3, gimbal: 4, joint: 5,
+      manned_turret: 20, remote_turret: 21, missile_turret: 22,
+      missile_rack: 30,
+      qed: 40, emp: 41
+    }
 
-  enum sub_category: {
-    retro_thrusters: 0, vtol_thrusters: 1,
-    manned_turrets: 10, remote_turrets: 11, missile_turret: 12
-  }, _suffix: true
+  enum :sub_category,
+    {
+      retro_thrusters: 0, vtol_thrusters: 1,
+      manned_turrets: 10, remote_turrets: 11, missile_turret: 12
+    }, suffix: true
 
-  enum size: {
-    vehicle: 0, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9,
-    ten: 10, eleven: 11, twelve: 12, snub: 100, small: 101, medium: 102, large: 103, capital: 104, tbd: 999
-  }, _suffix: true
+  enum :size,
+    {
+      vehicle: 0, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9,
+      ten: 10, eleven: 11, twelve: 12, snub: 100, small: 101, medium: 102, large: 103, capital: 104,
+      tbd: 999
+    }, suffix: true
 
   def self.types_by_group
     types_by_group = {}

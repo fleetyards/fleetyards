@@ -1,6 +1,6 @@
 import PhotoSwipeLightbox from "photoswipe/lightbox";
 import copyText from "@/shared/utils/CopyText";
-import { useNoty } from "@/shared/composables/useNoty";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useI18n } from "@/shared/composables/useI18n";
 
 export const useGallery = (
@@ -9,7 +9,7 @@ export const useGallery = (
 ) => {
   const { t } = useI18n();
 
-  const { displayAlert, displaySuccess } = useNoty();
+  const { displayAlert, displaySuccess } = useAppNotifications();
 
   const lightbox = ref<PhotoSwipeLightbox>();
 

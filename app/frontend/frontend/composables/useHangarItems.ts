@@ -1,9 +1,7 @@
 import { useRoute } from "vue-router";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useHangarStore } from "@/frontend/stores/hangar";
-import { useApiClient } from "@/frontend/composables/useApiClient";
-
-const { hangar: hangarService } = useApiClient();
+import { hangarItems } from "@/services/fyApi";
 
 export const useHangarItems = () => {
   const sessionStore = useSessionStore();
@@ -14,11 +12,13 @@ export const useHangarItems = () => {
       return;
     }
 
-    try {
-      hangarStore.save(await hangarService.hangarItems());
-    } catch (error) {
-      console.error(error);
-    }
+    await hangarItems()
+      .then((response) => {
+        hangarStore.save(response);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   fetchHangarItems();

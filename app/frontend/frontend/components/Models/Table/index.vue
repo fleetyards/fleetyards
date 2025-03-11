@@ -134,6 +134,16 @@ const storeImage = (record: Model) => {
           toNumber(record.metrics.cargo || "", "cargo")
         }}</span>
       </template>
+      <template #col-hydrogen_fuel_tank_size="{ record }">
+        <span class="no-break">{{
+          toNumber(record.metrics.hydrogenFuelTankSize || "", "cargo")
+        }}</span>
+      </template>
+      <template #col-quantum_fuel_tank_size="{ record }">
+        <span class="no-break">{{
+          toNumber(record.metrics.quantumFuelTankSize || "", "cargo")
+        }}</span>
+      </template>
       <template #col-min_crew="{ record }">
         <span class="no-break">{{
           toNumber(record.crew.min || "", "people")

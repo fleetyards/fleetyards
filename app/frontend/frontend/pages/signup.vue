@@ -8,22 +8,33 @@ export default {
 import { useForm } from "vee-validate";
 import { transformErrors } from "@/frontend/api/helpers";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useNoty } from "@/shared/composables/useNoty";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useFleetStore } from "@/frontend/stores/fleet";
-import type {
-  UserCreateInput,
-  ApiError,
-  ValidationError,
-} from "@/services/fyApi";
-import { useApiClient } from "@/frontend/composables/useApiClient";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
+import { type ErrorType } from "@/services/fyAdminApi/axiosClient";
+import {
+  useSignup as useSignupMutation,
+  type UserCreateInput,
+  type ValidationError,
+} from "@/services/fyApi";
+import { useRedirectBack } from "@/shared/composables/useRedirectBack";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 
 const { t } = useI18n();
 
-const { displaySuccess, displayAlert } = useNoty();
+const { displaySuccess, displayAlert } = useAppNotifications();
 
 const fleetStore = useFleetStore();
+
+const loginRoute = computed(() => {
+  return {
+    name: "login",
+    query: redirectQuery.value,
+  };
+});
 
 const initialValues = ref<UserCreateInput>({
   username: "",
@@ -58,44 +69,48 @@ const [saleNotify, saleNotifyProps] = defineField("saleNotify");
 
 const submitting = ref(false);
 
-const resetFleetInviteToken = () => {};
+const resetFleetInviteToken = () => {
+  fleetStore.resetInviteToken();
+};
 
-const router = useRouter();
+const signupMutation = useSignupMutation();
 
-const { users: usersService } = useApiClient();
+const { handleRedirect, redirectQuery } = useRedirectBack();
 
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
-  try {
-    await usersService.signup({
-      requestBody: values,
-    });
-
-    displaySuccess({
-      text: t("messages.signup.success"),
-    });
-
-    fleetStore.resetInviteToken();
-
-    router.push("/").catch(() => {});
-  } catch (error) {
-    const errorResponse = (error as ApiError).body as ValidationError;
-
-    if (errorResponse.errors) {
-      setErrors(transformErrors(errorResponse.errors));
-
-      displayAlert({
-        text: errorResponse.message,
+  await signupMutation
+    .mutateAsync({
+      data: values,
+    })
+    .then(async () => {
+      displaySuccess({
+        text: t("messages.signup.success"),
       });
-    } else {
-      displayAlert({
-        text: errorResponse.message,
-      });
-    }
-  }
 
-  submitting.value = false;
+      fleetStore.resetInviteToken();
+
+      handleRedirect();
+    })
+    .catch((error) => {
+      const response = error as unknown as ErrorType<ValidationError>;
+
+      if (response.response?.data?.errors) {
+        setErrors(transformErrors(response.response.data.errors));
+
+        displayAlert({
+          text: response.response?.data?.message,
+        });
+      } else {
+        displayAlert({
+          text: response.response?.data?.message,
+        });
+      }
+    })
+    .finally(() => {
+      submitting.value = false;
+    });
 });
 </script>
 
@@ -152,7 +167,7 @@ const onSubmit = handleSubmit(async (values) => {
           @clear="resetFleetInviteToken"
         />
 
-        <Checkbox
+        <FormCheckbox
           v-model="saleNotify"
           v-bind="saleNotifyProps"
           name="saleNotify"
@@ -181,7 +196,7 @@ const onSubmit = handleSubmit(async (values) => {
             {{ t("labels.alreadyRegistered") }}
           </p>
 
-          <Btn :to="{ name: 'login' }" :size="BtnSizesEnum.SMALL" :block="true">
+          <Btn :to="loginRoute" :size="BtnSizesEnum.SMALL" :block="true">
             {{ t("actions.login") }}
           </Btn>
         </footer>

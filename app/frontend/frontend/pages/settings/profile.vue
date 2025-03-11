@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
-import { useNoty } from "@/shared/composables/useNoty";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import AvatarUpload from "@/frontend/components/AvatarUpload/index.vue";
@@ -15,11 +15,11 @@ import { useForm } from "vee-validate";
 import { useComlink } from "@/shared/composables/useComlink";
 import { BtnTypesEnum, BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { type UserUpdateInput } from "@/services/fyApi";
-import { useApiClient } from "@/frontend/composables/useApiClient";
+import { useUpdateProfile as useUpdateProfileMutation } from "@/services/fyApi";
 
 const { t } = useI18n();
 
-const { displaySuccess, displayAlert } = useNoty();
+const { displaySuccess, displayAlert } = useAppNotifications();
 
 const sessionStore = useSessionStore();
 
@@ -69,28 +69,30 @@ const setupForm = () => {
 
 const comlink = useComlink();
 
-const { users: usersService } = useApiClient();
+const mutation = useUpdateProfileMutation();
 
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
-  try {
-    await usersService.updateProfile({
-      formData: values,
+  await mutation
+    .mutateAsync({
+      data: values,
+    })
+    .then(() => {
+      comlink.emit("user-update");
+      displaySuccess({
+        text: t("messages.updateProfile.success"),
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+      displayAlert({
+        text: t("messages.updateProfile.failure"),
+      });
+    })
+    .finally(() => {
+      submitting.value = false;
     });
-
-    comlink.emit("user-update");
-    displaySuccess({
-      text: t("messages.updateProfile.success"),
-    });
-  } catch (error) {
-    console.error(error);
-    displayAlert({
-      text: t("messages.updateProfile.failure"),
-    });
-  }
-
-  submitting.value = false;
 });
 </script>
 

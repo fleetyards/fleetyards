@@ -7,10 +7,10 @@ module Api
 
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
-        unless: :user_signed_in?,
+        unless: -> { warden.authenticate?(scope: :user) },
         only: %i[check_serial fleetchart hangar]
       before_action -> { doorkeeper_authorize! "hangar", "hangar:write" },
-        unless: :user_signed_in?,
+        unless: -> { warden.authenticate?(scope: :user) },
         except: %i[check_serial fleetchart hangar]
 
       def create
@@ -24,6 +24,24 @@ module Api
         else
           render json: ValidationError.new("vehicle.create", errors: @vehicle.errors), status: :bad_request
         end
+      end
+
+      def create_bulk
+        authorize! :create_bulk, :api_hangar
+
+        errors = []
+
+        Vehicle.transaction do
+          (vehicle_create_bulk_params[:vehicles] || []).each do |vehicle_params|
+            new_vehicle = current_user.vehicles.new(vehicle_params)
+
+            errors << new_vehicle.errors unless new_vehicle.save
+          end
+        end
+
+        return if errors.blank?
+
+        render json: ValidationError.new("vehicle.bulk_create", errors:), status: :bad_request
       end
 
       def update
@@ -108,14 +126,6 @@ module Api
         render json: {taken: current_user.vehicles.visible.purchased.exists?(serial: params[:value]&.upcase)}
       end
 
-      def bought_via_filters
-        authorize! :filters, :api_hangar
-
-        @filters = Vehicle.bought_via_filters
-
-        render "api/v1/shared/filters"
-      end
-
       # DEPRECATED
       def fleetchart
         authorize! :show, :api_hangar
@@ -149,6 +159,13 @@ module Api
             :name, :serial, :model_id, :wanted, :name_visible, :public, :sale_notify, :flagship,
             :model_paint_id, :bought_via,
             hangar_group_ids: [], model_module_ids: [], model_upgrade_ids: [], alternative_names: []
+          ).merge(user_id: current_user.id)
+      end
+
+      private def vehicle_create_bulk_params
+        @vehicle_bulk_params ||= params.transform_keys(&:underscore)
+          .permit(
+            vehicles: [:wanted, :model_id]
           ).merge(user_id: current_user.id)
       end
 

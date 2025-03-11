@@ -50,7 +50,7 @@ const { t } = useI18n();
 const route = useRoute();
 
 const pageRoute = (page: number) => ({
-  query: { page: String(page), q: route.query.q },
+  query: { ...route.query, page: String(page) },
   hash: props.hash,
 });
 

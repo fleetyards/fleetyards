@@ -8,14 +8,14 @@ export default {
 import PhotoSwipe from "photoswipe";
 import PhotoSwipeUIDefault from "photoswipe/dist/photoswipe-ui-default";
 import copyText from "@/shared/utils/CopyText";
-import { useNoty } from "@/shared/composables/useNoty";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useOverlayStore } from "@/shared/stores/overlay";
 import { type Image } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 
 const { t } = useI18n();
 
-const { displayAlert, displaySuccess } = useNoty();
+const { displayAlert, displaySuccess } = useAppNotifications();
 
 type Props = {
   items?: Array<Image>;

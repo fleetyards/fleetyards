@@ -22,7 +22,7 @@ state_path "#{app_dir}/tmp/pids/puma.state"
 
 activate_control_app
 
-# Allow puma to be restarted by `rails restart` command.
+# Allow puma to be restarted by `bin/rails restart` command.
 plugin :tmp_restart
 
 on_worker_boot do

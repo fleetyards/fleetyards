@@ -15,10 +15,6 @@ import type {
 import { computed, unref } from "vue";
 import type { MaybeRef } from "vue";
 import type {
-  CargoOptions,
-  CargoOptionsParams,
-  EmbedParams,
-  FilterOption,
   Images,
   Model,
   ModelExtended,
@@ -35,6 +31,7 @@ import type {
   ModelVariantsParams,
   ModelVideosParams,
   Models,
+  ModelsEmbedParams,
   ModelsParams,
   ModelsUpdatedParams,
   ModelsWithDocksParams,
@@ -45,367 +42,12 @@ import { axiosClient } from "../axiosClient";
 import type { ErrorType } from "../axiosClient";
 
 /**
- * @summary Models with Docks
- */
-export const modelsWithDocks = (
-  params?: MaybeRef<ModelsWithDocksParams>,
-  signal?: AbortSignal,
-) => {
-  params = unref(params);
-
-  return axiosClient<Models>({
-    url: `/models/with-docks`,
-    method: "GET",
-    params: unref(params),
-    signal,
-  });
-};
-
-export const getModelsWithDocksQueryKey = (
-  params?: MaybeRef<ModelsWithDocksParams>,
-) => {
-  return ["models", "with-docks", ...(params ? [params] : [])] as const;
-};
-
-export const getModelsWithDocksQueryOptions = <
-  TData = Awaited<ReturnType<typeof modelsWithDocks>>,
-  TError = ErrorType<unknown>,
->(
-  params?: MaybeRef<ModelsWithDocksParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof modelsWithDocks>>,
-        TError,
-        TData
-      >
-    >;
-  },
-) => {
-  const { query: queryOptions } = options ?? {};
-
-  const queryKey = getModelsWithDocksQueryKey(params);
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof modelsWithDocks>>> = ({
-    signal,
-  }) => modelsWithDocks(params, signal);
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof modelsWithDocks>>,
-    TError,
-    TData
-  >;
-};
-
-export type ModelsWithDocksQueryResult = NonNullable<
-  Awaited<ReturnType<typeof modelsWithDocks>>
->;
-export type ModelsWithDocksQueryError = ErrorType<unknown>;
-
-/**
- * @summary Models with Docks
- */
-
-export function useModelsWithDocks<
-  TData = Awaited<ReturnType<typeof modelsWithDocks>>,
-  TError = ErrorType<unknown>,
->(
-  params?: MaybeRef<ModelsWithDocksParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof modelsWithDocks>>,
-        TError,
-        TData
-      >
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = getModelsWithDocksQueryOptions(params, options);
-
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
-
-  query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
-
-  return query;
-}
-
-/**
- * @summary Unscheduled Models
- */
-export const modelsUnschduled = (signal?: AbortSignal) => {
-  return axiosClient<void>({
-    url: `/models/unscheduled`,
-    method: "GET",
-    signal,
-  });
-};
-
-export const getModelsUnschduledQueryKey = () => {
-  return ["models", "unscheduled"] as const;
-};
-
-export const getModelsUnschduledQueryOptions = <
-  TData = Awaited<ReturnType<typeof modelsUnschduled>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof modelsUnschduled>>, TError, TData>
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
-
-  const queryKey = getModelsUnschduledQueryKey();
-
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof modelsUnschduled>>
-  > = ({ signal }) => modelsUnschduled(signal);
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof modelsUnschduled>>,
-    TError,
-    TData
-  >;
-};
-
-export type ModelsUnschduledQueryResult = NonNullable<
-  Awaited<ReturnType<typeof modelsUnschduled>>
->;
-export type ModelsUnschduledQueryError = ErrorType<unknown>;
-
-/**
- * @summary Unscheduled Models
- */
-
-export function useModelsUnschduled<
-  TData = Awaited<ReturnType<typeof modelsUnschduled>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof modelsUnschduled>>, TError, TData>
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = getModelsUnschduledQueryOptions(options);
-
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
-
-  query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
-
-  return query;
-}
-
-/**
- * @summary Latest Models
- */
-export const modelsLatest = (signal?: AbortSignal) => {
-  return axiosClient<void>({ url: `/models/latest`, method: "GET", signal });
-};
-
-export const getModelsLatestQueryKey = () => {
-  return ["models", "latest"] as const;
-};
-
-export const getModelsLatestQueryOptions = <
-  TData = Awaited<ReturnType<typeof modelsLatest>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof modelsLatest>>, TError, TData>
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
-
-  const queryKey = getModelsLatestQueryKey();
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof modelsLatest>>> = ({
-    signal,
-  }) => modelsLatest(signal);
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof modelsLatest>>,
-    TError,
-    TData
-  >;
-};
-
-export type ModelsLatestQueryResult = NonNullable<
-  Awaited<ReturnType<typeof modelsLatest>>
->;
-export type ModelsLatestQueryError = ErrorType<unknown>;
-
-/**
- * @summary Latest Models
- */
-
-export function useModelsLatest<
-  TData = Awaited<ReturnType<typeof modelsLatest>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof modelsLatest>>, TError, TData>
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = getModelsLatestQueryOptions(options);
-
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
-
-  query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
-
-  return query;
-}
-
-/**
- * @summary Available Model-Slugs
- */
-export const modelsSlugs = (signal?: AbortSignal) => {
-  return axiosClient<void>({ url: `/models/slugs`, method: "GET", signal });
-};
-
-export const getModelsSlugsQueryKey = () => {
-  return ["models", "slugs"] as const;
-};
-
-export const getModelsSlugsQueryOptions = <
-  TData = Awaited<ReturnType<typeof modelsSlugs>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof modelsSlugs>>, TError, TData>
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
-
-  const queryKey = getModelsSlugsQueryKey();
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof modelsSlugs>>> = ({
-    signal,
-  }) => modelsSlugs(signal);
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof modelsSlugs>>,
-    TError,
-    TData
-  >;
-};
-
-export type ModelsSlugsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof modelsSlugs>>
->;
-export type ModelsSlugsQueryError = ErrorType<unknown>;
-
-/**
- * @summary Available Model-Slugs
- */
-
-export function useModelsSlugs<
-  TData = Awaited<ReturnType<typeof modelsSlugs>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof modelsSlugs>>, TError, TData>
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = getModelsSlugsQueryOptions(options);
-
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
-
-  query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
-
-  return query;
-}
-
-/**
- * @summary Updated Models
- */
-export const modelsUpdated = (
-  params?: MaybeRef<ModelsUpdatedParams>,
-  signal?: AbortSignal,
-) => {
-  params = unref(params);
-
-  return axiosClient<void>({
-    url: `/models/updated`,
-    method: "GET",
-    params: unref(params),
-    signal,
-  });
-};
-
-export const getModelsUpdatedQueryKey = (
-  params?: MaybeRef<ModelsUpdatedParams>,
-) => {
-  return ["models", "updated", ...(params ? [params] : [])] as const;
-};
-
-export const getModelsUpdatedQueryOptions = <
-  TData = Awaited<ReturnType<typeof modelsUpdated>>,
-  TError = ErrorType<void>,
->(
-  params?: MaybeRef<ModelsUpdatedParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof modelsUpdated>>, TError, TData>
-    >;
-  },
-) => {
-  const { query: queryOptions } = options ?? {};
-
-  const queryKey = getModelsUpdatedQueryKey(params);
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof modelsUpdated>>> = ({
-    signal,
-  }) => modelsUpdated(params, signal);
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof modelsUpdated>>,
-    TError,
-    TData
-  >;
-};
-
-export type ModelsUpdatedQueryResult = NonNullable<
-  Awaited<ReturnType<typeof modelsUpdated>>
->;
-export type ModelsUpdatedQueryError = ErrorType<void>;
-
-/**
- * @summary Updated Models
- */
-
-export function useModelsUpdated<
-  TData = Awaited<ReturnType<typeof modelsUpdated>>,
-  TError = ErrorType<void>,
->(
-  params?: MaybeRef<ModelsUpdatedParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof modelsUpdated>>, TError, TData>
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = getModelsUpdatedQueryOptions(params, options);
-
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
-
-  query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
-
-  return query;
-}
-
-/**
  * @summary Embed Models
  */
-export const embed = (params: MaybeRef<EmbedParams>, signal?: AbortSignal) => {
+export const modelsEmbed = (
+  params: MaybeRef<ModelsEmbedParams>,
+  signal?: AbortSignal,
+) => {
   params = unref(params);
 
   return axiosClient<Model[]>({
@@ -416,547 +58,57 @@ export const embed = (params: MaybeRef<EmbedParams>, signal?: AbortSignal) => {
   });
 };
 
-export const getEmbedQueryKey = (params: MaybeRef<EmbedParams>) => {
+export const getModelsEmbedQueryKey = (params: MaybeRef<ModelsEmbedParams>) => {
   return ["models", "embed", ...(params ? [params] : [])] as const;
 };
 
-export const getEmbedQueryOptions = <
-  TData = Awaited<ReturnType<typeof embed>>,
+export const getModelsEmbedQueryOptions = <
+  TData = Awaited<ReturnType<typeof modelsEmbed>>,
   TError = ErrorType<unknown>,
 >(
-  params: MaybeRef<EmbedParams>,
+  params: MaybeRef<ModelsEmbedParams>,
   options?: {
     query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof embed>>, TError, TData>
+      UseQueryOptions<Awaited<ReturnType<typeof modelsEmbed>>, TError, TData>
     >;
   },
 ) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey = getEmbedQueryKey(params);
+  const queryKey = getModelsEmbedQueryKey(params);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof embed>>> = ({
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof modelsEmbed>>> = ({
     signal,
-  }) => embed(params, signal);
+  }) => modelsEmbed(params, signal);
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof embed>>,
+    Awaited<ReturnType<typeof modelsEmbed>>,
     TError,
     TData
   >;
 };
 
-export type EmbedQueryResult = NonNullable<Awaited<ReturnType<typeof embed>>>;
-export type EmbedQueryError = ErrorType<unknown>;
+export type ModelsEmbedQueryResult = NonNullable<
+  Awaited<ReturnType<typeof modelsEmbed>>
+>;
+export type ModelsEmbedQueryError = ErrorType<unknown>;
 
 /**
  * @summary Embed Models
  */
 
-export function useEmbed<
-  TData = Awaited<ReturnType<typeof embed>>,
+export function useModelsEmbed<
+  TData = Awaited<ReturnType<typeof modelsEmbed>>,
   TError = ErrorType<unknown>,
 >(
-  params: MaybeRef<EmbedParams>,
+  params: MaybeRef<ModelsEmbedParams>,
   options?: {
     query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof embed>>, TError, TData>
+      UseQueryOptions<Awaited<ReturnType<typeof modelsEmbed>>, TError, TData>
     >;
   },
 ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = getEmbedQueryOptions(params, options);
-
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
-
-  query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
-
-  return query;
-}
-
-/**
- * @summary Model Filters
- */
-export const modelFilters = (signal?: AbortSignal) => {
-  return axiosClient<FilterOption[]>({
-    url: `/models/filters`,
-    method: "GET",
-    signal,
-  });
-};
-
-export const getModelFiltersQueryKey = () => {
-  return ["models", "filters"] as const;
-};
-
-export const getModelFiltersQueryOptions = <
-  TData = Awaited<ReturnType<typeof modelFilters>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof modelFilters>>, TError, TData>
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
-
-  const queryKey = getModelFiltersQueryKey();
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof modelFilters>>> = ({
-    signal,
-  }) => modelFilters(signal);
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof modelFilters>>,
-    TError,
-    TData
-  >;
-};
-
-export type ModelFiltersQueryResult = NonNullable<
-  Awaited<ReturnType<typeof modelFilters>>
->;
-export type ModelFiltersQueryError = ErrorType<unknown>;
-
-/**
- * @summary Model Filters
- */
-
-export function useModelFilters<
-  TData = Awaited<ReturnType<typeof modelFilters>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof modelFilters>>, TError, TData>
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = getModelFiltersQueryOptions(options);
-
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
-
-  query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
-
-  return query;
-}
-
-/**
- * @summary Model classifications
- */
-export const modelClassifications = (signal?: AbortSignal) => {
-  return axiosClient<FilterOption[]>({
-    url: `/models/classifications`,
-    method: "GET",
-    signal,
-  });
-};
-
-export const getModelClassificationsQueryKey = () => {
-  return ["models", "classifications"] as const;
-};
-
-export const getModelClassificationsQueryOptions = <
-  TData = Awaited<ReturnType<typeof modelClassifications>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof modelClassifications>>,
-      TError,
-      TData
-    >
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
-
-  const queryKey = getModelClassificationsQueryKey();
-
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof modelClassifications>>
-  > = ({ signal }) => modelClassifications(signal);
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof modelClassifications>>,
-    TError,
-    TData
-  >;
-};
-
-export type ModelClassificationsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof modelClassifications>>
->;
-export type ModelClassificationsQueryError = ErrorType<unknown>;
-
-/**
- * @summary Model classifications
- */
-
-export function useModelClassifications<
-  TData = Awaited<ReturnType<typeof modelClassifications>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof modelClassifications>>,
-      TError,
-      TData
-    >
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = getModelClassificationsQueryOptions(options);
-
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
-
-  query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
-
-  return query;
-}
-
-/**
- * @summary Model Production states
- */
-export const modelProductionStates = (signal?: AbortSignal) => {
-  return axiosClient<FilterOption[]>({
-    url: `/models/production-states`,
-    method: "GET",
-    signal,
-  });
-};
-
-export const getModelProductionStatesQueryKey = () => {
-  return ["models", "production-states"] as const;
-};
-
-export const getModelProductionStatesQueryOptions = <
-  TData = Awaited<ReturnType<typeof modelProductionStates>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof modelProductionStates>>,
-      TError,
-      TData
-    >
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
-
-  const queryKey = getModelProductionStatesQueryKey();
-
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof modelProductionStates>>
-  > = ({ signal }) => modelProductionStates(signal);
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof modelProductionStates>>,
-    TError,
-    TData
-  >;
-};
-
-export type ModelProductionStatesQueryResult = NonNullable<
-  Awaited<ReturnType<typeof modelProductionStates>>
->;
-export type ModelProductionStatesQueryError = ErrorType<unknown>;
-
-/**
- * @summary Model Production states
- */
-
-export function useModelProductionStates<
-  TData = Awaited<ReturnType<typeof modelProductionStates>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof modelProductionStates>>,
-      TError,
-      TData
-    >
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = getModelProductionStatesQueryOptions(options);
-
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
-
-  query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
-
-  return query;
-}
-
-/**
- * @summary Model focus
- */
-export const modelFocus = (signal?: AbortSignal) => {
-  return axiosClient<FilterOption[]>({
-    url: `/models/focus`,
-    method: "GET",
-    signal,
-  });
-};
-
-export const getModelFocusQueryKey = () => {
-  return ["models", "focus"] as const;
-};
-
-export const getModelFocusQueryOptions = <
-  TData = Awaited<ReturnType<typeof modelFocus>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof modelFocus>>, TError, TData>
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
-
-  const queryKey = getModelFocusQueryKey();
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof modelFocus>>> = ({
-    signal,
-  }) => modelFocus(signal);
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof modelFocus>>,
-    TError,
-    TData
-  >;
-};
-
-export type ModelFocusQueryResult = NonNullable<
-  Awaited<ReturnType<typeof modelFocus>>
->;
-export type ModelFocusQueryError = ErrorType<unknown>;
-
-/**
- * @summary Model focus
- */
-
-export function useModelFocus<
-  TData = Awaited<ReturnType<typeof modelFocus>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof modelFocus>>, TError, TData>
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = getModelFocusQueryOptions(options);
-
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
-
-  query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
-
-  return query;
-}
-
-/**
- * @summary Model Sizes
- */
-export const modelSizes = (signal?: AbortSignal) => {
-  return axiosClient<FilterOption[]>({
-    url: `/models/sizes`,
-    method: "GET",
-    signal,
-  });
-};
-
-export const getModelSizesQueryKey = () => {
-  return ["models", "sizes"] as const;
-};
-
-export const getModelSizesQueryOptions = <
-  TData = Awaited<ReturnType<typeof modelSizes>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof modelSizes>>, TError, TData>
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
-
-  const queryKey = getModelSizesQueryKey();
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof modelSizes>>> = ({
-    signal,
-  }) => modelSizes(signal);
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof modelSizes>>,
-    TError,
-    TData
-  >;
-};
-
-export type ModelSizesQueryResult = NonNullable<
-  Awaited<ReturnType<typeof modelSizes>>
->;
-export type ModelSizesQueryError = ErrorType<unknown>;
-
-/**
- * @summary Model Sizes
- */
-
-export function useModelSizes<
-  TData = Awaited<ReturnType<typeof modelSizes>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof modelSizes>>, TError, TData>
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = getModelSizesQueryOptions(options);
-
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
-
-  query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
-
-  return query;
-}
-
-/**
- * @summary Model Dock Sizes
- */
-export const modelDockSizes = (signal?: AbortSignal) => {
-  return axiosClient<FilterOption[]>({
-    url: `/models/dock-sizes`,
-    method: "GET",
-    signal,
-  });
-};
-
-export const getModelDockSizesQueryKey = () => {
-  return ["models", "dock-sizes"] as const;
-};
-
-export const getModelDockSizesQueryOptions = <
-  TData = Awaited<ReturnType<typeof modelDockSizes>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof modelDockSizes>>, TError, TData>
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
-
-  const queryKey = getModelDockSizesQueryKey();
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof modelDockSizes>>> = ({
-    signal,
-  }) => modelDockSizes(signal);
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof modelDockSizes>>,
-    TError,
-    TData
-  >;
-};
-
-export type ModelDockSizesQueryResult = NonNullable<
-  Awaited<ReturnType<typeof modelDockSizes>>
->;
-export type ModelDockSizesQueryError = ErrorType<unknown>;
-
-/**
- * @summary Model Dock Sizes
- */
-
-export function useModelDockSizes<
-  TData = Awaited<ReturnType<typeof modelDockSizes>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof modelDockSizes>>, TError, TData>
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = getModelDockSizesQueryOptions(options);
-
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
-
-  query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
-
-  return query;
-}
-
-/**
- * @summary Model Cargo options
- */
-export const cargoOptions = (
-  params?: MaybeRef<CargoOptionsParams>,
-  signal?: AbortSignal,
-) => {
-  params = unref(params);
-
-  return axiosClient<CargoOptions>({
-    url: `/models/cargo-options`,
-    method: "GET",
-    params: unref(params),
-    signal,
-  });
-};
-
-export const getCargoOptionsQueryKey = (
-  params?: MaybeRef<CargoOptionsParams>,
-) => {
-  return ["models", "cargo-options", ...(params ? [params] : [])] as const;
-};
-
-export const getCargoOptionsQueryOptions = <
-  TData = Awaited<ReturnType<typeof cargoOptions>>,
-  TError = ErrorType<unknown>,
->(
-  params?: MaybeRef<CargoOptionsParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof cargoOptions>>, TError, TData>
-    >;
-  },
-) => {
-  const { query: queryOptions } = options ?? {};
-
-  const queryKey = getCargoOptionsQueryKey(params);
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof cargoOptions>>> = ({
-    signal,
-  }) => cargoOptions(params, signal);
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof cargoOptions>>,
-    TError,
-    TData
-  >;
-};
-
-export type CargoOptionsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof cargoOptions>>
->;
-export type CargoOptionsQueryError = ErrorType<unknown>;
-
-/**
- * @summary Model Cargo options
- */
-
-export function useCargoOptions<
-  TData = Awaited<ReturnType<typeof cargoOptions>>,
-  TError = ErrorType<unknown>,
->(
-  params?: MaybeRef<CargoOptionsParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof cargoOptions>>, TError, TData>
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = getCargoOptionsQueryOptions(params, options);
+  const queryOptions = getModelsEmbedQueryOptions(params, options);
 
   const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
     queryKey: DataTag<QueryKey, TData>;
@@ -1033,6 +185,68 @@ export function useModels<
   },
 ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
   const queryOptions = getModelsQueryOptions(params, options);
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
+
+  query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
+
+  return query;
+}
+
+/**
+ * @summary Latest Models
+ */
+export const modelsLatest = (signal?: AbortSignal) => {
+  return axiosClient<Model[]>({ url: `/models/latest`, method: "GET", signal });
+};
+
+export const getModelsLatestQueryKey = () => {
+  return ["models", "latest"] as const;
+};
+
+export const getModelsLatestQueryOptions = <
+  TData = Awaited<ReturnType<typeof modelsLatest>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<Awaited<ReturnType<typeof modelsLatest>>, TError, TData>
+  >;
+}) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = getModelsLatestQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof modelsLatest>>> = ({
+    signal,
+  }) => modelsLatest(signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof modelsLatest>>,
+    TError,
+    TData
+  >;
+};
+
+export type ModelsLatestQueryResult = NonNullable<
+  Awaited<ReturnType<typeof modelsLatest>>
+>;
+export type ModelsLatestQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Latest Models
+ */
+
+export function useModelsLatest<
+  TData = Awaited<ReturnType<typeof modelsLatest>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<Awaited<ReturnType<typeof modelsLatest>>, TError, TData>
+  >;
+}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getModelsLatestQueryOptions(options);
 
   const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
     queryKey: DataTag<QueryKey, TData>;
@@ -2173,6 +1387,302 @@ export function useModelFleetchartImage<
   },
 ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
   const queryOptions = getModelFleetchartImageQueryOptions(slug, options);
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
+
+  query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
+
+  return query;
+}
+
+/**
+ * @summary Available Model-Slugs
+ */
+export const modelsSlugs = (signal?: AbortSignal) => {
+  return axiosClient<void>({ url: `/models/slugs`, method: "GET", signal });
+};
+
+export const getModelsSlugsQueryKey = () => {
+  return ["models", "slugs"] as const;
+};
+
+export const getModelsSlugsQueryOptions = <
+  TData = Awaited<ReturnType<typeof modelsSlugs>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<Awaited<ReturnType<typeof modelsSlugs>>, TError, TData>
+  >;
+}) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = getModelsSlugsQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof modelsSlugs>>> = ({
+    signal,
+  }) => modelsSlugs(signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof modelsSlugs>>,
+    TError,
+    TData
+  >;
+};
+
+export type ModelsSlugsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof modelsSlugs>>
+>;
+export type ModelsSlugsQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Available Model-Slugs
+ */
+
+export function useModelsSlugs<
+  TData = Awaited<ReturnType<typeof modelsSlugs>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<Awaited<ReturnType<typeof modelsSlugs>>, TError, TData>
+  >;
+}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getModelsSlugsQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
+
+  query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
+
+  return query;
+}
+
+/**
+ * @summary Unscheduled Models
+ */
+export const modelsUnschduled = (signal?: AbortSignal) => {
+  return axiosClient<void>({
+    url: `/models/unscheduled`,
+    method: "GET",
+    signal,
+  });
+};
+
+export const getModelsUnschduledQueryKey = () => {
+  return ["models", "unscheduled"] as const;
+};
+
+export const getModelsUnschduledQueryOptions = <
+  TData = Awaited<ReturnType<typeof modelsUnschduled>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<Awaited<ReturnType<typeof modelsUnschduled>>, TError, TData>
+  >;
+}) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = getModelsUnschduledQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof modelsUnschduled>>
+  > = ({ signal }) => modelsUnschduled(signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof modelsUnschduled>>,
+    TError,
+    TData
+  >;
+};
+
+export type ModelsUnschduledQueryResult = NonNullable<
+  Awaited<ReturnType<typeof modelsUnschduled>>
+>;
+export type ModelsUnschduledQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Unscheduled Models
+ */
+
+export function useModelsUnschduled<
+  TData = Awaited<ReturnType<typeof modelsUnschduled>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<Awaited<ReturnType<typeof modelsUnschduled>>, TError, TData>
+  >;
+}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getModelsUnschduledQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
+
+  query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
+
+  return query;
+}
+
+/**
+ * @summary Updated Models
+ */
+export const modelsUpdated = (
+  params?: MaybeRef<ModelsUpdatedParams>,
+  signal?: AbortSignal,
+) => {
+  params = unref(params);
+
+  return axiosClient<void>({
+    url: `/models/updated`,
+    method: "GET",
+    params: unref(params),
+    signal,
+  });
+};
+
+export const getModelsUpdatedQueryKey = (
+  params?: MaybeRef<ModelsUpdatedParams>,
+) => {
+  return ["models", "updated", ...(params ? [params] : [])] as const;
+};
+
+export const getModelsUpdatedQueryOptions = <
+  TData = Awaited<ReturnType<typeof modelsUpdated>>,
+  TError = ErrorType<void>,
+>(
+  params?: MaybeRef<ModelsUpdatedParams>,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof modelsUpdated>>, TError, TData>
+    >;
+  },
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = getModelsUpdatedQueryKey(params);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof modelsUpdated>>> = ({
+    signal,
+  }) => modelsUpdated(params, signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof modelsUpdated>>,
+    TError,
+    TData
+  >;
+};
+
+export type ModelsUpdatedQueryResult = NonNullable<
+  Awaited<ReturnType<typeof modelsUpdated>>
+>;
+export type ModelsUpdatedQueryError = ErrorType<void>;
+
+/**
+ * @summary Updated Models
+ */
+
+export function useModelsUpdated<
+  TData = Awaited<ReturnType<typeof modelsUpdated>>,
+  TError = ErrorType<void>,
+>(
+  params?: MaybeRef<ModelsUpdatedParams>,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof modelsUpdated>>, TError, TData>
+    >;
+  },
+): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getModelsUpdatedQueryOptions(params, options);
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
+
+  query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
+
+  return query;
+}
+
+/**
+ * @summary Models with Docks
+ */
+export const modelsWithDocks = (
+  params?: MaybeRef<ModelsWithDocksParams>,
+  signal?: AbortSignal,
+) => {
+  params = unref(params);
+
+  return axiosClient<Models>({
+    url: `/models/with-docks`,
+    method: "GET",
+    params: unref(params),
+    signal,
+  });
+};
+
+export const getModelsWithDocksQueryKey = (
+  params?: MaybeRef<ModelsWithDocksParams>,
+) => {
+  return ["models", "with-docks", ...(params ? [params] : [])] as const;
+};
+
+export const getModelsWithDocksQueryOptions = <
+  TData = Awaited<ReturnType<typeof modelsWithDocks>>,
+  TError = ErrorType<unknown>,
+>(
+  params?: MaybeRef<ModelsWithDocksParams>,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof modelsWithDocks>>,
+        TError,
+        TData
+      >
+    >;
+  },
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = getModelsWithDocksQueryKey(params);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof modelsWithDocks>>> = ({
+    signal,
+  }) => modelsWithDocks(params, signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof modelsWithDocks>>,
+    TError,
+    TData
+  >;
+};
+
+export type ModelsWithDocksQueryResult = NonNullable<
+  Awaited<ReturnType<typeof modelsWithDocks>>
+>;
+export type ModelsWithDocksQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Models with Docks
+ */
+
+export function useModelsWithDocks<
+  TData = Awaited<ReturnType<typeof modelsWithDocks>>,
+  TError = ErrorType<unknown>,
+>(
+  params?: MaybeRef<ModelsWithDocksParams>,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof modelsWithDocks>>,
+        TError,
+        TData
+      >
+    >;
+  },
+): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getModelsWithDocksQueryOptions(params, options);
 
   const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
     queryKey: DataTag<QueryKey, TData>;

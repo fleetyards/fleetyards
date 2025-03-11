@@ -492,7 +492,10 @@ export const useUpdateFleet = <
 /**
  * @summary Find Fleet by Invite
  */
-export const findByInvite = (token: MaybeRef<string>, signal?: AbortSignal) => {
+export const findFleetByInvite = (
+  token: MaybeRef<string>,
+  signal?: AbortSignal,
+) => {
   token = unref(token);
 
   return axiosClient<Fleet>({
@@ -502,23 +505,23 @@ export const findByInvite = (token: MaybeRef<string>, signal?: AbortSignal) => {
   });
 };
 
-export const getFindByInviteMutationOptions = <
+export const getFindFleetByInviteMutationOptions = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof findByInvite>>,
+    Awaited<ReturnType<typeof findFleetByInvite>>,
     TError,
     { token: string },
     TContext
   >;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof findByInvite>>,
+  Awaited<ReturnType<typeof findFleetByInvite>>,
   TError,
   { token: string },
   TContext
 > => {
-  const mutationKey = ["findByInvite"];
+  const mutationKey = ["findFleetByInvite"];
   const { mutation: mutationOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -528,43 +531,43 @@ export const getFindByInviteMutationOptions = <
     : { mutation: { mutationKey } };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof findByInvite>>,
+    Awaited<ReturnType<typeof findFleetByInvite>>,
     { token: string }
   > = (props) => {
     const { token } = props ?? {};
 
-    return findByInvite(token);
+    return findFleetByInvite(token);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type FindByInviteMutationResult = NonNullable<
-  Awaited<ReturnType<typeof findByInvite>>
+export type FindFleetByInviteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof findFleetByInvite>>
 >;
 
-export type FindByInviteMutationError = ErrorType<StandardError>;
+export type FindFleetByInviteMutationError = ErrorType<StandardError>;
 
 /**
  * @summary Find Fleet by Invite
  */
-export const useFindByInvite = <
+export const useFindFleetByInvite = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof findByInvite>>,
+    Awaited<ReturnType<typeof findFleetByInvite>>,
     TError,
     { token: string },
     TContext
   >;
 }): UseMutationReturnType<
-  Awaited<ReturnType<typeof findByInvite>>,
+  Awaited<ReturnType<typeof findFleetByInvite>>,
   TError,
   { token: string },
   TContext
 > => {
-  const mutationOptions = getFindByInviteMutationOptions(options);
+  const mutationOptions = getFindFleetByInviteMutationOptions(options);
 
   return useMutation(mutationOptions);
 };

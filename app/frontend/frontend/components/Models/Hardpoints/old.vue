@@ -9,9 +9,8 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import HardpointGroup from "./old/Group/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useQuery } from "@tanstack/vue-query";
-import { useApiClient } from "@/frontend/composables/useApiClient";
 import {
+  useModelHardpoints as useModelHardpointsQuery,
   ModelHardpointGroupEnum,
   type ModelHardpoint,
   type Model,
@@ -49,22 +48,20 @@ watch(
   },
 );
 
-const { models: modelsService } = useApiClient();
-
 const {
   isLoading,
   isFetching,
   data: hardpoints,
   refetch,
-} = useQuery({
-  queryKey: ["model-hardpoints", props.model.slug],
-  queryFn: () => {
-    return modelsService.modelHardpoints({
-      slug: props.model.slug,
-    });
+} = useModelHardpointsQuery(
+  props.model.slug,
+  {},
+  {
+    query: {
+      enabled: !!props.model,
+    },
   },
-  enabled: !!props.model,
-});
+);
 </script>
 
 <template>
@@ -81,8 +78,8 @@ const {
         <div class="col-12 col-md-6 col-lg-4">
           <HardpointGroup
             v-for="group in [
-              ModelHardpointGroupEnum.AVIONIC,
-              ModelHardpointGroupEnum.SYSTEM,
+              ModelHardpointGroupEnum.avionic,
+              ModelHardpointGroupEnum.system,
             ]"
             :key="group"
             :group="group"
@@ -92,8 +89,8 @@ const {
         <div class="col-12 col-md-6 col-lg-4">
           <HardpointGroup
             v-for="group in [
-              ModelHardpointGroupEnum.PROPULSION,
-              ModelHardpointGroupEnum.THRUSTER,
+              ModelHardpointGroupEnum.propulsion,
+              ModelHardpointGroupEnum.thruster,
             ]"
             :key="group"
             :group="group"
@@ -102,7 +99,7 @@ const {
         </div>
         <div class="col-12 col-md-6 col-lg-4">
           <HardpointGroup
-            v-for="group in [ModelHardpointGroupEnum.WEAPON]"
+            v-for="group in [ModelHardpointGroupEnum.weapon]"
             :key="group"
             :group="group"
             :hardpoints="hardpointsForGroup(group)"

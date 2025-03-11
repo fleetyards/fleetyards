@@ -18,10 +18,12 @@ import Loader from "@/shared/components/Loader/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import { type Image } from "@/services/fyApi";
 import logo from "@/images/pride/logo-planet.png";
-import { useApiClient } from "@/frontend/composables/useApiClient";
-import { useQuery } from "@tanstack/vue-query";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
+import {
+  useImagesRandom as useImagesRandomQuery,
+  useModelsLatest as useLatestModelsQuery,
+} from "@/services/fyApi";
 
 const { t } = useI18n();
 
@@ -44,27 +46,17 @@ const search = () => {
 
   router.push(
     {
-      name: "search",
+      name: "ships",
       query: {
-        search: searchQuery.value,
+        searchCont: searchQuery.value,
       },
     } as unknown as RouteLocationRaw, // HACK to make insufficient types for vue-router work
   );
 };
 
-const { models: modelsService } = useApiClient();
+const { isLoading: modelsLoading, data: latestModels } = useLatestModelsQuery();
 
-const { isLoading: modelsLoading, data: latestModels } = useQuery({
-  queryKey: ["latestModels"],
-  queryFn: () => modelsService.modelsLatest(),
-});
-
-const { images: imagesService } = useApiClient();
-
-const { isLoading: imagesLoading, data: randomImages } = useQuery({
-  queryKey: ["randomImages"],
-  queryFn: () => imagesService.imagesRandom({}),
-});
+const { isLoading: imagesLoading, data: randomImages } = useImagesRandomQuery();
 
 const scrollDown = () => {
   VueScrollTo.scrollTo(".home-ships");

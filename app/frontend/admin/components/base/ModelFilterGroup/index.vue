@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { models as fetchModels } from "@/services/fyApi/services/models/models";
+import { models as fetchModels } from "@/services/fyApi";
 import { type ModelQuery } from "@/services/fyApi/models/modelQuery";
 import { type Models } from "@/services/fyApi/models/models";
 import { type Model } from "@/services/fyApi/models/model";

@@ -84,10 +84,10 @@
       },
       "vehicle": {
         "add": {
-          "success": "Your new <b>%{model}</b> will be delivered to your <a href=\"/hangar\">Hangar</a>"
+          "success": "Your new <b>%{model}</b> will be delivered to your "
         },
         "addToWishlist": {
-          "success": "Your new <b>%{model}</b> was added to your <a href=\"/hangar/wishlist\">Wishlist</a>"
+          "success": "Your new <b>%{model}</b> was added to your "
         },
         "resetIngame": {
           "moveToWishlist": {

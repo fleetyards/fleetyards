@@ -55,17 +55,12 @@ RSpec.configure do |config|
         }
       },
       servers: api_servers,
-      security: [
-        SessionCookie: [],
-        BearerAuth: [],
-        Oauth2: [],
-        OpenId: []
-      ],
+      security: [],
       paths: {},
       components: {
         parameters: shared_v1_components_loader.parameters.merge(v1_components_loader.parameters),
         schemas: shared_v1_components_loader.schemas.merge(v1_components_loader.schemas),
-        securitySchemes: shared_v1_components_loader.security_schemes.merge(v1_components_loader.security_schemes)
+        securitySchemes: shared_v1_components_loader.security_schemes.merge(v1_components_loader.security_schemes).symbolize_keys
       }.compact
     },
     "admin/v1/schema.yaml" => {
@@ -90,7 +85,7 @@ RSpec.configure do |config|
       components: {
         parameters: shared_v1_components_loader.parameters.merge(admin_v1_components_loader.parameters),
         schemas: shared_v1_components_loader.schemas.merge(admin_v1_components_loader.schemas),
-        securitySchemes: shared_v1_components_loader.security_schemes.merge(admin_v1_components_loader.security_schemes)
+        securitySchemes: shared_v1_components_loader.security_schemes.merge(admin_v1_components_loader.security_schemes).symbolize_keys
       }.compact
     }
   }

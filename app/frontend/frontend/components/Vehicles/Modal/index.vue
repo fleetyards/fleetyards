@@ -14,11 +14,12 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   modelPaints as fetchModelPaints,
+  useVehicleBoughtViaFilters as useVehicleBoughtViaFiltersQuery,
   type VehicleUpdateInput,
   type Vehicle,
   type ModelPaint,
 } from "@/services/fyApi";
-import { useVehicleQueries } from "@/frontend/composables/useVehicleQueries";
+import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
@@ -84,21 +85,24 @@ const setupForm = () => {
 
 const comlink = useComlink();
 
-const { updateMutation, boughtViaFiltersQuery } = useVehicleQueries(
-  props.vehicle,
-);
+const { useUpdateMutation } = useVehicleMutations();
 
-const mutation = updateMutation();
+const vehicle = computed(() => props.vehicle);
+
+const mutation = useUpdateMutation(vehicle);
 
 const onSubmit = handleSubmit(async (values) => {
-  mutation.mutate(values, {
-    onSuccess: () => {
+  await mutation
+    .mutateAsync({
+      id: props.vehicle.id,
+      data: values,
+    })
+    .then(() => {
       comlink.emit("close-modal");
-    },
-  });
+    });
 });
 
-const { data: boughtViaFilters } = boughtViaFiltersQuery();
+const { data: boughtViaFilters } = useVehicleBoughtViaFiltersQuery();
 
 const paintsFilterQuery = () => {
   return fetchModelPaints(props.vehicle.model.slug);

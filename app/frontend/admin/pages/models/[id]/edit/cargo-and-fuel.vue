@@ -14,7 +14,7 @@ import {
   InputAlignmentsEnum,
   InputTypesEnum,
 } from "@/shared/components/base/FormInput/types";
-// import { useNoty } from "@/shared/composables/useNoty";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 type Props = {
   model: ModelExtended;
@@ -24,7 +24,7 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 
-// const { displayAlert } = useNoty();
+const { displayAlert } = useAppNotifications();
 
 const submitting = ref(false);
 
@@ -55,7 +55,7 @@ const onSubmit = handleSubmit(async (values) => {
 });
 
 const onCancel = () => {
-  alert("cancel");
+  displayAlert({ text: "cancel" });
 };
 </script>
 

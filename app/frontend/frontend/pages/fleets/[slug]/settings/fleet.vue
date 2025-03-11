@@ -269,11 +269,6 @@ import VueUploadComponent from "vue-upload-component";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import {
-  displaySuccess,
-  displayAlert,
-  displayConfirm,
-} from "@/frontend/lib/Noty";
 import { fleetRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";
 import fleetsCollection from "@/frontend/api/collections/Fleets";
 import { transformErrors } from "@/frontend/api/helpers";

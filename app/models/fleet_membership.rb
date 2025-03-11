@@ -42,9 +42,12 @@ class FleetMembership < ApplicationRecord
 
   paginates_per 30
 
-  enum ships_filter: {all: 0, hangar_group: 1, hide: 2}, _prefix: true
+  enum :ships_filter,
+    {all: 0, hangar_group: 1, hide: 2},
+    prefix: true
 
-  enum role: {admin: 0, officer: 1, member: 2}
+  enum :role,
+    {admin: 0, officer: 1, member: 2}
   ransacker :role, formatter: proc { |v| FleetMembership.roles[v] } do |parent|
     parent.table[:role]
   end

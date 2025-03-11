@@ -8,14 +8,11 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import ChangePasswordForm from "@/frontend/components/Security/ChangePasswordForm/index.vue";
 import { useSessionStore } from "@/frontend/stores/session";
-import { useNoty } from "@/shared/composables/useNoty";
 import { useI18n } from "@/shared/composables/useI18n";
 
 const sessionStore = useSessionStore();
 
 const { t } = useI18n();
-
-const { displayConfirm } = useNoty();
 
 const router = useRouter();
 

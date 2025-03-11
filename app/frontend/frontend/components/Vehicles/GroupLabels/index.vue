@@ -87,7 +87,7 @@ import draggable from "vuedraggable";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useNoty } from "@/shared/composables/useNoty";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useMobile } from "@/shared/composables/useMobile";
 import type { HangarGroup, HangarGroupMetric } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -106,7 +106,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const { displayAlert } = useNoty();
+const { displayAlert } = useAppNotifications();
 
 const drag = ref(false);
 

@@ -4,12 +4,13 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
+import type { FilterOptionValue } from "./filterOptionValue";
 
 export interface FilterOption {
   category?: string;
   icon?: string;
   label: string;
-  value: string;
+  value: FilterOptionValue;
   /** @deprecated */
   name?: string;
 }

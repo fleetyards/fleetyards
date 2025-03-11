@@ -9,9 +9,8 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useApiClient } from "@/frontend/composables/useApiClient";
 import type { PasswordInput } from "@/services/fyApi";
-import { useNoty } from "@/shared/composables/useNoty";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import {
   BtnVariantsEnum,
@@ -19,9 +18,11 @@ import {
 } from "@/shared/components/base/Btn/types";
 import { useForm } from "vee-validate";
 
+import { useUpdatePassword as useUpdatePasswordMutation } from "@/services/fyApi";
+
 const { t } = useI18n();
 
-const { displaySuccess, displayAlert } = useNoty();
+const { displaySuccess, displayAlert } = useAppNotifications();
 
 const validationSchema = {
   currentPassword: "required",
@@ -62,30 +63,32 @@ const setupForm = () => {
 
 const router = useRouter();
 
-const { password: passwordService } = useApiClient();
+const mutation = useUpdatePasswordMutation();
 
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
-  try {
-    await passwordService.updatePassword({
-      requestBody: values,
+  await mutation
+    .mutateAsync({
+      data: values,
+    })
+    .then(async () => {
+      displaySuccess({
+        text: t("messages.changePassword.success"),
+      });
+
+      await router.push("/").catch(() => {});
+    })
+    .catch((error) => {
+      console.error(error);
+
+      displayAlert({
+        text: t("messages.changePassword.failure"),
+      });
+    })
+    .finally(() => {
+      submitting.value = false;
     });
-
-    displaySuccess({
-      text: t("messages.changePassword.success"),
-    });
-
-    router.push("/");
-  } catch (error) {
-    console.error(error);
-
-    displayAlert({
-      text: t("messages.changePassword.failure"),
-    });
-  }
-
-  submitting.value = false;
 });
 </script>
 

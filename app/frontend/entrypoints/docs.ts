@@ -3,7 +3,6 @@ import App from "@/docs/App.vue";
 import router from "@/docs/plugins/Router";
 import FloatingVue from "floating-vue";
 import i18n from "@/shared/plugins/I18n";
-import noty from "@/shared/plugins/Noty";
 import "floating-vue/dist/style.css";
 import VueLazyload from "vue-lazyload";
 import VueHighlightJS from "vue3-highlightjs";
@@ -21,7 +20,6 @@ app.use(router);
 app.use(VueLazyload);
 app.use(pinia);
 app.use(i18n);
-app.use(noty);
 app.use(FloatingVue);
 app.use(VueHighlightJS);
 

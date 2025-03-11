@@ -16,20 +16,22 @@ import DashboardUsers from "@/admin/components/Dashboard/Users.vue";
 import DashboardModels from "@/admin/components/Dashboard/Models.vue";
 import DashboardManufacturers from "@/admin/components/Dashboard/Manufacturers.vue";
 import DashboardComponents from "@/admin/components/Dashboard/Components.vue";
-import { useApiClient } from "@/admin/composables/useApiClient";
-import { useQuery } from "@tanstack/vue-query";
+import {
+  useStats as useStatsQuery,
+  useVisitsPerDay as useVisitsPerDayQuery,
+  useMostViewedPages as useMostViewedPagesQuery,
+  useVisitsPerMonth as useVisitsPerMonthQuery,
+} from "@/services/fyAdminApi";
 import { useSessionStore } from "@/admin/stores/session";
 
 const { t } = useI18n();
 
 const sessionStore = useSessionStore();
 
-const { stats: statsService } = useApiClient();
-
-const { data: quickStats, refetch } = useQuery({
-  queryKey: ["quickstats"],
-  queryFn: () => statsService.stats(),
-  enabled: () => sessionStore.hasAccessTo("stats"),
+const { data: quickStats, refetch } = useStatsQuery({
+  query: {
+    enabled: () => sessionStore.hasAccessTo("stats"),
+  },
 });
 
 onMounted(() => {
@@ -38,23 +40,25 @@ onMounted(() => {
   }, 30 * 1000);
 });
 
-const { data: visitsPerDay, ...visitsPerDayStatus } = useQuery({
-  queryKey: ["charts", "visits-per-day"],
-  queryFn: () => statsService.visitsPerDay(),
-  enabled: () => sessionStore.hasAccessTo("stats"),
+const { data: visitsPerDay, ...visitsPerDayStatus } = useVisitsPerDayQuery({
+  query: {
+    enabled: () => sessionStore.hasAccessTo("stats"),
+  },
 });
 
-const { data: mostViewedPages, ...mostViewedPagesStatus } = useQuery({
-  queryKey: ["charts", "most-viewed-pages"],
-  queryFn: () => statsService.mostViewedPages(),
-  enabled: () => sessionStore.hasAccessTo("stats"),
-});
+const { data: mostViewedPages, ...mostViewedPagesStatus } =
+  useMostViewedPagesQuery({
+    query: {
+      enabled: () => sessionStore.hasAccessTo("stats"),
+    },
+  });
 
-const { data: visitsPerMonth, ...visitsPerMonthStatus } = useQuery({
-  queryKey: ["charts", "visits-per-month"],
-  queryFn: () => statsService.visitsPerMonth(),
-  enabled: () => sessionStore.hasAccessTo("stats"),
-});
+const { data: visitsPerMonth, ...visitsPerMonthStatus } =
+  useVisitsPerMonthQuery({
+    query: {
+      enabled: () => sessionStore.hasAccessTo("stats"),
+    },
+  });
 </script>
 
 <template>

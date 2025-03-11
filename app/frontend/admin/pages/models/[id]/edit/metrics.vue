@@ -14,7 +14,7 @@ import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { InputAlignmentsEnum } from "@/shared/components/base/FormInput/types";
 import ModelSizeFilterGroup from "@/frontend/components/base/ModelSizeFilterGroup/index.vue";
 import ModelDockSizeFilterGroup from "@/admin/components/base/ModelDockSizeFilterGroup/index.vue";
-// import { useNoty } from "@/shared/composables/useNoty";
+// import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 type Props = {
   model: ModelExtended;
@@ -24,7 +24,7 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 
-// const { displayAlert } = useNoty();
+// const { displayAlert } = useAppNotifications();
 
 const submitting = ref(false);
 

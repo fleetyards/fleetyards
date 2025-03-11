@@ -28,14 +28,6 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "/search/",
-    name: "search",
-    component: () => import("@/frontend/pages/search.vue"),
-    meta: {
-      title: "search",
-    },
-  },
-  {
     path: "/impressum/",
     name: "impressum",
     component: () => import("@/frontend/pages/impressum.vue"),

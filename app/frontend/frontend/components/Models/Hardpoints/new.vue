@@ -10,9 +10,8 @@ import Loader from "@/shared/components/Loader/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import HardpointGroup from "./Group/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useQuery } from "@tanstack/vue-query";
-import { useApiClient } from "@/frontend/composables/useApiClient";
 import {
+  useModelHardpoints as useModelHardpointsQuery,
   HardpointGroupEnum,
   HardpointSourceEnum,
   type Hardpoint,
@@ -50,26 +49,23 @@ watch(
 
 const source = ref(
   props.model.scIdentifier
-    ? HardpointSourceEnum.GAME_FILES
-    : HardpointSourceEnum.SHIP_MATRIX,
+    ? HardpointSourceEnum.game_files
+    : HardpointSourceEnum.ship_matrix,
 );
 
-const { models: modelsService } = useApiClient();
+const modelHardpointsQueryParams = computed(() => {
+  return {
+    source: source.value,
+  };
+});
 
 const {
   isLoading,
   isFetching,
   data: hardpoints,
   refetch,
-} = useQuery({
-  queryKey: ["model-hardpoints", props.model.slug, source],
-  queryFn: () => {
-    return modelsService.modelHardpoints({
-      slug: props.model.slug,
-      source: source.value,
-    });
-  },
-  enabled: !!props.model,
+} = useModelHardpointsQuery(props.model.slug, modelHardpointsQueryParams, {
+  query: { enabled: !!props.model },
 });
 </script>
 
@@ -86,20 +82,20 @@ const {
       <div class="d-flex justify-content-end">
         <BtnGroup>
           <Btn
-            :active="source === HardpointSourceEnum.GAME_FILES"
+            :active="source === HardpointSourceEnum.game_files"
             :disabled="!model.scIdentifier"
-            @click="source = HardpointSourceEnum.GAME_FILES"
+            @click="source = HardpointSourceEnum.game_files"
           >
             {{
-              t(`labels.hardpoint.sources.${HardpointSourceEnum.GAME_FILES}`)
+              t(`labels.hardpoint.sources.${HardpointSourceEnum.game_files}`)
             }}
           </Btn>
           <Btn
-            :active="source === HardpointSourceEnum.SHIP_MATRIX"
-            @click="source = HardpointSourceEnum.SHIP_MATRIX"
+            :active="source === HardpointSourceEnum.ship_matrix"
+            @click="source = HardpointSourceEnum.ship_matrix"
           >
             {{
-              t(`labels.hardpoint.sources.${HardpointSourceEnum.SHIP_MATRIX}`)
+              t(`labels.hardpoint.sources.${HardpointSourceEnum.ship_matrix}`)
             }}
           </Btn>
         </BtnGroup>
@@ -108,9 +104,9 @@ const {
         <div class="col-12 col-md-6 col-lg-4">
           <HardpointGroup
             v-for="group in [
-              HardpointGroupEnum.AVIONIC,
-              HardpointGroupEnum.SYSTEM,
-              HardpointGroupEnum.OTHER,
+              HardpointGroupEnum.avionic,
+              HardpointGroupEnum.system,
+              HardpointGroupEnum.other,
             ]"
             :key="group"
             :group="group"
@@ -120,8 +116,8 @@ const {
         <div class="col-12 col-md-6 col-lg-4">
           <HardpointGroup
             v-for="group in [
-              HardpointGroupEnum.PROPULSION,
-              HardpointGroupEnum.THRUSTER,
+              HardpointGroupEnum.propulsion,
+              HardpointGroupEnum.thruster,
             ]"
             :key="group"
             :group="group"
@@ -131,15 +127,15 @@ const {
         <div class="col-12 col-md-6 col-lg-4">
           <HardpointGroup
             v-for="group in [
-              HardpointGroupEnum.WEAPON,
-              HardpointGroupEnum.AUXILIARY,
+              HardpointGroupEnum.weapon,
+              HardpointGroupEnum.auxiliary,
             ]"
             :key="group"
             :group="group"
             :hardpoints="hardpointsForGroup(group)"
           />
           <HardpointGroup
-            v-for="group in [HardpointGroupEnum.SEAT]"
+            v-for="group in [HardpointGroupEnum.seat]"
             :key="group"
             :group="group"
             :hardpoints="hardpointsForGroup(group)"

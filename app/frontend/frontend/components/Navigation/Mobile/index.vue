@@ -13,8 +13,7 @@ import { useFleetRouteCheck } from "@/frontend/composables/useFleetRouteCheck";
 import { useFiltersStore } from "@/shared/stores/filters";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { type LocationQueryRaw } from "vue-router";
-import { useApiClient } from "@/frontend/composables/useApiClient";
-import { useQuery, useQueryClient } from "@tanstack/vue-query";
+import { useFleet as useFleetQuery } from "@/services/fyApi";
 
 const sessionStore = useSessionStore();
 
@@ -50,34 +49,15 @@ const shipsNavActive = computed(() => {
   return ["fleet-ships", "fleet-fleetchart"].includes(String(route.name));
 });
 
-const { fleets: fleetsService } = useApiClient();
-
-const queryClient = useQueryClient();
-
 const fleetSlug = computed(() => {
-  if (!isFleetRoute.value) {
-    return;
-  }
-
   return route.params.slug as string;
 });
 
-const { data: currentFleet } = useQuery(
-  {
-    queryKey: ["fleet", fleetSlug],
-    queryFn: async () => {
-      if (!fleetSlug.value) {
-        return;
-      }
-
-      return fleetsService.fleet({
-        slug: fleetSlug.value,
-      });
-    },
+const { data: currentFleet } = useFleetQuery(fleetSlug, {
+  query: {
     enabled: isFleetRoute,
   },
-  queryClient,
-);
+});
 </script>
 
 <template>

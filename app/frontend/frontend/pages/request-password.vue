@@ -8,22 +8,20 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useNoty } from "@/shared/composables/useNoty";
-import { useApiClient } from "@/frontend/composables/useApiClient";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import type { PasswordRequestInput } from "@/services/fyApi";
 import { useSessionStore } from "@/frontend/stores/session";
 import { storeToRefs } from "pinia";
 import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import { useForm } from "vee-validate";
+import { useRequestPasswordReset as useRequestPasswordResetMutation } from "@/services/fyApi";
 
 const { t } = useI18n();
 
-const { displaySuccess } = useNoty();
+const { displaySuccess } = useAppNotifications();
 
 const submitting = ref(false);
-
-const form = ref<PasswordRequestInput>({});
 
 const sessionStore = useSessionStore();
 
@@ -37,28 +35,30 @@ const { defineField, handleSubmit } = useForm<PasswordRequestInput>({
 
 const [email, emailProps] = defineField("email");
 
-const { password: passwordService } = useApiClient();
-
 const router = useRouter();
+
+const mutation = useRequestPasswordResetMutation();
 
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
-  try {
-    await passwordService.requestPasswordReset({
-      requestBody: values,
+  await mutation
+    .mutateAsync({
+      data: values,
+    })
+    .then(async () => {
+      displaySuccess({
+        text: t("messages.requestPasswordChange.success"),
+      });
+
+      await router.push("/").catch(() => {});
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+    .finally(() => {
+      submitting.value = false;
     });
-  } catch (error) {
-    console.error(error);
-  }
-
-  displaySuccess({
-    text: t("messages.requestPasswordChange.success"),
-  });
-
-  submitting.value = false;
-
-  router.push("/");
 });
 </script>
 

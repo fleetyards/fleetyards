@@ -12,6 +12,8 @@ export enum ChannelsEnum {
   ON_SALE = "OnSaleChannel",
   ROADMAP = "RoadmapChannel",
   IMPORTS = "ImportsChannel",
+  NOTIFICATIONS = "NotificationsChannel",
+  USER_NOTIFICATIONS = "UserNotificationsChannel",
 }
 
 export const useSubscription = ({

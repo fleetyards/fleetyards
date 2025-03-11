@@ -1,108 +1,107 @@
+<script lang="ts">
+export default {
+  name: "FleetInvitePage",
+};
+</script>
+
+<script lang="ts" setup>
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useFleetStore } from "@/frontend/stores/fleet";
+import {
+  useUseFleetInvite as useUseFleetInviteMutation,
+  findFleetByInvite,
+} from "@/services/fyApi";
+
+const { t } = useI18n();
+
+const { displayAlert, displaySuccess } = useAppNotifications();
+
+const fleetStore = useFleetStore();
+
+onMounted(() => {
+  useInvite();
+});
+
+const route = useRoute();
+
+const router = useRouter();
+
+const inviteToken = computed(() => route.params.token as string);
+
+const useInvite = async () => {
+  await findFleetByInvite(inviteToken.value)
+    .then((fleet) => {
+      displayConfirm({
+        text: t("messages.fleetInvite.confirm", {
+          fleet: fleet.name,
+        }),
+        onConfirm: () => {
+          handleFleetInvite();
+        },
+        onClose: async () => {
+          await router
+            .push({
+              name: "home",
+            })
+            .catch(() => {});
+        },
+      });
+    })
+    .catch(async (error) => {
+      console.error(error);
+
+      displayAlert({
+        text: t("messages.fleetInvite.notFound"),
+      });
+
+      await router
+        .push({
+          name: "home",
+        })
+        .catch(() => {});
+    });
+};
+
+const useInviteMutation = useUseFleetInviteMutation();
+
+const handleFleetInvite = async () => {
+  await useInviteMutation
+    .mutateAsync({
+      data: {
+        token: inviteToken.value,
+      },
+    })
+    .then(async (member) => {
+      fleetStore.resetInviteToken();
+
+      displaySuccess({
+        text: t("messages.fleetInvite.used", { fleet: member.fleetName }),
+      });
+
+      await router
+        .push({
+          name: "fleet",
+          params: { slug: member.fleetSlug },
+        })
+        .catch(() => {});
+    })
+    .catch(async (error) => {
+      console.error(error);
+
+      displayAlert({
+        text: t("messages.fleetInvite.failure"),
+      });
+
+      await router
+        .push({
+          name: "home",
+        })
+        .catch(() => {});
+    });
+};
+</script>
+
 <template>
   <section class="container fleet-detail" />
 </template>
-
-<script lang="ts">
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-import { Getter, Action } from "vuex-class";
-import fleetsCollection from "@/frontend/api/collections/Fleets";
-import {
-  displayConfirm,
-  displayAlert,
-  displaySuccess,
-} from "@/frontend/lib/Noty";
-import { useApiClient } from "@/frontend/composables/useApiClient";
-
-const { fleets: fleetService } = useApiClient();
-
-@Component<FleetInvite>()
-export default class FleetInvite extends Vue {
-  @Getter("currentUser", { namespace: "session" }) currentUser: User;
-
-  @Action("resetInviteToken", { namespace: "fleet" })
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  resetFleetInviteToken: any;
-
-  @Watch("currentUser")
-  onCurrentUserChange() {
-    this.useInvite();
-  }
-
-  mounted() {
-    this.useInvite();
-  }
-
-  async useInvite() {
-    if (!this.currentUser) {
-      return;
-    }
-
-    try {
-      const fleet = await fleetService.findByInvite({
-        token: this.$route.params.token,
-      });
-
-      if (!fleet) {
-        displayAlert({
-          text: this.$t("messages.fleetInvite.notFound"),
-        });
-
-        this.$router.push({
-          name: "home",
-        });
-      } else {
-        displayConfirm({
-          text: this.$t("messages.fleetInvite.confirm", {
-            fleet: fleet.name,
-          }),
-          onConfirm: () => {
-            this.handleFleetInvite();
-          },
-          onClose: () => {
-            this.$router.push({
-              name: "home",
-            });
-          },
-        });
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async handleFleetInvite() {
-    const member = await this.createMember();
-
-    if (!member) {
-      displayAlert({
-        text: this.$t("messages.fleetInvite.failure"),
-      });
-
-      this.$router.push({
-        name: "home",
-      });
-
-      return;
-    }
-
-    this.resetFleetInviteToken();
-
-    displaySuccess({
-      text: this.$t("messages.fleetInvite.used", { fleet: member.fleetName }),
-    });
-
-    this.$router.push({
-      name: "fleet",
-      params: { slug: member.fleetSlug },
-    });
-  }
-
-  createMember(): Promise<FleetMember | null> {
-    return fleetsCollection.useInvite({
-      token: this.$route.params.token,
-      username: this.currentUser.username,
-    });
-  }
-}
-</script>

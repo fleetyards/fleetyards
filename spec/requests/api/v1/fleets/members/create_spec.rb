@@ -18,7 +18,7 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
     parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
 
     post("Create Member") do
-      operationId "createMember"
+      operationId "createFleetMember"
       tags "FleetMembers"
       consumes "application/json"
       produces "application/json"
@@ -35,14 +35,6 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
         schema "$ref": "#/components/schemas/FleetMember"
 
         let(:user) { users :jeanluc }
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
 
         run_test! do |response|
           data = JSON.parse(response.body)

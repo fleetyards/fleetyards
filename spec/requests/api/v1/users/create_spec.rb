@@ -3,7 +3,7 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
+  fixtures :users
 
   let(:user) { nil }
   let(:input) do
@@ -32,14 +32,6 @@ RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
 
       response(201, "successful") do
         schema "$ref": "#/components/schemas/User"
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
 
         run_test!
       end

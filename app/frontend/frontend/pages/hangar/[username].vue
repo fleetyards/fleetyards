@@ -6,19 +6,13 @@ export default {
 
 <script lang="ts" setup>
 import AsyncData from "@/shared/components/AsyncData.vue";
-import { usePublicUserQueries } from "@/frontend/composables/usePublicUserQueries";
+import { usePublicUser as usePublicUserQuery } from "@/services/fyApi";
 
 const route = useRoute();
 
 const username = computed(() => route.params.username as string);
 
-const { publicUserQuery } = usePublicUserQueries();
-
-const {
-  data: user,
-  refetch,
-  ...asyncStatus
-} = publicUserQuery({ username: username.value });
+const { data: user, refetch, ...asyncStatus } = usePublicUserQuery(username);
 </script>
 
 <template>

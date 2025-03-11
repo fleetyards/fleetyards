@@ -8,7 +8,7 @@ export default {
 import "highlight.js";
 import copyText from "@/shared/utils/CopyText";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useNoty } from "@/shared/composables/useNoty";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 /* eslint-disable no-useless-escape */
 const widgetExample = `\<div id="fleetyards-view"\>\</div\>
@@ -37,18 +37,18 @@ const widgetExample = `\<div id="fleetyards-view"\>\</div\>
 
 const { t } = useI18n();
 
-const { displayInfo, displayAlert } = useNoty();
+const { displayInfo, displayAlert } = useAppNotifications();
 
 const copyExample = () => {
   copyText(widgetExample).then(
     () => {
       displayInfo({
-        text: t("messages.copyWidgetExample.success"),
+        text: t("messages.copy.success"),
       });
     },
     () => {
       displayAlert({
-        text: t("messages.copyWidgetExample.failure"),
+        text: t("messages.copy.failure"),
       });
     },
   );

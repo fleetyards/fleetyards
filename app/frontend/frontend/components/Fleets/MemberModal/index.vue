@@ -1,3 +1,66 @@
+<script lang="ts">
+export default {
+  name: "MemberModal",
+};
+</script>
+
+<script lang="ts" setup>
+import Modal from "@/shared/components/AppModal/Inner/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { Fleet, FleetMemberCreateInput } from "@/services/fyApi";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useCreateFleetMember as useCreateFleetMemberMutation } from "@/services/fyApi";
+import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
+
+const { t } = useI18n();
+
+type Props = {
+  fleet: Fleet;
+};
+
+const props = defineProps<Props>();
+
+const submitting = ref(false);
+
+const form = ref<FleetMemberCreateInput>({});
+
+onMounted(() => {
+  setupForm();
+});
+
+const setupForm = () => {
+  form.value = {
+    username: undefined,
+  };
+};
+
+const comlink = useComlink();
+
+const mutation = useCreateFleetMemberMutation();
+
+const save = async () => {
+  submitting.value = true;
+
+  await mutation
+    .mutateAsync({
+      fleetSlug: props.fleet.slug,
+      data: form.value,
+    })
+    .then((member) => {
+      comlink.emit("fleet-member-invited", member);
+      comlink.emit("close-modal");
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+    .finally(() => {
+      submitting.value = false;
+    });
+};
+</script>
+
 <template>
   <ValidationObserver v-slot="{ handleSubmit }" slim>
     <Modal v-if="fleet && form" :title="t('headlines.fleets.inviteMember')">
@@ -30,8 +93,8 @@
           <Btn
             :form="`fleet-member-${fleet.id}`"
             :loading="submitting"
-            type="submit"
-            size="large"
+            :type="BtnTypesEnum.SUBMIT"
+            :size="BtnSizesEnum.LARGE"
             :inline="true"
           >
             {{ t("actions.fleet.members.invite") }}
@@ -41,68 +104,3 @@
     </Modal>
   </ValidationObserver>
 </template>
-
-<script lang="ts" setup>
-import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import FormInput from "@/shared/components/base/FormInput/index.vue";
-import Btn from "@/shared/components/base/Btn/index.vue";
-import { useI18n } from "@/shared/composables/useI18n";
-import { useNoty } from "@/shared/composables/useNoty";
-import { Fleet, FleetMemberCreateInput } from "@/services/fyApi";
-import { useApiClient } from "@/frontend/composables/useApiClient";
-import { useComlink } from "@/shared/composables/useComlink";
-
-const { t } = useI18n();
-
-const { displayAlert } = useNoty();
-
-type Props = {
-  fleet: Fleet;
-};
-
-const props = defineProps<Props>();
-
-const submitting = ref(false);
-
-const form = ref<FleetMemberCreateInput>({});
-
-onMounted(() => {
-  setupForm();
-});
-
-const setupForm = () => {
-  form.value = {
-    username: undefined,
-  };
-};
-
-const { fleetMembers: fleetMembersService } = useApiClient();
-
-const comlink = useComlink();
-
-const save = async () => {
-  submitting.value = true;
-
-  try {
-    const member = await fleetMembersService.createMember({
-      fleetSlug: props.fleet.slug,
-      requestBody: form.value,
-    });
-
-    comlink.emit("fleet-member-invited", member);
-    comlink.emit("close-modal");
-  } catch (error) {
-    console.error(error);
-    // displayAlert({
-    //   text: t(response.error),
-    // });
-  }
-  submitting.value = false;
-};
-</script>
-
-<script lang="ts">
-export default {
-  name: "MemberModal",
-};
-</script>

@@ -1,13 +1,8 @@
-<template>
-  <FilterGroup
-    v-model="internalValue"
-    :label="t('labels.filters.models.productionStatus')"
-    :query-fn="fetch"
-    :name="name"
-    :multiple="multiple"
-    :no-label="noLabel"
-  />
-</template>
+<script lang="ts">
+export default {
+  name: "ProductionStatusFilterGroup",
+};
+</script>
 
 <script lang="ts" setup>
 import {
@@ -61,8 +56,13 @@ const fetch = async (_params: FilterGroupParams<FilterOption>) => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "ProductionStatusFilterGroup",
-};
-</script>
+<template>
+  <FilterGroup
+    v-model="internalValue"
+    :label="t('labels.filters.models.productionStatus')"
+    :query-fn="fetch"
+    :name="name"
+    :multiple="multiple"
+    :no-label="noLabel"
+  />
+</template>

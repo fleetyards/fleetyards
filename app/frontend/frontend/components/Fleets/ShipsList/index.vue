@@ -1,3 +1,192 @@
+<script lang="ts">
+export default {
+  name: "FleetShipsList",
+};
+</script>
+
+<script lang="ts" setup>
+import type { Subscription } from "@rails/actioncable";
+import FilteredList from "@/shared/components/FilteredList/index.vue";
+import Grid from "@/shared/components/base/Grid/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
+import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
+import FleetVehiclePanel from "@/frontend/components/Fleets/VehiclePanel/index.vue";
+import FleetVehiclesFilterForm from "@/frontend/components/Fleets/FilterForm/index.vue";
+import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
+import ModelClassLabels from "@/frontend/components/Models/ClassLabels/index.vue";
+import Paginator from "@/shared/components/Paginator/index.vue";
+import type { FleetVehicleQuery, Fleet, VehicleExport } from "@/services/fyApi";
+import { usePagination } from "@/shared/composables/usePagination";
+import { debounce } from "ts-debounce";
+import { format } from "date-fns";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useFilters } from "@/shared/composables/useFilters";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useCable } from "@/shared/composables/useCable";
+import { useMobile } from "@/shared/composables/useMobile";
+import { useFleetStore } from "@/frontend/stores/fleet";
+import { useFleetchartStore } from "@/shared/stores/fleetchart";
+import { storeToRefs } from "pinia";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import {
+  useFleetModelCounts as useFleetModelCountsQuery,
+  useFleetVehiclesStats as useFleetVehiclesStatsQuery,
+  fleetVehiclesExport as fetchFleetVehiclesExport,
+  useFleetVehicles as useFleetVehiclesQuery,
+  getFleetVehiclesQueryKey,
+} from "@/services/fyApi";
+
+type Props = {
+  fleet: Fleet;
+  shareUrl: string;
+  shareTitle: string;
+};
+
+const props = defineProps<Props>();
+
+const { t, toDollar, toUEC, toNumber } = useI18n();
+
+const { displayAlert } = useAppNotifications();
+
+const fleetVehiclesChannel = ref<Subscription>();
+
+const mobile = useMobile();
+
+const fleetStore = useFleetStore();
+
+const { grouped, money, detailsVisible } = storeToRefs(fleetStore);
+
+const fleetchartStore = useFleetchartStore();
+
+const fleetchartVisible = computed(() => {
+  return fleetchartStore.isVisible("fleet");
+});
+
+const toggleFleetchart = () => {
+  fleetchartStore.toggleFleetchart("fleet");
+};
+
+const toggleDetailsTooltip = computed(() => {
+  if (detailsVisible.value) {
+    return t("actions.hideDetails");
+  }
+  return t("actions.showDetails");
+});
+
+watch(
+  () => grouped.value,
+  () => refetch,
+);
+
+watch(
+  () => props.fleet,
+  () => refetch,
+);
+
+onMounted(() => {
+  setupUpdates();
+});
+
+const { consumer } = useCable();
+
+const setupUpdates = () => {
+  if (fleetVehiclesChannel.value) {
+    fleetVehiclesChannel.value.unsubscribe();
+  }
+
+  fleetVehiclesChannel.value = consumer.subscriptions.create(
+    {
+      channel: "FleetVehiclesChannel",
+    },
+    {
+      received: () => debounce(refetch, 500),
+    },
+  );
+};
+
+const exportJson = async () => {
+  try {
+    const exportedData = await fetchFleetVehiclesExport(
+      fleetSlug,
+      fleetVehiclesQueryParams,
+    );
+
+    downloadExport(exportedData);
+  } catch (error) {
+    displayAlert({ text: t("messages.hangarExport.failure") });
+    console.error(error);
+  }
+};
+
+const downloadExport = (data?: VehicleExport[]) => {
+  if (!data || !window.URL) {
+    displayAlert({ text: t("messages.hangarExport.failure") });
+    return;
+  }
+
+  const link = document.createElement("a");
+
+  link.href = window.URL.createObjectURL(
+    new Blob([data as unknown as BlobPart]),
+  );
+
+  link.setAttribute(
+    "download",
+    `fleetyards-${props.fleet.slug}-vehicles-${format(
+      new Date(),
+      "yyyy-MM-dd",
+    )}.json`,
+  );
+
+  document.body.appendChild(link);
+
+  link.click();
+
+  document.body.removeChild(link);
+};
+
+const route = useRoute();
+
+const fleetVehiclesQueryParams = computed(() => {
+  return {
+    page: page.value,
+    perPage: perPage.value,
+    q: filters.value,
+  };
+});
+
+const fleetVehiclesQueryKey = computed(() => {
+  return getFleetVehiclesQueryKey(fleetSlug, fleetVehiclesQueryParams);
+});
+
+const fleetSlug = computed(() => route.params.slug as string);
+
+const { data: fleetStats, refetch: refetchFleetStats } =
+  useFleetVehiclesStatsQuery(fleetSlug);
+
+const { data: modelCounts, refetch: refetchModelCounts } =
+  useFleetModelCountsQuery(fleetSlug, fleetVehiclesQueryParams);
+
+const refetch = () => {
+  refetchVehicles();
+  refetchModelCounts();
+  refetchFleetStats();
+};
+
+const {
+  data: fleetVehicles,
+  refetch: refetchVehicles,
+  ...asyncStatus
+} = useFleetVehiclesQuery(fleetSlug, fleetVehiclesQueryParams);
+
+const { filters } = useFilters<FleetVehicleQuery>({
+  updateCallback: () => refetch(),
+});
+
+const { perPage, page, updatePerPage } = usePagination(fleetVehiclesQueryKey);
+</script>
+
 <template>
   <div class="row">
     <div class="col-12 col-lg-12">
@@ -76,7 +265,7 @@
         primary-key="id"
         :hide-loading="fleetchartVisible"
       >
-        <template #actions>
+        <template #actions-right>
           <BtnDropdown :size="BtnSizesEnum.SMALL">
             <template v-if="mobile">
               <Btn
@@ -132,11 +321,11 @@
         <template #filter>
           <FleetVehiclesFilterForm />
         </template>
-        <template #default="{ records, loading, filterVisible, primaryKey }">
+        <template #default="{ records, loading, filterVisible }">
           <Grid
             :records="records"
             :filter-visible="filterVisible"
-            :primary-key="primaryKey"
+            primary-key="id"
           >
             <template #default="{ record }">
               <FleetVehiclePanel
@@ -167,195 +356,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import type { Subscription } from "@rails/actioncable";
-import FilteredList from "@/shared/components/FilteredList/index.vue";
-import Grid from "@/shared/components/base/Grid/index.vue";
-import Btn from "@/shared/components/base/Btn/index.vue";
-import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
-import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
-import FleetVehiclePanel from "@/frontend/components/Fleets/VehiclePanel/index.vue";
-import FleetVehiclesFilterForm from "@/frontend/components/Fleets/FilterForm/index.vue";
-import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
-import ModelClassLabels from "@/frontend/components/Models/ClassLabels/index.vue";
-import Paginator from "@/shared/components/Paginator/index.vue";
-import { useQuery } from "@tanstack/vue-query";
-import { useApiClient } from "@/frontend/composables/useApiClient";
-import type { FleetVehicleQuery, Fleet, VehicleExport } from "@/services/fyApi";
-import { usePagination } from "@/shared/composables/usePagination";
-import { debounce } from "ts-debounce";
-import { format } from "date-fns";
-import { useNoty } from "@/shared/composables/useNoty";
-import { useFilters } from "@/shared/composables/useFilters";
-import { useI18n } from "@/shared/composables/useI18n";
-import { useCable } from "@/shared/composables/useCable";
-import { useMobile } from "@/shared/composables/useMobile";
-import { useFleetStore } from "@/frontend/stores/fleet";
-import { useFleetchartStore } from "@/shared/stores/fleetchart";
-import { storeToRefs } from "pinia";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
-
-type Props = {
-  fleet: Fleet;
-  shareUrl: string;
-  shareTitle: string;
-};
-
-const props = defineProps<Props>();
-
-const { t, toDollar, toUEC, toNumber } = useI18n();
-
-const { displayAlert } = useNoty();
-
-const fleetVehiclesChannel = ref<Subscription>();
-
-const mobile = useMobile();
-
-const fleetStore = useFleetStore();
-
-const { grouped, money, detailsVisible } = storeToRefs(fleetStore);
-
-const fleetchartStore = useFleetchartStore();
-
-const fleetchartVisible = computed(() => {
-  return fleetchartStore.isVisible("fleet");
-});
-
-const toggleFleetchart = () => {
-  fleetchartStore.toggleFleetchart("fleet");
-};
-
-const toggleDetailsTooltip = computed(() => {
-  if (detailsVisible.value) {
-    return t("actions.hideDetails");
-  }
-  return t("actions.showDetails");
-});
-
-watch(
-  () => grouped.value,
-  () => refetch,
-);
-
-watch(
-  () => props.fleet,
-  () => refetch,
-);
-
-onMounted(() => {
-  setupUpdates();
-});
-
-const { consumer } = useCable();
-
-const setupUpdates = () => {
-  if (fleetVehiclesChannel.value) {
-    fleetVehiclesChannel.value.unsubscribe();
-  }
-
-  fleetVehiclesChannel.value = consumer.subscriptions.create(
-    {
-      channel: "FleetVehiclesChannel",
-    },
-    {
-      received: () => debounce(refetch, 500),
-    },
-  );
-};
-
-const { fleets: fleetService, fleetStats: fleetStatsService } = useApiClient();
-
-const exportJson = async () => {
-  try {
-    const exportedData = await fleetService.fleetVehiclesExport({
-      fleetSlug: String(route.params.slug),
-      q: filters.value,
-    });
-
-    downloadExport(exportedData);
-  } catch (error) {
-    displayAlert({ text: t("messages.hangarExport.failure") });
-    console.error(error);
-  }
-};
-
-const downloadExport = (data?: VehicleExport[]) => {
-  if (!data || !window.URL) {
-    displayAlert({ text: t("messages.hangarExport.failure") });
-    return;
-  }
-
-  const link = document.createElement("a");
-
-  link.href = window.URL.createObjectURL(
-    new Blob([data as unknown as BlobPart]),
-  );
-
-  link.setAttribute(
-    "download",
-    `fleetyards-${props.fleet.slug}-vehicles-${format(
-      new Date(),
-      "yyyy-MM-dd",
-    )}.json`,
-  );
-
-  document.body.appendChild(link);
-
-  link.click();
-
-  document.body.removeChild(link);
-};
-
-const route = useRoute();
-
-const { data: fleetStats, refetch: refetchFleetStats } = useQuery({
-  queryKey: ["fleet-ships-stats", props.fleet.slug],
-  queryFn: () =>
-    fleetStatsService.fleetVehiclesStats({
-      fleetSlug: String(route.params.slug),
-    }),
-});
-
-const { data: modelCounts, refetch: refetchModelCounts } = useQuery({
-  queryKey: ["fleet-ships-counts", props.fleet.slug],
-  queryFn: () =>
-    fleetStatsService.fleetModelCounts({
-      fleetSlug: String(route.params.slug),
-      q: filters.value,
-    }),
-});
-
-const refetch = () => {
-  refetchVehicles();
-  refetchModelCounts();
-  refetchFleetStats();
-};
-
-const {
-  data: fleetVehicles,
-  refetch: refetchVehicles,
-  ...asyncStatus
-} = useQuery({
-  queryKey: ["fleet-ships", props.fleet.slug],
-  queryFn: () =>
-    fleetService.fleetVehicles({
-      fleetSlug: String(route.params.slug),
-      page: page.value,
-      perPage: perPage.value,
-      q: filters.value,
-    }),
-});
-
-const { filters } = useFilters<FleetVehicleQuery>({
-  updateCallback: () => refetch(),
-});
-
-const { perPage, page, updatePerPage } = usePagination("fleet-ships");
-</script>
-
-<script lang="ts">
-export default {
-  name: "FleetShipsList",
-};
-</script>

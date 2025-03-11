@@ -24,7 +24,7 @@ import ModelClassificationFilterGroup from "@/frontend/components/base/ModelClas
 import ModelFocusFilterGroup from "@/frontend/components/base/ModelFocusFilterGroup/index.vue";
 import DirectUpload from "@/shared/components/DirectUpload/index.vue";
 import { useModelUpdateMutation } from "@/admin/composables/useModelUpdateMutation";
-// import { useNoty } from "@/shared/composables/useNoty";
+// import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 type Props = {
   model: ModelExtended;
@@ -34,7 +34,7 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 
-// const { displayAlert } = useNoty();
+// const { displayAlert } = useAppNotifications();
 
 const submitting = ref(false);
 
@@ -87,12 +87,14 @@ const { updateMutation: mutation } = useModelUpdateMutation(props.model);
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
-  await mutation.mutateAsync({
-    id: props.model.id,
-    data: values,
-  });
-
-  submitting.value = false;
+  await mutation
+    .mutateAsync({
+      id: props.model.id,
+      data: values,
+    })
+    .finally(() => {
+      submitting.value = false;
+    });
 });
 
 const onCancel = () => {

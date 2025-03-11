@@ -18,8 +18,8 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/sch
     parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
     parameter name: "token", in: :path, type: :string, description: "Invite Url Token"
 
-    delete("Remove Invite Url") do
-      operationId "removeInviteUrl"
+    delete("Remove Fleet Invite Url") do
+      operationId "destroyFleetInviteUrl"
       tags "FleetInviteUrls"
       produces "application/json"
 

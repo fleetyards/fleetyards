@@ -17,11 +17,11 @@ import {
 export type Props = {
   to?: RouterLinkProps["to"];
   href?: string;
-  type?: BtnTypesEnum;
+  type?: `${BtnTypesEnum}`;
   loading?: boolean;
   spinner?: boolean | SpinnerAlignment;
-  variant?: BtnVariantsEnum;
-  size?: BtnSizesEnum;
+  variant?: `${BtnVariantsEnum}`;
+  size?: `${BtnSizesEnum}`;
   exact?: boolean;
   block?: boolean;
   mobileBlock?: boolean;

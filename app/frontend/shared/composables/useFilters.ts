@@ -6,7 +6,7 @@ export const useFilters = <T>({
   updateCallback,
 }: {
   allowedKeys?: (keyof T)[];
-  ignoreKeys?: (keyof T)[];
+  ignoreKeys?: string[];
   updateCallback?: () => void;
 } = {}) => {
   const route = useRoute();
@@ -57,9 +57,7 @@ export const useFilters = <T>({
 
     Object.keys(query)
       .filter((key) => {
-        return [...(ignoreKeys || []), ...defaultAllowedKeys].includes(
-          key as keyof T,
-        );
+        return [...(ignoreKeys || []), ...defaultAllowedKeys].includes(key);
       })
       .forEach((key) => delete query[key]);
 

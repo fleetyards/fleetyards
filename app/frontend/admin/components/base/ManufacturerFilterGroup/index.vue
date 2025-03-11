@@ -1,16 +1,8 @@
-<template>
-  <FilterGroup
-    v-model="internalValue"
-    :label="t('labels.filters.manufacturer')"
-    :query-fn="fetch"
-    :query-response-formatter="formatter"
-    :name="name"
-    :paginated="true"
-    :searchable="true"
-    :multiple="multiple"
-    :no-label="noLabel"
-  />
-</template>
+<script lang="ts">
+export default {
+  name: "ManufacturerFilterGroup",
+};
+</script>
 
 <script lang="ts" setup>
 import {
@@ -97,8 +89,16 @@ const fetch = async (params: FilterGroupParams<Manufacturer>) => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "ManufacturerFilterGroup",
-};
-</script>
+<template>
+  <FilterGroup
+    v-model="internalValue"
+    :label="t('labels.filters.manufacturer')"
+    :query-fn="fetch"
+    :query-response-formatter="formatter"
+    :name="name"
+    :paginated="true"
+    :searchable="true"
+    :multiple="multiple"
+    :no-label="noLabel"
+  />
+</template>

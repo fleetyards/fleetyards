@@ -12,14 +12,28 @@ module Api
 
     skip_before_action :track_ahoy_visit
 
-    before_action :authenticate_user!, except: %i[root version]
-    before_action :current_ability
+    before_action :authenticate_user!, except: %i[root version provider]
+    before_action :current_ability, except: %i[root version provider]
     before_action :set_locale
     before_action :set_last_active_at
 
-    check_authorization except: %i[root version]
+    check_authorization except: %i[root version provider]
 
     after_action :set_rate_limit_headers
+
+    def oauth_token_url(*)
+      api_oauth_token_url(*)
+    end
+
+    def oauth_revoke_url(*)
+      api_oauth_revoke_url(*)
+    end
+
+    rescue_from Doorkeeper::Errors::TokenUnknown,
+      Doorkeeper::Errors::TokenExpired,
+      Doorkeeper::Errors::TokenForbidden do |exception|
+      render json: {code: "unauthorized", message: exception.message}, status: :unauthorized
+    end
 
     rescue_from CanCan::AccessDenied do |exception|
       render json: {code: "forbidden", message: exception.message}, status: :forbidden
@@ -55,6 +69,9 @@ module Api
       access_cookie = cookies.encrypted["#{Rails.configuration.cookie_prefix}_ACCESS_CONFIRMED"]
 
       access_cookie.present? && access_cookie == current_user.confirm_access_token
+    end
+
+    def provider
     end
 
     def root

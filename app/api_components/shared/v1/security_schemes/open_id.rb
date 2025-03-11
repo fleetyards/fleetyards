@@ -8,7 +8,7 @@ module Shared
 
         schema({
           type: :openIdConnect,
-          openIdConnectUrl: "https://fleetyards.net/.well-known/openid-configuration"
+          openIdConnectUrl: "http://fleetyards.test/.well-known/openid-configuration"
         })
       end
     end

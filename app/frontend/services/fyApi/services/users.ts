@@ -21,6 +21,7 @@ import type {
   AccountUpdateInput,
   Check,
   CheckInput,
+  ConfirmAccountInput,
   StandardError,
   StandardMessage,
   User,
@@ -196,6 +197,90 @@ export const useCheckUsername = <
   TContext
 > => {
   const mutationOptions = getCheckUsernameMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+/**
+ * @summary Confirm Account
+ */
+export const confirmAccount = (
+  confirmAccountInput: MaybeRef<ConfirmAccountInput>,
+  signal?: AbortSignal,
+) => {
+  confirmAccountInput = unref(confirmAccountInput);
+
+  return axiosClient<StandardMessage>({
+    url: `/users/confirm`,
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    data: confirmAccountInput,
+    signal,
+  });
+};
+
+export const getConfirmAccountMutationOptions = <
+  TError = ErrorType<ValidationError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof confirmAccount>>,
+    TError,
+    { data: ConfirmAccountInput },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof confirmAccount>>,
+  TError,
+  { data: ConfirmAccountInput },
+  TContext
+> => {
+  const mutationKey = ["confirmAccount"];
+  const { mutation: mutationOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof confirmAccount>>,
+    { data: ConfirmAccountInput }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return confirmAccount(data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type ConfirmAccountMutationResult = NonNullable<
+  Awaited<ReturnType<typeof confirmAccount>>
+>;
+export type ConfirmAccountMutationBody = ConfirmAccountInput;
+export type ConfirmAccountMutationError = ErrorType<ValidationError>;
+
+/**
+ * @summary Confirm Account
+ */
+export const useConfirmAccount = <
+  TError = ErrorType<ValidationError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof confirmAccount>>,
+    TError,
+    { data: ConfirmAccountInput },
+    TContext
+  >;
+}): UseMutationReturnType<
+  Awaited<ReturnType<typeof confirmAccount>>,
+  TError,
+  { data: ConfirmAccountInput },
+  TContext
+> => {
+  const mutationOptions = getConfirmAccountMutationOptions(options);
 
   return useMutation(mutationOptions);
 };
@@ -418,58 +503,12 @@ export function useMe<
  */
 export const updateProfile = (userUpdateInput: MaybeRef<UserUpdateInput>) => {
   userUpdateInput = unref(userUpdateInput);
-  const formData = new FormData();
-  if (userUpdateInput.avatar !== undefined) {
-    formData.append("avatar", userUpdateInput.avatar);
-  }
-  if (userUpdateInput.removeAvatar !== undefined) {
-    formData.append("removeAvatar", userUpdateInput.removeAvatar.toString());
-  }
-  if (userUpdateInput.rsiHandle !== undefined) {
-    formData.append("rsiHandle", userUpdateInput.rsiHandle);
-  }
-  if (userUpdateInput.homepage !== undefined) {
-    formData.append("homepage", userUpdateInput.homepage);
-  }
-  if (userUpdateInput.discord !== undefined) {
-    formData.append("discord", userUpdateInput.discord);
-  }
-  if (userUpdateInput.youtube !== undefined) {
-    formData.append("youtube", userUpdateInput.youtube);
-  }
-  if (userUpdateInput.guilded !== undefined) {
-    formData.append("guilded", userUpdateInput.guilded);
-  }
-  if (userUpdateInput.twitch !== undefined) {
-    formData.append("twitch", userUpdateInput.twitch);
-  }
-  if (userUpdateInput.saleNotify !== undefined) {
-    formData.append("saleNotify", userUpdateInput.saleNotify.toString());
-  }
-  if (userUpdateInput.publicHangar !== undefined) {
-    formData.append("publicHangar", userUpdateInput.publicHangar.toString());
-  }
-  if (userUpdateInput.publicHangarLoaners !== undefined) {
-    formData.append(
-      "publicHangarLoaners",
-      userUpdateInput.publicHangarLoaners.toString(),
-    );
-  }
-  if (userUpdateInput.publicWishlist !== undefined) {
-    formData.append(
-      "publicWishlist",
-      userUpdateInput.publicWishlist.toString(),
-    );
-  }
-  if (userUpdateInput.hideOwner !== undefined) {
-    formData.append("hideOwner", userUpdateInput.hideOwner.toString());
-  }
 
   return axiosClient<User>({
     url: `/users/me`,
     method: "PUT",
-    headers: { "Content-Type": "multipart/form-data" },
-    data: formData,
+    headers: { "Content-Type": "application/json" },
+    data: userUpdateInput,
   });
 };
 

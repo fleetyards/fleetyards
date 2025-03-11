@@ -62,6 +62,10 @@
         "verify": "RSI Account Verification"
       },
       "reload": "Update available!",
+      "visualTests": {
+        "index": "Overview",
+        "panels": "Panels"
+      },
       "admin": {
         "index": "Admin",
         "models": {

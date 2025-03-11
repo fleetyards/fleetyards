@@ -5,13 +5,13 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type ModelQuery, type Models, type Model } from "@/services/fyApi";
 import FilterGroup, {
   type FilterGroupParams,
   type ValueType,
 } from "@/shared/components/base/FilterGroup/index.vue";
+import { models as fetchModels } from "@/services/fyApi";
 
 type Props = {
   name: string;
@@ -62,8 +62,6 @@ const formatter = (response: Models) => {
   });
 };
 
-const { models: modelsService } = useApiClient();
-
 const fetch = async (params: FilterGroupParams<Model>) => {
   const q: ModelQuery = {};
 
@@ -79,7 +77,7 @@ const fetch = async (params: FilterGroupParams<Model>) => {
     }
   }
 
-  return modelsService.models({
+  return fetchModels({
     page: String(params.page || 1),
     q,
   });

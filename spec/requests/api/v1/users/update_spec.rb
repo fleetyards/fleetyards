@@ -3,10 +3,10 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
+  fixtures :users
 
   let(:user) { users :data }
-  let(:"") do
+  let(:input) do
     {
       discord: "DiscordServer"
     }
@@ -21,10 +21,10 @@ RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
       operationId "updateProfile"
       tags "Users"
 
-      consumes "multipart/form-data"
+      consumes "application/json"
       produces "application/json"
 
-      parameter name: :"", in: :formData, schema: {"$ref": "#/components/schemas/UserUpdateInput"}, required: true
+      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/UserUpdateInput"}, required: true
 
       response(200, "successful") do
         schema "$ref" => "#/components/schemas/User"

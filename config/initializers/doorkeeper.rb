@@ -105,7 +105,7 @@ Doorkeeper.configure do
   # Use a custom class for generating the access token.
   # See https://doorkeeper.gitbook.io/guides/configuration/other-configurations#custom-access-token-generator
   #
-  # access_token_generator '::Doorkeeper::JWT'
+  access_token_generator "::Doorkeeper::JWT"
 
   # The controller +Doorkeeper::ApplicationController+ inherits from.
   # Defaults to +ActionController::Base+ unless +api_only+ is set, which changes the default to
@@ -113,6 +113,7 @@ Doorkeeper.configure do
   # See https://doorkeeper.gitbook.io/guides/configuration/other-configurations#custom-controllers
   #
   base_controller "Api::BaseController"
+  base_metal_controller "Api::BaseController"
 
   # Reuse access token for the same resource owner within an application (disabled by default).
   #
@@ -221,7 +222,7 @@ Doorkeeper.configure do
   # https://doorkeeper.gitbook.io/guides/ruby-on-rails/scopes
   #
   default_scopes "public", "profile:read"
-  optional_scopes "profile:write", "hangar", "hangar:read", "hangar:write", "fleet", "fleet:read", "fleet:write"
+  optional_scopes "profile:write", "hangar", "hangar:read", "hangar:write", "fleet", "fleet:read", "fleet:write", "openid"
 
   # Allows to restrict only certain scopes for grant_type.
   # By default, all the scopes will be available for all the grant types.
@@ -304,7 +305,7 @@ Doorkeeper.configure do
   #   Doorkeeper::Errors::TokenForbidden, Doorkeeper::Errors::TokenExpired,
   #   Doorkeeper::Errors::TokenRevoked, Doorkeeper::Errors::TokenUnknown
   #
-  # handle_auth_errors :raise
+  handle_auth_errors :raise
 
   # Customize token introspection response.
   # Allows to add your own fields to default one that are required by the OAuth spec
@@ -340,7 +341,7 @@ Doorkeeper.configure do
   #   https://datatracker.ietf.org/doc/html/rfc6819#section-4.4.2
   #   https://datatracker.ietf.org/doc/html/rfc6819#section-4.4.3
   #
-  grant_flows %w[authorization_code]
+  grant_flows %w[authorization_code implicit_oidc]
 
   # Allows to customize OAuth grant flows that +each+ application support.
   # You can configure a custom block (or use a class respond to `#call`) that must

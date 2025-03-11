@@ -6,16 +6,13 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
-import { useApiClient } from "@/frontend/composables/useApiClient";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import BaseTable, {
-  type TableColumn,
-} from "@/shared/components/base/Table/index.vue";
+import BaseTable from "@/shared/components/base/Table/index.vue";
+import { type BaseTableColumn } from "@/shared/components/base/Table/types";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import TravelTime from "@/frontend/components/TravelTime/index.vue";
 import { usePagination } from "@/shared/composables/usePagination";
-import { useQuery } from "@tanstack/vue-query";
 import { type Component } from "@/services/fyApi";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
@@ -26,12 +23,16 @@ import {
   InputTypesEnum,
   InputAlignmentsEnum,
 } from "@/shared/components/base/FormInput/types";
+import {
+  useComponents as useComponentsQuery,
+  getComponentsQueryKey,
+} from "@/services/fyApi";
 
 const { t } = useI18n();
 
 const route = useRoute();
 
-const columns = computed<TableColumn[]>(() => {
+const columns = computed<BaseTableColumn[]>(() => {
   return [
     {
       name: "store_image",
@@ -66,8 +67,6 @@ const storeImage = (component: Component) => {
 
   return fallbackImageJpg;
 };
-
-const { components: componentsService } = useApiClient();
 
 const travelTime = (quantumDrive: Component) => {
   if (!quantumDrive.typeData?.standardJump) {
@@ -108,23 +107,25 @@ const sortedQuantumDrives = computed(() => {
   });
 });
 
+const componentsQueryParams = computed(() => ({
+  page: page.value,
+  perPage: "240",
+  q: {
+    itemTypeIn: ["quantum_drives"],
+  },
+}));
+
+const componentsQueryKey = computed(() => {
+  return getComponentsQueryKey(componentsQueryParams.value);
+});
+
+const { page, perPage, updatePerPage } = usePagination(componentsQueryKey);
+
 const {
   data: quantumDrives,
   refetch,
   ...asyncStatus
-} = useQuery({
-  queryKey: ["quantumDrives"],
-  queryFn: () =>
-    componentsService.components({
-      page: page.value,
-      perPage: "240",
-      q: {
-        itemTypeIn: ["quantum_drives"],
-      },
-    }),
-});
-
-const { page, perPage, updatePerPage } = usePagination("quantumDrives");
+} = useComponentsQuery(componentsQueryParams);
 </script>
 
 <template>
@@ -173,11 +174,11 @@ const { page, perPage, updatePerPage } = usePagination("quantumDrives");
     :name="route.name?.toString() || ''"
     :async-status="asyncStatus"
   >
-    <template #default="{ records, primaryKey }">
+    <template #default="{ records }">
       <BaseTable
         :records="records"
         :filter-visible="false"
-        :primary-key="primaryKey"
+        primary-key="slug"
         :columns="columns"
       >
         <template #col-store_image="{ record }">
