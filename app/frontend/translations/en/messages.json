@@ -84,10 +84,17 @@
       },
       "vehicle": {
         "add": {
-          "success": "Your new <b>%{model}</b> will be delivered to your "
+          "success": {
+            "noHtml": "Your new %{model} will be delivered to your Hangar",
+            "paragraph1": "Your new ",
+            "paragraph2": "will be delivered to your "
+          }
         },
         "addToWishlist": {
-          "success": "Your new <b>%{model}</b> was added to your "
+          "success": {
+            "noHtml": "Your new %{model} was added to your Wishlist",
+            "paragraph2": "was added to your "
+          }
         },
         "resetIngame": {
           "moveToWishlist": {
@@ -128,7 +135,12 @@
         "serialTaken": "Serial is already taken.",
         "textInvalid": "%{field} is invalid",
         "hangar": {
-          "accountRequired": "You need to <a href=\"/sign-up/\">Sign up</a> or <a href=\"/login/\">Login</a> to add Ships to your Hangar.<br>Get more Information <a href=\"/hangar/preview/\">here</a>"
+          "accountRequired": {
+            "noHtml": "You need to Sign up or Login to add Ships to your Hangar.",
+            "paragraph1": "You need to ",
+            "paragraph2": " to add Ships to your Hangar.",
+            "paragraph3": "Get more Information "
+          }
         },
         "commodityPrice": {
           "accountRequired": "You need to <a href=\"/sign-up/\">Sign up</a> or <a href=\"/login/\">Login</a> to submit Prices."

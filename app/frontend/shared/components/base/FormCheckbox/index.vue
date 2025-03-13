@@ -41,14 +41,18 @@ const { t } = useI18n();
 
 const { value, errorMessage } = useField(props.name);
 
-const internalValue = ref<boolean | (string | number)[]>();
-
 const uuid = ref(`${props.name}-${uuidv4()}`);
 
 const checked = computed(() => {
-  return Array.isArray(internalValue.value) && props.checkboxValue
-    ? internalValue.value.includes(props.checkboxValue)
-    : internalValue.value;
+  if (props.checkboxValue === undefined) {
+    return value.value as boolean;
+  }
+
+  if (Array.isArray(value.value)) {
+    return value.value.includes(props.checkboxValue);
+  } else {
+    return value.value === props.checkboxValue;
+  }
 });
 
 watch(

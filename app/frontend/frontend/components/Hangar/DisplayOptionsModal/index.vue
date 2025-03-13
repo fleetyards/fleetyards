@@ -17,41 +17,29 @@ import {
 
 const { t } = useI18n();
 
-type Form = {
-  columns: HangarTableViewColsEnum[];
-};
-
-const form = ref<Form>({
-  columns: [],
-});
-
 const columnOptions = computed(() => {
   return Object.values(HangarTableViewColsEnum);
 });
 
 onMounted(() => {
-  setupForm();
+  tableViewCols.value = hangarStore.tableViewCols;
 });
 
 const hangarStore = useHangarStore();
 
-const setupForm = () => {
-  form.value = {
-    columns: hangarStore.tableViewCols,
-  };
-};
+const tableViewCols = ref(hangarStore.tableViewCols);
 
 watch(
   () => hangarStore.tableViewCols,
   () => {
-    setupForm();
+    tableViewCols.value = hangarStore.tableViewCols;
   },
 );
 
 watch(
-  () => form.value.columns,
+  () => tableViewCols.value,
   () => {
-    hangarStore.setTableViewCols(form.value.columns);
+    hangarStore.setTableViewCols(tableViewCols.value);
   },
 );
 
@@ -65,7 +53,7 @@ const displayAsList = () => {
 </script>
 
 <template>
-  <Modal v-if="form" :title="t('headlines.modals.models.displayOptions')">
+  <Modal :title="t('headlines.modals.models.displayOptions')">
     <div class="row">
       <div class="col-6">
         <Btn
@@ -113,7 +101,7 @@ const displayAsList = () => {
               class="col-12 col-md-6"
             >
               <FormCheckbox
-                v-model="form.columns"
+                v-model="tableViewCols"
                 :checkbox-value="option"
                 :name="option"
                 :label="t('labels.hangarTable.columns.' + option)"

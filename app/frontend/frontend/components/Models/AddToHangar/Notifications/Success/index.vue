@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: "ModelsAddToHangarNotification",
+  name: "ModelsAddToHangarNotificationSuccess",
 };
 </script>
 
@@ -41,18 +41,6 @@ const to = computed(() => {
   };
 });
 
-const text = computed(() => {
-  if (props.vehicle.wanted) {
-    return t("messages.vehicle.add.success", {
-      model: model.value.name,
-    });
-  }
-
-  return t("messages.vehicle.addToWishlist.success", {
-    model: model.value.name,
-  });
-});
-
 const linkLabel = computed(() => {
   if (props.vehicle.wanted) {
     return t("labels.wishlist");
@@ -60,21 +48,24 @@ const linkLabel = computed(() => {
 
   return t("labels.hangar");
 });
+
+const paragraph2 = computed(() => {
+  if (props.vehicle.wanted) {
+    return t("messages.vehicle.addToWishlist.success.paragraph2");
+  }
+
+  return t("messages.vehicle.add.success.paragraph2");
+});
 </script>
 
 <template>
-  <div class="models-add-to-hangar-notification">
-    <MessageBody>
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <span v-html="text" />
-      <router-link :to="to" class="models-add-to-hangar-notification__link">
-        {{ linkLabel }}
-      </router-link>
-    </MessageBody>
-    <img v-lazy="image" :alt="alt" :title="title || alt" />
-  </div>
+  <MessageBody>
+    {{ t("messages.vehicle.add.success.paragraph1") }}
+    <b>{{ model.name }}</b>
+    {{ paragraph2 }}
+    <router-link :to="to" class="models-add-to-hangar-notification__link">
+      {{ linkLabel }}
+    </router-link>
+  </MessageBody>
+  <img v-lazy="image" :alt="alt" :title="title || alt" />
 </template>
-
-<style lang="scss" scoped>
-@import "index";
-</style>

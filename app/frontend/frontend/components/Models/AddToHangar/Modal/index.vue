@@ -40,14 +40,21 @@ const addToWishlist = async () => {
         wanted: true,
       },
     })
-    .then(() => {
+    .then((vehicle) => {
       wishlistStore.add(props.model.slug);
 
       displaySuccess({
-        text: t("messages.vehicle.addToWishlist.success", {
+        text: t("messages.vehicle.addToWishlist.success.noHtml", {
           model: props.model.name,
         }),
-        icon: props.model.media.storeImage?.small,
+        component: () =>
+          import(
+            "@/frontend/components/Models/AddToHangar/Notifications/Success/index.vue"
+          ),
+        componentProps: {
+          vehicle: vehicle,
+        },
+        timeout: false,
       });
 
       comlink.emit("close-modal");
@@ -64,13 +71,20 @@ const addToHangar = async () => {
         modelId: props.model.id,
       },
     })
-    .then(() => {
+    .then((vehicle) => {
       hangarStore.add(props.model.slug);
 
       displaySuccess({
-        text: t("messages.vehicle.add.success", {
+        text: t("messages.vehicle.add.success.noHtml", {
           model: props.model.name,
         }),
+        component: () =>
+          import(
+            "@/frontend/components/Models/AddToHangar/Notifications/Success/index.vue"
+          ),
+        componentProps: {
+          vehicle: vehicle,
+        },
         icon: props.model.media.storeImage?.small,
       });
 

@@ -81,6 +81,10 @@ const comlink = useComlink();
 const add = async () => {
   if (!sessionStore.isAuthenticated) {
     displayWarning({
+      component: () =>
+        import(
+          "@/frontend/components/Models/AddToHangar/Notifications/AccountRequired/index.vue"
+        ),
       text: t("messages.error.hangar.accountRequired"),
     });
 

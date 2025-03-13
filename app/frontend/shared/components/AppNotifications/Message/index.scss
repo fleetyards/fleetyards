@@ -30,6 +30,10 @@
     &--warning {
       background-color: $warning;
     }
+
+    :deep(img) {
+      max-width: 100%;
+    }
   }
 }
 
