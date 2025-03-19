@@ -14,6 +14,7 @@
 #  homepage           :string
 #  logo               :string
 #  name               :string
+#  normalized_fid     :string
 #  public_fleet       :boolean          default(FALSE)
 #  public_fleet_stats :boolean          default(FALSE)
 #  rsi_sid            :string
@@ -72,12 +73,17 @@ class Fleet < ApplicationRecord
   accepts_nested_attributes_for :fleet_memberships
 
   before_validation :update_urls
+  before_validation :set_normalized_fields
   before_save :update_slugs
   after_create :setup_admin_user
 
   def self.accepted
     includes(:fleet_memberships).joins(:fleet_memberships)
       .where(fleet_memberships: {aasm_state: :accepted})
+  end
+
+  def set_normalized_fields
+    self.normalized_fid = fid.downcase
   end
 
   def update_urls(force: false)

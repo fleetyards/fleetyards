@@ -14,6 +14,7 @@
 #  homepage           :string
 #  logo               :string
 #  name               :string
+#  normalized_fid     :string
 #  public_fleet       :boolean          default(FALSE)
 #  public_fleet_stats :boolean          default(FALSE)
 #  rsi_sid            :string

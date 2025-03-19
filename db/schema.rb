@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_04_083059) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_19_110026) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
@@ -258,6 +258,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_04_083059) do
     t.boolean "public_fleet", default: false
     t.text "description"
     t.boolean "public_fleet_stats", default: false
+    t.string "normalized_fid"
     t.index ["fid"], name: "index_fleets_on_fid", unique: true
   end
 
@@ -339,6 +340,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_04_083059) do
     t.uuid "user_id"
     t.string "import"
     t.text "import_data"
+    t.index ["aasm_state", "type"], name: "index_imports_on_aasm_state_and_type"
+    t.index ["aasm_state"], name: "index_imports_on_aasm_state"
+    t.index ["type"], name: "index_imports_on_type"
   end
 
   create_table "item_prices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

@@ -8,7 +8,7 @@ module Api
 
         # DEPRECATED
         def fleetchart
-          user = User.find_by!("lower(username) = ?", params.fetch(:username, "").downcase)
+          user = User.find_by!(normalized_username: params.fetch(:username, "").downcase)
 
           unless user.public_hangar?
             not_found
