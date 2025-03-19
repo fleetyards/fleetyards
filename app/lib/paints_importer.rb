@@ -147,6 +147,10 @@ class PaintsImporter
       "100 Series Sand Wave" => "Sand Wave",
       "600i BIS 2951" => "Best in Show 2951",
       "MPUV BIS 2951" => "Best in Show 2951",
+      "Mole Lovestruck" => "Lovestruck",
+      "Lovestruck s" => "Lovestruck",
+      "2954 Auspicious Red Dragon" => "Auspicious Red Dragon",
+      "2954 Auspicious Red Dog" => "Auspicious Red Dog",
       "Origin X1 Scarlet" => "Scarlet",
       "Mercury Star Runner BIS 2951" => "Best in Show 2951",
       "Star Runner Silver Spark" => "Silver Spark",
@@ -206,14 +210,14 @@ class PaintsImporter
       "Corsair 2953 Best in Show" => "Best in Show 2953",
       "Vulture 2953 Best in Show" => "Best in Show 2953",
       "Redeemer 2953 Best in Show" => "Best in Show 2953",
-      "100i 2954 Auspicious Red Dog" => "2954 Auspicious Red Dog",
-      "100i 2954 Auspicious Red Dragon" => "2954 Auspicious Red Dragon",
-      "400i 2954 Auspicious Red Dog" => "2954 Auspicious Red Dog",
-      "400i 2954 Auspicious Red Dragon" => "2954 Auspicious Red Dragon",
-      "600i 2954 Auspicious Red Dog" => "2954 Auspicious Red Dog",
-      "600i 2954 Auspicious Red Dragon" => "2954 Auspicious Red Dragon",
-      "X1 2954 Auspicious Red Dog" => "2954 Auspicious Red Dog",
-      "X1 2954 Auspicious Red Dragon" => "2954 Auspicious Red Dragon",
+      "100i 2954 Auspicious Red Dog" => "Auspicious Red Dog",
+      "100i 2954 Auspicious Red Dragon" => "Auspicious Red Dragon",
+      "400i 2954 Auspicious Red Dog" => "Auspicious Red Dog",
+      "400i 2954 Auspicious Red Dragon" => "Auspicious Red Dragon",
+      "600i 2954 Auspicious Red Dog" => "Auspicious Red Dog",
+      "600i 2954 Auspicious Red Dragon" => "Auspicious Red Dragon",
+      "X1 2954 Auspicious Red Dog" => "Auspicious Red Dog",
+      "X1 2954 Auspicious Red Dragon" => "Auspicious Red Dragon",
       "Scorpius Stinger Black Orange" => "Stinger"
     }
 
@@ -245,7 +249,12 @@ class PaintsImporter
       "F7C-M Super Hornet Mk I", "F7C Hornet Wildfire Mk I", "F7C Hornet Mk I", "F7A Hornet Mk I"
     ]
     hornet_mk2 = [
-      "F7C Hornet Mk II", "F7A Hornet Mk II", "F7C-R Hornet Tracker Mk II",
+      "Hornet Mk II",
+      "F7C Hornet Mk II",
+      "F7A Hornet Mk II",
+      "F7C-R Hornet Tracker Mk II",
+      "F7C-S Hornet Ghost Mk II",
+      "F7C-R Hornet Tracker Mk II",
       "F7C-S Hornet Ghost Mk II"
     ]
     mercury = ["Mercury", "Mercury Star Runner"]
@@ -264,6 +273,7 @@ class PaintsImporter
     spirit = ["A1 Spirit", "C1 Spirit", "E1 Spirit"]
     f8c = ["F8C Lightning", "F8C Lightning Executive Edition"]
     merlin = ["P-52 Merlin", "P-72 Archimedes"]
+    guardian = ["Guardian", "Guardian QI"]
 
     models_map = {
       "Cutter" => cutter,
@@ -301,10 +311,15 @@ class PaintsImporter
       "Freelancer - Black Paint " => freelancer,
       "2950 Invictus Freelancer Storm Surge" => freelancer,
       "Anvil Hornet" => hornet_mk1,
+      "Hornet Mk I" => hornet_mk1,
       "F7 Hornet Mk I" => hornet_mk1,
+      "Hornet Mk I Invictus Blue and Gold" => hornet_mk1,
+      "Hornet Mk I - Invictus Blue and Gold" => hornet_mk1,
+      "Hornet Mk II" => hornet_mk2,
       "F7 Hornet Mk II" => hornet_mk2,
       "F7A Hornet Mk II" => hornet_mk2,
       "F7C Hornet Mk II" => hornet_mk2,
+      "Mole Lovestruck" => ["MOLE"],
       "MOLE Dolivine" => ["MOLE"],
       "MOLE Aphorite" => ["MOLE"],
       "MOLE Hadanite" => ["MOLE"],
@@ -363,6 +378,7 @@ class PaintsImporter
       "Vanguard Series" => vanguard,
       "Vanguard" => vanguard,
       "Terrapin" => terrapin,
+      "Terrapin Medic" => terrapin,
       "Mustang" => ["Mustang Omega", "Mustang Gamma", "Mustang Delta", "Mustang Beta", "Mustang Alpha"],
       "2950 Invictus Valkyrie Light Grey" => ["Valkyrie"],
       "2950 Invictus Valkyrie Sage" => ["Valkyrie"],
@@ -380,8 +396,6 @@ class PaintsImporter
       "2950 Invictus Aurora Light and Dark Grey" => aurora,
       "2950 Invictus Aurora Green and Gold" => aurora,
       "2950 Invictus Auora Green and Gold" => aurora,
-      "Hornet Mk I Invictus Blue and Gold" => hornet_mk1,
-      "Hornet Mk I - Invictus Blue and Gold" => hornet_mk1,
       "Pisces" => ["C8 Pisces", "C8X Pisces Expedition", "C8R Pisces"],
       "Anvil Hawk" => ["Hawk"],
       "Tumbril Nova" => ["Nova"],
@@ -403,7 +417,9 @@ class PaintsImporter
       "Scorpius Stinger Black Orange" => scorpius,
       "Sabre" => sabre,
       "C1 Spirit 2954 Best In Show" => spirit,
-      "F8C Lightning 2954 Best In Show" => f8c
+      "F8C Lightning 2954 Best In Show" => f8c,
+      "Archimedes & Merlin" => merlin,
+      "Guardian" => guardian
     }
 
     return models_map[name.strip] if models_map[name.strip].present?

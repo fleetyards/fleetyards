@@ -100,21 +100,15 @@ Rails.application.configure do
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = Logger::Formatter.new
 
-  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.delivery_method = :postmark
   config.action_mailer.deliver_later_queue_name = "mailers"
 
   config.action_mailer.default_url_options = {host: Rails.configuration.app.domain, trailing_slash: true}
 
   config.action_mailer.asset_host = endpoints.frontend_endpoint
 
-  config.action_mailer.smtp_settings = {
-    address: Rails.application.credentials.mailer_host,
-    port: Rails.application.credentials.mailer_port,
-    enable_starttls_auto: true,
-    user_name: Rails.application.credentials.mailer_user,
-    password: Rails.application.credentials.mailer_password,
-    authentication: "login",
-    domain: Rails.configuration.app.domain
+  config.action_mailer.postmark_settings = {
+    api_token: Rails.application.credentials.postmark_api_token
   }
 
   if ENV["RAILS_LOG_TO_STDOUT"].present?
