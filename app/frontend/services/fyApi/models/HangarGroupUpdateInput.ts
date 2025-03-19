@@ -6,10 +6,8 @@
  */
 
 export interface HangarGroupUpdateInput {
-  /** @nullable */
-  name?: string | null;
-  /** @nullable */
-  color?: string | null;
+  name?: string;
+  color?: string;
   /** @nullable */
   sort?: number | null;
   /** @nullable */

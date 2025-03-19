@@ -1,12 +1,303 @@
-<template>
-  <section class="container">
-    <div class="row">
-      <div class="col-lg-12">
-        <BreadCrumbs :crumbs="crumbs" />
-        <h1>{{ $t("headlines.fleets.settings.fleet") }}</h1>
-      </div>
-    </div>
+<script lang="ts">
+import { fleetRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";
 
+export default {
+  name: "FleetSettingsPage",
+  beforeRouteEnter: fleetRouteGuard,
+};
+</script>
+
+<script lang="ts" setup>
+import { useI18n } from "@/shared/composables/useI18n";
+import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+// import Avatar from "@/frontend/core/components/Avatar/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
+import { type Fleet } from "@/services/fyApi";
+
+type Props = {
+  fleet: Fleet;
+};
+
+const props = defineProps<Props>();
+
+const { t } = useI18n();
+
+const leaving = ref(false);
+
+const submitting = ref(false);
+
+const deleting = ref(false);
+
+const crumbs = computed(() => {
+  return [
+    {
+      to: {
+        name: "fleet",
+        params: {
+          slug: props.fleet.slug,
+        },
+      },
+      label: props.fleet.name,
+    },
+  ];
+});
+
+// // eslint-disable-next-line @typescript-eslint/no-explicit-any
+// files: any[] = [];
+
+// fileExtensions = "jpg,jpeg,png,webp";
+
+// acceptedMimeTypes = "image/png,image/jpeg,image/webp";
+
+// form: FleetForm = {
+//   fid: null,
+//   name: null,
+//   description: null,
+//   rsiSid: null,
+//   discord: null,
+//   ts: null,
+//   homepage: null,
+//   twitch: null,
+//   youtube: null,
+//   guilded: null,
+//   publicFleet: false,
+//   publicFleetStats: false,
+//   removeLogo: false,
+// };
+
+// get fleet() {
+//   return fleetsCollection.record;
+// }
+
+// get metaTitle() {
+//   if (!this.fleet) {
+//     return null;
+//   }
+
+//   return this.$t("title.fleets.settings", { fleet: this.fleet.name });
+// }
+
+// get logoUrl() {
+//   if (this.fleet) {
+//     return this.newLogo.url || this.fleet.logo;
+//   }
+
+//   return this.newLogo.url;
+// }
+
+// get newLogo() {
+//   return (this.files && this.files[0]) || {};
+// }
+
+// get canEdit() {
+//   return this.fleet?.myRole === "admin";
+// }
+
+// get leaveTooltip() {
+//   if (this.canEdit) {
+//     return this.$t("texts.fleets.leaveInfo");
+//   }
+
+//   return null;
+// }
+
+// @Watch("$route")
+// onRouteChange() {
+//   this.fetch();
+// }
+
+// @Watch("fleet")
+// onFleetChange() {
+//   this.setupForm();
+// }
+
+// mounted() {
+//   this.fetch();
+
+//   if (this.fleet && !this.canEdit) {
+//     this.$router.replace({
+//       name: "fleet-settings-membership",
+//       params: { slug: this.$route.params.slug },
+//     });
+//     return;
+//   }
+
+//   if (this.fleet) {
+//     this.setupForm();
+//   }
+// }
+
+// selectLogo() {
+//   this.form.removeLogo = false;
+//   this.$refs.upload.$el.querySelector("input").click();
+// }
+
+// removeLogo() {
+//   this.files = [];
+//   this.fleet.logo = null;
+//   this.form.removeLogo = true;
+// }
+
+// setupForm() {
+//   this.form = {
+//     fid: this.fleet.fid,
+//     rsiSid: this.fleet.rsiSid,
+//     name: this.fleet.name,
+//     description: this.fleet.description,
+//     discord: this.fleet.discord,
+//     ts: this.fleet.ts,
+//     homepage: this.fleet.homepage,
+//     twitch: this.fleet.twitch,
+//     youtube: this.fleet.youtube,
+//     guilded: this.fleet.guilded,
+//     publicFleet: this.fleet.publicFleet,
+//     publicFleetStats: this.fleet.publicFleetStats,
+//     removeLogo: false,
+//   };
+// }
+
+// async submit() {
+//   this.submitting = true;
+
+//   await this.uploadLogo();
+
+//   const response = await this.$api.put(
+//     `fleets/${this.$route.params.slug}`,
+//     this.form,
+//   );
+
+//   this.submitting = false;
+
+//   if (!response.error) {
+//     displaySuccess({
+//       text: this.$t("messages.fleet.update.success"),
+//     });
+
+//     this.$comlink.$emit("fleet-update");
+
+//     if (response.data.slug !== this.$route.params.slug) {
+//       await this.$router.replace({
+//         name: "fleet-settings",
+//         params: { slug: response.data.slug },
+//       });
+//     }
+//   } else {
+//     this.handleUpdateError(response.error);
+//   }
+// }
+
+// async uploadLogo() {
+//   if (!this.newLogo || !this.newLogo.file) {
+//     return;
+//   }
+
+//   const uploadData = new FormData();
+//   uploadData.append("logo", this.newLogo.file);
+
+//   const response = await this.$api.upload(
+//     `fleets/${this.$route.params.slug}`,
+//     uploadData,
+//   );
+
+//   if (!response.error) {
+//     displaySuccess({
+//       text: this.$t("messages.fleet.update.logo.success"),
+//     });
+
+//     this.$comlink.$emit("fleet-update");
+
+//     setTimeout(() => {
+//       this.files = [];
+//     }, 1000);
+//   } else {
+//     this.handleUpdateError(response.error);
+//   }
+// }
+
+// handleUpdateError(error) {
+//   if (error.response && error.response.data) {
+//     const { data: errorData } = error.response;
+
+//     this.$refs.form.setErrors(transformErrors(errorData.errors));
+
+//     displayAlert({
+//       text: errorData.message,
+//     });
+//   } else {
+//     displayAlert({
+//       text: this.$t("messages.fleet.update.failure"),
+//     });
+//   }
+// }
+
+// async destroy() {
+//   this.deleting = true;
+//   displayConfirm({
+//     text: this.$t("messages.confirm.fleet.destroy"),
+//     onConfirm: async () => {
+//       const response = await this.$api.destroy(
+//         `fleets/${this.$route.params.slug}`,
+//       );
+
+//       if (!response.error) {
+//         // eslint-disable-next-line @typescript-eslint/no-empty-function
+//         this.$router.push({ name: "home" }).catch(() => {});
+
+//         this.$comlink.$emit("fleet-update");
+
+//         displaySuccess({
+//           text: this.$t("messages.fleet.destroy.success"),
+//         });
+//       } else {
+//         displayAlert({
+//           text: this.$t("messages.fleet.destroy.failure"),
+//         });
+//         this.deleting = false;
+//       }
+//     },
+//     onClose: () => {
+//       this.deleting = false;
+//     },
+//   });
+// }
+
+// updatedValue(value) {
+//   this.files = value;
+// }
+
+// inputFilter(newFile, oldFile, prevent) {
+//   if (newFile && !oldFile) {
+//     if (!/\.(gif|jpg|jpeg|png|webp)$/i.test(newFile.name)) {
+//       this.alert("Your choice is not a picture");
+//       return prevent();
+//     }
+//   }
+//   if (newFile && (!oldFile || newFile.file !== oldFile.file)) {
+//     // eslint-disable-next-line no-param-reassign
+//     newFile.url = "";
+//     const URL = window.URL || window.webkitURL;
+//     if (URL && URL.createObjectURL) {
+//       // eslint-disable-next-line no-param-reassign
+//       newFile.url = URL.createObjectURL(newFile.file);
+//     }
+//   }
+
+//   return null;
+// }
+
+// async fetch() {
+//   await fleetsCollection.findBySlug(this.$route.params.slug);
+// }
+</script>
+
+<template>
+  <BreadCrumbs :crumbs="crumbs" />
+  <Heading>{{ t("headlines.fleets.settings.fleet") }}</Heading>
+  {{ fleet }}
+  <!-- <section class="container">
     <ValidationObserver ref="form" v-slot="{ handleSubmit }" small>
       <form v-if="canEdit && fleet" @submit.prevent="handleSubmit(submit)">
         <div class="row">
@@ -259,305 +550,5 @@
         </Btn>
       </form>
     </ValidationObserver>
-  </section>
+  </section> -->
 </template>
-
-<script lang="ts">
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-import VueUploadComponent from "vue-upload-component";
-import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
-import Btn from "@/shared/components/base/Btn/index.vue";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import { fleetRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";
-import fleetsCollection from "@/frontend/api/collections/Fleets";
-import { transformErrors } from "@/frontend/api/helpers";
-import Avatar from "@/frontend/core/components/Avatar/index.vue";
-import FormCheckbox from "@/frontend/core/components/Form/FormCheckbox/index.vue";
-import FormTextarea from "@/frontend/core/components/Form/FormTextarea/index.vue";
-
-@Component<FleetSettings>({
-  beforeRouteEnter: fleetRouteGuard,
-  components: {
-    VueUploadComponent,
-    BreadCrumbs,
-    Btn,
-    FormInput,
-    FormTextarea,
-    Checkbox,
-    Avatar,
-  },
-})
-export default class FleetSettings extends Vue {
-  leaving = false;
-
-  submitting = false;
-
-  deleting = false;
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  files: any[] = [];
-
-  fileExtensions = "jpg,jpeg,png,webp";
-
-  acceptedMimeTypes = "image/png,image/jpeg,image/webp";
-
-  form: FleetForm = {
-    fid: null,
-    name: null,
-    description: null,
-    rsiSid: null,
-    discord: null,
-    ts: null,
-    homepage: null,
-    twitch: null,
-    youtube: null,
-    guilded: null,
-    publicFleet: false,
-    publicFleetStats: false,
-    removeLogo: false,
-  };
-
-  get fleet() {
-    return fleetsCollection.record;
-  }
-
-  get metaTitle() {
-    if (!this.fleet) {
-      return null;
-    }
-
-    return this.$t("title.fleets.settings", { fleet: this.fleet.name });
-  }
-
-  get logoUrl() {
-    if (this.fleet) {
-      return this.newLogo.url || this.fleet.logo;
-    }
-
-    return this.newLogo.url;
-  }
-
-  get newLogo() {
-    return (this.files && this.files[0]) || {};
-  }
-
-  get crumbs() {
-    if (!this.fleet) {
-      return [];
-    }
-
-    return [
-      {
-        to: {
-          name: "fleet",
-          params: {
-            slug: this.fleet.slug,
-          },
-        },
-        label: this.fleet.name,
-      },
-    ];
-  }
-
-  get canEdit() {
-    return this.fleet?.myRole === "admin";
-  }
-
-  get leaveTooltip() {
-    if (this.canEdit) {
-      return this.$t("texts.fleets.leaveInfo");
-    }
-
-    return null;
-  }
-
-  @Watch("$route")
-  onRouteChange() {
-    this.fetch();
-  }
-
-  @Watch("fleet")
-  onFleetChange() {
-    this.setupForm();
-  }
-
-  mounted() {
-    this.fetch();
-
-    if (this.fleet && !this.canEdit) {
-      this.$router.replace({
-        name: "fleet-settings-membership",
-        params: { slug: this.$route.params.slug },
-      });
-      return;
-    }
-
-    if (this.fleet) {
-      this.setupForm();
-    }
-  }
-
-  selectLogo() {
-    this.form.removeLogo = false;
-    this.$refs.upload.$el.querySelector("input").click();
-  }
-
-  removeLogo() {
-    this.files = [];
-    this.fleet.logo = null;
-    this.form.removeLogo = true;
-  }
-
-  setupForm() {
-    this.form = {
-      fid: this.fleet.fid,
-      rsiSid: this.fleet.rsiSid,
-      name: this.fleet.name,
-      description: this.fleet.description,
-      discord: this.fleet.discord,
-      ts: this.fleet.ts,
-      homepage: this.fleet.homepage,
-      twitch: this.fleet.twitch,
-      youtube: this.fleet.youtube,
-      guilded: this.fleet.guilded,
-      publicFleet: this.fleet.publicFleet,
-      publicFleetStats: this.fleet.publicFleetStats,
-      removeLogo: false,
-    };
-  }
-
-  async submit() {
-    this.submitting = true;
-
-    await this.uploadLogo();
-
-    const response = await this.$api.put(
-      `fleets/${this.$route.params.slug}`,
-      this.form,
-    );
-
-    this.submitting = false;
-
-    if (!response.error) {
-      displaySuccess({
-        text: this.$t("messages.fleet.update.success"),
-      });
-
-      this.$comlink.$emit("fleet-update");
-
-      if (response.data.slug !== this.$route.params.slug) {
-        await this.$router.replace({
-          name: "fleet-settings",
-          params: { slug: response.data.slug },
-        });
-      }
-    } else {
-      this.handleUpdateError(response.error);
-    }
-  }
-
-  async uploadLogo() {
-    if (!this.newLogo || !this.newLogo.file) {
-      return;
-    }
-
-    const uploadData = new FormData();
-    uploadData.append("logo", this.newLogo.file);
-
-    const response = await this.$api.upload(
-      `fleets/${this.$route.params.slug}`,
-      uploadData,
-    );
-
-    if (!response.error) {
-      displaySuccess({
-        text: this.$t("messages.fleet.update.logo.success"),
-      });
-
-      this.$comlink.$emit("fleet-update");
-
-      setTimeout(() => {
-        this.files = [];
-      }, 1000);
-    } else {
-      this.handleUpdateError(response.error);
-    }
-  }
-
-  handleUpdateError(error) {
-    if (error.response && error.response.data) {
-      const { data: errorData } = error.response;
-
-      this.$refs.form.setErrors(transformErrors(errorData.errors));
-
-      displayAlert({
-        text: errorData.message,
-      });
-    } else {
-      displayAlert({
-        text: this.$t("messages.fleet.update.failure"),
-      });
-    }
-  }
-
-  async destroy() {
-    this.deleting = true;
-    displayConfirm({
-      text: this.$t("messages.confirm.fleet.destroy"),
-      onConfirm: async () => {
-        const response = await this.$api.destroy(
-          `fleets/${this.$route.params.slug}`,
-        );
-
-        if (!response.error) {
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
-          this.$router.push({ name: "home" }).catch(() => {});
-
-          this.$comlink.$emit("fleet-update");
-
-          displaySuccess({
-            text: this.$t("messages.fleet.destroy.success"),
-          });
-        } else {
-          displayAlert({
-            text: this.$t("messages.fleet.destroy.failure"),
-          });
-          this.deleting = false;
-        }
-      },
-      onClose: () => {
-        this.deleting = false;
-      },
-    });
-  }
-
-  updatedValue(value) {
-    this.files = value;
-  }
-
-  inputFilter(newFile, oldFile, prevent) {
-    if (newFile && !oldFile) {
-      if (!/\.(gif|jpg|jpeg|png|webp)$/i.test(newFile.name)) {
-        this.alert("Your choice is not a picture");
-        return prevent();
-      }
-    }
-    if (newFile && (!oldFile || newFile.file !== oldFile.file)) {
-      // eslint-disable-next-line no-param-reassign
-      newFile.url = "";
-      const URL = window.URL || window.webkitURL;
-      if (URL && URL.createObjectURL) {
-        // eslint-disable-next-line no-param-reassign
-        newFile.url = URL.createObjectURL(newFile.file);
-      }
-    }
-
-    return null;
-  }
-
-  async fetch() {
-    await fleetsCollection.findBySlug(this.$route.params.slug);
-  }
-}
-</script>

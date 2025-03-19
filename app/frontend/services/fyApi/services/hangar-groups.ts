@@ -30,7 +30,7 @@ import type { ErrorType } from "../axiosClient";
 /**
  * @summary HangarGroup create
  */
-export const create = (
+export const createHangarGroup = (
   hangarGroupCreateInput: MaybeRef<HangarGroupCreateInput>,
   signal?: AbortSignal,
 ) => {
@@ -45,23 +45,23 @@ export const create = (
   });
 };
 
-export const getCreateMutationOptions = <
+export const getCreateHangarGroupMutationOptions = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof create>>,
+    Awaited<ReturnType<typeof createHangarGroup>>,
     TError,
     { data: HangarGroupCreateInput },
     TContext
   >;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof create>>,
+  Awaited<ReturnType<typeof createHangarGroup>>,
   TError,
   { data: HangarGroupCreateInput },
   TContext
 > => {
-  const mutationKey = ["create"];
+  const mutationKey = ["createHangarGroup"];
   const { mutation: mutationOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -71,43 +71,43 @@ export const getCreateMutationOptions = <
     : { mutation: { mutationKey } };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof create>>,
+    Awaited<ReturnType<typeof createHangarGroup>>,
     { data: HangarGroupCreateInput }
   > = (props) => {
     const { data } = props ?? {};
 
-    return create(data);
+    return createHangarGroup(data);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type CreateMutationResult = NonNullable<
-  Awaited<ReturnType<typeof create>>
+export type CreateHangarGroupMutationResult = NonNullable<
+  Awaited<ReturnType<typeof createHangarGroup>>
 >;
-export type CreateMutationBody = HangarGroupCreateInput;
-export type CreateMutationError = ErrorType<StandardError>;
+export type CreateHangarGroupMutationBody = HangarGroupCreateInput;
+export type CreateHangarGroupMutationError = ErrorType<StandardError>;
 
 /**
  * @summary HangarGroup create
  */
-export const useCreate = <
+export const useCreateHangarGroup = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof create>>,
+    Awaited<ReturnType<typeof createHangarGroup>>,
     TError,
     { data: HangarGroupCreateInput },
     TContext
   >;
 }): UseMutationReturnType<
-  Awaited<ReturnType<typeof create>>,
+  Awaited<ReturnType<typeof createHangarGroup>>,
   TError,
   { data: HangarGroupCreateInput },
   TContext
 > => {
-  const mutationOptions = getCreateMutationOptions(options);
+  const mutationOptions = getCreateHangarGroupMutationOptions(options);
 
   return useMutation(mutationOptions);
 };
@@ -180,7 +180,7 @@ export function useHangarGroups<
 /**
  * @summary HangarGroup Destroy
  */
-export const destroy = (id: MaybeRef<string>) => {
+export const destroyHangarGroup = (id: MaybeRef<string>) => {
   id = unref(id);
 
   return axiosClient<HangarGroup>({
@@ -189,23 +189,23 @@ export const destroy = (id: MaybeRef<string>) => {
   });
 };
 
-export const getDestroyMutationOptions = <
+export const getDestroyHangarGroupMutationOptions = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof destroy>>,
+    Awaited<ReturnType<typeof destroyHangarGroup>>,
     TError,
     { id: string },
     TContext
   >;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof destroy>>,
+  Awaited<ReturnType<typeof destroyHangarGroup>>,
   TError,
   { id: string },
   TContext
 > => {
-  const mutationKey = ["destroy"];
+  const mutationKey = ["destroyHangarGroup"];
   const { mutation: mutationOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -215,50 +215,50 @@ export const getDestroyMutationOptions = <
     : { mutation: { mutationKey } };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof destroy>>,
+    Awaited<ReturnType<typeof destroyHangarGroup>>,
     { id: string }
   > = (props) => {
     const { id } = props ?? {};
 
-    return destroy(id);
+    return destroyHangarGroup(id);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type DestroyMutationResult = NonNullable<
-  Awaited<ReturnType<typeof destroy>>
+export type DestroyHangarGroupMutationResult = NonNullable<
+  Awaited<ReturnType<typeof destroyHangarGroup>>
 >;
 
-export type DestroyMutationError = ErrorType<StandardError>;
+export type DestroyHangarGroupMutationError = ErrorType<StandardError>;
 
 /**
  * @summary HangarGroup Destroy
  */
-export const useDestroy = <
+export const useDestroyHangarGroup = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof destroy>>,
+    Awaited<ReturnType<typeof destroyHangarGroup>>,
     TError,
     { id: string },
     TContext
   >;
 }): UseMutationReturnType<
-  Awaited<ReturnType<typeof destroy>>,
+  Awaited<ReturnType<typeof destroyHangarGroup>>,
   TError,
   { id: string },
   TContext
 > => {
-  const mutationOptions = getDestroyMutationOptions(options);
+  const mutationOptions = getDestroyHangarGroupMutationOptions(options);
 
   return useMutation(mutationOptions);
 };
 /**
  * @summary HangarGroup Update
  */
-export const hangarGroupUpdate = (
+export const updateHangarGroup = (
   id: MaybeRef<string>,
   hangarGroupUpdateInput: MaybeRef<HangarGroupUpdateInput>,
 ) => {
@@ -273,23 +273,23 @@ export const hangarGroupUpdate = (
   });
 };
 
-export const getHangarGroupUpdateMutationOptions = <
+export const getUpdateHangarGroupMutationOptions = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof hangarGroupUpdate>>,
+    Awaited<ReturnType<typeof updateHangarGroup>>,
     TError,
     { id: string; data: HangarGroupUpdateInput },
     TContext
   >;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof hangarGroupUpdate>>,
+  Awaited<ReturnType<typeof updateHangarGroup>>,
   TError,
   { id: string; data: HangarGroupUpdateInput },
   TContext
 > => {
-  const mutationKey = ["hangarGroupUpdate"];
+  const mutationKey = ["updateHangarGroup"];
   const { mutation: mutationOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -299,43 +299,43 @@ export const getHangarGroupUpdateMutationOptions = <
     : { mutation: { mutationKey } };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof hangarGroupUpdate>>,
+    Awaited<ReturnType<typeof updateHangarGroup>>,
     { id: string; data: HangarGroupUpdateInput }
   > = (props) => {
     const { id, data } = props ?? {};
 
-    return hangarGroupUpdate(id, data);
+    return updateHangarGroup(id, data);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type HangarGroupUpdateMutationResult = NonNullable<
-  Awaited<ReturnType<typeof hangarGroupUpdate>>
+export type UpdateHangarGroupMutationResult = NonNullable<
+  Awaited<ReturnType<typeof updateHangarGroup>>
 >;
-export type HangarGroupUpdateMutationBody = HangarGroupUpdateInput;
-export type HangarGroupUpdateMutationError = ErrorType<StandardError>;
+export type UpdateHangarGroupMutationBody = HangarGroupUpdateInput;
+export type UpdateHangarGroupMutationError = ErrorType<StandardError>;
 
 /**
  * @summary HangarGroup Update
  */
-export const useHangarGroupUpdate = <
+export const useUpdateHangarGroup = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof hangarGroupUpdate>>,
+    Awaited<ReturnType<typeof updateHangarGroup>>,
     TError,
     { id: string; data: HangarGroupUpdateInput },
     TContext
   >;
 }): UseMutationReturnType<
-  Awaited<ReturnType<typeof hangarGroupUpdate>>,
+  Awaited<ReturnType<typeof updateHangarGroup>>,
   TError,
   { id: string; data: HangarGroupUpdateInput },
   TContext
 > => {
-  const mutationOptions = getHangarGroupUpdateMutationOptions(options);
+  const mutationOptions = getUpdateHangarGroupMutationOptions(options);
 
   return useMutation(mutationOptions);
 };

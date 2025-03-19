@@ -17,7 +17,7 @@ import HangarImportBtn from "@/frontend/components/Hangar/ImportBtn/index.vue";
 import HangarSyncBtn from "@/frontend/components/Hangar/SyncBtn/index.vue";
 import FilterForm from "@/frontend/components/Hangar/FilterForm/index.vue";
 import ModelClassLabels from "@/frontend/components/Models/ClassLabels/index.vue";
-import GroupLabels from "@/frontend/components/Vehicles/GroupLabels/index.vue";
+import GroupLabels from "@/frontend/components/Hangar/GroupLabels/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { format } from "date-fns";
@@ -52,7 +52,7 @@ import {
 
 const { t, toDollar, toUEC, toNumber } = useI18n();
 
-const { displayAlert } = useAppNotifications();
+const { displayAlert, displayConfirm } = useAppNotifications();
 
 const comlink = useComlink();
 
@@ -136,7 +136,7 @@ onMounted(() => {
   comlink.on("vehicle-save", fetch);
   comlink.on("hangar-delete-all", fetch);
   comlink.on("hangar-group-delete", fetch);
-  // comlink.on("hangar-group-save", groupsCollection.findAll);
+  comlink.on("hangar-group-save", fetch);
   comlink.on("hangar-sync-finished", fetch);
 });
 
@@ -144,7 +144,7 @@ onUnmounted(() => {
   comlink.off("vehicle-save");
   comlink.off("hangar-delete-all");
   comlink.off("hangar-group-delete");
-  // comlink.off("hangar-group-save");
+  comlink.off("hangar-group-save");
   comlink.off("hangar-sync-finished");
 });
 

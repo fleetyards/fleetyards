@@ -8,12 +8,17 @@ export default {
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
-import Gallery from "@/shared/components/Gallery/index.vue";
-import GalleryImage from "@/shared/components/Image/index.vue";
+import LazyImage from "@/shared/components/LazyImage/index.vue";
+import { useGallery } from "@/shared/composables/useGallery";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
+import { usePagination } from "@/shared/composables/usePagination";
 import { type Model } from "@/services/fyApi";
-import { useModelImages as useModelImagesQuery } from "@/services/fyApi";
+import Paginator from "@/shared/components/Paginator/index.vue";
+import {
+  useModelImages as useModelImagesQuery,
+  getModelImagesQueryKey,
+} from "@/services/fyApi";
 
 type Props = {
   model: Model;
@@ -75,7 +80,23 @@ const crumbs = computed(() => {
 
 const modelSlug = computed(() => route.params.slug as string);
 
-const { data, ...asyncStatus } = useModelImagesQuery(modelSlug);
+const modelImagesQueryParams = computed(() => {
+  return {
+    page: page.value,
+    perPage: perPage.value,
+  };
+});
+
+const imagesQueryKey = computed(() => {
+  return getModelImagesQueryKey(modelSlug, modelImagesQueryParams);
+});
+
+const { page, perPage } = usePagination(imagesQueryKey);
+
+const { data: images, ...asyncStatus } = useModelImagesQuery(
+  modelSlug,
+  modelImagesQueryParams,
+);
 
 onMounted(() => {
   updateTitle();
@@ -99,11 +120,7 @@ const updateTitle = () => {
   });
 };
 
-const gallery = ref<InstanceType<typeof Gallery>>();
-
-const openGallery = (index: number) => {
-  gallery.value?.open(index);
-};
+useGallery(".images");
 </script>
 
 <template>
@@ -122,7 +139,7 @@ const openGallery = (index: number) => {
   <FilteredList
     id="modelImages"
     name="modelImages"
-    :records="data?.items || []"
+    :records="images?.items || []"
     :async-status="asyncStatus"
     primary-key="id"
     class="images"
@@ -134,18 +151,22 @@ const openGallery = (index: number) => {
         :filter-visible="filterVisible"
         primary-key="id"
       >
-        <template #default="{ record, index }">
-          <GalleryImage
+        <template #default="{ record }">
+          <LazyImage
             :src="record.smallUrl"
             :href="record.url"
             :alt="record.name"
-            :title="record.caption || record.name"
-            @click.prevent.exact="openGallery(index)"
+            :width="record.width"
+            :height="record.height"
+            :title="record.name"
+            :caption="record.caption"
+            shadow
           />
         </template>
       </Grid>
     </template>
+    <template #pagination-bottom>
+      <Paginator v-if="images" :query-result-ref="images" :per-page="perPage" />
+    </template>
   </FilteredList>
-
-  <Gallery ref="gallery" :items="data?.items" />
 </template>

@@ -1,81 +1,3 @@
-<template>
-  <ValidationObserver v-slot="{ handleSubmit }" :small="true" :slim="true">
-    <Modal v-if="hangarGroup && form" :title="title">
-      <form :id="`hangar-group-${id}`" @submit.prevent="handleSubmit(save)">
-        <div class="row">
-          <div class="col-12 col-md-6">
-            <ValidationProvider
-              v-slot="{ errors }"
-              vid="group-name"
-              rules="required|alpha_dash"
-              :name="$t('labels.hangarGroup.name')"
-              :slim="true"
-            >
-              <FormInput
-                id="group-name"
-                v-model="form.name"
-                translation-key="name"
-                :error="errors[0]"
-                :no-label="true"
-              />
-            </ValidationProvider>
-          </div>
-          <div class="col-12 col-md-6">
-            <ValidationProvider
-              v-slot="{ errors }"
-              vid="color"
-              rules="required|hexColor"
-              :name="$t('labels.hangarGroup.color')"
-              :immediate="true"
-              :slim="true"
-            >
-              <FormInput
-                id="vehicle-color"
-                v-model="form.color"
-                translation-key="color"
-                :no-label="true"
-                :error="errors[0]"
-                type="text"
-              />
-            </ValidationProvider>
-          </div>
-          <div class="col-12 col-md-6">
-            <FormCheckbox
-              id="public"
-              v-model="form.public"
-              :label="$t('labels.hangarGroup.public')"
-            />
-          </div>
-          <div class="col-12">
-            <VSwatches v-model="form.color" :inline="true" />
-          </div>
-        </div>
-      </form>
-      <template #footer>
-        <div class="float-sm-right">
-          <Btn
-            v-if="hangarGroup && hangarGroup.id"
-            :disabled="deleting ? 'disabled' : null"
-            :inline="true"
-            @click.native="remove"
-          >
-            <i class="fal fa-trash" />
-          </Btn>
-          <Btn
-            :form="`hangar-group-${id}`"
-            :loading="submitting"
-            type="submit"
-            size="large"
-            :inline="true"
-          >
-            {{ $t("actions.save") }}
-          </Btn>
-        </div>
-      </template>
-    </Modal>
-  </ValidationObserver>
-</template>
-
 <script lang="ts">
 export default {
   name: "VehiclesGroupModal",
@@ -83,126 +5,177 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { useForm } from "vee-validate";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import { displayAlert, displayConfirm } from "@/frontend/lib/Noty";
-import hangarGroupsCollection from "@/frontend/api/collections/HangarGroups";
-import FormCheckbox from "@/frontend/core/components/Form/FormCheckbox/index.vue";
-import VSwatches from "vue-swatches";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import { VSwatches } from "vue3-swatches";
+import { useI18n } from "@/shared/composables/useI18n";
+import {
+  useDestroyHangarGroup as useDestroyHangarGroupMutation,
+  useUpdateHangarGroup as useUpdateHangarGroupMutation,
+  HangarGroupUpdateInput,
+  type HangarGroup,
+} from "@/services/fyApi";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
-  @Prop({
-    default() {
-      return {};
-    },
-  })
+type Props = {
   hangarGroup: HangarGroup;
+};
 
-  submitting = false;
+const props = defineProps<Props>();
 
-  deleting = false;
+const { t } = useI18n();
 
-  form: HangarGroupForm | null = null;
+const submitting = ref(false);
 
-  get title() {
-    if (this.hangarGroup && this.hangarGroup.id) {
-      return this.$t("headlines.hangarGroup.edit");
-    }
+const deleting = ref(false);
 
-    return this.$t("headlines.hangarGroup.create");
-  }
+const validationSchema = {
+  name: "required",
+  color: "required",
+};
 
-  get id() {
-    return (this.hangarGroup && this.hangarGroup.id) || "new";
-  }
+const initialValues = ref<HangarGroupUpdateInput>({
+  name: props.hangarGroup.name,
+  color: props.hangarGroup.color,
+  public: props.hangarGroup.public,
+});
 
-  mounted() {
-    this.setupForm();
-  }
+const { defineField, handleSubmit } = useForm({
+  initialValues: initialValues.value,
+  validationSchema,
+});
 
-  @Watch("hangarGroup")
-  onHangarGroupChange() {
-    this.setupForm();
-  }
+const [name, nameProps] = defineField("name");
+const [color, colorProps] = defineField("color");
+const [publicField, publicFieldProps] = defineField("public");
 
-  setupForm() {
-    this.form = {
-      name: this.hangarGroup?.name,
-      color: this.hangarGroup?.color,
-      public: this.hangarGroup?.public,
-    };
-  }
+const setupForm = () => {
+  initialValues.value = {
+    name: props.hangarGroup?.name,
+    color: props.hangarGroup?.color,
+    public: props.hangarGroup?.public,
+  };
+};
 
-  remove() {
-    this.deleting = true;
+onMounted(() => {
+  setupForm();
+});
 
-    displayConfirm({
-      text: this.$t("messages.confirm.hangarGroup.destroy"),
-      onConfirm: () => {
-        this.destroy();
-      },
-      onClose: () => {
-        this.deleting = false;
-      },
+watch(
+  () => props.hangarGroup,
+  () => {
+    setupForm();
+  },
+  { deep: true },
+);
+
+const { displayAlert } = useAppNotifications();
+
+const comlink = useComlink();
+
+const destroyMutation = useDestroyHangarGroupMutation();
+
+const onDestroy = async () => {
+  deleting.value = true;
+
+  await destroyMutation
+    .mutateAsync({
+      id: props.hangarGroup.id,
+    })
+    .then(() => {
+      comlink.emit("hangar-group-delete", props.hangarGroup);
+      comlink.emit("close-modal");
+    })
+    .then(() => {
+      deleting.value = false;
     });
-  }
+};
 
-  async destroy() {
-    const success = await hangarGroupsCollection.destroy(this.hangarGroup.id);
+const updateMutation = useUpdateHangarGroupMutation();
 
-    if (success) {
-      this.$comlink.$emit("hangar-group-delete", this.hangarGroup);
-      this.$comlink.$emit("close-modal");
-    } else {
-      this.deleting = false;
-    }
-  }
+const onSubmit = handleSubmit(async (values) => {
+  submitting.value = true;
 
-  async save() {
-    this.submitting = true;
+  await updateMutation
+    .mutateAsync({
+      id: props.hangarGroup.id,
+      data: values,
+    })
+    .then(() => {
+      comlink.emit("hangar-group-save");
+      comlink.emit("close-modal");
+    })
+    .catch((error) => {
+      console.error(error);
 
-    if (this.hangarGroup && this.hangarGroup.id) {
-      this.update();
-    } else {
-      this.create();
-    }
-  }
-
-  async update() {
-    const success = await hangarGroupsCollection.update(
-      this.hangarGroup.id,
-      this.form,
-    );
-
-    this.submitting = false;
-
-    if (success) {
-      this.$comlink.$emit("hangar-group-save");
-      this.$comlink.$emit("close-modal");
-    } else {
       displayAlert({
-        text: response.error.response.data.message,
+        text: error.response.data.message,
       });
-    }
-  }
-
-  async create() {
-    const newHangarGroup = await hangarGroupsCollection.create(this.form);
-
-    this.submitting = false;
-
-    if (newHangarGroup) {
-      this.$comlink.$emit("hangar-group-save");
-      this.$comlink.$emit("close-modal");
-    } else {
-      displayAlert({
-        text: response.error.response.data.message,
-      });
-    }
-  }
-}
+    })
+    .finally(() => {
+      submitting.value = false;
+    });
+});
 </script>
 
-<style lang="scss" scoped>
-@import "index";
-</style>
+<template>
+  <Modal :title="t('headlines.hangarGroup.edit')">
+    <form :id="`hangar-group-${hangarGroup.id}`" @submit.prevent="onSubmit">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <FormInput
+            v-model="name"
+            name="name"
+            v-bind="nameProps"
+            translation-key="name"
+            :no-label="true"
+          />
+        </div>
+        <div class="col-12 col-md-6">
+          <FormInput
+            v-model="color"
+            name="color"
+            v-bind="colorProps"
+            translation-key="color"
+            :no-label="true"
+          />
+        </div>
+        <div class="col-12 col-md-6">
+          <FormCheckbox
+            v-model="publicField"
+            name="public"
+            v-bind="publicFieldProps"
+            :label="t('labels.hangarGroup.public')"
+          />
+        </div>
+        <div class="col-12">
+          <VSwatches v-model="color" :inline="true" />
+        </div>
+      </div>
+    </form>
+    <template #footer>
+      <div class="float-sm-right">
+        <Btn
+          inline
+          :confirm="t('messages.confirm.hangarGroup.destroy')"
+          @click="onDestroy"
+        >
+          <i class="fal fa-trash" />
+        </Btn>
+        <Btn
+          :form="`hangar-group-${hangarGroup.id}`"
+          :loading="submitting"
+          type="submit"
+          size="large"
+          inline
+        >
+          {{ t("actions.save") }}
+        </Btn>
+      </div>
+    </template>
+  </Modal>
+</template>

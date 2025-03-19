@@ -13,6 +13,19 @@
   }
 }
 
+.side-image {
+  max-height: 180px;
+  border-radius: $border-radius-base;
+  box-shadow: 0 0 5px black;
+  opacity: 1;
+  margin-bottom: 20px;
+  transition: opacity ease $transition-base-speed;
+
+  &.image-hidden {
+    opacity: 0;
+  }
+}
+
 .ship-detail-left-col {
   display: flex;
   flex-direction: column;

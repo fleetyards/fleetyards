@@ -1,10 +1,8 @@
-<template>
-  <AsyncData :async-status="asyncStatus">
-    <template #resolved>
-      <router-view :fleet="fleet" />
-    </template>
-  </AsyncData>
-</template>
+<script lang="ts">
+export default {
+  name: "FleetRouterView",
+};
+</script>
 
 <script lang="ts" setup>
 import { useComlink } from "@/shared/composables/useComlink";
@@ -58,8 +56,10 @@ watch(
 );
 </script>
 
-<script lang="ts">
-export default {
-  name: "FleetRouterView",
-};
-</script>
+<template>
+  <AsyncData :async-status="asyncStatus">
+    <template #resolved>
+      <router-view :fleet="fleet" />
+    </template>
+  </AsyncData>
+</template>

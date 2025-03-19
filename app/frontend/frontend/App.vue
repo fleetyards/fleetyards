@@ -11,6 +11,7 @@ import FrontendNavigationMobile from "@/frontend/components/Navigation/Mobile/in
 import AppFooter from "@/shared/components/AppFooter/index.vue";
 import AppEnvironment from "@/frontend/components/core/AppEnvironment/index.vue";
 import AppModal from "@/shared/components/AppModal/index.vue";
+import AppConfirm from "@/shared/components/AppConfirm/index.vue";
 import AppNotifications from "@/shared/components/AppNotifications/index.vue";
 import SecurePage from "@/frontend/components/core/SecurePage/index.vue";
 import BackgroundImage from "@/shared/components/BackgroundImage/index.vue";
@@ -342,6 +343,7 @@ const setLocale = (locale: string) => {
       </div>
     </div>
 
+    <AppConfirm />
     <AppModal />
     <AppNotifications />
   </div>

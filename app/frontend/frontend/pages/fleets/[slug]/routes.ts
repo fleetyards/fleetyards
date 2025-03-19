@@ -45,7 +45,7 @@ export const routes: RouteRecordRaw[] = [
       backgroundImage: "bg-8",
     },
     redirect: {
-      name: "fleet-settings-fleet",
+      name: settingsRoutes[0].name,
     },
     children: settingsRoutes,
   },

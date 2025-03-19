@@ -1,9 +1,12 @@
 import mitt from "mitt";
-import type { AppModalOptions } from "@/shared/components/AppModal/index.vue";
-import type { FleetMember } from "@/services/fyApi";
+import { type AppModalOptions } from "@/shared/components/AppModal/index.vue";
+import { type AppConfirmOptions } from "@/shared/components/AppConfirm/types";
+import { type FleetMember, type HangarGroup } from "@/services/fyApi";
 
 type Events = {
   "open-modal": AppModalOptions;
+  "show-confirm": AppConfirmOptions;
+  "hide-confirm": undefined;
   "close-modal"?: boolean;
   "prices-update": undefined;
   "commodities-update": undefined;
@@ -20,7 +23,7 @@ type Events = {
   "hangar-delete-all": undefined;
   "hangar-sync-finished": undefined;
   "hangar-group-save": undefined;
-  "hangar-group-delete": undefined;
+  "hangar-group-delete": HangarGroup;
 };
 
 const AppComlink = mitt<Events>();

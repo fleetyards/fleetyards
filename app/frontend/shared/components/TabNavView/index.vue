@@ -12,7 +12,9 @@ export default {
       </ul>
     </div>
     <div class="col-12 col-md-9 order-md-1">
-      <slot name="content"></slot>
+      <slot name="content">
+        <router-view />
+      </slot>
     </div>
   </div>
 </template>

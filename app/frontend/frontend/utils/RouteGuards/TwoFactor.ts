@@ -1,4 +1,4 @@
-import userCollection from "@/frontend/api/collections/User";
+import { me as fetchMe } from "@/services/fyApi";
 import { RouteLocation, NavigationGuardNext } from "vue-router";
 
 export const enabledRouteGuard = async function fleetRouteGuard(
@@ -6,9 +6,9 @@ export const enabledRouteGuard = async function fleetRouteGuard(
   _from: RouteLocation,
   next: NavigationGuardNext,
 ) {
-  const response = await userCollection.current();
+  const user = await fetchMe();
 
-  if (!response.data?.twoFactorRequired) {
+  if (!user.twoFactorRequired) {
     next({ name: "settings-security-status" });
   } else {
     next();
@@ -20,9 +20,9 @@ export const disabledRouteGuard = async function publicFleetRouteGuard(
   _from: RouteLocation,
   next: NavigationGuardNext,
 ) {
-  const response = await userCollection.current();
+  const user = await fetchMe();
 
-  if (response.data?.twoFactorRequired) {
+  if (user.twoFactorRequired) {
     next({ name: "settings-security-status" });
   } else {
     next();

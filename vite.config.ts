@@ -7,6 +7,7 @@ import { VitePWA } from "vite-plugin-pwa";
 import Components from "unplugin-vue-components/vite";
 import AutoImport from "unplugin-auto-import/vite";
 import browserslistToEsbuild from "browserslist-to-esbuild";
+import { templateCompilerOptions } from "@tresjs/core";
 
 const cache: { [key: string]: string } = {};
 
@@ -28,7 +29,9 @@ export const accessEnv = (key: string, defaultValue?: string): string => {
 export default defineConfig({
   plugins: [
     ViteRails(),
-    Vue(),
+    Vue({
+      ...templateCompilerOptions,
+    }),
     tailwindcss(),
     VitePWA({
       registerType: "autoUpdate",
@@ -108,6 +111,7 @@ export default defineConfig({
     },
   },
   server: {
+    cors: true,
     fs: {
       allow: [".", accessEnv("FLEETYARDS_NODE_MODULES", "node_modules")],
     },
@@ -121,6 +125,12 @@ export default defineConfig({
   },
   define: {
     "process.env": {},
+    "import.meta.env.__VUE_PROD_HYDRATION_MISMATCH_DETAILS__": JSON.stringify(
+      process.env.__VUE_PROD_HYDRATION_MISMATCH_DETAILS__,
+    ),
+    "import.meta.env.__VUE_OPTIONS_API__": JSON.stringify(
+      process.env.__VUE_OPTIONS_API__,
+    ),
   },
   cacheDir: accessEnv("FLEETYARDS_VITE_CACHE", "node_modules/.vite"),
 });

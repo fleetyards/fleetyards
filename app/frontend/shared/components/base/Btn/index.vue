@@ -13,10 +13,12 @@ import {
   BtnVariantsEnum,
   BtnSizesEnum,
 } from "@/shared/components/base/Btn/types";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 export type Props = {
   to?: RouterLinkProps["to"];
   href?: string;
+  target?: HTMLAnchorElement["target"];
   type?: `${BtnTypesEnum}`;
   loading?: boolean;
   spinner?: boolean | SpinnerAlignment;
@@ -30,11 +32,13 @@ export type Props = {
   active?: boolean;
   disabled?: boolean;
   routeActiveClass?: string;
+  confirm?: boolean | string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   to: undefined,
   href: undefined,
+  target: undefined,
   type: BtnTypesEnum.BUTTON,
   loading: false,
   spinner: false,
@@ -48,6 +52,24 @@ const props = withDefaults(defineProps<Props>(), {
   active: false,
   disabled: false,
   routeActiveClass: undefined,
+  confirm: false,
+});
+
+const internalDisabled = ref(props.disabled);
+
+watch(
+  () => props.disabled,
+  (value) => {
+    internalDisabled.value = value;
+  },
+);
+
+onMounted(() => {
+  if (props.confirm && props.type === BtnTypesEnum.SUBMIT) {
+    throw new Error(
+      "BaseBtn: 'confirm' prop is not supported with type 'submit'",
+    );
+  }
 });
 
 const btnType = computed(() => {
@@ -95,8 +117,38 @@ const cssClasses = computed(() => ({
   "panel-btn-text-inline": props.textInline,
   "panel-btn-mobile-block": props.mobileBlock,
   active: props.active,
-  disabled: props.disabled,
+  disabled: internalDisabled.value,
 }));
+
+const emit = defineEmits(["click", "submit"]);
+
+const { displayConfirm } = useAppNotifications();
+
+const handleClick = (event: MouseEvent) => {
+  if (props.confirm) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    internalDisabled.value = true;
+
+    displayConfirm({
+      text: props.confirm === true ? undefined : props.confirm,
+      onConfirm: () => {
+        internalDisabled.value = false;
+        if (props.href) {
+          window.open(props.href, props.target);
+        } else {
+          emit("click", event);
+        }
+      },
+      onClose: () => {
+        internalDisabled.value = false;
+      },
+    });
+  } else {
+    emit("click", event);
+  }
+};
 </script>
 
 <template>
@@ -104,8 +156,9 @@ const cssClasses = computed(() => ({
     :is="btnType"
     class="panel-btn"
     :class="cssClasses"
-    :disabled="disabled || loading || undefined"
+    :disabled="internalDisabled || loading || undefined"
     v-bind="btnProps"
+    @click="handleClick"
   >
     <BtnInner :loading="loading" :spinner="spinner">
       <slot />

@@ -5,6 +5,8 @@ import {
   type AppNotification,
 } from "@/shared/components/AppNotifications/types";
 import { v4 as uuidv4 } from "uuid";
+import { useComlink } from "@/shared/composables/useComlink";
+import { type AppConfirmOptions } from "@/shared/components/AppConfirm/types";
 
 export const useAppNotifications = () => {
   const { t } = useI18n();
@@ -120,12 +122,19 @@ export const useAppNotifications = () => {
     });
   };
 
+  const comlink = useComlink();
+
+  const displayConfirm = (options: AppConfirmOptions) => {
+    comlink.emit("show-confirm", options);
+  };
+
   return {
     displayMessage,
     displayAlert,
     displaySuccess,
     displayInfo,
     displayWarning,
+    displayConfirm,
     displayNativeNotification,
     requestBrowserPermission,
   };

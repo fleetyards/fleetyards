@@ -227,7 +227,7 @@ const toggleHoloviewer = () => {
               {{ t("labels.3dView") }}
             </Btn>
             <a
-              v-show="holoviewerVisible"
+              v-show="holoviewerVisible && !model.holo"
               :href="starship42Url"
               class="starship42-link"
               target="_blank"
@@ -245,7 +245,7 @@ const toggleHoloviewer = () => {
               :src="starship42IframeUrl"
               frameborder="0"
             />
-            <LazyImage v-else-if="storeImage" :src="storeImage" class="image" />
+            <LazyImage v-else :src="storeImage" class="image" />
           </div>
           <div class="row production-status">
             <div class="col-6">
@@ -273,12 +273,19 @@ const toggleHoloviewer = () => {
           </blockquote>
         </div>
         <div class="col-12 col-lg-4">
-          <!-- <HoloViewer
-            v-if="model.holo"
-            :holo="model.holo"
-            :controllable="false"
-            inline
-          /> -->
+          <template v-if="model.holo">
+            <LazyImage
+              v-if="holoviewerVisible"
+              :src="storeImage"
+              class="side-image"
+            />
+            <HoloViewer
+              v-else
+              :holo="model.holo"
+              :controllable="false"
+              inline
+            />
+          </template>
           <Panel slim>
             <ModelBaseMetrics :model="model" />
           </Panel>

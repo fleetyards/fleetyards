@@ -1,40 +1,19 @@
 <script lang="ts" setup>
 import TabNavView from "@/shared/components/TabNavView/index.vue";
-import { useI18n } from "@/shared/composables/useI18n";
+import TabNavViewItems from "@/shared/components/TabNavView/Items/index.vue";
 import { routes as settingsRoutes } from "./settings/routes";
-import { type RouteRecordName } from "vue-router";
+import { useSessionStore } from "@/frontend/stores/session";
 
-const { t } = useI18n();
-
-const route = useRoute();
-
-const activeRoute = (routeName?: RouteRecordName) => {
-  return routeName === route.name;
-};
+const sessionStore = useSessionStore();
 </script>
 
 <template>
-  <TabNavView>
+  <TabNavView :routes="settingsRoutes">
     <template #nav>
-      <router-link
-        v-for="settingsRoute in settingsRoutes"
-        :key="settingsRoute.name"
-        v-slot="{ href: linkHref, navigate }"
-        :to="{ name: settingsRoute.name }"
-        :custom="true"
-      >
-        <li
-          role="link"
-          :class="{ active: activeRoute(settingsRoute.name) }"
-          @click="navigate"
-          @keypress.enter="() => navigate"
-        >
-          <a :href="linkHref">{{ t(`nav.${settingsRoute.meta?.title}`) }}</a>
-        </li>
-      </router-link>
-    </template>
-    <template #content>
-      <router-view />
+      <TabNavViewItems
+        :routes="settingsRoutes"
+        :authenticated="sessionStore.isAuthenticated"
+      />
     </template>
   </TabNavView>
 </template>

@@ -37,14 +37,4 @@ export interface Equipment {
   weaponClassLabel?: string;
   createdAt: string;
   updatedAt: string;
-  /** @deprecated */
-  storeImage?: string;
-  /** @deprecated */
-  storeImageIsFallback?: boolean;
-  /** @deprecated */
-  storeImageLarge?: string;
-  /** @deprecated */
-  storeImageMedium?: string;
-  /** @deprecated */
-  storeImageSmall?: string;
 }

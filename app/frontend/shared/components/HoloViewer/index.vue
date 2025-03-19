@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: "HoloViewer",
+  name: "HoloViewer2",
 };
 </script>
 
@@ -8,69 +8,58 @@ export default {
 import Loader from "@/shared/components/Loader/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import * as THREE from "three";
-import type { Mesh } from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { type Vector3 } from "three";
 import { useI18n } from "@/shared/composables/useI18n";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { TresCanvas } from "@tresjs/core";
+import { OrbitControls } from "@tresjs/cientos";
+import Model from "./Model/index.vue";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 type Props = {
   holo: string;
   colored?: boolean;
   controllable?: boolean;
   inline?: boolean;
+  fullscreen?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   colored: false,
   controllable: true,
   inline: false,
+  fullscreen: false,
 });
-
-const { t } = useI18n();
 
 const { displayAlert } = useAppNotifications();
 
-const modelColor = ref(0x428bca);
+const internalFullscreen = ref(props.fullscreen);
 
-const windowColor = 0x1d3d59;
+const enableFullscreen = () => {
+  internalFullscreen.value = true;
+};
 
-const autoRotateSpeed = 1.5;
+const disableFullscreen = () => {
+  internalFullscreen.value = false;
+};
+
+const { t } = useI18n();
+
+const modelColor = ref("#428bca");
+
+const autoRotateSpeed = 0.5;
 
 const loading = ref(false);
 
+const progress = ref(0);
+
 const debug = ref(false);
-
-let scene: THREE.Scene | undefined = undefined;
-
-let camera: THREE.Camera | undefined = undefined;
-
-let renderer: THREE.Renderer | undefined = undefined;
-
-let model: THREE.Group | undefined = undefined;
-
-let controls: OrbitControls | undefined = undefined;
 
 const autoRotate = ref(true);
 
 const zoom = ref(false);
 
-const progress = ref(0);
-
 const color = ref(false);
-
-const modelViewer = ref<HTMLElement | undefined>();
-
-const elementWidth = computed(() => {
-  return modelViewer.value?.clientWidth;
-});
-
-const elementHeight = computed(() => {
-  return modelViewer.value?.clientHeight;
-});
 
 const autoRotateTooltip = computed(() => {
   if (autoRotate.value) {
@@ -96,231 +85,10 @@ const colorTooltip = computed(() => {
   return t("actions.holoViewer.color.enable");
 });
 
-watch(
-  () => modelColor.value,
-  () => {
-    updateModelMaterial();
-  },
-);
-
-watch(
-  () => zoom.value,
-  () => {
-    if (controls) {
-      controls.enableZoom = zoom.value;
-      controls.update();
-    }
-  },
-);
-
-watch(
-  () => color.value,
-  () => {
-    if (model) {
-      updateModelMaterial();
-    }
-  },
-);
-
-watch(
-  () => autoRotate.value,
-  () => {
-    if (controls) {
-      controls.autoRotate = autoRotate.value;
-      controls.update();
-    }
-  },
-);
-
-onMounted(() => {
+onMounted(async () => {
   loading.value = true;
   progress.value = 0;
-
-  scene = setupScene();
-  camera = setupCamera();
-  if (camera) {
-    scene.add(camera);
-  }
-  renderer = setupRenderer();
-  controls = setupControls(renderer.domElement, camera);
-
-  loadModel();
 });
-
-const animate = () => {
-  if (!scene || !camera) {
-    return;
-  }
-
-  controls?.update();
-
-  requestAnimationFrame(animate);
-
-  renderer?.render(scene, camera);
-};
-
-const setupScene = () => {
-  const scene = new THREE.Scene();
-
-  scene.background = null;
-
-  return scene;
-};
-
-const setupCamera = () => {
-  if (!elementWidth.value || !elementHeight.value) {
-    return;
-  }
-
-  const camera = new THREE.PerspectiveCamera(
-    35,
-    elementWidth.value / elementHeight.value,
-    0.1,
-    1000,
-  );
-
-  return camera;
-};
-
-const setupControls = (domElement: HTMLElement, camera?: THREE.Camera) => {
-  if (!camera) {
-    return;
-  }
-
-  const controls = new OrbitControls(camera, domElement);
-
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.25;
-
-  controls.enablePan = false;
-
-  controls.enableZoom = zoom.value;
-  controls.minDistance = 50;
-  controls.maxDistance = 250;
-
-  controls.autoRotate = autoRotate.value;
-  controls.autoRotateSpeed = autoRotateSpeed;
-
-  controls.listenToKeyEvents(window);
-
-  controls.update();
-
-  return controls;
-};
-
-const setupRenderer = () => {
-  const renderer = new THREE.WebGLRenderer({
-    antialias: true,
-    alpha: true,
-  });
-
-  renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.toneMappingExposure = 1;
-  if (elementWidth.value && elementHeight.value) {
-    renderer.setSize(elementWidth.value, elementHeight.value);
-  }
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-  modelViewer.value?.appendChild(renderer.domElement);
-
-  return renderer;
-};
-
-const setupDirectionalLight = (objectModel: THREE.Object3D<THREE.Event>) => {
-  const directionalLight = new THREE.DirectionalLight(0x404040, 60);
-
-  directionalLight.target = objectModel;
-  directionalLight.castShadow = true;
-
-  return directionalLight;
-};
-
-const updateModelMaterial = () => {
-  const material = new THREE.MeshPhongMaterial({
-    color: modelColor.value,
-    side: THREE.DoubleSide,
-  });
-
-  const windowMaterial = new THREE.MeshPhongMaterial({
-    color: windowColor,
-    opacity: 0.8,
-    transparent: true,
-  });
-
-  const windowRefs = ["window", "glass"];
-
-  model?.traverse((node) => {
-    if (!(node as Mesh).isMesh) return;
-
-    if (windowRefs.some((item) => node.name.toLowerCase().includes(item))) {
-      (node as Mesh).material = windowMaterial;
-    } else {
-      (node as Mesh).material = material;
-    }
-  });
-};
-
-const loadModel = () => {
-  const loader = new GLTFLoader();
-
-  const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath("/vendor/js/draco/");
-  loader.setDRACOLoader(dracoLoader);
-
-  try {
-    loader.load(
-      props.holo,
-      (gltf) => {
-        loading.value = false;
-
-        model = gltf.scene;
-
-        model.rotation.set(0, 45, 0);
-
-        updateModelMaterial();
-
-        scene?.add(model);
-
-        const box = new THREE.Box3().setFromObject(model);
-        const size = box.getSize(new THREE.Vector3());
-
-        const maxValue = Math.max(size.x, size.y);
-
-        const cameraAngle = props.inline ? 15 : 30;
-
-        camera?.position.set(
-          0,
-          cameraAngle,
-          Math.max(maxValue * 1.5, size.y * 2),
-        );
-
-        camera?.add(setupDirectionalLight(model));
-
-        animate();
-      },
-      (xhr) => {
-        progress.value = (xhr.loaded / xhr.total) * 100;
-      },
-      (error) => {
-        handleError(error);
-      },
-    );
-  } catch (error) {
-    handleError(error);
-  }
-};
-
-const handleError = (error: unknown) => {
-  loading.value = false;
-
-  console.error(error);
-
-  displayAlert({
-    text: t("messages.holoViewer.modelLoader.failure"),
-  });
-};
 
 const toggleZoom = () => {
   zoom.value = !zoom.value;
@@ -333,15 +101,68 @@ const toggleColor = () => {
 const toggleAutoRotate = () => {
   autoRotate.value = !autoRotate.value;
 };
+
+const cameraPosition = ref<[x: number, y: number, z: number]>([11, 11, 11]);
+
+const cameraArgs = ref<
+  [fov: number, aspect: number, near: number, far: number]
+>([35, window.innerWidth / window.innerHeight, 0.1, 1000]);
+
+const cameraAngle = computed(() => {
+  return props.inline ? 15 : 30;
+});
+
+const handleModelLoaded = (size: Vector3) => {
+  loading.value = false;
+
+  const distance =
+    size.x / (2 * Math.tan((cameraArgs.value[0] * Math.PI) / 360));
+
+  cameraPosition.value = [0, cameraAngle.value, distance];
+};
+
+const handleModelError = (error: unknown) => {
+  loading.value = false;
+
+  console.error(error);
+
+  displayAlert({
+    text: t("messages.holoViewer.modelLoader.failure"),
+  });
+};
+
+const handleModelProgress = (loaded: number, total: number) => {
+  progress.value = (loaded / total) * 100;
+};
+
+defineExpose({
+  fullscreen: internalFullscreen,
+  enableFullscreen,
+  disableFullscreen,
+});
 </script>
 
 <template>
   <div
-    ref="modelViewer"
     class="holo-viewer"
-    :class="{ 'holo-viewer--inline': inline }"
+    :class="{
+      'holo-viewer--inline': inline && !internalFullscreen,
+      'holo-viewer--fullscreen': internalFullscreen,
+    }"
   >
-    <BtnGroup v-if="controllable" class="actions" inline>
+    <Btn
+      v-if="internalFullscreen"
+      variant="link"
+      class="holo-viewer__close"
+      @click.prevent.stop="disableFullscreen"
+    >
+      <i class="fal fa-times" />
+    </Btn>
+    <BtnGroup
+      v-if="controllable || internalFullscreen"
+      class="holo-viewer__actions"
+      inline
+    >
       <Btn
         v-tooltip="autoRotateTooltip"
         :size="BtnSizesEnum.SMALL"
@@ -374,6 +195,32 @@ const toggleAutoRotate = () => {
 
     <Loader v-if="loading" :loading="loading" :progress="progress" />
     <input v-if="debug" v-model="modelColor" type="color" />
+    <TresCanvas preset="realistic">
+      <TresPerspectiveCamera :position="cameraPosition" :args="cameraArgs">
+        <TresDirectionalLight cast-shadow />
+      </TresPerspectiveCamera>
+      <OrbitControls
+        :auto-rotate="autoRotate"
+        :auto-rotate-speed="autoRotateSpeed"
+        :enable-rotate="controllable || internalFullscreen"
+        :enable-zoom="zoom"
+        :zoom-speed="0.5"
+        :min-distance="50"
+        :max-distance="250"
+        enable-damping
+        :damping-factor="0.25"
+        :enable-pan="false"
+      />
+      <Suspense>
+        <Model
+          :path="holo"
+          :color="modelColor"
+          @loaded="handleModelLoaded"
+          @error="handleModelError"
+          @progress="handleModelProgress"
+        />
+      </Suspense>
+    </TresCanvas>
   </div>
 </template>
 

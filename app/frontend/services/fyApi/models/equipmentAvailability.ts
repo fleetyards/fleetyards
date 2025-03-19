@@ -4,10 +4,9 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { ShopCommodity } from "./shopCommodity";
+import type { ItemPrice } from "./itemPrice";
 
 export type EquipmentAvailability = {
-  listedAt: ShopCommodity[];
-  boughtAt: ShopCommodity[];
-  soldAt: ShopCommodity[];
+  boughtAt: ItemPrice[];
+  soldAt: ItemPrice[];
 };

@@ -60,7 +60,11 @@ const beforeResolve = (to: RouteLocation): FyRedirectRoute | undefined => {
     };
   }
 
-  if (to.meta.access && !sessionStore.hasAccessTo(to.meta.access)) {
+  if (
+    to.meta.access &&
+    to.meta.access != "all" &&
+    !sessionStore.hasAccessTo(to.meta.access)
+  ) {
     return {
       routeName: "403",
     };

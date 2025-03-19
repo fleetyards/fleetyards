@@ -214,29 +214,29 @@ export const useCreateFleet = <
  * You are not the owner of this Fleet
  * @summary Destroy Fleet
  */
-export const removeFleet = (slug: MaybeRef<string>) => {
+export const destroyFleet = (slug: MaybeRef<string>) => {
   slug = unref(slug);
 
   return axiosClient<void>({ url: `/fleets/${slug}`, method: "DELETE" });
 };
 
-export const getRemoveFleetMutationOptions = <
+export const getDestroyFleetMutationOptions = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof removeFleet>>,
+    Awaited<ReturnType<typeof destroyFleet>>,
     TError,
     { slug: string },
     TContext
   >;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof removeFleet>>,
+  Awaited<ReturnType<typeof destroyFleet>>,
   TError,
   { slug: string },
   TContext
 > => {
-  const mutationKey = ["removeFleet"];
+  const mutationKey = ["destroyFleet"];
   const { mutation: mutationOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -246,43 +246,43 @@ export const getRemoveFleetMutationOptions = <
     : { mutation: { mutationKey } };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof removeFleet>>,
+    Awaited<ReturnType<typeof destroyFleet>>,
     { slug: string }
   > = (props) => {
     const { slug } = props ?? {};
 
-    return removeFleet(slug);
+    return destroyFleet(slug);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type RemoveFleetMutationResult = NonNullable<
-  Awaited<ReturnType<typeof removeFleet>>
+export type DestroyFleetMutationResult = NonNullable<
+  Awaited<ReturnType<typeof destroyFleet>>
 >;
 
-export type RemoveFleetMutationError = ErrorType<StandardError>;
+export type DestroyFleetMutationError = ErrorType<StandardError>;
 
 /**
  * @summary Destroy Fleet
  */
-export const useRemoveFleet = <
+export const useDestroyFleet = <
   TError = ErrorType<StandardError>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof removeFleet>>,
+    Awaited<ReturnType<typeof destroyFleet>>,
     TError,
     { slug: string },
     TContext
   >;
 }): UseMutationReturnType<
-  Awaited<ReturnType<typeof removeFleet>>,
+  Awaited<ReturnType<typeof destroyFleet>>,
   TError,
   { slug: string },
   TContext
 > => {
-  const mutationOptions = getRemoveFleetMutationOptions(options);
+  const mutationOptions = getDestroyFleetMutationOptions(options);
 
   return useMutation(mutationOptions);
 };

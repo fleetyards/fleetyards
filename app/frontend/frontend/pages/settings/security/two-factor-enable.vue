@@ -1,184 +1,195 @@
+<script lang="ts">
+import { disabledRouteGuard } from "@/frontend/utils/RouteGuards/TwoFactor";
+
+export default {
+  name: "TwoFactorEnable",
+  beforeRouteEnter: disabledRouteGuard,
+};
+</script>
+
+<script lang="ts" setup>
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useComlink } from "@/shared/composables/useComlink";
+import BackupCodesPanel from "@/frontend/components/Security/TwoFactorBackupCodesPanel/index.vue";
+import copyText from "@/frontend/utils/CopyText";
+import { useSessionStore } from "@/frontend/stores/session";
+import { storeToRefs } from "pinia";
+import { useForm } from "vee-validate";
+import {
+  useStartOtpSetup as useStartOtpSetupMutation,
+  useEnableOtpSetup as useEnableOtpSetupMutation,
+  type ValidationError,
+} from "@/services/fyApi";
+import { type ErrorType } from "@/services/fyApi/axiosClient";
+
+const { t } = useI18n();
+
+const { displaySuccess, displayAlert } = useAppNotifications();
+
+const sessionStore = useSessionStore();
+
+const { currentUser } = storeToRefs(sessionStore);
+
+const comlink = useComlink();
+
+const submitting = ref(false);
+
+const started = ref(false);
+
+const backupCodes = ref<string[]>();
+
+const validationSchema = {
+  twoFactorCode: "required",
+};
+
+const { defineField, handleSubmit } = useForm({
+  validationSchema,
+});
+
+const [twoFactorCode, twoFactorCodeProps] = defineField("twoFactorCode");
+
+onMounted(() => {
+  startProcess();
+});
+
+onBeforeUnmount(() => {
+  comlink.off("access-confirmed");
+});
+
+const startMutation = useStartOtpSetupMutation();
+
+const startProcess = async () => {
+  await startMutation
+    .mutateAsync()
+    .then(() => {
+      started.value = true;
+      comlink.emit("user-update");
+    })
+    .catch((error) => {
+      console.error(error);
+      displayAlert({
+        text: t("messages.twoFactor.enable.failure"),
+      });
+    });
+};
+
+const enableMutation = useEnableOtpSetupMutation();
+
+const onSubmit = handleSubmit(async (values) => {
+  submitting.value = true;
+
+  await enableMutation
+    .mutateAsync({
+      data: values,
+    })
+    .then((data) => {
+      comlink.emit("user-update");
+
+      backupCodes.value = data.codes;
+
+      displaySuccess({
+        text: t("messages.twoFactor.enable.success"),
+      });
+    })
+    .catch((error) => {
+      const response = error as unknown as ErrorType<ValidationError>;
+
+      if (response.code === "requires_access_confirmation") {
+        comlink.emit("access-confirmation-required");
+      } else {
+        displayAlert({
+          text: t("messages.twoFactor.enable.failure"),
+        });
+      }
+    })
+    .finally(() => {
+      submitting.value = false;
+    });
+});
+
+const copyProvisioningUrl = () => {
+  if (!currentUser?.value || !currentUser.value.twoFactorProvisioningUrl) {
+    return;
+  }
+
+  copyText(currentUser.value.twoFactorProvisioningUrl).then(
+    () => {
+      displaySuccess({
+        text: t("messages.copyTwoFactorProvisioningUrl.success"),
+      });
+    },
+    () => {
+      displayAlert({
+        text: t("messages.copyTwoFactorProvisioningUrl.failure"),
+      });
+    },
+  );
+};
+</script>
+
 <template>
-  <div v-if="currentUser" class="row">
+  <Heading>{{ t("headlines.settings.twoFactor.enable") }}</Heading>
+
+  <div v-if="backupCodes" class="row two-factor-backup-codes">
+    <div class="col-12 col-md-6 offset-md-3">
+      <BackupCodesPanel :codes="backupCodes" />
+      <Btn
+        :to="{ name: 'settings-security', hash: '#two-factor' }"
+        :exact="true"
+      >
+        {{ t("actions.done") }}
+      </Btn>
+    </div>
+  </div>
+
+  <div
+    v-else-if="currentUser && !currentUser.twoFactorRequired && started"
+    class="row"
+  >
     <div class="col-12">
-      <div class="row">
-        <div class="col-12">
-          <h1>{{ $t("headlines.settings.twoFactor.enable") }}</h1>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12">
-          <div v-if="backupCodes" class="row two-factor-backup-codes">
-            <div class="col-12 col-md-6 offset-md-3">
-              <BackupCodesPanel :codes="backupCodes" />
-              <Btn
-                :to="{ name: 'settings-security', hash: '#two-factor' }"
-                :exact="true"
+      <p>
+        {{ t("texts.twoFactor.enable") }}
+      </p>
+      <form class="two-factor-form" @submit.prevent="onSubmit">
+        <div class="row">
+          <div class="col-12 two-factor-form-inner">
+            <div class="two-factor-qrcode">
+              <img
+                :src="currentUser.twoFactorQrCodeUrl"
+                alt="two-factor-qrcode"
+              />
+
+              <code
+                class="two-factor-provisioning-url"
+                @click="copyProvisioningUrl"
               >
-                {{ $t("actions.done") }}
-              </Btn>
+                {{ currentUser.twoFactorProvisioningUrl }}
+              </code>
             </div>
+            <FormInput
+              v-model="twoFactorCode"
+              name="twoFactorCode"
+              v-bind="twoFactorCodeProps"
+              class="two-factor-input"
+              :autofocus="true"
+              :no-label="true"
+              translation-key="twoFactorCode"
+            />
+
+            <br />
+
+            <Btn :loading="submitting" type="submit" size="large" :block="true">
+              {{ t("actions.twoFactor.enable") }}
+            </Btn>
           </div>
-
-          <template v-else-if="!currentUser.twoFactorRequired && started">
-            <p>
-              {{ $t("texts.twoFactor.enable") }}
-            </p>
-            <ValidationObserver
-              v-if="form"
-              v-slot="{ handleSubmit }"
-              :slim="true"
-            >
-              <form
-                class="two-factor-form"
-                @submit.prevent="handleSubmit(enable)"
-              >
-                <div class="row">
-                  <div class="col-12 two-factor-form-inner">
-                    <div class="two-factor-qrcode">
-                      <img
-                        :src="currentUser.twoFactorQrCodeUrl"
-                        alt="two-factor-qrcode"
-                      />
-
-                      <code
-                        class="two-factor-provisioning-url"
-                        @click="copyProvisioningUrl"
-                      >
-                        {{ currentUser.twoFactorProvisioningUrl }}
-                      </code>
-                    </div>
-                    <ValidationProvider
-                      vid="twoFactorCode"
-                      rules="required"
-                      :name="$t('labels.twoFactorCode')"
-                      :slim="true"
-                    >
-                      <FormInput
-                        id="twoFactorCode"
-                        v-model="form.twoFactorCode"
-                        class="two-factor-input"
-                        :autofocus="true"
-                        :no-label="true"
-                        translation-key="twoFactorCode"
-                      />
-                    </ValidationProvider>
-
-                    <br />
-
-                    <Btn
-                      :loading="submitting"
-                      type="submit"
-                      size="large"
-                      :block="true"
-                    >
-                      {{ $t("actions.twoFactor.enable") }}
-                    </Btn>
-                  </div>
-                </div>
-              </form>
-            </ValidationObserver>
-          </template>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import { disabledRouteGuard } from "@/frontend/utils/RouteGuards/TwoFactor";
-import FormInput from "@/shared/components/base/FormInput/index.vue";
-import Btn from "@/shared/components/base/Btn/index.vue";
-import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
-import BackupCodesPanel from "@/frontend/components/Security/TwoFactorBackupCodesPanel/index.vue";
-import copyText from "@/frontend/utils/CopyText";
-
-@Component<TwoFactorEnable>({
-  beforeRouteEnter: disabledRouteGuard,
-  components: {
-    SecurePage,
-    BackupCodesPanel,
-    FormInput,
-    Btn,
-  },
-})
-export default class TwoFactorEnable extends Vue {
-  @Getter("currentUser", { namespace: "session" }) currentUser;
-
-  submitting = false;
-
-  backupCodes: string[] | null = null;
-
-  form: TwoFactorForm | null = null;
-
-  started = false;
-
-  mounted() {
-    this.setupForm();
-    this.$comlink.$on("access-confirmed", this.startProcess);
-  }
-
-  beforeDestroy() {
-    this.$comlink.$off("access-confirmed");
-  }
-
-  setupForm() {
-    this.form = {
-      twoFactorCode: null,
-    };
-  }
-
-  async startProcess() {
-    const response = await twoFactorCollection.start();
-
-    if (!response.error) {
-      this.started = true;
-      this.$comlink.$emit("user-update");
-    }
-  }
-
-  async enable() {
-    this.submitting = true;
-
-    const response = await twoFactorCollection.enable(this.form.twoFactorCode);
-
-    this.submitting = false;
-
-    this.setupForm();
-
-    if (!response.error) {
-      this.$comlink.$emit("user-update");
-
-      this.backupCodes = response.data.codes;
-
-      displaySuccess({
-        text: this.$t("messages.twoFactor.enable.success"),
-      });
-    } else if (response.error === "requires_access_confirmation") {
-      this.$comlink.$emit("access-confirmation-required");
-    } else {
-      displayAlert({
-        text: this.$t("messages.twoFactor.enable.failure"),
-      });
-    }
-  }
-
-  copyProvisioningUrl() {
-    copyText(this.currentUser.twoFactorProvisioningUrl).then(
-      () => {
-        displaySuccess({
-          text: this.$t("messages.copyTwoFactorProvisioningUrl.success"),
-        });
-      },
-      () => {
-        displayAlert({
-          text: this.$t("messages.copyTwoFactorProvisioningUrl.failure"),
-        });
-      },
-    );
-  }
-}
-</script>
 
 <style lang="scss" scoped>
 .two-factor-form {

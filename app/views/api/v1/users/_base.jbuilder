@@ -33,4 +33,6 @@ end
 
 json.hangar_updated_at user.hangar_updated_at.utc.iso8601 if user.hangar_updated_at.present?
 
+json.resource_access []
+
 json.partial! "api/shared/dates", record: user
