@@ -20,6 +20,12 @@
 #  updated_at  :datetime         not null
 #  user_id     :uuid
 #
+# Indexes
+#
+#  index_imports_on_aasm_state           (aasm_state)
+#  index_imports_on_aasm_state_and_type  (aasm_state,type)
+#  index_imports_on_type                 (type)
+#
 module Imports
   class HangarSync < ::Import
     belongs_to :user
