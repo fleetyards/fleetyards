@@ -5810,6 +5810,8 @@ components:
           type: string
         publicFleet:
           type: boolean
+        publicFleetStats:
+          type: boolean
         homepage:
           type: string
         rsiSid:
@@ -5881,6 +5883,8 @@ components:
         description:
           type: string
         publicFleet:
+          type: boolean
+        publicFleetStats:
           type: boolean
         homepage:
           type: string
@@ -7989,14 +7993,11 @@ components:
           "$ref": "#/components/schemas/Model"
         username:
           type: string
-          nullable: true
         userAvatar:
           type: string
           format: uri
-          nullable: true
         userRsiHandle:
           type: string
-          nullable: true
         modelModuleIds:
           type: array
           items:

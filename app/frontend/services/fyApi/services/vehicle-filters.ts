@@ -32,7 +32,7 @@ export const vehicleBoughtViaFilters = (signal?: AbortSignal) => {
   });
 };
 
-export const getVehicleBoughtViaFiltersQueryKey = () => {
+const getVehicleBoughtViaFiltersQueryKey = () => {
   return ["filters", "vehicles", "bought-via"] as const;
 };
 

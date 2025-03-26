@@ -39,7 +39,7 @@ export const components = (
   });
 };
 
-export const getComponentsQueryKey = (params?: MaybeRef<ComponentsParams>) => {
+const getComponentsQueryKey = (params?: MaybeRef<ComponentsParams>) => {
   return ["components", ...(params ? [params] : [])] as const;
 };
 

@@ -44,7 +44,7 @@ export const images = (
   });
 };
 
-export const getImagesQueryKey = (params?: MaybeRef<ImagesParams>) => {
+const getImagesQueryKey = (params?: MaybeRef<ImagesParams>) => {
   return ["images", ...(params ? [params] : [])] as const;
 };
 
@@ -127,9 +127,7 @@ export const imagesRandom = (
   });
 };
 
-export const getImagesRandomQueryKey = (
-  params?: MaybeRef<ImagesRandomParams>,
-) => {
+const getImagesRandomQueryKey = (params?: MaybeRef<ImagesRandomParams>) => {
   return ["images", "random", ...(params ? [params] : [])] as const;
 };
 

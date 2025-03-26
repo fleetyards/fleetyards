@@ -45,7 +45,7 @@ export const publicHangarStats = (
   });
 };
 
-export const getPublicHangarStatsQueryKey = (
+const getPublicHangarStatsQueryKey = (
   username: MaybeRef<string>,
   params?: MaybeRef<PublicHangarStatsParams>,
 ) => {

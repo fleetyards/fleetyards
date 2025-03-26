@@ -32,7 +32,7 @@ export const me = (signal?: AbortSignal) => {
   });
 };
 
-export const getMeQueryKey = () => {
+const getMeQueryKey = () => {
   return ["admin_users", "me"] as const;
 };
 

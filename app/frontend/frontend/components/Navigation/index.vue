@@ -40,6 +40,10 @@ const { filters } = storeToRefs(filtersStore);
 
 const route = useRoute();
 
+const shouldVisualTestsRouteBeVisible = computed(() => {
+  return process.env.NODE_ENV !== "production";
+});
+
 const isVisualTestsRoute = computed(() => {
   if (process.env.NODE_ENV === "production") {
     return false;
@@ -163,6 +167,15 @@ const settingsActive = computed(() => {
           icon="fad fa-chart-bar"
           prefix="08"
         />
+        <template v-if="shouldVisualTestsRouteBeVisible">
+          <li class="nav-item__divider" />
+          <NavItem
+            :to="{ name: 'visual-tests' }"
+            :label="t('nav.visualTests.index')"
+            icon="fad fa-pen-swirl"
+            prefix="09"
+          />
+        </template>
       </template>
     </template>
     <template v-if="route.name" #footer>

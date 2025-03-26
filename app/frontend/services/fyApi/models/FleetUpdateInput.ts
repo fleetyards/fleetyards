@@ -14,6 +14,7 @@ export interface FleetUpdateInput {
   removeBackground?: boolean;
   description?: string;
   publicFleet?: boolean;
+  publicFleetStats?: boolean;
   homepage?: string;
   rsiSid?: string;
   discord?: string;

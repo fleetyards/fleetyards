@@ -44,9 +44,7 @@ export const manufacturers = (
   });
 };
 
-export const getManufacturersQueryKey = (
-  params?: MaybeRef<ManufacturersParams>,
-) => {
+const getManufacturersQueryKey = (params?: MaybeRef<ManufacturersParams>) => {
   return ["manufacturers", ...(params ? [params] : [])] as const;
 };
 
@@ -126,7 +124,7 @@ export const manufacturer = (id: MaybeRef<string>, signal?: AbortSignal) => {
   });
 };
 
-export const getManufacturerQueryKey = (id: MaybeRef<string>) => {
+const getManufacturerQueryKey = (id: MaybeRef<string>) => {
   return ["manufacturers", id] as const;
 };
 

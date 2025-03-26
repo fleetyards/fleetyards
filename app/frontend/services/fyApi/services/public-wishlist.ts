@@ -41,7 +41,7 @@ export const get = (
   });
 };
 
-export const getGetQueryKey = (
+const getGetQueryKey = (
   username: MaybeRef<string>,
   params?: MaybeRef<GetParams>,
 ) => {

@@ -47,9 +47,9 @@ import {
   useHangarGroups as useHangarGroupsQuery,
   hangarExport as fetchHangarExport,
   useDestroyHangar as useDestroyHangarMutation,
-  getHangarQueryKey,
+  useHangarQueryOptions,
 } from "@/services/fyApi";
-import { useQueryClient } from "@tanstack/vue-query";
+import { CustomQueryOptions } from "@/services/customQueryOptions";
 
 const { t, toDollar, toUEC, toNumber } = useI18n();
 
@@ -86,7 +86,8 @@ const hangarQueryParams = computed(() => ({
 }));
 
 const hangarQueryKey = computed(() => {
-  return getHangarQueryKey(hangarQueryParams);
+  return (useHangarQueryOptions(hangarQueryParams) as CustomQueryOptions)
+    .queryKey;
 });
 
 const { perPage, page, updatePerPage } = usePagination(hangarQueryKey);

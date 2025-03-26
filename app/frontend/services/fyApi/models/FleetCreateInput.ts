@@ -10,6 +10,7 @@ export interface FleetCreateInput {
   name: string;
   description?: string;
   publicFleet?: boolean;
+  publicFleetStats?: boolean;
   homepage?: string;
   rsiSid?: string;
   discord?: string;

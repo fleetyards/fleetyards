@@ -9,6 +9,7 @@ import { useSessionStore } from "@/frontend/stores/session";
 import { type UserUpdateInput } from "@/services/fyApi";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import Heading from "@/shared/components/base/Heading/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -92,12 +93,8 @@ const onSubmit = handleSubmit(async (values) => {
 </script>
 
 <template>
+  <Heading>{{ t("headlines.settings.hangar") }}</Heading>
   <form @submit.prevent="onSubmit">
-    <div class="row">
-      <div class="col-lg-12">
-        <h1>{{ t("headlines.settings.hangar") }}</h1>
-      </div>
-    </div>
     <div class="row">
       <div class="col-12 col-md-6">
         <FormCheckbox

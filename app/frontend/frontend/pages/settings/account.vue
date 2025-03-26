@@ -9,6 +9,7 @@ import { useRouter } from "vue-router";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import Heading from "@/shared/components/base/Heading/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -70,7 +71,7 @@ const comlink = useComlink();
 
 const { t } = useI18n();
 
-const { displaySuccess, displayAlert } = useAppNotifications();
+const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 
 const updateMutation = useUpdateAccountMutation();
 
@@ -140,72 +141,56 @@ const destroy = async () => {
 </script>
 
 <template>
+  <Heading>{{ t("headlines.settings.account") }}</Heading>
+
+  <form @submit.prevent="updateAccount">
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <FormInput v-model="username" v-bind="usernameProps" name="username" />
+        <FormInput
+          v-model="email"
+          v-bind="emailProps"
+          name="email"
+          :type="InputTypesEnum.EMAIL"
+        />
+
+        <FormInput
+          v-if="currentUser?.unconfirmedEmail"
+          v-model="currentUser.unconfirmedEmail"
+          name="unconfirmedEmail"
+          :type="InputTypesEnum.EMAIL"
+          :disabled="true"
+          :label="t('labels.user.unconfirmedEmail')"
+          :no-placeholder="true"
+        />
+        <Btn
+          :loading="submitting"
+          :type="BtnTypesEnum.SUBMIT"
+          :size="BtnSizesEnum.LARGE"
+        >
+          {{ t("actions.save") }}
+        </Btn>
+      </div>
+    </div>
+  </form>
+
+  <hr />
+
   <div class="row">
     <div class="col-12">
-      <div class="row">
-        <div class="col-12">
-          <h1>{{ t("headlines.settings.account") }}</h1>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-12">
-          <form @submit.prevent="updateAccount">
-            <div class="row">
-              <div class="col-12 col-md-6">
-                <FormInput
-                  v-model="username"
-                  v-bind="usernameProps"
-                  name="username"
-                />
-                <FormInput
-                  v-model="email"
-                  v-bind="emailProps"
-                  name="email"
-                  :type="InputTypesEnum.EMAIL"
-                />
-
-                <FormInput
-                  v-if="currentUser?.unconfirmedEmail"
-                  v-model="currentUser.unconfirmedEmail"
-                  name="unconfirmedEmail"
-                  :type="InputTypesEnum.EMAIL"
-                  :disabled="true"
-                  :label="t('labels.user.unconfirmedEmail')"
-                  :no-placeholder="true"
-                />
-                <Btn
-                  :loading="submitting"
-                  :type="BtnTypesEnum.SUBMIT"
-                  :size="BtnSizesEnum.LARGE"
-                >
-                  {{ t("actions.save") }}
-                </Btn>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-
-      <hr />
-
-      <div class="row">
-        <div class="col-12">
-          <br />
-          <p>
-            {{ t("labels.account.destroyInfo") }}
-          </p>
-          <Btn
-            :loading="deleting"
-            :variant="BtnVariantsEnum.DANGER"
-            :size="BtnSizesEnum.LARGE"
-            data-test="destroy-account"
-            @click="destroy"
-          >
-            {{ t("actions.destroyAccount") }}
-          </Btn>
-        </div>
-      </div>
+      <br />
+      <p>
+        {{ t("labels.account.destroyInfo") }}
+      </p>
+      <Btn
+        :loading="deleting"
+        :variant="BtnVariantsEnum.DANGER"
+        :size="BtnSizesEnum.LARGE"
+        data-test="destroy-account"
+        @click="destroy"
+      >
+        {{ t("actions.destroyAccount") }}
+      </Btn>
     </div>
   </div>
 </template>

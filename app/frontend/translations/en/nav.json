@@ -64,7 +64,8 @@
       },
       "reload": "Update available!",
       "visualTests": {
-        "index": "Overview",
+        "index": "Visual Tests",
+        "overview": "Overview",
         "panels": "Panels"
       },
       "admin": {

@@ -9,7 +9,6 @@ import { v4 as uuidv4 } from "uuid";
 import { RouteLocationRaw } from "vue-router";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import loadingImage from "@/images/loading.svg";
-import errorImage from "@/images/store_image.jpg";
 
 type Props = {
   src?: string;
@@ -83,10 +82,7 @@ const cssClasses = computed(() => {
     class="lazy-image"
     :class="cssClasses"
   >
-    <img
-      v-lazy="{ src: src, error: errorImage, loading: loadingImage }"
-      :alt="alt"
-    />
+    <img v-lazy="{ src: src, loading: loadingImage }" :alt="alt" />
     <slot />
     <!-- eslint-disable-next-line vue/no-v-html -->
     <div v-if="caption" class="hidden-caption-content" v-html="caption" />

@@ -45,7 +45,7 @@ export const modelProductionStates = (signal?: AbortSignal) => {
   });
 };
 
-export const getModelProductionStatesQueryKey = () => {
+const getModelProductionStatesQueryKey = () => {
   return ["models", "production-states"] as const;
 };
 
@@ -131,7 +131,7 @@ export const models = (
   });
 };
 
-export const getModelsQueryKey = (params?: MaybeRef<ModelsParams>) => {
+const getModelsQueryKey = (params?: MaybeRef<ModelsParams>) => {
   return ["models", ...(params ? [params] : [])] as const;
 };
 
@@ -213,7 +213,7 @@ export const paints = (
   });
 };
 
-export const getPaintsQueryKey = (params?: MaybeRef<PaintsParams>) => {
+const getPaintsQueryKey = (params?: MaybeRef<PaintsParams>) => {
   return ["model-paints", ...(params ? [params] : [])] as const;
 };
 
@@ -291,7 +291,7 @@ export const model = (id: MaybeRef<string>, signal?: AbortSignal) => {
   });
 };
 
-export const getModelQueryKey = (id: MaybeRef<string>) => {
+const getModelQueryKey = (id: MaybeRef<string>) => {
   return ["models", id] as const;
 };
 

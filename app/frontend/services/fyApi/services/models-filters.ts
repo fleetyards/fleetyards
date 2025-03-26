@@ -32,7 +32,7 @@ export const modelClassificationsFilters = (signal?: AbortSignal) => {
   });
 };
 
-export const getModelClassificationsFiltersQueryKey = () => {
+const getModelClassificationsFiltersQueryKey = () => {
   return ["filters", "models", "classifications"] as const;
 };
 
@@ -112,7 +112,7 @@ export const modelDockSizesFilters = (signal?: AbortSignal) => {
   });
 };
 
-export const getModelDockSizesFiltersQueryKey = () => {
+const getModelDockSizesFiltersQueryKey = () => {
   return ["filters", "models", "dock-sizes"] as const;
 };
 
@@ -192,7 +192,7 @@ export const modelFocusFilters = (signal?: AbortSignal) => {
   });
 };
 
-export const getModelFocusFiltersQueryKey = () => {
+const getModelFocusFiltersQueryKey = () => {
   return ["filters", "models", "focus"] as const;
 };
 
@@ -272,7 +272,7 @@ export const modelFilters = (signal?: AbortSignal) => {
   });
 };
 
-export const getModelFiltersQueryKey = () => {
+const getModelFiltersQueryKey = () => {
   return ["filters", "models"] as const;
 };
 
@@ -344,7 +344,7 @@ export const modelProductionStatesFilters = (signal?: AbortSignal) => {
   });
 };
 
-export const getModelProductionStatesFiltersQueryKey = () => {
+const getModelProductionStatesFiltersQueryKey = () => {
   return ["filters", "models", "production-states"] as const;
 };
 
@@ -424,7 +424,7 @@ export const modelSizesFilters = (signal?: AbortSignal) => {
   });
 };
 
-export const getModelSizesFiltersQueryKey = () => {
+const getModelSizesFiltersQueryKey = () => {
   return ["filters", "models", "sizes"] as const;
 };
 

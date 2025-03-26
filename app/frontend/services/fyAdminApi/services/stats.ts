@@ -32,7 +32,7 @@ export const mostViewedPages = (signal?: AbortSignal) => {
   });
 };
 
-export const getMostViewedPagesQueryKey = () => {
+const getMostViewedPagesQueryKey = () => {
   return ["stats", "most-viewed-pages"] as const;
 };
 
@@ -104,7 +104,7 @@ export const registrationsPerMonth = (signal?: AbortSignal) => {
   });
 };
 
-export const getRegistrationsPerMonthQueryKey = () => {
+const getRegistrationsPerMonthQueryKey = () => {
   return ["stats", "registrations-per-month"] as const;
 };
 
@@ -184,7 +184,7 @@ export const stats = (signal?: AbortSignal) => {
   });
 };
 
-export const getStatsQueryKey = () => {
+const getStatsQueryKey = () => {
   return ["stats", "quick-stats"] as const;
 };
 
@@ -254,7 +254,7 @@ export const visitsPerDay = (signal?: AbortSignal) => {
   });
 };
 
-export const getVisitsPerDayQueryKey = () => {
+const getVisitsPerDayQueryKey = () => {
   return ["stats", "visits-per-day"] as const;
 };
 
@@ -326,7 +326,7 @@ export const visitsPerMonth = (signal?: AbortSignal) => {
   });
 };
 
-export const getVisitsPerMonthQueryKey = () => {
+const getVisitsPerMonthQueryKey = () => {
   return ["stats", "visits-per-month"] as const;
 };
 

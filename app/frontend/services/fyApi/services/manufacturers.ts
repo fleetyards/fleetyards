@@ -39,9 +39,7 @@ export const manufacturers = (
   });
 };
 
-export const getManufacturersQueryKey = (
-  params?: MaybeRef<ManufacturersParams>,
-) => {
+const getManufacturersQueryKey = (params?: MaybeRef<ManufacturersParams>) => {
   return ["manufacturers", ...(params ? [params] : [])] as const;
 };
 
@@ -119,7 +117,7 @@ export const getManufacturersWithModels = (signal?: AbortSignal) => {
   });
 };
 
-export const getGetManufacturersWithModelsQueryKey = () => {
+const getGetManufacturersWithModelsQueryKey = () => {
   return ["manufacturers", "with-models"] as const;
 };
 

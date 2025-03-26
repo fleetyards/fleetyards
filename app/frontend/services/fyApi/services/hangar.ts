@@ -124,7 +124,7 @@ export const hangar = (
   });
 };
 
-export const getHangarQueryKey = (params?: MaybeRef<HangarParams>) => {
+const getHangarQueryKey = (params?: MaybeRef<HangarParams>) => {
   return ["hangar", ...(params ? [params] : [])] as const;
 };
 
@@ -206,9 +206,7 @@ export const hangarExport = (
   });
 };
 
-export const getHangarExportQueryKey = (
-  params?: MaybeRef<HangarExportParams>,
-) => {
+const getHangarExportQueryKey = (params?: MaybeRef<HangarExportParams>) => {
   return ["hangar", "export", ...(params ? [params] : [])] as const;
 };
 
@@ -368,7 +366,7 @@ export const hangarItems = (signal?: AbortSignal) => {
   return axiosClient<string[]>({ url: `/hangar/items`, method: "GET", signal });
 };
 
-export const getHangarItemsQueryKey = () => {
+const getHangarItemsQueryKey = () => {
   return ["hangar", "items"] as const;
 };
 

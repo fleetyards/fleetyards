@@ -14,11 +14,15 @@ import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import ManufacturerActions from "@/admin/components/Manufacturers/Actions/index.vue";
 import FilterForm from "@/admin/components/Manufacturers/FilterForm/index.vue";
-import { useManufacturers, getManufacturersQueryKey } from "@/services/fyApi";
+import {
+  useManufacturers,
+  useManufacturersQueryOptions,
+} from "@/services/fyApi";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useManufacturerFilters } from "@/admin/composables/useManufacturerFilters";
+import { CustomQueryOptions } from "@/services/customQueryOptions";
 
 const route = useRoute();
 
@@ -34,7 +38,7 @@ watch(
 );
 
 const manufacturersQueryKey = computed(() => {
-  return getManufacturersQueryKey(manufacturersQueryParams.value);
+  return (useManufacturersQueryOptions() as CustomQueryOptions).queryKey;
 });
 
 const { perPage, page, updatePerPage } = usePagination(manufacturersQueryKey);

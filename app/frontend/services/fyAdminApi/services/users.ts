@@ -36,7 +36,7 @@ export const users = (params?: MaybeRef<UsersParams>, signal?: AbortSignal) => {
   });
 };
 
-export const getUsersQueryKey = (params?: MaybeRef<UsersParams>) => {
+const getUsersQueryKey = (params?: MaybeRef<UsersParams>) => {
   return ["users", ...(params ? [params] : [])] as const;
 };
 

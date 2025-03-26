@@ -299,7 +299,7 @@ export const fleet = (slug: MaybeRef<string>, signal?: AbortSignal) => {
   return axiosClient<Fleet>({ url: `/fleets/${slug}`, method: "GET", signal });
 };
 
-export const getFleetQueryKey = (slug: MaybeRef<string>) => {
+const getFleetQueryKey = (slug: MaybeRef<string>) => {
   return ["fleets", slug] as const;
 };
 
@@ -401,6 +401,12 @@ export const updateFleet = (
   }
   if (fleetUpdateInput.publicFleet !== undefined) {
     formData.append("publicFleet", fleetUpdateInput.publicFleet.toString());
+  }
+  if (fleetUpdateInput.publicFleetStats !== undefined) {
+    formData.append(
+      "publicFleetStats",
+      fleetUpdateInput.publicFleetStats.toString(),
+    );
   }
   if (fleetUpdateInput.homepage !== undefined) {
     formData.append("homepage", fleetUpdateInput.homepage);
@@ -591,7 +597,7 @@ export const fleetInvites = (signal?: AbortSignal) => {
   });
 };
 
-export const getFleetInvitesQueryKey = () => {
+const getFleetInvitesQueryKey = () => {
   return ["fleets", "invites"] as const;
 };
 
@@ -659,7 +665,7 @@ export const myFleets = (signal?: AbortSignal) => {
   return axiosClient<Fleet[]>({ url: `/fleets/my`, method: "GET", signal });
 };
 
-export const getMyFleetsQueryKey = () => {
+const getMyFleetsQueryKey = () => {
   return ["fleets", "my"] as const;
 };
 
@@ -739,7 +745,7 @@ export const fleetVehiclesExport = (
   });
 };
 
-export const getFleetVehiclesExportQueryKey = (
+const getFleetVehiclesExportQueryKey = (
   fleetSlug: MaybeRef<string>,
   params?: MaybeRef<FleetVehiclesExportParams>,
 ) => {
@@ -848,7 +854,7 @@ export const fleetVehicles = (
   });
 };
 
-export const getFleetVehiclesQueryKey = (
+const getFleetVehiclesQueryKey = (
   fleetSlug: MaybeRef<string>,
   params?: MaybeRef<FleetVehiclesParams>,
 ) => {
@@ -944,7 +950,7 @@ export const publicFleetStatsModelCounts = (
   });
 };
 
-export const getPublicFleetStatsModelCountsQueryKey = (
+const getPublicFleetStatsModelCountsQueryKey = (
   fleetSlug: MaybeRef<string>,
   params?: MaybeRef<PublicFleetStatsModelCountsParams>,
 ) => {
@@ -1054,7 +1060,7 @@ export const publicFleetVehiclesEmbed = (
   });
 };
 
-export const getPublicFleetVehiclesEmbedQueryKey = (
+const getPublicFleetVehiclesEmbedQueryKey = (
   fleetSlug: MaybeRef<string>,
   params?: MaybeRef<PublicFleetVehiclesEmbedParams>,
 ) => {
@@ -1164,7 +1170,7 @@ export const publicFleetVehicles = (
   });
 };
 
-export const getPublicFleetVehiclesQueryKey = (
+const getPublicFleetVehiclesQueryKey = (
   fleetSlug: MaybeRef<string>,
   params?: MaybeRef<PublicFleetVehiclesParams>,
 ) => {

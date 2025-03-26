@@ -40,7 +40,7 @@ export const imports = (
   });
 };
 
-export const getImportsQueryKey = (params?: MaybeRef<ImportsParams>) => {
+const getImportsQueryKey = (params?: MaybeRef<ImportsParams>) => {
   return ["imports", ...(params ? [params] : [])] as const;
 };
 
@@ -116,7 +116,7 @@ export const _import = (id: MaybeRef<string>, signal?: AbortSignal) => {
   return axiosClient<Import>({ url: `/imports/${id}`, method: "GET", signal });
 };
 
-export const getImportQueryKey = (id: MaybeRef<string>) => {
+const getImportQueryKey = (id: MaybeRef<string>) => {
   return ["imports", id] as const;
 };
 

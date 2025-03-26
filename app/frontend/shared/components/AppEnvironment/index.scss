@@ -1,12 +1,12 @@
 .app-environment {
-  position: sticky;
+  position: fixed;
   z-index: 1000;
-  bottom: 0;
+  bottom: 25px;
+  right: 15px;
   display: flex;
   gap: 5px;
   padding-top: 1rem;
   padding-bottom: 1rem;
-  float: left;
 
   &__git-revision {
     cursor: pointer;

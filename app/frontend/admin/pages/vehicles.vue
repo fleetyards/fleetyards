@@ -20,8 +20,10 @@ import Paginator from "@/shared/components/Paginator/index.vue";
 import { Vehicle } from "@/services/fyApi";
 import {
   useVehicles as useVehiclesQuery,
-  getVehiclesQueryKey,
+  useVehiclesQueryOptions,
 } from "@/services/fyAdminApi";
+
+import { CustomQueryOptions } from "@/services/customQueryOptions";
 
 const { t } = useI18n();
 
@@ -50,7 +52,8 @@ const vehiclesQueryParams = computed(() => {
 });
 
 const vehiclesQueryKey = computed(() => {
-  return getVehiclesQueryKey(vehiclesQueryParams);
+  return (useVehiclesQueryOptions(vehiclesQueryParams) as CustomQueryOptions)
+    .queryKey;
 });
 
 const { perPage, page, updatePerPage } = usePagination(vehiclesQueryKey);

@@ -5,26 +5,26 @@ import {
   useDestroyVehicle as useDestroyVehicleMutation,
   useUpdateBulkVehicle as useUpdateBulkVehicleMutation,
   useDestroyBulkVehicle as useDestroyBulkVehicleMutation,
-  getHangarQueryKey,
-  getWishlistQueryKey,
+  useHangarQueryOptions,
+  useWishlistQueryOptions,
 } from "@/services/fyApi";
+import { type CustomQueryOptions } from "@/services/customQueryOptions";
 import { type Hangar, type Vehicle } from "@/services/fyApi";
 import { QueryKey, useQueryClient } from "@tanstack/vue-query";
 import { type ComputedRef } from "vue";
+import { getPreviousQueryData } from "@/shared/utils/QueryData";
 
 export const useVehicleMutations = () => {
   const queryClient = useQueryClient();
+
+  const hangarQueryOptions = useHangarQueryOptions() as CustomQueryOptions;
+  const wishlistQueryOptions = useWishlistQueryOptions() as CustomQueryOptions;
 
   const useCreateMutation = () => {
     return useCreateVehicleMutation({
       mutation: {
         onSettled: () => {
-          queryClient.invalidateQueries({
-            queryKey: [getHangarQueryKey()],
-          });
-          queryClient.invalidateQueries({
-            queryKey: [getWishlistQueryKey()],
-          });
+          invalidateHangarQueries();
         },
       },
     });
@@ -34,12 +34,7 @@ export const useVehicleMutations = () => {
     return useCreateBulkVehicleMutation({
       mutation: {
         onSettled: () => {
-          queryClient.invalidateQueries({
-            queryKey: [getHangarQueryKey()],
-          });
-          queryClient.invalidateQueries({
-            queryKey: [getWishlistQueryKey()],
-          });
+          invalidateHangarQueries();
         },
       },
     });
@@ -57,10 +52,8 @@ export const useVehicleMutations = () => {
             ...vehicleForMutation,
             ...data,
           };
-          await queryClient.cancelQueries({
-            queryKey: [getHangarQueryKey()],
-          });
-          const queryData = getPreviousQueryData();
+
+          const queryData = await getPreviousHangarQueryData();
 
           if (!queryData?.length) {
             return;
@@ -95,12 +88,7 @@ export const useVehicleMutations = () => {
           });
         },
         onSettled: (_updatedVehicle) => {
-          queryClient.invalidateQueries({
-            queryKey: [getHangarQueryKey()],
-          });
-          queryClient.invalidateQueries({
-            queryKey: [getWishlistQueryKey()],
-          });
+          invalidateHangarQueries();
         },
       },
     });
@@ -110,12 +98,7 @@ export const useVehicleMutations = () => {
     return useUpdateBulkVehicleMutation({
       mutation: {
         onSettled: () => {
-          queryClient.invalidateQueries({
-            queryKey: [getHangarQueryKey()],
-          });
-          queryClient.invalidateQueries({
-            queryKey: [getWishlistQueryKey()],
-          });
+          invalidateHangarQueries();
         },
       },
     });
@@ -129,11 +112,7 @@ export const useVehicleMutations = () => {
         onMutate: async () => {
           const vehicleForMutation = unref(vehicle);
 
-          await queryClient.cancelQueries({
-            queryKey: [getHangarQueryKey()],
-          });
-
-          const queryData = getPreviousQueryData();
+          const queryData = await getPreviousHangarQueryData();
 
           if (!queryData?.length) {
             return;
@@ -164,12 +143,7 @@ export const useVehicleMutations = () => {
           });
         },
         onSettled: () => {
-          queryClient.invalidateQueries({
-            queryKey: [getHangarQueryKey()],
-          });
-          queryClient.invalidateQueries({
-            queryKey: [getWishlistQueryKey()],
-          });
+          invalidateHangarQueries();
         },
       },
     });
@@ -179,27 +153,33 @@ export const useVehicleMutations = () => {
     return useDestroyBulkVehicleMutation({
       mutation: {
         onSettled: () => {
-          queryClient.invalidateQueries({
-            queryKey: [getHangarQueryKey()],
-          });
-          queryClient.invalidateQueries({
-            queryKey: [getWishlistQueryKey()],
-          });
+          invalidateHangarQueries();
         },
       },
     });
   };
 
-  const getPreviousQueryData = () => {
-    const results = queryClient.getQueriesData({
-      queryKey: getHangarQueryKey(),
+  const invalidateHangarQueries = () => {
+    queryClient.invalidateQueries({
+      queryKey: [hangarQueryOptions.queryKey],
+    });
+    queryClient.invalidateQueries({
+      queryKey: [wishlistQueryOptions.queryKey],
+    });
+  };
+
+  const getPreviousHangarQueryData = async () => {
+    await queryClient.cancelQueries({
+      queryKey: [hangarQueryOptions.queryKey],
+    });
+    await queryClient.cancelQueries({
+      queryKey: [wishlistQueryOptions.queryKey],
     });
 
-    if (results.length === 0) {
-      return undefined;
-    }
-
-    return results;
+    return getPreviousQueryData(queryClient, [
+      hangarQueryOptions.queryKey,
+      wishlistQueryOptions.queryKey,
+    ]);
   };
 
   return {

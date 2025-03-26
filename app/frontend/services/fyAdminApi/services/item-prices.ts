@@ -135,7 +135,7 @@ export const itemPrices = (
   });
 };
 
-export const getItemPricesQueryKey = (params?: MaybeRef<ItemPricesParams>) => {
+const getItemPricesQueryKey = (params?: MaybeRef<ItemPricesParams>) => {
   return ["item-prices", ...(params ? [params] : [])] as const;
 };
 
@@ -290,7 +290,7 @@ export const itemPrice = (id: MaybeRef<string>, signal?: AbortSignal) => {
   });
 };
 
-export const getItemPriceQueryKey = (id: MaybeRef<string>) => {
+const getItemPriceQueryKey = (id: MaybeRef<string>) => {
   return ["item-prices", id] as const;
 };
 

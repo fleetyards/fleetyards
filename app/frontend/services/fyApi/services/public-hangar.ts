@@ -45,7 +45,7 @@ export const publicHangarEmbed = (
   });
 };
 
-export const getPublicHangarEmbedQueryKey = (
+const getPublicHangarEmbedQueryKey = (
   params: MaybeRef<PublicHangarEmbedParams>,
 ) => {
   return ["public", "hangars", "embed", ...(params ? [params] : [])] as const;
@@ -141,7 +141,7 @@ export const publicHangar = (
   });
 };
 
-export const getPublicHangarQueryKey = (
+const getPublicHangarQueryKey = (
   username: MaybeRef<string>,
   params?: MaybeRef<PublicHangarParams>,
 ) => {

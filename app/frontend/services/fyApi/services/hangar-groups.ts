@@ -126,7 +126,7 @@ export const hangarGroups = (signal?: AbortSignal) => {
   });
 };
 
-export const getHangarGroupsQueryKey = () => {
+const getHangarGroupsQueryKey = () => {
   return ["hangar", "groups"] as const;
 };
 

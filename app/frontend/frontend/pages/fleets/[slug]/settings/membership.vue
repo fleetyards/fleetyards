@@ -9,7 +9,6 @@ export default {
 // import FormCheckbox from "@/frontend/core/components/Form/FormCheckbox/index.vue";
 // import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
 import { type Fleet, type FleetMember } from "@/services/fyApi";
-import { useFleetMeta } from "@/frontend/composables/useFleetMeta";
 
 type Props = {
   fleet: Fleet;
@@ -18,11 +17,7 @@ type Props = {
 
 const props = defineProps<Props>();
 
-// useFleetMeta(props.fleet);
-
-// collection: FleetMembersCollection = fleetMembersCollection;
-
-// submitting = false;
+const submitting = ref(false);
 
 // form: FleetMembershipForm = {
 //   primary: false,
@@ -153,13 +148,7 @@ const props = defineProps<Props>();
 <template>
   {{ fleet }}
   {{ membership }}
-  <!-- <section class="container">
-    <div class="row">
-      <div class="col-lg-12">
-        <BreadCrumbs :crumbs="crumbs" />
-        <h1>{{ $t("headlines.fleets.settings.membership") }}</h1>
-      </div>
-    </div>
+  <!--
     <ValidationObserver v-slot="{ handleSubmit }" :slim="true">
       <form v-if="fleet && form" @submit.prevent="handleSubmit(submit)">
         <div class="row">

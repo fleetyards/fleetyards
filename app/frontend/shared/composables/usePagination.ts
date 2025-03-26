@@ -35,7 +35,7 @@ export const usePagination = (
     () => page.value,
     () => {
       queryClient.invalidateQueries({
-        queryKey,
+        queryKey: [queryKey],
       });
     },
   );
@@ -44,7 +44,7 @@ export const usePagination = (
     () => perPage.value,
     () => {
       queryClient.invalidateQueries({
-        queryKey,
+        queryKey: [queryKey],
       });
     },
   );

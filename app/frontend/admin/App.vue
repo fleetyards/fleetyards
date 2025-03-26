@@ -196,10 +196,6 @@ const checkSessionReload = async () => {
                   :is="Component"
                   :key="`${locale}-${viewRoute.path}`"
                 />
-                <AppEnvironment
-                  :git-revision="appStore.gitRevision"
-                  show-in-production
-                />
               </section>
             </transition>
           </router-view>
@@ -215,5 +211,6 @@ const checkSessionReload = async () => {
     </div>
 
     <AppModal />
+    <AppEnvironment :git-revision="appStore.gitRevision" show-in-production />
   </div>
 </template>

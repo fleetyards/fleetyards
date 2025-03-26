@@ -282,8 +282,6 @@ const setLocale = (locale: string) => {
                   :is="Component"
                   :key="`${locale}-${viewRoute.path}`"
                 />
-
-                <AppEnvironment :git-revision="appStore.gitRevision" />
               </section>
             </transition>
           </router-view>
@@ -343,5 +341,6 @@ const setLocale = (locale: string) => {
     <AppConfirm />
     <AppModal />
     <AppNotifications />
+    <AppEnvironment :git-revision="appStore.gitRevision" />
   </div>
 </template>

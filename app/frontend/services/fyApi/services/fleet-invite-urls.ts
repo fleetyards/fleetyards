@@ -140,7 +140,7 @@ export const fleetInviteUrls = (
   });
 };
 
-export const getFleetInviteUrlsQueryKey = (
+const getFleetInviteUrlsQueryKey = (
   fleetSlug: MaybeRef<string>,
   params?: MaybeRef<FleetInviteUrlsParams>,
 ) => {

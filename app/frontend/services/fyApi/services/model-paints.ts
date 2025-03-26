@@ -39,7 +39,7 @@ export const paints = (
   });
 };
 
-export const getPaintsQueryKey = (params?: MaybeRef<PaintsParams>) => {
+const getPaintsQueryKey = (params?: MaybeRef<PaintsParams>) => {
   return ["model-paints", ...(params ? [params] : [])] as const;
 };
 

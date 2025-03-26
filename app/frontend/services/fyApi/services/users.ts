@@ -450,7 +450,7 @@ export const me = (signal?: AbortSignal) => {
   return axiosClient<User>({ url: `/users/me`, method: "GET", signal });
 };
 
-export const getMeQueryKey = () => {
+const getMeQueryKey = () => {
   return ["users", "me"] as const;
 };
 

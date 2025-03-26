@@ -32,7 +32,7 @@ export const scDataVersion = (signal?: AbortSignal) => {
   });
 };
 
-export const getScDataVersionQueryKey = () => {
+const getScDataVersionQueryKey = () => {
   return ["sc-data", "version"] as const;
 };
 
@@ -100,7 +100,7 @@ export const version = (signal?: AbortSignal) => {
   return axiosClient<Version>({ url: `/version`, method: "GET", signal });
 };
 
-export const getVersionQueryKey = () => {
+const getVersionQueryKey = () => {
   return ["version"] as const;
 };
 

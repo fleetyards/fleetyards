@@ -38,7 +38,7 @@ export const hangarModelsByClassification = (signal?: AbortSignal) => {
   });
 };
 
-export const getHangarModelsByClassificationQueryKey = () => {
+const getHangarModelsByClassificationQueryKey = () => {
   return ["hangar", "stats", "models-by-classification"] as const;
 };
 
@@ -118,7 +118,7 @@ export const hangarModelsByManufacturer = (signal?: AbortSignal) => {
   });
 };
 
-export const getHangarModelsByManufacturerQueryKey = () => {
+const getHangarModelsByManufacturerQueryKey = () => {
   return ["hangar", "stats", "models-by-manufacturer"] as const;
 };
 
@@ -198,7 +198,7 @@ export const hangarModelsByProductionStatus = (signal?: AbortSignal) => {
   });
 };
 
-export const getHangarModelsByProductionStatusQueryKey = () => {
+const getHangarModelsByProductionStatusQueryKey = () => {
   return ["hangar", "stats", "models-by-production-status"] as const;
 };
 
@@ -278,7 +278,7 @@ export const hangarModelsBySize = (signal?: AbortSignal) => {
   });
 };
 
-export const getHangarModelsBySizeQueryKey = () => {
+const getHangarModelsBySizeQueryKey = () => {
   return ["hangar", "stats", "models-by-size"] as const;
 };
 
@@ -364,9 +364,7 @@ export const hangarStats = (
   });
 };
 
-export const getHangarStatsQueryKey = (
-  params?: MaybeRef<HangarStatsParams>,
-) => {
+const getHangarStatsQueryKey = (params?: MaybeRef<HangarStatsParams>) => {
   return ["hangar", "stats", ...(params ? [params] : [])] as const;
 };
 

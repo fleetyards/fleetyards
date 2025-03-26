@@ -39,7 +39,7 @@ export const vehicles = (
   });
 };
 
-export const getVehiclesQueryKey = (params?: MaybeRef<VehiclesParams>) => {
+const getVehiclesQueryKey = (params?: MaybeRef<VehiclesParams>) => {
   return ["vehicles", ...(params ? [params] : [])] as const;
 };
 

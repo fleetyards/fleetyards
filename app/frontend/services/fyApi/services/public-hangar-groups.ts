@@ -38,7 +38,7 @@ export const publicHangarGroups = (
   });
 };
 
-export const getPublicHangarGroupsQueryKey = (username: MaybeRef<string>) => {
+const getPublicHangarGroupsQueryKey = (username: MaybeRef<string>) => {
   return ["public", "hangars", username, "groups"] as const;
 };
 

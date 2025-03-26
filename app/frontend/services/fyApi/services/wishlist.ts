@@ -118,7 +118,7 @@ export const wishlist = (
   });
 };
 
-export const getWishlistQueryKey = (params?: MaybeRef<WishlistParams>) => {
+const getWishlistQueryKey = (params?: MaybeRef<WishlistParams>) => {
   return ["wishlist", ...(params ? [params] : [])] as const;
 };
 
@@ -196,7 +196,7 @@ export const exportWishlist = (signal?: AbortSignal) => {
   });
 };
 
-export const getExportWishlistQueryKey = () => {
+const getExportWishlistQueryKey = () => {
   return ["wishlist", "export"] as const;
 };
 
@@ -268,7 +268,7 @@ export const wishlistItems = (signal?: AbortSignal) => {
   });
 };
 
-export const getWishlistItemsQueryKey = () => {
+const getWishlistItemsQueryKey = () => {
   return ["wishlist", "items"] as const;
 };
 

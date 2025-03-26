@@ -47,7 +47,7 @@ export const fleetMembersStats = (
   });
 };
 
-export const getFleetMembersStatsQueryKey = (fleetSlug: MaybeRef<string>) => {
+const getFleetMembersStatsQueryKey = (fleetSlug: MaybeRef<string>) => {
   return ["fleets", fleetSlug, "stats", "members"] as const;
 };
 
@@ -141,7 +141,7 @@ export const fleetModelCounts = (
   });
 };
 
-export const getFleetModelCountsQueryKey = (
+const getFleetModelCountsQueryKey = (
   fleetSlug: MaybeRef<string>,
   params?: MaybeRef<FleetModelCountsParams>,
 ) => {
@@ -247,7 +247,7 @@ export const fleetModelsByClassification = (
   });
 };
 
-export const getFleetModelsByClassificationQueryKey = (
+const getFleetModelsByClassificationQueryKey = (
   fleetSlug: MaybeRef<string>,
 ) => {
   return ["fleets", fleetSlug, "stats", "models-by-classification"] as const;
@@ -343,9 +343,7 @@ export const fleetModelsByManufacturer = (
   });
 };
 
-export const getFleetModelsByManufacturerQueryKey = (
-  fleetSlug: MaybeRef<string>,
-) => {
+const getFleetModelsByManufacturerQueryKey = (fleetSlug: MaybeRef<string>) => {
   return ["fleets", fleetSlug, "stats", "models-by-manufacturer"] as const;
 };
 
@@ -439,7 +437,7 @@ export const fleetModelsByProductionStatus = (
   });
 };
 
-export const getFleetModelsByProductionStatusQueryKey = (
+const getFleetModelsByProductionStatusQueryKey = (
   fleetSlug: MaybeRef<string>,
 ) => {
   return ["fleets", fleetSlug, "stats", "models-by-production-status"] as const;
@@ -535,7 +533,7 @@ export const fleetModelsBySize = (
   });
 };
 
-export const getFleetModelsBySizeQueryKey = (fleetSlug: MaybeRef<string>) => {
+const getFleetModelsBySizeQueryKey = (fleetSlug: MaybeRef<string>) => {
   return ["fleets", fleetSlug, "stats", "models-by-size"] as const;
 };
 
@@ -626,9 +624,7 @@ export const fleetVehiclesByModel = (
   });
 };
 
-export const getFleetVehiclesByModelQueryKey = (
-  fleetSlug: MaybeRef<string>,
-) => {
+const getFleetVehiclesByModelQueryKey = (fleetSlug: MaybeRef<string>) => {
   return ["fleets", fleetSlug, "stats", "vehicles-by-model"] as const;
 };
 
@@ -719,7 +715,7 @@ export const fleetVehiclesStats = (
   });
 };
 
-export const getFleetVehiclesStatsQueryKey = (fleetSlug: MaybeRef<string>) => {
+const getFleetVehiclesStatsQueryKey = (fleetSlug: MaybeRef<string>) => {
   return ["fleets", fleetSlug, "stats", "vehicles"] as const;
 };
 
@@ -810,9 +806,7 @@ export const publicFleetMembersStats = (
   });
 };
 
-export const getPublicFleetMembersStatsQueryKey = (
-  fleetSlug: MaybeRef<string>,
-) => {
+const getPublicFleetMembersStatsQueryKey = (fleetSlug: MaybeRef<string>) => {
   return ["public", "fleets", fleetSlug, "stats", "members"] as const;
 };
 
@@ -906,9 +900,7 @@ export const publicFleetVehiclesStats = (
   });
 };
 
-export const getPublicFleetVehiclesStatsQueryKey = (
-  fleetSlug: MaybeRef<string>,
-) => {
+const getPublicFleetVehiclesStatsQueryKey = (fleetSlug: MaybeRef<string>) => {
   return ["public", "fleets", fleetSlug, "stats", "vehicles"] as const;
 };
 

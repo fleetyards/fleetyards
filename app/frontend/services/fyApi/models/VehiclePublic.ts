@@ -19,12 +19,9 @@ export interface VehiclePublic {
   hangarGroups: HangarGroupPublic[];
   loaner: boolean;
   model: Model;
-  /** @nullable */
-  username?: string | null;
-  /** @nullable */
-  userAvatar?: string | null;
-  /** @nullable */
-  userRsiHandle?: string | null;
+  username?: string;
+  userAvatar?: string;
+  userRsiHandle?: string;
   modelModuleIds: string[];
   modelUpgradeIds: string[];
   modulePackage?: ModelModulePackage;

@@ -19,9 +19,10 @@ import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
-  getModelsQueryKey,
+  useModelsQueryOptions,
   useModels as useModelsQuery,
 } from "@/services/fyAdminApi";
+import { CustomQueryOptions } from "@/services/customQueryOptions";
 
 const route = useRoute();
 
@@ -46,7 +47,8 @@ const modelsQueryParams = computed(() => {
 });
 
 const modelsQueryKey = computed(() => {
-  return getModelsQueryKey(modelsQueryParams);
+  return (useModelsQueryOptions(modelsQueryParams) as CustomQueryOptions)
+    .queryKey;
 });
 
 const { perPage, page, updatePerPage } = usePagination(modelsQueryKey);

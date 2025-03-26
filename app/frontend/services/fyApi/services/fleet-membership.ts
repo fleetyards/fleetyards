@@ -288,7 +288,7 @@ export const fleetMembership = (
   });
 };
 
-export const getFleetMembershipQueryKey = (fleetSlug: MaybeRef<string>) => {
+const getFleetMembershipQueryKey = (fleetSlug: MaybeRef<string>) => {
   return ["fleets", fleetSlug, "membership"] as const;
 };
 

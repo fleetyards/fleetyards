@@ -32,7 +32,7 @@ export const componentItemTypesFilters = (signal?: AbortSignal) => {
   });
 };
 
-export const getComponentItemTypesFiltersQueryKey = () => {
+const getComponentItemTypesFiltersQueryKey = () => {
   return ["filters", "components", "item-types"] as const;
 };
 
@@ -112,7 +112,7 @@ export const componentClassesFilters = (signal?: AbortSignal) => {
   });
 };
 
-export const getComponentClassesFiltersQueryKey = () => {
+const getComponentClassesFiltersQueryKey = () => {
   return ["filters", "components", "classes"] as const;
 };
 

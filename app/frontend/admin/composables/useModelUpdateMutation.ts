@@ -5,13 +5,14 @@ import {
   type Models,
   type Model,
 } from "@/services/fyAdminApi";
+import { transformQueryKey } from "@/services/customQueryOptions";
 import { useQueryClient } from "@tanstack/vue-query";
 
 export const useModelUpdateMutation = (model: Model) => {
   const queryClient = useQueryClient();
 
   const modelsQueryKey = computed(() => {
-    return getModelsQueryKey();
+    return transformQueryKey(getModelsQueryKey());
   });
 
   const updateMutation = useUpdateModelMutation({
@@ -57,7 +58,7 @@ export const useModelUpdateMutation = (model: Model) => {
       onSettled: (updatedModel) => {
         if (updatedModel) {
           queryClient.invalidateQueries({
-            queryKey: getModelQueryKey(updatedModel?.id),
+            queryKey: transformQueryKey(getModelQueryKey(updatedModel?.id)),
           });
         }
         queryClient.invalidateQueries({

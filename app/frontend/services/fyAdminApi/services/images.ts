@@ -156,7 +156,7 @@ export const images = (
   });
 };
 
-export const getImagesQueryKey = (params?: MaybeRef<ImagesParams>) => {
+const getImagesQueryKey = (params?: MaybeRef<ImagesParams>) => {
   return ["images", ...(params ? [params] : [])] as const;
 };
 

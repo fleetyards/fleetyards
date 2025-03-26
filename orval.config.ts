@@ -17,6 +17,7 @@ export default defineConfig({
           name: "axiosClient",
         },
         query: {
+          shouldExportQueryKey: false,
           queryOptions: {
             path: "./app/frontend/services/customQueryOptions.ts",
             name: "customQueryOptions",
@@ -44,6 +45,7 @@ export default defineConfig({
           name: "axiosClient",
         },
         query: {
+          shouldExportQueryKey: false,
           queryOptions: {
             path: "./app/frontend/services/customQueryOptions.ts",
             name: "customQueryOptions",

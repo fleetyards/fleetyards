@@ -6,13 +6,17 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
+import { useForm } from "vee-validate";
 import Btn from "@/shared/components/base/Btn/index.vue";
 // import Avatar from "@/frontend/core/components/Avatar/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
-import { type Fleet, type FleetMember } from "@/services/fyApi";
-import { useFleetMeta } from "@/frontend/composables/useFleetMeta";
+import {
+  type Fleet,
+  type FleetMember,
+  type FleetUpdateInput,
+} from "@/services/fyApi";
 
 type Props = {
   fleet: Fleet;
@@ -23,13 +27,48 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 
-const leaving = ref(false);
-
 const submitting = ref(false);
 
 const deleting = ref(false);
 
-// useFleetMeta(props.fleet);
+const initialValues = ref<FleetUpdateInput>({
+  fid: props.fleet.fid,
+  name: props.fleet.name,
+  description: props.fleet.description,
+  rsiSid: props.fleet.rsiSid,
+  discord: props.fleet.discord,
+  ts: props.fleet.ts,
+  homepage: props.fleet.homepage,
+  twitch: props.fleet.twitch,
+  youtube: props.fleet.youtube,
+  guilded: props.fleet.guilded,
+  publicFleet: props.fleet.publicFleet,
+  publicFleetStats: props.fleet.publicFleetStats,
+});
+
+const validationSchema = {
+  fid: "required",
+  name: "required",
+};
+
+const { defineField, handleSubmit } = useForm({
+  initialValues: initialValues.value,
+  validationSchema,
+});
+
+const [fid, fidProps] = defineField("fid");
+const [name, nameProps] = defineField("name");
+const [description, descriptionProps] = defineField("description");
+const [rsiSid, rsiSidProps] = defineField("rsiSid");
+const [discord, discordProps] = defineField("discord");
+const [ts, tsProps] = defineField("ts");
+const [homepage, homepageProps] = defineField("homepage");
+const [twitch, twitchProps] = defineField("twitch");
+const [youtube, youtubeProps] = defineField("youtube");
+const [guilded, guildedProps] = defineField("guilded");
+const [publicFleet, publicFleetProps] = defineField("publicFleet");
+const [publicFleetStats, publicFleetStatsProps] =
+  defineField("publicFleetStats");
 
 // // eslint-disable-next-line @typescript-eslint/no-explicit-any
 // files: any[] = [];
@@ -219,37 +258,6 @@ const deleting = ref(false);
 //   }
 // }
 
-// async destroy() {
-//   this.deleting = true;
-//   displayConfirm({
-//     text: this.$t("messages.confirm.fleet.destroy"),
-//     onConfirm: async () => {
-//       const response = await this.$api.destroy(
-//         `fleets/${this.$route.params.slug}`,
-//       );
-
-//       if (!response.error) {
-//         // eslint-disable-next-line @typescript-eslint/no-empty-function
-//         this.$router.push({ name: "home" }).catch(() => {});
-
-//         this.$comlink.$emit("fleet-update");
-
-//         displaySuccess({
-//           text: this.$t("messages.fleet.destroy.success"),
-//         });
-//       } else {
-//         displayAlert({
-//           text: this.$t("messages.fleet.destroy.failure"),
-//         });
-//         this.deleting = false;
-//       }
-//     },
-//     onClose: () => {
-//       this.deleting = false;
-//     },
-//   });
-// }
-
 // updatedValue(value) {
 //   this.files = value;
 // }
@@ -277,262 +285,163 @@ const deleting = ref(false);
 // async fetch() {
 //   await fleetsCollection.findBySlug(this.$route.params.slug);
 // }
+
+const onSubmit = handleSubmit((values) => {});
+
+const onDestroy = async () => {
+  deleting.value = true;
+
+  // displayConfirm({
+  //   text: this.$t("messages.confirm.fleet.destroy"),
+  //   onConfirm: async () => {
+  //     const response = await this.$api.destroy(
+  //       `fleets/${this.$route.params.slug}`,
+  //     );
+
+  //     if (!response.error) {
+  //       // eslint-disable-next-line @typescript-eslint/no-empty-function
+  //       this.$router.push({ name: "home" }).catch(() => {});
+
+  //       this.$comlink.$emit("fleet-update");
+
+  //       displaySuccess({
+  //         text: this.$t("messages.fleet.destroy.success"),
+  //       });
+  //     } else {
+  //       displayAlert({
+  //         text: this.$t("messages.fleet.destroy.failure"),
+  //       });
+  //       this.deleting = false;
+  //     }
+  //   },
+  //   onClose: () => {
+  //     this.deleting = false;
+  //   },
+  // });
+};
 </script>
 
 <template>
-  {{ fleet }}
-  <!-- <section class="container">
-    <ValidationObserver ref="form" v-slot="{ handleSubmit }" small>
-      <form v-if="canEdit && fleet" @submit.prevent="handleSubmit(submit)">
-        <div class="row">
-          <div class="col-12 col-md-6">
-            <ValidationProvider
-              v-slot="{ errors }"
-              vid="logo"
-              :name="$t('labels.fleet.logo')"
-              :slim="true"
-            >
-              <div
-                :class="{ 'has-error has-feedback': errors[0] }"
-                class="form-group mb-3"
-              >
-                <VueUploadComponent
-                  ref="upload"
-                  :value="files"
-                  name="uploadLogo"
-                  :extensions="fileExtensions"
-                  :accept="acceptedMimeTypes"
-                  class="avatar-uploader"
-                  @input="updatedValue"
-                  @input-filter="inputFilter"
-                />
-                <Avatar
-                  :avatar="logoUrl"
-                  size="large"
-                  icon="fad fa-image"
-                  :editable="true"
-                  @upload="selectLogo"
-                  @destroy="removeLogo"
-                />
-              </div>
-            </ValidationProvider>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12 col-md-6">
-            <ValidationProvider
-              v-slot="{ errors }"
-              vid="fid"
-              :rules="{
-                required: true,
-                min: 3,
-                regex: /^[a-zA-Z0-9\-_]{3,}$/,
-              }"
-              :name="$t('labels.fleet.fid')"
-              :slim="true"
-            >
-              <FormInput
-                id="fid"
-                v-model="form.fid"
-                translation-key="fleet.fid"
-                :error="errors[0]"
-              />
-            </ValidationProvider>
-          </div>
-          <div class="col-12 col-md-6">
-            <ValidationProvider
-              v-slot="{ errors }"
-              vid="name"
-              :rules="{
-                required: true,
-                min: 3,
-                regex: /^[a-zA-Z0-9\-_\. ]{3,}$/,
-              }"
-              :name="$t('labels.name')"
-              :slim="true"
-            >
-              <FormInput
-                id="name"
-                v-model="form.name"
-                translation-key="name"
-                :error="errors[0]"
-              />
-            </ValidationProvider>
-          </div>
-          <div class="col-12">
-            <ValidationProvider
-              v-slot="{ errors }"
-              vid="description"
-              rules="text"
-              :name="$t('labels.description')"
-              :slim="true"
-            >
-              <FormTextarea
-                id="description"
-                v-model="form.description"
-                translation-key="description"
-                :error="errors[0]"
-              />
-            </ValidationProvider>
-          </div>
-          <div class="col-12 col-md-6">
-            <FormInput
-              id="rsiSid"
-              v-model="form.rsiSid"
-              icon="icon icon-rsi icon-label"
-              translation-key="fleet.rsiSid"
-            />
-          </div>
-          <div class="col-12 col-md-6">
-            <ValidationProvider
-              v-slot="{ errors }"
-              vid="publicFleet"
-              :name="$t('labels.fleet.public')"
-              :slim="true"
-            >
-              <FormCheckbox
-                id="publicFleet"
-                v-model="form.publicFleet"
-                :label="$t('labels.fleet.public')"
-                :class="{ 'has-error has-feedback': errors[0] }"
-                :slim="false"
-              />
-            </ValidationProvider>
-          </div>
-          <div class="col-12 col-md-6">
-            <ValidationProvider
-              v-slot="{ errors }"
-              vid="publicFleetStats"
-              :name="$t('labels.fleet.publicStats')"
-              :slim="true"
-            >
-              <FormCheckbox
-                id="publicFleetStats"
-                v-model="form.publicFleetStats"
-                :label="$t('labels.fleet.publicStats')"
-                :class="{ 'has-error has-feedback': errors[0] }"
-                :slim="false"
-              />
-            </ValidationProvider>
-          </div>
-        </div>
-        <hr />
-        <div class="row">
-          <div class="col-12 col-md-6">
-            <ValidationProvider
-              v-slot="{ errors }"
-              vid="homepage"
-              rules="url"
-              :name="$t('labels.homepage')"
-              :slim="true"
-            >
-              <FormInput
-                id="homepage"
-                v-model="form.homepage"
-                translation-key="homepage"
-                :error="errors[0]"
-              />
-            </ValidationProvider>
-          </div>
-          <div class="col-12 col-md-6">
-            <ValidationProvider
-              v-slot="{ errors }"
-              vid="discord"
-              rules="url"
-              :name="$t('labels.discord')"
-              :slim="true"
-            >
-              <FormInput
-                id="discord"
-                v-model="form.discord"
-                icon="fab fa-discord"
-                translation-key="discord"
-                :error="errors[0]"
-              />
-            </ValidationProvider>
-          </div>
-          <div class="col-12 col-md-6">
-            <FormInput
-              id="ts"
-              v-model="form.ts"
-              icon="fab fa-teamspeak"
-              translation-key="fleet.ts"
-            />
-          </div>
-        </div>
-        <hr />
-        <div class="row">
-          <div class="col-12 col-md-6">
-            <ValidationProvider
-              v-slot="{ errors }"
-              vid="youtube"
-              rules="url"
-              :name="$t('labels.youtube')"
-              :slim="true"
-            >
-              <FormInput
-                id="youtube"
-                v-model="form.youtube"
-                icon="fab fa-youtube"
-                translation-key="youtube"
-                :error="errors[0]"
-              />
-            </ValidationProvider>
-          </div>
-          <div class="col-12 col-md-6">
-            <ValidationProvider
-              v-slot="{ errors }"
-              vid="twitch"
-              rules="url"
-              :name="$t('labels.twitch')"
-              :slim="true"
-            >
-              <FormInput
-                id="twitch"
-                v-model="form.twitch"
-                icon="fab fa-twitch"
-                translation-key="twitch"
-                :error="errors[0]"
-              />
-            </ValidationProvider>
-          </div>
-          <div class="col-12 col-md-6">
-            <ValidationProvider
-              v-slot="{ errors }"
-              vid="guilded"
-              rules="url"
-              :name="$t('labels.guilded')"
-              :slim="true"
-            >
-              <FormInput
-                id="guilded"
-                v-model="form.guilded"
-                icon="fab fa-guilded"
-                translation-key="guilded"
-                :error="errors[0]"
-              />
-            </ValidationProvider>
-          </div>
-        </div>
-        <br />
-        <Btn
-          :loading="submitting"
-          type="submit"
-          size="large"
-          data-test="fleet-save"
-        >
-          {{ $t("actions.save") }}
-        </Btn>
-        <Btn
-          :loading="deleting"
-          size="large"
-          variant="danger"
-          data-test="fleet-delete"
-          @click.native="destroy"
-        >
-          {{ $t("actions.delete") }}
-        </Btn>
-      </form>
-    </ValidationObserver>
-  </section> -->
+  <form @submit.prevent="onSubmit">
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <FormInput
+          v-model="fid"
+          name="fid"
+          :label="t('labels.fleet.fid')"
+          v-bind="fidProps"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <FormInput v-model="name" name="name" v-bind="nameProps" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <FormTextarea
+          v-model="description"
+          name="description"
+          v-bind="descriptionProps"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <FormInput
+          v-model="rsiSid"
+          name="rsiSid"
+          icon="icon icon-rsi icon-label"
+          translation-key="fleet.rsiSid"
+          v-bind="rsiSidProps"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <FormCheckbox
+          v-model="publicFleet"
+          name="publicFLeet"
+          translation-key="fleet.public"
+          v-bind="publicFleetProps"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <FormCheckbox
+          v-model="publicFleetStats"
+          name="publicFleetStats"
+          translation-key="fleet.publicStats"
+          v-bind="publicFleetStatsProps"
+        />
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <FormInput v-model="homepage" name="homepage" v-bind="homepageProps" />
+      </div>
+      <div class="col-12 col-md-6">
+        <FormInput
+          v-model="ts"
+          name="ts"
+          icon="fab fa-teamspeak"
+          translation-key="fleet.ts"
+          v-bind="tsProps"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <FormInput
+          v-model="discord"
+          name="discord"
+          icon="fab fa-discord"
+          v-bind="discordProps"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <FormInput
+          v-model="guilded"
+          name="guilded"
+          icon="fab fa-guilded"
+          v-bind="guildedProps"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <FormInput
+          v-model="twitch"
+          name="twitch"
+          icon="fab fa-twitch"
+          v-bind="twitchProps"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <FormInput
+          v-model="youtube"
+          name="youtube"
+          icon="fab fa-youtube"
+          v-bind="youtubeProps"
+        />
+      </div>
+    </div>
+    <hr />
+    <Btn
+      :loading="submitting"
+      type="submit"
+      size="large"
+      data-test="fleet-save"
+    >
+      {{ t("actions.save") }}
+    </Btn>
+    <Btn
+      :loading="deleting"
+      size="large"
+      variant="danger"
+      data-test="fleet-delete"
+      @click="onDestroy"
+    >
+      {{ t("actions.delete") }}
+    </Btn>
+  </form>
 </template>

@@ -225,7 +225,7 @@ export const fleetMembers = (
   });
 };
 
-export const getFleetMembersQueryKey = (
+const getFleetMembersQueryKey = (
   fleetSlug: MaybeRef<string>,
   params?: MaybeRef<FleetMembersParams>,
 ) => {

@@ -13,6 +13,7 @@ module V1
             name: {type: :string},
             description: {type: :string},
             publicFleet: {type: :boolean},
+            publicFleetStats: {type: :boolean},
             homepage: {type: :string},
             rsiSid: {type: :string},
             discord: {type: :string},

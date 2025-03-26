@@ -38,7 +38,7 @@ export const publicUser = (
   });
 };
 
-export const getPublicUserQueryKey = (username: MaybeRef<string>) => {
+const getPublicUserQueryKey = (username: MaybeRef<string>) => {
   return ["public", "users", username] as const;
 };
 

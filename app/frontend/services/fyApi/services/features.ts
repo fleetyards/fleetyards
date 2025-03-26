@@ -26,7 +26,7 @@ export const features = (signal?: AbortSignal) => {
   return axiosClient<string[]>({ url: `/features`, method: "GET", signal });
 };
 
-export const getFeaturesQueryKey = () => {
+const getFeaturesQueryKey = () => {
   return ["features"] as const;
 };
 

@@ -32,7 +32,7 @@ export const componentsByClass = (signal?: AbortSignal) => {
   });
 };
 
-export const getComponentsByClassQueryKey = () => {
+const getComponentsByClassQueryKey = () => {
   return ["stats", "components-by-class"] as const;
 };
 
@@ -112,7 +112,7 @@ export const modelsByClassification = (signal?: AbortSignal) => {
   });
 };
 
-export const getModelsByClassificationQueryKey = () => {
+const getModelsByClassificationQueryKey = () => {
   return ["stats", "models-by-classification"] as const;
 };
 
@@ -192,7 +192,7 @@ export const modelsByManufacturer = (signal?: AbortSignal) => {
   });
 };
 
-export const getModelsByManufacturerQueryKey = () => {
+const getModelsByManufacturerQueryKey = () => {
   return ["stats", "models-by-manufacturer"] as const;
 };
 
@@ -272,7 +272,7 @@ export const modelsByProductionStatus = (signal?: AbortSignal) => {
   });
 };
 
-export const getModelsByProductionStatusQueryKey = () => {
+const getModelsByProductionStatusQueryKey = () => {
   return ["stats", "models-by-production-status"] as const;
 };
 
@@ -352,7 +352,7 @@ export const modelsBySize = (signal?: AbortSignal) => {
   });
 };
 
-export const getModelsBySizeQueryKey = () => {
+const getModelsBySizeQueryKey = () => {
   return ["stats", "models-by-size"] as const;
 };
 
@@ -424,7 +424,7 @@ export const modelsPerMonth = (signal?: AbortSignal) => {
   });
 };
 
-export const getModelsPerMonthQueryKey = () => {
+const getModelsPerMonthQueryKey = () => {
   return ["stats", "models-per-month"] as const;
 };
 
@@ -496,7 +496,7 @@ export const stats = (signal?: AbortSignal) => {
   });
 };
 
-export const getStatsQueryKey = () => {
+const getStatsQueryKey = () => {
   return ["stats", "quick-stats"] as const;
 };
 

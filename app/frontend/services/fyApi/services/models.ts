@@ -62,7 +62,7 @@ export const modelsEmbed = (
   });
 };
 
-export const getModelsEmbedQueryKey = (params: MaybeRef<ModelsEmbedParams>) => {
+const getModelsEmbedQueryKey = (params: MaybeRef<ModelsEmbedParams>) => {
   return ["models", "embed", ...(params ? [params] : [])] as const;
 };
 
@@ -146,7 +146,7 @@ export const models = (
   });
 };
 
-export const getModelsQueryKey = (params?: MaybeRef<ModelsParams>) => {
+const getModelsQueryKey = (params?: MaybeRef<ModelsParams>) => {
   return ["models", ...(params ? [params] : [])] as const;
 };
 
@@ -218,7 +218,7 @@ export const modelsLatest = (signal?: AbortSignal) => {
   return axiosClient<Model[]>({ url: `/models/latest`, method: "GET", signal });
 };
 
-export const getModelsLatestQueryKey = () => {
+const getModelsLatestQueryKey = () => {
   return ["models", "latest"] as const;
 };
 
@@ -292,7 +292,7 @@ export const model = (slug: MaybeRef<string>, signal?: AbortSignal) => {
   });
 };
 
-export const getModelQueryKey = (slug: MaybeRef<string>) => {
+const getModelQueryKey = (slug: MaybeRef<string>) => {
   return ["models", slug] as const;
 };
 
@@ -376,7 +376,7 @@ export const modelHardpoints = (
   });
 };
 
-export const getModelHardpointsQueryKey = (
+const getModelHardpointsQueryKey = (
   slug: MaybeRef<string>,
   params?: MaybeRef<ModelHardpointsParams>,
 ) => {
@@ -475,7 +475,7 @@ export const modelImages = (
   });
 };
 
-export const getModelImagesQueryKey = (
+const getModelImagesQueryKey = (
   slug: MaybeRef<string>,
   params?: MaybeRef<ModelImagesParams>,
 ) => {
@@ -566,7 +566,7 @@ export const modelVideos = (
   });
 };
 
-export const getModelVideosQueryKey = (
+const getModelVideosQueryKey = (
   slug: MaybeRef<string>,
   params?: MaybeRef<ModelVideosParams>,
 ) => {
@@ -657,7 +657,7 @@ export const modelVariants = (
   });
 };
 
-export const getModelVariantsQueryKey = (
+const getModelVariantsQueryKey = (
   slug: MaybeRef<string>,
   params?: MaybeRef<ModelVariantsParams>,
 ) => {
@@ -748,7 +748,7 @@ export const modelLoaners = (
   });
 };
 
-export const getModelLoanersQueryKey = (
+const getModelLoanersQueryKey = (
   slug: MaybeRef<string>,
   params?: MaybeRef<ModelLoanersParams>,
 ) => {
@@ -836,7 +836,7 @@ export const modelSnubCrafts = (
   });
 };
 
-export const getModelSnubCraftsQueryKey = (slug: MaybeRef<string>) => {
+const getModelSnubCraftsQueryKey = (slug: MaybeRef<string>) => {
   return ["models", slug, "snub-crafts"] as const;
 };
 
@@ -930,7 +930,7 @@ export const modelModules = (
   });
 };
 
-export const getModelModulesQueryKey = (
+const getModelModulesQueryKey = (
   slug: MaybeRef<string>,
   params?: MaybeRef<ModelModulesParams>,
 ) => {
@@ -1021,7 +1021,7 @@ export const modelModulePackages = (
   });
 };
 
-export const getModelModulePackagesQueryKey = (
+const getModelModulePackagesQueryKey = (
   slug: MaybeRef<string>,
   params?: MaybeRef<ModelModulePackagesParams>,
 ) => {
@@ -1123,7 +1123,7 @@ export const modelUpgrades = (slug: MaybeRef<string>, signal?: AbortSignal) => {
   });
 };
 
-export const getModelUpgradesQueryKey = (slug: MaybeRef<string>) => {
+const getModelUpgradesQueryKey = (slug: MaybeRef<string>) => {
   return ["models", slug, "upgrades"] as const;
 };
 
@@ -1203,7 +1203,7 @@ export const modelPaints = (slug: MaybeRef<string>, signal?: AbortSignal) => {
   });
 };
 
-export const getModelPaintsQueryKey = (slug: MaybeRef<string>) => {
+const getModelPaintsQueryKey = (slug: MaybeRef<string>) => {
   return ["models", slug, "paints"] as const;
 };
 
@@ -1287,7 +1287,7 @@ export const modelStoreImage = (
   });
 };
 
-export const getModelStoreImageQueryKey = (slug: MaybeRef<string>) => {
+const getModelStoreImageQueryKey = (slug: MaybeRef<string>) => {
   return ["models", slug, "store-image"] as const;
 };
 
@@ -1380,7 +1380,7 @@ export const modelFleetchartImage = (
   });
 };
 
-export const getModelFleetchartImageQueryKey = (slug: MaybeRef<string>) => {
+const getModelFleetchartImageQueryKey = (slug: MaybeRef<string>) => {
   return ["models", slug, "fleetchart-image"] as const;
 };
 
@@ -1463,7 +1463,7 @@ export const modelsSlugs = (signal?: AbortSignal) => {
   return axiosClient<void>({ url: `/models/slugs`, method: "GET", signal });
 };
 
-export const getModelsSlugsQueryKey = () => {
+const getModelsSlugsQueryKey = () => {
   return ["models", "slugs"] as const;
 };
 
@@ -1535,7 +1535,7 @@ export const modelsUnschduled = (signal?: AbortSignal) => {
   });
 };
 
-export const getModelsUnschduledQueryKey = () => {
+const getModelsUnschduledQueryKey = () => {
   return ["models", "unscheduled"] as const;
 };
 
@@ -1613,9 +1613,7 @@ export const modelsUpdated = (
   });
 };
 
-export const getModelsUpdatedQueryKey = (
-  params?: MaybeRef<ModelsUpdatedParams>,
-) => {
+const getModelsUpdatedQueryKey = (params?: MaybeRef<ModelsUpdatedParams>) => {
   return ["models", "updated", ...(params ? [params] : [])] as const;
 };
 
@@ -1699,7 +1697,7 @@ export const modelsWithDocks = (
   });
 };
 
-export const getModelsWithDocksQueryKey = (
+const getModelsWithDocksQueryKey = (
   params?: MaybeRef<ModelsWithDocksParams>,
 ) => {
   return ["models", "with-docks", ...(params ? [params] : [])] as const;

@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import LazyImage from "@/shared/components/LazyImage/index.vue";
+import Heading from "@/shared/components/base/Heading/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -14,8 +15,9 @@ import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import {
   useImages as useImagesQuery,
-  getImagesQueryKey,
+  useImagesQueryOptions,
 } from "@/services/fyApi";
+import { CustomQueryOptions } from "@/services/customQueryOptions";
 
 const { t } = useI18n();
 
@@ -27,7 +29,8 @@ const imagesQueryParams = computed(() => {
 });
 
 const imagesQueryKey = computed(() => {
-  return getImagesQueryKey(imagesQueryParams);
+  return (useImagesQueryOptions(imagesQueryParams) as CustomQueryOptions)
+    .queryKey;
 });
 
 const { page, perPage } = usePagination(imagesQueryKey);
@@ -38,17 +41,7 @@ useGallery(".images");
 </script>
 
 <template>
-  <div class="row">
-    <div class="col-12">
-      <div class="row">
-        <div class="col-12">
-          <h1 class="sr-only">
-            {{ t("headlines.images") }}
-          </h1>
-        </div>
-      </div>
-    </div>
-  </div>
+  <Heading hidden>{{ t("headlines.images") }}</Heading>
 
   <FilteredList
     name="images"
