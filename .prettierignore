@@ -1,2 +1,3 @@
 app/frontend/auto-imports.d.ts
+app/frontend/components.d.ts
 app/frontend/fontawesome
