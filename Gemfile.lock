@@ -320,6 +320,8 @@ GEM
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     jmespath (1.6.2)
+    job-iteration (1.10.0)
+      activejob (>= 6.1)
     json (2.10.1)
     json-schema (4.1.1)
       addressable (>= 2.8)
@@ -344,6 +346,9 @@ GEM
       childprocess (~> 5.0)
     letter_opener (1.10.0)
       launchy (>= 2.2, < 4)
+    lexorank (0.4.0)
+      activerecord
+      activesupport
     lint_roller (1.1.0)
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
@@ -362,6 +367,14 @@ GEM
       net-imap
       net-pop
       net-smtp
+    maintenance_tasks (2.11.0)
+      actionpack (>= 7.0)
+      activejob (>= 7.0)
+      activerecord (>= 7.0)
+      csv
+      job-iteration (>= 1.3.6)
+      railties (>= 7.0)
+      zeitwerk (>= 2.6.2)
     marcel (1.0.4)
     metadown (1.0.1)
       redcarpet
@@ -733,6 +746,9 @@ GEM
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    with_advisory_lock (5.1.0)
+      activerecord (>= 6.1)
+      zeitwerk (>= 2.6)
     xrpc (0.1.7.2)
       date
       httparty
@@ -797,8 +813,10 @@ DEPENDENCIES
   kaminari
   knapsack
   letter_opener
+  lexorank
   listen
   lograge
+  maintenance_tasks (~> 2.11)
   metadown
   mini_magick
   minitest-ci
@@ -860,6 +878,7 @@ DEPENDENCIES
   vite_rails
   web-console
   webmock
+  with_advisory_lock
 
 RUBY VERSION
    ruby 3.4.1p0

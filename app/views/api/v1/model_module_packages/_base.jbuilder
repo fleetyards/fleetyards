@@ -9,7 +9,7 @@ json.has_store_image module_package.store_image.present?
 json.media({})
 json.media do
   json.store_image do
-    json.partial! "api/v1/shared/media_image", media_image: module_package.store_image
+    json.partial! "api/v1/shared/view_image", view_image: module_package.store_image, width: module_package.store_image_width, height: module_package.store_image_height
   end
   # json.fleetchart_image module_package.fleetchart_image.url
   json.angled_view do

@@ -14,7 +14,7 @@ export const routes: RouteRecordRaw[] = [
       title: "admin.models.index",
       icon: "fad fa-list",
       mobileNav: 1,
-      access: "models",
+      access: ["models"],
     },
   },
   {
@@ -45,7 +45,7 @@ export const routes: RouteRecordRaw[] = [
     redirect: { name: modelModulesRoutes[0].name },
     meta: {
       needsAuthentication: true,
-      access: "model_modules",
+      access: ["model_modules"],
     },
   },
   {
@@ -55,7 +55,7 @@ export const routes: RouteRecordRaw[] = [
     redirect: { name: modelPaintsRoutes[0].name },
     meta: {
       needsAuthentication: true,
-      access: "model_paints",
+      access: ["model_paints"],
     },
   },
 ];

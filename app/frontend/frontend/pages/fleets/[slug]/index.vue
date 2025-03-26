@@ -91,10 +91,11 @@
 <script lang="ts" setup>
 import Avatar from "@/shared/components/Avatar/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type Fleet } from "@/services/fyApi";
+import { type Fleet, type FleetMember } from "@/services/fyApi";
 
 type Props = {
   fleet: Fleet;
+  membership: FleetMember;
 };
 
 const props = defineProps<Props>();

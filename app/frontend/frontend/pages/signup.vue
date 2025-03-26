@@ -32,7 +32,6 @@ const fleetStore = useFleetStore();
 const loginRoute = computed(() => {
   return {
     name: "login",
-    query: redirectQuery.value,
   };
 });
 
@@ -75,7 +74,7 @@ const resetFleetInviteToken = () => {
 
 const signupMutation = useSignupMutation();
 
-const { handleRedirect, redirectQuery } = useRedirectBack();
+const { handleRedirect } = useRedirectBack();
 
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;

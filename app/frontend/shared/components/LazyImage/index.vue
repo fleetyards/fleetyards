@@ -8,6 +8,8 @@ export default {
 import { v4 as uuidv4 } from "uuid";
 import { RouteLocationRaw } from "vue-router";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
+import loadingImage from "@/images/loading.svg";
+import errorImage from "@/images/store_image.jpg";
 
 type Props = {
   src?: string;
@@ -16,7 +18,6 @@ type Props = {
   to?: RouteLocationRaw;
   variant?: LazyImageVariantsEnum;
   shadow?: boolean;
-  contain?: boolean;
   width?: number;
   height?: number;
   caption?: string;
@@ -29,7 +30,6 @@ const props = withDefaults(defineProps<Props>(), {
   to: undefined,
   variant: undefined,
   shadow: false,
-  contain: false,
   width: undefined,
   height: undefined,
   caption: undefined,
@@ -45,10 +45,7 @@ const componentType = computed(() => {
   if (props.to) {
     return "router-link";
   }
-  if (props.href) {
-    return "a";
-  }
-  return "div";
+  return "a";
 });
 
 const componentProps = computed(() => {
@@ -56,17 +53,15 @@ const componentProps = computed(() => {
     return {
       to: props.to,
     };
-  } else if (props.href) {
+  } else {
     return {
       href: props.href,
       target: "_blank",
-      "data-pswp-src": props.src,
+      "data-pswp-src": props.href,
       "data-pswp-width": props.width,
       "data-pswp-height": props.height,
       "data-pswp-cropped": true,
     };
-  } else {
-    return {};
   }
 });
 
@@ -74,7 +69,6 @@ const cssClasses = computed(() => {
   return {
     [`lazy-image--${props.variant}`]: !!props.variant,
     "lazy-image--shadow": props.shadow,
-    "lazy-image--contain": props.contain,
     "gallery-image": !!props.href,
   };
 });
@@ -86,10 +80,13 @@ const cssClasses = computed(() => {
     v-if="src"
     :key="`${src}-${uuid}`"
     v-bind="componentProps"
-    v-lazy:background-image="src"
     class="lazy-image"
     :class="cssClasses"
   >
+    <img
+      v-lazy="{ src: src, error: errorImage, loading: loadingImage }"
+      :alt="alt"
+    />
     <slot />
     <!-- eslint-disable-next-line vue/no-v-html -->
     <div v-if="caption" class="hidden-caption-content" v-html="caption" />

@@ -1,23 +1,49 @@
+<script lang="ts">
+export default {
+  name: "StatsPanel",
+};
+</script>
+
 <script lang="ts" setup>
 import Panel from "@/shared/components/Panel/index.vue";
 import { PanelVariantsEnum } from "@/shared/components/Panel/types";
+import NumberFlow from "@number-flow/vue";
 
 type Props = {
   label: string;
   icon: string;
   value: number;
+  prefix?: string;
+  suffix?: string;
   outerSpacing?: boolean;
 };
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   outerSpacing: true,
+  value: undefined,
+  prefix: undefined,
+  suffix: undefined,
 });
-</script>
 
-<script lang="ts">
-export default {
-  name: "StatsPanel",
-};
+const innerValue = computed(() => {
+  return props.value;
+});
+
+const prefix = computed(() => {
+  if (!props.prefix) {
+    return undefined;
+  }
+
+  return ` ${props.prefix}`;
+});
+
+const suffix = computed(() => {
+  if (!props.suffix) {
+    return undefined;
+  }
+
+  return ` ${props.suffix}`;
+});
 </script>
 
 <template>
@@ -31,7 +57,7 @@ export default {
         <i :class="icon" />
       </div>
       <div class="stats-panel-text">
-        {{ value }}
+        <NumberFlow :value="innerValue" :prefix="prefix" :suffix="suffix" />
         <div class="stats-panel-text-info">
           {{ label }}
         </div>

@@ -3,9 +3,7 @@
   bottom: 0;
   padding-bottom: 1rem;
   z-index: 1025;
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
+  float: right;
 
   .primary-action-item {
     width: 59px;

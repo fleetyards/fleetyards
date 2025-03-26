@@ -17,6 +17,9 @@ namespace :admin, **admin_options do
   authenticate :admin_user, ->(u) { u.present? && u.access_to?(:features) } do
     mount Flipper::UI.app(Flipper) => "/features", :as => :features
   end
+  authenticate :admin_user, ->(u) { u.present? && u.access_to?(:maintenance) } do
+    mount MaintenanceTasks::Engine, at: "/maintenance_tasks"
+  end
 
   # devise_for :admin_users,
   #   singular: :admin_user, path: "", skip: %i[registration],

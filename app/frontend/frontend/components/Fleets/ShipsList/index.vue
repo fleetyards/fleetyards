@@ -148,16 +148,22 @@ const downloadExport = (data?: VehicleExport[]) => {
 
 const route = useRoute();
 
+const fleetVehiclesQueryKey = computed(() => {
+  return getFleetVehiclesQueryKey(fleetSlug, fleetVehiclesQueryParams);
+});
+
+const { filters } = useFilters<FleetVehicleQuery>({
+  updateCallback: () => refetch(),
+});
+
+const { perPage, page, updatePerPage } = usePagination(fleetVehiclesQueryKey);
+
 const fleetVehiclesQueryParams = computed(() => {
   return {
     page: page.value,
     perPage: perPage.value,
     q: filters.value,
   };
-});
-
-const fleetVehiclesQueryKey = computed(() => {
-  return getFleetVehiclesQueryKey(fleetSlug, fleetVehiclesQueryParams);
 });
 
 const fleetSlug = computed(() => route.params.slug as string);
@@ -179,12 +185,6 @@ const {
   refetch: refetchVehicles,
   ...asyncStatus
 } = useFleetVehiclesQuery(fleetSlug, fleetVehiclesQueryParams);
-
-const { filters } = useFilters<FleetVehicleQuery>({
-  updateCallback: () => refetch(),
-});
-
-const { perPage, page, updatePerPage } = usePagination(fleetVehiclesQueryKey);
 </script>
 
 <template>

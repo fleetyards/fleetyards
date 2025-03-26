@@ -40,7 +40,7 @@ module V1
                   fleetchartImage: {type: :string},
                   # frontView: {"$ref": "#/components/schemas/ViewImage"},
                   sideView: {"$ref": "#/components/schemas/ViewImage"},
-                  storeImage: {"$ref": "#/components/schemas/MediaImage"},
+                  storeImage: {"$ref": "#/components/schemas/ViewImage"},
                   topView: {"$ref": "#/components/schemas/ViewImage"}
                 },
                 additionalProperties: false

@@ -39,7 +39,8 @@
       "rsiHangar": "RSI Hangar",
       "tools": {
         "index": "Tools",
-        "travelTimes": "Travel Times"
+        "travelTimes": "Travel Times",
+        "cargoGrids": "Cargo Grids"
       },
       "api": "API Docs",
       "stats": "Stats",

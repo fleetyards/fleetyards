@@ -50,7 +50,7 @@ module Shared
             media: {
               type: :object,
               properties: {
-                storeImage: {"$ref": "#/components/schemas/MediaImage"}
+                storeImage: {"$ref": "#/components/schemas/ViewImage"}
               },
               additionalProperties: false
             },

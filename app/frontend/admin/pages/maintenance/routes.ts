@@ -9,6 +9,7 @@ export const routes: RouteRecordRaw[] = [
       title: "admin.maintenance.pghero",
       icon: "fad fa-database",
       needsAuthentication: true,
+      access: ["pghero"],
     },
   },
   {
@@ -19,6 +20,7 @@ export const routes: RouteRecordRaw[] = [
       title: "admin.maintenance.features",
       icon: "fad fa-circle-star",
       needsAuthentication: true,
+      access: ["features"],
     },
   },
   {
@@ -29,6 +31,18 @@ export const routes: RouteRecordRaw[] = [
       title: "admin.maintenance.workers",
       icon: "fad fa-list-timeline",
       needsAuthentication: true,
+      access: ["workers"],
+    },
+  },
+  {
+    path: "tasks/",
+    name: "tasks",
+    component: () => import("@/admin/pages/maintenance/tasks.vue"),
+    meta: {
+      title: "admin.maintenance.tasks",
+      icon: "fad fa-list-timeline",
+      needsAuthentication: true,
+      access: ["maintenance"],
     },
   },
   {
@@ -39,6 +53,7 @@ export const routes: RouteRecordRaw[] = [
       title: "admin.maintenance.rsiApiStatus",
       icon: "fad fa-chart-line",
       needsAuthentication: true,
+      access: ["rsi-api-status"],
     },
   },
 ];

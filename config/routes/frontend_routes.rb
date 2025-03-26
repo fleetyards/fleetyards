@@ -48,8 +48,6 @@ namespace :frontend, **frontend_options do
 
   get "manifest-:digest", to: "base#manifest", as: :manifest
 
-  match "404", to: "base#not_found", via: :all
-
   root to: "base#index"
 end
 

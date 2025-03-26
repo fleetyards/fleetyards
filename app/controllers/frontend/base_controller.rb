@@ -149,20 +149,6 @@ module Frontend
       render_frontend
     end
 
-    def not_found
-      respond_to do |format|
-        format.html do
-          render "frontend/index", status: :not_found
-        end
-        format.json do
-          render json: {code: "not_found", message: "Not Found"}, status: :not_found
-        end
-        format.all do
-          redirect_to "/404"
-        end
-      end
-    end
-
     def manifest
       respond_to do |format|
         format.json do

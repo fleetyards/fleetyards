@@ -162,6 +162,9 @@
       },
       "roadmap": "Ship-Roadmap",
       "tools": {
+        "index": "Tools",
+        "travelTimes": "Travel Times",
+        "cargoGrids": "Cargo Grids",
         "profitCalculator": {
           "index": "Profit Calculator"
         },

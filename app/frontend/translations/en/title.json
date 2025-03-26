@@ -38,7 +38,11 @@
         "invites": "Fleet Invites",
         "members": "%{fleet} Members",
         "stats": "%{fleet} Stats",
-        "settings": "%{fleet} Settings"
+        "settings": {
+          "index": "%{fleet} Settings",
+          "fleet": "%{fleet} Settings",
+          "membership": "%{fleet} Membership"
+        }
       },
       "roadmap": {
         "index": "Roadmap",

@@ -8,7 +8,7 @@ export default {
 import { groupBy } from "@/shared/utils/Array";
 import HardpointItem from "@/frontend/components/Models/Hardpoints/Item/index.vue";
 import HardpointComponent from "@/frontend/components/Models/Hardpoints/Component/index.vue";
-import { type Hardpoint, type ComponentCargoGrid } from "@/services/fyApi";
+import { type Hardpoint, type CargoHold } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
@@ -27,7 +27,7 @@ const hardpoint = computed(() => {
 });
 
 const typeData = computed(() => {
-  return hardpoint.value.component?.typeData as ComponentCargoGrid;
+  return hardpoint.value.component?.typeData as CargoHold;
 });
 
 const count = computed(() => {

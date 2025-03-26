@@ -65,7 +65,7 @@ useGallery(".images");
       >
         <template #default="{ record }">
           <LazyImage
-            :src="record.smallUrl"
+            :src="record.bigUrl"
             :href="record.url"
             :alt="record.name"
             :width="record.width"

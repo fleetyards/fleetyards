@@ -1,10 +1,11 @@
 <script lang="ts">
 export default {
-  name: "ToolsTravelTimes",
+  name: "ToolsTravelTimesPage",
 };
 </script>
 
 <script lang="ts" setup>
+import Heading from "@/shared/components/base/Heading/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
@@ -129,17 +130,7 @@ const {
 </script>
 
 <template>
-  <div class="row">
-    <div class="col-12 col-lg-12">
-      <div class="row">
-        <div class="col-12">
-          <h1 class="sr-only">
-            {{ t("headlines.tools.travelTimes") }}
-          </h1>
-        </div>
-      </div>
-    </div>
-  </div>
+  <Heading>{{ t(`headlines.${route.meta.title}`) }}</Heading>
 
   <div class="row">
     <div class="col-6">

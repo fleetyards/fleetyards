@@ -418,7 +418,6 @@ class PaintsImporter
       "Sabre" => sabre,
       "C1 Spirit 2954 Best In Show" => spirit,
       "F8C Lightning 2954 Best In Show" => f8c,
-      "Archimedes & Merlin" => merlin,
       "Guardian" => guardian
     }
 

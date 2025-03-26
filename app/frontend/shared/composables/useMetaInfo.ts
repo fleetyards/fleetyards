@@ -4,8 +4,24 @@ import { useI18n } from "@/shared/composables/useI18n";
 
 type MetaType = "website" | "article";
 
+type MetaInfo = {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: string;
+  url?: string;
+};
+
+type MetaInfoUpdate = {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: MetaType;
+};
+
 type MetaInfoOptions = {
   appTitle?: string;
+  custom?: boolean;
 };
 
 export const useMetaInfo = (options: MetaInfoOptions = {}) => {
@@ -52,7 +68,7 @@ export const useMetaInfo = (options: MetaInfoOptions = {}) => {
   const ogUrlElement = (): HTMLMetaElement | null =>
     document.querySelector('meta[property="og:url"]');
 
-  const getCurrentMetaInfo = () => {
+  const getCurrentMetaInfo = (): MetaInfo => {
     const currentTitle = titleElement.value?.text;
     const currentDescription = descriptionElement.value?.content;
 
@@ -103,13 +119,6 @@ export const useMetaInfo = (options: MetaInfoOptions = {}) => {
     return `${host}${logo}`;
   };
 
-  type MetaInfoUpdate = {
-    title?: string;
-    description?: string;
-    image?: string;
-    type?: MetaType;
-  };
-
   const updateMetaInfo = (update?: MetaInfoUpdate) => {
     const currentMetaTags = getCurrentMetaInfo();
 
@@ -155,12 +164,16 @@ export const useMetaInfo = (options: MetaInfoOptions = {}) => {
   watch(
     () => route.meta?.title,
     () => {
-      updateMetaInfo();
+      if (!options.custom) {
+        updateMetaInfo();
+      }
     },
   );
 
   onMounted(() => {
-    updateMetaInfo();
+    if (!options.custom) {
+      updateMetaInfo();
+    }
   });
 
   return {

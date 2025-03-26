@@ -2,6 +2,8 @@
 
 # rubocop:disable Rails/ApplicationController
 class ErrorsController < ActionController::Base
+  layout "application"
+
   def not_found
     respond_to do |format|
       format.html do

@@ -36,7 +36,7 @@ const name = computed(() => {
   <HardpointItem :count="count">
     <template #default>
       <HardpointComponent>
-        <template v-if="hardpoint.source === HardpointSourceEnum.GAME_FILES">
+        <template v-if="hardpoint.source === HardpointSourceEnum.game_files">
           {{ name }}
         </template>
       </HardpointComponent>

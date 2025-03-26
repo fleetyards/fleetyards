@@ -88,6 +88,8 @@
 #  rsi_size                   :string
 #  rsi_slug                   :string
 #  rsi_store_image            :string
+#  rsi_store_image_height     :integer
+#  rsi_store_image_width      :integer
 #  rsi_store_url              :string
 #  rsi_yaw                    :decimal(15, 2)
 #  sales_page_url             :string
@@ -108,6 +110,8 @@
 #  size                       :string
 #  slug                       :string(255)
 #  store_image                :string(255)
+#  store_image_height         :integer
+#  store_image_width          :integer
 #  store_images_updated_at    :datetime
 #  store_url                  :string(255)
 #  top_view                   :string

@@ -12,6 +12,7 @@ import AppNavigation from "@/shared/components/AppNavigation/index.vue";
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
 import FleetNav from "./FleetNav/index.vue";
 import FleetsNav from "./FleetsNav/index.vue";
+import ToolsNav from "./ToolsNav/index.vue";
 import VisualTestsNav from "./VisualTestsNav/index.vue";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useHangarStore } from "@/frontend/stores/hangar";
@@ -49,14 +50,6 @@ const isVisualTestsRoute = computed(() => {
   }
 
   return String(route.name).includes("visual-tests");
-});
-
-const isToolsRoute = computed(() => {
-  if (!route.name) {
-    return false;
-  }
-
-  return String(route.name).includes("tools");
 });
 
 const isShipRoute = computed(() => {
@@ -112,7 +105,7 @@ const settingsActive = computed(() => {
 
 <template>
   <AppNavigation :title="t('title.default')" :logo="favicon">
-    <template #main>
+    <template v-if="route.name" #main>
       <VisualTestsNav v-if="isVisualTestsRoute" />
       <FleetNav v-else-if="isFleetRoute" />
       <template v-else>
@@ -120,6 +113,7 @@ const settingsActive = computed(() => {
           :to="{ name: 'home' }"
           :label="t('nav.home')"
           icon="fad fa-home-alt"
+          prefix="01"
         />
         <NavItem
           v-if="isAuthenticated || !hangarPreview"
@@ -130,12 +124,14 @@ const settingsActive = computed(() => {
           :label="t('nav.hangar')"
           :active="isHangarRoute"
           icon="fad fa-warehouse"
+          prefix="02"
         />
         <NavItem
           v-else
           :to="{ name: 'hangar-preview' }"
           :label="t('nav.hangar')"
           icon="fal fa-warehouse"
+          prefix="02"
         />
         <NavItem
           :to="{
@@ -145,32 +141,31 @@ const settingsActive = computed(() => {
           :label="t('nav.ships.index')"
           :active="isShipRoute"
           icon="fad fa-starship"
+          prefix="03"
         />
         <NavItem
           :to="{ name: 'compare' }"
           :label="t('nav.compare.ships')"
           icon="fad fa-code-compare"
+          prefix="04"
         />
         <FleetsNav />
         <NavItem
           :to="{ name: 'images' }"
           :label="t('nav.images')"
           icon="fad fa-images"
+          prefix="06"
         />
-        <NavItem
-          :to="{ name: 'tools' }"
-          :label="t('nav.tools.index')"
-          icon="fad fa-toolbox"
-          :active="isToolsRoute"
-        />
+        <ToolsNav />
         <NavItem
           :to="{ name: 'stats' }"
           :label="t('nav.stats')"
           icon="fad fa-chart-bar"
+          prefix="08"
         />
       </template>
     </template>
-    <template #footer>
+    <template v-if="route.name" #footer>
       <template v-if="isAuthenticated && currentUser">
         <NavItem
           :to="{ name: 'settings' }"

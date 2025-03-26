@@ -1,5 +1,8 @@
 json.id member.id
 json.username member.user.username
+json.fleet_role do
+  json.partial! "api/v1/fleet_roles/base", fleet_role: member.fleet_role
+end
 json.role member.role
 json.role_Label FleetMembership.human_enum_name(:role, member.role)
 json.status member.aasm.current_state
@@ -32,5 +35,9 @@ json.hangar_updated_at member.user.hangar_updated_at&.utc&.iso8601
 json.fleet_slug member.fleet.slug
 json.fleet_name member.fleet.name
 json.primary member.primary
+
+if local_assigns.fetch(:extended, false)
+  json.is_destroy_allowed member.destroy_allowed?
+end
 
 json.partial! "api/shared/dates", record: member

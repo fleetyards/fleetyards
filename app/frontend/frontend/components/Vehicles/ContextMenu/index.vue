@@ -16,6 +16,7 @@ import {
 import { useComlink } from "@/shared/composables/useComlink";
 import { useDestroyVehicle as useDestroyVehicleMutation } from "@/services/fyApi";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 type Props = {
   vehicle: Vehicle;
@@ -63,7 +64,7 @@ const upgradable = computed(() => {
   );
 });
 
-const { useUpdateMutation } = useVehicleMutations();
+const { useUpdateMutation, useDestroyMutation } = useVehicleMutations();
 
 const vehicle = computed(() => props.vehicle);
 
@@ -82,6 +83,9 @@ const addToWishlist = async () => {
       data: {
         wanted: true,
       },
+    })
+    .then(() => {
+      comlink.emit("vehicle-save", props.vehicle.id);
     })
     .catch((error) => {
       console.error(error);
@@ -105,6 +109,9 @@ const addToHangar = async () => {
         wanted: false,
       },
     })
+    .then(() => {
+      comlink.emit("vehicle-save", props.vehicle.id);
+    })
     .catch((error) => {
       console.error(error);
     })
@@ -112,6 +119,8 @@ const addToHangar = async () => {
       updating.value = false;
     });
 };
+
+const { displayConfirm } = useAppNotifications();
 
 const remove = () => {
   deleting.value = true;
@@ -127,7 +136,7 @@ const remove = () => {
   });
 };
 
-const destroyMutation = useDestroyVehicleMutation();
+const destroyMutation = useDestroyMutation(vehicle);
 
 const destroy = async () => {
   if (!props.vehicle) {
@@ -137,6 +146,9 @@ const destroy = async () => {
   await destroyMutation
     .mutateAsync({
       id: props.vehicle.id,
+    })
+    .then(() => {
+      comlink.emit("vehicle-destroy", props.vehicle.id);
     })
     .catch((error) => {
       console.error(error);

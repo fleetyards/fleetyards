@@ -19,12 +19,18 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  fleet_id          :uuid
+#  fleet_role_id     :uuid
 #  hangar_group_id   :uuid
 #  user_id           :uuid
 #
 # Indexes
 #
+#  index_fleet_memberships_on_fleet_role_id         (fleet_role_id)
 #  index_fleet_memberships_on_user_id_and_fleet_id  (user_id,fleet_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (fleet_role_id => fleet_roles.id)
 #
 class FleetMembership < ApplicationRecord
   include AASM
@@ -38,6 +44,7 @@ class FleetMembership < ApplicationRecord
   }
 
   belongs_to :fleet, touch: true
+  belongs_to :fleet_role, optional: true
   belongs_to :user, touch: true
 
   paginates_per 30
@@ -84,6 +91,14 @@ class FleetMembership < ApplicationRecord
   after_create_commit :schedule_setup_fleet_vehicles
   after_update_commit :schedule_update_fleet_vehicles
   after_commit :broadcast_update
+  before_destroy :check_if_can_be_destroyed
+
+  def check_if_can_be_destroyed
+    return if destroy_allowed?
+
+    errors.add(:base, t("activerecord.errors.models.fleet_membership.attributes.base.cannot_destroy_last_member"))
+    throw(:abort)
+  end
 
   aasm timestamps: true, whiny_transitions: false do
     state :created, initial: true
@@ -277,6 +292,10 @@ class FleetMembership < ApplicationRecord
     else
       update(role: :member)
     end
+  end
+
+  def destroy_allowed?
+    fleet.fleet_memberships.where(fleet_role: fleet_role).count > 1
   end
 
   def to_json(*_args)

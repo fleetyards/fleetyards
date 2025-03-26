@@ -43,6 +43,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       needsAuthentication: true,
       backgroundImage: "bg-8",
+      title: "fleets.settings.index",
     },
     redirect: {
       name: settingsRoutes[0].name,
@@ -56,6 +57,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       needsAuthentication: true,
       backgroundImage: "bg-8",
+      title: "fleets.stats",
     },
   },
 ];

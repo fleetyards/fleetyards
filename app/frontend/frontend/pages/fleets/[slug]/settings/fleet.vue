@@ -1,24 +1,22 @@
 <script lang="ts">
-import { fleetRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";
-
 export default {
   name: "FleetSettingsPage",
-  beforeRouteEnter: fleetRouteGuard,
 };
 </script>
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
-import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 // import Avatar from "@/frontend/core/components/Avatar/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
-import { type Fleet } from "@/services/fyApi";
+import { type Fleet, type FleetMember } from "@/services/fyApi";
+import { useFleetMeta } from "@/frontend/composables/useFleetMeta";
 
 type Props = {
   fleet: Fleet;
+  membership: FleetMember;
 };
 
 const props = defineProps<Props>();
@@ -31,19 +29,7 @@ const submitting = ref(false);
 
 const deleting = ref(false);
 
-const crumbs = computed(() => {
-  return [
-    {
-      to: {
-        name: "fleet",
-        params: {
-          slug: props.fleet.slug,
-        },
-      },
-      label: props.fleet.name,
-    },
-  ];
-});
+// useFleetMeta(props.fleet);
 
 // // eslint-disable-next-line @typescript-eslint/no-explicit-any
 // files: any[] = [];
@@ -294,8 +280,6 @@ const crumbs = computed(() => {
 </script>
 
 <template>
-  <BreadCrumbs :crumbs="crumbs" />
-  <Heading>{{ t("headlines.fleets.settings.fleet") }}</Heading>
   {{ fleet }}
   <!-- <section class="container">
     <ValidationObserver ref="form" v-slot="{ handleSubmit }" small>

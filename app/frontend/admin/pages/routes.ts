@@ -16,7 +16,6 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       exact: true,
       mobileNav: 0,
-      access: "all",
     },
   },
   {
@@ -29,7 +28,7 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       icon: "fad fa-starship",
       mobileNav: 1,
-      access: "models",
+      access: ["models"],
     },
   },
   {
@@ -41,7 +40,7 @@ export const routes: RouteRecordRaw[] = [
       title: "admin.components.index",
       needsAuthentication: true,
       icon: "fad fa-flux-capacitor",
-      access: "components",
+      access: ["components"],
     },
   },
   {
@@ -53,7 +52,7 @@ export const routes: RouteRecordRaw[] = [
       title: "admin.manufacturers.index",
       needsAuthentication: true,
       icon: "fad fa-industry",
-      access: "manufacturers",
+      access: ["manufacturers"],
     },
   },
   {
@@ -64,7 +63,7 @@ export const routes: RouteRecordRaw[] = [
       title: "admin.images.index",
       needsAuthentication: true,
       icon: "fad fa-images",
-      access: "images",
+      access: ["images"],
     },
   },
   {
@@ -75,7 +74,7 @@ export const routes: RouteRecordRaw[] = [
       title: "admin.vehicles.index",
       needsAuthentication: true,
       icon: "fad fa-rocket",
-      access: "vehicles",
+      access: ["vehicles"],
     },
   },
   {
@@ -87,7 +86,7 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       icon: "fad fa-users-class",
       mobileNav: 2,
-      access: "fleets",
+      access: ["fleets"],
     },
   },
   {
@@ -100,7 +99,7 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       icon: "fad fa-users",
       mobileNav: 3,
-      access: "users",
+      access: ["users"],
     },
   },
   {
@@ -122,6 +121,7 @@ export const routes: RouteRecordRaw[] = [
       title: "admin.maintenance.index",
       needsAuthentication: true,
       icon: "fad fa-screwdriver-wrench",
+      access: ["maintenance"],
     },
   },
   {
@@ -133,7 +133,6 @@ export const routes: RouteRecordRaw[] = [
       icon: "fal fa-sign-in",
       hideWhenAuthenticated: true,
       nav: "footer",
-      access: "all",
     },
   },
   {
@@ -144,7 +143,6 @@ export const routes: RouteRecordRaw[] = [
       title: "notFound",
       backgroundImage: "bg-404",
       nav: "hidden",
-      access: "all",
     },
   },
   {
@@ -155,7 +153,6 @@ export const routes: RouteRecordRaw[] = [
       title: "notAuthorized",
       backgroundImage: "bg-404",
       nav: "hidden",
-      access: "all",
     },
   },
   {
@@ -165,7 +162,6 @@ export const routes: RouteRecordRaw[] = [
       title: "notFound",
       backgroundImage: "bg-404",
       nav: "hidden",
-      access: "all",
     },
   },
 ];

@@ -170,7 +170,6 @@ const { t } = useI18n();
             :variant="LazyImageVariantsEnum.WIDE_SMALL"
             :src="record.media.angledView.small"
             alt="Model angledView"
-            contain
           />
         </template>
         <template #col-name="{ record }">

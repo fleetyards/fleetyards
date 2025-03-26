@@ -22,6 +22,8 @@
 #  slug                   :string
 #  storage                :decimal(15, 2)
 #  store_image            :string
+#  store_image_height     :integer
+#  store_image_width      :integer
 #  temperature_rating     :string
 #  volume                 :decimal(15, 2)
 #  weapon_class           :integer
@@ -55,7 +57,7 @@ class Equipment < ApplicationRecord
   end
 
   belongs_to :manufacturer, optional: true
-  has_many :shop_commodities, as: :commodity_item, dependent: :destroy
+  has_many :item_prices, as: :item, dependent: :destroy
 
   validates :name, presence: true
 
@@ -162,15 +164,11 @@ class Equipment < ApplicationRecord
   end
 
   def sold_at
-    shop_commodities.where.not(sell_price: nil).order(sell_price: :asc).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
+    item_prices.sell.order(price: :asc).uniq(&:location)
   end
 
   def bought_at
-    shop_commodities.where.not(buy_price: nil).order(buy_price: :desc).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
-  end
-
-  def listed_at
-    shop_commodities.where(sell_price: nil, buy_price: nil).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
+    item_prices.buy.order(price: :asc).uniq(&:location)
   end
 
   def equipment_type_label

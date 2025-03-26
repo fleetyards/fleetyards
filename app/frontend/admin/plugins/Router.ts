@@ -3,6 +3,7 @@ import { useRedirectBackStore } from "@/shared/stores/redirectBack";
 import { createWebHistory, type RouteLocation } from "vue-router";
 import { routes } from "@/admin/pages/routes";
 import { setupRouter, type FyRedirectRoute } from "@/shared/plugins/Router";
+import { checkAccess } from "@/shared/utils/Access";
 
 const beforeResolve = (to: RouteLocation): FyRedirectRoute | undefined => {
   const sessionStore = useSessionStore();
@@ -16,7 +17,11 @@ const beforeResolve = (to: RouteLocation): FyRedirectRoute | undefined => {
     };
   }
 
-  if (to.meta.access && !sessionStore.hasAccessTo(to.meta.access)) {
+  if (
+    to.meta.access &&
+    !checkAccess(sessionStore.resourceAccess, to.meta.access) &&
+    !sessionStore.isSuperAdmin
+  ) {
     return {
       routeName: "403",
     };

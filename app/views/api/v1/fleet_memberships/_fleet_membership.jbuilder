@@ -1,3 +1,3 @@
 # frozen_string_literal: true
 
-json.partial! "api/v1/fleet_members/fleet_member", member: fleet_membership
+json.partial! "api/v1/fleet_members/fleet_member", member: fleet_membership, extended: true

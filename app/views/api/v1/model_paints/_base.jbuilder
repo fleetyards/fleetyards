@@ -30,7 +30,7 @@ json.media do
     json.partial! "api/v1/shared/view_image", view_image: model_paint.side_view, width: model_paint.side_view_width, height: model_paint.side_view_height
   end
   json.store_image do
-    json.partial! "api/v1/shared/media_image", media_image: model_paint.store_image
+    json.partial! "api/v1/shared/view_image", view_image: model_paint.store_image, width: model_paint.store_image_width, height: model_paint.store_image_height
   end
   json.top_view do
     json.partial! "api/v1/shared/view_image", view_image: model_paint.top_view, width: model_paint.top_view_width, height: model_paint.top_view_height

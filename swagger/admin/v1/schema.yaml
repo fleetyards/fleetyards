@@ -1028,7 +1028,7 @@ components:
           type: object
           properties:
             storeImage:
-              "$ref": "#/components/schemas/MediaImage"
+              "$ref": "#/components/schemas/ViewImage"
           additionalProperties: false
         typeData:
           anyOf:
@@ -1519,7 +1519,7 @@ components:
           type: object
           properties:
             storeImage:
-              "$ref": "#/components/schemas/MediaImage"
+              "$ref": "#/components/schemas/ViewImage"
           additionalProperties: false
         range:
           type: string
@@ -2675,7 +2675,7 @@ components:
             sideViewColored:
               "$ref": "#/components/schemas/ViewImage"
             storeImage:
-              "$ref": "#/components/schemas/MediaImage"
+              "$ref": "#/components/schemas/ViewImage"
             topView:
               "$ref": "#/components/schemas/ViewImage"
             topViewColored:
@@ -2939,7 +2939,7 @@ components:
             sideViewColored:
               "$ref": "#/components/schemas/ViewImage"
             storeImage:
-              "$ref": "#/components/schemas/MediaImage"
+              "$ref": "#/components/schemas/ViewImage"
             topView:
               "$ref": "#/components/schemas/ViewImage"
             topViewColored:
@@ -3281,7 +3281,7 @@ components:
           type: object
           properties:
             storeImage:
-              "$ref": "#/components/schemas/MediaImage"
+              "$ref": "#/components/schemas/ViewImage"
           additionalProperties: false
         pledgePrice:
           type: number
@@ -3353,7 +3353,7 @@ components:
             sideView:
               "$ref": "#/components/schemas/ViewImage"
             storeImage:
-              "$ref": "#/components/schemas/MediaImage"
+              "$ref": "#/components/schemas/ViewImage"
             topView:
               "$ref": "#/components/schemas/ViewImage"
             angledViewColored:

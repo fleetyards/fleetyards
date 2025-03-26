@@ -59,6 +59,33 @@ const { data: visitsPerMonth, ...visitsPerMonthStatus } =
       enabled: () => sessionStore.hasAccessTo("stats"),
     },
   });
+
+const onlineCount = ref(0);
+const shipsCountYear = ref(0);
+const fleetsCountTotal = ref(0);
+const usersCountTotal = ref(0);
+const shipsCountTotal = ref(0);
+
+// use refs and watch for stats to trigger animation on every page visit
+watch(
+  () => [
+    quickStats.value?.onlineCount,
+    quickStats.value?.shipsCountYear,
+    quickStats.value?.fleetsCountTotal,
+    quickStats.value?.usersCountTotal,
+    quickStats.value?.shipsCountTotal,
+  ],
+  () => {
+    setTimeout(() => {
+      onlineCount.value = quickStats.value?.onlineCount || 0;
+      shipsCountYear.value = quickStats.value?.shipsCountYear || 0;
+      fleetsCountTotal.value = quickStats.value?.fleetsCountTotal || 0;
+      usersCountTotal.value = quickStats.value?.usersCountTotal || 0;
+      shipsCountTotal.value = quickStats.value?.shipsCountTotal || 0;
+    }, 200);
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
@@ -68,17 +95,17 @@ const { data: visitsPerMonth, ...visitsPerMonthStatus } =
 
   <section>
     <div class="row">
-      <div class="col-12 col-md-6 col-lg-4">
-        <div v-if="quickStats" class="row">
+      <div class="col-12 col-md-6 col-lg-5">
+        <div class="row">
           <div class="col-12 col-sm-6">
             <StatsPanel
               icon="fad fa-user fa-4x"
-              :value="quickStats.onlineCount"
+              :value="onlineCount"
               :label="t('labels.admin.dashboard.quickStats.onlineUsers')"
             />
             <StatsPanel
               icon="fad fa-rocket fa-4x"
-              :value="quickStats.shipsCountYear"
+              :value="shipsCountYear"
               :label="
                 t('labels.admin.dashboard.quickStats.newShipsInYear', {
                   year: new Date().getFullYear(),
@@ -87,25 +114,25 @@ const { data: visitsPerMonth, ...visitsPerMonthStatus } =
             />
             <StatsPanel
               icon="fad fa-users-class fa-4x"
-              :value="quickStats.fleetsCountTotal"
+              :value="fleetsCountTotal"
               :label="t('labels.admin.dashboard.quickStats.totalFleets')"
             />
           </div>
           <div class="col-12 col-sm-6">
             <StatsPanel
               icon="fad fa-users fa-4x"
-              :value="quickStats.usersCountTotal"
+              :value="usersCountTotal"
               :label="t('labels.admin.dashboard.quickStats.totalUsers')"
             />
             <StatsPanel
               icon="fad fa-starship fa-4x"
-              :value="quickStats.shipsCountTotal"
+              :value="shipsCountTotal"
               :label="t('labels.admin.dashboard.quickStats.totalShips')"
             />
           </div>
         </div>
       </div>
-      <div v-if="visitsPerDay" class="col-12 col-md-6 col-lg-8">
+      <div v-if="visitsPerDay" class="col-12 col-md-6 col-lg-7">
         <Panel>
           <PanelHeading>
             {{ t("headlines.admin.dashboard.visitsPerDay") }}

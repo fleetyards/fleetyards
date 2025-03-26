@@ -7,11 +7,12 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
 import { type RouteRecordName, type RouteRecordRaw } from "vue-router";
+import { checkAccess } from "@/shared/utils/Access";
 
 type Props = {
   routes: RouteRecordRaw[];
   authenticated: boolean;
-  hasAccessTo?: (access: string) => boolean;
+  resourceAccess?: string[];
 };
 
 const props = defineProps<Props>();
@@ -26,17 +27,7 @@ const filteredRoutes = computed(() => {
       return !route.meta?.needsAuthentication;
     })
     .filter((route) => {
-      if (!props.hasAccessTo) {
-        return true;
-      }
-
-      if (route.meta?.access) {
-        return (
-          props.hasAccessTo(route.meta.access) || route.meta.access == "all"
-        );
-      }
-
-      return true;
+      return checkAccess(props.resourceAccess, route.meta?.access);
     });
 });
 

@@ -181,3 +181,8 @@ gem "doorkeeper-openid_connect"
 gem "oauth2", "~> 2.0"
 
 gem "aws-sdk-s3", require: false
+
+gem "lexorank"
+gem "with_advisory_lock"
+
+gem "maintenance_tasks", "~> 2.11"

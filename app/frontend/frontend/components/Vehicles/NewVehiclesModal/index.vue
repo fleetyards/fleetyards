@@ -87,6 +87,9 @@ const save = async () => {
         vehicles: newVehicles.value,
       },
     })
+    .then(() => {
+      comlink.emit("hangar-change");
+    })
     .finally(() => {
       submitting.value = false;
       comlink.emit("close-modal");

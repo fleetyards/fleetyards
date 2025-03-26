@@ -15,7 +15,7 @@ import { useMobile } from "@/shared/composables/useMobile";
 import { type Model } from "@/services/fyApi";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { type BaseTableColumn } from "@/shared/components/base/Table/types";
-import LazyImage from "@/shared/components/LazyImage/index.vue";
+import ViewImage from "@/shared/components/ViewImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import {
   useModelsStore,
@@ -82,10 +82,6 @@ const tableColumns = computed<BaseTableColumn[]>(() => {
     ...extraColumns.value,
   ];
 });
-
-const storeImage = (record: Model) => {
-  return record.media.storeImage?.medium;
-};
 </script>
 
 <template>
@@ -99,10 +95,11 @@ const storeImage = (record: Model) => {
       :empty-box-visible="emptyBoxVisible"
     >
       <template #col-store_image="{ record }">
-        <LazyImage
+        <ViewImage
+          :image="record.media.storeImage"
+          size="small"
+          alt="image"
           :variant="LazyImageVariantsEnum.WIDE"
-          :src="storeImage(record)"
-          alt="storeImage"
           shadow
         />
       </template>

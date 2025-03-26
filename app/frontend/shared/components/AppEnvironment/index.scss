@@ -2,21 +2,13 @@
   position: sticky;
   z-index: 1000;
   bottom: 0;
-  left: 100%;
   display: flex;
   gap: 5px;
-  padding: 20px 15px;
-  width: 276px;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  float: left;
 
-  &.spacing-right {
-    right: 230px;
-  }
-
-  &--git-revision {
+  &__git-revision {
     cursor: pointer;
-  }
-
-  &--with-primary-action {
-    padding-right: 90px;
   }
 }

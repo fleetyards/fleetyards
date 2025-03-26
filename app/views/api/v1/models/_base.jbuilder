@@ -80,7 +80,7 @@ json.media do
     json.partial! "api/v1/shared/view_image", view_image: model.side_view_colored, width: model.side_view_colored_width, height: model.side_view_colored_height
   end
   json.store_image do
-    json.partial! "api/v1/shared/media_image", media_image: model.store_image
+    json.partial! "api/v1/shared/view_image", view_image: model.store_image, width: model.store_image_width, height: model.store_image_height
   end
   json.top_view do
     json.partial! "api/v1/shared/view_image", view_image: model.top_view, width: model.top_view_width, height: model.top_view_height

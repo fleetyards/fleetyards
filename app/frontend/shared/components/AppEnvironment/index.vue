@@ -1,18 +1,8 @@
-<template>
-  <div v-if="nodeEnv && !mobile" class="app-environment" :class="cssClasses">
-    <BasePill :variant="environtmentVariant">
-      <i class="far fa-info-circle" />
-      {{ nodeEnv }}
-    </BasePill>
-    <BasePill
-      :variant="environtmentVariant"
-      class="app-environment--git-revision"
-    >
-      <i class="far fa-fingerprint" />
-      {{ gitRevision }}
-    </BasePill>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "AppEnvironment",
+};
+</script>
 
 <script lang="ts" setup>
 import BasePill from "@/shared/components/base/Pill/index.vue";
@@ -20,9 +10,13 @@ import { useMobile } from "@/shared/composables/useMobile";
 
 type Props = {
   gitRevision?: string;
+  showInProduction?: boolean;
 };
 
-defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  showInProduction: false,
+  gitRevision: undefined,
+});
 
 const mobile = useMobile();
 
@@ -45,19 +39,33 @@ const cssClasses = computed(() => {
 });
 
 const nodeEnv = computed(() => {
-  if (window.NODE_ENV === "production") {
-    return undefined;
-  }
-
   return (window.NODE_ENV || "").toUpperCase();
+});
+
+const visible = computed(() => {
+  return (
+    (window.NODE_ENV !== "production" || props.showInProduction) &&
+    !mobile.value
+  );
 });
 </script>
 
-<script lang="ts">
-export default {
-  name: "AppEnvironment",
-};
-</script>
+<template>
+  <div v-if="visible" class="app-environment" :class="cssClasses">
+    <BasePill :variant="environtmentVariant">
+      <i class="far fa-info-circle" />
+      {{ nodeEnv }}
+    </BasePill>
+    <BasePill
+      v-if="gitRevision"
+      :variant="environtmentVariant"
+      class="app-environment__git-revision"
+    >
+      <i class="far fa-fingerprint" />
+      {{ gitRevision }}
+    </BasePill>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 @import "index";

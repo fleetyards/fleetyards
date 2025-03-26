@@ -16,9 +16,4 @@ export const routes: RouteRecordRaw[] = [
     name: "ship-videos",
     component: () => import("@/frontend/pages/ships/[slug]/videos.vue"),
   },
-  {
-    path: "holo/",
-    name: "ship-holo",
-    component: () => import("@/frontend/pages/ships/[slug]/holo.vue"),
-  },
 ];

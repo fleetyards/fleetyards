@@ -11,7 +11,7 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       title: "admin.modelPaints.index",
       icon: "fad fa-palette",
-      access: "model_paints",
+      access: ["model_paints"],
     },
   },
   {

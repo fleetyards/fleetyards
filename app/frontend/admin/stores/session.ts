@@ -12,8 +12,14 @@ export const useSessionStore = defineStore("session", {
     currentUser: undefined,
   }),
   getters: {
+    isSuperAdmin(state) {
+      return state.currentUser?.superAdmin || false;
+    },
     isAuthenticated(state) {
       return state.authenticated;
+    },
+    resourceAccess(state) {
+      return state.currentUser?.resourceAccess || [];
     },
   },
   actions: {
@@ -31,7 +37,7 @@ export const useSessionStore = defineStore("session", {
 
       return (
         this.currentUser?.resourceAccess?.includes(resource) ||
-        this.currentUser?.superAdmin ||
+        this.isSuperAdmin ||
         false
       );
     },

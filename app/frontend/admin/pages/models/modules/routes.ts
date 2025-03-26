@@ -10,7 +10,7 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       title: "admin.modelModules.index",
       icon: "fad fa-puzzle",
-      access: "model_modules",
+      access: ["model_modules"],
     },
   },
   {

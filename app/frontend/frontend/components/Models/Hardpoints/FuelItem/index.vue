@@ -12,7 +12,7 @@ import {
   HardpointSourceEnum,
   HardpointCategoryEnum,
   type Hardpoint,
-  type ComponentFuelTank,
+  type FuelTank,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 
@@ -33,7 +33,7 @@ const count = computed(() => {
 });
 
 const typeData = computed(() => {
-  return hardpoint.value.component?.typeData as ComponentFuelTank;
+  return hardpoint.value.component?.typeData as FuelTank;
 });
 
 const label = computed(() => {
@@ -53,7 +53,7 @@ const label = computed(() => {
     <template #default>
       <HardpointSize :size="hardpoint.maxSize" />
       <HardpointComponent>
-        <template v-if="hardpoint.source === HardpointSourceEnum.GAME_FILES">
+        <template v-if="hardpoint.source === HardpointSourceEnum.game_files">
           {{ label }}
           <span>
             {{ toNumber(typeData.capacity, "cargo") }}

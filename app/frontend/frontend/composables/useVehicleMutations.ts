@@ -2,13 +2,14 @@ import {
   useCreateVehicle as useCreateVehicleMutation,
   useCreateBulkVehicle as useCreateBulkVehicleMutation,
   useUpdateVehicle as useUpdateVehicleMutation,
+  useDestroyVehicle as useDestroyVehicleMutation,
   useUpdateBulkVehicle as useUpdateBulkVehicleMutation,
   useDestroyBulkVehicle as useDestroyBulkVehicleMutation,
   getHangarQueryKey,
   getWishlistQueryKey,
 } from "@/services/fyApi";
 import { type Hangar, type Vehicle } from "@/services/fyApi";
-import { useQueryClient } from "@tanstack/vue-query";
+import { QueryKey, useQueryClient } from "@tanstack/vue-query";
 import { type ComputedRef } from "vue";
 
 export const useVehicleMutations = () => {
@@ -59,29 +60,39 @@ export const useVehicleMutations = () => {
           await queryClient.cancelQueries({
             queryKey: [getHangarQueryKey()],
           });
+          const queryData = getPreviousQueryData();
 
-          const previousVehicles = queryClient.getQueryData([
-            getHangarQueryKey(),
-          ]) as Hangar;
+          if (!queryData?.length) {
+            return;
+          }
 
-          queryClient.setQueryData([getHangarQueryKey()], {
-            ...previousVehicles,
-            items: previousVehicles.items.map((vehicle) => {
-              if (vehicle.id === updatedVehicle.id) {
-                return updatedVehicle;
-              }
+          queryData.forEach((query) => {
+            const [queryKey, previousVehicles] = query as [QueryKey, Hangar];
 
-              return vehicle;
-            }),
+            queryClient.setQueryData(queryKey, {
+              ...previousVehicles,
+              items: previousVehicles.items.map((vehicle) => {
+                if (vehicle.id === updatedVehicle.id) {
+                  return updatedVehicle;
+                }
+
+                return vehicle;
+              }),
+            });
           });
 
-          return { previousVehicles };
+          return { queryData };
         },
-        onError: (_error, _updatedVehicle, context) => {
-          queryClient.setQueryData(
-            [getHangarQueryKey()],
-            context?.previousVehicles,
-          );
+        onError: (_error, _variables, context) => {
+          if (!context?.queryData) {
+            return;
+          }
+
+          context.queryData.forEach((query) => {
+            const [queryKey, previousVehicles] = query as [QueryKey, Hangar];
+
+            queryClient.setQueryData([queryKey], previousVehicles);
+          });
         },
         onSettled: (_updatedVehicle) => {
           queryClient.invalidateQueries({
@@ -110,6 +121,60 @@ export const useVehicleMutations = () => {
     });
   };
 
+  const useDestroyMutation = (vehicle: ComputedRef<Vehicle>) => {
+    if (!vehicle) throw new Error("vehicle is required");
+
+    return useDestroyVehicleMutation({
+      mutation: {
+        onMutate: async () => {
+          const vehicleForMutation = unref(vehicle);
+
+          await queryClient.cancelQueries({
+            queryKey: [getHangarQueryKey()],
+          });
+
+          const queryData = getPreviousQueryData();
+
+          if (!queryData?.length) {
+            return;
+          }
+
+          queryData.forEach((query) => {
+            const [queryKey, previousVehicles] = query as [QueryKey, Hangar];
+
+            queryClient.setQueryData(queryKey, {
+              ...previousVehicles,
+              items: previousVehicles.items.filter((item) => {
+                return item.id !== vehicleForMutation.id;
+              }),
+            });
+          });
+
+          return { queryData };
+        },
+        onError: (_error, _variables, context) => {
+          if (!context?.queryData) {
+            return;
+          }
+
+          context.queryData.forEach((query) => {
+            const [queryKey, previousVehicles] = query as [QueryKey, Hangar];
+
+            queryClient.setQueryData([queryKey], previousVehicles);
+          });
+        },
+        onSettled: () => {
+          queryClient.invalidateQueries({
+            queryKey: [getHangarQueryKey()],
+          });
+          queryClient.invalidateQueries({
+            queryKey: [getWishlistQueryKey()],
+          });
+        },
+      },
+    });
+  };
+
   const useDestroyBulkMutation = () => {
     return useDestroyBulkVehicleMutation({
       mutation: {
@@ -125,10 +190,23 @@ export const useVehicleMutations = () => {
     });
   };
 
+  const getPreviousQueryData = () => {
+    const results = queryClient.getQueriesData({
+      queryKey: getHangarQueryKey(),
+    });
+
+    if (results.length === 0) {
+      return undefined;
+    }
+
+    return results;
+  };
+
   return {
     useCreateMutation,
     useCreateBulkMutation,
     useUpdateMutation,
+    useDestroyMutation,
     useUpdateBulkMutation,
     useDestroyBulkMutation,
   };

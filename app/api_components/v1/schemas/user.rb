@@ -37,7 +37,7 @@ module V1
         additionalProperties: false,
         required: %w[
           username email saleNotify publicHangar publicHangarLoaners publicWishlist hideOwner
-          twoFactorRequired createdAt updatedAt
+          twoFactorRequired resourceAccess createdAt updatedAt
         ]
       })
     end

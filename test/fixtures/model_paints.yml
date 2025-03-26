@@ -23,12 +23,16 @@
 #  rsi_name                :string
 #  rsi_slug                :string
 #  rsi_store_image         :string
+#  rsi_store_image_height  :integer
+#  rsi_store_image_width   :integer
 #  rsi_store_url           :string
 #  side_view               :string
 #  side_view_height        :integer
 #  side_view_width         :integer
 #  slug                    :string
 #  store_image             :string
+#  store_image_height      :integer
+#  store_image_width       :integer
 #  store_images_updated_at :datetime
 #  store_url               :string
 #  top_view                :string

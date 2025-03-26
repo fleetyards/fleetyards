@@ -42,7 +42,7 @@ end
 json.media({})
 json.media do
   json.store_image do
-    json.partial! "api/v1/shared/media_image", media_image: component.store_image
+    json.partial! "api/v1/shared/view_image", view_image: component.store_image, width: component.store_image_width, height: component.store_image_height
   end
 end
 

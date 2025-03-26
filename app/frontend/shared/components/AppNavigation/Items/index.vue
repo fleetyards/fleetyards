@@ -17,7 +17,7 @@ type Props = {
   routes: RouteRecordRaw[];
   currentRoute: RouteLocationNormalizedLoaded;
   authenticated: boolean;
-  hasAccessTo?: (access: string) => boolean;
+  hasAccessTo?: (access?: string[]) => boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -40,13 +40,7 @@ const filteredRoutes = computed(() => {
         return true;
       }
 
-      if (route.meta?.access) {
-        return (
-          props.hasAccessTo(route.meta.access) || route.meta.access == "all"
-        );
-      }
-
-      return false;
+      return props.hasAccessTo(route.meta?.access);
     });
 });
 
@@ -65,9 +59,7 @@ const filteredChildRoutes = (
       }
 
       if (child.meta?.access) {
-        return (
-          props.hasAccessTo(child.meta.access) || child.meta.access == "all"
-        );
+        return props.hasAccessTo(child.meta.access);
       }
 
       return false;

@@ -17,6 +17,15 @@ export const routes = [
       backgroundImage: "bg-8",
     },
   },
+  {
+    path: "cargo-grids/",
+    name: "cargo-grids",
+    component: () => import("@/frontend/pages/tools/cargo-grids.vue"),
+    meta: {
+      title: "tools.cargoGrids",
+      backgroundImage: "bg-8",
+    },
+  },
 ];
 
 export default routes;

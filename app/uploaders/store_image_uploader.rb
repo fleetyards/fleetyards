@@ -3,22 +3,37 @@
 class StoreImageUploader < BaseUploader
   include CarrierWave::MiniMagick
 
-  version :large do
-    process resize_to_limit: [2400, 2400]
-    process quality: 90
+  process :store_dimensions
+
+  version :small do
+    process resize_to_limit: [500, 500]
+    process quality: 80
   end
 
   version :medium do
-    process resize_to_limit: [800, 800]
+    process resize_to_limit: [1000, 1000]
     process quality: 90
   end
 
-  version :small do
-    process resize_to_limit: [300, 300]
-    process quality: 80
+  version :large do
+    process resize_to_limit: [2000, 2000]
+    process quality: 90
+  end
+
+  version :xlarge do
+    process resize_to_limit: [3000, 3000]
   end
 
   def extension_allowlist
     %w[jpg jpeg png webp]
+  end
+
+  private def store_dimensions
+    return unless file || model
+
+    width, height = ::MiniMagick::Image.open(file.file)[:dimensions]
+
+    model.send(:"#{mounted_as}_width=", width)
+    model.send(:"#{mounted_as}_height=", height)
   end
 end

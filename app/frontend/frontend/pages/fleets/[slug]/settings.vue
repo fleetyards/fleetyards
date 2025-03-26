@@ -15,6 +15,7 @@ import {
   type Fleet,
   useLeaveFleet as useLeaveFleetMutation,
   type ValidationError,
+  type FleetMember,
 } from "@/services/fyApi";
 import { type ErrorType } from "@/services/fyApi/axiosClient";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -27,6 +28,7 @@ const { displayAlert, displaySuccess, displayConfirm } = useAppNotifications();
 
 type Props = {
   fleet: Fleet;
+  membership?: FleetMember;
 };
 
 const props = defineProps<Props>();
@@ -52,15 +54,11 @@ const sessionStore = useSessionStore();
 const leaving = ref(false);
 
 const leaveTooltip = computed(() => {
-  if (props.fleet.myFleet && props.fleet.myRole === "admin") {
+  if (!props.membership?.isDestroyAllowed) {
     return t("texts.fleets.leaveInfo");
   }
 
   return null;
-});
-
-const canEdit = computed(() => {
-  return props.fleet?.myRole === "admin";
 });
 
 const comlink = useComlink();
@@ -70,7 +68,7 @@ const router = useRouter();
 const mutation = useLeaveFleetMutation();
 
 const leave = () => {
-  if (!canEdit.value || leaving.value) return;
+  if (!props.membership?.isDestroyAllowed || leaving.value) return;
 
   leaving.value = true;
 
@@ -113,14 +111,6 @@ const leave = () => {
     },
   });
 };
-
-const hasAccess = (access: string) => {
-  if (!access || access === "all") {
-    return true;
-  }
-
-  return canEdit.value;
-};
 </script>
 
 <template>
@@ -129,14 +119,13 @@ const hasAccess = (access: string) => {
       <TabNavViewItems
         :routes="fleetRoutes"
         :authenticated="sessionStore.isAuthenticated"
-        :has-access-to="hasAccess"
+        :resource-access="membership?.fleetRole.resourceAccess"
       />
-
       <li
         v-if="fleet"
         v-tooltip="leaveTooltip"
         :class="{
-          disabled: canEdit || leaving,
+          disabled: !membership?.isDestroyAllowed || leaving,
         }"
       >
         <a @click="leave">
@@ -148,7 +137,7 @@ const hasAccess = (access: string) => {
     <template #content>
       <BreadCrumbs :crumbs="crumbs" />
       <Heading>{{ t(`headlines.${route.meta.title}`) }}</Heading>
-      <router-view :fleet="fleet" />
+      <router-view :fleet="fleet" :membership="membership" />
     </template>
   </TabNavView>
 </template>

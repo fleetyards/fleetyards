@@ -17,7 +17,7 @@ import { type Vehicle } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { type BaseTableColumn } from "@/shared/components/base/Table/types";
-import LazyImage from "@/shared/components/LazyImage/index.vue";
+import ViewImage from "@/shared/components/ViewImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import {
   useHangarStore,
@@ -130,14 +130,14 @@ const openEditModal = (vehicle: Vehicle) => {
 
 const storeImage = (record: Vehicle) => {
   if (record && record.paint) {
-    return record.paint.media.storeImage?.medium;
+    return record.paint.media.storeImage;
   }
 
   if (record && record.upgrade) {
-    return record.upgrade.media.storeImage?.medium;
+    return record.upgrade.media.storeImage;
   }
 
-  return record.model.media.storeImage?.medium;
+  return record.model.media.storeImage;
 };
 
 const onSelectedChange = (value: string[]) => {
@@ -165,10 +165,11 @@ const resetSelected = () => {
         <ListActions :selected="selected" :wishlist="wishlist" />
       </template>
       <template #col-store_image="{ record }">
-        <LazyImage
+        <ViewImage
+          :image="storeImage(record)"
+          size="small"
+          alt="image"
           :variant="LazyImageVariantsEnum.WIDE"
-          :src="storeImage(record)"
-          alt="storeImage"
           shadow
         />
       </template>

@@ -18,7 +18,7 @@
         }
       },
       "fleets": {
-        "leaveInfo": "You can not leave a Fleet as an Admin."
+        "leaveInfo": "You can not leave the Fleet."
       },
       "hangarGuide": {
         "add": "To add a new ship to your hangar visit the ships page and click on the bookmark icon in the top right corner of the ship you want to add.<br>Alternatively you can add a ship on its detail page, the button is located on the right side below the stats boxes.<br>You can click multiple times on the icon if you want more than one ship of the same type.",

@@ -8,7 +8,10 @@ export default {
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useFleet as useFleetQuery } from "@/services/fyApi";
+import {
+  useFleet as useFleetQuery,
+  useFleetMembership as useFleetMembershipQuery,
+} from "@/services/fyApi";
 
 const { t } = useI18n();
 
@@ -26,6 +29,13 @@ const fleetSlug = computed(() => {
 });
 
 const { data: fleet, refetch } = useFleetQuery(fleetSlug, {
+  query: {
+    retry: false,
+    enabled: route.params.slug !== undefined,
+  },
+});
+
+const { data: membership } = useFleetMembershipQuery(fleetSlug, {
   query: {
     retry: false,
     enabled: route.params.slug !== undefined,
@@ -59,14 +69,14 @@ onMounted(() => {
         prefix="00"
       />
       <NavItem
-        v-if="currentFleet.publicFleet || currentFleet.myFleet"
+        v-if="currentFleet.publicFleet || membership"
         :to="{ name: 'fleet-ships', params: { slug: currentFleet.slug } }"
         :label="t('nav.fleets.ships')"
         :active="shipsNavActive"
         prefix="01"
         icon="fad fa-starship"
       />
-      <template v-if="currentFleet.myFleet">
+      <template v-if="membership">
         <NavItem
           :to="{ name: 'fleet-members', params: { slug: currentFleet.slug } }"
           :label="t('nav.fleets.members')"

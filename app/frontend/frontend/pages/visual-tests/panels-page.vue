@@ -13,17 +13,13 @@ import PanelImage from "@/shared/components/Panel/Image/index.vue";
 import PanelBody from "@/shared/components/Panel/Body/index.vue";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
-import SearchPanel from "@/frontend/components/Search/Panel/index.vue";
 import { BoughtViaEnum } from "@/services/fyApi";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
   PanelAlignmentsEnum,
   PanelVariantsEnum,
 } from "@/shared/components/Panel/types";
-import {
-  useModel as useModelQuery,
-  useSearch as useSearchQuery,
-} from "@/services/fyApi";
+import { useModel as useModelQuery } from "@/services/fyApi";
 
 const modelPanelDetails = ref(false);
 
@@ -52,12 +48,6 @@ const { data: model } = useModelQuery("galaxy");
 
 const modelImage = computed(() => {
   return model.value?.media?.storeImage?.medium;
-});
-
-const { data: searchResult } = useSearchQuery({
-  q: {
-    search: "600i",
-  },
 });
 
 const vehiclePanelDetails = ref(false);
@@ -372,17 +362,6 @@ const vehicle = computed(() => {
         <Btn :size="BtnSizesEnum.SMALL" @click="toggleVehiclePanelLoanerHint">
           Toggle Loaner Hint: {{ vehiclePanelLoanerHint }}
         </Btn>
-      </div>
-    </div>
-    <hr />
-    <div class="row">
-      <div class="col-12">
-        <div class="row">
-          <div class="col-12 col-md-4">
-            <h2>Search Panel</h2>
-            <SearchPanel v-if="searchResult" :item="searchResult[0]" />
-          </div>
-        </div>
       </div>
     </div>
   </div>

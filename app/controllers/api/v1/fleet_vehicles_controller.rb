@@ -8,13 +8,10 @@ module Api
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "fleet", "fleet:read" },
         unless: :user_signed_in?,
-        only: %i[index export model_counts fleetchart quick_stats]
+        only: %i[index export fleetchart]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
-        except: %i[
-          index export model_counts fleetchart quick_stats pulic public_model_counts
-          public_fleetchart embed
-        ]
+        except: %i[index export fleetchart]
 
       after_action -> { pagination_header(%i[vehicles models]) }, only: %i[index]
 

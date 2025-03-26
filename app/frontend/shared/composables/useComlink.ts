@@ -19,7 +19,9 @@ type Events = {
   "fleet-member-update": undefined;
   "access-confirmed": undefined;
   "access-confirmation-required": undefined;
-  "vehicle-save": undefined;
+  "vehicle-save"?: string;
+  "vehicle-destroy"?: string;
+  "hangar-change": undefined;
   "hangar-delete-all": undefined;
   "hangar-sync-finished": undefined;
   "hangar-group-save": undefined;

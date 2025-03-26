@@ -7,12 +7,7 @@ export default {
 <script lang="ts" setup>
 import { groupBy, sortBy } from "@/shared/utils/Array";
 import Panel from "@/shared/components/Panel/index.vue";
-import {
-  type Model,
-  type ModelModule,
-  type Hardpoint,
-  type HardpointGroupEnum,
-} from "@/services/fyApi";
+import { type Hardpoint, type HardpointGroupEnum } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import HardpointCategory from "@/frontend/components/Models/Hardpoints/Category/index.vue";
 import { HardpointCategoryEnum } from "@/services/fyAdminApi";
@@ -42,8 +37,8 @@ const categories = computed(() => {
   Object.keys(items).forEach((category) => {
     if (
       [
-        HardpointCategoryEnum.CONTROLLER,
-        HardpointCategoryEnum.UNKNOWN,
+        `${HardpointCategoryEnum.controller}`,
+        `${HardpointCategoryEnum.unknown}`,
       ].includes(category as HardpointCategoryEnum)
     ) {
       return;

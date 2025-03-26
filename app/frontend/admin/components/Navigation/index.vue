@@ -14,6 +14,7 @@ import routes from "@/admin/pages/routes";
 import { storeToRefs } from "pinia";
 import { useSessionStore } from "@/admin/stores/session";
 import { useDestroySession as useDestroySessionMutation } from "@/services/fyAdminApi";
+import { checkAccess } from "@/shared/utils/Access";
 
 const { t } = useI18n();
 
@@ -40,6 +41,13 @@ const logout = async () => {
 
   sessionStore.logout();
 };
+
+const hasAccessTo = (access?: string[]) => {
+  return (
+    checkAccess(sessionStore.resourceAccess, access) ||
+    sessionStore.isSuperAdmin
+  );
+};
 </script>
 
 <template>
@@ -49,7 +57,7 @@ const logout = async () => {
         :routes="mainRoutes"
         :current-route="currentRoute"
         :authenticated="isAuthenticated"
-        :has-access-to="sessionStore.hasAccessTo"
+        :has-access-to="hasAccessTo"
       />
     </template>
     <template #footer>
@@ -57,7 +65,7 @@ const logout = async () => {
         :routes="footerRoutes"
         :current-route="currentRoute"
         :authenticated="isAuthenticated"
-        :has-access-to="sessionStore.hasAccessTo"
+        :has-access-to="hasAccessTo"
       />
       <template v-if="isAuthenticated && currentUser">
         <NavItem

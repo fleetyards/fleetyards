@@ -49,6 +49,7 @@ import {
   useDestroyHangar as useDestroyHangarMutation,
   getHangarQueryKey,
 } from "@/services/fyApi";
+import { useQueryClient } from "@tanstack/vue-query";
 
 const { t, toDollar, toUEC, toNumber } = useI18n();
 
@@ -134,6 +135,8 @@ watch(
 
 onMounted(() => {
   comlink.on("vehicle-save", fetch);
+  comlink.on("vehicle-destroy", fetch);
+  comlink.on("hangar-change", fetch);
   comlink.on("hangar-delete-all", fetch);
   comlink.on("hangar-group-delete", fetch);
   comlink.on("hangar-group-save", fetch);
@@ -142,6 +145,8 @@ onMounted(() => {
 
 onUnmounted(() => {
   comlink.off("vehicle-save");
+  comlink.off("vehicle-destroy");
+  comlink.off("hangar-change");
   comlink.off("hangar-delete-all");
   comlink.off("hangar-group-delete");
   comlink.off("hangar-group-save");

@@ -26,21 +26,21 @@ const groupedHardpoints = computed(() => {
 });
 
 const itemComponent = computed(() => {
-  if (props.category === HardpointCategoryEnum.CARGOGRID) {
+  if (props.category === HardpointCategoryEnum.cargogrid) {
     return HardpointCargoItem;
   }
-  if (props.category === HardpointCategoryEnum.FUELTANKS) {
+  if (props.category === HardpointCategoryEnum.fueltanks) {
     return HardpointFuelItem;
   }
   if (
-    props.category === HardpointCategoryEnum.MAIN_THRUSTERS ||
-    props.category === HardpointCategoryEnum.MANEUVERING_THRUSTERS ||
-    props.category === HardpointCategoryEnum.RETRO_THRUSTERS ||
-    props.category === HardpointCategoryEnum.VTOL_THRUSTERS
+    props.category === HardpointCategoryEnum.main_thrusters ||
+    props.category === HardpointCategoryEnum.maneuvering_thrusters ||
+    props.category === HardpointCategoryEnum.retro_thrusters ||
+    props.category === HardpointCategoryEnum.vtol_thrusters
   ) {
     return HardpointThrusterItem;
   }
-  if (props.category === HardpointCategoryEnum.SEAT) {
+  if (props.category === HardpointCategoryEnum.seat) {
     return HardpointSeatItem;
   }
   return HardpointBaseItem;

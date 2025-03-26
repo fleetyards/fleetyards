@@ -41,6 +41,8 @@ class Fleet < ApplicationRecord
     reason_description: :update_reason_description
   }
 
+  has_many :fleet_roles,
+    dependent: :destroy
   has_many :fleet_memberships,
     dependent: :destroy
   has_many :fleet_invite_urls,

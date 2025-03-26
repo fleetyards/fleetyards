@@ -89,7 +89,7 @@ module V1
                 frontViewColored: {"$ref": "#/components/schemas/ViewImage"},
                 sideView: {"$ref": "#/components/schemas/ViewImage"},
                 sideViewColored: {"$ref": "#/components/schemas/ViewImage"},
-                storeImage: {"$ref": "#/components/schemas/MediaImage"},
+                storeImage: {"$ref": "#/components/schemas/ViewImage"},
                 topView: {"$ref": "#/components/schemas/ViewImage"},
                 topViewColored: {"$ref": "#/components/schemas/ViewImage"}
               },

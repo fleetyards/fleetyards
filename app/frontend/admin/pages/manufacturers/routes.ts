@@ -9,7 +9,7 @@ export const routes: RouteRecordRaw[] = [
     strict: true,
     meta: {
       needsAuthentication: true,
-      access: "manufacturers",
+      access: ["manufacturers"],
     },
   },
   {

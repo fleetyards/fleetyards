@@ -1,9 +1,6 @@
 <script lang="ts">
-import { fleetRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";
-
 export default {
   name: "FleetMembershipPage",
-  beforeRouteEnter: fleetRouteGuard,
 };
 </script>
 
@@ -11,13 +8,17 @@ export default {
 // import Btn from "@/shared/components/base/Btn/index.vue";
 // import FormCheckbox from "@/frontend/core/components/Form/FormCheckbox/index.vue";
 // import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
-import { type Fleet } from "@/services/fyApi";
+import { type Fleet, type FleetMember } from "@/services/fyApi";
+import { useFleetMeta } from "@/frontend/composables/useFleetMeta";
 
 type Props = {
   fleet: Fleet;
+  membership: FleetMember;
 };
 
 const props = defineProps<Props>();
+
+// useFleetMeta(props.fleet);
 
 // collection: FleetMembersCollection = fleetMembersCollection;
 
@@ -151,6 +152,7 @@ const props = defineProps<Props>();
 
 <template>
   {{ fleet }}
+  {{ membership }}
   <!-- <section class="container">
     <div class="row">
       <div class="col-lg-12">

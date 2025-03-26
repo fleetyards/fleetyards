@@ -10,17 +10,14 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
+import ViewImage from "@/shared/components/ViewImage/index.vue";
 import { type BaseTableColumn } from "@/shared/components/base/Table/types";
-import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import FilterForm from "@/admin/components/Vehicles/FilterForm/index.vue";
 import { useVehicleFilters } from "@/admin/composables/useVehicleFilters";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { Vehicle } from "@/services/fyApi";
-import fallbackImageJpg from "@/images/fallback/store_image.jpg";
-import fallbackImage from "@/images/fallback/store_image.webp";
-import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 import {
   useVehicles as useVehiclesQuery,
   getVehiclesQueryKey,
@@ -98,26 +95,16 @@ const columns: BaseTableColumn[] = [
   },
 ];
 
-const { supported: webpSupported } = useWebpCheck();
-
 const image = (record: Vehicle) => {
   if (record.paint && record.paint.media.storeImage) {
-    return record.paint.media.storeImage.small;
+    return record.paint.media.storeImage;
   }
 
   if (record.upgrade && record.upgrade.media.storeImage) {
-    return record.upgrade.media.storeImage.small;
+    return record.upgrade.media.storeImage;
   }
 
-  if (record.model.media.storeImage) {
-    return record.model.media.storeImage.small;
-  }
-
-  if (webpSupported) {
-    return fallbackImage;
-  }
-
-  return fallbackImageJpg;
+  return record.model.media.storeImage;
 };
 </script>
 
@@ -154,21 +141,21 @@ const image = (record: Vehicle) => {
         selectable
       >
         <template #col-image="{ record }">
-          <LazyImage
-            v-if="image(record)"
+          <ViewImage
+            :image="image(record)"
+            size="small"
+            alt="Model image"
             :variant="LazyImageVariantsEnum.WIDE_SMALL"
-            :src="image(record)"
-            alt="Model storeImage"
             shadow
           />
         </template>
         <template #col-fleetchart="{ record }">
-          <LazyImage
+          <ViewImage
             v-if="record.model.media.angledView"
-            :variant="LazyImageVariantsEnum.WIDE_SMALL"
-            :src="record.model.media.angledView.small"
+            :image="record.model.media.angledView"
+            size="small"
             alt="Model angledView"
-            contain
+            :variant="LazyImageVariantsEnum.WIDE_SMALL"
           />
         </template>
         <template #col-model_name="{ record }">

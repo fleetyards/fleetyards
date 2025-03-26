@@ -10,7 +10,7 @@ declare module "vue-router" {
     icon?: string;
     exact?: boolean;
     activeRoute?: string;
-    access?: string;
+    access?: string[];
     nav?: "main" | "footer" | "editTabs" | "hidden";
     mobileNav?: number;
   }

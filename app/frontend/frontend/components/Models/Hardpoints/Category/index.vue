@@ -71,49 +71,49 @@ const icons = {
   <div class="hardpoint-category">
     <div class="hardpoint-category__label">
       <span
-        v-if="category === HardpointCategoryEnum.CARGOGRID"
+        v-if="category === HardpointCategoryEnum.cargogrid"
         class="hardpoint-category__icon"
       >
         <i class="fad fa-boxes fa-lg" />
       </span>
       <span
-        v-else-if="category === HardpointCategoryEnum.SEAT"
+        v-else-if="category === HardpointCategoryEnum.seat"
         class="hardpoint-category__icon"
       >
         <i class="fad fa-person-seat-reclined fa-lg" />
       </span>
       <span
-        v-else-if="category === HardpointCategoryEnum.MODULE"
+        v-else-if="category === HardpointCategoryEnum.module"
         class="hardpoint-category__icon"
       >
         <i class="fad fa-puzzle fa-lg" />
       </span>
       <span
-        v-else-if="category === HardpointCategoryEnum.SALVAGEFILLERSTATION"
+        v-else-if="category === HardpointCategoryEnum.salvagefillerstation"
         class="hardpoint-category__icon"
       >
         <i class="fad fa-bin-recycle fa-lg" />
       </span>
       <span
-        v-else-if="category === HardpointCategoryEnum.ARMOR"
+        v-else-if="category === HardpointCategoryEnum.armor"
         class="hardpoint-category__icon"
       >
         <i class="fad fa-shield-halved fa-lg" />
       </span>
       <span
-        v-else-if="category === HardpointCategoryEnum.COUNTERMEASURES"
+        v-else-if="category === HardpointCategoryEnum.countermeasures"
         class="hardpoint-category__icon"
       >
         <i class="fad fa-shield-quartered fa-lg" />
       </span>
       <span
-        v-else-if="category === HardpointCategoryEnum.LIFESUPPORT"
+        v-else-if="category === HardpointCategoryEnum.lifesupport"
         class="hardpoint-category__icon"
       >
         <i class="fad fa-star-of-life fa-lg" />
       </span>
       <span
-        v-else-if="category === HardpointCategoryEnum.RELAY"
+        v-else-if="category === HardpointCategoryEnum.relay"
         class="hardpoint-category__icon"
       >
         <i class="fad fa-transformer-bolt fa-lg" />

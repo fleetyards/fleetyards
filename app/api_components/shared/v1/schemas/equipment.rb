@@ -42,7 +42,7 @@ module Shared
             media: {
               type: :object,
               properties: {
-                storeImage: {"$ref": "#/components/schemas/MediaImage"}
+                storeImage: {"$ref": "#/components/schemas/ViewImage"}
               },
               additionalProperties: false
             },
@@ -61,7 +61,7 @@ module Shared
             weaponClassLabel: {type: :string},
 
             createdAt: {type: :string, format: "date-time"},
-            updatedAt: {type: :string, format: "date-time"},
+            updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
           required: %w[id name slug availability media createdAt updatedAt]

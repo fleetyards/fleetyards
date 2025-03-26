@@ -352,8 +352,14 @@ en:
         blank: can't be blank
         record_invalid: Bad Data
       models:
+        fleet_role:
+          attributes:
+            resource_access:
+              changed: Access privileges can not be changed
         fleet_membership:
           attributes:
+            base:
+              cannot_destroy_last_member: Cannot remove last member of Fleet
             user_id:
               taken: already present or has a pending invite
         user:

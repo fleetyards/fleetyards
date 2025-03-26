@@ -4042,7 +4042,7 @@ components:
           type: object
           properties:
             storeImage:
-              "$ref": "#/components/schemas/MediaImage"
+              "$ref": "#/components/schemas/ViewImage"
           additionalProperties: false
         typeData:
           anyOf:
@@ -4533,7 +4533,7 @@ components:
           type: object
           properties:
             storeImage:
-              "$ref": "#/components/schemas/MediaImage"
+              "$ref": "#/components/schemas/ViewImage"
           additionalProperties: false
         range:
           type: string
@@ -5037,12 +5037,6 @@ components:
     Fleet:
       type: object
       properties:
-        myRole:
-          "$ref": "#/components/schemas/FleetMembershipRoleEnum"
-        primary:
-          type: boolean
-        myFleet:
-          type: boolean
         id:
           type: string
           format: uuid
@@ -5133,6 +5127,8 @@ components:
           format: uuid
         username:
           type: string
+        fleetRole:
+          "$ref": "#/components/schemas/FleetRole"
         role:
           "$ref": "#/components/schemas/FleetMembershipRoleEnum"
         roleLabel:
@@ -5189,6 +5185,8 @@ components:
           format: date-time
         declinedAtLabel:
           type: string
+        isDestroyAllowed:
+          type: boolean
         createdAt:
           type: string
           format: date-time
@@ -5199,11 +5197,13 @@ components:
       required:
       - id
       - username
+      - fleetRole
       - role
       - roleLabel
       - shipsFilter
       - fleetSlug
       - fleetName
+      - isDestroyAllowed
       - createdAt
       - updatedAt
       title: FleetMember
@@ -5267,6 +5267,62 @@ components:
       - items
       - meta
       title: FleetPublicVehicles
+    FleetRole:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        resourceAccess:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - resourceAccess
+      title: FleetRole
+    FleetRoleExtended:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        rank:
+          type: string
+        permanent:
+          type: boolean
+        resourceAccess:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - rank
+      - permanent
+      - resourceAccess
+      - createdAt
+      - updatedAt
+      title: FleetRoleExtended
     FleetVehicleExport:
       type: object
       properties:
@@ -6402,7 +6458,7 @@ components:
             sideViewColored:
               "$ref": "#/components/schemas/ViewImage"
             storeImage:
-              "$ref": "#/components/schemas/MediaImage"
+              "$ref": "#/components/schemas/ViewImage"
             topView:
               "$ref": "#/components/schemas/ViewImage"
             topViewColored:
@@ -6652,7 +6708,7 @@ components:
             sideViewColored:
               "$ref": "#/components/schemas/ViewImage"
             storeImage:
-              "$ref": "#/components/schemas/MediaImage"
+              "$ref": "#/components/schemas/ViewImage"
             topView:
               "$ref": "#/components/schemas/ViewImage"
             topViewColored:
@@ -6830,7 +6886,7 @@ components:
             sideView:
               "$ref": "#/components/schemas/ViewImage"
             storeImage:
-              "$ref": "#/components/schemas/MediaImage"
+              "$ref": "#/components/schemas/ViewImage"
             topView:
               "$ref": "#/components/schemas/ViewImage"
           additionalProperties: false
@@ -6988,7 +7044,7 @@ components:
           type: object
           properties:
             storeImage:
-              "$ref": "#/components/schemas/MediaImage"
+              "$ref": "#/components/schemas/ViewImage"
           additionalProperties: false
         pledgePrice:
           type: number
@@ -7071,7 +7127,7 @@ components:
             sideView:
               "$ref": "#/components/schemas/ViewImage"
             storeImage:
-              "$ref": "#/components/schemas/MediaImage"
+              "$ref": "#/components/schemas/ViewImage"
             topView:
               "$ref": "#/components/schemas/ViewImage"
           additionalProperties: false
@@ -7215,7 +7271,7 @@ components:
           type: object
           properties:
             storeImage:
-              "$ref": "#/components/schemas/MediaImage"
+              "$ref": "#/components/schemas/ViewImage"
           additionalProperties: false
         createdAt:
           type: string
@@ -7725,6 +7781,7 @@ components:
       - publicWishlist
       - hideOwner
       - twoFactorRequired
+      - resourceAccess
       - createdAt
       - updatedAt
       title: User

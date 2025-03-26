@@ -24,6 +24,8 @@
 #  size                  :string(255)
 #  slug                  :string
 #  store_image           :string
+#  store_image_height    :integer
+#  store_image_width     :integer
 #  tracking_signal       :integer
 #  type_data             :string
 #  version               :string

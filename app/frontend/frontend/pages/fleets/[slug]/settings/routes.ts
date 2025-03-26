@@ -19,7 +19,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "fleets.settings.fleet",
       needsAuthentication: true,
-      access: "fleet",
+      access: ["fleet:manage"],
     },
   },
 ];

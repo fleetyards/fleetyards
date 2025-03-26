@@ -7,19 +7,21 @@ export default {
 <script lang="ts" setup>
 import { useComlink } from "@/shared/composables/useComlink";
 import AsyncData from "@/shared/components/AsyncData.vue";
-import { useI18n } from "@/shared/composables/useI18n";
-import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-import { useFleet as useFleetQuery } from "@/services/fyApi";
+import AccessCheck from "@/shared/components/AccessCheck.vue";
+import {
+  useFleet as useFleetQuery,
+  useFleetMembership as useFleetMembershipQuery,
+} from "@/services/fyApi";
+import { useFleetMeta } from "@/frontend/composables/useFleetMeta";
 
 const route = useRoute();
 
 const slug = computed(() => route.params.slug as string);
 
-const { data: fleet, refetch, ...asyncStatus } = useFleetQuery(slug);
+const { data: fleet, refetch, ...asyncFleetStatus } = useFleetQuery(slug);
 
-const { t } = useI18n();
-
-const { updateMetaInfo } = useMetaInfo();
+const { data: membership, ...asyncMembershipStatus } =
+  useFleetMembershipQuery(slug);
 
 const comlink = useComlink();
 
@@ -31,35 +33,21 @@ onUnmounted(() => {
   comlink.off("fleet-update", refetch);
 });
 
-const fleetTitle = computed(() => {
-  if (!route.meta.title) {
-    return fleet.value?.name;
-  }
-
-  return t(route.meta.title, { fleet: fleet.value?.name });
-});
-
-watch(
-  () => fleet.value,
-  () => {
-    if (!fleet.value) {
-      return;
-    }
-
-    updateMetaInfo({
-      title: fleetTitle.value,
-      description: fleet.value.description,
-      image: fleet.value.logo,
-      type: "article",
-    });
-  },
-);
+useFleetMeta(fleet);
 </script>
 
 <template>
-  <AsyncData :async-status="asyncStatus">
+  <AsyncData :async-status="asyncFleetStatus">
     <template #resolved>
-      <router-view :fleet="fleet" />
+      <AsyncData :async-status="asyncMembershipStatus">
+        <template #resolved>
+          <AccessCheck :resource-access="membership?.fleetRole.resourceAccess">
+            <template #granted>
+              <router-view :fleet="fleet" :membership="membership" />
+            </template>
+          </AccessCheck>
+        </template>
+      </AsyncData>
     </template>
   </AsyncData>
 </template>

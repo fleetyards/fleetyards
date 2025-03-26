@@ -16,7 +16,11 @@
 
   .stats-panel-text {
     font-size: 40px;
-    text-align: right;
+    min-height: 83px;
+    flex-direction: column;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
 
     .stats-panel-text-info {
       font-size: 15px;

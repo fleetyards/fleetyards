@@ -7,15 +7,18 @@ module Api
         not_found(I18n.t("messages.record_not_found.#{exception.model.downcase}", slug: params[:slug]))
       end
 
-      before_action :authenticate_user!, except: %i[accept_request decline_request promote demote destroy]
+      before_action :authenticate_user!, only: []
+      before_action -> { doorkeeper_authorize! },
+        unless: :user_signed_in?,
+        only: %i[show create_by_invite update destroy]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
-        only: %i[accept_request decline_request promote demote destroy]
+        except: %i[create accept decline]
 
-      def current
-        authorize! :show, my_membership
+      def show
+        authorize! :show, membership
 
-        @member = my_membership
+        @member = membership
       end
 
       def create

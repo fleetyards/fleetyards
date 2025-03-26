@@ -5,6 +5,13 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import Heading from "@/shared/components/base/Heading/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+
+const { t } = useI18n();
+
+const route = useRoute();
+
 const tools = [
   {
     url: "https://verseguide.com/",
@@ -64,6 +71,7 @@ const tools = [
 </script>
 
 <template>
+  <Heading>{{ t(`headlines.${route.meta.title}`) }}</Heading>
   <div>
     <ul>
       <li v-for="tool in tools" :key="tool.name">

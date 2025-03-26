@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_19_110026) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_23_084065) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
@@ -144,6 +144,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_19_110026) do
     t.string "component_sub_type"
     t.string "inventory_consumption"
     t.string "version"
+    t.integer "store_image_width"
+    t.integer "store_image_height"
     t.index ["manufacturer_id"], name: "index_components_on_manufacturer_id"
   end
 
@@ -195,6 +197,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_19_110026) do
     t.string "temperature_rating"
     t.integer "backpack_compatibility"
     t.integer "core_compatibility"
+    t.integer "store_image_width"
+    t.integer "store_image_height"
     t.index ["manufacturer_id"], name: "index_equipment_on_manufacturer_id"
   end
 
@@ -226,7 +230,22 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_19_110026) do
     t.datetime "invited_at", precision: nil
     t.datetime "requested_at", precision: nil
     t.string "used_invite_token"
+    t.uuid "fleet_role_id"
+    t.index ["fleet_role_id"], name: "index_fleet_memberships_on_fleet_role_id"
     t.index ["user_id", "fleet_id"], name: "index_fleet_memberships_on_user_id_and_fleet_id", unique: true
+  end
+
+  create_table "fleet_roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.text "rank"
+    t.text "resource_access"
+    t.uuid "fleet_id", null: false
+    t.boolean "permanent"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fleet_id", "rank"], name: "index_fleet_roles_on_fleet_id_and_rank", unique: true
+    t.index ["fleet_id"], name: "index_fleet_roles_on_fleet_id"
   end
 
   create_table "fleet_vehicles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -358,6 +377,27 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_19_110026) do
     t.index ["item_type", "item_id"], name: "index_item_prices_on_item"
   end
 
+  create_table "maintenance_tasks_runs", force: :cascade do |t|
+    t.string "task_name", null: false
+    t.datetime "started_at", precision: nil
+    t.datetime "ended_at", precision: nil
+    t.float "time_running", default: 0.0, null: false
+    t.bigint "tick_count", default: 0, null: false
+    t.bigint "tick_total"
+    t.string "job_id"
+    t.string "cursor"
+    t.string "status", default: "enqueued", null: false
+    t.string "error_class"
+    t.string "error_message"
+    t.text "backtrace"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "arguments"
+    t.integer "lock_version", default: 0, null: false
+    t.text "metadata"
+    t.index ["task_name", "status", "created_at"], name: "index_maintenance_tasks_runs", order: { created_at: :desc }
+  end
+
   create_table "manufacturers", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", limit: 255
     t.string "slug", limit: 255
@@ -479,6 +519,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_19_110026) do
     t.string "side_view"
     t.integer "side_view_height"
     t.integer "side_view_width"
+    t.integer "store_image_width"
+    t.integer "store_image_height"
   end
 
   create_table "model_modules", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -497,6 +539,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_19_110026) do
     t.string "sc_key"
     t.decimal "cargo", precision: 15, scale: 2
     t.string "cargo_holds"
+    t.integer "store_image_width"
+    t.integer "store_image_height"
   end
 
   create_table "model_paints", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -535,6 +579,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_19_110026) do
     t.integer "top_view_width"
     t.integer "side_view_height"
     t.integer "side_view_width"
+    t.integer "store_image_width"
+    t.integer "store_image_height"
+    t.integer "rsi_store_image_width"
+    t.integer "rsi_store_image_height"
   end
 
   create_table "model_snub_crafts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -554,6 +602,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_19_110026) do
     t.decimal "pledge_price", precision: 15, scale: 2
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.integer "store_image_width"
+    t.integer "store_image_height"
   end
 
   create_table "models", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -678,6 +728,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_19_110026) do
     t.decimal "reverse_speed_boosted", precision: 15, scale: 2
     t.decimal "roll_boosted", precision: 15, scale: 2
     t.decimal "fuel_consumption", precision: 15, scale: 2
+    t.integer "store_image_width"
+    t.integer "store_image_height"
+    t.integer "rsi_store_image_width"
+    t.integer "rsi_store_image_height"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 
@@ -919,6 +973,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_19_110026) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "fleet_memberships", "fleet_roles"
+  add_foreign_key "fleet_roles", "fleets"
   add_foreign_key "hardpoints", "components"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_grants", "users", column: "resource_owner_id"

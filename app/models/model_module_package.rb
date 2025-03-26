@@ -18,6 +18,8 @@
 #  side_view_width    :integer
 #  slug               :string
 #  store_image        :string
+#  store_image_height :integer
+#  store_image_width  :integer
 #  top_view           :string
 #  top_view_height    :integer
 #  top_view_width     :integer

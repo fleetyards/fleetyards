@@ -16,7 +16,11 @@
         "weight": "t",
         "speed": "m/s",
         "cargo": "SCU",
-        "person": "person"
+        "person": "person",
+        "people": {
+          "one": "person",
+          "other": "persons"
+        }
       },
       "uec": "%{count} <span class=\"text-muted\">aUEC</span>",
       "uecPerUnit": "%{count} <span class=\"text-muted\">aUEC/unit</span>",

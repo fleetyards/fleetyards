@@ -74,7 +74,7 @@ const hardpointNames = computed(() => {
     <template #default>
       <HardpointSize :size="hardpoint.maxSize" />
       <HardpointComponent>
-        <template v-if="hardpoint.source === HardpointSourceEnum.GAME_FILES">
+        <template v-if="hardpoint.source === HardpointSourceEnum.game_files">
           <template v-if="hardpoint.component && hardpoint.component.name">
             {{ hardpoint.component.name }}
             <span v-if="hardpoint.component.itemClass">
@@ -91,8 +91,8 @@ const hardpointNames = computed(() => {
         <template v-else>
           <template
             v-if="
-              (hardpoint.category !== HardpointCategoryEnum.TURRET &&
-                hardpoint.category !== HardpointCategoryEnum.MISSILE_RACKS) ||
+              (hardpoint.category !== HardpointCategoryEnum.turret &&
+                hardpoint.category !== HardpointCategoryEnum.missile_racks) ||
               intended
             "
           >
