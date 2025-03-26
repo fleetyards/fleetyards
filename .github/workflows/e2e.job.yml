@@ -61,7 +61,7 @@ jobs:
       - name: Setup DB
         run: bundle exec rails db:create db:schema:load
       - name: Create ES Index
-        run: bundle exec thor search:index
+        run: bundle exec rails searchkick:reindex:all
       - name: Assets Compile
         run: bundle exec rails assets:precompile
       - name: Prefill DB

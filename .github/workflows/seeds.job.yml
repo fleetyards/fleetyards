@@ -42,6 +42,6 @@ jobs:
       - run: mkdir -p log
       - run: bundle exec rails db:create db:schema:load
       - name: Create ES Index
-        run: bundle exec thor search:index
+        run: bundle exec rails searchkick:reindex:all
       - name: Run Seeds
         run: bundle exec rails db:seed

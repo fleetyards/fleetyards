@@ -53,7 +53,7 @@ class Equipment < ApplicationRecord
   end
 
   def should_index?
-    !hidden && (listed_at.present? || sold_at.present? || bought_at.present?)
+    !hidden && (sold_at.present? || bought_at.present?)
   end
 
   belongs_to :manufacturer, optional: true
