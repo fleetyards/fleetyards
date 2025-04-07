@@ -17,7 +17,7 @@ import {
   type ValidationError,
   type FleetMember,
 } from "@/services/fyApi";
-import { type ErrorType } from "@/services/fyApi/axiosClient";
+import { type ErrorType } from "@/services/axiosClient";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useSessionStore } from "@/frontend/stores/session";

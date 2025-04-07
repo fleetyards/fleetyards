@@ -18,7 +18,7 @@ import {
   type ValidationError,
   type SessionInput,
 } from "@/services/fyAdminApi";
-import { type ErrorType } from "@/services/fyAdminApi/axiosClient";
+import { type ErrorType } from "@/services/axiosAdminClient";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import { BtnTypesEnum, BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {

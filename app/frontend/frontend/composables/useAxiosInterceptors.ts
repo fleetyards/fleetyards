@@ -1,5 +1,5 @@
 import { useSessionStore } from "@/frontend/stores/session";
-import { AXIOS_INSTANCE } from "@/services/fyApi/axiosClient";
+import { AXIOS_INSTANCE } from "@/services/axiosClient";
 import { useI18n } from "@/shared/composables/useI18n";
 import { csrfToken } from "@/shared/utils/Meta";
 

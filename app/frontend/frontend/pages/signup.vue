@@ -12,7 +12,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useFleetStore } from "@/frontend/stores/fleet";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
-import { type ErrorType } from "@/services/fyAdminApi/axiosClient";
+import { type ErrorType } from "@/services/axiosAdminClient";
 import {
   useSignup as useSignupMutation,
   type UserCreateInput,

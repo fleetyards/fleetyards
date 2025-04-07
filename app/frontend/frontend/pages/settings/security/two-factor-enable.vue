@@ -23,7 +23,7 @@ import {
   useEnableOtpSetup as useEnableOtpSetupMutation,
   type ValidationError,
 } from "@/services/fyApi";
-import { type ErrorType } from "@/services/fyApi/axiosClient";
+import { type ErrorType } from "@/services/axiosClient";
 
 const { t } = useI18n();
 
