@@ -21,8 +21,8 @@ spec/reports
 spec/reports/*
 
 # generated auto-import files
-packs/frontend/auto-imports.d.ts
-packs/frontend/components.d.ts
+app/frontend/auto-imports.d.ts
+app/frontend/components.d.ts
 .eslintrc-auto-import.json
 
 # generated api client
