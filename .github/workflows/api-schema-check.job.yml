@@ -13,5 +13,5 @@ jobs:
       - uses: ./.github/workflows/js-setup-action
       - run: |
           ./bin/generate-schema
-          git diff --exit-code ./swagger/v2/swagger.yaml
+          git diff --exit-code ./swagger/**/schema.yaml
         shell: bash
