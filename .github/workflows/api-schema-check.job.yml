@@ -1,4 +1,6 @@
-name: Api Schema Lint Job
+
+
+name: Api Schema Check Job
 
 on:
   workflow_call:
@@ -9,5 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/workflows/js-setup-action
-      - run: pnpm run validate-schema
-      - run: pnpm run validate-admin-schema
+      - run: |
+          ./bin/generate-schema
+          git diff --exit-code ./swagger/v2/swagger.yaml
+        shell: bash

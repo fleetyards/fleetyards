@@ -18,7 +18,7 @@ jobs:
   js-setup:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/workflows/js-setup-action
 
   js-lint:
@@ -33,14 +33,14 @@ jobs:
     needs: js-setup
     uses: ./.github/workflows/api-schema-lint.job.yml
 
-  # js-tests:
-  #   needs: js-setup
-  #   uses: ./.github/workflows/js-tests.job.yml
+  js-tests:
+    needs: js-setup
+    uses: ./.github/workflows/js-tests.job.yml
 
   ruby-setup:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
@@ -65,6 +65,11 @@ jobs:
   #   uses: ./.github/workflows/build.job.yml
   #   with:
   #     name: ${GITHUB_REF##*/}
+
+
+  api-schema-check:
+    needs: [ruby-setup, js-setup]
+    uses: ./.github/workflows/api-schema-check.job.yml
 
   e2e-test:
     needs: [ruby-setup, js-setup]
