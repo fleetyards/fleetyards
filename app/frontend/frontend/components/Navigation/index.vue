@@ -109,7 +109,7 @@ const settingsActive = computed(() => {
 
 <template>
   <AppNavigation :title="t('title.default')" :logo="favicon">
-    <template v-if="route.name" #main>
+    <template #main>
       <VisualTestsNav v-if="isVisualTestsRoute" />
       <FleetNav v-else-if="isFleetRoute" />
       <template v-else>
@@ -178,7 +178,7 @@ const settingsActive = computed(() => {
         </template>
       </template>
     </template>
-    <template v-if="route.name" #footer>
+    <template #footer>
       <template v-if="isAuthenticated && currentUser">
         <NavItem
           :to="{ name: 'settings' }"

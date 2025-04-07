@@ -35,6 +35,7 @@ starfleet_picard:
   fleet: starfleet
   user: jeanluc
   role: :admin
+  fleet_role: starfleet_admin
   aasm_state: :accepted
   ships_filter: :all
   accepted_at: <%= Time.now %>
@@ -43,6 +44,7 @@ starfleet_data:
   fleet: starfleet
   user: data
   role: :member
+  fleet_role: starfleet_member
   ships_filter: :all
   aasm_state: :accepted
   accepted_at: <%= Time.now %>
@@ -51,6 +53,7 @@ starfleet_geordi:
   fleet: starfleet
   user: geordi
   role: :officer
+  fleet_role: starfleet_officer
   ships_filter: :all
   aasm_state: :accepted
   accepted_at: <%= Time.now %>
@@ -59,6 +62,7 @@ starfleet_riker:
   fleet: starfleet
   user: will
   role: :member
+  fleet_role: starfleet_member
   ships_filter: :all
   aasm_state: :invited
   accepted_at: nil
@@ -67,6 +71,7 @@ starfleet_crusher:
   fleet: starfleet
   user: crusher
   role: :member
+  fleet_role: starfleet_member
   ships_filter: :all
   aasm_state: :requested
   accepted_at: nil
@@ -74,5 +79,6 @@ starfleet_crusher:
 klingon_empire_worf:
   fleet: klingon_empire
   user: worf
+  fleet_role: klingon_empire_admin
   ships_filter: :all
   aasm_state: :accepted

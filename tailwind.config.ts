@@ -17,6 +17,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontSize: {
+        hero: ["2.25rem", "3rem"],
+      },
       colors: {
         brand: {
           primary: "#428bca",

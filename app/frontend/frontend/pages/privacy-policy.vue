@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import AppContact from "@/frontend/components/core/AppContact/index.vue";
-import Panel from "@/shared/components/Panel/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 

@@ -1,0 +1,15 @@
+.box {
+  margin-bottom: 20px;
+}
+
+@media (min-width: $tablet-breakpoint) {
+  .box {
+    width: 350px;
+    margin: 0 auto 20px;
+    margin-top: 6%;
+
+    &.box-large {
+      width: 600px;
+    }
+  }
+}

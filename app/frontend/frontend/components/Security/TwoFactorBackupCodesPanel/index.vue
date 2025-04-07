@@ -25,7 +25,7 @@
 import Btn from "@/shared/components/base/Btn/index.vue";
 import copyText from "@/frontend/utils/CopyText";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import Panel from "@/shared/components/Panel/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 

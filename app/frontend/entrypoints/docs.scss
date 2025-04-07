@@ -12,4 +12,6 @@
 body {
   position: relative;
   background-color: black;
+  text-rendering: optimizeLegibility;
+  vertical-align: baseline;
 }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_23_084065) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_26_213549) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
@@ -278,6 +278,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_23_084065) do
     t.text "description"
     t.boolean "public_fleet_stats", default: false
     t.string "normalized_fid"
+    t.uuid "executive_role_id"
+    t.uuid "entry_role_id"
+    t.index ["entry_role_id"], name: "index_fleets_on_entry_role_id"
+    t.index ["executive_role_id"], name: "index_fleets_on_executive_role_id"
     t.index ["fid"], name: "index_fleets_on_fid", unique: true
   end
 

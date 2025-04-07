@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import Panel from "@/shared/components/Panel/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 
 export type ModalProps = {

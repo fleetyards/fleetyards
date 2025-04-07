@@ -6,19 +6,20 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import Panel from "@/shared/components/Panel/index.vue";
-import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
-import { PanelHeadingLevelEnum } from "@/shared/components/Panel/Heading/types";
-import PanelImage from "@/shared/components/Panel/Image/index.vue";
-import PanelBody from "@/shared/components/Panel/Body/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
+import PanelImage from "@/shared/components/base/Panel/Image/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
-import { BoughtViaEnum } from "@/services/fyApi";
+import { BoughtViaEnum, type Vehicle } from "@/services/fyApi";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
   PanelAlignmentsEnum,
+  PanelBgColorsEnum,
   PanelVariantsEnum,
-} from "@/shared/components/Panel/types";
+} from "@/shared/components/base/Panel/types";
 import { useModel as useModelQuery } from "@/services/fyApi";
 
 const modelPanelDetails = ref(false);
@@ -86,7 +87,7 @@ const toggleVehiclePanelModelOnSale = () => {
   vehiclePanelModelOnSale.value = !vehiclePanelModelOnSale.value;
 };
 
-const vehicle = computed(() => {
+const vehicle = computed<Vehicle | undefined>(() => {
   if (!model.value) {
     return undefined;
   }
@@ -96,7 +97,7 @@ const vehicle = computed(() => {
     boughtVia: BoughtViaEnum.pledge_store,
     wanted: false,
     flagship: vehiclePanelFlagship.value,
-    name: "My Awesome Ship",
+    name: "USS Enterprise",
     serial: "L8-4261-HA",
     alternativeNames: [],
     hangarGroupIds: [],
@@ -135,6 +136,17 @@ const vehicle = computed(() => {
     updatedAt: "2021-03-03T14:00:00.000Z",
   };
 });
+
+const vehicleTruncated = computed<Vehicle | undefined>(() => {
+  if (!vehicle.value) {
+    return undefined;
+  }
+
+  return {
+    ...vehicle.value,
+    name: "My Awesome Ship with a truncated name",
+  };
+});
 </script>
 
 <template>
@@ -142,7 +154,7 @@ const vehicle = computed(() => {
     <div class="row">
       <div class="col-12 col-md-4">
         <Panel>
-          <PanelHeading :level="PanelHeadingLevelEnum.H2">Panel</PanelHeading>
+          <PanelHeading :level="HeadingLevelEnum.H2">Panel</PanelHeading>
           <PanelImage :image="modelImage" alt="Odyssey" />
           <PanelBody no-min-height>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus
@@ -156,7 +168,7 @@ const vehicle = computed(() => {
         <Panel>
           <PanelImage :image="modelImage" rounded="top" alt="Odyssey" />
           <div>
-            <PanelHeading :level="PanelHeadingLevelEnum.H2"
+            <PanelHeading :level="HeadingLevelEnum.H2"
               >Panel Image Top</PanelHeading
             >
             <PanelBody no-min-height no-padding-top>
@@ -171,7 +183,7 @@ const vehicle = computed(() => {
       <div class="col-12 col-md-4">
         <Panel>
           <div>
-            <PanelHeading :level="PanelHeadingLevelEnum.H2"
+            <PanelHeading :level="HeadingLevelEnum.H2"
               >Panel Image Bottom</PanelHeading
             >
             <PanelBody no-min-height no-padding-top>
@@ -195,7 +207,7 @@ const vehicle = computed(() => {
             alt="Odyssey"
           />
           <div>
-            <PanelHeading :level="PanelHeadingLevelEnum.H2"
+            <PanelHeading :level="HeadingLevelEnum.H2"
               >Panel Image Left</PanelHeading
             >
             <PanelBody no-min-height no-padding-top>
@@ -210,7 +222,7 @@ const vehicle = computed(() => {
       <div class="col-12 col-md-4">
         <Panel :alignment="PanelAlignmentsEnum.RIGHT" slim>
           <div>
-            <PanelHeading :level="PanelHeadingLevelEnum.H2"
+            <PanelHeading :level="HeadingLevelEnum.H2"
               >Panel Image Right</PanelHeading
             >
             <PanelBody no-min-height no-padding-top>
@@ -234,8 +246,19 @@ const vehicle = computed(() => {
     <div class="row">
       <div class="col-12 col-md-4">
         <Panel :variant="PanelVariantsEnum.ERROR" slim>
-          <PanelHeading :level="PanelHeadingLevelEnum.H2"
-            >Panel Error</PanelHeading
+          <PanelHeading :level="HeadingLevelEnum.H2">Panel Error</PanelHeading>
+          <PanelBody no-min-height>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus
+            laborum necessitatibus obcaecati exercitationem perferendis ad
+            cupiditate dolorem quam autem. At qui eum temporibus ad similique
+            ipsa id sed eos iure.
+          </PanelBody>
+        </Panel>
+      </div>
+      <div class="col-12 col-md-4">
+        <Panel :variant="PanelVariantsEnum.ERROR" animated slim>
+          <PanelHeading :level="HeadingLevelEnum.H2"
+            >Panel Error Animated</PanelHeading
           >
           <PanelBody no-min-height>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus
@@ -246,10 +269,40 @@ const vehicle = computed(() => {
         </Panel>
       </div>
       <div class="col-12 col-md-4">
+        <Panel :bg-color="PanelBgColorsEnum.PRIMARY" slim>
+          <div>
+            <PanelHeading :level="HeadingLevelEnum.H2"
+              >Panel Primary Background</PanelHeading
+            >
+            <PanelBody no-min-height no-padding-top>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Accusamus laborum necessitatibus obcaecati exercitationem
+              perferendis ad cupiditate dolorem quam autem. At qui eum
+              temporibus ad similique ipsa id sed eos iure.
+            </PanelBody>
+          </div>
+        </Panel>
+      </div>
+      <div class="col-12 col-md-4">
         <Panel :variant="PanelVariantsEnum.SUCCESS" slim>
           <div>
-            <PanelHeading :level="PanelHeadingLevelEnum.H2"
+            <PanelHeading :level="HeadingLevelEnum.H2"
               >Panel Success</PanelHeading
+            >
+            <PanelBody no-min-height no-padding-top>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Accusamus laborum necessitatibus obcaecati exercitationem
+              perferendis ad cupiditate dolorem quam autem. At qui eum
+              temporibus ad similique ipsa id sed eos iure.
+            </PanelBody>
+          </div>
+        </Panel>
+      </div>
+      <div class="col-12 col-md-4">
+        <Panel :variant="PanelVariantsEnum.SUCCESS" animated slim>
+          <div>
+            <PanelHeading :level="HeadingLevelEnum.H2"
+              >Panel Success Animated</PanelHeading
             >
             <PanelBody no-min-height no-padding-top>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
@@ -263,7 +316,7 @@ const vehicle = computed(() => {
       <div class="col-12 col-md-4">
         <Panel :variant="PanelVariantsEnum.PRIMARY" slim>
           <div>
-            <PanelHeading :level="PanelHeadingLevelEnum.H2"
+            <PanelHeading :level="HeadingLevelEnum.H2"
               >Panel Primary</PanelHeading
             >
             <PanelBody no-min-height no-padding-top>
@@ -278,23 +331,8 @@ const vehicle = computed(() => {
       <div class="col-12 col-md-4">
         <Panel highlight slim>
           <div>
-            <PanelHeading :level="PanelHeadingLevelEnum.H2"
+            <PanelHeading :level="HeadingLevelEnum.H2"
               >Panel Highlight</PanelHeading
-            >
-            <PanelBody no-min-height no-padding-top>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Accusamus laborum necessitatibus obcaecati exercitationem
-              perferendis ad cupiditate dolorem quam autem. At qui eum
-              temporibus ad similique ipsa id sed eos iure.
-            </PanelBody>
-          </div>
-        </Panel>
-      </div>
-      <div class="col-12 col-md-4">
-        <Panel :variant="PanelVariantsEnum.PRIMARY" highlight slim>
-          <div>
-            <PanelHeading :level="PanelHeadingLevelEnum.H2"
-              >Panel Primary Highlight</PanelHeading
             >
             <PanelBody no-min-height no-padding-top>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
@@ -336,6 +374,16 @@ const vehicle = computed(() => {
             <VehiclePanel
               v-if="vehicle"
               :vehicle="vehicle"
+              :details="vehiclePanelDetails"
+              :editable="vehiclePanelEditable"
+              :loaners-hint-visible="vehiclePanelLoanerHint"
+            />
+          </div>
+          <div class="col-12 col-md-4">
+            <h2>Vehicle Panel with truncated name</h2>
+            <VehiclePanel
+              v-if="vehicleTruncated"
+              :vehicle="vehicleTruncated"
               :details="vehiclePanelDetails"
               :editable="vehiclePanelEditable"
               :loaners-hint-visible="vehiclePanelLoanerHint"

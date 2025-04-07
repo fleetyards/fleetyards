@@ -7,11 +7,11 @@ export default {
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
-import Panel from "@/shared/components/Panel/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
 import { type BaseTableColumn } from "@/shared/components/base/Table/types";
-import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
-import PanelBody from "@/shared/components/Panel/Body/index.vue";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Chart from "@/shared/components/Chart/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComponents } from "@/services/fyAdminApi";

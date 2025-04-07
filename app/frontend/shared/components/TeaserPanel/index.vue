@@ -5,14 +5,14 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import Panel from "@/shared/components/Panel/index.vue";
-import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
-import PanelBody from "@/shared/components/Panel/Body/index.vue";
-import PanelImage from "@/shared/components/Panel/Image/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
+import PanelImage from "@/shared/components/base/Panel/Image/index.vue";
 import type { MediaImage } from "@/services/fyApi";
 import type { RouteLocationNamedRaw } from "vue-router";
-import { PanelAlignmentsEnum } from "@/shared/components/Panel/types";
-import { PanelHeadingLevelEnum } from "@/shared/components/Panel/Heading/types";
+import { PanelAlignmentsEnum } from "@/shared/components/base/Panel/types";
+import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 
 type TeaserItem = {
   name: string;
@@ -65,7 +65,7 @@ const title = computed(() => {
       :alt="item.name"
     />
     <div>
-      <PanelHeading :level="PanelHeadingLevelEnum.H2">
+      <PanelHeading :level="HeadingLevelEnum.H2">
         <router-link v-if="to" :to="to">
           {{ title }}
         </router-link>

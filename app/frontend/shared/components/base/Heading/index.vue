@@ -5,38 +5,61 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import {
   HeadingLevelEnum,
-  HeadingAlignmentEnum,
+  HeadingSizeEnum,
 } from "@/shared/components/base/Heading/types";
 
 type Props = {
   level?: HeadingLevelEnum;
+  size?: HeadingSizeEnum;
+  hero?: boolean;
   hidden?: boolean;
-  alignment?: HeadingAlignmentEnum;
+  shadow?: boolean;
+  truncate?: boolean;
+  mb?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   level: HeadingLevelEnum.H1,
+  size: HeadingSizeEnum.XXL,
+  hero: false,
   hidden: false,
-  alignment: HeadingAlignmentEnum.LEFT,
+  shadow: false,
+  mb: false,
 });
 
 const cssClasses = computed(() => {
   return {
-    "text-3xl": props.level === "h1",
-    "text-2xl": props.level === "h2",
-    "text-xl": props.level === "h3",
-    "text-lg": props.level === "h4",
+    "font-hero": props.hero,
+    "font-opensans": !props.hero,
+    [`text-${props.size}`]: true,
     "sr-only": props.hidden,
-    "text-center": props.alignment === "center",
-    "text-right": props.alignment === "right",
+    "text-shadow": props.shadow,
+    "mb-4": props.mb,
   };
 });
+
+const slots = defineSlots<{
+  default: [];
+  subHeading: [];
+}>();
 </script>
 
 <template>
-  <component :is="level" :class="cssClasses">
-    <slot />
+  <component
+    :is="level"
+    :class="cssClasses"
+    class="font-normal flex flex-col justify-between"
+  >
+    <slot name="default" />
+    <HeadingSmall v-if="slots.subHeading">
+      <slot name="subHeading" />
+    </HeadingSmall>
   </component>
 </template>
+
+<style lang="scss" scoped>
+@import "index";
+</style>

@@ -10,6 +10,7 @@ const VisualTestsRoutes =
   process.env.NODE_ENV !== "production"
     ? [
         {
+          name: "visual-tests",
           path: "/visual-tests/",
           component: () => import("@/frontend/pages/visual-tests.vue"),
           children: visualTestsRoutes,

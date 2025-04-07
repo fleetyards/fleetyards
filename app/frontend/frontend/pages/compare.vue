@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import Box from "@/shared/components/base/Box/index.vue";
+import Box from "@/shared/components/Box/index.vue";
 import { type FilterGroupOption } from "@/shared/components/base/FilterGroup/index.vue";
 import ModelFilterGroup from "@/frontend/components/base/ModelFilterGroup/index.vue";
 import TopViewRows from "@/frontend/components/Compare/Models/TopView/index.vue";

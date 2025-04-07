@@ -12,7 +12,7 @@ import { type Vector3 } from "three";
 import { useI18n } from "@/shared/composables/useI18n";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { TresCanvas } from "@tresjs/core";
-import { OrbitControls, Grid } from "@tresjs/cientos";
+import { OrbitControls } from "@tresjs/cientos";
 import Model from "./Model/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 

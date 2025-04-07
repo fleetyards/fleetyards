@@ -1,27 +1,34 @@
 import axios from "axios";
+import { useWebpStore } from "@/shared/stores/webp";
 
-export const useWebpCheck = () => {
-  const supported = ref(true);
+export const useWebpCheck = (write: boolean = false) => {
+  const webpStore = useWebpStore();
 
   onMounted(() => {
-    check();
+    if (write) {
+      check();
+    }
+  });
+
+  const supported = computed(() => {
+    return webpStore.supported;
   });
 
   const check = async () => {
     if (typeof createImageBitmap === "undefined") {
-      return false;
+      webpStore.supported = false;
     }
 
     const webpData =
       "data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAAAAAAfQ//73v/+BiOh/AAA=";
     const response = await axios.get(webpData, { responseType: "blob" });
 
-    supported.value = await createImageBitmap(response.data).then(
+    webpStore.supported = await createImageBitmap(response.data).then(
       () => true,
       () => false,
     );
 
-    return supported.value;
+    return webpStore.supported;
   };
 
   return {

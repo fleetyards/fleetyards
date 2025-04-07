@@ -11,3 +11,7 @@ export default {
     <slot />
   </p>
 </template>
+
+<style lang="scss" scoped>
+@import "index";
+</style>

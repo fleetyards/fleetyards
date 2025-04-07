@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import Box from "@/shared/components/Box/index.vue";
 import EmptyHeadline from "./Headline/index.vue";
 import EmptyActions from "./Actions/index.vue";
 import EmptyInfo from "./Info/index.vue";

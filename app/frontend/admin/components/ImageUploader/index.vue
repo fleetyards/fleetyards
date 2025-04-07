@@ -119,7 +119,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import EmptyBox from "@/shared/components/EmptyBox/index.vue";
 import ImageRow from "@/admin/components/ImageUploader/ImageRow/index.vue";
 import type { Image } from "@/services/fyAdminApi";
-import Panel from "@/shared/components/Panel/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { formatSize } from "@/shared/utils/Format";

@@ -4693,6 +4693,8 @@ components:
         value:
           type: string
       additionalProperties: false
+      required:
+      - value
       title: CheckInput
     SetupOtpInput:
       type: object

@@ -8,9 +8,9 @@ export default {
 import { uniq as uniqArray } from "@/shared/utils/Array";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import { v4 as uuidv4 } from "uuid";
-import Panel from "@/shared/components/Panel/index.vue";
-import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
-import { PanelHeadingLevelEnum } from "@/shared/components/Panel/Heading/types";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import Loader from "@/shared/components/Loader/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -29,7 +29,7 @@ type Props = {
   primaryKey: keyof T;
   defaultSort?: string;
   title?: string;
-  titleLevel?: PanelHeadingLevelEnum;
+  titleLevel?: HeadingLevelEnum;
   loading?: boolean;
   inlineLoader?: boolean;
   emptyBoxVisible?: boolean;
@@ -40,7 +40,7 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   title: undefined,
   defaultSort: undefined,
-  titleLevel: PanelHeadingLevelEnum.H2,
+  titleLevel: HeadingLevelEnum.H2,
   loading: false,
   inlineLoader: false,
   emptyBoxVisible: false,

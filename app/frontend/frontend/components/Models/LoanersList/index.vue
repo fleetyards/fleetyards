@@ -8,7 +8,7 @@ export default {
 import AsyncData from "@/shared/components/AsyncData.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
-import { PanelHeadingLevelEnum } from "@/shared/components/Panel/Heading/types";
+import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import { useModelLoaners as useModelLoanersQuery } from "@/services/fyApi";
 
 type Props = {
@@ -40,7 +40,7 @@ const { t } = useI18n();
               <ModelPanel
                 :model="item"
                 :details="true"
-                :level="PanelHeadingLevelEnum.H3"
+                :level="HeadingLevelEnum.H3"
               />
             </div>
           </transition-group>

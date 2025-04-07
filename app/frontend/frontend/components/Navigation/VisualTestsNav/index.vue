@@ -19,12 +19,6 @@ const { t } = useI18n();
       icon="fal fa-chevron-left"
     />
     <NavItem
-      :to="{ name: 'visual-tests' }"
-      :label="t('nav.visualTests.index')"
-      icon="fad fa-list"
-      prefix="00"
-    />
-    <NavItem
       :to="{ name: 'visual-tests-panels' }"
       :label="t('nav.visualTests.panels')"
       icon="fadt fa-columns-3"

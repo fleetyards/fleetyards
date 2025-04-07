@@ -108,7 +108,7 @@
 <script lang="ts" setup>
 import VehicleOwner from "@/frontend/components/Vehicles/OwnerLabel/index.vue";
 import ModelPanelMetrics from "@/frontend/components/Models/PanelMetrics/index.vue";
-import Panel from "@/shared/components/Panel/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import Collapsed from "@/shared/components/Collapsed.vue";
 import type {

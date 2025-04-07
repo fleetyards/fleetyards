@@ -7,9 +7,9 @@ export default {
 <script lang="ts" setup>
 import Heading from "@/shared/components/base/Heading/index.vue";
 import StatsPanel from "@/shared/components/StatsPanel/index.vue";
-import Panel from "@/shared/components/Panel/index.vue";
-import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
-import PanelBody from "@/shared/components/Panel/Body/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Chart from "@/shared/components/Chart/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import DashboardUsers from "@/admin/components/Dashboard/Users.vue";

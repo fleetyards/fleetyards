@@ -58,12 +58,12 @@
 
 <script lang="ts" setup>
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
-import Panel from "@/shared/components/Panel/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type ModelModule, type ModelUpgrade } from "@/services/fyApi";
 import { FilterGroupOption } from "@/shared/components/base/FilterGroup/Option/index.vue";
-import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
-import PanelImage from "@/shared/components/Panel/Image/index.vue";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import PanelImage from "@/shared/components/base/Panel/Image/index.vue";
 
 type Props = {
   addons: (ModelModule | ModelUpgrade)[];

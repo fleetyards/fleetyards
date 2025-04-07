@@ -12,7 +12,8 @@ module Shared
             properties: {
               value: {type: :string}
             },
-            additionalProperties: false
+            additionalProperties: false,
+            required: %w[value]
           })
         end
       end

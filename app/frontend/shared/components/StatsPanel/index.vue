@@ -5,8 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import Panel from "@/shared/components/Panel/index.vue";
-import { PanelVariantsEnum } from "@/shared/components/Panel/types";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import { PanelBgColorsEnum } from "@/shared/components/base/Panel/types";
 import NumberFlow from "@number-flow/vue";
 
 type Props = {
@@ -48,7 +48,7 @@ const suffix = computed(() => {
 
 <template>
   <Panel
-    :variant="PanelVariantsEnum.PRIMARY"
+    :bg-color="PanelBgColorsEnum.PRIMARY"
     :outer-spacing="outerSpacing"
     slim
   >

@@ -52,8 +52,7 @@ const vehiclesQueryParams = computed(() => {
 });
 
 const vehiclesQueryKey = computed(() => {
-  return (useVehiclesQueryOptions(vehiclesQueryParams) as CustomQueryOptions)
-    .queryKey;
+  return useVehiclesQueryOptions(vehiclesQueryParams).queryKey;
 });
 
 const { perPage, page, updatePerPage } = usePagination(vehiclesQueryKey);

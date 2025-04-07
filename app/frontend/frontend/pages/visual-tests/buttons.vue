@@ -28,18 +28,18 @@ const toggleButton = () => {
   <div class="row">
     <div class="col-12">
       <Btn
-        :size="BtnSizesEnum.X_SMALL"
-        :disabled="disabled"
-        @click="toggleButton"
-      >
-        X-Small
-      </Btn>
-      <Btn
         :size="BtnSizesEnum.SMALL"
         :disabled="disabled"
         @click="toggleButton"
       >
         Small
+      </Btn>
+      <Btn
+        :size="BtnSizesEnum.X_SMALL"
+        :disabled="disabled"
+        @click="toggleButton"
+      >
+        X-Small
       </Btn>
       <Btn
         :size="BtnSizesEnum.DEFAULT"
@@ -68,13 +68,6 @@ const toggleButton = () => {
         Default
       </Btn>
       <Btn
-        :variant="BtnVariantsEnum.LINK"
-        :disabled="disabled"
-        @click="toggleButton"
-      >
-        Link
-      </Btn>
-      <Btn
         :variant="BtnVariantsEnum.DANGER"
         :disabled="disabled"
         @click="toggleButton"
@@ -87,6 +80,13 @@ const toggleButton = () => {
         @click="toggleButton"
       >
         TRANSPARENT
+      </Btn>
+      <Btn
+        :variant="BtnVariantsEnum.LINK"
+        :disabled="disabled"
+        @click="toggleButton"
+      >
+        Link
       </Btn>
     </div>
   </div>

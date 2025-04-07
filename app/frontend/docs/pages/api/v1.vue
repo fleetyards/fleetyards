@@ -5,6 +5,11 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import Heading from "@/shared/components/base/Heading/index.vue";
+import {
+  HeadingSizeEnum,
+  HeadingLevelEnum,
+} from "@/shared/components/base/Heading/types";
 import { SwaggerUIBundle } from "swagger-ui-dist";
 
 const schemaUrl = computed(() => `${window.API_ENDPOINT}/schema.yaml`);
@@ -43,9 +48,9 @@ onMounted(() => {
 <template>
   <main class="api-page">
     <div class="px-4 sm:px-6 lg:px-8 py-6">
-      <div class="p-6 bg-brand-grayBgDark/80 rounded">
-        <h1 class="font-hero text-4xl mb-5 flex flex-wrap gap-1 items-start">
-          <span>FleetYards.net API</span>
+      <Heading :size="HeadingSizeEnum.HERO" hero>
+        <span class="flex items-start gap-1">
+          FleetYards.net API
           <span
             class="bg-gray-500 font-sans text-white relative rounded-xl text-sm px-2 py-1"
             >{{ apiVersion }}</span
@@ -54,8 +59,10 @@ onMounted(() => {
             class="bg-lime-600 font-sans text-white relative rounded-xl text-sm px-2 py-1"
             >OAS {{ oasVersion }}</span
           >
-        </h1>
-        <p class="mt-4">
+        </span>
+      </Heading>
+      <div class="p-6 bg-brand-grayBgDark/80 rounded mt-4 mb-8">
+        <p>
           “Strap into one of dozens of ships and embark on a life within the
           Star Citizen universe. Unbound by profession or skill sets, you choose
           the path of your own life.”
@@ -64,7 +71,11 @@ onMounted(() => {
           This API provides basic Information about All Ships / Components /
           Manufacturers for the upcomming Space Simulation Star Citizen.
         </p>
-        <h2 class="mt-8 text-2xl font-bold">Pagination</h2>
+      </div>
+      <Heading :level="HeadingLevelEnum.H2" :size="HeadingSizeEnum.XXL"
+        >Pagination</Heading
+      >
+      <div class="p-6 bg-brand-grayBgDark/80 rounded mt-4 mb-8">
         <p class="mb-4">
           Requests that return multiple items will be paginated to
           <code class="hljs p-1 rounded">30</code> items by default. You can
@@ -146,7 +157,11 @@ onMounted(() => {
             </tr>
           </tbody>
         </table>
-        <h2 class="mt-8 text-2xl font-bold">Schema</h2>
+      </div>
+      <Heading :level="HeadingLevelEnum.H2" :size="HeadingSizeEnum.XXL" mb
+        >Schema</Heading
+      >
+      <div class="p-6 bg-brand-grayBgDark/80 rounded mt-4 mb-8">
         <a
           :href="schemaUrl"
           target="_blank"

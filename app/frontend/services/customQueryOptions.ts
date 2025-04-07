@@ -5,7 +5,10 @@ export type CustomQueryOptions = {
 };
 
 export const customQueryOptions = (args: CustomQueryOptions) => {
-  return { ...args, queryKey: transformQueryKey(args.queryKey) };
+  return {
+    ...args,
+    queryKey: transformQueryKey(args.queryKey),
+  } as CustomQueryOptions;
 };
 
 export const transformQueryKey = (key: readonly any[]) => {

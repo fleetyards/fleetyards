@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import AppContact from "@/frontend/components/core/AppContact/index.vue";
-import Panel from "@/shared/components/Panel/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 
 const { t } = useI18n();

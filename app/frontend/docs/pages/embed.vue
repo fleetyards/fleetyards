@@ -7,6 +7,11 @@ export default {
 <script lang="ts" setup>
 import "highlight.js";
 import copyText from "@/shared/utils/CopyText";
+import Heading from "@/shared/components/base/Heading/index.vue";
+import {
+  HeadingSizeEnum,
+  HeadingLevelEnum,
+} from "@/shared/components/base/Heading/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
@@ -58,11 +63,11 @@ const copyExample = () => {
 <template>
   <main class="embed-page">
     <div class="px-4 sm:px-6 lg:px-8 py-6">
-      <div class="p-6 bg-brand-grayBgDark/80 rounded">
-        <h1 class="font-hero text-4xl mb-5">Embed Fleetview</h1>
-
-        <h2 class="text-2xl my-5">Setup</h2>
-
+      <Heading :size="HeadingSizeEnum.HERO" hero mb>Embed Fleetview</Heading>
+      <Heading :level="HeadingLevelEnum.H2" :size="HeadingSizeEnum.XXL"
+        >Setup</Heading
+      >
+      <div class="p-6 bg-brand-grayBgDark/80 rounded mt-4 mb-8">
         <p>
           To get a custom Ship List on your Website you can just paste the
           example code on the right side at the position where you want to
@@ -70,7 +75,7 @@ const copyExample = () => {
         </p>
 
         <div
-          class="md:mx-24 my-10 relative group cursor-pointer"
+          class="md:mx-24 my-5 relative group cursor-pointer"
           @click="copyExample"
         >
           <i
@@ -81,9 +86,11 @@ const copyExample = () => {
             </code>
           </pre>
         </div>
-
-        <h2 class="text-2xl my-5">Options</h2>
-
+      </div>
+      <Heading :level="HeadingLevelEnum.H2" :size="HeadingSizeEnum.XXL"
+        >Options</Heading
+      >
+      <div class="p-6 bg-brand-grayBgDark/80 rounded mt-4 mb-8">
         <h3 class="text-xl my-5">Show Details</h3>
 
         <p class="mb-3">

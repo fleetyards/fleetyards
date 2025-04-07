@@ -17,6 +17,7 @@ import {
   type FleetMember,
   type FleetUpdateInput,
 } from "@/services/fyApi";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 type Props = {
   fleet: Fleet;
@@ -26,6 +27,8 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
+
+const { displayConfirm } = useAppNotifications();
 
 const submitting = ref(false);
 
@@ -47,8 +50,8 @@ const initialValues = ref<FleetUpdateInput>({
 });
 
 const validationSchema = {
-  fid: "required",
-  name: "required",
+  fid: "required|min:3|alpha_dash",
+  name: "required|min:3|alpha_dash",
 };
 
 const { defineField, handleSubmit } = useForm({
@@ -93,18 +96,6 @@ const [publicFleetStats, publicFleetStatsProps] =
 //   removeLogo: false,
 // };
 
-// get fleet() {
-//   return fleetsCollection.record;
-// }
-
-// get metaTitle() {
-//   if (!this.fleet) {
-//     return null;
-//   }
-
-//   return this.$t("title.fleets.settings", { fleet: this.fleet.name });
-// }
-
 // get logoUrl() {
 //   if (this.fleet) {
 //     return this.newLogo.url || this.fleet.logo;
@@ -121,38 +112,9 @@ const [publicFleetStats, publicFleetStatsProps] =
 //   return this.fleet?.myRole === "admin";
 // }
 
-// get leaveTooltip() {
-//   if (this.canEdit) {
-//     return this.$t("texts.fleets.leaveInfo");
-//   }
-
-//   return null;
-// }
-
-// @Watch("$route")
-// onRouteChange() {
-//   this.fetch();
-// }
-
 // @Watch("fleet")
 // onFleetChange() {
 //   this.setupForm();
-// }
-
-// mounted() {
-//   this.fetch();
-
-//   if (this.fleet && !this.canEdit) {
-//     this.$router.replace({
-//       name: "fleet-settings-membership",
-//       params: { slug: this.$route.params.slug },
-//     });
-//     return;
-//   }
-
-//   if (this.fleet) {
-//     this.setupForm();
-//   }
 // }
 
 // selectLogo() {
@@ -282,42 +244,39 @@ const [publicFleetStats, publicFleetStatsProps] =
 //   return null;
 // }
 
-// async fetch() {
-//   await fleetsCollection.findBySlug(this.$route.params.slug);
-// }
-
 const onSubmit = handleSubmit((values) => {});
 
 const onDestroy = async () => {
   deleting.value = true;
 
-  // displayConfirm({
-  //   text: this.$t("messages.confirm.fleet.destroy"),
-  //   onConfirm: async () => {
-  //     const response = await this.$api.destroy(
-  //       `fleets/${this.$route.params.slug}`,
-  //     );
+  displayConfirm({
+    text: t("messages.confirm.fleet.destroy"),
+    onConfirm: async () => {
+      deleting.value = false;
+      //     const response = await this.$api.destroy(
+      //       `fleets/${this.$route.params.slug}`,
+      //     );
 
-  //     if (!response.error) {
-  //       // eslint-disable-next-line @typescript-eslint/no-empty-function
-  //       this.$router.push({ name: "home" }).catch(() => {});
+      //     if (!response.error) {
+      //       // eslint-disable-next-line @typescript-eslint/no-empty-function
+      //       this.$router.push({ name: "home" }).catch(() => {});
 
-  //       this.$comlink.$emit("fleet-update");
+      //       this.$comlink.$emit("fleet-update");
 
-  //       displaySuccess({
-  //         text: this.$t("messages.fleet.destroy.success"),
-  //       });
-  //     } else {
-  //       displayAlert({
-  //         text: this.$t("messages.fleet.destroy.failure"),
-  //       });
-  //       this.deleting = false;
-  //     }
-  //   },
-  //   onClose: () => {
-  //     this.deleting = false;
-  //   },
-  // });
+      //       displaySuccess({
+      //         text: this.$t("messages.fleet.destroy.success"),
+      //       });
+      //     } else {
+      //       displayAlert({
+      //         text: this.$t("messages.fleet.destroy.failure"),
+      //       });
+      //       this.deleting = false;
+      //     }
+    },
+    onClose: () => {
+      deleting.value = false;
+    },
+  });
 };
 </script>
 

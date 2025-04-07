@@ -15,7 +15,7 @@ module ScData
       end
 
       it "loads data from game files" do
-        assert_difference(-> { Hardpoint.where(parent: model).count }, 99) do
+        assert_difference(-> { Hardpoint.where(parent: model).count }, 95) do
           loader.one(model)
         end
       end

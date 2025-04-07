@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import Box from "@/shared/components/base/Box/index.vue";
+import Box from "@/shared/components/Box/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -58,12 +58,16 @@ const resetPage = () => {
 
 <template>
   <div class="empty-box">
-    <Box class="info" :large="true">
-      <h1>{{ t("emptyBox.headline") }}</h1>
-      <p v-if="isQueryPresent">{{ t("emptyBox.texts.query") }}</p>
-      <p v-else>
-        {{ t("emptyBox.texts.info") }}
-      </p>
+    <Box class="info" large>
+      <template #heading>
+        {{ t("emptyBox.headline") }}
+      </template>
+      <template #default>
+        <p v-if="isQueryPresent">{{ t("emptyBox.texts.query") }}</p>
+        <p v-else>
+          {{ t("emptyBox.texts.info") }}
+        </p>
+      </template>
       <template v-if="isQueryPresent" #footer>
         <div class="empty-box-actions">
           <Btn v-if="isPagePresent" @click="resetPage">

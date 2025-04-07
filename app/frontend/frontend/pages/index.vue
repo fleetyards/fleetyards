@@ -11,7 +11,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import SupportBtn from "@/frontend/components/SupportBtn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import Panel from "@/shared/components/Panel/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
 import TeaserPanel from "@/shared/components/TeaserPanel/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";

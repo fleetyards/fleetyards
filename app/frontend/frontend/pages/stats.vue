@@ -7,10 +7,10 @@ export default {
 <script lang="ts" setup>
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Chart from "@/shared/components/Chart/index.vue";
-import Panel from "@/shared/components/Panel/index.vue";
-import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
-import { PanelHeadingLevelEnum } from "@/shared/components/Panel/Heading/types";
-import PanelBody from "@/shared/components/Panel/Body/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import StatsPanel from "@/shared/components/StatsPanel/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
@@ -88,7 +88,7 @@ watch(
   <div class="row">
     <div class="col-12 col-md-6">
       <Panel>
-        <PanelHeading :level="PanelHeadingLevelEnum.H2">
+        <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.modelsByClassification") }}
         </PanelHeading>
         <PanelBody>
@@ -106,7 +106,7 @@ watch(
     </div>
     <div class="col-12 col-md-6">
       <Panel>
-        <PanelHeading :level="PanelHeadingLevelEnum.H2">
+        <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.modelsBySize") }}
         </PanelHeading>
         <PanelBody>
@@ -125,7 +125,7 @@ watch(
   <div class="row">
     <div class="col-12 col-md-5">
       <Panel>
-        <PanelHeading :level="PanelHeadingLevelEnum.H2">
+        <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.modelsByProductionStatus") }}
         </PanelHeading>
         <PanelBody>
@@ -142,7 +142,7 @@ watch(
     </div>
     <div class="col-12 col-md-7">
       <Panel>
-        <PanelHeading :level="PanelHeadingLevelEnum.H2">
+        <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.modelsPerMonth") }}
         </PanelHeading>
         <PanelBody>
@@ -161,7 +161,7 @@ watch(
   <div class="row">
     <div class="col-12 col-lg-6">
       <Panel>
-        <PanelHeading :level="PanelHeadingLevelEnum.H2">
+        <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.modelsByManufacturer") }}
         </PanelHeading>
         <PanelBody>

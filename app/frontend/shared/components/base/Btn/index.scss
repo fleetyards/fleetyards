@@ -92,9 +92,15 @@
   }
 
   &.panel-btn-danger {
-    .panel-btn-inner {
-      background-color: $danger;
-      color: white;
+    &:not(:hover) {
+      border-color: $danger;
+    }
+
+    &:hover {
+      .panel-btn-inner {
+        background-color: $danger;
+        color: white;
+      }
     }
   }
 

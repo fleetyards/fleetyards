@@ -6,18 +6,18 @@ export default {
 
 <script lang="ts" setup>
 import { groupBy, sortBy } from "@/shared/utils/Array";
-import Panel from "@/shared/components/Panel/index.vue";
-import PanelImage from "@/shared/components/Panel/Image/index.vue";
-import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
-import PanelBody from "@/shared/components/Panel/Body/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelImage from "@/shared/components/base/Panel/Image/index.vue";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import HardpointCategory from "@/frontend/components/Models/Hardpoints/Category/index.vue";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 import { useMobile } from "@/shared/composables/useMobile";
 import { type ModelModule } from "@/services/fyApi";
-import { PanelAlignmentsEnum } from "@/shared/components/Panel/types";
-import { PanelHeadingLevelEnum } from "@/shared/components/Panel/Heading/types";
+import { PanelAlignmentsEnum } from "@/shared/components/base/Panel/types";
+import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import { HardpointCategoryEnum, type Hardpoint } from "@/services/fyApi";
 
 type Props = {
@@ -63,8 +63,8 @@ const categories = computed(() => {
   Object.keys(items).forEach((category) => {
     if (
       [
-        HardpointCategoryEnum.CONTROLLER,
-        HardpointCategoryEnum.UNKNOWN,
+        HardpointCategoryEnum.controller,
+        HardpointCategoryEnum.unknown,
       ].includes(category as HardpointCategoryEnum)
     ) {
       return;
@@ -86,7 +86,7 @@ const categories = computed(() => {
       :alt="module.name"
     />
     <div>
-      <PanelHeading :level="PanelHeadingLevelEnum.H2">
+      <PanelHeading :level="HeadingLevelEnum.H2">
         {{ module.name }}
       </PanelHeading>
       <PanelBody no-min-height no-padding-top>

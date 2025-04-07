@@ -5,9 +5,9 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import Panel from "@/shared/components/Panel/index.vue";
-import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
-import PanelBody from "@/shared/components/Panel/Body/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Collapsed from "@/shared/components/Collapsed.vue";
 import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
 import ModelPanelMetrics from "@/frontend/components/Models/PanelMetrics/index.vue";
@@ -16,11 +16,11 @@ import { useI18n } from "@/shared/composables/useI18n";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
-import { PanelHeadingLevelEnum } from "@/shared/components/Panel/Heading/types";
+import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import {
   PanelShadowsEnum,
   PanelBgRoundedEnum,
-} from "@/shared/components/Panel/types";
+} from "@/shared/components/base/Panel/types";
 
 type Props = {
   model: Model;
@@ -28,7 +28,7 @@ type Props = {
   highlight?: boolean;
   id?: string;
   storeImage?: string;
-  level?: PanelHeadingLevelEnum;
+  level?: HeadingLevelEnum;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -36,7 +36,7 @@ const props = withDefaults(defineProps<Props>(), {
   highlight: false,
   id: undefined,
   storeImage: undefined,
-  level: PanelHeadingLevelEnum.H2,
+  level: HeadingLevelEnum.H2,
 });
 
 const { t } = useI18n();

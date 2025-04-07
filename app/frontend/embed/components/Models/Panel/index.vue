@@ -46,8 +46,8 @@
 </template>
 
 <script lang="ts" setup>
-import Panel from "@/shared/components/Panel/index.vue";
-import PanelImage from "@/shared/components/Panel/Image/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelImage from "@/shared/components/base/Panel/Image/index.vue";
 import Collapsed from "@/shared/components/Collapsed.vue";
 import ModelTopMetrics from "@/embed/components/Models/TopMetrics/index.vue";
 import ModelBaseMetrics from "@/embed/components/Models/BaseMetrics/index.vue";

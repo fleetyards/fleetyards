@@ -38,6 +38,9 @@ import {
 import { useAxiosInterceptors } from "@/frontend/composables/useAxiosInterceptors";
 import { useCheckStoreVersion } from "@/shared/composables/useCheckStoreVersion";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useWebpCheck } from "@/shared/composables/useWebpCheck";
+
+useWebpCheck(true);
 
 useAxiosInterceptors();
 

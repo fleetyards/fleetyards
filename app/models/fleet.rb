@@ -25,10 +25,14 @@
 #  youtube            :string
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  entry_role_id      :uuid
+#  executive_role_id  :uuid
 #
 # Indexes
 #
-#  index_fleets_on_fid  (fid) UNIQUE
+#  index_fleets_on_entry_role_id      (entry_role_id)
+#  index_fleets_on_executive_role_id  (executive_role_id)
+#  index_fleets_on_fid                (fid) UNIQUE
 #
 class Fleet < ApplicationRecord
   include UrlFieldConcern
@@ -43,6 +47,8 @@ class Fleet < ApplicationRecord
 
   has_many :fleet_roles,
     dependent: :destroy
+  has_one :executive_role, class_name: "FleetRole", dependent: :nullify
+  has_one :entry_role, class_name: "FleetRole", dependent: :nullify
   has_many :fleet_memberships,
     dependent: :destroy
   has_many :fleet_invite_urls,
@@ -58,6 +64,7 @@ class Fleet < ApplicationRecord
     length: {minimum: 3},
     presence: true,
     format: {with: /\A[a-zA-Z0-9\-_]{3,}\Z/}
+
   validates :name,
     length: {minimum: 3},
     presence: true,
@@ -77,6 +84,7 @@ class Fleet < ApplicationRecord
   before_validation :update_urls
   before_validation :set_normalized_fields
   before_save :update_slugs
+  after_create :setup_default_roles
   after_create :setup_admin_user
 
   def self.accepted
@@ -103,6 +111,33 @@ class Fleet < ApplicationRecord
       aasm_state: :accepted,
       accepted_at: Time.zone.now
     )
+  end
+
+  def setup_default_roles!
+    executive_role = fleet_roles.find_or_create_by!(
+      name: "Admin"
+    ) do |role|
+      role.resource_access = FleetRole::DEFAULT_PRIVILEGES[:admin]
+      role.rank = 0
+      role.permanent = true
+    end
+
+    fleet_roles.find_or_create_by!(
+      name: "Officer"
+    ) do |role|
+      role.resource_access = FleetRole::DEFAULT_PRIVILEGES[:officer]
+      role.rank = 10
+    end
+
+    entry_role = fleet_roles.find_or_create_by!(
+      name: "Member"
+    ) do |role|
+      role.resource_access = FleetRole::DEFAULT_PRIVILEGES[:member]
+      role.rank = 20
+      role.permanent = true
+    end
+
+    update!(executive_role_id: executive_role.id, entry_role_id: entry_role.id)
   end
 
   def role(user_id)

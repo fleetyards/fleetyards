@@ -10,7 +10,7 @@ import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
-import Panel from "@/shared/components/Panel/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import { type FleetMember } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";

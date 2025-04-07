@@ -212,7 +212,12 @@
           "displayOptions": "Display Options"
         }
       },
-      "shoppingCart": "Shopping Cart"
+      "shoppingCart": "Shopping Cart",
+      "visualTests": {
+        "overview": "Overview",
+        "panels": "Panels",
+        "buttons": "Buttons"
+      }
     }
   }
 }

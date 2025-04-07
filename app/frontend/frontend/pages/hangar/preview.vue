@@ -6,8 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import Panel from "@/shared/components/Panel/index.vue";
-import { PanelTransparenciesEnum } from "@/shared/components/Panel/types";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import { PanelTransparenciesEnum } from "@/shared/components/base/Panel/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { useRedirectBackStore } from "@/shared/stores/redirectBack";

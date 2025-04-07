@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { groupBy, sortBy } from "@/shared/utils/Array";
-import Panel from "@/shared/components/Panel/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
 import { type Hardpoint, type HardpointGroupEnum } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import HardpointCategory from "@/frontend/components/Models/Hardpoints/Category/index.vue";
