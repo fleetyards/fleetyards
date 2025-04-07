@@ -4,7 +4,7 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import type { ModelPaintQuerySorts } from "./modelPaintQuerySorts";
+import type { ModelPaintQuerySorts } from './ModelPaintQuerySorts';
 
 export interface ModelPaintQuery {
   nameEq?: string;

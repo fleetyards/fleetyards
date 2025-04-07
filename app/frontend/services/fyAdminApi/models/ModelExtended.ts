@@ -4,18 +4,18 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import type { ModelExtendedAvailability } from "./modelExtendedAvailability";
-import type { ModelExtendedCrew } from "./modelExtendedCrew";
-import type { ModelExtendedLinks } from "./modelExtendedLinks";
-import type { ModelLoaner } from "./modelLoaner";
-import type { Manufacturer } from "./manufacturer";
-import type { ModelExtendedMedia } from "./modelExtendedMedia";
-import type { ModelExtendedMetrics } from "./modelExtendedMetrics";
-import type { CargoHold } from "./cargoHold";
-import type { FuelTank } from "./fuelTank";
-import type { ModelProductionStatusEnum } from "./modelProductionStatusEnum";
-import type { ModelExtendedSpeeds } from "./modelExtendedSpeeds";
-import type { DockCount } from "./dockCount";
+import type { ModelExtendedAvailability } from './ModelExtendedAvailability';
+import type { ModelExtendedCrew } from './ModelExtendedCrew';
+import type { ModelExtendedLinks } from './ModelExtendedLinks';
+import type { ModelLoaner } from './ModelLoaner';
+import type { Manufacturer } from './Manufacturer';
+import type { ModelExtendedMedia } from './ModelExtendedMedia';
+import type { ModelExtendedMetrics } from './ModelExtendedMetrics';
+import type { CargoHold } from './CargoHold';
+import type { FuelTank } from './FuelTank';
+import type { ModelProductionStatusEnum } from './ModelProductionStatusEnum';
+import type { ModelExtendedSpeeds } from './ModelExtendedSpeeds';
+import type { DockCount } from './DockCount';
 
 export interface ModelExtended {
   id: string;

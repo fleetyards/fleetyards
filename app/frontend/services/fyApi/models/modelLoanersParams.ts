@@ -6,6 +6,6 @@
  */
 
 export type ModelLoanersParams = {
-  page?: string;
-  perPage?: string;
+page?: string;
+perPage?: string;
 };

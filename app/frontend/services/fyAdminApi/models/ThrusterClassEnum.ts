@@ -5,13 +5,13 @@
  * OpenAPI spec version: v1
  */
 
-export type ThrusterClassEnum =
-  (typeof ThrusterClassEnum)[keyof typeof ThrusterClassEnum];
+export type ThrusterClassEnum = typeof ThrusterClassEnum[keyof typeof ThrusterClassEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ThrusterClassEnum = {
-  main: "main",
-  retro: "retro",
-  vtol: "vtol",
-  mav: "mav",
+  main: 'main',
+  retro: 'retro',
+  vtol: 'vtol',
+  mav: 'mav',
 } as const;

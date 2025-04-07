@@ -4,6 +4,6 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { RsiHangarItemInput } from "./rsiHangarItemInput";
+import type { RsiHangarItemInput } from './RsiHangarItemInput';
 
 export type SyncRsiHangarInput = RsiHangarItemInput[];

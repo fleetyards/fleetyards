@@ -5,14 +5,14 @@
  * OpenAPI spec version: v1
  */
 
-export type ModelHardpointGroupEnum =
-  (typeof ModelHardpointGroupEnum)[keyof typeof ModelHardpointGroupEnum];
+export type ModelHardpointGroupEnum = typeof ModelHardpointGroupEnum[keyof typeof ModelHardpointGroupEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ModelHardpointGroupEnum = {
-  avionic: "avionic",
-  system: "system",
-  propulsion: "propulsion",
-  thruster: "thruster",
-  weapon: "weapon",
+  avionic: 'avionic',
+  system: 'system',
+  propulsion: 'propulsion',
+  thruster: 'thruster',
+  weapon: 'weapon',
 } as const;

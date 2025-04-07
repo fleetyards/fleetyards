@@ -4,7 +4,7 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { ModelQuerySorts } from "./modelQuerySorts";
+import type { ModelQuerySorts } from './ModelQuerySorts';
 
 export interface ModelQuery {
   beamGteq?: number;

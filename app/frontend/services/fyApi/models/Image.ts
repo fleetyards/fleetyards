@@ -4,7 +4,7 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { Gallery } from "./gallery";
+import type { Gallery } from './Gallery';
 
 export interface Image {
   id: string;

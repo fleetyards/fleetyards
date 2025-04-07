@@ -4,10 +4,10 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { ModelPaintQuery } from "./modelPaintQuery";
+import type { ModelPaintQuery } from './ModelPaintQuery';
 
 export type PaintsParams = {
-  page?: string;
-  perPage?: string;
-  q?: ModelPaintQuery;
+page?: string;
+perPage?: string;
+q?: ModelPaintQuery;
 };

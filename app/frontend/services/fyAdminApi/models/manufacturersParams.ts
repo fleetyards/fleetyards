@@ -4,17 +4,17 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import type { PageParameterParameter } from "./pageParameterParameter";
-import type { SortingParameterParameter } from "./sortingParameterParameter";
-import type { ManufacturerQuery } from "./manufacturerQuery";
+import type { PageParameterParameter } from './PageParameterParameter';
+import type { SortingParameterParameter } from './SortingParameterParameter';
+import type { ManufacturerQuery } from './ManufacturerQuery';
 
 export type ManufacturersParams = {
-  page?: PageParameterParameter;
-  perPage?: string;
-  /**
-   * Sorting
-   */
-  s?: SortingParameterParameter;
-  q?: ManufacturerQuery;
-  cacheId?: string;
+page?: PageParameterParameter;
+perPage?: string;
+/**
+ * Sorting
+ */
+s?: SortingParameterParameter;
+q?: ManufacturerQuery;
+cacheId?: string;
 };

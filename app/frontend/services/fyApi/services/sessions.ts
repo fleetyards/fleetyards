@@ -4,262 +4,280 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import { useMutation } from "@tanstack/vue-query";
+import {
+  useMutation
+} from '@tanstack/vue-query';
 import type {
   MutationFunction,
   UseMutationOptions,
-  UseMutationReturnType,
-} from "@tanstack/vue-query";
+  UseMutationReturnType
+} from '@tanstack/vue-query';
 
-import { unref } from "vue";
-import type { MaybeRef } from "vue";
+import {
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
 
 import type {
   ConfirmAccessInput,
   SessionInput,
-  StandardError,
-  StandardMessage,
-} from "../models";
+  StandardError
+} from '../models';
 
-import { axiosClient } from "../axiosClient";
-import type { ErrorType } from "../axiosClient";
+import {
+  faker
+} from '@faker-js/faker';
+
+import {
+  HttpResponse,
+  delay,
+  http
+} from 'msw';
+
+import type {
+  StandardMessage
+} from '../models';
+
+import { axiosClient } from '../../axiosClient';
+import type { ErrorType } from '../../axiosClient';
+
+
+
+
 
 /**
  * @summary confirm_access session
  */
 export const confirmAccess = (
-  confirmAccessInput: MaybeRef<ConfirmAccessInput>,
-  signal?: AbortSignal,
+    confirmAccessInput: MaybeRef<ConfirmAccessInput>,
+ signal?: AbortSignal
 ) => {
-  confirmAccessInput = unref(confirmAccessInput);
+      confirmAccessInput = unref(confirmAccessInput);
+      
+      return axiosClient<StandardMessage>(
+      {url: `/sessions/confirm-access`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: confirmAccessInput, signal
+    },
+      );
+    }
+  
 
-  return axiosClient<StandardMessage>({
-    url: `/sessions/confirm-access`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: confirmAccessInput,
-    signal,
-  });
-};
 
-export const getConfirmAccessMutationOptions = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof confirmAccess>>,
-    TError,
-    { data: ConfirmAccessInput },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof confirmAccess>>,
-  TError,
-  { data: ConfirmAccessInput },
-  TContext
-> => {
-  const mutationKey = ["confirmAccess"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getConfirmAccessMutationOptions = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof confirmAccess>>, TError,{data: ConfirmAccessInput}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof confirmAccess>>, TError,{data: ConfirmAccessInput}, TContext> => {
+    
+const mutationKey = ['confirmAccess'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof confirmAccess>>,
-    { data: ConfirmAccessInput }
-  > = (props) => {
-    const { data } = props ?? {};
+      
 
-    return confirmAccess(data);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof confirmAccess>>, {data: ConfirmAccessInput}> = (props) => {
+          const {data} = props ?? {};
 
-export type ConfirmAccessMutationResult = NonNullable<
-  Awaited<ReturnType<typeof confirmAccess>>
->;
-export type ConfirmAccessMutationBody = ConfirmAccessInput;
-export type ConfirmAccessMutationError = ErrorType<StandardError>;
+          return  confirmAccess(data,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ConfirmAccessMutationResult = NonNullable<Awaited<ReturnType<typeof confirmAccess>>>
+    export type ConfirmAccessMutationBody = ConfirmAccessInput
+    export type ConfirmAccessMutationError = ErrorType<StandardError>
+
+    /**
  * @summary confirm_access session
  */
-export const useConfirmAccess = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof confirmAccess>>,
-    TError,
-    { data: ConfirmAccessInput },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof confirmAccess>>,
-  TError,
-  { data: ConfirmAccessInput },
-  TContext
-> => {
-  const mutationOptions = getConfirmAccessMutationOptions(options);
+export const useConfirmAccess = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof confirmAccess>>, TError,{data: ConfirmAccessInput}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof confirmAccess>>,
+        TError,
+        {data: ConfirmAccessInput},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getConfirmAccessMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary create session
  */
 export const createSession = (
-  sessionInput: MaybeRef<SessionInput>,
-  signal?: AbortSignal,
+    sessionInput: MaybeRef<SessionInput>,
+ signal?: AbortSignal
 ) => {
-  sessionInput = unref(sessionInput);
+      sessionInput = unref(sessionInput);
+      
+      return axiosClient<StandardMessage>(
+      {url: `/sessions`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: sessionInput, signal
+    },
+      );
+    }
+  
 
-  return axiosClient<StandardMessage>({
-    url: `/sessions`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: sessionInput,
-    signal,
-  });
-};
 
-export const getCreateSessionMutationOptions = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createSession>>,
-    TError,
-    { data: SessionInput },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof createSession>>,
-  TError,
-  { data: SessionInput },
-  TContext
-> => {
-  const mutationKey = ["createSession"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getCreateSessionMutationOptions = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createSession>>, TError,{data: SessionInput}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof createSession>>, TError,{data: SessionInput}, TContext> => {
+    
+const mutationKey = ['createSession'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof createSession>>,
-    { data: SessionInput }
-  > = (props) => {
-    const { data } = props ?? {};
+      
 
-    return createSession(data);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createSession>>, {data: SessionInput}> = (props) => {
+          const {data} = props ?? {};
 
-export type CreateSessionMutationResult = NonNullable<
-  Awaited<ReturnType<typeof createSession>>
->;
-export type CreateSessionMutationBody = SessionInput;
-export type CreateSessionMutationError = ErrorType<StandardError>;
+          return  createSession(data,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateSessionMutationResult = NonNullable<Awaited<ReturnType<typeof createSession>>>
+    export type CreateSessionMutationBody = SessionInput
+    export type CreateSessionMutationError = ErrorType<StandardError>
+
+    /**
  * @summary create session
  */
-export const useCreateSession = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createSession>>,
-    TError,
-    { data: SessionInput },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof createSession>>,
-  TError,
-  { data: SessionInput },
-  TContext
-> => {
-  const mutationOptions = getCreateSessionMutationOptions(options);
+export const useCreateSession = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createSession>>, TError,{data: SessionInput}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof createSession>>,
+        TError,
+        {data: SessionInput},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getCreateSessionMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary Destroy Session
  */
-export const destroySession = () => {
-  return axiosClient<void>({ url: `/sessions`, method: "DELETE" });
-};
+export const destroySession = (
+    
+ ) => {
+      
+      
+      return axiosClient<void>(
+      {url: `/sessions`, method: 'DELETE'
+    },
+      );
+    }
+  
 
-export const getDestroySessionMutationOptions = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof destroySession>>,
-    TError,
-    void,
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof destroySession>>,
-  TError,
-  void,
-  TContext
-> => {
-  const mutationKey = ["destroySession"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof destroySession>>,
-    void
-  > = () => {
-    return destroySession();
-  };
+export const getDestroySessionMutationOptions = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof destroySession>>, TError,void, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof destroySession>>, TError,void, TContext> => {
+    
+const mutationKey = ['destroySession'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type DestroySessionMutationResult = NonNullable<
-  Awaited<ReturnType<typeof destroySession>>
->;
 
-export type DestroySessionMutationError = ErrorType<StandardError>;
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof destroySession>>, void> = () => {
+          
 
-/**
+          return  destroySession()
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DestroySessionMutationResult = NonNullable<Awaited<ReturnType<typeof destroySession>>>
+    
+    export type DestroySessionMutationError = ErrorType<StandardError>
+
+    /**
  * @summary Destroy Session
  */
-export const useDestroySession = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof destroySession>>,
-    TError,
-    void,
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof destroySession>>,
-  TError,
-  void,
-  TContext
-> => {
-  const mutationOptions = getDestroySessionMutationOptions(options);
+export const useDestroySession = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof destroySession>>, TError,void, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof destroySession>>,
+        TError,
+        void,
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
+      const mutationOptions = getDestroySessionMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+
+export const getConfirmAccessResponseMock = (overrideResponse: Partial< StandardMessage > = {}): StandardMessage => ({code: faker.string.alpha(20), message: faker.string.alpha(20), ...overrideResponse})
+
+export const getCreateSessionResponseMock = (overrideResponse: Partial< StandardMessage > = {}): StandardMessage => ({code: faker.string.alpha(20), message: faker.string.alpha(20), ...overrideResponse})
+
+
+export const getConfirmAccessMockHandler = (overrideResponse?: StandardMessage | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<StandardMessage> | StandardMessage)) => {
+  return http.post('*/sessions/confirm-access', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getConfirmAccessResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getCreateSessionMockHandler = (overrideResponse?: StandardMessage | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<StandardMessage> | StandardMessage)) => {
+  return http.post('*/sessions', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getCreateSessionResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getDestroySessionMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<void> | void)) => {
+  return http.delete('*/sessions', async (info) => {await delay(1000);
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
+    return new HttpResponse(null,
+      { status: 200,
+        
+      })
+  })
+}
+export const getSessionsMock = () => [
+  getConfirmAccessMockHandler(),
+  getCreateSessionMockHandler(),
+  getDestroySessionMockHandler()
+]

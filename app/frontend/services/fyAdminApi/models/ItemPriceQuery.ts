@@ -4,8 +4,8 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import type { ItemPriceItemTypeEnum } from "./itemPriceItemTypeEnum";
-import type { ItemPriceTypeEnum } from "./itemPriceTypeEnum";
+import type { ItemPriceItemTypeEnum } from './ItemPriceItemTypeEnum';
+import type { ItemPriceTypeEnum } from './ItemPriceTypeEnum';
 
 export interface ItemPriceQuery {
   locationCont?: string;

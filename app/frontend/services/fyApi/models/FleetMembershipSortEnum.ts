@@ -5,17 +5,17 @@
  * OpenAPI spec version: v1
  */
 
-export type FleetMembershipSortEnum =
-  (typeof FleetMembershipSortEnum)[keyof typeof FleetMembershipSortEnum];
+export type FleetMembershipSortEnum = typeof FleetMembershipSortEnum[keyof typeof FleetMembershipSortEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FleetMembershipSortEnum = {
-  user_rsi_handle_asc: "user_rsi_handle asc",
-  user_rsi_handle_desc: "user_rsi_handle desc",
-  user_username_asc: "user_username asc",
-  user_username_desc: "user_username desc",
-  created_at_asc: "created_at asc",
-  created_at_desc: "created_at desc",
-  accepted_at_asc: "accepted_at asc",
-  accepted_at_desc: "accepted_at desc",
+  user_rsi_handle_asc: 'user_rsi_handle asc',
+  user_rsi_handle_desc: 'user_rsi_handle desc',
+  user_username_asc: 'user_username asc',
+  user_username_desc: 'user_username desc',
+  created_at_asc: 'created_at asc',
+  created_at_desc: 'created_at desc',
+  accepted_at_asc: 'accepted_at asc',
+  accepted_at_desc: 'accepted_at desc',
 } as const;

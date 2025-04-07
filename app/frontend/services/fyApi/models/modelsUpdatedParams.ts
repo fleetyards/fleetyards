@@ -6,6 +6,6 @@
  */
 
 export type ModelsUpdatedParams = {
-  from?: string;
-  to?: string;
+from?: string;
+to?: string;
 };

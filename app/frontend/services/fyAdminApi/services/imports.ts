@@ -4,181 +4,215 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import { useQuery } from "@tanstack/vue-query";
+import {
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   DataTag,
   QueryFunction,
   QueryKey,
   UseQueryOptions,
-  UseQueryReturnType,
-} from "@tanstack/vue-query";
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import { unref } from "vue";
-import type { MaybeRef } from "vue";
+import {
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
 
-import type { Import, Imports, ImportsParams, StandardError } from "../models";
+import type {
+  ImportsParams,
+  StandardError
+} from '../models';
 
-import { axiosClient } from "../axiosClient";
-import type { ErrorType } from "../axiosClient";
-import { customQueryOptions } from "../../customQueryOptions";
+import {
+  faker
+} from '@faker-js/faker';
+
+import {
+  HttpResponse,
+  delay,
+  http
+} from 'msw';
+
+import {
+  ImportStatusEnum,
+  ImportTypeEnum
+} from '../models';
+import type {
+  Import,
+  Imports
+} from '../models';
+
+import { axiosClient } from '../../axiosAdminClient';
+import type { ErrorType } from '../../axiosAdminClient';
+import { customQueryOptions } from '../../customQueryOptions';
+
+
+
+
 
 /**
  * Get a List of Imports
  * @summary Imports list
  */
 export const imports = (
-  params?: MaybeRef<ImportsParams>,
-  signal?: AbortSignal,
+    params?: MaybeRef<ImportsParams>,
+ signal?: AbortSignal
 ) => {
-  params = unref(params);
+      params = unref(params);
+      
+      return axiosClient<Imports>(
+      {url: `/imports`, method: 'GET',
+        params: unref(params), signal
+    },
+      );
+    }
+  
 
-  return axiosClient<Imports>({
-    url: `/imports`,
-    method: "GET",
-    params: unref(params),
-    signal,
-  });
-};
+const getImportsQueryKey = (params?: MaybeRef<ImportsParams>,) => {
+    return ['imports', ...(params ? [params]: [])] as const;
+    }
 
-const getImportsQueryKey = (params?: MaybeRef<ImportsParams>) => {
-  return ["imports", ...(params ? [params] : [])] as const;
-};
-
-export const useImportsQueryOptions = <
-  TData = Awaited<ReturnType<typeof imports>>,
-  TError = ErrorType<StandardError>,
->(
-  params?: MaybeRef<ImportsParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof imports>>, TError, TData>
-    >;
-  },
+    
+export const useImportsQueryOptions = <TData = Awaited<ReturnType<typeof imports>>, TError = ErrorType<StandardError>>(params?: MaybeRef<ImportsParams>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof imports>>, TError, TData>>, }
 ) => {
-  const { query: queryOptions } = options ?? {};
 
-  const queryKey = getImportsQueryKey(params);
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof imports>>> = ({
-    signal,
-  }) => imports(params, signal);
+  const queryKey =  getImportsQueryKey(params);
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof imports>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof imports>>> = ({ signal }) => imports(params, signal);
 
-export type ImportsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof imports>>
->;
-export type ImportsQueryError = ErrorType<StandardError>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof imports>>, TError, TData> 
+}
+
+export type ImportsQueryResult = NonNullable<Awaited<ReturnType<typeof imports>>>
+export type ImportsQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Imports list
  */
 
-export function useImports<
-  TData = Awaited<ReturnType<typeof imports>>,
-  TError = ErrorType<StandardError>,
->(
-  params?: MaybeRef<ImportsParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof imports>>, TError, TData>
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useImportsQueryOptions(params, options);
+export function useImports<TData = Awaited<ReturnType<typeof imports>>, TError = ErrorType<StandardError>>(
+ params?: MaybeRef<ImportsParams>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof imports>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useImportsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
 
+
+
 /**
  * @summary Import Detail
  */
-export const _import = (id: MaybeRef<string>, signal?: AbortSignal) => {
-  id = unref(id);
-
-  return axiosClient<Import>({ url: `/imports/${id}`, method: "GET", signal });
-};
-
-const getImportQueryKey = (id: MaybeRef<string>) => {
-  return ["imports", id] as const;
-};
-
-export const useImportQueryOptions = <
-  TData = Awaited<ReturnType<typeof _import>>,
-  TError = ErrorType<StandardError>,
->(
-  id: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof _import>>, TError, TData>
-    >;
-  },
+export const _import = (
+    id: MaybeRef<string>,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {};
+      id = unref(id);
+      
+      return axiosClient<Import>(
+      {url: `/imports/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  const queryKey = getImportQueryKey(id);
+const getImportQueryKey = (id: MaybeRef<string>,) => {
+    return ['imports',id] as const;
+    }
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof _import>>> = ({
-    signal,
-  }) => _import(id, signal);
+    
+export const useImportQueryOptions = <TData = Awaited<ReturnType<typeof _import>>, TError = ErrorType<StandardError>>(id: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof _import>>, TError, TData>>, }
+) => {
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+const {query: queryOptions} = options ?? {};
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof _import>>,
-    TError,
-    TData
-  >;
-};
+  const queryKey =  getImportQueryKey(id);
 
-export type _ImportQueryResult = NonNullable<
-  Awaited<ReturnType<typeof _import>>
->;
-export type _ImportQueryError = ErrorType<StandardError>;
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof _import>>> = ({ signal }) => _import(id, signal);
+
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof _import>>, TError, TData> 
+}
+
+export type _ImportQueryResult = NonNullable<Awaited<ReturnType<typeof _import>>>
+export type _ImportQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Import Detail
  */
 
-export function useImport<
-  TData = Awaited<ReturnType<typeof _import>>,
-  TError = ErrorType<StandardError>,
->(
-  id: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof _import>>, TError, TData>
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useImportQueryOptions(id, options);
+export function useImport<TData = Awaited<ReturnType<typeof _import>>, TError = ErrorType<StandardError>>(
+ id: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof _import>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useImportQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
+
+
+
+export const getImportsResponseMock = (overrideResponse: Partial< Imports > = {}): Imports => ({meta: {pagination: faker.helpers.arrayElement([{totalCount: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), currentPage: faker.number.int({min: undefined, max: undefined}), totalPages: faker.number.int({min: undefined, max: undefined}), defaultPerPage: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), maxPerPage: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), perPageSteps: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.helpers.arrayElement([faker.string.alpha(20),faker.number.int({min: undefined, max: undefined}),]))), undefined])}, undefined])}, items: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), type: faker.helpers.arrayElement(Object.values(ImportTypeEnum)), status: faker.helpers.arrayElement(Object.values(ImportStatusEnum)), info: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), version: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), input: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), output: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), import: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), importData: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), startedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), finishedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), failedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), ...overrideResponse})
+
+export const getImportResponseMock = (overrideResponse: Partial< Import > = {}): Import => ({id: faker.string.uuid(), type: faker.helpers.arrayElement(Object.values(ImportTypeEnum)), status: faker.helpers.arrayElement(Object.values(ImportStatusEnum)), info: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), version: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), input: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), output: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), import: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), importData: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), startedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), finishedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), failedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
+
+
+export const getImportsMockHandler = (overrideResponse?: Imports | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<Imports> | Imports)) => {
+  return http.get('*/imports', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getImportsResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getImportMockHandler = (overrideResponse?: Import | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<Import> | Import)) => {
+  return http.get('*/imports/:id', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getImportResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+export const getImportsMock = () => [
+  getImportsMockHandler(),
+  getImportMockHandler()
+]

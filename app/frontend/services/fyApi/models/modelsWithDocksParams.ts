@@ -4,11 +4,11 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { ModelQuery } from "./modelQuery";
+import type { ModelQuery } from './ModelQuery';
 
 export type ModelsWithDocksParams = {
-  page?: string;
-  perPage?: string;
-  q?: ModelQuery;
-  cacheId?: string;
+page?: string;
+perPage?: string;
+q?: ModelQuery;
+cacheId?: string;
 };

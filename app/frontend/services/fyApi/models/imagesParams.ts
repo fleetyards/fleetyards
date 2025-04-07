@@ -4,11 +4,11 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { ImageQuery } from "./imageQuery";
+import type { ImageQuery } from './ImageQuery';
 
 export type ImagesParams = {
-  page?: string;
-  perPage?: string;
-  q?: ImageQuery;
-  cacheId?: string;
+page?: string;
+perPage?: string;
+q?: ImageQuery;
+cacheId?: string;
 };

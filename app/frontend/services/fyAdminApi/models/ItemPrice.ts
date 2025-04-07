@@ -4,9 +4,9 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import type { ItemPriceTimeRangeEnum } from "./itemPriceTimeRangeEnum";
-import type { ItemPriceTypeEnum } from "./itemPriceTypeEnum";
-import type { ItemPriceItemTypeEnum } from "./itemPriceItemTypeEnum";
+import type { ItemPriceTimeRangeEnum } from './ItemPriceTimeRangeEnum';
+import type { ItemPriceTypeEnum } from './ItemPriceTypeEnum';
+import type { ItemPriceItemTypeEnum } from './ItemPriceItemTypeEnum';
 
 export interface ItemPrice {
   id: string;

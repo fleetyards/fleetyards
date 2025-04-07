@@ -4,10 +4,10 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { HardpointGroupEnum } from "./hardpointGroupEnum";
-import type { HardpointCategoryEnum } from "./hardpointCategoryEnum";
-import type { HardpointSourceEnum } from "./hardpointSourceEnum";
-import type { Component } from "./component";
+import type { HardpointGroupEnum } from './HardpointGroupEnum';
+import type { HardpointCategoryEnum } from './HardpointCategoryEnum';
+import type { HardpointSourceEnum } from './HardpointSourceEnum';
+import type { Component } from './Component';
 
 export interface Hardpoint {
   id: string;

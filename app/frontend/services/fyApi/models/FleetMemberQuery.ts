@@ -4,8 +4,8 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { FleetMembershipRoleEnum } from "./fleetMembershipRoleEnum";
-import type { FleetMemberQuerySorts } from "./fleetMemberQuerySorts";
+import type { FleetMembershipRoleEnum } from './FleetMembershipRoleEnum';
+import type { FleetMemberQuerySorts } from './FleetMemberQuerySorts';
 
 export interface FleetMemberQuery {
   usernameCont?: string;

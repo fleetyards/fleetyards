@@ -5,13 +5,13 @@
  * OpenAPI spec version: v1
  */
 
-export type ImportStatusEnum =
-  (typeof ImportStatusEnum)[keyof typeof ImportStatusEnum];
+export type ImportStatusEnum = typeof ImportStatusEnum[keyof typeof ImportStatusEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImportStatusEnum = {
-  created: "created",
-  started: "started",
-  finished: "finished",
-  failed: "failed",
+  created: 'created',
+  started: 'started',
+  finished: 'finished',
+  failed: 'failed',
 } as const;

@@ -4,7 +4,7 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { ModelUpgradeMedia } from "./modelUpgradeMedia";
+import type { ModelUpgradeMedia } from './ModelUpgradeMedia';
 
 export interface ModelUpgrade {
   id: string;

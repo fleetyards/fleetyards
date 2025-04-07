@@ -6,5 +6,5 @@
  */
 
 export type ModelsEmbedParams = {
-  models: string[];
+models: string[];
 };

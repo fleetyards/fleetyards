@@ -5,13 +5,14 @@
  * OpenAPI spec version: v1
  */
 
-export type DockTypeEnum = (typeof DockTypeEnum)[keyof typeof DockTypeEnum];
+export type DockTypeEnum = typeof DockTypeEnum[keyof typeof DockTypeEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DockTypeEnum = {
-  vehiclepad: "vehiclepad",
-  garage: "garage",
-  landingpad: "landingpad",
-  dockingport: "dockingport",
-  hangar: "hangar",
+  vehiclepad: 'vehiclepad',
+  garage: 'garage',
+  landingpad: 'landingpad',
+  dockingport: 'dockingport',
+  hangar: 'hangar',
 } as const;

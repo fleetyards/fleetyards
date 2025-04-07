@@ -4,8 +4,8 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { Meta } from "./meta";
-import type { Component } from "./component";
+import type { Meta } from './Meta';
+import type { Component } from './Component';
 
 export interface Components {
   meta: Meta;

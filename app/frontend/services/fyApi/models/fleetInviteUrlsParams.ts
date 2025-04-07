@@ -6,6 +6,6 @@
  */
 
 export type FleetInviteUrlsParams = {
-  page?: string;
-  perPage?: string;
+page?: string;
+perPage?: string;
 };

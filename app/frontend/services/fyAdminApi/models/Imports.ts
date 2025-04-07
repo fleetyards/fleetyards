@@ -4,8 +4,8 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import type { Meta } from "./meta";
-import type { Import } from "./import";
+import type { Meta } from './Meta';
+import type { Import } from './Import';
 
 export interface Imports {
   meta: Meta;

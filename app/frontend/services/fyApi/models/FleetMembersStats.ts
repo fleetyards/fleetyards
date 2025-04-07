@@ -4,7 +4,7 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { FleetMembersStatsMetrics } from "./fleetMembersStatsMetrics";
+import type { FleetMembersStatsMetrics } from './FleetMembersStatsMetrics';
 
 export interface FleetMembersStats {
   total: number;

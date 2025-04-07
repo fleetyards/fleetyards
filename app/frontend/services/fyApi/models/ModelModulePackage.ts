@@ -4,8 +4,8 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { ModelModule } from "./modelModule";
-import type { ModelModulePackageMedia } from "./modelModulePackageMedia";
+import type { ModelModule } from './ModelModule';
+import type { ModelModulePackageMedia } from './ModelModulePackageMedia';
 
 export interface ModelModulePackage {
   id: string;

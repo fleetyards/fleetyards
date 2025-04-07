@@ -4,11 +4,11 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { ComponentQuery } from "./componentQuery";
+import type { ComponentQuery } from './ComponentQuery';
 
 export type ComponentsParams = {
-  page?: string;
-  perPage?: string;
-  q?: ComponentQuery;
-  cacheId?: string;
+page?: string;
+perPage?: string;
+q?: ComponentQuery;
+cacheId?: string;
 };

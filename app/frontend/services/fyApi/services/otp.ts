@@ -4,350 +4,363 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import { useMutation } from "@tanstack/vue-query";
+import {
+  useMutation
+} from '@tanstack/vue-query';
 import type {
   MutationFunction,
   UseMutationOptions,
-  UseMutationReturnType,
-} from "@tanstack/vue-query";
+  UseMutationReturnType
+} from '@tanstack/vue-query';
 
-import { unref } from "vue";
-import type { MaybeRef } from "vue";
+import {
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
+
+import type {
+  SetupOtpInput,
+  StandardError,
+  ValidationError
+} from '../models';
+
+import {
+  faker
+} from '@faker-js/faker';
+
+import {
+  HttpResponse,
+  delay,
+  http
+} from 'msw';
 
 import type {
   OtpBackupCodes,
-  SetupOtpInput,
-  StandardError,
-  StandardMessage,
-  ValidationError,
-} from "../models";
+  StandardMessage
+} from '../models';
 
-import { axiosClient } from "../axiosClient";
-import type { ErrorType } from "../axiosClient";
+import { axiosClient } from '../../axiosClient';
+import type { ErrorType } from '../../axiosClient';
+
+
+
+
 
 /**
  * @summary Disable OTP Setup
  */
 export const disableOtpSetup = (
-  setupOtpInput: MaybeRef<SetupOtpInput>,
-  signal?: AbortSignal,
+    setupOtpInput: MaybeRef<SetupOtpInput>,
+ signal?: AbortSignal
 ) => {
-  setupOtpInput = unref(setupOtpInput);
+      setupOtpInput = unref(setupOtpInput);
+      
+      return axiosClient<StandardMessage>(
+      {url: `/otp/disable`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: setupOtpInput, signal
+    },
+      );
+    }
+  
 
-  return axiosClient<StandardMessage>({
-    url: `/otp/disable`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: setupOtpInput,
-    signal,
-  });
-};
 
-export const getDisableOtpSetupMutationOptions = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof disableOtpSetup>>,
-    TError,
-    { data: SetupOtpInput },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof disableOtpSetup>>,
-  TError,
-  { data: SetupOtpInput },
-  TContext
-> => {
-  const mutationKey = ["disableOtpSetup"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getDisableOtpSetupMutationOptions = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof disableOtpSetup>>, TError,{data: SetupOtpInput}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof disableOtpSetup>>, TError,{data: SetupOtpInput}, TContext> => {
+    
+const mutationKey = ['disableOtpSetup'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof disableOtpSetup>>,
-    { data: SetupOtpInput }
-  > = (props) => {
-    const { data } = props ?? {};
+      
 
-    return disableOtpSetup(data);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof disableOtpSetup>>, {data: SetupOtpInput}> = (props) => {
+          const {data} = props ?? {};
 
-export type DisableOtpSetupMutationResult = NonNullable<
-  Awaited<ReturnType<typeof disableOtpSetup>>
->;
-export type DisableOtpSetupMutationBody = SetupOtpInput;
-export type DisableOtpSetupMutationError = ErrorType<
-  ValidationError | StandardError
->;
+          return  disableOtpSetup(data,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DisableOtpSetupMutationResult = NonNullable<Awaited<ReturnType<typeof disableOtpSetup>>>
+    export type DisableOtpSetupMutationBody = SetupOtpInput
+    export type DisableOtpSetupMutationError = ErrorType<ValidationError | StandardError>
+
+    /**
  * @summary Disable OTP Setup
  */
-export const useDisableOtpSetup = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof disableOtpSetup>>,
-    TError,
-    { data: SetupOtpInput },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof disableOtpSetup>>,
-  TError,
-  { data: SetupOtpInput },
-  TContext
-> => {
-  const mutationOptions = getDisableOtpSetupMutationOptions(options);
+export const useDisableOtpSetup = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof disableOtpSetup>>, TError,{data: SetupOtpInput}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof disableOtpSetup>>,
+        TError,
+        {data: SetupOtpInput},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getDisableOtpSetupMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary Enable OTP Setup
  */
 export const enableOtpSetup = (
-  setupOtpInput: MaybeRef<SetupOtpInput>,
-  signal?: AbortSignal,
+    setupOtpInput: MaybeRef<SetupOtpInput>,
+ signal?: AbortSignal
 ) => {
-  setupOtpInput = unref(setupOtpInput);
+      setupOtpInput = unref(setupOtpInput);
+      
+      return axiosClient<OtpBackupCodes>(
+      {url: `/otp/enable`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: setupOtpInput, signal
+    },
+      );
+    }
+  
 
-  return axiosClient<OtpBackupCodes>({
-    url: `/otp/enable`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: setupOtpInput,
-    signal,
-  });
-};
 
-export const getEnableOtpSetupMutationOptions = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof enableOtpSetup>>,
-    TError,
-    { data: SetupOtpInput },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof enableOtpSetup>>,
-  TError,
-  { data: SetupOtpInput },
-  TContext
-> => {
-  const mutationKey = ["enableOtpSetup"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getEnableOtpSetupMutationOptions = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof enableOtpSetup>>, TError,{data: SetupOtpInput}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof enableOtpSetup>>, TError,{data: SetupOtpInput}, TContext> => {
+    
+const mutationKey = ['enableOtpSetup'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof enableOtpSetup>>,
-    { data: SetupOtpInput }
-  > = (props) => {
-    const { data } = props ?? {};
+      
 
-    return enableOtpSetup(data);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof enableOtpSetup>>, {data: SetupOtpInput}> = (props) => {
+          const {data} = props ?? {};
 
-export type EnableOtpSetupMutationResult = NonNullable<
-  Awaited<ReturnType<typeof enableOtpSetup>>
->;
-export type EnableOtpSetupMutationBody = SetupOtpInput;
-export type EnableOtpSetupMutationError = ErrorType<
-  ValidationError | StandardError
->;
+          return  enableOtpSetup(data,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type EnableOtpSetupMutationResult = NonNullable<Awaited<ReturnType<typeof enableOtpSetup>>>
+    export type EnableOtpSetupMutationBody = SetupOtpInput
+    export type EnableOtpSetupMutationError = ErrorType<ValidationError | StandardError>
+
+    /**
  * @summary Enable OTP Setup
  */
-export const useEnableOtpSetup = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof enableOtpSetup>>,
-    TError,
-    { data: SetupOtpInput },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof enableOtpSetup>>,
-  TError,
-  { data: SetupOtpInput },
-  TContext
-> => {
-  const mutationOptions = getEnableOtpSetupMutationOptions(options);
+export const useEnableOtpSetup = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof enableOtpSetup>>, TError,{data: SetupOtpInput}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof enableOtpSetup>>,
+        TError,
+        {data: SetupOtpInput},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getEnableOtpSetupMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary Generate OTP Backup Codes
  */
-export const generateOtpBackupCodes = (signal?: AbortSignal) => {
-  return axiosClient<OtpBackupCodes>({
-    url: `/otp/generate-backup-codes`,
-    method: "POST",
-    signal,
-  });
-};
+export const generateOtpBackupCodes = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return axiosClient<OtpBackupCodes>(
+      {url: `/otp/generate-backup-codes`, method: 'POST', signal
+    },
+      );
+    }
+  
 
-export const getGenerateOtpBackupCodesMutationOptions = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof generateOtpBackupCodes>>,
-    TError,
-    void,
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof generateOtpBackupCodes>>,
-  TError,
-  void,
-  TContext
-> => {
-  const mutationKey = ["generateOtpBackupCodes"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof generateOtpBackupCodes>>,
-    void
-  > = () => {
-    return generateOtpBackupCodes();
-  };
+export const getGenerateOtpBackupCodesMutationOptions = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof generateOtpBackupCodes>>, TError,void, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof generateOtpBackupCodes>>, TError,void, TContext> => {
+    
+const mutationKey = ['generateOtpBackupCodes'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type GenerateOtpBackupCodesMutationResult = NonNullable<
-  Awaited<ReturnType<typeof generateOtpBackupCodes>>
->;
 
-export type GenerateOtpBackupCodesMutationError = ErrorType<
-  ValidationError | StandardError
->;
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof generateOtpBackupCodes>>, void> = () => {
+          
 
-/**
+          return  generateOtpBackupCodes()
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type GenerateOtpBackupCodesMutationResult = NonNullable<Awaited<ReturnType<typeof generateOtpBackupCodes>>>
+    
+    export type GenerateOtpBackupCodesMutationError = ErrorType<ValidationError | StandardError>
+
+    /**
  * @summary Generate OTP Backup Codes
  */
-export const useGenerateOtpBackupCodes = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof generateOtpBackupCodes>>,
-    TError,
-    void,
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof generateOtpBackupCodes>>,
-  TError,
-  void,
-  TContext
-> => {
-  const mutationOptions = getGenerateOtpBackupCodesMutationOptions(options);
+export const useGenerateOtpBackupCodes = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof generateOtpBackupCodes>>, TError,void, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof generateOtpBackupCodes>>,
+        TError,
+        void,
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getGenerateOtpBackupCodesMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary Start OTP Setup
  */
-export const startOtpSetup = (signal?: AbortSignal) => {
-  return axiosClient<StandardMessage>({
-    url: `/otp/start`,
-    method: "POST",
-    signal,
-  });
-};
+export const startOtpSetup = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return axiosClient<StandardMessage>(
+      {url: `/otp/start`, method: 'POST', signal
+    },
+      );
+    }
+  
 
-export const getStartOtpSetupMutationOptions = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof startOtpSetup>>,
-    TError,
-    void,
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof startOtpSetup>>,
-  TError,
-  void,
-  TContext
-> => {
-  const mutationKey = ["startOtpSetup"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof startOtpSetup>>,
-    void
-  > = () => {
-    return startOtpSetup();
-  };
+export const getStartOtpSetupMutationOptions = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof startOtpSetup>>, TError,void, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof startOtpSetup>>, TError,void, TContext> => {
+    
+const mutationKey = ['startOtpSetup'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type StartOtpSetupMutationResult = NonNullable<
-  Awaited<ReturnType<typeof startOtpSetup>>
->;
 
-export type StartOtpSetupMutationError = ErrorType<
-  ValidationError | StandardError
->;
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof startOtpSetup>>, void> = () => {
+          
 
-/**
+          return  startOtpSetup()
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type StartOtpSetupMutationResult = NonNullable<Awaited<ReturnType<typeof startOtpSetup>>>
+    
+    export type StartOtpSetupMutationError = ErrorType<ValidationError | StandardError>
+
+    /**
  * @summary Start OTP Setup
  */
-export const useStartOtpSetup = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof startOtpSetup>>,
-    TError,
-    void,
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof startOtpSetup>>,
-  TError,
-  void,
-  TContext
-> => {
-  const mutationOptions = getStartOtpSetupMutationOptions(options);
+export const useStartOtpSetup = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof startOtpSetup>>, TError,void, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof startOtpSetup>>,
+        TError,
+        void,
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
+      const mutationOptions = getStartOtpSetupMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+
+export const getDisableOtpSetupResponseMock = (overrideResponse: Partial< StandardMessage > = {}): StandardMessage => ({code: faker.string.alpha(20), message: faker.string.alpha(20), ...overrideResponse})
+
+export const getEnableOtpSetupResponseMock = (overrideResponse: Partial< OtpBackupCodes > = {}): OtpBackupCodes => ({codes: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), ...overrideResponse})
+
+export const getGenerateOtpBackupCodesResponseMock = (overrideResponse: Partial< OtpBackupCodes > = {}): OtpBackupCodes => ({codes: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), ...overrideResponse})
+
+export const getStartOtpSetupResponseMock = (overrideResponse: Partial< StandardMessage > = {}): StandardMessage => ({code: faker.string.alpha(20), message: faker.string.alpha(20), ...overrideResponse})
+
+
+export const getDisableOtpSetupMockHandler = (overrideResponse?: StandardMessage | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<StandardMessage> | StandardMessage)) => {
+  return http.post('*/otp/disable', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getDisableOtpSetupResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getEnableOtpSetupMockHandler = (overrideResponse?: OtpBackupCodes | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<OtpBackupCodes> | OtpBackupCodes)) => {
+  return http.post('*/otp/enable', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getEnableOtpSetupResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getGenerateOtpBackupCodesMockHandler = (overrideResponse?: OtpBackupCodes | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<OtpBackupCodes> | OtpBackupCodes)) => {
+  return http.post('*/otp/generate-backup-codes', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getGenerateOtpBackupCodesResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getStartOtpSetupMockHandler = (overrideResponse?: StandardMessage | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<StandardMessage> | StandardMessage)) => {
+  return http.post('*/otp/start', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getStartOtpSetupResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+export const getOtpMock = () => [
+  getDisableOtpSetupMockHandler(),
+  getEnableOtpSetupMockHandler(),
+  getGenerateOtpBackupCodesMockHandler(),
+  getStartOtpSetupMockHandler()
+]

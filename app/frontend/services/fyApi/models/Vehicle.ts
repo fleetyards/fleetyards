@@ -4,12 +4,12 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { BoughtViaEnum } from "./boughtViaEnum";
-import type { HangarGroup } from "./hangarGroup";
-import type { Model } from "./model";
-import type { ModelModulePackage } from "./modelModulePackage";
-import type { ModelPaint } from "./modelPaint";
-import type { ModelUpgrade } from "./modelUpgrade";
+import type { BoughtViaEnum } from './BoughtViaEnum';
+import type { HangarGroup } from './HangarGroup';
+import type { Model } from './Model';
+import type { ModelModulePackage } from './ModelModulePackage';
+import type { ModelPaint } from './ModelPaint';
+import type { ModelUpgrade } from './ModelUpgrade';
 
 export interface Vehicle {
   id: string;

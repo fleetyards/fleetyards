@@ -6,5 +6,5 @@
  */
 
 export interface CheckInput {
-  value?: string;
+  value: string;
 }

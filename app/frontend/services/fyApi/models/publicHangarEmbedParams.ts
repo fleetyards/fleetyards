@@ -4,8 +4,8 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { HangarEmbedQuery } from "./hangarEmbedQuery";
+import type { HangarEmbedQuery } from './HangarEmbedQuery';
 
 export type PublicHangarEmbedParams = {
-  usernames: HangarEmbedQuery;
+usernames: HangarEmbedQuery;
 };

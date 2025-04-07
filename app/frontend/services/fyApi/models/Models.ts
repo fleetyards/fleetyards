@@ -4,8 +4,8 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { Meta } from "./meta";
-import type { Model } from "./model";
+import type { Meta } from './Meta';
+import type { Model } from './Model';
 
 export interface Models {
   meta: Meta;

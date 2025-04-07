@@ -5,4 +5,4 @@
  * OpenAPI spec version: v1
  */
 
-export type FleetModelCountsStatsModelCounts = { [key: string]: number };
+export type FleetModelCountsStatsModelCounts = {[key: string]: number};

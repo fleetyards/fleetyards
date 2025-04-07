@@ -4,8 +4,8 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { BoughtViaEnum } from "./boughtViaEnum";
-import type { HangarQuerySorts } from "./hangarQuerySorts";
+import type { BoughtViaEnum } from './BoughtViaEnum';
+import type { HangarQuerySorts } from './HangarQuerySorts';
 
 export interface HangarQuery {
   beamGteq?: number;

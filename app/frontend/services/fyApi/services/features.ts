@@ -4,85 +4,118 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import { useQuery } from "@tanstack/vue-query";
+import {
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   DataTag,
   QueryFunction,
   QueryKey,
   UseQueryOptions,
-  UseQueryReturnType,
-} from "@tanstack/vue-query";
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import { unref } from "vue";
+import {
+  unref
+} from 'vue';
 
-import { axiosClient } from "../axiosClient";
-import type { ErrorType } from "../axiosClient";
-import { customQueryOptions } from "../../customQueryOptions";
+import {
+  faker
+} from '@faker-js/faker';
+
+import {
+  HttpResponse,
+  delay,
+  http
+} from 'msw';
+
+import { axiosClient } from '../../axiosClient';
+import type { ErrorType } from '../../axiosClient';
+import { customQueryOptions } from '../../customQueryOptions';
+
+
+
+
 
 /**
  * @summary Feature Flags for User
  */
-export const features = (signal?: AbortSignal) => {
-  return axiosClient<string[]>({ url: `/features`, method: "GET", signal });
-};
+export const features = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return axiosClient<string[]>(
+      {url: `/features`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 const getFeaturesQueryKey = () => {
-  return ["features"] as const;
-};
+    return ['features'] as const;
+    }
 
-export const useFeaturesQueryOptions = <
-  TData = Awaited<ReturnType<typeof features>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof features>>, TError, TData>
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const useFeaturesQueryOptions = <TData = Awaited<ReturnType<typeof features>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof features>>, TError, TData>>, }
+) => {
 
-  const queryKey = getFeaturesQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof features>>> = ({
-    signal,
-  }) => features(signal);
+  const queryKey =  getFeaturesQueryKey();
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof features>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof features>>> = ({ signal }) => features(signal);
 
-export type FeaturesQueryResult = NonNullable<
-  Awaited<ReturnType<typeof features>>
->;
-export type FeaturesQueryError = ErrorType<unknown>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof features>>, TError, TData> 
+}
+
+export type FeaturesQueryResult = NonNullable<Awaited<ReturnType<typeof features>>>
+export type FeaturesQueryError = ErrorType<unknown>
+
 
 /**
  * @summary Feature Flags for User
  */
 
-export function useFeatures<
-  TData = Awaited<ReturnType<typeof features>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof features>>, TError, TData>
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useFeaturesQueryOptions(options);
+export function useFeatures<TData = Awaited<ReturnType<typeof features>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof features>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useFeaturesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
+
+
+
+export const getFeaturesResponseMock = (): string[] => (Array.from({length: faker.number.int({min: 1,max: 10})}, () => faker.word.sample()))
+
+
+export const getFeaturesMockHandler = (overrideResponse?: string[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<string[]> | string[])) => {
+  return http.get('*/features', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getFeaturesResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+export const getFeaturesMock = () => [
+  getFeaturesMockHandler()
+]

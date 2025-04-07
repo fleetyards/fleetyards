@@ -5,10 +5,11 @@
  * OpenAPI spec version: v1
  */
 
-export type BoughtViaEnum = (typeof BoughtViaEnum)[keyof typeof BoughtViaEnum];
+export type BoughtViaEnum = typeof BoughtViaEnum[keyof typeof BoughtViaEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const BoughtViaEnum = {
-  pledge_store: "pledge_store",
-  ingame: "ingame",
+  pledge_store: 'pledge_store',
+  ingame: 'ingame',
 } as const;

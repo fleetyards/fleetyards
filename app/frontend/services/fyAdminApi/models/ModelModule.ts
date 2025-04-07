@@ -4,13 +4,13 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import type { ModelModuleMetrics } from "./modelModuleMetrics";
-import type { CargoHold } from "./cargoHold";
-import type { ModelModuleAvailability } from "./modelModuleAvailability";
-import type { ModelModuleMedia } from "./modelModuleMedia";
-import type { Manufacturer } from "./manufacturer";
-import type { Hardpoint } from "./hardpoint";
-import type { Model } from "./model";
+import type { ModelModuleMetrics } from './ModelModuleMetrics';
+import type { CargoHold } from './CargoHold';
+import type { ModelModuleAvailability } from './ModelModuleAvailability';
+import type { ModelModuleMedia } from './ModelModuleMedia';
+import type { Manufacturer } from './Manufacturer';
+import type { Hardpoint } from './Hardpoint';
+import type { Model } from './Model';
 
 export interface ModelModule {
   id: string;

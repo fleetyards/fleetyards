@@ -4,7 +4,7 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { PaginationPerPageStepsItem } from "./paginationPerPageStepsItem";
+import type { PaginationPerPageStepsItem } from './PaginationPerPageStepsItem';
 
 export interface Pagination {
   totalCount?: number;

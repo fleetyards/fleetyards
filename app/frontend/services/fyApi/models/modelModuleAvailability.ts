@@ -4,7 +4,7 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { ItemPrice } from "./itemPrice";
+import type { ItemPrice } from './ItemPrice';
 
 export type ModelModuleAvailability = {
   boughtAt: ItemPrice[];

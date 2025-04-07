@@ -4,8 +4,8 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { Meta } from "./meta";
-import type { Video } from "./video";
+import type { Meta } from './Meta';
+import type { Video } from './Video';
 
 export interface Videos {
   meta: Meta;

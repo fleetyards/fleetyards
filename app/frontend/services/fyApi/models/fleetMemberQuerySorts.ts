@@ -4,8 +4,6 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { FleetMembershipSortEnum } from "./fleetMembershipSortEnum";
+import type { FleetMembershipSortEnum } from './FleetMembershipSortEnum';
 
-export type FleetMemberQuerySorts =
-  | FleetMembershipSortEnum[]
-  | FleetMembershipSortEnum;
+export type FleetMemberQuerySorts = FleetMembershipSortEnum[] | FleetMembershipSortEnum;

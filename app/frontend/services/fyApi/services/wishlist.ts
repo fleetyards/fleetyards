@@ -4,7 +4,10 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import { useMutation, useQuery } from "@tanstack/vue-query";
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   DataTag,
   MutationFunction,
@@ -13,318 +16,364 @@ import type {
   UseMutationOptions,
   UseMutationReturnType,
   UseQueryOptions,
-  UseQueryReturnType,
-} from "@tanstack/vue-query";
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import { unref } from "vue";
-import type { MaybeRef } from "vue";
+import {
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
 
 import type {
-  Hangar,
   StandardError,
-  VehicleExport,
-  WishlistParams,
-} from "../models";
+  WishlistParams
+} from '../models';
 
-import { axiosClient } from "../axiosClient";
-import type { ErrorType } from "../axiosClient";
-import { customQueryOptions } from "../../customQueryOptions";
+import {
+  faker
+} from '@faker-js/faker';
 
-/**
- * @summary Clear your Wishlist
- */
-export const destroyWishlist = () => {
-  return axiosClient<void>({ url: `/wishlist`, method: "DELETE" });
-};
+import {
+  HttpResponse,
+  delay,
+  http
+} from 'msw';
 
-export const getDestroyWishlistMutationOptions = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof destroyWishlist>>,
-    TError,
-    void,
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof destroyWishlist>>,
-  TError,
-  void,
-  TContext
-> => {
-  const mutationKey = ["destroyWishlist"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+import {
+  BoughtViaEnum,
+  ComponentItemClassEnum,
+  HardpointCategoryEnum,
+  HardpointGroupEnum,
+  HardpointSourceEnum,
+  ItemPriceItemTypeEnum,
+  ItemPriceTimeRangeEnum,
+  ItemPriceTypeEnum,
+  ModelProductionStatusEnum,
+  ThrusterClassEnum
+} from '../models';
+import type {
+  Hangar,
+  VehicleExport
+} from '../models';
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof destroyWishlist>>,
-    void
-  > = () => {
-    return destroyWishlist();
-  };
+import { axiosClient } from '../../axiosClient';
+import type { ErrorType } from '../../axiosClient';
+import { customQueryOptions } from '../../customQueryOptions';
 
-  return { mutationFn, ...mutationOptions };
-};
 
-export type DestroyWishlistMutationResult = NonNullable<
-  Awaited<ReturnType<typeof destroyWishlist>>
->;
 
-export type DestroyWishlistMutationError = ErrorType<StandardError>;
+
 
 /**
  * @summary Clear your Wishlist
  */
-export const useDestroyWishlist = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof destroyWishlist>>,
-    TError,
-    void,
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof destroyWishlist>>,
-  TError,
-  void,
-  TContext
-> => {
-  const mutationOptions = getDestroyWishlistMutationOptions(options);
+export const destroyWishlist = (
+    
+ ) => {
+      
+      
+      return axiosClient<void>(
+      {url: `/wishlist`, method: 'DELETE'
+    },
+      );
+    }
+  
 
-  return useMutation(mutationOptions);
-};
-/**
+
+export const getDestroyWishlistMutationOptions = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof destroyWishlist>>, TError,void, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof destroyWishlist>>, TError,void, TContext> => {
+    
+const mutationKey = ['destroyWishlist'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof destroyWishlist>>, void> = () => {
+          
+
+          return  destroyWishlist()
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DestroyWishlistMutationResult = NonNullable<Awaited<ReturnType<typeof destroyWishlist>>>
+    
+    export type DestroyWishlistMutationError = ErrorType<StandardError>
+
+    /**
+ * @summary Clear your Wishlist
+ */
+export const useDestroyWishlist = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof destroyWishlist>>, TError,void, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof destroyWishlist>>,
+        TError,
+        void,
+        TContext
+      > => {
+
+      const mutationOptions = getDestroyWishlistMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary Your Wishlist
  */
 export const wishlist = (
-  params?: MaybeRef<WishlistParams>,
-  signal?: AbortSignal,
+    params?: MaybeRef<WishlistParams>,
+ signal?: AbortSignal
 ) => {
-  params = unref(params);
+      params = unref(params);
+      
+      return axiosClient<Hangar>(
+      {url: `/wishlist`, method: 'GET',
+        params: unref(params), signal
+    },
+      );
+    }
+  
 
-  return axiosClient<Hangar>({
-    url: `/wishlist`,
-    method: "GET",
-    params: unref(params),
-    signal,
-  });
-};
+const getWishlistQueryKey = (params?: MaybeRef<WishlistParams>,) => {
+    return ['wishlist', ...(params ? [params]: [])] as const;
+    }
 
-const getWishlistQueryKey = (params?: MaybeRef<WishlistParams>) => {
-  return ["wishlist", ...(params ? [params] : [])] as const;
-};
-
-export const useWishlistQueryOptions = <
-  TData = Awaited<ReturnType<typeof wishlist>>,
-  TError = ErrorType<StandardError>,
->(
-  params?: MaybeRef<WishlistParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof wishlist>>, TError, TData>
-    >;
-  },
+    
+export const useWishlistQueryOptions = <TData = Awaited<ReturnType<typeof wishlist>>, TError = ErrorType<StandardError>>(params?: MaybeRef<WishlistParams>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof wishlist>>, TError, TData>>, }
 ) => {
-  const { query: queryOptions } = options ?? {};
 
-  const queryKey = getWishlistQueryKey(params);
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof wishlist>>> = ({
-    signal,
-  }) => wishlist(params, signal);
+  const queryKey =  getWishlistQueryKey(params);
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof wishlist>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof wishlist>>> = ({ signal }) => wishlist(params, signal);
 
-export type WishlistQueryResult = NonNullable<
-  Awaited<ReturnType<typeof wishlist>>
->;
-export type WishlistQueryError = ErrorType<StandardError>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof wishlist>>, TError, TData> 
+}
+
+export type WishlistQueryResult = NonNullable<Awaited<ReturnType<typeof wishlist>>>
+export type WishlistQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Your Wishlist
  */
 
-export function useWishlist<
-  TData = Awaited<ReturnType<typeof wishlist>>,
-  TError = ErrorType<StandardError>,
->(
-  params?: MaybeRef<WishlistParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof wishlist>>, TError, TData>
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useWishlistQueryOptions(params, options);
+export function useWishlist<TData = Awaited<ReturnType<typeof wishlist>>, TError = ErrorType<StandardError>>(
+ params?: MaybeRef<WishlistParams>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof wishlist>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useWishlistQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
 
+
+
 /**
  * @summary Export your Wishlist
  */
-export const exportWishlist = (signal?: AbortSignal) => {
-  return axiosClient<VehicleExport[]>({
-    url: `/wishlist/export`,
-    method: "GET",
-    signal,
-  });
-};
+export const exportWishlist = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return axiosClient<VehicleExport[]>(
+      {url: `/wishlist/export`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 const getExportWishlistQueryKey = () => {
-  return ["wishlist", "export"] as const;
-};
+    return ['wishlist','export'] as const;
+    }
 
-export const useExportWishlistQueryOptions = <
-  TData = Awaited<ReturnType<typeof exportWishlist>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof exportWishlist>>, TError, TData>
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const useExportWishlistQueryOptions = <TData = Awaited<ReturnType<typeof exportWishlist>>, TError = ErrorType<StandardError>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof exportWishlist>>, TError, TData>>, }
+) => {
 
-  const queryKey = getExportWishlistQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof exportWishlist>>> = ({
-    signal,
-  }) => exportWishlist(signal);
+  const queryKey =  getExportWishlistQueryKey();
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof exportWishlist>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof exportWishlist>>> = ({ signal }) => exportWishlist(signal);
 
-export type ExportWishlistQueryResult = NonNullable<
-  Awaited<ReturnType<typeof exportWishlist>>
->;
-export type ExportWishlistQueryError = ErrorType<StandardError>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof exportWishlist>>, TError, TData> 
+}
+
+export type ExportWishlistQueryResult = NonNullable<Awaited<ReturnType<typeof exportWishlist>>>
+export type ExportWishlistQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Export your Wishlist
  */
 
-export function useExportWishlist<
-  TData = Awaited<ReturnType<typeof exportWishlist>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof exportWishlist>>, TError, TData>
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useExportWishlistQueryOptions(options);
+export function useExportWishlist<TData = Awaited<ReturnType<typeof exportWishlist>>, TError = ErrorType<StandardError>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof exportWishlist>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useExportWishlistQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
 
+
+
 /**
  * @summary Your Wishlist items
  */
-export const wishlistItems = (signal?: AbortSignal) => {
-  return axiosClient<string[]>({
-    url: `/wishlist/items`,
-    method: "GET",
-    signal,
-  });
-};
+export const wishlistItems = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return axiosClient<string[]>(
+      {url: `/wishlist/items`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 const getWishlistItemsQueryKey = () => {
-  return ["wishlist", "items"] as const;
-};
+    return ['wishlist','items'] as const;
+    }
 
-export const useWishlistItemsQueryOptions = <
-  TData = Awaited<ReturnType<typeof wishlistItems>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof wishlistItems>>, TError, TData>
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const useWishlistItemsQueryOptions = <TData = Awaited<ReturnType<typeof wishlistItems>>, TError = ErrorType<StandardError>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof wishlistItems>>, TError, TData>>, }
+) => {
 
-  const queryKey = getWishlistItemsQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof wishlistItems>>> = ({
-    signal,
-  }) => wishlistItems(signal);
+  const queryKey =  getWishlistItemsQueryKey();
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof wishlistItems>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof wishlistItems>>> = ({ signal }) => wishlistItems(signal);
 
-export type WishlistItemsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof wishlistItems>>
->;
-export type WishlistItemsQueryError = ErrorType<StandardError>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof wishlistItems>>, TError, TData> 
+}
+
+export type WishlistItemsQueryResult = NonNullable<Awaited<ReturnType<typeof wishlistItems>>>
+export type WishlistItemsQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Your Wishlist items
  */
 
-export function useWishlistItems<
-  TData = Awaited<ReturnType<typeof wishlistItems>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof wishlistItems>>, TError, TData>
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useWishlistItemsQueryOptions(options);
+export function useWishlistItems<TData = Awaited<ReturnType<typeof wishlistItems>>, TError = ErrorType<StandardError>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof wishlistItems>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useWishlistItemsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
+
+
+
+export const getWishlistResponseMock = (overrideResponse: Partial< Hangar > = {}): Hangar => ({meta: {pagination: faker.helpers.arrayElement([{totalCount: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), currentPage: faker.number.int({min: undefined, max: undefined}), totalPages: faker.number.int({min: undefined, max: undefined}), defaultPerPage: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), maxPerPage: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), perPageSteps: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.helpers.arrayElement([faker.string.alpha(20),faker.number.int({min: undefined, max: undefined}),]))), undefined])}, undefined])}, items: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), name: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), slug: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), serial: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), alternativeNames: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), boughtVia: faker.helpers.arrayElement(Object.values(BoughtViaEnum)), boughtViaLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), flagship: faker.datatype.boolean(), hangarGroupIds: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.uuid())), hangarGroups: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.string.alpha(20), color: faker.string.alpha(20), public: faker.datatype.boolean(), sort: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), vehiclesCount: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), loaner: faker.datatype.boolean(), model: {id: faker.string.uuid(), scIdentifier: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), name: faker.string.alpha(20), slug: faker.string.alpha(20), availability: {boughtAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), soldAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), rentalAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}))}, brochure: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), classification: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), classificationLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), crew: {max: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), maxLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), min: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), minLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined])}, description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), erkulIdentifier: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), focus: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hasImages: faker.datatype.boolean(), hasModules: faker.datatype.boolean(), hasPaints: faker.datatype.boolean(), hasUpgrades: faker.datatype.boolean(), hasVideos: faker.datatype.boolean(), holo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), lastPledgePrice: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), lastPledgePriceLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), lastUpdatedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), lastUpdatedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), links: {salesPageUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), storeUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined])}, loaners: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({name: faker.string.alpha(20), slug: faker.string.alpha(20)})), manufacturer: faker.helpers.arrayElement([{name: faker.string.alpha(20), slug: faker.string.alpha(20), code: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), logo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), longName: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), scRef: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, undefined]), media: {angledView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), angledViewColored: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), fleetchartImage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), frontView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), frontViewColored: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), sideView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), sideViewColored: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), storeImage: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), topView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), topViewColored: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined])}, metrics: {beam: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), beamLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), cargo: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), cargoLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), fleetchartLength: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), height: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), heightLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hydrogenFuelTankSize: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), isGroundVehicle: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), length: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), lengthLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), mass: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), massLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), quantumFuelTankSize: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), size: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sizeLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), dockSize: faker.helpers.arrayElement([faker.string.alpha(20), undefined])}, cargoHolds: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined}), maxContainerSize: {size: faker.number.int({min: undefined, max: undefined}), dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}}, limits: {min: {dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined})}, max: faker.helpers.arrayElement([{dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined})}, undefined])}})), undefined]), hydrogenFuelTanks: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({capacity: faker.number.int({min: undefined, max: undefined})})), undefined]), quantumFuelTanks: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({capacity: faker.number.int({min: undefined, max: undefined})})), undefined]), onSale: faker.datatype.boolean(), pledgePrice: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), pledgePriceLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), price: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), priceLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), productionNote: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), productionStatus: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ModelProductionStatusEnum)), undefined]), rsiId: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), rsiName: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiSlug: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), speeds: {groundAcceleration: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), groundDecceleration: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), groundMaxSpeed: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), groundReverseSpeed: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), maxSpeed: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), pitch: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), pitchBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), roll: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), rollBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), scmSpeed: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), scmSpeedBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), reverseSpeedBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), yaw: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), yawBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined])}, createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, modelModuleIds: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.uuid())), modelUpgradeIds: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.uuid())), modulePackage: faker.helpers.arrayElement([{id: faker.string.uuid(), name: faker.string.alpha(20), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), pledgePrice: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), modules: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), scKey: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), metrics: faker.helpers.arrayElement([{cargo: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined])}, undefined]), cargoHolds: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined}), maxContainerSize: {size: faker.number.int({min: undefined, max: undefined}), dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}}, limits: {min: {dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined})}, max: faker.helpers.arrayElement([{dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined})}, undefined])}})), undefined]), availability: {boughtAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), soldAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}))}, media: {storeImage: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined])}, pledgePrice: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), productionStatus: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), manufacturer: faker.helpers.arrayElement([{name: faker.string.alpha(20), slug: faker.string.alpha(20), code: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), logo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), longName: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), scRef: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, undefined]), hardpoints: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), group: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HardpointGroupEnum)), undefined]), groupKey: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), matrixKey: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), category: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HardpointCategoryEnum)), undefined]), name: faker.string.alpha(20), minSize: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), maxSize: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), source: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HardpointSourceEnum)), undefined]), types: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), undefined]), details: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), component: faker.helpers.arrayElement([{id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.string.alpha(20), scKey: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), scRef: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hidden: faker.datatype.boolean(), category: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), type: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), subType: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), inventoryConsumption: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), grade: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), gradeLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), size: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), itemClass: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ComponentItemClassEnum)), undefined]), itemClassLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), availability: {boughtAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), soldAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}))}, manufacturer: faker.helpers.arrayElement([{name: faker.string.alpha(20), slug: faker.string.alpha(20), code: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), logo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), longName: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), scRef: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, undefined]), media: {storeImage: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined])}, typeData: faker.helpers.arrayElement([faker.helpers.arrayElement([{fuelRate: faker.number.int({min: undefined, max: undefined}), jumpRange: faker.number.int({min: undefined, max: undefined}), standardJump: {speed: faker.number.int({min: undefined, max: undefined}), stage1AccelerationRate: faker.number.int({min: undefined, max: undefined}), stage2AccelerationRate: faker.number.int({min: undefined, max: undefined}), spoolUpTime: faker.number.int({min: undefined, max: undefined}), cooldown: faker.number.int({min: undefined, max: undefined})}, splineJump: {speed: faker.number.int({min: undefined, max: undefined}), stage1AccelerationRate: faker.number.int({min: undefined, max: undefined}), stage2AccelerationRate: faker.number.int({min: undefined, max: undefined}), spoolUpTime: faker.number.int({min: undefined, max: undefined}), cooldown: faker.number.int({min: undefined, max: undefined})}},{dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined}), maxContainerSize: {size: faker.number.int({min: undefined, max: undefined}), dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}}, limits: {min: {dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined})}, max: faker.helpers.arrayElement([{dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined})}, undefined])}},{capacity: faker.number.int({min: undefined, max: undefined})},{thrustCapacity: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), thrusterType: faker.string.alpha(20), thrusterClass: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ThrusterClassEnum)), undefined]), fuelBurnRatePer10KNewton: faker.number.int({min: undefined, max: undefined})},]), undefined]), hardpoints: faker.helpers.arrayElement([[], undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, undefined]), hardpoints: faker.helpers.arrayElement([[], undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), media: {angledView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), sideView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), storeImage: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), topView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined])}, createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, hasStoreImage: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), storeImage: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageLarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageMedium: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageSmall: faker.helpers.arrayElement([faker.internet.url(), undefined]), angledView: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), angledViewHeight: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), angledViewLarge: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), angledViewMedium: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), angledViewSmall: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), angledViewWidth: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), angledViewXlarge: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sideView: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sideViewHeight: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), sideViewLarge: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sideViewMedium: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sideViewSmall: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sideViewWidth: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), sideViewXlarge: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), topView: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), topViewHeight: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), topViewLarge: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), topViewMedium: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), topViewSmall: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), topViewWidth: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), topViewXlarge: faker.helpers.arrayElement([faker.string.alpha(20), undefined])}, undefined]), nameVisible: faker.datatype.boolean(), paint: faker.helpers.arrayElement([{id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.string.alpha(20), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), lastUpdatedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), lastUpdatedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), availability: {boughtAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), soldAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}))}, media: {angledView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), fleetchartImage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sideView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), storeImage: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), topView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined])}, nameWithModel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiId: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), rsiName: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiSlug: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, angledView: faker.helpers.arrayElement([faker.internet.url(), undefined]), angledViewHeight: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), angledViewLarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), angledViewMedium: faker.helpers.arrayElement([faker.internet.url(), undefined]), angledViewSmall: faker.helpers.arrayElement([faker.internet.url(), undefined]), angledViewWidth: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), angledViewXlarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), fleetchartImage: faker.helpers.arrayElement([faker.internet.url(), undefined]), hasStoreImage: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), sideView: faker.helpers.arrayElement([faker.internet.url(), undefined]), sideViewHeight: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), sideViewLarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), sideViewMedium: faker.helpers.arrayElement([faker.internet.url(), undefined]), sideViewSmall: faker.helpers.arrayElement([faker.internet.url(), undefined]), sideViewWidth: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), sideViewXlarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImage: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageLarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageMedium: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageSmall: faker.helpers.arrayElement([faker.internet.url(), undefined]), topView: faker.helpers.arrayElement([faker.internet.url(), undefined]), topViewHeight: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), topViewLarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), topViewMedium: faker.helpers.arrayElement([faker.internet.url(), undefined]), topViewSmall: faker.helpers.arrayElement([faker.internet.url(), undefined]), topViewWidth: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), topViewXlarge: faker.helpers.arrayElement([faker.internet.url(), undefined])}, undefined]), public: faker.datatype.boolean(), saleNotify: faker.datatype.boolean(), upgrade: faker.helpers.arrayElement([{id: faker.string.uuid(), name: faker.string.alpha(20), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), pledgePrice: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), media: {storeImage: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined])}, createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, storeImage: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageLarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageMedium: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageSmall: faker.helpers.arrayElement([faker.internet.url(), undefined])}, undefined]), wanted: faker.datatype.boolean(), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), ...overrideResponse})
+
+export const getExportWishlistResponseMock = (): VehicleExport[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({name: faker.string.alpha(20), slug: faker.string.alpha(20), shipCode: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), manufacturerName: faker.string.alpha(20), manufacturerCode: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), paintSlug: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), shipName: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), shipSerial: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), wanted: faker.datatype.boolean(), flagship: faker.datatype.boolean(), public: faker.datatype.boolean(), saleNotify: faker.datatype.boolean(), nameVisible: faker.datatype.boolean(), groups: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), modules: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), upgrades: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20)))})))
+
+export const getWishlistItemsResponseMock = (): string[] => (Array.from({length: faker.number.int({min: 1,max: 10})}, () => faker.word.sample()))
+
+
+export const getDestroyWishlistMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<void> | void)) => {
+  return http.delete('*/wishlist', async (info) => {await delay(1000);
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
+    return new HttpResponse(null,
+      { status: 204,
+        
+      })
+  })
+}
+
+export const getWishlistMockHandler = (overrideResponse?: Hangar | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<Hangar> | Hangar)) => {
+  return http.get('*/wishlist', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getWishlistResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getExportWishlistMockHandler = (overrideResponse?: VehicleExport[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<VehicleExport[]> | VehicleExport[])) => {
+  return http.get('*/wishlist/export', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getExportWishlistResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getWishlistItemsMockHandler = (overrideResponse?: string[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<string[]> | string[])) => {
+  return http.get('*/wishlist/items', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getWishlistItemsResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+export const getWishlistMock = () => [
+  getDestroyWishlistMockHandler(),
+  getWishlistMockHandler(),
+  getExportWishlistMockHandler(),
+  getWishlistItemsMockHandler()
+]

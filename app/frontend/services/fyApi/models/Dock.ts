@@ -4,8 +4,8 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { DockShipSizeEnum } from "./dockShipSizeEnum";
-import type { DockTypeEnum } from "./dockTypeEnum";
+import type { DockShipSizeEnum } from './DockShipSizeEnum';
+import type { DockTypeEnum } from './DockTypeEnum';
 
 export interface Dock {
   name: string;

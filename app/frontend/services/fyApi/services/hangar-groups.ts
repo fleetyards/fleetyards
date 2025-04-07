@@ -4,7 +4,10 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import { useMutation, useQuery } from "@tanstack/vue-query";
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   DataTag,
   MutationFunction,
@@ -13,413 +16,435 @@ import type {
   UseMutationOptions,
   UseMutationReturnType,
   UseQueryOptions,
-  UseQueryReturnType,
-} from "@tanstack/vue-query";
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import { unref } from "vue";
-import type { MaybeRef } from "vue";
+import {
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
+
+import type {
+  HangarGroupCreateInput,
+  HangarGroupUpdateInput,
+  StandardError
+} from '../models';
+
+import {
+  faker
+} from '@faker-js/faker';
+
+import {
+  HttpResponse,
+  delay,
+  http
+} from 'msw';
 
 import type {
   HangarGroup,
-  HangarGroupCreateInput,
-  HangarGroupSort200,
-  HangarGroupUpdateInput,
-  StandardError,
-} from "../models";
+  HangarGroupSort200
+} from '../models';
 
-import { axiosClient } from "../axiosClient";
-import type { ErrorType } from "../axiosClient";
-import { customQueryOptions } from "../../customQueryOptions";
+import { axiosClient } from '../../axiosClient';
+import type { ErrorType } from '../../axiosClient';
+import { customQueryOptions } from '../../customQueryOptions';
+
+
+
+
 
 /**
  * @summary HangarGroup create
  */
 export const createHangarGroup = (
-  hangarGroupCreateInput: MaybeRef<HangarGroupCreateInput>,
-  signal?: AbortSignal,
+    hangarGroupCreateInput: MaybeRef<HangarGroupCreateInput>,
+ signal?: AbortSignal
 ) => {
-  hangarGroupCreateInput = unref(hangarGroupCreateInput);
+      hangarGroupCreateInput = unref(hangarGroupCreateInput);
+      
+      return axiosClient<HangarGroup>(
+      {url: `/hangar/groups`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: hangarGroupCreateInput, signal
+    },
+      );
+    }
+  
 
-  return axiosClient<HangarGroup>({
-    url: `/hangar/groups`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: hangarGroupCreateInput,
-    signal,
-  });
-};
 
-export const getCreateHangarGroupMutationOptions = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createHangarGroup>>,
-    TError,
-    { data: HangarGroupCreateInput },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof createHangarGroup>>,
-  TError,
-  { data: HangarGroupCreateInput },
-  TContext
-> => {
-  const mutationKey = ["createHangarGroup"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getCreateHangarGroupMutationOptions = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createHangarGroup>>, TError,{data: HangarGroupCreateInput}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof createHangarGroup>>, TError,{data: HangarGroupCreateInput}, TContext> => {
+    
+const mutationKey = ['createHangarGroup'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof createHangarGroup>>,
-    { data: HangarGroupCreateInput }
-  > = (props) => {
-    const { data } = props ?? {};
+      
 
-    return createHangarGroup(data);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createHangarGroup>>, {data: HangarGroupCreateInput}> = (props) => {
+          const {data} = props ?? {};
 
-export type CreateHangarGroupMutationResult = NonNullable<
-  Awaited<ReturnType<typeof createHangarGroup>>
->;
-export type CreateHangarGroupMutationBody = HangarGroupCreateInput;
-export type CreateHangarGroupMutationError = ErrorType<StandardError>;
+          return  createHangarGroup(data,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateHangarGroupMutationResult = NonNullable<Awaited<ReturnType<typeof createHangarGroup>>>
+    export type CreateHangarGroupMutationBody = HangarGroupCreateInput
+    export type CreateHangarGroupMutationError = ErrorType<StandardError>
+
+    /**
  * @summary HangarGroup create
  */
-export const useCreateHangarGroup = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createHangarGroup>>,
-    TError,
-    { data: HangarGroupCreateInput },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof createHangarGroup>>,
-  TError,
-  { data: HangarGroupCreateInput },
-  TContext
-> => {
-  const mutationOptions = getCreateHangarGroupMutationOptions(options);
+export const useCreateHangarGroup = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createHangarGroup>>, TError,{data: HangarGroupCreateInput}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof createHangarGroup>>,
+        TError,
+        {data: HangarGroupCreateInput},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getCreateHangarGroupMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary HangarGroup list
  */
-export const hangarGroups = (signal?: AbortSignal) => {
-  return axiosClient<HangarGroup[]>({
-    url: `/hangar/groups`,
-    method: "GET",
-    signal,
-  });
-};
+export const hangarGroups = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return axiosClient<HangarGroup[]>(
+      {url: `/hangar/groups`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 const getHangarGroupsQueryKey = () => {
-  return ["hangar", "groups"] as const;
-};
+    return ['hangar','groups'] as const;
+    }
 
-export const useHangarGroupsQueryOptions = <
-  TData = Awaited<ReturnType<typeof hangarGroups>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof hangarGroups>>, TError, TData>
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const useHangarGroupsQueryOptions = <TData = Awaited<ReturnType<typeof hangarGroups>>, TError = ErrorType<StandardError>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof hangarGroups>>, TError, TData>>, }
+) => {
 
-  const queryKey = getHangarGroupsQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof hangarGroups>>> = ({
-    signal,
-  }) => hangarGroups(signal);
+  const queryKey =  getHangarGroupsQueryKey();
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof hangarGroups>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof hangarGroups>>> = ({ signal }) => hangarGroups(signal);
 
-export type HangarGroupsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof hangarGroups>>
->;
-export type HangarGroupsQueryError = ErrorType<StandardError>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof hangarGroups>>, TError, TData> 
+}
+
+export type HangarGroupsQueryResult = NonNullable<Awaited<ReturnType<typeof hangarGroups>>>
+export type HangarGroupsQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary HangarGroup list
  */
 
-export function useHangarGroups<
-  TData = Awaited<ReturnType<typeof hangarGroups>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof hangarGroups>>, TError, TData>
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useHangarGroupsQueryOptions(options);
+export function useHangarGroups<TData = Awaited<ReturnType<typeof hangarGroups>>, TError = ErrorType<StandardError>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof hangarGroups>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useHangarGroupsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
 
-/**
- * @summary HangarGroup Destroy
- */
-export const destroyHangarGroup = (id: MaybeRef<string>) => {
-  id = unref(id);
 
-  return axiosClient<HangarGroup>({
-    url: `/hangar/groups/${id}`,
-    method: "DELETE",
-  });
-};
-
-export const getDestroyHangarGroupMutationOptions = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof destroyHangarGroup>>,
-    TError,
-    { id: string },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof destroyHangarGroup>>,
-  TError,
-  { id: string },
-  TContext
-> => {
-  const mutationKey = ["destroyHangarGroup"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof destroyHangarGroup>>,
-    { id: string }
-  > = (props) => {
-    const { id } = props ?? {};
-
-    return destroyHangarGroup(id);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type DestroyHangarGroupMutationResult = NonNullable<
-  Awaited<ReturnType<typeof destroyHangarGroup>>
->;
-
-export type DestroyHangarGroupMutationError = ErrorType<StandardError>;
 
 /**
  * @summary HangarGroup Destroy
  */
-export const useDestroyHangarGroup = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof destroyHangarGroup>>,
-    TError,
-    { id: string },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof destroyHangarGroup>>,
-  TError,
-  { id: string },
-  TContext
-> => {
-  const mutationOptions = getDestroyHangarGroupMutationOptions(options);
+export const destroyHangarGroup = (
+    id: MaybeRef<string>,
+ ) => {
+      id = unref(id);
+      
+      return axiosClient<HangarGroup>(
+      {url: `/hangar/groups/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
-  return useMutation(mutationOptions);
-};
-/**
+
+export const getDestroyHangarGroupMutationOptions = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof destroyHangarGroup>>, TError,{id: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof destroyHangarGroup>>, TError,{id: string}, TContext> => {
+    
+const mutationKey = ['destroyHangarGroup'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof destroyHangarGroup>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  destroyHangarGroup(id,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DestroyHangarGroupMutationResult = NonNullable<Awaited<ReturnType<typeof destroyHangarGroup>>>
+    
+    export type DestroyHangarGroupMutationError = ErrorType<StandardError>
+
+    /**
+ * @summary HangarGroup Destroy
+ */
+export const useDestroyHangarGroup = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof destroyHangarGroup>>, TError,{id: string}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof destroyHangarGroup>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+
+      const mutationOptions = getDestroyHangarGroupMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary HangarGroup Update
  */
 export const updateHangarGroup = (
-  id: MaybeRef<string>,
-  hangarGroupUpdateInput: MaybeRef<HangarGroupUpdateInput>,
-) => {
-  id = unref(id);
-  hangarGroupUpdateInput = unref(hangarGroupUpdateInput);
+    id: MaybeRef<string>,
+    hangarGroupUpdateInput: MaybeRef<HangarGroupUpdateInput>,
+ ) => {
+      id = unref(id);
+hangarGroupUpdateInput = unref(hangarGroupUpdateInput);
+      
+      return axiosClient<HangarGroup>(
+      {url: `/hangar/groups/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: hangarGroupUpdateInput
+    },
+      );
+    }
+  
 
-  return axiosClient<HangarGroup>({
-    url: `/hangar/groups/${id}`,
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    data: hangarGroupUpdateInput,
-  });
-};
 
-export const getUpdateHangarGroupMutationOptions = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateHangarGroup>>,
-    TError,
-    { id: string; data: HangarGroupUpdateInput },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof updateHangarGroup>>,
-  TError,
-  { id: string; data: HangarGroupUpdateInput },
-  TContext
-> => {
-  const mutationKey = ["updateHangarGroup"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getUpdateHangarGroupMutationOptions = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHangarGroup>>, TError,{id: string;data: HangarGroupUpdateInput}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof updateHangarGroup>>, TError,{id: string;data: HangarGroupUpdateInput}, TContext> => {
+    
+const mutationKey = ['updateHangarGroup'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof updateHangarGroup>>,
-    { id: string; data: HangarGroupUpdateInput }
-  > = (props) => {
-    const { id, data } = props ?? {};
+      
 
-    return updateHangarGroup(id, data);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateHangarGroup>>, {id: string;data: HangarGroupUpdateInput}> = (props) => {
+          const {id,data} = props ?? {};
 
-export type UpdateHangarGroupMutationResult = NonNullable<
-  Awaited<ReturnType<typeof updateHangarGroup>>
->;
-export type UpdateHangarGroupMutationBody = HangarGroupUpdateInput;
-export type UpdateHangarGroupMutationError = ErrorType<StandardError>;
+          return  updateHangarGroup(id,data,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateHangarGroupMutationResult = NonNullable<Awaited<ReturnType<typeof updateHangarGroup>>>
+    export type UpdateHangarGroupMutationBody = HangarGroupUpdateInput
+    export type UpdateHangarGroupMutationError = ErrorType<StandardError>
+
+    /**
  * @summary HangarGroup Update
  */
-export const useUpdateHangarGroup = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateHangarGroup>>,
-    TError,
-    { id: string; data: HangarGroupUpdateInput },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof updateHangarGroup>>,
-  TError,
-  { id: string; data: HangarGroupUpdateInput },
-  TContext
-> => {
-  const mutationOptions = getUpdateHangarGroupMutationOptions(options);
+export const useUpdateHangarGroup = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHangarGroup>>, TError,{id: string;data: HangarGroupUpdateInput}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof updateHangarGroup>>,
+        TError,
+        {id: string;data: HangarGroupUpdateInput},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getUpdateHangarGroupMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary HangarGroup sort
  */
-export const hangarGroupSort = () => {
-  return axiosClient<HangarGroupSort200>({
-    url: `/hangar/groups/sort`,
-    method: "PUT",
-  });
-};
+export const hangarGroupSort = (
+    
+ ) => {
+      
+      
+      return axiosClient<HangarGroupSort200>(
+      {url: `/hangar/groups/sort`, method: 'PUT'
+    },
+      );
+    }
+  
 
-export const getHangarGroupSortMutationOptions = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof hangarGroupSort>>,
-    TError,
-    void,
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof hangarGroupSort>>,
-  TError,
-  void,
-  TContext
-> => {
-  const mutationKey = ["hangarGroupSort"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof hangarGroupSort>>,
-    void
-  > = () => {
-    return hangarGroupSort();
-  };
+export const getHangarGroupSortMutationOptions = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof hangarGroupSort>>, TError,void, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof hangarGroupSort>>, TError,void, TContext> => {
+    
+const mutationKey = ['hangarGroupSort'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type HangarGroupSortMutationResult = NonNullable<
-  Awaited<ReturnType<typeof hangarGroupSort>>
->;
 
-export type HangarGroupSortMutationError = ErrorType<StandardError>;
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof hangarGroupSort>>, void> = () => {
+          
 
-/**
+          return  hangarGroupSort()
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type HangarGroupSortMutationResult = NonNullable<Awaited<ReturnType<typeof hangarGroupSort>>>
+    
+    export type HangarGroupSortMutationError = ErrorType<StandardError>
+
+    /**
  * @summary HangarGroup sort
  */
-export const useHangarGroupSort = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof hangarGroupSort>>,
-    TError,
-    void,
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof hangarGroupSort>>,
-  TError,
-  void,
-  TContext
-> => {
-  const mutationOptions = getHangarGroupSortMutationOptions(options);
+export const useHangarGroupSort = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof hangarGroupSort>>, TError,void, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof hangarGroupSort>>,
+        TError,
+        void,
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
+      const mutationOptions = getHangarGroupSortMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+
+export const getCreateHangarGroupResponseMock = (overrideResponse: Partial< HangarGroup > = {}): HangarGroup => ({id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.string.alpha(20), color: faker.string.alpha(20), public: faker.datatype.boolean(), sort: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), vehiclesCount: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
+
+export const getHangarGroupsResponseMock = (): HangarGroup[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.string.alpha(20), color: faker.string.alpha(20), public: faker.datatype.boolean(), sort: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), vehiclesCount: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})))
+
+export const getDestroyHangarGroupResponseMock = (overrideResponse: Partial< HangarGroup > = {}): HangarGroup => ({id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.string.alpha(20), color: faker.string.alpha(20), public: faker.datatype.boolean(), sort: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), vehiclesCount: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
+
+export const getUpdateHangarGroupResponseMock = (overrideResponse: Partial< HangarGroup > = {}): HangarGroup => ({id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.string.alpha(20), color: faker.string.alpha(20), public: faker.datatype.boolean(), sort: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), vehiclesCount: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
+
+export const getHangarGroupSortResponseMock = (overrideResponse: Partial< HangarGroupSort200 > = {}): HangarGroupSort200 => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), ...overrideResponse})
+
+
+export const getCreateHangarGroupMockHandler = (overrideResponse?: HangarGroup | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<HangarGroup> | HangarGroup)) => {
+  return http.post('*/hangar/groups', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getCreateHangarGroupResponseMock()),
+      { status: 201,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getHangarGroupsMockHandler = (overrideResponse?: HangarGroup[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<HangarGroup[]> | HangarGroup[])) => {
+  return http.get('*/hangar/groups', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getHangarGroupsResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getDestroyHangarGroupMockHandler = (overrideResponse?: HangarGroup | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<HangarGroup> | HangarGroup)) => {
+  return http.delete('*/hangar/groups/:id', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getDestroyHangarGroupResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getUpdateHangarGroupMockHandler = (overrideResponse?: HangarGroup | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<HangarGroup> | HangarGroup)) => {
+  return http.put('*/hangar/groups/:id', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getUpdateHangarGroupResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getHangarGroupSortMockHandler = (overrideResponse?: HangarGroupSort200 | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<HangarGroupSort200> | HangarGroupSort200)) => {
+  return http.put('*/hangar/groups/sort', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getHangarGroupSortResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+export const getHangarGroupsMock = () => [
+  getCreateHangarGroupMockHandler(),
+  getHangarGroupsMockHandler(),
+  getDestroyHangarGroupMockHandler(),
+  getUpdateHangarGroupMockHandler(),
+  getHangarGroupSortMockHandler()
+]

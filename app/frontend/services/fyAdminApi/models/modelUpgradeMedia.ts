@@ -4,7 +4,7 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import type { MediaImage } from "./mediaImage";
+import type { MediaImage } from './MediaImage';
 
 export type ModelUpgradeMedia = {
   storeImage?: MediaImage;

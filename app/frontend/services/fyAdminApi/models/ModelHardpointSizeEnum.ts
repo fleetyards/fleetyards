@@ -5,28 +5,28 @@
  * OpenAPI spec version: v1
  */
 
-export type ModelHardpointSizeEnum =
-  (typeof ModelHardpointSizeEnum)[keyof typeof ModelHardpointSizeEnum];
+export type ModelHardpointSizeEnum = typeof ModelHardpointSizeEnum[keyof typeof ModelHardpointSizeEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ModelHardpointSizeEnum = {
-  vehicle: "vehicle",
-  one: "one",
-  two: "two",
-  three: "three",
-  four: "four",
-  five: "five",
-  six: "six",
-  seven: "seven",
-  eight: "eight",
-  nine: "nine",
-  ten: "ten",
-  eleven: "eleven",
-  twelve: "twelve",
-  snub: "snub",
-  small: "small",
-  medium: "medium",
-  large: "large",
-  capital: "capital",
-  tbd: "tbd",
+  vehicle: 'vehicle',
+  one: 'one',
+  two: 'two',
+  three: 'three',
+  four: 'four',
+  five: 'five',
+  six: 'six',
+  seven: 'seven',
+  eight: 'eight',
+  nine: 'nine',
+  ten: 'ten',
+  eleven: 'eleven',
+  twelve: 'twelve',
+  snub: 'snub',
+  small: 'small',
+  medium: 'medium',
+  large: 'large',
+  capital: 'capital',
+  tbd: 'tbd',
 } as const;

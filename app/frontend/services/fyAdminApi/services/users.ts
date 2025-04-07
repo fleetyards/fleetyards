@@ -4,99 +4,131 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import { useQuery } from "@tanstack/vue-query";
+import {
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   DataTag,
   QueryFunction,
   QueryKey,
   UseQueryOptions,
-  UseQueryReturnType,
-} from "@tanstack/vue-query";
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import { unref } from "vue";
-import type { MaybeRef } from "vue";
+import {
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
 
-import type { StandardError, Users, UsersParams } from "../models";
+import type {
+  StandardError,
+  UsersParams
+} from '../models';
 
-import { axiosClient } from "../axiosClient";
-import type { ErrorType } from "../axiosClient";
-import { customQueryOptions } from "../../customQueryOptions";
+import {
+  faker
+} from '@faker-js/faker';
+
+import {
+  HttpResponse,
+  delay,
+  http
+} from 'msw';
+
+import type {
+  Users
+} from '../models';
+
+import { axiosClient } from '../../axiosAdminClient';
+import type { ErrorType } from '../../axiosAdminClient';
+import { customQueryOptions } from '../../customQueryOptions';
+
+
+
+
 
 /**
  * @summary Users list
  */
-export const users = (params?: MaybeRef<UsersParams>, signal?: AbortSignal) => {
-  params = unref(params);
-
-  return axiosClient<Users>({
-    url: `/users`,
-    method: "GET",
-    params: unref(params),
-    signal,
-  });
-};
-
-const getUsersQueryKey = (params?: MaybeRef<UsersParams>) => {
-  return ["users", ...(params ? [params] : [])] as const;
-};
-
-export const useUsersQueryOptions = <
-  TData = Awaited<ReturnType<typeof users>>,
-  TError = ErrorType<StandardError>,
->(
-  params?: MaybeRef<UsersParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof users>>, TError, TData>
-    >;
-  },
+export const users = (
+    params?: MaybeRef<UsersParams>,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {};
+      params = unref(params);
+      
+      return axiosClient<Users>(
+      {url: `/users`, method: 'GET',
+        params: unref(params), signal
+    },
+      );
+    }
+  
 
-  const queryKey = getUsersQueryKey(params);
+const getUsersQueryKey = (params?: MaybeRef<UsersParams>,) => {
+    return ['users', ...(params ? [params]: [])] as const;
+    }
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof users>>> = ({
-    signal,
-  }) => users(params, signal);
+    
+export const useUsersQueryOptions = <TData = Awaited<ReturnType<typeof users>>, TError = ErrorType<StandardError>>(params?: MaybeRef<UsersParams>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof users>>, TError, TData>>, }
+) => {
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+const {query: queryOptions} = options ?? {};
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof users>>,
-    TError,
-    TData
-  >;
-};
+  const queryKey =  getUsersQueryKey(params);
 
-export type UsersQueryResult = NonNullable<Awaited<ReturnType<typeof users>>>;
-export type UsersQueryError = ErrorType<StandardError>;
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof users>>> = ({ signal }) => users(params, signal);
+
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof users>>, TError, TData> 
+}
+
+export type UsersQueryResult = NonNullable<Awaited<ReturnType<typeof users>>>
+export type UsersQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Users list
  */
 
-export function useUsers<
-  TData = Awaited<ReturnType<typeof users>>,
-  TError = ErrorType<StandardError>,
->(
-  params?: MaybeRef<UsersParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof users>>, TError, TData>
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useUsersQueryOptions(params, options);
+export function useUsers<TData = Awaited<ReturnType<typeof users>>, TError = ErrorType<StandardError>>(
+ params?: MaybeRef<UsersParams>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof users>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useUsersQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
+
+
+
+export const getUsersResponseMock = (overrideResponse: Partial< Users > = {}): Users => ({meta: {pagination: faker.helpers.arrayElement([{totalCount: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), currentPage: faker.number.int({min: undefined, max: undefined}), totalPages: faker.number.int({min: undefined, max: undefined}), defaultPerPage: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), maxPerPage: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), perPageSteps: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.helpers.arrayElement([faker.string.alpha(20),faker.number.int({min: undefined, max: undefined}),]))), undefined])}, undefined])}, items: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.helpers.arrayElement([faker.string.uuid(), undefined]), username: faker.string.alpha(20), email: faker.string.alpha(20), unconfirmedEmail: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), avatar: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiHandle: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), discord: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), youtube: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twitch: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), guilded: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), homepage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), saleNotify: faker.datatype.boolean(), publicHangar: faker.datatype.boolean(), publicHangarUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), publicHangarLoaners: faker.datatype.boolean(), publicWishlist: faker.datatype.boolean(), publicWishlistUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hideOwner: faker.datatype.boolean(), twoFactorRequired: faker.datatype.boolean(), twoFactorQrCodeUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twoFactorProvisioningUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hangarUpdatedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), confirmedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), lastActiveAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), ...overrideResponse})
+
+
+export const getUsersMockHandler = (overrideResponse?: Users | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<Users> | Users)) => {
+  return http.get('*/users', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getUsersResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+export const getUsersMock = () => [
+  getUsersMockHandler()
+]

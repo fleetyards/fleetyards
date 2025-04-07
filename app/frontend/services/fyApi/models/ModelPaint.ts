@@ -4,8 +4,8 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { ModelPaintAvailability } from "./modelPaintAvailability";
-import type { ModelPaintMedia } from "./modelPaintMedia";
+import type { ModelPaintAvailability } from './ModelPaintAvailability';
+import type { ModelPaintMedia } from './ModelPaintMedia';
 
 export interface ModelPaint {
   id: string;

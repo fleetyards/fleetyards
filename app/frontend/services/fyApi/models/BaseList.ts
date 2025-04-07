@@ -4,7 +4,7 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { Meta } from "./meta";
+import type { Meta } from './Meta';
 
 export interface BaseList {
   meta: Meta;

@@ -4,10 +4,10 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { HangarQuery } from "./hangarQuery";
+import type { HangarQuery } from './HangarQuery';
 
 export type WishlistParams = {
-  page?: string;
-  perPage?: string;
-  q?: HangarQuery;
+page?: string;
+perPage?: string;
+q?: HangarQuery;
 };

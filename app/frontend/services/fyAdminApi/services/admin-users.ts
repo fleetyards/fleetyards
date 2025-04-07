@@ -4,88 +4,126 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import { useQuery } from "@tanstack/vue-query";
+import {
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   DataTag,
   QueryFunction,
   QueryKey,
   UseQueryOptions,
-  UseQueryReturnType,
-} from "@tanstack/vue-query";
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import { unref } from "vue";
+import {
+  unref
+} from 'vue';
 
-import type { AdminUser, StandardError } from "../models";
+import type {
+  StandardError
+} from '../models';
 
-import { axiosClient } from "../axiosClient";
-import type { ErrorType } from "../axiosClient";
-import { customQueryOptions } from "../../customQueryOptions";
+import {
+  faker
+} from '@faker-js/faker';
+
+import {
+  HttpResponse,
+  delay,
+  http
+} from 'msw';
+
+import type {
+  AdminUser
+} from '../models';
+
+import { axiosClient } from '../../axiosAdminClient';
+import type { ErrorType } from '../../axiosAdminClient';
+import { customQueryOptions } from '../../customQueryOptions';
+
+
+
+
 
 /**
  * @summary My Data
  */
-export const me = (signal?: AbortSignal) => {
-  return axiosClient<AdminUser>({
-    url: `/admin_users/me`,
-    method: "GET",
-    signal,
-  });
-};
+export const me = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return axiosClient<AdminUser>(
+      {url: `/admin_users/me`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 const getMeQueryKey = () => {
-  return ["admin_users", "me"] as const;
-};
+    return ['admin_users','me'] as const;
+    }
 
-export const useMeQueryOptions = <
-  TData = Awaited<ReturnType<typeof me>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof me>>, TError, TData>
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const useMeQueryOptions = <TData = Awaited<ReturnType<typeof me>>, TError = ErrorType<StandardError>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof me>>, TError, TData>>, }
+) => {
 
-  const queryKey = getMeQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof me>>> = ({ signal }) =>
-    me(signal);
+  const queryKey =  getMeQueryKey();
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof me>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof me>>> = ({ signal }) => me(signal);
 
-export type MeQueryResult = NonNullable<Awaited<ReturnType<typeof me>>>;
-export type MeQueryError = ErrorType<StandardError>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof me>>, TError, TData> 
+}
+
+export type MeQueryResult = NonNullable<Awaited<ReturnType<typeof me>>>
+export type MeQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary My Data
  */
 
-export function useMe<
-  TData = Awaited<ReturnType<typeof me>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof me>>, TError, TData>
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useMeQueryOptions(options);
+export function useMe<TData = Awaited<ReturnType<typeof me>>, TError = ErrorType<StandardError>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof me>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useMeQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
+
+
+
+export const getMeResponseMock = (overrideResponse: Partial< AdminUser > = {}): AdminUser => ({id: faker.helpers.arrayElement([faker.string.uuid(), undefined]), username: faker.string.alpha(20), email: faker.string.alpha(20), twoFactorRequired: faker.datatype.boolean(), twoFactorQrCodeUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twoFactorProvisioningUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), resourceAccess: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), superAdmin: faker.datatype.boolean(), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
+
+
+export const getMeMockHandler = (overrideResponse?: AdminUser | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<AdminUser> | AdminUser)) => {
+  return http.get('*/admin_users/me', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getMeResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+export const getAdminUsersMock = () => [
+  getMeMockHandler()
+]

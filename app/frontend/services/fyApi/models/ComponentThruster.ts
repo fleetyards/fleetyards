@@ -4,7 +4,7 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { ThrusterClassEnum } from "./thrusterClassEnum";
+import type { ThrusterClassEnum } from './ThrusterClassEnum';
 
 export interface ComponentThruster {
   thrustCapacity?: number;

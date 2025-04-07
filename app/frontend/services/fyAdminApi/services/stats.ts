@@ -4,385 +4,439 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import { useQuery } from "@tanstack/vue-query";
+import {
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   DataTag,
   QueryFunction,
   QueryKey,
   UseQueryOptions,
-  UseQueryReturnType,
-} from "@tanstack/vue-query";
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import { unref } from "vue";
+import {
+  unref
+} from 'vue';
 
-import type { BarChartStats, StandardError, Stats } from "../models";
+import type {
+  StandardError
+} from '../models';
 
-import { axiosClient } from "../axiosClient";
-import type { ErrorType } from "../axiosClient";
-import { customQueryOptions } from "../../customQueryOptions";
+import {
+  faker
+} from '@faker-js/faker';
+
+import {
+  HttpResponse,
+  delay,
+  http
+} from 'msw';
+
+import type {
+  BarChartStats,
+  Stats
+} from '../models';
+
+import { axiosClient } from '../../axiosAdminClient';
+import type { ErrorType } from '../../axiosAdminClient';
+import { customQueryOptions } from '../../customQueryOptions';
+
+
+
+
 
 /**
  * @summary Stats most viewed Pages
  */
-export const mostViewedPages = (signal?: AbortSignal) => {
-  return axiosClient<BarChartStats[]>({
-    url: `/stats/most-viewed-pages`,
-    method: "GET",
-    signal,
-  });
-};
+export const mostViewedPages = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return axiosClient<BarChartStats[]>(
+      {url: `/stats/most-viewed-pages`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 const getMostViewedPagesQueryKey = () => {
-  return ["stats", "most-viewed-pages"] as const;
-};
+    return ['stats','most-viewed-pages'] as const;
+    }
 
-export const useMostViewedPagesQueryOptions = <
-  TData = Awaited<ReturnType<typeof mostViewedPages>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof mostViewedPages>>, TError, TData>
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const useMostViewedPagesQueryOptions = <TData = Awaited<ReturnType<typeof mostViewedPages>>, TError = ErrorType<StandardError>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof mostViewedPages>>, TError, TData>>, }
+) => {
 
-  const queryKey = getMostViewedPagesQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof mostViewedPages>>> = ({
-    signal,
-  }) => mostViewedPages(signal);
+  const queryKey =  getMostViewedPagesQueryKey();
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof mostViewedPages>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof mostViewedPages>>> = ({ signal }) => mostViewedPages(signal);
 
-export type MostViewedPagesQueryResult = NonNullable<
-  Awaited<ReturnType<typeof mostViewedPages>>
->;
-export type MostViewedPagesQueryError = ErrorType<StandardError>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof mostViewedPages>>, TError, TData> 
+}
+
+export type MostViewedPagesQueryResult = NonNullable<Awaited<ReturnType<typeof mostViewedPages>>>
+export type MostViewedPagesQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Stats most viewed Pages
  */
 
-export function useMostViewedPages<
-  TData = Awaited<ReturnType<typeof mostViewedPages>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof mostViewedPages>>, TError, TData>
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useMostViewedPagesQueryOptions(options);
+export function useMostViewedPages<TData = Awaited<ReturnType<typeof mostViewedPages>>, TError = ErrorType<StandardError>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof mostViewedPages>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useMostViewedPagesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
 
+
+
 /**
  * @summary Stats Registrations per Month
  */
-export const registrationsPerMonth = (signal?: AbortSignal) => {
-  return axiosClient<BarChartStats[]>({
-    url: `/stats/registrations-per-month`,
-    method: "GET",
-    signal,
-  });
-};
+export const registrationsPerMonth = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return axiosClient<BarChartStats[]>(
+      {url: `/stats/registrations-per-month`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 const getRegistrationsPerMonthQueryKey = () => {
-  return ["stats", "registrations-per-month"] as const;
-};
+    return ['stats','registrations-per-month'] as const;
+    }
 
-export const useRegistrationsPerMonthQueryOptions = <
-  TData = Awaited<ReturnType<typeof registrationsPerMonth>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof registrationsPerMonth>>,
-      TError,
-      TData
-    >
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const useRegistrationsPerMonthQueryOptions = <TData = Awaited<ReturnType<typeof registrationsPerMonth>>, TError = ErrorType<StandardError>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof registrationsPerMonth>>, TError, TData>>, }
+) => {
 
-  const queryKey = getRegistrationsPerMonthQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof registrationsPerMonth>>
-  > = ({ signal }) => registrationsPerMonth(signal);
+  const queryKey =  getRegistrationsPerMonthQueryKey();
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof registrationsPerMonth>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof registrationsPerMonth>>> = ({ signal }) => registrationsPerMonth(signal);
 
-export type RegistrationsPerMonthQueryResult = NonNullable<
-  Awaited<ReturnType<typeof registrationsPerMonth>>
->;
-export type RegistrationsPerMonthQueryError = ErrorType<StandardError>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof registrationsPerMonth>>, TError, TData> 
+}
+
+export type RegistrationsPerMonthQueryResult = NonNullable<Awaited<ReturnType<typeof registrationsPerMonth>>>
+export type RegistrationsPerMonthQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Stats Registrations per Month
  */
 
-export function useRegistrationsPerMonth<
-  TData = Awaited<ReturnType<typeof registrationsPerMonth>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof registrationsPerMonth>>,
-      TError,
-      TData
-    >
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useRegistrationsPerMonthQueryOptions(options);
+export function useRegistrationsPerMonth<TData = Awaited<ReturnType<typeof registrationsPerMonth>>, TError = ErrorType<StandardError>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof registrationsPerMonth>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useRegistrationsPerMonthQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
 
+
+
 /**
  * @summary Stats
  */
-export const stats = (signal?: AbortSignal) => {
-  return axiosClient<Stats>({
-    url: `/stats/quick-stats`,
-    method: "GET",
-    signal,
-  });
-};
+export const stats = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return axiosClient<Stats>(
+      {url: `/stats/quick-stats`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 const getStatsQueryKey = () => {
-  return ["stats", "quick-stats"] as const;
-};
+    return ['stats','quick-stats'] as const;
+    }
 
-export const useStatsQueryOptions = <
-  TData = Awaited<ReturnType<typeof stats>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof stats>>, TError, TData>
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const useStatsQueryOptions = <TData = Awaited<ReturnType<typeof stats>>, TError = ErrorType<StandardError>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof stats>>, TError, TData>>, }
+) => {
 
-  const queryKey = getStatsQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof stats>>> = ({
-    signal,
-  }) => stats(signal);
+  const queryKey =  getStatsQueryKey();
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof stats>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof stats>>> = ({ signal }) => stats(signal);
 
-export type StatsQueryResult = NonNullable<Awaited<ReturnType<typeof stats>>>;
-export type StatsQueryError = ErrorType<StandardError>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof stats>>, TError, TData> 
+}
+
+export type StatsQueryResult = NonNullable<Awaited<ReturnType<typeof stats>>>
+export type StatsQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Stats
  */
 
-export function useStats<
-  TData = Awaited<ReturnType<typeof stats>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof stats>>, TError, TData>
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useStatsQueryOptions(options);
+export function useStats<TData = Awaited<ReturnType<typeof stats>>, TError = ErrorType<StandardError>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof stats>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useStatsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
 
+
+
 /**
  * @summary Stats Visits per Day
  */
-export const visitsPerDay = (signal?: AbortSignal) => {
-  return axiosClient<BarChartStats[]>({
-    url: `/stats/visits-per-day`,
-    method: "GET",
-    signal,
-  });
-};
+export const visitsPerDay = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return axiosClient<BarChartStats[]>(
+      {url: `/stats/visits-per-day`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 const getVisitsPerDayQueryKey = () => {
-  return ["stats", "visits-per-day"] as const;
-};
+    return ['stats','visits-per-day'] as const;
+    }
 
-export const useVisitsPerDayQueryOptions = <
-  TData = Awaited<ReturnType<typeof visitsPerDay>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof visitsPerDay>>, TError, TData>
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const useVisitsPerDayQueryOptions = <TData = Awaited<ReturnType<typeof visitsPerDay>>, TError = ErrorType<StandardError>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof visitsPerDay>>, TError, TData>>, }
+) => {
 
-  const queryKey = getVisitsPerDayQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof visitsPerDay>>> = ({
-    signal,
-  }) => visitsPerDay(signal);
+  const queryKey =  getVisitsPerDayQueryKey();
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof visitsPerDay>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof visitsPerDay>>> = ({ signal }) => visitsPerDay(signal);
 
-export type VisitsPerDayQueryResult = NonNullable<
-  Awaited<ReturnType<typeof visitsPerDay>>
->;
-export type VisitsPerDayQueryError = ErrorType<StandardError>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof visitsPerDay>>, TError, TData> 
+}
+
+export type VisitsPerDayQueryResult = NonNullable<Awaited<ReturnType<typeof visitsPerDay>>>
+export type VisitsPerDayQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Stats Visits per Day
  */
 
-export function useVisitsPerDay<
-  TData = Awaited<ReturnType<typeof visitsPerDay>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof visitsPerDay>>, TError, TData>
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useVisitsPerDayQueryOptions(options);
+export function useVisitsPerDay<TData = Awaited<ReturnType<typeof visitsPerDay>>, TError = ErrorType<StandardError>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof visitsPerDay>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useVisitsPerDayQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
 
+
+
 /**
  * @summary Stats Visits per Month
  */
-export const visitsPerMonth = (signal?: AbortSignal) => {
-  return axiosClient<BarChartStats[]>({
-    url: `/stats/visits-per-month`,
-    method: "GET",
-    signal,
-  });
-};
+export const visitsPerMonth = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return axiosClient<BarChartStats[]>(
+      {url: `/stats/visits-per-month`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 const getVisitsPerMonthQueryKey = () => {
-  return ["stats", "visits-per-month"] as const;
-};
+    return ['stats','visits-per-month'] as const;
+    }
 
-export const useVisitsPerMonthQueryOptions = <
-  TData = Awaited<ReturnType<typeof visitsPerMonth>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof visitsPerMonth>>, TError, TData>
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const useVisitsPerMonthQueryOptions = <TData = Awaited<ReturnType<typeof visitsPerMonth>>, TError = ErrorType<StandardError>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof visitsPerMonth>>, TError, TData>>, }
+) => {
 
-  const queryKey = getVisitsPerMonthQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof visitsPerMonth>>> = ({
-    signal,
-  }) => visitsPerMonth(signal);
+  const queryKey =  getVisitsPerMonthQueryKey();
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof visitsPerMonth>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof visitsPerMonth>>> = ({ signal }) => visitsPerMonth(signal);
 
-export type VisitsPerMonthQueryResult = NonNullable<
-  Awaited<ReturnType<typeof visitsPerMonth>>
->;
-export type VisitsPerMonthQueryError = ErrorType<StandardError>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof visitsPerMonth>>, TError, TData> 
+}
+
+export type VisitsPerMonthQueryResult = NonNullable<Awaited<ReturnType<typeof visitsPerMonth>>>
+export type VisitsPerMonthQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Stats Visits per Month
  */
 
-export function useVisitsPerMonth<
-  TData = Awaited<ReturnType<typeof visitsPerMonth>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof visitsPerMonth>>, TError, TData>
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useVisitsPerMonthQueryOptions(options);
+export function useVisitsPerMonth<TData = Awaited<ReturnType<typeof visitsPerMonth>>, TError = ErrorType<StandardError>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof visitsPerMonth>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useVisitsPerMonthQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
+
+
+
+export const getMostViewedPagesResponseMock = (): BarChartStats[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({label: faker.string.alpha(20), count: faker.number.int({min: undefined, max: undefined}), tooltip: faker.string.alpha(20)})))
+
+export const getRegistrationsPerMonthResponseMock = (): BarChartStats[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({label: faker.string.alpha(20), count: faker.number.int({min: undefined, max: undefined}), tooltip: faker.string.alpha(20)})))
+
+export const getStatsResponseMock = (overrideResponse: Partial< Stats > = {}): Stats => ({onlineCount: faker.number.int({min: undefined, max: undefined}), shipsCountYear: faker.number.int({min: undefined, max: undefined}), shipsCountTotal: faker.number.int({min: undefined, max: undefined}), usersCountTotal: faker.number.int({min: undefined, max: undefined}), fleetsCountTotal: faker.number.int({min: undefined, max: undefined}), ...overrideResponse})
+
+export const getVisitsPerDayResponseMock = (): BarChartStats[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({label: faker.string.alpha(20), count: faker.number.int({min: undefined, max: undefined}), tooltip: faker.string.alpha(20)})))
+
+export const getVisitsPerMonthResponseMock = (): BarChartStats[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({label: faker.string.alpha(20), count: faker.number.int({min: undefined, max: undefined}), tooltip: faker.string.alpha(20)})))
+
+
+export const getMostViewedPagesMockHandler = (overrideResponse?: BarChartStats[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<BarChartStats[]> | BarChartStats[])) => {
+  return http.get('*/stats/most-viewed-pages', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getMostViewedPagesResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getRegistrationsPerMonthMockHandler = (overrideResponse?: BarChartStats[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<BarChartStats[]> | BarChartStats[])) => {
+  return http.get('*/stats/registrations-per-month', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getRegistrationsPerMonthResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getStatsMockHandler = (overrideResponse?: Stats | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<Stats> | Stats)) => {
+  return http.get('*/stats/quick-stats', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getStatsResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getVisitsPerDayMockHandler = (overrideResponse?: BarChartStats[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<BarChartStats[]> | BarChartStats[])) => {
+  return http.get('*/stats/visits-per-day', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getVisitsPerDayResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getVisitsPerMonthMockHandler = (overrideResponse?: BarChartStats[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<BarChartStats[]> | BarChartStats[])) => {
+  return http.get('*/stats/visits-per-month', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getVisitsPerMonthResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+export const getStatsMock = () => [
+  getMostViewedPagesMockHandler(),
+  getRegistrationsPerMonthMockHandler(),
+  getStatsMockHandler(),
+  getVisitsPerDayMockHandler(),
+  getVisitsPerMonthMockHandler()
+]

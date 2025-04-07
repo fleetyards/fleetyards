@@ -4,8 +4,8 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import type { ImportTypeEnum } from "./importTypeEnum";
-import type { ImportStatusEnum } from "./importStatusEnum";
+import type { ImportTypeEnum } from './ImportTypeEnum';
+import type { ImportStatusEnum } from './ImportStatusEnum';
 
 export interface Import {
   id: string;

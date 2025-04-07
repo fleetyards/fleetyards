@@ -3,17 +3,17 @@ import { defineConfig } from "orval";
 export default defineConfig({
   fyApi: {
     output: {
+      namingConvention: "PascalCase",
       mode: "tags",
       workspace: "app/frontend/services/fyApi",
       target: "./services",
       schemas: "./models",
       client: "vue-query",
-      mock: false,
-      prettier: true,
+      mock: true,
       clean: true,
       override: {
         mutator: {
-          path: "./axiosClient.ts",
+          path: "../axiosClient.ts",
           name: "axiosClient",
         },
         query: {
@@ -31,17 +31,17 @@ export default defineConfig({
   },
   fyAdminApi: {
     output: {
+      namingConvention: "PascalCase",
       mode: "tags",
       workspace: "app/frontend/services/fyAdminApi",
       target: "./services",
       schemas: "./models",
       client: "vue-query",
-      mock: false,
-      prettier: true,
+      mock: true,
       clean: true,
       override: {
         mutator: {
-          path: "./axiosClient.ts",
+          path: "../axiosAdminClient.ts",
           name: "axiosClient",
         },
         query: {

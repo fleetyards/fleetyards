@@ -5,12 +5,12 @@
  * OpenAPI spec version: v1
  */
 
-export type GalleryTypeEnum =
-  (typeof GalleryTypeEnum)[keyof typeof GalleryTypeEnum];
+export type GalleryTypeEnum = typeof GalleryTypeEnum[keyof typeof GalleryTypeEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GalleryTypeEnum = {
-  Model: "Model",
-  Station: "Station",
-  Album: "Album",
+  Model: 'Model',
+  Station: 'Station',
+  Album: 'Album',
 } as const;

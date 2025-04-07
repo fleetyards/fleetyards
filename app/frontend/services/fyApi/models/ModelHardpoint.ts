@@ -4,14 +4,14 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { ModelHardpointCategoryEnum } from "./modelHardpointCategoryEnum";
-import type { Component } from "./component";
-import type { ModelHardpointGroupEnum } from "./modelHardpointGroupEnum";
-import type { ModelHardpointLoadout } from "./modelHardpointLoadout";
-import type { ModelHardpointSizeEnum } from "./modelHardpointSizeEnum";
-import type { HardpointSourceEnum } from "./hardpointSourceEnum";
-import type { ModelHardpointSubCategoryEnum } from "./modelHardpointSubCategoryEnum";
-import type { ModelHardpointTypeEnum } from "./modelHardpointTypeEnum";
+import type { ModelHardpointCategoryEnum } from './ModelHardpointCategoryEnum';
+import type { Component } from './Component';
+import type { ModelHardpointGroupEnum } from './ModelHardpointGroupEnum';
+import type { ModelHardpointLoadout } from './ModelHardpointLoadout';
+import type { ModelHardpointSizeEnum } from './ModelHardpointSizeEnum';
+import type { HardpointSourceEnum } from './HardpointSourceEnum';
+import type { ModelHardpointSubCategoryEnum } from './ModelHardpointSubCategoryEnum';
+import type { ModelHardpointTypeEnum } from './ModelHardpointTypeEnum';
 
 export interface ModelHardpoint {
   id: string;

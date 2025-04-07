@@ -4,7 +4,10 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import { useMutation, useQuery } from "@tanstack/vue-query";
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   DataTag,
   MutationFunction,
@@ -13,621 +16,609 @@ import type {
   UseMutationOptions,
   UseMutationReturnType,
   UseQueryOptions,
-  UseQueryReturnType,
-} from "@tanstack/vue-query";
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import { unref } from "vue";
-import type { MaybeRef } from "vue";
+import {
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
 
 import type {
-  FleetMember,
   FleetMemberCreateInput,
   FleetMembersParams,
   StandardError,
-  StandardMessage,
-  ValidationError,
-} from "../models";
+  ValidationError
+} from '../models';
 
-import { axiosClient } from "../axiosClient";
-import type { ErrorType } from "../axiosClient";
-import { customQueryOptions } from "../../customQueryOptions";
+import {
+  faker
+} from '@faker-js/faker';
+
+import {
+  HttpResponse,
+  delay,
+  http
+} from 'msw';
+
+import {
+  FleetMembershipRoleEnum,
+  FleetMembershipShipsFilterEnum,
+  FleetMembershipStatusEnum
+} from '../models';
+import type {
+  FleetMember,
+  StandardMessage
+} from '../models';
+
+import { axiosClient } from '../../axiosClient';
+import type { ErrorType } from '../../axiosClient';
+import { customQueryOptions } from '../../customQueryOptions';
+
+
+
+
 
 /**
  * No Member found
  * @summary Accept Member
  */
 export const acceptFleetMember = (
-  fleetSlug: MaybeRef<string>,
-  username: MaybeRef<string>,
-) => {
-  fleetSlug = unref(fleetSlug);
-  username = unref(username);
+    fleetSlug: MaybeRef<string>,
+    username: MaybeRef<string>,
+ ) => {
+      fleetSlug = unref(fleetSlug);
+username = unref(username);
+      
+      return axiosClient<StandardMessage>(
+      {url: `/fleets/${fleetSlug}/members/${username}/accept`, method: 'PUT'
+    },
+      );
+    }
+  
 
-  return axiosClient<StandardMessage>({
-    url: `/fleets/${fleetSlug}/members/${username}/accept`,
-    method: "PUT",
-  });
-};
 
-export const getAcceptFleetMemberMutationOptions = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof acceptFleetMember>>,
-    TError,
-    { fleetSlug: string; username: string },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof acceptFleetMember>>,
-  TError,
-  { fleetSlug: string; username: string },
-  TContext
-> => {
-  const mutationKey = ["acceptFleetMember"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getAcceptFleetMemberMutationOptions = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof acceptFleetMember>>, TError,{fleetSlug: string;username: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof acceptFleetMember>>, TError,{fleetSlug: string;username: string}, TContext> => {
+    
+const mutationKey = ['acceptFleetMember'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof acceptFleetMember>>,
-    { fleetSlug: string; username: string }
-  > = (props) => {
-    const { fleetSlug, username } = props ?? {};
+      
 
-    return acceptFleetMember(fleetSlug, username);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof acceptFleetMember>>, {fleetSlug: string;username: string}> = (props) => {
+          const {fleetSlug,username} = props ?? {};
 
-export type AcceptFleetMemberMutationResult = NonNullable<
-  Awaited<ReturnType<typeof acceptFleetMember>>
->;
+          return  acceptFleetMember(fleetSlug,username,)
+        }
 
-export type AcceptFleetMemberMutationError = ErrorType<
-  ValidationError | StandardError
->;
+        
 
-/**
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AcceptFleetMemberMutationResult = NonNullable<Awaited<ReturnType<typeof acceptFleetMember>>>
+    
+    export type AcceptFleetMemberMutationError = ErrorType<ValidationError | StandardError>
+
+    /**
  * @summary Accept Member
  */
-export const useAcceptFleetMember = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof acceptFleetMember>>,
-    TError,
-    { fleetSlug: string; username: string },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof acceptFleetMember>>,
-  TError,
-  { fleetSlug: string; username: string },
-  TContext
-> => {
-  const mutationOptions = getAcceptFleetMemberMutationOptions(options);
+export const useAcceptFleetMember = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof acceptFleetMember>>, TError,{fleetSlug: string;username: string}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof acceptFleetMember>>,
+        TError,
+        {fleetSlug: string;username: string},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getAcceptFleetMemberMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * You are not the owner of this Fleet
  * @summary Create Member
  */
 export const createFleetMember = (
-  fleetSlug: MaybeRef<string>,
-  fleetMemberCreateInput: MaybeRef<FleetMemberCreateInput>,
-  signal?: AbortSignal,
+    fleetSlug: MaybeRef<string>,
+    fleetMemberCreateInput: MaybeRef<FleetMemberCreateInput>,
+ signal?: AbortSignal
 ) => {
-  fleetSlug = unref(fleetSlug);
-  fleetMemberCreateInput = unref(fleetMemberCreateInput);
+      fleetSlug = unref(fleetSlug);
+fleetMemberCreateInput = unref(fleetMemberCreateInput);
+      
+      return axiosClient<FleetMember>(
+      {url: `/fleets/${fleetSlug}/members`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: fleetMemberCreateInput, signal
+    },
+      );
+    }
+  
 
-  return axiosClient<FleetMember>({
-    url: `/fleets/${fleetSlug}/members`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: fleetMemberCreateInput,
-    signal,
-  });
-};
 
-export const getCreateFleetMemberMutationOptions = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createFleetMember>>,
-    TError,
-    { fleetSlug: string; data: FleetMemberCreateInput },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof createFleetMember>>,
-  TError,
-  { fleetSlug: string; data: FleetMemberCreateInput },
-  TContext
-> => {
-  const mutationKey = ["createFleetMember"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getCreateFleetMemberMutationOptions = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createFleetMember>>, TError,{fleetSlug: string;data: FleetMemberCreateInput}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof createFleetMember>>, TError,{fleetSlug: string;data: FleetMemberCreateInput}, TContext> => {
+    
+const mutationKey = ['createFleetMember'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof createFleetMember>>,
-    { fleetSlug: string; data: FleetMemberCreateInput }
-  > = (props) => {
-    const { fleetSlug, data } = props ?? {};
+      
 
-    return createFleetMember(fleetSlug, data);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createFleetMember>>, {fleetSlug: string;data: FleetMemberCreateInput}> = (props) => {
+          const {fleetSlug,data} = props ?? {};
 
-export type CreateFleetMemberMutationResult = NonNullable<
-  Awaited<ReturnType<typeof createFleetMember>>
->;
-export type CreateFleetMemberMutationBody = FleetMemberCreateInput;
-export type CreateFleetMemberMutationError = ErrorType<
-  ValidationError | StandardError
->;
+          return  createFleetMember(fleetSlug,data,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateFleetMemberMutationResult = NonNullable<Awaited<ReturnType<typeof createFleetMember>>>
+    export type CreateFleetMemberMutationBody = FleetMemberCreateInput
+    export type CreateFleetMemberMutationError = ErrorType<ValidationError | StandardError>
+
+    /**
  * @summary Create Member
  */
-export const useCreateFleetMember = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createFleetMember>>,
-    TError,
-    { fleetSlug: string; data: FleetMemberCreateInput },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof createFleetMember>>,
-  TError,
-  { fleetSlug: string; data: FleetMemberCreateInput },
-  TContext
-> => {
-  const mutationOptions = getCreateFleetMemberMutationOptions(options);
+export const useCreateFleetMember = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createFleetMember>>, TError,{fleetSlug: string;data: FleetMemberCreateInput}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof createFleetMember>>,
+        TError,
+        {fleetSlug: string;data: FleetMemberCreateInput},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getCreateFleetMemberMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary Fleet Member List
  */
 export const fleetMembers = (
-  fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<FleetMembersParams>,
-  signal?: AbortSignal,
+    fleetSlug: MaybeRef<string>,
+    params?: MaybeRef<FleetMembersParams>,
+ signal?: AbortSignal
 ) => {
-  fleetSlug = unref(fleetSlug);
-  params = unref(params);
+      fleetSlug = unref(fleetSlug);
+params = unref(params);
+      
+      return axiosClient<FleetMember[]>(
+      {url: `/fleets/${fleetSlug}/members`, method: 'GET',
+        params: unref(params), signal
+    },
+      );
+    }
+  
 
-  return axiosClient<FleetMember[]>({
-    url: `/fleets/${fleetSlug}/members`,
-    method: "GET",
-    params: unref(params),
-    signal,
-  });
-};
+const getFleetMembersQueryKey = (fleetSlug: MaybeRef<string>,
+    params?: MaybeRef<FleetMembersParams>,) => {
+    return ['fleets',fleetSlug,'members', ...(params ? [params]: [])] as const;
+    }
 
-const getFleetMembersQueryKey = (
-  fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<FleetMembersParams>,
+    
+export const useFleetMembersQueryOptions = <TData = Awaited<ReturnType<typeof fleetMembers>>, TError = ErrorType<StandardError>>(fleetSlug: MaybeRef<string>,
+    params?: MaybeRef<FleetMembersParams>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof fleetMembers>>, TError, TData>>, }
 ) => {
-  return ["fleets", fleetSlug, "members", ...(params ? [params] : [])] as const;
-};
 
-export const useFleetMembersQueryOptions = <
-  TData = Awaited<ReturnType<typeof fleetMembers>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<FleetMembersParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof fleetMembers>>, TError, TData>
-    >;
-  },
-) => {
-  const { query: queryOptions } = options ?? {};
+const {query: queryOptions} = options ?? {};
 
-  const queryKey = getFleetMembersQueryKey(fleetSlug, params);
+  const queryKey =  getFleetMembersQueryKey(fleetSlug,params);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof fleetMembers>>> = ({
-    signal,
-  }) => fleetMembers(fleetSlug, params, signal);
+  
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof fleetMembers>>> = ({ signal }) => fleetMembers(fleetSlug,params, signal);
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof fleetMembers>>,
-    TError,
-    TData
-  >;
-};
+      
 
-export type FleetMembersQueryResult = NonNullable<
-  Awaited<ReturnType<typeof fleetMembers>>
->;
-export type FleetMembersQueryError = ErrorType<StandardError>;
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof fleetMembers>>, TError, TData> 
+}
+
+export type FleetMembersQueryResult = NonNullable<Awaited<ReturnType<typeof fleetMembers>>>
+export type FleetMembersQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Fleet Member List
  */
 
-export function useFleetMembers<
-  TData = Awaited<ReturnType<typeof fleetMembers>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<FleetMembersParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof fleetMembers>>, TError, TData>
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useFleetMembersQueryOptions(fleetSlug, params, options);
+export function useFleetMembers<TData = Awaited<ReturnType<typeof fleetMembers>>, TError = ErrorType<StandardError>>(
+ fleetSlug: MaybeRef<string>,
+    params?: MaybeRef<FleetMembersParams>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof fleetMembers>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useFleetMembersQueryOptions(fleetSlug,params,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
 
+
+
 /**
  * No Member found
  * @summary Decline Member
  */
 export const declineFleetMember = (
-  fleetSlug: MaybeRef<string>,
-  username: MaybeRef<string>,
-) => {
-  fleetSlug = unref(fleetSlug);
-  username = unref(username);
+    fleetSlug: MaybeRef<string>,
+    username: MaybeRef<string>,
+ ) => {
+      fleetSlug = unref(fleetSlug);
+username = unref(username);
+      
+      return axiosClient<StandardMessage>(
+      {url: `/fleets/${fleetSlug}/members/${username}/decline`, method: 'PUT'
+    },
+      );
+    }
+  
 
-  return axiosClient<StandardMessage>({
-    url: `/fleets/${fleetSlug}/members/${username}/decline`,
-    method: "PUT",
-  });
-};
 
-export const getDeclineFleetMemberMutationOptions = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof declineFleetMember>>,
-    TError,
-    { fleetSlug: string; username: string },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof declineFleetMember>>,
-  TError,
-  { fleetSlug: string; username: string },
-  TContext
-> => {
-  const mutationKey = ["declineFleetMember"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getDeclineFleetMemberMutationOptions = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof declineFleetMember>>, TError,{fleetSlug: string;username: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof declineFleetMember>>, TError,{fleetSlug: string;username: string}, TContext> => {
+    
+const mutationKey = ['declineFleetMember'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof declineFleetMember>>,
-    { fleetSlug: string; username: string }
-  > = (props) => {
-    const { fleetSlug, username } = props ?? {};
+      
 
-    return declineFleetMember(fleetSlug, username);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof declineFleetMember>>, {fleetSlug: string;username: string}> = (props) => {
+          const {fleetSlug,username} = props ?? {};
 
-export type DeclineFleetMemberMutationResult = NonNullable<
-  Awaited<ReturnType<typeof declineFleetMember>>
->;
+          return  declineFleetMember(fleetSlug,username,)
+        }
 
-export type DeclineFleetMemberMutationError = ErrorType<
-  ValidationError | StandardError
->;
+        
 
-/**
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeclineFleetMemberMutationResult = NonNullable<Awaited<ReturnType<typeof declineFleetMember>>>
+    
+    export type DeclineFleetMemberMutationError = ErrorType<ValidationError | StandardError>
+
+    /**
  * @summary Decline Member
  */
-export const useDeclineFleetMember = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof declineFleetMember>>,
-    TError,
-    { fleetSlug: string; username: string },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof declineFleetMember>>,
-  TError,
-  { fleetSlug: string; username: string },
-  TContext
-> => {
-  const mutationOptions = getDeclineFleetMemberMutationOptions(options);
+export const useDeclineFleetMember = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof declineFleetMember>>, TError,{fleetSlug: string;username: string}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof declineFleetMember>>,
+        TError,
+        {fleetSlug: string;username: string},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getDeclineFleetMemberMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * No Member found
  * @summary Demote Member
  */
 export const demoteFleetMember = (
-  fleetSlug: MaybeRef<string>,
-  username: MaybeRef<string>,
-) => {
-  fleetSlug = unref(fleetSlug);
-  username = unref(username);
+    fleetSlug: MaybeRef<string>,
+    username: MaybeRef<string>,
+ ) => {
+      fleetSlug = unref(fleetSlug);
+username = unref(username);
+      
+      return axiosClient<FleetMember>(
+      {url: `/fleets/${fleetSlug}/members/${username}/demote`, method: 'PUT'
+    },
+      );
+    }
+  
 
-  return axiosClient<FleetMember>({
-    url: `/fleets/${fleetSlug}/members/${username}/demote`,
-    method: "PUT",
-  });
-};
 
-export const getDemoteFleetMemberMutationOptions = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof demoteFleetMember>>,
-    TError,
-    { fleetSlug: string; username: string },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof demoteFleetMember>>,
-  TError,
-  { fleetSlug: string; username: string },
-  TContext
-> => {
-  const mutationKey = ["demoteFleetMember"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getDemoteFleetMemberMutationOptions = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof demoteFleetMember>>, TError,{fleetSlug: string;username: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof demoteFleetMember>>, TError,{fleetSlug: string;username: string}, TContext> => {
+    
+const mutationKey = ['demoteFleetMember'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof demoteFleetMember>>,
-    { fleetSlug: string; username: string }
-  > = (props) => {
-    const { fleetSlug, username } = props ?? {};
+      
 
-    return demoteFleetMember(fleetSlug, username);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof demoteFleetMember>>, {fleetSlug: string;username: string}> = (props) => {
+          const {fleetSlug,username} = props ?? {};
 
-export type DemoteFleetMemberMutationResult = NonNullable<
-  Awaited<ReturnType<typeof demoteFleetMember>>
->;
+          return  demoteFleetMember(fleetSlug,username,)
+        }
 
-export type DemoteFleetMemberMutationError = ErrorType<StandardError>;
+        
 
-/**
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DemoteFleetMemberMutationResult = NonNullable<Awaited<ReturnType<typeof demoteFleetMember>>>
+    
+    export type DemoteFleetMemberMutationError = ErrorType<StandardError>
+
+    /**
  * @summary Demote Member
  */
-export const useDemoteFleetMember = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof demoteFleetMember>>,
-    TError,
-    { fleetSlug: string; username: string },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof demoteFleetMember>>,
-  TError,
-  { fleetSlug: string; username: string },
-  TContext
-> => {
-  const mutationOptions = getDemoteFleetMemberMutationOptions(options);
+export const useDemoteFleetMember = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof demoteFleetMember>>, TError,{fleetSlug: string;username: string}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof demoteFleetMember>>,
+        TError,
+        {fleetSlug: string;username: string},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getDemoteFleetMemberMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * You are not the owner of this Fleet
  * @summary Remove Fleet Member
  */
 export const destroyFleetMember = (
-  fleetSlug: MaybeRef<string>,
-  username: MaybeRef<string>,
-) => {
-  fleetSlug = unref(fleetSlug);
-  username = unref(username);
+    fleetSlug: MaybeRef<string>,
+    username: MaybeRef<string>,
+ ) => {
+      fleetSlug = unref(fleetSlug);
+username = unref(username);
+      
+      return axiosClient<void>(
+      {url: `/fleets/${fleetSlug}/members/${username}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
-  return axiosClient<void>({
-    url: `/fleets/${fleetSlug}/members/${username}`,
-    method: "DELETE",
-  });
-};
 
-export const getDestroyFleetMemberMutationOptions = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof destroyFleetMember>>,
-    TError,
-    { fleetSlug: string; username: string },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof destroyFleetMember>>,
-  TError,
-  { fleetSlug: string; username: string },
-  TContext
-> => {
-  const mutationKey = ["destroyFleetMember"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getDestroyFleetMemberMutationOptions = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof destroyFleetMember>>, TError,{fleetSlug: string;username: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof destroyFleetMember>>, TError,{fleetSlug: string;username: string}, TContext> => {
+    
+const mutationKey = ['destroyFleetMember'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof destroyFleetMember>>,
-    { fleetSlug: string; username: string }
-  > = (props) => {
-    const { fleetSlug, username } = props ?? {};
+      
 
-    return destroyFleetMember(fleetSlug, username);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof destroyFleetMember>>, {fleetSlug: string;username: string}> = (props) => {
+          const {fleetSlug,username} = props ?? {};
 
-export type DestroyFleetMemberMutationResult = NonNullable<
-  Awaited<ReturnType<typeof destroyFleetMember>>
->;
+          return  destroyFleetMember(fleetSlug,username,)
+        }
 
-export type DestroyFleetMemberMutationError = ErrorType<StandardError>;
+        
 
-/**
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DestroyFleetMemberMutationResult = NonNullable<Awaited<ReturnType<typeof destroyFleetMember>>>
+    
+    export type DestroyFleetMemberMutationError = ErrorType<StandardError>
+
+    /**
  * @summary Remove Fleet Member
  */
-export const useDestroyFleetMember = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof destroyFleetMember>>,
-    TError,
-    { fleetSlug: string; username: string },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof destroyFleetMember>>,
-  TError,
-  { fleetSlug: string; username: string },
-  TContext
-> => {
-  const mutationOptions = getDestroyFleetMemberMutationOptions(options);
+export const useDestroyFleetMember = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof destroyFleetMember>>, TError,{fleetSlug: string;username: string}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof destroyFleetMember>>,
+        TError,
+        {fleetSlug: string;username: string},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getDestroyFleetMemberMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * No Member found
  * @summary Promote Member
  */
 export const promoteFleetMember = (
-  fleetSlug: MaybeRef<string>,
-  username: MaybeRef<string>,
-) => {
-  fleetSlug = unref(fleetSlug);
-  username = unref(username);
+    fleetSlug: MaybeRef<string>,
+    username: MaybeRef<string>,
+ ) => {
+      fleetSlug = unref(fleetSlug);
+username = unref(username);
+      
+      return axiosClient<FleetMember>(
+      {url: `/fleets/${fleetSlug}/members/${username}/promote`, method: 'PUT'
+    },
+      );
+    }
+  
 
-  return axiosClient<FleetMember>({
-    url: `/fleets/${fleetSlug}/members/${username}/promote`,
-    method: "PUT",
-  });
-};
 
-export const getPromoteFleetMemberMutationOptions = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof promoteFleetMember>>,
-    TError,
-    { fleetSlug: string; username: string },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof promoteFleetMember>>,
-  TError,
-  { fleetSlug: string; username: string },
-  TContext
-> => {
-  const mutationKey = ["promoteFleetMember"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getPromoteFleetMemberMutationOptions = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof promoteFleetMember>>, TError,{fleetSlug: string;username: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof promoteFleetMember>>, TError,{fleetSlug: string;username: string}, TContext> => {
+    
+const mutationKey = ['promoteFleetMember'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof promoteFleetMember>>,
-    { fleetSlug: string; username: string }
-  > = (props) => {
-    const { fleetSlug, username } = props ?? {};
+      
 
-    return promoteFleetMember(fleetSlug, username);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof promoteFleetMember>>, {fleetSlug: string;username: string}> = (props) => {
+          const {fleetSlug,username} = props ?? {};
 
-export type PromoteFleetMemberMutationResult = NonNullable<
-  Awaited<ReturnType<typeof promoteFleetMember>>
->;
+          return  promoteFleetMember(fleetSlug,username,)
+        }
 
-export type PromoteFleetMemberMutationError = ErrorType<StandardError>;
+        
 
-/**
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PromoteFleetMemberMutationResult = NonNullable<Awaited<ReturnType<typeof promoteFleetMember>>>
+    
+    export type PromoteFleetMemberMutationError = ErrorType<StandardError>
+
+    /**
  * @summary Promote Member
  */
-export const usePromoteFleetMember = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof promoteFleetMember>>,
-    TError,
-    { fleetSlug: string; username: string },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof promoteFleetMember>>,
-  TError,
-  { fleetSlug: string; username: string },
-  TContext
-> => {
-  const mutationOptions = getPromoteFleetMemberMutationOptions(options);
+export const usePromoteFleetMember = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof promoteFleetMember>>, TError,{fleetSlug: string;username: string}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof promoteFleetMember>>,
+        TError,
+        {fleetSlug: string;username: string},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
+      const mutationOptions = getPromoteFleetMemberMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+
+export const getAcceptFleetMemberResponseMock = (overrideResponse: Partial< StandardMessage > = {}): StandardMessage => ({code: faker.string.alpha(20), message: faker.string.alpha(20), ...overrideResponse})
+
+export const getCreateFleetMemberResponseMock = (overrideResponse: Partial< FleetMember > = {}): FleetMember => ({id: faker.string.uuid(), username: faker.string.alpha(20), fleetRole: {id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.string.alpha(20), resourceAccess: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20)))}, role: faker.helpers.arrayElement(Object.values(FleetMembershipRoleEnum)), roleLabel: faker.string.alpha(20), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(FleetMembershipStatusEnum)), undefined]), avatar: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiHandle: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), homepage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), discord: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), youtube: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twitch: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), guilded: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), shipsFilter: faker.helpers.arrayElement(Object.values(FleetMembershipShipsFilterEnum)), hangarGroupId: faker.helpers.arrayElement([faker.string.uuid(), undefined]), fleetSlug: faker.string.alpha(20), fleetName: faker.string.alpha(20), fleet: faker.helpers.arrayElement([{id: faker.string.uuid(), fid: faker.string.alpha(20), rsiSid: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), ts: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), discord: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), youtube: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twitch: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), guilded: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), homepage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), name: faker.string.alpha(20), slug: faker.string.alpha(20), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), publicFleet: faker.datatype.boolean(), publicFleetStats: faker.datatype.boolean(), logo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), backgroundImage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, undefined]), primary: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), hangarUpdatedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), invitedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), invitedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), requestedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), requestedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), acceptedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), acceptedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), declinedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), declinedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), isDestroyAllowed: faker.datatype.boolean(), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
+
+export const getFleetMembersResponseMock = (): FleetMember[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), username: faker.string.alpha(20), fleetRole: {id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.string.alpha(20), resourceAccess: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20)))}, role: faker.helpers.arrayElement(Object.values(FleetMembershipRoleEnum)), roleLabel: faker.string.alpha(20), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(FleetMembershipStatusEnum)), undefined]), avatar: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiHandle: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), homepage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), discord: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), youtube: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twitch: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), guilded: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), shipsFilter: faker.helpers.arrayElement(Object.values(FleetMembershipShipsFilterEnum)), hangarGroupId: faker.helpers.arrayElement([faker.string.uuid(), undefined]), fleetSlug: faker.string.alpha(20), fleetName: faker.string.alpha(20), fleet: faker.helpers.arrayElement([{id: faker.string.uuid(), fid: faker.string.alpha(20), rsiSid: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), ts: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), discord: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), youtube: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twitch: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), guilded: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), homepage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), name: faker.string.alpha(20), slug: faker.string.alpha(20), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), publicFleet: faker.datatype.boolean(), publicFleetStats: faker.datatype.boolean(), logo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), backgroundImage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, undefined]), primary: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), hangarUpdatedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), invitedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), invitedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), requestedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), requestedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), acceptedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), acceptedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), declinedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), declinedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), isDestroyAllowed: faker.datatype.boolean(), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})))
+
+export const getDeclineFleetMemberResponseMock = (overrideResponse: Partial< StandardMessage > = {}): StandardMessage => ({code: faker.string.alpha(20), message: faker.string.alpha(20), ...overrideResponse})
+
+export const getDemoteFleetMemberResponseMock = (overrideResponse: Partial< FleetMember > = {}): FleetMember => ({id: faker.string.uuid(), username: faker.string.alpha(20), fleetRole: {id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.string.alpha(20), resourceAccess: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20)))}, role: faker.helpers.arrayElement(Object.values(FleetMembershipRoleEnum)), roleLabel: faker.string.alpha(20), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(FleetMembershipStatusEnum)), undefined]), avatar: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiHandle: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), homepage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), discord: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), youtube: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twitch: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), guilded: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), shipsFilter: faker.helpers.arrayElement(Object.values(FleetMembershipShipsFilterEnum)), hangarGroupId: faker.helpers.arrayElement([faker.string.uuid(), undefined]), fleetSlug: faker.string.alpha(20), fleetName: faker.string.alpha(20), fleet: faker.helpers.arrayElement([{id: faker.string.uuid(), fid: faker.string.alpha(20), rsiSid: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), ts: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), discord: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), youtube: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twitch: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), guilded: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), homepage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), name: faker.string.alpha(20), slug: faker.string.alpha(20), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), publicFleet: faker.datatype.boolean(), publicFleetStats: faker.datatype.boolean(), logo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), backgroundImage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, undefined]), primary: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), hangarUpdatedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), invitedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), invitedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), requestedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), requestedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), acceptedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), acceptedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), declinedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), declinedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), isDestroyAllowed: faker.datatype.boolean(), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
+
+export const getPromoteFleetMemberResponseMock = (overrideResponse: Partial< FleetMember > = {}): FleetMember => ({id: faker.string.uuid(), username: faker.string.alpha(20), fleetRole: {id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.string.alpha(20), resourceAccess: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20)))}, role: faker.helpers.arrayElement(Object.values(FleetMembershipRoleEnum)), roleLabel: faker.string.alpha(20), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(FleetMembershipStatusEnum)), undefined]), avatar: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiHandle: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), homepage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), discord: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), youtube: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twitch: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), guilded: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), shipsFilter: faker.helpers.arrayElement(Object.values(FleetMembershipShipsFilterEnum)), hangarGroupId: faker.helpers.arrayElement([faker.string.uuid(), undefined]), fleetSlug: faker.string.alpha(20), fleetName: faker.string.alpha(20), fleet: faker.helpers.arrayElement([{id: faker.string.uuid(), fid: faker.string.alpha(20), rsiSid: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), ts: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), discord: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), youtube: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twitch: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), guilded: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), homepage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), name: faker.string.alpha(20), slug: faker.string.alpha(20), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), publicFleet: faker.datatype.boolean(), publicFleetStats: faker.datatype.boolean(), logo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), backgroundImage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, undefined]), primary: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), hangarUpdatedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), invitedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), invitedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), requestedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), requestedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), acceptedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), acceptedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), declinedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), declinedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), isDestroyAllowed: faker.datatype.boolean(), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
+
+
+export const getAcceptFleetMemberMockHandler = (overrideResponse?: StandardMessage | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<StandardMessage> | StandardMessage)) => {
+  return http.put('*/fleets/:fleetSlug/members/:username/accept', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getAcceptFleetMemberResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getCreateFleetMemberMockHandler = (overrideResponse?: FleetMember | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<FleetMember> | FleetMember)) => {
+  return http.post('*/fleets/:fleetSlug/members', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getCreateFleetMemberResponseMock()),
+      { status: 201,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getFleetMembersMockHandler = (overrideResponse?: FleetMember[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<FleetMember[]> | FleetMember[])) => {
+  return http.get('*/fleets/:fleetSlug/members', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getFleetMembersResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getDeclineFleetMemberMockHandler = (overrideResponse?: StandardMessage | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<StandardMessage> | StandardMessage)) => {
+  return http.put('*/fleets/:fleetSlug/members/:username/decline', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getDeclineFleetMemberResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getDemoteFleetMemberMockHandler = (overrideResponse?: FleetMember | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<FleetMember> | FleetMember)) => {
+  return http.put('*/fleets/:fleetSlug/members/:username/demote', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getDemoteFleetMemberResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getDestroyFleetMemberMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<void> | void)) => {
+  return http.delete('*/fleets/:fleetSlug/members/:username', async (info) => {await delay(1000);
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
+    return new HttpResponse(null,
+      { status: 204,
+        
+      })
+  })
+}
+
+export const getPromoteFleetMemberMockHandler = (overrideResponse?: FleetMember | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<FleetMember> | FleetMember)) => {
+  return http.put('*/fleets/:fleetSlug/members/:username/promote', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getPromoteFleetMemberResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+export const getFleetMembersMock = () => [
+  getAcceptFleetMemberMockHandler(),
+  getCreateFleetMemberMockHandler(),
+  getFleetMembersMockHandler(),
+  getDeclineFleetMemberMockHandler(),
+  getDemoteFleetMemberMockHandler(),
+  getDestroyFleetMemberMockHandler(),
+  getPromoteFleetMemberMockHandler()
+]

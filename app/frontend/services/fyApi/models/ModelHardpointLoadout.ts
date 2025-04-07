@@ -4,7 +4,7 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { Component } from "./component";
+import type { Component } from './Component';
 
 export interface ModelHardpointLoadout {
   id: string;

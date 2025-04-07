@@ -4,8 +4,8 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { HangarClassificationMetric } from "./hangarClassificationMetric";
-import type { HangarMetrics } from "./hangarMetrics";
+import type { HangarClassificationMetric } from './HangarClassificationMetric';
+import type { HangarMetrics } from './HangarMetrics';
 
 export interface FleetVehiclesStats {
   total: number;

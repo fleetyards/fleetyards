@@ -4,6 +4,6 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { ModelSortEnum } from "./modelSortEnum";
+import type { ModelSortEnum } from './ModelSortEnum';
 
 export type ModelQuerySorts = ModelSortEnum[] | ModelSortEnum;

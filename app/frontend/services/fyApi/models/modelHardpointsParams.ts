@@ -4,8 +4,8 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { HardpointSourceEnum } from "./hardpointSourceEnum";
+import type { HardpointSourceEnum } from './HardpointSourceEnum';
 
 export type ModelHardpointsParams = {
-  source?: HardpointSourceEnum;
+source?: HardpointSourceEnum;
 };

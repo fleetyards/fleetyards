@@ -4,179 +4,200 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import { useQuery } from "@tanstack/vue-query";
+import {
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   DataTag,
   QueryFunction,
   QueryKey,
   UseQueryOptions,
-  UseQueryReturnType,
-} from "@tanstack/vue-query";
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import { unref } from "vue";
+import {
+  unref
+} from 'vue';
 
-import type { FilterOption } from "../models";
+import {
+  faker
+} from '@faker-js/faker';
 
-import { axiosClient } from "../axiosClient";
-import type { ErrorType } from "../axiosClient";
-import { customQueryOptions } from "../../customQueryOptions";
+import {
+  HttpResponse,
+  delay,
+  http
+} from 'msw';
+
+import type {
+  FilterOption
+} from '../models';
+
+import { axiosClient } from '../../axiosClient';
+import type { ErrorType } from '../../axiosClient';
+import { customQueryOptions } from '../../customQueryOptions';
+
+
+
+
 
 /**
  * @summary Components Item Types Filters
  */
-export const componentItemTypesFilters = (signal?: AbortSignal) => {
-  return axiosClient<FilterOption[]>({
-    url: `/filters/components/item-types`,
-    method: "GET",
-    signal,
-  });
-};
+export const componentItemTypesFilters = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return axiosClient<FilterOption[]>(
+      {url: `/filters/components/item-types`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 const getComponentItemTypesFiltersQueryKey = () => {
-  return ["filters", "components", "item-types"] as const;
-};
+    return ['filters','components','item-types'] as const;
+    }
 
-export const useComponentItemTypesFiltersQueryOptions = <
-  TData = Awaited<ReturnType<typeof componentItemTypesFilters>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof componentItemTypesFilters>>,
-      TError,
-      TData
-    >
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const useComponentItemTypesFiltersQueryOptions = <TData = Awaited<ReturnType<typeof componentItemTypesFilters>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof componentItemTypesFilters>>, TError, TData>>, }
+) => {
 
-  const queryKey = getComponentItemTypesFiltersQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof componentItemTypesFilters>>
-  > = ({ signal }) => componentItemTypesFilters(signal);
+  const queryKey =  getComponentItemTypesFiltersQueryKey();
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof componentItemTypesFilters>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof componentItemTypesFilters>>> = ({ signal }) => componentItemTypesFilters(signal);
 
-export type ComponentItemTypesFiltersQueryResult = NonNullable<
-  Awaited<ReturnType<typeof componentItemTypesFilters>>
->;
-export type ComponentItemTypesFiltersQueryError = ErrorType<unknown>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof componentItemTypesFilters>>, TError, TData> 
+}
+
+export type ComponentItemTypesFiltersQueryResult = NonNullable<Awaited<ReturnType<typeof componentItemTypesFilters>>>
+export type ComponentItemTypesFiltersQueryError = ErrorType<unknown>
+
 
 /**
  * @summary Components Item Types Filters
  */
 
-export function useComponentItemTypesFilters<
-  TData = Awaited<ReturnType<typeof componentItemTypesFilters>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof componentItemTypesFilters>>,
-      TError,
-      TData
-    >
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useComponentItemTypesFiltersQueryOptions(options);
+export function useComponentItemTypesFilters<TData = Awaited<ReturnType<typeof componentItemTypesFilters>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof componentItemTypesFilters>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useComponentItemTypesFiltersQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
 
+
+
 /**
  * @summary Components Classes Filters
  */
-export const componentClassesFilters = (signal?: AbortSignal) => {
-  return axiosClient<FilterOption[]>({
-    url: `/filters/components/classes`,
-    method: "GET",
-    signal,
-  });
-};
+export const componentClassesFilters = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return axiosClient<FilterOption[]>(
+      {url: `/filters/components/classes`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 const getComponentClassesFiltersQueryKey = () => {
-  return ["filters", "components", "classes"] as const;
-};
+    return ['filters','components','classes'] as const;
+    }
 
-export const useComponentClassesFiltersQueryOptions = <
-  TData = Awaited<ReturnType<typeof componentClassesFilters>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof componentClassesFilters>>,
-      TError,
-      TData
-    >
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const useComponentClassesFiltersQueryOptions = <TData = Awaited<ReturnType<typeof componentClassesFilters>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof componentClassesFilters>>, TError, TData>>, }
+) => {
 
-  const queryKey = getComponentClassesFiltersQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof componentClassesFilters>>
-  > = ({ signal }) => componentClassesFilters(signal);
+  const queryKey =  getComponentClassesFiltersQueryKey();
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof componentClassesFilters>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof componentClassesFilters>>> = ({ signal }) => componentClassesFilters(signal);
 
-export type ComponentClassesFiltersQueryResult = NonNullable<
-  Awaited<ReturnType<typeof componentClassesFilters>>
->;
-export type ComponentClassesFiltersQueryError = ErrorType<unknown>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof componentClassesFilters>>, TError, TData> 
+}
+
+export type ComponentClassesFiltersQueryResult = NonNullable<Awaited<ReturnType<typeof componentClassesFilters>>>
+export type ComponentClassesFiltersQueryError = ErrorType<unknown>
+
 
 /**
  * @summary Components Classes Filters
  */
 
-export function useComponentClassesFilters<
-  TData = Awaited<ReturnType<typeof componentClassesFilters>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof componentClassesFilters>>,
-      TError,
-      TData
-    >
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useComponentClassesFiltersQueryOptions(options);
+export function useComponentClassesFilters<TData = Awaited<ReturnType<typeof componentClassesFilters>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof componentClassesFilters>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useComponentClassesFiltersQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
+
+
+
+export const getComponentItemTypesFiltersResponseMock = (): FilterOption[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({category: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), icon: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), label: faker.string.alpha(20), value: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20), null]),faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), null]),]), name: faker.helpers.arrayElement([faker.string.alpha(20), undefined])})))
+
+export const getComponentClassesFiltersResponseMock = (): FilterOption[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({category: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), icon: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), label: faker.string.alpha(20), value: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20), null]),faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), null]),]), name: faker.helpers.arrayElement([faker.string.alpha(20), undefined])})))
+
+
+export const getComponentItemTypesFiltersMockHandler = (overrideResponse?: FilterOption[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<FilterOption[]> | FilterOption[])) => {
+  return http.get('*/filters/components/item-types', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getComponentItemTypesFiltersResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getComponentClassesFiltersMockHandler = (overrideResponse?: FilterOption[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<FilterOption[]> | FilterOption[])) => {
+  return http.get('*/filters/components/classes', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getComponentClassesFiltersResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+export const getComponentsFiltersMock = () => [
+  getComponentItemTypesFiltersMockHandler(),
+  getComponentClassesFiltersMockHandler()
+]

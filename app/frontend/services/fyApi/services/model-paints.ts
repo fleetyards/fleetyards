@@ -4,102 +4,135 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import { useQuery } from "@tanstack/vue-query";
+import {
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   DataTag,
   QueryFunction,
   QueryKey,
   UseQueryOptions,
-  UseQueryReturnType,
-} from "@tanstack/vue-query";
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import { unref } from "vue";
-import type { MaybeRef } from "vue";
+import {
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
 
-import type { ModelPaint, PaintsParams } from "../models";
+import type {
+  PaintsParams
+} from '../models';
 
-import { axiosClient } from "../axiosClient";
-import type { ErrorType } from "../axiosClient";
-import { customQueryOptions } from "../../customQueryOptions";
+import {
+  faker
+} from '@faker-js/faker';
+
+import {
+  HttpResponse,
+  delay,
+  http
+} from 'msw';
+
+import {
+  ItemPriceItemTypeEnum,
+  ItemPriceTimeRangeEnum,
+  ItemPriceTypeEnum
+} from '../models';
+import type {
+  ModelPaint
+} from '../models';
+
+import { axiosClient } from '../../axiosClient';
+import type { ErrorType } from '../../axiosClient';
+import { customQueryOptions } from '../../customQueryOptions';
+
+
+
+
 
 /**
  * @summary Model Paints List
  */
 export const paints = (
-  params?: MaybeRef<PaintsParams>,
-  signal?: AbortSignal,
+    params?: MaybeRef<PaintsParams>,
+ signal?: AbortSignal
 ) => {
-  params = unref(params);
+      params = unref(params);
+      
+      return axiosClient<ModelPaint[]>(
+      {url: `/model-paints`, method: 'GET',
+        params: unref(params), signal
+    },
+      );
+    }
+  
 
-  return axiosClient<ModelPaint[]>({
-    url: `/model-paints`,
-    method: "GET",
-    params: unref(params),
-    signal,
-  });
-};
+const getPaintsQueryKey = (params?: MaybeRef<PaintsParams>,) => {
+    return ['model-paints', ...(params ? [params]: [])] as const;
+    }
 
-const getPaintsQueryKey = (params?: MaybeRef<PaintsParams>) => {
-  return ["model-paints", ...(params ? [params] : [])] as const;
-};
-
-export const usePaintsQueryOptions = <
-  TData = Awaited<ReturnType<typeof paints>>,
-  TError = ErrorType<unknown>,
->(
-  params?: MaybeRef<PaintsParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof paints>>, TError, TData>
-    >;
-  },
+    
+export const usePaintsQueryOptions = <TData = Awaited<ReturnType<typeof paints>>, TError = ErrorType<unknown>>(params?: MaybeRef<PaintsParams>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof paints>>, TError, TData>>, }
 ) => {
-  const { query: queryOptions } = options ?? {};
 
-  const queryKey = getPaintsQueryKey(params);
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof paints>>> = ({
-    signal,
-  }) => paints(params, signal);
+  const queryKey =  getPaintsQueryKey(params);
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof paints>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof paints>>> = ({ signal }) => paints(params, signal);
 
-export type PaintsQueryResult = NonNullable<Awaited<ReturnType<typeof paints>>>;
-export type PaintsQueryError = ErrorType<unknown>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof paints>>, TError, TData> 
+}
+
+export type PaintsQueryResult = NonNullable<Awaited<ReturnType<typeof paints>>>
+export type PaintsQueryError = ErrorType<unknown>
+
 
 /**
  * @summary Model Paints List
  */
 
-export function usePaints<
-  TData = Awaited<ReturnType<typeof paints>>,
-  TError = ErrorType<unknown>,
->(
-  params?: MaybeRef<PaintsParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof paints>>, TError, TData>
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = usePaintsQueryOptions(params, options);
+export function usePaints<TData = Awaited<ReturnType<typeof paints>>, TError = ErrorType<unknown>>(
+ params?: MaybeRef<PaintsParams>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof paints>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = usePaintsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
+
+
+
+export const getPaintsResponseMock = (): ModelPaint[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.string.alpha(20), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), lastUpdatedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), lastUpdatedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), availability: {boughtAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), soldAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}))}, media: {angledView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), fleetchartImage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sideView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), storeImage: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), topView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined])}, nameWithModel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiId: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), rsiName: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiSlug: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, angledView: faker.helpers.arrayElement([faker.internet.url(), undefined]), angledViewHeight: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), angledViewLarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), angledViewMedium: faker.helpers.arrayElement([faker.internet.url(), undefined]), angledViewSmall: faker.helpers.arrayElement([faker.internet.url(), undefined]), angledViewWidth: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), angledViewXlarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), fleetchartImage: faker.helpers.arrayElement([faker.internet.url(), undefined]), hasStoreImage: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), sideView: faker.helpers.arrayElement([faker.internet.url(), undefined]), sideViewHeight: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), sideViewLarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), sideViewMedium: faker.helpers.arrayElement([faker.internet.url(), undefined]), sideViewSmall: faker.helpers.arrayElement([faker.internet.url(), undefined]), sideViewWidth: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), sideViewXlarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImage: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageLarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageMedium: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageSmall: faker.helpers.arrayElement([faker.internet.url(), undefined]), topView: faker.helpers.arrayElement([faker.internet.url(), undefined]), topViewHeight: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), topViewLarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), topViewMedium: faker.helpers.arrayElement([faker.internet.url(), undefined]), topViewSmall: faker.helpers.arrayElement([faker.internet.url(), undefined]), topViewWidth: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), topViewXlarge: faker.helpers.arrayElement([faker.internet.url(), undefined])})))
+
+
+export const getPaintsMockHandler = (overrideResponse?: ModelPaint[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<ModelPaint[]> | ModelPaint[])) => {
+  return http.get('*/model-paints', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getPaintsResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+export const getModelPaintsMock = () => [
+  getPaintsMockHandler()
+]

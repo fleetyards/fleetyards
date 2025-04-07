@@ -5,12 +5,12 @@
  * OpenAPI spec version: v1
  */
 
-export type FleetMembershipRoleEnum =
-  (typeof FleetMembershipRoleEnum)[keyof typeof FleetMembershipRoleEnum];
+export type FleetMembershipRoleEnum = typeof FleetMembershipRoleEnum[keyof typeof FleetMembershipRoleEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FleetMembershipRoleEnum = {
-  admin: "admin",
-  officer: "officer",
-  member: "member",
+  admin: 'admin',
+  officer: 'officer',
+  member: 'member',
 } as const;

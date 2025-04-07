@@ -4,7 +4,7 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { ViewImage } from "./viewImage";
+import type { ViewImage } from './ViewImage';
 
 export type ComponentMedia = {
   storeImage?: ViewImage;

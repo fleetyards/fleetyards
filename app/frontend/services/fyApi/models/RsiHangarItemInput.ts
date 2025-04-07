@@ -4,7 +4,7 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { RsiHangarItemKindEnum } from "./rsiHangarItemKindEnum";
+import type { RsiHangarItemKindEnum } from './RsiHangarItemKindEnum';
 
 export interface RsiHangarItemInput {
   id: string;

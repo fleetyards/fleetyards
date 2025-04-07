@@ -4,6 +4,6 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import type { UserSortEnum } from "./userSortEnum";
+import type { UserSortEnum } from './UserSortEnum';
 
 export type UserQuerySorts = UserSortEnum[] | UserSortEnum;

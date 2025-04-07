@@ -5,17 +5,17 @@
  * OpenAPI spec version: v1
  */
 
-export type EquipmentTypeEnum =
-  (typeof EquipmentTypeEnum)[keyof typeof EquipmentTypeEnum];
+export type EquipmentTypeEnum = typeof EquipmentTypeEnum[keyof typeof EquipmentTypeEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const EquipmentTypeEnum = {
-  undersuit: "undersuit",
-  armor: "armor",
-  weapon: "weapon",
-  tool: "tool",
-  clothing: "clothing",
-  medical: "medical",
-  weapon_attachment: "weapon_attachment",
-  hacking_tool: "hacking_tool",
+  undersuit: 'undersuit',
+  armor: 'armor',
+  weapon: 'weapon',
+  tool: 'tool',
+  clothing: 'clothing',
+  medical: 'medical',
+  weapon_attachment: 'weapon_attachment',
+  hacking_tool: 'hacking_tool',
 } as const;

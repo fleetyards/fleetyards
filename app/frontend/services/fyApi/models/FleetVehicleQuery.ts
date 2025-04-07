@@ -4,7 +4,7 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { FleetVehicleQuerySorts } from "./fleetVehicleQuerySorts";
+import type { FleetVehicleQuerySorts } from './FleetVehicleQuerySorts';
 
 export interface FleetVehicleQuery {
   beamGteq?: number;

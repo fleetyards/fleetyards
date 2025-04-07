@@ -5,13 +5,13 @@
  * OpenAPI spec version: v1
  */
 
-export type ItemPriceTimeRangeEnum =
-  (typeof ItemPriceTimeRangeEnum)[keyof typeof ItemPriceTimeRangeEnum];
+export type ItemPriceTimeRangeEnum = typeof ItemPriceTimeRangeEnum[keyof typeof ItemPriceTimeRangeEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ItemPriceTimeRangeEnum = {
-  "1-day": "1-day",
-  "3-days": "3-days",
-  "7-days": "7-days",
-  "30-days": "30-days",
+  '1-day': '1-day',
+  '3-days': '3-days',
+  '7-days': '7-days',
+  '30-days': '30-days',
 } as const;

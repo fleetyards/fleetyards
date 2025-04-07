@@ -6,6 +6,6 @@
  */
 
 export type ModelVariantsParams = {
-  page?: string;
-  perPage?: string;
+page?: string;
+perPage?: string;
 };

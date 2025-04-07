@@ -4,111 +4,125 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import { useQuery } from "@tanstack/vue-query";
+import {
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   DataTag,
   QueryFunction,
   QueryKey,
   UseQueryOptions,
-  UseQueryReturnType,
-} from "@tanstack/vue-query";
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import { unref } from "vue";
-import type { MaybeRef } from "vue";
+import {
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
 
-import type { HangarGroupPublic } from "../models";
+import {
+  faker
+} from '@faker-js/faker';
 
-import { axiosClient } from "../axiosClient";
-import type { ErrorType } from "../axiosClient";
-import { customQueryOptions } from "../../customQueryOptions";
+import {
+  HttpResponse,
+  delay,
+  http
+} from 'msw';
+
+import type {
+  HangarGroupPublic
+} from '../models';
+
+import { axiosClient } from '../../axiosClient';
+import type { ErrorType } from '../../axiosClient';
+import { customQueryOptions } from '../../customQueryOptions';
+
+
+
+
 
 /**
  * @summary HangarGroup list
  */
 export const publicHangarGroups = (
-  username: MaybeRef<string>,
-  signal?: AbortSignal,
+    username: MaybeRef<string>,
+ signal?: AbortSignal
 ) => {
-  username = unref(username);
+      username = unref(username);
+      
+      return axiosClient<HangarGroupPublic[]>(
+      {url: `/public/hangars/${username}/groups`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  return axiosClient<HangarGroupPublic[]>({
-    url: `/public/hangars/${username}/groups`,
-    method: "GET",
-    signal,
-  });
-};
+const getPublicHangarGroupsQueryKey = (username: MaybeRef<string>,) => {
+    return ['public','hangars',username,'groups'] as const;
+    }
 
-const getPublicHangarGroupsQueryKey = (username: MaybeRef<string>) => {
-  return ["public", "hangars", username, "groups"] as const;
-};
-
-export const usePublicHangarGroupsQueryOptions = <
-  TData = Awaited<ReturnType<typeof publicHangarGroups>>,
-  TError = ErrorType<unknown>,
->(
-  username: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof publicHangarGroups>>,
-        TError,
-        TData
-      >
-    >;
-  },
+    
+export const usePublicHangarGroupsQueryOptions = <TData = Awaited<ReturnType<typeof publicHangarGroups>>, TError = ErrorType<unknown>>(username: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof publicHangarGroups>>, TError, TData>>, }
 ) => {
-  const { query: queryOptions } = options ?? {};
 
-  const queryKey = getPublicHangarGroupsQueryKey(username);
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof publicHangarGroups>>
-  > = ({ signal }) => publicHangarGroups(username, signal);
+  const queryKey =  getPublicHangarGroupsQueryKey(username);
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof publicHangarGroups>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof publicHangarGroups>>> = ({ signal }) => publicHangarGroups(username, signal);
 
-export type PublicHangarGroupsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof publicHangarGroups>>
->;
-export type PublicHangarGroupsQueryError = ErrorType<unknown>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof publicHangarGroups>>, TError, TData> 
+}
+
+export type PublicHangarGroupsQueryResult = NonNullable<Awaited<ReturnType<typeof publicHangarGroups>>>
+export type PublicHangarGroupsQueryError = ErrorType<unknown>
+
 
 /**
  * @summary HangarGroup list
  */
 
-export function usePublicHangarGroups<
-  TData = Awaited<ReturnType<typeof publicHangarGroups>>,
-  TError = ErrorType<unknown>,
->(
-  username: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof publicHangarGroups>>,
-        TError,
-        TData
-      >
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = usePublicHangarGroupsQueryOptions(username, options);
+export function usePublicHangarGroups<TData = Awaited<ReturnType<typeof publicHangarGroups>>, TError = ErrorType<unknown>>(
+ username: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof publicHangarGroups>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = usePublicHangarGroupsQueryOptions(username,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
+
+
+
+export const getPublicHangarGroupsResponseMock = (): HangarGroupPublic[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.string.alpha(20), color: faker.string.alpha(20), sort: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), vehiclesCount: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})))
+
+
+export const getPublicHangarGroupsMockHandler = (overrideResponse?: HangarGroupPublic[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<HangarGroupPublic[]> | HangarGroupPublic[])) => {
+  return http.get('*/public/hangars/:username/groups', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getPublicHangarGroupsResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+export const getPublicHangarGroupsMock = () => [
+  getPublicHangarGroupsMockHandler()
+]

@@ -4,13 +4,9 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import type { ComponentQuantumDrive } from "./componentQuantumDrive";
-import type { CargoHold } from "./cargoHold";
-import type { FuelTank } from "./fuelTank";
-import type { ComponentThruster } from "./componentThruster";
+import type { ComponentQuantumDrive } from './ComponentQuantumDrive';
+import type { CargoHold } from './CargoHold';
+import type { FuelTank } from './FuelTank';
+import type { ComponentThruster } from './ComponentThruster';
 
-export type ComponentTypeData =
-  | ComponentQuantumDrive
-  | CargoHold
-  | FuelTank
-  | ComponentThruster;
+export type ComponentTypeData = ComponentQuantumDrive | CargoHold | FuelTank | ComponentThruster;

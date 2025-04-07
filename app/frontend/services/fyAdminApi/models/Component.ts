@@ -4,12 +4,12 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import type { ComponentItemClassEnum } from "./componentItemClassEnum";
-import type { ComponentAvailability } from "./componentAvailability";
-import type { Manufacturer } from "./manufacturer";
-import type { ComponentMedia } from "./componentMedia";
-import type { ComponentTypeData } from "./componentTypeData";
-import type { Hardpoint } from "./hardpoint";
+import type { ComponentItemClassEnum } from './ComponentItemClassEnum';
+import type { ComponentAvailability } from './ComponentAvailability';
+import type { Manufacturer } from './Manufacturer';
+import type { ComponentMedia } from './ComponentMedia';
+import type { ComponentTypeData } from './ComponentTypeData';
+import type { Hardpoint } from './Hardpoint';
 
 export interface Component {
   id: string;

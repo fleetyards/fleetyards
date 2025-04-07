@@ -4,17 +4,17 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { ModelAvailability } from "./modelAvailability";
-import type { ModelCrew } from "./modelCrew";
-import type { ModelLinks } from "./modelLinks";
-import type { ModelLoaner } from "./modelLoaner";
-import type { Manufacturer } from "./manufacturer";
-import type { ModelMedia } from "./modelMedia";
-import type { ModelMetrics } from "./modelMetrics";
-import type { CargoHold } from "./cargoHold";
-import type { FuelTank } from "./fuelTank";
-import type { ModelProductionStatusEnum } from "./modelProductionStatusEnum";
-import type { ModelSpeeds } from "./modelSpeeds";
+import type { ModelAvailability } from './ModelAvailability';
+import type { ModelCrew } from './ModelCrew';
+import type { ModelLinks } from './ModelLinks';
+import type { ModelLoaner } from './ModelLoaner';
+import type { Manufacturer } from './Manufacturer';
+import type { ModelMedia } from './ModelMedia';
+import type { ModelMetrics } from './ModelMetrics';
+import type { CargoHold } from './CargoHold';
+import type { FuelTank } from './FuelTank';
+import type { ModelProductionStatusEnum } from './ModelProductionStatusEnum';
+import type { ModelSpeeds } from './ModelSpeeds';
 
 export interface Model {
   id: string;

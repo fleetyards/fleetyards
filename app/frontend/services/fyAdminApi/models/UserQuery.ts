@@ -4,7 +4,7 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import type { UserQuerySorts } from "./userQuerySorts";
+import type { UserQuerySorts } from './UserQuerySorts';
 
 export interface UserQuery {
   searchCont?: string;

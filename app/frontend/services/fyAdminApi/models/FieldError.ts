@@ -4,7 +4,7 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import type { StandardError } from "./standardError";
+import type { StandardError } from './StandardError';
 
 export interface FieldError {
   attribute: string;

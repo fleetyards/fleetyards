@@ -5,11 +5,11 @@
  * OpenAPI spec version: v1
  */
 
-export type OrderDirectionEnum =
-  (typeof OrderDirectionEnum)[keyof typeof OrderDirectionEnum];
+export type OrderDirectionEnum = typeof OrderDirectionEnum[keyof typeof OrderDirectionEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const OrderDirectionEnum = {
-  asc: "asc",
-  desc: "desc",
+  asc: 'asc',
+  desc: 'desc',
 } as const;

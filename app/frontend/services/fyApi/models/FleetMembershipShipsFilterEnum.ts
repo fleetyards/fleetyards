@@ -5,12 +5,12 @@
  * OpenAPI spec version: v1
  */
 
-export type FleetMembershipShipsFilterEnum =
-  (typeof FleetMembershipShipsFilterEnum)[keyof typeof FleetMembershipShipsFilterEnum];
+export type FleetMembershipShipsFilterEnum = typeof FleetMembershipShipsFilterEnum[keyof typeof FleetMembershipShipsFilterEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FleetMembershipShipsFilterEnum = {
-  all: "all",
-  hangar_group: "hangar_group",
-  hide: "hide",
+  all: 'all',
+  hangar_group: 'hangar_group',
+  hide: 'hide',
 } as const;

@@ -4,16 +4,16 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import type { PageParameterParameter } from "./pageParameterParameter";
-import type { SortingParameterParameter } from "./sortingParameterParameter";
-import type { ModelQuery } from "./modelQuery";
+import type { PageParameterParameter } from './PageParameterParameter';
+import type { SortingParameterParameter } from './SortingParameterParameter';
+import type { ModelQuery } from './ModelQuery';
 
 export type ModelsParams = {
-  page?: PageParameterParameter;
-  perPage?: string;
-  /**
-   * Sorting
-   */
-  s?: SortingParameterParameter;
-  q?: ModelQuery;
+page?: PageParameterParameter;
+perPage?: string;
+/**
+ * Sorting
+ */
+s?: SortingParameterParameter;
+q?: ModelQuery;
 };

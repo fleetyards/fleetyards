@@ -4,8 +4,8 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { Meta } from "./meta";
-import type { VehiclePublic } from "./vehiclePublic";
+import type { Meta } from './Meta';
+import type { VehiclePublic } from './VehiclePublic';
 
 export interface HangarPublic {
   meta: Meta;

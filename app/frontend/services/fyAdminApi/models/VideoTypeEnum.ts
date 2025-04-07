@@ -5,9 +5,10 @@
  * OpenAPI spec version: v1
  */
 
-export type VideoTypeEnum = (typeof VideoTypeEnum)[keyof typeof VideoTypeEnum];
+export type VideoTypeEnum = typeof VideoTypeEnum[keyof typeof VideoTypeEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VideoTypeEnum = {
-  youtube: "youtube",
+  youtube: 'youtube',
 } as const;

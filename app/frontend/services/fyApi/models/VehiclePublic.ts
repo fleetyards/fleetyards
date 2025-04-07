@@ -4,11 +4,11 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { HangarGroupPublic } from "./hangarGroupPublic";
-import type { Model } from "./model";
-import type { ModelModulePackage } from "./modelModulePackage";
-import type { ModelUpgrade } from "./modelUpgrade";
-import type { ModelPaint } from "./modelPaint";
+import type { HangarGroupPublic } from './HangarGroupPublic';
+import type { Model } from './Model';
+import type { ModelModulePackage } from './ModelModulePackage';
+import type { ModelUpgrade } from './ModelUpgrade';
+import type { ModelPaint } from './ModelPaint';
 
 export interface VehiclePublic {
   id: string;

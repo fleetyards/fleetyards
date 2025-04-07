@@ -4,11 +4,11 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { FleetRole } from "./fleetRole";
-import type { FleetMembershipRoleEnum } from "./fleetMembershipRoleEnum";
-import type { FleetMembershipStatusEnum } from "./fleetMembershipStatusEnum";
-import type { FleetMembershipShipsFilterEnum } from "./fleetMembershipShipsFilterEnum";
-import type { Fleet } from "./fleet";
+import type { FleetRole } from './FleetRole';
+import type { FleetMembershipRoleEnum } from './FleetMembershipRoleEnum';
+import type { FleetMembershipStatusEnum } from './FleetMembershipStatusEnum';
+import type { FleetMembershipShipsFilterEnum } from './FleetMembershipShipsFilterEnum';
+import type { Fleet } from './Fleet';
 
 export interface FleetMember {
   id: string;

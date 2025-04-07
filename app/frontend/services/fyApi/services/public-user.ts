@@ -4,103 +4,129 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import { useQuery } from "@tanstack/vue-query";
+import {
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   DataTag,
   QueryFunction,
   QueryKey,
   UseQueryOptions,
-  UseQueryReturnType,
-} from "@tanstack/vue-query";
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import { unref } from "vue";
-import type { MaybeRef } from "vue";
+import {
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
 
-import type { StandardError, UserPublic } from "../models";
+import type {
+  StandardError
+} from '../models';
 
-import { axiosClient } from "../axiosClient";
-import type { ErrorType } from "../axiosClient";
-import { customQueryOptions } from "../../customQueryOptions";
+import {
+  faker
+} from '@faker-js/faker';
+
+import {
+  HttpResponse,
+  delay,
+  http
+} from 'msw';
+
+import type {
+  UserPublic
+} from '../models';
+
+import { axiosClient } from '../../axiosClient';
+import type { ErrorType } from '../../axiosClient';
+import { customQueryOptions } from '../../customQueryOptions';
+
+
+
+
 
 /**
  * @summary Public User
  */
 export const publicUser = (
-  username: MaybeRef<string>,
-  signal?: AbortSignal,
+    username: MaybeRef<string>,
+ signal?: AbortSignal
 ) => {
-  username = unref(username);
+      username = unref(username);
+      
+      return axiosClient<UserPublic>(
+      {url: `/public/users/${username}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  return axiosClient<UserPublic>({
-    url: `/public/users/${username}`,
-    method: "GET",
-    signal,
-  });
-};
+const getPublicUserQueryKey = (username: MaybeRef<string>,) => {
+    return ['public','users',username] as const;
+    }
 
-const getPublicUserQueryKey = (username: MaybeRef<string>) => {
-  return ["public", "users", username] as const;
-};
-
-export const usePublicUserQueryOptions = <
-  TData = Awaited<ReturnType<typeof publicUser>>,
-  TError = ErrorType<StandardError>,
->(
-  username: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof publicUser>>, TError, TData>
-    >;
-  },
+    
+export const usePublicUserQueryOptions = <TData = Awaited<ReturnType<typeof publicUser>>, TError = ErrorType<StandardError>>(username: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof publicUser>>, TError, TData>>, }
 ) => {
-  const { query: queryOptions } = options ?? {};
 
-  const queryKey = getPublicUserQueryKey(username);
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof publicUser>>> = ({
-    signal,
-  }) => publicUser(username, signal);
+  const queryKey =  getPublicUserQueryKey(username);
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof publicUser>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof publicUser>>> = ({ signal }) => publicUser(username, signal);
 
-export type PublicUserQueryResult = NonNullable<
-  Awaited<ReturnType<typeof publicUser>>
->;
-export type PublicUserQueryError = ErrorType<StandardError>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof publicUser>>, TError, TData> 
+}
+
+export type PublicUserQueryResult = NonNullable<Awaited<ReturnType<typeof publicUser>>>
+export type PublicUserQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Public User
  */
 
-export function usePublicUser<
-  TData = Awaited<ReturnType<typeof publicUser>>,
-  TError = ErrorType<StandardError>,
->(
-  username: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof publicUser>>, TError, TData>
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = usePublicUserQueryOptions(username, options);
+export function usePublicUser<TData = Awaited<ReturnType<typeof publicUser>>, TError = ErrorType<StandardError>>(
+ username: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof publicUser>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = usePublicUserQueryOptions(username,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
+
+
+
+export const getPublicUserResponseMock = (overrideResponse: Partial< UserPublic > = {}): UserPublic => ({username: faker.string.alpha(20), avatar: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiHandle: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), discord: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), youtube: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twitch: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), guilded: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), homepage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), publicHangarLoaners: faker.datatype.boolean(), publicWishlist: faker.datatype.boolean(), ...overrideResponse})
+
+
+export const getPublicUserMockHandler = (overrideResponse?: UserPublic | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<UserPublic> | UserPublic)) => {
+  return http.get('*/public/users/:username', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getPublicUserResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+export const getPublicUserMock = () => [
+  getPublicUserMockHandler()
+]

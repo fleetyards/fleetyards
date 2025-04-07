@@ -5,12 +5,12 @@
  * OpenAPI spec version: v1
  */
 
-export type ModelProductionStatusEnum =
-  (typeof ModelProductionStatusEnum)[keyof typeof ModelProductionStatusEnum];
+export type ModelProductionStatusEnum = typeof ModelProductionStatusEnum[keyof typeof ModelProductionStatusEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ModelProductionStatusEnum = {
-  "in-concept": "in-concept",
-  "in-production": "in-production",
-  "flight-ready": "flight-ready",
+  'in-concept': 'in-concept',
+  'in-production': 'in-production',
+  'flight-ready': 'flight-ready',
 } as const;

@@ -4,7 +4,7 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { VehicleCreateBulkInputVehiclesItem } from "./vehicleCreateBulkInputVehiclesItem";
+import type { VehicleCreateBulkInputVehiclesItem } from './VehicleCreateBulkInputVehiclesItem';
 
 export interface VehicleCreateBulkInput {
   vehicles: VehicleCreateBulkInputVehiclesItem[];

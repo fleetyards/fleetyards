@@ -4,7 +4,10 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import { useMutation, useQuery } from "@tanstack/vue-query";
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   DataTag,
   MutationFunction,
@@ -13,440 +16,437 @@ import type {
   UseMutationOptions,
   UseMutationReturnType,
   UseQueryOptions,
-  UseQueryReturnType,
-} from "@tanstack/vue-query";
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import { unref } from "vue";
-import type { MaybeRef } from "vue";
+import {
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
 
 import type {
-  FleetMember,
   FleetMembershipUpdateInput,
   StandardError,
-  StandardMessage,
-  ValidationError,
-} from "../models";
+  ValidationError
+} from '../models';
 
-import { axiosClient } from "../axiosClient";
-import type { ErrorType } from "../axiosClient";
-import { customQueryOptions } from "../../customQueryOptions";
+import {
+  faker
+} from '@faker-js/faker';
+
+import {
+  HttpResponse,
+  delay,
+  http
+} from 'msw';
+
+import {
+  FleetMembershipRoleEnum,
+  FleetMembershipShipsFilterEnum,
+  FleetMembershipStatusEnum
+} from '../models';
+import type {
+  FleetMember,
+  StandardMessage
+} from '../models';
+
+import { axiosClient } from '../../axiosClient';
+import type { ErrorType } from '../../axiosClient';
+import { customQueryOptions } from '../../customQueryOptions';
+
+
+
+
 
 /**
  * No Membership found
  * @summary Accept Membership
  */
-export const acceptFleetMembership = (fleetSlug: MaybeRef<string>) => {
-  fleetSlug = unref(fleetSlug);
+export const acceptFleetMembership = (
+    fleetSlug: MaybeRef<string>,
+ ) => {
+      fleetSlug = unref(fleetSlug);
+      
+      return axiosClient<StandardMessage>(
+      {url: `/fleets/${fleetSlug}/membership/accept`, method: 'PUT'
+    },
+      );
+    }
+  
 
-  return axiosClient<StandardMessage>({
-    url: `/fleets/${fleetSlug}/membership/accept`,
-    method: "PUT",
-  });
-};
 
-export const getAcceptFleetMembershipMutationOptions = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof acceptFleetMembership>>,
-    TError,
-    { fleetSlug: string },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof acceptFleetMembership>>,
-  TError,
-  { fleetSlug: string },
-  TContext
-> => {
-  const mutationKey = ["acceptFleetMembership"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getAcceptFleetMembershipMutationOptions = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof acceptFleetMembership>>, TError,{fleetSlug: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof acceptFleetMembership>>, TError,{fleetSlug: string}, TContext> => {
+    
+const mutationKey = ['acceptFleetMembership'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof acceptFleetMembership>>,
-    { fleetSlug: string }
-  > = (props) => {
-    const { fleetSlug } = props ?? {};
+      
 
-    return acceptFleetMembership(fleetSlug);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof acceptFleetMembership>>, {fleetSlug: string}> = (props) => {
+          const {fleetSlug} = props ?? {};
 
-export type AcceptFleetMembershipMutationResult = NonNullable<
-  Awaited<ReturnType<typeof acceptFleetMembership>>
->;
+          return  acceptFleetMembership(fleetSlug,)
+        }
 
-export type AcceptFleetMembershipMutationError = ErrorType<
-  ValidationError | StandardError
->;
+        
 
-/**
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AcceptFleetMembershipMutationResult = NonNullable<Awaited<ReturnType<typeof acceptFleetMembership>>>
+    
+    export type AcceptFleetMembershipMutationError = ErrorType<ValidationError | StandardError>
+
+    /**
  * @summary Accept Membership
  */
-export const useAcceptFleetMembership = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof acceptFleetMembership>>,
-    TError,
-    { fleetSlug: string },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof acceptFleetMembership>>,
-  TError,
-  { fleetSlug: string },
-  TContext
-> => {
-  const mutationOptions = getAcceptFleetMembershipMutationOptions(options);
+export const useAcceptFleetMembership = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof acceptFleetMembership>>, TError,{fleetSlug: string}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof acceptFleetMembership>>,
+        TError,
+        {fleetSlug: string},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getAcceptFleetMembershipMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * No Membership found
  * @summary Decline Membership
  */
-export const declineFleetMembership = (fleetSlug: MaybeRef<string>) => {
-  fleetSlug = unref(fleetSlug);
+export const declineFleetMembership = (
+    fleetSlug: MaybeRef<string>,
+ ) => {
+      fleetSlug = unref(fleetSlug);
+      
+      return axiosClient<StandardMessage>(
+      {url: `/fleets/${fleetSlug}/membership/decline`, method: 'PUT'
+    },
+      );
+    }
+  
 
-  return axiosClient<StandardMessage>({
-    url: `/fleets/${fleetSlug}/membership/decline`,
-    method: "PUT",
-  });
-};
 
-export const getDeclineFleetMembershipMutationOptions = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof declineFleetMembership>>,
-    TError,
-    { fleetSlug: string },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof declineFleetMembership>>,
-  TError,
-  { fleetSlug: string },
-  TContext
-> => {
-  const mutationKey = ["declineFleetMembership"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getDeclineFleetMembershipMutationOptions = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof declineFleetMembership>>, TError,{fleetSlug: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof declineFleetMembership>>, TError,{fleetSlug: string}, TContext> => {
+    
+const mutationKey = ['declineFleetMembership'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof declineFleetMembership>>,
-    { fleetSlug: string }
-  > = (props) => {
-    const { fleetSlug } = props ?? {};
+      
 
-    return declineFleetMembership(fleetSlug);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof declineFleetMembership>>, {fleetSlug: string}> = (props) => {
+          const {fleetSlug} = props ?? {};
 
-export type DeclineFleetMembershipMutationResult = NonNullable<
-  Awaited<ReturnType<typeof declineFleetMembership>>
->;
+          return  declineFleetMembership(fleetSlug,)
+        }
 
-export type DeclineFleetMembershipMutationError = ErrorType<
-  ValidationError | StandardError
->;
+        
 
-/**
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeclineFleetMembershipMutationResult = NonNullable<Awaited<ReturnType<typeof declineFleetMembership>>>
+    
+    export type DeclineFleetMembershipMutationError = ErrorType<ValidationError | StandardError>
+
+    /**
  * @summary Decline Membership
  */
-export const useDeclineFleetMembership = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof declineFleetMembership>>,
-    TError,
-    { fleetSlug: string },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof declineFleetMembership>>,
-  TError,
-  { fleetSlug: string },
-  TContext
-> => {
-  const mutationOptions = getDeclineFleetMembershipMutationOptions(options);
+export const useDeclineFleetMembership = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof declineFleetMembership>>, TError,{fleetSlug: string}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof declineFleetMembership>>,
+        TError,
+        {fleetSlug: string},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getDeclineFleetMembershipMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary Leave Fleet
  */
-export const leaveFleet = (fleetSlug: MaybeRef<string>) => {
-  fleetSlug = unref(fleetSlug);
+export const leaveFleet = (
+    fleetSlug: MaybeRef<string>,
+ ) => {
+      fleetSlug = unref(fleetSlug);
+      
+      return axiosClient<void>(
+      {url: `/fleets/${fleetSlug}/membership`, method: 'DELETE'
+    },
+      );
+    }
+  
 
-  return axiosClient<void>({
-    url: `/fleets/${fleetSlug}/membership`,
-    method: "DELETE",
-  });
-};
 
-export const getLeaveFleetMutationOptions = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof leaveFleet>>,
-    TError,
-    { fleetSlug: string },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof leaveFleet>>,
-  TError,
-  { fleetSlug: string },
-  TContext
-> => {
-  const mutationKey = ["leaveFleet"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getLeaveFleetMutationOptions = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof leaveFleet>>, TError,{fleetSlug: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof leaveFleet>>, TError,{fleetSlug: string}, TContext> => {
+    
+const mutationKey = ['leaveFleet'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof leaveFleet>>,
-    { fleetSlug: string }
-  > = (props) => {
-    const { fleetSlug } = props ?? {};
+      
 
-    return leaveFleet(fleetSlug);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof leaveFleet>>, {fleetSlug: string}> = (props) => {
+          const {fleetSlug} = props ?? {};
 
-export type LeaveFleetMutationResult = NonNullable<
-  Awaited<ReturnType<typeof leaveFleet>>
->;
+          return  leaveFleet(fleetSlug,)
+        }
 
-export type LeaveFleetMutationError = ErrorType<StandardError>;
+        
 
-/**
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type LeaveFleetMutationResult = NonNullable<Awaited<ReturnType<typeof leaveFleet>>>
+    
+    export type LeaveFleetMutationError = ErrorType<StandardError>
+
+    /**
  * @summary Leave Fleet
  */
-export const useLeaveFleet = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof leaveFleet>>,
-    TError,
-    { fleetSlug: string },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof leaveFleet>>,
-  TError,
-  { fleetSlug: string },
-  TContext
-> => {
-  const mutationOptions = getLeaveFleetMutationOptions(options);
+export const useLeaveFleet = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof leaveFleet>>, TError,{fleetSlug: string}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof leaveFleet>>,
+        TError,
+        {fleetSlug: string},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getLeaveFleetMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * Membership for this slug and user does not exist
  * @summary Fleet Membership Detail
  */
 export const fleetMembership = (
-  fleetSlug: MaybeRef<string>,
-  signal?: AbortSignal,
+    fleetSlug: MaybeRef<string>,
+ signal?: AbortSignal
 ) => {
-  fleetSlug = unref(fleetSlug);
+      fleetSlug = unref(fleetSlug);
+      
+      return axiosClient<FleetMember>(
+      {url: `/fleets/${fleetSlug}/membership`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  return axiosClient<FleetMember>({
-    url: `/fleets/${fleetSlug}/membership`,
-    method: "GET",
-    signal,
-  });
-};
+const getFleetMembershipQueryKey = (fleetSlug: MaybeRef<string>,) => {
+    return ['fleets',fleetSlug,'membership'] as const;
+    }
 
-const getFleetMembershipQueryKey = (fleetSlug: MaybeRef<string>) => {
-  return ["fleets", fleetSlug, "membership"] as const;
-};
-
-export const useFleetMembershipQueryOptions = <
-  TData = Awaited<ReturnType<typeof fleetMembership>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof fleetMembership>>,
-        TError,
-        TData
-      >
-    >;
-  },
+    
+export const useFleetMembershipQueryOptions = <TData = Awaited<ReturnType<typeof fleetMembership>>, TError = ErrorType<StandardError>>(fleetSlug: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof fleetMembership>>, TError, TData>>, }
 ) => {
-  const { query: queryOptions } = options ?? {};
 
-  const queryKey = getFleetMembershipQueryKey(fleetSlug);
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof fleetMembership>>> = ({
-    signal,
-  }) => fleetMembership(fleetSlug, signal);
+  const queryKey =  getFleetMembershipQueryKey(fleetSlug);
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof fleetMembership>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof fleetMembership>>> = ({ signal }) => fleetMembership(fleetSlug, signal);
 
-export type FleetMembershipQueryResult = NonNullable<
-  Awaited<ReturnType<typeof fleetMembership>>
->;
-export type FleetMembershipQueryError = ErrorType<StandardError>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof fleetMembership>>, TError, TData> 
+}
+
+export type FleetMembershipQueryResult = NonNullable<Awaited<ReturnType<typeof fleetMembership>>>
+export type FleetMembershipQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Fleet Membership Detail
  */
 
-export function useFleetMembership<
-  TData = Awaited<ReturnType<typeof fleetMembership>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof fleetMembership>>,
-        TError,
-        TData
-      >
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useFleetMembershipQueryOptions(fleetSlug, options);
+export function useFleetMembership<TData = Awaited<ReturnType<typeof fleetMembership>>, TError = ErrorType<StandardError>>(
+ fleetSlug: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof fleetMembership>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useFleetMembershipQueryOptions(fleetSlug,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
 
+
+
 /**
  * Fleet for this slug and user does not exist
  * @summary Update Membership
  */
 export const updateFleetMembership = (
-  fleetSlug: MaybeRef<string>,
-  fleetMembershipUpdateInput: MaybeRef<FleetMembershipUpdateInput>,
-) => {
-  fleetSlug = unref(fleetSlug);
-  fleetMembershipUpdateInput = unref(fleetMembershipUpdateInput);
+    fleetSlug: MaybeRef<string>,
+    fleetMembershipUpdateInput: MaybeRef<FleetMembershipUpdateInput>,
+ ) => {
+      fleetSlug = unref(fleetSlug);
+fleetMembershipUpdateInput = unref(fleetMembershipUpdateInput);
+      
+      return axiosClient<FleetMember>(
+      {url: `/fleets/${fleetSlug}/membership`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: fleetMembershipUpdateInput
+    },
+      );
+    }
+  
 
-  return axiosClient<FleetMember>({
-    url: `/fleets/${fleetSlug}/membership`,
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    data: fleetMembershipUpdateInput,
-  });
-};
 
-export const getUpdateFleetMembershipMutationOptions = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateFleetMembership>>,
-    TError,
-    { fleetSlug: string; data: FleetMembershipUpdateInput },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof updateFleetMembership>>,
-  TError,
-  { fleetSlug: string; data: FleetMembershipUpdateInput },
-  TContext
-> => {
-  const mutationKey = ["updateFleetMembership"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getUpdateFleetMembershipMutationOptions = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateFleetMembership>>, TError,{fleetSlug: string;data: FleetMembershipUpdateInput}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof updateFleetMembership>>, TError,{fleetSlug: string;data: FleetMembershipUpdateInput}, TContext> => {
+    
+const mutationKey = ['updateFleetMembership'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof updateFleetMembership>>,
-    { fleetSlug: string; data: FleetMembershipUpdateInput }
-  > = (props) => {
-    const { fleetSlug, data } = props ?? {};
+      
 
-    return updateFleetMembership(fleetSlug, data);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateFleetMembership>>, {fleetSlug: string;data: FleetMembershipUpdateInput}> = (props) => {
+          const {fleetSlug,data} = props ?? {};
 
-export type UpdateFleetMembershipMutationResult = NonNullable<
-  Awaited<ReturnType<typeof updateFleetMembership>>
->;
-export type UpdateFleetMembershipMutationBody = FleetMembershipUpdateInput;
-export type UpdateFleetMembershipMutationError = ErrorType<
-  ValidationError | StandardError
->;
+          return  updateFleetMembership(fleetSlug,data,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateFleetMembershipMutationResult = NonNullable<Awaited<ReturnType<typeof updateFleetMembership>>>
+    export type UpdateFleetMembershipMutationBody = FleetMembershipUpdateInput
+    export type UpdateFleetMembershipMutationError = ErrorType<ValidationError | StandardError>
+
+    /**
  * @summary Update Membership
  */
-export const useUpdateFleetMembership = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateFleetMembership>>,
-    TError,
-    { fleetSlug: string; data: FleetMembershipUpdateInput },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof updateFleetMembership>>,
-  TError,
-  { fleetSlug: string; data: FleetMembershipUpdateInput },
-  TContext
-> => {
-  const mutationOptions = getUpdateFleetMembershipMutationOptions(options);
+export const useUpdateFleetMembership = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateFleetMembership>>, TError,{fleetSlug: string;data: FleetMembershipUpdateInput}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof updateFleetMembership>>,
+        TError,
+        {fleetSlug: string;data: FleetMembershipUpdateInput},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
+      const mutationOptions = getUpdateFleetMembershipMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+
+export const getAcceptFleetMembershipResponseMock = (overrideResponse: Partial< StandardMessage > = {}): StandardMessage => ({code: faker.string.alpha(20), message: faker.string.alpha(20), ...overrideResponse})
+
+export const getDeclineFleetMembershipResponseMock = (overrideResponse: Partial< StandardMessage > = {}): StandardMessage => ({code: faker.string.alpha(20), message: faker.string.alpha(20), ...overrideResponse})
+
+export const getFleetMembershipResponseMock = (overrideResponse: Partial< FleetMember > = {}): FleetMember => ({id: faker.string.uuid(), username: faker.string.alpha(20), fleetRole: {id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.string.alpha(20), resourceAccess: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20)))}, role: faker.helpers.arrayElement(Object.values(FleetMembershipRoleEnum)), roleLabel: faker.string.alpha(20), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(FleetMembershipStatusEnum)), undefined]), avatar: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiHandle: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), homepage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), discord: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), youtube: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twitch: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), guilded: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), shipsFilter: faker.helpers.arrayElement(Object.values(FleetMembershipShipsFilterEnum)), hangarGroupId: faker.helpers.arrayElement([faker.string.uuid(), undefined]), fleetSlug: faker.string.alpha(20), fleetName: faker.string.alpha(20), fleet: faker.helpers.arrayElement([{id: faker.string.uuid(), fid: faker.string.alpha(20), rsiSid: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), ts: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), discord: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), youtube: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twitch: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), guilded: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), homepage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), name: faker.string.alpha(20), slug: faker.string.alpha(20), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), publicFleet: faker.datatype.boolean(), publicFleetStats: faker.datatype.boolean(), logo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), backgroundImage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, undefined]), primary: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), hangarUpdatedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), invitedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), invitedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), requestedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), requestedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), acceptedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), acceptedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), declinedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), declinedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), isDestroyAllowed: faker.datatype.boolean(), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
+
+export const getUpdateFleetMembershipResponseMock = (overrideResponse: Partial< FleetMember > = {}): FleetMember => ({id: faker.string.uuid(), username: faker.string.alpha(20), fleetRole: {id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.string.alpha(20), resourceAccess: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20)))}, role: faker.helpers.arrayElement(Object.values(FleetMembershipRoleEnum)), roleLabel: faker.string.alpha(20), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(FleetMembershipStatusEnum)), undefined]), avatar: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiHandle: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), homepage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), discord: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), youtube: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twitch: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), guilded: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), shipsFilter: faker.helpers.arrayElement(Object.values(FleetMembershipShipsFilterEnum)), hangarGroupId: faker.helpers.arrayElement([faker.string.uuid(), undefined]), fleetSlug: faker.string.alpha(20), fleetName: faker.string.alpha(20), fleet: faker.helpers.arrayElement([{id: faker.string.uuid(), fid: faker.string.alpha(20), rsiSid: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), ts: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), discord: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), youtube: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twitch: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), guilded: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), homepage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), name: faker.string.alpha(20), slug: faker.string.alpha(20), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), publicFleet: faker.datatype.boolean(), publicFleetStats: faker.datatype.boolean(), logo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), backgroundImage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, undefined]), primary: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), hangarUpdatedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), invitedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), invitedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), requestedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), requestedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), acceptedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), acceptedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), declinedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), declinedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), isDestroyAllowed: faker.datatype.boolean(), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
+
+
+export const getAcceptFleetMembershipMockHandler = (overrideResponse?: StandardMessage | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<StandardMessage> | StandardMessage)) => {
+  return http.put('*/fleets/:fleetSlug/membership/accept', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getAcceptFleetMembershipResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getDeclineFleetMembershipMockHandler = (overrideResponse?: StandardMessage | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<StandardMessage> | StandardMessage)) => {
+  return http.put('*/fleets/:fleetSlug/membership/decline', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getDeclineFleetMembershipResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getLeaveFleetMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<void> | void)) => {
+  return http.delete('*/fleets/:fleetSlug/membership', async (info) => {await delay(1000);
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
+    return new HttpResponse(null,
+      { status: 204,
+        
+      })
+  })
+}
+
+export const getFleetMembershipMockHandler = (overrideResponse?: FleetMember | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<FleetMember> | FleetMember)) => {
+  return http.get('*/fleets/:fleetSlug/membership', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getFleetMembershipResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getUpdateFleetMembershipMockHandler = (overrideResponse?: FleetMember | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<FleetMember> | FleetMember)) => {
+  return http.put('*/fleets/:fleetSlug/membership', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getUpdateFleetMembershipResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+export const getFleetMembershipMock = () => [
+  getAcceptFleetMembershipMockHandler(),
+  getDeclineFleetMembershipMockHandler(),
+  getLeaveFleetMockHandler(),
+  getFleetMembershipMockHandler(),
+  getUpdateFleetMembershipMockHandler()
+]

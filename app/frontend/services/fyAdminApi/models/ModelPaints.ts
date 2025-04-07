@@ -4,8 +4,8 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import type { Meta } from "./meta";
-import type { ModelPaint } from "./modelPaint";
+import type { Meta } from './Meta';
+import type { ModelPaint } from './ModelPaint';
 
 export interface ModelPaints {
   meta: Meta;

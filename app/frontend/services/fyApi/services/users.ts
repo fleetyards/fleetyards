@@ -4,7 +4,10 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import { useMutation, useQuery } from "@tanstack/vue-query";
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   DataTag,
   MutationFunction,
@@ -13,662 +16,677 @@ import type {
   UseMutationOptions,
   UseMutationReturnType,
   UseQueryOptions,
-  UseQueryReturnType,
-} from "@tanstack/vue-query";
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import { unref } from "vue";
-import type { MaybeRef } from "vue";
+import {
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
 
 import type {
   AccountUpdateInput,
-  Check,
   CheckInput,
   ConfirmAccountInput,
   StandardError,
-  StandardMessage,
-  User,
   UserCreateInput,
   UserUpdateInput,
-  ValidationError,
-} from "../models";
+  ValidationError
+} from '../models';
 
-import { axiosClient } from "../axiosClient";
-import type { ErrorType } from "../axiosClient";
-import { customQueryOptions } from "../../customQueryOptions";
+import {
+  faker
+} from '@faker-js/faker';
+
+import {
+  HttpResponse,
+  delay,
+  http
+} from 'msw';
+
+import type {
+  Check,
+  StandardMessage,
+  User
+} from '../models';
+
+import { axiosClient } from '../../axiosClient';
+import type { ErrorType } from '../../axiosClient';
+import { customQueryOptions } from '../../customQueryOptions';
+
+
+
+
 
 /**
  * @summary Check E-Mail Availability
  */
 export const checkEmail = (
-  checkInput: MaybeRef<CheckInput>,
-  signal?: AbortSignal,
+    checkInput: MaybeRef<CheckInput>,
+ signal?: AbortSignal
 ) => {
-  checkInput = unref(checkInput);
+      checkInput = unref(checkInput);
+      
+      return axiosClient<Check>(
+      {url: `/users/check-email`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: checkInput, signal
+    },
+      );
+    }
+  
 
-  return axiosClient<Check>({
-    url: `/users/check-email`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: checkInput,
-    signal,
-  });
-};
 
-export const getCheckEmailMutationOptions = <
-  TError = ErrorType<unknown>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof checkEmail>>,
-    TError,
-    { data: CheckInput },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof checkEmail>>,
-  TError,
-  { data: CheckInput },
-  TContext
-> => {
-  const mutationKey = ["checkEmail"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getCheckEmailMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof checkEmail>>, TError,{data: CheckInput}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof checkEmail>>, TError,{data: CheckInput}, TContext> => {
+    
+const mutationKey = ['checkEmail'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof checkEmail>>,
-    { data: CheckInput }
-  > = (props) => {
-    const { data } = props ?? {};
+      
 
-    return checkEmail(data);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof checkEmail>>, {data: CheckInput}> = (props) => {
+          const {data} = props ?? {};
 
-export type CheckEmailMutationResult = NonNullable<
-  Awaited<ReturnType<typeof checkEmail>>
->;
-export type CheckEmailMutationBody = CheckInput;
-export type CheckEmailMutationError = ErrorType<unknown>;
+          return  checkEmail(data,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CheckEmailMutationResult = NonNullable<Awaited<ReturnType<typeof checkEmail>>>
+    export type CheckEmailMutationBody = CheckInput
+    export type CheckEmailMutationError = ErrorType<unknown>
+
+    /**
  * @summary Check E-Mail Availability
  */
-export const useCheckEmail = <
-  TError = ErrorType<unknown>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof checkEmail>>,
-    TError,
-    { data: CheckInput },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof checkEmail>>,
-  TError,
-  { data: CheckInput },
-  TContext
-> => {
-  const mutationOptions = getCheckEmailMutationOptions(options);
+export const useCheckEmail = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof checkEmail>>, TError,{data: CheckInput}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof checkEmail>>,
+        TError,
+        {data: CheckInput},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getCheckEmailMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary Check Username Availability
  */
 export const checkUsername = (
-  checkInput: MaybeRef<CheckInput>,
-  signal?: AbortSignal,
+    checkInput: MaybeRef<CheckInput>,
+ signal?: AbortSignal
 ) => {
-  checkInput = unref(checkInput);
+      checkInput = unref(checkInput);
+      
+      return axiosClient<Check>(
+      {url: `/users/check-username`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: checkInput, signal
+    },
+      );
+    }
+  
 
-  return axiosClient<Check>({
-    url: `/users/check-username`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: checkInput,
-    signal,
-  });
-};
 
-export const getCheckUsernameMutationOptions = <
-  TError = ErrorType<unknown>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof checkUsername>>,
-    TError,
-    { data: CheckInput },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof checkUsername>>,
-  TError,
-  { data: CheckInput },
-  TContext
-> => {
-  const mutationKey = ["checkUsername"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getCheckUsernameMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof checkUsername>>, TError,{data: CheckInput}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof checkUsername>>, TError,{data: CheckInput}, TContext> => {
+    
+const mutationKey = ['checkUsername'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof checkUsername>>,
-    { data: CheckInput }
-  > = (props) => {
-    const { data } = props ?? {};
+      
 
-    return checkUsername(data);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof checkUsername>>, {data: CheckInput}> = (props) => {
+          const {data} = props ?? {};
 
-export type CheckUsernameMutationResult = NonNullable<
-  Awaited<ReturnType<typeof checkUsername>>
->;
-export type CheckUsernameMutationBody = CheckInput;
-export type CheckUsernameMutationError = ErrorType<unknown>;
+          return  checkUsername(data,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CheckUsernameMutationResult = NonNullable<Awaited<ReturnType<typeof checkUsername>>>
+    export type CheckUsernameMutationBody = CheckInput
+    export type CheckUsernameMutationError = ErrorType<unknown>
+
+    /**
  * @summary Check Username Availability
  */
-export const useCheckUsername = <
-  TError = ErrorType<unknown>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof checkUsername>>,
-    TError,
-    { data: CheckInput },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof checkUsername>>,
-  TError,
-  { data: CheckInput },
-  TContext
-> => {
-  const mutationOptions = getCheckUsernameMutationOptions(options);
+export const useCheckUsername = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof checkUsername>>, TError,{data: CheckInput}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof checkUsername>>,
+        TError,
+        {data: CheckInput},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getCheckUsernameMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary Confirm Account
  */
 export const confirmAccount = (
-  confirmAccountInput: MaybeRef<ConfirmAccountInput>,
-  signal?: AbortSignal,
+    confirmAccountInput: MaybeRef<ConfirmAccountInput>,
+ signal?: AbortSignal
 ) => {
-  confirmAccountInput = unref(confirmAccountInput);
+      confirmAccountInput = unref(confirmAccountInput);
+      
+      return axiosClient<StandardMessage>(
+      {url: `/users/confirm`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: confirmAccountInput, signal
+    },
+      );
+    }
+  
 
-  return axiosClient<StandardMessage>({
-    url: `/users/confirm`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: confirmAccountInput,
-    signal,
-  });
-};
 
-export const getConfirmAccountMutationOptions = <
-  TError = ErrorType<ValidationError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof confirmAccount>>,
-    TError,
-    { data: ConfirmAccountInput },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof confirmAccount>>,
-  TError,
-  { data: ConfirmAccountInput },
-  TContext
-> => {
-  const mutationKey = ["confirmAccount"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getConfirmAccountMutationOptions = <TError = ErrorType<ValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof confirmAccount>>, TError,{data: ConfirmAccountInput}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof confirmAccount>>, TError,{data: ConfirmAccountInput}, TContext> => {
+    
+const mutationKey = ['confirmAccount'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof confirmAccount>>,
-    { data: ConfirmAccountInput }
-  > = (props) => {
-    const { data } = props ?? {};
+      
 
-    return confirmAccount(data);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof confirmAccount>>, {data: ConfirmAccountInput}> = (props) => {
+          const {data} = props ?? {};
 
-export type ConfirmAccountMutationResult = NonNullable<
-  Awaited<ReturnType<typeof confirmAccount>>
->;
-export type ConfirmAccountMutationBody = ConfirmAccountInput;
-export type ConfirmAccountMutationError = ErrorType<ValidationError>;
+          return  confirmAccount(data,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ConfirmAccountMutationResult = NonNullable<Awaited<ReturnType<typeof confirmAccount>>>
+    export type ConfirmAccountMutationBody = ConfirmAccountInput
+    export type ConfirmAccountMutationError = ErrorType<ValidationError>
+
+    /**
  * @summary Confirm Account
  */
-export const useConfirmAccount = <
-  TError = ErrorType<ValidationError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof confirmAccount>>,
-    TError,
-    { data: ConfirmAccountInput },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof confirmAccount>>,
-  TError,
-  { data: ConfirmAccountInput },
-  TContext
-> => {
-  const mutationOptions = getConfirmAccountMutationOptions(options);
+export const useConfirmAccount = <TError = ErrorType<ValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof confirmAccount>>, TError,{data: ConfirmAccountInput}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof confirmAccount>>,
+        TError,
+        {data: ConfirmAccountInput},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getConfirmAccountMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary Create new User
  */
 export const signup = (
-  userCreateInput: MaybeRef<UserCreateInput>,
-  signal?: AbortSignal,
+    userCreateInput: MaybeRef<UserCreateInput>,
+ signal?: AbortSignal
 ) => {
-  userCreateInput = unref(userCreateInput);
+      userCreateInput = unref(userCreateInput);
+      
+      return axiosClient<User>(
+      {url: `/users/signup`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: userCreateInput, signal
+    },
+      );
+    }
+  
 
-  return axiosClient<User>({
-    url: `/users/signup`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: userCreateInput,
-    signal,
-  });
-};
 
-export const getSignupMutationOptions = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof signup>>,
-    TError,
-    { data: UserCreateInput },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof signup>>,
-  TError,
-  { data: UserCreateInput },
-  TContext
-> => {
-  const mutationKey = ["signup"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getSignupMutationOptions = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof signup>>, TError,{data: UserCreateInput}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof signup>>, TError,{data: UserCreateInput}, TContext> => {
+    
+const mutationKey = ['signup'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof signup>>,
-    { data: UserCreateInput }
-  > = (props) => {
-    const { data } = props ?? {};
+      
 
-    return signup(data);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof signup>>, {data: UserCreateInput}> = (props) => {
+          const {data} = props ?? {};
 
-export type SignupMutationResult = NonNullable<
-  Awaited<ReturnType<typeof signup>>
->;
-export type SignupMutationBody = UserCreateInput;
-export type SignupMutationError = ErrorType<ValidationError | StandardError>;
+          return  signup(data,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SignupMutationResult = NonNullable<Awaited<ReturnType<typeof signup>>>
+    export type SignupMutationBody = UserCreateInput
+    export type SignupMutationError = ErrorType<ValidationError | StandardError>
+
+    /**
  * @summary Create new User
  */
-export const useSignup = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof signup>>,
-    TError,
-    { data: UserCreateInput },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof signup>>,
-  TError,
-  { data: UserCreateInput },
-  TContext
-> => {
-  const mutationOptions = getSignupMutationOptions(options);
+export const useSignup = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof signup>>, TError,{data: UserCreateInput}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof signup>>,
+        TError,
+        {data: UserCreateInput},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getSignupMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary Destroy Account
  */
-export const destroyAccount = () => {
-  return axiosClient<StandardMessage>({ url: `/users/me`, method: "DELETE" });
-};
+export const destroyAccount = (
+    
+ ) => {
+      
+      
+      return axiosClient<StandardMessage>(
+      {url: `/users/me`, method: 'DELETE'
+    },
+      );
+    }
+  
 
-export const getDestroyAccountMutationOptions = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof destroyAccount>>,
-    TError,
-    void,
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof destroyAccount>>,
-  TError,
-  void,
-  TContext
-> => {
-  const mutationKey = ["destroyAccount"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof destroyAccount>>,
-    void
-  > = () => {
-    return destroyAccount();
-  };
+export const getDestroyAccountMutationOptions = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof destroyAccount>>, TError,void, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof destroyAccount>>, TError,void, TContext> => {
+    
+const mutationKey = ['destroyAccount'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type DestroyAccountMutationResult = NonNullable<
-  Awaited<ReturnType<typeof destroyAccount>>
->;
 
-export type DestroyAccountMutationError = ErrorType<StandardError>;
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof destroyAccount>>, void> = () => {
+          
 
-/**
+          return  destroyAccount()
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DestroyAccountMutationResult = NonNullable<Awaited<ReturnType<typeof destroyAccount>>>
+    
+    export type DestroyAccountMutationError = ErrorType<StandardError>
+
+    /**
  * @summary Destroy Account
  */
-export const useDestroyAccount = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof destroyAccount>>,
-    TError,
-    void,
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof destroyAccount>>,
-  TError,
-  void,
-  TContext
-> => {
-  const mutationOptions = getDestroyAccountMutationOptions(options);
+export const useDestroyAccount = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof destroyAccount>>, TError,void, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof destroyAccount>>,
+        TError,
+        void,
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getDestroyAccountMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary My Data
  */
-export const me = (signal?: AbortSignal) => {
-  return axiosClient<User>({ url: `/users/me`, method: "GET", signal });
-};
+export const me = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return axiosClient<User>(
+      {url: `/users/me`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 const getMeQueryKey = () => {
-  return ["users", "me"] as const;
-};
+    return ['users','me'] as const;
+    }
 
-export const useMeQueryOptions = <
-  TData = Awaited<ReturnType<typeof me>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof me>>, TError, TData>
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const useMeQueryOptions = <TData = Awaited<ReturnType<typeof me>>, TError = ErrorType<StandardError>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof me>>, TError, TData>>, }
+) => {
 
-  const queryKey = getMeQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof me>>> = ({ signal }) =>
-    me(signal);
+  const queryKey =  getMeQueryKey();
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof me>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof me>>> = ({ signal }) => me(signal);
 
-export type MeQueryResult = NonNullable<Awaited<ReturnType<typeof me>>>;
-export type MeQueryError = ErrorType<StandardError>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof me>>, TError, TData> 
+}
+
+export type MeQueryResult = NonNullable<Awaited<ReturnType<typeof me>>>
+export type MeQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary My Data
  */
 
-export function useMe<
-  TData = Awaited<ReturnType<typeof me>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof me>>, TError, TData>
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useMeQueryOptions(options);
+export function useMe<TData = Awaited<ReturnType<typeof me>>, TError = ErrorType<StandardError>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof me>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useMeQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
 
-/**
- * @summary Update My Data
- */
-export const updateProfile = (userUpdateInput: MaybeRef<UserUpdateInput>) => {
-  userUpdateInput = unref(userUpdateInput);
 
-  return axiosClient<User>({
-    url: `/users/me`,
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    data: userUpdateInput,
-  });
-};
-
-export const getUpdateProfileMutationOptions = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateProfile>>,
-    TError,
-    { data: UserUpdateInput },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof updateProfile>>,
-  TError,
-  { data: UserUpdateInput },
-  TContext
-> => {
-  const mutationKey = ["updateProfile"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof updateProfile>>,
-    { data: UserUpdateInput }
-  > = (props) => {
-    const { data } = props ?? {};
-
-    return updateProfile(data);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type UpdateProfileMutationResult = NonNullable<
-  Awaited<ReturnType<typeof updateProfile>>
->;
-export type UpdateProfileMutationBody = UserUpdateInput;
-export type UpdateProfileMutationError = ErrorType<StandardError>;
 
 /**
  * @summary Update My Data
  */
-export const useUpdateProfile = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateProfile>>,
-    TError,
-    { data: UserUpdateInput },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof updateProfile>>,
-  TError,
-  { data: UserUpdateInput },
-  TContext
-> => {
-  const mutationOptions = getUpdateProfileMutationOptions(options);
+export const updateProfile = (
+    userUpdateInput: MaybeRef<UserUpdateInput>,
+ ) => {
+      userUpdateInput = unref(userUpdateInput);
+      
+      return axiosClient<User>(
+      {url: `/users/me`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: userUpdateInput
+    },
+      );
+    }
+  
 
-  return useMutation(mutationOptions);
-};
-/**
+
+export const getUpdateProfileMutationOptions = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateProfile>>, TError,{data: UserUpdateInput}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof updateProfile>>, TError,{data: UserUpdateInput}, TContext> => {
+    
+const mutationKey = ['updateProfile'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateProfile>>, {data: UserUpdateInput}> = (props) => {
+          const {data} = props ?? {};
+
+          return  updateProfile(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateProfileMutationResult = NonNullable<Awaited<ReturnType<typeof updateProfile>>>
+    export type UpdateProfileMutationBody = UserUpdateInput
+    export type UpdateProfileMutationError = ErrorType<StandardError>
+
+    /**
+ * @summary Update My Data
+ */
+export const useUpdateProfile = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateProfile>>, TError,{data: UserUpdateInput}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof updateProfile>>,
+        TError,
+        {data: UserUpdateInput},
+        TContext
+      > => {
+
+      const mutationOptions = getUpdateProfileMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary Update My Account
  */
 export const updateAccount = (
-  accountUpdateInput: MaybeRef<AccountUpdateInput>,
-) => {
-  accountUpdateInput = unref(accountUpdateInput);
+    accountUpdateInput: MaybeRef<AccountUpdateInput>,
+ ) => {
+      accountUpdateInput = unref(accountUpdateInput);
+      
+      return axiosClient<User>(
+      {url: `/users/account`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: accountUpdateInput
+    },
+      );
+    }
+  
 
-  return axiosClient<User>({
-    url: `/users/account`,
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    data: accountUpdateInput,
-  });
-};
 
-export const getUpdateAccountMutationOptions = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateAccount>>,
-    TError,
-    { data: AccountUpdateInput },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof updateAccount>>,
-  TError,
-  { data: AccountUpdateInput },
-  TContext
-> => {
-  const mutationKey = ["updateAccount"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getUpdateAccountMutationOptions = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAccount>>, TError,{data: AccountUpdateInput}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof updateAccount>>, TError,{data: AccountUpdateInput}, TContext> => {
+    
+const mutationKey = ['updateAccount'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof updateAccount>>,
-    { data: AccountUpdateInput }
-  > = (props) => {
-    const { data } = props ?? {};
+      
 
-    return updateAccount(data);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateAccount>>, {data: AccountUpdateInput}> = (props) => {
+          const {data} = props ?? {};
 
-export type UpdateAccountMutationResult = NonNullable<
-  Awaited<ReturnType<typeof updateAccount>>
->;
-export type UpdateAccountMutationBody = AccountUpdateInput;
-export type UpdateAccountMutationError = ErrorType<
-  ValidationError | StandardError
->;
+          return  updateAccount(data,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateAccountMutationResult = NonNullable<Awaited<ReturnType<typeof updateAccount>>>
+    export type UpdateAccountMutationBody = AccountUpdateInput
+    export type UpdateAccountMutationError = ErrorType<ValidationError | StandardError>
+
+    /**
  * @summary Update My Account
  */
-export const useUpdateAccount = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateAccount>>,
-    TError,
-    { data: AccountUpdateInput },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof updateAccount>>,
-  TError,
-  { data: AccountUpdateInput },
-  TContext
-> => {
-  const mutationOptions = getUpdateAccountMutationOptions(options);
+export const useUpdateAccount = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAccount>>, TError,{data: AccountUpdateInput}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof updateAccount>>,
+        TError,
+        {data: AccountUpdateInput},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
+      const mutationOptions = getUpdateAccountMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+
+export const getCheckEmailResponseMock = (overrideResponse: Partial< Check > = {}): Check => ({taken: faker.datatype.boolean(), ...overrideResponse})
+
+export const getCheckUsernameResponseMock = (overrideResponse: Partial< Check > = {}): Check => ({taken: faker.datatype.boolean(), ...overrideResponse})
+
+export const getConfirmAccountResponseMock = (overrideResponse: Partial< StandardMessage > = {}): StandardMessage => ({code: faker.string.alpha(20), message: faker.string.alpha(20), ...overrideResponse})
+
+export const getSignupResponseMock = (overrideResponse: Partial< User > = {}): User => ({id: faker.helpers.arrayElement([faker.string.uuid(), undefined]), username: faker.string.alpha(20), email: faker.string.alpha(20), unconfirmedEmail: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), avatar: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiHandle: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), discord: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), youtube: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twitch: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), guilded: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), homepage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), saleNotify: faker.datatype.boolean(), publicHangar: faker.datatype.boolean(), publicHangarUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), publicHangarLoaners: faker.datatype.boolean(), publicWishlist: faker.datatype.boolean(), publicWishlistUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hideOwner: faker.datatype.boolean(), twoFactorRequired: faker.datatype.boolean(), twoFactorQrCodeUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twoFactorProvisioningUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hangarUpdatedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), resourceAccess: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
+
+export const getDestroyAccountResponseMock = (overrideResponse: Partial< StandardMessage > = {}): StandardMessage => ({code: faker.string.alpha(20), message: faker.string.alpha(20), ...overrideResponse})
+
+export const getMeResponseMock = (overrideResponse: Partial< User > = {}): User => ({id: faker.helpers.arrayElement([faker.string.uuid(), undefined]), username: faker.string.alpha(20), email: faker.string.alpha(20), unconfirmedEmail: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), avatar: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiHandle: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), discord: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), youtube: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twitch: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), guilded: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), homepage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), saleNotify: faker.datatype.boolean(), publicHangar: faker.datatype.boolean(), publicHangarUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), publicHangarLoaners: faker.datatype.boolean(), publicWishlist: faker.datatype.boolean(), publicWishlistUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hideOwner: faker.datatype.boolean(), twoFactorRequired: faker.datatype.boolean(), twoFactorQrCodeUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twoFactorProvisioningUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hangarUpdatedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), resourceAccess: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
+
+export const getUpdateProfileResponseMock = (overrideResponse: Partial< User > = {}): User => ({id: faker.helpers.arrayElement([faker.string.uuid(), undefined]), username: faker.string.alpha(20), email: faker.string.alpha(20), unconfirmedEmail: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), avatar: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiHandle: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), discord: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), youtube: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twitch: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), guilded: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), homepage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), saleNotify: faker.datatype.boolean(), publicHangar: faker.datatype.boolean(), publicHangarUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), publicHangarLoaners: faker.datatype.boolean(), publicWishlist: faker.datatype.boolean(), publicWishlistUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hideOwner: faker.datatype.boolean(), twoFactorRequired: faker.datatype.boolean(), twoFactorQrCodeUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twoFactorProvisioningUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hangarUpdatedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), resourceAccess: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
+
+export const getUpdateAccountResponseMock = (overrideResponse: Partial< User > = {}): User => ({id: faker.helpers.arrayElement([faker.string.uuid(), undefined]), username: faker.string.alpha(20), email: faker.string.alpha(20), unconfirmedEmail: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), avatar: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiHandle: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), discord: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), youtube: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twitch: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), guilded: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), homepage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), saleNotify: faker.datatype.boolean(), publicHangar: faker.datatype.boolean(), publicHangarUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), publicHangarLoaners: faker.datatype.boolean(), publicWishlist: faker.datatype.boolean(), publicWishlistUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hideOwner: faker.datatype.boolean(), twoFactorRequired: faker.datatype.boolean(), twoFactorQrCodeUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twoFactorProvisioningUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hangarUpdatedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), resourceAccess: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
+
+
+export const getCheckEmailMockHandler = (overrideResponse?: Check | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<Check> | Check)) => {
+  return http.post('*/users/check-email', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getCheckEmailResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getCheckUsernameMockHandler = (overrideResponse?: Check | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<Check> | Check)) => {
+  return http.post('*/users/check-username', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getCheckUsernameResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getConfirmAccountMockHandler = (overrideResponse?: StandardMessage | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<StandardMessage> | StandardMessage)) => {
+  return http.post('*/users/confirm', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getConfirmAccountResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getSignupMockHandler = (overrideResponse?: User | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<User> | User)) => {
+  return http.post('*/users/signup', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getSignupResponseMock()),
+      { status: 201,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getDestroyAccountMockHandler = (overrideResponse?: StandardMessage | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<StandardMessage> | StandardMessage)) => {
+  return http.delete('*/users/me', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getDestroyAccountResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getMeMockHandler = (overrideResponse?: User | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<User> | User)) => {
+  return http.get('*/users/me', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getMeResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getUpdateProfileMockHandler = (overrideResponse?: User | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<User> | User)) => {
+  return http.put('*/users/me', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getUpdateProfileResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getUpdateAccountMockHandler = (overrideResponse?: User | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<User> | User)) => {
+  return http.put('*/users/account', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getUpdateAccountResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+export const getUsersMock = () => [
+  getCheckEmailMockHandler(),
+  getCheckUsernameMockHandler(),
+  getConfirmAccountMockHandler(),
+  getSignupMockHandler(),
+  getDestroyAccountMockHandler(),
+  getMeMockHandler(),
+  getUpdateProfileMockHandler(),
+  getUpdateAccountMockHandler()
+]

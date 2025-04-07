@@ -4,7 +4,7 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { Model } from "./model";
-import type { VehiclePublic } from "./vehiclePublic";
+import type { Model } from './Model';
+import type { VehiclePublic } from './VehiclePublic';
 
 export type FleetVehiclesItemsItem = Model | VehiclePublic;

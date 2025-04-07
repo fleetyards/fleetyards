@@ -6,5 +6,5 @@
  */
 
 export type ImagesRandomParams = {
-  limit?: number;
+limit?: number;
 };

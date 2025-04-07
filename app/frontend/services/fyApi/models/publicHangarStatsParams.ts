@@ -4,8 +4,8 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { HangarQuery } from "./hangarQuery";
+import type { HangarQuery } from './HangarQuery';
 
 export type PublicHangarStatsParams = {
-  q?: HangarQuery;
+q?: HangarQuery;
 };

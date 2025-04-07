@@ -4,7 +4,7 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { Hardpoint } from "./hardpoint";
-import type { ModelHardpoint } from "./modelHardpoint";
+import type { Hardpoint } from './Hardpoint';
+import type { ModelHardpoint } from './ModelHardpoint';
 
 export type ModelHardpoints200Item = Hardpoint | ModelHardpoint;

@@ -4,553 +4,592 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import { useQuery } from "@tanstack/vue-query";
+import {
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   DataTag,
   QueryFunction,
   QueryKey,
   UseQueryOptions,
-  UseQueryReturnType,
-} from "@tanstack/vue-query";
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import { unref } from "vue";
+import {
+  unref
+} from 'vue';
 
-import type { BarChartStats, PieChartStats, Stats } from "../models";
+import {
+  faker
+} from '@faker-js/faker';
 
-import { axiosClient } from "../axiosClient";
-import type { ErrorType } from "../axiosClient";
-import { customQueryOptions } from "../../customQueryOptions";
+import {
+  HttpResponse,
+  delay,
+  http
+} from 'msw';
+
+import type {
+  BarChartStats,
+  PieChartStats,
+  Stats
+} from '../models';
+
+import { axiosClient } from '../../axiosClient';
+import type { ErrorType } from '../../axiosClient';
+import { customQueryOptions } from '../../customQueryOptions';
+
+
+
+
 
 /**
  * @summary Stats Components by Class
  */
-export const componentsByClass = (signal?: AbortSignal) => {
-  return axiosClient<PieChartStats[]>({
-    url: `/stats/components-by-class`,
-    method: "GET",
-    signal,
-  });
-};
+export const componentsByClass = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return axiosClient<PieChartStats[]>(
+      {url: `/stats/components-by-class`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 const getComponentsByClassQueryKey = () => {
-  return ["stats", "components-by-class"] as const;
-};
+    return ['stats','components-by-class'] as const;
+    }
 
-export const useComponentsByClassQueryOptions = <
-  TData = Awaited<ReturnType<typeof componentsByClass>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof componentsByClass>>,
-      TError,
-      TData
-    >
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const useComponentsByClassQueryOptions = <TData = Awaited<ReturnType<typeof componentsByClass>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof componentsByClass>>, TError, TData>>, }
+) => {
 
-  const queryKey = getComponentsByClassQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof componentsByClass>>
-  > = ({ signal }) => componentsByClass(signal);
+  const queryKey =  getComponentsByClassQueryKey();
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof componentsByClass>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof componentsByClass>>> = ({ signal }) => componentsByClass(signal);
 
-export type ComponentsByClassQueryResult = NonNullable<
-  Awaited<ReturnType<typeof componentsByClass>>
->;
-export type ComponentsByClassQueryError = ErrorType<unknown>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof componentsByClass>>, TError, TData> 
+}
+
+export type ComponentsByClassQueryResult = NonNullable<Awaited<ReturnType<typeof componentsByClass>>>
+export type ComponentsByClassQueryError = ErrorType<unknown>
+
 
 /**
  * @summary Stats Components by Class
  */
 
-export function useComponentsByClass<
-  TData = Awaited<ReturnType<typeof componentsByClass>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof componentsByClass>>,
-      TError,
-      TData
-    >
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useComponentsByClassQueryOptions(options);
+export function useComponentsByClass<TData = Awaited<ReturnType<typeof componentsByClass>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof componentsByClass>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useComponentsByClassQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
 
+
+
 /**
  * @summary Stats Models by Classification
  */
-export const modelsByClassification = (signal?: AbortSignal) => {
-  return axiosClient<PieChartStats[]>({
-    url: `/stats/models-by-classification`,
-    method: "GET",
-    signal,
-  });
-};
+export const modelsByClassification = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return axiosClient<PieChartStats[]>(
+      {url: `/stats/models-by-classification`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 const getModelsByClassificationQueryKey = () => {
-  return ["stats", "models-by-classification"] as const;
-};
+    return ['stats','models-by-classification'] as const;
+    }
 
-export const useModelsByClassificationQueryOptions = <
-  TData = Awaited<ReturnType<typeof modelsByClassification>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof modelsByClassification>>,
-      TError,
-      TData
-    >
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const useModelsByClassificationQueryOptions = <TData = Awaited<ReturnType<typeof modelsByClassification>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof modelsByClassification>>, TError, TData>>, }
+) => {
 
-  const queryKey = getModelsByClassificationQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof modelsByClassification>>
-  > = ({ signal }) => modelsByClassification(signal);
+  const queryKey =  getModelsByClassificationQueryKey();
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof modelsByClassification>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof modelsByClassification>>> = ({ signal }) => modelsByClassification(signal);
 
-export type ModelsByClassificationQueryResult = NonNullable<
-  Awaited<ReturnType<typeof modelsByClassification>>
->;
-export type ModelsByClassificationQueryError = ErrorType<unknown>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof modelsByClassification>>, TError, TData> 
+}
+
+export type ModelsByClassificationQueryResult = NonNullable<Awaited<ReturnType<typeof modelsByClassification>>>
+export type ModelsByClassificationQueryError = ErrorType<unknown>
+
 
 /**
  * @summary Stats Models by Classification
  */
 
-export function useModelsByClassification<
-  TData = Awaited<ReturnType<typeof modelsByClassification>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof modelsByClassification>>,
-      TError,
-      TData
-    >
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useModelsByClassificationQueryOptions(options);
+export function useModelsByClassification<TData = Awaited<ReturnType<typeof modelsByClassification>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof modelsByClassification>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useModelsByClassificationQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
 
+
+
 /**
  * @summary Stats Models by Manufacturer
  */
-export const modelsByManufacturer = (signal?: AbortSignal) => {
-  return axiosClient<PieChartStats[]>({
-    url: `/stats/models-by-manufacturer`,
-    method: "GET",
-    signal,
-  });
-};
+export const modelsByManufacturer = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return axiosClient<PieChartStats[]>(
+      {url: `/stats/models-by-manufacturer`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 const getModelsByManufacturerQueryKey = () => {
-  return ["stats", "models-by-manufacturer"] as const;
-};
+    return ['stats','models-by-manufacturer'] as const;
+    }
 
-export const useModelsByManufacturerQueryOptions = <
-  TData = Awaited<ReturnType<typeof modelsByManufacturer>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof modelsByManufacturer>>,
-      TError,
-      TData
-    >
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const useModelsByManufacturerQueryOptions = <TData = Awaited<ReturnType<typeof modelsByManufacturer>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof modelsByManufacturer>>, TError, TData>>, }
+) => {
 
-  const queryKey = getModelsByManufacturerQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof modelsByManufacturer>>
-  > = ({ signal }) => modelsByManufacturer(signal);
+  const queryKey =  getModelsByManufacturerQueryKey();
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof modelsByManufacturer>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof modelsByManufacturer>>> = ({ signal }) => modelsByManufacturer(signal);
 
-export type ModelsByManufacturerQueryResult = NonNullable<
-  Awaited<ReturnType<typeof modelsByManufacturer>>
->;
-export type ModelsByManufacturerQueryError = ErrorType<unknown>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof modelsByManufacturer>>, TError, TData> 
+}
+
+export type ModelsByManufacturerQueryResult = NonNullable<Awaited<ReturnType<typeof modelsByManufacturer>>>
+export type ModelsByManufacturerQueryError = ErrorType<unknown>
+
 
 /**
  * @summary Stats Models by Manufacturer
  */
 
-export function useModelsByManufacturer<
-  TData = Awaited<ReturnType<typeof modelsByManufacturer>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof modelsByManufacturer>>,
-      TError,
-      TData
-    >
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useModelsByManufacturerQueryOptions(options);
+export function useModelsByManufacturer<TData = Awaited<ReturnType<typeof modelsByManufacturer>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof modelsByManufacturer>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useModelsByManufacturerQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
 
+
+
 /**
  * @summary Stats Models by Production-Status
  */
-export const modelsByProductionStatus = (signal?: AbortSignal) => {
-  return axiosClient<PieChartStats[]>({
-    url: `/stats/models-by-production-status`,
-    method: "GET",
-    signal,
-  });
-};
+export const modelsByProductionStatus = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return axiosClient<PieChartStats[]>(
+      {url: `/stats/models-by-production-status`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 const getModelsByProductionStatusQueryKey = () => {
-  return ["stats", "models-by-production-status"] as const;
-};
+    return ['stats','models-by-production-status'] as const;
+    }
 
-export const useModelsByProductionStatusQueryOptions = <
-  TData = Awaited<ReturnType<typeof modelsByProductionStatus>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof modelsByProductionStatus>>,
-      TError,
-      TData
-    >
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const useModelsByProductionStatusQueryOptions = <TData = Awaited<ReturnType<typeof modelsByProductionStatus>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof modelsByProductionStatus>>, TError, TData>>, }
+) => {
 
-  const queryKey = getModelsByProductionStatusQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof modelsByProductionStatus>>
-  > = ({ signal }) => modelsByProductionStatus(signal);
+  const queryKey =  getModelsByProductionStatusQueryKey();
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof modelsByProductionStatus>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof modelsByProductionStatus>>> = ({ signal }) => modelsByProductionStatus(signal);
 
-export type ModelsByProductionStatusQueryResult = NonNullable<
-  Awaited<ReturnType<typeof modelsByProductionStatus>>
->;
-export type ModelsByProductionStatusQueryError = ErrorType<unknown>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof modelsByProductionStatus>>, TError, TData> 
+}
+
+export type ModelsByProductionStatusQueryResult = NonNullable<Awaited<ReturnType<typeof modelsByProductionStatus>>>
+export type ModelsByProductionStatusQueryError = ErrorType<unknown>
+
 
 /**
  * @summary Stats Models by Production-Status
  */
 
-export function useModelsByProductionStatus<
-  TData = Awaited<ReturnType<typeof modelsByProductionStatus>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof modelsByProductionStatus>>,
-      TError,
-      TData
-    >
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useModelsByProductionStatusQueryOptions(options);
+export function useModelsByProductionStatus<TData = Awaited<ReturnType<typeof modelsByProductionStatus>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof modelsByProductionStatus>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useModelsByProductionStatusQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
 
+
+
 /**
  * @summary Stats Models by Size
  */
-export const modelsBySize = (signal?: AbortSignal) => {
-  return axiosClient<PieChartStats[]>({
-    url: `/stats/models-by-size`,
-    method: "GET",
-    signal,
-  });
-};
+export const modelsBySize = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return axiosClient<PieChartStats[]>(
+      {url: `/stats/models-by-size`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 const getModelsBySizeQueryKey = () => {
-  return ["stats", "models-by-size"] as const;
-};
+    return ['stats','models-by-size'] as const;
+    }
 
-export const useModelsBySizeQueryOptions = <
-  TData = Awaited<ReturnType<typeof modelsBySize>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof modelsBySize>>, TError, TData>
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const useModelsBySizeQueryOptions = <TData = Awaited<ReturnType<typeof modelsBySize>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof modelsBySize>>, TError, TData>>, }
+) => {
 
-  const queryKey = getModelsBySizeQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof modelsBySize>>> = ({
-    signal,
-  }) => modelsBySize(signal);
+  const queryKey =  getModelsBySizeQueryKey();
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof modelsBySize>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof modelsBySize>>> = ({ signal }) => modelsBySize(signal);
 
-export type ModelsBySizeQueryResult = NonNullable<
-  Awaited<ReturnType<typeof modelsBySize>>
->;
-export type ModelsBySizeQueryError = ErrorType<unknown>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof modelsBySize>>, TError, TData> 
+}
+
+export type ModelsBySizeQueryResult = NonNullable<Awaited<ReturnType<typeof modelsBySize>>>
+export type ModelsBySizeQueryError = ErrorType<unknown>
+
 
 /**
  * @summary Stats Models by Size
  */
 
-export function useModelsBySize<
-  TData = Awaited<ReturnType<typeof modelsBySize>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof modelsBySize>>, TError, TData>
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useModelsBySizeQueryOptions(options);
+export function useModelsBySize<TData = Awaited<ReturnType<typeof modelsBySize>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof modelsBySize>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useModelsBySizeQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
 
+
+
 /**
  * @summary Stats Models per Month
  */
-export const modelsPerMonth = (signal?: AbortSignal) => {
-  return axiosClient<BarChartStats[]>({
-    url: `/stats/models-per-month`,
-    method: "GET",
-    signal,
-  });
-};
+export const modelsPerMonth = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return axiosClient<BarChartStats[]>(
+      {url: `/stats/models-per-month`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 const getModelsPerMonthQueryKey = () => {
-  return ["stats", "models-per-month"] as const;
-};
+    return ['stats','models-per-month'] as const;
+    }
 
-export const useModelsPerMonthQueryOptions = <
-  TData = Awaited<ReturnType<typeof modelsPerMonth>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof modelsPerMonth>>, TError, TData>
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const useModelsPerMonthQueryOptions = <TData = Awaited<ReturnType<typeof modelsPerMonth>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof modelsPerMonth>>, TError, TData>>, }
+) => {
 
-  const queryKey = getModelsPerMonthQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof modelsPerMonth>>> = ({
-    signal,
-  }) => modelsPerMonth(signal);
+  const queryKey =  getModelsPerMonthQueryKey();
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof modelsPerMonth>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof modelsPerMonth>>> = ({ signal }) => modelsPerMonth(signal);
 
-export type ModelsPerMonthQueryResult = NonNullable<
-  Awaited<ReturnType<typeof modelsPerMonth>>
->;
-export type ModelsPerMonthQueryError = ErrorType<unknown>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof modelsPerMonth>>, TError, TData> 
+}
+
+export type ModelsPerMonthQueryResult = NonNullable<Awaited<ReturnType<typeof modelsPerMonth>>>
+export type ModelsPerMonthQueryError = ErrorType<unknown>
+
 
 /**
  * @summary Stats Models per Month
  */
 
-export function useModelsPerMonth<
-  TData = Awaited<ReturnType<typeof modelsPerMonth>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof modelsPerMonth>>, TError, TData>
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useModelsPerMonthQueryOptions(options);
+export function useModelsPerMonth<TData = Awaited<ReturnType<typeof modelsPerMonth>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof modelsPerMonth>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useModelsPerMonthQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
 
+
+
 /**
  * @summary Stats
  */
-export const stats = (signal?: AbortSignal) => {
-  return axiosClient<Stats>({
-    url: `/stats/quick-stats`,
-    method: "GET",
-    signal,
-  });
-};
+export const stats = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return axiosClient<Stats>(
+      {url: `/stats/quick-stats`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 const getStatsQueryKey = () => {
-  return ["stats", "quick-stats"] as const;
-};
+    return ['stats','quick-stats'] as const;
+    }
 
-export const useStatsQueryOptions = <
-  TData = Awaited<ReturnType<typeof stats>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof stats>>, TError, TData>
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const useStatsQueryOptions = <TData = Awaited<ReturnType<typeof stats>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof stats>>, TError, TData>>, }
+) => {
 
-  const queryKey = getStatsQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof stats>>> = ({
-    signal,
-  }) => stats(signal);
+  const queryKey =  getStatsQueryKey();
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof stats>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof stats>>> = ({ signal }) => stats(signal);
 
-export type StatsQueryResult = NonNullable<Awaited<ReturnType<typeof stats>>>;
-export type StatsQueryError = ErrorType<unknown>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof stats>>, TError, TData> 
+}
+
+export type StatsQueryResult = NonNullable<Awaited<ReturnType<typeof stats>>>
+export type StatsQueryError = ErrorType<unknown>
+
 
 /**
  * @summary Stats
  */
 
-export function useStats<
-  TData = Awaited<ReturnType<typeof stats>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof stats>>, TError, TData>
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useStatsQueryOptions(options);
+export function useStats<TData = Awaited<ReturnType<typeof stats>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof stats>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useStatsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
+
+
+
+export const getComponentsByClassResponseMock = (): PieChartStats[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({name: faker.string.alpha(20), y: faker.number.int({min: undefined, max: undefined}), selected: faker.datatype.boolean(), sliced: faker.datatype.boolean()})))
+
+export const getModelsByClassificationResponseMock = (): PieChartStats[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({name: faker.string.alpha(20), y: faker.number.int({min: undefined, max: undefined}), selected: faker.datatype.boolean(), sliced: faker.datatype.boolean()})))
+
+export const getModelsByManufacturerResponseMock = (): PieChartStats[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({name: faker.string.alpha(20), y: faker.number.int({min: undefined, max: undefined}), selected: faker.datatype.boolean(), sliced: faker.datatype.boolean()})))
+
+export const getModelsByProductionStatusResponseMock = (): PieChartStats[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({name: faker.string.alpha(20), y: faker.number.int({min: undefined, max: undefined}), selected: faker.datatype.boolean(), sliced: faker.datatype.boolean()})))
+
+export const getModelsBySizeResponseMock = (): PieChartStats[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({name: faker.string.alpha(20), y: faker.number.int({min: undefined, max: undefined}), selected: faker.datatype.boolean(), sliced: faker.datatype.boolean()})))
+
+export const getModelsPerMonthResponseMock = (): BarChartStats[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({label: faker.string.alpha(20), count: faker.number.int({min: undefined, max: undefined}), tooltip: faker.string.alpha(20)})))
+
+export const getStatsResponseMock = (overrideResponse: Partial< Stats > = {}): Stats => ({shipsCountYear: faker.number.int({min: undefined, max: undefined}), shipsCountTotal: faker.number.int({min: undefined, max: undefined}), ...overrideResponse})
+
+
+export const getComponentsByClassMockHandler = (overrideResponse?: PieChartStats[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<PieChartStats[]> | PieChartStats[])) => {
+  return http.get('*/stats/components-by-class', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getComponentsByClassResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getModelsByClassificationMockHandler = (overrideResponse?: PieChartStats[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<PieChartStats[]> | PieChartStats[])) => {
+  return http.get('*/stats/models-by-classification', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getModelsByClassificationResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getModelsByManufacturerMockHandler = (overrideResponse?: PieChartStats[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<PieChartStats[]> | PieChartStats[])) => {
+  return http.get('*/stats/models-by-manufacturer', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getModelsByManufacturerResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getModelsByProductionStatusMockHandler = (overrideResponse?: PieChartStats[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<PieChartStats[]> | PieChartStats[])) => {
+  return http.get('*/stats/models-by-production-status', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getModelsByProductionStatusResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getModelsBySizeMockHandler = (overrideResponse?: PieChartStats[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<PieChartStats[]> | PieChartStats[])) => {
+  return http.get('*/stats/models-by-size', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getModelsBySizeResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getModelsPerMonthMockHandler = (overrideResponse?: BarChartStats[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<BarChartStats[]> | BarChartStats[])) => {
+  return http.get('*/stats/models-per-month', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getModelsPerMonthResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getStatsMockHandler = (overrideResponse?: Stats | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<Stats> | Stats)) => {
+  return http.get('*/stats/quick-stats', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getStatsResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+export const getStatsMock = () => [
+  getComponentsByClassMockHandler(),
+  getModelsByClassificationMockHandler(),
+  getModelsByManufacturerMockHandler(),
+  getModelsByProductionStatusMockHandler(),
+  getModelsBySizeMockHandler(),
+  getModelsPerMonthMockHandler(),
+  getStatsMockHandler()
+]

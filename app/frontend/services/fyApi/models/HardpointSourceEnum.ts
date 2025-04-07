@@ -5,11 +5,11 @@
  * OpenAPI spec version: v1
  */
 
-export type HardpointSourceEnum =
-  (typeof HardpointSourceEnum)[keyof typeof HardpointSourceEnum];
+export type HardpointSourceEnum = typeof HardpointSourceEnum[keyof typeof HardpointSourceEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const HardpointSourceEnum = {
-  ship_matrix: "ship_matrix",
-  game_files: "game_files",
+  ship_matrix: 'ship_matrix',
+  game_files: 'game_files',
 } as const;

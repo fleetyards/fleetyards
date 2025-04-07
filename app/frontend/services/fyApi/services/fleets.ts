@@ -4,7 +4,10 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import { useMutation, useQuery } from "@tanstack/vue-query";
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   DataTag,
   MutationFunction,
@@ -13,1249 +16,1167 @@ import type {
   UseMutationOptions,
   UseMutationReturnType,
   UseQueryOptions,
-  UseQueryReturnType,
-} from "@tanstack/vue-query";
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import { unref } from "vue";
-import type { MaybeRef } from "vue";
+import {
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
 
 import type {
-  Check,
   CheckInput,
-  Fleet,
   FleetCreateInput,
-  FleetMember,
-  FleetModelCountsStats,
-  FleetPublicVehicles,
   FleetUpdateInput,
-  FleetVehicleExport,
-  FleetVehicles,
   FleetVehiclesExportParams,
   FleetVehiclesParams,
   PublicFleetStatsModelCountsParams,
   PublicFleetVehiclesEmbedParams,
   PublicFleetVehiclesParams,
   StandardError,
-  ValidationError,
-  VehiclePublic,
-} from "../models";
+  ValidationError
+} from '../models';
 
-import { axiosClient } from "../axiosClient";
-import type { ErrorType } from "../axiosClient";
-import { customQueryOptions } from "../../customQueryOptions";
+import {
+  faker
+} from '@faker-js/faker';
+
+import {
+  HttpResponse,
+  delay,
+  http
+} from 'msw';
+
+import {
+  ComponentItemClassEnum,
+  FleetMembershipRoleEnum,
+  FleetMembershipShipsFilterEnum,
+  FleetMembershipStatusEnum,
+  HardpointCategoryEnum,
+  HardpointGroupEnum,
+  HardpointSourceEnum,
+  ItemPriceItemTypeEnum,
+  ItemPriceTimeRangeEnum,
+  ItemPriceTypeEnum,
+  ModelProductionStatusEnum,
+  ThrusterClassEnum
+} from '../models';
+import type {
+  Check,
+  Fleet,
+  FleetMember,
+  FleetModelCountsStats,
+  FleetPublicVehicles,
+  FleetVehicleExport,
+  FleetVehicles,
+  VehiclePublic
+} from '../models';
+
+import { axiosClient } from '../../axiosClient';
+import type { ErrorType } from '../../axiosClient';
+import { customQueryOptions } from '../../customQueryOptions';
+
+
+
+
 
 /**
  * @summary Check Fleet FID Availability
  */
 export const checkFID = (
-  checkInput: MaybeRef<CheckInput>,
-  signal?: AbortSignal,
+    checkInput: MaybeRef<CheckInput>,
+ signal?: AbortSignal
 ) => {
-  checkInput = unref(checkInput);
+      checkInput = unref(checkInput);
+      
+      return axiosClient<Check>(
+      {url: `/fleets/check`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: checkInput, signal
+    },
+      );
+    }
+  
 
-  return axiosClient<Check>({
-    url: `/fleets/check`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: checkInput,
-    signal,
-  });
-};
 
-export const getCheckFIDMutationOptions = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof checkFID>>,
-    TError,
-    { data: CheckInput },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof checkFID>>,
-  TError,
-  { data: CheckInput },
-  TContext
-> => {
-  const mutationKey = ["checkFID"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getCheckFIDMutationOptions = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof checkFID>>, TError,{data: CheckInput}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof checkFID>>, TError,{data: CheckInput}, TContext> => {
+    
+const mutationKey = ['checkFID'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof checkFID>>,
-    { data: CheckInput }
-  > = (props) => {
-    const { data } = props ?? {};
+      
 
-    return checkFID(data);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof checkFID>>, {data: CheckInput}> = (props) => {
+          const {data} = props ?? {};
 
-export type CheckFIDMutationResult = NonNullable<
-  Awaited<ReturnType<typeof checkFID>>
->;
-export type CheckFIDMutationBody = CheckInput;
-export type CheckFIDMutationError = ErrorType<StandardError>;
+          return  checkFID(data,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CheckFIDMutationResult = NonNullable<Awaited<ReturnType<typeof checkFID>>>
+    export type CheckFIDMutationBody = CheckInput
+    export type CheckFIDMutationError = ErrorType<StandardError>
+
+    /**
  * @summary Check Fleet FID Availability
  */
-export const useCheckFID = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof checkFID>>,
-    TError,
-    { data: CheckInput },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof checkFID>>,
-  TError,
-  { data: CheckInput },
-  TContext
-> => {
-  const mutationOptions = getCheckFIDMutationOptions(options);
+export const useCheckFID = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof checkFID>>, TError,{data: CheckInput}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof checkFID>>,
+        TError,
+        {data: CheckInput},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getCheckFIDMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary Create Fleet
  */
 export const createFleet = (
-  fleetCreateInput: MaybeRef<FleetCreateInput>,
-  signal?: AbortSignal,
+    fleetCreateInput: MaybeRef<FleetCreateInput>,
+ signal?: AbortSignal
 ) => {
-  fleetCreateInput = unref(fleetCreateInput);
+      fleetCreateInput = unref(fleetCreateInput);
+      
+      return axiosClient<Fleet>(
+      {url: `/fleets`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: fleetCreateInput, signal
+    },
+      );
+    }
+  
 
-  return axiosClient<Fleet>({
-    url: `/fleets`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: fleetCreateInput,
-    signal,
-  });
-};
 
-export const getCreateFleetMutationOptions = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createFleet>>,
-    TError,
-    { data: FleetCreateInput },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof createFleet>>,
-  TError,
-  { data: FleetCreateInput },
-  TContext
-> => {
-  const mutationKey = ["createFleet"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getCreateFleetMutationOptions = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createFleet>>, TError,{data: FleetCreateInput}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof createFleet>>, TError,{data: FleetCreateInput}, TContext> => {
+    
+const mutationKey = ['createFleet'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof createFleet>>,
-    { data: FleetCreateInput }
-  > = (props) => {
-    const { data } = props ?? {};
+      
 
-    return createFleet(data);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createFleet>>, {data: FleetCreateInput}> = (props) => {
+          const {data} = props ?? {};
 
-export type CreateFleetMutationResult = NonNullable<
-  Awaited<ReturnType<typeof createFleet>>
->;
-export type CreateFleetMutationBody = FleetCreateInput;
-export type CreateFleetMutationError = ErrorType<
-  ValidationError | StandardError
->;
+          return  createFleet(data,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateFleetMutationResult = NonNullable<Awaited<ReturnType<typeof createFleet>>>
+    export type CreateFleetMutationBody = FleetCreateInput
+    export type CreateFleetMutationError = ErrorType<ValidationError | StandardError>
+
+    /**
  * @summary Create Fleet
  */
-export const useCreateFleet = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createFleet>>,
-    TError,
-    { data: FleetCreateInput },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof createFleet>>,
-  TError,
-  { data: FleetCreateInput },
-  TContext
-> => {
-  const mutationOptions = getCreateFleetMutationOptions(options);
+export const useCreateFleet = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createFleet>>, TError,{data: FleetCreateInput}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof createFleet>>,
+        TError,
+        {data: FleetCreateInput},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getCreateFleetMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * You are not the owner of this Fleet
  * @summary Destroy Fleet
  */
-export const destroyFleet = (slug: MaybeRef<string>) => {
-  slug = unref(slug);
+export const destroyFleet = (
+    slug: MaybeRef<string>,
+ ) => {
+      slug = unref(slug);
+      
+      return axiosClient<void>(
+      {url: `/fleets/${slug}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
-  return axiosClient<void>({ url: `/fleets/${slug}`, method: "DELETE" });
-};
 
-export const getDestroyFleetMutationOptions = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof destroyFleet>>,
-    TError,
-    { slug: string },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof destroyFleet>>,
-  TError,
-  { slug: string },
-  TContext
-> => {
-  const mutationKey = ["destroyFleet"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getDestroyFleetMutationOptions = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof destroyFleet>>, TError,{slug: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof destroyFleet>>, TError,{slug: string}, TContext> => {
+    
+const mutationKey = ['destroyFleet'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof destroyFleet>>,
-    { slug: string }
-  > = (props) => {
-    const { slug } = props ?? {};
+      
 
-    return destroyFleet(slug);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof destroyFleet>>, {slug: string}> = (props) => {
+          const {slug} = props ?? {};
 
-export type DestroyFleetMutationResult = NonNullable<
-  Awaited<ReturnType<typeof destroyFleet>>
->;
+          return  destroyFleet(slug,)
+        }
 
-export type DestroyFleetMutationError = ErrorType<StandardError>;
+        
 
-/**
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DestroyFleetMutationResult = NonNullable<Awaited<ReturnType<typeof destroyFleet>>>
+    
+    export type DestroyFleetMutationError = ErrorType<StandardError>
+
+    /**
  * @summary Destroy Fleet
  */
-export const useDestroyFleet = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof destroyFleet>>,
-    TError,
-    { slug: string },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof destroyFleet>>,
-  TError,
-  { slug: string },
-  TContext
-> => {
-  const mutationOptions = getDestroyFleetMutationOptions(options);
+export const useDestroyFleet = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof destroyFleet>>, TError,{slug: string}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof destroyFleet>>,
+        TError,
+        {slug: string},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getDestroyFleetMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary Fleet Detail
  */
-export const fleet = (slug: MaybeRef<string>, signal?: AbortSignal) => {
-  slug = unref(slug);
-
-  return axiosClient<Fleet>({ url: `/fleets/${slug}`, method: "GET", signal });
-};
-
-const getFleetQueryKey = (slug: MaybeRef<string>) => {
-  return ["fleets", slug] as const;
-};
-
-export const useFleetQueryOptions = <
-  TData = Awaited<ReturnType<typeof fleet>>,
-  TError = ErrorType<StandardError>,
->(
-  slug: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof fleet>>, TError, TData>
-    >;
-  },
+export const fleet = (
+    slug: MaybeRef<string>,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {};
+      slug = unref(slug);
+      
+      return axiosClient<Fleet>(
+      {url: `/fleets/${slug}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  const queryKey = getFleetQueryKey(slug);
+const getFleetQueryKey = (slug: MaybeRef<string>,) => {
+    return ['fleets',slug] as const;
+    }
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof fleet>>> = ({
-    signal,
-  }) => fleet(slug, signal);
+    
+export const useFleetQueryOptions = <TData = Awaited<ReturnType<typeof fleet>>, TError = ErrorType<StandardError>>(slug: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof fleet>>, TError, TData>>, }
+) => {
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+const {query: queryOptions} = options ?? {};
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof fleet>>,
-    TError,
-    TData
-  >;
-};
+  const queryKey =  getFleetQueryKey(slug);
 
-export type FleetQueryResult = NonNullable<Awaited<ReturnType<typeof fleet>>>;
-export type FleetQueryError = ErrorType<StandardError>;
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof fleet>>> = ({ signal }) => fleet(slug, signal);
+
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof fleet>>, TError, TData> 
+}
+
+export type FleetQueryResult = NonNullable<Awaited<ReturnType<typeof fleet>>>
+export type FleetQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Fleet Detail
  */
 
-export function useFleet<
-  TData = Awaited<ReturnType<typeof fleet>>,
-  TError = ErrorType<StandardError>,
->(
-  slug: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof fleet>>, TError, TData>
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useFleetQueryOptions(slug, options);
+export function useFleet<TData = Awaited<ReturnType<typeof fleet>>, TError = ErrorType<StandardError>>(
+ slug: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof fleet>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useFleetQueryOptions(slug,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
 
 /**
  * You are not an Admin or Officer of this Fleet
  * @summary Update Fleet
  */
 export const updateFleet = (
-  slug: MaybeRef<string>,
-  fleetUpdateInput: MaybeRef<FleetUpdateInput>,
-) => {
-  slug = unref(slug);
-  fleetUpdateInput = unref(fleetUpdateInput);
-  const formData = new FormData();
-  if (fleetUpdateInput.fid !== undefined) {
-    formData.append("fid", fleetUpdateInput.fid);
-  }
-  if (fleetUpdateInput.name !== undefined) {
-    formData.append("name", fleetUpdateInput.name);
-  }
-  if (fleetUpdateInput.logo !== undefined) {
-    formData.append("logo", fleetUpdateInput.logo);
-  }
-  if (fleetUpdateInput.removeLogo !== undefined) {
-    formData.append("removeLogo", fleetUpdateInput.removeLogo.toString());
-  }
-  if (fleetUpdateInput.backgroundImage !== undefined) {
-    formData.append("backgroundImage", fleetUpdateInput.backgroundImage);
-  }
-  if (fleetUpdateInput.removeBackground !== undefined) {
-    formData.append(
-      "removeBackground",
-      fleetUpdateInput.removeBackground.toString(),
-    );
-  }
-  if (fleetUpdateInput.description !== undefined) {
-    formData.append("description", fleetUpdateInput.description);
-  }
-  if (fleetUpdateInput.publicFleet !== undefined) {
-    formData.append("publicFleet", fleetUpdateInput.publicFleet.toString());
-  }
-  if (fleetUpdateInput.publicFleetStats !== undefined) {
-    formData.append(
-      "publicFleetStats",
-      fleetUpdateInput.publicFleetStats.toString(),
-    );
-  }
-  if (fleetUpdateInput.homepage !== undefined) {
-    formData.append("homepage", fleetUpdateInput.homepage);
-  }
-  if (fleetUpdateInput.rsiSid !== undefined) {
-    formData.append("rsiSid", fleetUpdateInput.rsiSid);
-  }
-  if (fleetUpdateInput.discord !== undefined) {
-    formData.append("discord", fleetUpdateInput.discord);
-  }
-  if (fleetUpdateInput.ts !== undefined) {
-    formData.append("ts", fleetUpdateInput.ts);
-  }
-  if (fleetUpdateInput.youtube !== undefined) {
-    formData.append("youtube", fleetUpdateInput.youtube);
-  }
-  if (fleetUpdateInput.twitch !== undefined) {
-    formData.append("twitch", fleetUpdateInput.twitch);
-  }
-  if (fleetUpdateInput.guilded !== undefined) {
-    formData.append("guilded", fleetUpdateInput.guilded);
-  }
+    slug: MaybeRef<string>,
+    fleetUpdateInput: MaybeRef<FleetUpdateInput>,
+ ) => {
+      slug = unref(slug);
+fleetUpdateInput = unref(fleetUpdateInput);
+      const formData = new FormData();
+if(fleetUpdateInput.fid !== undefined) {
+ formData.append('fid', fleetUpdateInput.fid)
+ }
+if(fleetUpdateInput.name !== undefined) {
+ formData.append('name', fleetUpdateInput.name)
+ }
+if(fleetUpdateInput.logo !== undefined) {
+ formData.append('logo', fleetUpdateInput.logo)
+ }
+if(fleetUpdateInput.removeLogo !== undefined) {
+ formData.append('removeLogo', fleetUpdateInput.removeLogo.toString())
+ }
+if(fleetUpdateInput.backgroundImage !== undefined) {
+ formData.append('backgroundImage', fleetUpdateInput.backgroundImage)
+ }
+if(fleetUpdateInput.removeBackground !== undefined) {
+ formData.append('removeBackground', fleetUpdateInput.removeBackground.toString())
+ }
+if(fleetUpdateInput.description !== undefined) {
+ formData.append('description', fleetUpdateInput.description)
+ }
+if(fleetUpdateInput.publicFleet !== undefined) {
+ formData.append('publicFleet', fleetUpdateInput.publicFleet.toString())
+ }
+if(fleetUpdateInput.publicFleetStats !== undefined) {
+ formData.append('publicFleetStats', fleetUpdateInput.publicFleetStats.toString())
+ }
+if(fleetUpdateInput.homepage !== undefined) {
+ formData.append('homepage', fleetUpdateInput.homepage)
+ }
+if(fleetUpdateInput.rsiSid !== undefined) {
+ formData.append('rsiSid', fleetUpdateInput.rsiSid)
+ }
+if(fleetUpdateInput.discord !== undefined) {
+ formData.append('discord', fleetUpdateInput.discord)
+ }
+if(fleetUpdateInput.ts !== undefined) {
+ formData.append('ts', fleetUpdateInput.ts)
+ }
+if(fleetUpdateInput.youtube !== undefined) {
+ formData.append('youtube', fleetUpdateInput.youtube)
+ }
+if(fleetUpdateInput.twitch !== undefined) {
+ formData.append('twitch', fleetUpdateInput.twitch)
+ }
+if(fleetUpdateInput.guilded !== undefined) {
+ formData.append('guilded', fleetUpdateInput.guilded)
+ }
 
-  return axiosClient<Fleet>({
-    url: `/fleets/${slug}`,
-    method: "PUT",
-    headers: { "Content-Type": "multipart/form-data" },
-    data: formData,
-  });
-};
+      return axiosClient<Fleet>(
+      {url: `/fleets/${slug}`, method: 'PUT',
+      headers: {'Content-Type': 'multipart/form-data', },
+       data: formData
+    },
+      );
+    }
+  
 
-export const getUpdateFleetMutationOptions = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateFleet>>,
-    TError,
-    { slug: string; data: FleetUpdateInput },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof updateFleet>>,
-  TError,
-  { slug: string; data: FleetUpdateInput },
-  TContext
-> => {
-  const mutationKey = ["updateFleet"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof updateFleet>>,
-    { slug: string; data: FleetUpdateInput }
-  > = (props) => {
-    const { slug, data } = props ?? {};
+export const getUpdateFleetMutationOptions = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateFleet>>, TError,{slug: string;data: FleetUpdateInput}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof updateFleet>>, TError,{slug: string;data: FleetUpdateInput}, TContext> => {
+    
+const mutationKey = ['updateFleet'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return updateFleet(slug, data);
-  };
+      
 
-  return { mutationFn, ...mutationOptions };
-};
 
-export type UpdateFleetMutationResult = NonNullable<
-  Awaited<ReturnType<typeof updateFleet>>
->;
-export type UpdateFleetMutationBody = FleetUpdateInput;
-export type UpdateFleetMutationError = ErrorType<StandardError>;
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateFleet>>, {slug: string;data: FleetUpdateInput}> = (props) => {
+          const {slug,data} = props ?? {};
 
-/**
+          return  updateFleet(slug,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateFleetMutationResult = NonNullable<Awaited<ReturnType<typeof updateFleet>>>
+    export type UpdateFleetMutationBody = FleetUpdateInput
+    export type UpdateFleetMutationError = ErrorType<StandardError>
+
+    /**
  * @summary Update Fleet
  */
-export const useUpdateFleet = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateFleet>>,
-    TError,
-    { slug: string; data: FleetUpdateInput },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof updateFleet>>,
-  TError,
-  { slug: string; data: FleetUpdateInput },
-  TContext
-> => {
-  const mutationOptions = getUpdateFleetMutationOptions(options);
+export const useUpdateFleet = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateFleet>>, TError,{slug: string;data: FleetUpdateInput}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof updateFleet>>,
+        TError,
+        {slug: string;data: FleetUpdateInput},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getUpdateFleetMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary Find Fleet by Invite
  */
 export const findFleetByInvite = (
-  token: MaybeRef<string>,
-  signal?: AbortSignal,
+    token: MaybeRef<string>,
+ signal?: AbortSignal
 ) => {
-  token = unref(token);
+      token = unref(token);
+      
+      return axiosClient<Fleet>(
+      {url: `/fleets/find-by-invite/${token}`, method: 'POST', signal
+    },
+      );
+    }
+  
 
-  return axiosClient<Fleet>({
-    url: `/fleets/find-by-invite/${token}`,
-    method: "POST",
-    signal,
-  });
-};
 
-export const getFindFleetByInviteMutationOptions = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof findFleetByInvite>>,
-    TError,
-    { token: string },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof findFleetByInvite>>,
-  TError,
-  { token: string },
-  TContext
-> => {
-  const mutationKey = ["findFleetByInvite"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getFindFleetByInviteMutationOptions = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof findFleetByInvite>>, TError,{token: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof findFleetByInvite>>, TError,{token: string}, TContext> => {
+    
+const mutationKey = ['findFleetByInvite'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof findFleetByInvite>>,
-    { token: string }
-  > = (props) => {
-    const { token } = props ?? {};
+      
 
-    return findFleetByInvite(token);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof findFleetByInvite>>, {token: string}> = (props) => {
+          const {token} = props ?? {};
 
-export type FindFleetByInviteMutationResult = NonNullable<
-  Awaited<ReturnType<typeof findFleetByInvite>>
->;
+          return  findFleetByInvite(token,)
+        }
 
-export type FindFleetByInviteMutationError = ErrorType<StandardError>;
+        
 
-/**
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type FindFleetByInviteMutationResult = NonNullable<Awaited<ReturnType<typeof findFleetByInvite>>>
+    
+    export type FindFleetByInviteMutationError = ErrorType<StandardError>
+
+    /**
  * @summary Find Fleet by Invite
  */
-export const useFindFleetByInvite = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof findFleetByInvite>>,
-    TError,
-    { token: string },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof findFleetByInvite>>,
-  TError,
-  { token: string },
-  TContext
-> => {
-  const mutationOptions = getFindFleetByInviteMutationOptions(options);
+export const useFindFleetByInvite = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof findFleetByInvite>>, TError,{token: string}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof findFleetByInvite>>,
+        TError,
+        {token: string},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getFindFleetByInviteMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary Fleet Invites current User
  */
-export const fleetInvites = (signal?: AbortSignal) => {
-  return axiosClient<FleetMember[]>({
-    url: `/fleets/invites`,
-    method: "GET",
-    signal,
-  });
-};
+export const fleetInvites = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return axiosClient<FleetMember[]>(
+      {url: `/fleets/invites`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 const getFleetInvitesQueryKey = () => {
-  return ["fleets", "invites"] as const;
-};
+    return ['fleets','invites'] as const;
+    }
 
-export const useFleetInvitesQueryOptions = <
-  TData = Awaited<ReturnType<typeof fleetInvites>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof fleetInvites>>, TError, TData>
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const useFleetInvitesQueryOptions = <TData = Awaited<ReturnType<typeof fleetInvites>>, TError = ErrorType<StandardError>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof fleetInvites>>, TError, TData>>, }
+) => {
 
-  const queryKey = getFleetInvitesQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof fleetInvites>>> = ({
-    signal,
-  }) => fleetInvites(signal);
+  const queryKey =  getFleetInvitesQueryKey();
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof fleetInvites>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof fleetInvites>>> = ({ signal }) => fleetInvites(signal);
 
-export type FleetInvitesQueryResult = NonNullable<
-  Awaited<ReturnType<typeof fleetInvites>>
->;
-export type FleetInvitesQueryError = ErrorType<StandardError>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof fleetInvites>>, TError, TData> 
+}
+
+export type FleetInvitesQueryResult = NonNullable<Awaited<ReturnType<typeof fleetInvites>>>
+export type FleetInvitesQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Fleet Invites current User
  */
 
-export function useFleetInvites<
-  TData = Awaited<ReturnType<typeof fleetInvites>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof fleetInvites>>, TError, TData>
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useFleetInvitesQueryOptions(options);
+export function useFleetInvites<TData = Awaited<ReturnType<typeof fleetInvites>>, TError = ErrorType<StandardError>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof fleetInvites>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useFleetInvitesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
 
+
+
 /**
  * @summary Fleets for current User
  */
-export const myFleets = (signal?: AbortSignal) => {
-  return axiosClient<Fleet[]>({ url: `/fleets/my`, method: "GET", signal });
-};
+export const myFleets = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return axiosClient<Fleet[]>(
+      {url: `/fleets/my`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 const getMyFleetsQueryKey = () => {
-  return ["fleets", "my"] as const;
-};
+    return ['fleets','my'] as const;
+    }
 
-export const useMyFleetsQueryOptions = <
-  TData = Awaited<ReturnType<typeof myFleets>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof myFleets>>, TError, TData>
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const useMyFleetsQueryOptions = <TData = Awaited<ReturnType<typeof myFleets>>, TError = ErrorType<StandardError>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof myFleets>>, TError, TData>>, }
+) => {
 
-  const queryKey = getMyFleetsQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof myFleets>>> = ({
-    signal,
-  }) => myFleets(signal);
+  const queryKey =  getMyFleetsQueryKey();
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof myFleets>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof myFleets>>> = ({ signal }) => myFleets(signal);
 
-export type MyFleetsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof myFleets>>
->;
-export type MyFleetsQueryError = ErrorType<StandardError>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof myFleets>>, TError, TData> 
+}
+
+export type MyFleetsQueryResult = NonNullable<Awaited<ReturnType<typeof myFleets>>>
+export type MyFleetsQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Fleets for current User
  */
 
-export function useMyFleets<
-  TData = Awaited<ReturnType<typeof myFleets>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof myFleets>>, TError, TData>
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useMyFleetsQueryOptions(options);
+export function useMyFleets<TData = Awaited<ReturnType<typeof myFleets>>, TError = ErrorType<StandardError>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof myFleets>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useMyFleetsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
 
 /**
  * @summary Fleet Vehicles List
  */
 export const fleetVehiclesExport = (
-  fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<FleetVehiclesExportParams>,
-  signal?: AbortSignal,
+    fleetSlug: MaybeRef<string>,
+    params?: MaybeRef<FleetVehiclesExportParams>,
+ signal?: AbortSignal
 ) => {
-  fleetSlug = unref(fleetSlug);
-  params = unref(params);
+      fleetSlug = unref(fleetSlug);
+params = unref(params);
+      
+      return axiosClient<FleetVehicleExport[]>(
+      {url: `/fleets/${fleetSlug}/vehicles/export`, method: 'GET',
+        params: unref(params), signal
+    },
+      );
+    }
+  
 
-  return axiosClient<FleetVehicleExport[]>({
-    url: `/fleets/${fleetSlug}/vehicles/export`,
-    method: "GET",
-    params: unref(params),
-    signal,
-  });
-};
+const getFleetVehiclesExportQueryKey = (fleetSlug: MaybeRef<string>,
+    params?: MaybeRef<FleetVehiclesExportParams>,) => {
+    return ['fleets',fleetSlug,'vehicles','export', ...(params ? [params]: [])] as const;
+    }
 
-const getFleetVehiclesExportQueryKey = (
-  fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<FleetVehiclesExportParams>,
+    
+export const useFleetVehiclesExportQueryOptions = <TData = Awaited<ReturnType<typeof fleetVehiclesExport>>, TError = ErrorType<StandardError>>(fleetSlug: MaybeRef<string>,
+    params?: MaybeRef<FleetVehiclesExportParams>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof fleetVehiclesExport>>, TError, TData>>, }
 ) => {
-  return [
-    "fleets",
-    fleetSlug,
-    "vehicles",
-    "export",
-    ...(params ? [params] : []),
-  ] as const;
-};
 
-export const useFleetVehiclesExportQueryOptions = <
-  TData = Awaited<ReturnType<typeof fleetVehiclesExport>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<FleetVehiclesExportParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof fleetVehiclesExport>>,
-        TError,
-        TData
-      >
-    >;
-  },
-) => {
-  const { query: queryOptions } = options ?? {};
+const {query: queryOptions} = options ?? {};
 
-  const queryKey = getFleetVehiclesExportQueryKey(fleetSlug, params);
+  const queryKey =  getFleetVehiclesExportQueryKey(fleetSlug,params);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof fleetVehiclesExport>>
-  > = ({ signal }) => fleetVehiclesExport(fleetSlug, params, signal);
+  
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof fleetVehiclesExport>>> = ({ signal }) => fleetVehiclesExport(fleetSlug,params, signal);
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof fleetVehiclesExport>>,
-    TError,
-    TData
-  >;
-};
+      
 
-export type FleetVehiclesExportQueryResult = NonNullable<
-  Awaited<ReturnType<typeof fleetVehiclesExport>>
->;
-export type FleetVehiclesExportQueryError = ErrorType<StandardError>;
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof fleetVehiclesExport>>, TError, TData> 
+}
+
+export type FleetVehiclesExportQueryResult = NonNullable<Awaited<ReturnType<typeof fleetVehiclesExport>>>
+export type FleetVehiclesExportQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Fleet Vehicles List
  */
 
-export function useFleetVehiclesExport<
-  TData = Awaited<ReturnType<typeof fleetVehiclesExport>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<FleetVehiclesExportParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof fleetVehiclesExport>>,
-        TError,
-        TData
-      >
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useFleetVehiclesExportQueryOptions(
-    fleetSlug,
-    params,
-    options,
-  );
+export function useFleetVehiclesExport<TData = Awaited<ReturnType<typeof fleetVehiclesExport>>, TError = ErrorType<StandardError>>(
+ fleetSlug: MaybeRef<string>,
+    params?: MaybeRef<FleetVehiclesExportParams>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof fleetVehiclesExport>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useFleetVehiclesExportQueryOptions(fleetSlug,params,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
 
 /**
  * @summary Fleet Vehicles List
  */
 export const fleetVehicles = (
-  fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<FleetVehiclesParams>,
-  signal?: AbortSignal,
+    fleetSlug: MaybeRef<string>,
+    params?: MaybeRef<FleetVehiclesParams>,
+ signal?: AbortSignal
 ) => {
-  fleetSlug = unref(fleetSlug);
-  params = unref(params);
+      fleetSlug = unref(fleetSlug);
+params = unref(params);
+      
+      return axiosClient<FleetVehicles>(
+      {url: `/fleets/${fleetSlug}/vehicles`, method: 'GET',
+        params: unref(params), signal
+    },
+      );
+    }
+  
 
-  return axiosClient<FleetVehicles>({
-    url: `/fleets/${fleetSlug}/vehicles`,
-    method: "GET",
-    params: unref(params),
-    signal,
-  });
-};
+const getFleetVehiclesQueryKey = (fleetSlug: MaybeRef<string>,
+    params?: MaybeRef<FleetVehiclesParams>,) => {
+    return ['fleets',fleetSlug,'vehicles', ...(params ? [params]: [])] as const;
+    }
 
-const getFleetVehiclesQueryKey = (
-  fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<FleetVehiclesParams>,
+    
+export const useFleetVehiclesQueryOptions = <TData = Awaited<ReturnType<typeof fleetVehicles>>, TError = ErrorType<StandardError>>(fleetSlug: MaybeRef<string>,
+    params?: MaybeRef<FleetVehiclesParams>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof fleetVehicles>>, TError, TData>>, }
 ) => {
-  return [
-    "fleets",
-    fleetSlug,
-    "vehicles",
-    ...(params ? [params] : []),
-  ] as const;
-};
 
-export const useFleetVehiclesQueryOptions = <
-  TData = Awaited<ReturnType<typeof fleetVehicles>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<FleetVehiclesParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof fleetVehicles>>, TError, TData>
-    >;
-  },
-) => {
-  const { query: queryOptions } = options ?? {};
+const {query: queryOptions} = options ?? {};
 
-  const queryKey = getFleetVehiclesQueryKey(fleetSlug, params);
+  const queryKey =  getFleetVehiclesQueryKey(fleetSlug,params);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof fleetVehicles>>> = ({
-    signal,
-  }) => fleetVehicles(fleetSlug, params, signal);
+  
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof fleetVehicles>>> = ({ signal }) => fleetVehicles(fleetSlug,params, signal);
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof fleetVehicles>>,
-    TError,
-    TData
-  >;
-};
+      
 
-export type FleetVehiclesQueryResult = NonNullable<
-  Awaited<ReturnType<typeof fleetVehicles>>
->;
-export type FleetVehiclesQueryError = ErrorType<StandardError>;
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof fleetVehicles>>, TError, TData> 
+}
+
+export type FleetVehiclesQueryResult = NonNullable<Awaited<ReturnType<typeof fleetVehicles>>>
+export type FleetVehiclesQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Fleet Vehicles List
  */
 
-export function useFleetVehicles<
-  TData = Awaited<ReturnType<typeof fleetVehicles>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<FleetVehiclesParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof fleetVehicles>>, TError, TData>
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useFleetVehiclesQueryOptions(fleetSlug, params, options);
+export function useFleetVehicles<TData = Awaited<ReturnType<typeof fleetVehicles>>, TError = ErrorType<StandardError>>(
+ fleetSlug: MaybeRef<string>,
+    params?: MaybeRef<FleetVehiclesParams>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof fleetVehicles>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useFleetVehiclesQueryOptions(fleetSlug,params,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
 
 /**
  * @summary Public Fleet Stats Model Counts
  */
 export const publicFleetStatsModelCounts = (
-  fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<PublicFleetStatsModelCountsParams>,
-  signal?: AbortSignal,
+    fleetSlug: MaybeRef<string>,
+    params?: MaybeRef<PublicFleetStatsModelCountsParams>,
+ signal?: AbortSignal
 ) => {
-  fleetSlug = unref(fleetSlug);
-  params = unref(params);
+      fleetSlug = unref(fleetSlug);
+params = unref(params);
+      
+      return axiosClient<FleetModelCountsStats>(
+      {url: `/public/fleets/${fleetSlug}/stats/model-counts`, method: 'GET',
+        params: unref(params), signal
+    },
+      );
+    }
+  
 
-  return axiosClient<FleetModelCountsStats>({
-    url: `/public/fleets/${fleetSlug}/stats/model-counts`,
-    method: "GET",
-    params: unref(params),
-    signal,
-  });
-};
+const getPublicFleetStatsModelCountsQueryKey = (fleetSlug: MaybeRef<string>,
+    params?: MaybeRef<PublicFleetStatsModelCountsParams>,) => {
+    return ['public','fleets',fleetSlug,'stats','model-counts', ...(params ? [params]: [])] as const;
+    }
 
-const getPublicFleetStatsModelCountsQueryKey = (
-  fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<PublicFleetStatsModelCountsParams>,
+    
+export const usePublicFleetStatsModelCountsQueryOptions = <TData = Awaited<ReturnType<typeof publicFleetStatsModelCounts>>, TError = ErrorType<StandardError>>(fleetSlug: MaybeRef<string>,
+    params?: MaybeRef<PublicFleetStatsModelCountsParams>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof publicFleetStatsModelCounts>>, TError, TData>>, }
 ) => {
-  return [
-    "public",
-    "fleets",
-    fleetSlug,
-    "stats",
-    "model-counts",
-    ...(params ? [params] : []),
-  ] as const;
-};
 
-export const usePublicFleetStatsModelCountsQueryOptions = <
-  TData = Awaited<ReturnType<typeof publicFleetStatsModelCounts>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<PublicFleetStatsModelCountsParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof publicFleetStatsModelCounts>>,
-        TError,
-        TData
-      >
-    >;
-  },
-) => {
-  const { query: queryOptions } = options ?? {};
+const {query: queryOptions} = options ?? {};
 
-  const queryKey = getPublicFleetStatsModelCountsQueryKey(fleetSlug, params);
+  const queryKey =  getPublicFleetStatsModelCountsQueryKey(fleetSlug,params);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof publicFleetStatsModelCounts>>
-  > = ({ signal }) => publicFleetStatsModelCounts(fleetSlug, params, signal);
+  
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof publicFleetStatsModelCounts>>> = ({ signal }) => publicFleetStatsModelCounts(fleetSlug,params, signal);
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof publicFleetStatsModelCounts>>,
-    TError,
-    TData
-  >;
-};
+      
 
-export type PublicFleetStatsModelCountsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof publicFleetStatsModelCounts>>
->;
-export type PublicFleetStatsModelCountsQueryError = ErrorType<StandardError>;
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof publicFleetStatsModelCounts>>, TError, TData> 
+}
+
+export type PublicFleetStatsModelCountsQueryResult = NonNullable<Awaited<ReturnType<typeof publicFleetStatsModelCounts>>>
+export type PublicFleetStatsModelCountsQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Public Fleet Stats Model Counts
  */
 
-export function usePublicFleetStatsModelCounts<
-  TData = Awaited<ReturnType<typeof publicFleetStatsModelCounts>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<PublicFleetStatsModelCountsParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof publicFleetStatsModelCounts>>,
-        TError,
-        TData
-      >
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = usePublicFleetStatsModelCountsQueryOptions(
-    fleetSlug,
-    params,
-    options,
-  );
+export function usePublicFleetStatsModelCounts<TData = Awaited<ReturnType<typeof publicFleetStatsModelCounts>>, TError = ErrorType<StandardError>>(
+ fleetSlug: MaybeRef<string>,
+    params?: MaybeRef<PublicFleetStatsModelCountsParams>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof publicFleetStatsModelCounts>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = usePublicFleetStatsModelCountsQueryOptions(fleetSlug,params,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
 
 /**
  * @summary Public Fleet Vehicles Embed for the Fleetyards Widget
  */
 export const publicFleetVehiclesEmbed = (
-  fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<PublicFleetVehiclesEmbedParams>,
-  signal?: AbortSignal,
+    fleetSlug: MaybeRef<string>,
+    params?: MaybeRef<PublicFleetVehiclesEmbedParams>,
+ signal?: AbortSignal
 ) => {
-  fleetSlug = unref(fleetSlug);
-  params = unref(params);
+      fleetSlug = unref(fleetSlug);
+params = unref(params);
+      
+      return axiosClient<VehiclePublic[]>(
+      {url: `/public/fleets/${fleetSlug}/vehicles/embed`, method: 'GET',
+        params: unref(params), signal
+    },
+      );
+    }
+  
 
-  return axiosClient<VehiclePublic[]>({
-    url: `/public/fleets/${fleetSlug}/vehicles/embed`,
-    method: "GET",
-    params: unref(params),
-    signal,
-  });
-};
+const getPublicFleetVehiclesEmbedQueryKey = (fleetSlug: MaybeRef<string>,
+    params?: MaybeRef<PublicFleetVehiclesEmbedParams>,) => {
+    return ['public','fleets',fleetSlug,'vehicles','embed', ...(params ? [params]: [])] as const;
+    }
 
-const getPublicFleetVehiclesEmbedQueryKey = (
-  fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<PublicFleetVehiclesEmbedParams>,
+    
+export const usePublicFleetVehiclesEmbedQueryOptions = <TData = Awaited<ReturnType<typeof publicFleetVehiclesEmbed>>, TError = ErrorType<StandardError>>(fleetSlug: MaybeRef<string>,
+    params?: MaybeRef<PublicFleetVehiclesEmbedParams>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof publicFleetVehiclesEmbed>>, TError, TData>>, }
 ) => {
-  return [
-    "public",
-    "fleets",
-    fleetSlug,
-    "vehicles",
-    "embed",
-    ...(params ? [params] : []),
-  ] as const;
-};
 
-export const usePublicFleetVehiclesEmbedQueryOptions = <
-  TData = Awaited<ReturnType<typeof publicFleetVehiclesEmbed>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<PublicFleetVehiclesEmbedParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof publicFleetVehiclesEmbed>>,
-        TError,
-        TData
-      >
-    >;
-  },
-) => {
-  const { query: queryOptions } = options ?? {};
+const {query: queryOptions} = options ?? {};
 
-  const queryKey = getPublicFleetVehiclesEmbedQueryKey(fleetSlug, params);
+  const queryKey =  getPublicFleetVehiclesEmbedQueryKey(fleetSlug,params);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof publicFleetVehiclesEmbed>>
-  > = ({ signal }) => publicFleetVehiclesEmbed(fleetSlug, params, signal);
+  
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof publicFleetVehiclesEmbed>>> = ({ signal }) => publicFleetVehiclesEmbed(fleetSlug,params, signal);
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof publicFleetVehiclesEmbed>>,
-    TError,
-    TData
-  >;
-};
+      
 
-export type PublicFleetVehiclesEmbedQueryResult = NonNullable<
-  Awaited<ReturnType<typeof publicFleetVehiclesEmbed>>
->;
-export type PublicFleetVehiclesEmbedQueryError = ErrorType<StandardError>;
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof publicFleetVehiclesEmbed>>, TError, TData> 
+}
+
+export type PublicFleetVehiclesEmbedQueryResult = NonNullable<Awaited<ReturnType<typeof publicFleetVehiclesEmbed>>>
+export type PublicFleetVehiclesEmbedQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Public Fleet Vehicles Embed for the Fleetyards Widget
  */
 
-export function usePublicFleetVehiclesEmbed<
-  TData = Awaited<ReturnType<typeof publicFleetVehiclesEmbed>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<PublicFleetVehiclesEmbedParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof publicFleetVehiclesEmbed>>,
-        TError,
-        TData
-      >
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = usePublicFleetVehiclesEmbedQueryOptions(
-    fleetSlug,
-    params,
-    options,
-  );
+export function usePublicFleetVehiclesEmbed<TData = Awaited<ReturnType<typeof publicFleetVehiclesEmbed>>, TError = ErrorType<StandardError>>(
+ fleetSlug: MaybeRef<string>,
+    params?: MaybeRef<PublicFleetVehiclesEmbedParams>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof publicFleetVehiclesEmbed>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = usePublicFleetVehiclesEmbedQueryOptions(fleetSlug,params,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
 
 /**
  * @summary Public Fleet Vehicles List
  */
 export const publicFleetVehicles = (
-  fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<PublicFleetVehiclesParams>,
-  signal?: AbortSignal,
+    fleetSlug: MaybeRef<string>,
+    params?: MaybeRef<PublicFleetVehiclesParams>,
+ signal?: AbortSignal
 ) => {
-  fleetSlug = unref(fleetSlug);
-  params = unref(params);
+      fleetSlug = unref(fleetSlug);
+params = unref(params);
+      
+      return axiosClient<FleetPublicVehicles>(
+      {url: `/public/fleets/${fleetSlug}/vehicles`, method: 'GET',
+        params: unref(params), signal
+    },
+      );
+    }
+  
 
-  return axiosClient<FleetPublicVehicles>({
-    url: `/public/fleets/${fleetSlug}/vehicles`,
-    method: "GET",
-    params: unref(params),
-    signal,
-  });
-};
+const getPublicFleetVehiclesQueryKey = (fleetSlug: MaybeRef<string>,
+    params?: MaybeRef<PublicFleetVehiclesParams>,) => {
+    return ['public','fleets',fleetSlug,'vehicles', ...(params ? [params]: [])] as const;
+    }
 
-const getPublicFleetVehiclesQueryKey = (
-  fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<PublicFleetVehiclesParams>,
+    
+export const usePublicFleetVehiclesQueryOptions = <TData = Awaited<ReturnType<typeof publicFleetVehicles>>, TError = ErrorType<StandardError>>(fleetSlug: MaybeRef<string>,
+    params?: MaybeRef<PublicFleetVehiclesParams>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof publicFleetVehicles>>, TError, TData>>, }
 ) => {
-  return [
-    "public",
-    "fleets",
-    fleetSlug,
-    "vehicles",
-    ...(params ? [params] : []),
-  ] as const;
-};
 
-export const usePublicFleetVehiclesQueryOptions = <
-  TData = Awaited<ReturnType<typeof publicFleetVehicles>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<PublicFleetVehiclesParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof publicFleetVehicles>>,
-        TError,
-        TData
-      >
-    >;
-  },
-) => {
-  const { query: queryOptions } = options ?? {};
+const {query: queryOptions} = options ?? {};
 
-  const queryKey = getPublicFleetVehiclesQueryKey(fleetSlug, params);
+  const queryKey =  getPublicFleetVehiclesQueryKey(fleetSlug,params);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof publicFleetVehicles>>
-  > = ({ signal }) => publicFleetVehicles(fleetSlug, params, signal);
+  
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof publicFleetVehicles>>> = ({ signal }) => publicFleetVehicles(fleetSlug,params, signal);
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof publicFleetVehicles>>,
-    TError,
-    TData
-  >;
-};
+      
 
-export type PublicFleetVehiclesQueryResult = NonNullable<
-  Awaited<ReturnType<typeof publicFleetVehicles>>
->;
-export type PublicFleetVehiclesQueryError = ErrorType<StandardError>;
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof publicFleetVehicles>>, TError, TData> 
+}
+
+export type PublicFleetVehiclesQueryResult = NonNullable<Awaited<ReturnType<typeof publicFleetVehicles>>>
+export type PublicFleetVehiclesQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Public Fleet Vehicles List
  */
 
-export function usePublicFleetVehicles<
-  TData = Awaited<ReturnType<typeof publicFleetVehicles>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<PublicFleetVehiclesParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof publicFleetVehicles>>,
-        TError,
-        TData
-      >
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = usePublicFleetVehiclesQueryOptions(
-    fleetSlug,
-    params,
-    options,
-  );
+export function usePublicFleetVehicles<TData = Awaited<ReturnType<typeof publicFleetVehicles>>, TError = ErrorType<StandardError>>(
+ fleetSlug: MaybeRef<string>,
+    params?: MaybeRef<PublicFleetVehiclesParams>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof publicFleetVehicles>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = usePublicFleetVehiclesQueryOptions(fleetSlug,params,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
+
+
+
+export const getCheckFIDResponseMock = (overrideResponse: Partial< Check > = {}): Check => ({taken: faker.datatype.boolean(), ...overrideResponse})
+
+export const getCreateFleetResponseMock = (overrideResponse: Partial< Fleet > = {}): Fleet => ({id: faker.string.uuid(), fid: faker.string.alpha(20), rsiSid: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), ts: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), discord: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), youtube: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twitch: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), guilded: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), homepage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), name: faker.string.alpha(20), slug: faker.string.alpha(20), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), publicFleet: faker.datatype.boolean(), publicFleetStats: faker.datatype.boolean(), logo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), backgroundImage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
+
+export const getFleetResponseMock = (overrideResponse: Partial< Fleet > = {}): Fleet => ({id: faker.string.uuid(), fid: faker.string.alpha(20), rsiSid: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), ts: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), discord: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), youtube: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twitch: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), guilded: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), homepage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), name: faker.string.alpha(20), slug: faker.string.alpha(20), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), publicFleet: faker.datatype.boolean(), publicFleetStats: faker.datatype.boolean(), logo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), backgroundImage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
+
+export const getUpdateFleetResponseMock = (overrideResponse: Partial< Fleet > = {}): Fleet => ({id: faker.string.uuid(), fid: faker.string.alpha(20), rsiSid: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), ts: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), discord: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), youtube: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twitch: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), guilded: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), homepage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), name: faker.string.alpha(20), slug: faker.string.alpha(20), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), publicFleet: faker.datatype.boolean(), publicFleetStats: faker.datatype.boolean(), logo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), backgroundImage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
+
+export const getFindFleetByInviteResponseMock = (overrideResponse: Partial< Fleet > = {}): Fleet => ({id: faker.string.uuid(), fid: faker.string.alpha(20), rsiSid: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), ts: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), discord: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), youtube: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twitch: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), guilded: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), homepage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), name: faker.string.alpha(20), slug: faker.string.alpha(20), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), publicFleet: faker.datatype.boolean(), publicFleetStats: faker.datatype.boolean(), logo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), backgroundImage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
+
+export const getFleetInvitesResponseMock = (): FleetMember[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), username: faker.string.alpha(20), fleetRole: {id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.string.alpha(20), resourceAccess: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20)))}, role: faker.helpers.arrayElement(Object.values(FleetMembershipRoleEnum)), roleLabel: faker.string.alpha(20), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(FleetMembershipStatusEnum)), undefined]), avatar: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiHandle: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), homepage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), discord: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), youtube: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twitch: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), guilded: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), shipsFilter: faker.helpers.arrayElement(Object.values(FleetMembershipShipsFilterEnum)), hangarGroupId: faker.helpers.arrayElement([faker.string.uuid(), undefined]), fleetSlug: faker.string.alpha(20), fleetName: faker.string.alpha(20), fleet: faker.helpers.arrayElement([{id: faker.string.uuid(), fid: faker.string.alpha(20), rsiSid: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), ts: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), discord: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), youtube: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twitch: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), guilded: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), homepage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), name: faker.string.alpha(20), slug: faker.string.alpha(20), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), publicFleet: faker.datatype.boolean(), publicFleetStats: faker.datatype.boolean(), logo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), backgroundImage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, undefined]), primary: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), hangarUpdatedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), invitedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), invitedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), requestedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), requestedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), acceptedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), acceptedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), declinedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), declinedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), isDestroyAllowed: faker.datatype.boolean(), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})))
+
+export const getMyFleetsResponseMock = (): Fleet[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), fid: faker.string.alpha(20), rsiSid: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), ts: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), discord: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), youtube: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), twitch: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), guilded: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), homepage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), name: faker.string.alpha(20), slug: faker.string.alpha(20), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), publicFleet: faker.datatype.boolean(), publicFleetStats: faker.datatype.boolean(), logo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), backgroundImage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})))
+
+export const getFleetVehiclesExportResponseMock = (): FleetVehicleExport[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({name: faker.string.alpha(20), slug: faker.string.alpha(20), shipCode: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), manufacturerName: faker.string.alpha(20), manufacturerCode: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), paintSlug: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), shipName: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), shipSerial: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), wanted: faker.datatype.boolean(), flagship: faker.datatype.boolean(), public: faker.datatype.boolean(), saleNotify: faker.datatype.boolean(), nameVisible: faker.datatype.boolean(), groups: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), modules: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), upgrades: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), username: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20), null]), undefined]), userAvatar: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.internet.url(), null]), undefined]), userRsiHandle: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20), null]), undefined])})))
+
+export const getFleetVehiclesResponseMock = (overrideResponse: Partial< FleetVehicles > = {}): FleetVehicles => ({meta: {pagination: faker.helpers.arrayElement([{totalCount: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), currentPage: faker.number.int({min: undefined, max: undefined}), totalPages: faker.number.int({min: undefined, max: undefined}), defaultPerPage: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), maxPerPage: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), perPageSteps: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.helpers.arrayElement([faker.string.alpha(20),faker.number.int({min: undefined, max: undefined}),]))), undefined])}, undefined])}, items: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.helpers.arrayElement([{id: faker.string.uuid(), scIdentifier: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), name: faker.string.alpha(20), slug: faker.string.alpha(20), availability: {boughtAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), soldAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), rentalAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}))}, brochure: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), classification: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), classificationLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), crew: {max: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), maxLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), min: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), minLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined])}, description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), erkulIdentifier: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), focus: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hasImages: faker.datatype.boolean(), hasModules: faker.datatype.boolean(), hasPaints: faker.datatype.boolean(), hasUpgrades: faker.datatype.boolean(), hasVideos: faker.datatype.boolean(), holo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), lastPledgePrice: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), lastPledgePriceLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), lastUpdatedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), lastUpdatedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), links: {salesPageUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), storeUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined])}, loaners: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({name: faker.string.alpha(20), slug: faker.string.alpha(20)})), manufacturer: faker.helpers.arrayElement([{name: faker.string.alpha(20), slug: faker.string.alpha(20), code: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), logo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), longName: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), scRef: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, undefined]), media: {angledView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), angledViewColored: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), fleetchartImage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), frontView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), frontViewColored: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), sideView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), sideViewColored: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), storeImage: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), topView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), topViewColored: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined])}, metrics: {beam: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), beamLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), cargo: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), cargoLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), fleetchartLength: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), height: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), heightLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hydrogenFuelTankSize: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), isGroundVehicle: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), length: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), lengthLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), mass: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), massLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), quantumFuelTankSize: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), size: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sizeLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), dockSize: faker.helpers.arrayElement([faker.string.alpha(20), undefined])}, cargoHolds: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined}), maxContainerSize: {size: faker.number.int({min: undefined, max: undefined}), dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}}, limits: {min: {dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined})}, max: faker.helpers.arrayElement([{dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined})}, undefined])}})), undefined]), hydrogenFuelTanks: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({capacity: faker.number.int({min: undefined, max: undefined})})), undefined]), quantumFuelTanks: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({capacity: faker.number.int({min: undefined, max: undefined})})), undefined]), onSale: faker.datatype.boolean(), pledgePrice: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), pledgePriceLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), price: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), priceLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), productionNote: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), productionStatus: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ModelProductionStatusEnum)), undefined]), rsiId: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), rsiName: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiSlug: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), speeds: {groundAcceleration: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), groundDecceleration: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), groundMaxSpeed: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), groundReverseSpeed: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), maxSpeed: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), pitch: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), pitchBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), roll: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), rollBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), scmSpeed: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), scmSpeedBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), reverseSpeedBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), yaw: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), yawBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined])}, createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`},{id: faker.string.uuid(), name: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), slug: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), serial: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hangarGroupIds: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.uuid())), hangarGroups: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.string.alpha(20), color: faker.string.alpha(20), sort: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), vehiclesCount: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), loaner: faker.datatype.boolean(), model: {id: faker.string.uuid(), scIdentifier: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), name: faker.string.alpha(20), slug: faker.string.alpha(20), availability: {boughtAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), soldAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), rentalAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}))}, brochure: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), classification: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), classificationLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), crew: {max: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), maxLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), min: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), minLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined])}, description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), erkulIdentifier: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), focus: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hasImages: faker.datatype.boolean(), hasModules: faker.datatype.boolean(), hasPaints: faker.datatype.boolean(), hasUpgrades: faker.datatype.boolean(), hasVideos: faker.datatype.boolean(), holo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), lastPledgePrice: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), lastPledgePriceLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), lastUpdatedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), lastUpdatedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), links: {salesPageUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), storeUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined])}, loaners: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({name: faker.string.alpha(20), slug: faker.string.alpha(20)})), manufacturer: faker.helpers.arrayElement([{name: faker.string.alpha(20), slug: faker.string.alpha(20), code: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), logo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), longName: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), scRef: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, undefined]), media: {angledView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), angledViewColored: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), fleetchartImage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), frontView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), frontViewColored: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), sideView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), sideViewColored: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), storeImage: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), topView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), topViewColored: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined])}, metrics: {beam: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), beamLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), cargo: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), cargoLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), fleetchartLength: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), height: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), heightLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hydrogenFuelTankSize: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), isGroundVehicle: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), length: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), lengthLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), mass: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), massLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), quantumFuelTankSize: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), size: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sizeLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), dockSize: faker.helpers.arrayElement([faker.string.alpha(20), undefined])}, cargoHolds: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined}), maxContainerSize: {size: faker.number.int({min: undefined, max: undefined}), dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}}, limits: {min: {dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined})}, max: faker.helpers.arrayElement([{dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined})}, undefined])}})), undefined]), hydrogenFuelTanks: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({capacity: faker.number.int({min: undefined, max: undefined})})), undefined]), quantumFuelTanks: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({capacity: faker.number.int({min: undefined, max: undefined})})), undefined]), onSale: faker.datatype.boolean(), pledgePrice: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), pledgePriceLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), price: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), priceLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), productionNote: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), productionStatus: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ModelProductionStatusEnum)), undefined]), rsiId: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), rsiName: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiSlug: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), speeds: {groundAcceleration: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), groundDecceleration: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), groundMaxSpeed: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), groundReverseSpeed: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), maxSpeed: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), pitch: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), pitchBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), roll: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), rollBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), scmSpeed: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), scmSpeedBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), reverseSpeedBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), yaw: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), yawBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined])}, createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, username: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), userAvatar: faker.helpers.arrayElement([faker.internet.url(), undefined]), userRsiHandle: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), modelModuleIds: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.uuid())), modelUpgradeIds: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.uuid())), modulePackage: faker.helpers.arrayElement([{id: faker.string.uuid(), name: faker.string.alpha(20), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), pledgePrice: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), modules: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), scKey: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), metrics: faker.helpers.arrayElement([{cargo: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined])}, undefined]), cargoHolds: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined}), maxContainerSize: {size: faker.number.int({min: undefined, max: undefined}), dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}}, limits: {min: {dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined})}, max: faker.helpers.arrayElement([{dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined})}, undefined])}})), undefined]), availability: {boughtAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), soldAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}))}, media: {storeImage: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined])}, pledgePrice: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), productionStatus: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), manufacturer: faker.helpers.arrayElement([{name: faker.string.alpha(20), slug: faker.string.alpha(20), code: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), logo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), longName: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), scRef: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, undefined]), hardpoints: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), group: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HardpointGroupEnum)), undefined]), groupKey: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), matrixKey: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), category: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HardpointCategoryEnum)), undefined]), name: faker.string.alpha(20), minSize: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), maxSize: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), source: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HardpointSourceEnum)), undefined]), types: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), undefined]), details: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), component: faker.helpers.arrayElement([{id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.string.alpha(20), scKey: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), scRef: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hidden: faker.datatype.boolean(), category: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), type: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), subType: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), inventoryConsumption: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), grade: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), gradeLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), size: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), itemClass: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ComponentItemClassEnum)), undefined]), itemClassLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), availability: {boughtAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), soldAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}))}, manufacturer: faker.helpers.arrayElement([{name: faker.string.alpha(20), slug: faker.string.alpha(20), code: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), logo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), longName: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), scRef: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, undefined]), media: {storeImage: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined])}, typeData: faker.helpers.arrayElement([faker.helpers.arrayElement([{fuelRate: faker.number.int({min: undefined, max: undefined}), jumpRange: faker.number.int({min: undefined, max: undefined}), standardJump: {speed: faker.number.int({min: undefined, max: undefined}), stage1AccelerationRate: faker.number.int({min: undefined, max: undefined}), stage2AccelerationRate: faker.number.int({min: undefined, max: undefined}), spoolUpTime: faker.number.int({min: undefined, max: undefined}), cooldown: faker.number.int({min: undefined, max: undefined})}, splineJump: {speed: faker.number.int({min: undefined, max: undefined}), stage1AccelerationRate: faker.number.int({min: undefined, max: undefined}), stage2AccelerationRate: faker.number.int({min: undefined, max: undefined}), spoolUpTime: faker.number.int({min: undefined, max: undefined}), cooldown: faker.number.int({min: undefined, max: undefined})}},{dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined}), maxContainerSize: {size: faker.number.int({min: undefined, max: undefined}), dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}}, limits: {min: {dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined})}, max: faker.helpers.arrayElement([{dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined})}, undefined])}},{capacity: faker.number.int({min: undefined, max: undefined})},{thrustCapacity: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), thrusterType: faker.string.alpha(20), thrusterClass: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ThrusterClassEnum)), undefined]), fuelBurnRatePer10KNewton: faker.number.int({min: undefined, max: undefined})},]), undefined]), hardpoints: faker.helpers.arrayElement([[], undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, undefined]), hardpoints: faker.helpers.arrayElement([[], undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), media: {angledView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), sideView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), storeImage: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), topView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined])}, createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, hasStoreImage: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), storeImage: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageLarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageMedium: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageSmall: faker.helpers.arrayElement([faker.internet.url(), undefined]), angledView: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), angledViewHeight: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), angledViewLarge: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), angledViewMedium: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), angledViewSmall: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), angledViewWidth: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), angledViewXlarge: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sideView: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sideViewHeight: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), sideViewLarge: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sideViewMedium: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sideViewSmall: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sideViewWidth: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), sideViewXlarge: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), topView: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), topViewHeight: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), topViewLarge: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), topViewMedium: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), topViewSmall: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), topViewWidth: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), topViewXlarge: faker.helpers.arrayElement([faker.string.alpha(20), undefined])}, undefined]), upgrade: faker.helpers.arrayElement([{id: faker.string.uuid(), name: faker.string.alpha(20), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), pledgePrice: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), media: {storeImage: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined])}, createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, storeImage: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageLarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageMedium: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageSmall: faker.helpers.arrayElement([faker.internet.url(), undefined])}, undefined]), paint: faker.helpers.arrayElement([{id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.string.alpha(20), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), lastUpdatedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), lastUpdatedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), availability: {boughtAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), soldAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}))}, media: {angledView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), fleetchartImage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sideView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), storeImage: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), topView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined])}, nameWithModel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiId: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), rsiName: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiSlug: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, angledView: faker.helpers.arrayElement([faker.internet.url(), undefined]), angledViewHeight: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), angledViewLarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), angledViewMedium: faker.helpers.arrayElement([faker.internet.url(), undefined]), angledViewSmall: faker.helpers.arrayElement([faker.internet.url(), undefined]), angledViewWidth: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), angledViewXlarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), fleetchartImage: faker.helpers.arrayElement([faker.internet.url(), undefined]), hasStoreImage: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), sideView: faker.helpers.arrayElement([faker.internet.url(), undefined]), sideViewHeight: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), sideViewLarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), sideViewMedium: faker.helpers.arrayElement([faker.internet.url(), undefined]), sideViewSmall: faker.helpers.arrayElement([faker.internet.url(), undefined]), sideViewWidth: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), sideViewXlarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImage: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageLarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageMedium: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageSmall: faker.helpers.arrayElement([faker.internet.url(), undefined]), topView: faker.helpers.arrayElement([faker.internet.url(), undefined]), topViewHeight: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), topViewLarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), topViewMedium: faker.helpers.arrayElement([faker.internet.url(), undefined]), topViewSmall: faker.helpers.arrayElement([faker.internet.url(), undefined]), topViewWidth: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), topViewXlarge: faker.helpers.arrayElement([faker.internet.url(), undefined])}, undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`},]))), ...overrideResponse})
+
+export const getPublicFleetStatsModelCountsResponseMock = (overrideResponse: Partial< FleetModelCountsStats > = {}): FleetModelCountsStats => ({modelCounts: {
+        [faker.string.alphanumeric(5)]: faker.number.int({min: undefined, max: undefined})
+      }, ...overrideResponse})
+
+export const getPublicFleetVehiclesEmbedResponseMock = (): VehiclePublic[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), name: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), slug: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), serial: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hangarGroupIds: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.uuid())), hangarGroups: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.string.alpha(20), color: faker.string.alpha(20), sort: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), vehiclesCount: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), loaner: faker.datatype.boolean(), model: {id: faker.string.uuid(), scIdentifier: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), name: faker.string.alpha(20), slug: faker.string.alpha(20), availability: {boughtAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), soldAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), rentalAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}))}, brochure: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), classification: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), classificationLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), crew: {max: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), maxLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), min: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), minLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined])}, description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), erkulIdentifier: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), focus: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hasImages: faker.datatype.boolean(), hasModules: faker.datatype.boolean(), hasPaints: faker.datatype.boolean(), hasUpgrades: faker.datatype.boolean(), hasVideos: faker.datatype.boolean(), holo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), lastPledgePrice: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), lastPledgePriceLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), lastUpdatedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), lastUpdatedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), links: {salesPageUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), storeUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined])}, loaners: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({name: faker.string.alpha(20), slug: faker.string.alpha(20)})), manufacturer: faker.helpers.arrayElement([{name: faker.string.alpha(20), slug: faker.string.alpha(20), code: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), logo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), longName: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), scRef: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, undefined]), media: {angledView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), angledViewColored: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), fleetchartImage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), frontView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), frontViewColored: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), sideView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), sideViewColored: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), storeImage: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), topView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), topViewColored: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined])}, metrics: {beam: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), beamLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), cargo: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), cargoLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), fleetchartLength: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), height: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), heightLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hydrogenFuelTankSize: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), isGroundVehicle: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), length: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), lengthLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), mass: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), massLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), quantumFuelTankSize: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), size: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sizeLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), dockSize: faker.helpers.arrayElement([faker.string.alpha(20), undefined])}, cargoHolds: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined}), maxContainerSize: {size: faker.number.int({min: undefined, max: undefined}), dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}}, limits: {min: {dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined})}, max: faker.helpers.arrayElement([{dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined})}, undefined])}})), undefined]), hydrogenFuelTanks: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({capacity: faker.number.int({min: undefined, max: undefined})})), undefined]), quantumFuelTanks: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({capacity: faker.number.int({min: undefined, max: undefined})})), undefined]), onSale: faker.datatype.boolean(), pledgePrice: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), pledgePriceLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), price: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), priceLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), productionNote: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), productionStatus: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ModelProductionStatusEnum)), undefined]), rsiId: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), rsiName: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiSlug: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), speeds: {groundAcceleration: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), groundDecceleration: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), groundMaxSpeed: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), groundReverseSpeed: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), maxSpeed: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), pitch: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), pitchBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), roll: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), rollBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), scmSpeed: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), scmSpeedBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), reverseSpeedBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), yaw: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), yawBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined])}, createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, username: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), userAvatar: faker.helpers.arrayElement([faker.internet.url(), undefined]), userRsiHandle: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), modelModuleIds: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.uuid())), modelUpgradeIds: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.uuid())), modulePackage: faker.helpers.arrayElement([{id: faker.string.uuid(), name: faker.string.alpha(20), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), pledgePrice: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), modules: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), scKey: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), metrics: faker.helpers.arrayElement([{cargo: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined])}, undefined]), cargoHolds: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined}), maxContainerSize: {size: faker.number.int({min: undefined, max: undefined}), dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}}, limits: {min: {dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined})}, max: faker.helpers.arrayElement([{dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined})}, undefined])}})), undefined]), availability: {boughtAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), soldAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}))}, media: {storeImage: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined])}, pledgePrice: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), productionStatus: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), manufacturer: faker.helpers.arrayElement([{name: faker.string.alpha(20), slug: faker.string.alpha(20), code: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), logo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), longName: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), scRef: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, undefined]), hardpoints: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), group: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HardpointGroupEnum)), undefined]), groupKey: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), matrixKey: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), category: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HardpointCategoryEnum)), undefined]), name: faker.string.alpha(20), minSize: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), maxSize: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), source: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HardpointSourceEnum)), undefined]), types: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), undefined]), details: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), component: faker.helpers.arrayElement([{id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.string.alpha(20), scKey: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), scRef: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hidden: faker.datatype.boolean(), category: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), type: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), subType: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), inventoryConsumption: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), grade: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), gradeLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), size: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), itemClass: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ComponentItemClassEnum)), undefined]), itemClassLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), availability: {boughtAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), soldAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}))}, manufacturer: faker.helpers.arrayElement([{name: faker.string.alpha(20), slug: faker.string.alpha(20), code: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), logo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), longName: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), scRef: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, undefined]), media: {storeImage: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined])}, typeData: faker.helpers.arrayElement([faker.helpers.arrayElement([{fuelRate: faker.number.int({min: undefined, max: undefined}), jumpRange: faker.number.int({min: undefined, max: undefined}), standardJump: {speed: faker.number.int({min: undefined, max: undefined}), stage1AccelerationRate: faker.number.int({min: undefined, max: undefined}), stage2AccelerationRate: faker.number.int({min: undefined, max: undefined}), spoolUpTime: faker.number.int({min: undefined, max: undefined}), cooldown: faker.number.int({min: undefined, max: undefined})}, splineJump: {speed: faker.number.int({min: undefined, max: undefined}), stage1AccelerationRate: faker.number.int({min: undefined, max: undefined}), stage2AccelerationRate: faker.number.int({min: undefined, max: undefined}), spoolUpTime: faker.number.int({min: undefined, max: undefined}), cooldown: faker.number.int({min: undefined, max: undefined})}},{dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined}), maxContainerSize: {size: faker.number.int({min: undefined, max: undefined}), dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}}, limits: {min: {dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined})}, max: faker.helpers.arrayElement([{dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined})}, undefined])}},{capacity: faker.number.int({min: undefined, max: undefined})},{thrustCapacity: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), thrusterType: faker.string.alpha(20), thrusterClass: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ThrusterClassEnum)), undefined]), fuelBurnRatePer10KNewton: faker.number.int({min: undefined, max: undefined})},]), undefined]), hardpoints: faker.helpers.arrayElement([[], undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, undefined]), hardpoints: faker.helpers.arrayElement([[], undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), media: {angledView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), sideView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), storeImage: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), topView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined])}, createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, hasStoreImage: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), storeImage: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageLarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageMedium: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageSmall: faker.helpers.arrayElement([faker.internet.url(), undefined]), angledView: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), angledViewHeight: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), angledViewLarge: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), angledViewMedium: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), angledViewSmall: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), angledViewWidth: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), angledViewXlarge: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sideView: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sideViewHeight: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), sideViewLarge: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sideViewMedium: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sideViewSmall: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sideViewWidth: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), sideViewXlarge: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), topView: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), topViewHeight: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), topViewLarge: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), topViewMedium: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), topViewSmall: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), topViewWidth: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), topViewXlarge: faker.helpers.arrayElement([faker.string.alpha(20), undefined])}, undefined]), upgrade: faker.helpers.arrayElement([{id: faker.string.uuid(), name: faker.string.alpha(20), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), pledgePrice: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), media: {storeImage: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined])}, createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, storeImage: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageLarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageMedium: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageSmall: faker.helpers.arrayElement([faker.internet.url(), undefined])}, undefined]), paint: faker.helpers.arrayElement([{id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.string.alpha(20), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), lastUpdatedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), lastUpdatedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), availability: {boughtAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), soldAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}))}, media: {angledView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), fleetchartImage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sideView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), storeImage: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), topView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined])}, nameWithModel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiId: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), rsiName: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiSlug: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, angledView: faker.helpers.arrayElement([faker.internet.url(), undefined]), angledViewHeight: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), angledViewLarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), angledViewMedium: faker.helpers.arrayElement([faker.internet.url(), undefined]), angledViewSmall: faker.helpers.arrayElement([faker.internet.url(), undefined]), angledViewWidth: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), angledViewXlarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), fleetchartImage: faker.helpers.arrayElement([faker.internet.url(), undefined]), hasStoreImage: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), sideView: faker.helpers.arrayElement([faker.internet.url(), undefined]), sideViewHeight: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), sideViewLarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), sideViewMedium: faker.helpers.arrayElement([faker.internet.url(), undefined]), sideViewSmall: faker.helpers.arrayElement([faker.internet.url(), undefined]), sideViewWidth: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), sideViewXlarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImage: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageLarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageMedium: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageSmall: faker.helpers.arrayElement([faker.internet.url(), undefined]), topView: faker.helpers.arrayElement([faker.internet.url(), undefined]), topViewHeight: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), topViewLarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), topViewMedium: faker.helpers.arrayElement([faker.internet.url(), undefined]), topViewSmall: faker.helpers.arrayElement([faker.internet.url(), undefined]), topViewWidth: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), topViewXlarge: faker.helpers.arrayElement([faker.internet.url(), undefined])}, undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})))
+
+export const getPublicFleetVehiclesResponseMock = (overrideResponse: Partial< FleetPublicVehicles > = {}): FleetPublicVehicles => ({meta: {pagination: faker.helpers.arrayElement([{totalCount: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), currentPage: faker.number.int({min: undefined, max: undefined}), totalPages: faker.number.int({min: undefined, max: undefined}), defaultPerPage: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), maxPerPage: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), perPageSteps: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.helpers.arrayElement([faker.string.alpha(20),faker.number.int({min: undefined, max: undefined}),]))), undefined])}, undefined])}, items: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.helpers.arrayElement([{id: faker.string.uuid(), scIdentifier: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), name: faker.string.alpha(20), slug: faker.string.alpha(20), availability: {boughtAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), soldAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), rentalAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}))}, brochure: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), classification: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), classificationLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), crew: {max: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), maxLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), min: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), minLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined])}, description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), erkulIdentifier: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), focus: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hasImages: faker.datatype.boolean(), hasModules: faker.datatype.boolean(), hasPaints: faker.datatype.boolean(), hasUpgrades: faker.datatype.boolean(), hasVideos: faker.datatype.boolean(), holo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), lastPledgePrice: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), lastPledgePriceLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), lastUpdatedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), lastUpdatedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), links: {salesPageUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), storeUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined])}, loaners: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({name: faker.string.alpha(20), slug: faker.string.alpha(20)})), manufacturer: faker.helpers.arrayElement([{name: faker.string.alpha(20), slug: faker.string.alpha(20), code: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), logo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), longName: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), scRef: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, undefined]), media: {angledView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), angledViewColored: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), fleetchartImage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), frontView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), frontViewColored: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), sideView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), sideViewColored: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), storeImage: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), topView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), topViewColored: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined])}, metrics: {beam: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), beamLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), cargo: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), cargoLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), fleetchartLength: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), height: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), heightLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hydrogenFuelTankSize: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), isGroundVehicle: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), length: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), lengthLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), mass: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), massLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), quantumFuelTankSize: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), size: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sizeLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), dockSize: faker.helpers.arrayElement([faker.string.alpha(20), undefined])}, cargoHolds: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined}), maxContainerSize: {size: faker.number.int({min: undefined, max: undefined}), dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}}, limits: {min: {dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined})}, max: faker.helpers.arrayElement([{dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined})}, undefined])}})), undefined]), hydrogenFuelTanks: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({capacity: faker.number.int({min: undefined, max: undefined})})), undefined]), quantumFuelTanks: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({capacity: faker.number.int({min: undefined, max: undefined})})), undefined]), onSale: faker.datatype.boolean(), pledgePrice: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), pledgePriceLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), price: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), priceLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), productionNote: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), productionStatus: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ModelProductionStatusEnum)), undefined]), rsiId: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), rsiName: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiSlug: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), speeds: {groundAcceleration: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), groundDecceleration: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), groundMaxSpeed: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), groundReverseSpeed: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), maxSpeed: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), pitch: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), pitchBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), roll: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), rollBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), scmSpeed: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), scmSpeedBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), reverseSpeedBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), yaw: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), yawBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined])}, createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`},{id: faker.string.uuid(), name: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), slug: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), serial: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hangarGroupIds: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.uuid())), hangarGroups: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.string.alpha(20), color: faker.string.alpha(20), sort: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), vehiclesCount: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), loaner: faker.datatype.boolean(), model: {id: faker.string.uuid(), scIdentifier: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), name: faker.string.alpha(20), slug: faker.string.alpha(20), availability: {boughtAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), soldAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), rentalAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}))}, brochure: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), classification: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), classificationLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), crew: {max: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), maxLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), min: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), minLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined])}, description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), erkulIdentifier: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), focus: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hasImages: faker.datatype.boolean(), hasModules: faker.datatype.boolean(), hasPaints: faker.datatype.boolean(), hasUpgrades: faker.datatype.boolean(), hasVideos: faker.datatype.boolean(), holo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), lastPledgePrice: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), lastPledgePriceLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), lastUpdatedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), lastUpdatedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), links: {salesPageUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), storeUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined])}, loaners: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({name: faker.string.alpha(20), slug: faker.string.alpha(20)})), manufacturer: faker.helpers.arrayElement([{name: faker.string.alpha(20), slug: faker.string.alpha(20), code: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), logo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), longName: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), scRef: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, undefined]), media: {angledView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), angledViewColored: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), fleetchartImage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), frontView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), frontViewColored: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), sideView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), sideViewColored: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), storeImage: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), topView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), topViewColored: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined])}, metrics: {beam: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), beamLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), cargo: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), cargoLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), fleetchartLength: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), height: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), heightLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hydrogenFuelTankSize: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), isGroundVehicle: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), length: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), lengthLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), mass: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), massLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), quantumFuelTankSize: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), size: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sizeLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), dockSize: faker.helpers.arrayElement([faker.string.alpha(20), undefined])}, cargoHolds: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined}), maxContainerSize: {size: faker.number.int({min: undefined, max: undefined}), dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}}, limits: {min: {dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined})}, max: faker.helpers.arrayElement([{dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined})}, undefined])}})), undefined]), hydrogenFuelTanks: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({capacity: faker.number.int({min: undefined, max: undefined})})), undefined]), quantumFuelTanks: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({capacity: faker.number.int({min: undefined, max: undefined})})), undefined]), onSale: faker.datatype.boolean(), pledgePrice: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), pledgePriceLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), price: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), priceLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), productionNote: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), productionStatus: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ModelProductionStatusEnum)), undefined]), rsiId: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), rsiName: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiSlug: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), speeds: {groundAcceleration: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), groundDecceleration: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), groundMaxSpeed: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), groundReverseSpeed: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), maxSpeed: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), pitch: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), pitchBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), roll: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), rollBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), scmSpeed: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), scmSpeedBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), reverseSpeedBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), yaw: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), yawBoosted: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined])}, createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, username: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), userAvatar: faker.helpers.arrayElement([faker.internet.url(), undefined]), userRsiHandle: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), modelModuleIds: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.uuid())), modelUpgradeIds: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.uuid())), modulePackage: faker.helpers.arrayElement([{id: faker.string.uuid(), name: faker.string.alpha(20), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), pledgePrice: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), modules: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), scKey: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), metrics: faker.helpers.arrayElement([{cargo: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined])}, undefined]), cargoHolds: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined}), maxContainerSize: {size: faker.number.int({min: undefined, max: undefined}), dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}}, limits: {min: {dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined})}, max: faker.helpers.arrayElement([{dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined})}, undefined])}})), undefined]), availability: {boughtAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), soldAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}))}, media: {storeImage: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined])}, pledgePrice: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), productionStatus: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), manufacturer: faker.helpers.arrayElement([{name: faker.string.alpha(20), slug: faker.string.alpha(20), code: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), logo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), longName: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), scRef: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, undefined]), hardpoints: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), group: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HardpointGroupEnum)), undefined]), groupKey: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), matrixKey: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), category: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HardpointCategoryEnum)), undefined]), name: faker.string.alpha(20), minSize: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), maxSize: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), source: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HardpointSourceEnum)), undefined]), types: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), undefined]), details: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), component: faker.helpers.arrayElement([{id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.string.alpha(20), scKey: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), scRef: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hidden: faker.datatype.boolean(), category: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), type: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), subType: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), inventoryConsumption: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), grade: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), gradeLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), size: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), itemClass: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ComponentItemClassEnum)), undefined]), itemClassLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), availability: {boughtAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), soldAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}))}, manufacturer: faker.helpers.arrayElement([{name: faker.string.alpha(20), slug: faker.string.alpha(20), code: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), logo: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), longName: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), scRef: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, undefined]), media: {storeImage: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined])}, typeData: faker.helpers.arrayElement([faker.helpers.arrayElement([{fuelRate: faker.number.int({min: undefined, max: undefined}), jumpRange: faker.number.int({min: undefined, max: undefined}), standardJump: {speed: faker.number.int({min: undefined, max: undefined}), stage1AccelerationRate: faker.number.int({min: undefined, max: undefined}), stage2AccelerationRate: faker.number.int({min: undefined, max: undefined}), spoolUpTime: faker.number.int({min: undefined, max: undefined}), cooldown: faker.number.int({min: undefined, max: undefined})}, splineJump: {speed: faker.number.int({min: undefined, max: undefined}), stage1AccelerationRate: faker.number.int({min: undefined, max: undefined}), stage2AccelerationRate: faker.number.int({min: undefined, max: undefined}), spoolUpTime: faker.number.int({min: undefined, max: undefined}), cooldown: faker.number.int({min: undefined, max: undefined})}},{dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined}), maxContainerSize: {size: faker.number.int({min: undefined, max: undefined}), dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}}, limits: {min: {dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined})}, max: faker.helpers.arrayElement([{dimensions: {x: faker.number.int({min: undefined, max: undefined}), y: faker.number.int({min: undefined, max: undefined}), z: faker.number.int({min: undefined, max: undefined})}, capacity: faker.number.int({min: undefined, max: undefined})}, undefined])}},{capacity: faker.number.int({min: undefined, max: undefined})},{thrustCapacity: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), thrusterType: faker.string.alpha(20), thrusterClass: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ThrusterClassEnum)), undefined]), fuelBurnRatePer10KNewton: faker.number.int({min: undefined, max: undefined})},]), undefined]), hardpoints: faker.helpers.arrayElement([[], undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}, undefined]), hardpoints: faker.helpers.arrayElement([[], undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), media: {angledView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), sideView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), storeImage: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), topView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined])}, createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, hasStoreImage: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), storeImage: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageLarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageMedium: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageSmall: faker.helpers.arrayElement([faker.internet.url(), undefined]), angledView: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), angledViewHeight: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), angledViewLarge: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), angledViewMedium: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), angledViewSmall: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), angledViewWidth: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), angledViewXlarge: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sideView: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sideViewHeight: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), sideViewLarge: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sideViewMedium: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sideViewSmall: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sideViewWidth: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), sideViewXlarge: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), topView: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), topViewHeight: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), topViewLarge: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), topViewMedium: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), topViewSmall: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), topViewWidth: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), topViewXlarge: faker.helpers.arrayElement([faker.string.alpha(20), undefined])}, undefined]), upgrade: faker.helpers.arrayElement([{id: faker.string.uuid(), name: faker.string.alpha(20), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), pledgePrice: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), media: {storeImage: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined])}, createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, storeImage: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageLarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageMedium: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageSmall: faker.helpers.arrayElement([faker.internet.url(), undefined])}, undefined]), paint: faker.helpers.arrayElement([{id: faker.string.uuid(), name: faker.string.alpha(20), slug: faker.string.alpha(20), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), lastUpdatedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), lastUpdatedAtLabel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), availability: {boughtAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), soldAt: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`}))}, media: {angledView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), fleetchartImage: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sideView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), storeImage: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined]), topView: faker.helpers.arrayElement([{source: faker.internet.url(), small: faker.internet.url(), medium: faker.internet.url(), large: faker.internet.url(), xlarge: faker.internet.url(), width: faker.number.int({min: undefined, max: undefined}), height: faker.number.int({min: undefined, max: undefined})}, undefined])}, nameWithModel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiId: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), rsiName: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), rsiSlug: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, angledView: faker.helpers.arrayElement([faker.internet.url(), undefined]), angledViewHeight: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), angledViewLarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), angledViewMedium: faker.helpers.arrayElement([faker.internet.url(), undefined]), angledViewSmall: faker.helpers.arrayElement([faker.internet.url(), undefined]), angledViewWidth: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), angledViewXlarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), fleetchartImage: faker.helpers.arrayElement([faker.internet.url(), undefined]), hasStoreImage: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), sideView: faker.helpers.arrayElement([faker.internet.url(), undefined]), sideViewHeight: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), sideViewLarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), sideViewMedium: faker.helpers.arrayElement([faker.internet.url(), undefined]), sideViewSmall: faker.helpers.arrayElement([faker.internet.url(), undefined]), sideViewWidth: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), sideViewXlarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImage: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageLarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageMedium: faker.helpers.arrayElement([faker.internet.url(), undefined]), storeImageSmall: faker.helpers.arrayElement([faker.internet.url(), undefined]), topView: faker.helpers.arrayElement([faker.internet.url(), undefined]), topViewHeight: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), topViewLarge: faker.helpers.arrayElement([faker.internet.url(), undefined]), topViewMedium: faker.helpers.arrayElement([faker.internet.url(), undefined]), topViewSmall: faker.helpers.arrayElement([faker.internet.url(), undefined]), topViewWidth: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), topViewXlarge: faker.helpers.arrayElement([faker.internet.url(), undefined])}, undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`},]))), ...overrideResponse})
+
+
+export const getCheckFIDMockHandler = (overrideResponse?: Check | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<Check> | Check)) => {
+  return http.post('*/fleets/check', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getCheckFIDResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getCreateFleetMockHandler = (overrideResponse?: Fleet | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<Fleet> | Fleet)) => {
+  return http.post('*/fleets', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getCreateFleetResponseMock()),
+      { status: 201,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getDestroyFleetMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<void> | void)) => {
+  return http.delete('*/fleets/:slug', async (info) => {await delay(1000);
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
+    return new HttpResponse(null,
+      { status: 204,
+        
+      })
+  })
+}
+
+export const getFleetMockHandler = (overrideResponse?: Fleet | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<Fleet> | Fleet)) => {
+  return http.get('*/fleets/:slug', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getFleetResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getUpdateFleetMockHandler = (overrideResponse?: Fleet | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<Fleet> | Fleet)) => {
+  return http.put('*/fleets/:slug', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getUpdateFleetResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getFindFleetByInviteMockHandler = (overrideResponse?: Fleet | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<Fleet> | Fleet)) => {
+  return http.post('*/fleets/find-by-invite/:token', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getFindFleetByInviteResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getFleetInvitesMockHandler = (overrideResponse?: FleetMember[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<FleetMember[]> | FleetMember[])) => {
+  return http.get('*/fleets/invites', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getFleetInvitesResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getMyFleetsMockHandler = (overrideResponse?: Fleet[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<Fleet[]> | Fleet[])) => {
+  return http.get('*/fleets/my', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getMyFleetsResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getFleetVehiclesExportMockHandler = (overrideResponse?: FleetVehicleExport[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<FleetVehicleExport[]> | FleetVehicleExport[])) => {
+  return http.get('*/fleets/:fleetSlug/vehicles/export', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getFleetVehiclesExportResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getFleetVehiclesMockHandler = (overrideResponse?: FleetVehicles | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<FleetVehicles> | FleetVehicles)) => {
+  return http.get('*/fleets/:fleetSlug/vehicles', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getFleetVehiclesResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getPublicFleetStatsModelCountsMockHandler = (overrideResponse?: FleetModelCountsStats | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<FleetModelCountsStats> | FleetModelCountsStats)) => {
+  return http.get('*/public/fleets/:fleetSlug/stats/model-counts', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getPublicFleetStatsModelCountsResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getPublicFleetVehiclesEmbedMockHandler = (overrideResponse?: VehiclePublic[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<VehiclePublic[]> | VehiclePublic[])) => {
+  return http.get('*/public/fleets/:fleetSlug/vehicles/embed', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getPublicFleetVehiclesEmbedResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getPublicFleetVehiclesMockHandler = (overrideResponse?: FleetPublicVehicles | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<FleetPublicVehicles> | FleetPublicVehicles)) => {
+  return http.get('*/public/fleets/:fleetSlug/vehicles', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getPublicFleetVehiclesResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+export const getFleetsMock = () => [
+  getCheckFIDMockHandler(),
+  getCreateFleetMockHandler(),
+  getDestroyFleetMockHandler(),
+  getFleetMockHandler(),
+  getUpdateFleetMockHandler(),
+  getFindFleetByInviteMockHandler(),
+  getFleetInvitesMockHandler(),
+  getMyFleetsMockHandler(),
+  getFleetVehiclesExportMockHandler(),
+  getFleetVehiclesMockHandler(),
+  getPublicFleetStatsModelCountsMockHandler(),
+  getPublicFleetVehiclesEmbedMockHandler(),
+  getPublicFleetVehiclesMockHandler()
+]

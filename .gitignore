@@ -20,6 +20,15 @@ test/reports/*
 spec/reports
 spec/reports/*
 
+# generated auto-import files
+packs/frontend/auto-imports.d.ts
+packs/frontend/components.d.ts
+.eslintrc-auto-import.json
+
+# generated api client
+app/frontend/services/fyApi
+app/frontend/services/fyAdminApi
+
 # app files
 public/uploads/*
 public/assets
@@ -63,3 +72,6 @@ swagger/todo
 !/app/assets/builds/.keep
 
 data/sc_data/raw
+
+*storybook.log
+storybook-static

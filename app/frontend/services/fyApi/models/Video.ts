@@ -4,7 +4,7 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { VideoTypeEnum } from "./videoTypeEnum";
+import type { VideoTypeEnum } from './VideoTypeEnum';
 
 export interface Video {
   id: string;

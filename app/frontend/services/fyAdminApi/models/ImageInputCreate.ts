@@ -4,7 +4,7 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import type { GalleryTypeEnum } from "./galleryTypeEnum";
+import type { GalleryTypeEnum } from './GalleryTypeEnum';
 
 export interface ImageInputCreate {
   caption?: string;

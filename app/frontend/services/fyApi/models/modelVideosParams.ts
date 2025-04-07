@@ -6,6 +6,6 @@
  */
 
 export type ModelVideosParams = {
-  page?: string;
-  perPage?: string;
+page?: string;
+perPage?: string;
 };

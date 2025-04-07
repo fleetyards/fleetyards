@@ -4,8 +4,8 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import type { ViewImage } from "./viewImage";
-import type { MediaImage } from "./mediaImage";
+import type { ViewImage } from './ViewImage';
+import type { MediaImage } from './MediaImage';
 
 export type ModelPaintMedia = {
   angledView?: ViewImage;

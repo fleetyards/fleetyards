@@ -5,12 +5,12 @@
  * OpenAPI spec version: v1
  */
 
-export type ItemPriceTypeEnum =
-  (typeof ItemPriceTypeEnum)[keyof typeof ItemPriceTypeEnum];
+export type ItemPriceTypeEnum = typeof ItemPriceTypeEnum[keyof typeof ItemPriceTypeEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ItemPriceTypeEnum = {
-  buy: "buy",
-  sell: "sell",
-  rental: "rental",
+  buy: 'buy',
+  sell: 'sell',
+  rental: 'rental',
 } as const;

@@ -1,3 +1,5 @@
 app/frontend/auto-imports.d.ts
 app/frontend/components.d.ts
 app/frontend/fontawesome
+app/frontend/services/fyApi
+app/frontend/services/fyAdminApi

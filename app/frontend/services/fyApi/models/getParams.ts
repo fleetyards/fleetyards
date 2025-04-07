@@ -4,10 +4,10 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { HangarQuery } from "./hangarQuery";
+import type { HangarQuery } from './HangarQuery';
 
 export type GetParams = {
-  page?: string;
-  perPage?: string;
-  q?: HangarQuery;
+page?: string;
+perPage?: string;
+q?: HangarQuery;
 };

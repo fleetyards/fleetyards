@@ -4,7 +4,7 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { FleetMembershipShipsFilterEnum } from "./fleetMembershipShipsFilterEnum";
+import type { FleetMembershipShipsFilterEnum } from './FleetMembershipShipsFilterEnum';
 
 export interface FleetMembershipUpdateInput {
   primary?: boolean;

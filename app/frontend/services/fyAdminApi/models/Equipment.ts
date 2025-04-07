@@ -4,9 +4,9 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import type { EquipmentAvailability } from "./equipmentAvailability";
-import type { Manufacturer } from "./manufacturer";
-import type { EquipmentMedia } from "./equipmentMedia";
+import type { EquipmentAvailability } from './EquipmentAvailability';
+import type { Manufacturer } from './Manufacturer';
+import type { EquipmentMedia } from './EquipmentMedia';
 
 export interface Equipment {
   id: string;

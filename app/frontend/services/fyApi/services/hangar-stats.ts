@@ -4,429 +4,444 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import { useQuery } from "@tanstack/vue-query";
+import {
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   DataTag,
   QueryFunction,
   QueryKey,
   UseQueryOptions,
-  UseQueryReturnType,
-} from "@tanstack/vue-query";
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import { unref } from "vue";
-import type { MaybeRef } from "vue";
+import {
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
+
+import type {
+  HangarStatsParams,
+  StandardError
+} from '../models';
+
+import {
+  faker
+} from '@faker-js/faker';
+
+import {
+  HttpResponse,
+  delay,
+  http
+} from 'msw';
 
 import type {
   HangarStats,
-  HangarStatsParams,
-  PieChartStats,
-  StandardError,
-} from "../models";
+  PieChartStats
+} from '../models';
 
-import { axiosClient } from "../axiosClient";
-import type { ErrorType } from "../axiosClient";
-import { customQueryOptions } from "../../customQueryOptions";
+import { axiosClient } from '../../axiosClient';
+import type { ErrorType } from '../../axiosClient';
+import { customQueryOptions } from '../../customQueryOptions';
+
+
+
+
 
 /**
  * @summary Hangar Stats - Models by Classification
  */
-export const hangarModelsByClassification = (signal?: AbortSignal) => {
-  return axiosClient<PieChartStats[]>({
-    url: `/hangar/stats/models-by-classification`,
-    method: "GET",
-    signal,
-  });
-};
+export const hangarModelsByClassification = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return axiosClient<PieChartStats[]>(
+      {url: `/hangar/stats/models-by-classification`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 const getHangarModelsByClassificationQueryKey = () => {
-  return ["hangar", "stats", "models-by-classification"] as const;
-};
+    return ['hangar','stats','models-by-classification'] as const;
+    }
 
-export const useHangarModelsByClassificationQueryOptions = <
-  TData = Awaited<ReturnType<typeof hangarModelsByClassification>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof hangarModelsByClassification>>,
-      TError,
-      TData
-    >
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const useHangarModelsByClassificationQueryOptions = <TData = Awaited<ReturnType<typeof hangarModelsByClassification>>, TError = ErrorType<StandardError>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof hangarModelsByClassification>>, TError, TData>>, }
+) => {
 
-  const queryKey = getHangarModelsByClassificationQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof hangarModelsByClassification>>
-  > = ({ signal }) => hangarModelsByClassification(signal);
+  const queryKey =  getHangarModelsByClassificationQueryKey();
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof hangarModelsByClassification>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof hangarModelsByClassification>>> = ({ signal }) => hangarModelsByClassification(signal);
 
-export type HangarModelsByClassificationQueryResult = NonNullable<
-  Awaited<ReturnType<typeof hangarModelsByClassification>>
->;
-export type HangarModelsByClassificationQueryError = ErrorType<StandardError>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof hangarModelsByClassification>>, TError, TData> 
+}
+
+export type HangarModelsByClassificationQueryResult = NonNullable<Awaited<ReturnType<typeof hangarModelsByClassification>>>
+export type HangarModelsByClassificationQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Hangar Stats - Models by Classification
  */
 
-export function useHangarModelsByClassification<
-  TData = Awaited<ReturnType<typeof hangarModelsByClassification>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof hangarModelsByClassification>>,
-      TError,
-      TData
-    >
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useHangarModelsByClassificationQueryOptions(options);
+export function useHangarModelsByClassification<TData = Awaited<ReturnType<typeof hangarModelsByClassification>>, TError = ErrorType<StandardError>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof hangarModelsByClassification>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useHangarModelsByClassificationQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
 
+
+
 /**
  * @summary Hangar Stats - Models by Manufacturer
  */
-export const hangarModelsByManufacturer = (signal?: AbortSignal) => {
-  return axiosClient<PieChartStats[]>({
-    url: `/hangar/stats/models-by-manufacturer`,
-    method: "GET",
-    signal,
-  });
-};
+export const hangarModelsByManufacturer = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return axiosClient<PieChartStats[]>(
+      {url: `/hangar/stats/models-by-manufacturer`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 const getHangarModelsByManufacturerQueryKey = () => {
-  return ["hangar", "stats", "models-by-manufacturer"] as const;
-};
+    return ['hangar','stats','models-by-manufacturer'] as const;
+    }
 
-export const useHangarModelsByManufacturerQueryOptions = <
-  TData = Awaited<ReturnType<typeof hangarModelsByManufacturer>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof hangarModelsByManufacturer>>,
-      TError,
-      TData
-    >
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const useHangarModelsByManufacturerQueryOptions = <TData = Awaited<ReturnType<typeof hangarModelsByManufacturer>>, TError = ErrorType<StandardError>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof hangarModelsByManufacturer>>, TError, TData>>, }
+) => {
 
-  const queryKey = getHangarModelsByManufacturerQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof hangarModelsByManufacturer>>
-  > = ({ signal }) => hangarModelsByManufacturer(signal);
+  const queryKey =  getHangarModelsByManufacturerQueryKey();
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof hangarModelsByManufacturer>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof hangarModelsByManufacturer>>> = ({ signal }) => hangarModelsByManufacturer(signal);
 
-export type HangarModelsByManufacturerQueryResult = NonNullable<
-  Awaited<ReturnType<typeof hangarModelsByManufacturer>>
->;
-export type HangarModelsByManufacturerQueryError = ErrorType<StandardError>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof hangarModelsByManufacturer>>, TError, TData> 
+}
+
+export type HangarModelsByManufacturerQueryResult = NonNullable<Awaited<ReturnType<typeof hangarModelsByManufacturer>>>
+export type HangarModelsByManufacturerQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Hangar Stats - Models by Manufacturer
  */
 
-export function useHangarModelsByManufacturer<
-  TData = Awaited<ReturnType<typeof hangarModelsByManufacturer>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof hangarModelsByManufacturer>>,
-      TError,
-      TData
-    >
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useHangarModelsByManufacturerQueryOptions(options);
+export function useHangarModelsByManufacturer<TData = Awaited<ReturnType<typeof hangarModelsByManufacturer>>, TError = ErrorType<StandardError>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof hangarModelsByManufacturer>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useHangarModelsByManufacturerQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
 
+
+
 /**
  * @summary Hangar Stats - Models by Production Status
  */
-export const hangarModelsByProductionStatus = (signal?: AbortSignal) => {
-  return axiosClient<PieChartStats[]>({
-    url: `/hangar/stats/models-by-production-status`,
-    method: "GET",
-    signal,
-  });
-};
+export const hangarModelsByProductionStatus = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return axiosClient<PieChartStats[]>(
+      {url: `/hangar/stats/models-by-production-status`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 const getHangarModelsByProductionStatusQueryKey = () => {
-  return ["hangar", "stats", "models-by-production-status"] as const;
-};
+    return ['hangar','stats','models-by-production-status'] as const;
+    }
 
-export const useHangarModelsByProductionStatusQueryOptions = <
-  TData = Awaited<ReturnType<typeof hangarModelsByProductionStatus>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof hangarModelsByProductionStatus>>,
-      TError,
-      TData
-    >
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const useHangarModelsByProductionStatusQueryOptions = <TData = Awaited<ReturnType<typeof hangarModelsByProductionStatus>>, TError = ErrorType<StandardError>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof hangarModelsByProductionStatus>>, TError, TData>>, }
+) => {
 
-  const queryKey = getHangarModelsByProductionStatusQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof hangarModelsByProductionStatus>>
-  > = ({ signal }) => hangarModelsByProductionStatus(signal);
+  const queryKey =  getHangarModelsByProductionStatusQueryKey();
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof hangarModelsByProductionStatus>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof hangarModelsByProductionStatus>>> = ({ signal }) => hangarModelsByProductionStatus(signal);
 
-export type HangarModelsByProductionStatusQueryResult = NonNullable<
-  Awaited<ReturnType<typeof hangarModelsByProductionStatus>>
->;
-export type HangarModelsByProductionStatusQueryError = ErrorType<StandardError>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof hangarModelsByProductionStatus>>, TError, TData> 
+}
+
+export type HangarModelsByProductionStatusQueryResult = NonNullable<Awaited<ReturnType<typeof hangarModelsByProductionStatus>>>
+export type HangarModelsByProductionStatusQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Hangar Stats - Models by Production Status
  */
 
-export function useHangarModelsByProductionStatus<
-  TData = Awaited<ReturnType<typeof hangarModelsByProductionStatus>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof hangarModelsByProductionStatus>>,
-      TError,
-      TData
-    >
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useHangarModelsByProductionStatusQueryOptions(options);
+export function useHangarModelsByProductionStatus<TData = Awaited<ReturnType<typeof hangarModelsByProductionStatus>>, TError = ErrorType<StandardError>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof hangarModelsByProductionStatus>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useHangarModelsByProductionStatusQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
 
+
+
 /**
  * @summary Hangar Stats - Models by Size
  */
-export const hangarModelsBySize = (signal?: AbortSignal) => {
-  return axiosClient<PieChartStats[]>({
-    url: `/hangar/stats/models-by-size`,
-    method: "GET",
-    signal,
-  });
-};
+export const hangarModelsBySize = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return axiosClient<PieChartStats[]>(
+      {url: `/hangar/stats/models-by-size`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 const getHangarModelsBySizeQueryKey = () => {
-  return ["hangar", "stats", "models-by-size"] as const;
-};
+    return ['hangar','stats','models-by-size'] as const;
+    }
 
-export const useHangarModelsBySizeQueryOptions = <
-  TData = Awaited<ReturnType<typeof hangarModelsBySize>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof hangarModelsBySize>>,
-      TError,
-      TData
-    >
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const useHangarModelsBySizeQueryOptions = <TData = Awaited<ReturnType<typeof hangarModelsBySize>>, TError = ErrorType<StandardError>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof hangarModelsBySize>>, TError, TData>>, }
+) => {
 
-  const queryKey = getHangarModelsBySizeQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof hangarModelsBySize>>
-  > = ({ signal }) => hangarModelsBySize(signal);
+  const queryKey =  getHangarModelsBySizeQueryKey();
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof hangarModelsBySize>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof hangarModelsBySize>>> = ({ signal }) => hangarModelsBySize(signal);
 
-export type HangarModelsBySizeQueryResult = NonNullable<
-  Awaited<ReturnType<typeof hangarModelsBySize>>
->;
-export type HangarModelsBySizeQueryError = ErrorType<StandardError>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof hangarModelsBySize>>, TError, TData> 
+}
+
+export type HangarModelsBySizeQueryResult = NonNullable<Awaited<ReturnType<typeof hangarModelsBySize>>>
+export type HangarModelsBySizeQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Hangar Stats - Models by Size
  */
 
-export function useHangarModelsBySize<
-  TData = Awaited<ReturnType<typeof hangarModelsBySize>>,
-  TError = ErrorType<StandardError>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof hangarModelsBySize>>,
-      TError,
-      TData
-    >
-  >;
-}): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useHangarModelsBySizeQueryOptions(options);
+export function useHangarModelsBySize<TData = Awaited<ReturnType<typeof hangarModelsBySize>>, TError = ErrorType<StandardError>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof hangarModelsBySize>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useHangarModelsBySizeQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
 
 /**
  * @summary Your Hangar Stats
  */
 export const hangarStats = (
-  params?: MaybeRef<HangarStatsParams>,
-  signal?: AbortSignal,
+    params?: MaybeRef<HangarStatsParams>,
+ signal?: AbortSignal
 ) => {
-  params = unref(params);
+      params = unref(params);
+      
+      return axiosClient<HangarStats>(
+      {url: `/hangar/stats`, method: 'GET',
+        params: unref(params), signal
+    },
+      );
+    }
+  
 
-  return axiosClient<HangarStats>({
-    url: `/hangar/stats`,
-    method: "GET",
-    params: unref(params),
-    signal,
-  });
-};
+const getHangarStatsQueryKey = (params?: MaybeRef<HangarStatsParams>,) => {
+    return ['hangar','stats', ...(params ? [params]: [])] as const;
+    }
 
-const getHangarStatsQueryKey = (params?: MaybeRef<HangarStatsParams>) => {
-  return ["hangar", "stats", ...(params ? [params] : [])] as const;
-};
-
-export const useHangarStatsQueryOptions = <
-  TData = Awaited<ReturnType<typeof hangarStats>>,
-  TError = ErrorType<StandardError>,
->(
-  params?: MaybeRef<HangarStatsParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof hangarStats>>, TError, TData>
-    >;
-  },
+    
+export const useHangarStatsQueryOptions = <TData = Awaited<ReturnType<typeof hangarStats>>, TError = ErrorType<StandardError>>(params?: MaybeRef<HangarStatsParams>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof hangarStats>>, TError, TData>>, }
 ) => {
-  const { query: queryOptions } = options ?? {};
 
-  const queryKey = getHangarStatsQueryKey(params);
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof hangarStats>>> = ({
-    signal,
-  }) => hangarStats(params, signal);
+  const queryKey =  getHangarStatsQueryKey(params);
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof hangarStats>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof hangarStats>>> = ({ signal }) => hangarStats(params, signal);
 
-export type HangarStatsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof hangarStats>>
->;
-export type HangarStatsQueryError = ErrorType<StandardError>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof hangarStats>>, TError, TData> 
+}
+
+export type HangarStatsQueryResult = NonNullable<Awaited<ReturnType<typeof hangarStats>>>
+export type HangarStatsQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Your Hangar Stats
  */
 
-export function useHangarStats<
-  TData = Awaited<ReturnType<typeof hangarStats>>,
-  TError = ErrorType<StandardError>,
->(
-  params?: MaybeRef<HangarStatsParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof hangarStats>>, TError, TData>
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useHangarStatsQueryOptions(params, options);
+export function useHangarStats<TData = Awaited<ReturnType<typeof hangarStats>>, TError = ErrorType<StandardError>>(
+ params?: MaybeRef<HangarStatsParams>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof hangarStats>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useHangarStatsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
+
+
+
+export const getHangarModelsByClassificationResponseMock = (): PieChartStats[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({name: faker.string.alpha(20), y: faker.number.int({min: undefined, max: undefined}), selected: faker.datatype.boolean(), sliced: faker.datatype.boolean()})))
+
+export const getHangarModelsByManufacturerResponseMock = (): PieChartStats[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({name: faker.string.alpha(20), y: faker.number.int({min: undefined, max: undefined}), selected: faker.datatype.boolean(), sliced: faker.datatype.boolean()})))
+
+export const getHangarModelsByProductionStatusResponseMock = (): PieChartStats[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({name: faker.string.alpha(20), y: faker.number.int({min: undefined, max: undefined}), selected: faker.datatype.boolean(), sliced: faker.datatype.boolean()})))
+
+export const getHangarModelsBySizeResponseMock = (): PieChartStats[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({name: faker.string.alpha(20), y: faker.number.int({min: undefined, max: undefined}), selected: faker.datatype.boolean(), sliced: faker.datatype.boolean()})))
+
+export const getHangarStatsResponseMock = (overrideResponse: Partial< HangarStats > = {}): HangarStats => ({total: faker.number.int({min: undefined, max: undefined}), wishlistTotal: faker.number.int({min: undefined, max: undefined}), classifications: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({name: faker.string.alpha(20), label: faker.string.alpha(20), count: faker.number.int({min: undefined, max: undefined})})), groups: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), slug: faker.string.alpha(20), count: faker.number.int({min: undefined, max: undefined})})), metrics: {totalMoney: faker.number.int({min: undefined, max: undefined}), totalCredits: faker.number.int({min: undefined, max: undefined}), totalMinCrew: faker.number.int({min: undefined, max: undefined}), totalMaxCrew: faker.number.int({min: undefined, max: undefined}), totalCargo: faker.number.int({min: undefined, max: undefined})}, ...overrideResponse})
+
+
+export const getHangarModelsByClassificationMockHandler = (overrideResponse?: PieChartStats[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<PieChartStats[]> | PieChartStats[])) => {
+  return http.get('*/hangar/stats/models-by-classification', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getHangarModelsByClassificationResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getHangarModelsByManufacturerMockHandler = (overrideResponse?: PieChartStats[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<PieChartStats[]> | PieChartStats[])) => {
+  return http.get('*/hangar/stats/models-by-manufacturer', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getHangarModelsByManufacturerResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getHangarModelsByProductionStatusMockHandler = (overrideResponse?: PieChartStats[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<PieChartStats[]> | PieChartStats[])) => {
+  return http.get('*/hangar/stats/models-by-production-status', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getHangarModelsByProductionStatusResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getHangarModelsBySizeMockHandler = (overrideResponse?: PieChartStats[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<PieChartStats[]> | PieChartStats[])) => {
+  return http.get('*/hangar/stats/models-by-size', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getHangarModelsBySizeResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getHangarStatsMockHandler = (overrideResponse?: HangarStats | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<HangarStats> | HangarStats)) => {
+  return http.get('*/hangar/stats', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getHangarStatsResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+export const getHangarStatsMock = () => [
+  getHangarModelsByClassificationMockHandler(),
+  getHangarModelsByManufacturerMockHandler(),
+  getHangarModelsByProductionStatusMockHandler(),
+  getHangarModelsBySizeMockHandler(),
+  getHangarStatsMockHandler()
+]

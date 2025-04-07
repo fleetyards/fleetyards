@@ -4,274 +4,288 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import { useMutation } from "@tanstack/vue-query";
+import {
+  useMutation
+} from '@tanstack/vue-query';
 import type {
   MutationFunction,
   UseMutationOptions,
-  UseMutationReturnType,
-} from "@tanstack/vue-query";
+  UseMutationReturnType
+} from '@tanstack/vue-query';
 
-import { unref } from "vue";
-import type { MaybeRef } from "vue";
+import {
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
 
 import type {
   PasswordInput,
   PasswordRequestInput,
   StandardError,
-  StandardMessage,
-  ValidationError,
-} from "../models";
+  ValidationError
+} from '../models';
 
-import { axiosClient } from "../axiosClient";
-import type { ErrorType } from "../axiosClient";
+import {
+  faker
+} from '@faker-js/faker';
+
+import {
+  HttpResponse,
+  delay,
+  http
+} from 'msw';
+
+import type {
+  StandardMessage
+} from '../models';
+
+import { axiosClient } from '../../axiosClient';
+import type { ErrorType } from '../../axiosClient';
+
+
+
+
 
 /**
  * @summary Request Password reset
  */
 export const requestPasswordReset = (
-  passwordRequestInput: MaybeRef<PasswordRequestInput>,
-  signal?: AbortSignal,
+    passwordRequestInput: MaybeRef<PasswordRequestInput>,
+ signal?: AbortSignal
 ) => {
-  passwordRequestInput = unref(passwordRequestInput);
+      passwordRequestInput = unref(passwordRequestInput);
+      
+      return axiosClient<StandardMessage>(
+      {url: `/password/request`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: passwordRequestInput, signal
+    },
+      );
+    }
+  
 
-  return axiosClient<StandardMessage>({
-    url: `/password/request`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: passwordRequestInput,
-    signal,
-  });
-};
 
-export const getRequestPasswordResetMutationOptions = <
-  TError = ErrorType<ValidationError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof requestPasswordReset>>,
-    TError,
-    { data: PasswordRequestInput },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof requestPasswordReset>>,
-  TError,
-  { data: PasswordRequestInput },
-  TContext
-> => {
-  const mutationKey = ["requestPasswordReset"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getRequestPasswordResetMutationOptions = <TError = ErrorType<ValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof requestPasswordReset>>, TError,{data: PasswordRequestInput}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof requestPasswordReset>>, TError,{data: PasswordRequestInput}, TContext> => {
+    
+const mutationKey = ['requestPasswordReset'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof requestPasswordReset>>,
-    { data: PasswordRequestInput }
-  > = (props) => {
-    const { data } = props ?? {};
+      
 
-    return requestPasswordReset(data);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof requestPasswordReset>>, {data: PasswordRequestInput}> = (props) => {
+          const {data} = props ?? {};
 
-export type RequestPasswordResetMutationResult = NonNullable<
-  Awaited<ReturnType<typeof requestPasswordReset>>
->;
-export type RequestPasswordResetMutationBody = PasswordRequestInput;
-export type RequestPasswordResetMutationError = ErrorType<ValidationError>;
+          return  requestPasswordReset(data,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type RequestPasswordResetMutationResult = NonNullable<Awaited<ReturnType<typeof requestPasswordReset>>>
+    export type RequestPasswordResetMutationBody = PasswordRequestInput
+    export type RequestPasswordResetMutationError = ErrorType<ValidationError>
+
+    /**
  * @summary Request Password reset
  */
-export const useRequestPasswordReset = <
-  TError = ErrorType<ValidationError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof requestPasswordReset>>,
-    TError,
-    { data: PasswordRequestInput },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof requestPasswordReset>>,
-  TError,
-  { data: PasswordRequestInput },
-  TContext
-> => {
-  const mutationOptions = getRequestPasswordResetMutationOptions(options);
+export const useRequestPasswordReset = <TError = ErrorType<ValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof requestPasswordReset>>, TError,{data: PasswordRequestInput}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof requestPasswordReset>>,
+        TError,
+        {data: PasswordRequestInput},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getRequestPasswordResetMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary Update password
  */
-export const updatePassword = (passwordInput: MaybeRef<PasswordInput>) => {
-  passwordInput = unref(passwordInput);
+export const updatePassword = (
+    passwordInput: MaybeRef<PasswordInput>,
+ ) => {
+      passwordInput = unref(passwordInput);
+      
+      return axiosClient<StandardMessage>(
+      {url: `/password`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: passwordInput
+    },
+      );
+    }
+  
 
-  return axiosClient<StandardMessage>({
-    url: `/password`,
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    data: passwordInput,
-  });
-};
 
-export const getUpdatePasswordMutationOptions = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updatePassword>>,
-    TError,
-    { data: PasswordInput },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof updatePassword>>,
-  TError,
-  { data: PasswordInput },
-  TContext
-> => {
-  const mutationKey = ["updatePassword"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getUpdatePasswordMutationOptions = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updatePassword>>, TError,{data: PasswordInput}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof updatePassword>>, TError,{data: PasswordInput}, TContext> => {
+    
+const mutationKey = ['updatePassword'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof updatePassword>>,
-    { data: PasswordInput }
-  > = (props) => {
-    const { data } = props ?? {};
+      
 
-    return updatePassword(data);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updatePassword>>, {data: PasswordInput}> = (props) => {
+          const {data} = props ?? {};
 
-export type UpdatePasswordMutationResult = NonNullable<
-  Awaited<ReturnType<typeof updatePassword>>
->;
-export type UpdatePasswordMutationBody = PasswordInput;
-export type UpdatePasswordMutationError = ErrorType<
-  ValidationError | StandardError
->;
+          return  updatePassword(data,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdatePasswordMutationResult = NonNullable<Awaited<ReturnType<typeof updatePassword>>>
+    export type UpdatePasswordMutationBody = PasswordInput
+    export type UpdatePasswordMutationError = ErrorType<ValidationError | StandardError>
+
+    /**
  * @summary Update password
  */
-export const useUpdatePassword = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updatePassword>>,
-    TError,
-    { data: PasswordInput },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof updatePassword>>,
-  TError,
-  { data: PasswordInput },
-  TContext
-> => {
-  const mutationOptions = getUpdatePasswordMutationOptions(options);
+export const useUpdatePassword = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updatePassword>>, TError,{data: PasswordInput}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof updatePassword>>,
+        TError,
+        {data: PasswordInput},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getUpdatePasswordMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary Update Password with Token
  */
 export const updatePasswordWithToken = (
-  token: MaybeRef<string>,
-  passwordInput: MaybeRef<PasswordInput>,
-) => {
-  token = unref(token);
-  passwordInput = unref(passwordInput);
+    token: MaybeRef<string>,
+    passwordInput: MaybeRef<PasswordInput>,
+ ) => {
+      token = unref(token);
+passwordInput = unref(passwordInput);
+      
+      return axiosClient<StandardMessage>(
+      {url: `/password/${token}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: passwordInput
+    },
+      );
+    }
+  
 
-  return axiosClient<StandardMessage>({
-    url: `/password/${token}`,
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    data: passwordInput,
-  });
-};
 
-export const getUpdatePasswordWithTokenMutationOptions = <
-  TError = ErrorType<ValidationError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updatePasswordWithToken>>,
-    TError,
-    { token: string; data: PasswordInput },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof updatePasswordWithToken>>,
-  TError,
-  { token: string; data: PasswordInput },
-  TContext
-> => {
-  const mutationKey = ["updatePasswordWithToken"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getUpdatePasswordWithTokenMutationOptions = <TError = ErrorType<ValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updatePasswordWithToken>>, TError,{token: string;data: PasswordInput}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof updatePasswordWithToken>>, TError,{token: string;data: PasswordInput}, TContext> => {
+    
+const mutationKey = ['updatePasswordWithToken'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof updatePasswordWithToken>>,
-    { token: string; data: PasswordInput }
-  > = (props) => {
-    const { token, data } = props ?? {};
+      
 
-    return updatePasswordWithToken(token, data);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updatePasswordWithToken>>, {token: string;data: PasswordInput}> = (props) => {
+          const {token,data} = props ?? {};
 
-export type UpdatePasswordWithTokenMutationResult = NonNullable<
-  Awaited<ReturnType<typeof updatePasswordWithToken>>
->;
-export type UpdatePasswordWithTokenMutationBody = PasswordInput;
-export type UpdatePasswordWithTokenMutationError = ErrorType<ValidationError>;
+          return  updatePasswordWithToken(token,data,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdatePasswordWithTokenMutationResult = NonNullable<Awaited<ReturnType<typeof updatePasswordWithToken>>>
+    export type UpdatePasswordWithTokenMutationBody = PasswordInput
+    export type UpdatePasswordWithTokenMutationError = ErrorType<ValidationError>
+
+    /**
  * @summary Update Password with Token
  */
-export const useUpdatePasswordWithToken = <
-  TError = ErrorType<ValidationError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updatePasswordWithToken>>,
-    TError,
-    { token: string; data: PasswordInput },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof updatePasswordWithToken>>,
-  TError,
-  { token: string; data: PasswordInput },
-  TContext
-> => {
-  const mutationOptions = getUpdatePasswordWithTokenMutationOptions(options);
+export const useUpdatePasswordWithToken = <TError = ErrorType<ValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updatePasswordWithToken>>, TError,{token: string;data: PasswordInput}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof updatePasswordWithToken>>,
+        TError,
+        {token: string;data: PasswordInput},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
+      const mutationOptions = getUpdatePasswordWithTokenMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+
+export const getRequestPasswordResetResponseMock = (overrideResponse: Partial< StandardMessage > = {}): StandardMessage => ({code: faker.string.alpha(20), message: faker.string.alpha(20), ...overrideResponse})
+
+export const getUpdatePasswordResponseMock = (overrideResponse: Partial< StandardMessage > = {}): StandardMessage => ({code: faker.string.alpha(20), message: faker.string.alpha(20), ...overrideResponse})
+
+export const getUpdatePasswordWithTokenResponseMock = (overrideResponse: Partial< StandardMessage > = {}): StandardMessage => ({code: faker.string.alpha(20), message: faker.string.alpha(20), ...overrideResponse})
+
+
+export const getRequestPasswordResetMockHandler = (overrideResponse?: StandardMessage | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<StandardMessage> | StandardMessage)) => {
+  return http.post('*/password/request', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getRequestPasswordResetResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getUpdatePasswordMockHandler = (overrideResponse?: StandardMessage | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<StandardMessage> | StandardMessage)) => {
+  return http.put('*/password', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getUpdatePasswordResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getUpdatePasswordWithTokenMockHandler = (overrideResponse?: StandardMessage | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<StandardMessage> | StandardMessage)) => {
+  return http.put('*/password/:token', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getUpdatePasswordWithTokenResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+export const getPasswordMock = () => [
+  getRequestPasswordResetMockHandler(),
+  getUpdatePasswordMockHandler(),
+  getUpdatePasswordWithTokenMockHandler()
+]

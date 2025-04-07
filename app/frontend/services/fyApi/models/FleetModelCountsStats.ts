@@ -4,7 +4,7 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { FleetModelCountsStatsModelCounts } from "./fleetModelCountsStatsModelCounts";
+import type { FleetModelCountsStatsModelCounts } from './FleetModelCountsStatsModelCounts';
 
 export interface FleetModelCountsStats {
   modelCounts: FleetModelCountsStatsModelCounts;

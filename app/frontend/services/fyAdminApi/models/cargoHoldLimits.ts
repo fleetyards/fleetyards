@@ -4,7 +4,7 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import type { CargoHoldLimit } from "./cargoHoldLimit";
+import type { CargoHoldLimit } from './CargoHoldLimit';
 
 export type CargoHoldLimits = {
   min: CargoHoldLimit;

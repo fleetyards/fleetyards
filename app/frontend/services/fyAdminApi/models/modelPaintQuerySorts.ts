@@ -4,6 +4,6 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import type { ModelPaintSortEnum } from "./modelPaintSortEnum";
+import type { ModelPaintSortEnum } from './ModelPaintSortEnum';
 
 export type ModelPaintQuerySorts = ModelPaintSortEnum[] | ModelPaintSortEnum;

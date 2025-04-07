@@ -4,7 +4,7 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { FieldError } from "./fieldError";
+import type { FieldError } from './FieldError';
 
 export interface ValidationError {
   code: string;

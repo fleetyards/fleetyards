@@ -5,16 +5,16 @@
  * OpenAPI spec version: v1
  */
 
-export type DockShipSizeEnum =
-  (typeof DockShipSizeEnum)[keyof typeof DockShipSizeEnum];
+export type DockShipSizeEnum = typeof DockShipSizeEnum[keyof typeof DockShipSizeEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DockShipSizeEnum = {
-  extra_extra_small: "extra_extra_small",
-  extra_small: "extra_small",
-  small: "small",
-  medium: "medium",
-  large: "large",
-  extra_large: "extra_large",
-  capital: "capital",
+  extra_extra_small: 'extra_extra_small',
+  extra_small: 'extra_small',
+  small: 'small',
+  medium: 'medium',
+  large: 'large',
+  extra_large: 'extra_large',
+  capital: 'capital',
 } as const;

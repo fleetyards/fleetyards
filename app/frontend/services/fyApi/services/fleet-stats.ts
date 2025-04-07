@@ -4,976 +4,845 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import { useQuery } from "@tanstack/vue-query";
+import {
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   DataTag,
   QueryFunction,
   QueryKey,
   UseQueryOptions,
-  UseQueryReturnType,
-} from "@tanstack/vue-query";
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import { unref } from "vue";
-import type { MaybeRef } from "vue";
+import {
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
+
+import type {
+  FleetModelCountsParams,
+  StandardError
+} from '../models';
+
+import {
+  faker
+} from '@faker-js/faker';
+
+import {
+  HttpResponse,
+  delay,
+  http
+} from 'msw';
 
 import type {
   BarChartStats,
   FleetMembersStats,
   FleetMembersStatsPublic,
-  FleetModelCountsParams,
   FleetModelCountsStats,
   FleetVehiclesStats,
-  PieChartStats,
-  StandardError,
-} from "../models";
+  PieChartStats
+} from '../models';
 
-import { axiosClient } from "../axiosClient";
-import type { ErrorType } from "../axiosClient";
-import { customQueryOptions } from "../../customQueryOptions";
+import { axiosClient } from '../../axiosClient';
+import type { ErrorType } from '../../axiosClient';
+import { customQueryOptions } from '../../customQueryOptions';
+
+
+
+
 
 /**
  * @summary Fleet Members Stats
  */
 export const fleetMembersStats = (
-  fleetSlug: MaybeRef<string>,
-  signal?: AbortSignal,
+    fleetSlug: MaybeRef<string>,
+ signal?: AbortSignal
 ) => {
-  fleetSlug = unref(fleetSlug);
+      fleetSlug = unref(fleetSlug);
+      
+      return axiosClient<FleetMembersStats>(
+      {url: `/fleets/${fleetSlug}/stats/members`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  return axiosClient<FleetMembersStats>({
-    url: `/fleets/${fleetSlug}/stats/members`,
-    method: "GET",
-    signal,
-  });
-};
+const getFleetMembersStatsQueryKey = (fleetSlug: MaybeRef<string>,) => {
+    return ['fleets',fleetSlug,'stats','members'] as const;
+    }
 
-const getFleetMembersStatsQueryKey = (fleetSlug: MaybeRef<string>) => {
-  return ["fleets", fleetSlug, "stats", "members"] as const;
-};
-
-export const useFleetMembersStatsQueryOptions = <
-  TData = Awaited<ReturnType<typeof fleetMembersStats>>,
-  TError = ErrorType<unknown>,
->(
-  fleetSlug: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof fleetMembersStats>>,
-        TError,
-        TData
-      >
-    >;
-  },
+    
+export const useFleetMembersStatsQueryOptions = <TData = Awaited<ReturnType<typeof fleetMembersStats>>, TError = ErrorType<unknown>>(fleetSlug: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof fleetMembersStats>>, TError, TData>>, }
 ) => {
-  const { query: queryOptions } = options ?? {};
 
-  const queryKey = getFleetMembersStatsQueryKey(fleetSlug);
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof fleetMembersStats>>
-  > = ({ signal }) => fleetMembersStats(fleetSlug, signal);
+  const queryKey =  getFleetMembersStatsQueryKey(fleetSlug);
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof fleetMembersStats>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof fleetMembersStats>>> = ({ signal }) => fleetMembersStats(fleetSlug, signal);
 
-export type FleetMembersStatsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof fleetMembersStats>>
->;
-export type FleetMembersStatsQueryError = ErrorType<unknown>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof fleetMembersStats>>, TError, TData> 
+}
+
+export type FleetMembersStatsQueryResult = NonNullable<Awaited<ReturnType<typeof fleetMembersStats>>>
+export type FleetMembersStatsQueryError = ErrorType<unknown>
+
 
 /**
  * @summary Fleet Members Stats
  */
 
-export function useFleetMembersStats<
-  TData = Awaited<ReturnType<typeof fleetMembersStats>>,
-  TError = ErrorType<unknown>,
->(
-  fleetSlug: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof fleetMembersStats>>,
-        TError,
-        TData
-      >
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useFleetMembersStatsQueryOptions(fleetSlug, options);
+export function useFleetMembersStats<TData = Awaited<ReturnType<typeof fleetMembersStats>>, TError = ErrorType<unknown>>(
+ fleetSlug: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof fleetMembersStats>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useFleetMembersStatsQueryOptions(fleetSlug,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
 
 /**
  * @summary Fleet Stats Model Counts
  */
 export const fleetModelCounts = (
-  fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<FleetModelCountsParams>,
-  signal?: AbortSignal,
+    fleetSlug: MaybeRef<string>,
+    params?: MaybeRef<FleetModelCountsParams>,
+ signal?: AbortSignal
 ) => {
-  fleetSlug = unref(fleetSlug);
-  params = unref(params);
+      fleetSlug = unref(fleetSlug);
+params = unref(params);
+      
+      return axiosClient<FleetModelCountsStats>(
+      {url: `/fleets/${fleetSlug}/stats/model-counts`, method: 'GET',
+        params: unref(params), signal
+    },
+      );
+    }
+  
 
-  return axiosClient<FleetModelCountsStats>({
-    url: `/fleets/${fleetSlug}/stats/model-counts`,
-    method: "GET",
-    params: unref(params),
-    signal,
-  });
-};
+const getFleetModelCountsQueryKey = (fleetSlug: MaybeRef<string>,
+    params?: MaybeRef<FleetModelCountsParams>,) => {
+    return ['fleets',fleetSlug,'stats','model-counts', ...(params ? [params]: [])] as const;
+    }
 
-const getFleetModelCountsQueryKey = (
-  fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<FleetModelCountsParams>,
+    
+export const useFleetModelCountsQueryOptions = <TData = Awaited<ReturnType<typeof fleetModelCounts>>, TError = ErrorType<StandardError>>(fleetSlug: MaybeRef<string>,
+    params?: MaybeRef<FleetModelCountsParams>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof fleetModelCounts>>, TError, TData>>, }
 ) => {
-  return [
-    "fleets",
-    fleetSlug,
-    "stats",
-    "model-counts",
-    ...(params ? [params] : []),
-  ] as const;
-};
 
-export const useFleetModelCountsQueryOptions = <
-  TData = Awaited<ReturnType<typeof fleetModelCounts>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<FleetModelCountsParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof fleetModelCounts>>,
-        TError,
-        TData
-      >
-    >;
-  },
-) => {
-  const { query: queryOptions } = options ?? {};
+const {query: queryOptions} = options ?? {};
 
-  const queryKey = getFleetModelCountsQueryKey(fleetSlug, params);
+  const queryKey =  getFleetModelCountsQueryKey(fleetSlug,params);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof fleetModelCounts>>
-  > = ({ signal }) => fleetModelCounts(fleetSlug, params, signal);
+  
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof fleetModelCounts>>> = ({ signal }) => fleetModelCounts(fleetSlug,params, signal);
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof fleetModelCounts>>,
-    TError,
-    TData
-  >;
-};
+      
 
-export type FleetModelCountsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof fleetModelCounts>>
->;
-export type FleetModelCountsQueryError = ErrorType<StandardError>;
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof fleetModelCounts>>, TError, TData> 
+}
+
+export type FleetModelCountsQueryResult = NonNullable<Awaited<ReturnType<typeof fleetModelCounts>>>
+export type FleetModelCountsQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Fleet Stats Model Counts
  */
 
-export function useFleetModelCounts<
-  TData = Awaited<ReturnType<typeof fleetModelCounts>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  params?: MaybeRef<FleetModelCountsParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof fleetModelCounts>>,
-        TError,
-        TData
-      >
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useFleetModelCountsQueryOptions(
-    fleetSlug,
-    params,
-    options,
-  );
+export function useFleetModelCounts<TData = Awaited<ReturnType<typeof fleetModelCounts>>, TError = ErrorType<StandardError>>(
+ fleetSlug: MaybeRef<string>,
+    params?: MaybeRef<FleetModelCountsParams>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof fleetModelCounts>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useFleetModelCountsQueryOptions(fleetSlug,params,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
 
 /**
  * @summary Fleet Stats - Models by Classification
  */
 export const fleetModelsByClassification = (
-  fleetSlug: MaybeRef<string>,
-  signal?: AbortSignal,
+    fleetSlug: MaybeRef<string>,
+ signal?: AbortSignal
 ) => {
-  fleetSlug = unref(fleetSlug);
+      fleetSlug = unref(fleetSlug);
+      
+      return axiosClient<PieChartStats[]>(
+      {url: `/fleets/${fleetSlug}/stats/models-by-classification`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  return axiosClient<PieChartStats[]>({
-    url: `/fleets/${fleetSlug}/stats/models-by-classification`,
-    method: "GET",
-    signal,
-  });
-};
+const getFleetModelsByClassificationQueryKey = (fleetSlug: MaybeRef<string>,) => {
+    return ['fleets',fleetSlug,'stats','models-by-classification'] as const;
+    }
 
-const getFleetModelsByClassificationQueryKey = (
-  fleetSlug: MaybeRef<string>,
+    
+export const useFleetModelsByClassificationQueryOptions = <TData = Awaited<ReturnType<typeof fleetModelsByClassification>>, TError = ErrorType<StandardError>>(fleetSlug: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof fleetModelsByClassification>>, TError, TData>>, }
 ) => {
-  return ["fleets", fleetSlug, "stats", "models-by-classification"] as const;
-};
 
-export const useFleetModelsByClassificationQueryOptions = <
-  TData = Awaited<ReturnType<typeof fleetModelsByClassification>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof fleetModelsByClassification>>,
-        TError,
-        TData
-      >
-    >;
-  },
-) => {
-  const { query: queryOptions } = options ?? {};
+const {query: queryOptions} = options ?? {};
 
-  const queryKey = getFleetModelsByClassificationQueryKey(fleetSlug);
+  const queryKey =  getFleetModelsByClassificationQueryKey(fleetSlug);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof fleetModelsByClassification>>
-  > = ({ signal }) => fleetModelsByClassification(fleetSlug, signal);
+  
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof fleetModelsByClassification>>> = ({ signal }) => fleetModelsByClassification(fleetSlug, signal);
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof fleetModelsByClassification>>,
-    TError,
-    TData
-  >;
-};
+      
 
-export type FleetModelsByClassificationQueryResult = NonNullable<
-  Awaited<ReturnType<typeof fleetModelsByClassification>>
->;
-export type FleetModelsByClassificationQueryError = ErrorType<StandardError>;
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof fleetModelsByClassification>>, TError, TData> 
+}
+
+export type FleetModelsByClassificationQueryResult = NonNullable<Awaited<ReturnType<typeof fleetModelsByClassification>>>
+export type FleetModelsByClassificationQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Fleet Stats - Models by Classification
  */
 
-export function useFleetModelsByClassification<
-  TData = Awaited<ReturnType<typeof fleetModelsByClassification>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof fleetModelsByClassification>>,
-        TError,
-        TData
-      >
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useFleetModelsByClassificationQueryOptions(
-    fleetSlug,
-    options,
-  );
+export function useFleetModelsByClassification<TData = Awaited<ReturnType<typeof fleetModelsByClassification>>, TError = ErrorType<StandardError>>(
+ fleetSlug: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof fleetModelsByClassification>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useFleetModelsByClassificationQueryOptions(fleetSlug,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
 
 /**
  * @summary Fleet Stats - Models by Manufacturer
  */
 export const fleetModelsByManufacturer = (
-  fleetSlug: MaybeRef<string>,
-  signal?: AbortSignal,
+    fleetSlug: MaybeRef<string>,
+ signal?: AbortSignal
 ) => {
-  fleetSlug = unref(fleetSlug);
+      fleetSlug = unref(fleetSlug);
+      
+      return axiosClient<PieChartStats[]>(
+      {url: `/fleets/${fleetSlug}/stats/models-by-manufacturer`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  return axiosClient<PieChartStats[]>({
-    url: `/fleets/${fleetSlug}/stats/models-by-manufacturer`,
-    method: "GET",
-    signal,
-  });
-};
+const getFleetModelsByManufacturerQueryKey = (fleetSlug: MaybeRef<string>,) => {
+    return ['fleets',fleetSlug,'stats','models-by-manufacturer'] as const;
+    }
 
-const getFleetModelsByManufacturerQueryKey = (fleetSlug: MaybeRef<string>) => {
-  return ["fleets", fleetSlug, "stats", "models-by-manufacturer"] as const;
-};
-
-export const useFleetModelsByManufacturerQueryOptions = <
-  TData = Awaited<ReturnType<typeof fleetModelsByManufacturer>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof fleetModelsByManufacturer>>,
-        TError,
-        TData
-      >
-    >;
-  },
+    
+export const useFleetModelsByManufacturerQueryOptions = <TData = Awaited<ReturnType<typeof fleetModelsByManufacturer>>, TError = ErrorType<StandardError>>(fleetSlug: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof fleetModelsByManufacturer>>, TError, TData>>, }
 ) => {
-  const { query: queryOptions } = options ?? {};
 
-  const queryKey = getFleetModelsByManufacturerQueryKey(fleetSlug);
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof fleetModelsByManufacturer>>
-  > = ({ signal }) => fleetModelsByManufacturer(fleetSlug, signal);
+  const queryKey =  getFleetModelsByManufacturerQueryKey(fleetSlug);
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof fleetModelsByManufacturer>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof fleetModelsByManufacturer>>> = ({ signal }) => fleetModelsByManufacturer(fleetSlug, signal);
 
-export type FleetModelsByManufacturerQueryResult = NonNullable<
-  Awaited<ReturnType<typeof fleetModelsByManufacturer>>
->;
-export type FleetModelsByManufacturerQueryError = ErrorType<StandardError>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof fleetModelsByManufacturer>>, TError, TData> 
+}
+
+export type FleetModelsByManufacturerQueryResult = NonNullable<Awaited<ReturnType<typeof fleetModelsByManufacturer>>>
+export type FleetModelsByManufacturerQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Fleet Stats - Models by Manufacturer
  */
 
-export function useFleetModelsByManufacturer<
-  TData = Awaited<ReturnType<typeof fleetModelsByManufacturer>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof fleetModelsByManufacturer>>,
-        TError,
-        TData
-      >
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useFleetModelsByManufacturerQueryOptions(
-    fleetSlug,
-    options,
-  );
+export function useFleetModelsByManufacturer<TData = Awaited<ReturnType<typeof fleetModelsByManufacturer>>, TError = ErrorType<StandardError>>(
+ fleetSlug: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof fleetModelsByManufacturer>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useFleetModelsByManufacturerQueryOptions(fleetSlug,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
 
 /**
  * @summary Fleet Stats - Models by Production Status
  */
 export const fleetModelsByProductionStatus = (
-  fleetSlug: MaybeRef<string>,
-  signal?: AbortSignal,
+    fleetSlug: MaybeRef<string>,
+ signal?: AbortSignal
 ) => {
-  fleetSlug = unref(fleetSlug);
+      fleetSlug = unref(fleetSlug);
+      
+      return axiosClient<PieChartStats[]>(
+      {url: `/fleets/${fleetSlug}/stats/models-by-production-status`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  return axiosClient<PieChartStats[]>({
-    url: `/fleets/${fleetSlug}/stats/models-by-production-status`,
-    method: "GET",
-    signal,
-  });
-};
+const getFleetModelsByProductionStatusQueryKey = (fleetSlug: MaybeRef<string>,) => {
+    return ['fleets',fleetSlug,'stats','models-by-production-status'] as const;
+    }
 
-const getFleetModelsByProductionStatusQueryKey = (
-  fleetSlug: MaybeRef<string>,
+    
+export const useFleetModelsByProductionStatusQueryOptions = <TData = Awaited<ReturnType<typeof fleetModelsByProductionStatus>>, TError = ErrorType<StandardError>>(fleetSlug: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof fleetModelsByProductionStatus>>, TError, TData>>, }
 ) => {
-  return ["fleets", fleetSlug, "stats", "models-by-production-status"] as const;
-};
 
-export const useFleetModelsByProductionStatusQueryOptions = <
-  TData = Awaited<ReturnType<typeof fleetModelsByProductionStatus>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof fleetModelsByProductionStatus>>,
-        TError,
-        TData
-      >
-    >;
-  },
-) => {
-  const { query: queryOptions } = options ?? {};
+const {query: queryOptions} = options ?? {};
 
-  const queryKey = getFleetModelsByProductionStatusQueryKey(fleetSlug);
+  const queryKey =  getFleetModelsByProductionStatusQueryKey(fleetSlug);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof fleetModelsByProductionStatus>>
-  > = ({ signal }) => fleetModelsByProductionStatus(fleetSlug, signal);
+  
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof fleetModelsByProductionStatus>>> = ({ signal }) => fleetModelsByProductionStatus(fleetSlug, signal);
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof fleetModelsByProductionStatus>>,
-    TError,
-    TData
-  >;
-};
+      
 
-export type FleetModelsByProductionStatusQueryResult = NonNullable<
-  Awaited<ReturnType<typeof fleetModelsByProductionStatus>>
->;
-export type FleetModelsByProductionStatusQueryError = ErrorType<StandardError>;
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof fleetModelsByProductionStatus>>, TError, TData> 
+}
+
+export type FleetModelsByProductionStatusQueryResult = NonNullable<Awaited<ReturnType<typeof fleetModelsByProductionStatus>>>
+export type FleetModelsByProductionStatusQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Fleet Stats - Models by Production Status
  */
 
-export function useFleetModelsByProductionStatus<
-  TData = Awaited<ReturnType<typeof fleetModelsByProductionStatus>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof fleetModelsByProductionStatus>>,
-        TError,
-        TData
-      >
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useFleetModelsByProductionStatusQueryOptions(
-    fleetSlug,
-    options,
-  );
+export function useFleetModelsByProductionStatus<TData = Awaited<ReturnType<typeof fleetModelsByProductionStatus>>, TError = ErrorType<StandardError>>(
+ fleetSlug: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof fleetModelsByProductionStatus>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useFleetModelsByProductionStatusQueryOptions(fleetSlug,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
 
 /**
  * @summary Fleet Stats - Models by Size
  */
 export const fleetModelsBySize = (
-  fleetSlug: MaybeRef<string>,
-  signal?: AbortSignal,
+    fleetSlug: MaybeRef<string>,
+ signal?: AbortSignal
 ) => {
-  fleetSlug = unref(fleetSlug);
+      fleetSlug = unref(fleetSlug);
+      
+      return axiosClient<PieChartStats[]>(
+      {url: `/fleets/${fleetSlug}/stats/models-by-size`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  return axiosClient<PieChartStats[]>({
-    url: `/fleets/${fleetSlug}/stats/models-by-size`,
-    method: "GET",
-    signal,
-  });
-};
+const getFleetModelsBySizeQueryKey = (fleetSlug: MaybeRef<string>,) => {
+    return ['fleets',fleetSlug,'stats','models-by-size'] as const;
+    }
 
-const getFleetModelsBySizeQueryKey = (fleetSlug: MaybeRef<string>) => {
-  return ["fleets", fleetSlug, "stats", "models-by-size"] as const;
-};
-
-export const useFleetModelsBySizeQueryOptions = <
-  TData = Awaited<ReturnType<typeof fleetModelsBySize>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof fleetModelsBySize>>,
-        TError,
-        TData
-      >
-    >;
-  },
+    
+export const useFleetModelsBySizeQueryOptions = <TData = Awaited<ReturnType<typeof fleetModelsBySize>>, TError = ErrorType<StandardError>>(fleetSlug: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof fleetModelsBySize>>, TError, TData>>, }
 ) => {
-  const { query: queryOptions } = options ?? {};
 
-  const queryKey = getFleetModelsBySizeQueryKey(fleetSlug);
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof fleetModelsBySize>>
-  > = ({ signal }) => fleetModelsBySize(fleetSlug, signal);
+  const queryKey =  getFleetModelsBySizeQueryKey(fleetSlug);
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof fleetModelsBySize>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof fleetModelsBySize>>> = ({ signal }) => fleetModelsBySize(fleetSlug, signal);
 
-export type FleetModelsBySizeQueryResult = NonNullable<
-  Awaited<ReturnType<typeof fleetModelsBySize>>
->;
-export type FleetModelsBySizeQueryError = ErrorType<StandardError>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof fleetModelsBySize>>, TError, TData> 
+}
+
+export type FleetModelsBySizeQueryResult = NonNullable<Awaited<ReturnType<typeof fleetModelsBySize>>>
+export type FleetModelsBySizeQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Fleet Stats - Models by Size
  */
 
-export function useFleetModelsBySize<
-  TData = Awaited<ReturnType<typeof fleetModelsBySize>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof fleetModelsBySize>>,
-        TError,
-        TData
-      >
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useFleetModelsBySizeQueryOptions(fleetSlug, options);
+export function useFleetModelsBySize<TData = Awaited<ReturnType<typeof fleetModelsBySize>>, TError = ErrorType<StandardError>>(
+ fleetSlug: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof fleetModelsBySize>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useFleetModelsBySizeQueryOptions(fleetSlug,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
 
 /**
  * @summary Fleet Stats - Vehicles by Model
  */
 export const fleetVehiclesByModel = (
-  fleetSlug: MaybeRef<string>,
-  signal?: AbortSignal,
+    fleetSlug: MaybeRef<string>,
+ signal?: AbortSignal
 ) => {
-  fleetSlug = unref(fleetSlug);
+      fleetSlug = unref(fleetSlug);
+      
+      return axiosClient<BarChartStats[]>(
+      {url: `/fleets/${fleetSlug}/stats/vehicles-by-model`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  return axiosClient<BarChartStats[]>({
-    url: `/fleets/${fleetSlug}/stats/vehicles-by-model`,
-    method: "GET",
-    signal,
-  });
-};
+const getFleetVehiclesByModelQueryKey = (fleetSlug: MaybeRef<string>,) => {
+    return ['fleets',fleetSlug,'stats','vehicles-by-model'] as const;
+    }
 
-const getFleetVehiclesByModelQueryKey = (fleetSlug: MaybeRef<string>) => {
-  return ["fleets", fleetSlug, "stats", "vehicles-by-model"] as const;
-};
-
-export const useFleetVehiclesByModelQueryOptions = <
-  TData = Awaited<ReturnType<typeof fleetVehiclesByModel>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof fleetVehiclesByModel>>,
-        TError,
-        TData
-      >
-    >;
-  },
+    
+export const useFleetVehiclesByModelQueryOptions = <TData = Awaited<ReturnType<typeof fleetVehiclesByModel>>, TError = ErrorType<StandardError>>(fleetSlug: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof fleetVehiclesByModel>>, TError, TData>>, }
 ) => {
-  const { query: queryOptions } = options ?? {};
 
-  const queryKey = getFleetVehiclesByModelQueryKey(fleetSlug);
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof fleetVehiclesByModel>>
-  > = ({ signal }) => fleetVehiclesByModel(fleetSlug, signal);
+  const queryKey =  getFleetVehiclesByModelQueryKey(fleetSlug);
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof fleetVehiclesByModel>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof fleetVehiclesByModel>>> = ({ signal }) => fleetVehiclesByModel(fleetSlug, signal);
 
-export type FleetVehiclesByModelQueryResult = NonNullable<
-  Awaited<ReturnType<typeof fleetVehiclesByModel>>
->;
-export type FleetVehiclesByModelQueryError = ErrorType<StandardError>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof fleetVehiclesByModel>>, TError, TData> 
+}
+
+export type FleetVehiclesByModelQueryResult = NonNullable<Awaited<ReturnType<typeof fleetVehiclesByModel>>>
+export type FleetVehiclesByModelQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Fleet Stats - Vehicles by Model
  */
 
-export function useFleetVehiclesByModel<
-  TData = Awaited<ReturnType<typeof fleetVehiclesByModel>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof fleetVehiclesByModel>>,
-        TError,
-        TData
-      >
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useFleetVehiclesByModelQueryOptions(fleetSlug, options);
+export function useFleetVehiclesByModel<TData = Awaited<ReturnType<typeof fleetVehiclesByModel>>, TError = ErrorType<StandardError>>(
+ fleetSlug: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof fleetVehiclesByModel>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useFleetVehiclesByModelQueryOptions(fleetSlug,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
 
 /**
  * @summary Fleet Vehicles Stats
  */
 export const fleetVehiclesStats = (
-  fleetSlug: MaybeRef<string>,
-  signal?: AbortSignal,
+    fleetSlug: MaybeRef<string>,
+ signal?: AbortSignal
 ) => {
-  fleetSlug = unref(fleetSlug);
+      fleetSlug = unref(fleetSlug);
+      
+      return axiosClient<FleetVehiclesStats>(
+      {url: `/fleets/${fleetSlug}/stats/vehicles`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  return axiosClient<FleetVehiclesStats>({
-    url: `/fleets/${fleetSlug}/stats/vehicles`,
-    method: "GET",
-    signal,
-  });
-};
+const getFleetVehiclesStatsQueryKey = (fleetSlug: MaybeRef<string>,) => {
+    return ['fleets',fleetSlug,'stats','vehicles'] as const;
+    }
 
-const getFleetVehiclesStatsQueryKey = (fleetSlug: MaybeRef<string>) => {
-  return ["fleets", fleetSlug, "stats", "vehicles"] as const;
-};
-
-export const useFleetVehiclesStatsQueryOptions = <
-  TData = Awaited<ReturnType<typeof fleetVehiclesStats>>,
-  TError = ErrorType<unknown>,
->(
-  fleetSlug: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof fleetVehiclesStats>>,
-        TError,
-        TData
-      >
-    >;
-  },
+    
+export const useFleetVehiclesStatsQueryOptions = <TData = Awaited<ReturnType<typeof fleetVehiclesStats>>, TError = ErrorType<unknown>>(fleetSlug: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof fleetVehiclesStats>>, TError, TData>>, }
 ) => {
-  const { query: queryOptions } = options ?? {};
 
-  const queryKey = getFleetVehiclesStatsQueryKey(fleetSlug);
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof fleetVehiclesStats>>
-  > = ({ signal }) => fleetVehiclesStats(fleetSlug, signal);
+  const queryKey =  getFleetVehiclesStatsQueryKey(fleetSlug);
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof fleetVehiclesStats>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof fleetVehiclesStats>>> = ({ signal }) => fleetVehiclesStats(fleetSlug, signal);
 
-export type FleetVehiclesStatsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof fleetVehiclesStats>>
->;
-export type FleetVehiclesStatsQueryError = ErrorType<unknown>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof fleetVehiclesStats>>, TError, TData> 
+}
+
+export type FleetVehiclesStatsQueryResult = NonNullable<Awaited<ReturnType<typeof fleetVehiclesStats>>>
+export type FleetVehiclesStatsQueryError = ErrorType<unknown>
+
 
 /**
  * @summary Fleet Vehicles Stats
  */
 
-export function useFleetVehiclesStats<
-  TData = Awaited<ReturnType<typeof fleetVehiclesStats>>,
-  TError = ErrorType<unknown>,
->(
-  fleetSlug: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof fleetVehiclesStats>>,
-        TError,
-        TData
-      >
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useFleetVehiclesStatsQueryOptions(fleetSlug, options);
+export function useFleetVehiclesStats<TData = Awaited<ReturnType<typeof fleetVehiclesStats>>, TError = ErrorType<unknown>>(
+ fleetSlug: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof fleetVehiclesStats>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useFleetVehiclesStatsQueryOptions(fleetSlug,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
 
 /**
  * @summary Public Fleet Members Stats
  */
 export const publicFleetMembersStats = (
-  fleetSlug: MaybeRef<string>,
-  signal?: AbortSignal,
+    fleetSlug: MaybeRef<string>,
+ signal?: AbortSignal
 ) => {
-  fleetSlug = unref(fleetSlug);
+      fleetSlug = unref(fleetSlug);
+      
+      return axiosClient<FleetMembersStatsPublic>(
+      {url: `/public/fleets/${fleetSlug}/stats/members`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  return axiosClient<FleetMembersStatsPublic>({
-    url: `/public/fleets/${fleetSlug}/stats/members`,
-    method: "GET",
-    signal,
-  });
-};
+const getPublicFleetMembersStatsQueryKey = (fleetSlug: MaybeRef<string>,) => {
+    return ['public','fleets',fleetSlug,'stats','members'] as const;
+    }
 
-const getPublicFleetMembersStatsQueryKey = (fleetSlug: MaybeRef<string>) => {
-  return ["public", "fleets", fleetSlug, "stats", "members"] as const;
-};
-
-export const usePublicFleetMembersStatsQueryOptions = <
-  TData = Awaited<ReturnType<typeof publicFleetMembersStats>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof publicFleetMembersStats>>,
-        TError,
-        TData
-      >
-    >;
-  },
+    
+export const usePublicFleetMembersStatsQueryOptions = <TData = Awaited<ReturnType<typeof publicFleetMembersStats>>, TError = ErrorType<StandardError>>(fleetSlug: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof publicFleetMembersStats>>, TError, TData>>, }
 ) => {
-  const { query: queryOptions } = options ?? {};
 
-  const queryKey = getPublicFleetMembersStatsQueryKey(fleetSlug);
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof publicFleetMembersStats>>
-  > = ({ signal }) => publicFleetMembersStats(fleetSlug, signal);
+  const queryKey =  getPublicFleetMembersStatsQueryKey(fleetSlug);
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof publicFleetMembersStats>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof publicFleetMembersStats>>> = ({ signal }) => publicFleetMembersStats(fleetSlug, signal);
 
-export type PublicFleetMembersStatsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof publicFleetMembersStats>>
->;
-export type PublicFleetMembersStatsQueryError = ErrorType<StandardError>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof publicFleetMembersStats>>, TError, TData> 
+}
+
+export type PublicFleetMembersStatsQueryResult = NonNullable<Awaited<ReturnType<typeof publicFleetMembersStats>>>
+export type PublicFleetMembersStatsQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Public Fleet Members Stats
  */
 
-export function usePublicFleetMembersStats<
-  TData = Awaited<ReturnType<typeof publicFleetMembersStats>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof publicFleetMembersStats>>,
-        TError,
-        TData
-      >
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = usePublicFleetMembersStatsQueryOptions(
-    fleetSlug,
-    options,
-  );
+export function usePublicFleetMembersStats<TData = Awaited<ReturnType<typeof publicFleetMembersStats>>, TError = ErrorType<StandardError>>(
+ fleetSlug: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof publicFleetMembersStats>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = usePublicFleetMembersStatsQueryOptions(fleetSlug,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
 
 /**
  * @summary Public Fleet Vehicles Stats
  */
 export const publicFleetVehiclesStats = (
-  fleetSlug: MaybeRef<string>,
-  signal?: AbortSignal,
+    fleetSlug: MaybeRef<string>,
+ signal?: AbortSignal
 ) => {
-  fleetSlug = unref(fleetSlug);
+      fleetSlug = unref(fleetSlug);
+      
+      return axiosClient<FleetVehiclesStats>(
+      {url: `/public/fleets/${fleetSlug}/stats/vehicles`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  return axiosClient<FleetVehiclesStats>({
-    url: `/public/fleets/${fleetSlug}/stats/vehicles`,
-    method: "GET",
-    signal,
-  });
-};
+const getPublicFleetVehiclesStatsQueryKey = (fleetSlug: MaybeRef<string>,) => {
+    return ['public','fleets',fleetSlug,'stats','vehicles'] as const;
+    }
 
-const getPublicFleetVehiclesStatsQueryKey = (fleetSlug: MaybeRef<string>) => {
-  return ["public", "fleets", fleetSlug, "stats", "vehicles"] as const;
-};
-
-export const usePublicFleetVehiclesStatsQueryOptions = <
-  TData = Awaited<ReturnType<typeof publicFleetVehiclesStats>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof publicFleetVehiclesStats>>,
-        TError,
-        TData
-      >
-    >;
-  },
+    
+export const usePublicFleetVehiclesStatsQueryOptions = <TData = Awaited<ReturnType<typeof publicFleetVehiclesStats>>, TError = ErrorType<StandardError>>(fleetSlug: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof publicFleetVehiclesStats>>, TError, TData>>, }
 ) => {
-  const { query: queryOptions } = options ?? {};
 
-  const queryKey = getPublicFleetVehiclesStatsQueryKey(fleetSlug);
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof publicFleetVehiclesStats>>
-  > = ({ signal }) => publicFleetVehiclesStats(fleetSlug, signal);
+  const queryKey =  getPublicFleetVehiclesStatsQueryKey(fleetSlug);
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof publicFleetVehiclesStats>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof publicFleetVehiclesStats>>> = ({ signal }) => publicFleetVehiclesStats(fleetSlug, signal);
 
-export type PublicFleetVehiclesStatsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof publicFleetVehiclesStats>>
->;
-export type PublicFleetVehiclesStatsQueryError = ErrorType<StandardError>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof publicFleetVehiclesStats>>, TError, TData> 
+}
+
+export type PublicFleetVehiclesStatsQueryResult = NonNullable<Awaited<ReturnType<typeof publicFleetVehiclesStats>>>
+export type PublicFleetVehiclesStatsQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Public Fleet Vehicles Stats
  */
 
-export function usePublicFleetVehiclesStats<
-  TData = Awaited<ReturnType<typeof publicFleetVehiclesStats>>,
-  TError = ErrorType<StandardError>,
->(
-  fleetSlug: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof publicFleetVehiclesStats>>,
-        TError,
-        TData
-      >
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = usePublicFleetVehiclesStatsQueryOptions(
-    fleetSlug,
-    options,
-  );
+export function usePublicFleetVehiclesStats<TData = Awaited<ReturnType<typeof publicFleetVehiclesStats>>, TError = ErrorType<StandardError>>(
+ fleetSlug: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof publicFleetVehiclesStats>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = usePublicFleetVehiclesStatsQueryOptions(fleetSlug,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
+
+
+
+export const getFleetMembersStatsResponseMock = (overrideResponse: Partial< FleetMembersStats > = {}): FleetMembersStats => ({total: faker.number.int({min: undefined, max: undefined}), metrics: {totalAdmins: faker.number.int({min: undefined, max: undefined}), totalOfficers: faker.number.int({min: undefined, max: undefined}), totalMembers: faker.number.int({min: undefined, max: undefined})}, ...overrideResponse})
+
+export const getFleetModelCountsResponseMock = (overrideResponse: Partial< FleetModelCountsStats > = {}): FleetModelCountsStats => ({modelCounts: {
+        [faker.string.alphanumeric(5)]: faker.number.int({min: undefined, max: undefined})
+      }, ...overrideResponse})
+
+export const getFleetModelsByClassificationResponseMock = (): PieChartStats[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({name: faker.string.alpha(20), y: faker.number.int({min: undefined, max: undefined}), selected: faker.datatype.boolean(), sliced: faker.datatype.boolean()})))
+
+export const getFleetModelsByManufacturerResponseMock = (): PieChartStats[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({name: faker.string.alpha(20), y: faker.number.int({min: undefined, max: undefined}), selected: faker.datatype.boolean(), sliced: faker.datatype.boolean()})))
+
+export const getFleetModelsByProductionStatusResponseMock = (): PieChartStats[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({name: faker.string.alpha(20), y: faker.number.int({min: undefined, max: undefined}), selected: faker.datatype.boolean(), sliced: faker.datatype.boolean()})))
+
+export const getFleetModelsBySizeResponseMock = (): PieChartStats[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({name: faker.string.alpha(20), y: faker.number.int({min: undefined, max: undefined}), selected: faker.datatype.boolean(), sliced: faker.datatype.boolean()})))
+
+export const getFleetVehiclesByModelResponseMock = (): BarChartStats[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({label: faker.string.alpha(20), count: faker.number.int({min: undefined, max: undefined}), tooltip: faker.string.alpha(20)})))
+
+export const getFleetVehiclesStatsResponseMock = (overrideResponse: Partial< FleetVehiclesStats > = {}): FleetVehiclesStats => ({total: faker.number.int({min: undefined, max: undefined}), classifications: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({name: faker.string.alpha(20), label: faker.string.alpha(20), count: faker.number.int({min: undefined, max: undefined})})), metrics: {totalMoney: faker.number.int({min: undefined, max: undefined}), totalCredits: faker.number.int({min: undefined, max: undefined}), totalMinCrew: faker.number.int({min: undefined, max: undefined}), totalMaxCrew: faker.number.int({min: undefined, max: undefined}), totalCargo: faker.number.int({min: undefined, max: undefined})}, ...overrideResponse})
+
+export const getPublicFleetMembersStatsResponseMock = (overrideResponse: Partial< FleetMembersStatsPublic > = {}): FleetMembersStatsPublic => ({total: faker.number.int({min: undefined, max: undefined}), ...overrideResponse})
+
+export const getPublicFleetVehiclesStatsResponseMock = (overrideResponse: Partial< FleetVehiclesStats > = {}): FleetVehiclesStats => ({total: faker.number.int({min: undefined, max: undefined}), classifications: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({name: faker.string.alpha(20), label: faker.string.alpha(20), count: faker.number.int({min: undefined, max: undefined})})), metrics: {totalMoney: faker.number.int({min: undefined, max: undefined}), totalCredits: faker.number.int({min: undefined, max: undefined}), totalMinCrew: faker.number.int({min: undefined, max: undefined}), totalMaxCrew: faker.number.int({min: undefined, max: undefined}), totalCargo: faker.number.int({min: undefined, max: undefined})}, ...overrideResponse})
+
+
+export const getFleetMembersStatsMockHandler = (overrideResponse?: FleetMembersStats | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<FleetMembersStats> | FleetMembersStats)) => {
+  return http.get('*/fleets/:fleetSlug/stats/members', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getFleetMembersStatsResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getFleetModelCountsMockHandler = (overrideResponse?: FleetModelCountsStats | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<FleetModelCountsStats> | FleetModelCountsStats)) => {
+  return http.get('*/fleets/:fleetSlug/stats/model-counts', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getFleetModelCountsResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getFleetModelsByClassificationMockHandler = (overrideResponse?: PieChartStats[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<PieChartStats[]> | PieChartStats[])) => {
+  return http.get('*/fleets/:fleetSlug/stats/models-by-classification', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getFleetModelsByClassificationResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getFleetModelsByManufacturerMockHandler = (overrideResponse?: PieChartStats[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<PieChartStats[]> | PieChartStats[])) => {
+  return http.get('*/fleets/:fleetSlug/stats/models-by-manufacturer', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getFleetModelsByManufacturerResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getFleetModelsByProductionStatusMockHandler = (overrideResponse?: PieChartStats[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<PieChartStats[]> | PieChartStats[])) => {
+  return http.get('*/fleets/:fleetSlug/stats/models-by-production-status', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getFleetModelsByProductionStatusResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getFleetModelsBySizeMockHandler = (overrideResponse?: PieChartStats[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<PieChartStats[]> | PieChartStats[])) => {
+  return http.get('*/fleets/:fleetSlug/stats/models-by-size', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getFleetModelsBySizeResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getFleetVehiclesByModelMockHandler = (overrideResponse?: BarChartStats[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<BarChartStats[]> | BarChartStats[])) => {
+  return http.get('*/fleets/:fleetSlug/stats/vehicles-by-model', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getFleetVehiclesByModelResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getFleetVehiclesStatsMockHandler = (overrideResponse?: FleetVehiclesStats | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<FleetVehiclesStats> | FleetVehiclesStats)) => {
+  return http.get('*/fleets/:fleetSlug/stats/vehicles', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getFleetVehiclesStatsResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getPublicFleetMembersStatsMockHandler = (overrideResponse?: FleetMembersStatsPublic | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<FleetMembersStatsPublic> | FleetMembersStatsPublic)) => {
+  return http.get('*/public/fleets/:fleetSlug/stats/members', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getPublicFleetMembersStatsResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getPublicFleetVehiclesStatsMockHandler = (overrideResponse?: FleetVehiclesStats | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<FleetVehiclesStats> | FleetVehiclesStats)) => {
+  return http.get('*/public/fleets/:fleetSlug/stats/vehicles', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getPublicFleetVehiclesStatsResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+export const getFleetStatsMock = () => [
+  getFleetMembersStatsMockHandler(),
+  getFleetModelCountsMockHandler(),
+  getFleetModelsByClassificationMockHandler(),
+  getFleetModelsByManufacturerMockHandler(),
+  getFleetModelsByProductionStatusMockHandler(),
+  getFleetModelsBySizeMockHandler(),
+  getFleetVehiclesByModelMockHandler(),
+  getFleetVehiclesStatsMockHandler(),
+  getPublicFleetMembersStatsMockHandler(),
+  getPublicFleetVehiclesStatsMockHandler()
+]

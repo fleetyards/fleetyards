@@ -4,7 +4,7 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import type { VehicleQuerySorts } from "./vehicleQuerySorts";
+import type { VehicleQuerySorts } from './VehicleQuerySorts';
 
 export interface VehicleQuery {
   searchCont?: string;

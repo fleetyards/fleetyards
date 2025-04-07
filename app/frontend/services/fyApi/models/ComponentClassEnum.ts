@@ -5,14 +5,14 @@
  * OpenAPI spec version: v1
  */
 
-export type ComponentClassEnum =
-  (typeof ComponentClassEnum)[keyof typeof ComponentClassEnum];
+export type ComponentClassEnum = typeof ComponentClassEnum[keyof typeof ComponentClassEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ComponentClassEnum = {
-  RSIModular: "RSIModular",
-  RSIWeapon: "RSIWeapon",
-  RSIAvionic: "RSIAvionic",
-  RSIPropulsion: "RSIPropulsion",
-  RSIThruster: "RSIThruster",
+  RSIModular: 'RSIModular',
+  RSIWeapon: 'RSIWeapon',
+  RSIAvionic: 'RSIAvionic',
+  RSIPropulsion: 'RSIPropulsion',
+  RSIThruster: 'RSIThruster',
 } as const;

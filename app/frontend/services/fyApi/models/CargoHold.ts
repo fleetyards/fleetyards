@@ -4,9 +4,9 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { CargoHoldDimension } from "./cargoHoldDimension";
-import type { CargoHoldContainerSize } from "./cargoHoldContainerSize";
-import type { CargoHoldLimits } from "./cargoHoldLimits";
+import type { CargoHoldDimension } from './CargoHoldDimension';
+import type { CargoHoldContainerSize } from './CargoHoldContainerSize';
+import type { CargoHoldLimits } from './CargoHoldLimits';
 
 export interface CargoHold {
   dimensions: CargoHoldDimension;

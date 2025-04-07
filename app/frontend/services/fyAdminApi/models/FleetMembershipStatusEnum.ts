@@ -5,14 +5,14 @@
  * OpenAPI spec version: v1
  */
 
-export type FleetMembershipStatusEnum =
-  (typeof FleetMembershipStatusEnum)[keyof typeof FleetMembershipStatusEnum];
+export type FleetMembershipStatusEnum = typeof FleetMembershipStatusEnum[keyof typeof FleetMembershipStatusEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FleetMembershipStatusEnum = {
-  created: "created",
-  invited: "invited",
-  requested: "requested",
-  accepted: "accepted",
-  declined: "declined",
+  created: 'created',
+  invited: 'invited',
+  requested: 'requested',
+  accepted: 'accepted',
+  declined: 'declined',
 } as const;

@@ -4,11 +4,11 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { ManufacturerQuery } from "./manufacturerQuery";
+import type { ManufacturerQuery } from './ManufacturerQuery';
 
 export type ManufacturersParams = {
-  page?: string;
-  perPage?: string;
-  q?: ManufacturerQuery;
-  cacheId?: string;
+page?: string;
+perPage?: string;
+q?: ManufacturerQuery;
+cacheId?: string;
 };

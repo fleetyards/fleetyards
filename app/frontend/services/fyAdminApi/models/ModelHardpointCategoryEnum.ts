@@ -5,21 +5,21 @@
  * OpenAPI spec version: v1
  */
 
-export type ModelHardpointCategoryEnum =
-  (typeof ModelHardpointCategoryEnum)[keyof typeof ModelHardpointCategoryEnum];
+export type ModelHardpointCategoryEnum = typeof ModelHardpointCategoryEnum[keyof typeof ModelHardpointCategoryEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ModelHardpointCategoryEnum = {
-  main: "main",
-  retro: "retro",
-  vtol: "vtol",
-  fixed: "fixed",
-  gimbal: "gimbal",
-  joint: "joint",
-  manned_turret: "manned_turret",
-  remote_turret: "remote_turret",
-  missile_turret: "missile_turret",
-  missile_rack: "missile_rack",
-  qed: "qed",
-  emp: "emp",
+  main: 'main',
+  retro: 'retro',
+  vtol: 'vtol',
+  fixed: 'fixed',
+  gimbal: 'gimbal',
+  joint: 'joint',
+  manned_turret: 'manned_turret',
+  remote_turret: 'remote_turret',
+  missile_turret: 'missile_turret',
+  missile_rack: 'missile_rack',
+  qed: 'qed',
+  emp: 'emp',
 } as const;

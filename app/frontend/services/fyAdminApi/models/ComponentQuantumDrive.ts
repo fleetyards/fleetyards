@@ -4,7 +4,7 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import type { ComponentQuantumDriveJump } from "./componentQuantumDriveJump";
+import type { ComponentQuantumDriveJump } from './ComponentQuantumDriveJump';
 
 export interface ComponentQuantumDrive {
   fuelRate: number;

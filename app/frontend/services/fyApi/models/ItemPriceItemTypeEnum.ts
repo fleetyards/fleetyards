@@ -5,13 +5,13 @@
  * OpenAPI spec version: v1
  */
 
-export type ItemPriceItemTypeEnum =
-  (typeof ItemPriceItemTypeEnum)[keyof typeof ItemPriceItemTypeEnum];
+export type ItemPriceItemTypeEnum = typeof ItemPriceItemTypeEnum[keyof typeof ItemPriceItemTypeEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ItemPriceItemTypeEnum = {
-  Model: "Model",
-  ModelModule: "ModelModule",
-  ModelPaint: "ModelPaint",
-  Component: "Component",
+  Model: 'Model',
+  ModelModule: 'ModelModule',
+  ModelPaint: 'ModelPaint',
+  Component: 'Component',
 } as const;

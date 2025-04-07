@@ -5,17 +5,17 @@
  * OpenAPI spec version: v1
  */
 
-export type ModelPaintSortEnum =
-  (typeof ModelPaintSortEnum)[keyof typeof ModelPaintSortEnum];
+export type ModelPaintSortEnum = typeof ModelPaintSortEnum[keyof typeof ModelPaintSortEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ModelPaintSortEnum = {
-  name_asc: "name asc",
-  name_desc: "name desc",
-  created_at_asc: "created_at asc",
-  created_at_desc: "created_at desc",
-  updated_at_asc: "updated_at asc",
-  updated_at_desc: "updated_at desc",
-  model_slug_asc: "model_slug asc",
-  model_slug_desc: "model_slug desc",
+  name_asc: 'name asc',
+  name_desc: 'name desc',
+  created_at_asc: 'created_at asc',
+  created_at_desc: 'created_at desc',
+  updated_at_asc: 'updated_at asc',
+  updated_at_desc: 'updated_at desc',
+  model_slug_asc: 'model_slug asc',
+  model_slug_desc: 'model_slug desc',
 } as const;

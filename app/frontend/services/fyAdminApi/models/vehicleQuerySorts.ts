@@ -4,6 +4,6 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import type { VehicleSortEnum } from "./vehicleSortEnum";
+import type { VehicleSortEnum } from './VehicleSortEnum';
 
 export type VehicleQuerySorts = VehicleSortEnum[] | VehicleSortEnum;

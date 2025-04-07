@@ -4,8 +4,8 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import type { Meta } from "./meta";
-import type { Image } from "./image";
+import type { Meta } from './Meta';
+import type { Image } from './Image';
 
 export interface Images {
   meta: Meta;

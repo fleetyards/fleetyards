@@ -6,6 +6,6 @@
  */
 
 export type ModelModulePackagesParams = {
-  page?: string;
-  perPage?: string;
+page?: string;
+perPage?: string;
 };

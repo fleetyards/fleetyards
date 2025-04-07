@@ -5,18 +5,19 @@
  * OpenAPI spec version: v1
  */
 
-export type UserSortEnum = (typeof UserSortEnum)[keyof typeof UserSortEnum];
+export type UserSortEnum = typeof UserSortEnum[keyof typeof UserSortEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UserSortEnum = {
-  username_asc: "username asc",
-  username_desc: "username desc",
-  email_asc: "email asc",
-  email_desc: "email desc",
-  created_at_asc: "created_at asc",
-  created_at_desc: "created_at desc",
-  last_active_at_asc: "last_active_at asc",
-  last_active_at_desc: "last_active_at desc",
-  last_sign_in_at_asc: "last_sign_in_at asc",
-  last_sign_in_at_desc: "last_sign_in_at desc",
+  username_asc: 'username asc',
+  username_desc: 'username desc',
+  email_asc: 'email asc',
+  email_desc: 'email desc',
+  created_at_asc: 'created_at asc',
+  created_at_desc: 'created_at desc',
+  last_active_at_asc: 'last_active_at asc',
+  last_active_at_desc: 'last_active_at desc',
+  last_sign_in_at_asc: 'last_sign_in_at asc',
+  last_sign_in_at_desc: 'last_sign_in_at desc',
 } as const;

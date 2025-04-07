@@ -4,7 +4,7 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { Pagination } from "./pagination";
+import type { Pagination } from './Pagination';
 
 export interface Session {
   pagination?: Pagination;

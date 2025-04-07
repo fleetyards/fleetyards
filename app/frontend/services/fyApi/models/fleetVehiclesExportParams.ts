@@ -4,8 +4,8 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { FleetVehicleQuery } from "./fleetVehicleQuery";
+import type { FleetVehicleQuery } from './FleetVehicleQuery';
 
 export type FleetVehiclesExportParams = {
-  q?: FleetVehicleQuery;
+q?: FleetVehicleQuery;
 };

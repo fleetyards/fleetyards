@@ -4,7 +4,7 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import type { FilterOptionValue } from "./filterOptionValue";
+import type { FilterOptionValue } from './FilterOptionValue';
 
 export interface FilterOption {
   category?: string;

@@ -5,13 +5,13 @@
  * OpenAPI spec version: v1
  */
 
-export type RsiHangarItemKindEnum =
-  (typeof RsiHangarItemKindEnum)[keyof typeof RsiHangarItemKindEnum];
+export type RsiHangarItemKindEnum = typeof RsiHangarItemKindEnum[keyof typeof RsiHangarItemKindEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RsiHangarItemKindEnum = {
-  ship: "ship",
-  component: "component",
-  upgrade: "upgrade",
-  skin: "skin",
+  ship: 'ship',
+  component: 'component',
+  upgrade: 'upgrade',
+  skin: 'skin',
 } as const;

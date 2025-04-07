@@ -4,7 +4,10 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import { useMutation, useQuery } from "@tanstack/vue-query";
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   DataTag,
   MutationFunction,
@@ -13,370 +16,380 @@ import type {
   UseMutationOptions,
   UseMutationReturnType,
   UseQueryOptions,
-  UseQueryReturnType,
-} from "@tanstack/vue-query";
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import { unref } from "vue";
-import type { MaybeRef } from "vue";
+import {
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
+
+import type {
+  ImageInput,
+  ImageInputCreate,
+  ImagesParams,
+  StandardError
+} from '../models';
+
+import {
+  faker
+} from '@faker-js/faker';
+
+import {
+  HttpResponse,
+  delay,
+  http
+} from 'msw';
 
 import type {
   Image,
-  ImageInput,
-  ImageInputCreate,
-  Images,
-  ImagesParams,
-  StandardError,
-} from "../models";
+  Images
+} from '../models';
 
-import { axiosClient } from "../axiosClient";
-import type { ErrorType } from "../axiosClient";
-import { customQueryOptions } from "../../customQueryOptions";
+import { axiosClient } from '../../axiosAdminClient';
+import type { ErrorType } from '../../axiosAdminClient';
+import { customQueryOptions } from '../../customQueryOptions';
+
+
+
+
 
 /**
  * @summary Image create
  */
 export const createImage = (
-  imageInputCreate: MaybeRef<ImageInputCreate>,
-  signal?: AbortSignal,
+    imageInputCreate: MaybeRef<ImageInputCreate>,
+ signal?: AbortSignal
 ) => {
-  imageInputCreate = unref(imageInputCreate);
-  const formData = new FormData();
-  if (imageInputCreate.caption !== undefined) {
-    formData.append("caption", imageInputCreate.caption);
-  }
-  if (imageInputCreate.enabled !== undefined) {
-    formData.append("enabled", imageInputCreate.enabled.toString());
-  }
-  if (imageInputCreate.global !== undefined) {
-    formData.append("global", imageInputCreate.global.toString());
-  }
-  if (imageInputCreate.background !== undefined) {
-    formData.append("background", imageInputCreate.background.toString());
-  }
-  if (imageInputCreate.galleryId !== undefined) {
-    formData.append("galleryId", imageInputCreate.galleryId);
-  }
-  if (imageInputCreate.galleryType !== undefined) {
-    formData.append("galleryType", imageInputCreate.galleryType);
-  }
-  if (imageInputCreate.file !== undefined) {
-    formData.append("file", imageInputCreate.file);
-  }
+      imageInputCreate = unref(imageInputCreate);
+      const formData = new FormData();
+if(imageInputCreate.caption !== undefined) {
+ formData.append('caption', imageInputCreate.caption)
+ }
+if(imageInputCreate.enabled !== undefined) {
+ formData.append('enabled', imageInputCreate.enabled.toString())
+ }
+if(imageInputCreate.global !== undefined) {
+ formData.append('global', imageInputCreate.global.toString())
+ }
+if(imageInputCreate.background !== undefined) {
+ formData.append('background', imageInputCreate.background.toString())
+ }
+if(imageInputCreate.galleryId !== undefined) {
+ formData.append('galleryId', imageInputCreate.galleryId)
+ }
+if(imageInputCreate.galleryType !== undefined) {
+ formData.append('galleryType', imageInputCreate.galleryType)
+ }
+if(imageInputCreate.file !== undefined) {
+ formData.append('file', imageInputCreate.file)
+ }
 
-  return axiosClient<Image>({
-    url: `/images`,
-    method: "POST",
-    headers: { "Content-Type": "multipart/form-data" },
-    data: formData,
-    signal,
-  });
-};
+      return axiosClient<Image>(
+      {url: `/images`, method: 'POST',
+      headers: {'Content-Type': 'multipart/form-data', },
+       data: formData, signal
+    },
+      );
+    }
+  
 
-export const getCreateImageMutationOptions = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createImage>>,
-    TError,
-    { data: ImageInputCreate },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof createImage>>,
-  TError,
-  { data: ImageInputCreate },
-  TContext
-> => {
-  const mutationKey = ["createImage"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof createImage>>,
-    { data: ImageInputCreate }
-  > = (props) => {
-    const { data } = props ?? {};
+export const getCreateImageMutationOptions = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createImage>>, TError,{data: ImageInputCreate}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof createImage>>, TError,{data: ImageInputCreate}, TContext> => {
+    
+const mutationKey = ['createImage'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return createImage(data);
-  };
+      
 
-  return { mutationFn, ...mutationOptions };
-};
 
-export type CreateImageMutationResult = NonNullable<
-  Awaited<ReturnType<typeof createImage>>
->;
-export type CreateImageMutationBody = ImageInputCreate;
-export type CreateImageMutationError = ErrorType<StandardError>;
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createImage>>, {data: ImageInputCreate}> = (props) => {
+          const {data} = props ?? {};
 
-/**
+          return  createImage(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateImageMutationResult = NonNullable<Awaited<ReturnType<typeof createImage>>>
+    export type CreateImageMutationBody = ImageInputCreate
+    export type CreateImageMutationError = ErrorType<StandardError>
+
+    /**
  * @summary Image create
  */
-export const useCreateImage = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createImage>>,
-    TError,
-    { data: ImageInputCreate },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof createImage>>,
-  TError,
-  { data: ImageInputCreate },
-  TContext
-> => {
-  const mutationOptions = getCreateImageMutationOptions(options);
+export const useCreateImage = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createImage>>, TError,{data: ImageInputCreate}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof createImage>>,
+        TError,
+        {data: ImageInputCreate},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getCreateImageMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * Get a List of Images
  * @summary Images list
  */
 export const images = (
-  params?: MaybeRef<ImagesParams>,
-  signal?: AbortSignal,
+    params?: MaybeRef<ImagesParams>,
+ signal?: AbortSignal
 ) => {
-  params = unref(params);
+      params = unref(params);
+      
+      return axiosClient<Images>(
+      {url: `/images`, method: 'GET',
+        params: unref(params), signal
+    },
+      );
+    }
+  
 
-  return axiosClient<Images>({
-    url: `/images`,
-    method: "GET",
-    params: unref(params),
-    signal,
-  });
-};
+const getImagesQueryKey = (params?: MaybeRef<ImagesParams>,) => {
+    return ['images', ...(params ? [params]: [])] as const;
+    }
 
-const getImagesQueryKey = (params?: MaybeRef<ImagesParams>) => {
-  return ["images", ...(params ? [params] : [])] as const;
-};
-
-export const useImagesQueryOptions = <
-  TData = Awaited<ReturnType<typeof images>>,
-  TError = ErrorType<StandardError>,
->(
-  params?: MaybeRef<ImagesParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof images>>, TError, TData>
-    >;
-  },
+    
+export const useImagesQueryOptions = <TData = Awaited<ReturnType<typeof images>>, TError = ErrorType<StandardError>>(params?: MaybeRef<ImagesParams>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof images>>, TError, TData>>, }
 ) => {
-  const { query: queryOptions } = options ?? {};
 
-  const queryKey = getImagesQueryKey(params);
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof images>>> = ({
-    signal,
-  }) => images(params, signal);
+  const queryKey =  getImagesQueryKey(params);
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof images>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof images>>> = ({ signal }) => images(params, signal);
 
-export type ImagesQueryResult = NonNullable<Awaited<ReturnType<typeof images>>>;
-export type ImagesQueryError = ErrorType<StandardError>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof images>>, TError, TData> 
+}
+
+export type ImagesQueryResult = NonNullable<Awaited<ReturnType<typeof images>>>
+export type ImagesQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Images list
  */
 
-export function useImages<
-  TData = Awaited<ReturnType<typeof images>>,
-  TError = ErrorType<StandardError>,
->(
-  params?: MaybeRef<ImagesParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof images>>, TError, TData>
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useImagesQueryOptions(params, options);
+export function useImages<TData = Awaited<ReturnType<typeof images>>, TError = ErrorType<StandardError>>(
+ params?: MaybeRef<ImagesParams>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof images>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useImagesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
 
-/**
- * @summary Image destroy
- */
-export const destroyImage = (id: MaybeRef<string>) => {
-  id = unref(id);
 
-  return axiosClient<void>({ url: `/images/${id}`, method: "DELETE" });
-};
-
-export const getDestroyImageMutationOptions = <
-  TError = ErrorType<void>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof destroyImage>>,
-    TError,
-    { id: string },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof destroyImage>>,
-  TError,
-  { id: string },
-  TContext
-> => {
-  const mutationKey = ["destroyImage"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof destroyImage>>,
-    { id: string }
-  > = (props) => {
-    const { id } = props ?? {};
-
-    return destroyImage(id);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type DestroyImageMutationResult = NonNullable<
-  Awaited<ReturnType<typeof destroyImage>>
->;
-
-export type DestroyImageMutationError = ErrorType<void>;
 
 /**
  * @summary Image destroy
  */
-export const useDestroyImage = <
-  TError = ErrorType<void>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof destroyImage>>,
-    TError,
-    { id: string },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof destroyImage>>,
-  TError,
-  { id: string },
-  TContext
-> => {
-  const mutationOptions = getDestroyImageMutationOptions(options);
+export const destroyImage = (
+    id: MaybeRef<string>,
+ ) => {
+      id = unref(id);
+      
+      return axiosClient<void>(
+      {url: `/images/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
-  return useMutation(mutationOptions);
-};
-/**
+
+export const getDestroyImageMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof destroyImage>>, TError,{id: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof destroyImage>>, TError,{id: string}, TContext> => {
+    
+const mutationKey = ['destroyImage'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof destroyImage>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  destroyImage(id,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DestroyImageMutationResult = NonNullable<Awaited<ReturnType<typeof destroyImage>>>
+    
+    export type DestroyImageMutationError = ErrorType<void>
+
+    /**
+ * @summary Image destroy
+ */
+export const useDestroyImage = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof destroyImage>>, TError,{id: string}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof destroyImage>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+
+      const mutationOptions = getDestroyImageMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary Image update
  */
 export const updateImage = (
-  id: MaybeRef<string>,
-  imageInput: MaybeRef<ImageInput>,
-) => {
-  id = unref(id);
-  imageInput = unref(imageInput);
+    id: MaybeRef<string>,
+    imageInput: MaybeRef<ImageInput>,
+ ) => {
+      id = unref(id);
+imageInput = unref(imageInput);
+      
+      return axiosClient<Image>(
+      {url: `/images/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: imageInput
+    },
+      );
+    }
+  
 
-  return axiosClient<Image>({
-    url: `/images/${id}`,
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    data: imageInput,
-  });
-};
 
-export const getUpdateImageMutationOptions = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateImage>>,
-    TError,
-    { id: string; data: ImageInput },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof updateImage>>,
-  TError,
-  { id: string; data: ImageInput },
-  TContext
-> => {
-  const mutationKey = ["updateImage"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getUpdateImageMutationOptions = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateImage>>, TError,{id: string;data: ImageInput}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof updateImage>>, TError,{id: string;data: ImageInput}, TContext> => {
+    
+const mutationKey = ['updateImage'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof updateImage>>,
-    { id: string; data: ImageInput }
-  > = (props) => {
-    const { id, data } = props ?? {};
+      
 
-    return updateImage(id, data);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateImage>>, {id: string;data: ImageInput}> = (props) => {
+          const {id,data} = props ?? {};
 
-export type UpdateImageMutationResult = NonNullable<
-  Awaited<ReturnType<typeof updateImage>>
->;
-export type UpdateImageMutationBody = ImageInput;
-export type UpdateImageMutationError = ErrorType<StandardError>;
+          return  updateImage(id,data,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateImageMutationResult = NonNullable<Awaited<ReturnType<typeof updateImage>>>
+    export type UpdateImageMutationBody = ImageInput
+    export type UpdateImageMutationError = ErrorType<StandardError>
+
+    /**
  * @summary Image update
  */
-export const useUpdateImage = <
-  TError = ErrorType<StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateImage>>,
-    TError,
-    { id: string; data: ImageInput },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof updateImage>>,
-  TError,
-  { id: string; data: ImageInput },
-  TContext
-> => {
-  const mutationOptions = getUpdateImageMutationOptions(options);
+export const useUpdateImage = <TError = ErrorType<StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateImage>>, TError,{id: string;data: ImageInput}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof updateImage>>,
+        TError,
+        {id: string;data: ImageInput},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
+      const mutationOptions = getUpdateImageMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+
+export const getCreateImageResponseMock = (overrideResponse: Partial< Image > = {}): Image => ({id: faker.string.uuid(), background: faker.datatype.boolean(), bigUrl: faker.internet.url(), caption: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), name: faker.string.alpha(20), smallUrl: faker.internet.url(), type: faker.string.alpha(20), url: faker.internet.url(), width: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), height: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), gallery: faker.helpers.arrayElement([{id: faker.string.uuid(), type: faker.string.alpha(20), name: faker.string.alpha(20), slug: faker.string.alpha(20)}, undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, size: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), enabled: faker.datatype.boolean(), global: faker.datatype.boolean(), ...overrideResponse})
+
+export const getImagesResponseMock = (overrideResponse: Partial< Images > = {}): Images => ({meta: {pagination: faker.helpers.arrayElement([{totalCount: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), currentPage: faker.number.int({min: undefined, max: undefined}), totalPages: faker.number.int({min: undefined, max: undefined}), defaultPerPage: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), maxPerPage: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), perPageSteps: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.helpers.arrayElement([faker.string.alpha(20),faker.number.int({min: undefined, max: undefined}),]))), undefined])}, undefined])}, items: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), background: faker.datatype.boolean(), bigUrl: faker.internet.url(), caption: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), name: faker.string.alpha(20), smallUrl: faker.internet.url(), type: faker.string.alpha(20), url: faker.internet.url(), width: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), height: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), gallery: faker.helpers.arrayElement([{id: faker.string.uuid(), type: faker.string.alpha(20), name: faker.string.alpha(20), slug: faker.string.alpha(20)}, undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, size: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), enabled: faker.datatype.boolean(), global: faker.datatype.boolean()})), ...overrideResponse})
+
+export const getUpdateImageResponseMock = (overrideResponse: Partial< Image > = {}): Image => ({id: faker.string.uuid(), background: faker.datatype.boolean(), bigUrl: faker.internet.url(), caption: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), name: faker.string.alpha(20), smallUrl: faker.internet.url(), type: faker.string.alpha(20), url: faker.internet.url(), width: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), height: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), gallery: faker.helpers.arrayElement([{id: faker.string.uuid(), type: faker.string.alpha(20), name: faker.string.alpha(20), slug: faker.string.alpha(20)}, undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, size: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), enabled: faker.datatype.boolean(), global: faker.datatype.boolean(), ...overrideResponse})
+
+
+export const getCreateImageMockHandler = (overrideResponse?: Image | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<Image> | Image)) => {
+  return http.post('*/images', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getCreateImageResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getImagesMockHandler = (overrideResponse?: Images | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<Images> | Images)) => {
+  return http.get('*/images', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getImagesResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getDestroyImageMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<void> | void)) => {
+  return http.delete('*/images/:id', async (info) => {await delay(1000);
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
+    return new HttpResponse(null,
+      { status: 204,
+        
+      })
+  })
+}
+
+export const getUpdateImageMockHandler = (overrideResponse?: Image | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<Image> | Image)) => {
+  return http.put('*/images/:id', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getUpdateImageResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+export const getImagesMock = () => [
+  getCreateImageMockHandler(),
+  getImagesMockHandler(),
+  getDestroyImageMockHandler(),
+  getUpdateImageMockHandler()
+]

@@ -4,7 +4,10 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import { useMutation, useQuery } from "@tanstack/vue-query";
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   DataTag,
   MutationFunction,
@@ -13,433 +16,440 @@ import type {
   UseMutationOptions,
   UseMutationReturnType,
   UseQueryOptions,
-  UseQueryReturnType,
-} from "@tanstack/vue-query";
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import { unref } from "vue";
-import type { MaybeRef } from "vue";
+import {
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
 
 import type {
-  ItemPrice,
   ItemPriceInput,
-  ItemPrices,
   ItemPricesParams,
   StandardError,
-  ValidationError,
-} from "../models";
+  ValidationError
+} from '../models';
 
-import { axiosClient } from "../axiosClient";
-import type { ErrorType } from "../axiosClient";
-import { customQueryOptions } from "../../customQueryOptions";
+import {
+  faker
+} from '@faker-js/faker';
+
+import {
+  HttpResponse,
+  delay,
+  http
+} from 'msw';
+
+import {
+  ItemPriceItemTypeEnum,
+  ItemPriceTimeRangeEnum,
+  ItemPriceTypeEnum
+} from '../models';
+import type {
+  ItemPrice,
+  ItemPrices
+} from '../models';
+
+import { axiosClient } from '../../axiosAdminClient';
+import type { ErrorType } from '../../axiosAdminClient';
+import { customQueryOptions } from '../../customQueryOptions';
+
+
+
+
 
 /**
  * @summary Create new Item Price
  */
 export const createItemPrice = (
-  itemPriceInput: MaybeRef<ItemPriceInput>,
-  signal?: AbortSignal,
+    itemPriceInput: MaybeRef<ItemPriceInput>,
+ signal?: AbortSignal
 ) => {
-  itemPriceInput = unref(itemPriceInput);
+      itemPriceInput = unref(itemPriceInput);
+      
+      return axiosClient<ItemPrice>(
+      {url: `/item-prices`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: itemPriceInput, signal
+    },
+      );
+    }
+  
 
-  return axiosClient<ItemPrice>({
-    url: `/item-prices`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: itemPriceInput,
-    signal,
-  });
-};
 
-export const getCreateItemPriceMutationOptions = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createItemPrice>>,
-    TError,
-    { data: ItemPriceInput },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof createItemPrice>>,
-  TError,
-  { data: ItemPriceInput },
-  TContext
-> => {
-  const mutationKey = ["createItemPrice"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getCreateItemPriceMutationOptions = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createItemPrice>>, TError,{data: ItemPriceInput}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof createItemPrice>>, TError,{data: ItemPriceInput}, TContext> => {
+    
+const mutationKey = ['createItemPrice'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof createItemPrice>>,
-    { data: ItemPriceInput }
-  > = (props) => {
-    const { data } = props ?? {};
+      
 
-    return createItemPrice(data);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createItemPrice>>, {data: ItemPriceInput}> = (props) => {
+          const {data} = props ?? {};
 
-export type CreateItemPriceMutationResult = NonNullable<
-  Awaited<ReturnType<typeof createItemPrice>>
->;
-export type CreateItemPriceMutationBody = ItemPriceInput;
-export type CreateItemPriceMutationError = ErrorType<
-  ValidationError | StandardError
->;
+          return  createItemPrice(data,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateItemPriceMutationResult = NonNullable<Awaited<ReturnType<typeof createItemPrice>>>
+    export type CreateItemPriceMutationBody = ItemPriceInput
+    export type CreateItemPriceMutationError = ErrorType<ValidationError | StandardError>
+
+    /**
  * @summary Create new Item Price
  */
-export const useCreateItemPrice = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createItemPrice>>,
-    TError,
-    { data: ItemPriceInput },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof createItemPrice>>,
-  TError,
-  { data: ItemPriceInput },
-  TContext
-> => {
-  const mutationOptions = getCreateItemPriceMutationOptions(options);
+export const useCreateItemPrice = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createItemPrice>>, TError,{data: ItemPriceInput}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof createItemPrice>>,
+        TError,
+        {data: ItemPriceInput},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getCreateItemPriceMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary Item Prices list
  */
 export const itemPrices = (
-  params?: MaybeRef<ItemPricesParams>,
-  signal?: AbortSignal,
+    params?: MaybeRef<ItemPricesParams>,
+ signal?: AbortSignal
 ) => {
-  params = unref(params);
+      params = unref(params);
+      
+      return axiosClient<ItemPrices>(
+      {url: `/item-prices`, method: 'GET',
+        params: unref(params), signal
+    },
+      );
+    }
+  
 
-  return axiosClient<ItemPrices>({
-    url: `/item-prices`,
-    method: "GET",
-    params: unref(params),
-    signal,
-  });
-};
+const getItemPricesQueryKey = (params?: MaybeRef<ItemPricesParams>,) => {
+    return ['item-prices', ...(params ? [params]: [])] as const;
+    }
 
-const getItemPricesQueryKey = (params?: MaybeRef<ItemPricesParams>) => {
-  return ["item-prices", ...(params ? [params] : [])] as const;
-};
-
-export const useItemPricesQueryOptions = <
-  TData = Awaited<ReturnType<typeof itemPrices>>,
-  TError = ErrorType<StandardError>,
->(
-  params?: MaybeRef<ItemPricesParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof itemPrices>>, TError, TData>
-    >;
-  },
+    
+export const useItemPricesQueryOptions = <TData = Awaited<ReturnType<typeof itemPrices>>, TError = ErrorType<StandardError>>(params?: MaybeRef<ItemPricesParams>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof itemPrices>>, TError, TData>>, }
 ) => {
-  const { query: queryOptions } = options ?? {};
 
-  const queryKey = getItemPricesQueryKey(params);
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof itemPrices>>> = ({
-    signal,
-  }) => itemPrices(params, signal);
+  const queryKey =  getItemPricesQueryKey(params);
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+  
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof itemPrices>>,
-    TError,
-    TData
-  >;
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof itemPrices>>> = ({ signal }) => itemPrices(params, signal);
 
-export type ItemPricesQueryResult = NonNullable<
-  Awaited<ReturnType<typeof itemPrices>>
->;
-export type ItemPricesQueryError = ErrorType<StandardError>;
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof itemPrices>>, TError, TData> 
+}
+
+export type ItemPricesQueryResult = NonNullable<Awaited<ReturnType<typeof itemPrices>>>
+export type ItemPricesQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Item Prices list
  */
 
-export function useItemPrices<
-  TData = Awaited<ReturnType<typeof itemPrices>>,
-  TError = ErrorType<StandardError>,
->(
-  params?: MaybeRef<ItemPricesParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof itemPrices>>, TError, TData>
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useItemPricesQueryOptions(params, options);
+export function useItemPrices<TData = Awaited<ReturnType<typeof itemPrices>>, TError = ErrorType<StandardError>>(
+ params?: MaybeRef<ItemPricesParams>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof itemPrices>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useItemPricesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
 
-/**
- * @summary Item price destroy
- */
-export const destroyItemPrice = (id: MaybeRef<string>) => {
-  id = unref(id);
 
-  return axiosClient<void>({ url: `/item-prices/${id}`, method: "DELETE" });
-};
-
-export const getDestroyItemPriceMutationOptions = <
-  TError = ErrorType<void>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof destroyItemPrice>>,
-    TError,
-    { id: string },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof destroyItemPrice>>,
-  TError,
-  { id: string },
-  TContext
-> => {
-  const mutationKey = ["destroyItemPrice"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof destroyItemPrice>>,
-    { id: string }
-  > = (props) => {
-    const { id } = props ?? {};
-
-    return destroyItemPrice(id);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type DestroyItemPriceMutationResult = NonNullable<
-  Awaited<ReturnType<typeof destroyItemPrice>>
->;
-
-export type DestroyItemPriceMutationError = ErrorType<void>;
 
 /**
  * @summary Item price destroy
  */
-export const useDestroyItemPrice = <
-  TError = ErrorType<void>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof destroyItemPrice>>,
-    TError,
-    { id: string },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof destroyItemPrice>>,
-  TError,
-  { id: string },
-  TContext
-> => {
-  const mutationOptions = getDestroyItemPriceMutationOptions(options);
+export const destroyItemPrice = (
+    id: MaybeRef<string>,
+ ) => {
+      id = unref(id);
+      
+      return axiosClient<void>(
+      {url: `/item-prices/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
-  return useMutation(mutationOptions);
-};
-/**
+
+export const getDestroyItemPriceMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof destroyItemPrice>>, TError,{id: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof destroyItemPrice>>, TError,{id: string}, TContext> => {
+    
+const mutationKey = ['destroyItemPrice'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof destroyItemPrice>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  destroyItemPrice(id,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DestroyItemPriceMutationResult = NonNullable<Awaited<ReturnType<typeof destroyItemPrice>>>
+    
+    export type DestroyItemPriceMutationError = ErrorType<void>
+
+    /**
+ * @summary Item price destroy
+ */
+export const useDestroyItemPrice = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof destroyItemPrice>>, TError,{id: string}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof destroyItemPrice>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+
+      const mutationOptions = getDestroyItemPriceMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary Get Item Price
  */
-export const itemPrice = (id: MaybeRef<string>, signal?: AbortSignal) => {
-  id = unref(id);
-
-  return axiosClient<ItemPrice>({
-    url: `/item-prices/${id}`,
-    method: "GET",
-    signal,
-  });
-};
-
-const getItemPriceQueryKey = (id: MaybeRef<string>) => {
-  return ["item-prices", id] as const;
-};
-
-export const useItemPriceQueryOptions = <
-  TData = Awaited<ReturnType<typeof itemPrice>>,
-  TError = ErrorType<StandardError>,
->(
-  id: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof itemPrice>>, TError, TData>
-    >;
-  },
+export const itemPrice = (
+    id: MaybeRef<string>,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {};
+      id = unref(id);
+      
+      return axiosClient<ItemPrice>(
+      {url: `/item-prices/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  const queryKey = getItemPriceQueryKey(id);
+const getItemPriceQueryKey = (id: MaybeRef<string>,) => {
+    return ['item-prices',id] as const;
+    }
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof itemPrice>>> = ({
-    signal,
-  }) => itemPrice(id, signal);
+    
+export const useItemPriceQueryOptions = <TData = Awaited<ReturnType<typeof itemPrice>>, TError = ErrorType<StandardError>>(id: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof itemPrice>>, TError, TData>>, }
+) => {
 
-  const customOptions = customQueryOptions({
-    ...queryOptions,
-    queryKey,
-    queryFn,
-  });
+const {query: queryOptions} = options ?? {};
 
-  return customOptions as UseQueryOptions<
-    Awaited<ReturnType<typeof itemPrice>>,
-    TError,
-    TData
-  >;
-};
+  const queryKey =  getItemPriceQueryKey(id);
 
-export type ItemPriceQueryResult = NonNullable<
-  Awaited<ReturnType<typeof itemPrice>>
->;
-export type ItemPriceQueryError = ErrorType<StandardError>;
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof itemPrice>>> = ({ signal }) => itemPrice(id, signal);
+
+      
+
+      const customOptions = customQueryOptions({...queryOptions, queryKey, queryFn});
+
+   return  customOptions as UseQueryOptions<Awaited<ReturnType<typeof itemPrice>>, TError, TData> 
+}
+
+export type ItemPriceQueryResult = NonNullable<Awaited<ReturnType<typeof itemPrice>>>
+export type ItemPriceQueryError = ErrorType<StandardError>
+
 
 /**
  * @summary Get Item Price
  */
 
-export function useItemPrice<
-  TData = Awaited<ReturnType<typeof itemPrice>>,
-  TError = ErrorType<StandardError>,
->(
-  id: MaybeRef<string>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof itemPrice>>, TError, TData>
-    >;
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = useItemPriceQueryOptions(id, options);
+export function useItemPrice<TData = Awaited<ReturnType<typeof itemPrice>>, TError = ErrorType<StandardError>>(
+ id: MaybeRef<string>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof itemPrice>>, TError, TData>>, }
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData>;
-  };
+  ): UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = useItemPriceQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData>;
 
   return query;
 }
+
+
 
 /**
  * @summary Update Item Price
  */
 export const updateItemPrice = (
-  id: MaybeRef<string>,
-  itemPriceInput: MaybeRef<ItemPriceInput>,
-) => {
-  id = unref(id);
-  itemPriceInput = unref(itemPriceInput);
+    id: MaybeRef<string>,
+    itemPriceInput: MaybeRef<ItemPriceInput>,
+ ) => {
+      id = unref(id);
+itemPriceInput = unref(itemPriceInput);
+      
+      return axiosClient<ItemPrice>(
+      {url: `/item-prices/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: itemPriceInput
+    },
+      );
+    }
+  
 
-  return axiosClient<ItemPrice>({
-    url: `/item-prices/${id}`,
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    data: itemPriceInput,
-  });
-};
 
-export const getUpdateItemPriceMutationOptions = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateItemPrice>>,
-    TError,
-    { id: string; data: ItemPriceInput },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof updateItemPrice>>,
-  TError,
-  { id: string; data: ItemPriceInput },
-  TContext
-> => {
-  const mutationKey = ["updateItemPrice"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+export const getUpdateItemPriceMutationOptions = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateItemPrice>>, TError,{id: string;data: ItemPriceInput}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof updateItemPrice>>, TError,{id: string;data: ItemPriceInput}, TContext> => {
+    
+const mutationKey = ['updateItemPrice'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof updateItemPrice>>,
-    { id: string; data: ItemPriceInput }
-  > = (props) => {
-    const { id, data } = props ?? {};
+      
 
-    return updateItemPrice(id, data);
-  };
 
-  return { mutationFn, ...mutationOptions };
-};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateItemPrice>>, {id: string;data: ItemPriceInput}> = (props) => {
+          const {id,data} = props ?? {};
 
-export type UpdateItemPriceMutationResult = NonNullable<
-  Awaited<ReturnType<typeof updateItemPrice>>
->;
-export type UpdateItemPriceMutationBody = ItemPriceInput;
-export type UpdateItemPriceMutationError = ErrorType<
-  ValidationError | StandardError
->;
+          return  updateItemPrice(id,data,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateItemPriceMutationResult = NonNullable<Awaited<ReturnType<typeof updateItemPrice>>>
+    export type UpdateItemPriceMutationBody = ItemPriceInput
+    export type UpdateItemPriceMutationError = ErrorType<ValidationError | StandardError>
+
+    /**
  * @summary Update Item Price
  */
-export const useUpdateItemPrice = <
-  TError = ErrorType<ValidationError | StandardError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateItemPrice>>,
-    TError,
-    { id: string; data: ItemPriceInput },
-    TContext
-  >;
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof updateItemPrice>>,
-  TError,
-  { id: string; data: ItemPriceInput },
-  TContext
-> => {
-  const mutationOptions = getUpdateItemPriceMutationOptions(options);
+export const useUpdateItemPrice = <TError = ErrorType<ValidationError | StandardError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateItemPrice>>, TError,{id: string;data: ItemPriceInput}, TContext>, }
+): UseMutationReturnType<
+        Awaited<ReturnType<typeof updateItemPrice>>,
+        TError,
+        {id: string;data: ItemPriceInput},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
+      const mutationOptions = getUpdateItemPriceMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+
+export const getCreateItemPriceResponseMock = (overrideResponse: Partial< ItemPrice > = {}): ItemPrice => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
+
+export const getItemPricesResponseMock = (overrideResponse: Partial< ItemPrices > = {}): ItemPrices => ({meta: {pagination: faker.helpers.arrayElement([{totalCount: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), currentPage: faker.number.int({min: undefined, max: undefined}), totalPages: faker.number.int({min: undefined, max: undefined}), defaultPerPage: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), maxPerPage: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), perPageSteps: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.helpers.arrayElement([faker.string.alpha(20),faker.number.int({min: undefined, max: undefined}),]))), undefined])}, undefined])}, items: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`})), ...overrideResponse})
+
+export const getItemPriceResponseMock = (overrideResponse: Partial< ItemPrice > = {}): ItemPrice => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
+
+export const getUpdateItemPriceResponseMock = (overrideResponse: Partial< ItemPrice > = {}): ItemPrice => ({id: faker.string.uuid(), price: faker.number.int({min: undefined, max: undefined}), timeRange: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(ItemPriceTimeRangeEnum)), undefined]), priceType: faker.helpers.arrayElement(Object.values(ItemPriceTypeEnum)), itemId: faker.string.uuid(), itemType: faker.helpers.arrayElement(Object.values(ItemPriceItemTypeEnum)), location: faker.string.alpha(20), locationUrl: faker.helpers.arrayElement([faker.internet.url(), undefined]), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
+
+
+export const getCreateItemPriceMockHandler = (overrideResponse?: ItemPrice | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ItemPrice> | ItemPrice)) => {
+  return http.post('*/item-prices', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getCreateItemPriceResponseMock()),
+      { status: 201,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getItemPricesMockHandler = (overrideResponse?: ItemPrices | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<ItemPrices> | ItemPrices)) => {
+  return http.get('*/item-prices', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getItemPricesResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getDestroyItemPriceMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<void> | void)) => {
+  return http.delete('*/item-prices/:id', async (info) => {await delay(1000);
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
+    return new HttpResponse(null,
+      { status: 204,
+        
+      })
+  })
+}
+
+export const getItemPriceMockHandler = (overrideResponse?: ItemPrice | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<ItemPrice> | ItemPrice)) => {
+  return http.get('*/item-prices/:id', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getItemPriceResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getUpdateItemPriceMockHandler = (overrideResponse?: ItemPrice | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<ItemPrice> | ItemPrice)) => {
+  return http.put('*/item-prices/:id', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getUpdateItemPriceResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+export const getItemPricesMock = () => [
+  getCreateItemPriceMockHandler(),
+  getItemPricesMockHandler(),
+  getDestroyItemPriceMockHandler(),
+  getItemPriceMockHandler(),
+  getUpdateItemPriceMockHandler()
+]
