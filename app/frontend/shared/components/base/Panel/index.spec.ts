@@ -1,6 +1,6 @@
 import { mount } from "@vue/test-utils";
 import { describe, expect, it } from "vitest";
-import Component from "@./index.vue";
+import Component from "./index.vue";
 
 describe("BasePanel", () => {
   it("renders", () => {

@@ -1,5 +1,5 @@
 import { intervalToDuration } from "date-fns";
-import { zeroPad } from "./numbers";
+import { zeroPad } from "@/shared/utils/Numbers";
 
 export const toTime = (seconds: number | undefined) => {
   if (!seconds) {

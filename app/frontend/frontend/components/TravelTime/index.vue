@@ -7,7 +7,7 @@
 <script lang="ts" setup>
 import { type Component } from "@/services/fyApi";
 import { calculateTravelTime } from "@/frontend/utils/travelTimes";
-import { toTime } from "@/frontend/utils/time";
+import { toTime } from "@/shared/utils/Time";
 
 type Props = {
   quantumDrive: Component;

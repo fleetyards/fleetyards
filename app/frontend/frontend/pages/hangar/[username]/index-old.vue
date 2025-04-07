@@ -221,7 +221,7 @@ export default class PublicHangar extends Vue {
             />
           </div>
           <div v-if="!mobile" class="page-actions page-actions-right">
-            <Btn data-test="fleetchart-link" @click.native="toggleFleetchart">
+            <Btn data-test="fleetchart-link" @click="toggleFleetchart">
               <i class="fad fa-starship" />
               {{ $t("labels.fleetchart") }}
             </Btn>

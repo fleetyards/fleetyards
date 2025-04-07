@@ -167,7 +167,7 @@ defineProps<Props>();
                 data-test="vehicle-add-name"
                 :inline="true"
                 variant="link"
-                @click.native="addName"
+                @click="addName"
               >
                 <i class="fal fa-plus" />
               </Btn>
@@ -197,7 +197,7 @@ defineProps<Props>();
                   data-test="vehicle-switch-name"
                   :inline="true"
                   variant="link"
-                  @click.native="useName(index)"
+                  @click="useName(index)"
                 >
                   <i class="fad fa-repeat" />
                 </Btn>
@@ -206,7 +206,7 @@ defineProps<Props>();
                   data-test="vehicle-add-name"
                   :inline="true"
                   variant="link"
-                  @click.native="removeName(index)"
+                  @click="removeName(index)"
                 >
                   <i class="fal fa-times" />
                 </Btn>

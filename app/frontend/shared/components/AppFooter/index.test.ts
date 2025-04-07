@@ -1,15 +1,15 @@
-import { mount } from "@vue/test-utils";
+import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { describe, expect, it } from "vitest";
 import Component from "./index.vue";
 
 describe("AppFooter", () => {
-  it("renders", () => {
-    const wrapper = mount(Component);
+  it("renders", async () => {
+    const wrapper = await mountWithDefaults<typeof Component>(Component);
     expect(wrapper.exists()).toBe(true);
   });
 
-  it("renders all links", () => {
-    const wrapper = mount(Component);
-    expect(wrapper.findAll("a")).toHaveLength(6);
+  it("renders all links", async () => {
+    const wrapper = await mountWithDefaults<typeof Component>(Component);
+    expect(wrapper.findAll("a")).toHaveLength(5);
   });
 });

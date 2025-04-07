@@ -1,4 +1,4 @@
-import { mount } from "@vue/test-utils";
+import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { describe, expect, it } from "vitest";
 import Component from "./index.vue";
 
@@ -9,9 +9,9 @@ const item = {
   storeImageMedium: "TestImage",
 };
 
-describe("TeaserPanel", () => {
-  it("renders", () => {
-    const wrapper = mount(Component, {
+describe("TeaserPanel", async () => {
+  it("renders", async () => {
+    const wrapper = await mountWithDefaults<typeof Component>(Component, {
       props: { item },
     });
     expect(wrapper.exists()).toBe(true);

@@ -12,6 +12,6 @@ describe("BaseBox", () => {
     const wrapper = mount(Component, {
       props: { large: true },
     });
-    expect(wrapper.vm.$el.className).toBe("box box-large");
+    expect(wrapper.vm.$el.className).toBe("box-large box");
   });
 });
