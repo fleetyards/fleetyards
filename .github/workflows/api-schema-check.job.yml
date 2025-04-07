@@ -16,29 +16,29 @@ jobs:
       DATABASE_USER: root
       OPENSEARCH_URL: http://localhost:8273
 
-    # services:
-    #   postgres:
-    #     image: postgres:13.2-alpine
-    #     env:
-    #       POSTGRES_USER: root
-    #       POSTGRES_DB: fleetyards_test
-    #       POSTGRES_PASSWORD: root
-    #     ports:
-    #       - 5432:5432
-    #     options: >-
-    #       --health-cmd pg_isready
-    #       --health-interval 10s
-    #       --health-timeout 5s
-    #       --health-retries 5
-    #   redis:
-    #     image: redis:6.2.10-alpine
-    #     ports:
-    #       - 6379:6379
-    #     options: >-
-    #       --health-cmd "redis-cli ping"
-    #       --health-interval 10s
-    #       --health-timeout 5s
-    #       --health-retries 5
+    services:
+      postgres:
+        image: postgres:13.2-alpine
+        env:
+          POSTGRES_USER: root
+          POSTGRES_DB: fleetyards_test
+          POSTGRES_PASSWORD: root
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:6.2.10-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - uses: actions/checkout@v4
