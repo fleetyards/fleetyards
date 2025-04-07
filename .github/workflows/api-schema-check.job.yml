@@ -14,7 +14,8 @@ jobs:
         with:
           bundler-cache: true
       - uses: ./.github/workflows/js-setup-action
-      - run: |
-          ./bin/generate-schema
-          git diff --exit-code ./swagger/**/schema.yaml
+      - run: mkdir -p log
+      - run: ./bin/generate-schema
+        shell: bash
+      - run: git diff --exit-code ./swagger/**/schema.yaml
         shell: bash
