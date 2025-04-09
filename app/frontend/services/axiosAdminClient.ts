@@ -34,6 +34,4 @@ export const axiosClient = <T>(config: AxiosRequestConfig): Promise<T> => {
   return promise;
 };
 
-export default axiosClient;
-
 export type ErrorType<Error> = AxiosError<Error>;

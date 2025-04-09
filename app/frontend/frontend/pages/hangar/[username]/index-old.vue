@@ -5,136 +5,136 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-import { Getter, Action } from "vuex-class";
-import { publicHangarRouteGuard } from "@/frontend/utils/RouteGuards/Hangar";
-import Btn from "@/shared/components/base/Btn/index.vue";
-import publicVehiclesCollection from "@/frontend/api/collections/PublicVehicles";
-import publicUserCollection from "@/frontend/api/collections/PublicUser";
-import publicHangarGroupsCollection from "@/frontend/api/collections/PublicHangarGroups";
-import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
-import ModelClassLabels from "@/frontend/components/Models/ClassLabels/index.vue";
-import AddonsModal from "@/frontend/components/Vehicles/AddonsModal/index.vue";
-import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
-import Avatar from "@/frontend/core/components/Avatar/index.vue";
-import FilteredList from "@/shared/components/FilteredList/index.vue";
-import Grid from "@/shared/components/base/Grid/index.vue";
-import GroupLabels from "@/frontend/components/Vehicles/GroupLabels/index.vue";
+// import Vue from "vue";
+// import { Component, Watch } from "vue-property-decorator";
+// import { Getter, Action } from "vuex-class";
+// import { publicHangarRouteGuard } from "@/frontend/utils/RouteGuards/Hangar";
+// import Btn from "@/shared/components/base/Btn/index.vue";
+// import publicVehiclesCollection from "@/frontend/api/collections/PublicVehicles";
+// import publicUserCollection from "@/frontend/api/collections/PublicUser";
+// import publicHangarGroupsCollection from "@/frontend/api/collections/PublicHangarGroups";
+// import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
+// import ModelClassLabels from "@/frontend/components/Models/ClassLabels/index.vue";
+// import AddonsModal from "@/frontend/components/Vehicles/AddonsModal/index.vue";
+// import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
+// import Avatar from "@/frontend/core/components/Avatar/index.vue";
+// import FilteredList from "@/shared/components/FilteredList/index.vue";
+// import Grid from "@/shared/components/base/Grid/index.vue";
+// import GroupLabels from "@/frontend/components/Vehicles/GroupLabels/index.vue";
 
-@Component<PublicHangar>({
-  beforeRouteEnter: publicHangarRouteGuard,
-  components: {
-    Btn,
-    AddonsModal,
-    FilteredList,
-    Grid,
-    FleetchartApp,
-    VehiclePanel,
-    ModelClassLabels,
-    Avatar,
-    GroupLabels,
-  },
-})
-export default class PublicHangar extends Vue {
-  loading = false;
+// @Component<PublicHangar>({
+//   beforeRouteEnter: publicHangarRouteGuard,
+//   components: {
+//     Btn,
+//     AddonsModal,
+//     FilteredList,
+//     Grid,
+//     FleetchartApp,
+//     VehiclePanel,
+//     ModelClassLabels,
+//     Avatar,
+//     GroupLabels,
+//   },
+// })
+// export default class PublicHangar extends Vue {
+//   loading = false;
 
-  collection: PublicVehiclesCollection = publicVehiclesCollection;
+//   collection: PublicVehiclesCollection = publicVehiclesCollection;
 
-  userCollection: PublicUserCollection = publicUserCollection;
+//   userCollection: PublicUserCollection = publicUserCollection;
 
-  highlightedGroup: string = null;
+//   highlightedGroup: string = null;
 
-  groupsCollection: PublicHangarGroupsCollection = publicHangarGroupsCollection;
+//   groupsCollection: PublicHangarGroupsCollection = publicHangarGroupsCollection;
 
-  @Getter("mobile") mobile;
+//   @Getter("mobile") mobile;
 
-  @Getter("fleetchartVisible", { namespace: "publicHangar" }) fleetchartVisible;
+//   @Getter("fleetchartVisible", { namespace: "publicHangar" }) fleetchartVisible;
 
-  @Getter("perPage", { namespace: "publicHangar" }) perPage;
+//   @Getter("perPage", { namespace: "publicHangar" }) perPage;
 
-  @Action("toggleFleetchart", { namespace: "publicHangar" })
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  toggleFleetchart: any;
+//   @Action("toggleFleetchart", { namespace: "publicHangar" })
+//   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+//   toggleFleetchart: any;
 
-  get hangarGroupCounts(): HangarGroupMetrics[] {
-    if (!this.hangarStats) {
-      return [];
-    }
+//   get hangarGroupCounts(): HangarGroupMetrics[] {
+//     if (!this.hangarStats) {
+//       return [];
+//     }
 
-    return this.hangarStats.groups;
-  }
+//     return this.hangarStats.groups;
+//   }
 
-  get hangarStats(): VehicleStats | null {
-    return this.collection.stats;
-  }
+//   get hangarStats(): VehicleStats | null {
+//     return this.collection.stats;
+//   }
 
-  get metaTitle() {
-    return this.$t("title.hangar.public", { user: this.usernamePlural });
-  }
+//   get metaTitle() {
+//     return this.$t("title.hangar.public", { user: this.usernamePlural });
+//   }
 
-  get user() {
-    return this.userCollection.record;
-  }
+//   get user() {
+//     return this.userCollection.record;
+//   }
 
-  get username() {
-    return this.$route.params.username;
-  }
+//   get username() {
+//     return this.$route.params.username;
+//   }
 
-  get usernamePlural() {
-    if (
-      this.userTitle.endsWith("s") ||
-      this.userTitle.endsWith("x") ||
-      this.userTitle.endsWith("z")
-    ) {
-      return this.userTitle;
-    }
+//   get usernamePlural() {
+//     if (
+//       this.userTitle.endsWith("s") ||
+//       this.userTitle.endsWith("x") ||
+//       this.userTitle.endsWith("z")
+//     ) {
+//       return this.userTitle;
+//     }
 
-    return `${this.userTitle}'s`;
-  }
+//     return `${this.userTitle}'s`;
+//   }
 
-  get userTitle() {
-    return this.username[0].toUpperCase() + this.username.slice(1);
-  }
+//   get userTitle() {
+//     return this.username[0].toUpperCase() + this.username.slice(1);
+//   }
 
-  get filters() {
-    return {
-      username: this.username,
-      page: this.$route.query.page,
-      filters: this.$route.query.q,
-    };
-  }
+//   get filters() {
+//     return {
+//       username: this.username,
+//       page: this.$route.query.page,
+//       filters: this.$route.query.q,
+//     };
+//   }
 
-  @Watch("$route")
-  onRouteChange() {
-    this.fetch();
-  }
+//   @Watch("$route")
+//   onRouteChange() {
+//     this.fetch();
+//   }
 
-  @Watch("perPage")
-  onPerPageChange() {
-    this.fetch();
-  }
+//   @Watch("perPage")
+//   onPerPageChange() {
+//     this.fetch();
+//   }
 
-  created() {
-    this.fetch();
-  }
+//   created() {
+//     this.fetch();
+//   }
 
-  highlightGroup(group) {
-    if (!group) {
-      this.highlightedGroup = null;
-      return;
-    }
+//   highlightGroup(group) {
+//     if (!group) {
+//       this.highlightedGroup = null;
+//       return;
+//     }
 
-    this.highlightedGroup = group.id;
-  }
+//     this.highlightedGroup = group.id;
+//   }
 
-  async fetch() {
-    await this.userCollection.findByUsername(this.username);
-    await this.groupsCollection.findAll(this.username);
-    await this.collection.findAll(this.filters);
-    await this.collection.findStatsByUsername(this.username, this.filters);
-  }
-}
+//   async fetch() {
+//     await this.userCollection.findByUsername(this.username);
+//     await this.groupsCollection.findAll(this.username);
+//     await this.collection.findAll(this.filters);
+//     await this.collection.findStatsByUsername(this.username, this.filters);
+//   }
+// }
 </script>
 
 <template>

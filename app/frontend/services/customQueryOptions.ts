@@ -25,5 +25,3 @@ export const transformQueryKey = (key: readonly any[]) => {
   return [newKey, ...newParams];
 };
 /* eslint-enable @typescript-eslint/no-explicit-any */
-
-export default customQueryOptions;

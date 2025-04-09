@@ -1,3 +1,37 @@
+<script lang="ts">
+export default {
+  name: "ModelActions",
+};
+</script>
+
+<script lang="ts" setup>
+import { type Manufacturer } from "@/services/fyAdminApi";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
+import { useI18n } from "@/shared/composables/useI18n";
+
+type Props = {
+  manufacturer: Manufacturer;
+  withLabels?: boolean;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  withLabels: false,
+});
+
+const { t } = useI18n();
+
+const sync = async () => {
+  console.info("sync", props.manufacturer);
+};
+
+const destroy = () => {
+  console.info("destroy", props.manufacturer);
+};
+</script>
+
 <template>
   <Btn :size="BtnSizesEnum.SMALL" @click="sync">
     <i class="fad fa-rotate" />
@@ -22,37 +56,3 @@
     <span v-if="withLabels">{{ t("actions.delete") }}</span>
   </Btn>
 </template>
-
-<script lang="ts" setup>
-import { type Manufacturer } from "@/services/fyAdminApi";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
-import { useI18n } from "@/shared/composables/useI18n";
-
-type Props = {
-  manufacturer: Manufacturer;
-  withLabels?: boolean;
-};
-
-const props = withDefaults(defineProps<Props>(), {
-  withLabels: false,
-});
-
-const { t } = useI18n();
-
-const sync = async () => {
-  console.log("sync", props.manufacturer);
-};
-
-const destroy = () => {
-  console.log("destroy", props.manufacturer);
-};
-</script>
-
-<script lang="ts">
-export default {
-  name: "ModelActions",
-};
-</script>

@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
-import SecurityRoutes from "./security/routes";
+import { routes as securityRoutes } from "./security/routes";
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -50,8 +50,6 @@ export const routes: RouteRecordRaw[] = [
     redirect: {
       name: "settings-security-status",
     },
-    children: SecurityRoutes,
+    children: securityRoutes,
   },
 ];
-
-export default routes;

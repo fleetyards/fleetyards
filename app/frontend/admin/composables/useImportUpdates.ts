@@ -8,7 +8,7 @@ export const useImportUpdates = (importerName: string) => {
     const importData = JSON.parse(data);
 
     if (importData.type === importerName) {
-      console.log(importData);
+      console.info(importData);
     }
   };
 

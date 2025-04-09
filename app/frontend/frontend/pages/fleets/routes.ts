@@ -47,5 +47,3 @@ export const routes: RouteRecordRaw[] = [
     redirect: { name: fleetRoutes[0].name },
   },
 ];
-
-export default routes;
