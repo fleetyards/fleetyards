@@ -1673,13 +1673,9 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
       requestBody:
         content:
-          multipart/form-data:
+          application/json:
             schema:
-              type: object
-              properties:
-                import:
-                  type: string
-                  format: binary
+              "$ref": "#/components/schemas/ImportInput"
         required: true
   "/hangar/items":
     get:
@@ -5922,6 +5918,15 @@ components:
           nullable: true
       additionalProperties: false
       title: HangarGroupUpdateInput
+    ImportInput:
+      type: object
+      properties:
+        import:
+          type: string
+      additionalProperties: false
+      required:
+      - import
+      title: ImportInput
     PasswordInput:
       type: object
       properties:
