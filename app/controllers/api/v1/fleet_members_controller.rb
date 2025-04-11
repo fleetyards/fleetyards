@@ -34,7 +34,12 @@ module Api
       def create
         user = User.find_by(normalized_username: params[:username]&.downcase)
 
-        @member = fleet.fleet_memberships.new(user: user, role: :member, invited_by: current_user.id)
+        @member = fleet.fleet_memberships.new(
+          user: user,
+          role: :member,
+          fleet_role: fleet.entry_role,
+          invited_by: current_user.id
+        )
 
         authorize! :create, member
 

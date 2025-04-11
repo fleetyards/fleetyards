@@ -9,9 +9,9 @@ export interface FleetRoleExtended {
   id: string;
   name: string;
   slug: string;
+  resourceAccess?: string[];
   rank: string;
   permanent: boolean;
-  resourceAccess: string[];
   createdAt: string;
   updatedAt: string;
 }

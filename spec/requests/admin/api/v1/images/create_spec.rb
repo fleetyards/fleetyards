@@ -3,19 +3,19 @@
 require "swagger_helper"
 
 RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/schema.yaml" do
-  fixtures :admin_users, :models
-
-  let(:user) { admin_users :jeanluc }
-  let(:model) { models :andromeda }
-  let(:"") do
+  let(:user) { create(:admin_user, resource_access: [:images]) }
+  let(:gallery) { create(:model) }
+  let(:blob) do
+    ActiveStorage::Blob.create_and_upload!(
+      io: File.open(Rails.root.join("test/fixtures/files/test.png")),
+      filename: "test.png"
+    )
+  end
+  let(:input) do
     {
-      file: ActionDispatch::Http::UploadedFile.new(
-        filename: "img.png",
-        type: "image/png",
-        tempfile: File.new(Rails.root.join("test/fixtures/files/test.png"))
-      ),
-      galleryId: model.id,
-      galleryType: "Model"
+      file: blob.signed_id,
+      galleryId: gallery.id,
+      galleryType: gallery.class.name
     }
   end
 
@@ -28,13 +28,21 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
       operationId "createImage"
       tags "Images"
 
-      consumes "multipart/form-data"
+      consumes "application/json"
       produces "application/json"
 
-      parameter name: :"", in: :formData, schema: {"$ref": "#/components/schemas/ImageInputCreate"}
+      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/ImageInputCreate"}
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Image"
+
+        run_test!
+      end
+
+      response(403, "forbidden") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { create(:admin_user, resource_access: []) }
 
         run_test!
       end

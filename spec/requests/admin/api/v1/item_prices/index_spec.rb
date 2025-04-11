@@ -3,13 +3,13 @@
 require "swagger_helper"
 
 RSpec.describe "admin/api/v1/item_prices", type: :request, swagger_doc: "admin/v1/schema.yaml" do
-  fixtures :admin_users, :item_prices, :models
-
-  let(:user) { admin_users :jeanluc }
-  let(:model) { models :andromeda }
+  let(:user) { create(:admin_user, resource_access: [:item_prices]) }
+  let(:item_prices) { create_list(:item_price, 10) }
 
   before do
     sign_in user if user.present?
+
+    item_prices
   end
 
   path "/item-prices" do
@@ -37,7 +37,7 @@ RSpec.describe "admin/api/v1/item_prices", type: :request, swagger_doc: "admin/v
         run_test! do |response|
           data = JSON.parse(response.body)
 
-          expect(data["items"].count).to eq(2)
+          expect(data["items"].count).to eq(10)
         end
       end
 
@@ -46,7 +46,7 @@ RSpec.describe "admin/api/v1/item_prices", type: :request, swagger_doc: "admin/v
 
         let(:q) do
           {
-            "itemIdEq" => model.id
+            "itemIdEq" => item_prices.first.item_id
           }
         end
 
@@ -55,6 +55,14 @@ RSpec.describe "admin/api/v1/item_prices", type: :request, swagger_doc: "admin/v
 
           expect(data["items"].count).to eq(1)
         end
+      end
+
+      response(403, "forbidden") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { create(:admin_user, resource_access: []) }
+
+        run_test!
       end
 
       response(401, "unauthorized") do

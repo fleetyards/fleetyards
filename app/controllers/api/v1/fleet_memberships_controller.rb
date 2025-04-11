@@ -13,7 +13,7 @@ module Api
         only: %i[show create_by_invite update destroy]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
-        except: %i[create accept decline]
+        except: %i[show create_by_invite update destroy]
 
       def show
         authorize! :show, membership
@@ -24,7 +24,12 @@ module Api
       def create
         user = User.find_by!(normalized_username: params[:username].downcase)
 
-        @member = fleet.fleet_memberships.new(user_id: user.id, role: :member, invited_by: current_user.id)
+        @member = fleet.fleet_memberships.new(
+          user_id: user.id,
+          role: :member,
+          fleet_role: fleet.entry_role,
+          invited_by: current_resource_owner.id
+        )
 
         authorize! :create, member
 
@@ -94,14 +99,14 @@ module Api
       end
 
       private def fleet
-        @fleet ||= current_user.fleets.where(slug: params[:fleet_slug]).first!
+        @fleet ||= current_resource_owner.fleets.where(slug: params[:fleet_slug]).first!
       end
 
       private def membership
         @membership ||= fleet.fleet_memberships
           .includes(:user)
           .joins(:user)
-          .where(user_id: current_user.id)
+          .where(user_id: current_resource_owner.id)
           .first!
       end
     end

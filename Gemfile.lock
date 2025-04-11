@@ -178,6 +178,10 @@ GEM
     data_migrate (11.3.0)
       activerecord (>= 6.1)
       railties (>= 6.1)
+    database_cleaner-active_record (2.2.0)
+      activerecord (>= 5.a)
+      database_cleaner-core (~> 2.0.0)
+    database_cleaner-core (2.0.1)
     date (3.3.4)
     debug (1.10.0)
       irb (~> 1.10)
@@ -782,6 +786,7 @@ DEPENDENCIES
   carrierwave
   dalli
   data_migrate
+  database_cleaner-active_record
   debug (>= 1.0.0)
   deep_merge
   devise

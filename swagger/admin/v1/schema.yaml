@@ -73,6 +73,51 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Components"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/components/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Component id
+      required: true
+    get:
+      summary: Component Detail
+      operationId: component
+      tags:
+      - Components
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Component"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '401':
           description: unauthorized
           content:
@@ -93,6 +138,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Image"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '401':
           description: unauthorized
           content:
@@ -101,7 +152,7 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
       requestBody:
         content:
-          multipart/form-data:
+          application/json:
             schema:
               "$ref": "#/components/schemas/ImageInputCreate"
     get:
@@ -134,6 +185,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Images"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '401':
           description: unauthorized
           content:
@@ -159,6 +216,8 @@ paths:
           description: successful
         '404':
           description: not_found
+        '403':
+          description: forbidden
         '401':
           description: unauthorized
     put:
@@ -176,6 +235,12 @@ paths:
                 "$ref": "#/components/schemas/Image"
         '401':
           description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
           content:
             application/json:
               schema:
@@ -255,6 +320,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '401':
           description: unauthorized
           content:
@@ -281,6 +352,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '401':
           description: unauthorized
           content:
@@ -322,6 +399,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ItemPrices"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '401':
           description: unauthorized
           content:
@@ -347,6 +430,8 @@ paths:
           description: successful
         '404':
           description: not_found
+        '403':
+          description: forbidden
         '401':
           description: unauthorized
     get:
@@ -363,6 +448,12 @@ paths:
                 "$ref": "#/components/schemas/ItemPrice"
         '404':
           description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
           content:
             application/json:
               schema:
@@ -387,13 +478,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/ItemPrice"
         '400':
-          description: unauthorized
+          description: bad request
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ValidationError"
         '404':
           description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
           content:
             application/json:
               schema:
@@ -445,6 +542,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Manufacturers"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '401':
           description: unauthorized
           content:
@@ -478,57 +581,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
+        '403':
+          description: forbidden
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/models/production-states":
-    get:
-      summary: Model Production states
-      operationId: modelProductionStates
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
-  "/models":
-    get:
-      summary: Models list
-      operationId: models
-      tags:
-      - Models
-      parameters:
-      - "$ref": "#/components/parameters/PageParameter"
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 30
-        required: false
-      - "$ref": "#/components/parameters/SortingParameter"
-      - name: q
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/ModelQuery"
-        style: deepObject
-        explode: true
-        required: false
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Models"
         '401':
           description: unauthorized
           content:
@@ -565,6 +623,81 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ModelPaints"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/production-states":
+    get:
+      summary: Model Production states
+      operationId: modelProductionStates
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models":
+    get:
+      summary: Models list
+      operationId: models
+      tags:
+      - Models
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ModelQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Models"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '401':
           description: unauthorized
           content:
@@ -598,6 +731,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '401':
           description: unauthorized
           content:
@@ -619,6 +758,12 @@ paths:
                 "$ref": "#/components/schemas/ModelExtended"
         '404':
           description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
           content:
             application/json:
               schema:
@@ -813,6 +958,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Users"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '401':
           description: unauthorized
           content:
@@ -849,6 +1000,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Vehicles"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '401':
           description: unauthorized
           content:
@@ -1028,7 +1185,7 @@ components:
           type: object
           properties:
             storeImage:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
           additionalProperties: false
         typeData:
           anyOf:
@@ -1328,13 +1485,13 @@ components:
     ImportTypeEnum:
       type: string
       enum:
-      - "::Imports::ModelImport"
-      - "::Imports::ModelsImport"
-      - "::Imports::ScData::AllImport"
-      - "::Imports::ScData::ModelsImport"
-      - "::Imports::ScData::ModelImport"
-      - "::Imports::HangarSync"
-      - "::Imports::HangarImport"
+      - Imports::ModelImport
+      - Imports::ModelsImport
+      - Imports::ScData::AllImport
+      - Imports::ScData::ModelsImport
+      - Imports::ScData::ModelImport
+      - Imports::HangarSync
+      - Imports::HangarImport
       title: ImportTypeEnum
     ItemPriceItemTypeEnum:
       type: string
@@ -1519,7 +1676,7 @@ components:
           type: object
           properties:
             storeImage:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
           additionalProperties: false
         range:
           type: string
@@ -1721,28 +1878,45 @@ components:
       - updatedAt
       - id
       title: Manufacturer
-    MediaImage:
+    MediaFile:
       type: object
       properties:
-        large:
+        name:
+          type: string
+        contentType:
+          type: string
+        size:
+          type: integer
+        url:
           type: string
           format: uri
-        medium:
+        smallUrl:
           type: string
           format: uri
-        small:
+        mediumUrl:
           type: string
           format: uri
-        source:
+        largeUrl:
           type: string
           format: uri
+        xlargeUrl:
+          type: string
+          format: uri
+        width:
+          type: integer
+        height:
+          type: integer
+        uploadedAt:
+          type: string
+          format: date-time
       additionalProperties: false
       required:
-      - source
-      - small
-      - medium
-      - large
-      title: MediaImage
+      - name
+      - contentType
+      - size
+      - url
+      - uploadedAt
+      title: MediaFile
     Meta:
       type: object
       properties:
@@ -1994,38 +2168,6 @@ components:
       - version
       - codename
       title: Version
-    ViewImage:
-      type: object
-      properties:
-        source:
-          type: string
-          format: uri
-        small:
-          type: string
-          format: uri
-        medium:
-          type: string
-          format: uri
-        large:
-          type: string
-          format: uri
-        xlarge:
-          type: string
-          format: uri
-        width:
-          type: integer
-        height:
-          type: integer
-      additionalProperties: false
-      required:
-      - source
-      - small
-      - medium
-      - large
-      - xlarge
-      - width
-      - height
-      title: ViewImage
     AdminUser:
       type: object
       properties:
@@ -2101,30 +2243,41 @@ components:
     Image:
       type: object
       properties:
+        name:
+          type: string
+        contentType:
+          type: string
+        size:
+          type: integer
+        url:
+          type: string
+          format: uri
+        smallUrl:
+          type: string
+          format: uri
+        mediumUrl:
+          type: string
+          format: uri
+        largeUrl:
+          type: string
+          format: uri
+        xlargeUrl:
+          type: string
+          format: uri
+        width:
+          type: integer
+        height:
+          type: integer
+        uploadedAt:
+          type: string
+          format: date-time
         id:
           type: string
           format: uuid
         background:
           type: boolean
-        bigUrl:
-          type: string
-          format: uri
         caption:
           type: string
-        name:
-          type: string
-        smallUrl:
-          type: string
-          format: uri
-        type:
-          type: string
-        url:
-          type: string
-          format: uri
-        width:
-          type: number
-        height:
-          type: number
         gallery:
           "$ref": "#/components/schemas/Gallery"
         createdAt:
@@ -2133,21 +2286,19 @@ components:
         updatedAt:
           type: string
           format: date-time
-        size:
-          type: number
         enabled:
           type: boolean
         global:
           type: boolean
       additionalProperties: false
       required:
-      - id
       - name
+      - contentType
+      - size
       - url
-      - type
+      - uploadedAt
+      - id
       - background
-      - smallUrl
-      - bigUrl
       - createdAt
       - updatedAt
       - enabled
@@ -2663,27 +2814,27 @@ components:
           type: object
           properties:
             angledView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             angledViewColored:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             fleetchartImage:
               type: string
             frontView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             frontViewColored:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             sideView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             sideViewColored:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             storeImage:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             topView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             topViewColored:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             rsiStoreImage:
-              "$ref": "#/components/schemas/MediaImage"
+              "$ref": "#/components/schemas/MediaFile"
           additionalProperties: false
         metrics:
           type: object
@@ -2927,27 +3078,27 @@ components:
           type: object
           properties:
             angledView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             angledViewColored:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             fleetchartImage:
               type: string
             frontView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             frontViewColored:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             sideView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             sideViewColored:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             storeImage:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             topView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             topViewColored:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             rsiStoreImage:
-              "$ref": "#/components/schemas/MediaImage"
+              "$ref": "#/components/schemas/MediaFile"
           additionalProperties: false
         metrics:
           type: object
@@ -3134,13 +3285,13 @@ components:
           type: object
           properties:
             angledView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             sideView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             storeImage:
-              "$ref": "#/components/schemas/MediaImage"
+              "$ref": "#/components/schemas/MediaFile"
             topView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
           additionalProperties: false
         createdAt:
           type: string
@@ -3283,7 +3434,7 @@ components:
           type: object
           properties:
             storeImage:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
           additionalProperties: false
         pledgePrice:
           type: number
@@ -3349,27 +3500,27 @@ components:
           type: object
           properties:
             angledView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             fleetchartImage:
               type: string
             sideView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             storeImage:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             topView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             angledViewColored:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             frontView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             frontViewColored:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             sideViewColored:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             rsiStoreImage:
-              "$ref": "#/components/schemas/MediaImage"
+              "$ref": "#/components/schemas/MediaFile"
             topViewColored:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
           additionalProperties: false
         nameWithModel:
           type: string
@@ -3534,7 +3685,7 @@ components:
           type: object
           properties:
             storeImage:
-              "$ref": "#/components/schemas/MediaImage"
+              "$ref": "#/components/schemas/MediaFile"
           additionalProperties: false
         model:
           "$ref": "#/components/schemas/Model"

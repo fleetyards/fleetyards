@@ -57,6 +57,7 @@ module Api
         @membership = invite_url.fleet.fleet_memberships.new(
           user: current_user,
           role: :member,
+          fleet_role: invite_url.fleet.entry_role,
           invited_by: invite_url.user_id,
           used_invite_token: invite_url.token
         )

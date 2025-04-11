@@ -295,7 +295,7 @@ class FleetMembership < ApplicationRecord
   end
 
   def destroy_allowed?
-    fleet.fleet_memberships.where(fleet_role: fleet_role).count > 1
+    fleet_role_id != fleet.executive_role_id
   end
 
   def to_json(*_args)

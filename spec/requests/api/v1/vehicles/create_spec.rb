@@ -6,7 +6,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
   fixtures :all
 
   let(:user) { users :data }
-  let(:data) do
+  let(:input) do
     {
       modelId: models(:andromeda).id
     }
@@ -23,7 +23,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :data, in: :body, schema: {"$ref": "#/components/schemas/VehicleCreateInput"}, required: true
+      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/VehicleCreateInput"}, required: true
 
       response(201, "successful") do
         schema "$ref": "#/components/schemas/Vehicle"

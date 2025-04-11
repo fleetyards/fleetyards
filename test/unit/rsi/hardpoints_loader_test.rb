@@ -30,7 +30,7 @@ class Rsi::HardpointsLoaderTest < ActiveSupport::TestCase
 
     expectations = {
       models: initial_model_count + 0,
-      hardpoints: initial_hardpoint_count + 51,
+      hardpoints: initial_hardpoint_count + 107,
       components: initial_component_count,
       paints: initial_paint_count,
       manufacturers: initial_manufacturer_count + 0

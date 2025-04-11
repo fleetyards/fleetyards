@@ -5,6 +5,7 @@ module Admin
     module V1
       class ModelsController < ::Admin::Api::BaseController
         before_action :set_model, only: %i[show update destroy use_rsi_image images reload_one]
+
         rescue_from ActiveRecord::RecordNotFound do |_exception|
           not_found(I18n.t("messages.record_not_found.model", slug: params[:slug]))
         end

@@ -255,9 +255,7 @@ class Model < ApplicationRecord
   accepts_nested_attributes_for :videos, allow_destroy: true
   accepts_nested_attributes_for :docks, allow_destroy: true
 
-  has_one_attached :store_image_new
   mount_uploader :store_image, StoreImageUploader
-
   mount_uploader :rsi_store_image, StoreImageUploader
   mount_uploader :fleetchart_image, FleetchartImageUploader
   mount_uploader :top_view, FleetchartImageUploader
@@ -270,6 +268,20 @@ class Model < ApplicationRecord
   mount_uploader :angled_view_colored, FleetchartImageUploader
   mount_uploader :brochure, BrochureUploader
   mount_uploader :holo, HoloUploader
+
+  has_one_attached :new_store_image
+  has_one_attached :new_rsi_store_image
+  has_one_attached :new_fleetchart_image
+  has_one_attached :new_top_view
+  has_one_attached :new_side_view
+  has_one_attached :new_front_view
+  has_one_attached :new_angled_view
+  has_one_attached :new_top_view_colored
+  has_one_attached :new_side_view_colored
+  has_one_attached :new_front_view_colored
+  has_one_attached :new_angled_view_colored
+  has_one_attached :new_brochure
+  has_one_attached :new_holo
 
   before_save :update_slugs
 

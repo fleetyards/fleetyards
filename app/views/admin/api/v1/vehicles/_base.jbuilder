@@ -15,7 +15,7 @@ json.sale_notify vehicle.sale_notify
 json.alternative_names vehicle.alternative_names
 
 json.model do
-  json.partial! "api/v1/models/base", model: vehicle.model
+  json.partial! "admin/api/v1/models/base", model: vehicle.model
 end
 
 json.paint do

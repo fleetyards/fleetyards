@@ -4,8 +4,8 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { ViewImage } from './ViewImage';
+import type { MediaFile } from './MediaFile';
 
 export type EquipmentMedia = {
-  storeImage?: ViewImage;
+  storeImage?: MediaFile;
 };

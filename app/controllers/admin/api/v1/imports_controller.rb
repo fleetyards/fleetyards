@@ -7,7 +7,7 @@ module Admin
         before_action :set_import, only: [:show]
 
         def index
-          authorize! :index, :admin_api_imports
+          authorize! :index, Import
 
           imports_query_params["sorts"] = "created_at desc"
 

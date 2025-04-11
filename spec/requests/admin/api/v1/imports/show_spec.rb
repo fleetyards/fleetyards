@@ -3,10 +3,8 @@
 require "swagger_helper"
 
 RSpec.describe "admin/api/v1/imports", type: :request, swagger_doc: "admin/v1/schema.yaml" do
-  fixtures :all
-
-  let(:user) { admin_users :jeanluc }
-  let(:import) { imports :model_andromeda }
+  let(:user) { create(:admin_user, resource_access: [:imports]) }
+  let(:import) { create(:import) }
   let(:id) { import.id }
 
   before do
@@ -31,6 +29,14 @@ RSpec.describe "admin/api/v1/imports", type: :request, swagger_doc: "admin/v1/sc
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:id) { "unknown-id" }
+
+        run_test!
+      end
+
+      response(403, "forbidden") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { create(:admin_user, resource_access: []) }
 
         run_test!
       end

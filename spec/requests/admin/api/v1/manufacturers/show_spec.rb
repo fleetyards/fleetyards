@@ -3,11 +3,9 @@
 require "swagger_helper"
 
 RSpec.describe "admin/api/v1/manufacturers", type: :request, swagger_doc: "admin/v1/schema.yaml" do
-  fixtures :manufacturers, :admin_users
-
-  let(:user) { admin_users :jeanluc }
-  let(:manufacturer) { manufacturers :rsi }
-  let(:id) { model.id }
+  let(:user) { create(:admin_user, resource_access: [:manufacturers]) }
+  let(:manufacturer) { create(:manufacturer) }
+  let(:id) { manufacturer.id }
 
   before do
     sign_in user if user.present?
@@ -31,6 +29,14 @@ RSpec.describe "admin/api/v1/manufacturers", type: :request, swagger_doc: "admin
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:id) { "unknown-id" }
+
+        run_test!
+      end
+
+      response(403, "forbidden") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { create(:admin_user, resource_access: []) }
 
         run_test!
       end

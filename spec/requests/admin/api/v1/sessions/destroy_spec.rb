@@ -3,9 +3,7 @@
 require "swagger_helper"
 
 RSpec.describe "admin/api/v1/sessions", type: :request, swagger_doc: "admin/v1/schema.yaml" do
-  fixtures :admin_users
-
-  let(:user) { admin_users :jeanluc }
+  let(:user) { create(:admin_user) }
 
   before do
     sign_in(user) if user.present?

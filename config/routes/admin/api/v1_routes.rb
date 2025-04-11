@@ -27,9 +27,9 @@ v1_admin_api_routes = lambda do
   resources :model_modules, path: "model-modules", only: %i[index]
   resources :model_paints, path: "model-paints", only: %i[index]
 
-  resources :manufacturers, only: %i[index]
+  resources :manufacturers, only: %i[index show]
 
-  resources :components, only: [:index] do
+  resources :components, only: %i[index show] do
     get :class_filters, on: :collection
     get :item_type_filters, on: :collection
   end

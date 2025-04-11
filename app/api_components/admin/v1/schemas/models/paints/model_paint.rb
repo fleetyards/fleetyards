@@ -16,17 +16,17 @@ module Admin
                 media: {
                   type: :object,
                   properties: {
-                    angledView: {"$ref": "#/components/schemas/ViewImage"},
-                    angledViewColored: {"$ref": "#/components/schemas/ViewImage"},
+                    angledView: {"$ref": "#/components/schemas/MediaFile"},
+                    angledViewColored: {"$ref": "#/components/schemas/MediaFile"},
                     fleetchartImage: {type: :string},
-                    frontView: {"$ref": "#/components/schemas/ViewImage"},
-                    frontViewColored: {"$ref": "#/components/schemas/ViewImage"},
-                    sideView: {"$ref": "#/components/schemas/ViewImage"},
-                    sideViewColored: {"$ref": "#/components/schemas/ViewImage"},
-                    rsiStoreImage: {"$ref": "#/components/schemas/MediaImage"},
-                    storeImage: {"$ref": "#/components/schemas/MediaImage"},
-                    topView: {"$ref": "#/components/schemas/ViewImage"},
-                    topViewColored: {"$ref": "#/components/schemas/ViewImage"}
+                    frontView: {"$ref": "#/components/schemas/MediaFile"},
+                    frontViewColored: {"$ref": "#/components/schemas/MediaFile"},
+                    sideView: {"$ref": "#/components/schemas/MediaFile"},
+                    sideViewColored: {"$ref": "#/components/schemas/MediaFile"},
+                    rsiStoreImage: {"$ref": "#/components/schemas/MediaFile"},
+                    storeImage: {"$ref": "#/components/schemas/MediaFile"},
+                    topView: {"$ref": "#/components/schemas/MediaFile"},
+                    topViewColored: {"$ref": "#/components/schemas/MediaFile"}
                   },
                   additionalProperties: false
                 }

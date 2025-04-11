@@ -26,6 +26,7 @@ class ModelUpgrade < ApplicationRecord
   has_many :item_prices, as: :item, dependent: :destroy
 
   mount_uploader :store_image, StoreImageUploader
+  has_one_attached :new_store_image
 
   accepts_nested_attributes_for :upgrade_kits, allow_destroy: true
 

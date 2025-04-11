@@ -3,6 +3,8 @@
 module Api
   module V1
     class ModelsController < ::Api::BaseController
+      include ViteRails::TagHelpers
+
       before_action :authenticate_user!, only: []
       after_action -> { pagination_header(:images) }, only: [:images]
       after_action -> { pagination_header(:videos) }, only: [:videos]
@@ -42,18 +44,6 @@ module Api
 
         @models = @q.result
           .sort_by { |model| [-model.length, model.name] }
-      end
-
-      def unscheduled
-        authorize! :index, :api_models
-
-        @models = Model.visible
-          .active
-          .where.not(id: RoadmapItem.pluck(:model_id).compact)
-          .where.not(rsi_id: nil)
-          .where.not(production_status: ["flight-ready"])
-          .order(name: :asc)
-          .all
       end
 
       def slugs
@@ -308,7 +298,10 @@ module Api
         model = ModelUpgrade.visible.active.where(slug: params[:slug]).first if model.blank?
         model = Model.new if model.blank?
 
-        redirect_to model.store_image.url, allow_other_host: true
+        store_image_url = model.store_image.url
+        store_image_url = vite_asset_url("images/fallback/store_image.jpg") if store_image_url.blank?
+
+        redirect_to store_image_url, allow_other_host: true
       end
 
       def fleetchart_image

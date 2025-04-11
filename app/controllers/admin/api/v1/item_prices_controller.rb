@@ -7,7 +7,7 @@ module Admin
         before_action :set_item_price, only: %i[show update destroy]
 
         def index
-          authorize! :index, :admin_api_item_prices
+          authorize! :index, ItemPrice
 
           item_price_query_params["sorts"] = "created_at desc"
 
@@ -19,7 +19,7 @@ module Admin
         end
 
         def create
-          authorize! :create, :admin_api_item_prices
+          authorize! :create, ItemPrice
 
           @item_price = ItemPrice.new(item_price_params)
 
@@ -31,11 +31,11 @@ module Admin
         end
 
         def show
-          authorize! :show, :admin_api_item_prices
+          authorize! :show, @item_price
         end
 
         def update
-          authorize! :update, :admin_api_item_prices
+          authorize! :update, @item_price
 
           if @item_price.update(item_price_params)
             render :show, status: :ok
@@ -45,7 +45,7 @@ module Admin
         end
 
         def destroy
-          authorize! :destroy, :admin_api_item_prices
+          authorize! :destroy, @item_price
 
           @item_price.destroy
 

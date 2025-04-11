@@ -15,7 +15,7 @@ module V1
             resourceAccess: {type: :array, items: {type: :string}}
           },
           additionalProperties: false,
-          required: %w[id name slug resourceAccess]
+          required: %w[id name slug]
         })
       end
     end

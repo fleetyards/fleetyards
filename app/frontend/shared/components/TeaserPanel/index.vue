@@ -9,7 +9,7 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import PanelImage from "@/shared/components/base/Panel/Image/index.vue";
-import type { MediaImage } from "@/services/fyApi";
+import type { ViewImage } from "@/services/fyApi";
 import type { RouteLocationNamedRaw } from "vue-router";
 import { PanelAlignmentsEnum } from "@/shared/components/base/Panel/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
@@ -20,7 +20,7 @@ type TeaserItem = {
   label?: string;
   description?: string;
   media?: {
-    storeImage?: MediaImage;
+    storeImage?: ViewImage;
   };
 };
 

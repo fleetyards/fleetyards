@@ -162,7 +162,13 @@ module Api
 
         return if invite_url.blank?
 
-        member = invite_url.fleet.fleet_memberships.create(user_id:, role: :member, invited_by: invite_url.user_id, used_invite_token: invite_url.token)
+        member = invite_url.fleet.fleet_memberships.create(
+          user_id:,
+          role: :member,
+          fleet_role: invite_url.fleet.entry_role,
+          invited_by: invite_url.user_id,
+          used_invite_token: invite_url.token
+        )
 
         return if member.blank?
 

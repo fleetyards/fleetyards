@@ -7,7 +7,7 @@ module Admin
         include HangarFiltersConcern
 
         def index
-          authorize! :index, :admin_api_vehicles
+          authorize! :index, Vehicle
 
           @q = index_scope
 

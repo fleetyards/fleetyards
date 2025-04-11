@@ -3,12 +3,13 @@
 require "swagger_helper"
 
 RSpec.describe "admin/api/v1/users", type: :request, swagger_doc: "admin/v1/schema.yaml" do
-  fixtures :users, :admin_users
-
-  let(:user) { admin_users :jeanluc }
+  let(:user) { create(:admin_user, resource_access: [:users]) }
+  let(:users) { create_list(:user, 7) }
 
   before do
     sign_in user if user.present?
+
+    users
   end
 
   path "/users" do
@@ -47,7 +48,7 @@ RSpec.describe "admin/api/v1/users", type: :request, swagger_doc: "admin/v1/sche
 
         let(:q) do
           {
-            "usernameCont" => "riker"
+            "usernameCont" => users.first.username
           }
         end
 
@@ -70,6 +71,14 @@ RSpec.describe "admin/api/v1/users", type: :request, swagger_doc: "admin/v1/sche
 
           expect(items.count).to eq(2)
         end
+      end
+
+      response(403, "forbidden") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { create(:admin_user, resource_access: []) }
+
+        run_test!
       end
 
       response(401, "unauthorized") do

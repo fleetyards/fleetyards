@@ -4,17 +4,17 @@
  * FleetYards.net API
  * OpenAPI spec version: v1
  */
-import type { ViewImage } from './ViewImage';
+import type { MediaFile } from './MediaFile';
 
 export type ModelExtendedMedia = {
-  angledView?: ViewImage;
-  angledViewColored?: ViewImage;
+  angledView?: MediaFile;
+  angledViewColored?: MediaFile;
   fleetchartImage?: string;
-  frontView?: ViewImage;
-  frontViewColored?: ViewImage;
-  sideView?: ViewImage;
-  sideViewColored?: ViewImage;
-  storeImage?: ViewImage;
-  topView?: ViewImage;
-  topViewColored?: ViewImage;
+  frontView?: MediaFile;
+  frontViewColored?: MediaFile;
+  sideView?: MediaFile;
+  sideViewColored?: MediaFile;
+  storeImage?: MediaFile;
+  topView?: MediaFile;
+  topViewColored?: MediaFile;
 };

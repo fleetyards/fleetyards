@@ -19,7 +19,7 @@ module Admin
                 media: {
                   type: :object,
                   properties: {
-                    storeImage: {"$ref": "#/components/schemas/MediaImage"}
+                    storeImage: {"$ref": "#/components/schemas/MediaFile"}
                   },
                   additionalProperties: false
                 },

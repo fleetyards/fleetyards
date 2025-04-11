@@ -2,7 +2,6 @@ resources :models, param: :slug, only: %i[index show] do
   collection do
     get :fleetchart
     get "with-docks" => "models#with_docks"
-    get :unscheduled
     get :latest
     get :slugs
     get :updated

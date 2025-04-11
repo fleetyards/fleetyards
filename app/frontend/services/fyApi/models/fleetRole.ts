@@ -9,5 +9,5 @@ export interface FleetRole {
   id: string;
   name: string;
   slug: string;
-  resourceAccess: string[];
+  resourceAccess?: string[];
 }

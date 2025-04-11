@@ -10,11 +10,11 @@ export type ImportTypeEnum = typeof ImportTypeEnum[keyof typeof ImportTypeEnum];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImportTypeEnum = {
-  '::Imports::ModelImport': '::Imports::ModelImport',
-  '::Imports::ModelsImport': '::Imports::ModelsImport',
-  '::Imports::ScData::AllImport': '::Imports::ScData::AllImport',
-  '::Imports::ScData::ModelsImport': '::Imports::ScData::ModelsImport',
-  '::Imports::ScData::ModelImport': '::Imports::ScData::ModelImport',
-  '::Imports::HangarSync': '::Imports::HangarSync',
-  '::Imports::HangarImport': '::Imports::HangarImport',
+  'Imports::ModelImport': 'Imports::ModelImport',
+  'Imports::ModelsImport': 'Imports::ModelsImport',
+  'Imports::ScData::AllImport': 'Imports::ScData::AllImport',
+  'Imports::ScData::ModelsImport': 'Imports::ScData::ModelsImport',
+  'Imports::ScData::ModelImport': 'Imports::ScData::ModelImport',
+  'Imports::HangarSync': 'Imports::HangarSync',
+  'Imports::HangarImport': 'Imports::HangarImport',
 } as const;

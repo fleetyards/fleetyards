@@ -4,6 +4,8 @@ module Admin
   module Api
     module V1
       class ManufacturersController < ::Admin::Api::BaseController
+        before_action :set_manufacturer, only: %i[show]
+
         rescue_from ActiveRecord::RecordNotFound do |_exception|
           not_found(I18n.t("messages.record_not_found.manufacturer", slug: params[:slug]))
         end
@@ -22,6 +24,14 @@ module Admin
           @manufacturers = q.result(distinct: true)
             .page(params[:page])
             .per(per_page(Manufacturer))
+        end
+
+        def show
+          authorize! :show, @manufacturer
+        end
+
+        private def set_manufacturer
+          @manufacturer = Manufacturer.find(params[:id])
         end
 
         private def manufacturer_query_params

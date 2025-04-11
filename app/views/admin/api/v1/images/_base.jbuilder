@@ -2,24 +2,18 @@
 
 json.ignore_nil!
 json.id image.id
-json.name image.name.file.filename
 json.caption image.caption
-json.url image.name.url
-json.width image.width
-json.height image.height
-json.type image.name.content_type
 json.background image.background?
-json.small_url image.name.small.url
-json.big_url image.name.big.url
-
-json.size image.name.file.size
 json.enabled image.enabled
 json.global image.global
 
-if local_assigns.fetch(:extended, false)
-  json.gallery do
-    json.partial!("api/v1/images/gallery", gallery: image.gallery, image:) if image.gallery.present?
-  end
+json.partial!("api/v1/shared/view_image", record: image, attr: :file, old_attr: :name, width: image.width, height: image.height)
+
+json.gallery do
+  json.id image.gallery_id
+  json.type image.gallery_type
+  json.name image.gallery_name
+  json.slug image.gallery_slug
 end
 
 json.partial! "api/shared/dates", record: image

@@ -7,16 +7,20 @@
 import type { Gallery } from './Gallery';
 
 export interface Image {
-  id: string;
-  background: boolean;
-  bigUrl: string;
-  caption?: string;
   name: string;
-  smallUrl: string;
-  type: string;
+  contentType: string;
+  size: number;
   url: string;
+  smallUrl?: string;
+  mediumUrl?: string;
+  largeUrl?: string;
+  xlargeUrl?: string;
   width?: number;
   height?: number;
+  uploadedAt: string;
+  id: string;
+  background: boolean;
+  caption?: string;
   gallery?: Gallery;
   createdAt: string;
   updatedAt: string;

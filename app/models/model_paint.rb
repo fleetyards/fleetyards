@@ -60,6 +60,14 @@ class ModelPaint < ApplicationRecord
   mount_uploader :side_view, FleetchartImageUploader
   mount_uploader :angled_view, FleetchartImageUploader
 
+  has_one_attached :new_store_image
+  has_one_attached :new_rsi_store_image
+  has_one_attached :new_fleetchart_image
+  has_one_attached :new_top_view
+  has_one_attached :new_side_view
+  has_one_attached :front_view
+  has_one_attached :new_angled_view
+
   def self.ransackable_attributes(auth_object = nil)
     [
       "active", "angled_view", "angled_view_height", "angled_view_width", "created_at",

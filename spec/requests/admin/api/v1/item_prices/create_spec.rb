@@ -3,13 +3,12 @@
 require "swagger_helper"
 
 RSpec.describe "admin/api/v1/item_prices", type: :request, swagger_doc: "admin/v1/schema.yaml" do
-  fixtures :all
-
-  let(:user) { admin_users :jeanluc }
-  let(:data) do
+  let(:user) { create(:admin_user, resource_access: [:item_prices]) }
+  let(:item) { create(:model) }
+  let(:input) do
     {
-      itemId: models(:andromeda).id,
-      itemType: "Model",
+      itemId: item.id,
+      itemType: item.class.name,
       price: 1000.50,
       priceType: "buy",
       location: "Port Olisar"
@@ -28,7 +27,7 @@ RSpec.describe "admin/api/v1/item_prices", type: :request, swagger_doc: "admin/v
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :data, in: :body, schema: {"$ref": "#/components/schemas/ItemPriceInput"}, required: true
+      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/ItemPriceInput"}, required: true
 
       response(201, "successful") do
         schema "$ref": "#/components/schemas/ItemPrice"
@@ -39,7 +38,15 @@ RSpec.describe "admin/api/v1/item_prices", type: :request, swagger_doc: "admin/v
       response(400, "unauthorized") do
         schema "$ref": "#/components/schemas/ValidationError"
 
-        let(:data) { nil }
+        let(:input) { nil }
+
+        run_test!
+      end
+
+      response(403, "forbidden") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { create(:admin_user, resource_access: []) }
 
         run_test!
       end

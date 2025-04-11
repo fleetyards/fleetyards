@@ -74,12 +74,16 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 
   config.before(:suite) do
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with(:truncation)
     Searchkick.disable_callbacks
   end
 
   config.around(:each, search: true) do |example|
-    Searchkick.callbacks(nil) do
-      example.run
+    DatabaseCleaner.cleaning do
+      Searchkick.callbacks(nil) do
+        example.run
+      end
     end
   end
 end

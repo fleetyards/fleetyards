@@ -7,7 +7,7 @@ module Admin
         after_action -> { pagination_header(:images) }, only: [:index]
 
         def index
-          authorize! :index, :admin_api_images
+          authorize! :index, Image
 
           image_query_params["sorts"] = "created_at desc"
 
@@ -19,9 +19,8 @@ module Admin
         end
 
         def create
-          authorize! :create, :admin_api_images
+          authorize! :create, Image
 
-          image_create_params[:name] = image_create_params.delete(:file)
           @image = Image.new(image_create_params)
 
           return if image.save

@@ -45,10 +45,6 @@ class Fleet < ApplicationRecord
     reason_description: :update_reason_description
   }
 
-  has_many :fleet_roles,
-    dependent: :destroy
-  has_one :executive_role, class_name: "FleetRole", dependent: :nullify
-  has_one :entry_role, class_name: "FleetRole", dependent: :nullify
   has_many :fleet_memberships,
     dependent: :destroy
   has_many :fleet_invite_urls,
@@ -58,6 +54,10 @@ class Fleet < ApplicationRecord
   has_many :models, through: :vehicles, source: :model
   has_many :manufacturers,
     through: :models
+  has_many :fleet_roles,
+    dependent: :destroy
+  has_one :executive_role, class_name: "FleetRole", dependent: :nullify
+  has_one :entry_role, class_name: "FleetRole", dependent: :nullify
 
   validates :fid,
     uniqueness: {case_sensitive: false},
@@ -84,7 +84,7 @@ class Fleet < ApplicationRecord
   before_validation :update_urls
   before_validation :set_normalized_fields
   before_save :update_slugs
-  after_create :setup_default_roles
+  after_create :setup_default_roles!
   after_create :setup_admin_user
 
   def self.accepted
@@ -93,7 +93,7 @@ class Fleet < ApplicationRecord
   end
 
   def set_normalized_fields
-    self.normalized_fid = fid.downcase
+    self.normalized_fid = fid&.downcase
   end
 
   def update_urls(force: false)
@@ -108,6 +108,7 @@ class Fleet < ApplicationRecord
     fleet_memberships.create(
       user_id: created_by,
       role: :admin,
+      fleet_role: executive_role,
       aasm_state: :accepted,
       accepted_at: Time.zone.now
     )

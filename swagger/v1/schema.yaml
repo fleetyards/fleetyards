@@ -352,7 +352,7 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
       requestBody:
         content:
-          multipart/form-data:
+          application/json:
             schema:
               "$ref": "#/components/schemas/FleetUpdateInput"
         required: true
@@ -2017,6 +2017,46 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/ModelPaint"
+  "/models/{slug}/store-image":
+    parameters:
+    - name: slug
+      in: path
+      description: Model slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Model Storeimage
+      operationId: modelStoreImage
+      deprecated: true
+      tags:
+      - Models
+      responses:
+        '302':
+          description: successful
+  "/models/{slug}/fleetchart-image":
+    parameters:
+    - name: slug
+      in: path
+      description: Model slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Model Fleetchart Image
+      operationId: modelFleetchartImage
+      deprecated: true
+      tags:
+      - Models
+      responses:
+        '302':
+          description: successful
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/models/embed":
     get:
       summary: Embed Models
@@ -2040,86 +2080,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Model"
-  "/models":
-    get:
-      summary: Models List
-      operationId: models
-      tags:
-      - Models
-      parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 30
-        required: false
-      - name: q
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/ModelQuery"
-        style: deepObject
-        explode: true
-        required: false
-      - name: cacheId
-        in: query
-        required: false
-        schema:
-          type: string
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Models"
-  "/models/latest":
-    get:
-      summary: Latest Models
-      operationId: modelsLatest
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Model"
-  "/models/{slug}":
-    parameters:
-    - name: slug
-      in: path
-      description: Model slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: Model Detail
-      operationId: model
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ModelExtended"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
   "/models/{slug}/hardpoints":
     parameters:
     - name: slug
@@ -2195,56 +2155,10 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/models/{slug}/videos":
-    parameters:
-    - name: slug
-      in: path
-      description: Model slug
-      required: true
-      schema:
-        type: string
+  "/models":
     get:
-      summary: Model Videos
-      operationId: modelVideos
-      tags:
-      - Models
-      parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 8
-        required: false
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Videos"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/models/{slug}/variants":
-    parameters:
-    - name: slug
-      in: path
-      description: Model slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: Model Variants
-      operationId: modelVariants
+      summary: Models List
+      operationId: models
       tags:
       - Models
       parameters:
@@ -2260,6 +2174,19 @@ paths:
           type: string
           default: 30
         required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ModelQuery"
+        style: deepObject
+        explode: true
+        required: false
+      - name: cacheId
+        in: query
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: successful
@@ -2267,12 +2194,21 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Models"
-        '404':
-          description: not found
+  "/models/latest":
+    get:
+      summary: Latest Models
+      operationId: modelsLatest
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/StandardError"
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Model"
   "/models/{slug}/loaners":
     parameters:
     - name: slug
@@ -2306,73 +2242,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Models"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/models/{slug}/snub-crafts":
-    parameters:
-    - name: slug
-      in: path
-      description: Model slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: Model Snubcrafts
-      operationId: modelSnubCrafts
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Model"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/models/{slug}/modules":
-    parameters:
-    - name: slug
-      in: path
-      description: Model slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: Model Modules
-      operationId: modelModules
-      tags:
-      - Models
-      parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 30
-        required: false
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ModelModules"
         '404':
           description: not found
           content:
@@ -2418,7 +2287,7 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/models/{slug}/upgrades":
+  "/models/{slug}/modules":
     parameters:
     - name: slug
       in: path
@@ -2427,19 +2296,30 @@ paths:
       schema:
         type: string
     get:
-      summary: Model Upgrades
-      operationId: modelUpgrades
+      summary: Model Modules
+      operationId: modelModules
       tags:
       - Models
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
       responses:
         '200':
           description: successful
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/ModelUpgrade"
+                "$ref": "#/components/schemas/ModelModules"
         '404':
           description: not found
           content:
@@ -2474,7 +2354,7 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/models/{slug}/store-image":
+  "/models/{slug}":
     parameters:
     - name: slug
       in: path
@@ -2483,31 +2363,17 @@ paths:
       schema:
         type: string
     get:
-      summary: Model Storeimage
-      operationId: modelStoreImage
-      deprecated: true
+      summary: Model Detail
+      operationId: model
       tags:
       - Models
       responses:
-        '302':
+        '200':
           description: successful
-  "/models/{slug}/fleetchart-image":
-    parameters:
-    - name: slug
-      in: path
-      description: Model slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: Model Fleetchart Image
-      operationId: modelFleetchartImage
-      deprecated: true
-      tags:
-      - Models
-      responses:
-        '302':
-          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelExtended"
         '404':
           description: not found
           content:
@@ -2523,15 +2389,34 @@ paths:
       responses:
         '200':
           description: successful
-  "/models/unscheduled":
+  "/models/{slug}/snub-crafts":
+    parameters:
+    - name: slug
+      in: path
+      description: Model slug
+      required: true
+      schema:
+        type: string
     get:
-      summary: Unscheduled Models
-      operationId: modelsUnschduled
+      summary: Model Snubcrafts
+      operationId: modelSnubCrafts
       tags:
       - Models
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Model"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/models/updated":
     get:
       summary: Updated Models
@@ -2557,6 +2442,112 @@ paths:
           description: successful
         '304':
           description: not modified
+  "/models/{slug}/upgrades":
+    parameters:
+    - name: slug
+      in: path
+      description: Model slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Model Upgrades
+      operationId: modelUpgrades
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ModelUpgrade"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/{slug}/variants":
+    parameters:
+    - name: slug
+      in: path
+      description: Model slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Model Variants
+      operationId: modelVariants
+      tags:
+      - Models
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Models"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/{slug}/videos":
+    parameters:
+    - name: slug
+      in: path
+      description: Model slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Model Videos
+      operationId: modelVideos
+      tags:
+      - Models
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 8
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Videos"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/models/with-docks":
     get:
       summary: Models with Docks
@@ -4042,7 +4033,7 @@ components:
           type: object
           properties:
             storeImage:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
           additionalProperties: false
         typeData:
           anyOf:
@@ -4342,13 +4333,13 @@ components:
     ImportTypeEnum:
       type: string
       enum:
-      - "::Imports::ModelImport"
-      - "::Imports::ModelsImport"
-      - "::Imports::ScData::AllImport"
-      - "::Imports::ScData::ModelsImport"
-      - "::Imports::ScData::ModelImport"
-      - "::Imports::HangarSync"
-      - "::Imports::HangarImport"
+      - Imports::ModelImport
+      - Imports::ModelsImport
+      - Imports::ScData::AllImport
+      - Imports::ScData::ModelsImport
+      - Imports::ScData::ModelImport
+      - Imports::HangarSync
+      - Imports::HangarImport
       title: ImportTypeEnum
     ItemPriceItemTypeEnum:
       type: string
@@ -4533,7 +4524,7 @@ components:
           type: object
           properties:
             storeImage:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
           additionalProperties: false
         range:
           type: string
@@ -4731,28 +4722,45 @@ components:
       - createdAt
       - updatedAt
       title: Manufacturer
-    MediaImage:
+    MediaFile:
       type: object
       properties:
-        large:
+        name:
+          type: string
+        contentType:
+          type: string
+        size:
+          type: integer
+        url:
           type: string
           format: uri
-        medium:
+        smallUrl:
           type: string
           format: uri
-        small:
+        mediumUrl:
           type: string
           format: uri
-        source:
+        largeUrl:
           type: string
           format: uri
+        xlargeUrl:
+          type: string
+          format: uri
+        width:
+          type: integer
+        height:
+          type: integer
+        uploadedAt:
+          type: string
+          format: date-time
       additionalProperties: false
       required:
-      - source
-      - small
-      - medium
-      - large
-      title: MediaImage
+      - name
+      - contentType
+      - size
+      - url
+      - uploadedAt
+      title: MediaFile
     Meta:
       type: object
       properties:
@@ -5004,38 +5012,6 @@ components:
       - version
       - codename
       title: Version
-    ViewImage:
-      type: object
-      properties:
-        source:
-          type: string
-          format: uri
-        small:
-          type: string
-          format: uri
-        medium:
-          type: string
-          format: uri
-        large:
-          type: string
-          format: uri
-        xlarge:
-          type: string
-          format: uri
-        width:
-          type: integer
-        height:
-          type: integer
-      additionalProperties: false
-      required:
-      - source
-      - small
-      - medium
-      - large
-      - xlarge
-      - width
-      - height
-      title: ViewImage
     Fleet:
       type: object
       properties:
@@ -5288,7 +5264,6 @@ components:
       - id
       - name
       - slug
-      - resourceAccess
       title: FleetRole
     FleetRoleExtended:
       type: object
@@ -5300,14 +5275,14 @@ components:
           type: string
         slug:
           type: string
-        rank:
-          type: string
-        permanent:
-          type: boolean
         resourceAccess:
           type: array
           items:
             type: string
+        rank:
+          type: string
+        permanent:
+          type: boolean
         createdAt:
           type: string
           format: date-time
@@ -5321,7 +5296,6 @@ components:
       - slug
       - rank
       - permanent
-      - resourceAccess
       - createdAt
       - updatedAt
       title: FleetRoleExtended
@@ -5707,30 +5681,41 @@ components:
     Image:
       type: object
       properties:
+        name:
+          type: string
+        contentType:
+          type: string
+        size:
+          type: integer
+        url:
+          type: string
+          format: uri
+        smallUrl:
+          type: string
+          format: uri
+        mediumUrl:
+          type: string
+          format: uri
+        largeUrl:
+          type: string
+          format: uri
+        xlargeUrl:
+          type: string
+          format: uri
+        width:
+          type: integer
+        height:
+          type: integer
+        uploadedAt:
+          type: string
+          format: date-time
         id:
           type: string
           format: uuid
         background:
           type: boolean
-        bigUrl:
-          type: string
-          format: uri
         caption:
           type: string
-        name:
-          type: string
-        smallUrl:
-          type: string
-          format: uri
-        type:
-          type: string
-        url:
-          type: string
-          format: uri
-        width:
-          type: number
-        height:
-          type: number
         gallery:
           "$ref": "#/components/schemas/Gallery"
         createdAt:
@@ -5741,13 +5726,13 @@ components:
           format: date-time
       additionalProperties: false
       required:
-      - id
       - name
+      - contentType
+      - size
       - url
-      - type
+      - uploadedAt
+      - id
       - background
-      - smallUrl
-      - bigUrl
       - createdAt
       - updatedAt
       title: Image
@@ -6450,25 +6435,25 @@ components:
           type: object
           properties:
             angledView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             angledViewColored:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             fleetchartImage:
               type: string
             frontView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             frontViewColored:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             sideView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             sideViewColored:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             storeImage:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             topView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             topViewColored:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
           additionalProperties: false
         metrics:
           type: object
@@ -6700,25 +6685,25 @@ components:
           type: object
           properties:
             angledView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             angledViewColored:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             fleetchartImage:
               type: string
             frontView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             frontViewColored:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             sideView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             sideViewColored:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             storeImage:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             topView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             topViewColored:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
           additionalProperties: false
         metrics:
           type: object
@@ -6888,13 +6873,13 @@ components:
           type: object
           properties:
             angledView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             sideView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             storeImage:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             topView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
           additionalProperties: false
         createdAt:
           type: string
@@ -7050,7 +7035,7 @@ components:
           type: object
           properties:
             storeImage:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
           additionalProperties: false
         pledgePrice:
           type: number
@@ -7127,15 +7112,15 @@ components:
           type: object
           properties:
             angledView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             fleetchartImage:
               type: string
             sideView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             storeImage:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             topView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
           additionalProperties: false
         nameWithModel:
           type: string
@@ -7277,7 +7262,7 @@ components:
           type: object
           properties:
             storeImage:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
           additionalProperties: false
         createdAt:
           type: string

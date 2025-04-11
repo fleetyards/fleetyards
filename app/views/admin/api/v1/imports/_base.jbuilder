@@ -9,7 +9,13 @@ json.version import.version
 if local_assigns.fetch(:extended, false)
   json.input import.input
   json.output import.output
-  json.import import.import
+  if import.is_a?(Imports::HangarImport)
+    if import.new_import.attached?
+      json.import rails_blob_url(import.new_import)
+    else
+      json.import import.import.url
+    end
+  end
   json.import_data import.import_data
 end
 

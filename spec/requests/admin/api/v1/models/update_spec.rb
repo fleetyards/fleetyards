@@ -3,12 +3,10 @@
 require "swagger_helper"
 
 RSpec.describe "admin/api/v1/models", type: :request, swagger_doc: "admin/v1/schema.yaml" do
-  fixtures :all
-
-  let(:user) { admin_users :jeanluc }
-  let(:model) { models :andromeda }
+  let(:user) { create(:admin_user, resource_access: [:models]) }
+  let(:model) { create(:model) }
   let(:id) { model.id }
-  let(:data) do
+  let(:input) do
     {
       name: "Enterprise A"
     }
@@ -27,7 +25,7 @@ RSpec.describe "admin/api/v1/models", type: :request, swagger_doc: "admin/v1/sch
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :data, in: :body, schema: {"$ref": "#/components/schemas/ModelUpdateInput"}, required: true
+      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/ModelUpdateInput"}, required: true
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/ModelExtended"
@@ -43,6 +41,14 @@ RSpec.describe "admin/api/v1/models", type: :request, swagger_doc: "admin/v1/sch
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:id) { SecureRandom.uuid }
+
+        run_test!
+      end
+
+      response(403, "forbidden") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { create(:admin_user, resource_access: []) }
 
         run_test!
       end

@@ -3,6 +3,12 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1", type: :request, swagger_doc: "v1/schema.yaml" do
+  let(:import) { create(:import, :scdata_all, aasm_state: :finished, version: "1.0.0") }
+
+  before do
+    import
+  end
+
   path "/sc-data/version" do
     get("SC Data Version") do
       operationId "scDataVersion"

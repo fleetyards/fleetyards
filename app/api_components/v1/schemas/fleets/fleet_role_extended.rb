@@ -3,23 +3,19 @@
 module V1
   module Schemas
     module Fleets
-      class FleetRoleExtended
+      class FleetRoleExtended < FleetRole
         include SchemaConcern
 
         schema({
           type: :object,
           properties: {
-            id: {type: :string, format: :uuid},
-            name: {type: :string},
-            slug: {type: :string},
             rank: {type: :string},
             permanent: {type: :boolean},
-            resourceAccess: {type: :array, items: {type: :string}},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id name slug rank permanent resourceAccess createdAt updatedAt]
+          required: %w[rank permanent createdAt updatedAt]
         })
       end
     end

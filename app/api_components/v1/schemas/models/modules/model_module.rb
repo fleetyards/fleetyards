@@ -46,7 +46,7 @@ module V1
               media: {
                 type: :object,
                 properties: {
-                  storeImage: {"$ref": "#/components/schemas/ViewImage"}
+                  storeImage: {"$ref": "#/components/schemas/MediaFile"}
                 },
                 additionalProperties: false
               },

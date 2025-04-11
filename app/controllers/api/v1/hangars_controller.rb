@@ -135,7 +135,7 @@ module Api
       end
 
       private def import_params
-        @import_params ||= params.permit(:import)
+        @import_params ||= params.permit(:import, :new_import)
       end
 
       private def sync_params

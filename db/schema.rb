@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_26_213549) do
+ActiveRecord::Schema[7.2].define(version: 2025_04_11_071300) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
@@ -345,6 +345,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_26_213549) do
     t.integer "height"
     t.boolean "global", default: true
     t.string "caption"
+    t.string "gallery_name"
+    t.string "gallery_slug"
     t.index ["gallery_id"], name: "index_images_on_gallery_id"
   end
 

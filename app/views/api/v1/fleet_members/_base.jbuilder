@@ -36,8 +36,6 @@ json.fleet_slug member.fleet.slug
 json.fleet_name member.fleet.name
 json.primary member.primary
 
-if local_assigns.fetch(:extended, false)
-  json.is_destroy_allowed member.destroy_allowed?
-end
+json.is_destroy_allowed member.destroy_allowed?
 
 json.partial! "api/shared/dates", record: member

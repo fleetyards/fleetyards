@@ -3,9 +3,8 @@
 require "swagger_helper"
 
 RSpec.describe "admin/api/v1/sessions", type: :request, swagger_doc: "admin/v1/schema.yaml" do
-  fixtures :admin_users
-
-  let(:user) { admin_users :jeanluc }
+  let(:password) { "enterprise" }
+  let(:user) { create(:admin_user, password:) }
 
   path "/sessions" do
     post("create session") do
@@ -22,7 +21,7 @@ RSpec.describe "admin/api/v1/sessions", type: :request, swagger_doc: "admin/v1/s
         let(:input) do
           {
             login: user.username,
-            password: "enterprise"
+            password:
           }
         end
 

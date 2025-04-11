@@ -9,7 +9,7 @@ module Admin
         end
 
         def index
-          authorize! :index, :admin_api_users
+          authorize! :index, User
 
           user_query_params["sorts"] ||= sorting_params(User)
 

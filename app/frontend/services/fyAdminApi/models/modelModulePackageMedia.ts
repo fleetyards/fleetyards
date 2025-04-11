@@ -4,12 +4,11 @@
  * FleetYards.net Command API
  * OpenAPI spec version: v1
  */
-import type { ViewImage } from './ViewImage';
-import type { MediaImage } from './MediaImage';
+import type { MediaFile } from './MediaFile';
 
 export type ModelModulePackageMedia = {
-  angledView?: ViewImage;
-  sideView?: ViewImage;
-  storeImage?: MediaImage;
-  topView?: ViewImage;
+  angledView?: MediaFile;
+  sideView?: MediaFile;
+  storeImage?: MediaFile;
+  topView?: MediaFile;
 };
