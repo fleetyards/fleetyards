@@ -25,19 +25,29 @@
 #  youtube            :string
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
-#  entry_role_id      :uuid
-#  executive_role_id  :uuid
 #
 # Indexes
 #
-#  index_fleets_on_entry_role_id      (entry_role_id)
-#  index_fleets_on_executive_role_id  (executive_role_id)
-#  index_fleets_on_fid                (fid) UNIQUE
+#  index_fleets_on_fid  (fid) UNIQUE
 #
 class Fleet < ApplicationRecord
   include UrlFieldConcern
 
   attr_accessor :update_reason, :update_reason_description, :author_id
+
+  AVAILABLE_PRIVILEGES = [
+    "fleet:update",
+    "fleet:update:images",
+    "fleet:update:description",
+    "fleet:delete",
+    "fleet:manage"
+  ].freeze
+
+  DEFAULT_PRIVILEGES = {
+    admin: ["fleet:manage"],
+    officer: ["fleet:update:description", "fleet:update:images"],
+    member: []
+  }.freeze
 
   has_paper_trail meta: {
     author_id: :author_id,
@@ -45,6 +55,8 @@ class Fleet < ApplicationRecord
     reason_description: :update_reason_description
   }
 
+  has_many :fleet_roles,
+    dependent: :destroy
   has_many :fleet_memberships,
     dependent: :destroy
   has_many :fleet_invite_urls,
@@ -54,10 +66,6 @@ class Fleet < ApplicationRecord
   has_many :models, through: :vehicles, source: :model
   has_many :manufacturers,
     through: :models
-  has_many :fleet_roles,
-    dependent: :destroy
-  has_one :executive_role, class_name: "FleetRole", dependent: :nullify
-  has_one :entry_role, class_name: "FleetRole", dependent: :nullify
 
   validates :fid,
     uniqueness: {case_sensitive: false},
@@ -84,7 +92,7 @@ class Fleet < ApplicationRecord
   before_validation :update_urls
   before_validation :set_normalized_fields
   before_save :update_slugs
-  after_create :setup_default_roles!
+  after_create :setup_default_roles
   after_create :setup_admin_user
 
   def self.accepted
@@ -104,55 +112,22 @@ class Fleet < ApplicationRecord
     self.ts = ensure_valid_ts_url(self, :ts, force:)
   end
 
+  def setup_default_roles
+    FleetRole.setup_default_roles(self)
+  end
+
   def setup_admin_user
     fleet_memberships.create(
       user_id: created_by,
-      role: :admin,
-      fleet_role: executive_role,
+      fleet_role: fleet_roles.ranked.first,
       aasm_state: :accepted,
       accepted_at: Time.zone.now
     )
   end
 
-  def setup_default_roles!
-    executive_role = fleet_roles.find_or_create_by!(
-      name: "Admin"
-    ) do |role|
-      role.resource_access = FleetRole::DEFAULT_PRIVILEGES[:admin]
-      role.rank = 0
-      role.permanent = true
+  def update_role_privileges
+    fleet.fleet_roles.each do |role|
     end
-
-    fleet_roles.find_or_create_by!(
-      name: "Officer"
-    ) do |role|
-      role.resource_access = FleetRole::DEFAULT_PRIVILEGES[:officer]
-      role.rank = 10
-    end
-
-    entry_role = fleet_roles.find_or_create_by!(
-      name: "Member"
-    ) do |role|
-      role.resource_access = FleetRole::DEFAULT_PRIVILEGES[:member]
-      role.rank = 20
-      role.permanent = true
-    end
-
-    update!(executive_role_id: executive_role.id, entry_role_id: entry_role.id)
-  end
-
-  def role(user_id)
-    membership = fleet_memberships.find_by(user_id:)
-
-    return if membership.blank? || !membership.accepted?
-
-    membership.role
-  end
-
-  def my_fleet?(user_id)
-    membership = fleet_memberships.find_by(user_id:)
-
-    membership.present? && membership.accepted?
   end
 
   def invitation(user_id)

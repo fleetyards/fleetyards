@@ -4,6 +4,8 @@ module Api
   module V1
     module Filters
       class ModelsController < ::Api::PublicBaseController
+        skip_verify_authorized
+
         def production_states
           @filters = Model.production_status_filters
 

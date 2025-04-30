@@ -3,7 +3,8 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/manufacturers", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :manufacturers
+  let!(:manufacturers) { create_list(:manufacturer, 2) }
+  let!(:manufacturers_with_models) { create_list(:manufacturer, 5, :with_models) }
 
   path "/manufacturers" do
     get("Manufacturers list") do
@@ -25,14 +26,6 @@ RSpec.describe "api/v1/manufacturers", type: :request, swagger_doc: "v1/schema.y
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Manufacturers"
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
 
         run_test! do |response|
           data = JSON.parse(response.body)
@@ -56,7 +49,7 @@ RSpec.describe "api/v1/manufacturers", type: :request, swagger_doc: "v1/schema.y
           data = JSON.parse(response.body)
           items = data["items"]
 
-          expect(items.count).to eq(6)
+          expect(items.count).to eq(5)
         end
       end
 
@@ -82,14 +75,6 @@ RSpec.describe "api/v1/manufacturers", type: :request, swagger_doc: "v1/schema.y
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Manufacturers"
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
 
         run_test!
       end

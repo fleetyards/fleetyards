@@ -15,14 +15,14 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
     member do
       put :demote
       put :promote
-      put :accept
-      put :decline
+      put :accept, to: "fleet_members#accept_request"
+      put :decline, to: "fleet_members#decline_request"
     end
   end
 
-  resource :fleet_membership, path: "membership", only: %i[show create update destroy] do
-    put :accept
-    put :decline
+  resource :fleet_membership, path: "membership", only: %i[show update destroy] do
+    put :accept, to: "fleet_memberships#accept_invitation"
+    put :decline, to: "fleet_memberships#decline_invitation"
   end
 
   resources :fleet_invite_urls, path: "invite-urls", param: :token, only: %i[index create destroy]
@@ -40,7 +40,7 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
 end
 
 namespace :public do
-  resources :fleets, param: :slug, only: %i[] do
+  resources :fleets, param: :slug, only: %i[show] do
     resources :fleet_vehicles, path: "vehicles", only: %i[index] do
       get :embed, on: :collection
     end

@@ -34,7 +34,6 @@
 starfleet_picard:
   fleet: starfleet
   user: jeanluc
-  role: :admin
   fleet_role: starfleet_admin
   aasm_state: :accepted
   ships_filter: :all
@@ -43,7 +42,6 @@ starfleet_picard:
 starfleet_data:
   fleet: starfleet
   user: data
-  role: :member
   fleet_role: starfleet_member
   ships_filter: :all
   aasm_state: :accepted
@@ -52,7 +50,6 @@ starfleet_data:
 starfleet_geordi:
   fleet: starfleet
   user: geordi
-  role: :officer
   fleet_role: starfleet_officer
   ships_filter: :all
   aasm_state: :accepted
@@ -61,7 +58,6 @@ starfleet_geordi:
 starfleet_riker:
   fleet: starfleet
   user: will
-  role: :member
   fleet_role: starfleet_member
   ships_filter: :all
   aasm_state: :invited
@@ -70,7 +66,6 @@ starfleet_riker:
 starfleet_crusher:
   fleet: starfleet
   user: crusher
-  role: :member
   fleet_role: starfleet_member
   ships_filter: :all
   aasm_state: :requested

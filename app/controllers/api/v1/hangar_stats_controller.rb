@@ -12,8 +12,9 @@ module Api
 
       # rubocop:disable Metrics/CyclomaticComplexity
       def show
-        authorize! :show, :api_hangar
-        scope = current_user.vehicles.visible.purchased.includes(:vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, :model)
+        authorize! with: ::HangarPolicy
+
+        scope = authorized_scope(Vehicle.all).visible.purchased.includes(:vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, :model)
 
         scope = loaner_included?(scope)
         scope = will_it_fit?(scope) if vehicle_query_params["will_it_fit"].present?
@@ -32,7 +33,7 @@ module Api
 
         @quick_stats = QuickStats.new(
           total: vehicles.count,
-          wishlist_total: current_user.vehicles.visible.wanted.where(loaner: false).count,
+          wishlist_total: authorized_scope(Vehicle.all).visible.wanted.where(loaner: false).count,
           classifications: Model.classifications.map do |classification|
             ClassificationCount.new(
               classification_count: models.count { |model| model.classification == classification },
@@ -60,10 +61,10 @@ module Api
       # rubocop:enable Metrics/CyclomaticComplexity
 
       def models_by_size
-        authorize! :show, :api_hangar
+        authorize! to: :show?, with: ::HangarPolicy
 
         models_by_size = transform_for_pie_chart(
-          current_user.vehicles.visible.purchased.where(loaner: false)
+          authorized_scope(Vehicle.all).visible.purchased.where(loaner: false)
                .joins(:model)
                .group("models.size").count
                .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
@@ -74,10 +75,10 @@ module Api
       end
 
       def models_by_production_status
-        authorize! :show, :api_hangar
+        authorize! to: :show?, with: ::HangarPolicy
 
         models_by_production_status = transform_for_pie_chart(
-          current_user.vehicles.visible.purchased.where(loaner: false)
+          authorized_scope(Vehicle.all).visible.purchased.where(loaner: false)
                .joins(:model)
                .group("models.production_status").count
                .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
@@ -88,13 +89,13 @@ module Api
       end
 
       def models_by_manufacturer
-        authorize! :show, :api_hangar
+        authorize! to: :show?, with: ::HangarPolicy
 
         models_by_manufacturer = transform_for_pie_chart(
           current_user.manufacturers.uniq
               .map do |manufacturer|
                 model_ids = manufacturer.model_ids
-                {manufacturer.name => current_user.vehicles.visible.purchased.where(loaner: false, model_id: model_ids).count}
+                {manufacturer.name => authorized_scope(Vehicle.all).visible.purchased.where(loaner: false, model_id: model_ids).count}
               end
               .reduce(:merge) || []
         )
@@ -103,10 +104,10 @@ module Api
       end
 
       def models_by_classification
-        authorize! :show, :api_hangar
+        authorize! to: :show?, with: ::HangarPolicy
 
         models_by_classification = transform_for_pie_chart(
-          current_user.vehicles.visible.purchased.where(loaner: false)
+          authorized_scope(Vehicle.all).visible.purchased.where(loaner: false)
                .joins(:model)
                .group("models.classification").count
                .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }

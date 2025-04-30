@@ -11,7 +11,7 @@ module Admin
         end
 
         def index
-          authorize! :read, Model
+          authorize! with: ::Admin::ModelPolicy
 
           @q = index_scope
 
@@ -21,11 +21,10 @@ module Admin
         end
 
         def show
-          authorize! :show, @model
         end
 
         def options
-          authorize! :read, Model
+          authorize! with: ::Admin::ModelPolicy
 
           @q = index_scope
 
@@ -35,13 +34,13 @@ module Admin
         end
 
         def production_states
-          authorize! :read, Model
+          authorize! with: ::Admin::ModelPolicy
 
           @production_states = Model.production_status_filters
         end
 
         def name_diff
-          authorize! :read, Model
+          authorize! with: ::Admin::ModelPolicy
 
           @q = Model.where("name != rsi_name AND rsi_id IS NOT NULL").ransack(params[:q])
 
@@ -53,7 +52,7 @@ module Admin
         end
 
         def price_diff
-          authorize! :read, Model
+          authorize! with: ::Admin::ModelPolicy
 
           @q = Model.where("pledge_price != last_pledge_price AND rsi_id IS NOT NULL").ransack(params[:q])
 
@@ -65,9 +64,9 @@ module Admin
         end
 
         def create
-          authorize! :create, Model
-
           @model = Model.new(model_params)
+
+          authorize! @model, with: ::Admin::ModelPolicy
 
           return if @model.save
 
@@ -75,24 +74,18 @@ module Admin
         end
 
         def update
-          authorize! :update, @model
-
           return if @model.update(model_params.merge(author_id: current_user.id, update_reason: :custom))
 
           render json: ValidationError.new("model.update", errors: @model.errors), status: :bad_request
         end
 
         def destroy
-          authorize! :destroy, @model
-
           return if @model.destroy
 
           render json: ValidationError.new("model.destroy", errors: @model.errors), status: :bad_request
         end
 
         def use_rsi_image
-          authorize! :update, @model
-
           return if @model.update(remote_store_image_url: @model.rsi_store_image_url)
 
           Rails.logger.info @model.errors.to_a.to_yaml
@@ -101,11 +94,10 @@ module Admin
         end
 
         def images
-          authorize! :images, @model
         end
 
         def reload_matrix
-          authorize! :reload, :admin_api_models
+          authorize! with: ::Admin::ModelPolicy
 
           Loaders::ModelsJob.perform_async
 
@@ -113,7 +105,7 @@ module Admin
         end
 
         def reload_scdata
-          authorize! :manage, Model
+          authorize! with: ::Admin::ModelPolicy
 
           Loaders::ScData::ModelsJob.perform_async
 
@@ -121,7 +113,7 @@ module Admin
         end
 
         def reload_loaners
-          authorize! :manage, Model
+          authorize! with: ::Admin::ModelPolicy
 
           Loaders::LoanerJob.perform_async
 
@@ -129,7 +121,7 @@ module Admin
         end
 
         def reload_paints
-          authorize! :manage, Model
+          authorize! with: ::Admin::ModelPolicy
 
           Loaders::PaintsImportJob.perform_async
 
@@ -137,8 +129,6 @@ module Admin
         end
 
         def reload_one
-          authorize! :reload, @model
-
           Loaders::ModelJob.perform_async(@model.rsi_id)
           Loaders::ScData::ModelJob.perform_async(@model.id) if @model.sc_identifier.present?
 
@@ -147,6 +137,8 @@ module Admin
 
         private def set_model
           @model = Model.find(params[:id])
+
+          authorize! @model, with: ::Admin::ModelPolicy
         end
 
         private def index_scope

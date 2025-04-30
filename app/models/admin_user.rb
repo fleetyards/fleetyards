@@ -38,14 +38,14 @@
 #  index_admin_users_on_username              (username) UNIQUE
 #
 class AdminUser < ApplicationRecord
+  include ResourceAccessConcern
+
   devise :two_factor_authenticatable, :two_factor_backupable, :recoverable, :trackable,
     :validatable, :timeoutable, :rememberable,
     authentication_keys: [:login], otp_secret_encryption_key: Rails.application.credentials.devise_admin_otp_secret!,
     otp_backup_code_length: 32, otp_number_of_backup_codes: 10
 
   before_validation :set_normalized_login_fields
-
-  serialize :resource_access, coder: YAML
 
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
@@ -63,8 +63,8 @@ class AdminUser < ApplicationRecord
     self.normalized_username = username.downcase
   end
 
-  def access_to?(resource)
-    super_admin? || resource_access&.include?(resource)
+  def has_access?(privileges)
+    super_admin? || super(privileges)
   end
 
   def reset_otp

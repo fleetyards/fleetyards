@@ -3,8 +3,6 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
   path "/models/updated" do
     get("Updated Models") do
       operationId "modelsUpdated"

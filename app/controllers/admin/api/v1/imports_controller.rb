@@ -7,11 +7,11 @@ module Admin
         before_action :set_import, only: [:show]
 
         def index
-          authorize! :index, Import
+          authorize! with: ::Admin::ImportPolicy
 
           imports_query_params["sorts"] = "created_at desc"
 
-          @q = Import.ransack(imports_query_params)
+          @q = authorized_scope(Import.all).ransack(imports_query_params)
 
           @imports = @q.result
             .page(params.fetch(:page, nil))
@@ -19,7 +19,6 @@ module Admin
         end
 
         def show
-          authorize! :show, @import
         end
 
         private def imports_query_params
@@ -30,6 +29,8 @@ module Admin
 
         private def set_import
           @import = Import.find(params[:id])
+
+          authorize! @import, with: ::Admin::ImportPolicy
         end
       end
     end

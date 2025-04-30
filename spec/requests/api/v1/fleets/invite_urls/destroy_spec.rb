@@ -3,12 +3,13 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
-  let(:fleet) { fleets :starfleet }
-  let(:invite_url) { fleet_invite_urls :starfleet_invite }
-
-  let(:user) { nil }
+  let(:member) { create(:user) }
+  let(:admin) { create(:user) }
+  let(:fleet) { create(:fleet, members: [member], admins: [admin]) }
+  let(:user) { admin }
+  let(:fleetSlug) { fleet.slug }
+  let(:invite_url) { create(:fleet_invite_url, fleet: fleet, user: admin) }
+  let(:token) { invite_url.token }
 
   before do
     sign_in(user) if user.present?
@@ -24,19 +25,13 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/sch
       produces "application/json"
 
       response(204, "successful") do
-        let(:user) { users :jeanluc }
-        let(:fleetSlug) { fleet.slug }
-        let(:token) { invite_url.token }
-
         run_test!
       end
 
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:user) { users :jeanluc }
         let(:fleetSlug) { "unknown-fleet" }
-        let(:token) { invite_url.token }
 
         run_test!
       end
@@ -44,20 +39,15 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/sch
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:user) { users :jeanluc }
-        let(:fleetSlug) { fleet.slug }
         let(:token) { "unknown-token" }
 
         run_test!
       end
 
       response(403, "forbidden") do
-        description "You are not the owner of this Fleet"
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:user) { users :data }
-        let(:fleetSlug) { fleet.slug }
-        let(:token) { invite_url.token }
+        let(:user) { member }
 
         run_test!
       end
@@ -65,8 +55,7 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/sch
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:fleetSlug) { fleet.slug }
-        let(:token) { invite_url.token }
+        let(:user) { nil }
 
         run_test!
       end

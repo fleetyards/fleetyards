@@ -6,17 +6,23 @@ module Api
       after_action -> { pagination_header(:fleet_invite_urls) }, only: %i[index]
 
       before_action :authenticate_user!, only: []
+      before_action -> { doorkeeper_authorize! },
+        unless: :user_signed_in?,
+        only: %i[use]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:read" },
         unless: :user_signed_in?,
         only: %i[index]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
-        except: %i[index]
+        only: %i[create destroy]
+
+      before_action :set_fleet, only: %i[index create destroy]
+      before_action :set_fleet_invite_url, only: %i[destroy]
 
       def index
-        authorize! :show, fleet
+        authorize! with: FleetInviteUrlPolicy, context: {fleet: @fleet}
 
-        scope = fleet.fleet_invite_urls
+        scope = authorized_scope(FleetInviteUrl.all)
 
         scope.order(created_at: :desc)
 
@@ -26,43 +32,38 @@ module Api
       end
 
       def create
-        @fleet_invite_url = fleet.fleet_invite_urls.new(
+        @fleet_invite_url = @fleet.fleet_invite_urls.new(
           expires_after: expires_after_minutes,
           limit: fleet_invite_url_params[:limit],
           user_id: current_user.id
         )
 
-        authorize! :create, fleet_invite_url
+        authorize! @fleet_invite_url
 
-        if fleet_invite_url.save
+        if @fleet_invite_url.save
           render :create, status: :created
         else
-          render json: ValidationError.new("fleet_invite_urls.create", errors: fleet_invite_url.errors), status: :bad_request
+          render json: ValidationError.new("fleet_invite_urls.create", errors: @fleet_invite_url.errors), status: :bad_request
         end
       end
 
       def destroy
-        @fleet_invite_url = fleet.fleet_invite_urls.find_by!(token: params[:token])
-
-        authorize! :destroy, fleet_invite_url
-
-        unless fleet_invite_url.destroy
-          render json: ValidationError.new("fleet_invite_urls.destroy", errors: fleet_invite_url.errors), status: :bad_request
+        unless @fleet_invite_url.destroy
+          render json: ValidationError.new("fleet_invite_urls.destroy", errors: @fleet_invite_url.errors), status: :bad_request
         end
       end
 
       def use
         invite_url = FleetInviteUrl.active.find_by!(token: params[:token])
 
+        authorize! invite_url
+
         @membership = invite_url.fleet.fleet_memberships.new(
           user: current_user,
-          role: :member,
-          fleet_role: invite_url.fleet.entry_role,
+          fleet_role: invite_url.fleet.fleet_roles.ranked.last,
           invited_by: invite_url.user_id,
           used_invite_token: invite_url.token
         )
-
-        authorize! :create_by_invite, @membership
 
         if @membership.save
           @membership.request!
@@ -74,16 +75,6 @@ module Api
         end
       end
 
-      private def fleet_invite_url
-        @fleet_invite_url ||= fleet.fleet_invite_urls
-          .where(token: params[:token])
-          .first!
-      end
-
-      private def fleet
-        @fleet ||= current_user.fleets.where(slug: params[:fleet_slug]).first!
-      end
-
       private def expires_after_minutes
         return if fleet_invite_url_params[:expires_after_minutes].blank?
 
@@ -91,8 +82,19 @@ module Api
       end
 
       private def fleet_invite_url_params
-        @fleet_invite_url_params ||= params.transform_keys(&:underscore)
-          .permit(:limit, :expires_after_minutes)
+        authorized(params)
+      end
+
+      private def set_fleet
+        @fleet = authorized_scope(Fleet.all).find_by!(slug: params[:fleet_slug])
+
+        authorize! @fleet, to: :show?
+      end
+
+      private def set_fleet_invite_url
+        @fleet_invite_url = @fleet.fleet_invite_urls.find_by!(token: params[:token])
+
+        authorize! @fleet_invite_url
       end
     end
   end

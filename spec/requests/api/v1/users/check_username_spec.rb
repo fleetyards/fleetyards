@@ -3,12 +3,15 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :users
-
+  let(:user) { create(:user, username: "data") }
   let(:input) do
     {
       value: "data"
     }
+  end
+
+  before do
+    user
   end
 
   path "/users/check-username" do
@@ -27,6 +30,22 @@ RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
           data = JSON.parse(response.body)
 
           expect(data["taken"]).to eq(true)
+        end
+      end
+
+      response(200, "successful") do
+        schema "$ref": "#/components/schemas/Check"
+
+        let(:input) do
+          {
+            value: "Picard"
+          }
+        end
+
+        run_test! do |response|
+          data = JSON.parse(response.body)
+
+          expect(data["taken"]).to eq(false)
         end
       end
     end

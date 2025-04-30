@@ -21,6 +21,20 @@ class FleetInviteUrl < ApplicationRecord
   include Rails.application.routes.url_helpers
   include ActionView::Helpers::DateHelper
 
+  AVAILABLE_PRIVILEGES = [
+    "fleet:invites:read",
+    "fleet:invites:create",
+    "fleet:invites:update",
+    "fleet:invites:delete",
+    "fleet:invites:manage"
+  ].freeze
+
+  DEFAULT_PRIVILEGES = {
+    admin: [],
+    officer: ["fleet:invites:manage"],
+    member: []
+  }.freeze
+
   paginates_per 30
 
   belongs_to :fleet

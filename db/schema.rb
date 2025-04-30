@@ -278,10 +278,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_11_071300) do
     t.text "description"
     t.boolean "public_fleet_stats", default: false
     t.string "normalized_fid"
-    t.uuid "executive_role_id"
-    t.uuid "entry_role_id"
-    t.index ["entry_role_id"], name: "index_fleets_on_entry_role_id"
-    t.index ["executive_role_id"], name: "index_fleets_on_executive_role_id"
     t.index ["fid"], name: "index_fleets_on_fid", unique: true
   end
 

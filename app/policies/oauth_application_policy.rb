@@ -1,0 +1,2 @@
+class OauthApplicationPolicy < ApplicationPolicy
+end

@@ -4,6 +4,8 @@ module Api
   module V1
     module Filters
       class ComponentsController < ::Api::PublicBaseController
+        skip_verify_authorized
+
         def classes
           @filters = Component.class_filters
 

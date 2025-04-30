@@ -4,14 +4,16 @@ module Admin
   module Api
     module V1
       class ComponentsController < ::Admin::Api::BaseController
+        skip_verify_authorized only: %i[class_filters item_type_filters]
+
         before_action :set_component, only: %i[show]
 
         def index
-          authorize! :index, Component
+          authorize! with: ::Admin::ComponentPolicy
 
           component_query_params["sorts"] ||= sorting_params(Component)
 
-          @q = Component.includes(:manufacturer).ransack(component_query_params)
+          @q = authorized_scope(Component.all).includes(:manufacturer).ransack(component_query_params)
 
           @components = @q.result
             .page(params[:page])
@@ -19,20 +21,15 @@ module Admin
         end
 
         def show
-          authorize! :show, @component
         end
 
         def class_filters
-          authorize! :index, Component
-
           @filters = Component.class_filters
 
           render "api/shared/filters"
         end
 
         def item_type_filters
-          authorize! :index, Component
-
           @filters = Component.item_type_filters
 
           render "api/shared/filters"
@@ -40,6 +37,8 @@ module Admin
 
         private def set_component
           @component = Component.find(params[:id])
+
+          authorize! @component, with: ::Admin::ComponentPolicy
         end
 
         private def component_query_params

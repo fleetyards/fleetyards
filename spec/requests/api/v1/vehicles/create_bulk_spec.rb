@@ -3,9 +3,7 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
-  let(:author) { users :data }
+  let(:author) { create(:user) }
   let(:user) { nil }
   let(:Authorization) { nil }
   let(:write_access_token) do
@@ -22,11 +20,12 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       scopes: ["hangar:read"]
     )
   end
-  let(:data) do
+  let(:model) { create(:model) }
+  let(:input) do
     {
       vehicles: [
         {
-          modelId: models(:andromeda).id,
+          modelId: model.id,
           wanted: true
         }
       ]
@@ -44,7 +43,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :data, in: :body, schema: {"$ref": "#/components/schemas/VehicleCreateBulkInput"}, required: true
+      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/VehicleCreateBulkInput"}, required: true
 
       security [{
         SessionCookie: [],

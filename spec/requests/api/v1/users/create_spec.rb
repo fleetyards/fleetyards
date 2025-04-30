@@ -3,9 +3,6 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :users
-
-  let(:user) { nil }
   let(:input) do
     {
       username: "TestUser",
@@ -15,10 +12,6 @@ RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
       saleNotify: true,
       fleetInviteToken: "ee86f1f1dbb8799dcb6f5cb9efd73f"
     }
-  end
-
-  before do
-    sign_in(user) if user.present?
   end
 
   path "/users/signup" do
@@ -36,10 +29,26 @@ RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
         run_test!
       end
 
+      response(400, "bad request") do
+        schema "$ref": "#/components/schemas/ValidationError"
+
+        let(:existing_user) { create(:user, email: "test@fleetyards.net") }
+
+        before do
+          existing_user
+        end
+
+        run_test!
+      end
+
       response(422, "unprocessable entity") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:user) { users(:data) }
+        let(:user) { create(:user) }
+
+        before do
+          sign_in(user)
+        end
 
         run_test!
       end

@@ -37,6 +37,20 @@ class FleetMembership < ApplicationRecord
 
   attr_accessor :update_reason, :update_reason_description, :author_id
 
+  AVAILABLE_PRIVILEGES = [
+    "fleet:memberships:read",
+    "fleet:memberships:create",
+    "fleet:memberships:update",
+    "fleet:memberships:delete",
+    "fleet:memberships:manage"
+  ].freeze
+
+  DEFAULT_PRIVILEGES = {
+    admin: [],
+    officer: ["fleet:memberships:manage"],
+    member: ["fleet:memberships:read"]
+  }.freeze
+
   has_paper_trail meta: {
     author_id: :author_id,
     reason: :update_reason,
@@ -52,12 +66,6 @@ class FleetMembership < ApplicationRecord
   enum :ships_filter,
     {all: 0, hangar_group: 1, hide: 2},
     prefix: true
-
-  enum :role,
-    {admin: 0, officer: 1, member: 2}
-  ransacker :role, formatter: proc { |v| FleetMembership.roles[v] } do |parent|
-    parent.table[:role]
-  end
 
   def self.ransackable_attributes(auth_object = nil)
     [
@@ -83,6 +91,7 @@ class FleetMembership < ApplicationRecord
 
   ransack_alias :username, :user_username
   ransack_alias :name, :user_username
+  ransack_alias :role, :fleet_role_name
 
   before_validation :set_default_ships_filter
   after_create :broadcast_create
@@ -93,10 +102,12 @@ class FleetMembership < ApplicationRecord
   after_commit :broadcast_update
   before_destroy :check_if_can_be_destroyed
 
-  def check_if_can_be_destroyed
-    return if destroy_allowed?
+  delegate :has_access?, to: :fleet_role
 
-    errors.add(:base, t("activerecord.errors.models.fleet_membership.attributes.base.cannot_destroy_last_member"))
+  def check_if_can_be_destroyed
+    return unless fleet_role&.permanent?
+
+    errors.add(:base, I18n.t("activerecord.errors.models.fleet_membership.attributes.base.cannot_destroy_from_permanent_role"))
     throw(:abort)
   end
 
@@ -275,27 +286,33 @@ class FleetMembership < ApplicationRecord
   end
 
   def promote
-    return if admin?
+    return if next_fleet_role == fleet_role || next_fleet_role.nil?
 
-    if officer?
-      update(role: :admin)
-    else
-      update(role: :officer)
-    end
+    update(fleet_role: next_fleet_role)
   end
 
   def demote
-    return if member?
+    return if fleet_role.permanent? && fleet_role.fleet_memberships.count == 1
+    return if prev_fleet_role == fleet_role || prev_fleet_role.nil?
 
-    if admin?
-      update(role: :officer)
-    else
-      update(role: :member)
-    end
+    update(fleet_role: prev_fleet_role)
   end
 
-  def destroy_allowed?
-    fleet_role_id != fleet.executive_role_id
+  def next_fleet_role
+    return if fleet_role.nil?
+
+    index = fleet.fleet_roles.ranked.index(fleet_role)
+
+    return if index - 1 < 0
+
+    fleet.fleet_roles[index - 1]
+  end
+
+  def prev_fleet_role
+    return if fleet_role.nil?
+
+    index = fleet.fleet_roles.ranked.index(fleet_role)
+    fleet.fleet_roles[index + 1]
   end
 
   def to_json(*_args)

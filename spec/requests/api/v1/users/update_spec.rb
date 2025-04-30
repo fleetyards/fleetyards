@@ -3,9 +3,7 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :users
-
-  let(:user) { users :data }
+  let(:user) { create(:user) }
   let(:input) do
     {
       discord: "DiscordServer"

@@ -3,12 +3,14 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
-  let(:user) { nil }
+  let(:author) { create(:user) }
+  let(:user) { author }
+  let(:invites) { create_list(:fleet_membership, 2, user: author, aasm_state: :invited) }
 
   before do
     sign_in(user) if user.present?
+
+    invites
   end
 
   path "/fleets/invites" do
@@ -21,25 +23,17 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
         schema type: :array,
           items: {"$ref": "#/components/schemas/FleetMember"}
 
-        let(:user) { users :will }
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
-
         run_test! do |response|
           data = JSON.parse(response.body)
 
-          expect(data.size).to eq(1)
+          expect(data.size).to eq(2)
         end
       end
 
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { nil }
 
         run_test!
       end

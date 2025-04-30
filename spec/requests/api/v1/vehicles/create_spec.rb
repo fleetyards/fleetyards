@@ -3,12 +3,12 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
-  let(:user) { users :data }
+  let(:author) { create(:user) }
+  let(:user) { author }
+  let(:model) { create(:model) }
   let(:input) do
     {
-      modelId: models(:andromeda).id
+      modelId: model.id
     }
   end
 

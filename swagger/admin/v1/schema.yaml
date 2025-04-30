@@ -1160,6 +1160,8 @@ components:
           type: string
         size:
           type: string
+        class:
+          "$ref": "#/components/schemas/ComponentClassEnum"
         itemClass:
           "$ref": "#/components/schemas/ComponentItemClassEnum"
         itemClassLabel:
@@ -1381,13 +1383,6 @@ components:
       - weapon_attachment
       - hacking_tool
       title: EquipmentTypeEnum
-    FleetMembershipRoleEnum:
-      type: string
-      enum:
-      - admin
-      - officer
-      - member
-      title: FleetMembershipRoleEnum
     FleetMembershipShipsFilterEnum:
       type: string
       enum:

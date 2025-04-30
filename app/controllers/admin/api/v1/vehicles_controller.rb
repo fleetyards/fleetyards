@@ -7,7 +7,7 @@ module Admin
         include HangarFiltersConcern
 
         def index
-          authorize! :index, Vehicle
+          authorize! with: ::Admin::VehiclePolicy
 
           @q = index_scope
 
@@ -19,7 +19,7 @@ module Admin
         private def index_scope
           vehicle_query_params["sorts"] ||= sorting_params(Vehicle)
 
-          scope = Vehicle.includes(:user, model: :manufacturer).where(hidden: false)
+          scope = authorized_scope(Vehicle.all).includes(:user, model: :manufacturer).where(hidden: false)
 
           scope = loaner_included?(scope)
 

@@ -359,7 +359,7 @@ en:
         fleet_membership:
           attributes:
             base:
-              cannot_destroy_last_member: Cannot remove last member of Fleet
+              cannot_destroy_from_permanent_role: Cannot remove member of Fleet from permanent role
             user_id:
               taken: already present or has a pending invite
         user:

@@ -48,7 +48,7 @@ const internalModel = computed(() => {
 const { data: model } = useModelQuery("galaxy");
 
 const modelImage = computed(() => {
-  return model.value?.media?.storeImage?.medium;
+  return model.value?.media?.storeImage?.mediumUrl;
 });
 
 const vehiclePanelDetails = ref(false);

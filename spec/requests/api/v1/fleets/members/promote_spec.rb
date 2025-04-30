@@ -3,14 +3,12 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
-  let(:user) { users :jeanluc }
-
-  let(:fleet) { fleets :starfleet }
+  let(:admin) { create(:user) }
+  let(:member) { create(:user) }
+  let(:another_member) { create(:user) }
+  let(:user) { admin }
+  let(:fleet) { create(:fleet, admins: [admin], members: [member, another_member]) }
   let(:fleetSlug) { fleet.slug }
-
-  let(:member) { users :data }
   let(:username) { member.username }
 
   before do
@@ -29,14 +27,6 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/FleetMember"
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
 
         run_test!
       end
@@ -61,7 +51,7 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
       response(403, "forbidden") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:user) { users :data }
+        let(:user) { another_member }
 
         run_test!
       end

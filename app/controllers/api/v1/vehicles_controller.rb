@@ -13,13 +13,15 @@ module Api
         unless: -> { warden.authenticate?(scope: :user) },
         except: %i[check_serial fleetchart hangar]
 
+      before_action :set_vehicle, only: %i[show update destroy]
+
       def create
         @vehicle = Vehicle.new(
           vehicle_params.merge(public: true)
         )
-        authorize! :create, vehicle
+        authorize! @vehicle
 
-        if vehicle.save
+        if @vehicle.save
           render status: :created
         else
           render json: ValidationError.new("vehicle.create", errors: @vehicle.errors), status: :bad_request
@@ -27,7 +29,7 @@ module Api
       end
 
       def create_bulk
-        authorize! :create_bulk, :api_hangar
+        authorize!
 
         errors = []
 
@@ -44,25 +46,26 @@ module Api
         render json: ValidationError.new("vehicle.bulk_create", errors:), status: :bad_request
       end
 
+      def show
+      end
+
       def update
-        authorize! :update, vehicle
+        @vehicle.vehicle_modules.destroy_all unless vehicle_params[:model_module_ids].nil?
+        @vehicle.vehicle_upgrades.destroy_all unless vehicle_params[:model_upgrade_ids].nil?
+        @vehicle.task_forces.destroy_all unless vehicle_params[:hangar_group_ids].nil?
 
-        vehicle.vehicle_modules.destroy_all unless vehicle_params[:model_module_ids].nil?
-        vehicle.vehicle_upgrades.destroy_all unless vehicle_params[:model_upgrade_ids].nil?
-        vehicle.task_forces.destroy_all unless vehicle_params[:hangar_group_ids].nil?
-
-        return if vehicle.update(vehicle_params)
+        return if @vehicle.update(vehicle_params)
 
         render json: ValidationError.new("vehicle.update", errors: @vehicle.errors), status: :bad_request
       end
 
       def update_bulk
-        authorize! :update_bulk, :api_hangar
+        authorize!
 
         errors = []
 
         Vehicle.transaction do
-          scope = current_user.vehicles.where(id: params[:ids])
+          scope = authorized_scope(Vehicle.all).where(id: params[:ids])
 
           scope.find_each do |vehicle|
             vehicle.task_forces.destroy_all unless vehicle_params[:hangar_group_ids].nil?
@@ -79,18 +82,16 @@ module Api
       end
 
       def destroy
-        authorize! :destroy, vehicle
-
-        return if vehicle.destroy
+        return if @vehicle.destroy
 
         render json: ValidationError.new("vehicle.destroy", errors: @vehicle.errors), status: :bad_request
       end
 
       def destroy_bulk
-        authorize! :destroy_bulk, :api_hangar
+        authorize!
 
         Vehicle.transaction do
-          scope = current_user.vehicles.where(id: params[:ids])
+          scope = authorized_scope(Vehicle.all).where(id: params[:ids])
 
           # rubocop:disable Rails/SkipsModelValidations
           scope.update_all(notify: false)
@@ -105,11 +106,11 @@ module Api
       end
 
       def destroy_all_ingame
-        authorize! :destroy_all, :api_hangar
+        authorize!
 
         Vehicle.transaction do
           # rubocop:disable Rails/SkipsModelValidations
-          current_user.vehicles.purchased.where(bought_via: :ingame).update_all(notify: false)
+          authorized_scope(Vehicle.all).purchased.where(bought_via: :ingame).update_all(notify: false)
           # rubocop:enable Rails/SkipsModelValidations
 
           vehicle_ids = current_user.vehicles.purchased.where(bought_via: :ingame).pluck(:id)
@@ -121,7 +122,7 @@ module Api
       end
 
       def check_serial
-        authorize! :check_serial, :api_vehicles
+        authorize!
 
         render json: {taken: current_user.vehicles.visible.purchased.exists?(serial: params[:value]&.upcase)}
       end
@@ -148,10 +149,11 @@ module Api
         @vehicles = current_user.vehicles.where(loaner: false).purchased.visible
       end
 
-      private def vehicle
-        @vehicle ||= Vehicle.find(params[:id])
+      private def set_vehicle
+        @vehicle = current_user.vehicles.find(params[:id])
+
+        authorize! @vehicle
       end
-      helper_method :vehicle
 
       private def vehicle_params
         @vehicle_params ||= params.transform_keys(&:underscore)

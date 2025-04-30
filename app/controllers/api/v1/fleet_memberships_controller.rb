@@ -10,34 +10,13 @@ module Api
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! },
         unless: :user_signed_in?,
-        only: %i[show create_by_invite update destroy]
-      before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
-        unless: :user_signed_in?,
-        except: %i[show create_by_invite update destroy]
+        only: %i[show create_by_invite accept_invitation decline_invitation update destroy]
+
+      before_action :set_fleet, only: %i[create show update accept_invitation decline_invitation destroy]
+      before_action :set_membership, only: %i[show update accept_invitation decline_invitation destroy]
 
       def show
-        authorize! :show, membership
-
-        @member = membership
-      end
-
-      def create
-        user = User.find_by!(normalized_username: params[:username].downcase)
-
-        @member = fleet.fleet_memberships.new(
-          user_id: user.id,
-          role: :member,
-          fleet_role: fleet.entry_role,
-          invited_by: current_resource_owner.id
-        )
-
-        authorize! :create, member
-
-        if member.save
-          member.invite!
-        else
-          render json: ValidationError.new("fleet_memberships.create", errors: member.errors), status: :bad_request
-        end
+        @member = @membership
       end
 
       def create_by_invite
@@ -57,57 +36,46 @@ module Api
       end
 
       def update
-        authorize! :update, membership
+        return if @membership.update(membership_params)
 
-        return if membership.update(membership_params)
-
-        render json: ValidationError.new("fleet_memberships.update", errors: membership.errors), status: :bad_request
+        render json: ValidationError.new("fleet_memberships.update", errors: @membership.errors), status: :bad_request
       end
 
-      def accept
-        authorize! :accept_invitation, membership
-
-        unless membership.accept_invitation!
-          render json: ValidationError.new("fleet_memberships.accept", errors: membership.errors), status: :bad_request
+      def accept_invitation
+        unless @membership.accept_invitation!
+          render json: ValidationError.new("fleet_memberships.accept", errors: @membership.errors), status: :bad_request
         end
       end
 
-      def decline
-        authorize! :decline_invitation, membership
-
-        unless membership.decline!
-          render json: ValidationError.new("fleet_memberships.decline", errors: membership.errors), status: :bad_request
+      def decline_invitation
+        unless @membership.decline!
+          render json: ValidationError.new("fleet_memberships.decline", errors: @membership.errors), status: :bad_request
         end
       end
 
       def destroy
-        authorize! :destroy, membership
+        return if @membership.destroy
 
-        if membership.admin?
-          render json: ValidationError.new("fleet_memberships.destroy", message: I18n.t("validation_error.fleet_memberships.leave_as_admin")), status: :bad_request
-          return
-        end
-
-        return if membership.destroy
-
-        render json: ValidationError.new("fleet_memberships.destroy", errors: membership.errors), status: :bad_request
+        render json: ValidationError.new("fleet_memberships.destroy", errors: @membership.errors), status: :bad_request
       end
 
       private def membership_params
-        @membership_params ||= params.transform_keys(&:underscore)
-          .permit(:primary, :ships_filter, :hangar_group_id)
+        authorized(params, context: {fleet: @fleet})
       end
 
-      private def fleet
-        @fleet ||= current_resource_owner.fleets.where(slug: params[:fleet_slug]).first!
+      private def set_fleet
+        @fleet = authorized_scope(Fleet.all).find_by!(slug: params[:fleet_slug])
+
+        authorize! @fleet, to: :show_for_membership?
       end
 
-      private def membership
-        @membership ||= fleet.fleet_memberships
+      private def set_membership
+        @membership = @fleet.fleet_memberships
           .includes(:user)
           .joins(:user)
-          .where(user_id: current_resource_owner.id)
-          .first!
+          .find_by!(user_id: current_resource_owner.id)
+
+        authorize! @membership
       end
     end
   end

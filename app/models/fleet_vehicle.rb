@@ -25,6 +25,20 @@ class FleetVehicle < ApplicationRecord
 
   validates :vehicle_id, uniqueness: {scope: [:fleet_id]}
 
+  AVAILABLE_PRIVILEGES = [
+    "fleet:vehicles:read",
+    "fleet:vehicles:create",
+    "fleet:vehicles:update",
+    "fleet:vehicles:delete",
+    "fleet:vehicles:manage"
+  ].freeze
+
+  DEFAULT_PRIVILEGES = {
+    admin: [],
+    officer: ["fleet:vehicles:manage"],
+    member: ["fleet:vehicles:read"]
+  }.freeze
+
   DEFAULT_SORTING_PARAMS = ["model_name asc"]
   ALLOWED_SORTING_PARAMS = [
     "model_name asc", "model_name desc", "created_at asc", "created_at desc", "updated_at asc",

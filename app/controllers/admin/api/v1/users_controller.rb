@@ -9,11 +9,11 @@ module Admin
         end
 
         def index
-          authorize! :index, User
+          authorize! with: ::Admin::UserPolicy
 
           user_query_params["sorts"] ||= sorting_params(User)
 
-          q = User.ransack(user_query_params)
+          q = authorized_scope(User.all).ransack(user_query_params)
 
           @users = q.result(distinct: true)
             .page(params[:page])

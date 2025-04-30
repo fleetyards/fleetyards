@@ -5,11 +5,11 @@ module Admin
     module V1
       class ModelModulesController < ::Admin::Api::BaseController
         def index
-          authorize! :read, ModelModule
+          authorize! with: ::Admin::ModelModulePolicy
 
           model_module_query_params["sorts"] = "name asc"
 
-          @q = ModelModule.ransack(model_module_query_params)
+          @q = authorized_scope(ModelModule.all).ransack(model_module_query_params)
 
           @model_modules = @q.result
             .page(params[:page])

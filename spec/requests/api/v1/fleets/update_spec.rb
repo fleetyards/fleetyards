@@ -3,10 +3,10 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
-  let(:user) { users :jeanluc }
-  let(:fleet) { fleets :starfleet }
+  let(:admin) { create(:user) }
+  let(:member) { create(:user) }
+  let(:fleet) { create(:fleet, admins: [admin], members: [member]) }
+  let(:user) { admin }
   let(:slug) { fleet.slug }
   let(:input) do
     {
@@ -51,7 +51,16 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
         description "You are not an Admin or Officer of this Fleet"
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:user) { users :data }
+        let(:user) { member }
+
+        run_test!
+      end
+
+      response(403, "forbidden") do
+        description "You are not an Admin or Officer of this Fleet"
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { create(:user) }
 
         run_test!
       end

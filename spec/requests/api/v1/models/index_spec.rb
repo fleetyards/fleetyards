@@ -3,7 +3,7 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
+  let!(:models) { create_list(:model, 6) }
 
   path "/models" do
     get("Models List") do
@@ -48,7 +48,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
         let(:q) do
           {
-            "nameOrDescriptionCont" => "Galaxy"
+            "nameOrDescriptionCont" => models.first.name
           }
         end
 
@@ -57,7 +57,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
           items = data["items"]
 
           expect(items.count).to eq(1)
-          expect(items.first["name"]).to eq("Galaxy")
+          expect(items.first["name"]).to eq(models.first.name)
         end
       end
 

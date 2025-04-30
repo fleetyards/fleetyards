@@ -4,6 +4,8 @@ module Api
   module V1
     module Filters
       class VehiclesController < ::Api::PublicBaseController
+        skip_verify_authorized
+
         def bought_via
           @filters = Vehicle.bought_via_filters
 

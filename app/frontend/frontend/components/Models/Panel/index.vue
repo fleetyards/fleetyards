@@ -55,7 +55,7 @@ const image = computed(() => {
   }
 
   if (props.model.media.storeImage) {
-    return props.model.media.storeImage.medium;
+    return props.model.media.storeImage.mediumUrl;
   }
 
   if (webpSupported) {

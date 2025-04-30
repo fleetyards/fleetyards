@@ -8,15 +8,10 @@ module Api
         include FleetMemberFiltersConcern
         include ChartHelper
 
+        before_action :set_fleet
+
         def model_counts
-          authorize! :read, :api_fleet
-
-          unless fleet.public_fleet?
-            not_found
-            return
-          end
-
-          scope = fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
+          scope = @fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
 
           @q = scope.ransack(vehicle_query_params)
 
@@ -24,14 +19,7 @@ module Api
         end
 
         def members
-          authorize! :read, :api_fleet
-
-          unless fleet.public_fleet_stats?
-            not_found
-            return
-          end
-
-          @q = fleet.fleet_memberships.ransack(member_query_params)
+          @q = @fleet.fleet_memberships.ransack(member_query_params)
 
           members = @q.result
 
@@ -41,14 +29,7 @@ module Api
         end
 
         def vehicles
-          authorize! :read, :api_fleet
-
-          unless fleet.public_fleet_stats?
-            not_found
-            return
-          end
-
-          scope = fleet.vehicles.includes(:model, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules)
+          scope = @fleet.vehicles.includes(:model, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules)
 
           scope = scope.where(loaner: loaner_included?)
 
@@ -153,8 +134,10 @@ module Api
         #   render json: models_by_classification.to_json
         # end
 
-        private def fleet
-          @fleet ||= Fleet.find_by!(slug: params[:fleet_slug])
+        private def set_fleet
+          @fleet = Fleet.find_by!(slug: params[:fleet_slug])
+
+          authorize! @fleet, to: :show?, with: ::Public::FleetPolicy
         end
       end
     end

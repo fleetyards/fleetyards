@@ -3,12 +3,14 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/wishlist", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
-  let(:user) { nil }
+  let(:author) { create(:user, vehicle_count: 3) }
+  let(:user) { author }
+  let(:wanted_vehicles) { create_list(:vehicle, 2, user: author, wanted: true) }
 
   before do
     sign_in(user) if user.present?
+
+    wanted_vehicles
   end
 
   path "/wishlist" do
@@ -31,16 +33,6 @@ RSpec.describe "api/v1/wishlist", type: :request, swagger_doc: "v1/schema.yaml" 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Hangar"
 
-        let(:user) { users :data }
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
-
         run_test! do |response|
           data = JSON.parse(response.body)
           items = data["items"]
@@ -52,10 +44,9 @@ RSpec.describe "api/v1/wishlist", type: :request, swagger_doc: "v1/schema.yaml" 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Hangar"
 
-        let(:user) { users :data }
         let(:q) do
           {
-            "modelNameOrModelDescriptionCont" => "Galaxy"
+            "modelNameOrModelDescriptionCont" => wanted_vehicles.first.model.name
           }
         end
 
@@ -64,14 +55,13 @@ RSpec.describe "api/v1/wishlist", type: :request, swagger_doc: "v1/schema.yaml" 
           items = data["items"]
 
           expect(items.count).to eq(1)
-          expect(items.first.dig("model", "name")).to eq("Galaxy")
+          expect(items.first.dig("model", "name")).to eq(wanted_vehicles.first.model.name)
         end
       end
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Hangar"
 
-        let(:user) { users :data }
         let(:perPage) { 1 }
 
         run_test! do |response|
@@ -84,6 +74,8 @@ RSpec.describe "api/v1/wishlist", type: :request, swagger_doc: "v1/schema.yaml" 
 
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { nil }
 
         run_test!
       end

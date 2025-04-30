@@ -37,7 +37,7 @@ gem "griddler"
 gem "griddler-postmark", github: "r38y/griddler-postmark"
 gem "postmark-rails"
 
-gem "cancancan"
+gem "action_policy"
 
 gem "devise"
 gem "devise-two-factor"

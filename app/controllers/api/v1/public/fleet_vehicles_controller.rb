@@ -6,17 +6,11 @@ module Api
       class FleetVehiclesController < ::Api::PublicBaseController
         include FleetVehicleFiltersConcern
 
+        before_action :set_fleet
         after_action -> { pagination_header(%i[vehicles models]) }, only: %i[index]
 
         def index
-          authorize! :read, :api_fleet
-
-          unless fleet.public_fleet?
-            not_found
-            return
-          end
-
-          scope = fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
+          scope = @fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
 
           scope = scope.where(loaner: loaner_included?)
 
@@ -27,7 +21,7 @@ module Api
           if ActiveModel::Type::Boolean.new.cast(params["grouped"])
             model_ids = @q.result.pluck(:model_id)
 
-            result = fleet.models
+            result = @fleet.models
               .where(id: model_ids)
               .distinct
               .order(name: :asc)
@@ -45,18 +39,11 @@ module Api
         end
 
         def embed
-          authorize! :read, :api_fleet
-
-          unless fleet.public_fleet?
-            @vehicles = []
-            return
-          end
-
           if !(request.referrer || "").include?(FRONTEND_DOMAIN) && !request.referrer.blank?
             ahoy.track "fleet_embedding", request.path_parameters
           end
 
-          scope = fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
+          scope = @fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
 
           vehicle_query_params["sorts"] = sorting_params(FleetVehicle)
 
@@ -69,14 +56,7 @@ module Api
         end
 
         def fleetchart
-          authorize! :read, :api_fleet
-
-          unless fleet.public_fleet?
-            @vehicles = Kaminari.paginate_array([]).page(params[:page]).per(per_page(Vehicle))
-            return
-          end
-
-          scope = fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
+          scope = @fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
 
           scope = scope.where(loaner: loaner_included?)
 
@@ -88,8 +68,10 @@ module Api
             .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
         end
 
-        private def fleet
-          @fleet ||= Fleet.find_by!(slug: params[:fleet_slug])
+        private def set_fleet
+          @fleet = Fleet.find_by!(slug: params[:fleet_slug])
+
+          authorize! @fleet, to: :show?, with: ::Public::FleetPolicy
         end
       end
     end

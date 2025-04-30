@@ -3,6 +3,8 @@
 module Api
   module V1
     class ComponentsController < ::Api::PublicBaseController
+      skip_verify_authorized only: %i[index]
+
       after_action -> { pagination_header(:components) }, only: [:index]
 
       def index

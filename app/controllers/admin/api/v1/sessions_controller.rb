@@ -4,7 +4,8 @@ module Admin
   module Api
     module V1
       class SessionsController < ::Admin::Api::BaseController
-        skip_authorization_check
+        skip_verify_authorized
+
         before_action :authenticate_admin_user!, except: [:create]
 
         def create

@@ -312,8 +312,20 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Fleet"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '404':
           description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -466,6 +478,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '401':
           description: unauthorized
           content:
@@ -491,7 +509,6 @@ paths:
       operationId: destroyFleetInviteUrl
       tags:
       - FleetInviteUrls
-      description: You are not the owner of this Fleet
       responses:
         '204':
           description: successful
@@ -638,7 +655,6 @@ paths:
       tags:
       - FleetMembers
       parameters: []
-      description: You are not the owner of this Fleet
       responses:
         '201':
           description: successful
@@ -812,6 +828,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '403':
           description: forbidden
           content:
@@ -843,7 +865,7 @@ paths:
       operationId: destroyFleetMember
       tags:
       - FleetMembers
-      description: You are not the owner of this Fleet
+      description: Without authentication
       responses:
         '204':
           description: successful
@@ -923,7 +945,6 @@ paths:
       operationId: acceptFleetMembership
       tags:
       - FleetMembership
-      description: No Membership found
       responses:
         '200':
           description: successful
@@ -962,7 +983,6 @@ paths:
       operationId: declineFleetMembership
       tags:
       - FleetMembership
-      description: No Membership found
       responses:
         '200':
           description: successful
@@ -1021,7 +1041,6 @@ paths:
       operationId: fleetMembership
       tags:
       - FleetMembership
-      description: Membership for this slug and user does not exist
       responses:
         '200':
           description: successful
@@ -1321,6 +1340,18 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FleetVehiclesStats"
+        '404':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/vehicles/export":
     parameters:
     - name: fleetSlug
@@ -1580,6 +1611,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/HangarGroup"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '404':
           description: not found
           content:
@@ -1607,6 +1644,12 @@ paths:
                 "$ref": "#/components/schemas/HangarGroup"
         '404':
           description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
           content:
             application/json:
               schema:
@@ -2787,6 +2830,32 @@ paths:
             schema:
               "$ref": "#/components/schemas/PasswordInput"
         required: true
+  "/public/fleets/{slug}":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Fleet Detail
+      operationId: publicFleet
+      tags:
+      - Fleets
+      responses:
+        '200':
+          description: successful without seesion
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Fleet"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/public/fleets/{fleetSlug}/stats/members":
     parameters:
     - name: fleetSlug
@@ -3245,6 +3314,10 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardMessage"
         '401':
           description: unauthorized
           content:
@@ -3434,18 +3507,18 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/User"
-        '422':
-          description: unprocessable entity
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
         '400':
           description: bad request
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ValidationError"
+        '422':
+          description: unprocessable entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
       requestBody:
         content:
           application/json:
@@ -4004,6 +4077,8 @@ components:
           type: string
         size:
           type: string
+        class:
+          "$ref": "#/components/schemas/ComponentClassEnum"
         itemClass:
           "$ref": "#/components/schemas/ComponentItemClassEnum"
         itemClassLabel:
@@ -4225,13 +4300,6 @@ components:
       - weapon_attachment
       - hacking_tool
       title: EquipmentTypeEnum
-    FleetMembershipRoleEnum:
-      type: string
-      enum:
-      - admin
-      - officer
-      - member
-      title: FleetMembershipRoleEnum
     FleetMembershipShipsFilterEnum:
       type: string
       enum:
@@ -5103,10 +5171,6 @@ components:
           type: string
         fleetRole:
           "$ref": "#/components/schemas/FleetRole"
-        role:
-          "$ref": "#/components/schemas/FleetMembershipRoleEnum"
-        roleLabel:
-          type: string
         status:
           "$ref": "#/components/schemas/FleetMembershipStatusEnum"
         avatar:
@@ -5159,8 +5223,6 @@ components:
           format: date-time
         declinedAtLabel:
           type: string
-        isDestroyAllowed:
-          type: boolean
         createdAt:
           type: string
           format: date-time
@@ -5172,12 +5234,9 @@ components:
       - id
       - username
       - fleetRole
-      - role
-      - roleLabel
       - shipsFilter
       - fleetSlug
       - fleetName
-      - isDestroyAllowed
       - createdAt
       - updatedAt
       title: FleetMember
@@ -7351,7 +7410,7 @@ components:
         roleIn:
           type: array
           items:
-            "$ref": "#/components/schemas/FleetMembershipRoleEnum"
+            type: string
         sorts:
           anyOf:
           - type: array

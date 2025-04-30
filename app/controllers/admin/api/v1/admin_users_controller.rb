@@ -5,7 +5,7 @@ module Admin
     module V1
       class AdminUsersController < ::Admin::Api::BaseController
         def me
-          authorize! :read, current_user
+          authorize! current_user, with: ::Admin::AdminUserPolicy
 
           @admin_user = current_user
         end

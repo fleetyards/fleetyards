@@ -4,7 +4,7 @@ module Api
   module V1
     class OtpController < ::Api::BaseController
       def start
-        authorize! :update, current_user
+        authorize! current_user, to: :update?
 
         unless access_cookie_valid?
           render json: {code: "requires_access_confirmation", message: I18n.t("messages.user.requires_access_confirmation")}, status: :bad_request
@@ -22,7 +22,7 @@ module Api
       end
 
       def qrcode
-        authorize! :update, current_user
+        authorize! current_user, to: :update?
 
         uri = current_user.otp_provisioning_uri(current_user.email, issuer: Rails.configuration.app.name)
 
@@ -32,7 +32,7 @@ module Api
       end
 
       def enable
-        authorize! :update, current_user
+        authorize! current_user, to: :update?
 
         unless access_cookie_valid?
           render json: {code: "requires_access_confirmation", message: I18n.t("messages.user.requires_access_confirmation")}, status: :bad_request
@@ -56,7 +56,7 @@ module Api
       end
 
       def disable
-        authorize! :update, current_user
+        authorize! current_user, to: :update?
 
         unless access_cookie_valid?
           render json: {code: "requires_access_confirmation", message: I18n.t("messages.user.requires_access_confirmation")}, status: :bad_request
@@ -80,7 +80,7 @@ module Api
       end
 
       def generate_backup_codes
-        authorize! :update, current_user
+        authorize! current_user, to: :update?
 
         unless access_cookie_valid?
           render json: {code: "requires_access_confirmation", message: I18n.t("messages.user.requires_access_confirmation")}, status: :bad_request

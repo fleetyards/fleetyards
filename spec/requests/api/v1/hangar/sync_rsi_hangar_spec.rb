@@ -3,9 +3,16 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
-  let(:user) { nil }
+  let(:user) { create(:user) }
+  let(:data) do
+    {
+      items: [{
+        id: 1,
+        name: "Constellation Andromeda",
+        kind: "ship"
+      }]
+    }
+  end
 
   before do
     sign_in(user) if user.present?
@@ -28,24 +35,12 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
       response(200, "successful") do
         schema "$ref": "#/components/schemas/HangarSyncResult"
 
-        let(:user) { users :data }
-        let(:data) do
-          {
-            items: [{
-              id: 1,
-              name: "Constellation Andromeda",
-              kind: "ship"
-            }]
-          }
-        end
-
         run_test!
       end
 
       response(400, "bad request") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:user) { users :data }
         let(:data) { nil }
 
         run_test!
@@ -54,7 +49,7 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:data) { nil }
+        let(:user) { nil }
 
         run_test!
       end

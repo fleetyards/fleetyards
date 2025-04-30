@@ -3,7 +3,8 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
+  let(:embeded_models) { create_list(:model, 3) }
+  let(:models) { embeded_models.map(&:slug) }
 
   path "/models/embed" do
     get("Embed Models") do
@@ -16,14 +17,6 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
       response(200, "successful") do
         schema type: :array,
           items: {"$ref": "#/components/schemas/Model"}
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
 
         run_test!
       end

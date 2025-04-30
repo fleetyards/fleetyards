@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import LazyImage from "@/shared/components/LazyImage/index.vue";
-import { type ViewImage } from "@/services/fyApi";
+import { type MediaFile } from "@/services/fyApi";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
@@ -14,8 +14,8 @@ import { RouteLocationRaw } from "vue-router";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 
 type Props = {
-  image?: ViewImage;
-  size: keyof Omit<ViewImage, "width" | "height">;
+  image?: MediaFile;
+  size: keyof Omit<MediaFile, "width" | "height">;
   alt: string;
   href?: string;
   to?: RouteLocationRaw;

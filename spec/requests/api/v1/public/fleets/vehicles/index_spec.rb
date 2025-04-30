@@ -3,10 +3,17 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
-  let(:fleet) { fleets :starfleet }
+  let(:member) { create(:user, vehicle_count: 2) }
+  let(:fleet) { create(:fleet, public_fleet: true, members: [member]) }
   let(:fleetSlug) { fleet.slug }
+
+  before do
+    Sidekiq::Testing.inline!
+  end
+
+  after do
+    Sidekiq::Testing.fake!
+  end
 
   path "/public/fleets/{fleetSlug}/vehicles" do
     parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
@@ -47,7 +54,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
         let(:fleetSlug) { fleet.slug }
         let(:q) do
           {
-            "modelNameCont" => "600i"
+            "modelNameCont" => member.vehicles.first.model.name
           }
         end
 
@@ -56,7 +63,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
           items = data["items"]
 
           expect(items.count).to eq(1)
-          expect(items.first.dig("model", "name")).to eq("600i")
+          expect(items.first.dig("model", "name")).to eq(member.vehicles.first.model.name)
         end
       end
 
@@ -89,7 +96,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:fleet) { fleets :klingon_empire }
+        let(:fleet) { create(:fleet, public_fleet: false) }
 
         run_test!
       end

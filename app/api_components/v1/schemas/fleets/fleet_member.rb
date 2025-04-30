@@ -12,8 +12,6 @@ module V1
             id: {type: :string, format: :uuid},
             username: {type: :string},
             fleetRole: {"$ref": "#/components/schemas/FleetRole"},
-            role: {"$ref": "#/components/schemas/FleetMembershipRoleEnum"},
-            roleLabel: {type: :string},
             status: {"$ref": "#/components/schemas/FleetMembershipStatusEnum"},
             avatar: {type: :string},
             rsiHandle: {type: :string},
@@ -37,12 +35,11 @@ module V1
             acceptedAtLabel: {type: :string},
             declinedAt: {type: :string, format: "date-time"},
             declinedAtLabel: {type: :string},
-            isDestroyAllowed: {type: :boolean},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id username fleetRole role roleLabel shipsFilter fleetSlug fleetName isDestroyAllowed createdAt updatedAt]
+          required: %w[id username fleetRole shipsFilter fleetSlug fleetName createdAt updatedAt]
         })
       end
     end

@@ -26,6 +26,7 @@ module Shared
             grade: {type: :string},
             gradeLabel: {type: :string},
             size: {type: :string},
+            class: {"$ref": "#/components/schemas/ComponentClassEnum"},
             itemClass: {"$ref": "#/components/schemas/ComponentItemClassEnum"},
             itemClassLabel: {type: :string},
 

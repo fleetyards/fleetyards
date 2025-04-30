@@ -5,6 +5,8 @@ module Api
     class ModelsController < ::Api::BaseController
       include ViteRails::TagHelpers
 
+      skip_verify_authorized
+
       before_action :authenticate_user!, only: []
       after_action -> { pagination_header(:images) }, only: [:images]
       after_action -> { pagination_header(:videos) }, only: [:videos]
@@ -14,8 +16,6 @@ module Api
       end
 
       def index
-        authorize! :index, :api_models
-
         @q = index_scope
 
         @models = @q.result
@@ -24,8 +24,6 @@ module Api
       end
 
       def with_docks
-        authorize! :index, :api_models
-
         model_query_params[:with_dock] = true
 
         @q = index_scope
@@ -38,8 +36,6 @@ module Api
       end
 
       def fleetchart
-        authorize! :index, :api_models
-
         @q = index_scope
 
         @models = @q.result
@@ -47,44 +43,30 @@ module Api
       end
 
       def slugs
-        authorize! :index, :api_models
-
         render json: Model.order(slug: :asc).all.pluck(:slug)
       end
 
       def production_states
-        authorize! :index, :api_models
-
         @production_states = Model.production_status_filters
       end
 
       def classifications
-        authorize! :index, :api_models
-
         @classifications = Model.classification_filters
       end
 
       def focus
-        authorize! :index, :api_models
-
         @focus = Model.focus_filters
       end
 
       def sizes
-        authorize! :index, :api_models
-
         @sizes = Model.size_filters
       end
 
       def dock_sizes
-        authorize! :index, :api_models
-
         @dock_sizes = Model.dock_size_filters
       end
 
       def filters
-        authorize! :index, :api_models
-
         @filters ||= begin
           filters = []
           filters << Manufacturer.model_filters
@@ -98,8 +80,6 @@ module Api
       end
 
       def cargo_options
-        authorize! :index, :api_models
-
         model_query_params["sorts"] = sorting_params(Model)
 
         @q = Model.visible
@@ -113,8 +93,6 @@ module Api
       end
 
       def latest
-        authorize! :index, :api_models
-
         @models = Model.visible.includes(:manufacturer)
           .active
           .order(last_updated_at: :desc, name: :asc)
@@ -122,14 +100,10 @@ module Api
       end
 
       def embed
-        authorize! :index, :api_models
-
         @models = Model.visible.active.where(slug: params[:models]).order(name: :asc).all
       end
 
       def updated
-        authorize! :index, :api_models
-
         if updated_range.present?
           scope = Model.visible.active.where(updated_at: updated_range)
           @models = scope.order(updated_at: :desc, name: :asc)
@@ -139,14 +113,10 @@ module Api
       end
 
       def show
-        authorize! :show, :api_models
-
         @model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
       end
 
       def hardpoints
-        authorize! :show, :api_models
-
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
         scope = if feature_enabled?("hardpoints-v2")
@@ -167,8 +137,6 @@ module Api
       end
 
       def images
-        authorize! :show, :api_models
-
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
         @images = model.images
@@ -179,8 +147,6 @@ module Api
       end
 
       def videos
-        authorize! :show, :api_models
-
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
         @videos = model.videos
@@ -190,8 +156,6 @@ module Api
       end
 
       def variants
-        authorize! :show, :api_models
-
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
         scope = model.variants.includes(:manufacturer).visible.active
@@ -216,8 +180,6 @@ module Api
       end
 
       def loaners
-        authorize! :show, :api_models
-
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
         scope = model.loaners.includes(:manufacturer).visible.active
@@ -244,8 +206,6 @@ module Api
       end
 
       def modules
-        authorize! :show, :api_models
-
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
         @model_modules = model.modules
@@ -257,8 +217,6 @@ module Api
       end
 
       def module_packages
-        authorize! :show, :api_models
-
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
         @module_packages = model.module_packages
@@ -270,8 +228,6 @@ module Api
       end
 
       def upgrades
-        authorize! :show, :api_models
-
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
         @model_upgrades = model.upgrades
@@ -281,8 +237,6 @@ module Api
       end
 
       def paints
-        authorize! :show, :api_models
-
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
         @paints = model.paints
@@ -292,8 +246,6 @@ module Api
       end
 
       def store_image
-        authorize! :show, :api_models
-
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first
         model = ModelUpgrade.visible.active.where(slug: params[:slug]).first if model.blank?
         model = Model.new if model.blank?
@@ -305,8 +257,6 @@ module Api
       end
 
       def fleetchart_image
-        authorize! :show, :api_models
-
         model = Model
           .visible
           .active
@@ -319,8 +269,6 @@ module Api
       end
 
       def snub_crafts
-        authorize! :show, :api_models
-
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
         @snub_crafts = model.snub_crafts

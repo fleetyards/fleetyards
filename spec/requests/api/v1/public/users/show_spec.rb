@@ -3,10 +3,8 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/public/users", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
-  let(:user) { users :data }
-  let(:user_without_public_hangar) { users :troi }
+  let(:user) { create(:user) }
+  let(:user_without_public_hangar) { create(:user, public_hangar: false) }
 
   path "/public/users/{username}" do
     parameter name: "username", in: :path, type: :string, required: true

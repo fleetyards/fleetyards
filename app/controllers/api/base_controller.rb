@@ -5,21 +5,23 @@ module Api
     include ActionController::Cookies
     include ActionController::MimeResponds
     include ActionController::Caching
+    include ActionPolicy::Controller
     include RansackHelper
     include Pagination
 
     respond_to :json
 
+    verify_authorized except: %i[root version provider]
+
     skip_before_action :track_ahoy_visit
 
     before_action :authenticate_user!, except: %i[root version provider]
-    before_action :current_ability, except: %i[root version provider]
     before_action :set_locale
     before_action :set_last_active_at
 
-    check_authorization except: %i[root version provider]
-
     after_action :set_rate_limit_headers
+
+    authorize :user, through: :current_resource_owner
 
     def oauth_token_url(*)
       api_oauth_token_url(*)
@@ -35,8 +37,8 @@ module Api
       render json: {code: "unauthorized", message: exception.message}, status: :unauthorized
     end
 
-    rescue_from CanCan::AccessDenied do |exception|
-      render json: {code: "forbidden", message: exception.message}, status: :forbidden
+    rescue_from ActionPolicy::Unauthorized do |exception|
+      render json: {code: "forbidden", message: exception.result.message}, status: :forbidden
     end
 
     rescue_from ActionController::InvalidAuthenticityToken do |_exception|

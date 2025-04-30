@@ -10,10 +10,10 @@ module Api
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "fleet", "fleet:read" },
         unless: :user_signed_in?
+      before_action :set_fleet
 
       def members
-        authorize! :show, fleet
-        @q = fleet.fleet_memberships.ransack(member_query_params)
+        @q = @fleet.fleet_memberships.ransack(member_query_params)
 
         members = @q.result
 
@@ -28,9 +28,7 @@ module Api
       end
 
       def vehicles
-        authorize! :show, fleet
-
-        scope = fleet.vehicles.includes(:model, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules)
+        scope = @fleet.vehicles.includes(:model, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules)
 
         scope = scope.where(loaner: loaner_included?)
 
@@ -67,9 +65,7 @@ module Api
       end
 
       def model_counts
-        authorize! :show, fleet
-
-        scope = fleet.vehicles.includes(
+        scope = @fleet.vehicles.includes(
           :model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules,
           model: [:manufacturer]
         )
@@ -88,10 +84,8 @@ module Api
       end
 
       def vehicles_by_model
-        authorize! :show, fleet
-
         vehicles_by_model = transform_for_bar_chart(
-          fleet.vehicles.visible.where(loaner: false)
+          @fleet.vehicles.visible.where(loaner: false)
                .joins(:model)
                .group("models.name").count
         ).take(params[:limit].present? ? params[:limit].to_i : Model.count)
@@ -100,10 +94,8 @@ module Api
       end
 
       def models_by_size
-        authorize! :show, fleet
-
         models_by_size = transform_for_pie_chart(
-          fleet.vehicles.visible.where(loaner: false)
+          @fleet.vehicles.visible.where(loaner: false)
                .joins(:model)
                .group("models.size").count
                .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
@@ -114,10 +106,8 @@ module Api
       end
 
       def models_by_production_status
-        authorize! :show, fleet
-
         models_by_production_status = transform_for_pie_chart(
-          fleet.vehicles.visible.where(loaner: false)
+          @fleet.vehicles.visible.where(loaner: false)
                .joins(:model)
                .group("models.production_status").count
                .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
@@ -128,13 +118,11 @@ module Api
       end
 
       def models_by_manufacturer
-        authorize! :show, fleet
-
         models_by_manufacturer = transform_for_pie_chart(
-          fleet.manufacturers.uniq
+          @fleet.manufacturers.uniq
               .map do |manufacturer|
                 model_ids = manufacturer.model_ids
-                {manufacturer.name => fleet.vehicles.visible.where(loaner: false, model_id: model_ids).count}
+                {manufacturer.name => @fleet.vehicles.visible.where(loaner: false, model_id: model_ids).count}
               end
               .reduce(:merge) || []
         )
@@ -143,10 +131,8 @@ module Api
       end
 
       def models_by_classification
-        authorize! :show, fleet
-
         models_by_classification = transform_for_pie_chart(
-          fleet.vehicles.visible.where(loaner: false)
+          @fleet.vehicles.visible.where(loaner: false)
                .joins(:model)
                .group("models.classification").count
                .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
@@ -156,8 +142,10 @@ module Api
         render json: models_by_classification.to_json
       end
 
-      private def fleet
-        @fleet ||= current_user.fleets.where(slug: params[:fleet_slug]).first!
+      private def set_fleet
+        @fleet = authorized_scope(Fleet.all).find_by!(slug: params[:fleet_slug])
+
+        authorize! @fleet, to: :show?
       end
     end
   end

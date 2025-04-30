@@ -11,7 +11,7 @@ module Admin
         end
 
         def index
-          authorize! :read, Manufacturer
+          authorize! with: ::Admin::ManufacturerPolicy
 
           scope = Manufacturer.with_name
 
@@ -27,11 +27,12 @@ module Admin
         end
 
         def show
-          authorize! :show, @manufacturer
         end
 
         private def set_manufacturer
           @manufacturer = Manufacturer.find(params[:id])
+
+          authorize! @manufacturer, with: ::Admin::ManufacturerPolicy
         end
 
         private def manufacturer_query_params

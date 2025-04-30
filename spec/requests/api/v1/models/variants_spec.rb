@@ -3,7 +3,7 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
-  let(:model) { create(:model) }
+  let(:model) { create(:model, :with_variants) }
   let(:slug) { model.slug }
 
   path "/models/{slug}/variants" do

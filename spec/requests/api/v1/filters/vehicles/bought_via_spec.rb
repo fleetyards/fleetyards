@@ -3,8 +3,6 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/filters/vehicles", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
   path "/filters/vehicles/bought-via" do
     get("Vehicles Bought Via Filters") do
       operationId "vehicleBoughtViaFilters"
@@ -14,7 +12,11 @@ RSpec.describe "api/v1/filters/vehicles", type: :request, swagger_doc: "v1/schem
       response(200, "successful") do
         schema type: :array, items: {"$ref": "#/components/schemas/FilterOption"}
 
-        run_test!
+        run_test! do |response|
+          data = JSON.parse(response.body)
+
+          expect(data.count).to be > 0
+        end
       end
     end
   end

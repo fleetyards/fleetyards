@@ -3,11 +3,11 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
-  let(:fleet) { fleets :starfleet }
-
-  let(:user) { nil }
+  let(:admin) { create(:user) }
+  let(:member) { create(:user) }
+  let(:fleet) { create(:fleet, admins: [admin], members: [member]) }
+  let(:user) { admin }
+  let(:slug) { fleet.slug }
 
   before do
     sign_in(user) if user.present?
@@ -22,9 +22,6 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
       produces "application/json"
 
       response(204, "successful") do
-        let(:slug) { fleet.slug }
-        let(:user) { users :jeanluc }
-
         run_test!
       end
 
@@ -32,7 +29,6 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:slug) { "unknown-model" }
-        let(:user) { users :data }
 
         run_test!
       end
@@ -41,8 +37,16 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
         description "You are not the owner of this Fleet"
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:slug) { fleet.slug }
-        let(:user) { users :data }
+        let(:user) { member }
+
+        run_test!
+      end
+
+      response(403, "forbidden") do
+        description "You are not the owner of this Fleet"
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { create(:user) }
 
         run_test!
       end
@@ -50,7 +54,7 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:slug) { fleet.slug }
+        let(:user) { nil }
 
         run_test!
       end

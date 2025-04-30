@@ -3,9 +3,7 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/sessions", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :users
-
-  let(:user) { users :data }
+  let(:user) { create(:user) }
 
   before do
     sign_in(user) if user.present?
@@ -18,13 +16,7 @@ RSpec.describe "api/v1/sessions", type: :request, swagger_doc: "v1/schema.yaml" 
       produces "application/json"
 
       response(200, "successful") do
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
+        schema "$ref": "#/components/schemas/StandardMessage"
 
         run_test!
       end

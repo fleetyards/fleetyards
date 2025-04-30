@@ -1,9 +1,5 @@
-import {
-  mount,
-  flushPromises,
-  ComponentMountingOptions,
-} from "@vue/test-utils";
-import { Plugin, Component } from "vue";
+import { mount, flushPromises } from "@vue/test-utils";
+import { Plugin } from "vue";
 import { createTestingPinia, TestingOptions } from "@pinia/testing";
 import { VueQueryPlugin } from "@tanstack/vue-query";
 import { createRouter, createWebHashHistory, type Router } from "vue-router";

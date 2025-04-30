@@ -3,7 +3,7 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/components", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
+  let!(:components) { create_list(:component, 2) }
 
   path "/components" do
     get("Components list") do
@@ -26,14 +26,6 @@ RSpec.describe "api/v1/components", type: :request, swagger_doc: "v1/schema.yaml
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Components"
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
-
         run_test! do |response|
           data = JSON.parse(response.body)
 
@@ -47,7 +39,7 @@ RSpec.describe "api/v1/components", type: :request, swagger_doc: "v1/schema.yaml
 
         let(:q) do
           {
-            "nameCont" => "Badger"
+            "nameCont" => components.first.name
           }
         end
 
@@ -55,7 +47,7 @@ RSpec.describe "api/v1/components", type: :request, swagger_doc: "v1/schema.yaml
           data = JSON.parse(response.body)
           items = data["items"]
           expect(items.count).to eq(1)
-          expect(items.first["name"]).to eq("CF-227 Badger")
+          expect(items.first["name"]).to eq(components.first.name)
         end
       end
 

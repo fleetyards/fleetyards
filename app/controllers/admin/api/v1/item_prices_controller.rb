@@ -7,11 +7,11 @@ module Admin
         before_action :set_item_price, only: %i[show update destroy]
 
         def index
-          authorize! :index, ItemPrice
+          authorize! with: ::Admin::ItemPricePolicy
 
           item_price_query_params["sorts"] = "created_at desc"
 
-          @q = ItemPrice.ransack(item_price_query_params)
+          @q = authorized_scope(ItemPrice.all).ransack(item_price_query_params)
 
           @item_prices = @q.result
             .page(params.fetch(:page, nil))
@@ -19,9 +19,9 @@ module Admin
         end
 
         def create
-          authorize! :create, ItemPrice
-
           @item_price = ItemPrice.new(item_price_params)
+
+          authorize! @item_price, with: ::Admin::ItemPricePolicy
 
           if @item_price.save
             render :show, status: :created
@@ -31,12 +31,9 @@ module Admin
         end
 
         def show
-          authorize! :show, @item_price
         end
 
         def update
-          authorize! :update, @item_price
-
           if @item_price.update(item_price_params)
             render :show, status: :ok
           else
@@ -45,8 +42,6 @@ module Admin
         end
 
         def destroy
-          authorize! :destroy, @item_price
-
           @item_price.destroy
 
           head :no_content
@@ -54,6 +49,8 @@ module Admin
 
         private def set_item_price
           @item_price = ItemPrice.find(params[:id])
+
+          authorize! @item_price, with: ::Admin::ItemPricePolicy
         end
 
         private def item_price_params

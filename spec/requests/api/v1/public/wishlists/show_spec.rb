@@ -3,10 +3,8 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/public/wishlists", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
-  let(:user) { users :data }
-  let(:user_without_public_wishlist) { users :troi }
+  let(:user) { create(:user, public_wishlist: true, wanted_vehicle_count: 2) }
+  let(:user_without_public_wishlist) { create(:user, public_wishlist: false, wanted_vehicle_count: 2) }
 
   path "/public/wishlists/{username}" do
     parameter name: "username", in: :path, type: :string, required: true
@@ -32,14 +30,6 @@ RSpec.describe "api/v1/public/wishlists", type: :request, swagger_doc: "v1/schem
 
         let(:username) { user.username }
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
-
         run_test! do |response|
           data = JSON.parse(response.body)
           items = data["items"]
@@ -54,7 +44,7 @@ RSpec.describe "api/v1/public/wishlists", type: :request, swagger_doc: "v1/schem
         let(:username) { user.username }
         let(:q) do
           {
-            "modelNameOrModelDescriptionCont" => "Galaxy"
+            "modelNameOrModelDescriptionCont" => user.vehicles.first.model.name
           }
         end
 
@@ -63,7 +53,7 @@ RSpec.describe "api/v1/public/wishlists", type: :request, swagger_doc: "v1/schem
           items = data["items"]
 
           expect(items.count).to eq(1)
-          expect(items.first.dig("model", "name")).to eq("Galaxy")
+          expect(items.first.dig("model", "name")).to eq(user.vehicles.first.model.name)
         end
       end
 

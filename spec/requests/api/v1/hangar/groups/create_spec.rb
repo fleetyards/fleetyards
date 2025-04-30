@@ -3,9 +3,13 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/hangar/groups", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :users
-
-  let(:user) { nil }
+  let(:user) { create(:user) }
+  let(:input) do
+    {
+      name: "Hangar Group One Test",
+      color: "#000000"
+    }
+  end
 
   before do
     sign_in(user) if user.present?
@@ -23,22 +27,6 @@ RSpec.describe "api/v1/hangar/groups", type: :request, swagger_doc: "v1/schema.y
       response(201, "successful") do
         schema "$ref": "#/components/schemas/HangarGroup"
 
-        let(:user) { users :data }
-        let(:input) do
-          {
-            name: "Hangar Group One Test",
-            color: "#000000"
-          }
-        end
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
-
         run_test! do |response|
           data = JSON.parse(response.body)
 
@@ -49,7 +37,7 @@ RSpec.describe "api/v1/hangar/groups", type: :request, swagger_doc: "v1/schema.y
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:input) { nil }
+        let(:user) { nil }
 
         run_test!
       end

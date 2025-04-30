@@ -4,14 +4,16 @@ module Admin
   module Api
     module V1
       class ImagesController < ::Admin::Api::BaseController
+        before_action :set_image, only: %i[update destroy]
+
         after_action -> { pagination_header(:images) }, only: [:index]
 
         def index
-          authorize! :index, Image
+          authorize!
 
           image_query_params["sorts"] = "created_at desc"
 
-          @q = Image.ransack(image_query_params)
+          @q = authorized_scope(Image.all).ransack(image_query_params)
 
           @images = @q.result
             .page(params.fetch(:page, nil))
@@ -19,30 +21,26 @@ module Admin
         end
 
         def create
-          authorize! :create, Image
-
           @image = Image.new(image_create_params)
 
-          return if image.save
+          authorize! @image, with: ::Admin::ImagePolicy
 
-          render json: ValidationError.new("image.create", errors: image.errors), status: :bad_request
+          return if @image.save
+
+          render json: ValidationError.new("image.create", errors: @image.errors), status: :bad_request
         end
 
         def update
-          authorize! :update, image
+          return if @image.update(image_params)
 
-          return if image.update(image_params)
-
-          render json: ValidationError.new("image.update", errors: image.errors), status: :bad_request
+          render json: ValidationError.new("image.update", errors: @image.errors), status: :bad_request
         end
 
         def destroy
-          authorize! :destroy, image
-
-          if image.destroy
+          if @image.destroy
             head :no_content
           else
-            render json: ValidationError.new("image.destroy", errors: image.errors), status: :bad_request
+            render json: ValidationError.new("image.destroy", errors: @image.errors), status: :bad_request
           end
         end
 
@@ -66,10 +64,11 @@ module Admin
             )
         end
 
-        private def image
-          @image ||= Image.find(params[:id])
+        private def set_image
+          @image = Image.find(params[:id])
+
+          authorize! @image, with: ::Admin::ImagePolicy
         end
-        helper_method :image
       end
     end
   end

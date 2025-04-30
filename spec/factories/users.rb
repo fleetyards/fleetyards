@@ -63,10 +63,25 @@
 #
 FactoryBot.define do
   factory :user do
+    transient do
+      vehicle_count { 0 }
+      wanted_vehicle_count { 0 }
+    end
+
     username { Faker::Internet.username(separators: ["_"]) }
     email { Faker::Internet.email }
     password { Faker::Internet.password }
     password_confirmation { password }
     confirmed_at { Time.now }
+
+    after(:create) do |user, evaluator|
+      evaluator.vehicle_count.times do
+        create(:vehicle, user: user)
+      end
+
+      evaluator.wanted_vehicle_count.times do
+        create(:vehicle, user: user, wanted: true)
+      end
+    end
   end
 end

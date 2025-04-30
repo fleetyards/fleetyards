@@ -3,9 +3,7 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
-  let(:user) { nil }
+  let(:user) { create(:user, vehicle_count: 2) }
 
   before do
     sign_in(user) if user.present?
@@ -18,13 +16,15 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
       produces "application/json"
 
       response(204, "successful") do
-        let(:user) { users :data }
-
-        run_test!
+        run_test! do
+          expect(user.vehicles.where(wanted: false).count).to eq(0)
+        end
       end
 
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { nil }
 
         run_test!
       end

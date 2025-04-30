@@ -36,15 +36,15 @@ const { t } = useI18n();
 
 const image = computed(() => {
   if (props.vehicle.paint && props.vehicle.paint.media.storeImage) {
-    return props.vehicle.paint.media.storeImage.medium;
+    return props.vehicle.paint.media.storeImage.mediumUrl;
   }
 
   if (props.vehicle.upgrade && props.vehicle.upgrade.media.storeImage) {
-    return props.vehicle.upgrade.media.storeImage.medium;
+    return props.vehicle.upgrade.media.storeImage.mediumUrl;
   }
 
   if (model.value?.media.storeImage) {
-    return model.value?.media.storeImage.medium;
+    return model.value?.media.storeImage.mediumUrl;
   }
 });
 

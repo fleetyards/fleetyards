@@ -25,14 +25,10 @@
 #  youtube            :string
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
-#  entry_role_id      :uuid
-#  executive_role_id  :uuid
 #
 # Indexes
 #
-#  index_fleets_on_entry_role_id      (entry_role_id)
-#  index_fleets_on_executive_role_id  (executive_role_id)
-#  index_fleets_on_fid                (fid) UNIQUE
+#  index_fleets_on_fid  (fid) UNIQUE
 #
 require "test_helper"
 
@@ -52,8 +48,6 @@ class FleetTest < ActiveSupport::TestCase
     )
 
     assert_equal(3, fleet.fleet_roles.size)
-    assert(fleet.executive_role.present?)
-    assert(fleet.entry_role.present?)
   end
 
   test "ensure valid urls are saved" do

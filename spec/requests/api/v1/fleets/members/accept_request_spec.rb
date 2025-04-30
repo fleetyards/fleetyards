@@ -2,31 +2,31 @@
 
 require "swagger_helper"
 
-RSpec.describe "api/v1/fleets/membership", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
-  let(:user) { nil }
-
-  let(:fleet) { fleets :starfleet }
+RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.yaml" do
+  let(:admin) { create(:user) }
+  let(:member) { create(:user) }
+  let(:new_member) { create(:fleet_membership, fleet: fleet, aasm_state: :requested).user }
+  let(:user) { admin }
+  let(:fleet) { create(:fleet, admins: [admin], members: [member]) }
   let(:fleetSlug) { fleet.slug }
+  let(:username) { new_member.username }
 
   before do
     sign_in(user) if user.present?
   end
 
-  path "/fleets/{fleetSlug}/membership/decline" do
+  path "/fleets/{fleetSlug}/members/{username}/accept" do
     parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
+    parameter name: "username", in: :path, type: :string, description: "Username"
 
-    put("Decline Membership") do
-      operationId "declineFleetMembership"
-      tags "FleetMembership"
+    put("Accept Member") do
+      operationId "acceptFleetMember"
+      tags "FleetMembers"
       consumes "application/json"
       produces "application/json"
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/StandardMessage"
-
-        let(:user) { users :will }
 
         run_test!
       end
@@ -34,7 +34,7 @@ RSpec.describe "api/v1/fleets/membership", type: :request, swagger_doc: "v1/sche
       response(400, "bad request") do
         schema "$ref": "#/components/schemas/ValidationError"
 
-        let(:user) { users :jeanluc }
+        let(:username) { member.username }
 
         run_test!
       end
@@ -42,23 +42,32 @@ RSpec.describe "api/v1/fleets/membership", type: :request, swagger_doc: "v1/sche
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:user) { users :will }
         let(:fleetSlug) { "unknown-fleet" }
 
         run_test!
       end
 
       response(404, "not found") do
-        description "No Membership found"
+        description "No Member found"
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:user) { users :worf }
+        let(:username) { "unknown-username" }
+
+        run_test!
+      end
+
+      response(403, "forbidden") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { member }
 
         run_test!
       end
 
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { nil }
 
         run_test!
       end

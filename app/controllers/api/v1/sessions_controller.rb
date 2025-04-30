@@ -3,8 +3,10 @@
 module Api
   module V1
     class SessionsController < ::Api::BaseController
-      skip_authorization_check except: [:confirm_access]
+      skip_verify_authorized except: [:confirm_access]
+
       before_action :authenticate_user!, except: [:create]
+      before_action :set_user, only: [:confirm_access]
 
       def create
         resource = User.find_for_database_authentication(login: login_params[:login])
@@ -54,8 +56,6 @@ module Api
       end
 
       def confirm_access
-        authorize! :confirm_access, current_user
-
         unless current_user.valid_password?(login_params[:password])
           render json: {code: "session.confirmAccess.failure", message: I18n.t("messages.confirmAccess.failure")}, status: :bad_request
           return
@@ -71,6 +71,12 @@ module Api
         }
 
         render json: {code: :success, message: I18n.t("labels.success")}
+      end
+
+      private def set_user
+        @user = current_user
+
+        authorize! @user
       end
 
       private def login_params

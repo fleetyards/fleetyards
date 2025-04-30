@@ -3,40 +3,31 @@
 module Api
   module V1
     class UsersController < ::Api::BaseController
-      skip_authorization_check only: %i[signup confirm check_email check_username]
+      skip_verify_authorized only: %i[signup confirm check_email check_username]
 
       before_action :doorkeeper_authorize!, unless: :user_signed_in?, only: %i[
-        me update
+        me update update_account destroy
       ]
       before_action :authenticate_user!, except: %i[
-        me update check_email check_username confirm signup
+        me update update_account destroy check_email check_username confirm signup
       ]
+      before_action :set_user, only: %i[me update update_account destroy]
 
       def me
-        authorize! :read, current_user
-
-        @user = current_user
       end
 
       def update
-        authorize! :update, current_user
-
-        @user = current_user
-
         return if @user.update(user_params)
 
         render json: ValidationError.new("update", errors: @user.errors), status: :bad_request
       end
 
       def update_account
-        authorize! :update, current_user
-
         unless access_cookie_valid?
           render json: {code: "requires_access_confirmation", message: I18n.t("messages.user.requires_access_confirmation")}, status: :bad_request
           return
         end
 
-        @user = current_user
         return if @user.update(user_account_params)
 
         render json: ValidationError.new("update", errors: @user.errors), status: :bad_request
@@ -102,15 +93,19 @@ module Api
       end
 
       def destroy
-        authorize! :destroy, current_user
-
-        if current_user.destroy
-          Cleanup::UserVisitsJob.perform_async(current_user.id)
+        if @user.destroy
+          Cleanup::UserVisitsJob.perform_async(@user.id)
 
           render json: {code: "current_user.destroyed", message: I18n.t("messages.destroy.success", resource: I18n.t("resources.user"))}
         else
-          render json: ValidationError.new("current_user.destroy", errors: @current_user.errors), status: :bad_request
+          render json: ValidationError.new("current_user.destroy", errors: @user.errors), status: :bad_request
         end
+      end
+
+      private def set_user
+        @user = current_resource_owner
+
+        authorize! @user
       end
 
       private def user_create_params
@@ -165,7 +160,7 @@ module Api
         member = invite_url.fleet.fleet_memberships.create(
           user_id:,
           role: :member,
-          fleet_role: invite_url.fleet.entry_role,
+          fleet_role: invite_url.fleet.fleet_roles.ranked.last,
           invited_by: invite_url.user_id,
           used_invite_token: invite_url.token
         )
