@@ -32,10 +32,6 @@ module Admin
       devise_controller?
     end
 
-    rescue_from CanCan::AccessDenied do |exception|
-      redirect_to admin_root_path, warning: exception.message
-    end
-
     private def set_default_nav
       @active_nav = "home"
     end
