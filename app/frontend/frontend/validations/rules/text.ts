@@ -1,9 +1,11 @@
-import type { I18nPluginOptions } from "@/shared/plugins/I18n";
+import { useI18n } from "@/shared/composables/useI18n";
 
 const regex =
   /^[\d\w\bÀÂÆÇÉÈÊËÏÎÔŒÙÛÜŸÄÖßÁÍÑÓÚàâæçéèêëïîôœùûüÿäöáíñóú[]()-_'".,?!:;\s]*$/i;
 
-export const useRule = (t: I18nPluginOptions["t"]) => {
+export const useRule = () => {
+  const { t } = useI18n();
+
   const validateText = (
     value: string,
     [_target]: [unknown],

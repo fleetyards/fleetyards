@@ -16,6 +16,6 @@ export default {
       },
     });
 
-    setupRules(t);
+    setupRules();
   },
 };

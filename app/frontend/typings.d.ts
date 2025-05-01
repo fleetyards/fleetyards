@@ -41,6 +41,7 @@ declare global {
     MAINTAINER_ADDRESS_POSTALCODE: string;
     MAINTAINER_ADDRESS_CITY: string;
     MAINTAINER_ADDRESS_COUNTRY: string;
+    COPYRIGHT_OWNER: string;
     RSI_ENDPOINT: string;
     DIRECT_UPLOAD_URL: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -1,8 +1,10 @@
 import { checkFID } from "@/services/fyApi";
 import { debounce } from "ts-debounce";
-import type { I18nPluginOptions } from "@/shared/plugins/I18n";
+import { useI18n } from "@/shared/composables/useI18n";
 
-export const useRule = (t: I18nPluginOptions["t"]) => {
+export const useRule = () => {
+  const { t } = useI18n();
+
   const errorMessage = t("messages.error.fleetTaken");
 
   const validate = debounce(async (value: string) => {

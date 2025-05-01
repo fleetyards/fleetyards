@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { modelDockSizesFilters as fetchModelDockSizeFilters } from "@/services/fyApi";
-import { type FilterOption } from "@/services/fyApi/models/filterOption";
+import { type FilterOption } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import FilterGroup, {
   type FilterGroupParams,

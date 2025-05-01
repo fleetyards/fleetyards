@@ -15,7 +15,10 @@ import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 
 type Props = {
   image?: MediaFile;
-  size: keyof Omit<MediaFile, "width" | "height">;
+  size: keyof Omit<
+    MediaFile,
+    "width" | "height" | "name" | "contentType" | "size" | "uploadedAt"
+  >;
   alt: string;
   href?: string;
   to?: RouteLocationRaw;

@@ -6,7 +6,6 @@ import { useRule as hexColorRule } from "./rules/hexColor";
 import { useRule as serialTakenRule } from "./rules/serialTaken";
 import { useRule as fidTakenRule } from "./rules/fidTaken";
 import { useRule as emailTakenRule } from "./rules/emailTaken";
-import type { I18nPluginOptions } from "@/shared/plugins/I18n";
 import {
   required,
   email,
@@ -20,7 +19,7 @@ import {
   url,
 } from "@vee-validate/rules";
 
-export const setupRules = (t: I18nPluginOptions["t"]) => {
+export const setupRules = () => {
   defineRule("required", required);
   defineRule("alpha_dash", alpha_dash);
   defineRule("confirmed", confirmed);
@@ -32,11 +31,11 @@ export const setupRules = (t: I18nPluginOptions["t"]) => {
   defineRule("email", email);
   defineRule("url", url);
 
-  defineRule("emailTaken", emailTakenRule(t));
-  defineRule("fidTaken", fidTakenRule(t));
-  defineRule("serialTaken", serialTakenRule(t));
-  defineRule("hexColor", hexColorRule(t));
-  defineRule("user", userRule(t));
-  defineRule("usernameTaken", usernameTakenRule(t));
-  defineRule("text", textRule(t));
+  defineRule("emailTaken", emailTakenRule());
+  defineRule("fidTaken", fidTakenRule());
+  defineRule("serialTaken", serialTakenRule());
+  defineRule("hexColor", hexColorRule());
+  defineRule("user", userRule());
+  defineRule("usernameTaken", usernameTakenRule());
+  defineRule("text", textRule());
 };

@@ -1,18 +1,18 @@
 import {
   useUpdateModel as useUpdateModelMutation,
-  getModelsQueryKey,
-  getModelQueryKey,
+  useModelsQueryOptions,
   type Models,
   type Model,
 } from "@/services/fyAdminApi";
 import { transformQueryKey } from "@/services/customQueryOptions";
 import { useQueryClient } from "@tanstack/vue-query";
+import { CustomQueryOptions } from "@/services/customQueryOptions";
 
 export const useModelUpdateMutation = (model: Model) => {
   const queryClient = useQueryClient();
 
   const modelsQueryKey = computed(() => {
-    return transformQueryKey(getModelsQueryKey());
+    return (useModelsQueryOptions() as CustomQueryOptions).queryKey;
   });
 
   const updateMutation = useUpdateModelMutation({

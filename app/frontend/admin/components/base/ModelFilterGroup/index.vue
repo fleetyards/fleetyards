@@ -6,9 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { models as fetchModels } from "@/services/fyApi";
-import { type ModelQuery } from "@/services/fyApi/models/modelQuery";
-import { type Models } from "@/services/fyApi/models/models";
-import { type Model } from "@/services/fyApi/models/model";
+import { type Models, type Model, type ModelQuery } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import FilterGroup, {
   type FilterGroupParams,

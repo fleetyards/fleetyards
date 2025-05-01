@@ -24,7 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
 const { t } = useI18n();
 
 const destroy = () => {
-  console.info("destroy", props.record);
+  console.info("destroy", props.user);
 };
 </script>
 

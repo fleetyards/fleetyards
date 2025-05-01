@@ -9,7 +9,7 @@ import AppNavigationItems from "@/shared/components/AppNavigation/Items/index.vu
 import AppNavigationMobile from "@/shared/components/AppNavigation/Mobile/index.vue";
 import { storeToRefs } from "pinia";
 import { useSessionStore } from "@/admin/stores/session";
-import routes from "@/admin/pages/routes";
+import { routes } from "@/admin/pages/routes";
 
 const mobileRoutes = computed(() => {
   return routes

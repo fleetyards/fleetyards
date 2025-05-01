@@ -24,10 +24,7 @@ import {
   InputTypesEnum,
   InputAlignmentsEnum,
 } from "@/shared/components/base/FormInput/types";
-import {
-  useComponents as useComponentsQuery,
-  getComponentsQueryKey,
-} from "@/services/fyApi";
+import { useComponents as useComponentsQuery } from "@/services/fyApi";
 
 const { t } = useI18n();
 

@@ -10,7 +10,7 @@ import logo from "@/images/admin/favicon.png";
 import AppNavigation from "@/shared/components/AppNavigation/index.vue";
 import AppNavigationItems from "@/shared/components/AppNavigation/Items/index.vue";
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
-import routes from "@/admin/pages/routes";
+import { routes } from "@/admin/pages/routes";
 import { storeToRefs } from "pinia";
 import { useSessionStore } from "@/admin/stores/session";
 import { useDestroySession as useDestroySessionMutation } from "@/services/fyAdminApi";
