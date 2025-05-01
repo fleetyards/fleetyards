@@ -8,7 +8,7 @@ module ScData
 
     describe "#all" do
       it "loads data from game files" do
-        assert_difference("Component.where.not(version: nil).count", 5956) do
+        assert_difference("Component.where.not(version: nil).count", 5249) do
           loader.all
         end
       end

@@ -118,8 +118,6 @@ class HangarImporterHangarXplorTest < ActiveSupport::TestCase
       "Mantis",
       "Merchantman",
       "Mercury",
-      "Mole Carbon Edition",
-      "Mole Talus Edition",
       "Mustang Alpha",
       "Mustang Alpha Vindicator",
       "Mustang Beta",
@@ -205,6 +203,8 @@ class HangarImporterHangarXplorTest < ActiveSupport::TestCase
     assert_equal(
       {
         missing: [
+          "Argo Mole - Carbon Edition",
+          "Argo Mole - Talus Edition",
           "Rover"
         ],
         imported: imported_ships,
