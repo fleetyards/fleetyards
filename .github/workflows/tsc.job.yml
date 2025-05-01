@@ -1,0 +1,13 @@
+name: TSC Job
+
+on:
+  workflow_call:
+
+jobs:
+  js-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/workflows/js-setup-action
+      - run: pnpm run vue-tsc
+      - run: pnpm run tsc

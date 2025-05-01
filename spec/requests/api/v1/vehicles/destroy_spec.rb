@@ -5,8 +5,8 @@ require "swagger_helper"
 RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" do
   let(:author) { create(:user) }
   let(:user) { author }
-  let(:vehicle) { create(:vehicle, user: author)}
-  let(:other_vehicle) { create(:vehicle)}
+  let(:vehicle) { create(:vehicle, user: author) }
+  let(:other_vehicle) { create(:vehicle) }
   let(:id) { vehicle.id }
 
   before do

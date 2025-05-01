@@ -25,6 +25,10 @@ jobs:
     needs: js-setup
     uses: ./.github/workflows/js-lint.job.yml
 
+  tsc:
+    needs: js-setup
+    uses: ./.github/workflows/tsc.job.yml
+
   js-prettier:
     needs: js-setup
     uses: ./.github/workflows/js-prettier.job.yml
