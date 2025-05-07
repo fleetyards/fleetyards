@@ -1,0 +1,24 @@
+{
+  "key": "HTNK_RSI_Constellation_Taurus",
+  "ref": "c36f6a0e-4f4a-4335-b788-f76fd9e998a6",
+  "category": "fueltanks",
+  "type": "FuelTank",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Internal Tank",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "capacity": 33.0
+  }
+}

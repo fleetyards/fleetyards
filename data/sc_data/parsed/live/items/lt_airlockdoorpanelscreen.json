@@ -1,0 +1,21 @@
+{
+  "key": "Lt_AirlockDoorPanelScreen",
+  "ref": "33b38cd4-11c0-44ac-891d-d4414afd7a39",
+  "category": "doors",
+  "type": "Misc",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

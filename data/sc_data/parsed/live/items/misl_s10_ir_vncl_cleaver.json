@@ -1,0 +1,24 @@
+{
+  "key": "MISL_S10_IR_VNCL_Cleaver",
+  "ref": "3be04d51-971d-42e3-b741-a5b28e177e38",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "Torpedo",
+  "size": "10",
+  "grade": "1",
+  "manufacturer_ref": "4668760a-d8a1-48d0-be4d-42304b702de0",
+  "name": "Vanduul Cleaver",
+  "short_name": null,
+  "description": "Vanduul Cleaver",
+  "inventory_consumption": {
+    "micro_scu": 187500.0,
+    "dimensions": {
+      "x": 6.252413,
+      "y": 18.79356,
+      "z": 4.81137
+    }
+  },
+  "durability": {
+    "health": 80.0
+  }
+}

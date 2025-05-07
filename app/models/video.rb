@@ -20,7 +20,8 @@ class Video < ApplicationRecord
 
   belongs_to :model, touch: true, counter_cache: true
 
-  enum video_type: {youtube: 0}
+  enum :video_type,
+    {youtube: 0}
 
   validates :url, :video_type, presence: true
 

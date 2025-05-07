@@ -1,0 +1,9 @@
+{
+  "key": "CRUS_Intrepid_Template",
+  "ref": "617fed64-0fca-496c-bdd3-6edfd98beb67",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 2.0
+  }
+}

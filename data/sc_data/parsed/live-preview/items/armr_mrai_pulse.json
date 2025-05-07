@@ -1,0 +1,24 @@
+{
+  "key": "ARMR_MRAI_Pulse",
+  "ref": "ec0390d7-8abc-4630-b1a7-496910f531ed",
+  "category": "armor",
+  "type": "Armor",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cdf6ea1e-7de3-4b58-bf9d-13c5fbafc49a",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  }
+}

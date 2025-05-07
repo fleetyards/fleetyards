@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Reclaimer_Dolivine_Green",
+  "ref": "a00d9465-8e6f-4597-9bd0-1a0d0d24ab0d",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "765f7fe2-ebcc-4e64-86c3-062b9ce4d93d",
+  "name": "Reclaimer Dolivine Livery",
+  "short_name": null,
+  "description": "Sharing the name with a gemstone prized for its beauty and industrial applications, the Dolivine livery blends shades of light green to give your Reclaimer a unique look.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

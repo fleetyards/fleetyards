@@ -1,0 +1,374 @@
+{
+  "key": "MISC_Prospector_Unmanned_NineTails",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "MISC Prospector",
+  "description": "Manufacturer: MISC\\nFocus: Mining\\n\\nFor years, the Prospector has been the universe’s preferred mining vessel for solo operators. Featuring MISC’s sleek design sensibility and a bevy of upgraded high-tech mining tools, the 2947 Prospector perfectly balances form and functionality.",
+  "career": "Industrial",
+  "role": "Light Mining",
+  "insurance": {
+    "base_wait_time_minutes": "9",
+    "mandatory_wait_time_minutes": "3",
+    "base_expediting_fee": "3040"
+  },
+  "mass": 137396.0,
+  "metrics": {
+    "x": 16.5,
+    "y": 26.5,
+    "z": 8.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "MISC_Prospector_SCItem_Seat",
+      "loadout": [
+        {
+          "name": "Annunciator_left",
+          "ref": null,
+          "key": "Vehicle_Screen_Physical_Holo"
+        },
+        {
+          "name": "Annunciator_right",
+          "ref": null,
+          "key": "Vehicle_Screen_Physical_Holo"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "MISC_Prospector_SCItem_SeatAccess"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_cockpit_radar",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_selfdestruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_30s"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_door_rear",
+      "ref": null,
+      "key": "Door_Ship_Ext_Dmg_MISC_Prospector_Rear"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_CHCO_S01_SurveyorLite"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_MISC_Prospector"
+    },
+    {
+      "name": "hardpoint_controller_scanner",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_ping",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_power_plant",
+      "ref": null,
+      "key": "POWR_JUST_S02_Trommel_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_fuel_tank",
+      "ref": null,
+      "key": "HTNK_MISC_Prospector"
+    },
+    {
+      "name": "hardpoint_fuel_intake",
+      "ref": null,
+      "key": "INTK_MISC_Prospector"
+    },
+    {
+      "name": "hardpoint_cooler",
+      "ref": null,
+      "key": "COOL_JUST_S02_Snowfall_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_JUST_S01_Goliath_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": null,
+          "key": "JDRV_TARS_S01_Explorer_SCItem"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_fuel_tank",
+      "ref": null,
+      "key": "QTNK_MISC_Prospector"
+    },
+    {
+      "name": "hardpoint_mining_arm",
+      "ref": "4e5b552a-8023-4b59-8282-c27b58a4c2c6",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_mining_laser",
+          "ref": "8bfc261a-6c67-4bec-b5b5-71407e086ec9",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_shield_generator",
+      "ref": null,
+      "key": "SHLD_BASL_S01_Bulwark_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_MISC_Prospector"
+    },
+    {
+      "name": "hardpoint_armour",
+      "ref": null,
+      "key": "ARMR_MISC_Prospector"
+    },
+    {
+      "name": "hardpoint_thruster_main_rear_middle",
+      "ref": null,
+      "key": "MISC_Prospector_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_main_rear_right",
+      "ref": null,
+      "key": "MISC_Prospector_Thruster_Aux"
+    },
+    {
+      "name": "hardpoint_thruster_main_rear_left",
+      "ref": null,
+      "key": "MISC_Prospector_Thruster_Aux"
+    },
+    {
+      "name": "hardpoint_thruster_retro_left",
+      "ref": null,
+      "key": "MISC_Prospector_Thruster_Retro_01"
+    },
+    {
+      "name": "hardpoint_thruster_retro_right",
+      "ref": null,
+      "key": "MISC_Prospector_Thruster_Retro_01"
+    },
+    {
+      "name": "hardpoint_thruster_retro_top",
+      "ref": null,
+      "key": "MISC_Prospector_Thruster_Retro_02"
+    },
+    {
+      "name": "hardpoint_thruster_front_left_bottom",
+      "ref": null,
+      "key": "MISC_Prospector_Thruster_Mav_FIxed_02"
+    },
+    {
+      "name": "hardpoint_thruster_front_right_bottom",
+      "ref": null,
+      "key": "MISC_Prospector_Thruster_Mav_FIxed_02"
+    },
+    {
+      "name": "hardpoint_thruster_front_right_side",
+      "ref": null,
+      "key": "MISC_Prospector_Thruster_Mav_Fixed_01"
+    },
+    {
+      "name": "hardpoint_thruster_front_left_side",
+      "ref": null,
+      "key": "MISC_Prospector_Thruster_Mav_Fixed_01"
+    },
+    {
+      "name": "hardpoint_thruster_front_left_top",
+      "ref": null,
+      "key": "MISC_Prospector_Thruster_Mav_Fixed_01_Top"
+    },
+    {
+      "name": "hardpoint_thruster_front_right_top",
+      "ref": null,
+      "key": "MISC_Prospector_Thruster_Mav_Fixed_01_Top"
+    },
+    {
+      "name": "hardpoint_thruster_rear_left_top",
+      "ref": null,
+      "key": "MISC_Prospector_Thruster_Mav_Fixed_03_Top"
+    },
+    {
+      "name": "hardpoint_thruster_rear_right_top",
+      "ref": null,
+      "key": "MISC_Prospector_Thruster_Mav_Fixed_03_Top"
+    },
+    {
+      "name": "hardpoint_thruster_rear_right_bottom",
+      "ref": null,
+      "key": "MISC_Prospector_Thruster_Mav_Fixed_03"
+    },
+    {
+      "name": "hardpoint_thruster_rear_left_bottom",
+      "ref": null,
+      "key": "MISC_Prospector_Thruster_Mav_Fixed_03"
+    },
+    {
+      "name": "hardpoint_thruster_rear_left_side",
+      "ref": null,
+      "key": "MISC_Prospector_Thruster_Mav_Fixed_04"
+    },
+    {
+      "name": "hardpoint_thruster_rear_right_side",
+      "ref": null,
+      "key": "MISC_Prospector_Thruster_Mav_Fixed_04"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_controller_mining",
+      "ref": null,
+      "key": "Controller_Mining"
+    },
+    {
+      "name": "hardpoint_weapon_left",
+      "ref": "80ae6d83-7d8a-4357-b109-a0154418bae5",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "c9c2bb19-3298-448e-a117-043e082a1c74",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_right",
+      "ref": "80ae6d83-7d8a-4357-b109-a0154418bae5",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "c9c2bb19-3298-448e-a117-043e082a1c74",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_countermeasure_launcher_left",
+      "ref": null,
+      "key": "MISC_Prospector_CML_Flare"
+    },
+    {
+      "name": "hardpoint_countermeasure_launcher_right",
+      "ref": null,
+      "key": "MISC_Prospector_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_mining_pod_1",
+      "ref": null,
+      "key": "Cargo_Mining_Pod"
+    },
+    {
+      "name": "hardpoint_mining_pod_2",
+      "ref": null,
+      "key": "Cargo_Mining_Pod"
+    },
+    {
+      "name": "hardpoint_mining_pod_3",
+      "ref": null,
+      "key": "Cargo_Mining_Pod"
+    },
+    {
+      "name": "hardpoint_mining_pod_4",
+      "ref": null,
+      "key": "Cargo_Mining_Pod"
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_MISC_Prospector"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "MISC_Prospector_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_shield_generator_B",
+      "ref": null,
+      "key": "SHLD_BASL_S01_Bulwark_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator_C",
+      "ref": null,
+      "key": "SHLD_BASL_S01_Bulwark_SCItem"
+    },
+    {
+      "name": "hardpoint_relay_cockpit",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_TYDT_S01_ComfortAir"
+    }
+  ]
+}

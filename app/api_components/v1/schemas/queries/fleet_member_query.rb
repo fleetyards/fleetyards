@@ -11,8 +11,8 @@ module V1
           properties: {
             usernameCont: {type: :string},
             nameCont: {type: :string, deprecated: true, description: "Use usernameCont instead"},
-            roleIn: {type: :array, items: {"$ref": "#/components/schemas/FleetMembershipRoleEnum"}},
-            sorts: {oneOf: [{
+            roleIn: {type: :array, items: {type: :string}},
+            sorts: {anyOf: [{
               type: :array, items: {"$ref": "#/components/schemas/FleetMembershipSortEnum"}
             }, {
               "$ref": "#/components/schemas/FleetMembershipSortEnum"

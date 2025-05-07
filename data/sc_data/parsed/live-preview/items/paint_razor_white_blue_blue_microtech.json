@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Razor_White_Blue_Blue_microTech",
+  "ref": "f4e0ed80-2182-43ff-adaa-018a68eb86b6",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "9840ecfe-5e57-4c19-961e-a127223bff21",
+  "name": "Razor Aspire Livery",
+  "short_name": null,
+  "description": "With the Aspire livery, blue and white combine to evoke both the colors and frigid temperatures of New Babbage. In honor of the landing zone that inspired it, the livery also features a depiction of the Aspire Grand building that dominates the city's skyline.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

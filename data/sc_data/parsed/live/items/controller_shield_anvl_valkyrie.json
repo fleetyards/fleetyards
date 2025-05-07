@@ -1,0 +1,21 @@
+{
+  "key": "Controller_Shield_ANVL_Valkyrie",
+  "ref": "3e6fcf88-f86e-4388-a3e7-b55ef390652a",
+  "category": "controller",
+  "type": "ShieldController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SHIELDS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

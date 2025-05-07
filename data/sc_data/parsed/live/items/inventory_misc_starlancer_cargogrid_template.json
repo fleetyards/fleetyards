@@ -1,0 +1,50 @@
+{
+  "key": "MISC_Starlancer_CargoGrid_Template",
+  "ref": "b321cf6b-a66b-4e88-8534-b9bce1b45504",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 2.5,
+      "y": 10.0,
+      "z": 3.75,
+      "scu": 48.0,
+      "max_container_size": {
+        "size": 32,
+        "dimensions": {
+          "x": 10.0,
+          "y": 2.5,
+          "z": 2.5
+        }
+      }
+    },
+    "min_container": {
+      "x": 1.25,
+      "y": 1.25,
+      "z": 1.25,
+      "scu": 1.0,
+      "max_container_size": {
+        "size": 1,
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        }
+      }
+    },
+    "max_container": {
+      "x": 2.5,
+      "y": 10.0,
+      "z": 2.5,
+      "scu": 32.0,
+      "max_container_size": {
+        "size": 32,
+        "dimensions": {
+          "x": 10.0,
+          "y": 2.5,
+          "z": 2.5
+        }
+      }
+    }
+  }
+}

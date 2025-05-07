@@ -1,0 +1,21 @@
+{
+  "key": "Controller_Shield_Orbital_Sentry_Turret",
+  "ref": "2b0d4544-cb77-4b8e-9900-27b6ebbafa52",
+  "category": "controller",
+  "type": "ShieldController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SHIELDS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

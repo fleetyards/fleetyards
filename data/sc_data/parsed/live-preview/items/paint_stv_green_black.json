@@ -1,0 +1,21 @@
+{
+  "key": "Paint_STV_Green_Black",
+  "ref": "1e12fe16-0a1e-40c0-96d3-e35d915219bd",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "67b35e19-d64d-4f41-b6e5-41f94f86473a",
+  "name": "STV Electric Green Livery",
+  "short_name": "STV Electric Green Livery",
+  "description": "Style and a striking color combine with the Electric Green livery. It gives the STV a vivid green look with black accents.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

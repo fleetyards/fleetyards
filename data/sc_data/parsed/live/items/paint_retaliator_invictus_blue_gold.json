@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Retaliator_Invictus_Blue_Gold",
+  "ref": "fa188681-cba7-4701-a45f-f6d64f97ceee",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "549aa80e-310b-4e1b-8892-b8c1c1c8877a",
+  "name": "Retaliator Invictus Blue and Gold Livery",
+  "short_name": null,
+  "description": "Show your support for the newest batch of Navy recruits by customizing your Retaliator with this special Blue and Gold livery to commemorate the 2950 Invictus Launch Week.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

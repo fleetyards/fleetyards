@@ -9,13 +9,6 @@ production: &production
     cron: '*/15 * * * *' # Every 15 Minutes
     class: 'Loaders::RsiNewsJob'
     queue: 'loaders'
-  loaders_roadmap_job:
-    cron: '0 */2 * * *' # Every 2 Hours
-    class: 'Loaders::RoadmapJob'
-    queue: 'loaders'
-  trade_routes_job:
-    cron: '0 */2 * * *' # Every 2 Hours
-    class: 'TradeRoutesJob'
   loaders_models_job:
     cron: '0 20 */1 * *' # Daily at 20:00
     class: 'Loaders::ModelsJob'
@@ -25,15 +18,15 @@ production: &production
     class: 'PricesJob'
   sc_data_check_job:
     cron: '0 22 */1 * *' # Daily at 22:00
-    class: 'ScDataCheckJob'
+    class: 'ScData::CheckJob'
     queue: 'loaders'
   metrics_job:
     cron: '0 1 */1 * *' # Daily at 1:00
     class: 'MetricsJob'
-  loaders_locations_job:
-    cron: '0 3 * * 0' # Weekly on Sunday 3:00
-    class: 'Loaders::LocationsJob'
-    queue: 'loaders'
+  cleanup_unattached_check_job:
+    cron: '0 2 */1 * *' # Daily at 2:00
+    class: 'Cleanup::UnattachedCheckJob'
+    queue: 'cleanup'
   loaders_paints_import_job:
     cron: '0 19 * * 0' # Weekly on Sunday 19:00
     class: 'Loaders::PaintsImportJob'

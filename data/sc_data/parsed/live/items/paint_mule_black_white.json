@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Mule_Black_White",
+  "ref": "0e000391-7e59-4668-8820-68661d1e7a67",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a50d1fb6-3096-438e-a7aa-264092055029",
+  "name": "Mule Silverback Livery",
+  "short_name": null,
+  "description": "The Silverback livery adds a white cargo cover and highlights to contrast the sleek grey frame of the Drake Mule.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

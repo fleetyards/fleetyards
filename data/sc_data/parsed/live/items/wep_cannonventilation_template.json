@@ -1,0 +1,21 @@
+{
+  "key": "WEP_CannonVentilation_Template",
+  "ref": "4a2f0a57-7ada-47dc-ac6d-758d969b2b4c",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "Ventilation",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

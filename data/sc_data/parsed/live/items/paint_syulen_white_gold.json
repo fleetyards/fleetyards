@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Syulen_White_Gold",
+  "ref": "758cb316-8138-49cd-86ef-9621cb13e507",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8ef4d721-5790-408d-b140-f75d1f9c877d",
+  "name": "Syulen Ch.iing Livery",
+  "short_name": null,
+  "description": "Make your Syulen stand out from the crowd with the Ch.iing livery that’s white marbled with gold accents.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,341 @@
+{
+  "key": "KRIG_P72_Archimedes_Emerald",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "Kruger P-72 Archimedes Emerald",
+  "description": "Manufacturer: Kruger Intergalactic\\nFocus: Racer\\n\\nWhether for added security, exploring a system or simply the joy of flying, the Kruger Intergalactic P-72 Archimedes snub craft was designed to deliver exceptional handling and nimble acceleration in a sleek and stylish package.  The Emerald limited edition features a special \"lucky\" paint job.",
+  "career": "Competition",
+  "role": "Racing",
+  "insurance": {
+    "base_wait_time_minutes": "2.65",
+    "mandatory_wait_time_minutes": "0.88",
+    "base_expediting_fee": "1375"
+  },
+  "mass": 8479.0,
+  "metrics": {
+    "x": 5.25,
+    "y": 12.0,
+    "z": 3.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "KRIG_P52_Merlin_SeatAccess"
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "KRIG_P72_Archimedes_Seat_Pilot"
+    },
+    {
+      "name": "hardpoint_self_destruct_pilot",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_10s"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_power_plant",
+      "ref": null,
+      "key": "POWR_AEGS_S01_Charger_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_cooler_left",
+      "ref": null,
+      "key": "COOL_AEGS_S01_Bracer_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_right",
+      "ref": null,
+      "key": "COOL_AEGS_S01_Bracer_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_KRIG_Merlin"
+    },
+    {
+      "name": "hardpoint_shield_generator",
+      "ref": null,
+      "key": "SHLD_YORM_S01_Targa_SCItem"
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": null,
+      "key": "ARMR_KRIG_Merlin"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_KRIG_P72_Archimedes"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_WLOP_S00_Denning"
+    },
+    {
+      "name": "hardpoint_scanner",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_ping",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_engine_left",
+      "ref": null,
+      "key": "KRIG_P72_Archimedes_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_engine_right",
+      "ref": null,
+      "key": "KRIG_P72_Archimedes_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_front_left",
+      "ref": null,
+      "key": "KRIG_P72_Archimedes_Thruster_Mav_Fixed_01"
+    },
+    {
+      "name": "hardpoint_thruster_front_right",
+      "ref": null,
+      "key": "KRIG_P72_Archimedes_Thruster_Mav_Fixed_01"
+    },
+    {
+      "name": "hardpoint_thruster_front_top",
+      "ref": null,
+      "key": "KRIG_P72_Archimedes_Thruster_Mav_Fixed_01_Top"
+    },
+    {
+      "name": "hardpoint_thruster_front_bottom",
+      "ref": null,
+      "key": "KRIG_P72_Archimedes_Thruster_Mav_Fixed_01_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_rear_left",
+      "ref": null,
+      "key": "KRIG_P72_Archimedes_Thruster_Mav_Fixed_01"
+    },
+    {
+      "name": "hardpoint_thruster_rear_right",
+      "ref": null,
+      "key": "KRIG_P72_Archimedes_Thruster_Mav_Fixed_01"
+    },
+    {
+      "name": "hardpoint_thruster_rear_top",
+      "ref": null,
+      "key": "KRIG_P72_Archimedes_Thruster_Mav_Fixed_01_Top"
+    },
+    {
+      "name": "hardpoint_thruster_rear_bottom",
+      "ref": null,
+      "key": "KRIG_P72_Archimedes_Thruster_Mav_Fixed_01_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_wing_right_top",
+      "ref": null,
+      "key": "KRIG_P72_Archimedes_Thruster_Mav_Fixed_02"
+    },
+    {
+      "name": "hardpoint_thruster_wing_right_bottom",
+      "ref": null,
+      "key": "KRIG_P72_Archimedes_Thruster_Mav_Fixed_02_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_wing_left_top",
+      "ref": null,
+      "key": "KRIG_P72_Archimedes_Thruster_Mav_Fixed_02"
+    },
+    {
+      "name": "hardpoint_thruster_wing_left_bottom",
+      "ref": null,
+      "key": "KRIG_P72_Archimedes_Thruster_Mav_Fixed_02_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_upper_left_retro",
+      "ref": null,
+      "key": "KRIG_P72_Archimedes_Thruster_Retro_01"
+    },
+    {
+      "name": "hardpoint_thruster_upper_right_retro",
+      "ref": null,
+      "key": "KRIG_P72_Archimedes_Thruster_Retro_01"
+    },
+    {
+      "name": "hardpoint_thruster_lower_center_retro",
+      "ref": null,
+      "key": "KRIG_P72_Archimedes_Thruster_Retro_02"
+    },
+    {
+      "name": "hardpoint_fuel_intake_left",
+      "ref": null,
+      "key": "INTK_KRIG_P52_Merlin"
+    },
+    {
+      "name": "hardpoint_fuel_intake_right",
+      "ref": null,
+      "key": "INTK_KRIG_P52_Merlin"
+    },
+    {
+      "name": "hardpoint_fuel_tank_left",
+      "ref": null,
+      "key": "HTNK_KRIG_P52_Merlin"
+    },
+    {
+      "name": "hardpoint_fuel_tank_right",
+      "ref": null,
+      "key": "HTNK_KRIG_P52_Merlin"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_archimedes_intake",
+      "ref": null,
+      "key": "KRIG_P72_Archimedes_Intake"
+    },
+    {
+      "name": "hardpoint_countermeasure_launcher_bottom",
+      "ref": null,
+      "key": "ORIG_M50_CML_Flare"
+    },
+    {
+      "name": "hardpoint_countermeasure_launcher_top",
+      "ref": null,
+      "key": "ORIG_M50_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_wing_left",
+      "ref": "280421ce-bd97-4592-a98a-fcc1a4d34f14",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_gun_left_wing",
+          "ref": "80ae6d83-7d8a-4357-b109-a0154418bae5",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "c9c2bb19-3298-448e-a117-043e082a1c74",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_gun_InnerLeft_wing",
+          "ref": "80ae6d83-7d8a-4357-b109-a0154418bae5",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "c9c2bb19-3298-448e-a117-043e082a1c74",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_wing_right",
+      "ref": "54dbc1eb-3188-4ef6-8c6e-dd0bc6a7dbe2",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_gun_right_wing",
+          "ref": "80ae6d83-7d8a-4357-b109-a0154418bae5",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "c9c2bb19-3298-448e-a117-043e082a1c74",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_gun_InnerRight_wing",
+          "ref": "80ae6d83-7d8a-4357-b109-a0154418bae5",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "c9c2bb19-3298-448e-a117-043e082a1c74",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "KRIG_P52_Merlin_ATCDataManager"
+    },
+    {
+      "name": "hardpoint_docking_collar",
+      "ref": null,
+      "key": "KRIG_P52_Merlin_DockingTube"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_KRIG_P52_Merlin"
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_cockpit",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_TYDT_S00_ComfortAirLite"
+    }
+  ]
+}

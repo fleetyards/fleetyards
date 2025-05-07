@@ -10,11 +10,11 @@ jobs:
   #   env:
   #     CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
   #   steps:
-  #     - uses: actions/checkout@v3
+  #     - uses: actions/checkout@v4
   #     - uses: ./.github/workflows/js-setup-action
-  #     - run: yarn cypress install
+  #     - run: pnpm cypress install
   #     - name: Run E2E Tests
-  #       run: yarn run test:e2e --record --config baseUrl=https://${{ vars.STAGE_DOMAIN }} --parallel
+  #       run: pnpm run test:e2e --record --config baseUrl=https://${{ vars.STAGE_DOMAIN }} --parallel
 
   # build:
   #   needs: [smoke-test]
@@ -50,7 +50,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: Live
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true

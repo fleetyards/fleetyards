@@ -1,0 +1,21 @@
+{
+  "key": "Paint_100i_Camo_Black",
+  "ref": "b2c23ca6-0ed9-473e-b2e6-18cc00e768d4",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a1f72772-2e79-4af3-a1d1-23fc5147e573",
+  "name": "100 Series Slate Camo Livery",
+  "short_name": null,
+  "description": "Customize your Origin 100 series ship with this grey camo livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

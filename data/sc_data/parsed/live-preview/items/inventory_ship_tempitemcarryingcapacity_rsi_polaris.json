@@ -1,0 +1,9 @@
+{
+  "key": "Ship_TempItemCarryingCapacity_RSI_Polaris",
+  "ref": "2d983aaf-8a73-446b-9c40-6ecde2d865c8",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 432.0
+  }
+}

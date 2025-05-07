@@ -20,6 +20,20 @@ module Rsi
       response
     end
 
+    def load_data
+      response = fetch_remote("#{base_url}/ship-matrix/index?#{Time.zone.now.to_i}")
+
+      return [] unless response.success?
+
+      begin
+        JSON.parse(response.body).dig("data") || []
+      rescue JSON::ParserError => e
+        Sentry.capture_exception(e)
+        Rails.logger.error "Model Data could not be parsed: #{response.body}"
+        []
+      end
+    end
+
     private def strip_name(name)
       name.gsub(/(?:AEGIS|Aegis|ARGO|Argo|ANVIL|Anvil|BANU|Banu|Crusader|CRUSADER|DRAKE|Drake|ESPERIA|Esperia|KRUGER|Kruger|Kruger Intergalactic|MISC|MIRAI|Mirai|ORIGIN|Origin|RSI|TUMBRIL|Tumbril|VANDUUL|Vanduul|Xi'an|CNOU|Consolidated Outland)/, "").strip
     end
@@ -34,10 +48,6 @@ module Rsi
       return if value.blank?
 
       value.to_i
-    end
-
-    private def prevent_extra_server_requests?
-      Rails.env.test? || ENV.fetch("CI") { Rails.configuration.rsi.load_from_file }
     end
   end
 end

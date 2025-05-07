@@ -1,0 +1,60 @@
+{
+  "key": "Mining_Laser_SHIN_Klein_S1",
+  "ref": "e6b284b9-456a-4444-b5fc-7c33bf5a6945",
+  "category": "weapons",
+  "type": "WeaponMining",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ab35f85f-919f-4457-8d58-4e885ea6c5c0",
+  "name": "Klein-S1 Mining Laser",
+  "short_name": null,
+  "description": "Manufacturer: Shubin Interstellar\\nItem Type: Mining Laser \\nSize: 1\\n\\nOptimal Range: 45m\\nMaximum Range: 135m\\n\\nMining Laser Power: 378 - 2220\\nExtraction Laser Power: 2220\\n\\nModule Slots: 0\\n\\nResistance: -45%\\nOptimal Charge Window Size: +20%\\nInert Material Level: -30%\\n\\nLaser Instability: +35%\\n\\nShubin designed the Klein-S1 to generate a powerful laser that makes mining faster. This power incurs additional risk by boosting a laser's instability, but if used correctly, the Klein-S1 can quickly reap rewards for the careful miner.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 8000.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 6.0,
+    "StartIRTemperature": 250.0,
+    "OverpowerHeat": 0.0,
+    "OverclockThresholdMinHeat": 0.0,
+    "OverclockThresholdMaxHeat": 0.0,
+    "ThermalEnergyBase": 11.5,
+    "ThermalEnergyDraw": 23.0,
+    "ThermalConductivity": 3.0,
+    "SpecificHeatCapacity": 13.0,
+    "Mass": 200.0,
+    "SurfaceArea": 50.0,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 1.0,
+    "MaxTemperature": 450.0,
+    "OverheatTemperature": 370.0,
+    "RecoveryTemperature": 350.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "power_connection": {
+    "power_base": 3000.0,
+    "power_draw": 3600.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 20.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.25,
+    "overclock_threshold_max": 0.53,
+    "overpower_performance": 0.3,
+    "overclock_performance": 0.24,
+    "power_to_em": 2.0,
+    "decay_rate_of_em": 0.15
+  }
+}

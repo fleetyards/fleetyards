@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Constellation_Heron_Black",
+  "ref": "8952488a-a4bc-408f-9bed-d0d5eec8afe0",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f07a37b5-0bad-489c-ba86-838fb3584639",
+  "name": "Constellation Black Heron Livery",
+  "short_name": null,
+  "description": "Embrace the darkness of space in style with the Constellation Black Heron livery that blends grey with green and orange highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "key": "SalvageFillerStation_DRAK_Vulture",
+  "ref": "d32fe366-2c38-472d-b9ab-48b45963e04b",
+  "category": "salvagefillerstation",
+  "type": "SalvageFillerStation",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6116471c-891d-4830-8968-650b6deafc00",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_salvage_refill",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_salvage_crate",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+
+      ]
+    }
+  ]
+}

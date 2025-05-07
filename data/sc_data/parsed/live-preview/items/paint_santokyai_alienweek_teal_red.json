@@ -1,0 +1,21 @@
+{
+  "key": "Paint_SanTokYai_AlienWeek_Teal_Red",
+  "ref": "a0de8a47-6cc4-4aae-b615-b00f55f25f2a",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1e328dc4-8e9a-46a4-b077-4fbef8f0c32d",
+  "name": "San'tok.yāi Ocellus Livery",
+  "short_name": null,
+  "description": "The Ocellus livery adapts and updates the iconic colors and design used on some Tevarin ships to bring a striking new look to the San'tok.yāi. The livery adds a distinct red pattern to the fuselage while shimmering green covers the rest of the ship. Grey lines swoop across the entire ship to help break up its silhouette.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,37 +1,42 @@
 # frozen_string_literal: true
 
 v1_admin_api_routes = lambda do
-  resources :models, only: %i[index] do
-    get :options, on: :collection
-    get :images, on: :member
-  end
+  resource :sessions, only: %i[create destroy]
 
-  resources :stations, only: %i[index] do
-    get :options, on: :collection
-    get :images, on: :member
-  end
-
-  resource :equipment, only: [] do
-    get :weapons, on: :collection
-    get :attachments, on: :collection
-    get :utilities, on: :collection
-  end
-
-  resources :equipment, only: [:index] do
+  resources :admin_users, only: %i[index create update destroy] do
     collection do
-      get :item_type_filters
-      get :type_filters
-      get :slot_filters
+      get :me
     end
   end
 
-  resources :commodities, only: [:index]
-  resources :components, only: [:index] do
+  resources :users, only: %i[index create update destroy] do
+    member do
+      get "login-as", to: "users#login_as"
+    end
+  end
+
+  resources :models, only: %i[index show create update destroy] do
+    collection do
+      get :options
+      get "production-states" => "models#production_states"
+    end
+
+    get :images, on: :member
+  end
+
+  resources :model_modules, path: "model-modules", only: %i[index]
+  resources :model_paints, path: "model-paints", only: %i[index]
+
+  resources :manufacturers, only: %i[index show]
+
+  resources :components, only: %i[index show] do
     get :class_filters, on: :collection
     get :item_type_filters, on: :collection
   end
-  resources :model_modules, path: "model-modules", only: [:index]
-  resources :model_paints, path: "model-paints", only: [:index]
+
+  resources :vehicles, only: %i[index]
+
+  resources :item_prices, path: "item-prices", only: %i[index show create update destroy]
 
   resource :stats, only: [] do
     get "quick-stats" => "stats#quick_stats"
@@ -43,34 +48,7 @@ v1_admin_api_routes = lambda do
 
   resources :images, only: %i[index create destroy update]
 
-  resources :shops, only: [] do
-    resources :shop_commodities, path: "commodities", only: %i[create index destroy update] do
-      member do
-        get "buy-prices" => "shop_commodities#buy_prices"
-        get "sell-prices" => "shop_commodities#sell_prices"
-        get "rental-prices" => "shop_commodities#rental_prices"
-      end
-    end
-  end
-
-  resources :shop_commodities, path: "shop-commodities", only: %i[index destroy] do
-    member do
-      put :confirm
-    end
-  end
-
-  resources :commodity_prices, path: "commodity-prices", only: %i[index destroy] do
-    collection do
-      post "create-sell-price" => "commodity_prices#create_sell_price"
-      post "create-buy-price" => "commodity_prices#create_buy_price"
-      post "create-rental-price" => "commodity_prices#create_rental_price"
-      get "time-ranges" => "commodity_prices#time_ranges"
-    end
-
-    member do
-      put :confirm
-    end
-  end
+  resources :imports, only: %i[index show]
 end
 
 scope :v1, as: :v1 do

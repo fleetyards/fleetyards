@@ -1,0 +1,24 @@
+{
+  "key": "MISL_S03_IR_NOVP_Viper",
+  "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "Missile",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "67fd3077-ee8c-4a7c-8bad-91500b2a9509",
+  "name": "Viper III Missile",
+  "short_name": "Viper III",
+  "description": "Manufacturer: Nova Pyrotechnica\\nTracking Signal: Infrared\\nSize: 3\\n\\nNova has worked hard to insure that their infrared tracking Viper strike missile lives up to its name by delivering agile and lethal attacks against hostile targets.",
+  "inventory_consumption": {
+    "micro_scu": 46875.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 3.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 18.0
+  }
+}

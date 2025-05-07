@@ -1,0 +1,21 @@
+{
+  "key": "InstancedHangarGateway_Stanton_LargeFront_Area18",
+  "ref": "8906ac2f-1081-4470-a427-327bba2ffed2",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": null,
+  "grade": null,
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hornet_F7C_Mk2_White_Blue",
+  "ref": "5983db70-464d-4de8-8622-3f3822ee1233",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "0b550d23-c1a5-442b-88dc-81b67c882a27",
+  "name": "Hornet Icebound Livery",
+  "short_name": null,
+  "description": "The Icebound livery covers the Hornet Mk2 in crisp white with light blue highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

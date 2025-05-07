@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Sabre_IAE2950_Grey_White_Camo",
+  "ref": "ce0a3a9f-c3d7-45dd-8d05-ed869ae1c131",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "11393dcd-0b9b-4c4c-a1dc-3676e2133e48",
+  "name": "Sabre Polar Camo Livery",
+  "short_name": null,
+  "description": "Modify your Sabre with this white and grey camo livery specifically designed for the 2950 IAE event on microTech.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

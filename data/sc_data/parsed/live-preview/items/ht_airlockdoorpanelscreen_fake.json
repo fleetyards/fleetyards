@@ -1,0 +1,21 @@
+{
+  "key": "Ht_AirlockDoorPanelScreen_Fake",
+  "ref": "bf0daaf3-7425-4aee-8c46-590be5c09cbb",
+  "category": "doors",
+  "type": "Misc",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

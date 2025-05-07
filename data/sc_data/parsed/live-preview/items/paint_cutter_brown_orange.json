@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Cutter_Brown_Orange",
+  "ref": "0fe14f78-0560-4a72-9e93-976db2cb468f",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d69d3700-df2d-4459-9fac-35de490e0012",
+  "name": "Cutter Tectonic Livery",
+  "short_name": null,
+  "description": "Bring a bit of personality to the Cutter with the Tectonic livery, which features vibrant pops of orange against the brown and black base paint.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

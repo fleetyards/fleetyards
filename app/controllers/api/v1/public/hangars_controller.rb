@@ -6,19 +6,16 @@ module Api
       class HangarsController < ::Api::PublicBaseController
         include HangarFiltersConcern
 
+        skip_verify_authorized only: %i[embed]
+
+        before_action :set_user, except: %i[embed]
+
         after_action -> { pagination_header(:vehicles) }, only: %i[show]
 
         def show
-          user = User.find_by!(normalized_username: params.fetch(:username, "").downcase)
-
-          unless user.public_hangar?
-            not_found
-            return
-          end
-
           vehicle_query_params["sorts"] = sorting_params(Vehicle)
 
-          scope = user.vehicles
+          scope = @user.vehicles
             .purchased
             .public
 
@@ -51,6 +48,12 @@ module Api
           @vehicles = @q.result(distinct: true)
             .includes(:model)
             .joins(:model)
+        end
+
+        private def set_user
+          @user = User.find_by!(normalized_username: params[:username].downcase)
+
+          authorize! @user, with: ::Public::UserPolicy
         end
       end
     end

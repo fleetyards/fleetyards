@@ -1,0 +1,21 @@
+{
+  "key": "DoorPanelScreen_Col_001",
+  "ref": "6d0591a9-8f26-4d5b-9916-f33a7f98394c",
+  "category": "doors",
+  "type": "Misc",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

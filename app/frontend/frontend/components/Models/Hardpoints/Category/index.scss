@@ -1,0 +1,31 @@
+.hardpoint-category {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba($gray-darker, 0.7);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &__label {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-block: 10px;
+    padding-right: 20px;
+    color: darken($text-color, 20%);
+  }
+
+  &__icon {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    color: $primary;
+    margin-right: 10px;
+    font-size: 1.3rem;
+  }
+}

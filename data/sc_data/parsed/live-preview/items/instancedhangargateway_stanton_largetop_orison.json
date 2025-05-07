@@ -1,0 +1,21 @@
+{
+  "key": "InstancedHangarGateway_Stanton_LargeTop_Orison",
+  "ref": "5aa5cb18-052a-4f05-9e01-e4ae6b179a7c",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": null,
+  "grade": null,
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  }
+}

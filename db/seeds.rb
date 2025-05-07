@@ -17,13 +17,6 @@ if ENV["TEST_SEEDS"].present?
     )
   end
 
-  stanton = Starsystem.find_or_create_by!(name: "Stanton")
-  stanton.update!(map_x: "59.766411599", map_y: "48.460661345", hidden: false)
-  crusader = CelestialObject.find_or_create_by!(name: "Crusader")
-  crusader.update!(starsystem: stanton, hidden: false)
-  portolisar = Station.find_or_initialize_by(name: "Port Olisar")
-  portolisar.update!(celestial_object: crusader, station_type: :station, location: "Orbit", hidden: false)
-
   test_user = User.find_or_initialize_by(username: "TestUser")
   test_user.skip_confirmation!
   test_user.update!(
@@ -53,53 +46,7 @@ if ENV["TEST_SEEDS"].present?
     membership.setup_fleet_vehicles
   end
 
-  RoadmapItem.create(
-    rsi_id: 500,
-    release: "1.0.0",
-    release_description: "lorem ipsum",
-    rsi_release_id: 500,
-    released: false,
-    rsi_category_id: 6,
-    name: "Foo Bar",
-    description: "lorem ipsum",
-    body: "lorem ipsum",
-    image: "/media/a71abdkipkp96r/product_thumb_large/01-Pacheco.jpg",
-    tasks: 2,
-    inprogress: 0,
-    completed: 0,
-    active: true
-  )
-
   return
-end
-
-if ENV["FLEETCHART_SEEDS"].present?
-  CarrierWave.clean_cached_files!
-
-  s3_seeds_fleetcharts_base_url = [
-    Rails.configuration.app.s3_endpoint,
-    Rails.configuration.app.s3_seeds_fleetchart_bucket
-  ].join("/")
-
-  Model.find_each do |model|
-    puts "Importing #{model.slug}..."
-
-    model_s3_url = [
-      s3_seeds_fleetcharts_base_url,
-      model.slug
-    ].join("/")
-
-    model.update(remote_side_view_url: "#{model_s3_url}/side-fleetchart.png")
-    model.update(remote_top_view_url: "#{model_s3_url}/top-fleetchart.png")
-    model.update(remote_angled_view_url: "#{model_s3_url}/angled-fleetchart.png")
-    model.update(remote_holo_url: "#{model_s3_url}/holo.gltf")
-
-    CarrierWave.clean_cached_files!
-
-    puts "#{model.slug} imported"
-  end
-
-  puts "Models missing: #{Model.active.visible.where(top_view: nil).count}"
 end
 
 unless ENV["SKIP_SEEDS"].present?

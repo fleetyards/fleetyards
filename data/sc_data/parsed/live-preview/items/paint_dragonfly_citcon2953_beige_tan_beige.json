@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Dragonfly_Citcon2953_Beige_Tan_Beige",
+  "ref": "0dd8db43-36aa-445b-99b4-d92c0c80ce9e",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "7a10191a-0f7d-4be1-97dc-3d95b1d2c251",
+  "name": "Dragonfly Roustabout Livery (Modified)",
+  "short_name": null,
+  "description": "This version of the livery has been modified from its original form with the addition of graffiti. Released in 2893 to celebrate the 400th anniversary of Pyro's discovery, the Roustabout livery gets it look and name from the ship whose scans led to the discovery of the first jump point into the system. It also features the logo of Pyrotechnic Amalgamated, the now-defunct mining company that named the system.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Sabre_Black_Silver_Silver_Polish",
+  "ref": "80ac0aec-d3ba-42a5-ba4e-454f313d5467",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a53bdf31-6eda-4524-8f52-96e1f59a79c3",
+  "name": "Sabre Starlight Livery",
+  "short_name": null,
+  "description": "An elegant black with chrome highlights, the Starlight livery brings a subtly striking and timeless look to the Sabre.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

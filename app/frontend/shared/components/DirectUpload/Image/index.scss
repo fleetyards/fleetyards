@@ -1,0 +1,19 @@
+.preview-image {
+  cursor: pointer;
+
+  &__remove {
+    display: none;
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+    z-index: 1000;
+    transform: translate(-50%, -50%);
+  }
+
+  &:hover {
+    .preview-image__remove {
+      display: block;
+    }
+  }
+}

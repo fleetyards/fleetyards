@@ -1,0 +1,40 @@
+{
+  "key": "FreightElevator_CargoGrid_Large",
+  "ref": "4abec8a1-a8df-4482-84b6-52c16983ea84",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 20.0,
+      "y": 17.5,
+      "z": 5.0
+    },
+    "capacity": 896.0,
+    "max_container_size": {
+      "size": 32,
+      "dimensions": {
+        "x": 10.0,
+        "y": 2.5,
+        "z": 2.5
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1.0
+      },
+      "max": {
+        "dimensions": {
+          "x": 2.5,
+          "y": 10.0,
+          "z": 2.5
+        },
+        "capacity": 32.0
+      }
+    }
+  }
+}

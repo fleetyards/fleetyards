@@ -1,0 +1,63 @@
+{
+  "key": "COOL_ACOM_S02_RapidCool_SCItem",
+  "ref": "8db577f4-7874-4c0d-950f-1722015b6f5f",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "2",
+  "grade": "4",
+  "manufacturer_ref": "5d616e6f-3257-4d19-90c3-11ab974f12e7",
+  "name": "RapidCool",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: ACOM\\nSize: 2\\nGrade: D \\nClass: Competition\\n\\nACOM brings its performance first philosophy to this medium cooler. The RapidCool trades signature strength and durability for better performance.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 290.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 15.0,
+    "StartIRTemperature": 250.0,
+    "OverpowerHeat": 0.3,
+    "OverclockThresholdMinHeat": 0.64,
+    "OverclockThresholdMaxHeat": 0.77,
+    "ThermalEnergyBase": 10.0,
+    "ThermalEnergyDraw": 20.0,
+    "ThermalConductivity": 3.0,
+    "SpecificHeatCapacity": 13.0,
+    "Mass": 414.0,
+    "SurfaceArea": 50.0,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 1.0,
+    "MaxTemperature": 450.0,
+    "OverheatTemperature": 370.0,
+    "RecoveryTemperature": 350.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "power_connection": {
+    "power_base": 16.0,
+    "power_draw": 24.0,
+    "time_to_reach_draw_request": 12.5,
+    "safeguard_priority": 30.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.34,
+    "overclock_threshold_max": 0.43,
+    "overpower_performance": 0.221,
+    "overclock_performance": 0.05,
+    "power_to_em": 10.0,
+    "decay_rate_of_em": 0.16
+  },
+  "type_data": {
+    "cooling_rate": 4560000.0
+  }
+}

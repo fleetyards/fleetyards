@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Caterpillar_IAE2950_Grey_White",
+  "ref": "6217cead-b368-466e-9060-026d60409288",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ff80d229-b77f-4be0-88d6-37fc10ddcc1b",
+  "name": "Caterpillar Polar Livery",
+  "short_name": null,
+  "description": "Modify your Caterpillar with this white and grey livery specifically designed for the 2950 IAE event on microTech.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

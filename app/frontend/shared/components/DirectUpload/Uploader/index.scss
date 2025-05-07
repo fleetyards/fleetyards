@@ -1,0 +1,89 @@
+.direct-upload {
+  &__input {
+    display: none;
+  }
+
+  &__uploader {
+    min-height: 100px;
+    height: 100%;
+    display: flex;
+
+    &:hover {
+      .direct-upload__dropzone {
+        opacity: 1;
+      }
+    }
+
+    &--multiple {
+      flex-direction: column;
+
+      &:hover {
+        .direct-upload__dropzone {
+          opacity: 0.5;
+        }
+      }
+
+      .direct-upload__dropzone {
+        height: 150px;
+        opacity: 0.5;
+        margin-bottom: 20px;
+        border: 2px dashed #ccc;
+
+        &::before {
+          display: none;
+        }
+      }
+    }
+  }
+
+  &__dropzone {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    width: 100%;
+    gap: 10px;
+    opacity: 0;
+    transition: opacity 0.3s;
+
+    span,
+    i,
+    button,
+    a {
+      z-index: 2;
+    }
+
+    &::before {
+      content: "";
+      display: block;
+      position: absolute;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(black, 0.7);
+    }
+
+    &--dragging {
+      opacity: 1 !important;
+    }
+  }
+
+  &__preview-files {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(4, minmax(200px, 1fr));
+    justify-items: center;
+  }
+
+  &__preview-file {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
+  &__file {
+    height: 200px;
+  }
+}

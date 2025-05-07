@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Fury_Green_Green_Red",
+  "ref": "2dd2a39e-3a1b-4a00-82d2-4d772adad587",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "abd483d4-d493-4a27-bab8-449a21354550",
+  "name": "Fury Leatherback Livery",
+  "short_name": null,
+  "description": "Primarily green with red highlights, the Leatherback livery delivers style along with the intimidating payload of the Fury.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

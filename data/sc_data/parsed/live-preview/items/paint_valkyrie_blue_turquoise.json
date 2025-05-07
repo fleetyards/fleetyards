@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Valkyrie_Blue_Turquoise",
+  "ref": "4f90232a-2a34-45d4-bf47-1985139de61d",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "99a89702-09b9-4f52-b365-cd2c8c3e3d4e",
+  "name": "Valkyrie Foundation Fest Livery",
+  "short_name": null,
+  "description": "Foundation Festival is an opportunity for Citizens and Civilians to come together and strengthen the foundation of our community. Show your commitment to a better universe with this custom livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

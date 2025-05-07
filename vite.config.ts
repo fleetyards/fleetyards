@@ -1,19 +1,20 @@
 import { resolve } from "path";
-import { defineConfig, splitVendorChunkPlugin } from "vite";
+import { defineConfig } from "vite";
 import ViteRails from "vite-plugin-rails";
-import Vue2 from "@vitejs/plugin-vue2";
-// import Vue from '@vitejs/plugin-vue'
+import Vue from "@vitejs/plugin-vue";
+import tailwindcss from "tailwindcss";
 import { VitePWA } from "vite-plugin-pwa";
-// import Components from "unplugin-vue-components/vite";
+import Components from "unplugin-vue-components/vite";
 import AutoImport from "unplugin-auto-import/vite";
 import browserslistToEsbuild from "browserslist-to-esbuild";
+import { templateCompilerOptions } from "@tresjs/core";
 
 const cache: { [key: string]: string } = {};
 
 export const accessEnv = (key: string, defaultValue?: string): string => {
   if (cache[key]) return cache[key];
 
-  if (!(key in process.env) || typeof process.env[key] === undefined) {
+  if (!(key in process.env) || process.env[key] === undefined) {
     if (defaultValue) return defaultValue;
     throw new Error(`${key} not found in process.env!`);
   }
@@ -28,12 +29,33 @@ export const accessEnv = (key: string, defaultValue?: string): string => {
 export default defineConfig({
   plugins: [
     ViteRails(),
-    Vue2(),
+    Vue({
+      ...templateCompilerOptions,
+    }),
+    tailwindcss(),
     VitePWA({
       registerType: "autoUpdate",
       filename: "sw.js",
       useCredentials: true,
       scope: "/",
+      manifest: {
+        name: "My Awesome App",
+        short_name: "MyApp",
+        description: "My Awesome App description",
+        theme_color: "#ffffff",
+        icons: [
+          {
+            src: "pwa-192x192.png",
+            sizes: "192x192",
+            type: "image/png",
+          },
+          {
+            src: "pwa-512x512.png",
+            sizes: "512x512",
+            type: "image/png",
+          },
+        ],
+      },
       workbox: {
         modifyURLPrefix: {
           "": "/vite/",
@@ -44,20 +66,20 @@ export default defineConfig({
         navigateFallback: null,
       },
     }),
-    // Components({
-    //   // generate `components.d.ts` global declarations
-    //   // https://github.com/antfu/unplugin-vue-components#typescript
-    //   dts: true,
-    //   directoryAsNamespace: true,
-    //   types: [
-    //     {
-    //       from: "vue-router",
-    //       names: ["RouterLink", "RouterView"],
-    //     },
-    //   ],
-    //   // relative paths to the directory to search for components.
-    //   dirs: ["frontend/components", "frontend/core/components"],
-    // }),
+    Components({
+      // generate `components.d.ts` global declarations
+      // https://github.com/antfu/unplugin-vue-components#typescript
+      dts: true,
+      directoryAsNamespace: true,
+      types: [
+        {
+          from: "vue-router",
+          names: ["RouterLink", "RouterView"],
+        },
+      ],
+      // relative paths to the directory to search for components.
+      dirs: ["shared/components/base"],
+    }),
     AutoImport({
       dts: true,
       // fix eslint complaining about missing imports
@@ -66,7 +88,6 @@ export default defineConfig({
       },
       imports: ["vue", "vitest", "vue-router"],
     }),
-    splitVendorChunkPlugin(),
   ],
   resolve: {
     alias: {
@@ -78,12 +99,19 @@ export default defineConfig({
     emptyOutDir: false,
     rollupOptions: {
       maxParallelFileOps: 5,
+      output: {
+        manualChunks: {
+          vue: ["vue"],
+          "vue-router": ["vue-router"],
+        },
+      },
     },
     commonjsOptions: {
       requireReturnsDefault: true,
     },
   },
   server: {
+    cors: true,
     fs: {
       allow: [".", accessEnv("FLEETYARDS_NODE_MODULES", "node_modules")],
     },
@@ -97,6 +125,12 @@ export default defineConfig({
   },
   define: {
     "process.env": {},
+    "import.meta.env.__VUE_PROD_HYDRATION_MISMATCH_DETAILS__": JSON.stringify(
+      process.env.__VUE_PROD_HYDRATION_MISMATCH_DETAILS__,
+    ),
+    "import.meta.env.__VUE_OPTIONS_API__": JSON.stringify(
+      process.env.__VUE_OPTIONS_API__,
+    ),
   },
   cacheDir: accessEnv("FLEETYARDS_VITE_CACHE", "node_modules/.vite"),
 });

@@ -1,0 +1,54 @@
+.app-confirm {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  transition: opacity $transition-base-speed ease-in-out;
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-items: flex-start;
+    justify-content: center;
+    width: 325px;
+    padding: 1rem;
+    max-width: 90vw;
+    background-color: $gray-darker;
+    border-radius: $border-radius-base;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+
+  &__text {
+    margin-bottom: 1rem;
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+  }
+}
+
+/* transitions */
+.app-confirm-fade-move,
+.app-confirm-fade-enter-active,
+.app-confirm-fade-leave-active {
+  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+.app-confirm-fade-enter-from,
+.app-confirm-fade-leave-to {
+  opacity: 0;
+  transform: scaleY(0.01) translate(30px, 0);
+}
+
+.app-confirm-fade-leave-active {
+  position: absolute;
+}

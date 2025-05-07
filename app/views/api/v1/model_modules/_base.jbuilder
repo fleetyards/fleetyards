@@ -2,37 +2,43 @@
 
 json.id model_module.id
 json.name model_module.name
+json.slug model_module.slug
+
+json.description model_module.description
+
+json.sc_key model_module.sc_key
+
+json.metrics({})
+json.metrics do
+  json.cargo model_module.cargo.to_f
+end
 
 json.availability do
   json.bought_at do
-    json.array! model_module.bought_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
+    json.array! model_module.bought_at, partial: "api/v1/item_prices/base", as: :item_price
   end
   json.sold_at do
-    json.array! model_module.sold_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
+    json.array! model_module.sold_at, partial: "api/v1/item_prices/base", as: :item_price
   end
 end
-
-json.description model_module.description
-json.has_store_image model_module.store_image.present?
 
 json.media({})
 json.media do
   json.store_image do
-    json.partial! "api/v1/shared/media_image", media_image: model_module.store_image
+    json.partial! "api/v1/shared/view_image", record: model_module, attr: :new_store_image, old_attr: :store_image, width: model_module.store_image_width, height: model_module.store_image_height
   end
 end
 
 json.pledge_price model_module.pledge_price
 json.production_status model_module.production_status
 
-json.store_image model_module.store_image.url
-json.store_image_large model_module.store_image.large.url
-json.store_image_medium model_module.store_image.medium.url
-json.store_image_small model_module.store_image.small.url
-
 json.manufacturer do
   json.null! if model_module.manufacturer.blank?
   json.partial! "api/v1/manufacturers/base", manufacturer: model_module.manufacturer if model_module.manufacturer.present?
+end
+
+json.hardpoints do
+  json.array! model_module.hardpoints, partial: "api/v1/hardpoints/hardpoint", as: :hardpoint
 end
 
 json.partial! "api/shared/dates", record: model_module

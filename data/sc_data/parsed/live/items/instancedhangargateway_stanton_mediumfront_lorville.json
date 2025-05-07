@@ -1,0 +1,21 @@
+{
+  "key": "InstancedHangarGateway_Stanton_MediumFront_Lorville",
+  "ref": "6662a09c-bbc9-477d-9e01-f753ef8818fb",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": null,
+  "grade": null,
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  }
+}

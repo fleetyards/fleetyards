@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_AEGS_Sabre_Firebird",
+  "ref": "51cd5acd-d235-4b1e-8e78-f47bf6641c32",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SELF STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "scm_speed": 240.0,
+    "scm_speed_boosted": 600.0,
+    "reverse_speed_boosted": 260.0,
+    "max_speed": 1400.0,
+    "angular_velocity": {
+      "pitch": 50.0,
+      "yaw": 42.0,
+      "roll": 160.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 60.0,
+      "yaw": 50.4,
+      "roll": 192.0
+    }
+  }
+}

@@ -10,9 +10,18 @@ class ImageUploader < BaseUploader
     process quality: 80
   end
 
-  version :big do
+  version :medium do
     process resize_to_limit: [1000, 1000]
     process quality: 90
+  end
+
+  version :large do
+    process resize_to_limit: [2000, 2000]
+    process quality: 90
+  end
+
+  version :xlarge do
+    process resize_to_limit: [3000, 3000]
   end
 
   def extension_allowlist

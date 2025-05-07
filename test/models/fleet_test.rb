@@ -41,6 +41,15 @@ class FleetTest < ActiveSupport::TestCase
   let(:expected_url) { "foo.bar" }
   let(:expected_ts_url) { "ts3server://foo.bar" }
 
+  test "ensure default roles and mandatory roles are present" do
+    fleet = Fleet.create!(
+      fid: Faker.name,
+      name: Faker.name
+    )
+
+    assert_equal(3, fleet.fleet_roles.size)
+  end
+
   test "ensure valid urls are saved" do
     klingon_empire.update(
       guilded: url,

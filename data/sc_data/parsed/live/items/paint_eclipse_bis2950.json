@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Eclipse_BIS2950",
+  "ref": "f268b121-f301-4608-a8ed-391f424437f8",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d55b3732-924d-4afe-b505-7acce2bcc1cc",
+  "name": "Eclipse 2950 Best In Show Livery",
+  "short_name": null,
+  "description": "Customize your Eclipse with this special 2950 Best in Show livery that is primarily white with gold accents.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

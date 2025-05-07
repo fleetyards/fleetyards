@@ -1,18 +1,18 @@
-import featuresCollection from "@/frontend/api/collections/Features";
+import { useFeatures as useFeaturesQuery } from "@/services/fyApi";
+
+export enum QueryKeysEnum {
+  FEATURES = "features",
+}
 
 export const useFeatures = () => {
-  const features = ref<string[]>([]);
-
-  onMounted(() => {
-    fetch();
+  const { data: features } = useFeaturesQuery({
+    query: {
+      retry: false,
+    },
   });
 
-  const fetch = async () => {
-    features.value = await featuresCollection.findAll();
-  };
-
   const isFeatureEnabled = (feature: string) =>
-    features.value.includes(feature);
+    features.value?.includes(feature) || false;
 
   return {
     features,

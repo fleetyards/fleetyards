@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Cutter_Beige_Orange",
+  "ref": "1ba0c15f-c1cf-42a2-a1d0-edd1c72985d6",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "9a5b5b75-3f09-4412-8a1e-c793a41c574d",
+  "name": "Cutter Cliffhanger Livery",
+  "short_name": null,
+  "description": "Primarily beige with brown accent stripes and black highlights, the Cliffhanger livery makes the Cutter look rugged yet refined.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

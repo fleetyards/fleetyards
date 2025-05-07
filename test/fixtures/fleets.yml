@@ -34,6 +34,7 @@ starfleet:
   slug: starfleet
   fid: stf
   sid: STF
+  normalized_fid: stf
   public_fleet: true
   public_fleet_stats: true
 
@@ -42,4 +43,5 @@ klingon_empire:
   slug: klingon
   fid: kli
   sid: KLI
+  normalized_fid: kli
   public_fleet: false

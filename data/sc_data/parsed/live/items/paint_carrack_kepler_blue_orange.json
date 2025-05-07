@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Carrack_Kepler_Blue_Orange",
+  "ref": "735b8e89-0887-458b-ac0d-84362b895927",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cd8386c7-24c2-4806-a967-3bcc4334c19a",
+  "name": "Carrack Kepler Livery",
+  "short_name": null,
+  "description": "To honor the brave explorers that brought us to space and support those currently seeking new frontiers, the Interstellar Cartography Center (ICC) commissioned this special livery for the Carrack. Named in honor of famed astronomer Johannes Kepler, the livery mixes dark blue and orange with black highlights. All proceeds from the sale of the Kepler livery goes directly to the ICC to support their efforts in \"Charting the Way Ahead.\"",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

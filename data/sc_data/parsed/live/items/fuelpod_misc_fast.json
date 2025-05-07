@@ -1,0 +1,24 @@
+{
+  "key": "FuelPod_MISC_Fast",
+  "ref": "9fdf862e-140a-4684-862d-1957a99f587d",
+  "category": "utility",
+  "type": "ExternalFuelTank",
+  "sub_type": null,
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "GSX-RF",
+  "short_name": null,
+  "description": "Manufacturer: Stor*All\\nItem Type: Fuel Pod\\nFlow Rate: 1.5 SCU/s\\nCapacity: 50 SCU\\n\\nWhen it comes to balancing your bottom line, time is money. That’s why Stor*All designed the GSX-RF fuel pod to have one of the fastest flow rates on the market. While it does have a slightly reduced capacity, the time saved and modest improvements to the safe flow rate makes this an ideal solution for service ships.\\n",
+  "inventory_consumption": {
+    "micro_scu": 50036534.0,
+    "dimensions": {
+      "x": 10.99875,
+      "y": 8.516968,
+      "z": 10.6829
+    }
+  },
+  "durability": {
+    "health": 8000.0
+  }
+}

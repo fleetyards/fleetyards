@@ -1,0 +1,24 @@
+{
+  "key": "HTNK_KRIG_P72_Archimedes",
+  "ref": "851319cf-e5c5-4978-ba5f-ae337664e353",
+  "category": "fueltanks",
+  "type": "FuelTank",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Internal Tank",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "capacity": 3.5
+  }
+}

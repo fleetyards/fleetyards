@@ -1,0 +1,16 @@
+{
+  "en": {
+    "directUpload": {
+      "title": "Upload",
+      "dropzone": {
+        "textMultiple": "Drop files here to upload",
+        "text": "Drop file here to upload",
+        "or": "or",
+        "browse": "browse"
+      },
+      "previewImage": {
+        "remove": "Remove"
+      }
+    }
+  }
+}

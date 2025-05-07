@@ -1,0 +1,9 @@
+{
+  "key": "AEGS_Gladius_Template",
+  "ref": "43ef139d-c341-4b57-8443-d51ee10f3b4c",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 0.65
+  }
+}

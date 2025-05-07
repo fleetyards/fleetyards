@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Valkyrie_Invictus_Camo",
+  "ref": "e7e359cc-abb6-4efb-8c92-2fdc1bdbdcb3",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "10110608-e7cc-4914-8717-428be68e0d60",
+  "name": "Valkyrie Splinter Livery",
+  "short_name": null,
+  "description": "Customize your Valkyrie with this fragmented green livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

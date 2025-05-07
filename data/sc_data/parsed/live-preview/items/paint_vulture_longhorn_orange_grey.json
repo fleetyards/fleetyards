@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Vulture_Longhorn_Orange_Grey",
+  "ref": "0c52ceb6-d267-4dd5-abd0-d546c4cca9f9",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "3677244a-86eb-4d56-83b1-a07e40f1d7c9",
+  "name": "Vulture Longhorn Livery",
+  "short_name": null,
+  "description": "For the Vulture captain dedicated to a hard day's work, the Longhorn livery's black-and-burnt orange hull with rough silver highlights lend a classic industrial feel to the famed spacecraft.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

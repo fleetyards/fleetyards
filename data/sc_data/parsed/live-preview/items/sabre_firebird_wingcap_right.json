@@ -1,0 +1,24 @@
+{
+  "key": "Sabre_Firebird_WingCap_Right",
+  "ref": "4e5e191b-6535-4c8f-bbfd-aec0304f464b",
+  "category": "module",
+  "type": "Misc",
+  "sub_type": null,
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

@@ -12,7 +12,7 @@ module Frontend
       route = request.fullpath.split("?").first.sub(%r{^/}, "").tr("/", "_")
       route = "home" if route.blank?
 
-      @title = I18n.t("title.frontend.#{route}")
+      @title = I18n.t("title.frontend.#{route}") if I18n.exists?("title.frontend.#{route}")
 
       render_frontend
     end
@@ -149,13 +149,10 @@ module Frontend
       render_frontend
     end
 
-    def not_found
+    def manifest
       respond_to do |format|
-        format.html do
-          render "frontend/index", status: :not_found
-        end
         format.json do
-          render json: {code: "not_found", message: "Not Found"}, status: :not_found
+          render "frontend/manifest", status: :ok, layout: false
         end
         format.all do
           redirect_to "/404"

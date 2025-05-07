@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Talon_AlienWeek_Platinum_Silver_Purple_Mosaic",
+  "ref": "0a735517-a6ac-4a9a-98cb-2f5b71f12cc4",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ae89e77d-0d96-4605-a424-fce2157abbf3",
+  "name": "Talon Wanderer Livery",
+  "short_name": null,
+  "description": "The Wanderer livery features crisscrossing purple and grey lines over a platinum foundation. Inspired by the sacred Xi'an gardens of R.aip’uāng, famous for its trails that wander in surprising ways and encourage a focus on the journey instead of the destination.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

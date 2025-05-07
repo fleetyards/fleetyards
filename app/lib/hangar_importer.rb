@@ -26,8 +26,10 @@ class HangarImporter
 
     (@import.import_data || []).each do |item|
       name = item[:name]
+      name = legacy_mapping[item[:name]] if legacy_mapping[item[:name]].present?
       name = starship_42_mapping[item[:name]] if starship_42_mapping[item[:name]].present?
       name = hangar_xplor_mapping[item[:name]] if hangar_xplor_mapping[item[:name]].present?
+
       normalized_name = normalize(name)
       slug = item[:slug].downcase if item[:slug].present?
       slug = item[:paint_slug].downcase if item[:paint_slug].present?
@@ -54,7 +56,7 @@ class HangarImporter
         name_visible: item[:name_visible] || false,
         sale_notify: item[:sale_notify] || false,
         hangar_group_ids: HangarGroup.where(user_id: @import.user_id, name: item[:groups]).pluck(:id),
-        model_module_ids: ModelModule.where(name: item[:modules]).pluck(:id),
+        model_module_ids: ModelModule.where(name: (item[:modules] || []) + (legacy_module_mapping[item["name"]] || [])).pluck(:id),
         model_upgrade_ids: ModelUpgrade.where(name: item[:upgrades]).pluck(:id)
       }
 
@@ -99,6 +101,33 @@ class HangarImporter
   # rubocop:enable Metrics/MethodLength
 
   # rubocop:disable Metrics/MethodLength
+  private def legacy_mapping
+    {
+      "Ursa Rover" => "Ursa",
+      "Ursa Rover Fortuna" => "Ursa Fortuna",
+      "Retaliator Bomber" => "Retaliator",
+      "F7A Hornet" => "F7A Hornet Mk I",
+      "F7C Hornet" => "F7C Hornet Mk I",
+      "F7C Hornet Wildfire" => "F7C Hornet Wildfire Mk I",
+      "F7C-M Super Hornet" => "F7C-M Super Hornet Mk I",
+      "F7C-M Super Hornet Heartseeker" => "F7C-M Super Hornet Heartseeker Mk I",
+      "F7C-R Hornet Tracker" => "F7C-R Hornet Tracker Mk I",
+      "F7C-S Hornet Ghost" => "F7C-S Hornet Ghost Mk I",
+      "F8C" => "F8C Lightning",
+      "F8C Lightning Executive-Edition" => "F8C Lightning Executive Edition"
+    }
+  end
+  # rubocop:enable Metrics/MethodLength
+
+  # rubocop:disable Metrics/MethodLength
+  private def legacy_module_mapping
+    {
+      "Retaliator Bomber" => ["Front Torpedo Bay", "Rear Torpedo Bay"]
+    }
+  end
+  # rubocop:enable Metrics/MethodLength
+
+  # rubocop:disable Metrics/MethodLength
   private def starship_42_mapping
     {
       "x1" => "X1",
@@ -109,7 +138,7 @@ class HangarImporter
       "600i touring module" => "600i Touring",
       "caterpillar 2949 best in show" => "caterpillar best in show edition",
       "cutlass 2949 best in show" => "cutlass black best in show edition",
-      "f7a military hornet" => "F7a Hornet",
+      "f7a military hornet" => "F7a Hornet Mk I",
       "f8c lightning civilian" => "F8C lightning",
       "hammerhead 2949 best in show" => "hammerhead best in show edition",
       "hercules starlifter a2" => "A2 Hercules",
@@ -131,7 +160,19 @@ class HangarImporter
       "a1 spirit" => "A1 Spirit",
       "crusader mercury star runner" => "Mercury",
       "genesis starliner" => "Genesis",
-      "retaliator base" => "Retaliator"
+      "retaliator base" => "Retaliator",
+      "ursa rover" => "Ursa",
+      "ursa rover fortuna" => "Ursa Fortuna",
+      "retaliator bomber" => "Retaliator",
+      "f7a hornet" => "F7A Hornet Mk I",
+      "f7c hornet" => "F7C Hornet Mk I",
+      "f7c hornet wildfire" => "F7C Hornet Wildfire Mk I",
+      "f7c-m super hornet" => "F7C-M Super Hornet Mk I",
+      "f7c-m super hornet heartseeker" => "F7C-M Super Hornet Heartseeker Mk I",
+      "f7c-r hornet tracker" => "F7C-R Hornet Tracker Mk I",
+      "f7c-s hornet ghost" => "F7C-S Hornet Ghost Mk I",
+      "f8c" => "F8C Lightning",
+      "f8c lightning executive-edition" => "F8C Lightning Executive Edition"
     }
   end
   # rubocop:enable Metrics/MethodLength
@@ -157,8 +198,8 @@ class HangarImporter
       "Hercules Starlifter C2" => "C2 Hercules",
       "Hercules Starlifter M2" => "M2 Hercules",
       "Genesis Starliner" => "Genesis",
-      "Hornet F7C" => "F7C Hornet",
-      "Hornet F7C-M Heartseeker" => "F7C-M Super Hornet Heartseeker",
+      "Hornet F7C" => "F7C Hornet Mk I",
+      "Hornet F7C-M Heartseeker" => "F7C-M Super Hornet Heartseeker Mk I",
       "Idris-M Frigate" => "Idris-M",
       "Idris-P Frigate" => "Idris-P",
       "Idris-K Frigate" => "Idris-P",

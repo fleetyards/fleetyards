@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Razor_IAE2951_Grey_White",
+  "ref": "ece6876b-2453-4103-bc2c-6fc59b1858d5",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "11cdb5e6-4a6c-4ddd-b238-7bd224afdbbc",
+  "name": "Razor Polar Livery",
+  "short_name": null,
+  "description": "Modify your Razor with this white and grey livery specifically designed for the 2951 IAE.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

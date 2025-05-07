@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 bundle exec rake rswag:specs:swaggerize
 
-yarn generate-api-client && yarn generate-admin-api-client
+pnpm generate-api-client

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Arrow_Unity",
+  "ref": "6d364eb6-97fc-42ba-8f2d-ed14943268da",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2b1996e8-3143-4767-bd4e-3df499421cc9",
+  "name": "Arrow Foundation Fest Livery",
+  "short_name": null,
+  "description": "Foundation Festival is an opportunity for Citizens and Civilians to come together and strengthen the foundation of our community. Show your commitment to a better universe with this custom livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

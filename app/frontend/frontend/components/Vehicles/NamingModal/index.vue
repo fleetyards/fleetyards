@@ -1,121 +1,170 @@
+<script lang="ts">
+export default {
+  name: "VehicleNamingModal",
+};
+</script>
+
+<script lang="ts" setup>
+import { useForm } from "vee-validate";
+import Modal from "@/shared/components/AppModal/Inner/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { transformErrors } from "@/frontend/api/helpers";
+import {
+  type Vehicle,
+  type VehicleUpdateInput,
+  type ValidationError,
+} from "@/services/fyApi";
+import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
+import { type ErrorType } from "@/services/axiosClient";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useI18n } from "@/shared/composables/useI18n";
+import AlternativeNamesInput from "./AlternativeNamesInput/index.vue";
+
+type Props = {
+  vehicle: Vehicle;
+};
+
+const props = defineProps<Props>();
+
+const { t } = useI18n();
+
+const initialValues = ref<VehicleUpdateInput>({
+  name: props.vehicle.name,
+  serial: props.vehicle.serial,
+  nameVisible: props.vehicle.nameVisible,
+  alternativeNames: props.vehicle.alternativeNames,
+});
+
+const { defineField, handleSubmit, setErrors } = useForm({
+  initialValues: initialValues.value,
+});
+
+const [name, nameProps] = defineField("name");
+const [serial, serialProps] = defineField("serial");
+const [nameVisible, nameVisibleProps] = defineField("nameVisible");
+const [alternativeNames, alternativeNamesProps] =
+  defineField("alternativeNames");
+
+const submitting = ref(false);
+
+onMounted(() => {
+  setupForm();
+});
+
+watch(
+  () => props.vehicle,
+  () => {
+    setupForm();
+  },
+  { deep: true },
+);
+
+const setupForm = () => {
+  initialValues.value = {
+    name: props.vehicle.name,
+    serial: props.vehicle.serial,
+    nameVisible: props.vehicle.nameVisible,
+    alternativeNames: props.vehicle.alternativeNames,
+  };
+};
+
+const vehicle = computed(() => props.vehicle);
+
+const { useUpdateMutation } = useVehicleMutations();
+
+const mutation = useUpdateMutation(vehicle);
+
+const comlink = useComlink();
+
+const { displayAlert } = useAppNotifications();
+
+const onSubmit = handleSubmit(async (values) => {
+  submitting.value = true;
+
+  await mutation
+    .mutateAsync({
+      id: props.vehicle.id,
+      data: values,
+    })
+    .then(() => {
+      comlink.emit("close-modal");
+    })
+    .catch((error) => {
+      const response = error as unknown as ErrorType<ValidationError>;
+
+      if (response.response?.data?.errors) {
+        setErrors(transformErrors(response.response.data.errors));
+
+        displayAlert({
+          text: response.response?.data?.message,
+        });
+      } else {
+        displayAlert({
+          text: response.response?.data?.message,
+        });
+      }
+    })
+    .finally(() => {
+      submitting.value = false;
+    });
+});
+
+const useName = (newName: string) => {
+  name.value = newName;
+};
+</script>
+
 <template>
   <Modal
-    v-if="vehicle && form"
-    :title="$t('headlines.nameMyVehicle', { vehicle: vehicle.model.name })"
+    v-if="vehicle"
+    :title="t('headlines.nameMyVehicle', { vehicle: vehicle.model.name })"
   >
-    <ValidationObserver ref="form" v-slot="{ handleSubmit }" :slim="true">
-      <form :id="`vehicle-${vehicle.id}`" @submit.prevent="handleSubmit(save)">
-        <div class="row">
-          <div class="col-12 col-md-6">
-            <div class="form-group">
-              <ValidationProvider
-                vid="name"
-                :name="$t('labels.name')"
-                :slim="true"
-              >
-                <FormInput
-                  id="vehicle-name"
-                  v-model="form.name"
-                  :placeholder="vehicle.model.name"
-                  translation-key="name"
-                  :no-label="true"
-                />
-              </ValidationProvider>
-            </div>
-          </div>
-          <div class="col-12 col-md-6">
-            <div class="form-group">
-              <ValidationProvider
-                v-slot="{ errors }"
-                vid="serial"
-                :name="$t('labels.vehicle.serial')"
-                :slim="true"
-              >
-                <FormInput
-                  id="vehicle-serial"
-                  v-model="form.serial"
-                  :placeholder="vehicle.model.serial"
-                  translation-key="vehicle.serial"
-                  :error="errors[0]"
-                  :no-label="true"
-                />
-              </ValidationProvider>
-            </div>
-          </div>
-          <div class="col-12 col-md-6">
-            <ValidationProvider
-              vid="nameVisible"
-              :name="$t('labels.vehicle.nameVisible')"
-              :slim="true"
-            >
-              <Checkbox
-                id="nameVisible"
-                v-model="form.nameVisible"
-                :label="$t('labels.vehicle.nameVisible')"
-              />
-            </ValidationProvider>
+    <form :id="`vehicle-${vehicle.id}`" @submit.prevent="onSubmit">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+            <FormInput
+              v-model="name"
+              v-bind="nameProps"
+              name="name"
+              :placeholder="vehicle.model.name"
+              translation-key="name"
+              :no-label="true"
+            />
           </div>
         </div>
-        <div class="row alternative-names">
-          <div class="col-12">
-            <hr />
-            <h3>
-              <span>
-                {{ $t("headlines.hangar.alternativeNames") }}
-              </span>
-              <Btn
-                data-test="vehicle-add-name"
-                :inline="true"
-                variant="link"
-                @click.native="addName"
-              >
-                <i class="fal fa-plus" />
-              </Btn>
-            </h3>
-          </div>
-          <div
-            v-for="(name, index) in form.alternativeNames"
-            :key="`alternative-name-${index}`"
-            class="col-12"
-          >
-            <div class="form-group">
-              <div class="input-group-flex">
-                <ValidationProvider
-                  :vid="`alternativeNames-${index}`"
-                  :name="$t('labels.vehicle.alternativeNames')"
-                  :slim="true"
-                >
-                  <FormInput
-                    :id="`vehicle-alternative-name-${index}`"
-                    v-model="form.alternativeNames[index]"
-                    translation-key="name"
-                    :no-label="true"
-                  />
-                </ValidationProvider>
-                <Btn
-                  v-tooltip="$t('actions.hangar.useName')"
-                  data-test="vehicle-switch-name"
-                  :inline="true"
-                  variant="link"
-                  @click.native="useName(index)"
-                >
-                  <i class="fad fa-repeat" />
-                </Btn>
-                <Btn
-                  v-tooltip="$t('actions.remove')"
-                  data-test="vehicle-add-name"
-                  :inline="true"
-                  variant="link"
-                  @click.native="removeName(index)"
-                >
-                  <i class="fal fa-times" />
-                </Btn>
-              </div>
-            </div>
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+            <FormInput
+              v-model="serial"
+              v-bind="serialProps"
+              name="serial"
+              :placeholder="t('placeholders.vehicle.serial')"
+              translation-key="vehicle.serial"
+              :no-label="true"
+            />
           </div>
         </div>
-      </form>
-    </ValidationObserver>
+        <div class="col-12 col-md-6">
+          <FormCheckbox
+            v-model="nameVisible"
+            v-bind="nameVisibleProps"
+            name="nameVisible"
+            :label="t('labels.vehicle.nameVisible')"
+          />
+        </div>
+      </div>
+      <AlternativeNamesInput
+        v-model="alternativeNames"
+        v-bind="alternativeNamesProps"
+        name="alternativeNames"
+        :current-name="name"
+        @use-name="useName"
+      />
+    </form>
 
     <template #footer>
       <div class="float-sm-right">
@@ -127,115 +176,12 @@
           data-test="vehicle-save"
           :inline="true"
         >
-          {{ $t("actions.save") }}
+          {{ t("actions.save") }}
         </Btn>
       </div>
     </template>
   </Modal>
 </template>
-
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
-import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
-import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import vehiclesCollection from "@/frontend/api/collections/Vehicles";
-import { transformErrors } from "@/frontend/api/helpers";
-
-type VehicleNamingFormData = {
-  name: string;
-  serial: string;
-  nameVisible: boolean;
-  alternativeNames: string[];
-};
-
-@Component<VehicleNamingModal>({
-  components: {
-    Modal,
-    Checkbox,
-    FormInput,
-    FilterGroup,
-    Btn,
-  },
-})
-export default class VehicleNamingModal extends Vue {
-  @Prop({ required: true }) vehicle!: Vehicle;
-
-  submitting = false;
-
-  deleting = false;
-
-  form: VehicleNamingFormData | null = null;
-
-  public get dirty() {
-    return (
-      !this.submitting &&
-      Object.keys(this.$refs.form.fields).some(
-        (field) => this.$refs.form.fields[field].dirty,
-      )
-    );
-  }
-
-  mounted() {
-    this.setupForm();
-  }
-
-  @Watch("vehicle")
-  onVehicleChange() {
-    this.setupForm();
-  }
-
-  addName() {
-    this.form.alternativeNames.push("");
-  }
-
-  removeName(index) {
-    this.form.alternativeNames.splice(index, 1);
-  }
-
-  useName(index) {
-    const newName = this.form.alternativeNames[index];
-    this.form.alternativeNames[index] = this.form.name;
-    this.form.name = newName;
-  }
-
-  setupForm() {
-    const initialData = JSON.parse(JSON.stringify(this.vehicle || {}));
-
-    this.form = {
-      name: initialData.name,
-      serial: initialData.serial,
-      nameVisible: initialData.nameVisible,
-      alternativeNames: initialData.alternativeNames,
-    };
-  }
-
-  async save() {
-    this.submitting = true;
-
-    const response = await vehiclesCollection.update(
-      this.vehicle.id,
-      this.form,
-    );
-
-    if (!response.error) {
-      this.$comlink.$emit("close-modal");
-    } else {
-      const { error } = response;
-      if (error.response && error.response.data) {
-        const { data: errorData } = error.response;
-
-        this.$refs.form.setErrors(transformErrors(errorData.errors));
-      }
-    }
-
-    this.submitting = false;
-  }
-}
-</script>
 
 <style lang="scss" scoped>
 @import "index";

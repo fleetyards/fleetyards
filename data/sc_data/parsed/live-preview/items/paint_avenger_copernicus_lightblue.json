@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Avenger_Copernicus_LightBlue",
+  "ref": "05694347-4761-446b-8305-78e8af4b911a",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "66c4b17b-7cfb-4669-8755-6b907757b3d7",
+  "name": "Avenger Copernicus Livery",
+  "short_name": null,
+  "description": "To honor the brave explorers that brought us to space and support those currently seeking new frontiers, the Interstellar Cartography Center (ICC) commissioned this special livery for the Avenger. Named in honor of famed astronomer Nicolaus Copernicus, the livery mixes two shades of blue with black highlights. All proceeds from the sale of the Copernicus livery goes directly to the ICC to support their efforts in \"Charting the Way Ahead.\"",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

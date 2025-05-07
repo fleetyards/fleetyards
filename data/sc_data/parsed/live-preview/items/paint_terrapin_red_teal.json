@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Terrapin_Red_Teal",
+  "ref": "4f585d9e-37bc-24f4-887e-09b325df3783",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4e893928-7de4-9236-ab9d-eeb312caf3b7",
+  "name": "Terrapin Vitality Livery",
+  "short_name": null,
+  "description": "The Vitality livery brings a bright white base paint with teal and red accents to the Terrapin.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

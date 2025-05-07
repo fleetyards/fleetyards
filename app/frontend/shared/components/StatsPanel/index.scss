@@ -1,0 +1,29 @@
+.stats-panel {
+  display: flex;
+  align-content: center;
+  justify-content: space-between;
+  padding: 10px 15px;
+
+  .stats-panel-icon {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+
+    div {
+      margin-bottom: 2px;
+    }
+  }
+
+  .stats-panel-text {
+    font-size: 40px;
+    min-height: 83px;
+    flex-direction: column;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+
+    .stats-panel-text-info {
+      font-size: 15px;
+    }
+  }
+}

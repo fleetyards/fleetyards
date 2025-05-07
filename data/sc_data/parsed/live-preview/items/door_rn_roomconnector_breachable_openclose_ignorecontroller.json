@@ -1,0 +1,24 @@
+{
+  "key": "Door_RN_RoomConnector_Breachable_OpenClose_IgnoreController",
+  "ref": "360c7cb1-6bbd-4eed-b7d9-7f51898f10c8",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  }
+}

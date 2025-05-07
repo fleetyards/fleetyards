@@ -3,19 +3,29 @@
 module Api
   module V1
     class HangarGroupsController < ::Api::BaseController
-      def index
-        authorize! :index, :api_hangar_groups
+      before_action :authenticate_user!, only: []
+      before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
+        unless: :user_signed_in?,
+        only: %i[index]
+      before_action -> { doorkeeper_authorize! "hangar", "hangar:write" },
+        unless: :user_signed_in?,
+        except: %i[index]
+      before_action :set_hangar_group, only: %i[update destroy]
 
-        @groups = HangarGroup.where(user_id: current_user.id)
+      def index
+        authorize!
+
+        @groups = authorized_scope(HangarGroup.all)
           .order([{sort: :asc, name: :asc}])
           .all
       end
 
       def create
         @hangar_group = HangarGroup.new(hangar_group_params)
-        authorize! :create, hangar_group
 
-        if hangar_group.save
+        authorize! @hangar_group
+
+        if @hangar_group.save
           render status: :created
         else
           render json: ValidationError.new("hangar_group.create", errors: @hangar_group.errors), status: :bad_request
@@ -23,28 +33,24 @@ module Api
       end
 
       def update
-        authorize! :update, hangar_group
-
-        return if hangar_group.update(hangar_group_params)
+        return if @hangar_group.update(hangar_group_params)
 
         render json: ValidationError.new("vehicle.update", errors: @hangar_group.errors), status: :bad_request
       end
 
       def destroy
-        authorize! :destroy, hangar_group
-
-        return if hangar_group.destroy
+        return if @hangar_group.destroy
 
         render json: ValidationError.new("hangar_group.destroy", errors: @hangar_group.errors), status: :bad_request
       end
 
       def sort
-        authorize! :sort, :api_hangar_groups
+        authorize! to: :index?
 
         sorting = params.permit(sorting: [])
 
         (sorting[:sorting] || []).each_with_index do |id, index|
-          group = HangarGroup.where(user_id: current_user.id, id:).first
+          group = authorized_scope(HangarGroup.all).where(id:).first
           next if group.blank?
 
           group.update(sort: index)
@@ -53,10 +59,11 @@ module Api
         render json: {success: true}
       end
 
-      private def hangar_group
-        @hangar_group ||= HangarGroup.find(params[:id])
+      private def set_hangar_group
+        @hangar_group = HangarGroup.find(params[:id])
+
+        authorize! @hangar_group
       end
-      helper_method :hangar_group
 
       private def hangar_group_params
         @hangar_group_params ||= params.permit(:name, :color, :sort, :public).merge(user_id: current_user.id)

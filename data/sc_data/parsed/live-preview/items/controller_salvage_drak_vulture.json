@@ -1,0 +1,21 @@
+{
+  "key": "Controller_Salvage_DRAK_Vulture",
+  "ref": "56157788-054f-4994-b840-062c638023f9",
+  "category": "controller",
+  "type": "SalvageController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "key": "BOMB_S05_FSKI",
+  "ref": "1b95523e-e2de-4de9-9b41-2cf79bfae59a",
+  "category": "weapons",
+  "type": "Bomb",
+  "sub_type": null,
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "5f81335d-44e6-4104-841e-c5af9df06829",
+  "name": "Stormburst Bomb",
+  "short_name": "Stormburst",
+  "description": "Manufacturer: FireStorm Kinetics\\nItem Type: Explosive Bomb\\nSize: 5\\n\\nWreak havoc on ground forces from the skies above, with the Stormburst. Designed by FireStorm Kinetics to maximize destructive impact at a more moderate size, these S5 bombs feature a mixed composite ordnance to decimate armored targets. The Stormburst also utilizes FireStorm Kinetics' patented Atmo-Xact fins to ensure the payload reaches its target.",
+  "inventory_consumption": {
+    "micro_scu": 3000000.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 3.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  }
+}

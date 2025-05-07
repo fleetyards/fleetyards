@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Nova_Snowblind_Grey_Camo",
+  "ref": "09f37928-8cb1-410b-9623-94d6af93b1b9",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "fbd6db91-25f3-4f9c-a7e1-495bdcdf4112",
+  "name": "Nova Snowblind Livery",
+  "short_name": null,
+  "description": "Featuring a grey, black and white camo paint scheme ideal for arctic environments, the Nova Snowblind livery offers a devastating combination of weaponry to eliminate threats on the ground and in the air.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

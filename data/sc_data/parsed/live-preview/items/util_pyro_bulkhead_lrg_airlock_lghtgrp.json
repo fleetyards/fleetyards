@@ -1,0 +1,21 @@
+{
+  "key": "util_pyro_bulkhead_lrg_airlock_lghtgrp",
+  "ref": "c4500bb8-554d-4f2d-b5e7-2fe93835794d",
+  "category": "doors",
+  "type": "Lightgroup",
+  "sub_type": "AirlockPart",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

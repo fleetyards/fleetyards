@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Zeus_VIP_Pale_Blue_Gold_Black",
+  "ref": "adc38a8e-1972-4632-97ec-c9eb067490f1",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "3bf0baa5-f753-4359-80f6-c8f15f719362",
+  "name": "Zeus Mk II Solstice Livery",
+  "short_name": null,
+  "description": "Outfit the ship that launched Humanity into the stars with the gorgeous Solstice livery. Grey and black panels accented by ribbons of gold give the Zeus Mk II a distinguished and unforgettable appearance.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

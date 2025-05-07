@@ -1,44 +1,48 @@
 <template>
-  <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-    <nav
-      ref="navigation"
-      class="relative w-[300px] min-w-[300px] h-screen z-[1000]"
-      role="navigation"
+  <nav
+    ref="navigation"
+    class="transition-nav ease-[ease] duration-500 absolute top-0 right-0 lg:top-auto lg:right-auto z-[1000] w-full lg:w-[300px] min-w-[300px] lg:h-screen"
+    role="navigation"
+  >
+    <div
+      class="transition-nav top-0 bottom-0 left-auto lg:top-auto lg:right-auto lg:bottom-auto ease-[ease] duration-500 lg:transition-none fixed w-[300px] min-w-[300px] lg:h-full lg:p-0 z-[1000] overflow-x-hidden overflow-y-auto bg-brand-grayBg/50 border-r border-brand-grayBorder/50"
+      :class="[collapsed ? '-right-[300px]' : 'right-0']"
     >
-      <div
-        class="nav-container fixed w-[300px] h-full overflow-y-auto overflow-x-hidden bg-brand-grayBg/50 border-r border-brand-grayBorder/50 fir"
-      >
-        <div class="relative min-h-full flex flex-col justify-between">
-          <ul class="py-5 mb-safe">
-            <NavItem class="min-h-[60px]">
-              <img v-lazy="logo" class="w-[40px]" alt="logo" />
-              <span class="font-hero">
-                {{ t("shortTitle") }}
-              </span>
-            </NavItem>
-            <NavItem
-              :to="{ name: 'api-v1' }"
-              :label="t('nav.apiV1')"
-              icon="fad fa-books"
-            />
-            <NavItem
-              :to="{ name: 'embed' }"
-              :label="t('nav.embed')"
-              icon="fad fa-arrow-up-from-square"
-            />
-          </ul>
-        </div>
+      <div class="relative m-h-full flex flex-col justify-between">
+        <ul class="py-5 mb-safe">
+          <NavItem class="min-h-[60px]">
+            <img v-lazy="logo" class="w-[40px]" alt="logo" />
+            <span class="font-hero">
+              {{ t("title.defaultDocsShort") }}
+            </span>
+          </NavItem>
+          <NavItem
+            :to="{ name: 'api-v1' }"
+            :label="t('nav.apiV1')"
+            icon="fad fa-books"
+          />
+          <NavItem
+            :to="{ name: 'embed' }"
+            :label="t('nav.embed')"
+            icon="fad fa-arrow-up-from-square"
+          />
+        </ul>
       </div>
-    </nav>
-  </div>
+    </div>
+  </nav>
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router/composables";
-import Store from "@/frontend/lib/Store";
-import { useI18n } from "@/docs/composables/useI18n";
+import { useRoute } from "vue-router";
+import { useI18n } from "@/shared/composables/useI18n";
 import logo from "@/images/favicon-small.png";
+import { useNavStore } from "@/docs/stores/nav";
+import { storeToRefs } from "pinia";
 import NavItem from "./NavItem/index.vue";
+
+const navStore = useNavStore();
+
+const { collapsed } = storeToRefs(navStore);
 
 const { t } = useI18n();
 
@@ -47,7 +51,7 @@ const route = useRoute();
 watch(
   () => route.path,
   () => {
-    close();
+    closeNav();
   },
 );
 
@@ -58,7 +62,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   document.removeEventListener("click", documentClick);
 
-  close();
+  closeNav();
 });
 
 const navigation = ref<HTMLElement | null>(null);
@@ -68,12 +72,12 @@ const documentClick = (event: Event) => {
   const { target } = event;
 
   if (element !== target && !element?.contains(target as Node)) {
-    close();
+    closeNav();
   }
 };
 
-const close = () => {
-  Store.commit("app/closeNav");
+const closeNav = () => {
+  // Store.commit("app/closeNav");
 };
 </script>
 
@@ -84,6 +88,13 @@ export default {
 </script>
 
 <style lang="scss">
+.app-navigation {
+  transition:
+    left ease 0.5s,
+    right ease 0.5s,
+    width ease 0.5s;
+}
+
 nav {
   .nav-container {
     // a {

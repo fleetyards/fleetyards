@@ -1,0 +1,39 @@
+{
+  "key": "JDRV_TARS_S02_Excelsior_SCItem",
+  "ref": "14cbe476-4050-4af5-8635-178519722f4b",
+  "category": "jumpdrive",
+  "type": "JumpDrive",
+  "sub_type": null,
+  "size": "2",
+  "grade": "3",
+  "manufacturer_ref": "2b25a2dd-47ea-4ab0-8711-03d34be214b1",
+  "name": "Excelsior",
+  "short_name": null,
+  "description": "Item Type: Jump Module\\nManufacturer: Tarsus\\nSize: 2\\nGrade: C\\nClass: Civilian\\n\\nJourney across the ‘verse with Tarsus’ Excelsior jump module, offering greater reliability to help take your wanderlust to new heights.",
+  "inventory_consumption": {
+    "micro_scu": 775760.0,
+    "dimensions": {
+      "x": 1.536,
+      "y": 0.9924,
+      "z": 0.5089
+    }
+  },
+  "durability": {
+    "health": 490.0
+  },
+  "power_connection": {
+    "power_base": 20.0,
+    "power_draw": 200.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 0.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.0,
+    "overclock_threshold_max": 0.0,
+    "overpower_performance": 0.0,
+    "overclock_performance": 0.0,
+    "power_to_em": 0.0,
+    "decay_rate_of_em": 0.15
+  }
+}
