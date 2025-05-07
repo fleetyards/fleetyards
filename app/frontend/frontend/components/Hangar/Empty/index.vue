@@ -59,11 +59,11 @@ const openGuide = () => {
     </template>
     <template #info="{ queryPresent }">
       <div v-if="queryPresent">
-        <tempalte v-if="wishlist">
+        <template v-if="wishlist">
           <p>
             {{ t("emptyBox.info.wishlist") }}
           </p>
-        </tempalte>
+        </template>
         <template v-else>
           <p>
             {{ t("emptyBox.info.hangar") }}

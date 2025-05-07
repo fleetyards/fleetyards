@@ -31,12 +31,12 @@ const { supported: webpSupported } = useWebpCheck();
 const mobile = useMobile();
 
 const storeImage = computed(() => {
-  if (mobile.value && props.module.media.storeImage?.medium) {
-    return props.module.media.storeImage?.medium;
+  if (mobile.value && props.module.media.storeImage?.mediumUrl) {
+    return props.module.media.storeImage?.mediumUrl;
   }
 
-  if (props.module.media.storeImage?.large) {
-    return props.module.media.storeImage?.large;
+  if (props.module.media.storeImage?.largeUrl) {
+    return props.module.media.storeImage?.largeUrl;
   }
 
   if (webpSupported) {

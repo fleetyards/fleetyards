@@ -14,7 +14,12 @@ import { type BaseTableColumn } from "@/shared/components/base/Table/types";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import TravelTime from "@/frontend/components/TravelTime/index.vue";
 import { usePagination } from "@/shared/composables/usePagination";
-import { type Component } from "@/services/fyApi";
+import {
+  useComponents as useComponentsQuery,
+  ComponentTypeEnum,
+  type ComponentQuantumDrive,
+  type Component,
+} from "@/services/fyApi";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
@@ -24,7 +29,6 @@ import {
   InputTypesEnum,
   InputAlignmentsEnum,
 } from "@/shared/components/base/FormInput/types";
-import { useComponents as useComponentsQuery } from "@/services/fyApi";
 
 const { t } = useI18n();
 
@@ -51,12 +55,12 @@ const { supported: webpSupported } = useWebpCheck();
 const mobile = useMobile();
 
 const storeImage = (component: Component) => {
-  if (mobile.value && component.media.storeImage?.medium) {
-    return component.media.storeImage?.medium;
+  if (mobile.value && component.media.storeImage?.mediumUrl) {
+    return component.media.storeImage?.mediumUrl;
   }
 
-  if (component.media.storeImage?.large) {
-    return component.media.storeImage?.large;
+  if (component.media.storeImage?.largeUrl) {
+    return component.media.storeImage?.largeUrl;
   }
 
   if (webpSupported) {
@@ -67,15 +71,15 @@ const storeImage = (component: Component) => {
 };
 
 const travelTime = (quantumDrive: Component) => {
-  if (!quantumDrive.typeData?.standardJump) {
+  if (quantumDrive.type !== ComponentTypeEnum.QuantumDrive) {
     return undefined;
   }
 
-  const a1 =
-    (quantumDrive.typeData?.standardJump.stage1AccelerationRate || 0) / 1000;
-  const a2 =
-    (quantumDrive.typeData?.standardJump.stage2AccelerationRate || 0) / 1000;
-  const speed = (quantumDrive.typeData?.standardJump.speed || 0) / 1000;
+  const typeData = quantumDrive.typeData as ComponentQuantumDrive;
+
+  const a1 = (typeData.standardJump.stage1AccelerationRate || 0) / 1000;
+  const a2 = (typeData.standardJump.stage2AccelerationRate || 0) / 1000;
+  const speed = (typeData.standardJump.speed || 0) / 1000;
 
   return calculateTravelTime(a1, a2, speed, distance.value);
 };

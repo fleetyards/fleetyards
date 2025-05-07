@@ -43,6 +43,6 @@ export const useSessionStore = defineStore("session", {
     },
   },
   persist: {
-    paths: ["authenticated"],
+    pick: ["authenticated"],
   },
 });

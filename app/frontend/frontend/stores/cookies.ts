@@ -35,6 +35,6 @@ export const useCookiesStore = defineStore("cookies", {
     },
   },
   persist: {
-    paths: ["infoVisible", "cookies"],
+    pick: ["infoVisible", "cookies"],
   },
 });

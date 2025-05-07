@@ -19,7 +19,12 @@
       "@/*": ["./app/frontend/*"],
       "~/*": ["*"]
     },
-    "types": ["cypress", "node", "vitest/globals", "vite/client"]
+    "types": [
+      "cypress",
+      "node",
+      "vitest/globals",
+      "vite/client"
+    ]
   },
   "include": [
     "@types/*",

@@ -86,7 +86,7 @@ export const useHangarStore = defineStore("hangar", {
     },
   },
   persist: {
-    paths: [
+    pick: [
       "ships",
       "detailsVisible",
       "preview",

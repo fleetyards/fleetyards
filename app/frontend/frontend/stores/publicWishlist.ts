@@ -35,6 +35,6 @@ export const usePublicWishlistStore = defineStore("publicWishlist", {
     },
   },
   persist: {
-    paths: ["ships", "detailsVisible", "perPage"],
+    pick: ["ships", "detailsVisible", "perPage"],
   },
 });

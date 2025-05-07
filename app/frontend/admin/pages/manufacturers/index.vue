@@ -17,7 +17,7 @@ import FilterForm from "@/admin/components/Manufacturers/FilterForm/index.vue";
 import {
   useManufacturers,
   useManufacturersQueryOptions,
-} from "@/services/fyApi";
+} from "@/services/fyAdminApi";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";

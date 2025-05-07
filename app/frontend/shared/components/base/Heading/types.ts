@@ -9,5 +9,12 @@ export enum HeadingSizeEnum {
   LG = "lg",
   XL = "xl",
   XXL = "2xl",
+  HERO_SM = "hero-sm",
   HERO = "hero",
+}
+
+export enum HeadingAlignmentEnum {
+  LEFT = "left",
+  CENTER = "center",
+  RIGHT = "right",
 }

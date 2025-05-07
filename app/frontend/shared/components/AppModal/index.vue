@@ -10,6 +10,7 @@ import type { Component, Raw } from "vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useOverlayStore } from "@/shared/stores/overlay";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 export type AppModalOptions = {
   component: () => Promise<Component>;
@@ -85,13 +86,15 @@ const open = (options: AppModalOptions) => {
 
 const { t } = useI18n();
 
+const { displayConfirm } = useAppNotifications();
+
 const close = (force = false) => {
   if (fixed.value && !force) {
     return;
   }
 
   if (modalComponent.value?.dirty) {
-    noty?.displayConfirm({
+    displayConfirm({
       text: t("appModal.messages.confirm.dirty"),
       onConfirm: () => {
         internalHide();

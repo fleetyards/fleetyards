@@ -1,5 +1,4 @@
 import { checkEmail } from "@/services/fyApi";
-import { debounce } from "ts-debounce";
 import { useI18n } from "@/shared/composables/useI18n";
 
 export const useRule = () => {
@@ -7,21 +6,16 @@ export const useRule = () => {
 
   const errorMessage = t("messages.error.emailTaken");
 
-  const validate = debounce(async (value: string) => {
-    try {
-      const response = await checkEmail({
-        value,
+  const validate = async (value: string) =>
+    checkEmail({
+      value,
+    })
+      .then((response) => {
+        return response.taken ? true : errorMessage;
+      })
+      .catch(() => {
+        return errorMessage;
       });
-
-      if (response.taken) {
-        return true;
-      }
-
-      return errorMessage;
-    } catch (error) {
-      return errorMessage;
-    }
-  }, 100);
 
   return validate;
 };

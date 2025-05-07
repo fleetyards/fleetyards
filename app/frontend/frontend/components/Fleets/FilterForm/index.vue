@@ -11,7 +11,7 @@
     <FilterGroup
       v-model="form.memberIn"
       :label="t('labels.filters.fleets.member')"
-      :fetch-path="`fleets/${$route.params.slug}/members`"
+      :fetch-path="`fleets/${route.params.slug}/members`"
       name="member"
       value-attr="username"
       label-attr="username"

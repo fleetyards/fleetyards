@@ -42,6 +42,6 @@ export const useFleetStore = defineStore("fleet", {
     },
   },
   persist: {
-    paths: ["detailsVisible", "grouped", "money", "preview", "inviteToken"],
+    pick: ["detailsVisible", "grouped", "money", "preview", "inviteToken"],
   },
 });

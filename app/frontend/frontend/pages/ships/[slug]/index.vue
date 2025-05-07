@@ -79,7 +79,7 @@ const { supported: webpSupported } = useWebpCheck();
 
 const storeImage = computed(() => {
   if (mobile.value && props.model?.media.storeImage?.medium) {
-    return props.model?.media.storeImage?.medium;
+    return props.model?.media.storeImage?.mediumUrl;
   }
 
   if (props.model?.media.storeImage?.large) {

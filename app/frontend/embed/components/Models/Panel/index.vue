@@ -14,12 +14,12 @@
       </div>
       <PanelImage class="text-center" :rounded="details ? undefined : 'bottom'">
         <LazyImage
-          v-if="model.media.storeImage?.medium"
+          v-if="model.media.storeImage?.mediumUrl"
           :href="url"
           target="_blank"
           rel="noopener"
           :aria-label="model.name"
-          :src="model.media.storeImage.medium"
+          :src="model.media.storeImage.mediumUrl"
           :alt="model.name"
         />
       </PanelImage>

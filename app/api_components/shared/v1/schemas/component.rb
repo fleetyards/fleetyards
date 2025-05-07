@@ -18,7 +18,7 @@ module Shared
             hidden: {type: :boolean},
 
             category: {type: :string},
-            type: {type: :string},
+            type: {"$ref": "#/components/schemas/ComponentTypeEnum"},
             subType: {type: :string},
 
             inventoryConsumption: {type: :string},

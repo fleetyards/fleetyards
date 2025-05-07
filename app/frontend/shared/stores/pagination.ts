@@ -19,6 +19,6 @@ export const usePaginationStore = defineStore("pagination", {
     },
   },
   persist: {
-    paths: ["perPage"],
+    pick: ["perPage"],
   },
 });

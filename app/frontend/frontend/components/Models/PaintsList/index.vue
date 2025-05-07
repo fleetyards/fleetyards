@@ -32,12 +32,12 @@ const { supported: webpSupported } = useWebpCheck();
 const mobile = useMobile();
 
 const storeImage = (paint: ModelPaint) => {
-  if (mobile.value && paint.media.storeImage?.medium) {
-    return paint.media.storeImage?.medium;
+  if (mobile.value && paint.media.storeImage?.mediumUrl) {
+    return paint.media.storeImage?.mediumUrl;
   }
 
-  if (paint.media.storeImage?.large) {
-    return paint.media.storeImage?.large;
+  if (paint.media.storeImage?.largeUrl) {
+    return paint.media.storeImage?.largeUrl;
   }
 
   if (webpSupported) {

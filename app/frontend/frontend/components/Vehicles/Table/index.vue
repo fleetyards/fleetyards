@@ -10,7 +10,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index.vue";
 import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue";
-import VehiclesEmpty from "@/frontend/components/Vehicles/Empty/index.vue";
+import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
 import ListActions from "@/frontend/components/Vehicles/Table/ListActions.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type Vehicle } from "@/services/fyApi";
@@ -328,7 +328,7 @@ const resetSelected = () => {
         </BtnGroup>
       </template>
       <template #empty>
-        <VehiclesEmpty :wishlist="wishlist" />
+        <HangarEmpty :wishlist="wishlist" />
       </template>
     </BaseTable>
   </div>

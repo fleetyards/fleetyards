@@ -285,7 +285,7 @@ const image = computed(() => {
     return imageByViewpoint.value?.large;
   }
 
-  return imageByViewpoint.value?.medium;
+  return imageByViewpoint.value?.mediumUrl;
 });
 </script>
 

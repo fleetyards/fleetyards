@@ -24,6 +24,6 @@ export const usePublicFleetStore = defineStore("publicFleet", {
     },
   },
   persist: {
-    paths: ["detailsVisible", "grouped", "perPage"],
+    pick: ["detailsVisible", "grouped", "perPage"],
   },
 });

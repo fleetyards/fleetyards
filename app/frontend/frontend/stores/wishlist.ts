@@ -58,6 +58,6 @@ export const useWishlistStore = defineStore("wishlist", {
     },
   },
   persist: {
-    paths: ["ships", "detailsVisible", "gridView", "tableViewCols"],
+    pick: ["ships", "detailsVisible", "gridView", "tableViewCols"],
   },
 });

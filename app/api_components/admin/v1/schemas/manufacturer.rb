@@ -3,7 +3,7 @@
 module Admin
   module V1
     module Schemas
-      class Manufacturer < ::Shared::V1::Schemas::Manufacturer
+      class Manufacturer < ::V1::Schemas::Manufacturer
         include SchemaConcern
 
         schema({

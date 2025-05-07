@@ -8,6 +8,7 @@ export const customQueryOptions = (args: CustomQueryOptions) => {
   return {
     ...args,
     queryKey: transformQueryKey(args.queryKey),
+    keepPreviousData: true,
   } as CustomQueryOptions;
 };
 

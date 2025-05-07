@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { useField } from "vee-validate";
 import { v4 as uuidv4 } from "uuid";
+import { debounce as tsDebounce } from "ts-debounce";
 import {
   InputTypesEnum,
   InputVariantsEnum,
@@ -18,8 +19,8 @@ import { useI18n } from "@/shared/composables/useI18n";
 type Props = {
   name: string;
   icon?: string;
-  modelValue?: string | number;
-  type?: InputTypesEnum;
+  modelValue?: string | number | null;
+  type?: `${InputTypesEnum}`;
   translationKey?: string;
   autofocus?: boolean;
   autocomplete?: string;
@@ -39,6 +40,7 @@ type Props = {
   variant?: InputVariantsEnum;
   size?: InputSizesEnum;
   alignment?: InputAlignmentsEnum;
+  debounce?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -61,6 +63,7 @@ const props = withDefaults(defineProps<Props>(), {
   inline: false,
   prefix: undefined,
   suffix: undefined,
+  debounce: false,
   variant: InputVariantsEnum.DEFAULT,
   size: InputSizesEnum.DEFAULT,
   alignment: InputAlignmentsEnum.LEFT,
@@ -163,9 +166,19 @@ const clear = () => {
   emit("update:modelValue", undefined);
 };
 
-const onChange = (event: Event) => {
+const handleOnChange = (event: Event) => {
   handleChange(event);
   emit("update:modelValue", inputValue.value);
+};
+
+const debouncedHandleOnChange = tsDebounce(handleOnChange, 200);
+
+const onChange = async (event: Event) => {
+  if (props.debounce) {
+    debouncedHandleOnChange(event);
+  } else {
+    handleOnChange(event);
+  }
 };
 
 const setFocus = () => {

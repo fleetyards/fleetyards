@@ -148,15 +148,15 @@ const { supported: webpSupported } = useWebpCheck();
 
 const storeImage = computed(() => {
   if (paint.value?.media.storeImage) {
-    return paint.value.media.storeImage.medium;
+    return paint.value.media.storeImage.mediumUrl;
   }
 
   if (upgrade.value?.media.storeImage) {
-    return upgrade.value.media.storeImage.medium;
+    return upgrade.value.media.storeImage.mediumUrl;
   }
 
   if (model.value.media.storeImage) {
-    return model.value.media.storeImage.medium;
+    return model.value.media.storeImage.mediumUrl;
   }
 
   if (webpSupported) {

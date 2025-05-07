@@ -59,6 +59,6 @@ export const useModelsStore = defineStore("models", {
     },
   },
   persist: {
-    paths: ["holoviewerVisible", "detailsVisible", "gridView", "tableViewCols"],
+    pick: ["holoviewerVisible", "detailsVisible", "gridView", "tableViewCols"],
   },
 });

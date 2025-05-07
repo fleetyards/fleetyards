@@ -21,7 +21,7 @@ const model = computed(() => props.vehicle.model);
 
 const image = computed(() => {
   if (model.value.media.storeImage) {
-    return model.value.media.storeImage.medium;
+    return model.value.media.storeImage.mediumUrl;
   }
 });
 

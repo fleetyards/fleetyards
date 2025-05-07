@@ -33,7 +33,6 @@
               element="#fleetchart"
               :filename="downloadName"
               size="small"
-              variant="dropdown"
             />
 
             <hr />
@@ -43,11 +42,10 @@
             v-if="mobile"
             :items="items"
             size="small"
-            variant="dropdown"
             :with-icon="true"
           />
 
-          <Btn size="small" variant="dropdown" @click="toggleLabels">
+          <Btn size="small" @click="toggleLabels">
             <i class="fad fa-tags" />
             <span v-if="showLabels">
               {{ t("actions.hideLabels") }}
@@ -57,7 +55,7 @@
             </span>
           </Btn>
 
-          <FleetChartStatusBtn variant="dropdown" size="small" />
+          <FleetChartStatusBtn size="small" />
         </BtnDropdown>
       </div>
 

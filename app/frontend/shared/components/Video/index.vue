@@ -26,7 +26,7 @@ import { useCookiesStore } from "@/frontend/stores/cookies";
 import { storeToRefs } from "pinia";
 
 type Props = {
-  video: Video;
+  video: Partial<Video>;
 };
 
 defineProps<Props>();
@@ -39,7 +39,7 @@ const { t } = useI18n();
 
 const { displaySuccess, displayAlert } = useAppNotifications();
 
-const copyVideoUrl = (video: Video) => {
+const copyVideoUrl = (video: Partial<Video>) => {
   copyText(`https://www.youtube.com/watch?v=${video.videoId}`).then(
     () => {
       displaySuccess({

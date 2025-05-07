@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import Heading from "@/shared/components/base/Heading/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { HeadingSizeEnum } from "@/shared/components/base/Heading/types";
 
 type Props = {
   name?: string;
@@ -20,7 +21,7 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <Heading class="empty__headline">
+  <Heading class="empty__headline" mt :size="HeadingSizeEnum.HERO_SM">
     <slot>
       <template v-if="name">
         {{ t("emptyBox.headlines.forName", { name: name }) }}

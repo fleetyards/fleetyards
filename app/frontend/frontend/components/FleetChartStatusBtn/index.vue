@@ -1,29 +1,8 @@
-<template>
-  <Btn
-    v-tooltip="tooltip"
-    :aria-label="t('actions.showStatusColor')"
-    :variant="variant"
-    :size="size"
-    :inline="inline"
-    @click="toggleStatus"
-  >
-    <i
-      class="fad"
-      :class="{
-        'fa-star-half-alt': !showStatus,
-        'fa-star': showStatus,
-      }"
-    />
-    <span v-if="withLabel">
-      <template v-if="showStatus">
-        {{ t("actions.hideStatusColor") }}
-      </template>
-      <template v-else>
-        {{ t("actions.showStatusColor") }}
-      </template>
-    </span>
-  </Btn>
-</template>
+<script lang="ts">
+export default {
+  name: "FleetChartStatusBtn",
+};
+</script>
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -36,8 +15,8 @@ import {
 
 type Props = {
   withLabel?: boolean;
-  variant?: BtnVariantsEnum;
-  size?: BtnSizesEnum;
+  variant?: `${BtnVariantsEnum}`;
+  size?: `${BtnSizesEnum}`;
   inline?: boolean;
 };
 
@@ -83,8 +62,29 @@ const toggleStatus = () => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "FleetChartStatusBtn",
-};
-</script>
+<template>
+  <Btn
+    v-tooltip="tooltip"
+    :aria-label="t('actions.showStatusColor')"
+    :variant="variant"
+    :size="size"
+    :inline="inline"
+    @click="toggleStatus"
+  >
+    <i
+      class="fad"
+      :class="{
+        'fa-star-half-alt': !showStatus,
+        'fa-star': showStatus,
+      }"
+    />
+    <span v-if="withLabel">
+      <template v-if="showStatus">
+        {{ t("actions.hideStatusColor") }}
+      </template>
+      <template v-else>
+        {{ t("actions.showStatusColor") }}
+      </template>
+    </span>
+  </Btn>
+</template>

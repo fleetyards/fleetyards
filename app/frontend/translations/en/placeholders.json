@@ -70,7 +70,7 @@
         "rsiHandle": "RSI Handle"
       },
       "vehicle": {
-        "serial": "Serial"
+        "serial": "Serial (XX-XXXX-XX)"
       },
       "commodityPrice": {
         "price": "100.00"

@@ -94,7 +94,7 @@ const submit = handleSubmit(async (values) => {
 
       <div class="row justify-content-lg-center">
         <div class="col-12 col-md-6 col-lg-4">
-          <FormInput name="fid" translation-key="fleet.fid" />
+          <FormInput name="fid" translation-key="fleet.fid" debounce />
           <FormInput name="name" translation-key="name" />
         </div>
       </div>

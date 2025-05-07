@@ -12,8 +12,8 @@ import {
 } from "@/shared/components/base/Btn/types";
 
 type Props = {
-  size?: BtnSizesEnum;
-  variant?: BtnVariantsEnum;
+  size?: `${BtnSizesEnum}`;
+  variant?: `${BtnVariantsEnum}`;
   expandLeft?: boolean;
   expandTop?: boolean;
   expandBottom?: boolean;

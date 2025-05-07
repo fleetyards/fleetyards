@@ -1672,6 +1672,7 @@ paths:
       operationId: hangarGroupSort
       tags:
       - HangarGroups
+      parameters: []
       responses:
         '200':
           description: successful
@@ -4066,7 +4067,7 @@ components:
         category:
           type: string
         type:
-          type: string
+          "$ref": "#/components/schemas/ComponentTypeEnum"
         subType:
           type: string
         inventoryConsumption:
@@ -4268,6 +4269,83 @@ components:
       - military
       - competition
       title: ComponentItemClassEnum
+    ComponentTypeEnum:
+      type: string
+      enum:
+      - Seat
+      - Door
+      - MainThruster
+      - Armor
+      - WeaponDefensive
+      - ManneuverThruster
+      - CargoGrid
+      - Cargo
+      - EMP
+      - Paints
+      - TurretBase
+      - ToolArm
+      - Turret
+      - Misc
+      - Module
+      - ControlPanel
+      - WeaponGun
+      - Container
+      - TractorBeam
+      - UtilityTurret
+      - TowingBeam
+      - MissileController
+      - Lightgroup
+      - Battery
+      - CapacitorAssignmentController
+      - CommsController
+      - CoolerController
+      - DoorController
+      - EnergyController
+      - FlightController
+      - MiningController
+      - BombLauncher
+      - Bomb
+      - FuelController
+      - SalvageController
+      - ShieldController
+      - TargetSelector
+      - WeaponController
+      - WheeledController
+      - Cooler
+      - DockingAnimator
+      - Button
+      - Sensor
+      - Usable
+      - ExternalFuelTank
+      - FuelTank
+      - WeaponMining
+      - SalvageHead
+      - JumpDrive
+      - FuelIntake
+      - MiningModifier
+      - Missile
+      - AttachedPart
+      - LifeSupportGenerator
+      - SpaceMine
+      - MissileLauncher
+      - DockingCollar
+      - PowerPlant
+      - QuantumFuelTank
+      - QuantumInterdictionGenerator
+      - QuantumDrive
+      - Relay
+      - Radar
+      - Scanner
+      - SalvageFillerStation
+      - Shield
+      - SeatDashboard
+      - Display
+      - SelfDestruct
+      - WeaponAttachment
+      - SalvageFieldEmitter
+      - SalvageFieldSupporter
+      - SalvageInternalStorage
+      title: ComponentTypeEnum
     DockShipSizeEnum:
       type: string
       enum:
@@ -4758,34 +4836,6 @@ components:
           type: string
       additionalProperties: false
       title: SetupOtpInput
-    Manufacturer:
-      type: object
-      properties:
-        name:
-          type: string
-        slug:
-          type: string
-        code:
-          type: string
-        logo:
-          type: string
-        longName:
-          type: string
-        scRef:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-      additionalProperties: false
-      required:
-      - name
-      - slug
-      - createdAt
-      - updatedAt
-      title: Manufacturer
     MediaFile:
       type: object
       properties:
@@ -6304,6 +6354,34 @@ components:
       - createdAt
       - updatedAt
       title: ItemPrice
+    Manufacturer:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        code:
+          type: string
+        logo:
+          type: string
+        longName:
+          type: string
+        scRef:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      - createdAt
+      - updatedAt
+      title: Manufacturer
     Manufacturers:
       type: object
       properties:

@@ -12,9 +12,14 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useMobile } from "@/shared/composables/useMobile";
-import type { HangarGroup, HangarGroupMetric } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useHangarGroupSort as useHangarGroupSortMutation } from "@/services/fyApi";
+import {
+  useHangarGroupSort as useHangarGroupSortMutation,
+  type HangarQuery,
+  type HangarGroup,
+  type HangarGroupMetric,
+} from "@/services/fyApi";
+import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
 
 type Props = {
   hangarGroups: HangarGroup[];
@@ -30,17 +35,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const { displayAlert } = useAppNotifications();
-
-const drag = ref(false);
-
-const groups = ref<HangarGroup[]>([]);
-
 const mobile = useMobile();
-
-const sortIndex = computed(() => {
-  return groups.value.map((item) => item.id);
-});
 
 onMounted(() => {
   groups.value = props.hangarGroups;
@@ -53,14 +48,7 @@ watch(
   },
 );
 
-watch(
-  () => groups.value,
-  () => {
-    if (groups.value !== props.hangarGroups) {
-      updateSort();
-    }
-  },
-);
+const { filter, filters } = useHangarFilters();
 
 const groupCount = (group: HangarGroup) => {
   return (
@@ -72,52 +60,42 @@ const groupCount = (group: HangarGroup) => {
 
 const route = useRoute();
 
-const router = useRouter();
+const filterGroup = (group: string) => {
+  const hangarGroupsIn = filters.value.hangarGroupsIn;
+  const hangarGroupsNotIn = filters.value.hangarGroupsNotIn;
 
-const filter = (filter) => {
-  const query = JSON.parse(JSON.stringify(route.query.q || {}));
-
-  if ((query.hangarGroupsIn || []).includes(filter)) {
-    if (!query.hangarGroupsNotIn) {
-      query.hangarGroupsNotIn = [];
-    }
-    query.hangarGroupsNotIn.push(filter);
-
-    const index = query.hangarGroupsIn.findIndex((item) => item === filter);
-    if (index > -1) {
-      query.hangarGroupsIn.splice(index, 1);
-    }
-  } else if ((query.hangarGroupsNotIn || []).includes(filter)) {
-    const index = query.hangarGroupsNotIn.findIndex((item) => item === filter);
-    if (index > -1) {
-      query.hangarGroupsNotIn.splice(index, 1);
-    }
-  } else {
-    if (!query.hangarGroupsIn) {
-      query.hangarGroupsIn = [];
-    }
-    query.hangarGroupsIn.push(filter);
+  if (!hangarGroupsIn && !hangarGroupsNotIn) {
+    filter({
+      hangarGroupsIn: [group],
+    });
+  } else if (hangarGroupsIn && hangarGroupsIn.includes(group)) {
+    filter({
+      hangarGroupsIn: hangarGroupsIn.filter((g) => g !== group),
+      hangarGroupsNotIn: [...(hangarGroupsNotIn || []), group],
+    });
+  } else if (hangarGroupsIn && !hangarGroupsIn.includes(group)) {
+    filter({
+      hangarGroupsIn: [...(hangarGroupsIn || []), group],
+    });
+  } else if (hangarGroupsNotIn && hangarGroupsNotIn.includes(group)) {
+    filter({
+      hangarGroupsNotIn: hangarGroupsNotIn.filter((g) => g !== group),
+    });
+  } else if (hangarGroupsNotIn && !hangarGroupsNotIn.includes(group)) {
+    filter({
+      hangarGroupsNotIn: [...(hangarGroupsNotIn || []), group],
+    });
   }
-
-  router.replace({
-    name: route.name,
-    query: {
-      q: query,
-    },
-  });
 };
 
 const isActive = (group: string) => {
-  if (!route.query.q) {
+  const hangarGroupsIn = filters.value.hangarGroupsIn;
+
+  if (!hangarGroupsIn) {
     return false;
   }
 
-  const filter = route.query.q.hangarGroupsIn;
-  if (!filter) {
-    return false;
-  }
-
-  if (filter.includes(group)) {
+  if (hangarGroupsIn.includes(group)) {
     return true;
   }
 
@@ -125,35 +103,51 @@ const isActive = (group: string) => {
 };
 
 const isInverted = (group: string) => {
-  if (!route.query.q) {
+  const hangarGroupsNotIn = filters.value.hangarGroupsNotIn;
+
+  if (!hangarGroupsNotIn) {
     return false;
   }
 
-  const filter = route.query.q.hangarGroupsNotIn;
-  if (!filter) {
-    return false;
-  }
-
-  if (filter.includes(group)) {
+  if (hangarGroupsNotIn.includes(group)) {
     return true;
   }
 
   return false;
 };
 
-const sortMutation = useHangarGroupSortMutation();
+const drag = ref(false);
 
-const updateSort = async () => {
-  await sortMutation
-    .mutateAsync({
-      sorting: sortIndex.value,
-    })
-    .catch((error) => {
-      displayAlert({
-        text: error.response.data.message,
-      });
-    });
-};
+const groups = ref<HangarGroup[]>([]);
+
+// watch(
+//   () => groups.value,
+//   () => {
+//     if (groups.value !== props.hangarGroups) {
+//       updateSort();
+//     }
+//   },
+// );
+
+// const sortIndex = computed(() => {
+//   return groups.value.map((item) => item.id);
+// });
+
+// const sortMutation = useHangarGroupSortMutation();
+
+// const { displayAlert } = useAppNotifications();
+
+// const updateSort = async () => {
+//   await sortMutation
+//     .mutateAsync({
+//       sorting: sortIndex.value,
+//     })
+//     .catch((error) => {
+//       displayAlert({
+//         text: error.response.data.message,
+//       });
+//     });
+// };
 
 const comlink = useComlink();
 
@@ -199,7 +193,7 @@ const highlight = (group?: HangarGroup) => {
         active: isActive(group.slug),
         inverted: isInverted(group.slug),
       }"
-      @click.exact="filter(group.slug)"
+      @click.exact="filterGroup(group.slug)"
     >
       <span
         :style="{
@@ -234,7 +228,7 @@ const highlight = (group?: HangarGroup) => {
             inverted: isInverted(group.slug),
           }"
           class="label label-link fade-list-item"
-          @click.exact="filter(group.slug)"
+          @click.exact="filterGroup(group.slug)"
           @click.right.prevent="openGroupModal(group)"
           @mouseenter="highlight(group)"
           @mouseleave="highlight()"

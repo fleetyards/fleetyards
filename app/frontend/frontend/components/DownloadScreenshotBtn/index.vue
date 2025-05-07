@@ -1,20 +1,8 @@
-<template>
-  <Btn
-    v-tooltip="tooltip"
-    :loading="downloading"
-    :aria-label="t('actions.saveScreenshot')"
-    :variant="variant"
-    :size="size"
-    :inline="inline"
-    @click="download"
-  >
-    <SmallLoader :loading="downloading" />
-    <i class="fad fa-image" />
-    <span v-if="withLabel">
-      {{ t("actions.saveScreenshot") }}
-    </span>
-  </Btn>
-</template>
+<script lang="ts">
+export default {
+  name: "DownloadScreenshotBtn",
+};
+</script>
 
 <script lang="ts" setup>
 import html2canvas from "html2canvas";
@@ -31,8 +19,8 @@ type Props = {
   element: string;
   withLabel?: boolean;
   filename?: string;
-  variant?: BtnVariantsEnum;
-  size?: BtnSizesEnum;
+  variant?: `${BtnVariantsEnum}`;
+  size?: `${BtnSizesEnum}`;
   inline?: boolean;
 };
 
@@ -87,11 +75,23 @@ const download = async () => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "DownloadScreenshotBtn",
-};
-</script>
+<template>
+  <Btn
+    v-tooltip="tooltip"
+    :loading="downloading"
+    :aria-label="t('actions.saveScreenshot')"
+    :variant="variant"
+    :size="size"
+    :inline="inline"
+    @click="download"
+  >
+    <SmallLoader :loading="downloading" />
+    <i class="fad fa-image" />
+    <span v-if="withLabel">
+      {{ t("actions.saveScreenshot") }}
+    </span>
+  </Btn>
+</template>
 
 <style lang="scss" scoped>
 @import "index";

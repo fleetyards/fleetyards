@@ -7,7 +7,7 @@ export const useRule = () => {
 
   const errorMessage = t("messages.error.colorInvalid");
 
-  const validateText = (value: string) => {
+  const validate = (value: string) => {
     if (regex.test(value)) {
       return true;
     }
@@ -15,5 +15,5 @@ export const useRule = () => {
     return errorMessage;
   };
 
-  return validateText;
+  return validate;
 };

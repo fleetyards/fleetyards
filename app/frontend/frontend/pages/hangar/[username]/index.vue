@@ -12,7 +12,7 @@ import Avatar from "@/shared/components/Avatar/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
-import VehiclesEmpty from "@/frontend/components/Vehicles/Empty/index.vue";
+import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
 import FilterForm from "@/frontend/components/Hangar/FilterForm/index.vue";
 import GroupLabels from "@/frontend/components/Vehicles/GroupLabels/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
@@ -320,7 +320,7 @@ useSubscription({
     </template>
 
     <template #empty="{ hideEmptyBox, emptyBoxVisible }">
-      <VehiclesEmpty
+      <HangarEmpty
         v-if="!hideEmptyBox && emptyBoxVisible"
         :variant="EmptyVariantsEnum.BOX"
       />

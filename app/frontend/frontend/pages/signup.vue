@@ -12,7 +12,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useFleetStore } from "@/frontend/stores/fleet";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
-import { type ErrorType } from "@/services/axiosAdminClient";
+import { type ErrorType } from "@/services/axiosClient";
 import {
   useSignup as useSignupMutation,
   type UserCreateInput,
@@ -46,7 +46,7 @@ const initialValues = ref<UserCreateInput>({
 
 const validationSchema = {
   username: "required|alpha_dash|usernameTaken",
-  email: "required|email",
+  email: "required|email|emailTaken",
   password: "required|min:8",
   passwordConfirmation: "required|confirmed:password",
 };
@@ -129,6 +129,7 @@ const onSubmit = handleSubmit(async (values) => {
           name="username"
           :hide-label-on-empty="true"
           :autofocus="true"
+          debounce
         />
 
         <FormInput
@@ -137,6 +138,7 @@ const onSubmit = handleSubmit(async (values) => {
           name="email"
           :type="InputTypesEnum.EMAIL"
           :hide-label-on-empty="true"
+          debounce
         />
 
         <FormInput

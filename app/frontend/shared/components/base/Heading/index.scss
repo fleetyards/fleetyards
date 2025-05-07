@@ -7,6 +7,9 @@ h4 {
 }
 
 // Tailwind CSS Placeholder Classes
+.mt-4 {
+  margin-top: 1rem !important;
+}
 
 .mb-4 {
   margin-bottom: 1rem !important;
@@ -27,6 +30,11 @@ h4 {
 .text-hero {
   font-size: 2.25rem;
   line-height: 3rem;
+}
+
+.text-hero-sm {
+  font-size: 1.875rem;
+  line-height: 2.5rem;
 }
 
 .text-2xl {

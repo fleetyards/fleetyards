@@ -1,21 +1,8 @@
-<template>
-  <Btn
-    v-if="items && items.length"
-    v-tooltip="tooltip"
-    :variant="variant"
-    :size="size"
-    :inline="inline"
-    :block="block"
-    @click="openStarship42"
-  >
-    <template v-if="withIcon">
-      <i class="fad fa-cube" /> {{ t("labels.exportStarship42") }}
-    </template>
-    <span v-else>
-      {{ t("labels.3dView") }}
-    </span>
-  </Btn>
-</template>
+<script lang="ts">
+export default {
+  name: "Starship42Btn",
+};
+</script>
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -34,8 +21,8 @@ type Props = {
   withIcon?: boolean;
   block?: boolean;
   inline?: boolean;
-  variant?: BtnVariantsEnum;
-  size?: BtnSizesEnum;
+  variant?: `${BtnVariantsEnum}`;
+  size?: `${BtnSizesEnum}`;
   to?: RouteLocationRaw;
   href?: string;
   type?: "button" | "submit";
@@ -114,8 +101,21 @@ const openStarship42 = () => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "Starship42Btn",
-};
-</script>
+<template>
+  <Btn
+    v-if="items && items.length"
+    v-tooltip="tooltip"
+    :variant="variant"
+    :size="size"
+    :inline="inline"
+    :block="block"
+    @click="openStarship42"
+  >
+    <template v-if="withIcon">
+      <i class="fad fa-cube" /> {{ t("labels.exportStarship42") }}
+    </template>
+    <span v-else>
+      {{ t("labels.3dView") }}
+    </span>
+  </Btn>
+</template>

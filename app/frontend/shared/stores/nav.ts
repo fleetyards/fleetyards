@@ -1,10 +1,10 @@
 import { defineStore } from "pinia";
 import { useMobileStore } from "@/shared/stores/mobile";
 
-interface NavStoreState {
+type NavStoreState = {
   collapsed: boolean;
   slim: boolean;
-}
+};
 
 export const useNavStore = defineStore("nav", {
   state: (): NavStoreState => ({
@@ -33,6 +33,6 @@ export const useNavStore = defineStore("nav", {
     },
   },
   persist: {
-    paths: ["slim"],
+    pick: ["slim"],
   },
 });

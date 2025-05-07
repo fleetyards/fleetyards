@@ -1,5 +1,4 @@
 import { checkUsername } from "@/services/fyApi";
-import { debounce } from "ts-debounce";
 import { useI18n } from "@/shared/composables/useI18n";
 
 export const useRule = () => {
@@ -7,21 +6,12 @@ export const useRule = () => {
 
   const errorMessage = t("messages.error.usernameTaken");
 
-  const validate = debounce(async (value: string) => {
-    try {
-      const response = await checkUsername({
-        value,
-      });
-
-      if (response.taken) {
-        return errorMessage;
-      }
-
-      return true;
-    } catch (error) {
-      return errorMessage;
-    }
-  }, 100);
+  const validate = async (value: string) =>
+    checkUsername({
+      value,
+    })
+      .then((response) => (response.taken ? errorMessage : true))
+      .catch(() => errorMessage);
 
   return validate;
 };

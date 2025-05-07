@@ -274,7 +274,7 @@ const declineRequest = async (member: FleetMember) => {
           {{ t("labels.fleet.members.declined") }}
         </span>
         <template v-else>
-          {{ member.roleLabel }}
+          {{ member.fleetRole.name }}
         </template>
       </div>
       <div class="joined">
@@ -387,7 +387,7 @@ const declineRequest = async (member: FleetMember) => {
           <i class="fal fa-chevron-up" />
         </Btn>
         <Btn
-          v-if="member.role !== 'member' && member.status === 'accepted'"
+          v-if="member.fleetRole !== 'member' && member.status === 'accepted'"
           v-tooltip="t('actions.fleet.members.demote')"
           :size="BtnSizesEnum.SMALL"
           :disabled="!canEditAdminActions(member) || updating"

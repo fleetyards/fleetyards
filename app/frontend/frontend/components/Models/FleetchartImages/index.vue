@@ -55,65 +55,65 @@ const hasImages = computed(() => {
 const fleetchartImageAngled = computed(() => {
   if (props.model.media.angledViewColored) {
     if (mobile.value) {
-      return props.model.media.angledViewColored.medium;
+      return props.model.media.angledViewColored.mediumUrl;
     }
 
-    return props.model.media.angledViewColored.large;
+    return props.model.media.angledViewColored.largeUrl;
   }
 
   if (mobile.value && props.model.media.angledView) {
-    return props.model.media.angledView.medium;
+    return props.model.media.angledView.mediumUrl;
   }
 
-  return props.model.media.angledView?.large;
+  return props.model.media.angledView?.largeUrl;
 });
 
 const fleetchartImageFront = computed(() => {
   if (props.model.media.frontViewColored) {
     if (mobile.value) {
-      return props.model.media.frontViewColored.medium;
+      return props.model.media.frontViewColored.mediumUrl;
     }
 
-    return props.model.media.frontViewColored.large;
+    return props.model.media.frontViewColored.largeUrl;
   }
 
   if (mobile.value && props.model.media.frontView) {
-    return props.model.media.frontView.medium;
+    return props.model.media.frontView.mediumUrl;
   }
 
-  return props.model.media.frontView?.large;
+  return props.model.media.frontView?.largeUrl;
 });
 
 const fleetchartImageTop = computed(() => {
   if (props.model.media.topViewColored) {
     if (mobile.value) {
-      return props.model.media.topViewColored.medium;
+      return props.model.media.topViewColored.mediumUrl;
     }
 
-    return props.model.media.topViewColored.large;
+    return props.model.media.topViewColored.largeUrl;
   }
 
   if (mobile.value && props.model.media.topView) {
-    return props.model.media.topView.medium;
+    return props.model.media.topView.mediumUrl;
   }
 
-  return props.model.media.topView?.large;
+  return props.model.media.topView?.largeUrl;
 });
 
 const fleetchartImageSide = computed(() => {
   if (props.model.media.sideViewColored) {
     if (mobile.value) {
-      return props.model.media.sideViewColored.medium;
+      return props.model.media.sideViewColored.mediumUrl;
     }
 
-    return props.model.media.sideViewColored.large;
+    return props.model.media.sideViewColored.largeUrl;
   }
 
-  if (mobile.value && props.model.media.sideView?.medium) {
-    return props.model.media.sideView.medium;
+  if (mobile.value && props.model.media.sideView?.mediumUrl) {
+    return props.model.media.sideView.mediumUrl;
   }
 
-  return props.model.media.sideView?.large;
+  return props.model.media.sideView?.largeUrl;
 });
 
 const windowWidth = ref(window.innerWidth / 2);

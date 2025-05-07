@@ -19,6 +19,8 @@ RSpec.describe "api/v1/hangar/groups", type: :request, swagger_doc: "v1/schema.y
       tags "HangarGroups"
       produces "application/json"
 
+      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/HangarGroupUpdateInput"}, required: true
+
       response(200, "successful") do
         schema type: :object, properties: {success: {type: :boolean}}
 

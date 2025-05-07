@@ -16,7 +16,7 @@ import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import { format } from "date-fns";
 import { debounce } from "ts-debounce";
 import VehiclesTable from "@/frontend/components/Vehicles/Table/index.vue";
-import VehiclesEmpty from "@/frontend/components/Vehicles/Empty/index.vue";
+import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -334,7 +334,7 @@ const openDisplayOptionsModal = () => {
     </template>
 
     <template #empty="{ hideEmptyBox, emptyBoxVisible }">
-      <VehiclesEmpty
+      <HangarEmpty
         v-if="!hideEmptyBox && emptyBoxVisible"
         :variant="EmptyVariantsEnum.BOX"
         wishlist

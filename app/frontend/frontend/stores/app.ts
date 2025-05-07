@@ -83,6 +83,6 @@ export const useAppStore = defineStore("app", {
     },
   },
   persist: {
-    paths: ["storeVersion"],
+    pick: ["storeVersion"],
   },
 });

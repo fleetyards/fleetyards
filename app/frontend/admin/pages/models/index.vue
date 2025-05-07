@@ -176,7 +176,7 @@ const { t, l } = useI18n();
           <LazyImage
             v-if="record.media.storeImage"
             :variant="LazyImageVariantsEnum.WIDE_SMALL"
-            :src="record.media.storeImage.small"
+            :src="record.media.storeImage.smallUrl"
             alt="Model storeImage"
             shadow
           />
@@ -185,7 +185,7 @@ const { t, l } = useI18n();
           <LazyImage
             v-if="record.media.rsiStoreImage"
             :variant="LazyImageVariantsEnum.WIDE_SMALL"
-            :src="record.media.rsiStoreImage.small"
+            :src="record.media.rsiStoreImage.smallUrl"
             alt="Model rsiStoreImage"
             shadow
           />
@@ -194,7 +194,7 @@ const { t, l } = useI18n();
           <LazyImage
             v-if="record.media.angledView"
             :variant="LazyImageVariantsEnum.WIDE_SMALL"
-            :src="record.media.angledView.small"
+            :src="record.media.angledView.smallUrl"
             alt="Model angledView"
           />
         </template>

@@ -1,13 +1,8 @@
-<template>
-  <div
-    :id="uuid"
-    ref="chart"
-    :class="{
-      loading,
-    }"
-    class="chart"
-  />
-</template>
+<script lang="ts">
+export default {
+  name: "ChartComponent",
+};
+</script>
 
 <script lang="ts" setup>
 import Highcharts from "highcharts";
@@ -207,8 +202,13 @@ const setupChart = () => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "ChartComponent",
-};
-</script>
+<template>
+  <div
+    :id="uuid"
+    ref="chart"
+    :class="{
+      loading,
+    }"
+    class="chart"
+  />
+</template>

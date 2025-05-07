@@ -35,6 +35,6 @@ export const usePublicHangarStore = defineStore("publicHangar", {
     },
   },
   persist: {
-    paths: ["ships", "detailsVisible"],
+    pick: ["ships", "detailsVisible"],
   },
 });

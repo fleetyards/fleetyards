@@ -12,7 +12,7 @@ import PrimaryAction from "@/shared/components/PrimaryAction/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import VehiclesTable from "@/frontend/components/Vehicles/Table/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
-import VehiclesEmpty from "@/frontend/components/Vehicles/Empty/index.vue";
+import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
 import HangarImportBtn from "@/frontend/components/Hangar/ImportBtn/index.vue";
 import HangarSyncBtn from "@/frontend/components/Hangar/SyncBtn/index.vue";
 import FilterForm from "@/frontend/components/Hangar/FilterForm/index.vue";
@@ -534,7 +534,7 @@ const openDisplayOptionsModal = () => {
     </template>
 
     <template #empty="{ hideEmptyBox, emptyBoxVisible }">
-      <VehiclesEmpty
+      <HangarEmpty
         v-if="!hideEmptyBox && emptyBoxVisible"
         :variant="EmptyVariantsEnum.BOX"
       />

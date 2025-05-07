@@ -132,6 +132,7 @@
         "urlInvalid": "URL is invalid",
         "emailTaken": "Email is already taken.",
         "fleetTaken": "Fleet is already taken.",
+        "colorInvalid": "Color is invalid",
         "serialTaken": "Serial is already taken.",
         "textInvalid": "%{field} is invalid",
         "hangar": {

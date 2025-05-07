@@ -6,7 +6,7 @@ const regex =
 export const useRule = () => {
   const { t } = useI18n();
 
-  const validateText = (
+  const validate = (
     value: string,
     [_target]: [unknown],
     ctx: FieldValidationMetaInfo,
@@ -18,5 +18,5 @@ export const useRule = () => {
     return t("messages.error.textInvalid", { field: ctx.field });
   };
 
-  return validateText;
+  return validate;
 };
