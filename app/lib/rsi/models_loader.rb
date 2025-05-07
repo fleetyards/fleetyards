@@ -110,16 +110,13 @@ module Rsi
       page = Nokogiri::HTML(response.body)
 
       prices = []
-      (page.css("#buying-options .final-price") || []).each do |price_element|
+      (page.css("[data-cy-id='price_unit__value']") || []).each do |price_element|
         prices << extract_price(price_element)
       end
 
       prices = prices.compact.sort
 
-      if currency_factor.present? && currency_factor > 0 && prices.present?
-        model.pledge_price = (prices.first / currency_factor).round
-        model.on_sale = true
-      elsif prices.present?
+      if prices.present?
         model.pledge_price = prices.first
         model.on_sale = true
       else
@@ -130,16 +127,11 @@ module Rsi
     private def extract_price(element)
       raw_price = element.text
 
-      price_match_usd = raw_price.match(/^\$(\d?,?\d+.\d+) USD$/)
-      price_match_eur = raw_price.match(/^€(\d?,?\d+.\d+) EUR$/)
+      price_match = raw_price.match(/^\$(\d?,?\d+.\d+)$/)
 
-      price_with_local_vat = if price_match_usd.present?
-        price_match_usd[1].gsub(/[$,]/, "").to_d
-      elsif price_match_eur.present?
-        price_match_eur[1].gsub(/[€,]/, "").to_d
-      end
+      return if price_match.blank?
 
-      price_with_local_vat * 100 / (vat_percent + 100) if price_with_local_vat.present?
+      price_match[1].gsub(/[$,]/, "").to_d
     end
 
     # rubocop:disable Metrics/CyclomaticComplexity
