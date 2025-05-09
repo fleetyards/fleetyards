@@ -37,6 +37,8 @@
 require "test_helper"
 
 class VehicleTest < ActiveSupport::TestCase
+  fixtures :vehicles
+
   should belong_to(:user)
   should belong_to(:model)
   should belong_to(:model_paint).optional(true)

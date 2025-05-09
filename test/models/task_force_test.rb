@@ -18,6 +18,8 @@
 require "test_helper"
 
 class TaskForceTest < ActiveSupport::TestCase
+  fixtures :vehicles, :hangar_groups
+
   should belong_to(:vehicle)
   should belong_to(:hangar_group)
 
