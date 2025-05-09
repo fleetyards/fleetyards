@@ -3,9 +3,7 @@
 module Loaders
   class ModelsJob < ::Loaders::BaseJob
     def perform
-      ::Rsi::ModelsLoader
-        .new(vat_percent: Rails.configuration.rsi.vat_percent)
-        .all
+      ::Rsi::ModelsLoader.new.all
     end
   end
 end

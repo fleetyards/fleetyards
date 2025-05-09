@@ -151,7 +151,7 @@ module ScData
         # Hack for A2 missile racks on the Starlifter
         next if model_id == A2_MODEL_ID && port_data["InstalledItem"].blank?
 
-        puts port_data["InstalledItem"].inspect
+        # puts port_data["InstalledItem"].inspect
 
         category = port_data["PortName"].include?("turret") ? "missile_turret" : nil
         key_modifier = port_data.dig("InstalledItem", "Ports", 0, "Loadout")

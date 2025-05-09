@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_19_110026) do
+ActiveRecord::Schema[7.1].define(version: 2025_05_09_143429) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
@@ -511,7 +511,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_19_110026) do
     t.string "slug"
     t.string "description"
     t.decimal "pledge_price", precision: 15, scale: 2
-    t.decimal "last_pledge_price", precision: 15, scale: 2
     t.string "store_image"
     t.boolean "active", default: true
     t.boolean "hidden", default: true
@@ -594,7 +593,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_19_110026) do
     t.datetime "store_images_updated_at", precision: nil
     t.boolean "hidden", default: true
     t.datetime "last_updated_at", precision: nil
-    t.decimal "last_pledge_price", precision: 15, scale: 2
     t.string "rsi_name"
     t.string "rsi_slug"
     t.string "brochure"
@@ -678,6 +676,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_19_110026) do
     t.decimal "sc_length", precision: 15, scale: 2
     t.decimal "sc_beam", precision: 15, scale: 2
     t.decimal "sc_height", precision: 15, scale: 2
+    t.string "rsi_ctm_url"
+    t.string "rsi_pledge_slug"
+    t.integer "rsi_pledge_value"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 
@@ -686,15 +687,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_19_110026) do
     t.uuid "model_module_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-  end
-
-  create_table "oauth_connections", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "provider"
-    t.string "uid"
-    t.uuid "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_oauth_connections_on_user_id"
   end
 
   create_table "roadmap_items", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -1014,5 +1006,4 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_19_110026) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "oauth_connections", "users"
 end

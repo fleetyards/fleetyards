@@ -75,7 +75,7 @@ class Fleet < ApplicationRecord
   end
 
   def set_normalized_fields
-    self.normalized_fid = fid.downcase
+    self.normalized_fid = fid&.downcase
   end
 
   def update_urls(force: false)

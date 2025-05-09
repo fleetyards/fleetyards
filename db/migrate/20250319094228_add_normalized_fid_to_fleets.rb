@@ -1,4 +1,4 @@
-class AddNormalizedFidToFleets < ActiveRecord::Migration[7.2]
+class AddNormalizedFidToFleets < ActiveRecord::Migration[7.1]
   def change
     add_column :fleets, :normalized_fid, :string
 

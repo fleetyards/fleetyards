@@ -1,11 +1,27 @@
 <template>
   <div id="hardpoints">
     <div v-if="erkulUrl" class="d-flex justify-content-center">
-      <Btn :href="erkulUrl" :mobile-block="true" class="erkul-link">
-        <small>{{ $t("labels.erkul.prefix") }}</small>
-        <i />
-        {{ $t("labels.erkul.link") }}
-      </Btn>
+      <BtnGroup>
+        <span class="text-muted">{{ $t("labels.hardpointTools.prefix") }}</span>
+        <Btn
+          :href="erkulUrl"
+          variant="dropdown"
+          :mobile-block="true"
+          class="erkul-link"
+        >
+          <i />
+          {{ $t("labels.hardpointTools.erkul") }}
+        </Btn>
+        <Btn
+          :href="spviewerUrl"
+          variant="dropdown"
+          :mobile-block="true"
+          class="spviewer-link"
+        >
+          <i />
+          {{ $t("labels.hardpointTools.spviewer") }}
+        </Btn>
+      </BtnGroup>
     </div>
     <div class="row">
       <div class="col-12 col-md-6 col-lg-4">
@@ -54,6 +70,7 @@
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
 import Btn from "@/frontend/core/components/Btn/index.vue";
+import BtnGroup from "@/frontend/core/components/BtnGroup/index.vue";
 import Loader from "@/frontend/core/components/Loader/index.vue";
 import modelHardpointsCollection from "@/frontend/api/collections/ModelHardpoints";
 import HardpointGroup from "./Group/index.vue";
@@ -63,6 +80,7 @@ import HardpointGroup from "./Group/index.vue";
     HardpointGroup,
     Loader,
     Btn,
+    BtnGroup,
   },
 })
 export default class Hardpoints extends Vue {
@@ -86,6 +104,18 @@ export default class Hardpoints extends Vue {
     }
 
     return `https://www.erkul.games/ship/${this.model.erkulIdentifier}`;
+  }
+
+  get spviewerUrl(): string | null {
+    if (
+      !this.model ||
+      this.model.productionStatus !== "flight-ready" ||
+      !this.model.scIdentifier
+    ) {
+      return null;
+    }
+
+    return `https://www.spviewer.eu/performance?ship=${this.model.scIdentifier}`;
   }
 
   get scunpackedUrl(): string | null {

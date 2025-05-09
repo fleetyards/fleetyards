@@ -30,20 +30,6 @@ module Admin
         .per(40)
     end
 
-    def price_diff
-      authorize! :index, :admin_models
-
-      @active_nav = "admin-models-price-diff"
-
-      @q = Model.where("pledge_price != last_pledge_price AND rsi_id IS NOT NULL").ransack(params[:q])
-
-      @q.sorts = "name asc" if @q.sorts.empty?
-
-      @models = @q.result
-        .page(params.fetch(:page) { nil })
-        .per(40)
-    end
-
     def new
       authorize! :create, :admin_models
       @model = Model.new
@@ -161,7 +147,7 @@ module Admin
         :length, :height, :mass, :cargo, :pledge_price, :on_sale, :manufacturer_id, :focus,
         :classification, :description, :production_status, :production_note, :size, :scm_speed,
         :max_speed, :ground_max_speed, :ground_reverse_speed, :pitch,
-        :yaw, :roll, :max_crew, :min_crew, :price, :last_pledge_price, :rsi_id, :dock_size,
+        :yaw, :roll, :max_crew, :min_crew, :price, :rsi_id, :dock_size,
         :sc_identifier, :erkul_identifier, :sales_page_url, :angled_view, :angled_view_cache,
         :remove_angled_view, :front_view, :front_view_cache, :remove_front_view,
         :fleetchart_offset_length, :angled_view_colored, :angled_view_colored_cache,

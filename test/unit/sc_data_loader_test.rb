@@ -31,10 +31,10 @@ class ScDataLoaderTest < ActiveSupport::TestCase
         loader.load(model)
 
         assert_equal([
-          97,
-          27,
-          1,
-          39
+          99,
+          18,
+          0,
+          42
         ], [
           ModelHardpoint.where(model_id: model.id).count,
           Component.count,

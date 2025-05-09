@@ -18,11 +18,11 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
       loader.all
 
       expectations = {
-        hardpoints: 5901,
-        components: 139,
-        models: 179,
-        paints: 18,
-        manufacturers: 24
+        hardpoints: 7342,
+        components: 14,
+        models: 217,
+        paints: 15,
+        manufacturers: 18
       }
 
       assert_equal(expectations,
@@ -37,7 +37,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
   end
 
   test "#updates only when needed" do
-    VCR.use_cassette("rsi_models_loader_all") do
+    VCR.use_cassette("rsi_models_loader_300i") do
       loader.one(7)
 
       model = Model.find_by(name: "300i")
@@ -53,7 +53,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
   end
 
   test "#updates production status only when time_modified changes" do
-    VCR.use_cassette("rsi_models_loader_all") do
+    VCR.use_cassette("rsi_models_loader_300i") do
       loader.one(7)
 
       model = Model.find_by(name: "300i")
@@ -72,7 +72,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
   end
 
   test "#overides present data" do
-    VCR.use_cassette("rsi_models_loader_all") do
+    VCR.use_cassette("rsi_models_loader_polaris") do
       model_polaris = Model.create(
         name: "Polaris",
         rsi_id: 116,
@@ -88,20 +88,20 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
 
       model_polaris.reload
 
-      assert_in_delta(155.0, model_polaris.length.to_f)
-      assert_equal("2022-08-18T16:49:02Z", model_polaris.last_updated_at.utc.iso8601)
+      assert_in_delta(166.0, model_polaris.length.to_f)
+      assert_equal("2024-12-05T19:00:50Z", model_polaris.last_updated_at.utc.iso8601)
     end
   end
 
   test "#saves hardpoint data" do
-    VCR.use_cassette("rsi_models_loader_all") do
+    VCR.use_cassette("rsi_models_loader_300i") do
       loader.one(7)
 
       model = Model.find_by(name: "300i")
 
       assert_equal([
         34,
-        8,
+        0,
         0
       ], [
         ModelHardpoint.where(model_id: model.id).count,

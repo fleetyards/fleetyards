@@ -66,10 +66,10 @@
                 v-html="toUEC(model.price)"
               />
             </div>
-            <div v-if="model.lastPledgePrice" class="col-6">
+            <div v-if="model.pledgePrice" class="col-6">
               <div class="metrics-label">{{ t("model.pledgePrice") }}:</div>
               <div class="metrics-value">
-                {{ toDollar(model.lastPledgePrice) }}
+                {{ toDollar(model.pledgePrice) }}
               </div>
             </div>
           </div>

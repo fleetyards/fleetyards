@@ -62,7 +62,7 @@ RSpec.describe "admin/api/v1/shops/commodities", type: :request, swagger_doc: "a
         let(:user) { admin_users :jeanluc }
         let(:filters) do
           {
-            "name" => ["600i"]
+            "name" => ["600i Explorer"]
           }
         end
 

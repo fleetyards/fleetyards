@@ -573,9 +573,10 @@ export default {
     showAveragePrices: "Display average Prices",
     showLatestPrices: "Display latest Prices",
   },
-  erkul: {
+  hardpointTools: {
     prefix: "Tryout Loadouts with",
-    link: "Erkul's DPS Calculator",
+    erkul: "Erkul's DPS Calculator",
+    spviewer: "SC Ships Performances Viewer",
   },
   scunpacked: {
     prefix: "Loadouts based on Gamefiles powered by",

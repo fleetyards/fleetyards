@@ -3,6 +3,8 @@
 require "test_helper"
 
 class HangarImporterHangarXplorTest < ActiveSupport::TestCase
+  fixtures :users, :vehicles, :models
+
   let(:loader) { ::Rsi::ModelsLoader.new }
   let(:importer) { ::HangarImporter.new }
   let(:import) { ::Imports::HangarImport.create!(user_id: user.id, import: import_file) }
@@ -48,7 +50,7 @@ class HangarImporterHangarXplorTest < ActiveSupport::TestCase
       "Carrack",
       "Carrack Expedition",
       "Caterpillar",
-      "Caterpillar Best In Show Edition",
+      "Caterpillar",
       "Caterpillar Pirate Edition",
       "Constellation Andromeda",
       "Constellation Aquila",
@@ -58,7 +60,7 @@ class HangarImporterHangarXplorTest < ActiveSupport::TestCase
       "Corsair",
       "Crucible",
       "Cutlass Black",
-      "Cutlass Black Best In Show Edition",
+      "Cutlass Black",
       "Cutlass Blue",
       "Cutlass Red",
       "Cyclone",
@@ -72,26 +74,27 @@ class HangarImporterHangarXplorTest < ActiveSupport::TestCase
       "Dragonfly Yellowjacket",
       "Eclipse",
       "Endeavor",
-      "F7A Hornet",
-      "F7C Hornet",
-      "F7C Hornet Wildfire",
-      "F7C-M Super Hornet",
-      "F7C-M Super Hornet Heartseeker",
-      "F7C-R Hornet Tracker",
-      "F7C-S Hornet Ghost",
-      "F8C",
-      "F8C Lightning Executive-Edition",
+      "F7A Hornet Mk I",
+      "F7C Hornet Mk I",
+      "F7C Hornet Wildfire Mk I",
+      "F7C-M Super Hornet Mk I",
+      "F7C-M Super Hornet Mk I",
+      "F7C-R Hornet Tracker Mk I",
+      "F7C-S Hornet Ghost Mk I",
+      "F8C Lightning",
+      "F8C Lightning Executive Edition",
       "Freelancer",
       "Freelancer DUR",
       "Freelancer MAX",
       "Freelancer MIS",
+      "G12a",
       "Genesis",
       "Gladiator",
       "Gladius",
       "Gladius Valiant",
       "Glaive",
       "Hammerhead",
-      "Hammerhead Best In Show Edition",
+      "Hammerhead",
       "Hawk",
       "Herald",
       "Hull A",
@@ -145,14 +148,14 @@ class HangarImporterHangarXplorTest < ActiveSupport::TestCase
       "Razor EX",
       "Razor LX",
       "Reclaimer",
-      "Reclaimer Best In Show Edition",
+      "Reclaimer",
       "Redeemer",
       "Reliant Kore",
       "Reliant Mako",
       "Reliant Sen",
       "Reliant Tana",
       "Retaliator",
-      "Retaliator Bomber",
+      "Retaliator",
       "SRV",
       "Sabre",
       "Sabre Comet",
@@ -162,8 +165,8 @@ class HangarImporterHangarXplorTest < ActiveSupport::TestCase
       "Starfarer",
       "Starfarer Gemini",
       "Terrapin",
-      "Ursa Rover",
-      "Ursa Rover Fortuna",
+      "Ursa",
+      "Ursa Fortuna",
       "Valkyrie",
       "Valkyrie Liberator Edition",
       "Vanguard Harbinger",
@@ -180,6 +183,7 @@ class HangarImporterHangarXplorTest < ActiveSupport::TestCase
   let(:import_file) { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/imports/hangarXPLOR.json")) }
 
   before do
+    Timecop.freeze("2017-01-01 14:00:00")
     VCR.use_cassette("rsi_models_loader_all") do
       loader.all
     end
@@ -187,6 +191,7 @@ class HangarImporterHangarXplorTest < ActiveSupport::TestCase
 
   after do
     Import.destroy_all
+    Timecop.return
   end
 
   it "imports all data" do
@@ -194,9 +199,7 @@ class HangarImporterHangarXplorTest < ActiveSupport::TestCase
 
     assert_equal(
       {
-        missing: [
-          "Rover"
-        ],
+        missing: [],
         imported: imported_ships,
         success: true
       },

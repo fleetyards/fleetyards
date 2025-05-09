@@ -41,8 +41,8 @@ RSpec.describe "api/v1/public/fleets/stats", type: :request, swagger_doc: "v1/sc
           data = JSON.parse(response.body)
 
           expect(data["modelCounts"]).to eq({
-            "andromeda" => 1,
-            "600i" => 1,
+            "600i-explorer" => 1,
+            "constellation-andromeda" => 1,
             "ptv" => 1
           })
         end
@@ -54,7 +54,7 @@ RSpec.describe "api/v1/public/fleets/stats", type: :request, swagger_doc: "v1/sc
         let(:fleetSlug) { fleet.slug }
         let(:q) do
           {
-            "modelNameCont" => "600i"
+            "modelNameCont" => "600i Explorer"
           }
         end
 
@@ -62,7 +62,7 @@ RSpec.describe "api/v1/public/fleets/stats", type: :request, swagger_doc: "v1/sc
           data = JSON.parse(response.body)
 
           expect(data["modelCounts"]).to eq({
-            "600i" => 1
+            "600i-explorer" => 1
           })
         end
       end

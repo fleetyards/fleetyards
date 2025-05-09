@@ -67,7 +67,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
         let(:fleetSlug) { fleet.slug }
         let(:q) do
           {
-            "modelNameCont" => "600i"
+            "modelNameCont" => "600i Explorer"
           }
         end
 
@@ -75,7 +75,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
           data = JSON.parse(response.body)
 
           expect(data.count).to eq(1)
-          expect(data.first.dig("model", "name")).to eq("600i")
+          expect(data.first.dig("model", "name")).to eq("600i Explorer")
         end
       end
 

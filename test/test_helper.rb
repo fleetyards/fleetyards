@@ -56,8 +56,6 @@ class ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   ActiveRecord::Migration.check_all_pending!
 
-  fixtures :all
-
   make_my_diffs_pretty!
 
   parallelize_setup do |worker|
@@ -75,8 +73,6 @@ end
 class ActionView::TestCase
   include Devise::Test::ControllerHelpers
 
-  fixtures :all
-
   make_my_diffs_pretty!
 end
 # rubocop:enable Style/ClassAndModuleChildren
@@ -84,8 +80,6 @@ end
 # rubocop:disable Style/ClassAndModuleChildren
 class ActiveSupport::TestCase
   ActiveRecord::Migration.check_all_pending!
-
-  fixtures :all
 
   after do
     Sidekiq::Worker.clear_all

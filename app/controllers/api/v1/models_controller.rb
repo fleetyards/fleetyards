@@ -193,8 +193,8 @@ module Api
 
         scope = model.variants.includes(:manufacturer).visible.active
         if pledge_price_range.present?
-          model_query_params["sorts"] = "last_pledge_price asc"
-          scope = scope.where(last_pledge_price: pledge_price_range)
+          model_query_params["sorts"] = "pledge_price asc"
+          scope = scope.where(pledge_price: pledge_price_range)
         end
         if price_range.present?
           model_query_params["sorts"] = "price asc"
@@ -218,8 +218,8 @@ module Api
         scope = model.loaners.includes(:manufacturer).visible.active
 
         if pledge_price_range.present?
-          model_query_params["sorts"] = "last_pledge_price asc"
-          scope = scope.where(last_pledge_price: pledge_price_range)
+          model_query_params["sorts"] = "pledge_price asc"
+          scope = scope.where(pledge_price: pledge_price_range)
         end
 
         if price_range.present?
@@ -357,8 +357,8 @@ module Api
         scope = Model.includes([:manufacturer]).visible.active
 
         if pledge_price_range.present?
-          model_query_params["sorts"] = "last_pledge_price asc"
-          scope = scope.where(last_pledge_price: pledge_price_range)
+          model_query_params["sorts"] = "pledge_price asc"
+          scope = scope.where(pledge_price: pledge_price_range)
         end
 
         if price_range.present?

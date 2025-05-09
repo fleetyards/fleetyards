@@ -1,9 +1,10 @@
 module Rsi
   class BaseLoader
-    attr_accessor :base_url
+    attr_accessor :base_url, :graphql_client
 
     def initialize(options = {})
       @base_url = options[:base_url] || Rails.configuration.rsi.endpoint
+      @graphql_client = Graphlient::Client.new("#{base_url}/graphql")
     end
 
     private def fetch_remote(url)
@@ -15,6 +16,22 @@ module Rsi
       when 200
         log_entry = RsiRequestLog.find_by(url: url.split("?").first, resolved: false)
         log_entry.update(resolved: true) if log_entry.present?
+      end
+
+      response
+    end
+
+    private def fetch_graphql(body)
+      response = Typhoeus.post("#{base_url}/graphql", body:, headers: {"Content-Type" => "application/json"})
+
+      case response.code
+      when 403
+        RsiRequestLog.find_or_create_by(url: "#{base_url}/graphql")
+      when 200
+        log_entry = RsiRequestLog.find_by(url: "#{base_url}/graphql", resolved: false)
+        log_entry.update(resolved: true) if log_entry.present?
+
+        JSON.parse(response.body)
       end
 
       response
@@ -34,10 +51,6 @@ module Rsi
       return if value.blank?
 
       value.to_i
-    end
-
-    private def prevent_extra_server_requests?
-      Rails.env.test? || ENV.fetch("CI") { Rails.configuration.rsi.load_from_file }
     end
   end
 end

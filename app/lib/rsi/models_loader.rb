@@ -2,20 +2,18 @@ module Rsi
   class ModelsLoader < ::Rsi::BaseLoader
     REFRENCE_MODEL_PRICE = 60
 
-    attr_accessor :json_file_path, :vat_percent, :hardpoints_loader, :manufacturers_loader, :currency_factor
+    attr_accessor :json_file_path, :hardpoints_loader, :manufacturers_loader, :pledge_store_loader
 
     def initialize(options = {})
       super
 
       self.json_file_path = "public/models.json"
-      self.vat_percent = options[:vat_percent] || 19
       self.manufacturers_loader = ::Rsi::ManufacturersLoader.new
       self.hardpoints_loader = ::Rsi::HardpointsLoader.new
+      self.pledge_store_loader = ::Rsi::PledgeStoreLoader.new
     end
 
     def all
-      setup_currency_factor
-
       models = load_models
 
       models.each do |data|
@@ -28,8 +26,6 @@ module Rsi
     end
 
     def one(rsi_id)
-      setup_currency_factor
-
       models = load_models
 
       model_data = models.find { |model| model["id"].to_s == rsi_id.to_s }
@@ -41,35 +37,13 @@ module Rsi
       cleanup_variants
     end
 
-    def setup_currency_factor
-      return if prevent_extra_server_requests?
-
-      response = fetch_remote("#{base_url}/pledge/ships/origin-300/300i?#{Time.zone.now.to_i}")
-
-      return unless response.success?
-
-      page = Nokogiri::HTML(response.body)
-
-      prices = []
-      (page.css("#buying-options .final-price") || []).each do |price_element|
-        prices << extract_price(price_element)
-      end
-
-      prices.compact.sort!
-
-      self.currency_factor = prices.first / REFRENCE_MODEL_PRICE if prices.present?
-    end
-
     def load_models
-      return JSON.parse(File.read(json_file_path))["data"] if prevent_extra_server_requests? && File.exist?(json_file_path)
-
       response = fetch_remote("#{base_url}/ship-matrix/index?#{Time.zone.now.to_i}")
 
       return [] unless response.success?
 
       begin
         model_data = JSON.parse(response.body)
-        File.write(json_file_path, model_data.to_json)
         model_data["data"]
       rescue JSON::ParserError => e
         Sentry.capture_exception(e)
@@ -86,9 +60,9 @@ module Rsi
         create_or_update_model(data)
       end
 
-      load_buying_options(model) unless prevent_extra_server_requests?
-
       unless paint?(data)
+        sleep 5 unless Rails.env.test?
+        pledge_store_loader.run(model)
         manufacturers_loader.run(data["manufacturer"], model)
         hardpoints_loader.run(data["compiled"], model)
       end
@@ -96,42 +70,6 @@ module Rsi
       model.hidden = false
 
       model.save!
-    end
-
-    def load_buying_options(model)
-      return if prevent_extra_server_requests?
-
-      sleep 5
-
-      response = fetch_remote("#{base_url}#{model.store_url}?#{Time.zone.now.to_i}")
-
-      return unless response.success?
-
-      page = Nokogiri::HTML(response.body)
-
-      prices = []
-      (page.css("[data-cy-id='price_unit__value']") || []).each do |price_element|
-        prices << extract_price(price_element)
-      end
-
-      prices = prices.compact.sort
-
-      if prices.present?
-        model.pledge_price = prices.first
-        model.on_sale = true
-      else
-        model.on_sale = false
-      end
-    end
-
-    private def extract_price(element)
-      raw_price = element.text
-
-      price_match = raw_price.match(/^\$(\d?,?\d+.\d+)$/)
-
-      return if price_match.blank?
-
-      price_match[1].gsub(/[$,]/, "").to_d
     end
 
     # rubocop:disable Metrics/CyclomaticComplexity
@@ -202,6 +140,10 @@ module Rsi
       load_store_image(model, data["media"][0])
 
       model
+      # rescue ActiveRecord::RecordInvalid => e
+      #   puts "Error: #{e.message}"
+      #   puts "Data: #{data.inspect}"
+      #   raise e
     end
     # rubocop:enable Metrics/CyclomaticComplexity
 
@@ -245,7 +187,7 @@ module Rsi
       store_image_url = media_data["images"]["store_hub_large"]
       store_image_url = "#{base_url}#{store_image_url}" unless store_image_url.starts_with?("https")
 
-      return if store_image_url.blank? || prevent_extra_server_requests?
+      return if store_image_url.blank?
 
       image_url = store_image_url.gsub("store_hub_large", "source")
 

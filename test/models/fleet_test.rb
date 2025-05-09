@@ -33,6 +33,8 @@
 require "test_helper"
 
 class FleetTest < ActiveSupport::TestCase
+  fixtures :fleets
+
   let(:klingon_empire) { fleets :klingon_empire }
   let(:url) { "foo.bar" }
   let(:url_slash) { "//foo.bar" }
