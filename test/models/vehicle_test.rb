@@ -37,7 +37,7 @@
 require "test_helper"
 
 class VehicleTest < ActiveSupport::TestCase
-  fixtures :vehicles
+  fixtures :vehicles, :loaners, :users, :models, :manufacturers
 
   should belong_to(:user)
   should belong_to(:model)

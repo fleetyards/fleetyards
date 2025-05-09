@@ -29,7 +29,7 @@
 require "test_helper"
 
 class FleetMembershipTest < ActiveSupport::TestCase
-  fixtures :fleets, :users, :fleet_memberships
+  fixtures :fleets, :users, :fleet_memberships, :vehicles, :models, :manufacturers
 
   should belong_to(:user)
   should belong_to(:fleet)
