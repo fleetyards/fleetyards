@@ -20,9 +20,9 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
       expectations = {
         hardpoints: 7342,
         components: 14,
-        models: 215,
+        models: 217,
         paints: 15,
-        manufacturers: 18
+        manufacturers: 25
       }
 
       assert_equal(expectations,
