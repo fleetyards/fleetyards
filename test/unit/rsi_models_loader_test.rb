@@ -7,6 +7,15 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
 
   before do
     Timecop.freeze("2017-01-01 14:00:00")
+
+    Model.destroy_all
+    Component.destroy_all
+    ModelPaint.destroy_all
+    ModelHardpoint.destroy_all
+    ModelModule.destroy_all
+    ModelModulePackage.destroy_all
+    ModelSnubCraft.destroy_all
+    ModuleHardpoint.destroy_all
   end
 
   after do
@@ -20,7 +29,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
       expectations = {
         hardpoints: 7342,
         components: 14,
-        models: 217,
+        models: 215,
         paints: 15,
         manufacturers: 25
       }

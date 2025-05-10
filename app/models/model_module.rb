@@ -27,8 +27,8 @@ class ModelModule < ApplicationRecord
     dependent: :destroy
   has_many :models, through: :module_hardpoints
   has_many :shop_commodities, as: :commodity_item, dependent: :destroy
-  has_many :model_module_packge_items, dependent: :destroy
-  has_many :model_module_packges, through: :model_module_packge_items
+  has_many :model_module_package_items, dependent: :destroy
+  has_many :model_module_packages, through: :model_module_package_items
 
   mount_uploader :store_image, StoreImageUploader
 
