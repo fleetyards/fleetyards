@@ -78,7 +78,7 @@ json.media do
     json.partial! "api/v1/shared/view_image", record: model, attr: :new_side_view_colored, old_attr: :side_view_colored, width: model.side_view_colored_width, height: model.side_view_colored_height
   end
   json.store_image do
-    json.partial! "api/v1/shared/view_image", record: model, attr: :new_store_image, old_attr: :store_image, width: model.store_image_width, height: model.store_image_height
+    json.partial! "api/v1/shared/view_image", record: model, attr: :new_store_image, old_attr: :store_image, width: model.try(:store_image_width), height: model.try(:store_image_height)
   end
   json.top_view do
     json.partial! "api/v1/shared/view_image", record: model, attr: :new_top_view, old_attr: :top_view, width: model.top_view_width, height: model.top_view_height

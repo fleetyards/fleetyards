@@ -154,6 +154,7 @@ group :test do
   gem "simplecov-html", require: false
   gem "timecop"
   gem "webmock", require: false
+  gem "vcr"
   gem "database_cleaner-active_record"
 end
 

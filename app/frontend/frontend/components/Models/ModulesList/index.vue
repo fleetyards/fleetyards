@@ -1,3 +1,26 @@
+<script lang="ts">
+export default {
+  name: "ModelsModulesList",
+};
+</script>
+
+<script lang="ts" setup>
+import AsyncData from "@/shared/components/AsyncData.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import ModulePanel from "@/frontend/components/Modules/Panel/index.vue";
+import { useModelModules as useModelModulesQuery } from "@/services/fyApi";
+
+type Props = {
+  modelSlug: string;
+};
+
+const props = defineProps<Props>();
+
+const { data: modules, ...asyncStatus } = useModelModulesQuery(props.modelSlug);
+
+const { t } = useI18n();
+</script>
+
 <template>
   <AsyncData :async-status="asyncStatus" hide-error>
     <template v-if="modules?.items.length" #resolved>
@@ -21,26 +44,3 @@
     </template>
   </AsyncData>
 </template>
-
-<script lang="ts" setup>
-import AsyncData from "@/shared/components/AsyncData.vue";
-import { useI18n } from "@/shared/composables/useI18n";
-import ModulePanel from "@/frontend/components/Modules/Panel/index.vue";
-import { useModelModules as useModelModulesQuery } from "@/services/fyApi";
-
-type Props = {
-  modelSlug: string;
-};
-
-const props = defineProps<Props>();
-
-const { data: modules, ...asyncStatus } = useModelModulesQuery(props.modelSlug);
-
-const { t } = useI18n();
-</script>
-
-<script lang="ts">
-export default {
-  name: "ModelsModulesList",
-};
-</script>

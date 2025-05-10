@@ -42,7 +42,6 @@
 #  hydrogen_fuel_tank_size    :decimal(15, 2)
 #  hydrogen_fuel_tanks        :string
 #  images_count               :integer          default(0)
-#  last_pledge_price          :decimal(15, 2)
 #  last_updated_at            :datetime
 #  length                     :decimal(15, 2)   default(0.0), not null
 #  loaners_count              :integer          default(0), not null
@@ -71,6 +70,7 @@
 #  rsi_beam                   :decimal(15, 2)   default(0.0), not null
 #  rsi_cargo                  :decimal(15, 2)
 #  rsi_classification         :string
+#  rsi_ctm_url                :string
 #  rsi_description            :text
 #  rsi_focus                  :string
 #  rsi_height                 :decimal(15, 2)   default(0.0), not null
@@ -81,6 +81,8 @@
 #  rsi_min_crew               :integer
 #  rsi_name                   :string
 #  rsi_pitch                  :decimal(15, 2)
+#  rsi_pledge_slug            :string
+#  rsi_pledge_value           :integer
 #  rsi_roll                   :decimal(15, 2)
 #  rsi_scm_speed              :decimal(15, 2)
 #  rsi_size                   :string

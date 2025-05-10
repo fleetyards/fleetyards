@@ -28,11 +28,19 @@ const props = defineProps<Props>();
 const { t } = useI18n();
 
 const erkulUrl = computed(() => {
-  if (!props.model || !props.model.erkulIdentifier) {
-    return null;
+  if (!props.model.scIdentifier) {
+    return undefined;
   }
 
   return `https://www.erkul.games/ship/${props.model.erkulIdentifier}`;
+});
+
+const spviewerUrl = computed(() => {
+  if (!props.model.scIdentifier) {
+    return undefined;
+  }
+
+  return `https://www.spviewer.eu/performance?ship=${props.model.scIdentifier}`;
 });
 
 const hardpointsForGroup = (group: HardpointGroupEnum): Hardpoint[] => {
@@ -72,12 +80,18 @@ const {
 <template>
   <div id="hardpoints" class="row hardpoints">
     <div class="col-12">
-      <div v-if="erkulUrl" class="d-flex justify-content-center">
-        <Btn :href="erkulUrl" mobile-block class="erkul-link">
-          <small>{{ t("labels.erkul.prefix") }}</small>
-          <i />
-          {{ t("labels.erkul.link") }}
-        </Btn>
+      <div v-if="model.scIdentifier" class="d-flex justify-content-center">
+        <BtnGroup>
+          <span class="text-muted">{{ t("labels.hardpoints.prefix") }}</span>
+          <Btn :href="erkulUrl" :mobile-block="true" class="erkul-link">
+            <i />
+            {{ t("labels.hardpoints.erkul") }}
+          </Btn>
+          <Btn :href="spviewerUrl" :mobile-block="true" class="spviewer-link">
+            <i />
+            {{ t("labels.hardpoints.spviewer") }}
+          </Btn>
+        </BtnGroup>
       </div>
       <div class="d-flex justify-content-end">
         <BtnGroup>

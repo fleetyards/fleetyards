@@ -1,3 +1,28 @@
+<script lang="ts">
+export default {
+  name: "ModelsModulesList",
+};
+</script>
+
+<script lang="ts" setup>
+import AsyncData from "@/shared/components/AsyncData.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import TeaserPanel from "@/shared/components/TeaserPanel/index.vue";
+import { useModelUpgrades as useModelUpgradesQuery } from "@/services/fyApi";
+
+type Props = {
+  modelSlug: string;
+};
+
+const props = defineProps<Props>();
+
+const { data: upgrades, ...asyncStatus } = useModelUpgradesQuery(
+  props.modelSlug,
+);
+
+const { t } = useI18n();
+</script>
+
 <template>
   <AsyncData :async-status="asyncStatus" hide-error>
     <template v-if="upgrades?.length" #resolved>
@@ -21,28 +46,3 @@
     </template>
   </AsyncData>
 </template>
-
-<script lang="ts" setup>
-import AsyncData from "@/shared/components/AsyncData.vue";
-import { useI18n } from "@/shared/composables/useI18n";
-import TeaserPanel from "@/shared/components/TeaserPanel/index.vue";
-import { useModelUpgrades as useModelUpgradesQuery } from "@/services/fyApi";
-
-type Props = {
-  modelSlug: string;
-};
-
-const props = defineProps<Props>();
-
-const { data: upgrades, ...asyncStatus } = useModelUpgradesQuery(
-  props.modelSlug,
-);
-
-const { t } = useI18n();
-</script>
-
-<script lang="ts">
-export default {
-  name: "ModelsModulesList",
-};
-</script>

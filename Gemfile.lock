@@ -739,6 +739,8 @@ GEM
     url_plumber (0.1.2)
       activesupport (>= 3.0.0)
     useragent (0.16.11)
+    vcr (6.3.1)
+      base64
     version_gem (1.1.3)
     vite_rails (3.0.19)
       railties (>= 5.1, < 9)
@@ -894,6 +896,7 @@ DEPENDENCIES
   uniform_notifier
   url_plumber
   useragent
+  vcr
   vite_rails
   web-console
   webmock
