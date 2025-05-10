@@ -16,6 +16,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
     ModelModulePackage.destroy_all
     ModelSnubCraft.destroy_all
     ModuleHardpoint.destroy_all
+    Manufacturer.destroy_all
   end
 
   after do
@@ -31,7 +32,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
         components: 14,
         models: 215,
         paints: 15,
-        manufacturers: 25
+        manufacturers: 18
       }
 
       assert_equal(expectations,
