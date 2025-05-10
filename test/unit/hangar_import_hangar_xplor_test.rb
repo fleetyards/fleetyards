@@ -3,9 +3,6 @@
 require "test_helper"
 
 class HangarImporterHangarXplorTest < ActiveSupport::TestCase
-  let(:pledge_response_stub) { File.read("test/fixtures/rsi/300i_pledge_page.html") }
-  let(:matrix_response_stub) { File.read("test/fixtures/rsi/matrix.json") }
-
   let(:loader) { ::Rsi::ModelsLoader.new }
   let(:importer) { ::HangarImporter.new }
   let(:import) { ::Imports::HangarImport.create!(user_id: user.id, import: import_file) }
@@ -51,7 +48,7 @@ class HangarImporterHangarXplorTest < ActiveSupport::TestCase
       "Carrack",
       "Carrack Expedition",
       "Caterpillar",
-      "Caterpillar Best In Show Edition",
+      "Caterpillar",
       "Caterpillar Pirate Edition",
       "Constellation Andromeda",
       "Constellation Aquila",
@@ -61,7 +58,7 @@ class HangarImporterHangarXplorTest < ActiveSupport::TestCase
       "Corsair",
       "Crucible",
       "Cutlass Black",
-      "Cutlass Black Best In Show Edition",
+      "Cutlass Black",
       "Cutlass Blue",
       "Cutlass Red",
       "Cyclone",
@@ -78,7 +75,7 @@ class HangarImporterHangarXplorTest < ActiveSupport::TestCase
       "F7A Hornet Mk I",
       "F7C Hornet Mk I",
       "F7C Hornet Wildfire Mk I",
-      "F7C-M Super Hornet Heartseeker Mk I",
+      "F7C-M Super Hornet Mk I",
       "F7C-M Super Hornet Mk I",
       "F7C-R Hornet Tracker Mk I",
       "F7C-S Hornet Ghost Mk I",
@@ -88,13 +85,14 @@ class HangarImporterHangarXplorTest < ActiveSupport::TestCase
       "Freelancer DUR",
       "Freelancer MAX",
       "Freelancer MIS",
+      "G12a",
       "Genesis",
       "Gladiator",
       "Gladius",
       "Gladius Valiant",
       "Glaive",
       "Hammerhead",
-      "Hammerhead Best In Show Edition",
+      "Hammerhead",
       "Hawk",
       "Herald",
       "Hull A",
@@ -146,7 +144,7 @@ class HangarImporterHangarXplorTest < ActiveSupport::TestCase
       "Razor EX",
       "Razor LX",
       "Reclaimer",
-      "Reclaimer Best In Show Edition",
+      "Reclaimer",
       "Redeemer",
       "Reliant Kore",
       "Reliant Mako",
@@ -182,14 +180,9 @@ class HangarImporterHangarXplorTest < ActiveSupport::TestCase
 
   before do
     Timecop.freeze("2017-01-01 14:00:00")
-
-    stub_request(:get, %r{\Ahttps://robertsspaceindustries.com/pledge/ships/.*/.*})
-      .to_return(status: 200, body: pledge_response_stub)
-
-    stub_request(:get, %r{\Ahttps://robertsspaceindustries.com/ship-matrix/index.*})
-      .to_return(status: 200, body: matrix_response_stub)
-
-    loader.all
+    VCR.use_cassette("rsi_models_loader_all") do
+      loader.all
+    end
   end
 
   after do
@@ -202,11 +195,7 @@ class HangarImporterHangarXplorTest < ActiveSupport::TestCase
 
     assert_equal(
       {
-        missing: [
-          "Argo Mole - Carbon Edition",
-          "Argo Mole - Talus Edition",
-          "Rover"
-        ],
+        missing: [],
         imported: imported_ships,
         success: true
       },

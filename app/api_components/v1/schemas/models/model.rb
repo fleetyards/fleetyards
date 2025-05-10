@@ -58,8 +58,6 @@ module V1
             hasUpgrades: {type: :boolean},
             hasVideos: {type: :boolean},
             holo: {type: :string},
-            lastPledgePrice: {type: :number},
-            lastPledgePriceLabel: {type: :string},
             lastUpdatedAt: {type: :string, format: "date-time"},
             lastUpdatedAtLabel: {type: :string},
 

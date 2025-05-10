@@ -2,19 +2,17 @@ module Rsi
   class ModelsLoader < ::Rsi::BaseLoader
     REFRENCE_MODEL_PRICE = 60
 
-    attr_accessor :vat_percent, :hardpoints_loader, :manufacturers_loader, :currency_factor
+    attr_accessor :hardpoints_loader, :manufacturers_loader, :pledge_store_loader
 
     def initialize(options = {})
       super
 
-      self.vat_percent = options[:vat_percent] || 19
       self.manufacturers_loader = ::Rsi::ManufacturersLoader.new
       self.hardpoints_loader = ::Rsi::HardpointsLoader.new
+      self.pledge_store_loader = ::Rsi::PledgeStoreLoader.new
     end
 
     def all
-      setup_currency_factor
-
       models = load_data
 
       models.each do |data|
@@ -27,8 +25,6 @@ module Rsi
     end
 
     def one(rsi_id)
-      setup_currency_factor
-
       models = load_data
 
       model_data = models.find { |model| model["id"].to_s == rsi_id.to_s }
@@ -40,23 +36,6 @@ module Rsi
       cleanup_variants
     end
 
-    def setup_currency_factor
-      response = fetch_remote("#{base_url}/pledge/ships/origin-300/300i?#{Time.zone.now.to_i}")
-
-      return unless response.success?
-
-      page = Nokogiri::HTML(response.body)
-
-      prices = []
-      (page.css("#buying-options .final-price") || []).each do |price_element|
-        prices << extract_price(price_element)
-      end
-
-      prices.compact.sort!
-
-      self.currency_factor = prices.first / REFRENCE_MODEL_PRICE if prices.present?
-    end
-
     def sync_model(data)
       model_for_paint = find_model_for_paint(data)
       model = if model_for_paint.present?
@@ -65,9 +44,9 @@ module Rsi
         create_or_update_model(data)
       end
 
-      load_buying_options(model)
-
       unless paint?(data)
+        sleep 5 unless Rails.env.test?
+        pledge_store_loader.run(model)
         model.manufacturer = manufacturers_loader.one(data["manufacturer"]) if model.manufacturer.blank?
         hardpoints_loader.all(model, data["compiled"])
       end
@@ -75,40 +54,6 @@ module Rsi
       model.hidden = false
 
       model.save!
-    end
-
-    def load_buying_options(model)
-      sleep 5 unless Rails.env.test?
-
-      response = fetch_remote("#{base_url}#{model.store_url}?#{Time.zone.now.to_i}")
-
-      return unless response.success?
-
-      page = Nokogiri::HTML(response.body)
-
-      prices = []
-      (page.css("[data-cy-id='price_unit__value']") || []).each do |price_element|
-        prices << extract_price(price_element)
-      end
-debugger
-      prices = prices.compact.sort
-
-      if prices.present?
-        model.pledge_price = prices.first
-        model.on_sale = true
-      else
-        model.on_sale = false
-      end
-    end
-
-    private def extract_price(element)
-      raw_price = element.text
-
-      price_match = raw_price.match(/^\$(\d?,?\d+.\d+)$/)
-
-      return if price_match.blank?
-
-      price_match[1].gsub(/[$,]/, "").to_d
     end
 
     # rubocop:disable Metrics/CyclomaticComplexity
@@ -182,6 +127,10 @@ debugger
       load_store_image(model, data["media"][0])
 
       model
+      # rescue ActiveRecord::RecordInvalid => e
+      #   puts "Error: #{e.message}"
+      #   puts "Data: #{data.inspect}"
+      #   raise e
     end
     # rubocop:enable Metrics/CyclomaticComplexity
 

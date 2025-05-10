@@ -14,7 +14,6 @@
 #  fleetchart_image_height :integer
 #  fleetchart_image_width  :integer
 #  hidden                  :boolean          default(TRUE)
-#  last_pledge_price       :decimal(15, 2)
 #  last_updated_at         :datetime
 #  name                    :string
 #  on_sale                 :boolean          default(FALSE)
@@ -72,7 +71,7 @@ class ModelPaint < ApplicationRecord
     [
       "active", "angled_view", "angled_view_height", "angled_view_width", "created_at",
       "description", "fleetchart_image", "fleetchart_image_height", "fleetchart_image_width",
-      "hidden", "id", "id_value", "last_pledge_price", "last_updated_at", "model_id", "name",
+      "hidden", "id", "id_value", "last_updated_at", "model_id", "name",
       "on_sale", "pledge_price", "production_note", "production_status", "rsi_description",
       "rsi_id", "rsi_name", "rsi_slug", "rsi_store_image", "rsi_store_url", "side_view",
       "side_view_height", "side_view_width", "slug", "store_image", "store_images_updated_at",

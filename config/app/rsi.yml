@@ -1,4 +1,3 @@
 shared:
   endpoint: <%= ENV["RSI_ENDPOINT"] || 'https://robertsspaceindustries.com' %>
-  vat_percent: 19
   load_from_file: <%= ENV["RSI_LOAD_FROM_FILE"] %>

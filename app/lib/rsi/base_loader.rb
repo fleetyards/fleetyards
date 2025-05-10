@@ -1,9 +1,10 @@
 module Rsi
   class BaseLoader
-    attr_accessor :base_url
+    attr_accessor :base_url, :graphql_client
 
     def initialize(options = {})
       @base_url = options[:base_url] || Rails.configuration.rsi.endpoint
+      @graphql_client = Graphlient::Client.new("#{base_url}/graphql")
     end
 
     private def fetch_remote(url)
@@ -20,7 +21,7 @@ module Rsi
       response
     end
 
-    def load_data
+    private def load_data
       response = fetch_remote("#{base_url}/ship-matrix/index?#{Time.zone.now.to_i}")
 
       return [] unless response.success?
@@ -32,6 +33,22 @@ module Rsi
         Rails.logger.error "Model Data could not be parsed: #{response.body}"
         []
       end
+    end
+
+    private def fetch_graphql(body)
+      response = Typhoeus.post("#{base_url}/graphql", body:, headers: {"Content-Type" => "application/json"})
+
+      case response.code
+      when 403
+        RsiRequestLog.find_or_create_by(url: "#{base_url}/graphql")
+      when 200
+        log_entry = RsiRequestLog.find_by(url: "#{base_url}/graphql", resolved: false)
+        log_entry.update(resolved: true) if log_entry.present?
+
+        JSON.parse(response.body)
+      end
+
+      response
     end
 
     private def strip_name(name)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_11_071300) do
+ActiveRecord::Schema[7.2].define(version: 2025_05_09_143429) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
@@ -551,7 +551,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_11_071300) do
     t.string "slug"
     t.string "description"
     t.decimal "pledge_price", precision: 15, scale: 2
-    t.decimal "last_pledge_price", precision: 15, scale: 2
     t.string "store_image"
     t.boolean "active", default: true
     t.boolean "hidden", default: true
@@ -640,7 +639,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_11_071300) do
     t.datetime "store_images_updated_at", precision: nil
     t.boolean "hidden", default: true
     t.datetime "last_updated_at", precision: nil
-    t.decimal "last_pledge_price", precision: 15, scale: 2
     t.string "rsi_name"
     t.string "rsi_slug"
     t.string "brochure"
@@ -734,6 +732,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_11_071300) do
     t.integer "store_image_height"
     t.integer "rsi_store_image_width"
     t.integer "rsi_store_image_height"
+    t.string "rsi_ctm_url"
+    t.string "rsi_pledge_slug"
+    t.integer "rsi_pledge_value"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 

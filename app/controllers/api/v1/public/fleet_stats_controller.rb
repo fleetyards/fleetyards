@@ -56,7 +56,7 @@ module Api
               )
             end,
             metrics: {
-              total_money: models_without_loaners.map(&:last_pledge_price).sum(&:to_i) + modules.map(&:pledge_price).sum(&:to_i) + upgrades.map(&:pledge_price).sum(&:to_i),
+              total_money: models_without_loaners.map(&:pledge_price).sum(&:to_i) + modules.map(&:pledge_price).sum(&:to_i) + upgrades.map(&:pledge_price).sum(&:to_i),
               total_credits: ingame_models.map(&:price).sum(&:to_i),
               total_min_crew: models.map(&:min_crew).sum(&:to_i),
               total_max_crew: models.map(&:max_crew).sum(&:to_i),

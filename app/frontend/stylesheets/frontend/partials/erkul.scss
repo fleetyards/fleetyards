@@ -1,7 +1,9 @@
 .erkul-link {
-  small {
-    color: darken($text-color, 20%);
-    transition: all ease 0.5s;
+  .panel-btn-inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
   }
 
   i {
@@ -16,12 +18,28 @@
   }
 
   &:hover {
-    small {
-      color: $gray-darker;
-    }
-
     i {
       background-image: url("@/images/sc_dps_calculator_black.png");
     }
+  }
+}
+
+.spviewer-link {
+  .panel-btn-inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+  }
+
+  i {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background-image: url("@/images/spviewer.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    transition: all ease 0.5s;
   }
 }

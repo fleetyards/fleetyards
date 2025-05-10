@@ -82,10 +82,6 @@ ENV Variables:
 
 - CABLE_ENDPOINT
 
-#### your VAT added on sales for the RSI Pledge Store, just leave it blank if there is no VAT added in your country
-
-- RSI_VAT_PERCENT
-
 #### Sentry Bugtracker
 
 - SENTRY_DSN

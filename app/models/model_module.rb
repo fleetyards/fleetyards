@@ -44,8 +44,8 @@ class ModelModule < ApplicationRecord
   has_many :module_hardpoints,
     dependent: :destroy
   has_many :models, through: :module_hardpoints
-  has_many :model_module_packge_items, dependent: :destroy
-  has_many :model_module_packges, through: :model_module_packge_items
+  has_many :model_module_package_items, dependent: :destroy
+  has_many :model_module_packages, through: :model_module_package_items
 
   has_many :item_prices, as: :item, dependent: :destroy
 

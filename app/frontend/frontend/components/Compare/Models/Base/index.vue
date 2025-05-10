@@ -207,7 +207,7 @@
             class="col-6 text-center compare-row-item"
           >
             <span class="metrics-value">
-              {{ toDollar(model.lastPledgePrice) }}
+              {{ toDollar(model.pledgePrice) }}
             </span>
           </div>
         </div>

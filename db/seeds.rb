@@ -7,7 +7,26 @@ system("curl -XPUT -H \"Content-Type: application/json\" #{elasticsearch_url}/_a
 puts ""
 
 if ENV["TEST_SEEDS"].present?
-  ::Rsi::ModelsLoader.new(vat_percent: Rails.configuration.rsi.vat_percent).all
+  Model.find_or_create_by!(name: "Freelancer") do |model|
+    model.hidden = false
+    model.manufacturer = Manufacturer.find_or_create_by!(name: "MISC")
+  end
+  Model.find_or_create_by!(name: "300i") do |model|
+    model.hidden = false
+    model.manufacturer = Manufacturer.find_or_create_by!(name: "Origin")
+  end
+  Model.find_or_create_by!(name: "100i") do |model|
+    model.hidden = false
+    model.manufacturer = Manufacturer.find_or_create_by!(name: "Origin")
+  end
+  Model.find_or_create_by!(name: "600i Explorer") do |model|
+    model.hidden = false
+    model.manufacturer = Manufacturer.find_or_create_by!(name: "Origin")
+  end
+  Model.find_or_create_by!(name: "600i Touring") do |model|
+    model.hidden = false
+    model.manufacturer = Manufacturer.find_or_create_by!(name: "Origin")
+  end
 
   model = Model.first
   20.times do |index|

@@ -7,9 +7,7 @@ module Loaders
 
       import.start!
 
-      ::Rsi::ModelsLoader
-        .new(vat_percent: Rails.configuration.rsi.vat_percent)
-        .one(rsi_id)
+      ::Rsi::ModelsLoader.new.one(rsi_id)
 
       import.finish!
     rescue => e
