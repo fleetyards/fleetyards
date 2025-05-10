@@ -7,10 +7,25 @@ system("curl -XPUT -H \"Content-Type: application/json\" #{elasticsearch_url}/_a
 puts ""
 
 if ENV["TEST_SEEDS"].present?
-  ["Freelancer", "300i", "100i", "600i Explorer", "600i Touring"].each do |model_name|
-    Model.find_or_create_by!(name: "Freelancer") do |model|
-      model.hidden = false
-    end
+  Model.find_or_create_by!(name: "Freelancer") do |model|
+    model.hidden = false
+    model.manufacturer = Manufacturer.find_or_create_by!(name: "MISC")
+  end
+  Model.find_or_create_by!(name: "300i") do |model|
+    model.hidden = false
+    model.manufacturer = Manufacturer.find_or_create_by!(name: "Origin")
+  end
+  Model.find_or_create_by!(name: "100i") do |model|
+    model.hidden = false
+    model.manufacturer = Manufacturer.find_or_create_by!(name: "Origin")
+  end
+  Model.find_or_create_by!(name: "600i Explorer") do |model|
+    model.hidden = false
+    model.manufacturer = Manufacturer.find_or_create_by!(name: "Origin")
+  end
+  Model.find_or_create_by!(name: "600i Touring") do |model|
+    model.hidden = false
+    model.manufacturer = Manufacturer.find_or_create_by!(name: "Origin")
   end
 
   model = Model.first
