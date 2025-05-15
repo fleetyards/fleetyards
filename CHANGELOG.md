@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.56](///compare/v5.31.55...v5.31.56) (2025-05-15)
+
+
+### Bug Fixes
+
+* **paints:** add mapping for idris 1d370c2
+
 ### [5.31.55](///compare/v5.31.54...v5.31.55) (2025-05-10)
 
 
