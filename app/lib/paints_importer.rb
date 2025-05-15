@@ -136,6 +136,7 @@ class PaintsImporter
     paint_map = {
       "2950 Invictus Constellation Blue and Gold" => "2950 Invictus Blue and Gold",
       "2950 Invictus Retaliator Midnight Blue and Gold" => "2950 Invictus Blue and Gold",
+      "Retaliator -Invictus Blue and Gold" => "2950 Invictus Blue and Gold",
       "2950 Invictus Constellation Dark Green" => "Dark Green",
       "Retaliator Twilight" => "Twilight",
       "Retaliator Grey" => "Grey",
@@ -192,6 +193,7 @@ class PaintsImporter
       "Hercules Starlifter Argent" => "Argent",
       "Hercules Starlifter Dryad" => "Dryad",
       "Hercules Starlifter BIS 2951" => "Best in Show 2951",
+      "Hercules Invictus Blue and Gold" => "Invictus Blue and Gold",
       "Aurora SXSW 2015" => "SXSW 2015",
       "2950 Invictus Aurora Blue and Gold" => "Invictus Blue and Gold",
       "Hornet Mk I Invictus Blue and Gold" => "Invictus Blue and Gold",
@@ -218,7 +220,8 @@ class PaintsImporter
       "600i 2954 Auspicious Red Dragon" => "Auspicious Red Dragon",
       "X1 2954 Auspicious Red Dog" => "Auspicious Red Dog",
       "X1 2954 Auspicious Red Dragon" => "Auspicious Red Dragon",
-      "Scorpius Stinger Black Orange" => "Stinger"
+      "Scorpius Stinger Black Orange" => "Stinger",
+      "Reliant Invictus Blue and Gold" => "Invictus Blue and Gold"
     }
 
     return paint_map[name] if paint_map[name].present?
@@ -236,7 +239,7 @@ class PaintsImporter
     cyclone = %w[Cyclone Cyclone-TR Cyclone-RN Cyclone-RC Cyclone-AA]
     vanguard = ["Vanguard Warden", "Vanguard Sentinel", "Vanguard Hoplite", "Vanguard Harbinger"]
     freelancer = ["Freelancer", "Freelancer DUR", "Freelancer MAX", "Freelancer MIS"]
-    tali = ["Retaliator Bomber", "Retaliator"]
+    tali = ["Retaliator"]
     hercules = ["C2 Hercules", "M2 Hercules", "A2 Hercules"]
     gladius = ["Gladius", "Gladius Valiant", "Pirate Gladius"]
     series_100 = %w[100i 125a 135c]
@@ -269,6 +272,8 @@ class PaintsImporter
     f8c = ["F8C Lightning", "F8C Lightning Executive Edition"]
     merlin = ["P-52 Merlin", "P-72 Archimedes"]
     guardian = ["Guardian", "Guardian QI"]
+    reliant = ["Reliant Kore", "Reliant Mako", "Reliant Sen", "Reliant Tana"]
+    idris = ["Idris-P", "Idris-M"]
 
     models_map = {
       "Cutter" => cutter,
@@ -277,6 +282,7 @@ class PaintsImporter
       "2950 Invictus Constellation Blue and Gold" => connie,
       "2950 Invictus Constellation Dark Green" => connie,
       "2950 Invictus Retaliator Midnight Blue and Gold" => tali,
+      "Retaliator -Invictus Blue and Gold" => tali,
       "Retaliator Twilight" => tali,
       "Retaliator Grey" => tali,
       "Fury Variants" => fury,
@@ -329,6 +335,7 @@ class PaintsImporter
       "Hercules Starlifter Sylvan" => hercules,
       "Hercules Starlifter Argent" => hercules,
       "Hercules Starlifter Dryad" => hercules,
+      "Hercules Invictus Blue and Gold" => hercules,
       "Drake Cutlass" => cutlass,
       "Cutlass" => cutlass,
       "Drake Cutlass Ghoulish Green" => cutlass,
@@ -380,7 +387,8 @@ class PaintsImporter
       "Starfarer Storm Surge" => starfarer,
       "2950 Invictus Starfarer Light Grey" => starfarer,
       "2950 Invictus Starfarer Black" => starfarer,
-      "MISC Reliant" => ["Reliant Kore", "Reliant Mako", "Reliant Sen", "Reliant Tana"],
+      "MISC Reliant" => reliant,
+      "Reliant Invictus Blue and Gold" => reliant,
       "Aurora" => aurora,
       "Aurora SXSW 2015" => aurora,
       "Operation Pitchfork" => aurora,
@@ -413,7 +421,8 @@ class PaintsImporter
       "C1 Spirit 2954 Best In Show" => spirit,
       "F8C Lightning 2954 Best In Show" => f8c,
       "Archimedes & Merlin" => merlin,
-      "Guardian" => guardian
+      "Guardian" => guardian,
+      "Idris" => idris
     }
 
     return models_map[name.strip] if models_map[name.strip].present?
