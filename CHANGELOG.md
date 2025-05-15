@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.57](///compare/v5.31.56...v5.31.57) (2025-05-15)
+
+
+### Bug Fixes
+
+* **loaners:** update mapping 0eb4e03
+
 ### [5.31.56](///compare/v5.31.55...v5.31.56) (2025-05-15)
 
 
