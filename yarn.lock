@@ -1846,10 +1846,10 @@ aggregate-error@^3.0.0:
     clean-stack "^2.0.0"
     indent-string "^4.0.0"
 
-ahoy.js@0.4.3:
-  version "0.4.3"
-  resolved "https://registry.yarnpkg.com/ahoy.js/-/ahoy.js-0.4.3.tgz#1b8403fd9415b0a54a9e36a3d67cab8534d2221c"
-  integrity sha512-l1WDqy4N+pK1LWWOjFabIeQpsuKIuKY08Mzgh6FHHJC2Ry1OJzOCFhSkuHUShMdaYeeaXo6CW5pfefj2GCsjkw==
+ahoy.js@0.4.4:
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/ahoy.js/-/ahoy.js-0.4.4.tgz#51bb393fbc6e53962eefac7155642c2d85405238"
+  integrity sha512-LpEf/4Xe4YWAbCN3SUjf58hhWKQzqECRdXJDCRSUp9cgwTul+CnukXxKXavGvoyiYg1QkdVQuO6tx/HELgizlA==
 
 ajv@^6.12.4:
   version "6.12.6"
