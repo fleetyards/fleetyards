@@ -271,7 +271,7 @@ class PaintsImporter
     spirit = ["A1 Spirit", "C1 Spirit", "E1 Spirit"]
     f8c = ["F8C Lightning", "F8C Lightning Executive Edition"]
     merlin = ["P-52 Merlin", "P-72 Archimedes"]
-    guardian = ["Guardian", "Guardian QI"]
+    guardian = ["Guardian", "Guardian QI", "Guardian MX"]
     reliant = ["Reliant Kore", "Reliant Mako", "Reliant Sen", "Reliant Tana"]
     idris = ["Idris-P", "Idris-M"]
 
