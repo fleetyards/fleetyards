@@ -26,16 +26,6 @@
         {{ t("texts.support.subline") }}
       </p>
       <div class="page-actions page-actions-center">
-        <Btn
-          href="https://www.buymeacoffee.com/mortik"
-          variant="link"
-          class="support-buymeacoffee"
-        >
-          <img
-            src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=martenk&button_colour=428bca&font_colour=ffffff&font_family=Cookie&outline_colour=ffffff&coffee_colour=FFDD00"
-          />
-        </Btn>
-        &nbsp; &nbsp;
         <Btn href="https://paypal.me/mortik" size="large">
           <i class="fab fa-paypal" />
           PayPal
@@ -44,6 +34,16 @@
         <Btn href="https://www.patreon.com/fleetyards" size="large">
           <i class="fab fa-patreon" />
           Patreon
+        </Btn>
+        &nbsp; &nbsp;
+        <Btn
+          href="https://www.buymeacoffee.com/mortik"
+          variant="link"
+          class="support-buymeacoffee"
+        >
+          <img
+            src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=martenk&button_colour=428bca&font_colour=ffffff&font_family=Cookie&outline_colour=ffffff&coffee_colour=FFDD00"
+          />
         </Btn>
       </div>
     </div>
@@ -67,5 +67,11 @@ export default {
 <style scoped lang="scss">
 .support-referral-link {
   font-size: 130%;
+}
+
+.support-buymeacoffee {
+  img {
+    width: auto;
+  }
 }
 </style>
