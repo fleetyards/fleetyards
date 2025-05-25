@@ -37,7 +37,11 @@
                 />
                 <Btn :href="erkulUrl" :block="true" class="erkul-link">
                   <i />
-                  {{ $t("labels.erkul.link") }}
+                  {{ $t("labels.hardpointTools.erkul") }}
+                </Btn>
+                <Btn :href="spviewerUrl" :block="true" class="spviewer-link">
+                  <i />
+                  {{ $t("labels.hardpointTools.spviewer") }}
                 </Btn>
                 <Starship42Btn
                   :items="sortedModels"
@@ -147,6 +151,10 @@ export default class ModelsCompare extends Vue {
 
   get erkulUrl() {
     return "https://www.erkul.games/calculator";
+  }
+
+  get spviewerUrl() {
+    return `https://www.spviewer.eu/performance`;
   }
 
   get sortedModels() {
