@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.60](///compare/v5.31.59...v5.31.60) (2025-05-25)
+
+
+### Bug Fixes
+
+* **hangar-sync:** update mapping for best in show ships 6f5a253
+
 ### [5.31.59](///compare/v5.31.58...v5.31.59) (2025-05-22)
 
 ### [5.31.58](///compare/v5.31.57...v5.31.58) (2025-05-21)
