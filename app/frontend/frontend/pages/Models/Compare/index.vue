@@ -154,7 +154,14 @@ export default class ModelsCompare extends Vue {
   }
 
   get spviewerUrl() {
-    return `https://www.spviewer.eu/performance`;
+    // eslint-disable-next-line compat/compat
+    const url = new URL("https://www.spviewer.eu/performance");
+
+    if (this.form.models && this.form.models.length > 0) {
+      url.searchParams.set("ship", this.form.models.join(","));
+    }
+
+    return url.toString();
   }
 
   get sortedModels() {

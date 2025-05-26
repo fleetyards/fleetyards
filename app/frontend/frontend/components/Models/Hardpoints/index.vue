@@ -2,7 +2,9 @@
   <div id="hardpoints">
     <div v-if="erkulUrl" class="d-flex justify-content-center">
       <BtnGroup>
-        <span class="text-muted">{{ $t("labels.hardpointTools.prefix") }}</span>
+        <span v-if="!mobile" class="text-muted">{{
+          $t("labels.hardpointTools.prefix")
+        }}</span>
         <Btn
           :href="erkulUrl"
           variant="dropdown"
@@ -73,6 +75,7 @@ import Btn from "@/frontend/core/components/Btn/index.vue";
 import BtnGroup from "@/frontend/core/components/BtnGroup/index.vue";
 import Loader from "@/frontend/core/components/Loader/index.vue";
 import modelHardpointsCollection from "@/frontend/api/collections/ModelHardpoints";
+import Store from "@/frontend/lib/Store";
 import HardpointGroup from "./Group/index.vue";
 
 @Component<Hardpoints>({
@@ -89,6 +92,8 @@ export default class Hardpoints extends Vue {
   collection: ModelHardpointsCollection = modelHardpointsCollection;
 
   loading = false;
+
+  mobile = computed(() => Store.getters.mobile);
 
   get hardpoints() {
     return this.collection.records || [];

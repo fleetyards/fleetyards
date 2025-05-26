@@ -43,3 +43,17 @@
     transition: all ease 0.5s;
   }
 }
+
+@media (max-width: $desktop-breakpoint) {
+  .erkul-link {
+    .panel-btn-inner {
+      flex-direction: column;
+    }
+  }
+
+  .spviewer-link {
+    .panel-btn-inner {
+      flex-direction: column;
+    }
+  }
+}
