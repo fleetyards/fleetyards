@@ -41,14 +41,13 @@ export const routes: RouteRecordRaw[] = [
   },
   {
     path: "security/",
-    name: "settings-security",
     component: () => import("@/frontend/pages/settings/security.vue"),
     meta: {
       title: "settings.security",
       needsAuthentication: true,
     },
     redirect: {
-      name: "settings-security-status",
+      name: "settings-security",
     },
     children: securityRoutes,
   },

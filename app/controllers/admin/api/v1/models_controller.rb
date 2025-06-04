@@ -51,18 +51,6 @@ module Admin
             .per(40)
         end
 
-        def price_diff
-          authorize! with: ::Admin::ModelPolicy
-
-          @q = Model.where("pledge_price != last_pledge_price AND rsi_id IS NOT NULL").ransack(params[:q])
-
-          @q.sorts = "name asc" if @q.sorts.empty?
-
-          @models = @q.result
-            .page(params.fetch(:page) { nil })
-            .per(40)
-        end
-
         def create
           @model = Model.new(model_params)
 
@@ -163,7 +151,7 @@ module Admin
             :pitch, :pitch_boosted, :roll, :roll_boosted, :sc_identifier, :erkul_identifier,
             :manufacturer_id, :rsi_id, :base_model_id, :production_status, :production_note,
             :classification, :focus, :size, :dock_size, :length, :beam, :height, :on_sale,
-            :store_url, :sales_page_url, :price, :pledge_price, :last_pledge_price, :cargo,
+            :store_url, :sales_page_url, :price, :pledge_price, :cargo,
             :cargo_holds, :hydrogen_fuel_tank_size, :hydrogen_fuel_tanks, :quantum_fuel_tank_size,
             :quantum_fuel_tanks, :store_image_new
           )

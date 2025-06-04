@@ -92,7 +92,7 @@ class Fleet < ApplicationRecord
   before_validation :update_urls
   before_validation :set_normalized_fields
   before_save :update_slugs
-  after_create :setup_default_roles
+  after_create :setup_default_roles!
   after_create :setup_admin_user
 
   def self.accepted
@@ -112,8 +112,8 @@ class Fleet < ApplicationRecord
     self.ts = ensure_valid_ts_url(self, :ts, force:)
   end
 
-  def setup_default_roles
-    FleetRole.setup_default_roles(self)
+  def setup_default_roles!
+    FleetRole.setup_default_roles!(self)
   end
 
   def setup_admin_user

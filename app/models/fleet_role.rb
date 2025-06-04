@@ -89,7 +89,7 @@ class FleetRole < ApplicationRecord
     }
   end
 
-  def self.setup_default_roles(fleet)
+  def self.setup_default_roles!(fleet)
     fleet.fleet_roles.find_or_create_by!(
       name: "Admin"
     ) do |role|

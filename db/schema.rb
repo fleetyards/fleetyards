@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_05_09_143429) do
+ActiveRecord::Schema[7.2].define(version: 2025_05_27_173654) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
@@ -722,6 +722,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_09_143429) do
     t.decimal "sc_length", precision: 15, scale: 2
     t.decimal "sc_beam", precision: 15, scale: 2
     t.decimal "sc_height", precision: 15, scale: 2
+    t.string "rsi_ctm_url"
+    t.string "rsi_pledge_slug"
+    t.integer "rsi_pledge_value"
     t.decimal "scm_speed_boosted", precision: 15, scale: 2
     t.decimal "pitch_boosted", precision: 15, scale: 2
     t.decimal "yaw_boosted", precision: 15, scale: 2
@@ -732,9 +735,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_09_143429) do
     t.integer "store_image_height"
     t.integer "rsi_store_image_width"
     t.integer "rsi_store_image_height"
-    t.string "rsi_ctm_url"
-    t.string "rsi_pledge_slug"
-    t.integer "rsi_pledge_value"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 
@@ -796,6 +796,16 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_09_143429) do
     t.uuid "access_grant_id", null: false
     t.string "nonce", null: false
     t.index ["access_grant_id"], name: "index_oauth_openid_requests_on_access_grant_id"
+  end
+
+  create_table "omniauth_connections", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "uid", null: false
+    t.integer "provider", null: false
+    t.jsonb "auth_payload"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_omniauth_connections_on_user_id"
   end
 
   create_table "rollups", force: :cascade do |t|
@@ -984,4 +994,5 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_09_143429) do
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "users", column: "resource_owner_id"
   add_foreign_key "oauth_openid_requests", "oauth_access_grants", column: "access_grant_id", on_delete: :cascade
+  add_foreign_key "omniauth_connections", "users"
 end

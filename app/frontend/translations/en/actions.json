@@ -82,6 +82,18 @@
       "showTableView": "Display as List",
       "showGridView": "Display as Grid",
       "syncRsiHangar": "Sync RSI Hangar",
+      "oauth": {
+        "discord": "Discord",
+        "bluesky": "BlueSky",
+        "github": "GitHub",
+        "twitch": "Twitch",
+        "connected": {
+          "discord": "Connected to Discord",
+          "bluesky": "Connected to BlueSky",
+          "github": "Connected to GitHub",
+          "twitch": "Connected to Twitch"
+        }
+      },
       "compare": {
         "ships": "Compare"
       },

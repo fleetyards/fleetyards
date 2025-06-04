@@ -35,4 +35,6 @@ json.hangar_updated_at user.hangar_updated_at.utc.iso8601 if user.hangar_updated
 
 json.resource_access []
 
+json.auth_connections user.omniauth_connections.pluck(:provider)
+
 json.partial! "api/shared/dates", record: user

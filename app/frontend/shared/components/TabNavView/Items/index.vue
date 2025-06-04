@@ -38,19 +38,23 @@ const route = useRoute();
 const activeRoute = (routeName?: RouteRecordName) => {
   return routeName === route.name;
 };
+
+const routeName = (route: RouteRecordRaw) => {
+  return route.name || (route.redirect as RouteRecordRaw)?.name;
+};
 </script>
 
 <template>
   <router-link
     v-for="item in filteredRoutes"
-    :key="item.name"
+    :key="routeName(item)"
     v-slot="{ href: linkHref, navigate }"
-    :to="{ name: item.name }"
+    :to="{ name: routeName(item) }"
     :custom="true"
   >
     <li
       role="link"
-      :class="{ active: activeRoute(item.name) }"
+      :class="{ active: activeRoute(routeName(item)) }"
       @click="navigate"
       @keypress.enter="() => navigate"
     >

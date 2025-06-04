@@ -39,6 +39,8 @@ import { useAxiosInterceptors } from "@/frontend/composables/useAxiosInterceptor
 import { useCheckStoreVersion } from "@/shared/composables/useCheckStoreVersion";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
+import { usePrefetch } from "@/shared/composables/usePrefetch";
+import { useFlashNotifications } from "@/shared/composables/useFlashNotifications";
 
 useWebpCheck(true);
 
@@ -75,6 +77,8 @@ const { infoVisible } = storeToRefs(cookiesStore);
 const CHECK_VERSION_INTERVAL = 1800 * 1000; // 30 mins
 
 const { t, availableLocales, currentLocale } = useI18n();
+
+useFlashNotifications();
 
 watch(
   () => navCollapsed.value,
@@ -188,13 +192,13 @@ const setNoScroll = () => {
 
 const checkSessionReload = async () => {
   if (route.query.reload_session) {
-    sessionStore.login();
+    sessionStore.fetchUserAndLogin();
   }
 };
 
 const { data: user, refetch: refetchCurrentUser } = useMeQuery({
   query: {
-    enabled: isAuthenticated,
+    retry: false,
   },
 });
 
@@ -202,7 +206,7 @@ watch(
   () => user.value,
   () => {
     if (user.value) {
-      sessionStore.currentUser = user.value;
+      sessionStore.login(user.value);
     }
   },
 );

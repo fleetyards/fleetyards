@@ -32,6 +32,17 @@ shared:
     version: "4.0.0-live.9470730"
     environment: "live-preview"
 
+  discord:
+    oauth_client_id: <%= ENV["DISCORD_OAUTH_CLIENT_ID"] %>
+    oauth_secret: <%= ENV["DISCORD_OAUTH_SECRET"] %>
+
+  github:
+    oauth_client_id: <%= ENV["GITHUB_OAUTH_CLIENT_ID"] %>
+    oauth_secret: <%= ENV["GITHUB_OAUTH_SECRET"] %>
+
+  twitch:
+    oauth_client_id: <%= ENV["TWITCH_OAUTH_CLIENT_ID"] %>
+    oauth_secret: <%= ENV["TWITCH_OAUTH_SECRET"] %>
 
 staging:
   on_subdomain?: true

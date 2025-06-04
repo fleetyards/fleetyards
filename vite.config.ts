@@ -96,6 +96,7 @@ export default defineConfig({
   },
   build: {
     target: browserslistToEsbuild(),
+    minify: "esbuild",
     emptyOutDir: false,
     rollupOptions: {
       maxParallelFileOps: 5,
@@ -114,6 +115,9 @@ export default defineConfig({
     cors: true,
     fs: {
       allow: [".", accessEnv("FLEETYARDS_NODE_MODULES", "node_modules")],
+    },
+    hmr: {
+      timeout: 60000,
     },
   },
   css: {

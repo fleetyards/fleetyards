@@ -16,7 +16,7 @@ import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
 import FilterForm from "@/frontend/components/Hangar/FilterForm/index.vue";
 import GroupLabels from "@/frontend/components/Vehicles/GroupLabels/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
-import { debounce } from "ts-debounce";
+import debounce from "lodash.debounce";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import {
   type HangarGroupMetric,

@@ -16,12 +16,14 @@ type Props = {
   variant?: EmptyVariantsEnum;
   name?: string;
   title?: string;
+  inline?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   variant: EmptyVariantsEnum.DEFAULT,
   name: undefined,
   title: undefined,
+  inline: false,
 });
 
 const route = useRoute();
@@ -38,16 +40,15 @@ const isQueryPresent = computed(
 );
 
 const cssClasses = computed(() => {
-  if (props.variant === EmptyVariantsEnum.BOX) {
-    return "empty--box";
-  }
-
-  return "";
+  return {
+    "empty-list-box": props.variant === EmptyVariantsEnum.BOX,
+    "empty-list-inline": props.inline,
+  };
 });
 </script>
 
 <template>
-  <div class="empty" :class="cssClasses">
+  <div class="empty-list" :class="cssClasses">
     <Box v-if="variant === EmptyVariantsEnum.BOX" class="info" :large="true">
       <EmptyHeadline :name="name">
         <slot name="headline" :query-present="isQueryPresent" />

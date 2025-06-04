@@ -1,13 +1,18 @@
 import { useFeatures as useFeaturesQuery } from "@/services/fyApi";
+import { usePrefetch } from "@/shared/composables/usePrefetch";
 
 export enum QueryKeysEnum {
   FEATURES = "features",
 }
 
 export const useFeatures = () => {
+  const { fetchData } = usePrefetch();
+
   const { data: features } = useFeaturesQuery({
     query: {
       retry: false,
+      initialData: fetchData("features"),
+      staleTime: 1000,
     },
   });
 

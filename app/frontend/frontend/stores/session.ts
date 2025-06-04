@@ -1,7 +1,12 @@
 import { formatISO, parseISO, differenceInMinutes } from "date-fns";
 import { defineStore } from "pinia";
 import { useHangarStore } from "./hangar";
-import type { User } from "@/services/fyApi";
+import {
+  type User,
+  me as fetchMe,
+  destroySession,
+  hangar,
+} from "@/services/fyApi";
 
 interface SessionState {
   authenticated: boolean;
@@ -33,15 +38,22 @@ export const useSessionStore = defineStore("session", {
     },
   },
   actions: {
-    login() {
+    async fetchUserAndLogin() {
+      await fetchMe().then((user) => {
+        this.login(user);
+      });
+    },
+    login(user: User) {
       this.authenticated = true;
+      this.currentUser = user;
     },
     async logout() {
-      const hangarStore = useHangarStore();
+      await destroySession().finally(() => {
+        const hangarStore = useHangarStore();
+        hangarStore.ships = [];
 
-      this.authenticated = false;
-      hangarStore.ships = [];
-      this.currentUser = undefined;
+        this.$reset();
+      });
     },
     confirmAccess() {
       this.accessConfirmed = formatISO(new Date());

@@ -11,7 +11,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/index.vue";
 import FleetChartStatusBtn from "@/frontend/components/FleetChartStatusBtn/index.vue";
-import { debounce } from "ts-debounce";
+import debounce from "lodash.debounce";
 import Starship42Btn from "@/frontend/components/Starship42Btn/index.vue";
 import CommunityLogo from "@/shared/components/CommunityLogo/index.vue";
 import FleetchartItem from "./Item/index.vue";
@@ -524,7 +524,6 @@ const imageMaxWidth = (item: Vehicle | Model | VehiclePublic) => {
               element="#fleetchart"
               :filename="downloadName"
               size="small"
-              variant="dropdown"
             />
 
             <hr />
@@ -534,11 +533,10 @@ const imageMaxWidth = (item: Vehicle | Model | VehiclePublic) => {
             v-if="mobile"
             :items="items"
             size="small"
-            variant="dropdown"
             :with-icon="true"
           />
 
-          <Btn size="small" variant="dropdown" @click="toggleLabels">
+          <Btn size="small" @click="toggleLabels">
             <i class="fad fa-tags" />
             <span v-if="showLabels">
               {{ t("actions.hideLabels") }}
@@ -548,9 +546,9 @@ const imageMaxWidth = (item: Vehicle | Model | VehiclePublic) => {
             </span>
           </Btn>
 
-          <FleetChartStatusBtn variant="dropdown" size="small" />
+          <FleetChartStatusBtn size="small" />
 
-          <Btn size="small" variant="dropdown" @click="markForReset">
+          <Btn size="small" @click="markForReset">
             <i class="fad fa-undo" />
             <span>{{ t("actions.resetZoom") }}</span>
           </Btn>

@@ -1,6 +1,6 @@
 import { useIsFetching } from "@tanstack/vue-query";
 import nprogress from "nprogress";
-import { debounce } from "ts-debounce";
+import debounce from "lodash.debounce";
 
 export const useNProgress = () => {
   const isFetching = useIsFetching();

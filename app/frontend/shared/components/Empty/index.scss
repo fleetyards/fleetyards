@@ -1,15 +1,19 @@
-.empty {
+.empty-list {
   width: 600px;
+}
 
-  &--box {
-    width: 90%;
-    margin-right: auto;
-    margin-left: auto;
-  }
+.empty-list-inline {
+  width: auto;
+}
+
+.empty-list-box {
+  width: 90%;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 @media (max-width: $desktop-breakpoint) {
-  .empty {
+  .empty-list {
     max-width: 100%;
     padding: 0;
   }

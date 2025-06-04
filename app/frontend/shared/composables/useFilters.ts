@@ -1,4 +1,4 @@
-import { debounce } from "ts-debounce";
+import debounce from "lodash.debounce";
 
 export const useFilters = <T>({
   allowedKeys,
@@ -66,11 +66,24 @@ export const useFilters = <T>({
 
   const router = useRouter();
 
+  const hasOnlyPageQuery = computed(() => {
+    return Object.keys(route.query).length === 1 && route.query.page;
+  });
+
+  const shouldResetPage = (query: ReturnType<typeof getQuery>) => {
+    return hasOnlyPageQuery.value && Object.keys(query).length > 1;
+  };
+
   const debouncedFilter = (filter: T) => {
+    const query = getQuery(filter);
+
     router
       .replace({
         ...route,
-        query: getQuery(filter),
+        query: {
+          ...query,
+          page: shouldResetPage(query) ? undefined : route.query.page,
+        },
       })
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       .catch((_error: Error) => {});

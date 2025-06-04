@@ -16,9 +16,8 @@ import FleetVehiclesFilterForm from "@/frontend/components/Fleets/FilterForm/ind
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import ModelClassLabels from "@/frontend/components/Models/ClassLabels/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import type { FleetVehicleQuery, Fleet, VehicleExport } from "@/services/fyApi";
 import { usePagination } from "@/shared/composables/usePagination";
-import { debounce } from "ts-debounce";
+import debounce from "lodash.debounce";
 import { format } from "date-fns";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useFilters } from "@/shared/composables/useFilters";
@@ -34,8 +33,13 @@ import {
   useFleetVehiclesStats as useFleetVehiclesStatsQuery,
   fleetVehiclesExport as fetchFleetVehiclesExport,
   useFleetVehicles as useFleetVehiclesQuery,
-  getFleetVehiclesQueryKey,
+  useFleetVehiclesQueryOptions,
+  type FleetVehicleQuery,
+  type Fleet,
+  type VehicleExport,
+  type FleetVehicles,
 } from "@/services/fyApi";
+import { useApiQueryOptions } from "@/shared/composables/useApiQueryOptions";
 
 type Props = {
   fleet: Fleet;
@@ -148,8 +152,12 @@ const downloadExport = (data?: VehicleExport[]) => {
 
 const route = useRoute();
 
+const { getQueryKey } = useApiQueryOptions();
+
 const fleetVehiclesQueryKey = computed(() => {
-  return getFleetVehiclesQueryKey(fleetSlug, fleetVehiclesQueryParams);
+  return getQueryKey<FleetVehicles>(
+    useFleetVehiclesQueryOptions(fleetSlug, fleetVehiclesQueryParams),
+  );
 });
 
 const { filters } = useFilters<FleetVehicleQuery>({

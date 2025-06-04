@@ -1,3 +1,5 @@
+import { keepPreviousData } from "@tanstack/vue-query";
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type CustomQueryOptions = {
   queryKey: readonly any[];
@@ -8,6 +10,7 @@ export const customQueryOptions = (args: CustomQueryOptions) => {
   return {
     ...args,
     queryKey: transformQueryKey(args.queryKey),
+    placeholderData: keepPreviousData,
     keepPreviousData: true,
   } as CustomQueryOptions;
 };

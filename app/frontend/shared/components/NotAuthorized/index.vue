@@ -17,11 +17,18 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <Box :variant="PanelVariantsEnum.ERROR" large>
-    <Heading :level="HeadingLevelEnum.H1">{{
-      t("headlines.accessDenied")
-    }}</Heading>
-    <Text>{{ t("texts.accessDenied") }}</Text>
+  <Box
+    :variant="PanelVariantsEnum.ERROR"
+    :heading-size="HeadingSizeEnum.HERO"
+    animated
+    large
+  >
+    <template #heading>
+      {{ t("headlines.accessDenied") }}
+    </template>
+    <template #default>
+      <Text>{{ t("texts.accessDenied") }}</Text>
+    </template>
     <template #footer>
       <Btn :to="{ name: 'home' }" :exact="true">
         <i class="fa fa-chevron-left" />

@@ -42,11 +42,17 @@ namespace :frontend, **frontend_options do
   get "embed-v2-fleet-test", to: "embed#test_v2_fleet"
 
   get "settings/notifications", to: "base#index"
-  get "settings/security", to: "base#index"
+  get "settings/security", to: "base#index", as: :security_settings
 
   get "privacy-policy", to: "base#index"
 
   get "manifest-:digest", to: "base#manifest", as: :manifest
+
+  get "sign-up", to: "base#index", as: :sign_up
+
+  get "login", to: "base#index", as: :login
+
+  get "sign-up/auth-callback", to: "base#index", as: :sign_up_auth_callback
 
   root to: "base#index"
 end

@@ -273,7 +273,6 @@
         "scIdentifier": "SC Identifier",
         "price": "Price",
         "pledgePrice": "Pledge Price",
-        "lastPledgePrice": "Last Pledge Price",
         "erkulIdentifier": "Erkul Identifier",
         "mass": "Mass",
         "minCrew": "Min. Crew",

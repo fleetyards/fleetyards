@@ -31,13 +31,14 @@ module V1
           twoFactorProvisioningUrl: {type: :string},
           hangarUpdatedAt: {type: :string, format: "date-time"},
           resourceAccess: {type: :array, items: {type: :string}},
+          authConnections: {type: :array, items: {type: :string}},
           createdAt: {type: :string, format: "date-time"},
           updatedAt: {type: :string, format: "date-time"}
         },
         additionalProperties: false,
         required: %w[
           username email saleNotify publicHangar publicHangarLoaners publicWishlist hideOwner
-          twoFactorRequired resourceAccess createdAt updatedAt
+          twoFactorRequired resourceAccess authConnections createdAt updatedAt
         ]
       })
     end

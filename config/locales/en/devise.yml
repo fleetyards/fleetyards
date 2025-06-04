@@ -44,9 +44,22 @@ en:
         subject: Reset password instructions
       unlock_instructions:
         subject: Unlock Instructions
-    omniauth_callbacks:
-      failure: Could not authenticate you from %{kind} because "%{reason}".
-      success: Successfully authenticated from %{kind} account.
+    omniauth:
+      provider:
+        discord: "Discord"
+        google_oauth2: "Google"
+        github: "GitHub"
+        bluesky: "Bluesky"
+        twitch: "Twitch"
+      failure: Could not authenticate you with %{kind}.
+      failure_with_reason: Could not authenticate you with %{kind} because "%{reason}".
+      failure_username_taken: "Could not authenticate you with %{kind} because there is already an account with the same username.\nPlease sign in your existing account or sign up to a new account and connect your %{kind} account."
+      success: Successfully authenticated with %{kind}.
+      connect:
+        failure: Could not connect your %{kind} account.
+        failure_with_reason: Could not connect your %{kind} account because "%{reason}".
+        success: Successfully connected your %{kind} account.
+        already_connected: Your %{kind} account is already connected to your FleetYards.net Account.
     otp:
       backup_codes: Generate Backup Codes
       backup_explain: Copy the Backup Codes and keep them save and secure.

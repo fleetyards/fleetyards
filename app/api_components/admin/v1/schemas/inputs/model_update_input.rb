@@ -47,7 +47,6 @@ module Admin
               salesPageUrl: {type: :string},
               price: {type: :number},
               pledgePrice: {type: :number},
-              lastPledgePrice: {type: :number},
               cargo: {type: :number},
               cargoHolds: {type: :string},
               hydrogenFuelTankSize: {type: :number},

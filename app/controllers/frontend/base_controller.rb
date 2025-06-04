@@ -5,6 +5,8 @@ require "image_processing/mini_magick"
 module Frontend
   class BaseController < ApplicationController
     before_action :check_short_domain
+    before_action :add_flash_messages_to_prefetch
+    before_action :add_features_to_prefetch
 
     include PrefetchHelper
 
@@ -158,6 +160,60 @@ module Frontend
           redirect_to "/404"
         end
       end
+    end
+
+    private def add_flash_messages_to_prefetch
+      messages = []
+
+      if flash[:alert].present?
+        messages << {
+          type: "alert",
+          text: flash[:alert]
+        }
+      end
+      if flash[:error].present?
+        messages << {
+          type: "alert",
+          text: flash[:error]
+        }
+      end
+      if flash[:warning].present?
+        messages << {
+          type: "warning",
+          text: flash[:warning]
+        }
+      end
+      if flash[:notice].present?
+        messages << {
+          type: "info",
+          text: flash[:notice]
+        }
+      end
+      if flash[:success].present?
+        messages << {
+          type: "success",
+          text: flash[:success]
+        }
+      end
+
+      return if messages.blank?
+
+      add_to_prefetch(:notifications, messages.to_json)
+    end
+
+    def add_features_to_prefetch
+      user_features = Flipper.features.filter_map do |feature|
+        Flipper.enabled?(feature.name, current_user) ? feature.to_s : nil
+      end
+      fleet_features = Flipper.features.filter_map do |feature|
+        Flipper.enabled?(feature.name, current_user&.fleets) ? feature.to_s : nil
+      end
+
+      features = (user_features + fleet_features).uniq
+
+      return if features.blank?
+
+      add_to_prefetch(:features, features.to_json)
     end
 
     private def render_frontend

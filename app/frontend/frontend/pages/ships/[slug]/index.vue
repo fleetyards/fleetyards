@@ -78,12 +78,12 @@ const { holoviewerVisible } = storeToRefs(modelsStore);
 const { supported: webpSupported } = useWebpCheck();
 
 const storeImage = computed(() => {
-  if (mobile.value && props.model?.media.storeImage?.medium) {
+  if (mobile.value && props.model?.media.storeImage?.mediumUrl) {
     return props.model?.media.storeImage?.mediumUrl;
   }
 
-  if (props.model?.media.storeImage?.large) {
-    return props.model?.media.storeImage?.large;
+  if (props.model?.media.storeImage?.largeUrl) {
+    return props.model?.media.storeImage?.largeUrl;
   }
 
   if (webpSupported) {
@@ -126,7 +126,7 @@ const metaImage = computed(() => {
     return undefined;
   }
 
-  return props.model.media.storeImage?.large;
+  return props.model.media.storeImage?.largeUrl;
 });
 
 const crumbs = computed(() => {
@@ -152,7 +152,7 @@ const price = computed(() => {
     return undefined;
   }
 
-  return props.model.pledgePrice || props.model.lastPledgePrice;
+  return props.model.pledgePrice;
 });
 
 onMounted(() => {

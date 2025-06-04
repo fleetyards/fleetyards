@@ -46,7 +46,9 @@ module Admin
 
           sign_in(:admin_user, resource)
 
-          render json: {code: :success, message: I18n.t("labels.success")}
+          @admin_user = resource
+
+          render "admin/api/v1/admin_users/me"
         end
 
         def destroy

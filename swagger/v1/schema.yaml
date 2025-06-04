@@ -3294,7 +3294,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/StandardMessage"
+                "$ref": "#/components/schemas/User"
         '400':
           description: bad request
           content:
@@ -6550,10 +6550,6 @@ components:
           type: boolean
         holo:
           type: string
-        lastPledgePrice:
-          type: number
-        lastPledgePriceLabel:
-          type: string
         lastUpdatedAt:
           type: string
           format: date-time
@@ -6793,10 +6789,6 @@ components:
         hasVideos:
           type: boolean
         holo:
-          type: string
-        lastPledgePrice:
-          type: number
-        lastPledgePriceLabel:
           type: string
         lastUpdatedAt:
           type: string
@@ -7898,6 +7890,10 @@ components:
           type: array
           items:
             type: string
+        authConnections:
+          type: array
+          items:
+            type: string
         createdAt:
           type: string
           format: date-time
@@ -7915,6 +7911,7 @@ components:
       - hideOwner
       - twoFactorRequired
       - resourceAccess
+      - authConnections
       - createdAt
       - updatedAt
       title: User

@@ -16,20 +16,12 @@ RSpec.describe "admin/api/v1/sessions", type: :request, swagger_doc: "admin/v1/s
       parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/SessionInput"}, required: true
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/StandardMessage"
+        schema "$ref" => "#/components/schemas/AdminUser"
 
         let(:input) do
           {
             login: user.username,
             password:
-          }
-        end
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
           }
         end
 

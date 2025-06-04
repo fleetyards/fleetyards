@@ -9,19 +9,27 @@ const cleanData = function cleanData(key: string) {
   window.DATA_PREFETCH[key] = null;
 };
 
-export const usePrefetch = <T>(key: string): T | undefined => {
+const keyExists = function keyExists(key: string) {
+  return !!(window.DATA_PREFETCH && window.DATA_PREFETCH[key]);
+};
+
+const fetchData = function fetchData<T>(key: string): T | undefined {
   const json = getByKey(key);
+
   cleanData(key);
 
   if (!json) {
     return undefined;
   }
 
-  const element = JSON.parse(json);
-
-  if (Array.isArray(element)) {
-    return element.map((item) => JSON.parse(item)) as T;
-  }
+  const element = JSON.parse(json) as T;
 
   return element;
+};
+
+export const usePrefetch = () => {
+  return {
+    keyExists,
+    fetchData,
+  };
 };

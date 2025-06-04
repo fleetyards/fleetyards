@@ -31,7 +31,6 @@ const submitting = ref(false);
 const initialValues = ref<ModelInput>({
   price: props.model.price,
   pledgePrice: props.model.pledgePrice,
-  lastPledgePrice: props.model.lastPledgePrice,
   onSale: props.model.onSale,
   salesPageUrl: props.model.links.salesPageUrl,
   storeUrl: props.model.links.storeUrl,
@@ -46,7 +45,6 @@ const { defineField, handleSubmit } = useForm({
 
 const [price, priceProps] = defineField("price");
 const [pledgePrice, pledgePriceProps] = defineField("pledgePrice");
-const [lastPledgePrice, lastPledgePriceProps] = defineField("lastPledgePrice");
 const [onSale, onSaleProps] = defineField("onSale");
 const [salesPageUrl, salesPageUrlProps] = defineField("salesPageUrl");
 const [storeUrl, storeUrlProps] = defineField("storeUrl");
@@ -84,15 +82,6 @@ const onCancel = () => {
           name="pledgePrice"
           :type="InputTypesEnum.NUMBER"
           translation-key="model.pledgePrice"
-          :suffix="t('number.units.currency')"
-        />
-        <FormInput
-          v-model="lastPledgePrice"
-          v-bind="lastPledgePriceProps"
-          :alignment="InputAlignmentsEnum.RIGHT"
-          name="lastPledgePrice"
-          :type="InputTypesEnum.NUMBER"
-          translation-key="model.lastPledgePrice"
           :suffix="t('number.units.currency')"
         />
       </div>

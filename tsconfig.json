@@ -20,10 +20,10 @@
       "~/*": ["*"]
     },
     "types": [
-      "cypress",
       "node",
       "vitest/globals",
-      "vite/client"
+      "vite/client",
+      "cypress"
     ]
   },
   "include": [
@@ -31,6 +31,6 @@
     "app/frontend/**/*.ts",
     "app/frontend/**/*.d.ts",
     "app/frontend/**/*.vue",
-    "cypress/**/*.ts"
+    "spec/cypress/**/*.ts"
   ]
 }

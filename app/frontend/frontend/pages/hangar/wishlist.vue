@@ -14,7 +14,7 @@ import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import FilterForm from "@/frontend/components/Hangar/FilterForm/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import { format } from "date-fns";
-import { debounce } from "ts-debounce";
+import debounce from "lodash.debounce";
 import VehiclesTable from "@/frontend/components/Vehicles/Table/index.vue";
 import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";

@@ -122,7 +122,7 @@ const add = async () => {
     existingModel &&
     !form.value.models?.includes(String(existingModel.value || ""))
   ) {
-    models.value.push(newModel.value.object);
+    models.value.push(newModel.value?.object);
 
     form.value.models?.push(newModel.value);
 

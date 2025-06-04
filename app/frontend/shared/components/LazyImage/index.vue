@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 import { RouteLocationRaw } from "vue-router";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import loadingImage from "@/images/loading.svg";
+import placeholderImage from "@/images/fallback/store_image.webp";
 
 type Props = {
   src?: string;
@@ -71,18 +72,21 @@ const cssClasses = computed(() => {
     "gallery-image": !!props.href,
   };
 });
+
+const imageSrc = computed(() => {
+  return props.src || placeholderImage;
+});
 </script>
 
 <template>
   <component
     :is="componentType"
-    v-if="src"
-    :key="`${src}-${uuid}`"
+    :key="`${imageSrc}-${uuid}`"
     v-bind="componentProps"
     class="lazy-image"
     :class="cssClasses"
   >
-    <img v-lazy="{ src: src, loading: loadingImage }" :alt="alt" />
+    <img v-lazy="{ src: imageSrc, loading: loadingImage }" :alt="alt" />
     <slot />
     <!-- eslint-disable-next-line vue/no-v-html -->
     <div v-if="caption" class="hidden-caption-content" v-html="caption" />

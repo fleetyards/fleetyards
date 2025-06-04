@@ -40,7 +40,6 @@
         "height": "Height",
         "price": "Price",
         "pledgePrice": "Pledge Price",
-        "lastPledgePrice": "Last Pledge Price",
         "mass": "Mass",
         "minCrew": "Min. Crew",
         "maxCrew": "Max. Crew",

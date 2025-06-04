@@ -22,7 +22,7 @@ RSpec.describe "api/v1/sessions", type: :request, swagger_doc: "v1/schema.yaml" 
       parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/SessionInput"}, required: true
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/StandardMessage"
+        schema "$ref": "#/components/schemas/User"
 
         run_test!
       end

@@ -144,9 +144,10 @@ FactoryBot.define do
     focus { :combat }
     size { :large }
     height { 15.25 }
+    active { true }
     hidden { false }
     images_count { 0 }
-    last_pledge_price { 225 }
+    pledge_price { 225 }
     length { 63.5 }
     manufacturer
     mass { 430057.0 }
@@ -173,7 +174,7 @@ FactoryBot.define do
 
     trait :with_images do
       after(:create) do |model|
-        create_list(:image, 3, gallery: model)
+        create_list(:image, 3, gallery: model, file: Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/files/image.jpg"), "image/jpeg"))
       end
     end
 
@@ -232,8 +233,8 @@ FactoryBot.define do
     end
 
     trait :with_legacy_images do
-      fleetchart_image { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/test.png"), "image/jpeg") }
-      store_image { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/test.png"), "image/jpeg") }
+      fleetchart_image { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/files/test.png"), "image/png") }
+      store_image { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/files/ship.jpg"), "image/jpeg") }
     end
 
     trait :with_docks do

@@ -45,7 +45,7 @@ const crumbs = computed(() => {
 // import fleetMembersCollection from "@/frontend/api/collections/FleetMembers";
 // import { fleetRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";
 // import fleetsCollection from "@/frontend/api/collections/Fleets";
-// import { debounce } from "ts-debounce";
+// import debounce from "lodash.debounce";
 // import FilteredList from "@/shared/components/FilteredList/index.vue";
 // import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 // import Btn from "@/shared/components/base/Btn/index.vue";

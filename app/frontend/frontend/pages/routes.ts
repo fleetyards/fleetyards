@@ -114,6 +114,14 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "/sign-up/auth-callback",
+    name: "signup-auth-callback",
+    component: () => import("@/frontend/pages/auth-callback.vue"),
+    meta: {
+      needsAuthentication: true,
+    },
+  },
+  {
     path: "/login/",
     name: "login",
     component: () => import("@/frontend/pages/login.vue"),

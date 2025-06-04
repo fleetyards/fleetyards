@@ -46,7 +46,9 @@ module Api
 
         sign_in(:user, resource)
 
-        render json: {code: :success, message: I18n.t("labels.success")}
+        @user = resource
+
+        render "api/v1/users/me"
       end
 
       def destroy

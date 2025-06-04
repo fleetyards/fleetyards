@@ -29,6 +29,10 @@
   }
 }
 
+.no-wrap {
+  white-space: nowrap;
+}
+
 @media (max-width: $desktop-breakpoint) {
   .vehicle-states,
   .hangar-groups {

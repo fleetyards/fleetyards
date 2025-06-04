@@ -32,7 +32,8 @@ const footerRoutes = computed(() => {
   return routes.filter((route) => route.meta?.nav === "footer");
 });
 
-const { isAuthenticated, currentUser } = storeToRefs(sessionStore);
+const { isAuthenticated, currentUser, resourceAccess } =
+  storeToRefs(sessionStore);
 
 const mutation = useDestroySessionMutation();
 

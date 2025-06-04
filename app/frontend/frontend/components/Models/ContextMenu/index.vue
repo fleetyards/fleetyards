@@ -7,7 +7,6 @@ export default {
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
-import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
 import type { Model } from "@/services/fyApi";

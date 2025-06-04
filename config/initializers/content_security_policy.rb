@@ -32,9 +32,9 @@ Rails.application.configure do
       "https://www.gstatic.com", s3_endpoint
     ].compact
 
-    connect_src.push("ws://#{ViteRuby.config.host_with_port}") if Rails.env.development?
-    connect_src.push("ws://127.0.0.1:3035", "http://127.0.0.1:3035", "ws://127.0.0.1:3136", "http://127.0.0.1:3136") if Rails.env.development?
-    connect_src.push("ws://localhost:3035", "http://localhost:3035", "ws://localhost:3136", "http://localhost:3136") if Rails.env.development?
+    connect_src.push("ws://#{ViteRuby.config.host_with_port}") if Rails.env.development? || Rails.env.test?
+    connect_src.push("ws://127.0.0.1:3035", "http://127.0.0.1:3035", "ws://127.0.0.1:3136", "http://127.0.0.1:3136", "ws://127.0.0.1:3137", "http://127.0.0.1:3137") if Rails.env.development? || Rails.env.test?
+    connect_src.push("ws://localhost:3035", "http://localhost:3035", "ws://localhost:3136", "http://localhost:3136", "ws://localhost:3137", "http://localhost:3137") if Rails.env.development? || Rails.env.test?
     connect_src.push("ws://fleetyards.test:3035", "http://fleetyards.test:3035", "ws://fleetyards.test:3136", "http://fleetyards.test:3136") if Rails.env.development?
     connect_src.push("ws://api.fleetyards.test:3035", "http://api.fleetyards.test:3035", "ws://api.fleetyards.test:3136", "http://api.fleetyards.test:3136") if Rails.env.development?
     connect_src.push("ws://docs.fleetyards.test:3035", "http://docs.fleetyards.test:3035", "ws://docs.fleetyards.test:3136", "http://docs.fleetyards.test:3136") if Rails.env.development?
@@ -78,7 +78,11 @@ Rails.application.configure do
     form_src = [
       :self, api_endpoint,
       "https://starship42.com",
-      FRONTEND_ENDPOINT
+      FRONTEND_ENDPOINT,
+      "https://discord.com",
+      "https://api.github.com",
+      "https://github.com",
+      "https://id.twitch.tv"
     ]
 
     policy.default_src :none

@@ -25,7 +25,7 @@ import { useOverlayStore } from "@/shared/stores/overlay";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useImportUpdates } from "@/admin/composables/useImportUpdates";
-import { useAxiosInterceptors } from "@/frontend/composables/useAxiosInterceptors";
+import { useAxiosInterceptors } from "@/admin/composables/useAxiosInterceptors";
 import { useMe as useMeQuery } from "@/services/fyAdminApi";
 
 const { t } = useI18n();
@@ -95,17 +95,7 @@ watch(
   },
 );
 
-watch(
-  () => route.name,
-  () => {
-    checkSessionReload();
-
-    // setupLocale();
-  },
-);
-
 onMounted(async () => {
-  checkSessionReload();
   setNoScroll();
 
   if (isAuthenticated.value) {
@@ -153,12 +143,6 @@ const setNoScroll = () => {
     document.body.classList.add("no-scroll");
   } else {
     document.body.classList.remove("no-scroll");
-  }
-};
-
-const checkSessionReload = async () => {
-  if (route.query.reload_session) {
-    sessionStore.login();
   }
 };
 </script>

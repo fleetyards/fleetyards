@@ -110,6 +110,7 @@ export const routes: RouteRecordRaw[] = [
       title: "admin.admins.index",
       needsAuthentication: true,
       icon: "fad fa-user-group-crown",
+      access: ["admins"],
     },
   },
   {

@@ -18,7 +18,7 @@ import {
   type ValidationError,
   type SessionInput,
 } from "@/services/fyAdminApi";
-import { type ErrorType } from "@/services/axiosAdminClient";
+import { type AxiosError } from "axios";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import { BtnTypesEnum, BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
@@ -71,19 +71,19 @@ const onSubmit = handleSubmit(async (values) => {
     .mutateAsync({
       data: values,
     })
-    .then(async () => {
-      sessionStore.login();
+    .then(async (user) => {
+      sessionStore.login(user);
 
       handleRedirect();
     })
     .catch((error) => {
-      const response = error as unknown as ErrorType<ValidationError>;
+      const response = (error as AxiosError<ValidationError>).response;
 
-      if (response?.code === "session.create.two_factor_required") {
+      if (response?.data.code === "session.create.two_factor_required") {
         twoFactorRequired.value = true;
       } else {
         displayAlert({
-          text: response.response?.data?.message || t("errors.generic"),
+          text: response?.data.message || t("errors.generic"),
         });
       }
     })

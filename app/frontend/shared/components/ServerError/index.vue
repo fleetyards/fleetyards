@@ -8,7 +8,10 @@ export default {
 import Box from "@/shared/components/Box/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Text from "@/shared/components/base/Text/index.vue";
-import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
+import {
+  HeadingLevelEnum,
+  HeadingSizeEnum,
+} from "@/shared/components/base/Heading/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 
@@ -16,10 +19,17 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <Box :variant="PanelVariantsEnum.ERROR" large>
-    <Heading :level="HeadingLevelEnum.H1">{{
-      t("headlines.serverError")
-    }}</Heading>
-    <Text>{{ t("texts.serverError") }}</Text>
+  <Box
+    :variant="PanelVariantsEnum.ERROR"
+    :heading-size="HeadingSizeEnum.HERO"
+    animated
+    large
+  >
+    <template #heading>
+      {{ t("headlines.serverError") }}
+    </template>
+    <template #default>
+      <Text>{{ t("texts.serverError") }}</Text>
+    </template>
   </Box>
 </template>

@@ -8,16 +8,16 @@ admin_options = {
 namespace :admin, **admin_options do
   draw "admin/api_routes"
 
-  authenticate :admin_user, ->(u) { u.present? && u.access_to?(:workers) } do
+  authenticate :admin_user, ->(u) { u.present? && u.has_access?(:workers) } do
     mount Sidekiq::Web => "/workers"
   end
-  authenticate :admin_user, ->(u) { u.present? && u.access_to?(:pghero) } do
+  authenticate :admin_user, ->(u) { u.present? && u.has_access?(:pghero) } do
     mount PgHero::Engine => "/pghero"
   end
-  authenticate :admin_user, ->(u) { u.present? && u.access_to?(:features) } do
+  authenticate :admin_user, ->(u) { u.present? && u.has_access?(:features) } do
     mount Flipper::UI.app(Flipper) => "/features", :as => :features
   end
-  authenticate :admin_user, ->(u) { u.present? && u.access_to?(:maintenance) } do
+  authenticate :admin_user, ->(u) { u.present? && u.has_access?(:maintenance) } do
     mount MaintenanceTasks::Engine, at: "/maintenance_tasks"
   end
 

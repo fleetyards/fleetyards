@@ -9,7 +9,7 @@ import Collapsed from "@/shared/components/Collapsed.vue";
 import SmallLoader from "@/shared/components/SmallLoader/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import { debounce } from "ts-debounce";
+import debounce from "lodash.debounce";
 import { v4 as uuidv4 } from "uuid";
 import Option from "./Option/index.vue";
 import {

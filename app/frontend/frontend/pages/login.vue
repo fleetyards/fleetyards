@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { useForm } from "vee-validate";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import SocialLogins from "@/shared/components/SocialLogins/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -25,6 +26,7 @@ import {
 } from "@/shared/components/base/Btn/types";
 import { type AxiosError } from "axios";
 import { useRedirectBack } from "@/shared/composables/useRedirectBack";
+import { useComlink } from "@/shared/composables/useComlink";
 
 const { t } = useI18n();
 
@@ -70,21 +72,20 @@ const onSubmit = handleSubmit(async (values) => {
     .mutateAsync({
       data: values,
     })
-    .then(async () => {
-      sessionStore.login();
+    .then(async (user) => {
+      sessionStore.login(user);
 
       handleRedirect();
     })
     .catch((error) => {
-      const response = (error as AxiosError).response;
+      const response = (error as AxiosError<ValidationError>).response;
 
       if (response) {
-        const data = response.data as ValidationError;
-        if (data.code === "session.create.two_factor_required") {
+        if (response?.data.code === "session.create.two_factor_required") {
           twoFactorRequired.value = true;
         } else {
           displayAlert({
-            text: data.message || t("errors.generic"),
+            text: response?.data.message || t("errors.generic"),
           });
         }
       } else {
@@ -154,10 +155,17 @@ const signupRoute = computed(() => {
           :type="BtnTypesEnum.SUBMIT"
           data-test="submit-login"
           :size="BtnSizesEnum.LARGE"
-          :block="true"
+          block
         >
           {{ t("actions.login") }}
         </Btn>
+
+        <hr />
+
+        <SocialLogins only-icons />
+
+        <hr />
+
         <Btn
           :to="{
             name: 'request-password',

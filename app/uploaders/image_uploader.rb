@@ -15,6 +15,11 @@ class ImageUploader < BaseUploader
     process quality: 90
   end
 
+  version :big do
+    process resize_to_limit: [2000, 2000]
+    process quality: 90
+  end
+
   version :large do
     process resize_to_limit: [2000, 2000]
     process quality: 90

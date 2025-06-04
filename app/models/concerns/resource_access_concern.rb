@@ -8,7 +8,7 @@ module ResourceAccessConcern
   end
 
   def has_access?(privileges)
-    resource_access.any? do |access|
+    resource_access&.any? do |access|
       privileges.include?(access)
     end
   end

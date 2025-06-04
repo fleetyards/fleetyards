@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { type AdminUser } from "@/services/fyAdminApi";
+import { me as fetchMe, destroySession } from "@/services/fyAdminApi";
 
 interface SessionState {
   authenticated: boolean;
@@ -23,12 +24,20 @@ export const useSessionStore = defineStore("session", {
     },
   },
   actions: {
-    login() {
+    async fetchUserAndlogin() {
+      await fetchMe().then((user) => {
+        this.login(user);
+      });
+    },
+    login(user: AdminUser) {
       this.authenticated = true;
+      this.currentUser = user;
     },
     async logout() {
-      this.authenticated = false;
-      this.currentUser = undefined;
+      await destroySession().finally(() => {
+        this.authenticated = false;
+        this.currentUser = undefined;
+      });
     },
     hasAccessTo(resource?: string) {
       if (!resource || resource === "all") {

@@ -68,7 +68,8 @@ class User < ApplicationRecord
   include Rails.application.routes.url_helpers
 
   devise :two_factor_authenticatable, :two_factor_backupable, :recoverable, :trackable,
-    :validatable, :confirmable, :rememberable, :timeoutable,
+    :validatable, :confirmable, :rememberable, :timeoutable, :omniauthable,
+    omniauth_providers: [:discord, :twitch, :bluesky],
     authentication_keys: [:login], otp_secret_encryption_key: Rails.application.credentials.devise_otp_secret!,
     otp_backup_code_length: 10, otp_number_of_backup_codes: 10
 
@@ -109,6 +110,7 @@ class User < ApplicationRecord
     through: :fleet_memberships
 
   has_many :oauth_applications, class_name: "Oauth::Application", as: :owner
+  has_many :omniauth_connections, dependent: :destroy
 
   has_many :access_grants,
     class_name: "Oauth::AccessGrant",
@@ -339,5 +341,9 @@ class User < ApplicationRecord
     #    so that your code will continue to function correctly even if you later
     #    change to a block cipher mode.
     cipher.update(cipher_text) + cipher.final
+  end
+
+  def to_json(*_args)
+    to_jbuilder_json
   end
 end

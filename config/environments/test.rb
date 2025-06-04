@@ -16,6 +16,8 @@ Rails.application.configure do
   config.hosts << "api.fleetyards.test"
   config.hosts << "admin.fleetyards.test"
   config.hosts << "www.example.com"
+  config.hosts << "localhost:8280"
+  config.hosts << "127.0.0.1:8280"
 
   # While tests run files are not watched, reloading is not necessary.
   config.enable_reloading = false
@@ -76,4 +78,10 @@ Rails.application.configure do
   config.action_controller.asset_host = endpoints.frontend_endpoint
 
   config.logger = ActiveSupport::Logger.new(config.paths["log"].first, 1, 10.megabytes)
+
+  config.action_cable.allowed_request_origins = [
+    "http://localhost:#{ENV["PORT"]}",
+    endpoints.frontend_endpoint,
+    endpoints.admin_endpoint
+  ]
 end

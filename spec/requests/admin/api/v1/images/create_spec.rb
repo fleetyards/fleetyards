@@ -7,7 +7,7 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
   let(:gallery) { create(:model) }
   let(:blob) do
     ActiveStorage::Blob.create_and_upload!(
-      io: File.open(Rails.root.join("test/fixtures/files/test.png")),
+      io: File.open(Rails.root.join("spec/fixtures/files/test.png")),
       filename: "test.png"
     )
   end

@@ -4,4 +4,11 @@ set -euo pipefail
 
 bundle exec rake rswag:specs:swaggerize
 
+echo "cleanup old generated files"
+
+rm -rf ./app/frontend/services/fyAdminApi
+rm -rf ./app/frontend/services/fyApi
+
+echo "generate api clients"
+
 pnpm generate-api-client

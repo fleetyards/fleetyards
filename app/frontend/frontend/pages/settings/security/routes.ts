@@ -3,8 +3,8 @@ import type { RouteRecordRaw } from "vue-router";
 export const routes: RouteRecordRaw[] = [
   {
     path: "",
-    name: "settings-security-status",
-    component: () => import("@/frontend/pages/settings/security/status.vue"),
+    name: "settings-security",
+    component: () => import("@/frontend/pages/settings/security/index.vue"),
     meta: {
       title: "settings.security",
       needsAuthentication: true,

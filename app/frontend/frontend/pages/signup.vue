@@ -12,7 +12,6 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useFleetStore } from "@/frontend/stores/fleet";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
-import { type ErrorType } from "@/services/axiosClient";
 import {
   useSignup as useSignupMutation,
   type UserCreateInput,
@@ -20,8 +19,10 @@ import {
 } from "@/services/fyApi";
 import { useRedirectBack } from "@/shared/composables/useRedirectBack";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import SocialLogins from "@/shared/components/SocialLogins/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import { type AxiosError } from "axios";
 
 const { t } = useI18n();
 
@@ -93,17 +94,17 @@ const onSubmit = handleSubmit(async (values) => {
       handleRedirect();
     })
     .catch((error) => {
-      const response = error as unknown as ErrorType<ValidationError>;
+      const response = (error as AxiosError<ValidationError>).response;
 
-      if (response.response?.data?.errors) {
-        setErrors(transformErrors(response.response.data.errors));
+      if (response?.data?.errors) {
+        setErrors(transformErrors(response.data.errors));
 
         displayAlert({
-          text: response.response?.data?.message,
+          text: response?.data?.message,
         });
       } else {
         displayAlert({
-          text: response.response?.data?.message,
+          text: response?.data?.message,
         });
       }
     })
@@ -184,6 +185,12 @@ const onSubmit = handleSubmit(async (values) => {
         >
           {{ t("actions.signUp") }}
         </Btn>
+
+        <hr />
+
+        <SocialLogins only-icons />
+
+        <hr />
 
         <p class="privacy-info">
           {{ t("labels.signup.privacyPolicy") }}

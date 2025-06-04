@@ -31,7 +31,7 @@ export const useModelsStore = defineStore("models", {
     holoviewerVisible: false,
     detailsVisible: false,
     filterVisible: true,
-    gridView: false,
+    gridView: true,
     tableViewCols: [
       ModelTableViewColsEnum.LENGTH,
       ModelTableViewColsEnum.BEAM,

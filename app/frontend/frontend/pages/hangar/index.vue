@@ -21,7 +21,7 @@ import GroupLabels from "@/frontend/components/Hangar/GroupLabels/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { format } from "date-fns";
-import { debounce } from "ts-debounce";
+import debounce from "lodash.debounce";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { type HangarGroupMetric, HangarGroup } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";

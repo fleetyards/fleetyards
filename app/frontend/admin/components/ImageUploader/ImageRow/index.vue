@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { debounce } from "ts-debounce";
+import debounce from "lodash.debounce";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { v4 as uuidv4 } from "uuid";
 import { formatSize } from "@/shared/utils/Format";

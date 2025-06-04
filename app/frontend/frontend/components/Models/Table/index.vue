@@ -34,8 +34,6 @@ defineProps<Props>();
 
 const { t, toNumber, toUEC, toDollar } = useI18n();
 
-const updating = ref(false);
-
 const mobile = useMobile();
 
 const modelsStore = useModelsStore();
@@ -97,7 +95,7 @@ const tableColumns = computed<BaseTableColumn[]>(() => {
       <template #col-store_image="{ record }">
         <ViewImage
           :image="record.media.storeImage"
-          size="small"
+          size="smallUrl"
           alt="image"
           :variant="LazyImageVariantsEnum.WIDE"
           shadow
@@ -215,14 +213,14 @@ const tableColumns = computed<BaseTableColumn[]>(() => {
             }"
             :size="BtnSizesEnum.SMALL"
           >
-            <span>{{ t("actions.showDetailPage") }}</span>
+            <span class="no-wrap">{{ t("actions.showDetailPage") }}</span>
           </Btn>
           <AddToHangar :model="record" :size="BtnSizesEnum.SMALL" />
           <ModelContextMenu :model="record" />
         </BtnGroup>
       </template>
       <template #empty>
-        <Empty :name="t('models.name')" />
+        <Empty :name="t('models.name')" inline />
       </template>
     </BaseTable>
   </div>

@@ -42,6 +42,10 @@ gem "action_policy"
 gem "devise"
 gem "devise-two-factor"
 gem "rqrcode"
+gem "omniauth-discord"
+gem "omniauth-github"
+gem "omniauth-twitch"
+gem "omniauth-rails_csrf_protection"
 
 gem "useragent"
 
@@ -170,6 +174,8 @@ group :development, :test do
   gem "pry-byebug"
 
   gem "knapsack"
+
+  gem "cypress-on-rails"
 end
 
 gem "enum_attributes_validation", "~> 0.1.7"

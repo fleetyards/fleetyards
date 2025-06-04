@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup>
 import { useField } from "vee-validate";
 import { v4 as uuidv4 } from "uuid";
-import { debounce as tsDebounce } from "ts-debounce";
+import lodashDebounce from "lodash.debounce";
 import {
   InputTypesEnum,
   InputVariantsEnum,
@@ -171,7 +171,7 @@ const handleOnChange = (event: Event) => {
   emit("update:modelValue", inputValue.value);
 };
 
-const debouncedHandleOnChange = tsDebounce(handleOnChange, 200);
+const debouncedHandleOnChange = lodashDebounce(handleOnChange, 200);
 
 const onChange = async (event: Event) => {
   if (props.debounce) {
