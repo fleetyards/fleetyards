@@ -21,6 +21,7 @@ type Props = {
   width?: number;
   height?: number;
   caption?: string;
+  transparent?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -33,6 +34,7 @@ const props = withDefaults(defineProps<Props>(), {
   width: undefined,
   height: undefined,
   caption: undefined,
+  transparent: false,
 });
 
 const uuid = ref<string>(uuidv4());
@@ -70,6 +72,7 @@ const cssClasses = computed(() => {
     [`lazy-image--${props.variant}`]: !!props.variant,
     "lazy-image--shadow": props.shadow,
     "gallery-image": !!props.href,
+    "lazy-image--transparent": props.transparent,
   };
 });
 

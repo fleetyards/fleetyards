@@ -2,6 +2,7 @@ import type { ShipListState } from "@/frontend/types";
 import { defineStore } from "pinia";
 
 export enum WishlistTableViewColsEnum {
+  ANGLED_VIEW = "angled_image",
   MANUFACTURER_NAME = "model_manufacturer_name",
   LENGTH = "model_length",
   BEAM = "model_beam",

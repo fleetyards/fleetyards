@@ -5,8 +5,6 @@ import { useRedirectBackStore } from "@/shared/stores/redirectBack";
 import { type NavigationGuardNext, type RouteLocation } from "vue-router";
 import { routes } from "@/frontend/pages/routes";
 import { setupRouter, type FyRedirectRoute } from "@/shared/plugins/Router";
-import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { useI18n } from "@/shared/composables/useI18n";
 
 const beforeEach = (
   to: RouteLocation,
@@ -46,29 +44,11 @@ const beforeResolve = (to: RouteLocation): FyRedirectRoute | undefined => {
     };
   }
 
-  const { displayInfo } = useAppNotifications();
-
-  const { t } = useI18n();
-
   if (to.meta.needsNoAuthentication && sessionStore.isAuthenticated) {
-    displayInfo({
-      text: t("messages.session.alreadyLoggedIn"),
-    });
-
     return {
       routeName: "home",
     };
   }
-
-  // if (
-  //   to.meta.access &&
-  //   to.meta.access != "all" &&
-  //   !sessionStore.hasAccessTo(to.meta.access)
-  // ) {
-  //   return {
-  //     routeName: "403",
-  //   };
-  // }
 };
 
 const router = setupRouter({

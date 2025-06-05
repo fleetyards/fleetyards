@@ -12,28 +12,46 @@ import fallbackImage from "@/images/fallback/store_image.webp";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 import { RouteLocationRaw } from "vue-router";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
+import { ViewImageSizeEnum, viewImageSizeMapping } from "./types";
 
 type Props = {
-  image?: MediaFile;
-  size: keyof Omit<
-    MediaFile,
-    "width" | "height" | "name" | "contentType" | "size" | "uploadedAt"
-  >;
   alt: string;
+  image?: MediaFile;
+  size?: `${ViewImageSizeEnum}`;
   href?: string;
   to?: RouteLocationRaw;
   variant?: LazyImageVariantsEnum;
   shadow?: boolean;
   caption?: string;
+  transparent?: boolean;
+  withoutFallback?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  image: undefined,
+  size: ViewImageSizeEnum.SOURCE,
+  href: undefined,
+  to: undefined,
+  variant: LazyImageVariantsEnum.SMALL,
+  shadow: false,
+  caption: undefined,
+  transparent: false,
+  withoutFallback: false,
+});
 
 const { supported: webpSupported } = useWebpCheck();
 
+const urlAttr = computed(() => {
+  return viewImageSizeMapping[props.size];
+});
+
 const src = computed(() => {
-  if (props.image && props.image[props.size]) {
-    return props.image[props.size];
+  if (props.image && props.image[urlAttr.value]) {
+    return props.image[urlAttr.value];
+  }
+
+  if (props.withoutFallback) {
+    return undefined;
   }
 
   if (webpSupported.value) {
@@ -46,6 +64,7 @@ const src = computed(() => {
 
 <template>
   <LazyImage
+    v-if="src"
     :src="src"
     :alt="alt"
     :variant="variant"
@@ -55,6 +74,7 @@ const src = computed(() => {
     :caption="caption"
     :to="to"
     :href="href"
+    :transparent="transparent"
   >
     <slot />
   </LazyImage>

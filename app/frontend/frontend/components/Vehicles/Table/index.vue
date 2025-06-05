@@ -57,6 +57,9 @@ const extraColumns = computed(() => {
       })
       .filter((col) => {
         return wishlistStore.tableViewCols.includes(col.name);
+      })
+      .filter((col) => {
+        return col.name !== WishlistTableViewColsEnum.ANGLED_VIEW;
       });
   }
 
@@ -70,7 +73,40 @@ const extraColumns = computed(() => {
     })
     .filter((col) => {
       return hangarStore.tableViewCols.includes(col.name);
+    })
+    .filter((col) => {
+      return col.name !== HangarTableViewColsEnum.ANGLED_VIEW;
     });
+});
+
+const extraViewColumns = computed(() => {
+  if (props.wishlist) {
+    if (
+      wishlistStore.tableViewCols.includes(
+        WishlistTableViewColsEnum.ANGLED_VIEW,
+      )
+    ) {
+      return [
+        {
+          name: "angled_view",
+          label: "",
+          centered: true,
+        },
+      ];
+    }
+  }
+
+  if (hangarStore.tableViewCols.includes(HangarTableViewColsEnum.ANGLED_VIEW)) {
+    return [
+      {
+        name: "angled_view",
+        label: "",
+        centered: true,
+      },
+    ];
+  }
+
+  return [];
 });
 
 const manufacturerColumnVisible = computed(() => {
@@ -86,6 +122,7 @@ const tableColumns = computed<BaseTableColumn[]>(() => {
       label: "",
       centered: true,
     },
+    ...extraViewColumns.value,
     {
       name: "name",
       label: t("labels.vehicle.name"),
@@ -138,6 +175,14 @@ const storeImage = (record: Vehicle) => {
   }
 
   return record.model.media.storeImage;
+};
+
+const angledImage = (record: Vehicle) => {
+  if (record && record.model.media.angledViewColored) {
+    return record.model.media.angledViewColored;
+  }
+
+  return record.model.media.angledView;
 };
 
 const onSelectedChange = (value: string[]) => {
@@ -201,6 +246,16 @@ const resetSelected = () => {
             </template>
           </small>
         </div>
+      </template>
+      <template #col-angled_view="{ record }">
+        <ViewImage
+          :image="angledImage(record)"
+          size="small"
+          alt="image"
+          :variant="LazyImageVariantsEnum.WIDE_SMALL"
+          transparent
+          without-fallback
+        />
       </template>
       <template #col-model_manufacturer_name="{ record }">
         {{ record.model.manufacturer?.name }}

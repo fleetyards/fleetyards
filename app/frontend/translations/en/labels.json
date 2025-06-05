@@ -785,6 +785,7 @@
       "hangarTable": {
         "extraColumns": "Columns",
         "columns": {
+          "angled_view": "Angled View",
           "model_manufacturer_name": "Manufacturer",
           "model_length": "Length",
           "model_beam": "Beam",

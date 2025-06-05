@@ -44,6 +44,14 @@
       object-fit: none;
     }
   }
+
+  &--transparent {
+    background-color: transparent;
+
+    img {
+      object-fit: contain;
+    }
+  }
 }
 
 .gallery-image {
