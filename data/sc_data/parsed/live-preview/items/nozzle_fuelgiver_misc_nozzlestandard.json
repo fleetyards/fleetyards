@@ -1,0 +1,34 @@
+{
+  "key": "Nozzle_FuelGiver_MISC_NozzleStandard",
+  "ref": "8b1915bf-22ce-473d-9c1d-727423d59c0e",
+  "category": "utility",
+  "type": "DockingCollar",
+  "sub_type": null,
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": "RN-7s",
+  "short_name": null,
+  "description": "Manufacturer: MISC\\nItem Type: Fuel Nozzle\\nSafe Flow Rate: 0.4 SCU/s\\n\\nThe nozzle of choice for the acclaimed MISC Starfarer, the RN-7s was designed to be a flexible fuel transfer option suited for a variety of situations.\\n",
+  "inventory_consumption": {
+    "micro_scu": 41074432.0,
+    "dimensions": {
+      "x": 4.000076,
+      "y": 21.60153,
+      "z": 3.044145
+    }
+  },
+  "loadout": [
+    {
+      "name": "itemport_vehicle_attach",
+      "min_size": "0",
+      "max_size": "8",
+      "types": [
+        "NOITEM_Vehicle"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 350.0
+  }
+}

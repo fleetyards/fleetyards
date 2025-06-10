@@ -1,7 +1,8 @@
 #fleetyards-view {
   @import "@/stylesheets/variables";
-  @import "@/stylesheets/frontend/fonts";
+  @import "@/stylesheets/shared/fonts";
   @import "@/stylesheets/embed/bootstrap-custom";
   @import "@/stylesheets/embed/partials";
+  @import "@/stylesheets/shared/transitions";
   @import "@/stylesheets/embed/base";
 }

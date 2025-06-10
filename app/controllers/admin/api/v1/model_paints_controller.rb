@@ -5,11 +5,11 @@ module Admin
     module V1
       class ModelPaintsController < ::Admin::Api::BaseController
         def index
-          authorize! :index, :admin_api_model_paints
+          authorize! with: ::Admin::ModelPaintPolicy
 
-          model_paint_query_params["sorts"] = "name asc"
+          model_paint_query_params["sorts"] ||= sorting_params(ModelPaint, "created_at desc")
 
-          @q = ModelPaint.ransack(model_paint_query_params)
+          @q = authorized_scope(ModelPaint.all).ransack(model_paint_query_params)
 
           @model_paints = @q.result
             .page(params[:page])

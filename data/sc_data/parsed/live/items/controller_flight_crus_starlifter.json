@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_CRUS_Starlifter",
+  "ref": "df7be894-9e93-4743-a468-d253ae426423",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "63685f47-b0cc-4ebe-8f16-72793a5cd6e0",
+  "name": "SELF STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "scm_speed": 160.0,
+    "scm_speed_boosted": 320.0,
+    "reverse_speed_boosted": 170.0,
+    "max_speed": 950.0,
+    "angular_velocity": {
+      "pitch": 20.0,
+      "yaw": 18.0,
+      "roll": 30.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 30.0,
+      "yaw": 27.0,
+      "roll": 60.0
+    }
+  }
+}

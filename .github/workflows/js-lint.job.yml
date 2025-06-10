@@ -7,6 +7,6 @@ jobs:
   js-lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/workflows/js-setup-action
-      - run: yarn run lint:js
+      - run: pnpm run lint:js

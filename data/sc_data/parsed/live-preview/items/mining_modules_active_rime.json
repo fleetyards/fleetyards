@@ -1,0 +1,24 @@
+{
+  "key": "Mining_Modules_Active_Rime",
+  "ref": "4af4857b-b564-4448-afbc-820ff288c0af",
+  "category": "utility",
+  "type": "MiningModifier",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "name": "Rime Module",
+  "short_name": null,
+  "description": "Manufacturer: Greycat Industrial\\nItem Type: Mining Module (Active)\\n\\nResistance: -25%\\nShatter Damage: -10%\\n\\nMining Laser Power: 85%\\n\\nDuration: 20 seconds\\nUses: 10\\n\\nThe Rime delivers a safer mining experience by sacrificing laser power to reduce a deposit's resistance and the dangers associated with shattering.",
+  "inventory_consumption": {
+    "micro_scu": 5699.0,
+    "dimensions": {
+      "x": 0.1704287,
+      "y": 0.3127302,
+      "z": 0.1336606
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

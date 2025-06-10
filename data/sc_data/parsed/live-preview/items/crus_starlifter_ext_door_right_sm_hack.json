@@ -1,0 +1,24 @@
+{
+  "key": "CRUS_Starlifter_Ext_Door_Right_Sm_HACK",
+  "ref": "351342b4-fe1e-4111-9e49-94e388c3c680",
+  "category": "module",
+  "type": "Container",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

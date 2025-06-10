@@ -1,0 +1,9 @@
+{
+  "key": "RSI_Lynx_Rover_Template",
+  "ref": "632cf6eb-b13a-4795-8a0a-6a980296d3c6",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 2.46
+  }
+}

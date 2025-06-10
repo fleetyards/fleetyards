@@ -3,9 +3,17 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
+  let(:member) { create(:user, vehicle_count: 3) }
+  let(:fleet) { create(:fleet, public_fleet: true, members: [member]) }
+  let(:fleetSlug) { fleet.slug }
 
-  let(:fleet) { fleets :starfleet }
+  before do
+    Sidekiq::Testing.inline!
+  end
+
+  after do
+    Sidekiq::Testing.fake!
+  end
 
   path "/public/fleets/{fleetSlug}/vehicles/embed" do
     parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
@@ -28,16 +36,6 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
         schema type: :array,
           items: {"$ref": "#/components/schemas/VehiclePublic"}
 
-        let(:fleetSlug) { fleet.slug }
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
-
         run_test! do |response|
           data = JSON.parse(response.body)
 
@@ -50,10 +48,9 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
         schema type: :array,
           items: {"$ref": "#/components/schemas/VehiclePublic"}
 
-        let(:fleetSlug) { fleet.slug }
         let(:q) do
           {
-            "modelNameCont" => "600i Explorer"
+            "modelNameCont" => member.vehicles.first.model.name
           }
         end
 
@@ -61,22 +58,16 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
           data = JSON.parse(response.body)
 
           expect(data.count).to eq(1)
-          expect(data.first.dig("model", "name")).to eq("600i Explorer")
+          expect(data.first.dig("model", "name")).to eq(member.vehicles.first.model.name)
         end
       end
 
-      response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/VehiclePublic"}
+      response(404, "not found") do
+        schema "$ref": "#/components/schemas/StandardError"
 
-        let(:fleet) { fleets :klingon_empire }
-        let(:fleetSlug) { fleet.slug }
+        let(:fleet) { create(:fleet, public_fleet: false) }
 
-        run_test! do |response|
-          data = JSON.parse(response.body)
-
-          expect(data.count).to eq(0)
-        end
+        run_test!
       end
 
       response(404, "not found") do

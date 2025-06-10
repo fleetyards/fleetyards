@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Pisces_Fleetweek_Black_Red_Camo",
+  "ref": "882d760c-2e9a-43f6-9c1f-3fec60214b41",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "9aa08876-ec06-460f-b67c-b6782cfb9b00",
+  "name": "C8 Pisces Nightbreak Livery",
+  "short_name": null,
+  "description": "Discreetly soar through the night sky in the C8 Pisces with the Nightbreak livery, which is primarily black with red highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

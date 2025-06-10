@@ -1,0 +1,201 @@
+<script lang="ts">
+export default {
+  name: "FormTextarea",
+};
+</script>
+
+<script lang="ts" setup>
+import { useField } from "vee-validate";
+import { v4 as uuidv4 } from "uuid";
+import {
+  InputTypesEnum,
+  InputVariantsEnum,
+  InputSizesEnum,
+  InputAlignmentsEnum,
+} from "@/shared/components/base/FormInput/types";
+import { useI18n } from "@/shared/composables/useI18n";
+
+type Props = {
+  name: string;
+  icon?: string;
+  modelValue?: string | number;
+  type?: InputTypesEnum;
+  translationKey?: string;
+  autofocus?: boolean;
+  autocomplete?: string;
+  hideLabelOnEmpty?: boolean;
+  label?: string;
+  min?: number;
+  max?: number;
+  noLabel?: boolean;
+  noPlaceholder?: boolean;
+  placeholder?: string;
+  disabled?: boolean;
+  inline?: boolean;
+  variant?: InputVariantsEnum;
+  size?: InputSizesEnum;
+  alignment?: InputAlignmentsEnum;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  icon: undefined,
+  modelValue: undefined,
+  type: InputTypesEnum.TEXT,
+  translationKey: undefined,
+  autofocus: false,
+  autocomplete: undefined,
+  hideLabelOnEmpty: false,
+  label: undefined,
+  min: undefined,
+  max: undefined,
+  noLabel: false,
+  noPlaceholder: false,
+  placeholder: undefined,
+  disabled: false,
+  inline: false,
+  variant: InputVariantsEnum.DEFAULT,
+  size: InputSizesEnum.DEFAULT,
+  alignment: InputAlignmentsEnum.LEFT,
+});
+
+watch(
+  () => props.modelValue,
+  () => {
+    resetField({
+      value: props.modelValue,
+    });
+  },
+);
+
+const { t } = useI18n();
+
+const inputElement = ref<HTMLTextAreaElement | undefined>();
+
+const id = ref(`${props.name}-${uuidv4()}`);
+
+const innerLabel = computed(() => {
+  if (props.label) {
+    return props.label;
+  }
+
+  if (props.translationKey) {
+    return t(`labels.${props.translationKey}`);
+  }
+
+  return t(`labels.${props.name}`);
+});
+
+const {
+  value: inputValue,
+  errorMessage,
+  errors,
+  handleChange,
+  handleBlur,
+  handleReset,
+  resetField,
+} = useField(props.name, undefined, {
+  initialValue: props.modelValue,
+  label: innerLabel.value,
+});
+
+const hasErrors = computed(() => {
+  return errors.value.length;
+});
+
+const innerPlaceholder = computed(() => {
+  if (props.noPlaceholder) {
+    return undefined;
+  }
+
+  if (props.placeholder) {
+    return props.placeholder;
+  }
+
+  if (props.translationKey) {
+    return t(`placeholders.${props.translationKey}`);
+  }
+
+  return t(`placeholders.${props.name}`);
+});
+
+const cssClasses = computed(() => {
+  return {
+    "base-textarea--with-error": hasErrors.value,
+    "base-textarea--large": props.size === InputSizesEnum.LARGE,
+    "base-textarea--clean": props.variant === InputVariantsEnum.CLEAN,
+    "base-textarea--disabled": props.disabled,
+    "base-textarea--inline": props.inline,
+    "base-textarea--align-left": props.alignment === InputAlignmentsEnum.LEFT,
+    "base-textarea--align-right": props.alignment === InputAlignmentsEnum.RIGHT,
+    [`base-textarea--${props.type}`]: true,
+  };
+});
+
+onMounted(() => {
+  id.value = `${props.name}-${uuidv4()}`;
+
+  if (props.autofocus) {
+    inputElement.value?.focus();
+  }
+});
+
+const emit = defineEmits(["update:modelValue"]);
+
+const clear = () => {
+  handleReset();
+  emit("update:modelValue", undefined);
+};
+
+const onChange = (event: Event) => {
+  handleChange(event);
+  emit("update:modelValue", inputValue.value);
+};
+
+const setFocus = () => {
+  inputElement.value?.focus();
+};
+
+defineExpose({
+  clear,
+  setFocus,
+});
+</script>
+
+<template>
+  <div :key="id" class="base-textarea" :class="cssClasses">
+    <transition name="fade">
+      <label
+        v-show="!hideLabelOnEmpty || inputValue"
+        v-if="innerLabel && !noLabel"
+        :for="id"
+      >
+        <i v-if="icon" :class="icon" />
+        {{ innerLabel }}
+      </label>
+    </transition>
+    <div class="base-textarea__wrapper">
+      <textarea
+        :id="id"
+        ref="inputElement"
+        v-tooltip.right="hasErrors && errorMessage"
+        :value="inputValue"
+        :placeholder="innerPlaceholder"
+        :type="type"
+        :data-test="`input-${name}`"
+        :aria-label="innerLabel"
+        :autofocus="autofocus"
+        :autocomplete="autocomplete"
+        :disabled="disabled"
+        :name="name"
+        :min="min"
+        :max="max"
+        @input="onChange"
+        @blur="handleBlur"
+      />
+    </div>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+@import "index";
+</style>

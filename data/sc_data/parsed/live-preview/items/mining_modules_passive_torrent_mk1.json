@@ -1,0 +1,24 @@
+{
+  "key": "Mining_Modules_Passive_Torrent_MK1",
+  "ref": "d1b1792f-21bc-456f-ae53-20f301920a55",
+  "category": "utility",
+  "type": "MiningModifier",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d1a1bf03-89d9-4eae-ac34-11eeb8e45d8f",
+  "name": "Torrent Module",
+  "short_name": null,
+  "description": "Manufacturer: Thermyte Concern\\nItem Type: Mining Module (Passive)\\n\\nOptimal Charge Rate: +30%\\n\\nOptimal Charge Window Size: -10%\\n\\nSave time while mining with the Torrent Module. It requires steady hands to hit the sweet spot but accelerates the charge rate once there.",
+  "inventory_consumption": {
+    "micro_scu": 7892.0,
+    "dimensions": {
+      "x": 0.2161508,
+      "y": 0.3023084,
+      "z": 0.1509762
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

@@ -7,23 +7,23 @@
         <BtnDropdown size="small">
           <template #label>
             <template v-if="!mobile">
-              {{ $t("labels.fleetchartApp.viewpoint") }}:
+              {{ t("labels.fleetchartApp.viewpoint") }}:
             </template>
-            {{ $t(`labels.fleetchartApp.viewpointOptions.${viewpoint}`) }}
+            {{ t(`labels.fleetchartApp.viewpointOptions.${viewpoint}`) }}
           </template>
           <Btn
-            v-for="(option, index) in viewpointOptions"
+            v-for="(option, index) in FleetchartViewpoints"
             :key="`fleetchart-screen-height-drowndown-${index}-${option}`"
             size="small"
             variant="link"
             :active="viewpoint === option"
-            @click.native="setViewpoint(option)"
+            @click="setViewpoint(option)"
           >
-            {{ $t(`labels.fleetchartApp.viewpointOptions.${option}`) }}
+            {{ t(`labels.fleetchartApp.viewpointOptions.${option}`) }}
           </Btn>
         </BtnDropdown>
 
-        <Btn size="small" :active="gridEnabled" @click.native="toggleGrid">
+        <Btn size="small" :active="gridEnabled" @click="toggleGrid">
           <i class="fad fa-th" />
         </Btn>
 
@@ -33,7 +33,6 @@
               element="#fleetchart"
               :filename="downloadName"
               size="small"
-              variant="dropdown"
             />
 
             <hr />
@@ -43,21 +42,20 @@
             v-if="mobile"
             :items="items"
             size="small"
-            variant="dropdown"
             :with-icon="true"
           />
 
-          <Btn size="small" variant="dropdown" @click.native="toggleLabels">
+          <Btn size="small" @click="toggleLabels">
             <i class="fad fa-tags" />
             <span v-if="showLabels">
-              {{ $t("actions.hideLabels") }}
+              {{ t("actions.hideLabels") }}
             </span>
             <span v-else>
-              {{ $t("actions.showLabels") }}
+              {{ t("actions.showLabels") }}
             </span>
           </Btn>
 
-          <FleetChartStatusBtn variant="dropdown" size="small" />
+          <FleetChartStatusBtn size="small" />
         </BtnDropdown>
       </div>
 
@@ -67,7 +65,7 @@
           'fleetchart-grid-enabled': gridEnabled,
         }"
       >
-        {{ $t("labels.fleetchartApp.gridSize", { size: gridSizeLabel }) }}
+        {{ t("labels.fleetchartApp.gridSize", { size: gridSizeLabel }) }}
       </div>
 
       <div class="fleetchart-scroll-wrapper">
@@ -115,187 +113,204 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
+<script lang="ts" setup>
 import FleetchartSlider from "@/frontend/components/Fleetchart/Slider/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/index.vue";
 import FleetChartStatusBtn from "@/frontend/components/FleetChartStatusBtn/index.vue";
-import { Getter } from "vuex-class";
 import Starship42Btn from "@/frontend/components/Starship42Btn/index.vue";
-import CommunityLogo from "@/frontend/core/components/CommunityLogo/index.vue";
+import CommunityLogo from "@/shared/components/CommunityLogo/index.vue";
 import FleetchartItem from "./Item/index.vue";
+import { useMobile } from "@/shared/composables/useMobile";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
+import {
+  FleetchartViewpoints,
+  useFleetchartStore,
+} from "@/shared/stores/fleetchart";
+import { Vehicle, Model, VehiclePublic } from "@/services/fyApi";
 
-@Component({
-  components: {
-    Btn,
-    BtnDropdown,
-    DownloadScreenshotBtn,
-    FleetChartStatusBtn,
-    FleetchartItem,
-    FleetchartSlider,
-    Starship42Btn,
-    CommunityLogo,
+type Props = {
+  namespace: string;
+  items?: (Vehicle | Model | VehiclePublic)[];
+  myShip?: boolean;
+  downloadName?: string;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  items: () => [],
+  myShip: false,
+  downloadName: undefined,
+});
+
+const { t } = useI18n();
+
+const showStatus = ref(false);
+
+const gridEnabled = ref(false);
+
+const screenWidth = ref<number | undefined>();
+
+const screenHeight = ref<number | undefined>();
+
+const gridSize = 80.0;
+
+const sizeMultiplicator = 4;
+
+const internalScale = ref(1);
+
+const maxScale = 20;
+
+const minScale = 0.5;
+
+const mobile = useMobile();
+
+const gridSizeLabel = computed(() => {
+  return (gridSize / scale.value / sizeMultiplicator)
+    .toFixed(2)
+    .replace(".00", "");
+});
+
+const fleetchartStore = useFleetchartStore();
+
+const scale = computed(() => {
+  return fleetchartStore.fleetchartScale(props.namespace);
+});
+
+const viewpoint = computed(() => {
+  return fleetchartStore.fleetchartViewpoint(props.namespace);
+});
+
+const showLabels = computed(() => {
+  return fleetchartStore.showLabels(props.namespace);
+});
+
+watch(
+  () => internalScale.value,
+  () => {
+    fleetchartStore.updateScale({
+      namespace: props.namespace,
+      scale: internalScale.value,
+    });
   },
-})
-export default class FleetchartList extends Vue {
-  viewpointOptions: string[] = ["side", "top", "angled"];
+);
 
-  showStatus = false;
+const comlink = useComlink();
 
-  gridEnabled = false;
+const route = useRoute();
 
-  screenWidth: number | null = null;
+onMounted(() => {
+  internalScale.value = scale.value;
 
-  screenHeight: number | null = null;
+  showStatus.value = !!route.query?.showStatus;
 
-  gridSize = 80.0;
+  comlink.on("fleetchart-toggle-status", toggleStatus);
 
-  sizeMultiplicator = 4;
+  updateScreenSize();
 
-  internalScale = 1;
+  window.addEventListener("resize", updateScreenSize);
+  window.addEventListener("deviceorientation", updateScreenSize);
+});
 
-  maxScale = 20;
+onUnmounted(() => {
+  comlink.off("fleetchart-toggle-status");
 
-  minScale = 0.5;
+  window.removeEventListener("resize", updateScreenSize);
+  window.removeEventListener("deviceorientation", updateScreenSize);
+});
 
-  @Prop({ required: true }) namespace!: string;
+const updateScreenSize = () => {
+  screenWidth.value = window.innerWidth;
+  screenHeight.value = window.innerHeight;
 
-  @Prop({
-    default() {
-      return [];
-    },
-  })
-  items!: Vehicle[] | Model[];
+  drawGridLines();
+};
 
-  @Prop({ default: false }) myShip!: boolean;
+const toggleGrid = () => {
+  gridEnabled.value = !gridEnabled.value;
 
-  @Prop({ default: null }) downloadName!: string;
+  drawGridLines();
+};
 
-  @Getter("mobile") mobile;
+const setViewpoint = (viewpoint: FleetchartViewpoints) => {
+  fleetchartStore.updateViewpoint({
+    namespace: props.namespace,
+    viewpoint,
+  });
+};
 
-  get gridSizeLabel() {
-    return (this.gridSize / this.scale / this.sizeMultiplicator)
-      .toFixed(2)
-      .replace(".00", "");
+const toggleStatus = () => {
+  showStatus.value = !showStatus.value;
+};
+
+const toggleLabels = () => {
+  fleetchartStore.toggleLabels(props.namespace);
+};
+
+const fleetchartGrid = ref<HTMLCanvasElement>();
+
+const drawGridLines = async () => {
+  if (!gridEnabled.value) {
+    return;
   }
 
-  get scale() {
-    return this.$store.getters[`${this.namespace}/fleetchartScale`];
+  await nextTick();
+
+  const canvas = fleetchartGrid.value;
+
+  if (!canvas) {
+    return;
   }
 
-  get viewpoint() {
-    return this.$store.getters[`${this.namespace}/fleetchartViewpoint`];
-  }
+  if (canvas.getContext) {
+    const ctx = canvas.getContext("2d");
 
-  get showLabels() {
-    return this.$store.getters[`${this.namespace}/fleetchartLabels`];
-  }
-
-  @Watch("internalScale")
-  onScaleChange() {
-    this.$store.commit(
-      `${this.namespace}/setFleetchartScale`,
-      this.internalScale,
-    );
-  }
-
-  mounted() {
-    this.internalScale = this.scale;
-
-    this.showStatus = !!this.$route.query?.showStatus;
-
-    this.$comlink.$on("fleetchart-toggle-status", this.toggleStatus);
-
-    this.updateScreenSize();
-
-    window.addEventListener("resize", this.updateScreenSize);
-    window.addEventListener("deviceorientation", this.updateScreenSize);
-  }
-
-  beforeDestroy() {
-    this.$comlink.$off("fleetchart-toggle-status");
-
-    window.removeEventListener("resize", this.updateScreenSize);
-    window.removeEventListener("deviceorientation", this.updateScreenSize);
-  }
-
-  modelName(item) {
-    const model = item.model || item;
-
-    return model.name;
-  }
-
-  productionStatus(item) {
-    const model = item.model || item;
-
-    return this.$t(`labels.model.productionStatus.${model.productionStatus}`);
-  }
-
-  updateScreenSize() {
-    this.screenWidth = window.innerWidth;
-    this.screenHeight = window.innerHeight;
-
-    this.drawGridLines();
-  }
-
-  toggleGrid() {
-    this.gridEnabled = !this.gridEnabled;
-
-    this.drawGridLines();
-  }
-
-  setViewpoint(viewpoint) {
-    this.$store.commit(`${this.namespace}/setFleetchartViewpoint`, viewpoint);
-  }
-
-  toggleStatus() {
-    this.showStatus = !this.showStatus;
-  }
-
-  toggleLabels() {
-    this.$store.commit(
-      `${this.namespace}/setFleetchartLabels`,
-      !this.showLabels,
-    );
-  }
-
-  async drawGridLines() {
-    if (!this.gridEnabled) {
+    if (!ctx) {
       return;
     }
 
-    await this.$nextTick();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const canvas = this.$refs.fleetchartGrid;
+    const drawVerticalLine = (
+      left: number,
+      top: number,
+      height: number,
+      color: string | CanvasGradient | CanvasPattern,
+    ) => {
+      ctx.fillStyle = color;
+      ctx.fillRect(left, top, 1, height);
+    };
 
-    if (canvas.getContext) {
-      const ctx = canvas.getContext("2d");
+    const drawHorizontalLine = (
+      left: number,
+      top: number,
+      width: number,
+      color: string | CanvasGradient | CanvasPattern,
+    ) => {
+      ctx.fillStyle = color;
+      ctx.fillRect(left, top, width, 1);
+    };
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const lineColor = "rgba(255, 255, 255, 0.5)";
 
-      ctx.drawVerticalLine = (left, top, height, color) => {
-        ctx.fillStyle = color;
-        ctx.fillRect(left, top, 1, height);
-      };
+    for (let i = 0; i < canvas.width; i += gridSize) {
+      drawVerticalLine(i, 0, canvas.height, lineColor);
+    }
 
-      ctx.drawHorizontalLine = (left, top, width, color) => {
-        ctx.fillStyle = color;
-        ctx.fillRect(left, top, width, 1);
-      };
-
-      const lineColor = "rgba(255, 255, 255, 0.5)";
-
-      for (let i = 0; i < canvas.width; i += this.gridSize) {
-        ctx.drawVerticalLine(i, 0, canvas.height, lineColor);
-      }
-
-      for (let i = 0; i < canvas.height; i += this.gridSize) {
-        ctx.drawHorizontalLine(0, i, canvas.width, lineColor);
-      }
+    for (let i = 0; i < canvas.height; i += gridSize) {
+      drawHorizontalLine(0, i, canvas.width, lineColor);
     }
   }
-}
+};
 </script>
+
+<script lang="ts">
+export default {
+  name: "FleetchartList",
+};
+</script>
+
+<style lang="scss" scoped>
+@import "index.scss";
+</style>

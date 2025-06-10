@@ -1,0 +1,24 @@
+{
+  "key": "MISL_S05_EM_TALN_Reaper",
+  "ref": "918ad61c-ea99-4040-b05a-a42cd5436aed",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "Missile",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "587fcede-4fe9-4fb4-85ec-124abc8542b0",
+  "name": "Reaper V Missile",
+  "short_name": "Reaper V",
+  "description": "Manufacturer: Talon\\nTracking Signal: Electromagnetic\\nSize: 5\\n\\nThe Reaper strike torpedo features a favorable destructive yield-to-expense ratio and a proven Talon EM tracking suite.",
+  "inventory_consumption": {
+    "micro_scu": 78125.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 5.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 28.0
+  }
+}

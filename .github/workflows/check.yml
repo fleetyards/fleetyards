@@ -2,14 +2,14 @@ name: Check
 
 on:
   schedule:
-    - cron: "0 20 * * *"
+    - cron: "0 20 * * 1-5" # every week day at 20:00 UTC
   workflow_dispatch:
 
 jobs:
   js-setup:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/workflows/js-setup-action
 
   js-audit:
@@ -19,7 +19,7 @@ jobs:
   ruby-setup:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true

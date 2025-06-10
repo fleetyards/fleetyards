@@ -1,0 +1,21 @@
+{
+  "key": "Salvage_Modifier_Tractor_Small",
+  "ref": "cdcddccb-247c-4fcb-ab5b-915822159c87",
+  "category": "utility",
+  "type": "SalvageModifier",
+  "sub_type": "SalvageModifier_TractorBeam",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "ReadyGrip Tractor Module",
+  "short_name": "ReadyGrip Tractor Module",
+  "description": "Manufacturer: Greycat Industrial\\nItem Type: Tractor Beam\\nMax Angle: 60°\\nMax Range: 150 m\\nFull Strength Distance: 75 m\\n\\nThe Ready Grip Tractor Module compresses the dependability and power of Greycat’s signature tractor beam technology into a smaller sub-component that can be attached to a salvaging laser head.",
+  "inventory_consumption": {
+    "micro_scu": 340.0,
+    "dimensions": {
+      "x": 0.0549,
+      "y": 0.0424,
+      "z": 0.133
+    }
+  }
+}

@@ -1,45 +1,76 @@
-<template>
-  <Btn
-    v-tooltip="variant !== 'dropdown' && t('actions.share')"
-    :variant="variant"
-    :size="size"
-    :inline="inline"
-    @click.native="share"
-  >
-    <i class="fad fa-share-square" />
-    <span v-if="variant === 'dropdown'">{{ t("actions.share") }}</span>
-  </Btn>
-</template>
+<script lang="ts">
+export default {
+  name: "ShareBtn",
+};
+</script>
 
 <script lang="ts" setup>
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import type {
-  Props as BtnProps,
-  BtnVariants,
-  BtnSizes,
-} from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import copyText from "@/frontend/utils/CopyText";
-import { displayAlert, displaySuccess } from "@/frontend/lib/Noty";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useI18n } from "@/shared/composables/useI18n";
+import type { SpinnerAlignment } from "@/shared/components/SmallLoader/index.vue";
+import type { RouteLocationRaw } from "vue-router";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
+import { useMobile } from "@/shared/composables/useMobile";
 
-interface Props extends BtnProps {
+type Props = {
   url: string;
   title: string;
-  variant?: BtnVariants;
-  size?: BtnSizes;
+  to?: RouteLocationRaw;
+  href?: string;
+  type?: "button" | "submit";
+  loading?: boolean;
+  spinner?: boolean | SpinnerAlignment;
+  variant?: BtnVariantsEnum;
+  size?: BtnSizesEnum;
+  exact?: boolean;
+  block?: boolean;
+  mobileBlock?: boolean;
   inline?: boolean;
-}
+  textInline?: boolean;
+  active?: boolean;
+  disabled?: boolean;
+  routeActiveClass?: string;
+  inGroup?: boolean;
+  noLabel?: boolean;
+};
 
 const props = withDefaults(defineProps<Props>(), {
-  variant: "default",
-  size: "default",
+  to: undefined,
+  href: undefined,
+  type: "button",
+  loading: false,
+  spinner: false,
+  variant: BtnVariantsEnum.DEFAULT,
+  size: BtnSizesEnum.DEFAULT,
+  exact: false,
+  block: false,
+  mobileBlock: false,
   inline: false,
+  textInline: false,
+  active: false,
+  disabled: false,
+  routeActiveClass: undefined,
+  inGroup: false,
+  noLabel: false,
 });
 
 const { t } = useI18n();
 
+const { displayAlert, displaySuccess } = useAppNotifications();
+
+const isMobile = useMobile();
+
 const share = () => {
-  if (navigator.canShare && navigator.canShare({ url: props.url })) {
+  if (
+    isMobile.value &&
+    navigator.canShare &&
+    navigator.canShare({ url: props.url })
+  ) {
     navigator
       .share({
         title: props.title,
@@ -76,8 +107,15 @@ const copyShareUrl = () => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "ShareBtn",
-};
-</script>
+<template>
+  <Btn
+    v-tooltip="noLabel && t('actions.share')"
+    :variant="variant"
+    :size="size"
+    :inline="inline"
+    @click="share"
+  >
+    <i class="fad fa-share-square" />
+    <span v-if="!noLabel">{{ t("actions.share") }}</span>
+  </Btn>
+</template>

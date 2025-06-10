@@ -45,7 +45,7 @@ jobs:
           --health-retries 5
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
@@ -65,7 +65,7 @@ jobs:
       - name: Setup DB
         run: bundle exec rails db:create db:schema:load
       - name: Create ES Index
-        run: bundle exec thor search:index
+        run: bundle exec rails searchkick:reindex:all
       - name: Assets Compile
         run: bundle exec rails assets:precompile
       - name: Prefill DB

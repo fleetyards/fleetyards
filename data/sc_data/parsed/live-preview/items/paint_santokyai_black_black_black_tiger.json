@@ -1,0 +1,21 @@
+{
+  "key": "Paint_SanTokYai_Black_Black_Black_Tiger",
+  "ref": "172c6e96-db0d-43f1-83c2-8f0c795a56d4",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "22efa66d-ffdf-4952-ba8c-0d58a43d4274",
+  "name": "San'tok.yāi Yilen Livery",
+  "short_name": null,
+  "description": "The shimmering iridescence of the Yilen livery delivers a distinct look for the San'tok.yāi.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

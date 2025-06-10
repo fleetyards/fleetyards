@@ -3,50 +3,60 @@
 module Api
   module V1
     class UsersController < ::Api::BaseController
-      skip_authorization_check only: %i[signup confirm]
-      before_action :authenticate_user!, except: %i[signup confirm check_email check_username public]
+      skip_verify_authorized only: %i[signup confirm check_email check_username]
+
+      before_action :doorkeeper_authorize!, unless: :user_signed_in?, only: %i[
+        me update update_account destroy
+      ]
+      before_action :authenticate_user!, except: %i[
+        me update update_account destroy check_email check_username confirm signup
+      ]
+      before_action :set_user, only: %i[me update update_account destroy]
 
       def me
-        authorize! :read, current_user
-        @user = current_user
-      end
-
-      def public
-        authorize! :read_public, :api_user
-        @user = User.find_by!(normalized_username: params[:username].downcase, public_hangar: true)
       end
 
       def update
-        authorize! :update, current_user
-
-        @user = current_user
         return if @user.update(user_params)
 
         render json: ValidationError.new("update", errors: @user.errors), status: :bad_request
       end
 
       def update_account
-        authorize! :update, current_user
-
         unless access_cookie_valid?
           render json: {code: "requires_access_confirmation", message: I18n.t("messages.user.requires_access_confirmation")}, status: :bad_request
           return
         end
 
-        @user = current_user
         return if @user.update(user_account_params)
 
         render json: ValidationError.new("update", errors: @user.errors), status: :bad_request
       end
 
       def signup
+        if current_user.present?
+          render json: {code: "already_signed_in", message: I18n.t("messages.signup.already_signed_in")}, status: :unprocessable_entity
+          return
+        end
+
         if blocked(user_create_params[:email])
-          render json: {code: "blocked"}, status: :bad_request
+          render json: {code: "blocked", message: I18n.t("messages.signup.blocked")}, status: :unprocessable_entity
           return
         end
 
         if reserved_name(user_create_params[:username])
-          render json: {code: "reserved_username", message: I18n.t("messages.signup.reserved_username")}, status: :bad_request
+          render json: {
+            code: "reserved_username",
+            message: I18n.t("messages.signup.reserved_username"),
+            errors: [
+              {
+                attribute: "username",
+                messages: [{
+                  message: I18n.t("messages.signup.username_invalid")
+                }]
+              }
+            ]
+          }, status: :bad_request
           return
         end
 
@@ -58,14 +68,15 @@ module Api
 
         if @user.save
           handle_fleet_invite(@user.id, fleet_invite_token) if fleet_invite_token.present?
-          return
-        end
 
-        render json: ValidationError.new("signup", errors: @user.errors), status: :bad_request
+          render "api/v1/users/signup", status: :created
+        else
+          render json: ValidationError.new("signup", errors: @user.errors), status: :bad_request
+        end
       end
 
       def confirm
-        user = User.confirm_by_token(params[:token])
+        user = User.confirm_by_token(user_confirm_params[:token])
         if user.present? && user.errors.blank?
           render json: {code: "confirmation", message: I18n.t("devise.confirmations.confirmed")}
         else
@@ -74,25 +85,27 @@ module Api
       end
 
       def check_email
-        authorize! :check, :api_users
-        render json: {emailTaken: User.exists?(normalized_email: (user_create_params[:email] || "").downcase)}
+        render json: {taken: User.exists?(normalized_email: (user_check_params[:value] || "").downcase)}
       end
 
       def check_username
-        authorize! :check, :api_users
-        render json: {usernameTaken: User.exists?(normalized_username: (user_create_params[:username] || "").downcase)}
+        render json: {taken: User.exists?(normalized_username: (user_check_params[:value] || "").downcase)}
       end
 
       def destroy
-        authorize! :destroy, current_user
-
-        if current_user.destroy
-          Cleanup::UserVisitsJob.perform_async(current_user.id)
+        if @user.destroy
+          Cleanup::UserVisitsJob.perform_async(@user.id)
 
           render json: {code: "current_user.destroyed", message: I18n.t("messages.destroy.success", resource: I18n.t("resources.user"))}
         else
-          render json: ValidationError.new("current_user.destroy", errors: @current_user.errors), status: :bad_request
+          render json: ValidationError.new("current_user.destroy", errors: @user.errors), status: :bad_request
         end
+      end
+
+      private def set_user
+        @user = current_resource_owner
+
+        authorize! @user
       end
 
       private def user_create_params
@@ -113,12 +126,22 @@ module Api
           .permit(:username, :email)
       end
 
+      private def user_confirm_params
+        @user_confirm_params ||= params.transform_keys(&:underscore)
+          .permit(:token)
+      end
+
+      private def user_check_params
+        @user_check_params ||= params.transform_keys(&:underscore)
+          .permit(:value)
+      end
+
       private def blocked(email)
         return unless Rails.root.join("blocklist.json").exist?
 
         blocklist = JSON.parse(Rails.root.join("blocklist.json").read)
 
-        blocklist.include?(email.downcase.strip)
+        blocklist.include?(email&.downcase&.strip)
       end
 
       private def reserved_name(username)
@@ -126,7 +149,7 @@ module Api
 
         reserved_usernames = JSON.parse(Rails.root.join("reserved_usernames.json").read)
 
-        reserved_usernames.include?(username.downcase.strip)
+        reserved_usernames.include?(username&.downcase&.strip)
       end
 
       private def handle_fleet_invite(user_id, fleet_invite_token)
@@ -134,7 +157,13 @@ module Api
 
         return if invite_url.blank?
 
-        member = invite_url.fleet.fleet_memberships.create(user_id:, role: :member, invited_by: invite_url.user_id, used_invite_token: invite_url.token)
+        member = invite_url.fleet.fleet_memberships.create(
+          user_id:,
+          role: :member,
+          fleet_role: invite_url.fleet.fleet_roles.ranked.last,
+          invited_by: invite_url.user_id,
+          used_invite_token: invite_url.token
+        )
 
         return if member.blank?
 

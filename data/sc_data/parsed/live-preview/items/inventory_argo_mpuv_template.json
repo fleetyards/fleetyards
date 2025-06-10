@@ -1,0 +1,9 @@
+{
+  "key": "ARGO_MPUV_Template",
+  "ref": "bbaa3409-7c13-4f5a-b73b-7be6a42c2f7e",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 0.0
+  }
+}

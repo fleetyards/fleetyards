@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Intrepid_Blue_White",
+  "ref": "e988055e-4815-454c-ac80-60472d7d077b",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "7f2b8653-8bd8-472b-8c5e-1ac18f959dde",
+  "name": "Intrepid Wavefront Livery",
+  "short_name": null,
+  "description": "Featuring decorative white markings across a bluish-green base paint, the Wavefront livery brings a dynamic and distinct look to the Intrepid.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

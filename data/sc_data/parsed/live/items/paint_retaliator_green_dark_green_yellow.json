@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Retaliator_Green_Dark_Green_Yellow",
+  "ref": "39c706be-6f13-49ef-8b3b-1731e33932be",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ac96ba1d-a2d6-4fc0-8120-b4408fb276f2",
+  "name": "Retaliator Underbrush Livery",
+  "short_name": null,
+  "description": "The Underbrush livery for the Retaliator was introduced during the First Tevarin War. This classic styling uses various shades of green and yellow highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

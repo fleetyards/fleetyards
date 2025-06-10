@@ -3,9 +3,13 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
-  let(:user) { nil }
+  let(:user) { create(:user) }
+  let(:input) do
+    {
+      fid: "STARFLEET",
+      name: "Starfleet"
+    }
+  end
 
   before do
     sign_in(user) if user.present?
@@ -23,22 +27,6 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
       response(201, "successful") do
         schema "$ref": "#/components/schemas/Fleet"
 
-        let(:user) { users :data }
-        let(:input) do
-          {
-            fid: "STARFLEET",
-            name: "Starfleet"
-          }
-        end
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
-
         run_test! do |response|
           data = JSON.parse(response.body)
 
@@ -49,7 +37,6 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
       response(400, "bad request") do
         schema "$ref": "#/components/schemas/ValidationError"
 
-        let(:user) { users :data }
         let(:input) { nil }
 
         run_test!
@@ -58,7 +45,7 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:input) { nil }
+        let(:user) { nil }
 
         run_test!
       end

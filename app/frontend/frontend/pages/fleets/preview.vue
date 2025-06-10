@@ -1,0 +1,158 @@
+<script lang="ts">
+export default {
+  name: "FleetPreviewPage",
+};
+</script>
+
+<script lang="ts" setup>
+import Btn from "@/shared/components/base/Btn/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import { PanelTransparenciesEnum } from "@/shared/components/base/Panel/types";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useFleetStore } from "@/frontend/stores/fleet";
+import { useRedirectBackStore } from "@/shared/stores/redirectBack";
+
+const { t } = useI18n();
+
+const fleetStore = useFleetStore();
+
+const redirectBackStore = useRedirectBackStore();
+
+const setBackRoute = () => {
+  redirectBackStore.backRoute = {
+    name: "fleet-add",
+  };
+};
+
+const handleLogin = () => {
+  fleetStore.preview = false;
+
+  setBackRoute();
+};
+</script>
+
+<template>
+  <section class="container fleet">
+    <div class="row">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-12">
+            <h1 class="sr-only">
+              {{ t("headlines.fleets.preview.h1") }}
+            </h1>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <h2 class="text-center main-headline">
+              {{ t("headlines.fleets.preview.h2") }}
+            </h2>
+          </div>
+        </div>
+
+        <hr class="large-spacer" />
+
+        <div class="row">
+          <div class="col-12">
+            <h3 class="text-center main-subheadline">
+              {{ t("headlines.fleets.preview.h3") }}
+            </h3>
+          </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+          <div class="col-12 col-lg-4">
+            <Panel
+              class="info-box"
+              :transparency="PanelTransparenciesEnum.MORE"
+            >
+              <div class="panel-heading">
+                <h2 class="panel-title text-center">
+                  {{ t("texts.fleetPreview.notified.headline") }}
+                </h2>
+              </div>
+              <div class="panel-body text-center">
+                <!-- eslint-disable-next-line vue/no-v-html -->
+                <p v-html="t('texts.fleetPreview.notified.text')" />
+              </div>
+            </Panel>
+          </div>
+          <div class="col-12 col-lg-4">
+            <Panel
+              class="info-box"
+              :transparency="PanelTransparenciesEnum.MORE"
+            >
+              <div class="panel-heading">
+                <h2 class="panel-title text-center">
+                  {{ t("texts.fleetPreview.overview.headline") }}
+                </h2>
+              </div>
+              <div class="panel-body text-center">
+                <!-- eslint-disable-next-line vue/no-v-html -->
+                <p v-html="t('texts.fleetPreview.overview.text')" />
+              </div>
+            </Panel>
+          </div>
+          <div class="col-12 col-lg-4">
+            <Panel
+              class="info-box"
+              :transparency="PanelTransparenciesEnum.MORE"
+            >
+              <div class="panel-heading">
+                <h2 class="panel-title text-center">
+                  {{ t("texts.fleetPreview.fleetchart.headline") }}
+                </h2>
+              </div>
+              <div class="panel-body text-center">
+                <!-- eslint-disable-next-line vue/no-v-html -->
+                <p v-html="t('texts.fleetPreview.fleetchart.text')" />
+              </div>
+            </Panel>
+          </div>
+        </div>
+
+        <hr class="large-spacer" />
+
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-4">
+            <Btn
+              :to="{
+                name: 'signup',
+              }"
+              data-test="signup"
+              size="large"
+              :block="true"
+              @click="setBackRoute"
+            >
+              {{ t("actions.signUp") }}
+            </Btn>
+
+            <hr />
+
+            <p class="text-center">
+              {{ t("labels.alreadyRegistered") }}
+            </p>
+
+            <Btn
+              data-test="login"
+              :to="{
+                name: 'login',
+              }"
+              :block="true"
+              @click="handleLogin"
+            >
+              {{ t("actions.login") }}
+            </Btn>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>
+
+<style lang="scss" scoped>
+@import "preview";
+</style>

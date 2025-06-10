@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_MISC_Starfarer",
+  "ref": "a87033a4-cd47-4958-bbf9-994d27f2a529",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SELF STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "scm_speed": 106.0,
+    "scm_speed_boosted": 295.0,
+    "reverse_speed_boosted": 106.0,
+    "max_speed": 845.0,
+    "angular_velocity": {
+      "pitch": 23.0,
+      "yaw": 23.0,
+      "roll": 45.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 27.599999999999998,
+      "yaw": 27.599999999999998,
+      "roll": 54.0
+    }
+  }
+}

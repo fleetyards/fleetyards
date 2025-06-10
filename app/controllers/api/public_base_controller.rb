@@ -2,7 +2,10 @@
 
 module Api
   class PublicBaseController < ::Api::BaseController
-    skip_authorization_check
     before_action :authenticate_user!, only: %i[]
+
+    rescue_from ActionPolicy::Unauthorized do |exception|
+      not_found
+    end
   end
 end

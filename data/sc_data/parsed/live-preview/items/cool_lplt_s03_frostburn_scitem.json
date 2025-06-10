@@ -1,0 +1,63 @@
+{
+  "key": "COOL_LPLT_S03_FrostBurn_SCItem",
+  "ref": "4f61e805-f5f4-49b2-a834-cfda713f48db",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "3",
+  "grade": "3",
+  "manufacturer_ref": "60d0f346-0c22-4869-81d3-1168b526a258",
+  "name": "FrostBurn",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Lightning Power Ltd. \\nSize: 3\\nGrade: C\\nClass: Civilian\\n\\nLightning Power Ltd. has put its years of design expertise and manufacturing know-how to craft the FrostBurn, an effective cooler that can handle the large scale heat management needs of a wide variety of ships on the market.",
+  "inventory_consumption": {
+    "micro_scu": 756000.0,
+    "dimensions": {
+      "x": 0.6699014,
+      "y": 4.422015,
+      "z": 1.202842
+    }
+  },
+  "durability": {
+    "health": 920.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 20.0,
+    "StartIRTemperature": 250.0,
+    "OverpowerHeat": 0.06,
+    "OverclockThresholdMinHeat": 0.43,
+    "OverclockThresholdMaxHeat": 0.51,
+    "ThermalEnergyBase": 10.0,
+    "ThermalEnergyDraw": 20.0,
+    "ThermalConductivity": 3.0,
+    "SpecificHeatCapacity": 13.0,
+    "Mass": 3240.0,
+    "SurfaceArea": 50.0,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 1.0,
+    "MaxTemperature": 450.0,
+    "OverheatTemperature": 370.0,
+    "RecoveryTemperature": 350.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "power_connection": {
+    "power_base": 32.0,
+    "power_draw": 48.0,
+    "time_to_reach_draw_request": 15.0,
+    "safeguard_priority": 30.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.34,
+    "overclock_threshold_max": 0.43,
+    "overpower_performance": 0.34,
+    "overclock_performance": 0.05,
+    "power_to_em": 10.0,
+    "decay_rate_of_em": 0.2
+  },
+  "type_data": {
+    "cooling_rate": 8000000.0
+  }
+}

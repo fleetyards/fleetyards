@@ -1,0 +1,34 @@
+{
+  "key": "Door_RN_RoomConnector_Breachable_OpenReverse_300i_Cargodoor",
+  "ref": "b6b8bafd-5f12-4e27-bdd0-d34ecbe1eca9",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_cargo_grid_front",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "CargoGrid"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1000.0
+  }
+}

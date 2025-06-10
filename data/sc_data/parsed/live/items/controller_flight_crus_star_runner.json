@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_CRUS_Star_Runner",
+  "ref": "5c453707-7c9d-44e9-a0d4-61fbeb7dc323",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SELF STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "scm_speed": 215.0,
+    "scm_speed_boosted": 410.0,
+    "reverse_speed_boosted": 205.0,
+    "max_speed": 1200.0,
+    "angular_velocity": {
+      "pitch": 30.0,
+      "yaw": 30.0,
+      "roll": 60.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 36.0,
+      "yaw": 36.0,
+      "roll": 72.0
+    }
+  }
+}

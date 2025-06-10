@@ -3,10 +3,15 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
+  let(:user) { create(:user) }
+  let(:usernames) do
+    [user.username]
+  end
+  let(:vehicles) { create_list(:vehicle, 2, user: user, public: true) }
 
-  let(:user) { users :data }
-  let(:user_without_public_hangar) { users :troi }
+  before do
+    vehicles
+  end
 
   path "/public/hangars/embed" do
     get("Public Hangar embed") do
@@ -27,10 +32,6 @@ RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.
         schema type: :array,
           items: {"$ref": "#/components/schemas/VehiclePublic"}
 
-        let(:usernames) do
-          [user.username]
-        end
-
         run_test! do |response|
           data = JSON.parse(response.body)
 
@@ -42,9 +43,7 @@ RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.
         schema type: :array,
           items: {"$ref": "#/components/schemas/VehiclePublic"}
 
-        let(:usernames) do
-          [user_without_public_hangar.username]
-        end
+        let(:user) { create(:user, public_hangar: false) }
 
         run_test! do |response|
           data = JSON.parse(response.body)

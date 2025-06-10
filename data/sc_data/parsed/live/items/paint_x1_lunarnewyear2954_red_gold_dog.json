@@ -1,0 +1,21 @@
+{
+  "key": "Paint_X1_LunarNewYear2954_Red_Gold_Dog",
+  "ref": "86a2ad62-8eab-4601-b972-a2ca92b5ff93",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "2",
+  "manufacturer_ref": "c5586d46-3e4c-4f72-a7ab-efa356561058",
+  "name": "X1 2954 Auspicious Red Dog Livery",
+  "short_name": null,
+  "description": "Seek peace and prosperity in the new year with the Auspicious Red Dog livery. Outfit your ship with this bold red base paint complemented by gold accents and a stylized graphic of a dog.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

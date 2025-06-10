@@ -1,0 +1,9 @@
+{
+  "key": "Ship_TempItemCarryingCapacity_ANVL_Carrack",
+  "ref": "3159b29b-006d-47cd-be0a-d3eb8350f92e",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 456.0
+  }
+}

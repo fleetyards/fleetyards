@@ -1,0 +1,24 @@
+{
+  "key": "COMP_S00_Template",
+  "ref": "45ed70cc-faa8-4727-a56e-f94550fe3c4b",
+  "category": "computers",
+  "type": "Misc",
+  "sub_type": null,
+  "size": "0",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1.0
+  }
+}

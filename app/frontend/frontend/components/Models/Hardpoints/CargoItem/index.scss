@@ -1,0 +1,12 @@
+.hardpoint-item__cargo-container {
+  padding-right: 10px;
+  color: $gray-light;
+  white-space: nowrap;
+}
+
+.hardpoint-item__cargo-component {
+  width: 100%;
+  flex-grow: 1;
+  margin-right: 5px;
+  text-transform: capitalize;
+}

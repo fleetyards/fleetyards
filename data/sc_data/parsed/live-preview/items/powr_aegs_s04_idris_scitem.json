@@ -1,0 +1,60 @@
+{
+  "key": "POWR_AEGS_S04_Idris_SCItem",
+  "ref": "4f29e9ae-6a77-4461-b479-0479b9ecdca0",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Main Powerplant",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 2100000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "durability": {
+    "health": 9500.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 5.0,
+    "StartIRTemperature": 140.0,
+    "OverpowerHeat": 0.3,
+    "OverclockThresholdMinHeat": 0.64,
+    "OverclockThresholdMaxHeat": 0.77,
+    "ThermalEnergyBase": 22000000.0,
+    "ThermalEnergyDraw": 27000000.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.5,
+    "Mass": 600000.0,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 86.66,
+    "MaxTemperature": 700.0,
+    "OverheatTemperature": 700.0,
+    "RecoveryTemperature": 550.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 300.0,
+    "MisfireMaxTemperature": 900.0
+  },
+  "power_connection": {
+    "power_base": 0.0,
+    "power_draw": 250000.0,
+    "time_to_reach_draw_request": 10.0,
+    "safeguard_priority": 100.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 1.0,
+    "is_overclockable": 1.0,
+    "overclock_threshold_min": 0.55,
+    "overclock_threshold_max": 0.68,
+    "overpower_performance": 0.25,
+    "overclock_performance": 0.51,
+    "power_to_em": 0.15,
+    "decay_rate_of_em": 0.25
+  }
+}

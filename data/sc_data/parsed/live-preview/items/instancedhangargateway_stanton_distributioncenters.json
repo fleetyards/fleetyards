@@ -1,0 +1,21 @@
+{
+  "key": "InstancedHangarGateway_Stanton_DistributionCenters",
+  "ref": "f9f4dbf2-6e8b-4ca4-b93a-4a9f87dfaecc",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": null,
+  "grade": null,
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  }
+}

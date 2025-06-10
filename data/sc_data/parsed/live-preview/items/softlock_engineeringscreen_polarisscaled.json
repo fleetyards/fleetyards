@@ -1,0 +1,21 @@
+{
+  "key": "SoftLock_EngineeringScreen_PolarisScaled",
+  "ref": "1fd318dc-0262-4a96-97d3-10829cb8dc76",
+  "category": "utility",
+  "type": "SeatDashboard",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Screen",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

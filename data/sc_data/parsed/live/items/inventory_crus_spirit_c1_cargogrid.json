@@ -1,0 +1,50 @@
+{
+  "key": "CRUS_Spirit_C1_CargoGrid",
+  "ref": "7f3b985b-bc11-41b1-9eec-4e97d138163e",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 2.5,
+      "y": 10.0,
+      "z": 2.5,
+      "scu": 32.0,
+      "max_container_size": {
+        "size": 32,
+        "dimensions": {
+          "x": 10.0,
+          "y": 2.5,
+          "z": 2.5
+        }
+      }
+    },
+    "min_container": {
+      "x": 1.25,
+      "y": 1.25,
+      "z": 1.25,
+      "scu": 1.0,
+      "max_container_size": {
+        "size": 1,
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        }
+      }
+    },
+    "max_container": {
+      "x": 2.5,
+      "y": 10.0,
+      "z": 2.5,
+      "scu": 32.0,
+      "max_container_size": {
+        "size": 32,
+        "dimensions": {
+          "x": 10.0,
+          "y": 2.5,
+          "z": 2.5
+        }
+      }
+    }
+  }
+}

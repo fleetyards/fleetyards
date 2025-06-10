@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Storm_Dark_Camo",
+  "ref": "3ffde285-d545-4e28-9fe9-b624e128be4f",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a3a2864e-acd4-481c-a7d9-2071a5104368",
+  "name": "Storm Darkside Livery",
+  "short_name": null,
+  "description": "The Darkside livery gives the Storm a black and grey camouflage pattern to make it hard to see in low light situations.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

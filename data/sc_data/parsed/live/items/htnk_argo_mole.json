@@ -1,0 +1,24 @@
+{
+  "key": "HTNK_ARGO_MOLE",
+  "ref": "6347cc89-9e6a-43a3-a80c-6be1203e7bf3",
+  "category": "fueltanks",
+  "type": "FuelTank",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Internal Tank",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "capacity": 100.0
+  }
+}

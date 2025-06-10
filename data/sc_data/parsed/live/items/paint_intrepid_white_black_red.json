@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Intrepid_White_Black_Red",
+  "ref": "79928bfa-b375-4442-a9ec-80d0c8cc8b8b",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "9e048adc-cbd2-49d2-974a-a64305c3a20f",
+  "name": "Intrepid Altair Livery",
+  "short_name": null,
+  "description": "The Altair livery is primarily a crisp white with black and red highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

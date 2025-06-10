@@ -3,9 +3,8 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/public/hangars/stats", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
-  let(:user) { users :data }
+  let(:user) { create(:user, vehicle_count: 2) }
+  let(:username) { user.username }
 
   path "/public/hangars/{username}/stats" do
     parameter name: "username", in: :path, type: :string, description: "username"
@@ -26,16 +25,6 @@ RSpec.describe "api/v1/public/hangars/stats", type: :request, swagger_doc: "v1/s
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/HangarStatsPublic"
-
-        let(:username) { user.username }
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
 
         run_test!
       end

@@ -1,0 +1,21 @@
+{
+  "key": "InstancedHangarGateway_Pyro_LargeFront_RestStop",
+  "ref": "e9bb12f6-6965-4411-95cd-d08f6760cdcb",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": null,
+  "grade": null,
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  }
+}

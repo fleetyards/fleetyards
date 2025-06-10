@@ -1,0 +1,9 @@
+{
+  "key": "Ship_TempItemCarryingCapacity_CNOU_Mustang",
+  "ref": "2ac482b9-68a6-4dce-915c-b3ac00264263",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 6.0
+  }
+}

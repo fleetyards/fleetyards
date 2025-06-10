@@ -1,0 +1,21 @@
+{
+  "key": "WEP_CannonFiringMechanism_Template",
+  "ref": "c99fc2d3-04c0-4ca6-8870-3ff3456fda9f",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "FiringMechanism",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

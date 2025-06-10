@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Pisces_LunarNewYear_Red_Gold",
+  "ref": "e4d386d8-67e1-42e2-9868-aa0d6a662426",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "31bc915d-e4fe-4dfb-9a56-c1f77003fc41",
+  "name": "Pisces 2953 Auspicious Red Rooster Livery",
+  "short_name": null,
+  "description": "Seek peace and prosperity in the new year with the Auspicious Red Rooster livery. Outfit your ship with this bold red base paint complemented by gold accents and a stylized graphic of a rooster.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

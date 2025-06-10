@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Reliant_Fleetweek_Green_Orange",
+  "ref": "ea43d1c8-6170-47ef-90bf-1bd33f9ed4cc",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4aa5ae3f-57d8-4497-ad93-2b6a506947a4",
+  "name": "Reliant Timberline Livery",
+  "short_name": null,
+  "description": "Customize your Reliant with the Timberline livery that's olive green with orange accents.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

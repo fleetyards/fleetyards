@@ -1,0 +1,186 @@
+{
+  "key": "RSI_Lynx_AI_CIV",
+  "ground": true,
+  "movement_class": "ArcadeWheeled",
+  "gravlev": "0",
+  "min_crew": "2",
+  "name": "RSI Lynx",
+  "description": "Manufacturer: RSI\\nFocus: Exploration\\n\\nRSI designed the Lynx Rover to be a vehicle capable of exploring a wide variety of terrains while still delivering a top-rated and finely tuned driving experience.",
+  "career": "Ground",
+  "role": "Transporter",
+  "insurance": {
+    "base_wait_time_minutes": "2.7",
+    "mandatory_wait_time_minutes": "0.9",
+    "base_expediting_fee": "1080"
+  },
+  "mass": 10372.0,
+  "metrics": {
+    "x": 5.7,
+    "y": 7.75,
+    "z": 3.5
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_passenger",
+      "ref": null,
+      "key": "RSI_Lynx_SCItem_SeatDashboard_Gunner",
+      "loadout": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_seat_driver",
+      "ref": null,
+      "key": "RSI_Lynx_SCItem_SeatDashboard_Pilot",
+      "loadout": [
+        {
+          "name": "Hardpoint_Driver_Radar",
+          "ref": null,
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_seat_access_pilot",
+      "ref": null,
+      "key": "RSI_Lynx_SeatAccess"
+    },
+    {
+      "name": "hardpoint_seat_access_copilot",
+      "ref": null,
+      "key": "RSI_Lynx_CoPilot_SeatAccess"
+    },
+    {
+      "name": "hardpoint_controller_wheel",
+      "ref": null,
+      "key": "Controller_Wheel_RSI_Lynx"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_selfdestruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_20s"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_GRNP_S00_Prevenir"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_powerplant",
+      "ref": null,
+      "key": "POWR_LPLT_S00_Radix_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_cooler",
+      "ref": null,
+      "key": "COOL_JSPN_S00_FrostStarSL_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_RSI_Lynx"
+    },
+    {
+      "name": "hardpoint_shield_generator",
+      "ref": null,
+      "key": "SHLD_SECO_S00_PIN_SCItem"
+    },
+    {
+      "name": "hardpoint_door_sideDoor",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenReverse_Lynx_SideDoor"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon_Vehicle"
+    },
+    {
+      "name": "hardpoint_turret_mount",
+      "ref": null,
+      "key": "RSI_Lynx_Ball_Turret",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "BEHR_LaserCannon_S1"
+        },
+        {
+          "name": "turret_right",
+          "ref": null,
+          "key": "BEHR_LaserCannon_S1"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_personal_storage_Left",
+      "ref": null,
+      "key": "PersonalStorage_RSI_Lynx_Left"
+    },
+    {
+      "name": "hardpoint_personal_storage_Right",
+      "ref": null,
+      "key": "PersonalStorage_RSI_Lynx_Right"
+    },
+    {
+      "name": "hardpoint_fire_extinguisher",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": null,
+      "key": "ARMR_RSI_Lynx"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_RSI_Lynx"
+    },
+    {
+      "name": "hardpoint_fuelport",
+      "ref": null,
+      "key": "Door_Ship_Exterior_RSI_Lynx_Fuelport"
+    }
+  ]
+}

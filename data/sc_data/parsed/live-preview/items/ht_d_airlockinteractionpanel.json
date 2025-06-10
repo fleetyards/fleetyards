@@ -1,0 +1,21 @@
+{
+  "key": "Ht_D_AirlockInteractionPanel",
+  "ref": "21362886-8d5a-4cca-8ec0-69aef632dfc6",
+  "category": "doors",
+  "type": "ControlPanel",
+  "sub_type": "DoorPart",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

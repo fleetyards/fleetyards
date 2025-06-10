@@ -1,0 +1,24 @@
+{
+  "key": "MISL_S04_IR_VNCL_Dragon",
+  "ref": "bc9adaf0-90a2-45e8-ba1d-5e0b56a76c92",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "Missile",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "'Dragon' IV Missile",
+  "short_name": "Dragon IV",
+  "description": "Manufacturer: Vanduul\\nTracking Signal: Infrared\\nSize: 4\\n\\nDesignated the Dragon, this Vanduul infrared tracking strike missile has a fearful reputation earned the number of destroyed Naval ships attributed to its destructive power.",
+  "inventory_consumption": {
+    "micro_scu": 62500.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 4.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 22.0
+  }
+}

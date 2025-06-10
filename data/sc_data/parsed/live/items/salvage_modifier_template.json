@@ -1,0 +1,21 @@
+{
+  "key": "Salvage_Modifier_Template",
+  "ref": "dddf3ee3-5713-4f2b-8b9d-be369b61e6ce",
+  "category": "utility",
+  "type": "SalvageModifier",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 340.0,
+    "dimensions": {
+      "x": 0.0549,
+      "y": 0.0424,
+      "z": 0.133
+    }
+  }
+}

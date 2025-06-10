@@ -1,0 +1,60 @@
+{
+  "key": "POWR_SASU_S02_Radiance_SCItem",
+  "ref": "64844114-2aaa-4292-9326-0e3ac941afd9",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "2",
+  "grade": "2",
+  "manufacturer_ref": "40c59850-8fb5-4a0e-ab61-7fd3871a632a",
+  "name": "Radiance",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Sakura Sun\\nSize: 2\\nGrade: B\\nClass: Civilian\\n\\nConsidering its extensive and extremely diverse line of products, it’s incredible that Sakura Sun can maintain such quality and consistency. The Radiance power plant is a perfect example. A staple of their product line for years, the Radiance has won multiple consumer awards for its reliability and overall performance.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 910.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 5.0,
+    "StartIRTemperature": 140.0,
+    "OverpowerHeat": 0.12,
+    "OverclockThresholdMinHeat": 0.47,
+    "OverclockThresholdMaxHeat": 0.6,
+    "ThermalEnergyBase": 61423.91,
+    "ThermalEnergyDraw": 71250.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.4,
+    "Mass": 1695.0,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 102.1899,
+    "MaxTemperature": 700.0,
+    "OverheatTemperature": 600.0,
+    "RecoveryTemperature": 670.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 300.0,
+    "MisfireMaxTemperature": 900.0
+  },
+  "power_connection": {
+    "power_base": 0.0,
+    "power_draw": 6562.5,
+    "time_to_reach_draw_request": 13.75,
+    "safeguard_priority": 100.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 1.0,
+    "is_overclockable": 1.0,
+    "overclock_threshold_min": 0.357,
+    "overclock_threshold_max": 0.4515,
+    "overpower_performance": 0.0525,
+    "overclock_performance": 0.357,
+    "power_to_em": 0.55,
+    "decay_rate_of_em": 0.21
+  }
+}

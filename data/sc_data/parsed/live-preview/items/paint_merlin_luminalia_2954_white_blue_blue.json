@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Merlin_Luminalia_2954_White_Blue_Blue",
+  "ref": "5d83b277-c025-493a-b312-878cd7351c9b",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "7b5d1ed3-11e7-49e6-9ed3-9d0cb52a3dc2",
+  "name": "P-52 Merlin IceBreak Livery",
+  "short_name": null,
+  "description": "Equip your P-52 Merlin with a paint scheme cooler than a snow storm. The IceBreak livery mixes crisp, cool white with a frostbitten blue for an exciting look suitable for any season.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

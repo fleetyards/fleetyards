@@ -1,0 +1,40 @@
+{
+  "key": "ORIG_400i_CargoGrid",
+  "ref": "7a98a97f-0af7-4f1a-859b-4c5ef57b5acd",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 3.75,
+      "y": 8.75,
+      "z": 2.5
+    },
+    "capacity": 42.0,
+    "max_container_size": {
+      "size": 24,
+      "dimensions": {
+        "x": 7.5,
+        "y": 2.5,
+        "z": 2.5
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1.0
+      },
+      "max": {
+        "dimensions": {
+          "x": 2.5,
+          "y": 5.0,
+          "z": 2.5
+        },
+        "capacity": 16.0
+      }
+    }
+  }
+}

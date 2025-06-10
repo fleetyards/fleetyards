@@ -1,0 +1,60 @@
+{
+  "key": "POWR_JUST_S02_Trommel_SCItem",
+  "ref": "aa15e2df-d7b1-4e97-9e0d-7623a3a096b0",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "2",
+  "grade": "4",
+  "manufacturer_ref": "d7cc897f-b760-4a73-93c0-27e23c52db0a",
+  "name": "Trommel",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Juno Starwerk\\nSize: 2\\nGrade: D\\nClass: Industrial\\n\\nUtilitarian to its core, the Trommel’s lack of frills has made the power plant a favorite of mechanics around the Empire.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 950.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 5.0,
+    "StartIRTemperature": 140.0,
+    "OverpowerHeat": 0.17,
+    "OverclockThresholdMinHeat": 0.3,
+    "OverclockThresholdMaxHeat": 0.64,
+    "ThermalEnergyBase": 228088.2,
+    "ThermalEnergyDraw": 237500.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.4,
+    "Mass": 2400.0,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 245.435,
+    "MaxTemperature": 700.0,
+    "OverheatTemperature": 600.0,
+    "RecoveryTemperature": 670.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 300.0,
+    "MisfireMaxTemperature": 900.0
+  },
+  "power_connection": {
+    "power_base": 0.0,
+    "power_draw": 11875.0,
+    "time_to_reach_draw_request": 18.75,
+    "safeguard_priority": 100.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 1.0,
+    "is_overclockable": 1.0,
+    "overclock_threshold_min": 0.017,
+    "overclock_threshold_max": 0.0215,
+    "overpower_performance": 0.0025,
+    "overclock_performance": 0.017,
+    "power_to_em": 0.55,
+    "decay_rate_of_em": 0.01
+  }
+}

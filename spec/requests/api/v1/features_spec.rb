@@ -16,14 +16,6 @@ RSpec.describe "api/v1", type: :request, swagger_doc: "v1/schema.yaml" do
       response(200, "successful") do
         schema type: :array, items: {type: :string}
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
-
         run_test! do |response|
           expect(JSON.parse(response.body)).to eq(["NewFeature"])
         end

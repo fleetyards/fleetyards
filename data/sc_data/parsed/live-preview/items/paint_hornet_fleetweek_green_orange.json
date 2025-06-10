@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hornet_Fleetweek_Green_Orange",
+  "ref": "5cd90713-8e9f-4653-a966-e6c02840b02b",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2bdbe9b3-e2c1-4e81-99b3-2726089048ac",
+  "name": "Hornet Timberline Livery",
+  "short_name": null,
+  "description": "Customize your Hornet with the Timberline livery that's olive green with orange accents.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

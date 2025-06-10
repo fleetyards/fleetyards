@@ -1,0 +1,10 @@
+{
+  "en": {
+    "validations": {
+      "required": "The %{field} field is required",
+      "min": "The %{field} field must be at least %{min} characters",
+      "max": "The %{field} field must be at most %{max} characters",
+      "alpha_dash": "The %{field} field may contain alpha-numeric characters as well as dashes and underscores"
+    }
+  }
+}

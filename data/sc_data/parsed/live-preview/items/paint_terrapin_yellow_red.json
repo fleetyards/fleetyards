@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Terrapin_Yellow_Red",
+  "ref": "4ada1c1b-ed19-106c-013a-5b487905caaf",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "468f517a-84e5-9f84-ba41-6847b9abd9bd",
+  "name": "Terrapin Felicity Livery",
+  "short_name": null,
+  "description": "Make the Terrapin highly visible with the Felicity livery, featuring a primarily yellow base with grey and red accents.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

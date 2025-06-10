@@ -1,0 +1,1057 @@
+{
+  "key": "AEGS_Javelin_PU_AI_UEE_FleetWeek_2021",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "Aegis Javelin",
+  "description": "Manufacturer: Aegis Dynamics\\nFocus: Destroyer\\n\\nDesigned for use by the UEE military, the Javelin is a massive, modular capital ship that can be appropriated for entrepreneurial use. With a detailed interior, plenty of modular room options, and a high crew capacity, the Javelin is a ship that has made a name for itself in a variety of roles.",
+  "career": "Destroyer",
+  "role": "Destroyer",
+  "insurance": {
+    "base_wait_time_minutes": "168.75",
+    "mandatory_wait_time_minutes": "56.25",
+    "base_expediting_fee": "84375"
+  },
+  "mass": 111080494.0,
+  "metrics": {
+    "x": 0.0,
+    "y": 0.0,
+    "z": 0.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "AEGS_Javelin_SCItem_Seat_Pilot_Blocked"
+    },
+    {
+      "name": "hardpoint_seat_rear_left",
+      "ref": null,
+      "key": "AEGS_Javelin_SCItem_Seat_Bridge_Left_RemoteTurret"
+    },
+    {
+      "name": "hardpoint_seat_rear_right",
+      "ref": null,
+      "key": "AEGS_Javelin_SCItem_Seat_Bridge_Right_RemoteTurret"
+    },
+    {
+      "name": "hardpoint_hangar_door",
+      "ref": null,
+      "key": "Door_Ship_Exterior_Javelin_Hangar_Invulnerable"
+    },
+    {
+      "name": "hardpoint_escpod_door_01",
+      "ref": null,
+      "key": "Door_Ship_Exterior_Javelin_EscapePod_Bridge_Invulnerable"
+    },
+    {
+      "name": "hardpoint_escpod_door_02",
+      "ref": null,
+      "key": "Door_Ship_Exterior_Javelin_EscapePod_02_Invulnerable"
+    },
+    {
+      "name": "hardpoint_escpod_door_04",
+      "ref": null,
+      "key": "Door_Ship_Exterior_Javelin_EscapePod_04_Invulnerable"
+    },
+    {
+      "name": "hardpoint_escpod_door_05",
+      "ref": null,
+      "key": "Door_Ship_Exterior_Javelin_EscapePod_05_Invulnerable"
+    },
+    {
+      "name": "hardpoint_cockpit_radar",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_selfdestruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_120s"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_AEGS_Javelin"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_AEGS_Javelin"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_Default"
+    },
+    {
+      "name": "hardpoint_powerplant_01",
+      "ref": null,
+      "key": "POWR_AEGS_S04_Idris_SCItem"
+    },
+    {
+      "name": "hardpoint_powerplant_02",
+      "ref": null,
+      "key": "POWR_AEGS_S04_Idris_SCItem"
+    },
+    {
+      "name": "hardpoint_powerplant_03",
+      "ref": null,
+      "key": "POWR_AEGS_S04_Idris_SCItem"
+    },
+    {
+      "name": "hardpoint_powerplant_04",
+      "ref": null,
+      "key": "POWR_AEGS_S04_Idris_SCItem"
+    },
+    {
+      "name": "hardpoint_fuel_tank_01",
+      "ref": null,
+      "key": "HTNK_AEGS_Javelin"
+    },
+    {
+      "name": "hardpoint_fuel_tank_02",
+      "ref": null,
+      "key": "HTNK_AEGS_Javelin"
+    },
+    {
+      "name": "hardpoint_fuel_intake_left",
+      "ref": null,
+      "key": "INTK_AEGS_Javelin"
+    },
+    {
+      "name": "hardpoint_fuel_intake_right",
+      "ref": null,
+      "key": "INTK_AEGS_Javelin"
+    },
+    {
+      "name": "hardpoint_cooler_right_03",
+      "ref": null,
+      "key": "COOL_AEGS_S04_Javelin_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_right_04",
+      "ref": null,
+      "key": "COOL_AEGS_S04_Javelin_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_right_05",
+      "ref": null,
+      "key": "COOL_AEGS_S04_Javelin_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_right_06",
+      "ref": null,
+      "key": "COOL_AEGS_S04_Javelin_SCItem"
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_AEGS_S04_Javelin_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": null,
+          "key": "JDRV_AEGS_S04_Javelin_SCItem"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_fuel_tank",
+      "ref": null,
+      "key": "QTNK_AEGS_Javelin"
+    },
+    {
+      "name": "hardpoint_armour",
+      "ref": null,
+      "key": "ARMR_AEGS_Javelin"
+    },
+    {
+      "name": "hardpoint_shield_generator_01",
+      "ref": null,
+      "key": "SHLD_GODI_S04_Javelin_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator_02",
+      "ref": null,
+      "key": "SHLD_GODI_S04_Javelin_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator_03",
+      "ref": null,
+      "key": "SHLD_GODI_S04_Javelin_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator_04",
+      "ref": null,
+      "key": "SHLD_GODI_S04_Javelin_SCItem"
+    },
+    {
+      "name": "hardpoint_engine_left_upper",
+      "ref": null,
+      "key": "AEGS_Javelin_Thruster_Main_01_Invulnerable",
+      "loadout": [
+        {
+          "name": "hardpoint_mav_thruster_left",
+          "ref": null,
+          "key": "AEGS_Javelin_Thruster_Mav_Main_01_Aux_Side"
+        },
+        {
+          "name": "hardpoint_mav_thruster_right",
+          "ref": null,
+          "key": "AEGS_Javelin_Thruster_Mav_Main_01_Aux_Side"
+        },
+        {
+          "name": "hardpoint_mav_thruster_top_left",
+          "ref": null,
+          "key": "AEGS_Javelin_Thruster_Mav_Main_01_Aux_Top"
+        },
+        {
+          "name": "hardpoint_mav_thruster_top_right",
+          "ref": null,
+          "key": "AEGS_Javelin_Thruster_Mav_Main_01_Aux_Top"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_engine_left_lower",
+      "ref": null,
+      "key": "AEGS_Javelin_Thruster_Main_01_Invulnerable",
+      "loadout": [
+        {
+          "name": "hardpoint_mav_thruster_left",
+          "ref": null,
+          "key": "AEGS_Javelin_Thruster_Mav_Main_01_Aux_Side"
+        },
+        {
+          "name": "hardpoint_mav_thruster_right",
+          "ref": null,
+          "key": "AEGS_Javelin_Thruster_Mav_Main_01_Aux_Side"
+        },
+        {
+          "name": "hardpoint_mav_thruster_bottom_left",
+          "ref": null,
+          "key": "AEGS_Javelin_Thruster_Mav_Main_01_Aux_Top"
+        },
+        {
+          "name": "hardpoint_mav_thruster_bottom_right",
+          "ref": null,
+          "key": "AEGS_Javelin_Thruster_Mav_Main_01_Aux_Top"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_engine_right_upper",
+      "ref": null,
+      "key": "AEGS_Javelin_Thruster_Main_01_Invulnerable",
+      "loadout": [
+        {
+          "name": "hardpoint_mav_thruster_left",
+          "ref": null,
+          "key": "AEGS_Javelin_Thruster_Mav_Main_01_Aux_Side"
+        },
+        {
+          "name": "hardpoint_mav_thruster_right",
+          "ref": null,
+          "key": "AEGS_Javelin_Thruster_Mav_Main_01_Aux_Side"
+        },
+        {
+          "name": "hardpoint_mav_thruster_top_left",
+          "ref": null,
+          "key": "AEGS_Javelin_Thruster_Mav_Main_01_Aux_Top"
+        },
+        {
+          "name": "hardpoint_mav_thruster_top_right",
+          "ref": null,
+          "key": "AEGS_Javelin_Thruster_Mav_Main_01_Aux_Top"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_engine_right_lower",
+      "ref": null,
+      "key": "AEGS_Javelin_Thruster_Main_01_Invulnerable",
+      "loadout": [
+        {
+          "name": "hardpoint_mav_thruster_left",
+          "ref": null,
+          "key": "AEGS_Javelin_Thruster_Mav_Main_01_Aux_Side"
+        },
+        {
+          "name": "hardpoint_mav_thruster_right",
+          "ref": null,
+          "key": "AEGS_Javelin_Thruster_Mav_Main_01_Aux_Side"
+        },
+        {
+          "name": "hardpoint_mav_thruster_bottom_left",
+          "ref": null,
+          "key": "AEGS_Javelin_Thruster_Mav_Main_01_Aux_Top"
+        },
+        {
+          "name": "hardpoint_mav_thruster_bottom_right",
+          "ref": null,
+          "key": "AEGS_Javelin_Thruster_Mav_Main_01_Aux_Top"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_sup_engine_upp_far_right",
+      "ref": null,
+      "key": "AEGS_Javelin_Thruster_Main_02_Invulnerable",
+      "loadout": [
+        {
+          "name": "hardpoint_mav_thruster_right",
+          "ref": null,
+          "key": "AEGS_Javelin_Thruster_Mav_Main_02_Aux"
+        },
+        {
+          "name": "hardpoint_mav_hatch_left",
+          "ref": null,
+          "key": "AEGS_Javelin_Engine_Cover_Left"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_sup_engine_upp_inner_right",
+      "ref": null,
+      "key": "AEGS_Javelin_Thruster_Main_02_Invulnerable",
+      "loadout": [
+        {
+          "name": "hardpoint_mav_hatch_left",
+          "ref": null,
+          "key": "AEGS_Javelin_Engine_Cover_Left"
+        },
+        {
+          "name": "hardpoint_mav_hatch_right",
+          "ref": null,
+          "key": "AEGS_Javelin_Engine_Cover_Right"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_sup_engine_low_far_right",
+      "ref": null,
+      "key": "AEGS_Javelin_Thruster_Main_02_Invulnerable",
+      "loadout": [
+        {
+          "name": "hardpoint_mav_thruster_right",
+          "ref": null,
+          "key": "AEGS_Javelin_Thruster_Mav_Main_02_Aux"
+        },
+        {
+          "name": "hardpoint_mav_hatch_left",
+          "ref": null,
+          "key": "AEGS_Javelin_Engine_Cover_Left"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_sup_engine_low_inner_right",
+      "ref": null,
+      "key": "AEGS_Javelin_Thruster_Main_02_Invulnerable",
+      "loadout": [
+        {
+          "name": "hardpoint_mav_hatch_left",
+          "ref": null,
+          "key": "AEGS_Javelin_Engine_Cover_Left"
+        },
+        {
+          "name": "hardpoint_mav_hatch_right",
+          "ref": null,
+          "key": "AEGS_Javelin_Engine_Cover_Right"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_sup_engine_upp_far_left",
+      "ref": null,
+      "key": "AEGS_Javelin_Thruster_Main_02_Invulnerable",
+      "loadout": [
+        {
+          "name": "hardpoint_mav_thruster_left",
+          "ref": null,
+          "key": "AEGS_Javelin_Thruster_Mav_Main_02_Aux"
+        },
+        {
+          "name": "hardpoint_mav_hatch_right",
+          "ref": null,
+          "key": "AEGS_Javelin_Engine_Cover_Right"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_sup_engine_upp_inner_left",
+      "ref": null,
+      "key": "AEGS_Javelin_Thruster_Main_02_Invulnerable",
+      "loadout": [
+        {
+          "name": "hardpoint_mav_hatch_left",
+          "ref": null,
+          "key": "AEGS_Javelin_Engine_Cover_Left"
+        },
+        {
+          "name": "hardpoint_mav_hatch_right",
+          "ref": null,
+          "key": "AEGS_Javelin_Engine_Cover_Right"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_sup_engine_low_far_left",
+      "ref": null,
+      "key": "AEGS_Javelin_Thruster_Main_02_Invulnerable",
+      "loadout": [
+        {
+          "name": "hardpoint_mav_thruster_left",
+          "ref": null,
+          "key": "AEGS_Javelin_Thruster_Mav_Main_02_Aux"
+        },
+        {
+          "name": "hardpoint_mav_hatch_right",
+          "ref": null,
+          "key": "AEGS_Javelin_Engine_Cover_Right"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_sup_engine_low_inner_left",
+      "ref": null,
+      "key": "AEGS_Javelin_Thruster_Main_02_Invulnerable",
+      "loadout": [
+        {
+          "name": "hardpoint_mav_hatch_left",
+          "ref": null,
+          "key": "AEGS_Javelin_Engine_Cover_Left"
+        },
+        {
+          "name": "hardpoint_mav_hatch_right",
+          "ref": null,
+          "key": "AEGS_Javelin_Engine_Cover_Right"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_sup_engine_nose_left",
+      "ref": null,
+      "key": "AEGS_Javelin_Thruster_Main_02_Invulnerable",
+      "loadout": [
+        {
+          "name": "hardpoint_mav_thruster_left",
+          "ref": null,
+          "key": "AEGS_Javelin_Thruster_Mav_Main_02_Aux"
+        },
+        {
+          "name": "hardpoint_mav_hatch_right",
+          "ref": null,
+          "key": "AEGS_Javelin_Engine_Cover_Right"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_sup_engine_nose_right",
+      "ref": null,
+      "key": "AEGS_Javelin_Thruster_Main_02_Invulnerable",
+      "loadout": [
+        {
+          "name": "hardpoint_mav_thruster_right",
+          "ref": null,
+          "key": "AEGS_Javelin_Thruster_Mav_Main_02_Aux"
+        },
+        {
+          "name": "hardpoint_mav_hatch_left",
+          "ref": null,
+          "key": "AEGS_Javelin_Engine_Cover_Left"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_retro_left_upper",
+      "ref": null,
+      "key": "AEGS_Javelin_Thruster_Retro_Invulnerable"
+    },
+    {
+      "name": "hardpoint_retro_left_lower",
+      "ref": null,
+      "key": "AEGS_Javelin_Thruster_Retro_Invulnerable"
+    },
+    {
+      "name": "hardpoint_retro_right_upper",
+      "ref": null,
+      "key": "AEGS_Javelin_Thruster_Retro_Invulnerable"
+    },
+    {
+      "name": "hardpoint_retro_right_lower",
+      "ref": null,
+      "key": "AEGS_Javelin_Thruster_Retro_Invulnerable"
+    },
+    {
+      "name": "hardpoint_thruster_front_right_upper",
+      "ref": null,
+      "key": "AEGS_Javelin_Thruster_Mav_Joint_02_Invulnerable"
+    },
+    {
+      "name": "hardpoint_thruster_front_right_lower",
+      "ref": null,
+      "key": "AEGS_Javelin_Thruster_Mav_Joint_02_Invulnerable"
+    },
+    {
+      "name": "hardpoint_thruster_front_left_upper",
+      "ref": null,
+      "key": "AEGS_Javelin_Thruster_Mav_Joint_02_Invulnerable"
+    },
+    {
+      "name": "hardpoint_thruster_front_left_lower",
+      "ref": null,
+      "key": "AEGS_Javelin_Thruster_Mav_Joint_02_Invulnerable"
+    },
+    {
+      "name": "hardpoint_turret_front_left_upper",
+      "ref": null,
+      "key": "AEGS_Javelin_Side_Turret_Front_No_Tag_Invulnerable",
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left",
+          "ref": null,
+          "key": "BEHR_JavelinBallisticCannon_S7_Dummy"
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "ref": null,
+          "key": "BEHR_JavelinBallisticCannon_S7_Dummy"
+        },
+        {
+          "name": "hardpoint_gimbal_left",
+          "ref": null,
+          "key": "APAR_BallisticGatling_S4_test_inf_ammo_Dummy"
+        },
+        {
+          "name": "hardpoint_gimbal_right",
+          "ref": null,
+          "key": "APAR_BallisticGatling_S4_test_inf_ammo_Dummy"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_centre_left_upper",
+      "ref": null,
+      "key": "AEGS_Javelin_Side_Turret_Middle_No_Tag_Invulnerable",
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left",
+          "ref": null,
+          "key": "BEHR_JavelinBallisticCannon_S7_Dummy"
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "ref": null,
+          "key": "BEHR_JavelinBallisticCannon_S7_Dummy"
+        },
+        {
+          "name": "hardpoint_gimbal_left",
+          "ref": null,
+          "key": "APAR_BallisticGatling_S4_test_inf_ammo_Dummy"
+        },
+        {
+          "name": "hardpoint_gimbal_right",
+          "ref": null,
+          "key": "APAR_BallisticGatling_S4_test_inf_ammo_Dummy"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_rear_left_upper",
+      "ref": null,
+      "key": "AEGS_Javelin_Side_Turret_Rear_No_Tag_Invulnerable",
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left",
+          "ref": null,
+          "key": "BEHR_JavelinBallisticCannon_S7_Dummy"
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "ref": null,
+          "key": "BEHR_JavelinBallisticCannon_S7_Dummy"
+        },
+        {
+          "name": "hardpoint_gimbal_left",
+          "ref": null,
+          "key": "APAR_BallisticGatling_S4_test_inf_ammo_Dummy"
+        },
+        {
+          "name": "hardpoint_gimbal_right",
+          "ref": null,
+          "key": "APAR_BallisticGatling_S4_test_inf_ammo_Dummy"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_front_right_upper",
+      "ref": null,
+      "key": "AEGS_Javelin_Side_Turret_Front_Invulnerable",
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left",
+          "ref": null,
+          "key": "BEHR_JavelinBallisticCannon_S7"
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "ref": null,
+          "key": "BEHR_JavelinBallisticCannon_S7"
+        },
+        {
+          "name": "hardpoint_gimbal_left",
+          "ref": null,
+          "key": "APAR_BallisticGatling_S4_test_inf_ammo"
+        },
+        {
+          "name": "hardpoint_gimbal_right",
+          "ref": null,
+          "key": "APAR_BallisticGatling_S4_test_inf_ammo"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_centre_right_upper",
+      "ref": null,
+      "key": "AEGS_Javelin_Side_Turret_Middle_Invulnerable",
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left",
+          "ref": null,
+          "key": "BEHR_JavelinBallisticCannon_S7"
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "ref": null,
+          "key": "BEHR_JavelinBallisticCannon_S7"
+        },
+        {
+          "name": "hardpoint_gimbal_left",
+          "ref": null,
+          "key": "APAR_BallisticGatling_S4_test_inf_ammo"
+        },
+        {
+          "name": "hardpoint_gimbal_right",
+          "ref": null,
+          "key": "APAR_BallisticGatling_S4_test_inf_ammo"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_rear_right_upper",
+      "ref": null,
+      "key": "AEGS_Javelin_Side_Turret_Rear_Invulnerable",
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left",
+          "ref": null,
+          "key": "BEHR_JavelinBallisticCannon_S7"
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "ref": null,
+          "key": "BEHR_JavelinBallisticCannon_S7"
+        },
+        {
+          "name": "hardpoint_gimbal_left",
+          "ref": null,
+          "key": "APAR_BallisticGatling_S4_test_inf_ammo"
+        },
+        {
+          "name": "hardpoint_gimbal_right",
+          "ref": null,
+          "key": "APAR_BallisticGatling_S4_test_inf_ammo"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_nose_left_upper",
+      "ref": null,
+      "key": "AEGS_Javelin_SCItem_Turret_Manned_Left_Invulnerable",
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left",
+          "ref": null,
+          "key": "BEHR_LaserCannon_S7_Turret"
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "ref": null,
+          "key": "BEHR_LaserCannon_S7_Turret"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_nose_right_upper",
+      "ref": null,
+      "key": "AEGS_Javelin_SCItem_Turret_Manned_Invulnerable",
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left",
+          "ref": null,
+          "key": "BEHR_LaserCannon_S7_Turret"
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "ref": null,
+          "key": "BEHR_LaserCannon_S7_Turret"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_nose_left_lower",
+      "ref": null,
+      "key": "AEGS_Javelin_SCItem_Turret_Manned_Invulnerable",
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left",
+          "ref": null,
+          "key": "BEHR_LaserCannon_S7_Turret"
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "ref": null,
+          "key": "BEHR_LaserCannon_S7_Turret"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_nose_right_lower",
+      "ref": null,
+      "key": "AEGS_Javelin_SCItem_Turret_Manned_Left_Invulnerable",
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left",
+          "ref": null,
+          "key": "BEHR_LaserCannon_S7_Turret"
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "ref": null,
+          "key": "BEHR_LaserCannon_S7_Turret"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_front_lower",
+      "ref": null,
+      "key": "AEGS_Javelin_SCItem_Turret_Lower_Manned_Invulnerable",
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left",
+          "ref": null,
+          "key": "BEHR_LaserCannon_S7_Turret"
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "ref": null,
+          "key": "BEHR_LaserCannon_S7_Turret"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_centre_lower",
+      "ref": null,
+      "key": "AEGS_Javelin_SCItem_Turret_Lower_Manned_Invulnerable",
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left",
+          "ref": null,
+          "key": "BEHR_LaserCannon_S7_Turret"
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "ref": null,
+          "key": "BEHR_LaserCannon_S7_Turret"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_rear_lower",
+      "ref": null,
+      "key": "AEGS_Javelin_SCItem_Turret_Lower_Manned_Invulnerable",
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left",
+          "ref": null,
+          "key": "BEHR_LaserCannon_S7_Turret"
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "ref": null,
+          "key": "BEHR_LaserCannon_S7_Turret"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_tail_upper",
+      "ref": null,
+      "key": "AEGS_Javelin_SCItem_Turret_Large_Invulnerable"
+    },
+    {
+      "name": "hardpoint_turret_tail_lower",
+      "ref": null,
+      "key": "AEGS_Javelin_SCItem_Turret_Large_Invulnerable"
+    },
+    {
+      "name": "hardpoint_turret_remote_turret_top_controller",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_turret_remote_turret_bottom_controller",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_countermeasures_left",
+      "ref": null,
+      "key": "AEGS_Javelin_CML_Decoy"
+    },
+    {
+      "name": "hardpoint_countermeasures_left_02",
+      "ref": null,
+      "key": "AEGS_Javelin_CML_Decoy"
+    },
+    {
+      "name": "hardpoint_countermeasures_left_03",
+      "ref": null,
+      "key": "AEGS_Javelin_CML_Decoy"
+    },
+    {
+      "name": "hardpoint_countermeasures_left_04",
+      "ref": null,
+      "key": "AEGS_Javelin_CML_Decoy"
+    },
+    {
+      "name": "hardpoint_countermeasures_right",
+      "ref": null,
+      "key": "AEGS_Javelin_CML_Decoy"
+    },
+    {
+      "name": "hardpoint_countermeasures_right_02",
+      "ref": null,
+      "key": "AEGS_Javelin_CML_Decoy"
+    },
+    {
+      "name": "hardpoint_countermeasures_right_03",
+      "ref": null,
+      "key": "AEGS_Javelin_CML_Decoy"
+    },
+    {
+      "name": "hardpoint_countermeasures_right_04",
+      "ref": null,
+      "key": "AEGS_Javelin_CML_Decoy"
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": "Controller_Missile"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "AEGS_Javelin_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_airlock_door_rear_left",
+      "ref": null,
+      "key": "Door_Ship_Exterior_AEGS_Javelin_Airlock_Invulnerable"
+    },
+    {
+      "name": "hardpoint_docking_collar_rear_left",
+      "ref": null,
+      "key": "AEGS_Javelin_DockingTube"
+    },
+    {
+      "name": "hardpoint_airlock_rear_left",
+      "ref": null,
+      "key": "AEGS_Javelin_Docking_Bay_Airlock_Invulnerable"
+    },
+    {
+      "name": "hardpoint_security_seat",
+      "ref": null,
+      "key": "AEGS_Javelin_SCItem_Seat_Security"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_xenothreat_wall",
+      "ref": null,
+      "key": "AEGS_Javelin_Xenothreat_wall"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_AEGS_Javelin"
+    },
+    {
+      "name": "hardpoint_missile_launcher_front_left",
+      "ref": null,
+      "key": "MRCK_S04_AEGS_Javelin_Tri",
+      "loadout": [
+        {
+          "name": "missile_attach_01",
+          "ref": null,
+          "key": "MISL_S04_EM_TALN_Raptor"
+        },
+        {
+          "name": "missile_attach_02",
+          "ref": null,
+          "key": "MISL_S04_EM_TALN_Raptor"
+        },
+        {
+          "name": "missile_attach_03",
+          "ref": null,
+          "key": "MISL_S04_EM_TALN_Raptor"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_launcher_front_right",
+      "ref": null,
+      "key": "MRCK_S04_AEGS_Javelin_Tri",
+      "loadout": [
+        {
+          "name": "missile_attach_01",
+          "ref": null,
+          "key": "MISL_S04_EM_TALN_Raptor"
+        },
+        {
+          "name": "missile_attach_02",
+          "ref": null,
+          "key": "MISL_S04_EM_TALN_Raptor"
+        },
+        {
+          "name": "missile_attach_03",
+          "ref": null,
+          "key": "MISL_S04_EM_TALN_Raptor"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_launcher_centre_left",
+      "ref": null,
+      "key": "MRCK_S04_AEGS_Javelin_Tri",
+      "loadout": [
+        {
+          "name": "missile_attach_01",
+          "ref": null,
+          "key": "MISL_S04_EM_TALN_Raptor"
+        },
+        {
+          "name": "missile_attach_02",
+          "ref": null,
+          "key": "MISL_S04_EM_TALN_Raptor"
+        },
+        {
+          "name": "missile_attach_03",
+          "ref": null,
+          "key": "MISL_S04_EM_TALN_Raptor"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_launcher_centre_right",
+      "ref": null,
+      "key": "MRCK_S04_AEGS_Javelin_Tri",
+      "loadout": [
+        {
+          "name": "missile_attach_01",
+          "ref": null,
+          "key": "MISL_S04_EM_TALN_Raptor"
+        },
+        {
+          "name": "missile_attach_02",
+          "ref": null,
+          "key": "MISL_S04_EM_TALN_Raptor"
+        },
+        {
+          "name": "missile_attach_03",
+          "ref": null,
+          "key": "MISL_S04_EM_TALN_Raptor"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_launcher_rear_left",
+      "ref": null,
+      "key": "MRCK_S04_AEGS_Javelin_Tri",
+      "loadout": [
+        {
+          "name": "missile_attach_01",
+          "ref": null,
+          "key": "MISL_S04_EM_TALN_Raptor"
+        },
+        {
+          "name": "missile_attach_02",
+          "ref": null,
+          "key": "MISL_S04_EM_TALN_Raptor"
+        },
+        {
+          "name": "missile_attach_03",
+          "ref": null,
+          "key": "MISL_S04_EM_TALN_Raptor"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_launcher_rear_right",
+      "ref": null,
+      "key": "MRCK_S04_AEGS_Javelin_Tri",
+      "loadout": [
+        {
+          "name": "missile_attach_01",
+          "ref": null,
+          "key": "MISL_S04_EM_TALN_Raptor"
+        },
+        {
+          "name": "missile_attach_02",
+          "ref": null,
+          "key": "MISL_S04_EM_TALN_Raptor"
+        },
+        {
+          "name": "missile_attach_03",
+          "ref": null,
+          "key": "MISL_S04_EM_TALN_Raptor"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_S04_AEGS_Javelin"
+    }
+  ]
+}

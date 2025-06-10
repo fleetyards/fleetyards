@@ -1,0 +1,24 @@
+{
+  "key": "Mining_Modules_Active_Surge",
+  "ref": "46643b07-bb39-4ac1-83e4-d428f0c01a75",
+  "category": "utility",
+  "type": "MiningModifier",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d1a1bf03-89d9-4eae-ac34-11eeb8e45d8f",
+  "name": "Surge Module",
+  "short_name": null,
+  "description": "Manufacturer: Thermyte Concern\\nItem Type: Mining Module (Active)\\n\\nMining Laser Power: 150%\\nResistance: -15%\\n\\nLaser Instability: +10%\\n\\nDuration: 15 seconds\\nUses: 7\\n\\nInstantly inject energy into a deposit with the Surge. It uses a special configuration of lenses to increase mining laser power and bypass a deposit's resistance. It does require careful management as the module also increases laser instability.",
+  "inventory_consumption": {
+    "micro_scu": 10644.0,
+    "dimensions": {
+      "x": 0.2113915,
+      "y": 0.3365072,
+      "z": 0.187045
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

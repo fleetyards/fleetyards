@@ -3,15 +3,15 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/fleets/membership", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
-  let(:fleet) { fleets :starfleet }
+  let(:member) { create(:user) }
+  let(:user) { member }
+  let(:fleet) { create(:fleet) }
   let(:fleetSlug) { fleet.slug }
-
-  let(:user) { nil }
 
   before do
     sign_in(user) if user.present?
+
+    create(:fleet_membership, fleet:, user: member)
   end
 
   path "/fleets/{fleetSlug}/membership" do
@@ -23,22 +23,21 @@ RSpec.describe "api/v1/fleets/membership", type: :request, swagger_doc: "v1/sche
       produces "application/json"
 
       response(204, "successful") do
-        let(:user) { users :data }
-
         run_test!
       end
 
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:user) { users :data }
-        let(:fleet) { fleets :klingon_empire }
+        let(:fleetSlug) { "unknown-fleet" }
 
         run_test!
       end
 
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { nil }
 
         run_test!
       end

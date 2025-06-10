@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_ARGO_MPUV_1T",
+  "ref": "ea32bd43-280d-4674-b3cd-920326245f9d",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "9e1f5a35-edcc-4d19-bede-08e2730043c5",
+  "name": "SELF STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "scm_speed": 175.0,
+    "scm_speed_boosted": 365.0,
+    "reverse_speed_boosted": 145.0,
+    "max_speed": 895.0,
+    "angular_velocity": {
+      "pitch": 35.0,
+      "yaw": 35.0,
+      "roll": 85.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 42.0,
+      "yaw": 42.0,
+      "roll": 102.0
+    }
+  }
+}

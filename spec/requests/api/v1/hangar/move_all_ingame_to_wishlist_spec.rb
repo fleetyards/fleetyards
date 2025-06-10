@@ -3,12 +3,14 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
-  let(:user) { nil }
+  let(:author) { create(:user) }
+  let(:user) { author }
+  let(:ingame_vehicles) { create_list(:vehicle, 2, user: author, bought_via: :ingame) }
 
   before do
     sign_in(user) if user.present?
+
+    ingame_vehicles
   end
 
   path "/hangar/move-all-ingame-to-wishlist" do
@@ -18,13 +20,16 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
       produces "application/json"
 
       response(204, "successful") do
-        let(:user) { users :data }
-
-        run_test!
+        run_test! do
+          expect(user.vehicles.where(wanted: true).count).to eq(2)
+          expect(user.vehicles.where(wanted: false).count).to eq(0)
+        end
       end
 
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { nil }
 
         run_test!
       end

@@ -1,0 +1,24 @@
+{
+  "key": "Mining_Modules_Passive_Focus_MK1",
+  "ref": "e8864c48-6cd1-49e8-95ba-91912e321f35",
+  "category": "utility",
+  "type": "MiningModifier",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d1a1bf03-89d9-4eae-ac34-11eeb8e45d8f",
+  "name": "Focus Module",
+  "short_name": null,
+  "description": "Manufacturer: Thermyte Concern\\nItem Type: Mining Module (Passive)\\n\\nOptimal Charge Window Size: +30%\\n\\nMining Laser Power: 85%\\n\\nThe Focus Module uses a modified mining laser crystal to create a larger optimal charge window at the expense of laser power.",
+  "inventory_consumption": {
+    "micro_scu": 6984.0,
+    "dimensions": {
+      "x": 0.215933,
+      "y": 0.2455083,
+      "z": 0.1646649
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

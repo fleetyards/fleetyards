@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width" />
     <meta name="color-scheme" content="light dark">
 
-    <%= stylesheet_link_tag "email" %>
+    <%= vite_stylesheet_tag 'email.scss' %>
   </head>
 
   <body>
@@ -18,14 +18,12 @@
               <row>
                 <columns small="12" large="3">
                   <center>
-                    <img src="<%= image_url('logo-small.png') %>" alt="logo">
+                    <img src="<%= vite_asset_url('images/logo-small.png') %>" alt="logo">
                   </center>
                 </columns>
                 <columns small="12" large="9">
                   <h1 style="margin-bottom: 0; margin-top: 20px;">
-                    <center>
-                      <%= I18n.t('title.default') %>
-                    </center>
+                    <%= I18n.t('title.default') %>
                   </h1>
                 </columns>
               </row>

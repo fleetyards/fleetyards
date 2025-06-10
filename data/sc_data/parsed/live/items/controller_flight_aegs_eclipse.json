@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_AEGS_Eclipse",
+  "ref": "9cdf411e-8253-414f-a6f1-2c37a5e1081f",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SELF STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "scm_speed": 202.0,
+    "scm_speed_boosted": 500.0,
+    "reverse_speed_boosted": 215.0,
+    "max_speed": 1050.0,
+    "angular_velocity": {
+      "pitch": 33.0,
+      "yaw": 33.0,
+      "roll": 110.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 39.6,
+      "yaw": 39.6,
+      "roll": 132.0
+    }
+  }
+}

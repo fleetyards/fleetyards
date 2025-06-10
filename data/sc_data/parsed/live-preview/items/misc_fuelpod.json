@@ -1,0 +1,27 @@
+{
+  "key": "MISC_FuelPod",
+  "ref": "be8caf6c-8682-45ba-a0d5-f3b580ae01f2",
+  "category": "fueltanks",
+  "type": "FuelTank",
+  "sub_type": "Fuel",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 500.0
+  },
+  "type_data": {
+    "capacity": 250.0
+  }
+}

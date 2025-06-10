@@ -1,0 +1,21 @@
+{
+  "key": "SoftLock_EngineeringScreen_AEGS_Retaliator",
+  "ref": "b2e6f541-e23b-4c76-ae1d-ec444b1c4e4c",
+  "category": "utility",
+  "type": "SeatDashboard",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Screen",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

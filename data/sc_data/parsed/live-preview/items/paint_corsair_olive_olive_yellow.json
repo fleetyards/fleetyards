@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Corsair_Olive_Olive_Yellow",
+  "ref": "bf60050d-f3c6-40ac-9b51-cc4fbc2fc19d",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4757b905-a921-40c7-a8cf-3b6b1b5156fa",
+  "name": "Corsair Commando Livery",
+  "short_name": null,
+  "description": "Primarily green with yellow accents, the Commando livery allows the Corsair to blend in with forests and verdant locations.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

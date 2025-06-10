@@ -1,0 +1,9 @@
+{
+  "key": "ESPR_Talon_Template",
+  "ref": "1158055c-a5ac-4a1d-9e44-9e4375247fd0",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 0.65
+  }
+}

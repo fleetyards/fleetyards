@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_MISC_Freelancer_MAX",
+  "ref": "7eafe909-715e-4f46-b8c0-648050e04aa6",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SELF STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "scm_speed": 197.0,
+    "scm_speed_boosted": 400.0,
+    "reverse_speed_boosted": 205.0,
+    "max_speed": 1010.0,
+    "angular_velocity": {
+      "pitch": 32.0,
+      "yaw": 32.0,
+      "roll": 105.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 38.4,
+      "yaw": 38.4,
+      "roll": 126.0
+    }
+  }
+}

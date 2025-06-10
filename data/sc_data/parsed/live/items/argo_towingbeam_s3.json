@@ -1,0 +1,60 @@
+{
+  "key": "ARGO_TowingBeam_S3",
+  "ref": "fd3625ad-6dce-4a48-ac86-3c7f8f09e11f",
+  "category": "weapons",
+  "type": "TowingBeam",
+  "sub_type": null,
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "name": "SafeTow S3 Towing Beam",
+  "short_name": "SafeTow S3 Towing Beam",
+  "description": "Manufacturer: Greycat Industrial\\nItem Type: Towing Beam\\nMax Angle: 160°\\nMax Range: 250 m\\nFull Strength Distance: 200 m\\n\\nThe safe and secure choice of recovery teams across the empire, the SafeTow towing beam from Greycat Industrial boasts enough strength, power, and control to transport both heavy cargo and vehicles across the ‘verse.",
+  "inventory_consumption": {
+    "micro_scu": 756000.0,
+    "dimensions": {
+      "x": 0.6699014,
+      "y": 4.422015,
+      "z": 1.202842
+    }
+  },
+  "durability": {
+    "health": 1050.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 6.0,
+    "StartIRTemperature": 250.0,
+    "OverpowerHeat": 0.6,
+    "OverclockThresholdMinHeat": 0.3,
+    "OverclockThresholdMaxHeat": 0.41,
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.5,
+    "Mass": 280.0,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 94.0,
+    "MaxTemperature": 450.0,
+    "OverheatTemperature": 370.0,
+    "RecoveryTemperature": 350.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "power_connection": {
+    "power_base": 46.0,
+    "power_draw": 146.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 20.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 1.0,
+    "is_overclockable": 1.0,
+    "overclock_threshold_min": 0.15,
+    "overclock_threshold_max": 0.49,
+    "overpower_performance": 0.24,
+    "overclock_performance": 0.24,
+    "power_to_em": 0.9,
+    "decay_rate_of_em": 0.5
+  }
+}

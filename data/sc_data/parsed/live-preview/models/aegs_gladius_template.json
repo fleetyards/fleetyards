@@ -1,0 +1,25 @@
+{
+  "key": "AEGS_Gladius_Template",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "Aegis Gladius",
+  "description": "Manufacturer: Aegis Dynamics\\nFocus: Light Fighter\\n\\nThe Gladius is an older design which has been updated over the years to keep up with modern technology. In military circles, the Gladius is beloved for its performance and its simplicity. A fast, light fighter with a laser-focus on dogfighting, the Gladius is an ideal interceptor or escort ship.",
+  "career": "Combat",
+  "role": "Light Fighter",
+  "insurance": {
+    "base_wait_time_minutes": "33.33",
+    "mandatory_wait_time_minutes": "3.33",
+    "base_expediting_fee": "333"
+  },
+  "mass": null,
+  "metrics": {
+    "x": 17.5,
+    "y": 21.0,
+    "z": 5.5
+  },
+  "loadout": [
+
+  ]
+}

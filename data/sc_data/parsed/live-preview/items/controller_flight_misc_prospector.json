@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_MISC_Prospector",
+  "ref": "4f3df11b-d49a-4334-bc0f-7c514b3d38d5",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SELF STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "scm_speed": 156.0,
+    "scm_speed_boosted": 371.0,
+    "reverse_speed_boosted": 160.0,
+    "max_speed": 994.0,
+    "angular_velocity": {
+      "pitch": 32.0,
+      "yaw": 32.0,
+      "roll": 75.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 38.4,
+      "yaw": 38.4,
+      "roll": 90.0
+    }
+  }
+}

@@ -1,4 +1,3 @@
-ruby 3.2.4
-nodejs 20.10.0
-yarn 1.22.10
-bun 1.1.7
+ruby 3.4.1
+nodejs lts
+pnpm 10.3.0

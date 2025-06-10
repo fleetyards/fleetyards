@@ -1,0 +1,186 @@
+$outerBorderWidth: 2px;
+$outerBorderRadius: $panelOuterBorderRadius;
+$innerBorderWidth: 3px;
+$innerBorderRadius: $panelInnerBorderRadius;
+$contentBorderRadius: $panelContentBorderRadius;
+
+$panelPrimaryBgColor: $primary;
+$panelPrimaryBorderColor: $primary;
+$panelHighlightBorderColor: $gold;
+$panelErrorBorderColor: darken(red, 10%);
+$panelSuccessBorderColor: darken($success, 5%);
+
+.panel {
+  position: relative;
+  min-height: $innerBorderRadius * 2;
+  background-color: $panel-bg;
+  border: $innerBorderWidth solid $panel-inner-border;
+  border-radius: $innerBorderRadius;
+  box-shadow: 0 1px 1px rgba(#000, 0.05);
+  color: $text-color;
+  font-family: "Open Sans", sans-serif;
+
+  &::before {
+    position: absolute;
+    top: -$innerBorderWidth;
+    right: 40px;
+    left: 40px;
+    height: ($innerBorderWidth + 1);
+    background-color: #444;
+    border-bottom-right-radius: 1px;
+    border-bottom-left-radius: 1px;
+    content: "";
+  }
+
+  &::after {
+    position: absolute;
+    right: 40px;
+    bottom: -$innerBorderWidth;
+    left: 40px;
+    height: ($innerBorderWidth + 1);
+    background-color: #444;
+    border-top-left-radius: 1px;
+    border-top-right-radius: 1px;
+    content: "";
+  }
+
+  &--transparency-more {
+    background-color: rgba($panel-bg, 0.6);
+  }
+
+  &--transparency-complete {
+    background-color: transparent;
+  }
+
+  &-wrapper {
+    position: relative;
+    box-sizing: border-box;
+    padding: $outerBorderWidth;
+    border: $outerBorderWidth solid $panel-outer-border;
+    border-radius: $outerBorderRadius;
+    transition: border-color $transition-base-speed ease;
+
+    &::before {
+      position: absolute;
+      top: -$outerBorderWidth;
+      right: 80px;
+      left: 80px;
+      height: $outerBorderWidth;
+      background-color: #444;
+      content: "";
+    }
+
+    &::after {
+      position: absolute;
+      right: 80px;
+      bottom: -$outerBorderWidth;
+      left: 80px;
+      height: $outerBorderWidth;
+      background-color: #444;
+      content: "";
+    }
+
+    &--outer-spacing {
+      margin-bottom: 21px;
+    }
+
+    &--highlight {
+      border-color: $panelHighlightBorderColor;
+    }
+
+    &--primary {
+      border-color: $panelPrimaryBorderColor;
+    }
+
+    &--primary-bg {
+      .panel {
+        color: white;
+        background-color: $panelPrimaryBgColor;
+      }
+    }
+
+    &--error {
+      border-color: $panelErrorBorderColor;
+
+      &.panel-wrapper--animated {
+        animation: panel-border-error-animation $transition-base-speed * 2
+          infinite ease alternate;
+      }
+    }
+
+    &--success {
+      border-color: $panelSuccessBorderColor;
+
+      &.panel-wrapper--animated {
+        animation: panel-border-success-animation $transition-base-speed * 2
+          infinite ease alternate;
+      }
+    }
+  }
+
+  &-inner {
+    border-radius: $contentBorderRadius;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 286px;
+
+    &--text {
+      padding: 20px;
+      padding-bottom: 0;
+    }
+
+    &--left,
+    &--right {
+      display: flex;
+      flex-direction: row;
+    }
+
+    &--left {
+      > :first-child {
+        flex: 30% 0 0;
+      }
+
+      > :last-child {
+        flex: 1;
+      }
+    }
+
+    &--right {
+      > :last-child {
+        flex: 30% 0 0;
+      }
+    }
+
+    &--slim {
+      min-height: 0;
+    }
+  }
+
+  table {
+    margin-bottom: 0;
+  }
+
+  table:first-child tbody:first-child tr:first-child td,
+  table:first-child thead tr:first-child th {
+    border-top: none;
+  }
+}
+
+@keyframes panel-border-success-animation {
+  from {
+    border-color: rgba($panelSuccessBorderColor, 0.5);
+  }
+  to {
+    border-color: rgba($panelSuccessBorderColor, 1);
+  }
+}
+
+@keyframes panel-border-error-animation {
+  from {
+    border-color: rgba($panelErrorBorderColor, 0.5);
+  }
+  to {
+    border-color: rgba($panelErrorBorderColor, 1);
+  }
+}

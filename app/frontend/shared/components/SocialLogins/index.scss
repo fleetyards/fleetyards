@@ -1,0 +1,12 @@
+.social-logins {
+  display: flex;
+  justify-content: flex-start;
+  gap: 5px;
+
+  &.block {
+    justify-content: space-between;
+    > * {
+      flex: 1;
+    }
+  }
+}

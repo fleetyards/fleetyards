@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Nox_Racing_Red_Silver",
+  "ref": "06606e88-d50d-4134-8829-3d4caf521b39",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "c06fbf77-e4a6-40d4-971f-b81750924a13",
+  "name": "Nox Overdrive Livery",
+  "short_name": null,
+  "description": "Blast past other racers in your Nox with the Overdrive livery, which features a stylish blend red and silver coloring.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

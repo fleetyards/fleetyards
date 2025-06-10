@@ -1,0 +1,456 @@
+{
+  "key": "DRAK_Vulture_PU_AI_CIV",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "Drake Vulture",
+  "description": "Manufacturer: Drake Interplanetary\\nFocus: Light Salvage\\n\\nAnswer to no one, cut out the middle man, and throw caution to the wind. Rip wrecks like a pro and carve out your own place in the great big empty behind the stick of this rough, rugged salvage machine from Drake Interplanetary.",
+  "career": "Industrial",
+  "role": "Light Salvage",
+  "insurance": {
+    "base_wait_time_minutes": "9",
+    "mandatory_wait_time_minutes": "3",
+    "base_expediting_fee": "3040"
+  },
+  "mass": 186103.0,
+  "metrics": {
+    "x": 16.0,
+    "y": 34.0,
+    "z": 9.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "DRAK_Vulture_SCItem_Seat_Pilot",
+      "loadout": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_cockpit_selfdestruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_30s"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_power_plant_01",
+      "ref": null,
+      "key": "POWR_JUST_S01_Fortitude_SCItem"
+    },
+    {
+      "name": "hardpoint_power_plant_02",
+      "ref": null,
+      "key": "POWR_JUST_S01_Fortitude_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_cooler_left",
+      "ref": null,
+      "key": "COOL_JUST_S01_Thermax_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_right",
+      "ref": null,
+      "key": "COOL_JUST_S01_Thermax_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_DRAK_Vulture"
+    },
+    {
+      "name": "hardpoint_shield_generator_left",
+      "ref": null,
+      "key": "SHLD_BASL_S01_Bulwark_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator_right",
+      "ref": null,
+      "key": "SHLD_BASL_S01_Bulwark_SCItem"
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": null,
+      "key": "ARMR_DRAK_Vulture"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_DRAK_Vulture"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_CHCO_S01_SurveyorLite"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_scanner",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_ping",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuel_intake_left",
+      "ref": null,
+      "key": "INTK_DRAK_Vulture"
+    },
+    {
+      "name": "hardpoint_fuel_intake_right",
+      "ref": null,
+      "key": "INTK_DRAK_Vulture"
+    },
+    {
+      "name": "hardpoint_fuel_tank_left",
+      "ref": null,
+      "key": "HTNK_DRAK_Vulture"
+    },
+    {
+      "name": "hardpoint_fuel_tank_right",
+      "ref": null,
+      "key": "HTNK_DRAK_Vulture"
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_JUST_S01_Goliath_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": null,
+          "key": "JDRV_TARS_S01_C_Explorer"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_fuel_tank",
+      "ref": null,
+      "key": "QTNK_DRAK_Vulture"
+    },
+    {
+      "name": "hardpoint_thruster_main_left",
+      "ref": null,
+      "key": "DRAK_Vulture_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_main_right",
+      "ref": null,
+      "key": "DRAK_Vulture_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_retro_left",
+      "ref": null,
+      "key": "DRAK_Vulture_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_retro_right",
+      "ref": null,
+      "key": "DRAK_Vulture_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_mav_front_bottom_left",
+      "ref": null,
+      "key": "DRAK_Vulture_Thruster_Maneuver_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_mav_front_bottom_right",
+      "ref": null,
+      "key": "DRAK_Vulture_Thruster_Maneuver_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_mav_front_side_left",
+      "ref": null,
+      "key": "DRAK_Vulture_Thruster_Maneuver"
+    },
+    {
+      "name": "hardpoint_thruster_mav_front_side_right",
+      "ref": null,
+      "key": "DRAK_Vulture_Thruster_Maneuver"
+    },
+    {
+      "name": "hardpoint_thruster_mav_front_top_left",
+      "ref": null,
+      "key": "DRAK_Vulture_Thruster_Maneuver_Top"
+    },
+    {
+      "name": "hardpoint_thruster_mav_front_top_right",
+      "ref": null,
+      "key": "DRAK_Vulture_Thruster_Maneuver_Top"
+    },
+    {
+      "name": "hardpoint_thruster_mav_rear_bottom_left",
+      "ref": null,
+      "key": "DRAK_Vulture_Thruster_Maneuver_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_mav_rear_bottom_right",
+      "ref": null,
+      "key": "DRAK_Vulture_Thruster_Maneuver_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_mav_rear_side_left",
+      "ref": null,
+      "key": "DRAK_Vulture_Thruster_Maneuver"
+    },
+    {
+      "name": "hardpoint_thruster_mav_rear_side_right",
+      "ref": null,
+      "key": "DRAK_Vulture_Thruster_Maneuver"
+    },
+    {
+      "name": "hardpoint_thruster_mav_rear_top_left",
+      "ref": null,
+      "key": "DRAK_Vulture_Thruster_Maneuver_Top"
+    },
+    {
+      "name": "hardpoint_thruster_mav_rear_top_right",
+      "ref": null,
+      "key": "DRAK_Vulture_Thruster_Maneuver_Top"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_front_left",
+      "ref": null,
+      "key": "DRAK_Vulture_Thruster_VTOL"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_front_right",
+      "ref": null,
+      "key": "DRAK_Vulture_Thruster_VTOL"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_rear_left",
+      "ref": null,
+      "key": "DRAK_Vulture_Thruster_VTOL"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_rear_right",
+      "ref": null,
+      "key": "DRAK_Vulture_Thruster_VTOL"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_weapon_nose_left",
+      "ref": "80ae6d83-7d8a-4357-b109-a0154418bae5",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "c9c2bb19-3298-448e-a117-043e082a1c74",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_nose_right",
+      "ref": "80ae6d83-7d8a-4357-b109-a0154418bae5",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "c9c2bb19-3298-448e-a117-043e082a1c74",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_cm_launcher_left",
+      "ref": null,
+      "key": "DRAK_Vulture_CML_Flare"
+    },
+    {
+      "name": "hardpoint_cm_launcher_right",
+      "ref": null,
+      "key": "DRAK_Vulture_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": "Controller_Missile"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_door_cargo",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenReverse_IP_Vulture_Ramp"
+    },
+    {
+      "name": "hardpoint_cargogrid_main",
+      "ref": null,
+      "key": "DRAK_Vulture_CargoGrid_Main"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_DRAK_Vulture"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "DRAK_Vulture_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_weapon_rack",
+      "ref": null,
+      "key": "Weapon_Rack_DRAK_Vulture"
+    },
+    {
+      "name": "hardpoint_personal_storage",
+      "ref": null,
+      "key": "PersonalStorage_DRAK_Vulture"
+    },
+    {
+      "name": "hardpoint_cockpit_flair",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_salvage",
+      "ref": null,
+      "key": "Controller_Salvage_DRAK_Vulture"
+    },
+    {
+      "name": "hardpoint_salvage_arm_left",
+      "ref": "374a959e-0b71-49ee-9f69-b7df06d6c581",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_salvage_laser",
+          "ref": null,
+          "key": "Salvage_Head_standard",
+          "loadout": [
+            {
+              "name": "hardpoint_salvage_subItem01",
+              "ref": null,
+              "key": "Salvage_Modifier_Scraper_Small"
+            },
+            {
+              "name": "hardpoint_salvage_subItem02",
+              "ref": null,
+              "key": "Salvage_Modifier_Tractor_Small"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_salvage_arm_right",
+      "ref": "160cf776-33cd-402e-a126-b8858d81efd5",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_salvage_laser",
+          "ref": null,
+          "key": "Salvage_Head_standard",
+          "loadout": [
+            {
+              "name": "hardpoint_salvage_subItem01",
+              "ref": null,
+              "key": "Salvage_Modifier_Scraper_Small"
+            },
+            {
+              "name": "hardpoint_salvage_subItem02",
+              "ref": null,
+              "key": "Salvage_Modifier_Scraper_Medium"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_refill_station",
+      "ref": "d32fe366-2c38-472d-b9ab-48b45963e04b",
+      "key": null
+    },
+    {
+      "name": "hardpoint_fire_extinguisher",
+      "ref": null,
+      "key": "Gadget_Cabinet_kegr_fire_extinguisher_NG_Flipped"
+    },
+    {
+      "name": "hardpoint_attachable_buff",
+      "ref": null,
+      "key": "Salvage_Buff_Modifier_Vulture"
+    },
+    {
+      "name": "hardpoint_disintegration_area",
+      "ref": null,
+      "key": "SalvageDisintegrationArea"
+    },
+    {
+      "name": "hardpoint_internal_storage",
+      "ref": "0d226a98-1a05-4e49-bde5-11fff0f8f88f",
+      "key": null
+    },
+    {
+      "name": "hardpoint_salvage_dummy_left",
+      "ref": "224884e8-0a84-44fb-8144-222d8cf50b4c",
+      "key": "SalvageFieldSupporter"
+    },
+    {
+      "name": "hardpoint_salvage_dummy_right",
+      "ref": "224884e8-0a84-44fb-8144-222d8cf50b4c",
+      "key": "SalvageFieldSupporter"
+    },
+    {
+      "name": "hardpoint_shield_generator_rear",
+      "ref": null,
+      "key": "SHLD_BASL_S01_Bulwark_SCItem"
+    },
+    {
+      "name": "hardpoint_relay_cockpit",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_TYDT_S01_ComfortAir"
+    }
+  ]
+}

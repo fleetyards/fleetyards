@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Prospector_Luminalia_2953_White_Blue",
+  "ref": "737d8874-adf8-4f1f-b8f1-6fae8c9247d2",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "06dc23c5-755a-4264-a5fb-952c2f188e5b",
+  "name": "Prospector IceBreak Livery",
+  "short_name": null,
+  "description": "Equip your Prospector with a paint scheme cooler than a snow storm. The IceBreak livery mixes crisp, cool white with a frostbitten blue for an exciting look suitable for any season.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

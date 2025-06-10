@@ -1,0 +1,9 @@
+{
+  "key": "Ship_TempItemCarryingCapacity_ORIG_315P",
+  "ref": "294ab3da-0e96-4cff-8bb6-86883f95430b",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 12.0
+  }
+}

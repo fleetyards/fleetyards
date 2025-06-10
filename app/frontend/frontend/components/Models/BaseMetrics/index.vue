@@ -1,3 +1,25 @@
+<script lang="ts">
+export default {
+  name: "ModelBaseMetrics",
+};
+</script>
+
+<script lang="ts" setup>
+import type { Model } from "@/services/fyApi";
+import { useI18n } from "@/shared/composables/useI18n";
+
+const { t, toNumber, toDollar, toUEC } = useI18n();
+
+type Props = {
+  model: Model;
+};
+
+const props = defineProps<Props>();
+
+const soldAt = computed(() => props.model.availability.soldAt);
+const rentalAt = computed(() => props.model.availability.rentalAt);
+</script>
+
 <template>
   <div class="row base-metrics metrics-padding">
     <div class="col-12 col-lg-3">
@@ -60,11 +82,13 @@
           <div class="row">
             <div v-if="model.price" class="col-6">
               <div class="metrics-label">{{ t("model.price") }}:</div>
+              <!-- eslint-disable vue/no-v-html -->
               <div
-                v-tooltip="toUEC(model.price)"
+                v-tooltip="{ content: toUEC(model.price), html: true }"
                 class="metrics-value"
                 v-html="toUEC(model.price)"
               />
+              <!-- eslint-enable vue/no-v-html -->
             </div>
             <div v-if="model.pledgePrice" class="col-6">
               <div class="metrics-label">{{ t("model.pledgePrice") }}:</div>
@@ -88,7 +112,7 @@
                 {{ t("model.hydrogenFuelTankSize") }}:
               </div>
               <div class="metrics-value">
-                {{ toNumber(model.metrics.hydrogenFuelTankSize, "fuel") }}
+                {{ toNumber(model.metrics.hydrogenFuelTankSize, "cargo") }}
               </div>
             </div>
             <div v-if="model.metrics.quantumFuelTankSize" class="col-6">
@@ -96,7 +120,7 @@
                 {{ t("model.quantumFuelTankSize") }}:
               </div>
               <div class="metrics-value">
-                {{ toNumber(model.metrics.quantumFuelTankSize, "fuel") }}
+                {{ toNumber(model.metrics.quantumFuelTankSize, "cargo") }}
               </div>
             </div>
           </div>
@@ -116,26 +140,22 @@
         </div>
         <div class="col-12">
           <div class="row">
-            <div v-if="soldAt && soldAt.length" class="col-12 col-lg-6">
+            <div v-if="soldAt && soldAt.length" class="col-12">
               <div class="metrics-label">{{ t("model.soldAt") }}:</div>
               <div class="metrics-value">
                 <ul class="list-unstyled">
-                  <li v-for="shopCommodity in soldAt" :key="shopCommodity.id">
-                    <router-link :to="shopRoute(shopCommodity)">
-                      {{ shopName(shopCommodity) }}
-                    </router-link>
+                  <li v-for="modelPrice in soldAt" :key="modelPrice.id">
+                    {{ modelPrice.location }}
                   </li>
                 </ul>
               </div>
             </div>
-            <div v-if="rentalAt && rentalAt.length" class="col-12 col-lg-6">
+            <div v-if="rentalAt && rentalAt.length" class="col-12">
               <div class="metrics-label">{{ t("model.rentalAt") }}:</div>
               <div class="metrics-value">
                 <ul class="list-unstyled">
-                  <li v-for="shopCommodity in rentalAt" :key="shopCommodity.id">
-                    <router-link :to="shopRoute(shopCommodity)">
-                      {{ shopName(shopCommodity) }}
-                    </router-link>
+                  <li v-for="modelPrice in rentalAt" :key="modelPrice.id">
+                    {{ modelPrice.location }}
                   </li>
                 </ul>
               </div>
@@ -146,35 +166,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import type { Model, ShopCommodity } from "@/services/fyApi";
-import { useI18n } from "@/frontend/composables/useI18n";
-
-const { t, toNumber, toDollar, toUEC } = useI18n();
-
-type Props = {
-  model: Model;
-};
-
-const props = defineProps<Props>();
-
-const shopRoute = (shopCommodity: ShopCommodity) => ({
-  name: "shop",
-  params: {
-    stationSlug: shopCommodity.shop?.station?.slug,
-    slug: shopCommodity.shop?.slug,
-  },
-});
-
-const shopName = (shopCommodity: ShopCommodity) => shopCommodity.shop?.name;
-
-const soldAt = computed(() => props.model.availability.soldAt);
-const rentalAt = computed(() => props.model.availability.rentalAt);
-</script>
-
-<script lang="ts">
-export default {
-  name: "ModelBaseMetrics",
-};
-</script>

@@ -6,4 +6,8 @@ export default {
   toggleFilter({ commit, state }) {
     commit("setFilterVisible", !state.filterVisible);
   },
+
+  updatePerPage({ commit }, payload) {
+    commit("setPerPage", payload);
+  },
 };

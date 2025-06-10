@@ -1,0 +1,24 @@
+{
+  "key": "CRUS_Starfighter_Ballistic_Nacelle_Left",
+  "ref": "4008ac13-ae45-40c9-a1a5-63a6934c0561",
+  "category": "module",
+  "type": "Misc",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "63685f47-b0cc-4ebe-8f16-72793a5cd6e0",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 2000.0
+  }
+}

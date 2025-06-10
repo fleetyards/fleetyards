@@ -1,0 +1,75 @@
+{
+  "key": "VNCL_LaserCannon_S1",
+  "ref": "00ab31a0-7de2-44f7-a567-7ff88fdbad49",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4668760a-d8a1-48d0-be4d-42304b702de0",
+  "name": "'WEAK' Repeater",
+  "short_name": "WEAK",
+  "description": "Manufacturer: Vanduul / Esperia\\nItem Type: Laser Repeater\\nSize: 1\\n\\nThis laser repeater is typically found on Vanduul war ships and is commonly known by its UEE Navy designation of 'WEAK'.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "magazine_attach",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+
+      ]
+    }
+  ],
+  "durability": {
+    "health": 550.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 1.0,
+    "StartIRTemperature": 250.0,
+    "OverpowerHeat": 0.8,
+    "OverclockThresholdMinHeat": 0.52,
+    "OverclockThresholdMaxHeat": 0.76,
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.5,
+    "Mass": 210.0,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 63.3,
+    "MaxTemperature": 700.0,
+    "OverheatTemperature": 650.0,
+    "RecoveryTemperature": 550.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  },
+  "power_connection": {
+    "power_base": 180.0,
+    "power_draw": 180.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 20.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.25,
+    "overclock_threshold_max": 0.53,
+    "overpower_performance": 0.3,
+    "overclock_performance": 0.24,
+    "power_to_em": 1.5,
+    "decay_rate_of_em": 0.2
+  }
+}

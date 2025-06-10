@@ -1,0 +1,60 @@
+{
+  "key": "POWR_TYDT_S01_SonicLite_SCItem",
+  "ref": "ad089033-7cfc-479f-b7d4-49a93e1e3bd4",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "1",
+  "grade": "3",
+  "manufacturer_ref": "a2a97679-2a6e-4e89-80d8-439c88a01427",
+  "name": "SonicLite",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Tyler Design & Tech\\nSize: 1\\nGrade: C\\nClass: Stealth\\n\\nConstructed from the ground up to minimize your heat signature, Tyler Design’s SonicLite power plant has gained a following among pilots who appreciate a subtler approach.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 500.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 1.75,
+    "StartIRTemperature": 14.0,
+    "OverpowerHeat": 0.1,
+    "OverclockThresholdMinHeat": 0.34,
+    "OverclockThresholdMaxHeat": 0.47,
+    "ThermalEnergyBase": 9166.667,
+    "ThermalEnergyDraw": 15777.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.5,
+    "Mass": 486.0,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 53.98861,
+    "MaxTemperature": 700.0,
+    "OverheatTemperature": 600.0,
+    "RecoveryTemperature": 670.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 300.0,
+    "MisfireMaxTemperature": 900.0
+  },
+  "power_connection": {
+    "power_base": 0.0,
+    "power_draw": 1367.28,
+    "time_to_reach_draw_request": 3.75,
+    "safeguard_priority": 100.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 1.0,
+    "is_overclockable": 1.0,
+    "overclock_threshold_min": 0.34,
+    "overclock_threshold_max": 0.43,
+    "overpower_performance": 0.34,
+    "overclock_performance": 0.05,
+    "power_to_em": 0.634,
+    "decay_rate_of_em": 0.2
+  }
+}

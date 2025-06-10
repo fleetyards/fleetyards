@@ -1,0 +1,21 @@
+{
+  "key": "Paint_PTV_Metal",
+  "ref": "7b35dc9f-c013-4b54-b6a5-d50c3c3c9133",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "name": "PTV Gunmetal Livery",
+  "short_name": null,
+  "description": "Who says a buggy can’t be elegant? The Gunmetal livery is a medium gloss, two-component technology that maximizes gloss retention and durability.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

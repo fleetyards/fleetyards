@@ -1,0 +1,9 @@
+{
+  "key": "Ship_TempItemCarryingCapacity_ORIG_100i_125A",
+  "ref": "34fd0c4e-f40b-4ae1-94a5-cdb185d8fe6f",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 2.0
+  }
+}

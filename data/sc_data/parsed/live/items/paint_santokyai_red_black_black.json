@@ -1,0 +1,21 @@
+{
+  "key": "Paint_SanTokYai_Red_Black_Black",
+  "ref": "6138951f-5e23-43ba-ab57-30b42d6f38ac",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "fc8ad4a1-b137-4bf4-8fab-7e2d0f12ccec",
+  "name": "San'tok.yāi Xuā'cha Livery",
+  "short_name": null,
+  "description": "Outfit the San'tok.yāi in fiery red and black trim with the Xuā'cha livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

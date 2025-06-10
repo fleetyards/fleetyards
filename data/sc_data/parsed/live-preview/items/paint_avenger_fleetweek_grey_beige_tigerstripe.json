@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Avenger_Fleetweek_Grey_Beige_Tigerstripe",
+  "ref": "33165ef1-ff5a-4b93-8653-e6f6e1e0b4ab",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "24378a91-5581-4a0a-9899-8aeeb84c97c5",
+  "name": "Avenger Shroud Livery",
+  "short_name": null,
+  "description": "Give the Avenger an utterly unique look with the Shroud livery, featuring a light grey hull with beige and darker grey contrails over it.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

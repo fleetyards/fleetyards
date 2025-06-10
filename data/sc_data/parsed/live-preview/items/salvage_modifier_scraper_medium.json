@@ -1,0 +1,21 @@
+{
+  "key": "Salvage_Modifier_Scraper_Medium",
+  "ref": "98e0e5ac-3a76-4f3f-be2f-7fabf65a8826",
+  "category": "utility",
+  "type": "SalvageModifier",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "name": "Abrade Scraper Module",
+  "short_name": null,
+  "description": "Manufacturer: Greycat Industrial\\nItem Type: Scraper Module\\nExtraction Speed: 0.15/0.45\\nRadius: 3.5m\\nExtraction Efficiency: 70%\\n\\nIt's easy to see why the Abrade from Greycat Industrial is one of the most used scraper module in the 'verse. Its design delivers both a sizable area of effect and respectable extraction rate, creating a reliable beam that can scrape hulls quickly and efficiently.",
+  "inventory_consumption": {
+    "micro_scu": 340.0,
+    "dimensions": {
+      "x": 0.0549,
+      "y": 0.0424,
+      "z": 0.133
+    }
+  }
+}
