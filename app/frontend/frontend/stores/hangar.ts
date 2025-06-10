@@ -1,8 +1,14 @@
 import { type ShipListState } from "@/frontend/types";
 import { defineStore } from "pinia";
 
-export enum HangarTableViewColsEnum {
+export enum HangarTableViewImageColsEnum {
+  STORE_IMAGE = "store_image",
+  STORE_IMAGE_WIDE = "store_image_wide",
   ANGLED_VIEW = "angled_view",
+  ANGLED_VIEW_WIDE = "angled_view_wide",
+}
+
+export enum HangarTableViewColsEnum {
   MANUFACTURER_NAME = "model_manufacturer_name",
   LENGTH = "model_length",
   BEAM = "model_beam",
@@ -26,6 +32,7 @@ interface HangarState extends ShipListState {
   starterGuideVisible: boolean;
   money: boolean;
   extensionReady: boolean;
+  tableViewImageCols: HangarTableViewImageColsEnum[];
   tableViewCols: HangarTableViewColsEnum[];
 }
 
@@ -39,6 +46,7 @@ export const useHangarStore = defineStore("hangar", {
     starterGuideVisible: false,
     gridView: true,
     extensionReady: false,
+    tableViewImageCols: [HangarTableViewImageColsEnum.STORE_IMAGE],
     tableViewCols: [HangarTableViewColsEnum.MANUFACTURER_NAME],
   }),
   getters: {
@@ -85,6 +93,9 @@ export const useHangarStore = defineStore("hangar", {
     setTableViewCols(cols: HangarTableViewColsEnum[]) {
       this.tableViewCols = cols;
     },
+    setTableViewImageCols(cols: HangarTableViewImageColsEnum[]) {
+      this.tableViewImageCols = cols;
+    },
   },
   persist: {
     pick: [
@@ -94,6 +105,7 @@ export const useHangarStore = defineStore("hangar", {
       "money",
       "starterGuideVisible",
       "gridView",
+      "tableViewImageCols",
       "tableViewCols",
     ],
   },

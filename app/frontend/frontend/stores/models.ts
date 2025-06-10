@@ -1,6 +1,13 @@
 import { type ShipListState } from "@/frontend/types";
 import { defineStore } from "pinia";
 
+export enum ModelTableViewImageColsEnum {
+  STORE_IMAGE = "store_image",
+  STORE_IMAGE_WIDE = "store_image_wide",
+  ANGLED_VIEW = "angled_view",
+  ANGLED_VIEW_WIDE = "angled_view_wide",
+}
+
 export enum ModelTableViewColsEnum {
   MANUFACTURER_NAME = "manufacturer_name",
   LENGTH = "length",
@@ -24,6 +31,7 @@ export enum ModelTableViewColsEnum {
 interface ModelsState extends ShipListState {
   holoviewerVisible: boolean;
   tableViewCols: ModelTableViewColsEnum[];
+  tableViewImageCols: ModelTableViewImageColsEnum[];
 }
 
 export const useModelsStore = defineStore("models", {
@@ -40,6 +48,7 @@ export const useModelsStore = defineStore("models", {
       ModelTableViewColsEnum.CARGO,
       ModelTableViewColsEnum.MIN_CREW,
     ],
+    tableViewImageCols: [ModelTableViewImageColsEnum.STORE_IMAGE],
   }),
   actions: {
     toggleHoloviewer() {
@@ -57,8 +66,17 @@ export const useModelsStore = defineStore("models", {
     setTableViewCols(cols: ModelTableViewColsEnum[]) {
       this.tableViewCols = cols;
     },
+    setTableViewImageCols(cols: ModelTableViewImageColsEnum[]) {
+      this.tableViewImageCols = cols;
+    },
   },
   persist: {
-    pick: ["holoviewerVisible", "detailsVisible", "gridView", "tableViewCols"],
+    pick: [
+      "holoviewerVisible",
+      "detailsVisible",
+      "gridView",
+      "tableViewCols",
+      "tableViewImageCols",
+    ],
   },
 });

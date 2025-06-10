@@ -318,6 +318,10 @@
         "extraColumns": "Columns",
         "table": {
           "columns": {
+            "store_image": "Image",
+            "store_image_wide": "Wide Image",
+            "angled_view": "3D Image",
+            "angled_view_wide": "Wide 3D Image",
             "manufacturer_name": "Manufacturer",
             "length": "Length",
             "beam": "Beam",
@@ -785,7 +789,10 @@
       "hangarTable": {
         "extraColumns": "Columns",
         "columns": {
-          "angled_view": "Angled View",
+          "store_image": "Image",
+          "store_image_wide": "Wide Image",
+          "angled_view": "3D Image",
+          "angled_view_wide": "Wide 3D Image",
           "model_manufacturer_name": "Manufacturer",
           "model_length": "Length",
           "model_beam": "Beam",

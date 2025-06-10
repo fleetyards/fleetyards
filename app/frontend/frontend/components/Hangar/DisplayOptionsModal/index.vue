@@ -13,6 +13,7 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
   useHangarStore,
   HangarTableViewColsEnum,
+  HangarTableViewImageColsEnum,
 } from "@/frontend/stores/hangar";
 
 const { t } = useI18n();
@@ -21,13 +22,19 @@ const columnOptions = computed(() => {
   return Object.values(HangarTableViewColsEnum);
 });
 
+const imageColumnOptions = computed(() => {
+  return Object.values(HangarTableViewImageColsEnum);
+});
+
 onMounted(() => {
   tableViewCols.value = hangarStore.tableViewCols;
+  tableViewImageCols.value = hangarStore.tableViewImageCols;
 });
 
 const hangarStore = useHangarStore();
 
 const tableViewCols = ref(hangarStore.tableViewCols);
+const tableViewImageCols = ref(hangarStore.tableViewImageCols);
 
 watch(
   () => hangarStore.tableViewCols,
@@ -40,6 +47,20 @@ watch(
   () => tableViewCols.value,
   () => {
     hangarStore.setTableViewCols(tableViewCols.value);
+  },
+);
+
+watch(
+  () => hangarStore.tableViewImageCols,
+  () => {
+    tableViewImageCols.value = hangarStore.tableViewImageCols;
+  },
+);
+
+watch(
+  () => tableViewImageCols.value,
+  () => {
+    hangarStore.setTableViewImageCols(tableViewImageCols.value);
   },
 );
 
@@ -95,6 +116,18 @@ const displayAsList = () => {
             <h3>{{ t("labels.models.extraColumns") }}:</h3>
           </legend>
           <div class="row">
+            <div
+              v-for="option in imageColumnOptions"
+              :key="option"
+              class="col-12 col-md-6"
+            >
+              <FormCheckbox
+                v-model="tableViewImageCols"
+                :checkbox-value="option"
+                :name="option"
+                :label="t('labels.hangarTable.columns.' + option)"
+              />
+            </div>
             <div
               v-for="option in columnOptions"
               :key="option"

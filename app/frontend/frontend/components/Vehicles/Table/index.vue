@@ -22,10 +22,12 @@ import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import {
   useHangarStore,
   HangarTableViewColsEnum,
+  HangarTableViewImageColsEnum,
 } from "@/frontend/stores/hangar";
 import {
   useWishlistStore,
   WishlistTableViewColsEnum,
+  WishlistTableViewImageColsEnum,
 } from "@/frontend/stores/wishlist";
 
 type Props = {
@@ -57,9 +59,6 @@ const extraColumns = computed(() => {
       })
       .filter((col) => {
         return wishlistStore.tableViewCols.includes(col.name);
-      })
-      .filter((col) => {
-        return col.name !== WishlistTableViewColsEnum.ANGLED_VIEW;
       });
   }
 
@@ -73,40 +72,35 @@ const extraColumns = computed(() => {
     })
     .filter((col) => {
       return hangarStore.tableViewCols.includes(col.name);
-    })
-    .filter((col) => {
-      return col.name !== HangarTableViewColsEnum.ANGLED_VIEW;
     });
 });
 
-const extraViewColumns = computed(() => {
+const extraImageColumns = computed(() => {
   if (props.wishlist) {
-    if (
-      wishlistStore.tableViewCols.includes(
-        WishlistTableViewColsEnum.ANGLED_VIEW,
-      )
-    ) {
-      return [
-        {
-          name: "angled_view",
+    return Object.values(WishlistTableViewImageColsEnum)
+      .map((col) => {
+        return {
+          name: col,
           label: "",
           centered: true,
-        },
-      ];
-    }
+        };
+      })
+      .filter((col) => {
+        return wishlistStore.tableViewImageCols.includes(col.name);
+      });
   }
 
-  if (hangarStore.tableViewCols.includes(HangarTableViewColsEnum.ANGLED_VIEW)) {
-    return [
-      {
-        name: "angled_view",
+  return Object.values(HangarTableViewImageColsEnum)
+    .map((col) => {
+      return {
+        name: col,
         label: "",
         centered: true,
-      },
-    ];
-  }
-
-  return [];
+      };
+    })
+    .filter((col) => {
+      return hangarStore.tableViewImageCols.includes(col.name);
+    });
 });
 
 const manufacturerColumnVisible = computed(() => {
@@ -117,12 +111,7 @@ const manufacturerColumnVisible = computed(() => {
 
 const tableColumns = computed<BaseTableColumn[]>(() => {
   return [
-    {
-      name: "store_image",
-      label: "",
-      centered: true,
-    },
-    ...extraViewColumns.value,
+    ...extraImageColumns.value,
     {
       name: "name",
       label: t("labels.vehicle.name"),
@@ -214,8 +203,37 @@ const resetSelected = () => {
           :image="storeImage(record)"
           size="small"
           alt="image"
+          :variant="LazyImageVariantsEnum.WIDE_SMALL"
+          shadow
+        />
+      </template>
+      <template #col-store_image_wide="{ record }">
+        <ViewImage
+          :image="storeImage(record)"
+          size="small"
+          alt="image"
           :variant="LazyImageVariantsEnum.WIDE"
           shadow
+        />
+      </template>
+      <template #col-angled_view="{ record }">
+        <ViewImage
+          :image="angledImage(record)"
+          size="small"
+          alt="image"
+          :variant="LazyImageVariantsEnum.WIDE_SMALL"
+          transparent
+          without-fallback
+        />
+      </template>
+      <template #col-angled_view_wide="{ record }">
+        <ViewImage
+          :image="angledImage(record)"
+          size="small"
+          alt="image"
+          :variant="LazyImageVariantsEnum.WIDE"
+          transparent
+          without-fallback
         />
       </template>
       <template #col-name="{ record }">
@@ -246,16 +264,6 @@ const resetSelected = () => {
             </template>
           </small>
         </div>
-      </template>
-      <template #col-angled_view="{ record }">
-        <ViewImage
-          :image="angledImage(record)"
-          size="small"
-          alt="image"
-          :variant="LazyImageVariantsEnum.WIDE_SMALL"
-          transparent
-          without-fallback
-        />
       </template>
       <template #col-model_manufacturer_name="{ record }">
         {{ record.model.manufacturer?.name }}

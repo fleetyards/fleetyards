@@ -20,6 +20,7 @@ import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import {
   useModelsStore,
   ModelTableViewColsEnum,
+  ModelTableViewImageColsEnum,
 } from "@/frontend/stores/models";
 
 type Props = {
@@ -58,6 +59,20 @@ const extraColumns = computed<ShipTableCol[]>(() => {
     });
 });
 
+const extraImageColumns = computed(() => {
+  return Object.values(ModelTableViewImageColsEnum)
+    .map((col) => {
+      return {
+        name: col,
+        label: "",
+        centered: true,
+      };
+    })
+    .filter((col) => {
+      return modelsStore.tableViewImageCols.includes(col.name);
+    });
+});
+
 const manufacturerColumnVisible = computed(() => {
   return extraColumns.value.some(
     (column) => column.name === "manufacturer_name",
@@ -66,11 +81,7 @@ const manufacturerColumnVisible = computed(() => {
 
 const tableColumns = computed<BaseTableColumn[]>(() => {
   return [
-    {
-      name: "store_image",
-      label: "",
-      centered: true,
-    },
+    ...extraImageColumns.value,
     {
       name: "name",
       label: t("labels.vehicle.name"),
@@ -80,6 +91,14 @@ const tableColumns = computed<BaseTableColumn[]>(() => {
     ...extraColumns.value,
   ];
 });
+
+const angledImage = (record: Model) => {
+  if (record && record.media.angledViewColored) {
+    return record.media.angledViewColored;
+  }
+
+  return record.media.angledView;
+};
 </script>
 
 <template>
@@ -95,10 +114,39 @@ const tableColumns = computed<BaseTableColumn[]>(() => {
       <template #col-store_image="{ record }">
         <ViewImage
           :image="record.media.storeImage"
-          size="smallUrl"
+          size="small"
+          alt="image"
+          :variant="LazyImageVariantsEnum.WIDE_SMALL"
+          shadow
+        />
+      </template>
+      <template #col-store_image_wide="{ record }">
+        <ViewImage
+          :image="record.media.storeImage"
+          size="small"
           alt="image"
           :variant="LazyImageVariantsEnum.WIDE"
           shadow
+        />
+      </template>
+      <template #col-angled_view="{ record }">
+        <ViewImage
+          :image="angledImage(record)"
+          size="small"
+          alt="image"
+          :variant="LazyImageVariantsEnum.WIDE_SMALL"
+          transparent
+          without-fallback
+        />
+      </template>
+      <template #col-angled_view_wide="{ record }">
+        <ViewImage
+          :image="angledImage(record)"
+          size="small"
+          alt="image"
+          :variant="LazyImageVariantsEnum.WIDE"
+          transparent
+          without-fallback
         />
       </template>
       <template #col-manufacturer_name="{ record }">

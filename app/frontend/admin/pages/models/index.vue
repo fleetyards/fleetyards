@@ -10,7 +10,7 @@ import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
 import { type BaseTableColumn } from "@/shared/components/base/Table/types";
-import LazyImage from "@/shared/components/LazyImage/index.vue";
+import ViewImage from "@/shared/components/ViewImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import ModelActions from "@/admin/components/Models/Actions/index.vue";
 import FilterForm from "@/admin/components/Models/FilterForm/index.vue";
@@ -21,6 +21,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import {
   useModels as useModelsQuery,
   useModelsQueryOptions,
+  type Model,
 } from "@/services/fyAdminApi";
 import { CustomQueryOptions } from "@/services/customQueryOptions";
 
@@ -117,6 +118,14 @@ const columns: BaseTableColumn[] = [
 ];
 
 const { t, l } = useI18n();
+
+const angledImage = (record: Model) => {
+  if (record && record.media.angledViewColored) {
+    return record.media.angledViewColored;
+  }
+
+  return record.media.angledView;
+};
 </script>
 
 <template>
@@ -173,30 +182,31 @@ const { t, l } = useI18n();
         selectable
       >
         <template #col-storeImage="{ record }">
-          <LazyImage
-            v-if="record.media.storeImage"
+          <ViewImage
+            :image="record.media.storeImage"
+            size="small"
+            alt="image"
             :variant="LazyImageVariantsEnum.WIDE_SMALL"
-            :src="record.media.storeImage.smallUrl"
-            alt="Model storeImage"
             shadow
           />
         </template>
         <template #col-rsiStoreImage="{ record }">
-          <LazyImage
-            v-if="record.media.rsiStoreImage"
+          <ViewImage
+            :image="record.media.storeImage"
+            size="small"
+            alt="image"
             :variant="LazyImageVariantsEnum.WIDE_SMALL"
-            :src="record.media.rsiStoreImage.smallUrl"
-            alt="Model rsiStoreImage"
             shadow
           />
         </template>
         <template #col-angledView="{ record }">
-          <LazyImage
-            v-if="record.media.angledView"
+          <ViewImage
+            :image="angledImage(record)"
+            size="small"
+            alt="image"
             :variant="LazyImageVariantsEnum.WIDE_SMALL"
-            :src="record.media.angledView.smallUrl"
-            alt="Model angledView"
             transparent
+            without-fallback
           />
         </template>
         <template #col-name="{ record }">

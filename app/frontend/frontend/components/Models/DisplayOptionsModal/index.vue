@@ -13,45 +13,54 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
   useModelsStore,
   ModelTableViewColsEnum,
+  ModelTableViewImageColsEnum,
 } from "@/frontend/stores/models";
 
 const { t } = useI18n();
 
-type Form = {
-  columns: ModelTableViewColsEnum[];
-};
+const modelsStore = useModelsStore();
 
-const form = ref<Form>({
-  columns: [],
+onMounted(() => {
+  tableViewCols.value = modelsStore.tableViewCols;
+  tableViewImageCols.value = modelsStore.tableViewImageCols;
 });
+
+const tableViewCols = ref(modelsStore.tableViewCols);
+const tableViewImageCols = ref(modelsStore.tableViewImageCols);
 
 const columnOptions = computed(() => {
   return Object.values(ModelTableViewColsEnum);
 });
 
-onMounted(() => {
-  setupForm();
+const imageColumnOptions = computed(() => {
+  return Object.values(ModelTableViewImageColsEnum);
 });
-
-const modelsStore = useModelsStore();
-
-const setupForm = () => {
-  form.value = {
-    columns: modelsStore.tableViewCols,
-  };
-};
 
 watch(
   () => modelsStore.tableViewCols,
   () => {
-    setupForm();
+    tableViewCols.value = modelsStore.tableViewCols;
   },
 );
 
 watch(
-  () => form.value.columns,
+  () => tableViewCols.value,
   () => {
-    modelsStore.setTableViewCols(form.value.columns);
+    modelsStore.setTableViewCols(tableViewCols.value);
+  },
+);
+
+watch(
+  () => modelsStore.tableViewImageCols,
+  () => {
+    tableViewImageCols.value = modelsStore.tableViewImageCols;
+  },
+);
+
+watch(
+  () => tableViewImageCols.value,
+  () => {
+    modelsStore.setTableViewImageCols(tableViewImageCols.value);
   },
 );
 
@@ -65,7 +74,7 @@ const displayAsList = () => {
 </script>
 
 <template>
-  <Modal v-if="form" :title="t('headlines.modals.models.displayOptions')">
+  <Modal :title="t('headlines.modals.models.displayOptions')">
     <div class="row">
       <div class="col-6">
         <Btn
@@ -108,12 +117,24 @@ const displayAsList = () => {
           </legend>
           <div class="row">
             <div
+              v-for="option in imageColumnOptions"
+              :key="option"
+              class="col-12 col-md-6"
+            >
+              <FormCheckbox
+                v-model="tableViewImageCols"
+                :checkbox-value="option"
+                :name="option"
+                :label="t('labels.models.table.columns.' + option)"
+              />
+            </div>
+            <div
               v-for="option in columnOptions"
               :key="option"
               class="col-12 col-md-6"
             >
               <FormCheckbox
-                v-model="form.columns"
+                v-model="tableViewCols"
                 :checkbox-value="option"
                 :name="option"
                 :label="t('labels.models.table.columns.' + option)"

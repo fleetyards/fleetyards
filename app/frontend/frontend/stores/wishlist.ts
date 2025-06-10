@@ -1,8 +1,14 @@
 import type { ShipListState } from "@/frontend/types";
 import { defineStore } from "pinia";
 
+export enum WishlistTableViewImageColsEnum {
+  STORE_IMAGE = "store_image",
+  STORE_IMAGE_WIDE = "store_image_wide",
+  ANGLED_VIEW = "angled_view",
+  ANGLED_VIEW_WIDE = "angled_view_wide",
+}
+
 export enum WishlistTableViewColsEnum {
-  ANGLED_VIEW = "angled_image",
   MANUFACTURER_NAME = "model_manufacturer_name",
   LENGTH = "model_length",
   BEAM = "model_beam",
@@ -22,6 +28,7 @@ export enum WishlistTableViewColsEnum {
 
 interface WishlistState extends ShipListState {
   ships: string[];
+  tableViewImageCols: WishlistTableViewImageColsEnum[];
   tableViewCols: WishlistTableViewColsEnum[];
 }
 
@@ -31,6 +38,7 @@ export const useWishlistStore = defineStore("wishlist", {
     filterVisible: true,
     gridView: true,
     ships: [],
+    tableViewImageCols: [WishlistTableViewImageColsEnum.STORE_IMAGE],
     tableViewCols: [WishlistTableViewColsEnum.MANUFACTURER_NAME],
   }),
   getters: {
@@ -59,6 +67,12 @@ export const useWishlistStore = defineStore("wishlist", {
     },
   },
   persist: {
-    pick: ["ships", "detailsVisible", "gridView", "tableViewCols"],
+    pick: [
+      "ships",
+      "detailsVisible",
+      "gridView",
+      "tableViewImageCols",
+      "tableViewCols",
+    ],
   },
 });
