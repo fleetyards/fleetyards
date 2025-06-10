@@ -28,5 +28,5 @@ class OmniauthConnection < ApplicationRecord
     bluesky: 3
   }
 
-  validates :provider, presence: true, uniqueness: { scope: :user_id }
+  validates :provider, presence: true, uniqueness: {scope: :user_id}
 end

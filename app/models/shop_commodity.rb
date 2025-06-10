@@ -35,8 +35,8 @@
 class ShopCommodity < ApplicationRecord
   paginates_per 30
 
-  searchkick word_start: %i[name manufacturer_name],
-    searchable: %i[name manufacturer_name created_at]
+  # searchkick word_start: %i[name manufacturer_name],
+  #   searchable: %i[name manufacturer_name created_at]
 
   def search_data
     {
