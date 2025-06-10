@@ -93,7 +93,8 @@ module Rsi
         "Kraken (+ Privateer)" => ["Kraken", "Kraken Privateer"],
         "Mercury" => ["Mercury", "Mercury Star Runner"],
         "Mercury Star Runner" => ["Mercury", "Mercury Star Runner"],
-        "Mole" => ["Mole"],
+        "Constellation Phoenix Emerald" => ["Constellation Phoenix"],
+        "Mole" => ["MOLE"],
         "G12A" => ["G12a"],
         "G12R" => ["G12r"],
         "G12 Variants" => ["G12", "G12a", "G12r"],
@@ -105,7 +106,7 @@ module Rsi
         "Zeus Variants" => zeus_variants,
         "Storm Variants" => ["Storm", "Storm AA"],
         "ROC (+ ROC DS)" => %w[ROC ROC-DS],
-        "Retaliator" => ["Retaliator Bomber", "Retaliator"],
+        "Retaliator" => ["Retaliator"],
         "San'Tok.yai" => ["San'tok.yāi"],
         "Nox" => ["Nox", "Nox Kue"],
         "X1 & Variants" => x1_variants,
@@ -137,6 +138,7 @@ module Rsi
         "Cyclone (Explorer only)" => "Cyclone",
         "Khartu-al (Xi'an Scout)" => "Khartu-Al",
         "Khartu-al" => "Khartu-Al",
+        "Lynx Rover" => "Lynx",
         "Mole" => "MOLE",
         "315p (non-customized; see known issue above)" => "315p"
       }

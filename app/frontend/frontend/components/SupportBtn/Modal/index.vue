@@ -26,16 +26,6 @@
         {{ t("texts.support.subline") }}
       </p>
       <div class="page-actions page-actions-center">
-        <Btn
-          href="https://www.buymeacoffee.com/mortik"
-          variant="link"
-          class="support-buymeacoffee"
-        >
-          <img
-            src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=martenk&button_colour=428bca&font_colour=ffffff&font_family=Cookie&outline_colour=ffffff&coffee_colour=FFDD00"
-          />
-        </Btn>
-        &nbsp; &nbsp;
         <Btn href="https://paypal.me/mortik" size="large">
           <i class="fab fa-paypal" />
           PayPal
@@ -49,6 +39,16 @@
         <Btn href="https://ko-fi.com/fleetyardsnet" size="large">
           <img :src="kofiIcon" alt="Ko-fi Icon" width="30" />
           Ko-fi
+        </Btn>
+        &nbsp; &nbsp;
+        <Btn
+          href="https://www.buymeacoffee.com/mortik"
+          variant="link"
+          class="support-buymeacoffee"
+        >
+          <img
+            src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=martenk&button_colour=428bca&font_colour=ffffff&font_family=Cookie&outline_colour=ffffff&coffee_colour=FFDD00"
+          />
         </Btn>
       </div>
     </div>
