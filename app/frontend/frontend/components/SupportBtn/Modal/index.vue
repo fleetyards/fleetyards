@@ -30,26 +30,22 @@
           <i class="fab fa-paypal" />
           PayPal
         </Btn>
-        &nbsp; &nbsp;
         <Btn href="https://www.patreon.com/fleetyards" size="large">
           <i class="fab fa-patreon" />
           Patreon
         </Btn>
-        &nbsp; &nbsp;
         <Btn href="https://ko-fi.com/fleetyardsnet" size="large">
           <img :src="kofiIcon" alt="Ko-fi Icon" width="30" />
           Ko-fi
         </Btn>
-        &nbsp; &nbsp;
-        <Btn
+        <a
           href="https://www.buymeacoffee.com/mortik"
-          variant="link"
           class="support-buymeacoffee"
         >
           <img
             src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=martenk&button_colour=428bca&font_colour=ffffff&font_family=Cookie&outline_colour=ffffff&coffee_colour=FFDD00"
           />
-        </Btn>
+        </a>
       </div>
     </div>
   </Modal>
