@@ -274,8 +274,12 @@ class PaintsImporter
     guardian = ["Guardian", "Guardian QI", "Guardian MX"]
     reliant = ["Reliant Kore", "Reliant Mako", "Reliant Sen", "Reliant Tana"]
     idris = ["Idris-P", "Idris-M"]
+    alts = ["ATLS", "ATLS Geo"]
 
     models_map = {
+      "A.T.L.S" => alts,
+      "A.T.L.S." => alts,
+      "ATLS" => alts,
       "Cutter" => cutter,
       "Syluen" => ["Syulen"],
       "Constellation" => connie,
