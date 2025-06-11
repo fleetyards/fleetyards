@@ -22,8 +22,7 @@
     "types": [
       "node",
       "vitest/globals",
-      "vite/client",
-      "cypress"
+      "vite/client"
     ]
   },
   "include": [
