@@ -4,7 +4,7 @@ export default defineConfig({
   fyApi: {
     output: {
       namingConvention: "PascalCase",
-      mode: "tags",
+      mode: "tags-split",
       workspace: "app/frontend/services/fyApi",
       target: "./services",
       schemas: "./models",
@@ -32,7 +32,7 @@ export default defineConfig({
   fyAdminApi: {
     output: {
       namingConvention: "PascalCase",
-      mode: "tags",
+      mode: "tags-split",
       workspace: "app/frontend/services/fyAdminApi",
       target: "./services",
       schemas: "./models",

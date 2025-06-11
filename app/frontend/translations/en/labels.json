@@ -151,7 +151,8 @@
         "viewpointOptions": {
           "side": "Side",
           "top": "Top",
-          "angled": "Angled"
+          "angled": "Angled",
+          "front": "Front"
         },
         "gridSize": "%{size} meter per grid box",
         "mode": "Mode",

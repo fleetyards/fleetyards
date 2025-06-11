@@ -118,9 +118,9 @@ const modulePackage = computed(() => {
 const image = computed(() => {
   if (
     modulePackage.value &&
-    (modulePackage.value.topView ||
-      modulePackage.value.sideView ||
-      modulePackage.value.angledView)
+    (modulePackage.value.media.topView ||
+      modulePackage.value.media.sideView ||
+      modulePackage.value.media.angledView)
   ) {
     const url = extractImageFromModel(modulePackage.value);
     if (url) {
@@ -229,9 +229,9 @@ const sourceImageHeightMax = computed(() => {
 const sourceImageHeight = computed(() => {
   if (
     modulePackage.value &&
-    (modulePackage.value.topView ||
-      modulePackage.value.sideView ||
-      modulePackage.value.angledView)
+    (modulePackage.value.media.topView ||
+      modulePackage.value.media.sideView ||
+      modulePackage.value.media.angledView)
   ) {
     const height = extractImageHeightFromModel(modulePackage.value);
     if (height) {
@@ -241,7 +241,9 @@ const sourceImageHeight = computed(() => {
 
   if (
     paint.value &&
-    (paint.value.topView || paint.value.sideView || paint.value.angledView)
+    (paint.value.media.topView ||
+      paint.value.media.sideView ||
+      paint.value.media.angledView)
   ) {
     const height = extractImageHeightFromModel(paint.value);
     if (height) {
@@ -384,30 +386,30 @@ const topView = (model: Model | ModelPaint | ModelModulePackage) => {
   const width = length.value * props.sizeMultiplicator * props.scale;
 
   if (width > 1900) {
-    return model.topView;
+    return model.media.topView?.url;
   }
 
-  return model.topViewLarge;
+  return model.media.topView?.largeUrl;
 };
 
 const sideView = (model: Model | ModelPaint | ModelModulePackage) => {
   const width = length.value * props.sizeMultiplicator * props.scale;
 
   if (width > 1900) {
-    return model.sideView;
+    return model.media.sideView?.url;
   }
 
-  return model.sideViewLarge;
+  return model.media.sideView?.largeUrl;
 };
 
 const angledView = (model: Model | ModelPaint | ModelModulePackage) => {
   const width = length.value * props.sizeMultiplicator * props.scale;
 
   if (width > 1900) {
-    return model.angledView;
+    return model.media.angledView?.url;
   }
 
-  return model.angledViewLarge;
+  return model.media.angledView?.largeUrl;
 };
 </script>
 

@@ -14,7 +14,6 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { csrfToken } from "@/shared/utils/Meta";
-import { useRoute } from "vue-router";
 
 type Props = {
   provider: `${OauthBtnProvidersEnum}`;

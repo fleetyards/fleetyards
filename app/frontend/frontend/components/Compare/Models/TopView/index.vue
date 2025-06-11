@@ -32,9 +32,9 @@
             class="col-6 text-center compare-row-item compare-row-item-top-view"
           >
             <FleetchartItemImage
-              v-if="model.media.sideView"
+              v-if="model.media.sideView?.smallUrl"
               :label="model.name"
-              :src="model.media.sideView?.small"
+              :src="model.media.sideView?.smallUrl"
               :max-width="`${length(model)}%`"
             />
           </div>
@@ -49,9 +49,9 @@
             class="col-6 text-center compare-row-item compare-row-item-top-view"
           >
             <FleetchartItemImage
-              v-if="model.media.topView"
+              v-if="model.media.topView?.smallUrl"
               :label="model.name"
-              :src="model.media.topView?.small"
+              :src="model.media.topView?.smallUrl"
               :max-width="`${length(model)}%`"
             />
           </div>

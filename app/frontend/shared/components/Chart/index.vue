@@ -16,8 +16,8 @@ import { useI18n } from "@/shared/composables/useI18n";
 accessibility(Highcharts);
 
 type TooltipLabelOption = {
-  label: number;
-  count: number;
+  label?: number | string;
+  count?: number;
   percentage?: number;
 };
 
@@ -111,7 +111,7 @@ onMounted(() => {
 const tooltipFormat = (tooltip: Highcharts.TooltipFormatterContextObject) => {
   const options: TooltipLabelOption = {
     label: tooltip.key,
-    count: tooltip.y,
+    count: tooltip.y || undefined,
     percentage: undefined,
   };
 

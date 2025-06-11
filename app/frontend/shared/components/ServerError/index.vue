@@ -6,12 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import Box from "@/shared/components/Box/index.vue";
-import Heading from "@/shared/components/base/Heading/index.vue";
 import Text from "@/shared/components/base/Text/index.vue";
-import {
-  HeadingLevelEnum,
-  HeadingSizeEnum,
-} from "@/shared/components/base/Heading/types";
+import { HeadingSizeEnum } from "@/shared/components/base/Heading/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 

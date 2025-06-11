@@ -26,7 +26,6 @@ import {
 } from "@/shared/components/base/Btn/types";
 import { type AxiosError } from "axios";
 import { useRedirectBack } from "@/shared/composables/useRedirectBack";
-import { useComlink } from "@/shared/composables/useComlink";
 
 const { t } = useI18n();
 

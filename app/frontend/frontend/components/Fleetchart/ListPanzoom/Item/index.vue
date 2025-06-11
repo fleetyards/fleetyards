@@ -47,7 +47,7 @@ import type {
   Vehicle,
   VehiclePublic,
   ModelModulePackage,
-  ViewImage,
+  MediaFile,
   ModelPaint,
 } from "@/services/fyApi";
 import { FleetchartViewpoints } from "@/shared/stores/fleetchart";
@@ -73,7 +73,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const imageByViewpoint = computed<ViewImage | undefined>(() => {
+const imageByViewpoint = computed<MediaFile | undefined>(() => {
   if (props.viewpoint === "angled") {
     return angledView.value;
   }
@@ -194,7 +194,7 @@ const topView = computed(() => {
     return modulePackage.value.media.topView;
   }
 
-  if (props.colored && model.value.media.topViewColored?.source) {
+  if (props.colored && model.value.media.topViewColored?.url) {
     return model.value.media.topViewColored;
   }
 
@@ -278,11 +278,11 @@ const image = computed(() => {
   const width = length.value * props.sizeMultiplicator * props.scale;
 
   if (width > 1900) {
-    return imageByViewpoint.value?.source;
+    return imageByViewpoint.value?.url;
   }
 
   if (width > 900) {
-    return imageByViewpoint.value?.large;
+    return imageByViewpoint.value?.largeUrl;
   }
 
   return imageByViewpoint.value?.mediumUrl;

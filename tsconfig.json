@@ -5,19 +5,18 @@
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "Bundler",
     "isolatedModules": true,
     "strict": true,
     "jsx": "preserve",
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "lib": ["esnext", "dom"],
+    "lib": ["esnext", "dom", "dom.iterable"],
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./app/frontend/*"],
-      "~/*": ["*"]
     },
     "types": [
       "node",
@@ -31,5 +30,10 @@
     "app/frontend/**/*.d.ts",
     "app/frontend/**/*.vue",
     "spec/cypress/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "./node_modules",
+    "./node_modules/*",
   ]
 }

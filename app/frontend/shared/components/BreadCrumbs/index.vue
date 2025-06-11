@@ -5,11 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import {
-  type RouteLocationNamedRaw,
-  type RouteLocationNormalizedLoaded,
-  type RouterLinkProps,
-} from "vue-router";
+import { type RouteLocationNamedRaw, type RouterLinkProps } from "vue-router";
 import { useI18n } from "@/shared/composables/useI18n";
 
 export type Crumb = {
@@ -29,7 +25,7 @@ const { t } = useI18n();
 
 const router = useRouter();
 
-const lastRoute = computed<RouteLocationNormalizedLoaded | undefined>(() => {
+const lastRoute = computed(() => {
   if (!router.options.history.state.back) {
     return undefined;
   }

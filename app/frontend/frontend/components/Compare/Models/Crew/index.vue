@@ -34,7 +34,7 @@
             class="col-6 text-center compare-row-item"
           >
             <span class="metrics-value">
-              {{ toNumber(model.minCrew, "people") }}
+              {{ toNumber(model.crew.min, "people") }}
             </span>
           </div>
         </div>
@@ -50,7 +50,7 @@
             class="col-6 text-center compare-row-item"
           >
             <span class="metrics-value">
-              {{ toNumber(model.maxCrew, "people") }}
+              {{ toNumber(model.crew.max, "people") }}
             </span>
           </div>
         </div>

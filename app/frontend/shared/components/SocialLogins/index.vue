@@ -8,6 +8,7 @@ export default {
 import OauthBtn from "@/shared/components/OauthBtn/index.vue";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useSessionStore } from "@/frontend/stores/session";
+import { OauthBtnProvidersEnum } from "@/shared/components/OauthBtn/types";
 
 type Props = {
   block?: boolean;
@@ -23,9 +24,7 @@ const sessionStore = useSessionStore();
 
 const { isFeatureEnabled } = useFeatures();
 
-const providers = ["discord", "github", "twitch"];
-
-const providerActive = (provider) => {
+const providerActive = (provider: OauthBtnProvidersEnum) => {
   return isFeatureEnabled(`oauth-${provider}`);
 };
 
@@ -34,7 +33,7 @@ const connections = computed(() => {
 });
 
 const activeProviders = computed(() => {
-  return providers.filter(providerActive);
+  return Object.values(OauthBtnProvidersEnum).filter(providerActive);
 });
 </script>
 

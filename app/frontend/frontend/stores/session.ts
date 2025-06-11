@@ -1,12 +1,7 @@
 import { formatISO, parseISO, differenceInMinutes } from "date-fns";
 import { defineStore } from "pinia";
 import { useHangarStore } from "./hangar";
-import {
-  type User,
-  me as fetchMe,
-  destroySession,
-  hangar,
-} from "@/services/fyApi";
+import { type User, me as fetchMe, destroySession } from "@/services/fyApi";
 
 interface SessionState {
   authenticated: boolean;

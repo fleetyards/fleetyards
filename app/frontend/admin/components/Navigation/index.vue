@@ -44,10 +44,7 @@ const logout = async () => {
 };
 
 const hasAccessTo = (access?: string[]) => {
-  return (
-    checkAccess(sessionStore.resourceAccess, access) ||
-    sessionStore.isSuperAdmin
-  );
+  return checkAccess(resourceAccess.value, access) || sessionStore.isSuperAdmin;
 };
 </script>
 
