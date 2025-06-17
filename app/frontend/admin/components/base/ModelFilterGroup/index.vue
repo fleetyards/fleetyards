@@ -19,6 +19,7 @@ type Props = {
   noLabel?: boolean;
   returnObject?: boolean;
   translationKey?: string;
+  hideSelected?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -27,6 +28,7 @@ const props = withDefaults(defineProps<Props>(), {
   multiple: false,
   noLabel: true,
   returnObject: false,
+  hideSelected: false,
 });
 
 const { t } = useI18n();
@@ -98,5 +100,6 @@ const fetch = async (params: FilterGroupParams<Model>) => {
     :multiple="multiple"
     :no-label="noLabel"
     :return-object="returnObject"
+    :hide-selected="hideSelected"
   />
 </template>

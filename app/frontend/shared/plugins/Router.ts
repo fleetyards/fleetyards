@@ -69,6 +69,7 @@ export const setupRouter = (options: FyRouterOptions) => {
 
     stringifyQuery(query) {
       const result = qs.stringify(query, { arrayFormat: "brackets" });
+
       return result ? `${result}` : "";
     },
 

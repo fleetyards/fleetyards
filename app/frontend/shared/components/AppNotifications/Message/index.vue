@@ -60,9 +60,7 @@ onMounted(() => {
     @click="hideMessage"
   >
     <component :is="component" v-if="component" v-bind="componentProps" />
-    <MessageBody v-else>
-      {{ message.text }}
-    </MessageBody>
+    <MessageBody v-else :text="message.text" />
     <ProgressBar :timeout="message.timeout" />
   </div>
 </template>

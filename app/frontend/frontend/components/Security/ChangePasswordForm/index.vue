@@ -37,7 +37,6 @@ const initialValues = ref<PasswordInput>({
 });
 
 const { defineField, handleSubmit } = useForm({
-  validationSchema,
   initialValues: initialValues.value,
 });
 
@@ -97,6 +96,7 @@ const onSubmit = handleSubmit(async (values) => {
     <FormInput
       v-model="currentPassword"
       name="currentPassword"
+      :rules="validationSchema.currentPassword"
       :label="t('labels.currentPassword')"
       v-bind="currentPasswordProps"
       :type="InputTypesEnum.PASSWORD"
@@ -105,6 +105,7 @@ const onSubmit = handleSubmit(async (values) => {
     <FormInput
       v-model="password"
       name="password"
+      :rules="validationSchema.password"
       v-bind="passwordProps"
       :label="t('labels.password')"
       :type="InputTypesEnum.PASSWORD"
@@ -113,6 +114,7 @@ const onSubmit = handleSubmit(async (values) => {
     <FormInput
       v-model="passwordConfirmation"
       name="passwordConfirmation"
+      :rules="validationSchema.passwordConfirmation"
       v-bind="passwordConfirmationProps"
       :label="t('labels.passwordConfirmation')"
       :type="InputTypesEnum.PASSWORD"

@@ -694,7 +694,8 @@
       "hardpoints": {
         "prefix": "Tryout Loadouts with",
         "erkul": "Erkul's DPS Calculator",
-        "spviewer": "SC Ships Performances Viewer"
+        "spviewer": "SP Viewer",
+        "spviewerTitle": "SC Ships Performances Viewer"
       },
       "scunpacked": {
         "prefix": "Loadouts based on Gamefiles powered by",

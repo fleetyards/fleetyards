@@ -13,6 +13,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { extensionUrls } from "@/types/extension";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
+import EmptyInfo from "@/shared/components/Empty/Info/index.vue";
 
 type Props = {
   variant?: EmptyVariantsEnum;
@@ -51,14 +52,15 @@ const openGuide = () => {
         </template>
       </span>
     </template>
-    <template v-if="!wishlist" #actions>
-      <HangarSyncBtn />
-      <Btn @click="openGuide">
+    <template v-if="!wishlist" #actions="{ queryPresent }">
+      <HangarSyncBtn v-if="!queryPresent" />
+      <Btn v-if="!queryPresent" @click="openGuide">
         {{ t("actions.empty.hangarGuide") }}
       </Btn>
     </template>
     <template #info="{ queryPresent }">
-      <div v-if="queryPresent">
+      <EmptyInfo v-if="queryPresent" :query-present="queryPresent" />
+      <div v-else>
         <template v-if="wishlist">
           <p>
             {{ t("emptyBox.info.wishlist") }}

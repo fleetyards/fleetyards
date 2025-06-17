@@ -58,17 +58,16 @@ module Rsi
 
     # rubocop:disable Metrics/CyclomaticComplexity
     private def create_or_update_model(data)
-      model = Model.find_by(rsi_id: data["id"])
-      if model.blank?
-        sc_identifier = resolve_sc_identifier(data)
+      sc_identifier = resolve_sc_identifier(data)
 
-        model = Model.find_by(sc_identifier: sc_identifier) if sc_identifier.present?
-      end
+      model = Model.find_by(rsi_id: data["id"])
+      model = Model.find_by(sc_identifier: sc_identifier) if sc_identifier.present? && model.blank?
       model = Model.find_by(rsi_id: nil, name: strip_name(data["name"]), sc_identifier: nil) if model.blank?
       model = Model.create!(rsi_id: data["id"], name: strip_name(data["name"])) if model.blank?
 
       updates = {
         rsi_id: data["id"],
+        sc_identifier:,
         rsi_chassis_id: data["chassis_id"],
         last_updated_at: new_time_modified(data)
       }
@@ -357,12 +356,12 @@ module Rsi
 
     private def resolve_sc_identifier(item)
       sc_identifier_parts = [
-        item.dig("manufacturer", "code"),
+        item.dig("manufacturer", "code").uppercase,
         item["name"].tr(" ", "_").downcase
       ].compact
 
       if sc_identifier_parts.size > 1
-        return sc_identifier_parts.join("_").downcase
+        return sc_identifier_parts.join("_")
       end
 
       nil

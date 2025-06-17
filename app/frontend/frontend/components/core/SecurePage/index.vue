@@ -44,7 +44,6 @@ const validationSchema = {
 
 const { defineField, handleSubmit, resetForm } = useForm({
   initialValues: initialValues.value,
-  validationSchema,
 });
 
 const [password, passwordProps] = defineField("password");
@@ -112,6 +111,7 @@ const confirmAccess = handleSubmit(async () => {
             v-model="password"
             v-bind="passwordProps"
             name="password"
+            :rules="validationSchema.password"
             :type="InputTypesEnum.PASSWORD"
             :hide-label-on-empty="true"
             :clearable="true"

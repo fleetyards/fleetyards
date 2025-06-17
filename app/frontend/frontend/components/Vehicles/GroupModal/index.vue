@@ -46,7 +46,6 @@ const initialValues = ref<HangarGroupUpdateInput>({
 
 const { defineField, handleSubmit } = useForm({
   initialValues: initialValues.value,
-  validationSchema,
 });
 
 const [name, nameProps] = defineField("name");
@@ -130,6 +129,7 @@ const onSubmit = handleSubmit(async (values) => {
           <FormInput
             v-model="name"
             name="name"
+            :rules="validationSchema.name"
             v-bind="nameProps"
             translation-key="name"
             :no-label="true"
@@ -139,6 +139,7 @@ const onSubmit = handleSubmit(async (values) => {
           <FormInput
             v-model="color"
             name="color"
+            :rules="validationSchema.color"
             v-bind="colorProps"
             translation-key="color"
             :no-label="true"

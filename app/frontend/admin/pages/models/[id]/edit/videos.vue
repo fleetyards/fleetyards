@@ -35,7 +35,6 @@ const validationSchema = {};
 
 const { defineField, handleSubmit } = useForm({
   initialValues: initialValues.value,
-  validationSchema,
 });
 
 const [size, sizeProps] = defineField("size");

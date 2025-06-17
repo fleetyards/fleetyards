@@ -5,9 +5,9 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { useField } from "vee-validate";
+import { type MaybeRef } from "vue";
+import { useField, type RuleExpression } from "vee-validate";
 import { v4 as uuidv4 } from "uuid";
-import lodashDebounce from "lodash.debounce";
 import {
   InputTypesEnum,
   InputVariantsEnum,
@@ -18,6 +18,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   name: string;
+  rules?: MaybeRef<RuleExpression<string | number | null>>;
   icon?: string;
   modelValue?: string | number | null;
   type?: `${InputTypesEnum}`;
@@ -40,11 +41,11 @@ type Props = {
   variant?: InputVariantsEnum;
   size?: InputSizesEnum;
   alignment?: InputAlignmentsEnum;
-  debounce?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   icon: undefined,
+  rules: undefined,
   modelValue: undefined,
   type: InputTypesEnum.TEXT,
   translationKey: undefined,
@@ -63,7 +64,6 @@ const props = withDefaults(defineProps<Props>(), {
   inline: false,
   prefix: undefined,
   suffix: undefined,
-  debounce: false,
   variant: InputVariantsEnum.DEFAULT,
   size: InputSizesEnum.DEFAULT,
   alignment: InputAlignmentsEnum.LEFT,
@@ -112,7 +112,7 @@ const {
   handleBlur,
   handleReset,
   resetField,
-} = useField(props.name, undefined, {
+} = useField(props.name, props.rules, {
   initialValue: props.modelValue,
   label: innerLabel.value,
 });
@@ -166,19 +166,9 @@ const clear = () => {
   emit("update:modelValue", undefined);
 };
 
-const handleOnChange = (event: Event) => {
+const onChange = (event: Event) => {
   handleChange(event);
   emit("update:modelValue", inputValue.value);
-};
-
-const debouncedHandleOnChange = lodashDebounce(handleOnChange, 200);
-
-const onChange = async (event: Event) => {
-  if (props.debounce) {
-    debouncedHandleOnChange(event);
-  } else {
-    handleOnChange(event);
-  }
 };
 
 const setFocus = () => {

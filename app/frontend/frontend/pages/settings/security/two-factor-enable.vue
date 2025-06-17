@@ -45,9 +45,7 @@ const validationSchema = {
   twoFactorCode: "required",
 };
 
-const { defineField, handleSubmit } = useForm({
-  validationSchema,
-});
+const { defineField, handleSubmit } = useForm();
 
 const [twoFactorCode, twoFactorCodeProps] = defineField("twoFactorCode");
 
@@ -173,6 +171,7 @@ const copyProvisioningUrl = () => {
               v-model="twoFactorCode"
               name="twoFactorCode"
               v-bind="twoFactorCodeProps"
+              :rules="validationSchema.twoFactorCode"
               class="two-factor-input"
               :autofocus="true"
               :no-label="true"

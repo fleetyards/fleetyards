@@ -54,7 +54,6 @@ const validationSchema = {
 
 const { defineField, handleSubmit, setErrors } = useForm<UserCreateInput>({
   initialValues: initialValues.value,
-  validationSchema,
 });
 
 const [username, usernameProps] = defineField("username");
@@ -127,24 +126,25 @@ const onSubmit = handleSubmit(async (values) => {
         <FormInput
           v-model="username"
           v-bind="usernameProps"
+          :rules="validationSchema.username"
           name="username"
           :hide-label-on-empty="true"
           :autofocus="true"
-          debounce
         />
 
         <FormInput
           v-model="email"
           v-bind="emailProps"
+          :rules="validationSchema.email"
           name="email"
           :type="InputTypesEnum.EMAIL"
           :hide-label-on-empty="true"
-          debounce
         />
 
         <FormInput
           v-model="password"
           v-bind="passwordProps"
+          :rules="validationSchema.password"
           name="password"
           :type="InputTypesEnum.PASSWORD"
           :hide-label-on-empty="true"
@@ -154,6 +154,7 @@ const onSubmit = handleSubmit(async (values) => {
           v-model="passwordConfirmation"
           v-bind="passwordConfirmationProps"
           name="passwordConfirmation"
+          :rules="validationSchema.passwordConfirmation"
           :type="InputTypesEnum.PASSWORD"
           :hide-label-on-empty="true"
         />

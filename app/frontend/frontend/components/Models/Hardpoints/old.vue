@@ -78,7 +78,12 @@ const {
             <i />
             {{ t("labels.hardpoints.erkul") }}
           </Btn>
-          <Btn :href="spviewerUrl" :mobile-block="true" class="spviewer-link">
+          <Btn
+            v-tooltip="t('labels.hardpoints.spviewerTitle')"
+            :href="spviewerUrl"
+            :mobile-block="true"
+            class="spviewer-link"
+          >
             <i />
             {{ t("labels.hardpoints.spviewer") }}
           </Btn>

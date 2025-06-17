@@ -4,12 +4,22 @@ export default {
 };
 </script>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+type Props = {
+  text?: string;
+};
+
+withDefaults(defineProps<Props>(), {
+  text: undefined,
+});
+</script>
 
 <template>
   <div class="app-notifications__message-body">
     <div class="app-notifications__message-body__inner">
-      <slot />
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <span v-if="text" v-html="text" />
+      <slot v-else />
     </div>
 
     <div class="app-notifications__message-body__close">

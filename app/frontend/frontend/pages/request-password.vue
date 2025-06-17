@@ -27,11 +27,11 @@ const sessionStore = useSessionStore();
 
 const { isAuthenticated } = storeToRefs(sessionStore);
 
-const { defineField, handleSubmit } = useForm<PasswordRequestInput>({
-  validationSchema: {
-    email: "required|email",
-  },
-});
+const validationSchema = {
+  email: "required|email",
+};
+
+const { defineField, handleSubmit } = useForm<PasswordRequestInput>();
 
 const [email, emailProps] = defineField("email");
 
@@ -76,6 +76,7 @@ const onSubmit = handleSubmit(async (values) => {
           v-model="email"
           name="email"
           :label="t('labels.email')"
+          :rules="validationSchema.email"
           :type="InputTypesEnum.EMAIL"
           :hide-label-on-empty="true"
           autocomplete="off"

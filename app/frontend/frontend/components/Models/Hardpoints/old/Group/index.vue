@@ -101,7 +101,7 @@ const filteredHardpoints = computed(() => {
 
 const hasGameFileData = computed(() => {
   return props.hardpoints.some(
-    (h) => h.source === HardpointSourceEnum.GAME_FILES,
+    (h) => h.source === HardpointSourceEnum.game_files,
   );
 });
 

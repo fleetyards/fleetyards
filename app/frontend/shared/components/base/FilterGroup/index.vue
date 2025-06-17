@@ -17,7 +17,11 @@ import {
   keepPreviousData,
   useQuery,
 } from "@tanstack/vue-query";
-import type { BaseList, FilterOption } from "@/services/fyApi";
+import {
+  type BaseList,
+  type FilterOption,
+  type FilterOptionValue,
+} from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { InputVariantsEnum } from "@/shared/components/base/FormInput/types";
@@ -66,6 +70,7 @@ type Props = {
   paginated?: boolean;
   noLabel?: boolean;
   bigIcon?: boolean;
+  hideSelected?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -87,6 +92,7 @@ const props = withDefaults(defineProps<Props>(), {
   paginated: false,
   noLabel: false,
   bigIcon: false,
+  hideSelected: false,
 });
 
 const { t, tExists } = useI18n();
@@ -237,7 +243,8 @@ const selectedOptions = computed(() => {
   if (props.multiple) {
     return availableOptions.value.filter(
       (item) =>
-        props.modelValue && (props.modelValue as string[]).includes(item.value),
+        props.modelValue &&
+        (props.modelValue as FilterOptionValue[]).includes(item.value),
     );
   }
 
@@ -347,9 +354,9 @@ const clearSearch = () => {
   search.value = undefined;
 };
 
-const selected = (option: string) => {
+const selected = (option: FilterOptionValue) => {
   if (props.multiple) {
-    return ((props.modelValue as string[]) || []).includes(option);
+    return ((props.modelValue as FilterOptionValue[]) || []).includes(option);
   }
 
   return props.modelValue === option;
@@ -357,7 +364,7 @@ const selected = (option: string) => {
 
 const emit = defineEmits(["update:modelValue"]);
 
-const select = (optionValue: string) => {
+const select = (optionValue: FilterOptionValue) => {
   clearSearch();
 
   if (selected(optionValue)) {
@@ -372,7 +379,9 @@ const select = (optionValue: string) => {
       emit("update:modelValue", null);
     }
   } else if (props.multiple) {
-    const values: string[] = JSON.parse(JSON.stringify(props.modelValue || []));
+    const values: FilterOptionValue[] = JSON.parse(
+      JSON.stringify(props.modelValue || []),
+    );
 
     values.push(optionValue);
 
@@ -450,11 +459,11 @@ const focusSearch = () => {
       <span class="filter-group-title-prompt">
         {{ prompt }}
       </span>
-      <SmallLoader v-if="queryFn" :loading="loading" />
+      <SmallLoader v-if="props.queryFn" :loading="loading" />
       <i class="fa fa-chevron-right" />
     </div>
     <Collapsed
-      v-if="multiple"
+      v-if="multiple && !hideSelected"
       :id="`${name}-selected-${id}`"
       :visible="selectedOptions.length > 0 && !visible"
       class="filter-group-items"

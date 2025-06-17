@@ -83,11 +83,16 @@ const {
       <div v-if="model.scIdentifier" class="d-flex justify-content-center">
         <BtnGroup>
           <span class="text-muted">{{ t("labels.hardpoints.prefix") }}</span>
-          <Btn :href="erkulUrl" :mobile-block="true" class="erkul-link">
+          <Btn :href="erkulUrl" mobile-block class="erkul-link">
             <i />
             {{ t("labels.hardpoints.erkul") }}
           </Btn>
-          <Btn :href="spviewerUrl" :mobile-block="true" class="spviewer-link">
+          <Btn
+            v-tooltip="t('labels.hardpoints.spviewerTitle')"
+            :href="spviewerUrl"
+            mobile-block
+            class="spviewer-link"
+          >
             <i />
             {{ t("labels.hardpoints.spviewer") }}
           </Btn>

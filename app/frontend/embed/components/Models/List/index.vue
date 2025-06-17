@@ -12,7 +12,7 @@
 
 <script lang="ts" setup>
 import ModelPanel from "@/embed/components/Models/Panel/index.vue";
-import type { EnhancedModelMinimal } from "@/embed/pages/Home.vue";
+import type { EnhancedModelMinimal } from "@/embed/pages/index.vue";
 import { type Model } from "@/services/fyApi";
 import { useEmbedStore } from "@/embed/stores/embed";
 import { storeToRefs } from "pinia";

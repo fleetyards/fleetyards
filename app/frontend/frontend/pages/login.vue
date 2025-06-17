@@ -50,7 +50,6 @@ const validationSchema = {
 
 const { defineField, handleSubmit } = useForm({
   initialValues: initialValues.value,
-  validationSchema,
 });
 
 const [login, loginProps] = defineField("login");
@@ -119,6 +118,7 @@ const signupRoute = computed(() => {
           <FormInput
             v-model="twoFactorCode"
             v-bind="twoFactorCodeProps"
+            :rules="validationSchema.twoFactorCode"
             name="twoFactorCode"
             :autofocus="true"
             :hide-label-on-empty="true"
@@ -129,6 +129,7 @@ const signupRoute = computed(() => {
           <FormInput
             v-model="login"
             v-bind="loginProps"
+            :rules="validationSchema.login"
             name="login"
             :autofocus="true"
             :hide-label-on-empty="true"
@@ -137,6 +138,7 @@ const signupRoute = computed(() => {
           <FormInput
             v-model="password"
             v-bind="passwordProps"
+            :rules="validationSchema.password"
             name="password"
             :type="InputTypesEnum.PASSWORD"
             :hide-label-on-empty="true"

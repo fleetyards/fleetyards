@@ -10,12 +10,8 @@ export const useRule = () => {
     checkEmail({
       value,
     })
-      .then((response) => {
-        return response.taken ? true : errorMessage;
-      })
-      .catch(() => {
-        return errorMessage;
-      });
+      .then((response) => (response.taken ? errorMessage : true))
+      .catch(() => errorMessage);
 
   return validate;
 };

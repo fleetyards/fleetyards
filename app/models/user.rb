@@ -122,9 +122,20 @@ class User < ApplicationRecord
     foreign_key: :resource_owner_id,
     dependent: :delete_all # or :destroy if you need callbacks
 
+  # Legacy Validation for exisiting short usernames
   validates :username,
     uniqueness: {case_sensitive: false},
-    format: {with: /\A[a-zA-Z0-9\-_]+\Z/}
+    presence: true,
+    format: {with: /\A[a-zA-Z0-9\-_]+\Z/},
+    on: :update
+
+  validates :username,
+    uniqueness: {case_sensitive: false},
+    length: {minimum: 3},
+    presence: true,
+    format: {with: /\A[a-zA-Z0-9\-_]{3,}\Z/},
+    on: :create
+
   validates :email,
     uniqueness: {case_sensitive: false},
     presence: true

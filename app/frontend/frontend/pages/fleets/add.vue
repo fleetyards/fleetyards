@@ -33,7 +33,6 @@ const validationSchema = {
 
 const { setErrors, handleSubmit } = useForm({
   initialValues,
-  validationSchema,
 });
 
 const submitting = ref(false);
@@ -94,8 +93,16 @@ const submit = handleSubmit(async (values) => {
 
       <div class="row justify-content-lg-center">
         <div class="col-12 col-md-6 col-lg-4">
-          <FormInput name="fid" translation-key="fleet.fid" debounce />
-          <FormInput name="name" translation-key="name" />
+          <FormInput
+            name="fid"
+            :rules="validationSchema.fid"
+            translation-key="fleet.fid"
+          />
+          <FormInput
+            name="name"
+            :rules="validationSchema.name"
+            translation-key="name"
+          />
         </div>
       </div>
       <div class="row justify-content-lg-center">

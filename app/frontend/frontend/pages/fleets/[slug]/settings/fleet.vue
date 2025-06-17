@@ -56,7 +56,6 @@ const validationSchema = {
 
 const { defineField, handleSubmit } = useForm({
   initialValues: initialValues.value,
-  validationSchema,
 });
 
 const [fid, fidProps] = defineField("fid");
@@ -287,12 +286,18 @@ const onDestroy = async () => {
         <FormInput
           v-model="fid"
           name="fid"
+          :rules="validationSchema.fid"
           :label="t('labels.fleet.fid')"
           v-bind="fidProps"
         />
       </div>
       <div class="col-12 col-md-6">
-        <FormInput v-model="name" name="name" v-bind="nameProps" />
+        <FormInput
+          v-model="name"
+          name="name"
+          :rules="validationSchema.name"
+          v-bind="nameProps"
+        />
       </div>
     </div>
     <div class="row">

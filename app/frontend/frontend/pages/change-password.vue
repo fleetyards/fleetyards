@@ -34,9 +34,7 @@ const validationSchema = {
   passwordConfirmation: "required|confirmed:password",
 };
 
-const { defineField, handleSubmit } = useForm<PasswordInput>({
-  validationSchema,
-});
+const { defineField, handleSubmit } = useForm<PasswordInput>();
 
 const [password, passwordProps] = defineField("password");
 const [passwordConfirmation, passwordConfirmationProps] = defineField(
@@ -99,6 +97,7 @@ const onSubmit = handleSubmit(async (values) => {
           v-model="password"
           name="password"
           :label="t('labels.password')"
+          :rules="validationSchema.password"
           :type="InputTypesEnum.PASSWORD"
           :autofocus="true"
           v-bind="passwordProps"
@@ -108,6 +107,7 @@ const onSubmit = handleSubmit(async (values) => {
         <FormInput
           v-model="passwordConfirmation"
           name="passwordConfirmation"
+          :rules="validationSchema.passwordConfirmation"
           :label="t('labels.passwordConfirmation')"
           v-bind="passwordConfirmationProps"
           :type="InputTypesEnum.PASSWORD"
