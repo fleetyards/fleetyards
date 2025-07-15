@@ -130,18 +130,18 @@ module Admin
         end
 
         private def index_scope
-          model_query_params["sorts"] ||= sorting_params(Model)
+          model_query_params["sorts"] = sorting_params(Model, model_query_params[:sorts])
 
           Model.includes([:manufacturer]).ransack(model_query_params)
         end
 
         private def model_query_params
-          @model_query_params ||= query_params(
+          @model_query_params ||= params.permit(q: [
             :search_cont, :name_cont, :id_eq, :front_view_blank, :fleetchart_image_blank,
-            :top_view_colored_blank, :sc_identifier_blank, :holo_blank,
+            :top_view_colored_blank, :sc_identifier_blank, :holo_blank, :sorts,
             name_in: [], id_in: [], id_not_in: [], production_status_in: [],
-            manufacturer_in: []
-          )
+            manufacturer_in: [], sorts: []
+          ]).fetch(:q, {})
         end
 
         private def model_params

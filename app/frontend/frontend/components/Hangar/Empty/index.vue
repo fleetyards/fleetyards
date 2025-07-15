@@ -45,10 +45,10 @@ const openGuide = () => {
     <template #headline="{ queryPresent }">
       <span v-if="!queryPresent">
         <template v-if="wishlist">
-          {{ t("emptyBox.headlines.wishlist") }}
+          {{ t("empty.headlines.wishlist") }}
         </template>
         <template v-else>
-          {{ t("emptyBox.headlines.hangar") }}
+          {{ t("empty.headlines.hangar") }}
         </template>
       </span>
     </template>
@@ -63,15 +63,15 @@ const openGuide = () => {
       <div v-else>
         <template v-if="wishlist">
           <p>
-            {{ t("emptyBox.info.wishlist") }}
+            {{ t("empty.info.wishlist") }}
           </p>
         </template>
         <template v-else>
           <p>
-            {{ t("emptyBox.info.hangar") }}
+            {{ t("empty.info.hangar") }}
           </p>
           <div v-if="!hangarStore.extensionReady">
-            <p>{{ t("emptyBox.info.extension") }}</p>
+            <p>{{ t("empty.info.extension") }}</p>
             <div class="sync-extension-platforms">
               <a
                 v-for="link in extensionUrls"

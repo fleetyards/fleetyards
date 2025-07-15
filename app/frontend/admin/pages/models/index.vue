@@ -9,7 +9,7 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
-import { type BaseTableColumn } from "@/shared/components/base/Table/types";
+import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import ViewImage from "@/shared/components/ViewImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import ModelActions from "@/admin/components/Models/Actions/index.vue";
@@ -62,22 +62,22 @@ const {
   ...asyncStatus
 } = useModelsQuery(modelsQueryParams);
 
-const columns: BaseTableColumn[] = [
+const columns: BaseTableCol<Model>[] = [
   {
     name: "storeImage",
     label: "",
-    centered: true,
+    alignment: "center",
   },
   {
     name: "rsiStoreImage",
     label: "",
-    centered: true,
+    alignment: "center",
     mobile: false,
   },
   {
     name: "angledView",
     label: "",
-    centered: true,
+    alignment: "center",
     mobile: false,
   },
   {
@@ -88,7 +88,6 @@ const columns: BaseTableColumn[] = [
   {
     name: "rsiId",
     label: "RSI ID",
-    field: "rsi_id",
     sortable: true,
   },
   {
@@ -165,19 +164,19 @@ const angledImage = (record: Model) => {
     :records="models?.items || []"
     :async-status="asyncStatus"
     hide-loading
-    hide-empty-box
+    hide-empty
     :is-filter-selected="isFilterSelected"
   >
     <template #filter>
       <FilterForm />
     </template>
-    <template #default="{ loading, emptyBoxVisible }">
+    <template #default="{ loading, emptyVisible }">
       <BaseTable
         :records="models?.items || []"
         primary-key="id"
         :columns="columns"
         :loading="loading"
-        :empty-box-visible="emptyBoxVisible"
+        :empty-visible="emptyVisible"
         default-sort="name asc"
         selectable
       >

@@ -154,8 +154,8 @@ class User < ApplicationRecord
 
   DEFAULT_SORTING_PARAMS = "username asc"
   ALLOWED_SORTING_PARAMS = [
-    "username asc", "username desc", "email asc", "email desc", "created_at asc", "created_at desc",
-    "last_active_at asc", "last_active_at desc", "last_sign_in_at asc", "last_sign_in_at desc"
+    "username asc", "username desc", "email asc", "email desc", "createdAt asc", "createdAt desc",
+    "lastActiveAt asc", "lastActiveAt desc", "lastSignInAt asc", "lastSignInAt desc"
   ]
 
   ransack_alias :search, :username_or_email

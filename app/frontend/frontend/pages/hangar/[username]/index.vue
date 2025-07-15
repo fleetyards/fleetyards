@@ -319,9 +319,9 @@ useSubscription({
       />
     </template>
 
-    <template #empty="{ hideEmptyBox, emptyBoxVisible }">
+    <template #empty="{ hideEmpty, emptyVisible }">
       <HangarEmpty
-        v-if="!hideEmptyBox && emptyBoxVisible"
+        v-if="!hideEmpty && emptyVisible"
         :variant="EmptyVariantsEnum.BOX"
       />
     </template>

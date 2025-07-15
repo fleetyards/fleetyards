@@ -14,9 +14,9 @@ module Admin
     end
 
     private def save_filters
-      session[:vehicles_filters] = query_params(
+      session[:vehicles_filters] = params.permit(q: [
         :name_cont
-      ).to_h
+      ]).fetch(:q, {})
       session[:vehicles_page] = params[:page]
     end
 

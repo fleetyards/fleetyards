@@ -17,9 +17,9 @@ module Admin
         end
 
         private def model_module_query_params
-          @model_module_query_params ||= query_params(
+          @model_module_query_params ||= params.permit(q: [
             :name_in, :id_eq, :name_cont, :name_eq
-          )
+          ]).fetch(:q, {})
         end
       end
     end

@@ -34,7 +34,7 @@ module Api
         scope = scope.where(models: {cargo: 0.1..}) if vehicle_query_params.delete("with_cargo")
         scope = will_it_fit?(scope) if vehicle_query_params["will_it_fit"].present?
 
-        vehicle_query_params["sorts"] = sorting_params(Vehicle)
+        vehicle_query_params["sorts"] = sorting_params(Vehicle, vehicle_query_params["sorts"])
 
         @q = scope.ransack(vehicle_query_params)
 

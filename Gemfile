@@ -118,6 +118,8 @@ gem "flipper-active_record"
 # openapi
 gem "rspec-rails", require: false
 gem "rswag-specs", require: false
+gem "rswag-schema_components"
+gem "committee"
 
 group :development do
   gem "annotate"

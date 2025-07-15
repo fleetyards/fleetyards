@@ -346,10 +346,11 @@
       "metrics": {
         "info": "Info",
         "levels": "Levels",
-        "topView": "Top View",
+        "views": "Views",
         "base": "Base",
         "crew": "Crew",
         "speed": "Speed",
+        "hardpoints": "Hardpoints",
         "missileOptions": "Missle Options (if available)"
       },
       "component": {

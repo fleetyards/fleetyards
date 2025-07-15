@@ -84,7 +84,7 @@ class Component < ApplicationRecord
 
   DEFAULT_SORTING_PARAMS = ["name asc", "created_at asc"]
   ALLOWED_SORTING_PARAMS = [
-    "name asc", "name desc", "created_at asc", "created_at desc"
+    "name asc", "name desc", "createdAt asc", "createdAt desc"
   ]
 
   def self.ordered_by_name

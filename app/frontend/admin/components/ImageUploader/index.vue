@@ -105,7 +105,7 @@
       </transition-group>
     </Panel>
 
-    <EmptyBox :visible="emptyBoxVisible" />
+    <Empty :visible="emptyVisible" />
 
     <Loader :loading="loading" :fixed="true" />
   </div>
@@ -116,7 +116,7 @@ import VueUploadComponent from "vue-upload-component";
 import type { VueUploadItem } from "vue-upload-component";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import EmptyBox from "@/shared/components/EmptyBox/index.vue";
+import Empty from "@/shared/components/Empty/index.vue";
 import ImageRow from "@/admin/components/ImageUploader/ImageRow/index.vue";
 import type { Image } from "@/services/fyAdminApi";
 import Panel from "@/shared/components/base/Panel/index.vue";
@@ -170,7 +170,7 @@ const metaData = computed(() => {
   };
 });
 
-const emptyBoxVisible = computed(() => {
+const emptyVisible = computed(() => {
   return !props.loading && !allImages.value.length;
 });
 

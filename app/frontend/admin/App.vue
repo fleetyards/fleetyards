@@ -10,6 +10,7 @@ import BackgroundImage from "@/shared/components/BackgroundImage/index.vue";
 import AdminNavigation from "@/admin/components/Navigation/index.vue";
 import AppNavigationHeader from "@/shared/components/AppNavigation/Header/index.vue";
 import AdminNavigationMobile from "@/admin/components/Navigation/Mobile/index.vue";
+import AccessCheck from "@/admin/components/AccessCheck.vue";
 import { useI18nStore } from "@/shared/stores/i18n";
 import { useAppStore } from "@/admin/stores/app";
 import { storeToRefs } from "pinia";
@@ -169,19 +170,26 @@ const setNoScroll = () => {
           <AppNavigationHeader />
 
           <router-view v-slot="{ Component, route: viewRoute }">
-            <transition name="fade" mode="out-in">
-              <section
-                class="container main"
-                :class="{
-                  [route.name || '']: true,
-                }"
-              >
-                <component
-                  :is="Component"
-                  :key="`${locale}-${viewRoute.path}`"
-                />
-              </section>
-            </transition>
+            <AccessCheck
+              :resource-access="user?.resourceAccess"
+              :super-admin="user?.superAdmin"
+            >
+              <template #granted>
+                <transition name="fade" mode="out-in">
+                  <section
+                    class="container main"
+                    :class="{
+                      [route.name || '']: true,
+                    }"
+                  >
+                    <component
+                      :is="Component"
+                      :key="`${locale}-${viewRoute.path}`"
+                    />
+                  </section>
+                </transition>
+              </template>
+            </AccessCheck>
           </router-view>
         </div>
 

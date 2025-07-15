@@ -30,5 +30,11 @@ const { t } = useI18n();
       icon="fadt fa-toggle-on"
       prefix="02"
     />
+    <NavItem
+      :to="{ name: 'visual-tests-tables' }"
+      :label="t('nav.visualTests.tables')"
+      icon="fadt fa-table"
+      prefix="02"
+    />
   </div>
 </template>

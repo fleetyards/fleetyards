@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { ComponentExposed } from "vue-component-type-helpers";
 import { models as fetchModels } from "@/services/fyApi";
 import { type Models, type Model, type ModelQuery } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -35,6 +36,8 @@ const { t } = useI18n();
 
 const internalValue = ref<string | string[] | undefined>(props.modelValue);
 
+const filterGroup = ref<ComponentExposed<typeof FilterGroup>>();
+
 onMounted(() => {
   internalValue.value = props.modelValue;
 });
@@ -46,12 +49,12 @@ watch(
   },
 );
 
-const emit = defineEmits(["update:modelValue"]);
+const emits = defineEmits(["update:modelValue"]);
 
 watch(
   () => internalValue.value,
   () => {
-    emit("update:modelValue", internalValue.value);
+    emits("update:modelValue", internalValue.value);
   },
 );
 
@@ -84,10 +87,32 @@ const fetch = async (params: FilterGroupParams<Model>) => {
     q,
   });
 };
+
+const clear = () => {
+  internalValue.value = undefined;
+  filterGroup.value?.clear();
+};
+
+const clearSearch = () => {
+  filterGroup.value?.clearSearch();
+};
+
+const reset = () => {
+  clear();
+  clearSearch();
+  filterGroup.value?.reset();
+};
+
+defineExpose({
+  clear,
+  clearSearch,
+  reset,
+});
 </script>
 
 <template>
   <FilterGroup
+    ref="filterGroup"
     v-model="internalValue"
     :label="translationKey ? undefined : t('labels.selectModel')"
     :search-label="translationKey ? undefined : t('labels.findModel')"

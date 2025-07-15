@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
-import logo from "@/images/admin/favicon.png";
+import logo from "@/images/admin/favicons/favicon.png";
 import AppNavigation from "@/shared/components/AppNavigation/index.vue";
 import AppNavigationItems from "@/shared/components/AppNavigation/Items/index.vue";
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";

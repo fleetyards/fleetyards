@@ -99,7 +99,7 @@ export const useFilters = <T>({
       .catch((_error: Error) => {});
   };
 
-  const filter = debounce(debouncedFilter, 500);
+  const filter = debounce(debouncedFilter, 300);
 
   return {
     isFilterSelected,

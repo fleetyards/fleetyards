@@ -24,10 +24,10 @@ const { t } = useI18n();
   <Heading class="empty__headline" mt :size="HeadingSizeEnum.HERO_SM">
     <slot>
       <template v-if="name">
-        {{ t("emptyBox.headlines.forName", { name: name }) }}
+        {{ t("empty.headlines.forName", { name: name }) }}
       </template>
       <template v-else>
-        {{ t("emptyBox.headlines.default") }}
+        {{ t("empty.headlines.default") }}
       </template>
     </slot>
   </Heading>

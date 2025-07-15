@@ -33,7 +33,7 @@ class Manufacturer < ApplicationRecord
   before_save :update_slugs
 
   DEFAULT_SORTING_PARAMS = "name asc"
-  ALLOWED_SORTING_PARAMS = ["name asc", "name desc", "created_at asc", "created_at desc"]
+  ALLOWED_SORTING_PARAMS = ["name asc", "name desc", "createdAt asc", "createdAt desc"]
 
   def self.ransackable_attributes(auth_object = nil)
     [

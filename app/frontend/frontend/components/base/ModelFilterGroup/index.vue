@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { ComponentExposed } from "vue-component-type-helpers";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type ModelQuery, type Models, type Model } from "@/services/fyApi";
 import FilterGroup, {
@@ -82,10 +83,34 @@ const fetch = async (params: FilterGroupParams<Model>) => {
     q,
   });
 };
+
+const filterGroup = ref<ComponentExposed<typeof FilterGroup>>();
+
+const clear = () => {
+  internalValue.value = undefined;
+  filterGroup.value?.clear();
+};
+
+const clearSearch = () => {
+  filterGroup.value?.clearSearch();
+};
+
+const reset = () => {
+  clear();
+  clearSearch();
+  filterGroup.value?.reset();
+};
+
+defineExpose({
+  clear,
+  clearSearch,
+  reset,
+});
 </script>
 
 <template>
   <FilterGroup
+    ref="filterGroup"
     v-model="internalValue"
     :label="t('labels.selectModel')"
     :search-label="t('labels.findModel')"

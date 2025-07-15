@@ -1,3 +1,30 @@
+<script lang="ts">
+export default {
+  name: "FleetchartListItemImage",
+};
+</script>
+
+<script lang="ts" setup>
+type Props = {
+  src: string;
+  label: string;
+  width?: number;
+  height?: number;
+  maxWidth?: string;
+  maxHeight?: string;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  height: undefined,
+  width: undefined,
+  maxWidth: undefined,
+});
+
+const internalWidth = computed(() => {
+  return `${props.width}px` || "auto";
+});
+</script>
+
 <template>
   <img
     v-if="src"
@@ -15,29 +42,3 @@
     <p>{{ label }}</p>
   </span>
 </template>
-
-<script lang="ts" setup>
-type Props = {
-  src: string;
-  label: string;
-  width?: number;
-  height?: number;
-  maxWidth?: string;
-};
-
-const props = withDefaults(defineProps<Props>(), {
-  height: undefined,
-  width: undefined,
-  maxWidth: undefined,
-});
-
-const internalWidth = computed(() => {
-  return `${props.width}px` || "auto";
-});
-</script>
-
-<script lang="ts">
-export default {
-  name: "FleetchartListItemImage",
-};
-</script>

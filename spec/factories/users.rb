@@ -68,7 +68,7 @@ FactoryBot.define do
       wanted_vehicle_count { 0 }
     end
 
-    username { Faker::Internet.username(separators: ["_"]) }
+    username { Faker::Alphanumeric.alphanumeric(number: 10) }
     email { Faker::Internet.email }
     password { Faker::Internet.password }
     password_confirmation { password }

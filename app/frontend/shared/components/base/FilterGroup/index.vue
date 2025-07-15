@@ -111,6 +111,15 @@ const page = ref(1);
 
 const internalOptions = ref<FilterOption[]>([]);
 
+const internalValue = ref<ValueType<T> | undefined>(props.modelValue);
+
+watch(
+  () => props.modelValue,
+  () => {
+    internalValue.value = props.modelValue;
+  },
+);
+
 const prompt = computed(() => {
   if (!props.multiple && selectedOptions.value.length > 0) {
     return selectedOptions.value[0].label;
@@ -243,13 +252,13 @@ const selectedOptions = computed(() => {
   if (props.multiple) {
     return availableOptions.value.filter(
       (item) =>
-        props.modelValue &&
-        (props.modelValue as FilterOptionValue[]).includes(item.value),
+        internalValue.value &&
+        (internalValue.value as FilterOptionValue[]).includes(item.value),
     );
   }
 
   const selectedOption = availableOptions.value.find(
-    (item) => item.value === props.modelValue,
+    (item) => item.value === internalValue.value,
   );
 
   return selectedOption ? [selectedOption] : [];
@@ -310,15 +319,16 @@ const onSearch = debounce(debouncedOnSearch, 500);
 
 const fetchMissingOption = async () => {
   if (
-    !props.modelValue ||
+    !internalValue.value ||
     (props.multiple &&
-      selectedOptions.value.length === (props.modelValue as string[]).length) ||
-    (!props.multiple && selectedOptions.value[0]?.value === props.modelValue)
+      selectedOptions.value.length ===
+        (internalValue.value as string[]).length) ||
+    (!props.multiple && selectedOptions.value[0]?.value === internalValue.value)
   ) {
     return;
   }
 
-  missing.value = props.modelValue;
+  missing.value = internalValue.value as string;
 
   refetch();
 };
@@ -356,55 +366,57 @@ const clearSearch = () => {
 
 const selected = (option: FilterOptionValue) => {
   if (props.multiple) {
-    return ((props.modelValue as FilterOptionValue[]) || []).includes(option);
+    return ((internalValue.value as FilterOptionValue[]) || []).includes(
+      option,
+    );
   }
 
-  return props.modelValue === option;
+  return internalValue.value === option;
 };
 
-const emit = defineEmits(["update:modelValue"]);
+const emits = defineEmits(["update:modelValue"]);
 
 const select = (optionValue: FilterOptionValue) => {
   clearSearch();
 
   if (selected(optionValue)) {
     if (props.multiple) {
-      emit(
+      emits(
         "update:modelValue",
-        (props.modelValue as string[]).filter(
+        (internalValue.value as string[]).filter(
           (item: string) => item !== optionValue,
         ),
       );
     } else if (props.nullable) {
-      emit("update:modelValue", null);
+      emits("update:modelValue", null);
     }
   } else if (props.multiple) {
     const values: FilterOptionValue[] = JSON.parse(
-      JSON.stringify(props.modelValue || []),
+      JSON.stringify(internalValue.value || []),
     );
 
     values.push(optionValue);
 
     if (props.returnObject) {
-      emit(
+      emits(
         "update:modelValue",
         values.map((value) => {
           return internalOptions.value.find((item) => item.value === value);
         }),
       );
     } else {
-      emit("update:modelValue", values);
+      emits("update:modelValue", values);
     }
 
     focusSearch();
   } else {
     if (props.returnObject) {
-      emit(
+      emits(
         "update:modelValue",
         internalOptions.value.find((item) => item.value === optionValue),
       );
     } else {
-      emit("update:modelValue", optionValue);
+      emits("update:modelValue", optionValue);
     }
 
     toggle();
@@ -432,6 +444,21 @@ const focusSearch = () => {
     });
   }
 };
+
+const clear = () => {
+  internalValue.value = undefined;
+};
+
+const reset = () => {
+  clear();
+  clearSearch();
+};
+
+defineExpose({
+  reset,
+  clear,
+  clearSearch,
+});
 </script>
 
 <template>

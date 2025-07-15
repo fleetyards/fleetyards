@@ -41,7 +41,7 @@ class FleetVehicle < ApplicationRecord
 
   DEFAULT_SORTING_PARAMS = ["model_name asc"]
   ALLOWED_SORTING_PARAMS = [
-    "model_name asc", "model_name desc", "created_at asc", "created_at desc", "updated_at asc",
-    "updated_at desc"
+    "modelName asc", "modelName desc", "createdAt asc", "createdAt desc", "updatedAt asc",
+    "updatedAt desc"
   ]
 end

@@ -132,19 +132,19 @@ const { t } = useI18n();
     :records="models?.items || []"
     :async-status="asyncStatus"
     hide-loading
-    hide-empty-box
+    hide-empty
     :is-filter-selected="isFilterSelected"
   >
     <template #filter>
       <FilterForm />
     </template>
-    <template #default="{ loading, emptyBoxVisible }">
+    <template #default="{ loading, emptyVisible }">
       <BaseTable
         :records="models?.items || []"
         primary-key="id"
         :columns="columns"
         :loading="loading"
-        :empty-box-visible="emptyBoxVisible"
+        :empty-visible="emptyVisible"
         default-sort="name asc"
         selectable
       >
@@ -152,7 +152,7 @@ const { t } = useI18n();
           <LazyImage
             v-if="record.media.storeImage"
             :variant="LazyImageVariantsEnum.WIDE_SMALL"
-            :src="record.media.storeImage.small"
+            :src="record.media.storeImage.smallUrl"
             alt="Model storeImage"
             shadow
           />
@@ -161,7 +161,7 @@ const { t } = useI18n();
           <LazyImage
             v-if="record.media.storeImage"
             :variant="LazyImageVariantsEnum.WIDE_SMALL"
-            :src="record.media.storeImage.small"
+            :src="record.media.storeImage.smallUrl"
             alt="Model rsiStoreImage"
             shadow
           />
@@ -170,7 +170,7 @@ const { t } = useI18n();
           <LazyImage
             v-if="record.media.angledView"
             :variant="LazyImageVariantsEnum.WIDE_SMALL"
-            :src="record.media.angledView.small"
+            :src="record.media.angledView.smallUrl"
             alt="Model angledView"
           />
         </template>

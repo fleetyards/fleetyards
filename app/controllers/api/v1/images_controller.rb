@@ -33,9 +33,9 @@ module Api
       end
 
       private def image_query_params
-        @image_query_params ||= query_params(
+        @image_query_params ||= params.permit(q: [
           model_in: [], station_in: []
-        )
+        ]).fetch(:q, {})
       end
     end
   end

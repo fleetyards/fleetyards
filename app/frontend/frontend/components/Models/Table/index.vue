@@ -14,7 +14,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
 import { type Model } from "@/services/fyApi";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
-import { type BaseTableColumn } from "@/shared/components/base/Table/types";
+import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import ViewImage from "@/shared/components/ViewImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import {
@@ -28,7 +28,7 @@ type Props = {
   editable?: boolean;
   wishlist?: boolean;
   loading?: boolean;
-  emptyBoxVisible?: boolean;
+  emptyVisible?: boolean;
 };
 
 defineProps<Props>();
@@ -65,6 +65,7 @@ const extraImageColumns = computed(() => {
       return {
         name: col,
         label: "",
+        width: col.endsWith("_wide") ? "270px" : "120px",
         centered: true,
       };
     })
@@ -79,13 +80,13 @@ const manufacturerColumnVisible = computed(() => {
   );
 });
 
-const tableColumns = computed<BaseTableColumn[]>(() => {
+const tableColumns = computed<BaseTableCol<Model>[]>(() => {
   return [
     ...extraImageColumns.value,
     {
       name: "name",
       label: t("labels.vehicle.name"),
-      width: "40%",
+      width: "auto",
       sortable: true,
     },
     ...extraColumns.value,
@@ -109,7 +110,7 @@ const angledImage = (record: Model) => {
       default-sort="name asc"
       :columns="tableColumns"
       :loading="loading"
-      :empty-box-visible="emptyBoxVisible"
+      :empty-visible="emptyVisible"
     >
       <template #col-store_image="{ record }">
         <ViewImage

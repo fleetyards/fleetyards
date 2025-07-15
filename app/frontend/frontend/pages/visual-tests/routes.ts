@@ -17,4 +17,13 @@ export const routes = [
       backgroundImage: "bg-7",
     },
   },
+  {
+    path: "tables/",
+    name: "visual-tests-tables",
+    component: () => import("@/frontend/pages/visual-tests/tables.vue"),
+    meta: {
+      title: "visualTests.tables",
+      backgroundImage: "bg-7",
+    },
+  },
 ];

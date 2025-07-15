@@ -19,10 +19,10 @@ const { t } = useI18n();
 <template>
   <p class="text-muted">
     <template v-if="queryPresent">
-      {{ t("emptyBox.texts.query") }}
+      {{ t("empty.texts.query") }}
     </template>
     <template v-else>
-      {{ t("emptyBox.texts.info") }}
+      {{ t("empty.texts.info") }}
     </template>
   </p>
 </template>

@@ -74,7 +74,9 @@
       "cookiePolicy": "Cookie policy",
       "visualTests": {
         "index": "Visual Tests",
-        "panels": "Panels - Visual Tests"
+        "panels": "Panels - Visual Tests",
+        "buttons": "Buttons - Visual Tests",
+        "tables": "Tables - Visual Tests"
       },
       "admin": {
         "models": {

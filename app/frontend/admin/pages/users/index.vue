@@ -121,18 +121,18 @@ const columns: BaseTableColumn[] = [
     :records="users.items || []"
     :async-status="asyncStatus"
     hide-loading
-    hide-empty-box
+    hide-empty
   >
     <template #filter>
       <FilterForm />
     </template>
-    <template #default="{ loading, emptyBoxVisible }">
+    <template #default="{ loading, emptyVisible }">
       <BaseTable
         :records="users.items || []"
         primary-key="id"
         :columns="columns"
         :loading="loading"
-        :empty-box-visible="emptyBoxVisible"
+        :empty-visible="emptyVisible"
         selectable
       >
         <template #col-avatar="{ record }">

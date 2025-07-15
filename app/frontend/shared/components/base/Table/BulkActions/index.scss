@@ -1,0 +1,46 @@
+.base-table-bulk-actions {
+  position: sticky;
+  top: 0;
+  z-index: 500;
+}
+
+.base-table-bulk-actions__inner {
+  display: flex;
+  justify-content: space-between;
+  background-color: $panel-bg;
+  border-radius: $panelInnerBorderRadius;
+  gap: 10px;
+  padding: 10px 20px;
+  width: 100%;
+}
+
+.base-table-bulk-actions__count {
+  color: $primary;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  font-size: 120%;
+
+  :deep(.panel-btn-inner) {
+    color: $primary;
+  }
+
+  &--hide {
+    opacity: 0;
+  }
+}
+
+.base-table-bulk-actions__actions {
+  position: relative;
+  z-index: 1000;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+
+  :deep(.panel-btn),
+  :deep(.panel-btn-group) {
+    margin-bottom: 0;
+    margin-right: 0;
+  }
+}

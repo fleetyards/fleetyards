@@ -6,21 +6,26 @@ export default {
 
 <script lang="ts" setup>
 import Collapsed from "@/shared/components/Collapsed.vue";
+import CompareModelsRow from "@/frontend/components/Compare/Models/Row/index.vue";
+import CompareModelsRowTitle from "@/frontend/components/Compare/Models/Row/Title/index.vue";
 import HardpointGroup from "@/frontend/components/Models/Hardpoints/Group/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   type Model,
   type Hardpoint,
   HardpointSourceEnum,
+  HardpointGroupEnum,
+  modelHardpoints as fetchModelHardpoints,
 } from "@/services/fyApi";
-import { HardpointGroupEnum } from "@/services/fyApi";
-import { modelHardpoints as fetchModelHardpoints } from "@/services/fyApi";
 
 type Props = {
   models: Model[];
+  slim?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  slim: false,
+});
 
 const { t } = useI18n();
 
@@ -148,54 +153,51 @@ const hardpointsForGroup = (
   group: HardpointGroupEnum,
   hardpoints: Hardpoint[],
 ) => (hardpoints || []).filter((hardpoint) => hardpoint.group === group);
+
+const hardpointsForModel = (model: Model) => {
+  const hardpoint = hardpoints.value.find((h) => h.slug === model.slug);
+  return hardpoint ? hardpoint.hardpoints : [];
+};
 </script>
 
 <template>
-  <div>
-    <div v-for="group in groups" :key="group">
-      <div class="row compare-row compare-section">
-        <div class="col-12 compare-row-label sticky-left">
-          <div
-            :class="{
-              active: isVisible(group),
-            }"
-            class="text-right metrics-title"
-            @click="toggle(group)"
-          >
-            {{ t(`labels.hardpoint.groups.${group.toLowerCase()}`) }}
-            <i class="fa fa-chevron-right" />
-          </div>
-        </div>
-        <div
-          v-for="model in models"
-          :key="`${model.slug}-placeholder`"
-          class="col-12 compare-row-item"
+  <div v-for="group in groups" :key="group">
+    <CompareModelsRow
+      :models="models"
+      :row-key="group"
+      :slim="slim"
+      sticky-left
+      section
+    >
+      <template #label>
+        <CompareModelsRowTitle
+          :active="isVisible(group)"
+          :title="t(`labels.hardpoint.groups.${group.toLowerCase()}`)"
+          @click="toggle(group)"
         />
-      </div>
+      </template>
+    </CompareModelsRow>
 
-      <Collapsed :id="group" :visible="isVisible(group)" class="row">
-        <div class="col-12">
-          <div class="row compare-row">
-            <div
-              class="col-12 compare-row-label text-right metrics-label sticky-left"
+    <Collapsed :id="group" :visible="isVisible(group)" class="row">
+      <div class="col-12">
+        <CompareModelsRow
+          :models="models"
+          :row-key="group"
+          :slim="slim"
+          sticky-left
+        >
+          <template #default="{ model }">
+            <HardpointGroup
+              v-if="
+                hardpointsForGroup(group, hardpointsForModel(model)).length > 0
+              "
+              :group="group"
+              :hardpoints="hardpointsForGroup(group, hardpointsForModel(model))"
+              without-title
             />
-            <div
-              v-for="model in hardpoints"
-              :key="`${model.slug}-${group}`"
-              class="col-6 compare-row-item"
-            >
-              <div class="well">
-                <HardpointGroup
-                  v-if="hardpointsForGroup(group, model.hardpoints).length > 0"
-                  :group="group"
-                  :hardpoints="hardpointsForGroup(group, model.hardpoints)"
-                  without-title
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </Collapsed>
-    </div>
+          </template>
+        </CompareModelsRow>
+      </div>
+    </Collapsed>
   </div>
 </template>

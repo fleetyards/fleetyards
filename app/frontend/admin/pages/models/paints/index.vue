@@ -138,19 +138,19 @@ const { t, l } = useI18n();
     :records="paints?.items || []"
     :async-status="asyncStatus"
     hide-loading
-    hide-empty-box
+    hide-empty
     :is-filter-selected="isFilterSelected"
   >
     <template #filter>
       <FilterForm />
     </template>
-    <template #default="{ loading, emptyBoxVisible }">
+    <template #default="{ loading, emptyVisible }">
       <BaseTable
         :records="paints?.items || []"
         primary-key="id"
         :columns="columns"
         :loading="loading"
-        :empty-box-visible="emptyBoxVisible"
+        :empty-visible="emptyVisible"
         default-sort="name asc"
         selectable
       >
@@ -158,7 +158,7 @@ const { t, l } = useI18n();
           <LazyImage
             v-if="record.media.storeImage"
             :variant="LazyImageVariantsEnum.WIDE_SMALL"
-            :src="record.media.storeImage.small"
+            :src="record.media.storeImage.smallUrl"
             alt="Model storeImage"
             shadow
           />
@@ -167,7 +167,7 @@ const { t, l } = useI18n();
           <LazyImage
             v-if="record.media.rsiStoreImage"
             :variant="LazyImageVariantsEnum.WIDE_SMALL"
-            :src="record.media.rsiStoreImage.small"
+            :src="record.media.rsiStoreImage.smallUrl"
             alt="Model rsiStoreImage"
             shadow
           />

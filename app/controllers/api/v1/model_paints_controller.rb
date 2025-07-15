@@ -21,10 +21,10 @@ module Api
       end
 
       private def model_paint_query_params
-        @model_paint_query_params ||= query_params(
+        @model_paint_query_params ||= params.permit(q: [
           :name_cont, :id_eq, :model_slug_eq,
           name_in: [], id_not_in: [], id_in: []
-        )
+        ]).fetch(:q, {})
       end
     end
   end

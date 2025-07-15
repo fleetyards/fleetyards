@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup generic="T">
+import Empty from "@/shared/components/Empty/index.vue";
 import { uniq as uniqArray } from "@/shared/utils/Array";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import { v4 as uuidv4 } from "uuid";
@@ -13,37 +14,35 @@ import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import Loader from "@/shared/components/Loader/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
-import { useI18n } from "@/shared/composables/useI18n";
-import { type BaseTableColumn } from "@/shared/components/base/Table/types";
-import { RouteLocationRaw } from "vue-router";
-import {
-  BtnVariantsEnum,
-  BtnSizesEnum,
-} from "@/shared/components/base/Btn/types";
-
-const { t } = useI18n();
+import { type BaseTableCol } from "./types";
+import TableHeader from "./Header/index.vue";
+import TableRow from "./Row/index.vue";
+import TableCol from "./Col/index.vue";
+import BulkActions from "./BulkActions/index.vue";
 
 type Props = {
   records: T[];
-  columns: BaseTableColumn[];
+  columns: BaseTableCol<T>[];
   primaryKey: keyof T;
+  id?: string;
   defaultSort?: string;
   title?: string;
   titleLevel?: HeadingLevelEnum;
   loading?: boolean;
   inlineLoader?: boolean;
-  emptyBoxVisible?: boolean;
+  emptyVisible?: boolean;
   selectable?: boolean;
   selected?: string[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  id: undefined,
   title: undefined,
   defaultSort: undefined,
   titleLevel: HeadingLevelEnum.H2,
   loading: false,
   inlineLoader: false,
-  emptyBoxVisible: false,
+  emptyVisible: false,
   selectable: false,
   selected: () => [],
 });
@@ -60,7 +59,7 @@ const filteredColumns = computed(() => {
   });
 });
 
-const uuid = ref<string>(uuidv4());
+const colKey = ref<string>(uuidv4());
 
 const allSelected = computed(() => {
   if (!props.records.length) {
@@ -89,10 +88,10 @@ watch(
 );
 
 onMounted(() => {
-  uuid.value = uuidv4();
+  colKey.value = uuidv4();
 });
 
-const onAllSelectedChange = (value?: string[]) => {
+const onAllSelectedChange = (value?: boolean) => {
   if (value) {
     internalSelected.value = [
       ...internalSelected.value,
@@ -108,70 +107,23 @@ const onAllSelectedChange = (value?: string[]) => {
   }
 };
 
-const fieldByColumn = (column: BaseTableColumn) => {
-  return (column.field || column.name) as keyof T;
+const fieldByColumn = (column: BaseTableCol<T>) => {
+  return (column.attributeKey || column.name) as keyof T;
 };
 
 const primaryValue = (record: T) => {
   return record[props.primaryKey] as string | number;
 };
 
-const route = useRoute();
-
-const sortableDirection = (column: BaseTableColumn) => {
-  if (!column.sortable && !route.query.s) {
-    return undefined;
-  }
-
-  const sortCol = ((route.query.s as string) || "").split(" ")[0];
-  if (sortCol === sortableField(column)) {
-    return (route.query.s as string).split(" ")[1];
-  } else if (
-    props.defaultSort &&
-    props.defaultSort.includes(sortableField(column))
-  ) {
-    return props.defaultSort.split(" ")[1];
-  }
+type Slots = {
+  title?: () => void;
+  empty?: () => void;
+  "selected-actions"?: (props: { selected: string[] }) => void;
+  actions?: (props: { record: T }) => void;
+  [key: `col-${string}`]: (props: { record: T }) => void;
 };
 
-const sortableField = (column: BaseTableColumn) => {
-  return (column.field || column.name) as string;
-};
-
-const sortableLink = (column: BaseTableColumn) => {
-  let direction: "asc" | "desc" | undefined;
-  if (sortableDirection(column) === "asc") {
-    direction = "desc";
-  } else if (!sortableDirection(column)) {
-    direction = "asc";
-  }
-
-  if (!direction) {
-    return {
-      query: {
-        ...route.query,
-        s: undefined,
-      },
-    } as RouteLocationRaw;
-  }
-
-  return {
-    query: {
-      ...route.query,
-      s: `${sortableField(column)} ${direction}`,
-    },
-  } as RouteLocationRaw;
-};
-
-const columnCssClasses = (column: BaseTableColumn) => {
-  return {
-    [`${column.class}`]: column.class,
-    [`base-table__column--sorted-${sortableDirection(column) || "asc"}`]:
-      column.sortable,
-  };
-};
-
-const slots = useSlots();
+const slots = defineSlots<Slots>();
 
 const columnCount = computed(() => {
   return (
@@ -185,132 +137,59 @@ const resetSelected = () => {
 </script>
 
 <template>
-  <Panel class="base-table w-full" :slim="true">
-    <PanelHeading v-if="title || slots.title" :level="titleLevel">
-      <slot name="title">{{ title }}</slot>
+  <Panel :id="props.id" class="base-table w-full" :slim="true">
+    <PanelHeading v-if="props.title || slots.title" :level="props.titleLevel">
+      <slot name="title">{{ props.title }}</slot>
     </PanelHeading>
+    <BulkActions :selected="internalSelected" @reset="resetSelected">
+      <slot name="selected-actions" :selected="internalSelected" />
+    </BulkActions>
     <div class="base-table__outer-wrapper">
       <div class="base-table__wrapper w-full">
         <Loader
-          v-if="loading && !records.length"
-          :loading="loading"
+          v-if="props.loading && !props.records.length"
+          :loading="props.loading"
           class="base-table__loader"
         />
         <table class="base-table__inner">
+          <TableHeader
+            :id="props.id"
+            :col-key="colKey"
+            :selected="internalSelected"
+            :selectable="props.selectable"
+            :loading="props.loading"
+            :empty-visible="props.emptyVisible"
+            :columns="filteredColumns"
+            :has-actions="!!slots.actions"
+            :all-selected="allSelected"
+            :default-sort="props.defaultSort"
+            @select-all="onAllSelectedChange"
+          />
           <transition-group
             name="list"
             :class="{
-              'base-table__loading': loading,
-            }"
-            tag="thead"
-            :appear="true"
-          >
-            <tr v-if="internalSelected.length > 0" key="selected-header">
-              <th :colspan="columnCount">
-                <div class="base-table__selected">
-                  <div class="base-table__selected--count">
-                    <span>
-                      {{
-                        t("filteredTable.labels.selected", {
-                          count: internalSelected.length,
-                        })
-                      }}
-                    </span>
-                    <Btn
-                      v-tooltip="t('filteredTable.actions.unselect')"
-                      :size="BtnSizesEnum.SMALL"
-                      :variant="BtnVariantsEnum.LINK"
-                      inline
-                      @click="resetSelected"
-                    >
-                      <i class="fa fa-times" />
-                    </Btn>
-                  </div>
-                  <div class="base-table__selected--actions">
-                    <slot
-                      name="selected-actions"
-                      :selected="internalSelected"
-                    />
-                  </div>
-                </div>
-              </th>
-            </tr>
-            <tr key="header" class="base-table__header">
-              <th v-if="selectable" class="base-table__column">
-                <FormCheckbox
-                  v-if="!loading && !emptyBoxVisible"
-                  name="all"
-                  :model-value="allSelected"
-                  inline
-                  no-label
-                  :partial="internalSelected.length > 0 && !allSelected"
-                  @update:model-value="onAllSelectedChange"
-                />
-              </th>
-              <th
-                v-for="(column, index) in filteredColumns"
-                :key="`base-table__header-${uuid}-${index}-${column.name}`"
-                class="base-table__column"
-                :class="columnCssClasses(column)"
-                :style="{
-                  'flex-grow': column.flexGrow,
-                  width: column.width,
-                  'min-width': column.minWidth,
-                }"
-              >
-                <router-link v-if="column.sortable" :to="sortableLink(column)">
-                  {{ column.label }}
-                  <i
-                    v-if="sortableDirection(column) === 'desc'"
-                    class="fad fa-sort-up"
-                  />
-                  <i
-                    v-else-if="sortableDirection(column) === 'asc'"
-                    class="fad fa-sort-down"
-                  />
-                  <i v-else class="base-table__sortable-icon far fa-sort" />
-                </router-link>
-                <span v-else>
-                  {{ column.label }}
-                </span>
-              </th>
-              <th
-                v-if="slots.actions"
-                class="base-table__column base-table__column-actions"
-              >
-                {{ t("labels.actions") }}
-              </th>
-            </tr>
-          </transition-group>
-          <transition-group
-            name="list"
-            :class="{
-              'base-table__loading': loading,
+              'base-table__loading': props.loading,
             }"
             tag="tbody"
             :appear="true"
           >
-            <tr
-              v-if="emptyBoxVisible"
+            <TableRow
+              v-if="props.emptyVisible && !props.loading"
               key="empty-row"
-              class="base-table__empty"
             >
-              <td class="base-table__column" :colspan="columnCount">
-                <div class="base-table__empty-inner">
-                  <slot name="empty">
-                    {{ t("filteredTable.empty.info") }}
-                  </slot>
-                </div>
-              </td>
-            </tr>
-            <tr
-              v-for="record in records"
+              <TableCol :colspan="columnCount" variant="empty">
+                <slot name="empty">
+                  <Empty />
+                </slot>
+              </TableCol>
+            </TableRow>
+            <TableRow
+              v-for="record in props.records"
               v-else
               :id="String(primaryValue(record))"
               :key="primaryValue(record)"
-              class="base-table__row"
             >
-              <td v-if="selectable" class="base-table__column">
+              <TableCol v-if="props.selectable" variant="selection">
                 <FormCheckbox
                   v-model="internalSelected"
                   name="item"
@@ -318,14 +197,13 @@ const resetSelected = () => {
                   inline
                   :checkbox-value="primaryValue(record)"
                 />
-              </td>
-              <td
+              </TableCol>
+              <TableCol
                 v-for="column in filteredColumns"
-                :key="`base-table__item-${uuid}-${column.name}`"
-                class="base-table__column"
+                :key="`base-table__item-${colKey}-${column.name}`"
+                :alignment="column.alignment"
                 :class="{
                   [`${column.class}`]: !!column.class,
-                  'base-table__column--centered': column.centered,
                 }"
                 :style="{
                   'flex-grow': column.flexGrow,
@@ -333,18 +211,14 @@ const resetSelected = () => {
                   'min-width': column.minWidth,
                 }"
               >
-                <div class="base-table__column-inner">
-                  <slot :record="record" :name="`col-${column.name}`">
-                    {{ record[fieldByColumn(column)] }}
-                  </slot>
-                </div>
-              </td>
-              <td class="base-table__column base-table__column-actions">
-                <div class="base-table__column-inner">
-                  <slot :record="record" name="actions" />
-                </div>
-              </td>
-            </tr>
+                <slot :record="record" :name="`col-${column.name}`">
+                  {{ record[fieldByColumn(column)] }}
+                </slot>
+              </TableCol>
+              <TableCol v-if="slots.actions" variant="actions">
+                <slot :record="record" name="actions" />
+              </TableCol>
+            </TableRow>
           </transition-group>
         </table>
       </div>

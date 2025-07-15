@@ -87,15 +87,15 @@ class Vehicle < ApplicationRecord
 
   DEFAULT_SORTING_PARAMS = ["flagship desc", "name asc", "model_name asc"]
   ALLOWED_SORTING_PARAMS = [
-    "flagship desc", "flagship asc", "name asc", "name desc", "model_name asc", "model_name desc",
-    "created_at asc", "created_at desc", "updated_at asc", "updated_at desc",
-    "model_manufacturer_name asc", "model_manufacturer_name desc", "model_length asc",
-    "model_length desc", "model_beam asc", "model_beam desc", "model_height asc",
-    "model_height desc", "model_mass asc", "model_mass desc", "model_cargo asc", "model_cargo desc",
-    "model_pledge_price asc", "model_pledge_price desc", "model_price asc", "model_price desc",
-    "model_scm_speed asc", "model_scm_speed desc", "model_max_speed asc", "model_max_speed desc",
-    "model_ground_max_speed asc", "model_ground_max_speed desc", "model_production_status asc",
-    "model_production_status desc", "model_focus asc", "model_focus desc"
+    "flagship desc", "flagship asc", "name asc", "name desc", "modelName asc", "modelName desc",
+    "createdAt asc", "createdAt desc", "updatedAt asc", "updatedAt desc",
+    "modelManufacturerName asc", "modelManufacturerName desc", "modelLength asc",
+    "modelLength desc", "modelBeam asc", "modelBeam desc", "modelHeight asc",
+    "modelHeight desc", "modelMass asc", "modelMass desc", "modelCargo asc", "modelCargo desc",
+    "modelPledgePrice asc", "modelPledgePrice desc", "modelPrice asc", "modelPrice desc",
+    "modelScmSpeed asc", "modelScmSpeed desc", "modelMaxSpeed asc", "modelMaxSpeed desc",
+    "modelGroundMaxSpeed asc", "modelGroundMaxSpeed desc", "modelProductionStatus asc",
+    "modelProductionStatus desc", "modelFocus asc", "modelFocus desc"
   ]
 
   ransack_alias :search, :name_or_model_name_or_model_slug

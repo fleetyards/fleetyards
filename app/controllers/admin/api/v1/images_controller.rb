@@ -45,9 +45,9 @@ module Admin
         end
 
         private def image_query_params
-          @image_query_params ||= query_params(
+          @image_query_params ||= params.permit(q: [
             :gallery_id_eq, :gallery_type_eq
-          )
+          ]).fetch(:q, {})
         end
 
         private def image_create_params

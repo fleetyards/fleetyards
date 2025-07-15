@@ -57,10 +57,10 @@ const reset = () => {
     <slot></slot>
     <template v-if="queryPresent">
       <Btn v-if="pagePresent" @click="resetPage">
-        {{ t("emptyBox.actions.resetPage") }}
+        {{ t("empty.actions.resetPage") }}
       </Btn>
       <Btn @click="reset">
-        {{ t("emptyBox.actions.reset") }}
+        {{ t("empty.actions.reset") }}
       </Btn>
     </template>
   </div>

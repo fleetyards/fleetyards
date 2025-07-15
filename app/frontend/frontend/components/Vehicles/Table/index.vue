@@ -16,7 +16,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { type Vehicle } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
-import { type BaseTableColumn } from "@/shared/components/base/Table/types";
+import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import ViewImage from "@/shared/components/ViewImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import {
@@ -35,7 +35,7 @@ type Props = {
   editable?: boolean;
   wishlist?: boolean;
   loading?: boolean;
-  emptyBoxVisible?: boolean;
+  emptyVisible?: boolean;
 };
 
 const props = defineProps<Props>();
@@ -75,7 +75,7 @@ const extraColumns = computed(() => {
     });
 });
 
-const extraImageColumns = computed(() => {
+const extraImageColumns = computed<BaseTableCol<Vehicle>[]>(() => {
   if (props.wishlist) {
     return Object.values(WishlistTableViewImageColsEnum)
       .map((col) => {
@@ -95,6 +95,7 @@ const extraImageColumns = computed(() => {
       return {
         name: col,
         label: "",
+        width: col.endsWith("_wide") ? "270px" : "120px",
         centered: true,
       };
     })
@@ -109,7 +110,7 @@ const manufacturerColumnVisible = computed(() => {
   );
 });
 
-const tableColumns = computed<BaseTableColumn[]>(() => {
+const tableColumns = computed<BaseTableCol<Vehicle>[]>(() => {
   return [
     ...extraImageColumns.value,
     {
@@ -192,7 +193,7 @@ const resetSelected = () => {
       :selectable="editable"
       :selected="selected"
       :loading="loading"
-      :empty-box-visible="emptyBoxVisible"
+      :empty-visible="emptyVisible"
       @selected-change="onSelectedChange"
     >
       <template #selected-actions>

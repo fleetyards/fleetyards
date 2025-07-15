@@ -132,18 +132,18 @@ const { t } = useI18n();
     :records="models?.items || []"
     :async-status="asyncStatus"
     hide-loading
-    hide-empty-box
+    hide-empty
   >
     <template #filter>
       <FilterForm />
     </template>
-    <template #default="{ loading, emptyBoxVisible }">
+    <template #default="{ loading, emptyVisible }">
       <BaseTable
         :records="models?.items || []"
         primary-key="id"
         :columns="columns"
         :loading="loading"
-        :empty-box-visible="emptyBoxVisible"
+        :empty-visible="emptyVisible"
         default-sort="name asc"
         selectable
       >

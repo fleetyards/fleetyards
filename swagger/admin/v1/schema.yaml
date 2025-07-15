@@ -2037,34 +2037,34 @@ components:
     FleetMembershipSortEnum:
       type: string
       enum:
-      - user_rsi_handle asc
-      - user_rsi_handle desc
-      - user_username asc
-      - user_username desc
-      - created_at asc
-      - created_at desc
-      - accepted_at asc
-      - accepted_at desc
+      - userRsiHandle asc
+      - userRsiHandle desc
+      - userUsername asc
+      - userUsername desc
+      - createdAt asc
+      - createdAt desc
+      - acceptedAt asc
+      - acceptedAt desc
       title: FleetMembershipSortEnum
     FleetVehicleSortEnum:
       type: string
       enum:
-      - model_name asc
-      - model_name desc
-      - created_at asc
-      - created_at desc
-      - updated_at asc
-      - updated_at desc
+      - modelName asc
+      - modelName desc
+      - createdAt asc
+      - createdAt desc
+      - updatedAt asc
+      - updatedAt desc
       title: FleetVehicleSortEnum
     ModelPaintSortEnum:
       type: string
       enum:
       - name asc
       - name desc
-      - created_at asc
-      - created_at desc
-      - updated_at asc
-      - updated_at desc
+      - createdAt asc
+      - createdAt desc
+      - updatedAt asc
+      - updatedAt desc
       - model_slug asc
       - model_slug desc
       title: ModelPaintSortEnum
@@ -2073,8 +2073,8 @@ components:
       enum:
       - name asc
       - name desc
-      - created_at asc
-      - created_at desc
+      - createdAt asc
+      - createdAt desc
       - length asc
       - length desc
       - beam asc
@@ -2085,22 +2085,24 @@ components:
       - mass desc
       - cargo asc
       - cargo desc
-      - manufacturer_name asc
-      - manufacturer_name desc
-      - pledge_price asc
-      - pledge_price desc
+      - manufacturerName asc
+      - manufacturerName desc
+      - pledgePrice asc
+      - pledgePrice desc
       - price asc
       - price desc
-      - scm_speed asc
-      - scm_speed desc
-      - max_speed asc
-      - max_speed desc
-      - ground_max_speed asc
-      - ground_max_speed desc
-      - production_status asc
-      - production_status desc
+      - scmSpeed asc
+      - scmSpeed desc
+      - maxSpeed asc
+      - maxSpeed desc
+      - groundMaxSpeed asc
+      - groundMaxSpeed desc
+      - productionStatus asc
+      - productionStatus desc
       - focus asc
       - focus desc
+      - rsiId asc
+      - rsiId desc
       title: ModelSortEnum
     UserSortEnum:
       type: string
@@ -2109,12 +2111,12 @@ components:
       - username desc
       - email asc
       - email desc
-      - created_at asc
-      - created_at desc
-      - last_active_at asc
-      - last_active_at desc
-      - last_sign_in_at asc
-      - last_sign_in_at desc
+      - createdAt asc
+      - createdAt desc
+      - lastActiveAt asc
+      - lastActiveAt desc
+      - lastSignInAt asc
+      - lastSignInAt desc
       title: UserSortEnum
     VehicleSortEnum:
       type: string
@@ -2123,38 +2125,38 @@ components:
       - flagship asc
       - name asc
       - name desc
-      - model_name asc
-      - model_name desc
-      - created_at asc
-      - created_at desc
-      - updated_at asc
-      - updated_at desc
-      - model_manufacturer_name asc
-      - model_manufacturer_name desc
-      - model_length asc
-      - model_length desc
-      - model_beam asc
-      - model_beam desc
-      - model_height asc
-      - model_height desc
-      - model_mass asc
-      - model_mass desc
-      - model_cargo asc
-      - model_cargo desc
-      - model_pledge_price asc
-      - model_pledge_price desc
-      - model_price asc
-      - model_price desc
-      - model_scm_speed asc
-      - model_scm_speed desc
-      - model_max_speed asc
-      - model_max_speed desc
-      - model_ground_max_speed asc
-      - model_ground_max_speed desc
-      - model_production_status asc
-      - model_production_status desc
-      - model_focus asc
-      - model_focus desc
+      - modelName asc
+      - modelName desc
+      - createdAt asc
+      - createdAt desc
+      - updatedAt asc
+      - updatedAt desc
+      - modelManufacturerName asc
+      - modelManufacturerName desc
+      - modelLength asc
+      - modelLength desc
+      - modelBeam asc
+      - modelBeam desc
+      - modelHeight asc
+      - modelHeight desc
+      - modelMass asc
+      - modelMass desc
+      - modelCargo asc
+      - modelCargo desc
+      - modelPledgePrice asc
+      - modelPledgePrice desc
+      - modelPrice asc
+      - modelPrice desc
+      - modelScmSpeed asc
+      - modelScmSpeed desc
+      - modelMaxSpeed asc
+      - modelMaxSpeed desc
+      - modelGroundMaxSpeed asc
+      - modelGroundMaxSpeed desc
+      - modelProductionStatus asc
+      - modelProductionStatus desc
+      - modelFocus asc
+      - modelFocus desc
       title: VehicleSortEnum
     StandardError:
       type: object
@@ -4277,32 +4279,4 @@ components:
       - items
       - meta
       title: Vehicles
-  securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-    Oauth2:
-      type: oauth2
-      flows:
-        authorizationCode:
-          authorizationUrl: https://fleetyards.net/oauth/authorize
-          tokenUrl: https://fleetyards.net/oauth/token
-          scopes:
-            public: Public Access
-            profile:read: Read Profile
-            profile:write: Manage Profile
-            hangar: Full Hangar Access
-            hangar:read: Read Hangar
-            hangar:write: Manage Hangar
-            fleet: Full Fleet Access
-            fleet:read: Read Fleet
-            fleet:write: Manage Fleet
-            openid: Authenticate your account
-    OpenId:
-      type: openIdConnect
-      openIdConnectUrl: http://fleetyards.test/.well-known/openid-configuration
-    SessionCookie:
-      type: apiKey
-      description: Session Cookie
-      name: FLTYRD
-      in: cookie
+  securitySchemes: {}

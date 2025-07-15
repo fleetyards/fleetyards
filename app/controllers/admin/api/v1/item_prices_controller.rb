@@ -60,9 +60,9 @@ module Admin
         end
 
         private def item_price_query_params
-          @item_price_query_params ||= query_params(
+          @item_price_query_params ||= params.permit(q: [
             :item_id_eq, :item_type_eq, :location_cont, :sorts, item_id_in: [], item_type_in: []
-          )
+          ]).fetch(:q, {})
         end
       end
     end

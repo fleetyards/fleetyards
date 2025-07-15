@@ -78,6 +78,18 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
         end
       end
 
+      response(400, "bad request") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:q) do
+          {
+            "foo" => "bar"
+          }
+        end
+
+        run_test!
+      end
+
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
 

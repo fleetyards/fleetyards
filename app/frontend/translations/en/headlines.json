@@ -216,7 +216,8 @@
       "visualTests": {
         "overview": "Overview",
         "panels": "Panels",
-        "buttons": "Buttons"
+        "buttons": "Buttons",
+        "tables": "Tables"
       }
     }
   }

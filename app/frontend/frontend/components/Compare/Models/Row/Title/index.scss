@@ -1,0 +1,22 @@
+.title {
+  position: relative;
+  padding-right: 25px;
+  cursor: pointer;
+  font-size: 18px;
+  font-family: "Orbitron", tahoma, sans-serif;
+  text-transform: uppercase;
+  text-align: right;
+
+  > :deep(i) {
+    position: absolute;
+    top: 4px;
+    right: 0;
+    transition: all 0.5s ease;
+  }
+
+  &.active {
+    > :deep(i) {
+      transform: rotate(90deg);
+    }
+  }
+}

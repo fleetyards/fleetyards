@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup generic="T">
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
-import EmptyBox from "@/shared/components/EmptyBox/index.vue";
+import Empty from "@/shared/components/Empty/index.vue";
 import { useFiltersStore } from "@/shared/stores/filters";
 import { type AsyncStatus } from "@/shared/components/AsyncData.types";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
@@ -18,14 +18,14 @@ type Props = {
   records: T[];
   asyncStatus: AsyncStatus;
   staticFilters?: boolean;
-  hideEmptyBox?: boolean;
+  hideEmpty?: boolean;
   hideLoading?: boolean;
   isFilterSelected?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   staticFilters: false,
-  hideEmptyBox: false,
+  hideEmpty: false,
   hideLoading: false,
   isFilterSelected: false,
 });
@@ -70,7 +70,7 @@ const filterTooltip = computed(() => {
   return t("filteredList.actions.showFilter");
 });
 
-const emptyBoxVisible = computed(() => {
+const emptyVisible = computed(() => {
   return !!(
     props.asyncStatus?.fetchStatus.value === "idle" && !props.records.length
   );
@@ -174,14 +174,14 @@ const toggleFilter = () => {
           </slot>
 
           <slot
-            v-else-if="!hideEmptyBox && emptyBoxVisible"
+            v-else-if="!hideEmpty && emptyVisible"
             name="empty"
             :filter-visible="filterVisible"
-            :hide-empty-box="hideEmptyBox"
-            :empty-box-visible="emptyBoxVisible"
+            :hide-empty="hideEmpty"
+            :empty-visible="emptyVisible"
           >
             <transition name="fade">
-              <EmptyBox />
+              <Empty />
             </transition>
           </slot>
 
@@ -191,7 +191,7 @@ const toggleFilter = () => {
             :records="records"
             :filter-visible="filterVisible"
             :loading="loading"
-            :empty-box-visible="emptyBoxVisible"
+            :empty-visible="emptyVisible"
           />
         </div>
       </div>

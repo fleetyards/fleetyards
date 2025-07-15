@@ -17,6 +17,7 @@ type Props = {
   name?: string;
   title?: string;
   inline?: boolean;
+  hideActions?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -24,6 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
   name: undefined,
   title: undefined,
   inline: false,
+  hideActions: false,
 });
 
 const route = useRoute();
@@ -58,6 +60,7 @@ const cssClasses = computed(() => {
       </slot>
       <template v-if="isQueryPresent" #footer>
         <EmptyActions
+          v-if="!props.hideActions"
           :query-present="isQueryPresent"
           :page-present="isPagePresent"
         >
@@ -71,6 +74,7 @@ const cssClasses = computed(() => {
         <EmptyInfo :query-present="isQueryPresent" />
       </slot>
       <EmptyActions
+        v-if="!props.hideActions"
         :query-present="isQueryPresent"
         :page-present="isPagePresent"
       >

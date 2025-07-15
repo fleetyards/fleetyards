@@ -11,7 +11,7 @@ module Admin
         def index
           authorize! with: ::Admin::ComponentPolicy
 
-          component_query_params["sorts"] ||= sorting_params(Component)
+          component_query_params["sorts"] = sorting_params(Component, component_query_params[:sorts])
 
           @q = authorized_scope(Component.all).includes(:manufacturer).ransack(component_query_params)
 
@@ -42,9 +42,9 @@ module Admin
         end
 
         private def component_query_params
-          @component_query_params ||= query_params(
-            :name_in, :id_eq, :name_cont, :name_eq, :item_type_eq
-          )
+          @component_query_params ||= params.permit(q: [
+            :name_in, :id_eq, :name_cont, :name_eq, :item_type_eq, :sorts, sorts: []
+          ]).fetch(:q, {})
         end
       end
     end

@@ -65,9 +65,9 @@ module Admin
     end
 
     private def save_filters
-      session[:model_module_packages_filters] = query_params(
+      session[:model_module_packages_filters] = params.permit(q: [
         :name_or_slug_cont
-      ).to_h
+      ]).fetch(:q, {})
       session[:model_module_packages_page] = params[:page]
     end
 

@@ -298,12 +298,12 @@ class Model < ApplicationRecord
 
   DEFAULT_SORTING_PARAMS = "name asc"
   ALLOWED_SORTING_PARAMS = [
-    "name asc", "name desc", "created_at asc", "created_at desc", "length asc", "length desc",
+    "name asc", "name desc", "createdAt asc", "createdAt desc", "length asc", "length desc",
     "beam asc", "beam desc", "height asc", "height desc", "mass asc", "mass desc", "cargo asc",
-    "cargo desc", "manufacturer_name asc", "manufacturer_name desc", "pledge_price asc",
-    "pledge_price desc", "price asc", "price desc", "scm_speed asc", "scm_speed desc", "max_speed asc",
-    "max_speed desc", "ground_max_speed asc", "ground_max_speed desc", "production_status asc",
-    "production_status desc", "focus asc", "focus desc"
+    "cargo desc", "manufacturerName asc", "manufacturerName desc", "pledgePrice asc",
+    "pledgePrice desc", "price asc", "price desc", "scmSpeed asc", "scmSpeed desc", "maxSpeed asc",
+    "maxSpeed desc", "groundMaxSpeed asc", "groundMaxSpeed desc", "productionStatus asc",
+    "productionStatus desc", "focus asc", "focus desc", "rsiId asc", "rsiId desc"
   ]
 
   ransack_alias :manufacturer, :manufacturer_slug

@@ -85,8 +85,8 @@ class ModelPaint < ApplicationRecord
 
   DEFAULT_SORTING_PARAMS = "name asc"
   ALLOWED_SORTING_PARAMS = [
-    "name asc", "name desc", "created_at asc", "created_at desc", "updated_at asc",
-    "updated_at desc", "model_slug asc", "model_slug desc"
+    "name asc", "name desc", "createdAt asc", "createdAt desc", "updatedAt asc",
+    "updatedAt desc", "model_slug asc", "model_slug desc"
   ]
 
   before_save :update_slugs

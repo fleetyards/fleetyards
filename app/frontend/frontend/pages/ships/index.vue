@@ -108,7 +108,7 @@ const openDisplayOptionsModal = () => {
   <FilteredList
     name="models"
     :hide-loading="fleetchartVisible"
-    :hide-empty-box="!gridView"
+    :hide-empty="!gridView"
     :records="models?.items || []"
     :async-status="asyncStatus"
     :is-filter-selected="isFilterSelected"
@@ -136,7 +136,7 @@ const openDisplayOptionsModal = () => {
       />
     </template>
 
-    <template #default="{ records, loading, filterVisible, emptyBoxVisible }">
+    <template #default="{ records, loading, filterVisible, emptyVisible }">
       <Grid
         v-if="gridView"
         :records="records"
@@ -151,7 +151,7 @@ const openDisplayOptionsModal = () => {
       <ModelsTable
         v-else
         :loading="loading"
-        :empty-box-visible="emptyBoxVisible"
+        :empty-visible="emptyVisible"
         :models="models?.items || []"
       />
 
@@ -185,9 +185,9 @@ const openDisplayOptionsModal = () => {
       />
     </template>
 
-    <template #empty="{ hideEmptyBox, emptyBoxVisible }">
+    <template #empty="{ hideEmpty, emptyVisible }">
       <Empty
-        v-if="!hideEmptyBox && emptyBoxVisible"
+        v-if="!hideEmpty && emptyVisible"
         :name="t('models.name')"
         :variant="EmptyVariantsEnum.BOX"
       />
