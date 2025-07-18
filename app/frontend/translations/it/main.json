@@ -1,6 +1,5 @@
 {
   "it": {
-    "app": "FleetYards.net",
     "meta": {
       "description": "FleetYards.net, il tuo database per tutte le informazioni relative alle navi di “Star Citizen“.",
       "keywords": "Star Citizen, Astronavi, Navi, Caccia, Database, Squadron, 42, Star, Citizen, Italiano, Chris, Roberts, Online, Gioco, Spazio, Simulazione"
@@ -25,17 +24,33 @@
       "minCrew": "min. Equipaggio",
       "maxCrew": "max. Equipaggio",
       "scmSpeed": "Velocità SCM",
-      "afterburnerSpeed": "Velocità Afterburner",
-      "groundSpeed": "Velocità a Terra",
-      "afterburnerGroundSpeed": "con Afterburner",
-      "pitchMax": "Beccheggio Massimo",
-      "yawMax": "Imbardata Massima",
-      "rollMax": "Rollio Massimo",
+      "scmSpeedBoosted": "Velocità SCM Potenziata",
+      "reverseSpeedBoosted": "Velocità Indietro Potenziata",
+      "maxSpeed": "Velocità Massima",
+      "scm": "SCM",
+      "max": "Max",
+      "groundMaxSpeed": "Velocità Massima",
+      "groundReverseSpeed": "Velocità Indietro",
+      "pitch": "Beccheggio",
+      "pitchBoosted": "Beccheggio Potenziato",
+      "yaw": "Imbardata",
+      "yawBoosted": "Imbardata Potenziata",
+      "roll": "Rollio",
+      "rollBoosted": "Rollio Potenziato",
       "price": "Prezzo",
+      "groundAcceleration": "Accelerazione",
+      "groundDecceleration": "Decelerazione",
+      "scmSpeedAcceleration": "Zero a SCM",
+      "scmSpeedDecceleration": "SCM a Zero",
+      "maxSpeedAcceleration": "Zero a Max",
+      "maxSpeedDecceleration": "Max a Zero",
+      "compare": {
+        "groundMaxSpeed": "Velocità Massima a Terra",
+        "groundReverseSpeed": "Velocità Indietro a Terra",
+        "groundAcceleration": "Accelerazione a Terra",
+        "groundDecceleration": "Decelerazione a Terra"
+      },
       "pledgePrice": "Prezzo del Pledge",
-      "xaxisAcceleration": "Asse X",
-      "yaxisAcceleration": "Asse Y",
-      "zaxisAcceleration": "Asse Z",
       "quantumFuelTankSize": "Quantum Fuel",
       "hydrogenFuelTankSize": "Carburante",
       "height": "Altezza",
@@ -100,49 +115,20 @@
       "unconfirmed": "Elemento non confermato",
       "manufacturer": "Produttore"
     },
-    "shopCommodity": {
+    "availability": {
       "listedAt": "Elencato a",
       "soldAt": "Venduto a",
       "boughtAt": "Acquistato a"
     },
     "resources": {
       "models": "Navi",
+      "hardpoints": "Hardpoints",
       "images": "Immagini"
     },
     "pagination": {
       "previous": "Pagina precedente",
       "next": "Pagina successiva",
       "gap": "&hellip;"
-    },
-    "datetime": {
-      "formats": {
-        "default": "d MMMM y 'at' HH:mm z",
-        "iso": "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"
-      }
-    },
-    "number": {
-      "format": {
-        "precision": 2,
-        "strip_insignificant_zeros": true,
-        "delimiter": ".",
-        "separator": ","
-      },
-      "percent": "%{count} %",
-      "distance": "%{count} m",
-      "weight": "%{count} t",
-      "speed": "%{count} m/s",
-      "rateOfFire": "%{count} spari/min",
-      "rotation": "%{count} deg/s",
-      "cargo": "%{count} SCU",
-      "fuel": "%{count}",
-      "ships": {
-        "one": "%{count} nave",
-        "other": "%{count} navi"
-      },
-      "people": {
-        "one": "%{count} persona",
-        "other": "%{count} persone"
-      }
     }
   }
 }

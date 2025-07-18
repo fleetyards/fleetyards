@@ -1,79 +1,115 @@
 {
   "zh-CN": {
     "title": {
-      "main": "%{title} | FleetYards.net",
-      "home": "Home",
-      "search": "Search Results",
+      "default": "FleetYards.net",
+      "defaultShort": "FleetYards",
+      "defaultAdmin": "FleetYards.net Command",
+      "defaultAdminShort": "FltYrds Command",
+      "defaultDocs": "FleetYards.net Documentation",
+      "defaultDocsShort": "FleetYards Docs",
+      "home": "首页",
+      "search": "搜索结果",
       "ships": {
-        "index": "Ships"
+        "index": "舰船"
       },
       "ship": "%{name} - %{manufacturer}",
-      "shipImages": "%{name} Images",
-      "shipVideos": "%{name} Videos",
-      "images": "Images",
-      "stats": "Stats",
-      "login": "Login",
-      "signUp": "Sign Up",
+      "shipImages": "%{name} 图片",
+      "shipVideos": "%{name} 视频",
+      "images": "图片",
+      "stats": "统计",
+      "login": "登录",
+      "signUp": "注册",
+      "embed": "嵌入式小组件",
+      "apiV1": "API V1",
       "hangar": {
-        "index": "My Hangar",
-        "preview": "My Hangar Preview",
-        "stats": "My Hangar Stats",
-        "import": "Import",
-        "public": "%{user} Hangar",
-        "wishlist": "Wishlist",
-        "publicWishlist": "%{user} Wishlist"
+        "index": "我的机库",
+        "preview": "我的机库预览",
+        "stats": "我的机库统计",
+        "import": "导入",
+        "public": "%{user} 机库",
+        "wishlist": "心愿单",
+        "publicWishlist": "%{user} 心愿单"
       },
-      "stations": "Stations",
-      "shops": "Shops",
-      "starsystems": "Starsystems",
-      "starsystem": "%{starsystem} Starsystem",
-      "celestialObject": "%{celestialObject} in the %{starsystem} System",
-      "station": "%{station} near %{celestialObject}",
-      "stationImages": "Images of %{station} near %{celestialObject}",
-      "shop": "%{shop} - %{station}",
-      "requestPassword": "Request Password",
-      "changePassword": "Change Password",
+      "requestPassword": "请求密码",
+      "changePassword": "更改密码",
       "fleets": {
-        "add": "Create a new Fleet",
-        "preview": "Fleet Preview",
-        "invites": "Fleet Invites",
-        "members": "%{fleet} Members",
-        "stats": "%{fleet} Stats",
-        "settings": "%{fleet} Settings"
+        "add": "创建新舰队",
+        "preview": "舰队预览",
+        "invites": "舰队邀请",
+        "members": "%{fleet} 成员",
+        "stats": "%{fleet} 统计",
+        "settings": {
+          "index": "%{fleet} 设置",
+          "fleet": "%{fleet} 设置",
+          "membership": "%{fleet} 成员资格"
+        }
       },
       "roadmap": {
-        "index": "Roadmap",
-        "ships": "Ship-Roadmap",
-        "changes": "Roadmap Changes"
+        "index": "路线图",
+        "ships": "舰船路线图",
+        "changes": "路线图变更"
       },
       "settings": {
-        "index": "Profile Settings",
-        "account": "Account",
-        "hangar": "Hangar Settings",
-        "notifications": "Notification Settings",
-        "security": "Account Security",
+        "index": "个人设置",
+        "account": "账户",
+        "hangar": "机库设置",
+        "notifications": "通知设置",
+        "security": "账户安全",
         "twoFactor": {
-          "enable": "Enable Two-factor Authentiation",
-          "disable": "Disable Two-factor Authentiation",
-          "backupCodes": "Generate Two-Factor Backup Codes"
+          "enable": "启用双因素认证",
+          "disable": "禁用双因素认证",
+          "backupCodes": "生成双因素备份代码"
         }
       },
       "compare": {
-        "ships": "Compare Ships"
+        "ships": "比较舰船"
       },
       "notFound": "404",
       "tools": {
-        "profitCalculator": "Profit Calculator",
-        "tradeRoutes": "Trade Routes",
-        "travelTimes": "Travel Times"
+        "index": "工具",
+        "travelTimes": "旅行时间"
       },
-      "commodities": "Commodities",
-      "impressum": "Impressum",
-      "privacyPolicy": "Privacy policy",
-      "cookiePolicy": "Cookie policy",
+      "impressum": "版权声明",
+      "privacyPolicy": "隐私政策",
+      "cookiePolicy": "Cookie政策",
       "visualTests": {
-        "index": "Visual Tests",
-        "panels": "Panels - Visual Tests"
+        "index": "视觉测试",
+        "panels": "面板 - 视觉测试",
+        "buttons": "按钮 - 视觉测试",
+        "tables": "表格 - 视觉测试"
+      },
+      "admin": {
+        "models": {
+          "index": "模型",
+          "new": "新模型",
+          "edit": {
+            "index": "编辑模型",
+            "metrics": "编辑模型指标",
+            "prices": "编辑模型价格",
+            "fleetchart": "编辑模型舰队图",
+            "hardpoints": "编辑模型硬点",
+            "cargoAndFuel": "货物和燃料",
+            "docks": "编辑模型停靠点",
+            "videos": "编辑模型视频"
+          }
+        },
+        "components": {
+          "index": "组件",
+          "new": "新组件",
+          "edit": "编辑组件"
+        },
+        "manufacturers": {
+          "index": "制造商",
+          "new": "新制造商",
+          "edit": "编辑制造商"
+        },
+        "users": {
+          "index": "用户",
+          "edit": "编辑用户"
+        },
+        "vehicles": {
+          "index": "载具"
+        }
       }
     }
   }

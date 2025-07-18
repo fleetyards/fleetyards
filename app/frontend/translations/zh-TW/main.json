@@ -1,6 +1,5 @@
 {
   "zh-TW": {
-    "app": "FleetYards.net",
     "meta": {
       "description": "FleetYards.net, Your Database for all Information related to Ships from “Star Citizen“.",
       "keywords": "Star Citizen, Spaceships, Ships, Fighter, Database, Squadron, 42, Star, Citizen, English, Chris, Roberts, Online, Game, Space, Simulation"
@@ -24,27 +23,32 @@
       "speed": "Speed",
       "minCrew": "min. Crew",
       "maxCrew": "max. Crew",
-      "scmSpeed": "SCM Speed",
-      "maxSpeed": "Max Speed",
+      "scmSpeed": "SCM速度",
+      "scmSpeedBoosted": "SCM速度增強",
+      "reverseSpeedBoosted": "倒車速度增強",
+      "maxSpeed": "最大速度",
       "scm": "SCM",
-      "max": "Max",
-      "groundMaxSpeed": "Max Speed",
-      "groundReverseSpeed": "Reverse Speed",
-      "pitch": "Pitch",
-      "yaw": "Yaw",
-      "roll": "Roll",
-      "price": "Price",
-      "groundAcceleration": "Acceleration",
-      "groundDecceleration": "Decceleration",
-      "scmSpeedAcceleration": "Zero to SCM",
-      "scmSpeedDecceleration": "SCM to Zero",
-      "maxSpeedAcceleration": "Zero to Max",
-      "maxSpeedDecceleration": "Max to Zero",
+      "max": "最大",
+      "groundMaxSpeed": "最大速度",
+      "groundReverseSpeed": "倒車速度",
+      "pitch": "俯仰",
+      "pitchBoosted": "俯仰增強",
+      "yaw": "偏航",
+      "yawBoosted": "偏航增強",
+      "roll": "滾轉",
+      "rollBoosted": "滾轉增強",
+      "price": "價格",
+      "groundAcceleration": "加速度",
+      "groundDecceleration": "減速度",
+      "scmSpeedAcceleration": "零到SCM",
+      "scmSpeedDecceleration": "SCM到零",
+      "maxSpeedAcceleration": "零到最大",
+      "maxSpeedDecceleration": "最大到零",
       "compare": {
-        "groundMaxSpeed": "Max Ground Speed",
-        "groundReverseSpeed": "Reverse Ground Speed",
-        "groundAcceleration": "Ground Acceleration",
-        "groundDecceleration": "Ground Decceleration"
+        "groundMaxSpeed": "地面最大速度",
+        "groundReverseSpeed": "地面倒車速度",
+        "groundAcceleration": "地面加速度",
+        "groundDecceleration": "地面減速度"
       },
       "quantumFuelTankSize": "Quantum Fuel",
       "hydrogenFuelTankSize": "Fuel",
@@ -117,8 +121,9 @@
       "boughtAt": "Bought at"
     },
     "resources": {
-      "models": "Ships",
-      "images": "Images"
+      "models": "飛船",
+      "hardpoints": "掛載點",
+      "images": "圖片"
     },
     "pagination": {
       "previous": "Previous Page",

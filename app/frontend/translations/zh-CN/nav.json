@@ -1,74 +1,131 @@
 {
   "zh-CN": {
     "nav": {
-      "home": "Home",
-      "back": "Back",
+      "home": "主页",
+      "back": "返回",
       "ships": {
-        "index": "Ships"
+        "index": "飞船"
       },
       "compare": {
-        "index": "Compare",
-        "ships": "Compare Ships"
+        "index": "比较",
+        "ships": "比较飞船"
       },
-      "manufacturers": "Manufacturers",
-      "images": "Images",
-      "videos": "Videos",
-      "hangar": "My Hangar",
-      "login": "Login",
-      "logout": "Logout",
-      "signUp": "Sign up",
-      "privacyPolicy": "Privacy policy",
-      "privacySettings": "Privacy settings",
-      "impressum": "Impressum",
-      "admin": "Admin",
+      "manufacturers": "制造商",
+      "images": "图片",
+      "videos": "视频",
+      "hangar": "我的机库",
+      "login": "登录",
+      "logout": "登出",
+      "apiV1": "API v1",
+      "embed": "嵌入小部件",
+      "signUp": "注册",
+      "privacyPolicy": "隐私政策",
+      "privacySettings": "隐私设置",
+      "impressum": "法律声明",
       "fleets": {
-        "index": "Fleets",
-        "add": "Create a new Fleet",
-        "invites": "Invites",
-        "ships": "Ships",
-        "members": "Members",
-        "stats": "Stats",
+        "index": "舰队",
+        "add": "创建新舰队",
+        "invites": "邀请",
+        "ships": "飞船",
+        "members": "成员",
+        "stats": "统计",
         "settings": {
-          "index": "Settings",
-          "fleet": "Fleet Settings",
-          "membership": "Membership Settings"
+          "index": "设置",
+          "fleet": "舰队设置",
+          "membership": "成员设置"
         }
       },
-      "rsiProfile": "RSI Profile",
-      "rsiHangar": "RSI Hangar",
+      "rsiProfile": "RSI 档案",
+      "rsiHangar": "RSI 机库",
       "tools": {
-        "index": "Tools",
-        "tradeRoutes": "Trade Routes",
-        "travelTimes": "Travel Times"
+        "index": "工具",
+        "travelTimes": "旅行时间",
+        "cargoGrids": "货物网格"
       },
-      "api": "API Docs",
-      "stats": "Stats",
-      "toggleSlimCollapse": "Collapse",
-      "toggleSlimExpand": "Expand",
+      "api": "API 文档",
+      "stats": "统计",
+      "toggleSlimCollapse": "折叠",
+      "toggleSlimExpand": "展开",
       "roadmap": {
-        "index": "Roadmap",
-        "overview": "Overview",
-        "changes": "Changes",
-        "ships": "Ship-Roadmap"
+        "index": "路线图",
+        "overview": "概览",
+        "changes": "变更",
+        "ships": "飞船路线图"
       },
-      "rsiVerification": "RSI Verification",
+      "rsiVerification": "RSI 验证",
       "settings": {
-        "index": "Settings",
-        "profile": "Profile",
-        "account": "Account",
-        "security": "Security",
-        "notifications": "Notifications",
-        "hangar": "Hangar",
-        "verify": "RSI Account Verification"
+        "index": "设置",
+        "profile": "档案",
+        "account": "账户",
+        "security": "安全",
+        "notifications": "通知",
+        "hangar": "机库",
+        "verify": "RSI 账户验证"
       },
-      "starsystems": "Starsystems",
-      "stations": {
-        "index": "Stations",
-        "overview": "Overview",
-        "starsystems": "By Starsystems",
-        "shops": "Shops"
+      "reload": "有可用更新！",
+      "visualTests": {
+        "index": "视觉测试",
+        "panels": "面板",
+        "buttons": "按钮",
+        "tables": "表格"
       },
-      "reload": "Update available!"
+      "admin": {
+        "index": "管理员",
+        "models": {
+          "index": "模型",
+          "create": "创建模型",
+          "edit": {
+            "index": "基础数据",
+            "metrics": "指标",
+            "prices": "价格",
+            "docks": "停靠点",
+            "videos": "视频",
+            "cargoAndFuel": "货物和燃料",
+            "fleetchart": "舰队图表图片",
+            "hardpoints": "武器挂点"
+          }
+        },
+        "modelPaints": {
+          "index": "涂装",
+          "create": "创建涂装"
+        },
+        "modelModules": {
+          "index": "模块",
+          "create": "创建模块"
+        },
+        "modelModulePackages": {
+          "index": "模块包",
+          "create": "创建模块包"
+        },
+        "components": {
+          "index": "组件"
+        },
+        "manufacturers": {
+          "index": "制造商"
+        },
+        "images": {
+          "index": "图片"
+        },
+        "users": {
+          "index": "用户"
+        },
+        "fleets": {
+          "index": "舰队"
+        },
+        "vehicles": {
+          "index": "载具"
+        },
+        "admins": {
+          "index": "管理员"
+        },
+        "maintenance": {
+          "index": "维护",
+          "pghero": "PG-Hero",
+          "features": "功能",
+          "workers": "工作进程",
+          "rsiApiStatus": "RSI API 状态"
+        }
+      }
     }
   }
 }

@@ -49,14 +49,24 @@
         "success": "Password modificata correttamente.",
         "failure": "La tua password non può essere cambiata."
       },
-      "updateProfile": { "success": "Profilo aggiornato." },
+      "updateProfile": {
+        "success": "Profilo aggiornato.",
+        "failure": "Il profilo non può essere aggiornato."
+      },
       "updateHangar": { "success": "Impostazioni Hangar aggiornate." },
       "updateNotifications": {
         "success": "Impostazioni notifiche aggiornate."
       },
       "updateAccount": { "success": "Account aggiornato." },
       "avatarUpload": {
-        "success": "Avatar caricato",
+        "create": {
+          "success": "Avatar caricato",
+          "failure": "Impossibile caricare l'Avatar"
+        },
+        "destroy": {
+          "success": "Avatar rimosso",
+          "failure": "Impossibile rimuovere l'Avatar"
+        },
         "invalidExtension": "L'immagine che hai fornito ha un formato non valido. I formati supportati sono: %{extensions}."
       },
       "hangarImport": {
@@ -70,19 +80,26 @@
       },
       "vehicle": {
         "add": {
-          "success": "La tua nuova <b>%{model}</b> sarà consegnata al tuo <a href=\"/hangar\">Hangar</a>"
+          "success": {
+            "noHtml": "La tua nuova %{model} sarà consegnata al tuo Hangar",
+            "paragraph1": "La tua nuova ",
+            "paragraph2": "sarà consegnata al tuo "
+          }
         },
         "addToWishlist": {
-          "success": "Your new <b>%{model}</b> was added to your <a href=\"/hangar/wishlist\">Wishlist</a>"
+          "success": {
+            "noHtml": "La tua nuova %{model} è stata aggiunta alla tua Lista dei Desideri",
+            "paragraph2": "è stata aggiunta alla tua "
+          }
         },
         "resetIngame": {
           "moveToWishlist": {
-            "success": "Moved all Ingame bought Ships to your Wishlist.",
-            "failure": "Could not move all Ingame bought Ships to your Wishlist."
+            "success": "Tutte le navi acquistate in-game sono state spostate nella tua Lista dei Desideri.",
+            "failure": "Impossibile spostare tutte le navi acquistate in-game nella tua Lista dei Desideri."
           },
           "removeAll": {
-            "success": "Removed all Ingame bought Ships from your Hangar.",
-            "failure": "Could not remove all Ingame bought Ships from your Hangar."
+            "success": "Tutte le navi acquistate in-game sono state rimosse dal tuo Hangar.",
+            "failure": "Impossibile rimuovere tutte le navi acquistate in-game dal tuo Hangar."
           }
         }
       },
@@ -107,15 +124,21 @@
         "urlInvalid": "L'URL non è valido",
         "emailTaken": "Email già utilizzata.",
         "fleetTaken": "Nome Flotta già in uso.",
+        "colorInvalid": "Il colore non è valido",
         "serialTaken": "Seriale già in uso.",
         "textInvalid": "%{field} non è valido",
         "hangar": {
-          "accountRequired": "You need to <a href=\"/sign-up/\">Sign up</a> or <a href=\"/login/\">Login</a> to add Ships to your Hangar.<br>Get more Information <a href=\"/hangar/preview/\">here</a>"
+          "accountRequired": {
+            "noHtml": "Devi registrarti o effettuare il login per aggiungere navi al tuo Hangar.",
+            "paragraph1": "Devi ",
+            "paragraph2": " per aggiungere navi al tuo Hangar.",
+            "paragraph3": "Ottieni più informazioni "
+          }
         },
         "commodityPrice": {
-          "accountRequired": "You need to <a href=\"/sign-up/\">Sign up</a> or <a href=\"/login/\">Login</a> to submit Prices."
+          "accountRequired": "Devi <a href=\"/sign-up/\">registrarti</a> o <a href=\"/login/\">effettuare il login</a> per inviare prezzi."
         },
-        "default": "<b>Something wrong happened.</b> <br>Have you tried turning it off and on again?"
+        "default": "<b>Si è verificato un errore.</b> <br>Hai provato a spegnere e riaccendere?"
       },
       "account": {
         "destroy": {
@@ -205,10 +228,10 @@
           "destroyAll": "Sei sicuro di voler rimuovere tutte le navi dall'Hangar? Questa azione non può essere annullata."
         },
         "wishlist": {
-          "destroyAll": "Are you sure you want to remove all Ships from you Wishlist? This Action can't be reverted."
+          "destroyAll": "Sei sicuro di voler rimuovere tutte le navi dalla tua Lista dei Desideri? Questa azione non può essere annullata."
         },
         "tradeRoutes": {
-          "reset": "Are you sure you want to reset all commodity prices?"
+          "reset": "Sei sicuro di voler resettare tutti i prezzi delle merci?"
         },
         "account": {
           "destroy": "Sei sicuro di voler eliminare il tuo account? Questa azione non potrà essere annullata."
@@ -217,7 +240,7 @@
           "destroy": "Sei sicuro di voler eliminare questo prezzo? Questa azione non potrà essere annullata."
         },
         "shopCommodity": {
-          "destroy": "Are you sure you want to destroy this Commodity? This Action can't be reverted."
+          "destroy": "Sei sicuro di voler eliminare questa merce? Questa azione non può essere annullata."
         },
         "fleet": {
           "leave": "Sei sicuro di voler lasciare questa Flotta? Questa azione non potrà essere annullata.",
@@ -230,14 +253,14 @@
           }
         },
         "twoFactor": {
-          "generateBackupCodes": "Sei sicuro di voler generare nuovi Codici di Backup per la 2FA?"
+          "generateBackupCodes": "Sei sicuro di voler rigenerare i tuoi codici di backup per l'autenticazione a due fattori?"
         }
       },
       "syncExtension": {
-        "started": "Syncing your Hangar...",
-        "success": "Your Hangar has been synced.",
-        "failure": "Your Hangar could not be synced.",
-        "notLoggedIn": "You need to be logged in on <a href=\"https://robertsspaceindustries.com\" target=\"_blank\">https://robertsspaceindustries.com</a> to sync your Hangar."
+        "started": "Sincronizzazione del tuo Hangar in corso...",
+        "success": "Il tuo Hangar è stato sincronizzato.",
+        "failure": "Il tuo Hangar non può essere sincronizzato.",
+        "notLoggedIn": "Devi essere connesso su <a href=\"https://robertsspaceindustries.com\" target=\"_blank\">https://robertsspaceindustries.com</a> per sincronizzare il tuo Hangar."
       }
     }
   }

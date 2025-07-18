@@ -1,6 +1,5 @@
 {
   "de": {
-    "app": "FleetYards.net",
     "meta": {
       "description": "FleetYards.net, Deine Datenbank für alle Information rund um die Schiffe & Stationen von “Star Citizen“.",
       "keywords": "Star, Citizen, Spaceships, Raumschiffe, Weltraum, Ships, Fighter, Database, Squadron, 42, Star, Citizen, English, Chris, Roberts, Online, Game, Space, Simulation"
@@ -25,19 +24,35 @@
       "minCrew": "min. Besatzung",
       "maxCrew": "max. Besatzung",
       "scmSpeed": "SCM-Geschwindigkeit",
-      "afterburnerSpeed": "Nachbrenner Geschwindigkeit",
-      "groundSpeed": "Geschwindigkeit am Boden",
-      "afterburnerGroundSpeed": "mit Nachbrenner",
-      "pitchMax": "Max. Nick (Pitch)",
-      "yawMax": "Max. Gier (Yaw)",
-      "rollMax": "Roll-Max",
+      "scmSpeedBoosted": "SCM-Geschwindigkeit verstärkt",
+      "reverseSpeedBoosted": "Rückwärts-Geschwindigkeit verstärkt",
+      "maxSpeed": "Max-Geschwindigkeit",
+      "scm": "SCM",
+      "max": "Max",
+      "groundMaxSpeed": "Max-Geschwindigkeit",
+      "groundReverseSpeed": "Rückwärts-Geschwindigkeit",
+      "pitch": "Nick (Pitch)",
+      "pitchBoosted": "Nick verstärkt",
+      "yaw": "Gier (Yaw)",
+      "yawBoosted": "Gier verstärkt",
+      "roll": "Roll",
+      "rollBoosted": "Roll verstärkt",
       "price": "Preis",
-      "pledgePrice": "Pledge-Preis",
-      "xaxisAcceleration": "X-Achse",
-      "yaxisAcceleration": "Y-Achse",
-      "zaxisAcceleration": "Z-Achse",
+      "groundAcceleration": "Beschleunigung",
+      "groundDecceleration": "Abbremsung",
+      "scmSpeedAcceleration": "Null zu SCM",
+      "scmSpeedDecceleration": "SCM zu Null",
+      "maxSpeedAcceleration": "Null zu Max",
+      "maxSpeedDecceleration": "Max zu Null",
+      "compare": {
+        "groundMaxSpeed": "Max-Geschwindigkeit am Boden",
+        "groundReverseSpeed": "Rückwärts-Geschwindigkeit am Boden",
+        "groundAcceleration": "Beschleunigung am Boden",
+        "groundDecceleration": "Abbremsung am Boden"
+      },
       "quantumFuelTankSize": "Quantum Treibstoff",
       "hydrogenFuelTankSize": "Treibstoff",
+      "pledgePrice": "Pledge-Preis",
       "height": "Höhe",
       "length": "Länge",
       "mass": "Masse",
@@ -100,49 +115,20 @@
       "unconfirmed": "Item ist unbestätigt",
       "manufacturer": "Hersteller"
     },
-    "shopCommodity": {
+    "availability": {
       "listedAt": "Gelistet bei",
       "soldAt": "Verkauft bei",
       "boughtAt": "Gekauft von"
     },
     "resources": {
       "models": "Schiffe",
+      "hardpoints": "Aufhängungen",
       "images": "Bilder"
     },
     "pagination": {
       "previous": "Vorherige Seite",
       "next": "Nächste Seite",
       "gap": "&hellip;"
-    },
-    "datetime": {
-      "formats": {
-        "default": "L MMMM y 'um' HH:mm z",
-        "iso": "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"
-      }
-    },
-    "number": {
-      "format": {
-        "precision": 2,
-        "strip_insignificant_zeros": true,
-        "delimiter": ".",
-        "separator": "."
-      },
-      "percent": "%{count} %",
-      "distance": "%{count} m",
-      "weight": "%{count} t",
-      "speed": "%{count} m/s",
-      "rateOfFire": "%{count} Schüsse/min",
-      "rotation": "%{count} Grad/s",
-      "cargo": "%{count} SCU",
-      "fuel": "%{count}",
-      "ships": {
-        "one": "%{count} Schiff",
-        "other": "%{count} Schiffe"
-      },
-      "people": {
-        "one": "%{count} Person",
-        "other": "%{count} Personen"
-      }
     }
   }
 }

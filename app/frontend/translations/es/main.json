@@ -1,6 +1,5 @@
 {
   "es": {
-    "app": "FleetYards.net",
     "meta": {
       "description": "FleetYards.net, Your Database for all Information related to Ships from “Star Citizen“.",
       "keywords": "Star Citizen, Spaceships, Ships, Fighter, Database, Squadron, 42, Star, Citizen, English, Chris, Roberts, Online, Game, Space, Simulation"
@@ -25,17 +24,33 @@
       "minCrew": "min. Crew",
       "maxCrew": "max. Crew",
       "scmSpeed": "SCM Speed",
-      "afterburnerSpeed": "Afterburner Speed",
-      "groundSpeed": "Ground Speed",
-      "afterburnerGroundSpeed": "with Afterburner",
-      "pitchMax": "Pitch Max",
-      "yawMax": "Yaw Max",
-      "rollMax": "Roll Max",
+      "scmSpeedBoosted": "SCM Speed Boosted",
+      "reverseSpeedBoosted": "Reverse Speed Boosted",
+      "maxSpeed": "Max Speed",
+      "scm": "SCM",
+      "max": "Max",
+      "groundMaxSpeed": "Max Speed",
+      "groundReverseSpeed": "Reverse Speed",
+      "pitch": "Pitch",
+      "pitchBoosted": "Pitch Boosted",
+      "yaw": "Yaw",
+      "yawBoosted": "Yaw Boosted",
+      "roll": "Roll",
+      "rollBoosted": "Roll Boosted",
       "price": "Price",
+      "groundAcceleration": "Acceleration",
+      "groundDecceleration": "Decceleration",
+      "scmSpeedAcceleration": "Zero to SCM",
+      "scmSpeedDecceleration": "SCM to Zero",
+      "maxSpeedAcceleration": "Zero to Max",
+      "maxSpeedDecceleration": "Max to Zero",
+      "compare": {
+        "groundMaxSpeed": "Max Ground Speed",
+        "groundReverseSpeed": "Reverse Ground Speed",
+        "groundAcceleration": "Ground Acceleration",
+        "groundDecceleration": "Ground Decceleration"
+      },
       "pledgePrice": "Pledge Price",
-      "xaxisAcceleration": "X-Axis",
-      "yaxisAcceleration": "Y-Axis",
-      "zaxisAcceleration": "Z-Axis",
       "quantumFuelTankSize": "Quantum Fuel",
       "hydrogenFuelTankSize": "Fuel",
       "height": "Height",
@@ -100,49 +115,20 @@
       "unconfirmed": "Item is unconfirmed",
       "manufacturer": "Manufacturer"
     },
-    "shopCommodity": {
+    "availability": {
       "listedAt": "Listed at",
       "soldAt": "Sold at",
       "boughtAt": "Bought at"
     },
     "resources": {
       "models": "Ships",
+      "hardpoints": "Hardpoints",
       "images": "Images"
     },
     "pagination": {
       "previous": "Previous Page",
       "next": "Next Page",
       "gap": "&hellip;"
-    },
-    "datetime": {
-      "formats": {
-        "default": "d MMMM y 'at' HH:mm z",
-        "iso": "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"
-      }
-    },
-    "number": {
-      "format": {
-        "precision": 2,
-        "strip_insignificant_zeros": true,
-        "delimiter": ".",
-        "separator": ","
-      },
-      "percent": "%{count} %",
-      "distance": "%{count} m",
-      "weight": "%{count} t",
-      "speed": "%{count} m/s",
-      "rateOfFire": "%{count} shots/min",
-      "rotation": "%{count} deg/s",
-      "cargo": "%{count} SCU",
-      "fuel": "%{count}",
-      "ships": {
-        "one": "%{count} ship",
-        "other": "%{count} ships"
-      },
-      "people": {
-        "one": "%{count} person",
-        "other": "%{count} persons"
-      }
     }
   }
 }

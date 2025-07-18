@@ -1,7 +1,12 @@
 {
   "fr": {
     "title": {
-      "main": "%{title} | FleetYards.net",
+      "default": "FleetYards.net",
+      "defaultShort": "FleetYards",
+      "defaultAdmin": "FleetYards.net Command",
+      "defaultAdminShort": "FltYrds Command",
+      "defaultDocs": "FleetYards.net Documentation",
+      "defaultDocsShort": "FleetYards Docs",
       "home": "Accueil",
       "search": "Résultats de la recherche",
       "ships": { "index": "Vaisseaux" },
@@ -12,6 +17,8 @@
       "stats": "Statistiques",
       "login": "Se connecter",
       "signUp": "S'inscrire",
+      "embed": "Widget Intégré",
+      "apiV1": "API V1",
       "hangar": {
         "index": "Mon Hangar",
         "preview": "Aperçu de mon Hangar",
@@ -21,14 +28,6 @@
         "wishlist": "Liste de souhait",
         "publicWishlist": "%{user} Liste de souhait"
       },
-      "stations": "Stations",
-      "shops": "Points de vente",
-      "starsystems": "Systèmes planétaires",
-      "starsystem": "Le système %{starsystem}",
-      "celestialObject": "%{celestialObject} dans le système %{starsystem}",
-      "station": "%{station} à proximité de %{celestialObject}",
-      "stationImages": "Images de %{station} à proximité de %{celestialObject}",
-      "shop": "%{shop} - %{station}",
       "requestPassword": "Demander un mot de passe",
       "changePassword": "Modifier le mot de passe",
       "fleets": {
@@ -37,7 +36,11 @@
         "invites": "Invitations",
         "members": "Membres de %{fleet}",
         "stats": "Statistiques sur %{fleet}",
-        "settings": "Paramètres de %{fleet}"
+        "settings": {
+          "index": "Paramètres de %{fleet}",
+          "fleet": "Paramètres de %{fleet}",
+          "membership": "Adhésion à %{fleet}"
+        }
       },
       "roadmap": {
         "index": "Roadmap",
@@ -59,13 +62,51 @@
       "compare": { "ships": "Comparer les vaisseaux" },
       "notFound": "404",
       "tools": {
-        "profitCalculator": "Calculatrice de profits",
-        "tradeRoutes": "Routes commerciales"
+        "index": "Outils",
+        "travelTimes": "Temps de Voyage"
       },
-      "commodities": "Marchandises",
       "impressum": "Mentions légales",
       "privacyPolicy": "Politique de confidentialité",
-      "cookiePolicy": "Politique relative aux cookies"
+      "cookiePolicy": "Politique relative aux cookies",
+      "visualTests": {
+        "index": "Tests Visuels",
+        "panels": "Panneaux - Tests Visuels",
+        "buttons": "Boutons - Tests Visuels",
+        "tables": "Tableaux - Tests Visuels"
+      },
+      "admin": {
+        "models": {
+          "index": "Modèles",
+          "new": "Nouveau Modèle",
+          "edit": {
+            "index": "Éditer le Modèle",
+            "metrics": "Éditer les Métriques du Modèle",
+            "prices": "Éditer les Prix du Modèle",
+            "fleetchart": "Éditer les Images du Modèle",
+            "hardpoints": "Éditer les Points de Montage du Modèle",
+            "cargoAndFuel": "Cargaison et Carburant",
+            "docks": "Éditer les Quais du Modèle",
+            "videos": "Éditer les Vidéos du Modèle"
+          }
+        },
+        "components": {
+          "index": "Composants",
+          "new": "Nouveau Composant",
+          "edit": "Éditer le Composant"
+        },
+        "manufacturers": {
+          "index": "Fabricants",
+          "new": "Nouveau Fabricant",
+          "edit": "Éditer le Fabricant"
+        },
+        "users": {
+          "index": "Utilisateurs",
+          "edit": "Éditer l'Utilisateur"
+        },
+        "vehicles": {
+          "index": "Véhicules"
+        }
+      }
     }
   }
 }

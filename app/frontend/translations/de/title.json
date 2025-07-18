@@ -1,71 +1,112 @@
 {
   "de": {
     "title": {
-      "main": "%{title} | FleetYards.net",
-      "home": "Home",
-      "search": "Search Results",
-      "ships": { "index": "Ships" },
+      "default": "FleetYards.net",
+      "defaultShort": "FleetYards",
+      "defaultAdmin": "FleetYards.net Command",
+      "defaultAdminShort": "FltYrds Command",
+      "defaultDocs": "FleetYards.net Documentation",
+      "defaultDocsShort": "FleetYards Docs",
+      "home": "Startseite",
+      "search": "Suchergebnisse",
+      "ships": { "index": "Schiffe" },
       "ship": "%{name} - %{manufacturer}",
-      "shipImages": "%{name} Images",
+      "shipImages": "%{name} Bilder",
       "shipVideos": "%{name} Videos",
-      "images": "Images",
-      "stats": "Stats",
-      "login": "Login",
-      "signUp": "Sign Up",
+      "images": "Bilder",
+      "stats": "Statistiken",
+      "login": "Anmelden",
+      "signUp": "Registrieren",
+      "embed": "Widget Einbetten",
+      "apiV1": "API V1",
       "hangar": {
-        "index": "My Hangar",
-        "preview": "My Hangar Preview",
-        "stats": "My Hangar Stats",
-        "import": "Import",
+        "index": "Mein Hangar",
+        "preview": "Mein Hangar Vorschau",
+        "stats": "Meine Hangar Statistiken",
+        "import": "Importieren",
         "public": "%{user} Hangar",
-        "wishlist": "Wishlist",
-        "publicWishlist": "%{user} Wishlist"
+        "wishlist": "Wunschliste",
+        "publicWishlist": "%{user} Wunschliste"
       },
-      "stations": "Stations",
-      "shops": "Shops",
-      "starsystems": "Starsystems",
-      "starsystem": "%{starsystem} Starsystem",
-      "celestialObject": "%{celestialObject} in the %{starsystem} System",
-      "station": "%{station} near %{celestialObject}",
-      "stationImages": "Images of %{station} near %{celestialObject}",
-      "shop": "%{shop} - %{station}",
-      "requestPassword": "Request Password",
-      "changePassword": "Change Password",
+      "requestPassword": "Passwort anfordern",
+      "changePassword": "Passwort ändern",
       "fleets": {
-        "add": "Create a new Fleet",
-        "preview": "Fleet Preview",
-        "invites": "Fleet Invites",
-        "members": "%{fleet} Members",
-        "stats": "%{fleet} Stats",
-        "settings": "%{fleet} Settings"
+        "add": "Neue Flotte erstellen",
+        "preview": "Flotten Vorschau",
+        "invites": "Flotten Einladungen",
+        "members": "%{fleet} Mitglieder",
+        "stats": "%{fleet} Statistiken",
+        "settings": {
+          "index": "%{fleet} Einstellungen",
+          "fleet": "%{fleet} Einstellungen",
+          "membership": "%{fleet} Mitgliedschaft"
+        }
       },
       "roadmap": {
         "index": "Roadmap",
-        "ships": "Ship-Roadmap",
-        "changes": "Roadmap Changes"
+        "ships": "Schiff-Roadmap",
+        "changes": "Roadmap Änderungen"
       },
       "settings": {
-        "index": "Profile Settings",
-        "account": "Account",
-        "hangar": "Hangar Settings",
-        "notifications": "Notification Settings",
-        "security": "Account Security",
+        "index": "Profil Einstellungen",
+        "account": "Konto",
+        "hangar": "Hangar Einstellungen",
+        "notifications": "Benachrichtigungseinstellungen",
+        "security": "Konto Sicherheit",
         "twoFactor": {
-          "enable": "Enable Two-factor Authentiation",
-          "disable": "Disable Two-factor Authentiation",
-          "backupCodes": "Generate Two-Factor Backup Codes"
+          "enable": "Zwei-Faktor-Authentifizierung aktivieren",
+          "disable": "Zwei-Faktor-Authentifizierung deaktivieren",
+          "backupCodes": "Zwei-Faktor-Backup-Codes generieren"
         }
       },
-      "compare": { "ships": "Compare Ships" },
+      "compare": { "ships": "Schiffe vergleichen" },
       "notFound": "404",
       "tools": {
-        "profitCalculator": "Profit Calculator",
-        "tradeRoutes": "Trade Routes"
+        "index": "Werkzeuge",
+        "travelTimes": "Reisezeiten"
       },
-      "commodities": "Commodities",
       "impressum": "Impressum",
-      "privacyPolicy": "Privacy policy",
-      "cookiePolicy": "Cookie policy"
+      "privacyPolicy": "Datenschutzrichtlinie",
+      "cookiePolicy": "Cookie-Richtlinie",
+      "visualTests": {
+        "index": "Visuelle Tests",
+        "panels": "Panels - Visuelle Tests",
+        "buttons": "Buttons - Visuelle Tests",
+        "tables": "Tabellen - Visuelle Tests"
+      },
+      "admin": {
+        "models": {
+          "index": "Modelle",
+          "new": "Neues Modell",
+          "edit": {
+            "index": "Modell bearbeiten",
+            "metrics": "Modell Metriken bearbeiten",
+            "prices": "Modell Preise bearbeiten",
+            "fleetchart": "Modell Flottendiagramm-Bilder bearbeiten",
+            "hardpoints": "Modell Hardpoints bearbeiten",
+            "cargoAndFuel": "Fracht und Treibstoff",
+            "docks": "Modell Docks bearbeiten",
+            "videos": "Modell Videos bearbeiten"
+          }
+        },
+        "components": {
+          "index": "Komponenten",
+          "new": "Neue Komponente",
+          "edit": "Komponente bearbeiten"
+        },
+        "manufacturers": {
+          "index": "Hersteller",
+          "new": "Neuer Hersteller",
+          "edit": "Hersteller bearbeiten"
+        },
+        "users": {
+          "index": "Benutzer",
+          "edit": "Benutzer bearbeiten"
+        },
+        "vehicles": {
+          "index": "Fahrzeuge"
+        }
+      }
     }
   }
 }

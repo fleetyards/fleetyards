@@ -43,215 +43,236 @@
         "failure": "你的账户无法确认。"
       },
       "requestPasswordChange": {
-        "success": "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."
+        "success": "如果您的邮箱地址存在于我们的数据库中，您将在几分钟内收到密码恢复链接。"
       },
       "changePassword": {
-        "success": "Your password was changed successfully.",
-        "failure": "Your password could not be updated."
+        "success": "您的密码已成功更改。",
+        "failure": "无法更新您的密码。"
       },
       "updateProfile": {
-        "success": "Profile updated."
+        "success": "资料已更新。",
+        "failure": "无法更新资料。"
       },
       "updateHangar": {
-        "success": "Hangar Settings updated."
+        "success": "机库设置已更新。"
       },
       "updateNotifications": {
-        "success": "Notification Settings updated."
+        "success": "通知设置已更新。"
       },
       "updateAccount": {
-        "success": "Account updated."
+        "success": "账户已更新。"
       },
       "avatarUpload": {
-        "success": "Avatar uploaded",
-        "invalidExtension": "The Picture you provided has an invalid Format. Supported Formats are: %{extensions}."
+        "create": {
+          "success": "头像已上传",
+          "failure": "无法上传头像"
+        },
+        "destroy": {
+          "success": "头像已移除",
+          "failure": "无法移除头像"
+        },
+        "invalidExtension": "您提供的图片格式无效。支持的格式：%{extensions}。"
       },
       "hangarImport": {
-        "success": "Import completed",
-        "partialSuccess": "Import partially completed.<br><br>Not found Ships: <br>%{missing}",
-        "failure": "Import failed",
-        "invalidExtension": "The Import you provided has an invalid Format. Supported Formats are: %{extensions}."
+        "success": "导入完成",
+        "partialSuccess": "导入部分完成。<br><br>未找到的飞船：<br>%{missing}",
+        "failure": "导入失败",
+        "invalidExtension": "您提供的导入文件格式无效。支持的格式：%{extensions}。"
       },
       "hangarExport": {
-        "failure": "Export failed, Please try again later."
+        "failure": "导出失败，请稍后再试。"
       },
       "vehicle": {
         "add": {
-          "success": "Your new <b>%{model}</b> will be delivered to your <a href=\"/hangar\">Hangar</a>"
+          "success": {
+            "noHtml": "您的新 %{model} 将被交付到您的机库",
+            "paragraph1": "您的新 ",
+            "paragraph2": "将被交付到您的 "
+          }
         },
         "addToWishlist": {
-          "success": "Your new <b>%{model}</b> was added to your <a href=\"/hangar/wishlist\">Wishlist</a>"
+          "success": {
+            "noHtml": "您的新 %{model} 已添加到您的愿望清单",
+            "paragraph2": "已添加到您的 "
+          }
         },
         "resetIngame": {
           "moveToWishlist": {
-            "success": "Moved all Ingame bought Ships to your Wishlist.",
-            "failure": "Could not move all Ingame bought Ships to your Wishlist."
+            "success": "已将所有游戏内购买的飞船移动到您的愿望清单。",
+            "failure": "无法将所有游戏内购买的飞船移动到您的愿望清单。"
           },
           "removeAll": {
-            "success": "Removed all Ingame bought Ships from your Hangar.",
-            "failure": "Could not remove all Ingame bought Ships from your Hangar."
+            "success": "已从您的机库中移除所有游戏内购买的飞船。",
+            "failure": "无法从您的机库中移除所有游戏内购买的飞船。"
           }
         }
       },
       "model": {
-        "onSale": "%{model} now on Sale!"
+        "onSale": "%{model} 现在特价销售！"
       },
       "notification": {
-        "granted": "Welcome to FleetYards.net Notifications!"
+        "granted": "欢迎使用 FleetYards.net 通知！"
       },
       "twoFactor": {
         "enable": {
-          "success": "Two-factor Authentication enabled!",
-          "failure": "Could not enable Two-factor Authentication."
+          "success": "双因素认证已启用！",
+          "failure": "无法启用双因素认证。"
         },
         "disable": {
-          "success": "Two-factor Authentication disabled!",
-          "failure": "Could not diable Two-factor Authentication."
+          "success": "双因素认证已禁用！",
+          "failure": "无法禁用双因素认证。"
         },
         "backupCodes": {
-          "failure": "Backup Codes could not be generated."
+          "failure": "无法生成备份代码。"
         }
       },
       "error": {
-        "usernameTaken": "Username is already taken.",
-        "userNotFound": "User not found",
-        "urlInvalid": "URL is invalid",
-        "emailTaken": "Email is already taken.",
-        "fleetTaken": "Fleet is already taken.",
-        "serialTaken": "Serial is already taken.",
-        "textInvalid": "%{field} is invalid",
+        "usernameTaken": "用户名已被占用。",
+        "userNotFound": "用户未找到",
+        "urlInvalid": "URL 无效",
+        "emailTaken": "邮箱已被占用。",
+        "fleetTaken": "舰队名已被占用。",
+        "colorInvalid": "颜色无效",
+        "serialTaken": "序列号已被占用。",
+        "textInvalid": "%{field} 无效",
         "hangar": {
-          "accountRequired": "You need to <a href=\"/sign-up/\">Sign up</a> or <a href=\"/login/\">Login</a> to add Ships to your Hangar.<br>Get more Information <a href=\"/hangar/preview/\">here</a>"
+          "accountRequired": {
+            "noHtml": "您需要注册或登录以向机库添加飞船。",
+            "paragraph1": "您需要 ",
+            "paragraph2": " 以向机库添加飞船。",
+            "paragraph3": "获取更多信息 "
+          }
         },
         "commodityPrice": {
-          "accountRequired": "You need to <a href=\"/sign-up/\">Sign up</a> or <a href=\"/login/\">Login</a> to submit Prices."
+          "accountRequired": "您需要 <a href=\"/sign-up/\">注册</a> 或 <a href=\"/login/\">登录</a> 以提交价格。"
         },
-        "default": "<b>Something wrong happened.</b> <br>Have you tried turning it off and on again?"
+        "default": "<b>出现了一些问题。</b> <br>您是否尝试过关闭并重新打开？"
       },
       "account": {
         "destroy": {
-          "success": "<b>Your Account has been destroyed.</b> <br>Sad to see you go :'(",
-          "failure": "We could not destroy your Account! Please try again later."
+          "success": "<b>您的账户已被删除。</b> <br>很遗憾看到您离开 :'(",
+          "failure": "我们无法删除您的账户！请稍后再试。"
         }
       },
       "commodityPrice": {
         "create": {
-          "success": "Thank you for your price submission."
+          "success": "感谢您提交价格信息。"
         }
       },
       "fleet": {
         "create": {
-          "success": "Your Fleet has been created.",
-          "failure": "Fleet could not be saved."
+          "success": "您的舰队已创建。",
+          "failure": "舰队无法保存。"
         },
         "update": {
-          "success": "Settings saved.",
-          "failure": "Settings could not be saved."
+          "success": "设置已保存。",
+          "failure": "设置无法保存。"
         },
         "destroy": {
-          "success": "Your Fleet has been destroyed.",
-          "failure": "We could not destroy your Fleet."
+          "success": "您的舰队已被删除。",
+          "failure": "我们无法删除您的舰队。"
         },
         "leave": {
-          "success": "You have left the Fleet.",
-          "failure": "Could not leave the Fleet."
+          "success": "您已离开舰队。",
+          "failure": "无法离开舰队。"
         },
         "invites": {
           "accept": {
-            "success": "Invite accepted.",
-            "failure": "Could not accept Invite."
+            "success": "邀请已接受。",
+            "failure": "无法接受邀请。"
           },
           "decline": {
-            "success": "Invite declined.",
-            "failure": "Could not decline Invite."
+            "success": "邀请已拒绝。",
+            "failure": "无法拒绝邀请。"
           },
           "create": {
-            "failure": "Could not invite User."
+            "failure": "无法邀请用户。"
           }
         },
         "members": {
           "update": {
-            "success": "Settings saved.",
-            "failure": "Settings could not be saved."
+            "success": "设置已保存。",
+            "failure": "设置无法保存。"
           },
           "destroy": {
-            "success": "Member removed.",
-            "failure": "Member could not be removed."
+            "success": "成员已移除。",
+            "failure": "无法移除成员。"
           },
           "demote": {
-            "success": "Member demoted.",
-            "failure": "Member could not be demoted."
+            "success": "成员已降级。",
+            "failure": "无法降级成员。"
           },
           "promote": {
-            "success": "Member promoted.",
-            "failure": "Member could not be promoted."
+            "success": "成员已升级。",
+            "failure": "无法升级成员。"
           },
           "accept": {
-            "success": "Member accepted.",
-            "failure": "Member could not be accepted."
+            "success": "成员已接受。",
+            "failure": "无法接受成员。"
           },
           "decline": {
-            "success": "Member declined.",
-            "failure": "Member could not be declined."
+            "success": "成员已拒绝。",
+            "failure": "无法拒绝成员。"
           }
         }
       },
       "fleetInvite": {
-        "used": "<b>Join request for %{fleet} send!</b><br>Once your Membership is accepted you will be notified via email",
-        "failure": "Invite could not be used.",
-        "notFound": "Invite not found.",
-        "confirm": "Are you sure you want to join the Fleet: \"%{fleet}\"?"
+        "used": "<b>%{fleet} 的加入请求已发送！</b><br>一旦您的会员资格被接受，您将通过电子邮件收到通知",
+        "failure": "邀请无法使用。",
+        "notFound": "邀请未找到。",
+        "confirm": "您确定要加入舰队：\"%{fleet}\"吗？"
       },
       "holoViewer": {
         "modelLoader": {
-          "failure": "We could not load the requested 3D model! Please try again later."
+          "failure": "我们无法加载请求的3D模型！请稍后再试。"
         }
       },
       "confirm": {
         "vehicle": {
-          "destroy": "Are you sure you want to remove this Ship from you Hangar?"
+          "destroy": "您确定要从机库中移除这艘飞船吗？"
         },
         "hangarGroup": {
-          "destroy": "Are you sure you want to remove this Group from you Hangar?"
+          "destroy": "您确定要从机库中移除这个群组吗？"
         },
         "hangar": {
-          "import": "Imported ships will be added to your Hangar without matching to exisiting Ships.<br><br>Supported Formats are: Fleetyards Export, Starship42 or HangarXplor.<br><br>Do you want to continue?",
-          "destroySelected": "Are you sure you want to remove all Selected Ships from you Hangar? This Action can't be reverted.",
-          "destroyAll": "Are you sure you want to remove all Ships from you Hangar? This Action can't be reverted."
+          "import": "导入的飞船将被添加到您的机库中，而不会与现有飞船进行匹配。<br><br>支持的格式：Fleetyards 导出、Starship42 或 HangarXplor。<br><br>您想继续吗？",
+          "destroySelected": "您确定要从机库中移除所有选定的飞船吗？此操作无法撤销。",
+          "destroyAll": "您确定要从机库中移除所有飞船吗？此操作无法撤销。"
         },
         "wishlist": {
-          "destroyAll": "Are you sure you want to remove all Ships from you Wishlist? This Action can't be reverted."
+          "destroyAll": "您确定要从愿望清单中移除所有飞船吗？此操作无法撤销。"
         },
         "tradeRoutes": {
-          "reset": "Are you sure you want to reset all commodity prices?"
+          "reset": "您确定要重置所有商品价格吗？"
         },
         "account": {
-          "destroy": "Are you sure you want to destroy your Account? This Action can't be reverted."
+          "destroy": "您确定要删除您的账户吗？此操作无法撤销。"
         },
         "commodityPrice": {
-          "destroy": "Are you sure you want to destroy this Price? This Action can't be reverted."
+          "destroy": "您确定要删除此价格吗？此操作无法撤销。"
         },
         "shopCommodity": {
-          "destroy": "Are you sure you want to destroy this Commodity? This Action can't be reverted."
+          "destroy": "您确定要删除此商品吗？此操作无法撤销。"
         },
         "fleet": {
-          "leave": "Are you sure you want to leave the Fleet? This Action can't be reverted.",
-          "destroy": "Are you sure you want to destroy your Fleet? This Action can't be reverted.",
+          "leave": "您确定要离开舰队吗？此操作无法撤销。",
+          "destroy": "您确定要删除您的舰队吗？此操作无法撤销。",
           "members": {
-            "destroy": "Are you sure you want to remove this Member?"
+            "destroy": "您确定要移除此成员吗？"
           },
           "invites": {
-            "decline": "Are you sure you want to decline this Invite? This Action can't be reverted."
+            "decline": "您确定要拒绝此邀请吗？此操作无法撤销。"
           }
         },
         "twoFactor": {
-          "generateBackupCodes": "Are you sure you want to regenerate your Two-factor Backup Codes?"
+          "generateBackupCodes": "您确定要重新生成您的双因素认证备份代码吗？"
         }
       },
       "syncExtension": {
-        "started": "Syncing your Hangar...",
-        "success": "Your Hangar has been synced.",
-        "failure": "Your Hangar could not be synced.",
-        "notLoggedIn": "You need to be logged in on <a href=\"https://robertsspaceindustries.com\" target=\"_blank\">https://robertsspaceindustries.com</a> to sync your Hangar."
+        "started": "正在同步您的机库...",
+        "success": "您的机库已同步。",
+        "failure": "您的机库无法同步。",
+        "notLoggedIn": "您需要登录 <a href=\"https://robertsspaceindustries.com\" target=\"_blank\">https://robertsspaceindustries.com</a> 以同步您的机库。"
       }
     }
   }

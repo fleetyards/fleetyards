@@ -2,236 +2,244 @@
   "fr": {
     "messages": {
       "copy": {
-        "success": "Text Copied!",
-        "failure": "Could not copy Text"
+        "success": "Texte copié !",
+        "failure": "Impossible de copier le texte"
       },
       "copyGitRevision": {
-        "success": "Git Revision Copied!",
-        "failure": "Could not copy Git Revision"
+        "success": "Révision Git copiée !",
+        "failure": "Impossible de copier la révision Git"
       },
       "copyImageUrl": {
-        "success": "Image URL Copied!",
-        "failure": "Could not copy Image URL"
+        "success": "URL de l'image copiée !",
+        "failure": "Impossible de copier l'URL de l'image"
       },
       "copyVideoUrl": {
-        "success": "Video URL Copied!",
-        "failure": "Could not copy Video URL"
+        "success": "URL de la vidéo copiée !",
+        "failure": "Impossible de copier l'URL de la vidéo"
       },
       "copyShareUrl": {
-        "success": "URL \"%{url}\" Copied!",
-        "failure": "Could not copy URL"
+        "success": "URL \"%{url}\" copiée !",
+        "failure": "Impossible de copier l'URL"
       },
       "copyInviteUrl": {
-        "success": "Invite URL \"%{url}\" Copied!",
-        "failure": "Could not copy Invite URL"
+        "success": "URL d'invitation \"%{url}\" copiée !",
+        "failure": "Impossible de copier l'URL d'invitation"
       },
       "copyTwoFactorProvisioningUrl": {
-        "success": "Provisioning Url Copied!",
-        "failure": "Could not copy Provisioning Url"
+        "success": "URL de provisionnement copiée !",
+        "failure": "Impossible de copier l'URL de provisionnement"
       },
       "copyBackupCodes": {
-        "success": "Backup Codes Copied!",
-        "failure": "Could not copy Backup Codes"
+        "success": "Codes de sauvegarde copiés !",
+        "failure": "Impossible de copier les codes de sauvegarde"
       },
       "signup": {
-        "success": "<b>Welcome to FleetYards.net!</b> Your account has been created. <br>You will receive a confirmation email to activate your account.",
-        "invalid": "Please resolve the errors before your account can be created.",
-        "failure": "We could not create your account. Please try again later."
+        "success": "<b>Bienvenue sur FleetYards.net !</b> Votre compte a été créé. <br>Vous recevrez un email de confirmation pour activer votre compte.",
+        "invalid": "Veuillez résoudre les erreurs avant que votre compte puisse être créé.",
+        "failure": "Nous n'avons pas pu créer votre compte. Veuillez réessayer plus tard."
       },
       "accountConfirm": {
-        "success": "Your account was successfully confirmed.<br>You can now login.",
-        "failure": "Your account could not be confirmed."
+        "success": "Votre compte a été confirmé avec succès.<br>Vous pouvez maintenant vous connecter.",
+        "failure": "Votre compte n'a pas pu être confirmé."
       },
       "requestPasswordChange": {
-        "success": "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."
+        "success": "Si votre adresse email existe dans notre base de données, vous recevrez un lien de récupération de mot de passe à votre adresse email dans quelques minutes."
       },
       "changePassword": {
-        "success": "Your password was changed successfully.",
-        "failure": "Your password could not be updated."
+        "success": "Votre mot de passe a été modifié avec succès.",
+        "failure": "Votre mot de passe n'a pas pu être mis à jour."
       },
-      "updateProfile": { "success": "Profile updated." },
-      "updateHangar": { "success": "Hangar Settings updated." },
-      "updateNotifications": { "success": "Notification Settings updated." },
-      "updateAccount": { "success": "Account updated." },
+      "updateProfile": { "success": "Profil mis à jour." },
+      "updateHangar": { "success": "Paramètres du Hangar mis à jour." },
+      "updateNotifications": {
+        "success": "Paramètres de notification mis à jour."
+      },
+      "updateAccount": { "success": "Compte mis à jour." },
       "avatarUpload": {
-        "success": "Avatar uploaded",
-        "invalidExtension": "The Picture you provided has an invalid Format. Supported Formats are: %{extensions}."
+        "success": "Avatar chargé",
+        "invalidExtension": "L'image que vous avez fournie a un format invalide. Les formats supportés sont : %{extensions}."
       },
       "hangarImport": {
-        "success": "Import completed",
-        "partialSuccess": "Import partially completed.<br><br>Not found Ships: <br>%{missing}",
-        "failure": "Import failed",
-        "invalidExtension": "The Import you provided has an invalid Format. Supported Formats are: %{extensions}."
+        "success": "Importation terminée",
+        "partialSuccess": "Importation partiellement terminée.<br><br>Vaisseaux non trouvés : <br>%{missing}",
+        "failure": "Échec de l'importation",
+        "invalidExtension": "L'importation que vous avez fournie a un format invalide. Les formats supportés sont : %{extensions}."
       },
-      "hangarExport": { "failure": "Export failed, Please try again later." },
+      "hangarExport": {
+        "failure": "Échec de l'exportation, veuillez réessayer plus tard."
+      },
       "vehicle": {
         "add": {
-          "success": "Your new <b>%{model}</b> will be delivered to your <a href=\"/hangar\">Hangar</a>"
+          "success": "Votre nouveau <b>%{model}</b> sera livré à votre <a href=\"/hangar\">Hangar</a>"
         },
         "addToWishlist": {
-          "success": "Your new <b>%{model}</b> was added to your <a href=\"/hangar/wishlist\">Wishlist</a>"
+          "success": "Votre nouveau <b>%{model}</b> a été ajouté à votre <a href=\"/hangar/wishlist\">Liste de souhaits</a>"
         },
         "resetIngame": {
           "moveToWishlist": {
-            "success": "Moved all Ingame bought Ships to your Wishlist.",
-            "failure": "Could not move all Ingame bought Ships to your Wishlist."
+            "success": "Tous les vaisseaux achetés en jeu ont été déplacés vers votre liste de souhaits.",
+            "failure": "Impossible de déplacer tous les vaisseaux achetés en jeu vers votre liste de souhaits."
           },
           "removeAll": {
-            "success": "Removed all Ingame bought Ships from your Hangar.",
-            "failure": "Could not remove all Ingame bought Ships from your Hangar."
+            "success": "Tous les vaisseaux achetés en jeu ont été supprimés de votre Hangar.",
+            "failure": "Impossible de supprimer tous les vaisseaux achetés en jeu de votre Hangar."
           }
         }
       },
-      "model": { "onSale": "%{model} now on Sale!" },
-      "notification": { "granted": "Welcome to FleetYards.net Notifications!" },
+      "model": { "onSale": "%{model} maintenant en vente !" },
+      "notification": {
+        "granted": "Bienvenue aux notifications FleetYards.net !"
+      },
       "twoFactor": {
         "enable": {
-          "success": "Two-factor Authentication enabled!",
-          "failure": "Could not enable Two-factor Authentication."
+          "success": "Authentification à deux facteurs activée !",
+          "failure": "Impossible d'activer l'authentification à deux facteurs."
         },
         "disable": {
-          "success": "Two-factor Authentication disabled!",
-          "failure": "Could not diable Two-factor Authentication."
+          "success": "Authentification à deux facteurs désactivée !",
+          "failure": "Impossible de désactiver l'authentification à deux facteurs."
         },
-        "backupCodes": { "failure": "Backup Codes could not be generated." }
+        "backupCodes": {
+          "failure": "Les codes de sauvegarde n'ont pas pu être générés."
+        }
       },
       "error": {
-        "usernameTaken": "Username is already taken.",
-        "userNotFound": "User not found",
-        "urlInvalid": "URL is invalid",
-        "emailTaken": "Email is already taken.",
-        "fleetTaken": "Fleet is already taken.",
-        "serialTaken": "Serial is already taken.",
-        "textInvalid": "%{field} is invalid",
+        "usernameTaken": "Le nom d'utilisateur est déjà pris.",
+        "userNotFound": "Utilisateur non trouvé",
+        "urlInvalid": "L'URL n'est pas valide",
+        "emailTaken": "L'email est déjà pris.",
+        "fleetTaken": "La flotte est déjà prise.",
+        "serialTaken": "Le numéro de série est déjà pris.",
+        "textInvalid": "%{field} n'est pas valide",
         "hangar": {
-          "accountRequired": "You need to <a href=\"/sign-up/\">Sign up</a> or <a href=\"/login/\">Login</a> to add Ships to your Hangar.<br>Get more Information <a href=\"/hangar/preview/\">here</a>"
+          "accountRequired": "Vous devez <a href=\"/sign-up/\">Créer un compte</a> ou <a href=\"/login/\">Vous connecter</a> pour ajouter des vaisseaux à votre Hangar.<br>Obtenez plus d'informations <a href=\"/hangar/preview/\">ici</a>"
         },
         "commodityPrice": {
-          "accountRequired": "You need to <a href=\"/sign-up/\">Sign up</a> or <a href=\"/login/\">Login</a> to submit Prices."
+          "accountRequired": "Vous devez <a href=\"/sign-up/\">Créer un compte</a> ou <a href=\"/login/\">Vous connecter</a> pour soumettre des prix."
         },
-        "default": "<b>Something wrong happened.</b> <br>Have you tried turning it off and on again?"
+        "default": "<b>Quelque chose s'est mal passé.</b> <br>Avez-vous essayé de l'éteindre et de le rallumer ?"
       },
       "account": {
         "destroy": {
-          "success": "<b>Your Account has been destroyed.</b> <br>Sad to see you go :'(",
-          "failure": "We could not destroy your Account! Please try again later."
+          "success": "<b>Votre compte a été supprimé.</b> <br>Désolé de vous voir partir :'(",
+          "failure": "Nous n'avons pas pu supprimer votre compte ! Veuillez réessayer plus tard."
         }
       },
       "commodityPrice": {
-        "create": { "success": "Thank you for your price submission." }
+        "create": { "success": "Merci pour votre soumission de prix." }
       },
       "fleet": {
         "create": {
-          "success": "Your Fleet has been created.",
-          "failure": "Fleet could not be saved."
+          "success": "Votre flotte a été créée.",
+          "failure": "La flotte n'a pas pu être sauvegardée."
         },
         "update": {
-          "success": "Settings saved.",
-          "failure": "Settings could not be saved."
+          "success": "Paramètres sauvegardés.",
+          "failure": "Les paramètres n'ont pas pu être sauvegardés."
         },
         "destroy": {
-          "success": "Your Fleet has been destroyed.",
-          "failure": "We could not destroy your Fleet."
+          "success": "Votre flotte a été supprimée.",
+          "failure": "Nous n'avons pas pu supprimer votre flotte."
         },
         "leave": {
-          "success": "You have left the Fleet.",
-          "failure": "Could not leave the Fleet."
+          "success": "Vous avez quitté la flotte.",
+          "failure": "Impossible de quitter la flotte."
         },
         "invites": {
           "accept": {
-            "success": "Invite accepted.",
-            "failure": "Could not accept Invite."
+            "success": "Invitation acceptée.",
+            "failure": "Impossible d'accepter l'invitation."
           },
           "decline": {
-            "success": "Invite declined.",
-            "failure": "Could not decline Invite."
+            "success": "Invitation déclinée.",
+            "failure": "Impossible de décliner l'invitation."
           },
-          "create": { "failure": "Could not invite User." }
+          "create": { "failure": "Impossible d'inviter l'utilisateur." }
         },
         "members": {
           "update": {
-            "success": "Settings saved.",
-            "failure": "Settings could not be saved."
+            "success": "Paramètres sauvegardés.",
+            "failure": "Les paramètres n'ont pas pu être sauvegardés."
           },
           "destroy": {
-            "success": "Member removed.",
-            "failure": "Member could not be removed."
+            "success": "Membre supprimé.",
+            "failure": "Le membre n'a pas pu être supprimé."
           },
           "demote": {
-            "success": "Member demoted.",
-            "failure": "Member could not be demoted."
+            "success": "Membre rétrogradé.",
+            "failure": "Le membre n'a pas pu être rétrogradé."
           },
           "promote": {
-            "success": "Member promoted.",
-            "failure": "Member could not be promoted."
+            "success": "Membre promu.",
+            "failure": "Le membre n'a pas pu être promu."
           },
           "accept": {
-            "success": "Member accepted.",
-            "failure": "Member could not be accepted."
+            "success": "Membre accepté.",
+            "failure": "Le membre n'a pas pu être accepté."
           },
           "decline": {
-            "success": "Member declined.",
-            "failure": "Member could not be declined."
+            "success": "Membre décliné.",
+            "failure": "Le membre n'a pas pu être décliné."
           }
         }
       },
       "fleetInvite": {
-        "used": "<b>Join request for %{fleet} send!</b><br>Once your Membership is accepted you will be notified via email",
-        "failure": "Invite could not be used.",
-        "notFound": "Invite not found.",
-        "confirm": "Are you sure you want to join the Fleet: \"%{fleet}\"?"
+        "used": "<b>Demande d'adhésion pour %{fleet} envoyée !</b><br>Une fois votre adhésion acceptée, vous serez notifié par email",
+        "failure": "L'invitation n'a pas pu être utilisée.",
+        "notFound": "Invitation non trouvée.",
+        "confirm": "Êtes-vous sûr de vouloir rejoindre la flotte : \"%{fleet}\" ?"
       },
       "holoViewer": {
         "modelLoader": {
-          "failure": "We could not load the requested 3D model! Please try again later."
+          "failure": "Nous n'avons pas pu charger le modèle 3D demandé ! Veuillez réessayer plus tard."
         }
       },
       "confirm": {
         "vehicle": {
-          "destroy": "Are you sure you want to remove this Ship from you Hangar?"
+          "destroy": "Êtes-vous sûr de vouloir supprimer ce vaisseau de votre Hangar ?"
         },
         "hangarGroup": {
-          "destroy": "Are you sure you want to remove this Group from you Hangar?"
+          "destroy": "Êtes-vous sûr de vouloir supprimer ce groupe de votre Hangar ?"
         },
         "hangar": {
-          "import": "Imported ships will be added to your Hangar without matching to exisiting Ships.<br><br>Supported Formats are: Fleetyards Export, Starship42 or HangarXplor.<br><br>Do you want to continue?",
-          "destroySelected": "Are you sure you want to remove all Selected Ships from you Hangar? This Action can't be reverted.",
-          "destroyAll": "Are you sure you want to remove all Ships from you Hangar? This Action can't be reverted."
+          "import": "Les vaisseaux importés seront ajoutés à votre Hangar sans correspondance avec les vaisseaux existants.<br><br>Les formats supportés sont : Fleetyards Export, Starship42 ou HangarXplor.<br><br>Voulez-vous continuer ?",
+          "destroySelected": "Êtes-vous sûr de vouloir supprimer tous les vaisseaux sélectionnés de votre Hangar ? Cette action ne peut pas être annulée.",
+          "destroyAll": "Êtes-vous sûr de vouloir supprimer tous les vaisseaux de votre Hangar ? Cette action ne peut pas être annulée."
         },
         "wishlist": {
-          "destroyAll": "Are you sure you want to remove all Ships from you Wishlist? This Action can't be reverted."
+          "destroyAll": "Êtes-vous sûr de vouloir supprimer tous les vaisseaux de votre liste de souhaits ? Cette action ne peut pas être annulée."
         },
         "tradeRoutes": {
-          "reset": "Are you sure you want to reset all commodity prices?"
+          "reset": "Êtes-vous sûr de vouloir réinitialiser tous les prix des marchandises ?"
         },
         "account": {
-          "destroy": "Are you sure you want to destroy your Account? This Action can't be reverted."
+          "destroy": "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action ne peut pas être annulée."
         },
         "commodityPrice": {
-          "destroy": "Are you sure you want to destroy this Price? This Action can't be reverted."
+          "destroy": "Êtes-vous sûr de vouloir supprimer ce prix ? Cette action ne peut pas être annulée."
         },
         "shopCommodity": {
-          "destroy": "Are you sure you want to destroy this Commodity? This Action can't be reverted."
+          "destroy": "Êtes-vous sûr de vouloir supprimer cette marchandise ? Cette action ne peut pas être annulée."
         },
         "fleet": {
-          "leave": "Are you sure you want to leave the Fleet? This Action can't be reverted.",
-          "destroy": "Are you sure you want to destroy your Fleet? This Action can't be reverted.",
+          "leave": "Êtes-vous sûr de vouloir quitter la flotte ? Cette action ne peut pas être annulée.",
+          "destroy": "Êtes-vous sûr de vouloir supprimer votre flotte ? Cette action ne peut pas être annulée.",
           "members": {
-            "destroy": "Are you sure you want to remove this Member?"
+            "destroy": "Êtes-vous sûr de vouloir supprimer ce membre ?"
           },
           "invites": {
-            "decline": "Are you sure you want to decline this Invite? This Action can't be reverted."
+            "decline": "Êtes-vous sûr de vouloir décliner cette invitation ? Cette action ne peut pas être annulée."
           }
         },
         "twoFactor": {
-          "generateBackupCodes": "Are you sure you want to regenerate your Two-factor Backup Codes?"
+          "generateBackupCodes": "Êtes-vous sûr de vouloir régénérer vos codes de sauvegarde d'authentification à deux facteurs ?"
         }
       },
       "syncExtension": {
-        "started": "Syncing your Hangar...",
-        "success": "Your Hangar has been synced.",
-        "failure": "Your Hangar could not be synced.",
-        "notLoggedIn": "You need to be logged in on <a href=\"https://robertsspaceindustries.com\" target=\"_blank\">https://robertsspaceindustries.com</a> to sync your Hangar."
+        "started": "Synchronisation de votre Hangar...",
+        "success": "Votre Hangar a été synchronisé.",
+        "failure": "Votre Hangar n'a pas pu être synchronisé.",
+        "notLoggedIn": "Vous devez être connecté sur <a href=\"https://robertsspaceindustries.com\" target=\"_blank\">https://robertsspaceindustries.com</a> pour synchroniser votre Hangar."
       }
     }
   }

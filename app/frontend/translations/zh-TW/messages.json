@@ -26,232 +26,253 @@
         "failure": "無法複製邀請鏈接"
       },
       "copyTwoFactorProvisioningUrl": {
-        "success": "Provisioning Url Copied!",
-        "failure": "Could not copy Provisioning Url"
+        "success": "配置網址已複製！",
+        "failure": "無法複製配置網址"
       },
       "copyBackupCodes": {
-        "success": "Backup Codes Copied!",
-        "failure": "Could not copy Backup Codes"
+        "success": "備份代碼已複製！",
+        "failure": "無法複製備份代碼"
       },
       "signup": {
-        "success": "<b>Welcome to FleetYards.net!</b> Your account has been created. <br>You will receive a confirmation email to activate your account.",
-        "invalid": "Please resolve the errors before your account can be created.",
-        "failure": "We could not create your account. Please try again later."
+        "success": "<b>歡迎來到FleetYards.net！</b> 您的帳戶已建立。<br>您將收到一封確認郵件以啟用您的帳戶。",
+        "invalid": "請解決錯誤後再建立帳戶。",
+        "failure": "我們無法建立您的帳戶。請稍後再試。"
       },
       "accountConfirm": {
-        "success": "Your account was successfully confirmed.<br>You can now login.",
-        "failure": "Your account could not be confirmed."
+        "success": "您的帳戶已成功確認。<br>您現在可以登入。",
+        "failure": "您的帳戶無法確認。"
       },
       "requestPasswordChange": {
-        "success": "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."
+        "success": "如果您的電子郵件地址存在於我們的資料庫中，您將在幾分鐘內收到密碼重置連結。"
       },
       "changePassword": {
-        "success": "Your password was changed successfully.",
-        "failure": "Your password could not be updated."
+        "success": "您的密碼已成功更改。",
+        "failure": "您的密碼無法更新。"
       },
       "updateProfile": {
-        "success": "Profile updated."
+        "success": "個人資料已更新。",
+        "failure": "個人資料無法更新。"
       },
       "updateHangar": {
-        "success": "Hangar Settings updated."
+        "success": "機庫設定已更新。"
       },
       "updateNotifications": {
-        "success": "Notification Settings updated."
+        "success": "通知設定已更新。"
       },
       "updateAccount": {
-        "success": "Account updated."
+        "success": "帳戶已更新。"
       },
       "avatarUpload": {
-        "success": "Avatar uploaded",
-        "invalidExtension": "The Picture you provided has an invalid Format. Supported Formats are: %{extensions}."
+        "create": {
+          "success": "頭像已上傳",
+          "failure": "無法上傳頭像"
+        },
+        "destroy": {
+          "success": "頭像已移除",
+          "failure": "無法移除頭像"
+        },
+        "invalidExtension": "您提供的圖片格式無效。支援的格式為：%{extensions}。"
       },
       "hangarImport": {
-        "success": "Import completed",
-        "partialSuccess": "Import partially completed.<br><br>Not found Ships: <br>%{missing}",
-        "failure": "Import failed",
-        "invalidExtension": "The Import you provided has an invalid Format. Supported Formats are: %{extensions}."
+        "success": "匯入完成",
+        "partialSuccess": "匯入部分完成。<br><br>未找到的飛船：<br>%{missing}",
+        "failure": "匯入失敗",
+        "invalidExtension": "您提供的匯入檔案格式無效。支援的格式為：%{extensions}。"
       },
       "hangarExport": {
-        "failure": "Export failed, Please try again later."
+        "failure": "匯出失敗，請稍後再試。"
       },
       "vehicle": {
         "add": {
-          "success": "Your new <b>%{model}</b> will be delivered to your <a href=\"/hangar\">Hangar</a>"
+          "success": {
+            "noHtml": "您的新%{model}將送達您的機庫",
+            "paragraph1": "您的新",
+            "paragraph2": "將送達您的"
+          }
         },
         "addToWishlist": {
-          "success": "Your new <b>%{model}</b> was added to your <a href=\"/hangar/wishlist\">Wishlist</a>"
+          "success": {
+            "noHtml": "您的新%{model}已新增至您的願望清單",
+            "paragraph2": "已新增至您的"
+          }
         },
         "resetIngame": {
           "moveToWishlist": {
-            "success": "Moved all Ingame bought Ships to your Wishlist.",
-            "failure": "Could not move all Ingame bought Ships to your Wishlist."
+            "success": "已將所有遊戲內購買的飛船移至您的願望清單。",
+            "failure": "無法將所有遊戲內購買的飛船移至您的願望清單。"
           },
           "removeAll": {
-            "success": "Removed all Ingame bought Ships from your Hangar.",
-            "failure": "Could not remove all Ingame bought Ships from your Hangar."
+            "success": "已從您的機庫移除所有遊戲內購買的飛船。",
+            "failure": "無法從您的機庫移除所有遊戲內購買的飛船。"
           }
         }
       },
       "model": {
-        "onSale": "%{model} now on Sale!"
+        "onSale": "%{model}現在特價中！"
       },
       "notification": {
-        "granted": "Welcome to FleetYards.net Notifications!"
+        "granted": "歡迎使用FleetYards.net通知！"
       },
       "twoFactor": {
         "enable": {
-          "success": "Two-factor Authentication enabled!",
-          "failure": "Could not enable Two-factor Authentication."
+          "success": "雙因素驗證已啟用！",
+          "failure": "無法啟用雙因素驗證。"
         },
         "disable": {
-          "success": "Two-factor Authentication disabled!",
-          "failure": "Could not diable Two-factor Authentication."
+          "success": "雙因素驗證已停用！",
+          "failure": "無法停用雙因素驗證。"
         },
         "backupCodes": {
-          "failure": "Backup Codes could not be generated."
+          "failure": "無法生成備份代碼。"
         }
       },
       "error": {
-        "usernameTaken": "Username is already taken.",
-        "userNotFound": "User not found",
-        "urlInvalid": "URL is invalid",
-        "emailTaken": "Email is already taken.",
-        "fleetTaken": "Fleet is already taken.",
-        "serialTaken": "Serial is already taken.",
-        "textInvalid": "%{field} is invalid",
+        "usernameTaken": "使用者名稱已被使用。",
+        "userNotFound": "找不到使用者",
+        "urlInvalid": "網址無效",
+        "emailTaken": "電子郵件已被使用。",
+        "fleetTaken": "艦隊名稱已被使用。",
+        "colorInvalid": "顏色無效",
+        "serialTaken": "序號已被使用。",
+        "textInvalid": "%{field}無效",
         "hangar": {
-          "accountRequired": "You need to <a href=\"/sign-up/\">Sign up</a> or <a href=\"/login/\">Login</a> to add Ships to your Hangar.<br>Get more Information <a href=\"/hangar/preview/\">here</a>"
+          "accountRequired": {
+            "noHtml": "您需要註冊或登入以新增飛船至您的機庫。",
+            "paragraph1": "您需要",
+            "paragraph2": "以新增飛船至您的機庫。",
+            "paragraph3": "取得更多資訊"
+          }
         },
         "commodityPrice": {
-          "accountRequired": "You need to <a href=\"/sign-up/\">Sign up</a> or <a href=\"/login/\">Login</a> to submit Prices."
+          "accountRequired": "您需要<a href=\"/sign-up/\">註冊</a>或<a href=\"/login/\">登入</a>以提交價格。"
         },
-        "default": "<b>Something wrong happened.</b> <br>Have you tried turning it off and on again?"
+        "default": "<b>發生了錯誤。</b><br>您試過重新啟動嗎？"
       },
       "account": {
         "destroy": {
-          "success": "<b>Your Account has been destroyed.</b> <br>Sad to see you go :'(",
-          "failure": "We could not destroy your Account! Please try again later."
+          "success": "<b>您的帳戶已刪除。</b><br>很遺憾看到您離開 :'(",
+          "failure": "我們無法刪除您的帳戶！請稍後再試。"
         }
       },
       "commodityPrice": {
         "create": {
-          "success": "Thank you for your price submission."
+          "success": "感謝您提交價格。"
         }
       },
       "fleet": {
         "create": {
-          "success": "Your Fleet has been created.",
-          "failure": "Fleet could not be saved."
+          "success": "您的艦隊已建立。",
+          "failure": "艦隊無法儲存。"
         },
         "update": {
-          "success": "Settings saved.",
-          "failure": "Settings could not be saved."
+          "success": "設定已儲存。",
+          "failure": "設定無法儲存。"
         },
         "destroy": {
-          "success": "Your Fleet has been destroyed.",
-          "failure": "We could not destroy your Fleet."
+          "success": "您的艦隊已刪除。",
+          "failure": "我們無法刪除您的艦隊。"
         },
         "leave": {
-          "success": "You have left the Fleet.",
-          "failure": "Could not leave the Fleet."
+          "success": "您已離開艦隊。",
+          "failure": "無法離開艦隊。"
         },
         "invites": {
           "accept": {
-            "success": "Invite accepted.",
-            "failure": "Could not accept Invite."
+            "success": "邀請已接受。",
+            "failure": "無法接受邀請。"
           },
           "decline": {
-            "success": "Invite declined.",
-            "failure": "Could not decline Invite."
+            "success": "邀請已拒絕。",
+            "failure": "無法拒絕邀請。"
           },
           "create": {
-            "failure": "Could not invite User."
+            "failure": "無法邀請使用者。"
           }
         },
         "members": {
           "update": {
-            "success": "Settings saved.",
-            "failure": "Settings could not be saved."
+            "success": "設定已儲存。",
+            "failure": "設定無法儲存。"
           },
           "destroy": {
-            "success": "Member removed.",
-            "failure": "Member could not be removed."
+            "success": "成員已移除。",
+            "failure": "成員無法移除。"
           },
           "demote": {
-            "success": "Member demoted.",
-            "failure": "Member could not be demoted."
+            "success": "成員已降級。",
+            "failure": "成員無法降級。"
           },
           "promote": {
-            "success": "Member promoted.",
-            "failure": "Member could not be promoted."
+            "success": "成員已升級。",
+            "failure": "成員無法升級。"
           },
           "accept": {
-            "success": "Member accepted.",
-            "failure": "Member could not be accepted."
+            "success": "成員已接受。",
+            "failure": "成員無法接受。"
           },
           "decline": {
-            "success": "Member declined.",
-            "failure": "Member could not be declined."
+            "success": "成員已拒絕。",
+            "failure": "成員無法拒絕。"
           }
         }
       },
       "fleetInvite": {
-        "used": "<b>Join request for %{fleet} send!</b><br>Once your Membership is accepted you will be notified via email",
-        "failure": "Invite could not be used.",
-        "notFound": "Invite not found.",
-        "confirm": "Are you sure you want to join the Fleet: \"%{fleet}\"?"
+        "used": "<b>已發送加入%{fleet}的申請！</b><br>一旦您的會員資格被接受，您將收到電子郵件通知",
+        "failure": "邀請無法使用。",
+        "notFound": "找不到邀請。",
+        "confirm": "您確定要加入艦隊：\"%{fleet}\"嗎？"
       },
       "holoViewer": {
         "modelLoader": {
-          "failure": "We could not load the requested 3D model! Please try again later."
+          "failure": "我們無法載入請求的3D模型！請稍後再試。"
         }
       },
       "confirm": {
         "vehicle": {
-          "destroy": "Are you sure you want to remove this Ship from you Hangar?"
+          "destroy": "您確定要從機庫移除此飛船嗎？"
         },
         "hangarGroup": {
-          "destroy": "Are you sure you want to remove this Group from you Hangar?"
+          "destroy": "您確定要從機庫移除此群組嗎？"
         },
         "hangar": {
-          "import": "Imported ships will be added to your Hangar without matching to exisiting Ships.<br><br>Supported Formats are: Fleetyards Export, Starship42 or HangarXplor.<br><br>Do you want to continue?",
-          "destroySelected": "Are you sure you want to remove all Selected Ships from you Hangar? This Action can't be reverted.",
-          "destroyAll": "Are you sure you want to remove all Ships from you Hangar? This Action can't be reverted."
+          "import": "匯入的飛船將新增至您的機庫，不會與現有飛船匹配。<br><br>支援的格式為：Fleetyards匯出、Starship42或HangarXplor。<br><br>您要繼續嗎？",
+          "destroySelected": "您確定要從機庫移除所有選中的飛船嗎？此操作無法復原。",
+          "destroyAll": "您確定要從機庫移除所有飛船嗎？此操作無法復原。"
         },
         "wishlist": {
-          "destroyAll": "Are you sure you want to remove all Ships from you Wishlist? This Action can't be reverted."
+          "destroyAll": "您確定要從願望清單移除所有飛船嗎？此操作無法復原。"
         },
         "tradeRoutes": {
-          "reset": "Are you sure you want to reset all commodity prices?"
+          "reset": "您確定要重置所有商品價格嗎？"
         },
         "account": {
-          "destroy": "Are you sure you want to destroy your Account? This Action can't be reverted."
+          "destroy": "您確定要刪除您的帳戶嗎？此操作無法復原。"
         },
         "commodityPrice": {
-          "destroy": "Are you sure you want to destroy this Price? This Action can't be reverted."
+          "destroy": "您確定要刪除此價格嗎？此操作無法復原。"
         },
         "shopCommodity": {
-          "destroy": "Are you sure you want to destroy this Commodity? This Action can't be reverted."
+          "destroy": "您確定要刪除此商品嗎？此操作無法復原。"
         },
         "fleet": {
-          "leave": "Are you sure you want to leave the Fleet? This Action can't be reverted.",
-          "destroy": "Are you sure you want to destroy your Fleet? This Action can't be reverted.",
+          "leave": "您確定要離開艦隊嗎？此操作無法復原。",
+          "destroy": "您確定要刪除您的艦隊嗎？此操作無法復原。",
           "members": {
-            "destroy": "Are you sure you want to remove this Member?"
+            "destroy": "您確定要移除此成員嗎？"
           },
           "invites": {
-            "decline": "Are you sure you want to decline this Invite? This Action can't be reverted."
+            "decline": "您確定要拒絕此邀請嗎？此操作無法復原。"
           }
         },
         "twoFactor": {
-          "generateBackupCodes": "Are you sure you want to regenerate your Two-factor Backup Codes?"
+          "generateBackupCodes": "您確定要重新生成雙因素備份代碼嗎？"
         }
       },
       "syncExtension": {
-        "started": "Syncing your Hangar...",
-        "success": "Your Hangar has been synced.",
-        "failure": "Your Hangar could not be synced.",
-        "notLoggedIn": "You need to be logged in on <a href=\"https://robertsspaceindustries.com\" target=\"_blank\">https://robertsspaceindustries.com</a> to sync your Hangar."
+        "started": "正在同步您的機庫...",
+        "success": "您的機庫已同步。",
+        "failure": "您的機庫無法同步。",
+        "notLoggedIn": "您需要在<a href=\"https://robertsspaceindustries.com\" target=\"_blank\">https://robertsspaceindustries.com</a>登入以同步您的機庫。"
       }
     }
   }

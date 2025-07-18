@@ -1,6 +1,5 @@
 {
   "fr": {
-    "app": "FleetYards.net",
     "meta": {
       "description": "FleetYards.net, votre base de données pour toutes les informations relatives aux vaisseaux de « Star Citizen ».",
       "keywords": "Star Citizen, vaisseaux spatiaux, vaisseaux, Fighter, Database, Squadron, 42, Star, Citizen, Français, Chris, Roberts, Online, Game, Espace, Simulation"
@@ -25,17 +24,33 @@
       "minCrew": "Équipage min.",
       "maxCrew": "Équipage max.",
       "scmSpeed": "Vitesse SCM",
-      "afterburnerSpeed": "Vitesse Afterburner",
-      "groundSpeed": "Vitesse terrestre",
-      "afterburnerGroundSpeed": "avec Afterburner",
-      "pitchMax": "Pitch max",
-      "yawMax": "Yaw max",
-      "rollMax": "Roll max",
+      "scmSpeedBoosted": "Vitesse SCM Boostée",
+      "reverseSpeedBoosted": "Vitesse Marche Arrière Boostée",
+      "maxSpeed": "Vitesse Max",
+      "scm": "SCM",
+      "max": "Max",
+      "groundMaxSpeed": "Vitesse Max",
+      "groundReverseSpeed": "Vitesse Marche Arrière",
+      "pitch": "Pitch",
+      "pitchBoosted": "Pitch Boosté",
+      "yaw": "Yaw",
+      "yawBoosted": "Yaw Boosté",
+      "roll": "Roll",
+      "rollBoosted": "Roll Boosté",
       "price": "Prix",
+      "groundAcceleration": "Accélération",
+      "groundDecceleration": "Décélération",
+      "scmSpeedAcceleration": "Zéro vers SCM",
+      "scmSpeedDecceleration": "SCM vers Zéro",
+      "maxSpeedAcceleration": "Zéro vers Max",
+      "maxSpeedDecceleration": "Max vers Zéro",
+      "compare": {
+        "groundMaxSpeed": "Vitesse Sol Max",
+        "groundReverseSpeed": "Vitesse Sol Marche Arrière",
+        "groundAcceleration": "Accélération Sol",
+        "groundDecceleration": "Décélération Sol"
+      },
       "pledgePrice": "Prix réel",
-      "xaxisAcceleration": "Axe X",
-      "yaxisAcceleration": "Axe Y",
-      "zaxisAcceleration": "Axe Z",
       "quantumFuelTankSize": "Carburant Quantum",
       "hydrogenFuelTankSize": "Carburant",
       "height": "Hauteur",
@@ -100,49 +115,20 @@
       "unconfirmed": "L'article n'est pas confirmé",
       "manufacturer": "Fabricant"
     },
-    "shopCommodity": {
+    "availability": {
       "listedAt": "Listé à",
       "soldAt": "Vendu à",
       "boughtAt": "Acheté à"
     },
     "resources": {
       "models": "Vaisseaux",
+      "hardpoints": "Points d'ancrage",
       "images": "Images"
     },
     "pagination": {
       "previous": "Page précédente",
       "next": "Page suivante",
       "gap": "écart entre les lignes"
-    },
-    "datetime": {
-      "formats": {
-        "default": "jour mois année et heures:minutes",
-        "iso": "année-mois-jour et heures:minutes:secondes"
-      }
-    },
-    "number": {
-      "format": {
-        "precision": 2,
-        "strip_insignificant_zeros": true,
-        "delimiter": ".",
-        "separator": ","
-      },
-      "percent": "%{count} %",
-      "distance": "%{count} m",
-      "weight": "%{count} t",
-      "speed": "%{count} m/s",
-      "rateOfFire": "%{count} tirs/min",
-      "rotation": "%{count} deg/s",
-      "cargo": "%{count} SCU",
-      "fuel": "%{count}",
-      "ships": {
-        "one": "%{count} vaisseau",
-        "other": "%{count} vaisseaux"
-      },
-      "people": {
-        "one": "%{count} personne",
-        "other": "%{count} personnes"
-      }
     }
   }
 }

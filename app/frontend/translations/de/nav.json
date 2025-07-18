@@ -1,64 +1,131 @@
 {
   "de": {
     "nav": {
-      "home": "Home",
-      "back": "Back",
-      "ships": { "index": "Ships" },
-      "compare": { "ships": "Compare" },
-      "manufacturers": "Manufacturers",
-      "images": "Images",
+      "home": "Startseite",
+      "back": "Zurück",
+      "ships": {
+        "index": "Schiffe"
+      },
+      "compare": {
+        "index": "Vergleichen",
+        "ships": "Schiffe Vergleichen"
+      },
+      "manufacturers": "Hersteller",
+      "images": "Bilder",
       "videos": "Videos",
-      "hangar": "My Hangar",
-      "login": "Login",
-      "logout": "Logout",
-      "signUp": "Sign up",
-      "privacyPolicy": "Privacy policy",
-      "privacySettings": "Privacy settings",
+      "hangar": "Mein Hangar",
+      "login": "Anmelden",
+      "logout": "Abmelden",
+      "apiV1": "API v1",
+      "embed": "Einbettungswidget",
+      "signUp": "Registrieren",
+      "privacyPolicy": "Datenschutzerklärung",
+      "privacySettings": "Datenschutzeinstellungen",
       "impressum": "Impressum",
-      "admin": "Admin",
       "fleets": {
-        "index": "Fleets",
-        "add": "Create a new Fleet",
-        "invites": "Invites",
-        "ships": "Ships",
-        "members": "Members",
-        "stats": "Stats",
+        "index": "Flotten",
+        "add": "Neue Flotte erstellen",
+        "invites": "Einladungen",
+        "ships": "Schiffe",
+        "members": "Mitglieder",
+        "stats": "Statistiken",
         "settings": {
-          "index": "Settings",
-          "fleet": "Fleet Settings",
-          "membership": "Membership Settings"
+          "index": "Einstellungen",
+          "fleet": "Flotteneinstellungen",
+          "membership": "Mitgliedschaftseinstellungen"
         }
       },
-      "rsiProfile": "RSI Profile",
-      "tradeRoutes": "Trade Routes",
-      "api": "API Docs",
-      "stats": "Stats",
-      "toggleSlimCollapse": "Collapse",
-      "toggleSlimExpand": "Expand",
+      "rsiProfile": "RSI-Profil",
+      "rsiHangar": "RSI-Hangar",
+      "tools": {
+        "index": "Werkzeuge",
+        "travelTimes": "Reisezeiten",
+        "cargoGrids": "Frachtgitter"
+      },
+      "api": "API-Dokumentation",
+      "stats": "Statistiken",
+      "toggleSlimCollapse": "Zusammenklappen",
+      "toggleSlimExpand": "Erweitern",
       "roadmap": {
         "index": "Roadmap",
-        "overview": "Overview",
-        "changes": "Changes",
-        "ships": "Ship-Roadmap"
+        "overview": "Übersicht",
+        "changes": "Änderungen",
+        "ships": "Schiffe-Roadmap"
       },
-      "rsiVerification": "RSI Verification",
+      "rsiVerification": "RSI-Verifizierung",
       "settings": {
-        "index": "Settings",
-        "profile": "Profile",
-        "account": "Account",
-        "security": "Security",
-        "notifications": "Notifications",
+        "index": "Einstellungen",
+        "profile": "Profil",
+        "account": "Konto",
+        "security": "Sicherheit",
+        "notifications": "Benachrichtigungen",
         "hangar": "Hangar",
-        "verify": "RSI Account Verification"
+        "verify": "RSI-Kontoverifizierung"
       },
-      "starsystems": "Starsystems",
-      "stations": {
-        "index": "Stations",
-        "overview": "Overview",
-        "starsystems": "By Starsystems",
-        "shops": "Shops"
+      "reload": "Update verfügbar!",
+      "visualTests": {
+        "index": "Visuelle Tests",
+        "panels": "Panels",
+        "buttons": "Buttons",
+        "tables": "Tabellen"
       },
-      "reload": "Update available!"
+      "admin": {
+        "index": "Admin",
+        "models": {
+          "index": "Modelle",
+          "create": "Modell erstellen",
+          "edit": {
+            "index": "Basisdaten",
+            "metrics": "Metriken",
+            "prices": "Preise",
+            "docks": "Docks",
+            "videos": "Videos",
+            "cargoAndFuel": "Fracht und Treibstoff",
+            "fleetchart": "Flottenkarten-Bilder",
+            "hardpoints": "Hardpoints"
+          }
+        },
+        "modelPaints": {
+          "index": "Lackierungen",
+          "create": "Lackierung erstellen"
+        },
+        "modelModules": {
+          "index": "Module",
+          "create": "Modul erstellen"
+        },
+        "modelModulePackages": {
+          "index": "Modulpakete",
+          "create": "Modulpaket erstellen"
+        },
+        "components": {
+          "index": "Komponenten"
+        },
+        "manufacturers": {
+          "index": "Hersteller"
+        },
+        "images": {
+          "index": "Bilder"
+        },
+        "users": {
+          "index": "Benutzer"
+        },
+        "fleets": {
+          "index": "Flotten"
+        },
+        "vehicles": {
+          "index": "Fahrzeuge"
+        },
+        "admins": {
+          "index": "Administratoren"
+        },
+        "maintenance": {
+          "index": "Wartung",
+          "pghero": "PG-Hero",
+          "features": "Features",
+          "workers": "Worker",
+          "rsiApiStatus": "RSI-API-Status"
+        }
+      }
     }
   }
 }

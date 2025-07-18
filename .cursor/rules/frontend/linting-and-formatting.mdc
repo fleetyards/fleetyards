@@ -15,23 +15,19 @@ alwaysApply: true
 ## Commands
 
 ```bash
-pnpm lint          # Run all linting (ESLint + Stylelint + TypeScript + formatting)
-pnpm lint:all:fix  # Fix all auto-fixable issues (ESLint + CSS + formatting)
-pnpm lint:js:fix   # Fix JavaScript/TypeScript ESLint issues only
-pnpm vue-tsc       # TypeScript type checking for Vue/TypeScript files
-pnpm lint:fix      # Fix auto-fixable issues
-pnpm eslint --fix  # Fix specific files
-pnpm format        # prettier
-pnpm format:fix    # prettier with fix
+pnpm lint               # Run all linting (ESLint + Stylelint + TypeScript + formatting)
+pnpm lint:fix           # Fix auto-fixable issues
+pnpm lint:js            # Fix JavaScript/TypeScript ESLint issues only
+pnpm lint:ts            # TypeScript type checking for Vue/TypeScript files
+pnpm lint:prettier      # prettier
+pnpm lint:prettier:fix  # prettier with fix
 ```
 
 ## Important Notes
 
-- **Use `pnpm lint:all:fix` for comprehensive fixing** of ESLint, CSS, and formatting issues
-- **Use `pnpm vue-tsc` for TypeScript type checking for Vue and TypeScript files**
-- **Use `pnpm tsc` for TypeScript type checking for plain TypeScript files**
+- **Use `pnpm lint:fix` for comprehensive fixing** of ESLint, CSS, and formatting issues
+- **Use `pnpm lint:ts` for TypeScript type checking for Vue and TypeScript files**
 - The `type-check` and `typecheck` command does not exist in this project
-- Use `pnpm lint:all:fix` instead of `pnpm lint:fix` for complete linting and formatting
 
 ## Auto-formatting
 
