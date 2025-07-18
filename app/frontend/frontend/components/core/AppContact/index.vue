@@ -1,19 +1,40 @@
+<script lang="ts">
+export default {
+  name: "AppContact",
+};
+</script>
+
+<script setup lang="ts">
+import { computed } from "vue";
+
+const appName = computed(() => window.APP_NAME);
+const maintainerName = computed(() => window.MAINTAINER_NAME);
+const maintainerMail = computed(() => window.MAINTAINER_MAIL);
+const maintainerAddressStreet = computed(
+  () => window.MAINTAINER_ADDRESS_STREET,
+);
+const maintainerAddressPostalcode = computed(
+  () => window.MAINTAINER_ADDRESS_POSTALCODE,
+);
+const maintainerAddressCity = computed(() => window.MAINTAINER_ADDRESS_CITY);
+const maintainerAddressCountry = computed(
+  () => window.MAINTAINER_ADDRESS_COUNTRY,
+);
+</script>
+
 <template>
   <address>
-    <dl class="dl-horizontal">
-      <dd class="name">
+    <dl class="app-contact__dl-horizontal">
+      <dd class="app-contact__name">
         {{ appName }}
       </dd>
       <dt>
         <strong>Address:</strong>
       </dt>
       <dd>
-        {{ maintainerName }}
-        <br />
-        {{ maintainerAddressStreet }}
-        <br />
-        {{ maintainerAddressPostalcode }} {{ maintainerAddressCity }}
-        <br />
+        {{ maintainerName }}<br />
+        {{ maintainerAddressStreet }}<br />
+        {{ maintainerAddressPostalcode }} {{ maintainerAddressCity }}<br />
         {{ maintainerAddressCountry }}
       </dd>
       <dt>
@@ -26,38 +47,24 @@
   </address>
 </template>
 
-<script lang="ts" setup>
-const appName = computed(() => {
-  return window.APP_NAME;
-});
+<style lang="scss" scoped>
+.app-contact__dl-horizontal {
+  margin: 0;
+  padding: 0;
 
-const maintainerName = computed(() => {
-  return window.MAINTAINER_NAME;
-});
+  dt {
+    font-weight: bold;
+    margin-top: 0.5em;
+  }
 
-const maintainerMail = computed(() => {
-  return window.MAINTAINER_MAIL;
-});
+  dd {
+    margin: 0 0 0.5em 0;
 
-const maintainerAddressStreet = computed(() => {
-  return window.MAINTAINER_ADDRESS_STREET;
-});
-
-const maintainerAddressPostalcode = computed(() => {
-  return window.MAINTAINER_ADDRESS_POSTALCODE;
-});
-
-const maintainerAddressCity = computed(() => {
-  return window.MAINTAINER_ADDRESS_CITY;
-});
-
-const maintainerAddressCountry = computed(() => {
-  return window.MAINTAINER_ADDRESS_COUNTRY;
-});
-</script>
-
-<script lang="ts">
-export default {
-  name: "AppContact",
-};
-</script>
+    &.app-contact__name {
+      font-size: 1.2em;
+      font-weight: 600;
+      margin-bottom: 0.5em;
+    }
+  }
+}
+</style>
