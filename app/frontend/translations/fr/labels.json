@@ -19,7 +19,7 @@
       "collapse": "Réduire",
       "price": "Prix",
       "expand": "Agrandir",
-      "anonymous": "Anonymous",
+      "anonymous": "Anonyme",
       "toggleNavigation": "Changer de navigation",
       "enableYoutube": "Cliquez pour activer les liens Youtube ou cliquez avec le bouton droit de la souris pour copier l'URL de la vidéo",
       "or": "ou",
@@ -588,16 +588,16 @@
         },
         "pledgeItems": {
           "pages": "Pages",
-          "all": "All Pledge Items",
-          "ships": "Ships",
+          "all": "Tous les articles de promesse",
+          "ships": "Vaisseaux",
           "components": "Modules",
-          "skins": "Paints"
+          "skins": "Peintures"
         },
         "importedItems": {
-          "new": "New",
-          "updated": "Updated",
-          "movedToWanted": "Moved to Wishlist",
-          "missing": "Unable to Import"
+          "new": "Nouveau",
+          "updated": "Mis à jour",
+          "movedToWanted": "Déplacé vers la liste de souhaits",
+          "missing": "Impossible d'importer"
         }
       }
     }

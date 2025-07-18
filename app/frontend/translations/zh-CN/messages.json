@@ -2,45 +2,45 @@
   "zh-CN": {
     "messages": {
       "copy": {
-        "success": "Text Copied!",
-        "failure": "Could not copy Text"
+        "success": "文本已复制！",
+        "failure": "无法复制文本"
       },
       "copyGitRevision": {
-        "success": "Git Revision Copied!",
-        "failure": "Could not copy Git Revision"
+        "success": "Git 版本已复制！",
+        "failure": "无法复制 Git 版本"
       },
       "copyImageUrl": {
-        "success": "Image URL Copied!",
-        "failure": "Could not copy Image URL"
+        "success": "图片链接已复制！",
+        "failure": "无法复制图片链接"
       },
       "copyVideoUrl": {
-        "success": "Video URL Copied!",
-        "failure": "Could not copy Video URL"
+        "success": "视频链接已复制！",
+        "failure": "无法复制视频链接"
       },
       "copyShareUrl": {
-        "success": "URL \"%{url}\" Copied!",
-        "failure": "Could not copy URL"
+        "success": "链接 \"%{url}\" 已复制！",
+        "failure": "无法复制链接"
       },
       "copyInviteUrl": {
-        "success": "Invite URL \"%{url}\" Copied!",
-        "failure": "Could not copy Invite URL"
+        "success": "邀请链接 \"%{url}\" 已复制！",
+        "failure": "无法复制邀请链接"
       },
       "copyTwoFactorProvisioningUrl": {
-        "success": "Provisioning Url Copied!",
-        "failure": "Could not copy Provisioning Url"
+        "success": "配置链接已复制！",
+        "failure": "无法复制配置链接"
       },
       "copyBackupCodes": {
-        "success": "Backup Codes Copied!",
-        "failure": "Could not copy Backup Codes"
+        "success": "备份代码已复制！",
+        "failure": "无法复制备份代码"
       },
       "signup": {
-        "success": "<b>Welcome to FleetYards.net!</b> Your account has been created. <br>You will receive a confirmation email to activate your account.",
-        "invalid": "Please resolve the errors before your account can be created.",
-        "failure": "We could not create your account. Please try again later."
+        "success": "<b>欢迎来到 FleetYards.net！</b> 你的账户已创建。 <br>你将收到一封确认邮件来激活你的账户。",
+        "invalid": "请在创建账户之前解决错误。",
+        "failure": "我们无法创建你的账户。请稍后再试。"
       },
       "accountConfirm": {
-        "success": "Your account was successfully confirmed.<br>You can now login.",
-        "failure": "Your account could not be confirmed."
+        "success": "你的账户已成功确认。<br>现在你可以登录了。",
+        "failure": "你的账户无法确认。"
       },
       "requestPasswordChange": {
         "success": "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."

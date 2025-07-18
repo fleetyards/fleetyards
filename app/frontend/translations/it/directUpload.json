@@ -1,0 +1,16 @@
+{
+  "it": {
+    "directUpload": {
+      "title": "Carica",
+      "dropzone": {
+        "textMultiple": "Trascina i file qui per caricare",
+        "text": "Trascina il file qui per caricare",
+        "or": "o",
+        "browse": "sfoglia"
+      },
+      "previewImage": {
+        "remove": "Rimuovi"
+      }
+    }
+  }
+}

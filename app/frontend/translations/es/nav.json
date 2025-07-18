@@ -1,64 +1,64 @@
 {
   "es": {
     "nav": {
-      "home": "Home",
-      "back": "Back",
-      "ships": { "index": "Ships" },
-      "compare": { "ships": "Compare" },
-      "manufacturers": "Manufacturers",
-      "images": "Images",
-      "videos": "Videos",
-      "hangar": "My Hangar",
-      "login": "Login",
-      "logout": "Logout",
-      "signUp": "Sign up",
-      "privacyPolicy": "Privacy policy",
-      "privacySettings": "Privacy settings",
-      "impressum": "Impressum",
-      "admin": "Admin",
+      "home": "Inicio",
+      "back": "Atrás",
+      "ships": { "index": "Naves" },
+      "compare": { "ships": "Comparar" },
+      "manufacturers": "Fabricantes",
+      "images": "Imágenes",
+      "videos": "Vídeos",
+      "hangar": "Mi Hangar",
+      "login": "Iniciar sesión",
+      "logout": "Cerrar sesión",
+      "signUp": "Registrarse",
+      "privacyPolicy": "Política de privacidad",
+      "privacySettings": "Configuración de privacidad",
+      "impressum": "Aviso legal",
+      "admin": "Administrador",
       "fleets": {
-        "index": "Fleets",
-        "add": "Create a new Fleet",
-        "invites": "Invites",
-        "ships": "Ships",
-        "members": "Members",
-        "stats": "Stats",
+        "index": "Flotas",
+        "add": "Crear una nueva flota",
+        "invites": "Invitaciones",
+        "ships": "Naves",
+        "members": "Miembros",
+        "stats": "Estadísticas",
         "settings": {
-          "index": "Settings",
-          "fleet": "Fleet Settings",
-          "membership": "Membership Settings"
+          "index": "Configuración",
+          "fleet": "Configuración de flota",
+          "membership": "Configuración de membresía"
         }
       },
-      "rsiProfile": "RSI Profile",
-      "tradeRoutes": "Trade Routes",
-      "api": "API Docs",
-      "stats": "Stats",
-      "toggleSlimCollapse": "Collapse",
-      "toggleSlimExpand": "Expand",
+      "rsiProfile": "Perfil RSI",
+      "tradeRoutes": "Rutas comerciales",
+      "api": "Documentación API",
+      "stats": "Estadísticas",
+      "toggleSlimCollapse": "Contraer",
+      "toggleSlimExpand": "Expandir",
       "roadmap": {
         "index": "Roadmap",
-        "overview": "Overview",
-        "changes": "Changes",
-        "ships": "Ship-Roadmap"
+        "overview": "Visión general",
+        "changes": "Cambios",
+        "ships": "Roadmap de naves"
       },
-      "rsiVerification": "RSI Verification",
+      "rsiVerification": "Verificación RSI",
       "settings": {
-        "index": "Settings",
-        "profile": "Profile",
-        "account": "Account",
-        "security": "Security",
-        "notifications": "Notifications",
+        "index": "Configuración",
+        "profile": "Perfil",
+        "account": "Cuenta",
+        "security": "Seguridad",
+        "notifications": "Notificaciones",
         "hangar": "Hangar",
-        "verify": "RSI Account Verification"
+        "verify": "Verificación de cuenta RSI"
       },
-      "starsystems": "Starsystems",
+      "starsystems": "Sistemas estelares",
       "stations": {
-        "index": "Stations",
-        "overview": "Overview",
-        "starsystems": "By Starsystems",
-        "shops": "Shops"
+        "index": "Estaciones",
+        "overview": "Visión general",
+        "starsystems": "Por sistemas estelares",
+        "shops": "Tiendas"
       },
-      "reload": "Update available!"
+      "reload": "¡Actualización disponible!"
     }
   }
 }

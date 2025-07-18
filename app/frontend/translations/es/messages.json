@@ -2,45 +2,45 @@
   "es": {
     "messages": {
       "copy": {
-        "success": "Text Copied!",
-        "failure": "Could not copy Text"
+        "success": "¡Texto copiado!",
+        "failure": "No se pudo copiar el texto"
       },
       "copyGitRevision": {
-        "success": "Git Revision Copied!",
-        "failure": "Could not copy Git Revision"
+        "success": "¡Revisión de Git copiada!",
+        "failure": "No se pudo copiar la revisión de Git"
       },
       "copyImageUrl": {
-        "success": "Image URL Copied!",
-        "failure": "Could not copy Image URL"
+        "success": "¡URL de imagen copiada!",
+        "failure": "No se pudo copiar la URL de la imagen"
       },
       "copyVideoUrl": {
-        "success": "Video URL Copied!",
-        "failure": "Could not copy Video URL"
+        "success": "¡URL de vídeo copiada!",
+        "failure": "No se pudo copiar la URL del vídeo"
       },
       "copyShareUrl": {
-        "success": "URL \"%{url}\" Copied!",
-        "failure": "Could not copy URL"
+        "success": "¡URL \"%{url}\" copiada!",
+        "failure": "No se pudo copiar la URL"
       },
       "copyInviteUrl": {
-        "success": "Invite URL \"%{url}\" Copied!",
-        "failure": "Could not copy Invite URL"
+        "success": "¡URL de invitación \"%{url}\" copiada!",
+        "failure": "No se pudo copiar la URL de invitación"
       },
       "copyTwoFactorProvisioningUrl": {
-        "success": "Provisioning Url Copied!",
-        "failure": "Could not copy Provisioning Url"
+        "success": "¡URL de aprovisionamiento copiada!",
+        "failure": "No se pudo copiar la URL de aprovisionamiento"
       },
       "copyBackupCodes": {
-        "success": "Backup Codes Copied!",
-        "failure": "Could not copy Backup Codes"
+        "success": "¡Códigos de respaldo copiados!",
+        "failure": "No se pudieron copiar los códigos de respaldo"
       },
       "signup": {
-        "success": "<b>Welcome to FleetYards.net!</b> Your account has been created. <br>You will receive a confirmation email to activate your account.",
-        "invalid": "Please resolve the errors before your account can be created.",
-        "failure": "We could not create your account. Please try again later."
+        "success": "<b>¡Bienvenido a FleetYards.net!</b> Tu cuenta ha sido creada. <br>Recibirás un email de confirmación para activar tu cuenta.",
+        "invalid": "Por favor, resuelve los errores antes de que tu cuenta pueda ser creada.",
+        "failure": "No pudimos crear tu cuenta. Por favor, inténtalo de nuevo más tarde."
       },
       "accountConfirm": {
-        "success": "Your account was successfully confirmed.<br>You can now login.",
-        "failure": "Your account could not be confirmed."
+        "success": "Tu cuenta fue confirmada exitosamente.<br>Ahora puedes iniciar sesión.",
+        "failure": "Tu cuenta no pudo ser confirmada."
       },
       "requestPasswordChange": {
         "success": "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."

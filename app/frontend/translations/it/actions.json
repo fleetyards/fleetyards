@@ -58,7 +58,7 @@
       "filter": "Filtra",
       "showStatusColor": "Mostra stato come colori",
       "hideStatusColor": "Nascondi stato come colori",
-      "addToHangar": "Add to Hangar",
+      "addToHangar": "Aggiungi all'hangar",
       "resetFilter": "Resetta i filtri",
       "resetPrices": "Resetta i prezzi",
       "requestPassword": "Richiedi la password via email",
@@ -66,7 +66,7 @@
       "updatePassword": "Aggiorna la password",
       "copyBackupCodes": "Copia i codici di backup",
       "add": "Aggiungi",
-      "addToWishlist": "Add to Wishlist",
+      "addToWishlist": "Aggiungi alla lista dei desideri",
       "addAnother": "Aggiungi un altro",
       "addVehicle": "Aggiungi nave",
       "addGroup": "Aggiungi gruppo",
@@ -74,7 +74,7 @@
       "addUpgrade": "Aggiungi un altro upgrade",
       "showTableView": "Mostra come lista",
       "showGridView": "Mostra come griglia",
-      "syncRsiHangar": "Sync RSI Hangar",
+      "syncRsiHangar": "Sincronizza hangar RSI",
       "compare": { "ships": "Compara" },
       "hangar": {
         "editGroups": "Aggiungi o rimuovi gruppo",
@@ -85,18 +85,18 @@
         "hideFromPublicHangar": "Nascondi da pubblico",
         "editGroupsSelected": "Aggiungi/rimuovi gruppo",
         "resetIngame": {
-          "openModal": "Reset Ingame Ships after Wipe",
-          "moveToWishlist": "Move to Wishlist",
-          "removeAll": "Remove all"
+          "openModal": "Resetta navi in-game dopo il wipe",
+          "moveToWishlist": "Sposta nella lista dei desideri",
+          "removeAll": "Rimuovi tutto"
         }
       },
       "syncExtension": {
-        "cancel": "Cancel",
-        "start": "Start Sync",
-        "close": "Close"
+        "cancel": "Annulla",
+        "start": "Avvia sincronizzazione",
+        "close": "Chiudi"
       },
       "empty": {
-        "hangarGuide": "Need Help?"
+        "hangarGuide": "Serve aiuto?"
       },
       "fleet": {
         "join": "Unisciti a %{fleet}!",

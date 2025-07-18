@@ -2,28 +2,28 @@
   "zh-TW": {
     "messages": {
       "copy": {
-        "success": "Text Copied!",
-        "failure": "Could not copy Text"
+        "success": "文本已複製！",
+        "failure": "無法複製文本"
       },
       "copyGitRevision": {
-        "success": "Git Revision Copied!",
-        "failure": "Could not copy Git Revision"
+        "success": "Git 版本已複製！",
+        "failure": "無法複製 Git 版本"
       },
       "copyImageUrl": {
-        "success": "Image URL Copied!",
-        "failure": "Could not copy Image URL"
+        "success": "圖片鏈接已複製！",
+        "failure": "無法複製圖片鏈接"
       },
       "copyVideoUrl": {
-        "success": "Video URL Copied!",
-        "failure": "Could not copy Video URL"
+        "success": "視頻鏈接已複製！",
+        "failure": "無法複製視頻鏈接"
       },
       "copyShareUrl": {
-        "success": "URL \"%{url}\" Copied!",
-        "failure": "Could not copy URL"
+        "success": "鏈接 \"%{url}\" 已複製！",
+        "failure": "無法複製鏈接"
       },
       "copyInviteUrl": {
-        "success": "Invite URL \"%{url}\" Copied!",
-        "failure": "Could not copy Invite URL"
+        "success": "邀請鏈接 \"%{url}\" 已複製！",
+        "failure": "無法複製邀請鏈接"
       },
       "copyTwoFactorProvisioningUrl": {
         "success": "Provisioning Url Copied!",

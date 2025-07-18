@@ -74,7 +74,7 @@
       "addUpgrade": "Ajouter une autre mise à niveau",
       "showTableView": "Afficher sous forme de liste",
       "showGridView": "Afficher sous forme de grille",
-      "syncRsiHangar": "Sync RSI Hangar",
+      "syncRsiHangar": "Synchroniser le hangar RSI",
       "compare": { "ships": "Comparer" },
       "hangar": {
         "editGroups": "Ajouter ou supprimer des groupes",
@@ -91,12 +91,12 @@
         }
       },
       "syncExtension": {
-        "cancel": "Cancel",
-        "start": "Start Sync",
-        "close": "Close"
+        "cancel": "Annuler",
+        "start": "Démarrer la synchronisation",
+        "close": "Fermer"
       },
       "empty": {
-        "hangarGuide": "Need Help?"
+        "hangarGuide": "Besoin d'aide ?"
       },
       "fleet": {
         "join": "Rejoignez la flotte %{fleet}!",

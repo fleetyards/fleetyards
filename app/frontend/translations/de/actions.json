@@ -1,6 +1,12 @@
 {
   "de": {
     "actions": {
+      "admin": {
+        "dashboard": {
+          "reloadModels": "Modelle neu laden",
+          "reloadScData": "SC-Daten neu laden"
+        }
+      },
       "showReleased": "Alte Versionen anzeigen",
       "hideReleased": "Alte Versionen verbergen",
       "upgrade": "Update verfügbar!",
@@ -58,7 +64,7 @@
       "filter": "Filter",
       "showStatusColor": "Status als Farbe anzeigen",
       "hideStatusColor": "Status als Farbe ausblenden",
-      "addToHangar": "Add to your Hangar",
+      "addToHangar": "Zum Hangar hinzufügen",
       "resetFilter": "Filter zurücksetzen",
       "resetPrices": "Preise zurücksetzen",
       "requestPassword": "Passwort-E-Mail anfordern",
@@ -66,7 +72,8 @@
       "updatePassword": "Passwort aktualisieren",
       "copyBackupCodes": "Backup-Codes kopieren",
       "add": "Hinzufügen",
-      "addToWishlist": "Add to Wishlist",
+      "create": "Erstellen",
+      "addToWishlist": "Zur Wunschliste hinzufügen",
       "addAnother": "Weitere hinzufügen",
       "addVehicle": "Schiffe hinzufügen",
       "addGroup": "Gruppe hinzufügen",
@@ -75,6 +82,22 @@
       "showTableView": "Als Liste anzeigen",
       "showGridView": "Als Raster anzeigen",
       "syncRsiHangar": "Sync RSI Hangar",
+      "oauth": {
+        "apple": "Apple",
+        "google": "Google",
+        "discord": "Discord",
+        "bluesky": "BlueSky",
+        "github": "GitHub",
+        "twitch": "Twitch",
+        "connected": {
+          "apple": "Mit Apple verbunden",
+          "google": "Mit Google verbunden",
+          "discord": "Mit Discord verbunden",
+          "bluesky": "Mit BlueSky verbunden",
+          "github": "Mit GitHub verbunden",
+          "twitch": "Mit Twitch verbunden"
+        }
+      },
       "compare": { "ships": "Vergleichen" },
       "hangar": {
         "editGroups": "Gruppen hinzufügen oder löschen",
@@ -85,18 +108,20 @@
         "hideFromPublicHangar": "Nicht öffentlich anzeigen",
         "editGroupsSelected": "Hinzufügen/Entfernen aus Gruppen",
         "resetIngame": {
-          "openModal": "Reset Ingame Ships after Wipe",
-          "moveToWishlist": "Move to Wishlist",
-          "removeAll": "Remove all"
+          "openModal": "Ingame-Schiffe nach Wipe zurücksetzen",
+          "moveToWishlist": "Zur Wunschliste verschieben",
+          "removeAll": "Alle entfernen"
         }
       },
       "syncExtension": {
-        "cancel": "Cancel",
-        "start": "Start Sync",
-        "close": "Close"
+        "cancel": "Abbrechen",
+        "start": "Synchronisation starten",
+        "close": "Schließen",
+        "refresh": "Seite aktualisieren"
       },
       "empty": {
-        "hangarGuide": "Need Help?"
+        "hangarGuide": "Hilfe benötigt?",
+        "reset": "Filter zurücksetzen"
       },
       "fleet": {
         "join": "%{fleet} beitreten!",
@@ -122,6 +147,12 @@
         "gallery": "Galerie",
         "onSale": "Im Verkauf: %{price}",
         "store": "RSI-Seite"
+      },
+      "models": {
+        "sync": "Von RSI synchronisieren",
+        "exchangeStoreImage": "RSI-Bild verwenden",
+        "images": "Bilder",
+        "openTableConfiguration": "Tabellenkonfiguration öffnen"
       },
       "unselect": "Auswahl aufheben",
       "openPriceModal": "Preis einreichen",
