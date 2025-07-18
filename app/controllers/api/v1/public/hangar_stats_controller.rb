@@ -27,6 +27,7 @@ module Api
 
           @quick_stats = QuickStats.new(
             total: vehicles.count,
+            wishlist_total: @user.public_wishlist ? @user.vehicles.wanted.public.where(loaner: false).count : nil,
             classifications: Model.classifications.map do |classification|
               ClassificationCount.new(
                 classification_count: models.count { |model| model.classification == classification },

@@ -13,7 +13,7 @@ module Api
         after_action -> { pagination_header(:vehicles) }, only: %i[show]
 
         def show
-          vehicle_query_params["sorts"] = sorting_params(Vehicle)
+          vehicle_query_params["sorts"] = sorting_params(Vehicle, vehicle_query_params[:sorts])
 
           scope = @user.vehicles
             .purchased
@@ -38,7 +38,7 @@ module Api
           usernames = params.fetch(:usernames, []).map(&:downcase)
           user_ids = User.where(normalized_username: usernames, public_hangar: true).pluck(:id)
 
-          vehicle_query_params["sorts"] = sorting_params(Vehicle, ["model_name asc"])
+          vehicle_query_params["sorts"] = sorting_params(Vehicle, vehicle_query_params[:sorts], ["model_name asc"])
 
           @q = Vehicle.where(user_id: user_ids)
             .public

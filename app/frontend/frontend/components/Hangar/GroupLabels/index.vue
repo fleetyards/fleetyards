@@ -17,14 +17,15 @@ import {
   useHangarGroupSort as useHangarGroupSortMutation,
   type HangarQuery,
   type HangarGroup,
+  type HangarGroupPublic,
   type HangarGroupMetric,
 } from "@/services/fyApi";
 import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
 
 type Props = {
-  hangarGroups: HangarGroup[];
-  hangarGroupCounts: HangarGroupMetric[];
-  editable: boolean;
+  hangarGroups?: (HangarGroup | HangarGroupPublic)[];
+  hangarGroupCounts?: HangarGroupMetric[];
+  editable?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {

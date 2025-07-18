@@ -14,15 +14,11 @@ import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
 import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
 import FilterForm from "@/frontend/components/Hangar/FilterForm/index.vue";
-import GroupLabels from "@/frontend/components/Vehicles/GroupLabels/index.vue";
+import GroupLabels from "@/frontend/components/Hangar/GroupLabels/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import debounce from "lodash.debounce";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import {
-  type HangarGroupMetric,
-  HangarGroup,
-  type UserPublic,
-} from "@/services/fyApi";
+import { HangarGroup, type UserPublic } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useMobile } from "@/shared/composables/useMobile";
@@ -37,8 +33,12 @@ import {
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import {
   usePublicHangar as usePublicHangarQuery,
-  getPublicHangarQueryKey,
+  usePublicHangarQueryOptions,
+  usePublicHangarStats,
+  usePublicHangarGroups,
+  type HangarGroupMetric,
 } from "@/services/fyApi";
+import { CustomQueryOptions } from "@/services/customQueryOptions";
 
 const { t } = useI18n();
 
@@ -89,7 +89,12 @@ const publicHangarQueryParams = computed(() => {
 });
 
 const publicHangarQueryKey = computed(() => {
-  return getPublicHangarQueryKey(username.value, publicHangarQueryParams.value);
+  return (
+    usePublicHangarQueryOptions(
+      username,
+      publicHangarQueryParams,
+    ) as CustomQueryOptions
+  ).queryKey;
 });
 
 const { perPage, page, updatePerPage } = usePagination(publicHangarQueryKey);
@@ -100,23 +105,27 @@ const {
   ...asyncStatus
 } = usePublicHangarQuery(username, publicHangarQueryParams);
 
-// const { data: hangarStats, refetch: refetchStats } = publicStatsQuery(filters);
+const { data: hangarStats, refetch: refetchStats } = usePublicHangarStats(
+  username,
+  publicHangarQueryParams,
+);
 
-// const { data: hangarGroups, refetch: refetchGroups } = publicGroupsQuery();
+const { data: hangarGroups, refetch: refetchGroups } =
+  usePublicHangarGroups(username);
 
 const fetch = () => {
   refetch();
-  // refetchStats();
-  // refetchGroups();
+  refetchStats();
+  refetchGroups();
 };
 
-// const hangarGroupCounts = computed<HangarGroupMetric[]>(() => {
-//   if (!hangarStats.value) {
-//     return [];
-//   }
+const hangarGroupCounts = computed<HangarGroupMetric[]>(() => {
+  if (!hangarStats.value) {
+    return [];
+  }
 
-//   return hangarStats.value.groups;
-// });
+  return hangarStats.value.groups;
+});
 
 const route = useRoute();
 
@@ -147,7 +156,7 @@ useSubscription({
 </script>
 
 <template>
-  <div class="row">
+  <div class="row hangar-public">
     <div class="col-12 col-lg-8">
       <Heading>
         <Avatar :avatar="user.avatar" />
@@ -223,7 +232,6 @@ useSubscription({
             :hangar-groups="hangarGroups"
             :hangar-group-counts="hangarGroupCounts"
             :label="t('labels.groups')"
-            :editable="true"
             @highlight="highlightGroup"
           />
         </div>
@@ -236,7 +244,7 @@ useSubscription({
       <i class="fad fa-wand-sparkles" />
       {{ t("labels.wishlist") }}
       <transition name="fade" mode="out-in" appear>
-        <span v-if="hangarStats && hangarStats.wishlistTotal">
+        <span v-if="hangarStats && hangarStats.total">
           ({{ hangarStats.wishlistTotal }})
         </span>
       </transition>
