@@ -1,0 +1,110 @@
+---
+description:
+globs: *.rake,*.html.erb,*.rb,*.jbuilder,*.jbuilder.json
+alwaysApply: true
+---
+
+# Backend Development Rules
+
+You are an expert in Ruby on Rails, PostgreSQL, Redis, Sidekiq, and SCSS, with a deep understanding of best practices and performance optimization techniques in these technologies.
+
+## Directory structure
+
+- app/
+  - models/                # ActiveRecord models
+  - controllers/           # Rails controllers
+  - views/                 # Rails views
+  - helpers/               # View helpers
+  - mailers/               # Mailers
+  - jobs/                  # ActiveJob/Sidekiq jobs
+  - policies/              # Authorization policies
+  - uploaders/             # File uploaders
+  - channels/              # ActionCable channels
+  - api_components/        # API-specific code
+  - lib/                   # Custom libraries
+  - tasks/                 # Rake tasks
+- config/                  # Rails configuration
+- db/                      # Database migrations, schema, seeds
+- spec/                    # RSpec tests
+- test/                    # Minitest tests
+- bin/                     # Development scripts
+
+## Related rules
+
+- [Linting and Formatting](mdc:.cursor/rules/backend/linting-and-formatting.mdc): Ruby code style and formatting standards
+
+## Key libraries
+
+- **Ruby on Rails**: Web application framework
+- **PostgreSQL**: Primary database
+- **Redis**: Caching and Sidekiq job queue
+- **Sidekiq**: Background job processing
+- **Devise**: Authentication system
+- **Action Policy**: Authorization framework
+- **Minitest/RSpec**: Testing frameworks
+- **FactoryBot**: Test data generation
+
+## Code Style and Structure
+
+- Write concise, idiomatic Ruby code.
+- Follow Rails conventions and best practices.
+- Use object-oriented and functional programming patterns as appropriate.
+- Prefer iteration and modularization over code duplication.
+- Use descriptive variable and method names (e.g., user_signed_in?, calculate_total).
+- Structure files according to Rails conventions (MVC, concerns, helpers, etc.).
+
+## Naming Conventions
+
+- Use snake_case for file names, method names, and variables.
+- Use CamelCase for class and module names.
+- Follow Rails naming conventions for models, controllers, and views.
+
+## Ruby and Rails Usage
+
+- Use Ruby 3.x features when appropriate.
+- Leverage Rails' built-in helpers and methods.
+- Use ActiveRecord for database operations.
+
+## Syntax and Formatting
+
+- Follow the Ruby Style Guide (<https://rubystyle.guide/>)
+- Prefer single quotes for strings unless interpolation is needed.
+
+## Error Handling and Validation
+
+- Use exceptions for exceptional cases, not for control flow.
+- Implement proper error logging and user-friendly messages.
+- Use ActiveModel validations in models.
+- Handle errors gracefully in controllers and display appropriate flash messages.
+
+## UI and Styling
+
+- Use SCSS for styling.
+- Use Rails view helpers and partials to keep views DRY.
+
+## Performance Optimization
+
+- Use database indexing effectively.
+- Implement caching strategies (fragment caching, Russian Doll caching).
+- Use eager loading to avoid N+1 queries.
+- Optimize database queries using includes, joins, or select.
+
+## Key Conventions
+
+- Follow RESTful routing conventions.
+- Use concerns for shared behavior across models or controllers.
+- Implement service objects for complex business logic.
+- Use background jobs (sidekiq) for time-consuming tasks.
+
+## Testing
+
+- Write comprehensive tests using Minitest or RSpec.
+- Use factories (factory_bot) for test data generation.
+
+## Security
+
+- Implement proper authentication (devise) and authorization (action_policy).
+- Use strong parameters in controllers.
+- Protect against common web vulnerabilities (XSS, CSRF, SQL injection).
+- Follow the official Ruby on Rails guides for best practices.
+

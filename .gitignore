@@ -75,3 +75,8 @@ data/sc_data/raw
 
 *storybook.log
 storybook-static
+
+# ai agent files
+.cursor/working/
+.augment/
+.claude/

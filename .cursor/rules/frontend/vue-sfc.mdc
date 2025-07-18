@@ -1,0 +1,43 @@
+---
+description:
+globs: *.vue
+alwaysApply: true
+---
+
+# Vue SFC Rules
+
+## Structure
+- Use `<script setup lang="ts">` for all logic.
+- Place styles in `<style lang="scss" scoped>` unless global.
+- Use `<template>` for markup, keep it concise and readable.
+- Add a name in a `<script lang="ts">` block at the top of the File.
+
+## Best Practices
+- Use PascalCase for component file names and names.
+- Export only one component per file.
+- Use props and emits with full TypeScript typing.
+- Use composables for reusable logic.
+- Keep components focused and small; split large components.
+
+## Example
+```vue
+<script lang="ts">
+export default {
+  name: "MyComponent"
+}
+</script>
+
+<script setup lang="ts">
+defineProps<{ onClick: () => void }>();
+</script>
+
+<template>
+  <button @click="onClick">Click me</button>
+</template>
+
+<style lang="scss" scoped>
+button {
+  color: $primary;
+}
+</style>
+```
