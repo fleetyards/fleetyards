@@ -44,6 +44,16 @@ shared:
     oauth_client_id: <%= ENV["TWITCH_OAUTH_CLIENT_ID"] %>
     oauth_secret: <%= ENV["TWITCH_OAUTH_SECRET"] %>
 
+  google:
+    oauth_client_id: <%= ENV["GOOGLE_OAUTH_CLIENT_ID"] %>
+    oauth_secret: <%= ENV["GOOGLE_OAUTH_SECRET"] %>
+
+  apple:
+    bundle_id: <%= ENV["APPLE_BUNDLE_ID"] %>
+    id_prefix: <%= ENV["APPLE_ID_PREFIX"] %>
+    key: <%= ENV["APPLE_KEY_ID"] %>
+    pem: <%= ENV["APPLE_PEM"] %>
+
 staging:
   on_subdomain?: true
 

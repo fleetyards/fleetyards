@@ -83,11 +83,15 @@
       "showGridView": "Display as Grid",
       "syncRsiHangar": "Sync RSI Hangar",
       "oauth": {
+        "apple": "Apple",
+        "google": "Google",
         "discord": "Discord",
         "bluesky": "BlueSky",
         "github": "GitHub",
         "twitch": "Twitch",
         "connected": {
+          "apple": "Connected to Apple",
+          "google": "Connected to Google",
           "discord": "Connected to Discord",
           "bluesky": "Connected to BlueSky",
           "github": "Connected to GitHub",

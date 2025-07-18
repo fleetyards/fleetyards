@@ -38,7 +38,7 @@ const activeProviders = computed(() => {
 </script>
 
 <template>
-  <div class="social-logins" :class="{ block: block }">
+  <div class="social-logins" :class="{ block: block, 'only-icons': onlyIcons }">
     <OauthBtn
       v-for="provider in activeProviders"
       :key="provider"

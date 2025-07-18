@@ -80,6 +80,7 @@ const providerActive = computed(() => {
       :inline="inline"
       :type="BtnTypesEnum.BUTTON"
       class="oauth-btn"
+      :class="{ inline: inline }"
       data-test="oauth-btn"
       :disabled="connected"
       @click="handleClick"
@@ -92,3 +93,7 @@ const providerActive = computed(() => {
     </Btn>
   </Transition>
 </template>
+
+<style lang="scss" scoped>
+@import "index";
+</style>

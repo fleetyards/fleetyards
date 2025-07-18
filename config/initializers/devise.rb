@@ -247,7 +247,13 @@ Devise.setup do |config|
   # up on your models and hooks.
   # config.omniauth :facebook, Rails.application.credentials.facebook_id, Rails.application.credentials.facebook_secret
   # config.omniauth :twitter, Rails.application.credentials.twitter_id, Rails.application.credentials.twitter_secret
-  # config.omniauth :google_oauth2, Rails.application.credentials.google_id, Rails.application.credentials.google_secret
+  config.omniauth :apple, Rails.configuration.app.apple[:bundle_id], "", {
+    scope: "email name",
+    team_id: Rails.configuration.app.apple[:id_prefix],
+    key_id: Rails.configuration.app.apple[:key],
+    pem: Rails.configuration.app.apple[:pem]
+  }
+  config.omniauth :google, Rails.configuration.app.google[:oauth_client_id], Rails.configuration.app.google[:oauth_secret], name: :google_oauth2
   config.omniauth :github, Rails.configuration.app.github[:oauth_client_id], Rails.configuration.app.github[:oauth_secret], scope: "user"
   config.omniauth :twitch, Rails.configuration.app.twitch[:oauth_client_id], Rails.configuration.app.twitch[:oauth_secret]
   config.omniauth :discord, Rails.configuration.app.discord[:oauth_client_id], Rails.configuration.app.discord[:oauth_secret], scope: "identify email"
