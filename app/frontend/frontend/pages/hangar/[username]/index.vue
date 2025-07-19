@@ -8,8 +8,7 @@ export default {
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import Avatar from "@/shared/components/Avatar/index.vue";
-import Heading from "@/shared/components/base/Heading/index.vue";
+import HangarPublicHeading from "@/frontend/components/Hangar/PublicHeading/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
 import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
@@ -20,7 +19,6 @@ import debounce from "lodash.debounce";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { HangarGroup, type UserPublic } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useComlink } from "@/shared/composables/useComlink";
 import { useMobile } from "@/shared/composables/useMobile";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
@@ -51,24 +49,6 @@ const props = defineProps<Props>();
 const username = computed(() => {
   return props.user.username;
 });
-
-const usernamePlural = computed(() => {
-  if (
-    userTitle.value.endsWith("s") ||
-    userTitle.value.endsWith("x") ||
-    userTitle.value.endsWith("z")
-  ) {
-    return userTitle.value;
-  }
-
-  return `${userTitle.value}'s`;
-});
-
-const userTitle = computed(() => {
-  return username.value[0].toUpperCase() + username.value.slice(1);
-});
-
-const comlink = useComlink();
 
 const highlightedGroup = ref<string>("");
 
@@ -158,12 +138,7 @@ useSubscription({
 <template>
   <div class="row hangar-public">
     <div class="col-12 col-lg-8">
-      <Heading>
-        <Avatar :avatar="user.avatar" />
-        <span>
-          {{ t("headlines.hangar.public", { user: usernamePlural }) }}
-        </span>
-      </Heading>
+      <HangarPublicHeading :user="props.user" />
     </div>
 
     <div class="col-12 col-lg-4 hangar-profile-links">
@@ -240,11 +215,11 @@ useSubscription({
   </div>
 
   <Teleport v-if="!mobile" to="#header-right">
-    <Btn v-if="user.publicWishlist" :to="{ name: 'hangar-wishlist' }">
+    <Btn v-if="user.publicWishlist" :to="{ name: 'wishlist-public' }">
       <i class="fad fa-wand-sparkles" />
       {{ t("labels.wishlist") }}
       <transition name="fade" mode="out-in" appear>
-        <span v-if="hangarStats && hangarStats.total">
+        <span v-if="hangarStats && hangarStats.wishlistTotal">
           ({{ hangarStats.wishlistTotal }})
         </span>
       </transition>

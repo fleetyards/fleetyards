@@ -13,9 +13,9 @@ import {
 } from "@/shared/components/base/Heading/types";
 
 type Props = {
-  level?: HeadingLevelEnum;
-  size?: HeadingSizeEnum;
-  alignment?: HeadingAlignmentEnum;
+  level?: `${HeadingLevelEnum}`;
+  size?: `${HeadingSizeEnum}`;
+  alignment?: `${HeadingAlignmentEnum}`;
   hero?: boolean;
   hidden?: boolean;
   shadow?: boolean;
@@ -44,8 +44,9 @@ const cssClasses = computed(() => {
     "text-shadow": props.shadow,
     "mb-4": props.mb,
     "mt-4": props.mt,
-    "text-center": props.alignment === HeadingAlignmentEnum.CENTER,
-    "text-right": props.alignment === HeadingAlignmentEnum.RIGHT,
+    "items-start": props.alignment === HeadingAlignmentEnum.LEFT,
+    "items-center": props.alignment === HeadingAlignmentEnum.CENTER,
+    "items-end": props.alignment === HeadingAlignmentEnum.RIGHT,
   };
 });
 
@@ -56,11 +57,7 @@ const slots = defineSlots<{
 </script>
 
 <template>
-  <component
-    :is="level"
-    :class="cssClasses"
-    class="font-normal flex flex-col justify-between"
-  >
+  <component :is="level" :class="cssClasses" class="font-normal flex flex-col">
     <slot name="default" />
     <HeadingSmall v-if="slots.subHeading">
       <slot name="subHeading" />

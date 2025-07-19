@@ -13,7 +13,7 @@ import { useRoute } from "vue-router";
 import { EmptyVariantsEnum } from "./types";
 
 type Props = {
-  variant?: EmptyVariantsEnum;
+  variant?: `${EmptyVariantsEnum}`;
   name?: string;
   title?: string;
   inline?: boolean;

@@ -39,7 +39,7 @@ import {
   useWishlist as useWishlistQuery,
   exportWishlist,
   useDestroyWishlist as useDestroyWishlistMutation,
-  getWishlistQueryKey,
+  useWishlistQueryOptions,
 } from "@/services/fyApi";
 
 const { t } = useI18n();
@@ -71,7 +71,9 @@ const wishlistQueryParams = computed(() => ({
 }));
 
 const wishlistQueryKey = computed(() => {
-  return getWishlistQueryKey(wishlistQueryParams.value);
+  return useWishlistQueryOptions({
+    ...wishlistQueryParams.value,
+  }).queryKey;
 });
 
 const { perPage, page, updatePerPage } = usePagination(wishlistQueryKey);

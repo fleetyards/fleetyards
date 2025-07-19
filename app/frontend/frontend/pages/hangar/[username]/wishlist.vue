@@ -1,34 +1,39 @@
-<script setup lang="ts">
-import { useI18n } from "@/shared/composables/useI18n";
-import { useMobile } from "@/shared/composables/useMobile";
-import { useGet as usePublicWishlist } from "@/services/fyApi";
-import type { UserPublic, Vehicle } from "@/services/fyApi";
-import type { AsyncStatus } from "@/shared/components/AsyncData.types";
+<script lang="ts">
+export default {
+  name: "PublicWishlistPage",
+};
+</script>
 
-import Btn from "@/shared/components/base/Btn/index.vue";
-import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
-import ModelClassLabels from "@/frontend/components/Models/ClassLabels/index.vue";
-import AddonsModal from "@/frontend/components/Vehicles/AddonsModal/index.vue";
-import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
-import Avatar from "@/shared/components/Avatar/index.vue";
+<script lang="ts" setup>
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
-import GroupLabels from "@/frontend/components/Hangar/GroupLabels/index.vue";
-import Paginator from "@/shared/components/Paginator/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import HangarPublicHeading from "@/frontend/components/Hangar/PublicHeading/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
-import Heading from "@/shared/components/base/Heading/index.vue";
+import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
+import FilterForm from "@/frontend/components/Hangar/FilterForm/index.vue";
+import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
+import Paginator from "@/shared/components/Paginator/index.vue";
+import { type UserPublic } from "@/services/fyApi";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useMobile } from "@/shared/composables/useMobile";
+import { useFleetchartStore } from "@/shared/stores/fleetchart";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { usePublicWishlist as usePublicWishlistQuery } from "@/services/fyApi";
 
 const { t } = useI18n();
-const mobile = useMobile();
-const route = useRoute();
 
-// Accept user as a prop
-const props = defineProps<{ user: UserPublic }>();
+type Props = {
+  user: UserPublic;
+};
 
-const username = computed(() => props.user.username);
-const userTitle = computed(
-  () => username.value.charAt(0).toUpperCase() + username.value.slice(1),
-);
+const props = defineProps<Props>();
+
+const username = computed(() => {
+  return props.user.username;
+});
+
 const usernamePlural = computed(() => {
   if (
     userTitle.value.endsWith("s") ||
@@ -37,33 +42,66 @@ const usernamePlural = computed(() => {
   ) {
     return userTitle.value;
   }
+
   return `${userTitle.value}'s`;
 });
 
-const wishlistQuery = usePublicWishlist(username);
-const asyncStatus: AsyncStatus = {
+const userTitle = computed(() => {
+  return username.value[0].toUpperCase() + username.value.slice(1);
+});
+
+const mobile = useMobile();
+
+const fleetchartStore = useFleetchartStore();
+
+const fleetchartVisible = computed(() => fleetchartStore.isVisible("wishlist"));
+
+const route = useRoute();
+
+const wishlistQuery = usePublicWishlistQuery(username);
+const wishlist = wishlistQuery.data;
+const refetch = wishlistQuery.refetch;
+const asyncStatus = {
   fetchStatus: wishlistQuery.fetchStatus,
   isError: wishlistQuery.isError,
   isLoading: wishlistQuery.isLoading,
   isFetching: wishlistQuery.isFetching,
   isRefetching: wishlistQuery.isRefetching,
   error: wishlistQuery.error,
-  refetch: wishlistQuery.refetch,
 };
-const wishlist = wishlistQuery.data;
-const refetch = wishlistQuery.refetch;
+
+const toggleFleetchart = () => {
+  fleetchartStore.toggleFleetchart("wishlist");
+};
+
+const router = useRouter();
+
+onMounted(() => {
+  if (!props.user.publicWishlist) {
+    router.replace({
+      name: "hangar-public",
+      params: { username: username.value },
+    });
+  }
+});
 </script>
 
 <template>
-  <div class="row">
+  <Teleport to="#header-left">
+    <BreadCrumbs
+      :crumbs="[
+        {
+          to: { name: 'hangar-public', params: { username: username } },
+          label: t('headlines.hangar.public', { user: usernamePlural }),
+        },
+      ]"
+    />
+  </Teleport>
+  <div class="row hangar-public">
     <div class="col-12 col-lg-8">
-      <Heading>
-        <Avatar :avatar="user.avatar" />
-        <span>
-          {{ t("headlines.hangar.publicWishlist", { user: usernamePlural }) }}
-        </span>
-      </Heading>
+      <HangarPublicHeading :user="user" />
     </div>
+
     <div class="col-12 col-lg-4 hangar-profile-links">
       <a
         v-if="user.homepage"
@@ -123,37 +161,58 @@ const refetch = wishlistQuery.refetch;
   </div>
 
   <Teleport v-if="!mobile" to="#header-right">
-    <Btn :to="{ name: 'hangar-public' }">
-      <i class="fad fa-ship" />
-      {{ t("labels.hangar") }}
+    <Btn data-test="fleetchart-link" @click="toggleFleetchart">
+      <i class="fad fa-starship" />
+      {{ t("labels.fleetchart") }}
     </Btn>
   </Teleport>
 
   <FilteredList
     :key="`public-wishlist-${username}`"
+    :hide-loading="fleetchartVisible"
     :records="wishlist?.items || []"
     :name="route.name?.toString() || ''"
     :async-status="asyncStatus"
   >
     <template v-if="mobile" #actions-right>
-      <BtnDropdown>
-        <Btn :to="{ name: 'hangar-public' }">
-          <i class="fad fa-ship" />
-          <span>{{ t("labels.hangar") }}</span>
+      <BtnDropdown :size="BtnSizesEnum.SMALL">
+        <Btn
+          data-test="fleetchart-link"
+          :size="BtnSizesEnum.SMALL"
+          @click="toggleFleetchart"
+        >
+          <i class="fad fa-starship" />
+          <span>{{ t("labels.fleetchart") }}</span>
         </Btn>
       </BtnDropdown>
     </template>
 
-    <template #default="{ records }">
-      <Grid
-        :records="records as Vehicle[]"
-        :primary-key="'id'"
-        :filter-visible="false"
-      >
+    <template #default="{ records, loading }">
+      <Grid :records="records" :filter-visible="false" primary-key="id">
         <template #default="{ record }">
           <VehiclePanel :vehicle="record" :details="false" :editable="false" />
         </template>
       </Grid>
+
+      <FleetchartApp
+        :items="wishlist?.items || []"
+        namespace="wishlist"
+        :loading="loading"
+        download-name="my-wishlist-fleetchart"
+      >
+        <template #filter>
+          <FilterForm hide-quicksearch />
+        </template>
+        <template #pagination>
+          <Paginator
+            v-if="wishlist"
+            :query-result-ref="wishlist"
+            :per-page="wishlist?.meta?.pagination?.defaultPerPage || 20"
+            :size="BtnSizesEnum.SMALL"
+            :update-per-page="() => refetch()"
+          />
+        </template>
+      </FleetchartApp>
     </template>
 
     <template #pagination-bottom>
@@ -163,12 +222,6 @@ const refetch = wishlistQuery.refetch;
         :per-page="wishlist?.meta?.pagination?.defaultPerPage || 20"
         :update-per-page="() => refetch()"
       />
-    </template>
-
-    <template #empty="{ hideEmpty, emptyVisible }">
-      <div v-if="!hideEmpty && emptyVisible" class="wishlist-empty">
-        {{ t("messages.empty.wishlist") }}
-      </div>
     </template>
   </FilteredList>
 </template>

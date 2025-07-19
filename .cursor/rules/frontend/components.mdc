@@ -1,7 +1,7 @@
 ---
 description: 
 globs: *.vue
-alwaysApply: false
+alwaysApply: true
 ---
 
 # Shared Components Directory (`app/frontend/shared/components`)

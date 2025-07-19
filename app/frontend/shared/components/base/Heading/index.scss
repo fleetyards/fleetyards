@@ -72,8 +72,16 @@ h4 {
   flex-direction: column;
 }
 
-.justify-between {
-  justify-content: space-between;
+.items-start {
+  align-items: flex-start;
+}
+
+.items-end {
+  align-items: flex-end;
+}
+
+.items-center {
+  align-items: center;
 }
 
 .gap-1 {

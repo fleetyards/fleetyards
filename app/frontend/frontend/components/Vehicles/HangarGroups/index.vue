@@ -1,30 +1,16 @@
-<template>
-  <div
-    class="hangar-groups"
-    :class="{
-      'hangar-groups-large': size === 'large',
-    }"
-  >
-    <div
-      v-for="group in groups"
-      :key="`hangar-group-${group.id}`"
-      v-tooltip="group.name"
-      class="hangar-group"
-      :style="{
-        'background-color': group.color,
-      }"
-      @click.exact="filter($event, group.slug)"
-    />
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "HangarGroups",
+};
+</script>
 
 <script lang="ts" setup>
-import type { HangarGroup } from "@/services/fyApi";
+import { type HangarGroup, type HangarGroupPublic } from "@/services/fyApi";
 
 type HangarGroupBubbleSizes = "default" | "large";
 
 type Props = {
-  groups: HangarGroup[];
+  groups: (HangarGroup | HangarGroupPublic)[];
   size?: HangarGroupBubbleSizes;
 };
 
@@ -67,11 +53,25 @@ const filter = (event: Event, filter: string) => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "HangarGroups",
-};
-</script>
+<template>
+  <div
+    class="hangar-groups"
+    :class="{
+      'hangar-groups-large': size === 'large',
+    }"
+  >
+    <div
+      v-for="group in groups"
+      :key="`hangar-group-${group.id}`"
+      v-tooltip="group.name"
+      class="hangar-group"
+      :style="{
+        'background-color': group.color,
+      }"
+      @click.exact="filter($event, group.slug)"
+    />
+  </div>
+</template>
 
 <style lang="scss" scoped>
 @import "index";

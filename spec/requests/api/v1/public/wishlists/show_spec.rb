@@ -10,7 +10,7 @@ RSpec.describe "api/v1/public/wishlists", type: :request, swagger_doc: "v1/schem
     parameter name: "username", in: :path, type: :string, required: true
 
     get("Your Wishlist") do
-      operationId "get"
+      operationId "publicWishlist"
       tags "PublicWishlist"
       produces "application/json"
 

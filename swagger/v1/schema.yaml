@@ -3205,7 +3205,7 @@ paths:
         type: string
     get:
       summary: Your Wishlist
-      operationId: get
+      operationId: publicWishlist
       tags:
       - PublicWishlist
       parameters:
@@ -5703,6 +5703,8 @@ components:
       type: object
       properties:
         total:
+          type: integer
+        wishlistTotal:
           type: integer
         classifications:
           type: array

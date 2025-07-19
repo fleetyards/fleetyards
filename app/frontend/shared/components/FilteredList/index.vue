@@ -181,7 +181,7 @@ const toggleFilter = () => {
             :empty-visible="emptyVisible"
           >
             <transition name="fade">
-              <Empty />
+              <Empty variant="box" />
             </transition>
           </slot>
 

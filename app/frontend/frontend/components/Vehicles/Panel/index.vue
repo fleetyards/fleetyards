@@ -10,13 +10,17 @@ import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
 import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index.vue";
 import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue";
-import { type Vehicle, type Manufacturer } from "@/services/fyApi";
+import {
+  type Vehicle,
+  type VehiclePublic,
+  type Manufacturer,
+} from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
-  vehicle: Vehicle;
+  vehicle: Vehicle | VehiclePublic;
   details?: boolean;
   editable?: boolean;
   wishlist?: boolean;
@@ -116,6 +120,10 @@ const openAddonsModal = () => {
     },
   });
 };
+
+const shouldHighlight = computed(() => {
+  return props.highlight || (props.vehicle as Vehicle).flagship;
+});
 </script>
 
 <template>
@@ -124,7 +132,7 @@ const openAddonsModal = () => {
     :model="model"
     class="vehicle-panel"
     :details="details"
-    :highlight="vehicle.flagship || highlight"
+    :highlight="shouldHighlight"
     :store-image="image"
   >
     <template #heading-title>
@@ -151,7 +159,10 @@ const openAddonsModal = () => {
         </transition>
 
         <transition name="fade" appear>
-          <small v-if="vehicle.flagship" v-tooltip.right="flagshipTooltip">
+          <small
+            v-if="(vehicle as Vehicle).flagship"
+            v-tooltip.right="flagshipTooltip"
+          >
             <i class="fa fa-certificate vehicle-panel-flagship-icon" />
           </small>
         </transition>
@@ -180,7 +191,7 @@ const openAddonsModal = () => {
     <template #heading-actions>
       <VehicleContextMenu
         v-if="editable && !vehicle.loaner"
-        :vehicle="vehicle"
+        :vehicle="vehicle as Vehicle"
         :editable="editable"
         :wishlist="wishlist"
         :variant="BtnVariantsEnum.LINK"
