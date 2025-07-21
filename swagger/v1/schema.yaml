@@ -5963,6 +5963,9 @@ components:
           type: boolean
         shipsFilter:
           "$ref": "#/components/schemas/FleetMembershipShipsFilterEnum"
+        hangarGroupId:
+          type: string
+          nullable: true
       additionalProperties: false
       title: FleetMembershipUpdateInput
     FleetUpdateInput:

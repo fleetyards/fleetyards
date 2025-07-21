@@ -5,10 +5,21 @@ export default {
 </script>
 
 <script lang="ts" setup>
-// import Btn from "@/shared/components/base/Btn/index.vue";
-// import FormCheckbox from "@/frontend/core/components/Form/FormCheckbox/index.vue";
-// import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
-import { type Fleet, type FleetMember } from "@/services/fyApi";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useForm } from "vee-validate";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import type { FilterOption } from "@/services/fyApi";
+import {
+  type Fleet,
+  type FleetMember,
+  type FleetMembershipUpdateInput,
+  FleetMembershipShipsFilterEnum,
+} from "@/services/fyApi";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useUpdateFleetMembership } from "@/services/fyApi/services/fleet-membership/fleet-membership";
+import { useHangarGroups } from "@/services/fyApi/services/hangar-groups/hangar-groups";
 
 type Props = {
   fleet: Fleet;
@@ -17,13 +28,24 @@ type Props = {
 
 const props = defineProps<Props>();
 
+const { t } = useI18n();
+const { displaySuccess, displayAlert } = useAppNotifications();
+
 const submitting = ref(false);
 
-// form: FleetMembershipForm = {
-//   primary: false,
-//   shipsFilter: null,
-//   hangarGroupId: null,
-// };
+const initialValues = ref<FleetMembershipUpdateInput>({
+  primary: props.membership.primary,
+  shipsFilter: props.membership.shipsFilter,
+  hangarGroupId: props.membership.hangarGroupId,
+});
+
+const { defineField, handleSubmit, setErrors } = useForm({
+  initialValues: initialValues.value,
+});
+
+const [primary, primaryProps] = defineField("primary");
+const [shipsFilter, shipsFilterProps] = defineField("shipsFilter");
+const [hangarGroupId, hangarGroupIdProps] = defineField("hangarGroupId");
 
 // get fleet() {
 //   return fleetsCollection.record;
@@ -56,167 +78,123 @@ const submitting = ref(false);
 //   ];
 // }
 
-// get shipsFilterIsHangarGroup() {
-//   return this.form.shipsFilter === "hangar_group";
-// }
+const shipsFilterIsHangarGroup = computed(() => {
+  return shipsFilter.value === FleetMembershipShipsFilterEnum.hangar_group;
+});
 
-// get shipsFilterOptions() {
-//   return [
-//     {
-//       name: this.$t("labels.fleet.members.shipsFilter.values.all"),
-//       value: "all",
-//     },
-//     {
-//       name: this.$t("labels.fleet.members.shipsFilter.values.hangar_group"),
-//       value: "hangar_group",
-//     },
-//     {
-//       name: this.$t("labels.fleet.members.shipsFilter.values.hide"),
-//       value: "hide",
-//     },
-//   ];
-// }
+const shipsFilterOptions = computed<FilterOption[]>(() => [
+  {
+    label: t("labels.fleet.members.shipsFilter.values.all"),
+    value: FleetMembershipShipsFilterEnum.all,
+  },
+  {
+    label: t("labels.fleet.members.shipsFilter.values.hangar_group"),
+    value: FleetMembershipShipsFilterEnum.hangar_group,
+  },
+  {
+    label: t("labels.fleet.members.shipsFilter.values.hide"),
+    value: FleetMembershipShipsFilterEnum.hide,
+  },
+]);
 
-// get membership() {
-//   return this.collection.record;
-// }
+// Fetch hangar groups
+const { data: hangarGroups } = useHangarGroups();
 
-// @Watch("$route")
-// onRouteChange() {
-//   this.fetchFleet();
-// }
+const hangarGroupOptions = computed<FilterOption[]>(() => {
+  if (!hangarGroups.value) return [];
 
-// @Watch("fleet")
-// onFleetChange() {
-//   this.fetch();
-// }
+  return hangarGroups.value.map((group) => ({
+    label: group.name,
+    value: group.id,
+  }));
+});
 
-// @Watch("shipsFilterIsHangarGroup")
-// onShipsFilterChange() {
-//   if (!this.shipsFilterIsHangarGroup) {
-//     this.form.hangarGroupId = null;
-//   }
-// }
+// Clear hangar group selection when ships filter changes
+watch(shipsFilterIsHangarGroup, (newValue) => {
+  if (!newValue) {
+    hangarGroupId.value = null;
+  }
+});
 
-// mounted() {
-//   this.fetchFleet();
-//   this.fetch();
-// }
+const { mutateAsync: updateMembership } = useUpdateFleetMembership();
 
-// setupForm() {
-//   this.form = {
-//     primary: this.membership?.primary,
-//     shipsFilter: this.membership?.shipsFilter,
-//     hangarGroupId: this.membership?.hangarGroupId,
-//   };
-// }
+const onSubmit = handleSubmit(async (values) => {
+  submitting.value = true;
 
-// async fetch() {
-//   await this.collection.findByFleet(this.$route.params.slug);
+  try {
+    await updateMembership({
+      fleetSlug: props.fleet.slug,
+      data: values,
+    });
 
-//   this.setupForm();
-// }
+    displaySuccess({
+      text: t("messages.fleet.members.update.success"),
+    });
 
-// async fetchFleet() {
-//   await fleetsCollection.findBySlug(this.$route.params.slug);
-// }
+    // TODO: Emit fleet-update event when event system is implemented
+  } catch (error) {
+    const errorResponse = error as {
+      response?: {
+        data?: { errors?: Record<string, string[]>; message?: string };
+      };
+    };
 
-// async submit() {
-//   this.submitting = true;
+    if (errorResponse.response?.data?.errors) {
+      setErrors(errorResponse.response.data.errors);
+    }
 
-//   const response = await this.$api.put(
-//     `fleets/${this.$route.params.slug}/members`,
-//     this.form,
-//   );
-
-//   this.submitting = false;
-
-//   if (!response.error) {
-//     displaySuccess({
-//       text: this.$t("messages.fleet.members.update.success"),
-//     });
-
-//     this.$comlink.$emit("fleet-update");
-//   } else {
-//     displayAlert({
-//       text: this.$t("messages.fleet.members.update.failure"),
-//     });
-//   }
-// }
+    displayAlert({
+      text:
+        errorResponse.response?.data?.message ||
+        t("messages.fleet.members.update.failure"),
+    });
+  } finally {
+    submitting.value = false;
+  }
+});
 </script>
 
 <template>
-  {{ fleet }}
-  {{ membership }}
-  <!--
-    <ValidationObserver v-slot="{ handleSubmit }" :slim="true">
-      <form v-if="fleet && form" @submit.prevent="handleSubmit(submit)">
-        <div class="row">
-          <div class="col-lg-12 col-xl-6">
-            <FormCheckbox
-              id="primary"
-              v-model="form.primary"
-              :label="$t('labels.fleet.members.primary')"
-            />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-12 col-xl-6">
-            <ValidationProvider
-              v-slot="{ errors }"
-              vid="shipsFilter"
-              rules="required"
-              :name="$t('labels.fleet.members.shipsFilter.field')"
-              :slim="true"
-            >
-              <div
-                :class="{ 'has-error has-feedback': errors[0] }"
-                class="form-group"
-              >
-                <FilterGroup
-                  :key="'ships-filter'"
-                  v-model="form.shipsFilter"
-                  translation-key="fleet.members.shipsFilter"
-                  :options="shipsFilterOptions"
-                  name="shipsFilter"
-                />
-              </div>
-            </ValidationProvider>
-          </div>
-          <div v-if="shipsFilterIsHangarGroup" class="col-lg-12 col-xl-6">
-            <ValidationProvider
-              v-slot="{ errors }"
-              vid="hangarGroupId"
-              rules="required"
-              :name="$t('labels.fleet.members.hangarGroupId.field')"
-              :slim="true"
-            >
-              <div
-                :class="{ 'has-error has-feedback': errors[0] }"
-                class="form-group"
-              >
-                <FilterGroup
-                  :key="'hangar-group-id'"
-                  v-model="form.hangarGroupId"
-                  translation-key="fleet.members.hangarGroupId"
-                  fetch-path="hangar-groups"
-                  value-attr="id"
-                  name="hangarGroupId"
-                />
-              </div>
-            </ValidationProvider>
-          </div>
-        </div>
-        <br />
-        <Btn
-          :loading="submitting"
-          type="submit"
-          size="large"
-          data-test="fleet-save"
-        >
-          {{ $t("actions.save") }}
-        </Btn>
-      </form>
-    </ValidationObserver>
-  </section> -->
+  <form @submit.prevent="onSubmit">
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <FormCheckbox
+          v-model="primary"
+          name="primary"
+          translation-key="fleet.members.primary"
+          v-bind="primaryProps"
+        />
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <FilterGroup
+          v-model="shipsFilter"
+          name="shipsFilter"
+          translation-key="fleet.members.shipsFilter"
+          :options="shipsFilterOptions"
+          v-bind="shipsFilterProps"
+        />
+      </div>
+      <div v-if="shipsFilterIsHangarGroup" class="col-12 col-md-6">
+        <FilterGroup
+          v-model="hangarGroupId"
+          name="hangarGroupId"
+          translation-key="fleet.members.hangarGroupId"
+          :options="hangarGroupOptions"
+          v-bind="hangarGroupIdProps"
+        />
+      </div>
+    </div>
+    <hr />
+    <Btn
+      :loading="submitting"
+      type="submit"
+      size="large"
+      data-test="fleet-membership-save"
+    >
+      {{ t("actions.save") }}
+    </Btn>
+  </form>
 </template>
