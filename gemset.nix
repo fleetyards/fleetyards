@@ -298,7 +298,7 @@
       sha256 = "045wzckxpwcqzrjr353cxnyaxgf0qg22jh00dcx7z38cys5g1jlr";
       type = "gem";
     };
-    version = "3.2.4";
+    version = "3.4.5";
   };
   bullet = {
     dependencies = ["activesupport" "uniform_notifier"];
