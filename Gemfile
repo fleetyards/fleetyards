@@ -3,6 +3,7 @@
 source "https://rubygems.org"
 
 ruby file: ".tool-versions"
+ruby "3.4.5"
 
 gem "rails", "7.1.3.2"
 
