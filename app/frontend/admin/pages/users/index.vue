@@ -13,12 +13,13 @@ import UserActions from "@/admin/components/Users/Actions/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import { BaseTableColumn } from "@/shared/components/base/Table/types";
+import { BaseTableCol } from "@/shared/components/base/Table/types";
 import { usePagination } from "@/shared/composables/usePagination";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import {
   useUsers as useUsersQuery,
-  getUsersQueryKey,
+  useUsersQueryOptions,
+  type User,
 } from "@/services/fyAdminApi";
 import { useUserFilters } from "@/admin/composables/useUserFilters";
 
@@ -47,7 +48,7 @@ const usersQueryParams = computed(() => {
 });
 
 const usersQueryKey = computed(() => {
-  return getUsersQueryKey(usersQueryParams);
+  return useUsersQueryOptions(usersQueryParams).queryKey;
 });
 
 const { perPage, page, updatePerPage } = usePagination(usersQueryKey);
@@ -60,7 +61,7 @@ const {
   ...asyncStatus
 } = useUsersQuery(usersQueryParams);
 
-const columns: BaseTableColumn[] = [
+const columns: BaseTableCol<User>[] = [
   {
     name: "avatar",
     label: "",
