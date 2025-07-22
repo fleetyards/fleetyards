@@ -64,7 +64,7 @@ class AdminUser < ApplicationRecord
   end
 
   def has_access?(privileges)
-    super_admin? || super(privileges)
+    super_admin? || super
   end
 
   def reset_otp

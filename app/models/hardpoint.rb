@@ -96,7 +96,7 @@ class Hardpoint < ApplicationRecord
       :unknown
     end
 
-    if sc_name&.start_with?("hardpoint_engineering") || sc_name&.start_with?("hardpoint_engineeringscreen")
+    if sc_name&.start_with?("hardpoint_engineering", "hardpoint_engineeringscreen")
       self.group = :seat
     end
 
