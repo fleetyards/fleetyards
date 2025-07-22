@@ -283,7 +283,7 @@ GEM
     graphql-client (0.25.0)
       activesupport (>= 3.0)
       graphql (>= 1.13.0)
-    griddler (1.5.2)
+    griddler (1.6.0)
       htmlentities
       rails (>= 3.2.0)
     groupdate (6.4.0)
