@@ -297,7 +297,7 @@ GEM
       rchardet (~> 1.9)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    google-protobuf (3.25.2)
+    google-protobuf (3.25.5)
     graphlient (0.8.0)
       faraday (~> 2.0)
       graphql-client
