@@ -154,7 +154,7 @@
     "vite": "7.0.5",
     "vite-plugin-pwa": "0.21.1",
     "vite-plugin-rails": "0.5.0",
-    "vitest": "^3.0.0",
+    "vitest": "3.2.4",
     "vue-component-type-helpers": "^2.2.10",
     "vue-tsc": "2.2.10",
     "workbox-build": "7.0.0",
