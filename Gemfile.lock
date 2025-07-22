@@ -449,8 +449,8 @@ GEM
     pg (1.5.9)
     pg_query (6.1.0)
       google-protobuf (>= 3.25.3)
-    pghero (3.4.1)
-      activerecord (>= 6)
+    pghero (3.7.0)
+      activerecord (>= 7.1)
     postmark (1.25.0)
       json
     postmark-rails (0.22.1)
