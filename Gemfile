@@ -201,23 +201,3 @@ gem "with_advisory_lock"
 gem "maintenance_tasks", "~> 2.11"
 
 gem "graphlient"
-
-# legacy gems: needs to be removed once vue3 update is finished
-gem "haml"
-gem "haml-rails"
-gem "slim-rails"
-gem "selectize-rails"
-gem "i18n-js", "< 4.0"
-gem "js_cookie_rails"
-# Stylesheet inlining for email **
-gem "foundation_emails"
-gem "cancancan"
-gem "dynamic_fields_for_rails"
-gem "bourbon"
-gem "coffee-rails"
-gem "sass-rails"
-gem "sprockets-rails"
-gem "jquery-rails"
-gem "js-routes"
-gem "uglifier"
-gem "x"
