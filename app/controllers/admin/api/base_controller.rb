@@ -7,6 +7,9 @@ module Admin
       include RansackHelper
       include Pagination
 
+      helper_method :combined_fragment_cache_key
+      helper_method :view_cache_dependencies
+
       respond_to :json
 
       skip_before_action :track_ahoy_visit
