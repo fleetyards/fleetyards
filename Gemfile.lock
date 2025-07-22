@@ -12,6 +12,8 @@ GEM
       concurrent-ruby (~> 1.0)
     abbrev (0.1.2)
     accept_language (2.0.8)
+    action_policy (0.7.5)
+      ruby-next-core (>= 1.0)
     actioncable (7.2.2.1)
       actionpack (= 7.2.2.1)
       activesupport (= 7.2.2.1)
@@ -85,6 +87,7 @@ GEM
       tzinfo (~> 2.0, >= 2.0.5)
     addressable (2.8.6)
       public_suffix (>= 2.0.2, < 6.0)
+    aes_key_wrap (1.1.0)
     after_commit_everywhere (1.4.0)
       activerecord (>= 4.2)
       activesupport
@@ -101,11 +104,33 @@ GEM
     appsignal (3.7.4)
       rack
     ast (2.4.3)
+    atproto_client (0.1.4)
+      jwt (~> 2.7)
+      openssl (~> 3.0)
+    aws-eventstream (1.4.0)
+    aws-partitions (1.1132.0)
+    aws-sdk-core (3.227.0)
+      aws-eventstream (~> 1, >= 1.3.0)
+      aws-partitions (~> 1, >= 1.992.0)
+      aws-sigv4 (~> 1.9)
+      base64
+      jmespath (~> 1, >= 1.6.1)
+      logger
+    aws-sdk-kms (1.107.0)
+      aws-sdk-core (~> 3, >= 3.227.0)
+      aws-sigv4 (~> 1.5)
+    aws-sdk-s3 (1.194.0)
+      aws-sdk-core (~> 3, >= 3.227.0)
+      aws-sdk-kms (~> 1)
+      aws-sigv4 (~> 1.5)
+    aws-sigv4 (1.12.1)
+      aws-eventstream (~> 1, >= 1.0.2)
     base64 (0.3.0)
     bcrypt (3.1.20)
     bcrypt_pbkdf (1.1.1)
     benchmark (0.4.1)
     bigdecimal (3.2.2)
+    bindata (2.5.1)
     bindex (0.8.1)
     bootsnap (1.18.6)
       msgpack (~> 1.2)
@@ -162,11 +187,20 @@ GEM
     css_parser (1.16.0)
       addressable
     csv (3.3.5)
+    cypress-on-rails (1.17.0)
+      rack
     dalli (3.2.8)
     data_migrate (9.4.0)
       activerecord (>= 6.1)
       railties (>= 6.1)
+    database_cleaner-active_record (2.2.1)
+      activerecord (>= 5.a)
+      database_cleaner-core (~> 2.0.0)
+    database_cleaner-core (2.0.1)
     date (3.4.1)
+    debug (1.11.0)
+      irb (~> 1.10)
+      reline (>= 0.3.8)
     deep_merge (1.2.2)
     device_detector (1.1.2)
     devise (4.9.4)
@@ -180,11 +214,20 @@ GEM
       devise (~> 4.0)
       railties (>= 7.0, < 8.1)
       rotp (~> 6.0)
+    didkit (0.2.3)
     diff-lcs (1.5.1)
     discordrb-webhooks (3.5.0)
       rest-client (>= 2.0.0)
     docile (1.4.0)
     domain_name (0.6.20231109)
+    doorkeeper (5.8.2)
+      railties (>= 5)
+    doorkeeper-jwt (0.4.2)
+      jwt (>= 2.1)
+    doorkeeper-openid_connect (1.8.11)
+      doorkeeper (>= 5.5, < 5.9)
+      jwt (>= 2.5)
+      ostruct (>= 0.5)
     dotenv (3.1.8)
     dotenv-rails (3.1.8)
       dotenv (= 3.1.8)
@@ -211,6 +254,8 @@ GEM
       i18n (>= 1.8.11, < 2)
     faraday (2.9.0)
       faraday-net_http (>= 2.0, < 3.2)
+    faraday-follow_redirects (0.3.0)
+      faraday (>= 1, < 3)
     faraday-net_http (3.1.0)
       net-http
     ffi (1.16.3)
@@ -290,6 +335,8 @@ GEM
       multi_xml (>= 0.5.2)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
+    i18n-js (3.9.2)
+      i18n (>= 0.6.6)
     i18n-tasks (1.0.14)
       activesupport (>= 4.0.2)
       ast (>= 2.1.0)
@@ -299,7 +346,6 @@ GEM
       parser (>= 3.2.2.1)
       rails-i18n
       rainbow (>= 2.2.2, < 4.0)
-      ruby-progressbar (~> 1.8, >= 1.8.1)
       terminal-table (>= 1.5.1)
     image_processing (1.12.2)
       mini_magick (>= 4.9.5, < 5)
@@ -316,8 +362,10 @@ GEM
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     jmespath (1.6.2)
-    job-iteration (1.10.0)
+    job-iteration (1.11.0)
       activejob (>= 6.1)
+    js_cookie_rails (2.2.0)
+      railties (>= 3.1)
     json (2.13.0)
     json-jwt (1.16.7)
       activesupport (>= 4.2)
@@ -328,6 +376,9 @@ GEM
       faraday-follow_redirects
     json-schema (4.1.1)
       addressable (>= 2.8)
+    json_schema (0.21.0)
+    jwt (2.10.2)
+      base64
     kaminari (1.2.2)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.2)
@@ -348,6 +399,9 @@ GEM
       childprocess (~> 5.0)
     letter_opener (1.10.0)
       launchy (>= 2.2, < 4)
+    lexorank (0.4.0)
+      activerecord
+      activesupport
     lint_roller (1.1.0)
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
@@ -366,6 +420,14 @@ GEM
       net-imap
       net-pop
       net-smtp
+    maintenance_tasks (2.12.0)
+      actionpack (>= 7.0)
+      activejob (>= 7.0)
+      activerecord (>= 7.0)
+      csv
+      job-iteration (>= 1.3.6)
+      railties (>= 7.0)
+      zeitwerk (>= 2.6.2)
     marcel (1.0.4)
     metadown (1.0.1)
       redcarpet
@@ -413,12 +475,53 @@ GEM
       racc (~> 1.4)
     nokogiri (1.18.9-x86_64-linux-gnu)
       racc (~> 1.4)
+    oauth2 (2.0.12)
+      faraday (>= 0.17.3, < 4.0)
+      jwt (>= 1.0, < 4.0)
+      logger (~> 1.2)
+      multi_xml (~> 0.5)
+      rack (>= 1.2, < 4)
+      snaky_hash (~> 2.0, >= 2.0.3)
+      version_gem (>= 1.1.8, < 3)
     oj (3.16.11)
       bigdecimal (>= 3.0)
       ostruct (>= 0.2)
+    omniauth (2.1.3)
+      hashie (>= 3.4.6)
+      rack (>= 2.2.3)
+      rack-protection
+    omniauth-apple (1.3.0)
+      json-jwt
+      omniauth-oauth2
+    omniauth-atproto (0.1.3)
+      atproto_client (~> 0.1.4)
+      didkit
+      faraday
+      jwt (~> 2.7)
+      omniauth-oauth2 (~> 1.8)
+    omniauth-discord (1.2.0)
+      omniauth-oauth2 (~> 1.6)
+    omniauth-github (2.0.1)
+      omniauth (~> 2.0)
+      omniauth-oauth2 (~> 1.8)
+    omniauth-google-oauth2 (1.2.1)
+      jwt (>= 2.9.2)
+      oauth2 (~> 2.0)
+      omniauth (~> 2.0)
+      omniauth-oauth2 (~> 1.8)
+    omniauth-oauth2 (1.8.0)
+      oauth2 (>= 1.4, < 3)
+      omniauth (~> 2.0)
+    omniauth-rails_csrf_protection (1.0.2)
+      actionpack (>= 4.2)
+      omniauth (~> 2.0)
+    omniauth-twitch (1.2.0)
+      omniauth-oauth2 (~> 1.6)
+    openapi_parser (2.2.6)
     opensearch-ruby (3.3.0)
       faraday (>= 1.0, < 3)
       multi_json (>= 1.0)
+    openssl (3.3.0)
     options (2.3.2)
     orm_adapter (0.5.0)
     ostruct (0.6.3)
@@ -594,6 +697,8 @@ GEM
     rswag-api (2.16.0)
       activesupport (>= 5.2, < 8.1)
       railties (>= 5.2, < 8.1)
+    rswag-schema_components (0.2.0)
+      rails (>= 3.0.0, < 8.1.0)
     rswag-specs (2.16.0)
       activesupport (>= 5.2, < 8.1)
       json-schema (>= 2.2, < 6.0)
@@ -617,6 +722,7 @@ GEM
       rubocop-ast (>= 1.30.0, < 2.0)
     ruby-graphviz (1.2.5)
       rexml
+    ruby-next-core (1.1.2)
     ruby-progressbar (1.13.0)
     ruby-vips (2.2.1)
       ffi (~> 1.12)
@@ -663,9 +769,9 @@ GEM
       terminal-table
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.4)
-    snaky_hash (2.0.1)
-      hashie
-      version_gem (~> 1.1, >= 1.1.1)
+    snaky_hash (2.0.3)
+      hashie (>= 0.1.0, < 6)
+      version_gem (>= 1.1.8, < 3)
     spring (4.2.1)
     spring-watcher-listen (2.1.0)
       listen (>= 2.7, < 4.0)
@@ -707,6 +813,7 @@ GEM
       activesupport (>= 3.0.0)
     useragent (0.16.11)
     vcr (6.2.0)
+    version_gem (1.1.8)
     vite_rails (3.0.17)
       railties (>= 5.1, < 8)
       vite_ruby (~> 3.0, >= 3.2.2)
@@ -729,9 +836,9 @@ GEM
       base64
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    with_advisory_lock (5.1.0)
-      activerecord (>= 6.1)
-      zeitwerk (>= 2.6)
+    with_advisory_lock (7.0.1)
+      activerecord (>= 7.2)
+      zeitwerk (>= 2.7)
     xrpc (0.1.7.2)
       date
       httparty
@@ -747,10 +854,12 @@ DEPENDENCIES
   aasm
   abbrev
   accept_language
+  action_policy
   after_commit_everywhere
   ahoy_matey
   annotate
   appsignal
+  aws-sdk-s3
   bcrypt_pbkdf
   bootsnap (>= 1.1.0)
   bskyrb (~> 0.5.3)
@@ -762,13 +871,20 @@ DEPENDENCIES
   capistrano-rails-console
   capistrano-rbenv (~> 2.1)
   carrierwave
+  committee
   csv
+  cypress-on-rails
   dalli
   data_migrate
+  database_cleaner-active_record
+  debug (>= 1.0.0)
   deep_merge
   devise
   devise-two-factor
   discordrb-webhooks
+  doorkeeper (~> 5.6)
+  doorkeeper-jwt
+  doorkeeper-openid_connect
   dotenv
   dotenv-rails
   ed25519
@@ -779,6 +895,7 @@ DEPENDENCIES
   flipper-active_record
   flipper-ui
   fog-aws
+  foundation_emails
   git
   graphlient
   griddler
@@ -786,22 +903,34 @@ DEPENDENCIES
   groupdate
   highline
   i18n
+  i18n-js (< 4.0)
   i18n-tasks (~> 1.0.5)
   image_processing (~> 1.0)
   inky-rb
   jbuilder
+  js_cookie_rails
   kaminari
   knapsack
   letter_opener
+  lexorank
   listen
   lograge
+  maintenance_tasks (~> 2.11)
   metadown
   mini_magick
   minitest-ci
   minitest-rails
   mocha
   nokogiri
+  oauth2 (~> 2.0)
   oj
+  omniauth-apple
+  omniauth-atproto
+  omniauth-discord
+  omniauth-github
+  omniauth-google-oauth2
+  omniauth-rails_csrf_protection
+  omniauth-twitch
   opensearch-ruby
   paper_trail
   pg (~> 1.0)
@@ -830,6 +959,7 @@ DEPENDENCIES
   rqrcode
   rspec-rails
   rswag-api
+  rswag-schema_components
   rswag-specs
   searchkick
   sentry-rails
@@ -862,4 +992,4 @@ RUBY VERSION
    ruby 3.4.5p51
 
 BUNDLED WITH
-   2.4.4
+   2.7.1
