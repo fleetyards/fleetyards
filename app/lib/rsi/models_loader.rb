@@ -356,7 +356,7 @@ module Rsi
 
     private def resolve_sc_identifier(item)
       sc_identifier_parts = [
-        item.dig("manufacturer", "code").uppercase,
+        item.dig("manufacturer", "code").upcase,
         item["name"].tr(" ", "_").downcase
       ].compact
 

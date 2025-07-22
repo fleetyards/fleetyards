@@ -28,7 +28,7 @@ RSpec.describe "admin/api/v1/components", type: :request, swagger_doc: "admin/v1
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:id) { "unknown-id" }
+        let(:id) { "5b30f7ab-5c62-4bec-9db7-e187f84f6aeb" }
 
         run_test!
       end
