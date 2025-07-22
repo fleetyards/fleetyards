@@ -6,7 +6,11 @@ on:
 jobs:
   e2e-test:
     runs-on: ubuntu-latest
-
+    strategy:
+      fail-fast: false
+      matrix:
+        shardIndex: [1, 2, 3, 4]
+        shardTotal: [4]
     env:
       CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
       DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards_test
@@ -70,15 +74,7 @@ jobs:
         run: bundle exec rails assets:precompile
       - name: Prefill DB
         run: bundle exec rails db:seed
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
-        with:
-          start: bundle exec puma -C config/puma.rb
-          wait-on: "http://localhost:8270"
-          wait-on-timeout: 120
-          browser: chrome
-          record: true
-          parallel: true
-        env:
-          PORT: 8270
-          CYPRESS_BASE_URL: http://localhost:8270
+      - name: Install playwright browsers
+        run: pnpm test:e2e:install
+      - name: Run e2e Tests
+        run: pnpm test:e2e:run --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
