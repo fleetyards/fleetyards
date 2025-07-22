@@ -32,7 +32,6 @@ export default defineConfig({
     Vue({
       ...templateCompilerOptions,
     }),
-    tailwindcss(),
     VitePWA({
       registerType: "autoUpdate",
       filename: "sw.js",
