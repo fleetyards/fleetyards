@@ -737,7 +737,7 @@ GEM
       unicode-display_width (>= 1.1.1, < 4)
     thor (1.4.0)
     tilt (2.3.0)
-    timecop (0.9.8)
+    timecop (0.9.10)
     timeout (0.4.3)
     typhoeus (1.4.1)
       ethon (>= 0.9.0)
