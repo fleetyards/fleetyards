@@ -77,7 +77,11 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:input) { nil }
+        let(:input) do
+          {
+            value: "foo"
+          }
+        end
         let(:user) { nil }
 
         run_test!
