@@ -445,7 +445,7 @@ GEM
     parser (3.3.1.0)
       ast (~> 2.4.1)
       racc
-    pg (1.5.6)
+    pg (1.5.9)
     pg_query (6.1.0)
       google-protobuf (>= 3.25.3)
     pghero (3.4.1)
@@ -542,7 +542,7 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.3.0)
-    ransack (4.1.1)
+    ransack (4.3.0)
       activerecord (>= 6.1.5)
       activesupport (>= 6.1.5)
       i18n
