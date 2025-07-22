@@ -25,7 +25,9 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
 
         let(:user) { users :data }
         let(:import) do
-          Rack::Test::UploadedFile.new(File.new(Rails.root.join("test/fixtures/files/hangar_import.json")))
+          {
+            import: Rack::Test::UploadedFile.new(File.new(Rails.root.join("test/fixtures/files/hangar_import.json")))
+          }
         end
 
         run_test!
@@ -36,7 +38,9 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
 
         let(:user) { users :data }
         let(:import) do
-          Rack::Test::UploadedFile.new(File.new(Rails.root.join("test/fixtures/files/empty_hangar_import.json")))
+          {
+            import: Rack::Test::UploadedFile.new(File.new(Rails.root.join("test/fixtures/files/empty_hangar_import.json")))
+          }
         end
 
         run_test!
