@@ -1,0 +1,34 @@
+{
+  "key": "Nozzle_FuelGiver_MISC_NozzleFast",
+  "ref": "b46eae55-2ed3-4008-9635-8fe26a1a3a4c",
+  "category": "utility",
+  "type": "DockingCollar",
+  "sub_type": null,
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "name": "Norfield",
+  "short_name": null,
+  "description": "Manufacturer: Greycat Industrial\\nItem Type: Fuel Nozzle\\nSafe Flow Rate: 0.3 SCU/s\\n\\nAllowing for a greatly increased overall flow rate, the Norfield fuel nozzle from Greycat prioritizes the fast and efficient transfer of fuel while only sacrificing some pod storage capacity.  \\n",
+  "inventory_consumption": {
+    "micro_scu": 41074432.0,
+    "dimensions": {
+      "x": 4.000076,
+      "y": 21.60153,
+      "z": 3.044145
+    }
+  },
+  "loadout": [
+    {
+      "name": "itemport_vehicle_attach",
+      "min_size": "0",
+      "max_size": "8",
+      "types": [
+        "NOITEM_Vehicle"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 250.0
+  }
+}

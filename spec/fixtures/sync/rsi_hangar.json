@@ -1,0 +1,262 @@
+[
+  { "id": "00064530", "name": "Retaliator Grey Livery", "type": "skin" },
+  { "id": "00064529", "name": "Hurricane - Waylay Camo Paint", "type": "skin" },
+  { "id": "00064528", "name": "Hurricane - Flashfire Paint", "type": "skin" },
+  { "id": "00043858", "name": "Avenger - Ironweave Paint", "type": "skin" },
+  { "id": "00003657", "name": "Reliant Kore - Mini Hauler", "type": "ship" },
+  { "id": "00008782", "name": "Cutter - Aspire Paint", "type": "skin" },
+  {
+    "id": "00052706",
+    "name": "Ares Star Fighter - Hosanna Paint",
+    "type": "skin"
+  },
+  { "id": "00052706", "name": "Razor - Hosanna Paint", "type": "skin" },
+  { "id": "00052706", "name": "Hawk - Hosanna Paint", "type": "skin" },
+  { "id": "00052706", "name": "Cutter - Hosanna Paint", "type": "skin" },
+  { "id": "00027872", "name": "315p Explorer", "type": "ship" },
+  { "id": "00052701", "name": "Vulture - Assembly Paint", "type": "skin" },
+  { "id": "00052701", "name": "Vulture - Carbonide Paint", "type": "skin" },
+  { "id": "00052701", "name": "Vulture - Longhorn Paint", "type": "skin" },
+  { "id": "00052645", "name": "Scorpius - Tiburon Paint", "type": "skin" },
+  { "id": "00052645", "name": "Scorpius - Avalanche Paint", "type": "skin" },
+  { "id": "00052645", "name": " Scorpius - Shock Force Paint", "type": "skin" },
+  { "id": "00052645", "name": "Scorpius Blight Green Paint", "type": "skin" },
+  {
+    "id": "00052645",
+    "name": "Scorpius Sunburn White Orange Paint",
+    "type": "skin"
+  },
+  {
+    "id": "00052645",
+    "name": "Scorpius Stormcloud Grey Paint",
+    "type": "skin"
+  },
+  { "id": "00084544", "name": "Arrow", "type": "ship" },
+  { "id": "00010727", "name": "Carrack", "type": "ship" },
+  { "id": "00082125", "name": "Dragonfly - Overdrive Paint", "type": "skin" },
+  { "id": "00082125", "name": "Cyclone - Overdrive Paint", "type": "skin" },
+  { "id": "00082125", "name": "Nox - Overdrive Paint", "type": "skin" },
+  { "id": "00082125", "name": "HoverQuad - Overdrive Paint", "type": "skin" },
+  { "id": "00033676", "name": "Dragonfly - Slipstream Paint", "type": "skin" },
+  { "id": "00033676", "name": "Cyclone - Slipstream Paint", "type": "skin" },
+  { "id": "00033676", "name": "Nox - Slipstream Paint", "type": "skin" },
+  { "id": "00033676", "name": "HoverQuad - Slipstream Paint", "type": "skin" },
+  { "id": "00037273", "name": "Nomad Deck the Hull Livery", "type": "skin" },
+  { "id": "00037273", "name": "Nomad IceBreak Livery", "type": "skin" },
+  { "id": "00033656", "name": "Avenger Deck the Hull Livery", "type": "skin" },
+  { "id": "00033656", "name": "Avenger IceBreak Livery", "type": "skin" },
+  {
+    "id": "00044266",
+    "name": "100 Series Deck the Hull Livery",
+    "type": "skin"
+  },
+  { "id": "00044266", "name": "100 Series IceBreak Livery", "type": "skin" },
+  {
+    "id": "00033094",
+    "name": "Gladius Series - Solar Winds Paint",
+    "type": "skin"
+  },
+  { "id": "00003842", "name": "Carrack - Red Alert Paint", "type": "skin" },
+  { "id": "00099143", "name": "C8 Pisces - Red Alert Paint", "type": "skin" },
+  { "id": "00060445", "name": "C8 Pisces - Red Alert Paint", "type": "skin" },
+  { "id": "00040659", "name": "C8 Pisces - Red Alert Paint", "type": "skin" },
+  {
+    "id": "00075521",
+    "name": "Mercury Star Runner - Red Alert Paint",
+    "type": "skin"
+  },
+  { "id": "00026801", "name": "Scorpius - Red Alert Paint", "type": "skin" },
+  { "id": "00002870", "name": "C8 Pisces - Responder Paint", "type": "skin" },
+  { "id": "00002870", "name": "C8 Pisces - Heartbeat Paint", "type": "skin" },
+  { "id": "00002870", "name": "C8 Pisces - Scrubland Paint", "type": "skin" },
+  { "id": "00002870", "name": "C8 Pisces - Nightbreak Paint", "type": "skin" },
+  { "id": "00000544", "name": "C8R Pisces", "type": "ship" },
+  { "id": "00000544", "name": "C8 Pisces - Code Blue Paint", "type": "skin" },
+  { "id": "00025819", "name": "Cutter", "type": "ship" },
+  { "id": "00025819", "name": "Cutter - Groundswell Paint", "type": "skin" },
+  { "id": "00091791", "name": "600i - Cold Forge Paint", "type": "skin" },
+  { "id": "00091791", "name": "600i - Sterling Paint", "type": "skin" },
+  { "id": "00072908", "name": "Corsair - Eternity Paint", "type": "skin" },
+  { "id": "00072907", "name": "Corsair - Commando Paint", "type": "skin" },
+  { "id": "00069899", "name": "Cutter - Wind Chill Paint", "type": "skin" },
+  { "id": "00069899", "name": "Gladius", "type": "ship" },
+  { "id": "00087789", "name": "STV - Blue Steel Paint", "type": "skin" },
+  { "id": "00059491", "name": "Spirit - Crimson Paint", "type": "skin" },
+  { "id": "00096704", "name": "STV - Cobalt Grey Paint", "type": "skin" },
+  { "id": "00096671", "name": "Mule - Reburn Paint", "type": "skin" },
+  { "id": "00096671", "name": "Mule - Bushwacker Paint", "type": "skin" },
+  { "id": "00034843", "name": "STV - Cobalt Grey Paint", "type": "skin" },
+  { "id": "00015722", "name": "STV", "type": "ship" },
+  { "id": "00015722", "name": "STV - Blue Steel Paint", "type": "skin" },
+  { "id": "00014989", "name": "STV", "type": "ship" },
+  { "id": "00014989", "name": "STV - Blue Steel Paint", "type": "skin" },
+  { "id": "00007795", "name": "P-72 Archimedes", "type": "ship" },
+  { "id": "00005607", "name": "E1 Spirit", "type": "ship" },
+  { "id": "00005607", "name": "Spirit - Olympia Paint", "type": "skin" },
+  {
+    "id": "00049856",
+    "name": "Drake Dragonfly - Mistwalker Paint",
+    "type": "skin"
+  },
+  {
+    "id": "00049853",
+    "name": "Drake Dragonfly - Coalfire Paint",
+    "type": "skin"
+  },
+  { "id": "00049852", "name": "Cutlass - Saurian Paint", "type": "skin" },
+  { "id": "00049850", "name": "Cutlass - Hawthorn Paint", "type": "skin" },
+  {
+    "id": "00049847",
+    "name": "Drake Cutlass - Coalfire Paint",
+    "type": "skin"
+  },
+  { "id": "00064313", "name": "Constellation Andromeda", "type": "ship" },
+  {
+    "id": "00078113",
+    "name": "Cutlass Black - Skull and Crossbones",
+    "type": "skin"
+  },
+  {
+    "id": "00085587",
+    "name": "Cutlass - Foundation Festival Paint",
+    "type": "skin"
+  },
+  { "id": "00020659", "name": "Anvil Arrow UEE Unity Paint", "type": "skin" },
+  {
+    "id": "00018088",
+    "name": "Star Runner - Foundation Festival Paint",
+    "type": "skin"
+  },
+  {
+    "id": "00015820",
+    "name": "600i Touring - Foundation Festival Paint",
+    "type": "skin"
+  },
+  {
+    "id": "00013670",
+    "name": "Caterpillar - Foundation Festival Paint",
+    "type": "skin"
+  },
+  {
+    "id": "00011342",
+    "name": "Freelancer Series - Foundation Festival Paint",
+    "type": "skin"
+  },
+  {
+    "id": "00009183",
+    "name": "Prospector - Foundation Festival Paint",
+    "type": "skin"
+  },
+  {
+    "id": "00006898",
+    "name": "Valkyrie - Foundation Festival Paint",
+    "type": "skin"
+  },
+  {
+    "id": "00076245",
+    "name": "Gladius - Foundation Festival Paint",
+    "type": "skin"
+  },
+  {
+    "id": "00073662",
+    "name": "Cutlass - Foundation Festival Paint",
+    "type": "skin"
+  },
+  { "id": "00029019", "name": "C8X Pisces Expedition", "type": "ship" },
+  { "id": "00038410", "name": "Kraken", "type": "ship" },
+  { "id": "00098301", "name": "Mule", "type": "ship" },
+  { "id": "00098301", "name": "Mule - Smokestack Paint", "type": "skin" },
+  { "id": "00000569", "name": "HoverQuad - Copperhead Paint", "type": "skin" },
+  { "id": "00009039", "name": "C8 Pisces - Scrubland Paint", "type": "skin" },
+  { "id": "00009039", "name": "C8 Pisces - Nightbreak Paint", "type": "skin" },
+  { "id": "00055846", "name": "C8 Pisces - Scrubland Paint", "type": "skin" },
+  { "id": "00055846", "name": "C8 Pisces - Nightbreak Paint", "type": "skin" },
+  {
+    "id": "00038978",
+    "name": "600i Executive Edition",
+    "type": "ship"
+  },
+  { "id": "00096750", "name": "HoverQuad", "type": "ship" },
+  {
+    "id": "00027641",
+    "name": "Corsair",
+    "customName": "Enterprise",
+    "type": "ship"
+  },
+  { "id": "00017333", "name": "ROC Dolivine Livery", "type": "skin" },
+  { "id": "00017333", "name": "MOLE Dolivine Livery", "type": "skin" },
+  { "id": "00017333", "name": "Reclaimer - Dolivine Paint", "type": "skin" },
+  { "id": "00017333", "name": "Prospector Dolivine Livery", "type": "skin" },
+  { "id": "00080811", "name": "Nox Kue", "type": "ship" },
+  { "id": "00015637", "name": "600i BIS 2951 Paint", "type": "skin" },
+  { "id": "00093352", "name": "MPUV BIS 2951 Paint", "type": "skin" },
+  { "id": "00093344", "name": "MPUV BIS 2951 Paint", "type": "skin" },
+  { "id": "00041827", "name": "MPUV BIS 2951 Paint", "type": "skin" },
+  {
+    "id": "00043207",
+    "name": "Mercury Star Runner BIS 2951 Paint",
+    "type": "skin"
+  },
+  { "id": "00098506", "name": "Odyssey", "type": "ship" },
+  { "id": "00098506", "name": "Odyssey - Windrider Paint", "type": "skin" },
+  { "id": "00009515", "name": "Buccaneer", "type": "ship" },
+  { "id": "00091717", "name": "ROC - Quicksilver Paint", "type": "skin" },
+  { "id": "00056001", "name": "ROC", "type": "ship" },
+  { "id": "00069570", "name": "G12", "type": "ship" },
+  { "id": "00030049", "name": "X1", "type": "ship" },
+  { "id": "00030049", "name": "Origin X1 Scarlet Skin", "type": "skin" },
+  { "id": "00024287", "name": "MPUV Cargo", "type": "ship" },
+  { "id": "00070940", "name": "Liberator - Condor Paint", "type": "skin" },
+  { "id": "00023664", "name": "Avenger - Copernicus Paint", "type": "skin" },
+  {
+    "id": "00020402",
+    "name": "Origin 100 series - Sand Wave Paint",
+    "type": "skin"
+  },
+  { "id": "00049596", "name": "C8X Pisces Expedition", "type": "ship" },
+  { "id": "00085199", "name": "Scorpius", "type": "ship" },
+  { "id": "00085199", "name": "RSI Scorpius - Stinger Paint", "type": "skin" },
+  { "id": "00087314", "name": "Dragonfly Black", "type": "ship" },
+  { "id": "00090335", "name": "Eclipse Paint - Best in Show", "type": "skin" },
+  {
+    "id": "00010368",
+    "name": "Cutlass Black Paint - Best in Show",
+    "type": "skin"
+  },
+  { "id": "00070001", "name": "Carrack Paint - Best in Show", "type": "skin" },
+  { "id": "00060587", "name": "Valkyrie Paint - Best in Show", "type": "skin" },
+  { "id": "00085168", "name": "85X", "type": "ship" },
+  { "id": "00087820", "name": "Vulture", "type": "ship" },
+  { "id": "00087820", "name": "SRV", "type": "ship" },
+  { "id": "00087820", "name": "Hull C", "type": "ship" },
+  { "id": "00087820", "name": "Merchantman", "type": "ship" },
+  { "id": "00087820", "name": "Caterpillar", "type": "ship" },
+  { "id": "00032490", "name": "Cutlass Black", "type": "ship" },
+  { "id": "00075674", "name": "PTV", "type": "ship" },
+  { "id": "00075673", "name": "PTV", "type": "ship" },
+  { "id": "00081592", "name": "Dragonfly Black", "type": "ship" },
+  { "id": "00081592", "name": "Polaris", "type": "ship" },
+  { "id": "00081592", "name": "Liberator", "type": "ship" },
+  { "id": "00081592", "name": "RAFT", "type": "ship" },
+  { "id": "00081592", "name": "Orion", "type": "ship" },
+  {
+    "id": "00081592",
+    "name": "600i Exploration Module",
+    "type": "ship"
+  },
+  { "id": "00081592", "name": "Retaliator", "type": "ship" },
+  { "id": "00081592", "name": "Terrapin", "type": "ship" },
+  {
+    "id": "00002113",
+    "name": "F8C Lightning Executive Edition",
+    "type": "ship"
+  },
+  { "id": "00062408", "name": "Ranger CV", "type": "ship" },
+  { "id": "00085101", "name": "F8C Lightning Civilian ", "type": "ship" },
+  {
+    "id": "00035957",
+    "name": "Mercury Star Runner - Nightrunner Paint",
+    "type": "skin"
+  },
+  { "id": "00010383", "name": "Sabre Raven", "type": "ship" }
+]

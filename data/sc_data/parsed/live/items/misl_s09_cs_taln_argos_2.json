@@ -1,0 +1,24 @@
+{
+  "key": "MISL_S09_CS_TALN_Argos_2",
+  "ref": "5bdd509f-93eb-4638-83a9-dfcaae0c91ad",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "Torpedo",
+  "size": "9",
+  "grade": "1",
+  "manufacturer_ref": "587fcede-4fe9-4fb4-85ec-124abc8542b0",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 140625.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 9.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 58.0
+  }
+}

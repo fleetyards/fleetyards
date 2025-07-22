@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Redeemer_BIS2953_Purple_Blue_Cyan",
+  "ref": "3c9c1fe2-4d2c-4ac0-9faa-f8ce2c9a95a8",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "c5ff6a75-23d8-49d5-9294-4200c12f4acb",
+  "name": "Redeemer 2953 Best in Show Livery",
+  "short_name": null,
+  "description": "Celebrate the Aegis Redeemer being voted a Best in Show finalist for 2953 with this pearlescent purple and cyan livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

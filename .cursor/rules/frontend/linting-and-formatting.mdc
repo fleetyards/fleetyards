@@ -1,0 +1,36 @@
+---
+description:
+globs: *.ts,*.vue
+alwaysApply: true
+---
+
+# Frontend Formatting
+
+## Tools
+
+- **ESLint**: JavaScript/TypeScript linting
+- **Prettier**: Code formatting
+- **Stylelint**: CSS/SCSS linting
+
+## Commands
+
+```bash
+pnpm lint               # Run all linting (ESLint + Stylelint + TypeScript + formatting)
+pnpm lint:fix           # Fix auto-fixable issues
+pnpm lint:js            # Fix JavaScript/TypeScript ESLint issues only
+pnpm lint:ts            # TypeScript type checking for Vue/TypeScript files
+pnpm lint:prettier      # prettier
+pnpm lint:prettier:fix  # prettier with fix
+```
+
+## Important Notes
+
+- **Use `pnpm lint:fix` for comprehensive fixing** of ESLint, CSS, and formatting issues
+- **Use `pnpm lint:ts` for TypeScript type checking for Vue and TypeScript files**
+- The `type-check` and `typecheck` command does not exist in this project
+
+## Auto-formatting
+
+- VSCode/Cursor auto-formats on save
+- Pre-commit hooks enforce formatting
+- Use `pnpm lint:fix` for bulk fixes

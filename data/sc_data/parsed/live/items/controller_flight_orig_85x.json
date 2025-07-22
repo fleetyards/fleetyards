@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_ORIG_85X",
+  "ref": "ecde7f12-5941-487b-b037-aa15f134d776",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SELF STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "scm_speed": 230.0,
+    "scm_speed_boosted": 550.0,
+    "reverse_speed_boosted": 270.0,
+    "max_speed": 1250.0,
+    "angular_velocity": {
+      "pitch": 65.0,
+      "yaw": 65.0,
+      "roll": 215.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 78.0,
+      "yaw": 78.0,
+      "roll": 258.0
+    }
+  }
+}

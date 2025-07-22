@@ -1,0 +1,24 @@
+{
+  "key": "MISL_S09_EM_TALN_Seeker",
+  "ref": "a53527ab-3c28-460d-bc96-dcfac76f1463",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "Torpedo",
+  "size": "9",
+  "grade": "1",
+  "manufacturer_ref": "587fcede-4fe9-4fb4-85ec-124abc8542b0",
+  "name": "Seeker IX Torpedo",
+  "short_name": "Seeker IX",
+  "description": "Manufacturer: Talon\\nTracking Signal: Electromagnetic\\nSize: 9\\n\\nTalon's Seeker torpedo is a precision, EM-targeting torpedo capable of delivering a massive payload quickly and accurately.",
+  "inventory_consumption": {
+    "micro_scu": 140625.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 9.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 58.0
+  }
+}

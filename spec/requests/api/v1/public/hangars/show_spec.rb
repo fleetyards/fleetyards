@@ -3,10 +3,13 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
+  let(:user) { create(:user) }
+  let(:username) { user.username }
+  let(:vehicles) { create_list(:vehicle, 2, user: user, public: true) }
 
-  let(:user) { users :data }
-  let(:user_without_public_hangar) { users :troi }
+  before do
+    vehicles
+  end
 
   path "/public/hangars/{username}" do
     parameter name: "username", in: :path, type: :string, required: true
@@ -28,44 +31,51 @@ RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.
         required: false
 
       response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/VehiclePublic"}
+        schema "$ref": "#/components/schemas/HangarPublic"
 
-        let(:username) { user.username }
+        run_test! do |response|
+          data = JSON.parse(response.body)
+          items = data["items"]
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
+          expect(items.count).to be > 0
+        end
+      end
+
+      response(200, "successful") do
+        schema "$ref": "#/components/schemas/HangarPublic"
+
+        let(:q) do
+          {
+            "modelNameOrModelDescriptionCont" => vehicles.first.model.name
           }
         end
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to be > 0
+          expect(items.count).to eq(1)
+          expect(items.first.dig("model", "name")).to eq(vehicles.first.model.name)
         end
       end
 
       response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/VehiclePublic"}
+        schema "$ref": "#/components/schemas/HangarPublic"
 
         let(:perPage) { 1 }
-        let(:username) { user.username }
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to eq(1)
+          expect(items.count).to eq(1)
         end
       end
 
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:username) { user_without_public_hangar.username }
+        let(:user) { create(:user, public_hangar: false) }
 
         run_test!
       end

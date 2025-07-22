@@ -1,3 +1,58 @@
+<script lang="ts">
+export default {
+  name: "HangarGroups",
+};
+</script>
+
+<script lang="ts" setup>
+import { type HangarGroup, type HangarGroupPublic } from "@/services/fyApi";
+
+type HangarGroupBubbleSizes = "default" | "large";
+
+type Props = {
+  groups: (HangarGroup | HangarGroupPublic)[];
+  size?: HangarGroupBubbleSizes;
+};
+
+withDefaults(defineProps<Props>(), {
+  size: "default",
+});
+
+const router = useRouter();
+const route = useRoute();
+
+const filter = (event: Event, filter: string) => {
+  event.preventDefault();
+
+  if (!filter || !route.name) {
+    return;
+  }
+
+  const query = JSON.parse(JSON.stringify(route.query.q || {}));
+
+  if ((query.hangarGroupsIn || []).includes(filter)) {
+    const index = (query.hangarGroupsIn as string[]).findIndex(
+      (item) => item === filter,
+    );
+    if (index > -1) {
+      query.hangarGroupsIn.splice(index, 1);
+    }
+  } else {
+    if (!query.hangarGroupsIn) {
+      query.hangarGroupsIn = [];
+    }
+    query.hangarGroupsIn.push(filter);
+  }
+
+  router.replace({
+    name: route.name,
+    query: {
+      q: query,
+    },
+  });
+};
+</script>
+
 <template>
   <div
     class="hangar-groups"
@@ -17,53 +72,6 @@
     />
   </div>
 </template>
-
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-
-@Component<PanelGroups>({})
-export default class PanelGroups extends Vue {
-  @Prop({ required: true }) groups: HangarGroup[];
-
-  @Prop({
-    default: "default",
-    validator(value) {
-      return ["default", "large"].indexOf(value) !== -1;
-    },
-  })
-  size!: string;
-
-  filter(event, filter) {
-    event.preventDefault();
-
-    if (!filter) {
-      return;
-    }
-
-    const query = JSON.parse(JSON.stringify(this.$route.query.q || {}));
-
-    if ((query.hangarGroupsIn || []).includes(filter)) {
-      const index = query.hangarGroupsIn.findIndex((item) => item === filter);
-      if (index > -1) {
-        query.hangarGroupsIn.splice(index, 1);
-      }
-    } else {
-      if (!query.hangarGroupsIn) {
-        query.hangarGroupsIn = [];
-      }
-      query.hangarGroupsIn.push(filter);
-    }
-
-    this.$router.replace({
-      name: this.$route.name,
-      query: {
-        q: query,
-      },
-    });
-  }
-}
-</script>
 
 <style lang="scss" scoped>
 @import "index";

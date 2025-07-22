@@ -1,0 +1,24 @@
+{
+  "key": "AEGS_Retaliator_Door_Cap_Front",
+  "ref": "bab56126-c1ae-4c0d-98ba-dd8d93ee6092",
+  "category": "module",
+  "type": "Misc",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

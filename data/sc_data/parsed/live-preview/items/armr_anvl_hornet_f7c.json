@@ -1,0 +1,24 @@
+{
+  "key": "ARMR_ANVL_Hornet_F7C",
+  "ref": "1f3e5067-eb3f-43ee-b3b3-8d7ed80a84b2",
+  "category": "armor",
+  "type": "Armor",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": "Hornet F7A Ship Armor",
+  "short_name": null,
+  "description": "Hornet F7A Ship Armor",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Door_Single_DerelictFreelancer_SideDoor_Pumpable",
+  "ref": "574ccaed-3a1c-4033-9551-86bb405f1a00",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": null,
+  "grade": null,
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  }
+}

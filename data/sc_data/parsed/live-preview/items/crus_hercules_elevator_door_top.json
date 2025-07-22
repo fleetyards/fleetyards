@@ -1,0 +1,21 @@
+{
+  "key": "CRUS_Hercules_Elevator_Door_Top",
+  "ref": "0196e46a-0c96-4da4-b230-dc9921242d13",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Elevator Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

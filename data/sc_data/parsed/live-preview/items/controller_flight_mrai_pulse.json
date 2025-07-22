@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_MRAI_Pulse",
+  "ref": "4c143b67-e684-47b7-99e3-6ec869ed90ea",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ec227ef3-fb08-4897-abdb-579eb4e87c25",
+  "name": "SELF STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "scm_speed": 204.0,
+    "scm_speed_boosted": 284.0,
+    "reverse_speed_boosted": 124.0,
+    "max_speed": 561.0,
+    "angular_velocity": {
+      "pitch": 84.0,
+      "yaw": 84.0,
+      "roll": 135.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 100.8,
+      "yaw": 100.8,
+      "roll": 162.0
+    }
+  }
+}

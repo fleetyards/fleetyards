@@ -1,0 +1,29 @@
+---
+description:
+globs: *.scss,*.vue
+alwaysApply: true
+---
+
+# Frontend Styling Rules
+
+## SCSS Usage
+- Use SCSS for all custom styles.
+- Organize styles by feature/component in the appropriate directory (e.g., `shared/components/ComponentName/index.scss`).
+- Use variables and mixins for colors, spacing, and reusable patterns (see `stylesheets/variables.scss`).
+
+## Naming Conventions
+- Use BEM or similar methodology for class names to avoid conflicts.
+- Use lowercase and dashes for class names (e.g., `.primary-action-btn`).
+
+## Imports
+- Import global variables and mixins at the top of each SCSS file as needed.
+- Avoid deep selector nesting; keep specificity low.
+
+## Best Practices
+- Prefer utility classes for layout and spacing when possible.
+- Use CSS custom properties for themeable values if needed.
+- Remove unused styles regularly.
+
+## Bootstrap
+- Use Bootstrap utility classes where possible to reduce custom CSS.
+- Override Bootstrap variables in `variables.scss` for project-wide changes.

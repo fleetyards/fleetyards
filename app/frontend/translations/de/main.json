@@ -1,0 +1,134 @@
+{
+  "de": {
+    "meta": {
+      "description": "FleetYards.net, Deine Datenbank für alle Information rund um die Schiffe & Stationen von “Star Citizen“.",
+      "keywords": "Star, Citizen, Spaceships, Raumschiffe, Weltraum, Ships, Fighter, Database, Squadron, 42, Star, Citizen, English, Chris, Roberts, Online, Game, Space, Simulation"
+    },
+    "station": {
+      "type": "Typ",
+      "location": "Himmelskörper",
+      "classification": "Klassifizierung",
+      "habitable": "Bewohnbar?",
+      "refinery": "Raffinerie-Station",
+      "cargoHub": "Frachtzentrum"
+    },
+    "model": {
+      "focus": "Fokus",
+      "classification": "Klassifizierung",
+      "size": "Größe",
+      "beam": "Breite",
+      "cargo": "Fracht",
+      "netCargo": "Fracht mit Rover/Snub",
+      "crew": "Besatzung",
+      "speed": "Geschwindigkeit",
+      "minCrew": "min. Besatzung",
+      "maxCrew": "max. Besatzung",
+      "scmSpeed": "SCM-Geschwindigkeit",
+      "scmSpeedBoosted": "SCM-Geschwindigkeit verstärkt",
+      "reverseSpeedBoosted": "Rückwärts-Geschwindigkeit verstärkt",
+      "maxSpeed": "Max-Geschwindigkeit",
+      "scm": "SCM",
+      "max": "Max",
+      "groundMaxSpeed": "Max-Geschwindigkeit",
+      "groundReverseSpeed": "Rückwärts-Geschwindigkeit",
+      "pitch": "Nick (Pitch)",
+      "pitchBoosted": "Nick verstärkt",
+      "yaw": "Gier (Yaw)",
+      "yawBoosted": "Gier verstärkt",
+      "roll": "Roll",
+      "rollBoosted": "Roll verstärkt",
+      "price": "Preis",
+      "groundAcceleration": "Beschleunigung",
+      "groundDecceleration": "Abbremsung",
+      "scmSpeedAcceleration": "Null zu SCM",
+      "scmSpeedDecceleration": "SCM zu Null",
+      "maxSpeedAcceleration": "Null zu Max",
+      "maxSpeedDecceleration": "Max zu Null",
+      "compare": {
+        "groundMaxSpeed": "Max-Geschwindigkeit am Boden",
+        "groundReverseSpeed": "Rückwärts-Geschwindigkeit am Boden",
+        "groundAcceleration": "Beschleunigung am Boden",
+        "groundDecceleration": "Abbremsung am Boden"
+      },
+      "quantumFuelTankSize": "Quantum Treibstoff",
+      "hydrogenFuelTankSize": "Treibstoff",
+      "pledgePrice": "Pledge-Preis",
+      "height": "Höhe",
+      "length": "Länge",
+      "mass": "Masse",
+      "manufacturer": "Hersteller",
+      "hardpoints": "Aufhängungen",
+      "weapons": "Waffen",
+      "equipment": "Equipment",
+      "variants": "Varianten",
+      "maxUpgrades": "Upgrades",
+      "productionStatus": "Produktionsstatus",
+      "propulsion": "Antrieb",
+      "ordnance": "Gegenmaßnahmen",
+      "modular": "Modular",
+      "soldAt": "Verkauft bei?",
+      "rentalAt": "Vermietung bei?",
+      "lastUpdatedAt": "Zuletzt aktualisiert am?"
+    },
+    "component": {
+      "manufacturer": "Hersteller",
+      "size": "Größe"
+    },
+    "celestialObject": {
+      "type": "Typ",
+      "subType": "Unterart",
+      "habitable": "Bewohnbar?",
+      "fairchanceact": "Fair Chance Act?",
+      "population": "Bevölkerung",
+      "economy": "Wirtschaft",
+      "danger": "Gefahr"
+    },
+    "starsystem": {
+      "type": "Typ",
+      "size": "Größe",
+      "population": "Bevölkerung",
+      "economy": "Wirtschaft",
+      "danger": "Gefahr"
+    },
+    "shop": {
+      "type": "Typ",
+      "celestialObject": "Himmelskörper",
+      "station": "Station",
+      "location": "%{name} in %{location}",
+      "refineryTerminal": "Raffinerie-Terminal"
+    },
+    "commodityItem": {
+      "grade": "Stufe",
+      "type": "Typ",
+      "itemType": "Item-Typ",
+      "itemClass": "Item-Klasse",
+      "weaponClass": "Waffenklasse",
+      "size": "Größe",
+      "range": "Reichweite",
+      "damageReduction": "Schadensreduktion",
+      "rateOfFire": "Feuerrate",
+      "extras": "Zusätzliche Informationen",
+      "location": "Position",
+      "slot": "Slot",
+      "storage": "Lager",
+      "shop": "Shop",
+      "unconfirmed": "Item ist unbestätigt",
+      "manufacturer": "Hersteller"
+    },
+    "availability": {
+      "listedAt": "Gelistet bei",
+      "soldAt": "Verkauft bei",
+      "boughtAt": "Gekauft von"
+    },
+    "resources": {
+      "models": "Schiffe",
+      "hardpoints": "Aufhängungen",
+      "images": "Bilder"
+    },
+    "pagination": {
+      "previous": "Vorherige Seite",
+      "next": "Nächste Seite",
+      "gap": "&hellip;"
+    }
+  }
+}

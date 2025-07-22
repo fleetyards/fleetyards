@@ -1,0 +1,21 @@
+{
+  "key": "Paint_ATLS_Blue_Blue_Grey",
+  "ref": "124de29d-3da8-4571-8873-860f6aa8894e",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "86504dfa-e717-48cd-a89d-e72530e1966f",
+  "name": "ATLS Monsoon Livery",
+  "short_name": null,
+  "description": "The Monsoon livery brings a bold blue tint to your ATLS power suit.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Vulture_Luminalia_2953_Green_Red",
+  "ref": "9713a915-4920-4298-8f2e-903f06d6901f",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8ab5ef8f-118e-4ae9-9500-fa4eab68badd",
+  "name": "Vulture Deck the Hull Livery",
+  "short_name": null,
+  "description": "Express your holiday spirit with the Deck the Hull livery, which uses the traditional Luminalia colors of green and red to celebrate the popular Banu festival that's become beloved by Humans.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

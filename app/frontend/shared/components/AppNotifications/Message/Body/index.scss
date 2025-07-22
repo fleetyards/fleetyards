@@ -1,0 +1,24 @@
+.app-notifications {
+  &__message-body {
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    display: flex;
+
+    &__inner {
+      padding: 1rem;
+    }
+
+    &__close {
+      cursor: pointer;
+      padding-right: 1rem;
+      opacity: 0.5;
+      transition: opacity $transition-base-speed ease;
+    }
+  }
+}
+
+.app-notifications__message:hover .app-notifications__message-body__close {
+  opacity: 1;
+}

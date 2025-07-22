@@ -1,0 +1,24 @@
+{
+  "key": "HTNK_ANVL_Lightning_F8",
+  "ref": "ac3687d7-7092-4c75-b73c-738cb82afe4c",
+  "category": "fueltanks",
+  "type": "FuelTank",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Internal Tank",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "capacity": 18.6
+  }
+}

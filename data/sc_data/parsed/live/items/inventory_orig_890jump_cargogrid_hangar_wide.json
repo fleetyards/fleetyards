@@ -1,0 +1,50 @@
+{
+  "key": "ORIG_890Jump_CargoGrid_Hangar_Wide",
+  "ref": "e10f02ac-7a47-4de7-af93-1bd690eeaaac",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 3.75,
+      "y": 6.25,
+      "z": 2.5,
+      "scu": 30.0,
+      "max_container_size": {
+        "size": 16,
+        "dimensions": {
+          "x": 5.0,
+          "y": 2.5,
+          "z": 2.5
+        }
+      }
+    },
+    "min_container": {
+      "x": 1.25,
+      "y": 1.25,
+      "z": 1.25,
+      "scu": 1.0,
+      "max_container_size": {
+        "size": 1,
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        }
+      }
+    },
+    "max_container": {
+      "x": 2.5,
+      "y": 5.0,
+      "z": 2.5,
+      "scu": 16.0,
+      "max_container_size": {
+        "size": 16,
+        "dimensions": {
+          "x": 5.0,
+          "y": 2.5,
+          "z": 2.5
+        }
+      }
+    }
+  }
+}

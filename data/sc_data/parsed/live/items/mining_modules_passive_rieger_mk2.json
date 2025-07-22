@@ -1,0 +1,24 @@
+{
+  "key": "Mining_Modules_Passive_Rieger_MK2",
+  "ref": "369d2b1b-d42e-41b4-aff4-74de9712ab68",
+  "category": "utility",
+  "type": "MiningModifier",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ab35f85f-919f-4457-8d58-4e885ea6c5c0",
+  "name": "Rieger-C2 Module",
+  "short_name": null,
+  "description": "Manufacturer: Shubin Interstellar\\nItem Type: Mining Module (Passive)\\n\\nMining Laser Power: 120%\\n\\nOptimal Charge Window Size: -3%\\n\\nThe Rieger-C2 Module boosts laser power but requires more precision to find an effective mining area.",
+  "inventory_consumption": {
+    "micro_scu": 7708.0,
+    "dimensions": {
+      "x": 0.202347,
+      "y": 0.2902367,
+      "z": 0.1640546
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

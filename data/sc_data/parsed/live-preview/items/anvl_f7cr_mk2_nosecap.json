@@ -1,0 +1,24 @@
+{
+  "key": "ANVL_F7CR_Mk2_NoseCap",
+  "ref": "cfaaf5e5-a35b-4ff1-826f-57841c70f834",
+  "category": "module",
+  "type": "Misc",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

@@ -1,0 +1,14 @@
+.support-button {
+  position: absolute;
+  top: 20px;
+  right: 15px;
+  z-index: 1000;
+  margin: 0;
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .support-button {
+    right: auto;
+    left: 15px;
+  }
+}

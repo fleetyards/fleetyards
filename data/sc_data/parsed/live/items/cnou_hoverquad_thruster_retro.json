@@ -1,0 +1,66 @@
+{
+  "key": "CNOU_HoverQuad_Thruster_Retro",
+  "ref": "40310d85-e7b5-4c33-9c71-54cc6eaa93d0",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "70ac7035-10a0-4bbb-90b0-9bddf047b504",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 2500.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 0.2,
+    "StartIRTemperature": 250.0,
+    "OverpowerHeat": 1.05,
+    "OverclockThresholdMinHeat": 1.0,
+    "OverclockThresholdMaxHeat": 1.0,
+    "ThermalEnergyBase": 500.0,
+    "ThermalEnergyDraw": 1250.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.5,
+    "Mass": 250.0,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 20.0,
+    "MaxTemperature": 1000.0,
+    "OverheatTemperature": 850.0,
+    "RecoveryTemperature": 800.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 400.0,
+    "MisfireMaxTemperature": 1100.0
+  },
+  "power_connection": {
+    "power_base": 3.0,
+    "power_draw": 5.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 0.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 1.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 1.0,
+    "overclock_threshold_max": 1.0,
+    "overpower_performance": 0.0,
+    "overclock_performance": 0.0,
+    "power_to_em": 0.0,
+    "decay_rate_of_em": 0.15
+  },
+  "type_data": {
+    "thrust_capacity": 56500.0,
+    "fuel_burn_rate_per10_k_newton": 0.125,
+    "thruster_type": "Retro",
+    "thruster_class": "retro"
+  }
+}

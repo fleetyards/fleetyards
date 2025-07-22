@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Vulture_Ghoulish_Green",
+  "ref": "f541c6f3-3e97-4dd0-b919-6bb2c763f317",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f792ef29-82fd-4b9b-ac35-32d80ca02e64",
+  "name": "Vulture Ghoulish Green Livery",
+  "short_name": null,
+  "description": "Embrace Day of the Vara mischievousness and mayhem any time of the year with this custom Vulture livery. It combines metallic green and black for a striking look that highlights the holiday's classic colors.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

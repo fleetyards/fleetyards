@@ -1,46 +1,23 @@
-<template>
-  <form @submit.prevent="submit">
-    <FilterGroup2
-      key="admin-images-filter-model"
-      v-model="modelIdEq"
-      :label="t('labels.filters.images.model')"
-      :fetch="fetchModels"
-      name="model"
-      :searchable="true"
-      :paginated="true"
-      :no-label="true"
-    />
-
-    <FilterGroup2
-      key="admin-images-filter-station"
-      v-model="stationIdEq"
-      :label="t('labels.filters.images.station')"
-      :fetch="fetchStations"
-      name="station"
-      :searchable="true"
-      :paginated="true"
-      :no-label="true"
-    />
-
-    <Btn
-      :disabled="!isFilterSelected"
-      :block="true"
-      @click.native="resetFilter"
-    >
-      <i class="fal fa-times" />
-      {{ t("actions.resetFilter") }}
-    </Btn>
-  </form>
-</template>
+<script lang="ts">
+export default {
+  name: "ImagesFilterForm",
+};
+</script>
 
 <script lang="ts" setup>
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import FilterGroup2 from "@/frontend/core/components/Form/FilterGroup2/index.vue";
-import { useRoute } from "vue-router/composables";
-import { useFilters } from "@/frontend/composables/useFilters";
-import { useI18n } from "@/frontend/composables/useI18n";
-import modelsCollection from "@/admin/api/collections/Models";
-import stationsCollection from "@/admin/api/collections/Stations";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import type { FilterGroupParams } from "@/shared/components/base/FilterGroup/index.vue";
+import { useRoute } from "vue-router";
+import { useImageFilters } from "@/admin/composables/useImageFilters";
+import { useI18n } from "@/shared/composables/useI18n";
+import type {
+  ImageQuery,
+  Models,
+  ModelQuery,
+  Model,
+} from "@/services/fyAdminApi";
+import { models } from "@/services/fyAdminApi";
 
 const { t } = useI18n();
 
@@ -48,18 +25,13 @@ const modelIdEq = ref<string | undefined>(undefined);
 
 const stationIdEq = ref<string | undefined>(undefined);
 
-const { filter, isFilterSelected, resetFilter } = useFilters();
+const { filter, isFilterSelected, resetFilter } = useImageFilters();
 
 const route = useRoute();
 
-const query = computed(() => (route.query.q || {}) as GalleryFilters);
+const query = computed(() => (route.query.q || {}) as ImageQuery);
 
-type GalleryFilters = {
-  galleryIdEq?: string;
-  galleryTypeEq?: string;
-};
-
-const form = ref<GalleryFilters>({
+const form = ref<ImageQuery>({
   galleryIdEq: query.value.galleryIdEq,
   galleryTypeEq: query.value.galleryTypeEq,
 });
@@ -71,21 +43,24 @@ const setupForm = () => {
   };
 };
 
-watch(
-  () => route.query,
-  () => {
-    setupForm();
-  },
-  { deep: true },
-);
+onMounted(() => {
+  setupForm();
+});
 
 watch(
   () => form.value,
   () => {
     filter(form.value);
+
     if (!form.value.galleryIdEq && !form.value.galleryTypeEq) {
       modelIdEq.value = undefined;
       stationIdEq.value = undefined;
+    } else {
+      if (form.value.galleryTypeEq === "Model") {
+        modelIdEq.value = form.value.galleryIdEq;
+      } else if (form.value.galleryTypeEq === "Station") {
+        stationIdEq.value = form.value.galleryIdEq;
+      }
     }
   },
   { deep: true },
@@ -123,67 +98,55 @@ const submit = () => {
   filter(form.value);
 };
 
-const fetchModels = async (params?: TFilterGroupParams) => {
-  const filters: AdminModelsFilter = {};
+const modelsFormatter = (response: Models) => {
+  return response.items.map((model) => {
+    return {
+      label: model.name,
+      value: model.id,
+    };
+  });
+};
 
-  if (params?.search) {
-    filters.nameCont = params.search;
-  } else if (params?.missing) {
+const fetchModels = async (params: FilterGroupParams<Model>) => {
+  const q: ModelQuery = {};
+
+  if (params.search) {
+    q.nameCont = params.search;
+  }
+
+  if (params.missing) {
     if (Array.isArray(params.missing)) {
-      filters.idIn = params.missing;
+      q.idIn = params.missing as string[];
     } else {
-      filters.idEq = params.missing;
+      q.idEq = params.missing as string;
     }
   }
 
-  const data = await modelsCollection.findAll({
-    filters,
-    page: params?.page || 1,
+  return models({
+    page: String(params.page || 1),
+    s: ["name asc"],
+    q,
   });
-
-  if (!data) {
-    return [];
-  }
-
-  return data.map((model) => ({
-    label: model.name,
-    value: model.id,
-    icon: model.media.storeImage?.small,
-  }));
-};
-
-const fetchStations = async (params?: TFilterGroupParams) => {
-  const filters: AdminStationsFilter = {};
-
-  if (params?.search) {
-    filters.nameCont = params.search;
-  } else if (params?.missing) {
-    if (Array.isArray(params.missing)) {
-      filters.idIn = params.missing;
-    } else {
-      filters.idEq = params.missing;
-    }
-  }
-
-  const data = await stationsCollection.findAll({
-    filters,
-    page: params?.page || 1,
-  });
-
-  if (!data) {
-    return [];
-  }
-
-  return data.map((station) => ({
-    label: station.name,
-    value: station.id,
-    icon: station.media.storeImage?.small,
-  }));
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "ImagesFilterForm",
-};
-</script>
+<template>
+  <form @submit.prevent="submit">
+    <FilterGroup
+      key="admin-images-filter-model"
+      v-model="modelIdEq"
+      :label="t('labels.filters.images.model')"
+      :query-fn="fetchModels"
+      :query-response-formatter="modelsFormatter"
+      name="model"
+      :searchable="true"
+      :paginated="true"
+      :no-label="true"
+    />
+
+    <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
+      <i class="fal fa-times" />
+      {{ t("actions.resetFilter") }}
+    </Btn>
+  </form>
+</template>

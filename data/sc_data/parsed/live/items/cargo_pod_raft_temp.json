@@ -1,0 +1,24 @@
+{
+  "key": "Cargo_Pod_RAFT_TEMP",
+  "ref": "fd267a6b-5f62-42d8-a47e-770177ad7d71",
+  "category": "utility",
+  "type": "Container",
+  "sub_type": "Cargo",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "capacity": 32.0
+  }
+}

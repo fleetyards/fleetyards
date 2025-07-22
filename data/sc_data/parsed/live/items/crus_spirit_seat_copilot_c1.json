@@ -1,0 +1,21 @@
+{
+  "key": "CRUS_Spirit_Seat_Copilot_C1",
+  "ref": "97b77473-bb59-402a-b0bd-6cd6055433ef",
+  "category": "seat",
+  "type": "Seat",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "63685f47-b0cc-4ebe-8f16-72793a5cd6e0",
+  "name": "TRGT. STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

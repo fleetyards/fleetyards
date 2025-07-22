@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Ursa_Blue_White_Grey",
+  "ref": "1705a08b-b6d5-44ad-8265-8671d12fe3c0",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "0d816a8e-6943-404a-a168-3e8959f2da0f",
+  "name": "Ursa Aja Livery",
+  "short_name": null,
+  "description": "Inspired by the hue of a medicinal plant found on Terra, the Aja livery for the Ursa is dark blue with white and grey highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

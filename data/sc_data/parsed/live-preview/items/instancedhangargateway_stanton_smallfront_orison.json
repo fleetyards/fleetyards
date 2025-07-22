@@ -1,0 +1,21 @@
+{
+  "key": "InstancedHangarGateway_Stanton_SmallFront_Orison",
+  "ref": "cb2ae0c3-633c-453e-b1c2-34f3deeb6b04",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": null,
+  "grade": null,
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  }
+}

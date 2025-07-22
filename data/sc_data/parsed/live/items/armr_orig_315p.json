@@ -1,0 +1,24 @@
+{
+  "key": "ARMR_ORIG_315p",
+  "ref": "3a0a0de4-43ef-408c-8f7a-d837c0817962",
+  "category": "armor",
+  "type": "Armor",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1e47a9ec-a3f0-431d-be0e-377712e1ed84",
+  "name": "315p Ship Armor",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  }
+}

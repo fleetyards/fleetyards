@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hawk_Red_White_Pink_Crusader",
+  "ref": "c544ea5e-38c3-45e6-a049-859a3edce6a9",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "57951af5-6734-439e-9023-308c1b884f27",
+  "name": "Hawk Hosanna Livery",
+  "short_name": null,
+  "description": "Inspired by the gorgeous clouds that enshroud Orison, the Hosanna livery blends red, ivory, and pink to give the Hawk a distinct appearance. It also features a silhouette of the landing zone's famous Hosanna tree complete with its pink flowers.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

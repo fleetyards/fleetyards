@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Starlifter_Fleetweek_Black",
+  "ref": "732e7568-b903-4777-9542-b6c4ee84efff",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b3c9ad1f-7f65-4ac5-8f41-756e5922bf44",
+  "name": "Hercules Starlifter Cerberus Livery",
+  "short_name": null,
+  "description": "Let your Hercules Starlifter become one with the vast, black expanse of space with the Cerberus livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

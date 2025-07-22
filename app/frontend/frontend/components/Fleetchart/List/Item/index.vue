@@ -29,6 +29,7 @@
       }"
     >
       <FleetchartItemImage
+        v-if="image"
         :label="name || modelName"
         :src="image"
         :width="imageWidth"
@@ -38,356 +39,382 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+<script lang="ts" setup>
 import FleetchartItemImage from "./Image/index.vue";
+import { FleetchartViewpoints } from "@/shared/stores/fleetchart";
+import {
+  Model,
+  Vehicle,
+  VehiclePublic,
+  ModelPaint,
+  ModelModulePackage,
+} from "@/services/fyApi";
+import { useI18n } from "@/shared/composables/useI18n";
 
-@Component({
-  components: {
-    Btn,
-    FleetchartItemImage,
-  },
-})
-export default class FleetchartListItem extends Vue {
-  @Prop({ required: true }) item!: Model | Vehicle;
+type Props = {
+  item: Vehicle | Model | VehiclePublic;
+  viewpoint: FleetchartViewpoints;
+  showLabel: boolean;
+  showStatus: boolean;
+  sizeMultiplicator: number;
+  scale: number;
+};
 
-  @Prop({ default: "side" }) viewpoint!: string;
+const props = withDefaults(defineProps<Props>(), {
+  showLabel: false,
+  showStatus: false,
+  sizeMultiplicator: 1,
+  scale: 1,
+});
 
-  @Prop({ default: false }) showLabel!: boolean;
+const { t } = useI18n();
 
-  @Prop({ default: false }) showStatus!: boolean;
+const cssClasses = computed(() => {
+  const cssClasses = [`fleetchart-item-${model.value.slug}`];
 
-  @Prop({ default: 1 }) sizeMultiplicator!: number;
-
-  @Prop({ default: 1 }) scale!: number;
-
-  get cssClasses() {
-    const cssClasses = [`fleetchart-item-${this.model.slug}`];
-
-    if (this.showStatus) {
-      cssClasses.push(`status-${this.model.productionStatus}`);
-    }
-
-    if (this.showLabel) {
-      cssClasses.push("fleetchart-item-with-labels");
-    }
-
-    return cssClasses;
+  if (props.showStatus) {
+    cssClasses.push(`status-${model.value.productionStatus}`);
   }
 
-  get model() {
-    if (this.item && this.item.model) {
-      return this.item.model;
-    }
-
-    return this.item;
+  if (props.showLabel) {
+    cssClasses.push("fleetchart-item-with-labels");
   }
 
-  get vehicle() {
-    if (this.item && this.item.model) {
-      return this.item;
-    }
+  return cssClasses;
+});
 
-    return null;
+const model = computed(() => {
+  if (props.item && (props.item as Vehicle).model) {
+    return (props.item as Vehicle).model;
   }
 
-  get paint() {
-    if (this.vehicle && this.vehicle.paint) {
-      return this.vehicle.paint;
-    }
+  return props.item as Model;
+});
 
-    return null;
+const vehicle = computed(() => {
+  if (props.item && (props.item as Vehicle).model) {
+    return props.item as Vehicle;
   }
 
-  get modulePackage() {
-    if (this.vehicle && this.vehicle.modulePackage) {
-      return this.vehicle.modulePackage;
-    }
+  return undefined;
+});
 
-    return null;
+const paint = computed(() => {
+  if (vehicle.value && vehicle.value.paint) {
+    return vehicle.value.paint;
   }
 
-  get image() {
-    if (
-      this.modulePackage &&
-      (this.modulePackage.topView ||
-        this.modulePackage.sideView ||
-        this.modulePackage.angledView)
-    ) {
-      const url = this.extractImageFromModel(this.modulePackage);
-      if (url) {
-        return url;
-      }
-    }
+  return null;
+});
 
-    if (
-      this.paint &&
-      (this.paint.topView || this.paint.sideView || this.paint.angledView)
-    ) {
-      const url = this.extractImageFromModel(this.paint);
-      if (url) {
-        return url;
-      }
-    }
-
-    return this.extractImageFromModel(this.model);
+const modulePackage = computed(() => {
+  if (vehicle.value && vehicle.value.modulePackage) {
+    return vehicle.value.modulePackage;
   }
 
-  get viewpointTop() {
-    return this.viewpoint === "top";
+  return null;
+});
+
+const image = computed(() => {
+  if (
+    modulePackage.value &&
+    (modulePackage.value.media.topView ||
+      modulePackage.value.media.sideView ||
+      modulePackage.value.media.angledView)
+  ) {
+    const url = extractImageFromModel(modulePackage.value);
+    if (url) {
+      return url;
+    }
   }
 
-  get viewpointSide() {
-    return this.viewpoint === "side";
+  if (
+    paint.value &&
+    (paint.value.media.topView ||
+      paint.value.media.sideView ||
+      paint.value.media.angledView)
+  ) {
+    const url = extractImageFromModel(paint.value);
+    if (url) {
+      return url;
+    }
   }
 
-  get viewpointAngled() {
-    return this.viewpoint === "angled";
+  return extractImageFromModel(model.value);
+});
+
+const viewpointTop = computed(() => {
+  return props.viewpoint === "top";
+});
+
+const viewpointSide = computed(() => {
+  return props.viewpoint === "side";
+});
+
+const viewpointAngled = computed(() => {
+  return props.viewpoint === "angled";
+});
+
+const productionStatus = computed(() => {
+  return t(`labels.model.productionStatus.${model.value.productionStatus}`);
+});
+
+const name = computed(() => {
+  if (vehicle.value && vehicle.value.name) {
+    return vehicle.value.name;
   }
 
-  get productionStatus() {
-    return this.$t(
-      `labels.model.productionStatus.${this.model.productionStatus}`,
-    );
+  return null;
+});
+
+const modelName = computed(() => {
+  if (paint.value && paint.value.rsiId) {
+    return `${model.value.manufacturer?.code} ${paint.value.name}`;
   }
 
-  get tooltip() {
-    if (this.showStatus) {
-      return `${this.label}<small>${this.productionStatus}`;
-    }
+  return `${model.value.manufacturer?.code} ${model.value.name}`;
+});
 
-    return this.label;
+const length = computed(() => {
+  return (
+    (model.value.metrics.fleetchartLength || 0) *
+    props.sizeMultiplicator *
+    props.scale
+  );
+});
+
+const height = computed(() => {
+  return (
+    (length.value * sourceImageHeightMax.value) / sourceImageWidthMax.value
+  );
+});
+
+const imageWidth = computed(() => {
+  if (!sourceImageWidth.value || !sourceImageHeight.value) {
+    return length.value;
   }
 
-  get name() {
-    if (this.vehicle && this.vehicle.name) {
-      return this.vehicle.name;
-    }
+  return Math.min(
+    (height.value * sourceImageWidth.value) / sourceImageHeight.value,
+    length.value,
+  );
+});
 
-    return null;
+const sourceImageHeightMax = computed(() => {
+  if (
+    modulePackage.value &&
+    (modulePackage.value.topView ||
+      modulePackage.value.sideView ||
+      modulePackage.value.angledView)
+  ) {
+    const height = extractMaxHeightFromModel(modulePackage.value);
+    if (height) {
+      return height;
+    }
   }
 
-  get modelName() {
-    if (this.paint && this.paint.rsiId) {
-      return `${this.model.manufacturer.code} ${this.paint.name}`;
+  if (
+    paint.value &&
+    (paint.value.topView || paint.value.sideView || paint.value.angledView)
+  ) {
+    const height = extractMaxHeightFromModel(paint.value);
+    if (height) {
+      return height;
     }
-
-    return `${this.model.manufacturer.code} ${this.model.name}`;
   }
 
-  get length() {
-    return this.model.fleetchartLength * this.sizeMultiplicator * this.scale;
+  return extractMaxHeightFromModel(model.value);
+});
+
+const sourceImageHeight = computed(() => {
+  if (
+    modulePackage.value &&
+    (modulePackage.value.media.topView ||
+      modulePackage.value.media.sideView ||
+      modulePackage.value.media.angledView)
+  ) {
+    const height = extractImageHeightFromModel(modulePackage.value);
+    if (height) {
+      return height;
+    }
   }
 
-  get height() {
-    return (this.length * this.sourceImageHeightMax) / this.sourceImageWidthMax;
+  if (
+    paint.value &&
+    (paint.value.media.topView ||
+      paint.value.media.sideView ||
+      paint.value.media.angledView)
+  ) {
+    const height = extractImageHeightFromModel(paint.value);
+    if (height) {
+      return height;
+    }
   }
 
-  get imageWidth() {
-    return Math.min(
-      (this.height * this.sourceImageWidth) / this.sourceImageHeight,
-      this.length,
-    );
+  return extractImageHeightFromModel(model.value);
+});
+
+const sourceImageWidth = computed(() => {
+  if (
+    modulePackage.value &&
+    (modulePackage.value.media.topView ||
+      modulePackage.value.media.sideView ||
+      modulePackage.value.media.angledView)
+  ) {
+    const height = extractImageWidthFromModel(modulePackage.value);
+    if (height) {
+      return height;
+    }
   }
 
-  get sourceImageHeightMax() {
-    if (
-      this.modulePackage &&
-      (this.modulePackage.topView ||
-        this.modulePackage.sideView ||
-        this.modulePackage.angledView)
-    ) {
-      const height = this.extractMaxHeightFromModel(this.modulePackage);
-      if (height) {
-        return height;
-      }
+  if (
+    paint.value &&
+    (paint.value.media.topView ||
+      paint.value.media.sideView ||
+      paint.value.media.angledView)
+  ) {
+    const width = extractImageWidthFromModel(paint.value);
+    if (width) {
+      return width;
     }
-
-    if (
-      this.paint &&
-      (this.paint.topView || this.paint.sideView || this.paint.angledView)
-    ) {
-      const height = this.extractMaxHeightFromModel(this.paint);
-      if (height) {
-        return height;
-      }
-    }
-
-    return this.extractMaxHeightFromModel(this.model);
   }
 
-  get sourceImageHeight() {
-    if (
-      this.modulePackage &&
-      (this.modulePackage.topView ||
-        this.modulePackage.sideView ||
-        this.modulePackage.angledView)
-    ) {
-      const height = this.extractImageHeightFromModel(this.modulePackage);
-      if (height) {
-        return height;
-      }
-    }
+  return extractImageWidthFromModel(model.value);
+});
 
-    if (
-      this.paint &&
-      (this.paint.topView || this.paint.sideView || this.paint.angledView)
-    ) {
-      const height = this.extractImageHeightFromModel(this.paint);
-      if (height) {
-        return height;
-      }
+const sourceImageWidthMax = computed(() => {
+  if (
+    modulePackage.value &&
+    (modulePackage.value.media.topView ||
+      modulePackage.value.media.sideView ||
+      modulePackage.value.media.angledView)
+  ) {
+    const width = extractMaxWidthFromModel(modulePackage.value);
+    if (width) {
+      return width;
     }
-
-    return this.extractImageHeightFromModel(this.model);
   }
 
-  get sourceImageWidth() {
-    if (
-      this.modulePackage &&
-      (this.modulePackage.topView ||
-        this.modulePackage.sideView ||
-        this.modulePackage.angledView)
-    ) {
-      const height = this.extractImageWidthFromModel(this.modulePackage);
-      if (height) {
-        return height;
-      }
+  if (
+    paint.value &&
+    (paint.value.topView || paint.value.sideView || paint.value.angledView)
+  ) {
+    const width = extractMaxWidthFromModel(paint.value);
+    if (width) {
+      return width;
     }
-
-    if (
-      this.paint &&
-      (this.paint.topView || this.paint.sideView || this.paint.angledView)
-    ) {
-      const width = this.extractImageWidthFromModel(this.paint);
-      if (width) {
-        return width;
-      }
-    }
-
-    return this.extractImageWidthFromModel(this.model);
   }
 
-  get sourceImageWidthMax() {
-    if (
-      this.modulePackage &&
-      (this.modulePackage.topView ||
-        this.modulePackage.sideView ||
-        this.modulePackage.angledView)
-    ) {
-      const width = this.extractMaxWidthFromModel(this.modulePackage);
-      if (width) {
-        return width;
-      }
-    }
+  return extractMaxWidthFromModel(model.value);
+});
 
-    if (
-      this.paint &&
-      (this.paint.topView || this.paint.sideView || this.paint.angledView)
-    ) {
-      const width = this.extractMaxWidthFromModel(this.paint);
-      if (width) {
-        return width;
-      }
-    }
-
-    return this.extractMaxWidthFromModel(this.model);
+const extractImageFromModel = (
+  model: Model | ModelPaint | ModelModulePackage,
+) => {
+  if (viewpointTop.value && model.media.topView) {
+    return topView(model);
   }
 
-  extractImageFromModel(model) {
-    if (this.viewpointTop && model.topView) {
-      return this.topView(model);
-    }
-
-    if (this.viewpointSide && model.sideView) {
-      return this.sideView(model);
-    }
-
-    if (this.viewpointAngled && model.angledView) {
-      return this.angledView(model);
-    }
-
-    return null;
+  if (viewpointSide.value && model.media.sideView) {
+    return sideView(model);
   }
 
-  extractMaxWidthFromModel(model) {
-    return Math.max(
-      model.topViewWidth,
-      model.sideViewWidth,
-      model.angledViewWidth,
-    );
+  if (viewpointAngled.value && model.media.angledView) {
+    return angledView(model);
   }
 
-  extractMaxHeightFromModel(model) {
-    return Math.max(
-      model.topViewHeight,
-      model.sideViewHeight,
-      model.angledViewHeight,
-    );
+  return null;
+};
+
+const extractMaxWidthFromModel = (
+  model: Model | ModelPaint | ModelModulePackage,
+) => {
+  return Math.max(
+    model.media.topView?.width || 0,
+    model.media.sideView?.width || 0,
+    model.media.angledView?.width || 0,
+  );
+};
+
+const extractMaxHeightFromModel = (
+  model: Model | ModelPaint | ModelModulePackage,
+) => {
+  return Math.max(
+    model.media.topView?.height || 0,
+    model.media.sideView?.height || 0,
+    model.media.angledView?.height || 0,
+  );
+};
+
+const extractImageHeightFromModel = (
+  model: Model | ModelPaint | ModelModulePackage,
+) => {
+  if (viewpointTop.value && model.media.topView) {
+    return model.media.topView.height;
   }
 
-  extractImageHeightFromModel(model) {
-    if (this.viewpointTop && model.topView) {
-      return model.topViewHeight;
-    }
-
-    if (this.viewpointSide && model.sideView) {
-      return model.sideViewHeight;
-    }
-
-    if (this.viewpointAngled && model.angledView) {
-      return model.angledViewHeight;
-    }
-
-    return null;
+  if (viewpointSide.value && model.media.sideView) {
+    return model.media.sideView.height;
   }
 
-  extractImageWidthFromModel(model) {
-    if (this.viewpointTop && model.topView) {
-      return model.topViewWidth;
-    }
-
-    if (this.viewpointSide && model.sideView) {
-      return model.sideViewWidth;
-    }
-
-    if (this.viewpointAngled && model.angledView) {
-      return model.angledViewWidth;
-    }
-
-    return null;
+  if (viewpointAngled.value && model.media.angledView) {
+    return model.media.angledView.height;
   }
 
-  topView(model) {
-    const width = this.length * this.sizeMultiplicator * this.scale;
+  return null;
+};
 
-    if (width > 1900) {
-      return model.topView;
-    }
-
-    return model.topViewLarge;
+const extractImageWidthFromModel = (
+  model: Model | ModelPaint | ModelModulePackage,
+) => {
+  if (viewpointTop.value && model.media.topView) {
+    return model.media.topView.width;
   }
 
-  sideView(model) {
-    const width = this.length * this.sizeMultiplicator * this.scale;
-
-    if (width > 1900) {
-      return model.sideView;
-    }
-
-    return model.sideViewLarge;
+  if (viewpointSide.value && model.media.sideView) {
+    return model.media.sideView.width;
   }
 
-  angledView(model) {
-    const width = this.length * this.sizeMultiplicator * this.scale;
-
-    if (width > 1900) {
-      return model.angledView;
-    }
-
-    return model.angledViewLarge;
+  if (viewpointAngled.value && model.media.angledView) {
+    return model.media.angledView.width;
   }
-}
+
+  return null;
+};
+
+const topView = (model: Model | ModelPaint | ModelModulePackage) => {
+  const width = length.value * props.sizeMultiplicator * props.scale;
+
+  if (width > 1900) {
+    return model.media.topView?.url;
+  }
+
+  return model.media.topView?.largeUrl;
+};
+
+const sideView = (model: Model | ModelPaint | ModelModulePackage) => {
+  const width = length.value * props.sizeMultiplicator * props.scale;
+
+  if (width > 1900) {
+    return model.media.sideView?.url;
+  }
+
+  return model.media.sideView?.largeUrl;
+};
+
+const angledView = (model: Model | ModelPaint | ModelModulePackage) => {
+  const width = length.value * props.sizeMultiplicator * props.scale;
+
+  if (width > 1900) {
+    return model.media.angledView?.url;
+  }
+
+  return model.media.angledView?.largeUrl;
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "FleetchartListItem",
+};
 </script>

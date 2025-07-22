@@ -64,11 +64,12 @@
 #  index_users_on_username              (username) UNIQUE
 #
 class User < ApplicationRecord
-  include UrlFieldHelper
+  include UrlFieldConcern
   include Rails.application.routes.url_helpers
 
   devise :two_factor_authenticatable, :two_factor_backupable, :recoverable, :trackable,
-    :validatable, :confirmable, :rememberable, :timeoutable,
+    :validatable, :confirmable, :rememberable, :timeoutable, :omniauthable,
+    omniauth_providers: [:discord, :twitch, :bluesky],
     authentication_keys: [:login], otp_secret_encryption_key: Rails.application.credentials.devise_otp_secret!,
     otp_backup_code_length: 10, otp_number_of_backup_codes: 10
 
@@ -108,9 +109,33 @@ class User < ApplicationRecord
   has_many :fleets,
     through: :fleet_memberships
 
+  has_many :oauth_applications, class_name: "Oauth::Application", as: :owner
+  has_many :omniauth_connections, dependent: :destroy
+
+  has_many :access_grants,
+    class_name: "Oauth::AccessGrant",
+    foreign_key: :resource_owner_id,
+    dependent: :delete_all # or :destroy if you need callbacks
+
+  has_many :access_tokens,
+    class_name: "Oauth::AccessToken",
+    foreign_key: :resource_owner_id,
+    dependent: :delete_all # or :destroy if you need callbacks
+
+  # Legacy Validation for exisiting short usernames
   validates :username,
     uniqueness: {case_sensitive: false},
-    format: {with: /\A[a-zA-Z0-9\-_]+\Z/}
+    presence: true,
+    format: {with: /\A[a-zA-Z0-9\-_]+\Z/},
+    on: :update
+
+  validates :username,
+    uniqueness: {case_sensitive: false},
+    length: {minimum: 3},
+    presence: true,
+    format: {with: /\A[a-zA-Z0-9\-_]{3,}\Z/},
+    on: :create
+
   validates :email,
     uniqueness: {case_sensitive: false},
     presence: true
@@ -127,11 +152,19 @@ class User < ApplicationRecord
 
   mount_uploader :avatar, AvatarUploader
 
+  DEFAULT_SORTING_PARAMS = "username asc"
+  ALLOWED_SORTING_PARAMS = [
+    "username asc", "username desc", "email asc", "email desc", "createdAt asc", "createdAt desc",
+    "lastActiveAt asc", "lastActiveAt desc", "lastSignInAt asc", "lastSignInAt desc"
+  ]
+
+  ransack_alias :search, :username_or_email
+
   def self.ransackable_attributes(auth_object = nil)
     [
       "avatar", "confirmed_at", "created_at", "current_sign_in_at", "discord", "email",
       "guilded", "hangar_updated_at", "homepage", "last_active_at", "last_sign_in_at", "locale",
-      "twitch", "updated_at", "username", "wanted_vehicles_count", "youtube"
+      "twitch", "updated_at", "username", "wanted_vehicles_count", "youtube", "search"
     ]
   end
 
@@ -151,6 +184,11 @@ class User < ApplicationRecord
     elsif conditions.key?(:username) || conditions.key?(:email)
       find_by(conditions.to_h)
     end
+  end
+
+  def self.authenticate(email, password)
+    user = User.find_for_authentication(email: email)
+    user&.valid_password?(password) ? user : nil
   end
 
   def self.confirmed
@@ -314,5 +352,9 @@ class User < ApplicationRecord
     #    so that your code will continue to function correctly even if you later
     #    change to a block cipher mode.
     cipher.update(cipher_text) + cipher.final
+  end
+
+  def to_json(*_args)
+    to_jbuilder_json
   end
 end

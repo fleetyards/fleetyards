@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Terrapin_Halloween2024_Blood",
+  "ref": "fb335d47-b37b-44a8-9d1a-8384f2d828ba",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ab880448-e7fb-4fcc-a89b-d48a1ad55b04",
+  "name": "Terrapin Purple Haze Livery",
+  "short_name": null,
+  "description": "Celebrate Day of the Vara in style with the Purple Haze livery, featuring a glimmering metallic purple base paint splattered in green.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

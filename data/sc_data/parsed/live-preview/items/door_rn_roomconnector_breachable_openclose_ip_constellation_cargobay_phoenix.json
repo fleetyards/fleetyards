@@ -1,0 +1,76 @@
+{
+  "key": "Door_RN_RoomConnector_Breachable_OpenClose_IP_Constellation_CargoBay_Phoenix",
+  "ref": "aa80ea4f-e312-41ad-931d-203aabb56304",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_cargogrid",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "CargoGrid"
+      ]
+    },
+    {
+      "name": "hardpoint_cargowall_right",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Container"
+      ]
+    },
+    {
+      "name": "hardpoint_cargowall_left",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_cargogrid",
+      "key": null,
+      "ref": "a5397e6b-42b3-403b-b83d-8b5b9b4a31b4",
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_cargowall_right",
+      "key": null,
+      "ref": "9fa31592-ff04-476c-a7d9-e5f7938fc89b",
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_cargowall_left",
+      "key": null,
+      "ref": "5072c903-f5ed-4373-a526-6240cfeaeb0d",
+      "default_loadout": [
+
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1000.0
+  }
+}

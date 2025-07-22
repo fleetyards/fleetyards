@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Starlifter_C2_BIS2951",
+  "ref": "e8a0ecbc-2a03-46c7-bcd1-bfe4c117a61f",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1fdad0d9-352a-4913-ac40-526437e517de",
+  "name": "Hercules Starlifter 2951 Best in Show Livery",
+  "short_name": null,
+  "description": "Celebrate the Starlifter being voted a Best in Show finalist for 2951 with this special blue and black livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

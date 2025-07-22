@@ -1,0 +1,21 @@
+{
+  "key": "Paint_ROC_Aphorite_Purple",
+  "ref": "9165cb44-d419-42d4-ae53-dd894f209f81",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "3bd41375-a8ad-4cff-baa3-5e398405b9a9",
+  "name": "ROC Aphorite Livery",
+  "short_name": null,
+  "description": "Decorate your ROC with the Aphorite livery, which gets its name and color from the precious purple gemstone prized for its multi-hued tones.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

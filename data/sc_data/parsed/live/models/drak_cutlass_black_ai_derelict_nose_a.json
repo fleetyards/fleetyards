@@ -1,0 +1,25 @@
+{
+  "key": "DRAK_Cutlass_Black_AI_Derelict_Nose_A",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "3",
+  "name": "Wreckage",
+  "description": "",
+  "career": "",
+  "role": "",
+  "insurance": {
+    "base_wait_time_minutes": "9.99",
+    "mandatory_wait_time_minutes": "3.33",
+    "base_expediting_fee": "6251"
+  },
+  "mass": 246577.0,
+  "metrics": {
+    "x": 26.5,
+    "y": 37.5,
+    "z": 11.5
+  },
+  "loadout": [
+
+  ]
+}

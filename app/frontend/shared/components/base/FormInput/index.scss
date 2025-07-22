@@ -1,0 +1,204 @@
+.base-input {
+  position: relative;
+  width: 100%;
+  margin-bottom: 1rem;
+
+  label {
+    white-space: nowrap;
+  }
+
+  &__prefix,
+  &__suffix {
+    min-width: 40px;
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    background-color: lighten($input-bg, 10%);
+    border: 1px solid $input-border;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  }
+
+  &__prefix {
+    border-right: none;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+  }
+
+  &__suffix {
+    border-left: none;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+  }
+
+  &__subline {
+    display: block;
+    margin-top: 5px;
+  }
+
+  &__clear {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 100%;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  &__wrapper {
+    position: relative;
+    display: flex;
+
+    input {
+      display: block;
+      width: 100%;
+      height: 43px;
+      padding: 6px 12px 6px 12px;
+      color: $input-color;
+      font-size: 16px;
+      line-height: 1.42857;
+      text-overflow: ellipsis;
+      background-color: $input-bg;
+      background-image: none;
+      border: 1px solid $input-border;
+      border-radius: 3px;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+      transition:
+        border-color ease-in-out 0.15s,
+        box-shadow ease-in-out 0.15s;
+
+      &[type="number"]::-webkit-inner-spin-button,
+      &[type="number"]::-webkit-outer-spin-button {
+        margin: 0;
+        -webkit-appearance: none;
+      }
+
+      &[type="number"] {
+        -moz-appearance: textfield;
+      }
+
+      &:focus {
+        outline: none;
+      }
+
+      &.clearable {
+        padding-right: 50px;
+      }
+    }
+
+    &--with-prefix {
+      input {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+    }
+
+    &--with-suffix {
+      input {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+  }
+
+  &--clearable {
+    input {
+      padding-right: 50px;
+    }
+  }
+
+  &--disabled {
+    input {
+      color: darken($input-color, 10%);
+      cursor: not-allowed;
+      opacity: 0.9;
+    }
+  }
+
+  &--large {
+    input {
+      height: 55px;
+      padding: 10px 16px;
+      font-size: 19px;
+      line-height: 1.33333;
+      border-radius: 6px;
+    }
+  }
+
+  &--clean {
+    margin-bottom: 0;
+
+    input {
+      border: none;
+      border-radius: 0;
+    }
+  }
+
+  &--inline {
+    display: flex;
+    justify-content: stretch;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 0;
+
+    > div {
+      flex-grow: 1;
+    }
+  }
+
+  &--align-left {
+    input {
+      text-align: left;
+    }
+  }
+
+  &--align-right {
+    input {
+      text-align: right;
+    }
+  }
+
+  &--with-error {
+    input {
+      border-color: darken($danger, 15%);
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    }
+
+    .base-input {
+      &--prefix,
+      &--suffix {
+        border-color: darken($danger, 15%);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+      }
+    }
+
+    .base-input__wrapper {
+      &--with-prefix {
+        input {
+          border-left: none;
+        }
+      }
+
+      &--with-suffix {
+        input {
+          border-right: none;
+        }
+      }
+    }
+  }
+}
+
+.base-input-group-flex,
+.base-input-group {
+  margin-bottom: 1rem;
+
+  .base-input {
+    margin-bottom: 0;
+  }
+}

@@ -16,7 +16,7 @@ module Api
       end
 
       private def commodity_query_params
-        @commodity_query_params ||= query_params(:name_cont, id_in: [], name_in: [])
+        @commodity_query_params ||= parems.permit(q: [:name_cont, id_in: [], name_in: []]).fetch(:q, {})
       end
     end
   end

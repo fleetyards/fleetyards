@@ -1,0 +1,62 @@
+.compare-cols {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 30px;
+}
+
+.compare-image {
+  position: relative;
+  overflow: hidden;
+  height: 242px;
+
+  & > a {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border-top-right-radius: $border-radius-base;
+    border-top-left-radius: $border-radius-base;
+    -webkit-animation-name: fadein;
+    animation-name: fadeIn;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+  }
+
+  .remove-model {
+    position: absolute;
+    top: 10px;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $gray-darker;
+    border-radius: 10px 0 0 10px;
+    cursor: pointer;
+
+    i {
+      color: #fff;
+    }
+  }
+}
+
+.compare-title {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-size: 120%;
+  height: 40px;
+  position: sticky;
+  top: 0;
+  z-index: 500;
+  background-color: $gray-darker;
+  border-bottom-right-radius: $border-radius-base;
+  border-bottom-left-radius: $border-radius-base;
+}

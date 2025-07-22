@@ -3,8 +3,10 @@
 module Api
   module V1
     class SessionsController < ::Api::BaseController
-      skip_authorization_check except: [:confirm_access]
+      skip_verify_authorized except: [:confirm_access]
+
       before_action :authenticate_user!, except: [:create]
+      before_action :set_user, only: [:confirm_access]
 
       def create
         resource = User.find_for_database_authentication(login: login_params[:login])
@@ -20,7 +22,7 @@ module Api
             return
           end
 
-          if resource.otp_required_for_login && two_factor_code.blank?
+          if resource.otp_required_for_login && login_params[:two_factor_code].blank?
             render json: {code: "session.create.two_factor_required", message: I18n.t("devise.failure.two_factor_required")}, status: :bad_request
             return
           end
@@ -30,8 +32,8 @@ module Api
             return
           end
 
-          if resource.otp_required_for_login && !resource.validate_and_consume_otp!(two_factor_code)
-            if resource.invalidate_otp_backup_code!(two_factor_code)
+          if resource.otp_required_for_login && !resource.validate_and_consume_otp!(login_params[:two_factor_code])
+            if resource.invalidate_otp_backup_code!(login_params[:two_factor_code])
               resource.save!
             else
               render json: {code: "session.create.invalid", message: I18n.t("devise.failure.two_factor_invalid")}, status: :bad_request
@@ -40,11 +42,13 @@ module Api
           end
         end
 
-        resource.remember_me = remember_me
+        resource.remember_me = login_params[:remember_me]
 
         sign_in(:user, resource)
 
-        render json: {code: :success, message: I18n.t("labels.success")}
+        @user = resource
+
+        render "api/v1/users/me"
       end
 
       def destroy
@@ -54,8 +58,6 @@ module Api
       end
 
       def confirm_access
-        authorize! :confirm_access, current_user
-
         unless current_user.valid_password?(login_params[:password])
           render json: {code: "session.confirmAccess.failure", message: I18n.t("messages.confirmAccess.failure")}, status: :bad_request
           return
@@ -73,24 +75,14 @@ module Api
         render json: {code: :success, message: I18n.t("labels.success")}
       end
 
-      private def user_agent
-        @user_agent ||= UserAgent.parse(request.user_agent)
+      private def set_user
+        @user = current_user
+
+        authorize! @user
       end
 
       private def login_params
-        @login_params ||= params.permit(:login, :password, :remember_me, :two_factor_code, :rememberMe, :twoFactorCode)
-      end
-
-      private def remember_me
-        login_params[:remember_me] || login_params[:rememberMe]
-      end
-
-      private def two_factor_code
-        login_params[:two_factor_code] || login_params[:twoFactorCode]
-      end
-
-      private def invalid_login_attempt
-        render json: {code: "session.create", message: I18n.t("devise.failure.invalid")}, status: :bad_request
+        @login_params ||= params.permit(:login, :password, :remember_me, :two_factor_code)
       end
     end
   end

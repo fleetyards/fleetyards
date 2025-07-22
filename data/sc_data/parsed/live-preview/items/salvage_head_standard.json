@@ -1,0 +1,83 @@
+{
+  "key": "Salvage_Head_standard",
+  "ref": "f8aabcb1-83b9-4b08-8846-acc77082cd4d",
+  "category": "utility",
+  "type": "SalvageHead",
+  "sub_type": null,
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "name": "Baler Salvage Head",
+  "short_name": "Baler Salvage Head",
+  "description": "Manufacturer: Greycat Industrial\\nItem Type: Salvage Head\\nSize: 2\\n\\nModule Capacity: 3\\nGimble Area: ???\\n\\nGreycat Industrial has spent centuries refining the Baler salvage head into its current form that's both durable and precise even under the harshest of conditions. Designed to swap between three modules, the Baler will be ready to rip apart whatever hull you find. Experience why it's the standard salvage head for countless personal and large-scale industrial operations across the universe.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_salvage_subItem01",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "SalvageModifier"
+      ]
+    },
+    {
+      "name": "hardpoint_salvage_subItem02",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "SalvageModifier"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 5000.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 6.0,
+    "StartIRTemperature": 250.0,
+    "OverpowerHeat": 0.0,
+    "OverclockThresholdMinHeat": 0.0,
+    "OverclockThresholdMaxHeat": 0.0,
+    "ThermalEnergyBase": 10.0,
+    "ThermalEnergyDraw": 20.0,
+    "ThermalConductivity": 3.0,
+    "SpecificHeatCapacity": 13.0,
+    "Mass": 200.0,
+    "SurfaceArea": 50.0,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 1.0,
+    "MaxTemperature": 450.0,
+    "OverheatTemperature": 370.0,
+    "RecoveryTemperature": 350.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "ammunition": {
+    "max_ammo_count": 2147483647.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  },
+  "power_connection": {
+    "power_base": 0.0,
+    "power_draw": 10.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 0.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.1,
+    "overclock_threshold_max": 0.2,
+    "overpower_performance": 0.0,
+    "overclock_performance": 0.0,
+    "power_to_em": 0.0,
+    "decay_rate_of_em": 0.15
+  }
+}

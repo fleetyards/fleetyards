@@ -1,0 +1,28 @@
+{
+  "key": "CRUS_Starlifter_CargoGrid_Personal_Large",
+  "ref": "1681575c-d425-45d3-a697-d301d1139370",
+  "category": "cargogrid",
+  "type": "Cargo",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "63685f47-b0cc-4ebe-8f16-72793a5cd6e0",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "storage": {
+    "storage": 2.5e-05
+  },
+  "durability": {
+    "health": 1000.0
+  },
+  "inventory_ref": "22910161-b338-43d5-a9e4-03cb598ff5a8"
+}

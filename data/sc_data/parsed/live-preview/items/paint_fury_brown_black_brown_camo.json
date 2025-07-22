@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Fury_Brown_Black_Brown_Camo",
+  "ref": "e532df39-c360-42dd-9ebc-dfccf6bd0964",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "5ef8df89-251e-4e83-9749-a5f03e4c5779",
+  "name": "Fury Wasteland Camo Livery",
+  "short_name": null,
+  "description": "Outfit the Fury in tan camo with the Wasteland Camo livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

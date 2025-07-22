@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Scorpius_Stinger_Black_Orange",
+  "ref": "7aa165d8-a1be-49de-be43-d5559b8d054b",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f39b09e4-bbfe-45d9-96f2-7c88de7401d4",
+  "name": "Scorpius Stinger Livery",
+  "short_name": null,
+  "description": "The exclusive Scorpius Stinger livery features a black finish and an orange decal in the shape the famously lethal arachnid that is the ship's namesake.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

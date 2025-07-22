@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Scout_AlienWeek_Teal_Red",
+  "ref": "48a57967-03a8-4778-922b-97d7750b72b6",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "7ed26f26-628c-4ada-bf94-d712c5c6da0d",
+  "name": "Khartu-al Harmony Livery",
+  "short_name": null,
+  "description": "The Harmony livery is meant to showcase Humanity's peaceful relationship with alien species with a semi-pearlescent blue main coat marked with organic reflective red to suggest the coming together of disparate species and cultures. The Harmony livery has been designed and produced by the UEE's Diplomatic Corps and freely licensed to all spacecraft manufacturers. Now Khartu-al owners can celebrate the UEE's intentions of working toward a peaceful galaxy.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

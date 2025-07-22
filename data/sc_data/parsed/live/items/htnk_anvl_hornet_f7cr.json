@@ -1,0 +1,24 @@
+{
+  "key": "HTNK_ANVL_Hornet_F7CR",
+  "ref": "144b87a7-db8c-4d48-82bb-053a1f28a654",
+  "category": "fueltanks",
+  "type": "FuelTank",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Internal Tank",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "capacity": 6.0
+  }
+}

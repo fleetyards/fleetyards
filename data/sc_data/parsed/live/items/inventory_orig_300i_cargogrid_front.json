@@ -1,0 +1,50 @@
+{
+  "key": "ORIG_300i_CargoGrid_Front",
+  "ref": "8a5fe9c3-0131-4a14-af06-ff4ee190f98e",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 2.5,
+      "y": 5.0,
+      "z": 1.25,
+      "scu": 8.0,
+      "max_container_size": {
+        "size": 4,
+        "dimensions": {
+          "x": 2.5,
+          "y": 2.5,
+          "z": 1.25
+        }
+      }
+    },
+    "min_container": {
+      "x": 1.25,
+      "y": 1.25,
+      "z": 1.25,
+      "scu": 1.0,
+      "max_container_size": {
+        "size": 1,
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        }
+      }
+    },
+    "max_container": {
+      "x": 2.5,
+      "y": 1.25,
+      "z": 1.25,
+      "scu": 2.0,
+      "max_container_size": {
+        "size": 2,
+        "dimensions": {
+          "x": 2.5,
+          "y": 1.25,
+          "z": 1.25
+        }
+      }
+    }
+  }
+}

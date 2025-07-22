@@ -1,0 +1,158 @@
+{
+  "fr": {
+    "actions": {
+      "showReleased": "Afficher les versions précédentes",
+      "hideReleased": "Masquer les anciennes versions",
+      "upgrade": "Une mise à jour est disponible !",
+      "backToHome": "Planifier un nouveau voyage",
+      "disableGrouping": "Désactiver le groupement",
+      "enableGrouping": "Désactiver le groupement",
+      "groupedByModel": "Grouper par modèle",
+      "ungrouped": "Dégroupé",
+      "destroyAccount": "Supprimer le compte",
+      "saveScreenshot": "Enregistrer au format PNG",
+      "verify": "Vérifier",
+      "clearHistory": "Vider l'historique",
+      "sortBy": "Trier par",
+      "back": "Précédent",
+      "open": "Ouvrir",
+      "copy": "Copier",
+      "more": "Détails...",
+      "showMore": "Afficher plus",
+      "export": "Exporter",
+      "import": "Importer",
+      "here": "ici",
+      "backToTop": "Revenir en haut",
+      "cancel": "Annuler",
+      "ok": "Ok",
+      "reset": "Réinitialiser",
+      "reload": "Recharger",
+      "confirm": "Valider",
+      "moreInfo": "Plus d'informations",
+      "showDetailPage": "Détails",
+      "showDetails": "Afficher les détails",
+      "hideDetails": "Masquer les détails",
+      "showGuide": "Afficher le guide",
+      "hideGuide": "Masquer le guide",
+      "showFleetchart": "Fleetchart",
+      "hideFleetchart": "Affichage par défaut",
+      "showLabels": "Afficher les labels",
+      "hideLabels": "Masquer les labels",
+      "resetZoom": "Réinitialiser le zoom",
+      "supportUs": "Soutenir FleetYards.net",
+      "login": "Se connecter",
+      "signUp": "Créer un compte",
+      "confirmAccess": "Confirmer le mot de passe",
+      "reset-password": "Mot de passe oublié ?",
+      "edit": "Modifier",
+      "done": "Terminer",
+      "share": "Partager",
+      "change": "Modifier",
+      "upload": "Charger",
+      "editCommodities": "Modifier les marchandises",
+      "save": "Sauvegarder",
+      "remove": "Retirer",
+      "delete": "Supprimer",
+      "deleteSelected": "Supprimer la sélection",
+      "close": "Fermer",
+      "filter": "Filtrer",
+      "showStatusColor": "Afficher l'état en tant que couleur",
+      "hideStatusColor": "Masquer le statut en tant que couleur",
+      "addToHangar": "Ajouter à votre Hangar",
+      "resetFilter": "Réinitialiser les filtres",
+      "resetPrices": "Réinitialiser les prix",
+      "requestPassword": "Demande de mot de passe par e-mail",
+      "changePassword": "Modifier le mot de passe",
+      "updatePassword": "Changer le mot de passe",
+      "copyBackupCodes": "Copier les codes de sauvegarde",
+      "add": "Ajouter",
+      "addToWishlist": "Ajouter à la liste de souhaits",
+      "addAnother": "Ajouter un autre",
+      "addVehicle": "Ajouter un vaisseau",
+      "addGroup": "Ajouter un groupe",
+      "addModule": "Ajouter un autre module",
+      "addUpgrade": "Ajouter une autre mise à niveau",
+      "showTableView": "Afficher sous forme de liste",
+      "showGridView": "Afficher sous forme de grille",
+      "syncRsiHangar": "Synchroniser le hangar RSI",
+      "compare": { "ships": "Comparer" },
+      "hangar": {
+        "editGroups": "Ajouter ou supprimer des groupes",
+        "editName": "Nommez votre vaisseau",
+        "useName": "Utiliser ce nom",
+        "destroyAll": "Supprimer tous les vaisseaux",
+        "showOnPublicHangar": "Rendre publique",
+        "hideFromPublicHangar": "Rendre privé",
+        "editGroupsSelected": "Ajouter/Retirer des groupes",
+        "resetIngame": {
+          "openModal": "Réinitialiser les vaisseaux obtenus dans le jeu",
+          "moveToWishlist": "Déplacer dans la liste de souhaits",
+          "removeAll": "Tout supprimer"
+        }
+      },
+      "syncExtension": {
+        "cancel": "Annuler",
+        "start": "Démarrer la synchronisation",
+        "close": "Fermer"
+      },
+      "empty": {
+        "hangarGuide": "Besoin d'aide ?"
+      },
+      "fleet": {
+        "join": "Rejoignez la flotte %{fleet}!",
+        "leave": "Quitter la flotte %{fleet}",
+        "createInviteUrl": "Créer un lien d'invitation",
+        "inviteMember": "Inviter un nouveau membre",
+        "acceptInvite": "Accepter l'invitation",
+        "declineInvite": "Décliner l'invitation",
+        "acceptRequest": "Accepter la demande",
+        "declineRequest": "Décliner la demande",
+        "showOwners": "Détails",
+        "members": {
+          "invite": "Inviter",
+          "promote": "Promouvoir",
+          "demote": "Rétrograder",
+          "accept": "Accepter",
+          "decline": "Décliner",
+          "remove": "Retirer"
+        },
+        "inviteUrls": { "create": "Créer le nouveau lien d'invitation" }
+      },
+      "model": {
+        "gallery": "Galerie",
+        "onSale": "En vente : %{price}",
+        "store": "Page RSI"
+      },
+      "unselect": "Retirer la sélection",
+      "openPriceModal": "Soumettre le prix",
+      "shoppingCart": {
+        "add": "Ajouter au panier",
+        "refresh": "Actualiser le panier",
+        "clear": "Vider le panier"
+      },
+      "twoFactor": {
+        "enable": "Activer l'authentification à deux facteurs",
+        "disable": "Désactiver l'authentification à deux facteurs",
+        "generateBackupCodes": "Générer des codes de sauvegarde"
+      },
+      "holoViewer": {
+        "autoRotate": {
+          "enable": "Activer la rotation automatique",
+          "disable": "Désactiver la rotation automatique"
+        },
+        "zoom": {
+          "enable": "Activer le zoom",
+          "disable": "Désactiver le zoom"
+        },
+        "color": {
+          "enable": "Activer les couleurs",
+          "disable": "Désactiver les couleurs"
+        }
+      },
+      "roadmap": {
+        "showRemoved": "Afficher les retirées",
+        "hideRemoved": "Masquer les retirées"
+      }
+    }
+  }
+}

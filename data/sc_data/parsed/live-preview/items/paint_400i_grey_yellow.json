@@ -1,0 +1,21 @@
+{
+  "key": "Paint_400i_Grey_Yellow",
+  "ref": "867fc361-f3b4-4496-aed0-1e6a56bbf12c",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "68064481-93ce-427e-9192-8d3f6d9288fe",
+  "name": "400i Stratus Livery",
+  "short_name": null,
+  "description": "The Stratus livery for the 400i punctuates the grey wings and white main body with a vibrant yellow accent border.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "DoorEmptyInteractionPanel_Template",
+  "ref": "656b5b8a-b07f-4d64-a4ae-7b126b7b8df7",
+  "category": "doors",
+  "type": "ControlPanel",
+  "sub_type": "DoorPart",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

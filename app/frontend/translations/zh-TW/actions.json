@@ -1,0 +1,163 @@
+{
+  "zh-TW": {
+    "actions": {
+      "showReleased": "顯示舊版本",
+      "hideReleased": "隱藏舊版本",
+      "upgrade": "更新可用！",
+      "backToHome": "規劃新航線",
+      "disableGrouping": "停用分組",
+      "enableGrouping": "啟用分組",
+      "groupedByModel": "按型號分組",
+      "ungrouped": "未分組",
+      "destroyAccount": "刪除帳戶",
+      "saveScreenshot": "儲存為PNG",
+      "verify": "驗證",
+      "clearHistory": "清除歷史記錄",
+      "sortBy": "排序方式",
+      "back": "返回",
+      "open": "開啟",
+      "copy": "複製",
+      "more": "更多...",
+      "showMore": "顯示更多",
+      "export": "匯出",
+      "import": "匯入",
+      "here": "這裡",
+      "backToTop": "返回頂部",
+      "cancel": "取消",
+      "ok": "確定",
+      "reset": "重置",
+      "reload": "重新載入",
+      "confirm": "確認",
+      "moreInfo": "更多資訊",
+      "showDetailPage": "詳情頁面",
+      "showDetails": "顯示詳情",
+      "hideDetails": "隱藏詳情",
+      "showGuide": "顯示指南",
+      "hideGuide": "隱藏指南",
+      "showFleetchart": "艦隊圖表",
+      "hideFleetchart": "預設檢視",
+      "showLabels": "顯示標籤",
+      "hideLabels": "隱藏標籤",
+      "resetZoom": "重置縮放",
+      "supportUs": "支援FleetYards.net",
+      "login": "登入",
+      "signUp": "註冊",
+      "confirmAccess": "確認密碼",
+      "reset-password": "忘記密碼？",
+      "edit": "編輯",
+      "done": "完成",
+      "share": "分享",
+      "change": "更改",
+      "upload": "上傳",
+      "editCommodities": "編輯商品",
+      "save": "儲存",
+      "remove": "移除",
+      "delete": "刪除",
+      "deleteSelected": "刪除選中項",
+      "close": "關閉",
+      "filter": "篩選",
+      "showStatusColor": "顯示狀態顏色",
+      "hideStatusColor": "隱藏狀態顏色",
+      "addToHangar": "新增至機庫",
+      "resetFilter": "重置篩選器",
+      "resetPrices": "重置價格",
+      "requestPassword": "請求密碼郵件",
+      "changePassword": "更改密碼",
+      "updatePassword": "更新密碼",
+      "copyBackupCodes": "複製備份代碼",
+      "add": "新增",
+      "addToWishlist": "新增至願望清單",
+      "addAnother": "新增另一個",
+      "addVehicle": "新增飛船",
+      "addGroup": "新增群組",
+      "addModule": "新增另一個模組",
+      "addUpgrade": "新增另一個升級",
+      "showTableView": "顯示為清單",
+      "showGridView": "顯示為網格",
+      "syncRsiHangar": "同步RSI機庫",
+      "compare": {
+        "ships": "對比"
+      },
+      "hangar": {
+        "editGroups": "Add or remove Groups",
+        "editName": "Name your Ship",
+        "useName": "Use Name",
+        "destroyAll": "Remove all Ships",
+        "showOnPublicHangar": "Make Public",
+        "hideFromPublicHangar": "Hide from Public",
+        "editGroupsSelected": "Add/Remove from Groups",
+        "resetIngame": {
+          "openModal": "Reset Ingame Ships after Wipe",
+          "moveToWishlist": "Move to Wishlist",
+          "removeAll": "Remove all"
+        }
+      },
+      "syncExtension": {
+        "cancel": "Cancel",
+        "start": "Start Sync",
+        "close": "Close",
+        "refresh": "Refresh Page"
+      },
+      "empty": {
+        "hangarGuide": "Need Help?"
+      },
+      "fleet": {
+        "join": "Join %{fleet}!",
+        "leave": "Leave %{fleet}",
+        "createInviteUrl": "Create Invite Urls",
+        "inviteMember": "Invite new Member",
+        "acceptInvite": "Accept Invitation",
+        "declineInvite": "Decline Invitation",
+        "acceptRequest": "accept Request",
+        "declineRequest": "Decline Request",
+        "showOwners": "More",
+        "members": {
+          "invite": "Invite",
+          "promote": "Promote",
+          "demote": "Demote",
+          "accept": "Accept",
+          "decline": "Decline",
+          "remove": "Remove"
+        },
+        "inviteUrls": {
+          "create": "Create new Invite Url"
+        }
+      },
+      "model": {
+        "gallery": "Gallery",
+        "onSale": "On Sale: %{price}",
+        "store": "RSI Page"
+      },
+      "unselect": "Unselect all Selected",
+      "openPriceModal": "Submit Price",
+      "shoppingCart": {
+        "add": "Add to Cart",
+        "refresh": "Refresh Cart",
+        "clear": "Clear Cart"
+      },
+      "twoFactor": {
+        "enable": "Enable Two-factor",
+        "disable": "Disable Two-factor",
+        "generateBackupCodes": "Generate Backup Codes"
+      },
+      "holoViewer": {
+        "autoRotate": {
+          "enable": "Enable auto rotate",
+          "disable": "Disable auto rotate"
+        },
+        "zoom": {
+          "enable": "Enable zoom",
+          "disable": "Disable zoom"
+        },
+        "color": {
+          "enable": "Enable colors",
+          "disable": "Disable colors"
+        }
+      },
+      "roadmap": {
+        "showRemoved": "Show Removed",
+        "hideRemoved": "Hide Removed"
+      }
+    }
+  }
+}

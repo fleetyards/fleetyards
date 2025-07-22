@@ -1,0 +1,112 @@
+{
+  "key": "BEHR_BallisticGatling_S6",
+  "ref": "6c46b8e3-81c8-4018-bce2-740b81174a00",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "6",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "AD6B Ballistic Gatling",
+  "short_name": "AD6B",
+  "description": "Manufacturer: Behring\\nItem Type: Ballistic Gatling\\nSize: 6\\n\\nThe AD6B, Behring's take on the classic ballistic gatling, includes a crystal cycle firing mechanism in the the high speed rotary system to maximize efficiency for sustained engagements with minimal misfires. Next time an aggressor escalates a hostile situation, make them regret the decision by spinning up this overwhelming and effective weapon.",
+  "inventory_consumption": {
+    "micro_scu": 7560000.0,
+    "dimensions": {
+      "x": 1.339803,
+      "y": 11.05504,
+      "z": 2.405685
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "7",
+      "max_size": "7",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "7",
+      "max_size": "7",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "7",
+      "max_size": "7",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "BAR1",
+      "key": "BEHR_BallisticGatling_Barrel_S6",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "MEC",
+      "key": "BEHR_BallisticGatling_FiringMechanism_S6",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "POW",
+      "key": "BEHR_BallisticGatling_PowerArray_S6",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "VEN",
+      "key": "BEHR_BallisticGatling_Ventilation_S6",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1650.0
+  },
+  "ammunition": {
+    "max_ammo_count": 2100.0,
+    "initial_ammo_count": 2100.0,
+    "max_restock_count": 3.0
+  },
+  "power_connection": {
+    "power_base": 90.0,
+    "power_draw": 110.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 20.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.0,
+    "overclock_threshold_max": 0.0,
+    "overpower_performance": 0.0,
+    "overclock_performance": 0.0,
+    "power_to_em": 1.75,
+    "decay_rate_of_em": 0.5
+  }
+}

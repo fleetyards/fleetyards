@@ -1,0 +1,39 @@
+{
+  "key": "JDRV_TARS_S01_Explorer_SCItem",
+  "ref": "c8797bce-6220-4d1e-bc6d-23da4a366a6d",
+  "category": "jumpdrive",
+  "type": "JumpDrive",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2b25a2dd-47ea-4ab0-8711-03d34be214b1",
+  "name": "Explorer",
+  "short_name": null,
+  "description": "Item Type: Jump Module\\nManufacturer: Tarsus\\nSize: 1\\nGrade: C\\nClass: Civilian\\n\\nJourney across the ‘verse with Tarsus’ Explorer jump module, offering greater reliability to help take your wanderlust to new heights.",
+  "inventory_consumption": {
+    "micro_scu": 91290.0,
+    "dimensions": {
+      "x": 0.7443,
+      "y": 0.4853,
+      "z": 0.2527
+    }
+  },
+  "durability": {
+    "health": 320.0
+  },
+  "power_connection": {
+    "power_base": 10.0,
+    "power_draw": 100.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 0.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.0,
+    "overclock_threshold_max": 0.0,
+    "overpower_performance": 0.0,
+    "overclock_performance": 0.0,
+    "power_to_em": 0.0,
+    "decay_rate_of_em": 0.15
+  }
+}

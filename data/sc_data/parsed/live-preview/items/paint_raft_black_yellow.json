@@ -1,0 +1,21 @@
+{
+  "key": "Paint_RAFT_Black_Yellow",
+  "ref": "ca68467f-43ef-4b34-8764-17a1373deeab",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "40c80194-3749-4c55-ac36-732e83ccedc8",
+  "name": "RAFT Hazard Livery",
+  "short_name": null,
+  "description": "Black with yellow highlights, the Hazard is another great livery option for the Argo RAFT.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

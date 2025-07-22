@@ -1,0 +1,21 @@
+{
+  "key": "Paint_HoverQuad_Copperhead_White_Bronze",
+  "ref": "a421dc6f-7906-4999-ae8f-b410013f9f45",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "0c6191c0-7bdd-47a2-af60-19f544d84b4f",
+  "name": "HoverQuad Copperhead Livery",
+  "short_name": null,
+  "description": "Speed across picturesque landscapes in this sublime HoverQuad Copperhead livery, which is white, bronze, and black.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

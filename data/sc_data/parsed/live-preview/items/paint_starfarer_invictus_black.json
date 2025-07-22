@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Starfarer_Invictus_Black",
+  "ref": "8fae8721-8de5-4dba-95a1-f21ae265e5eb",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6595f94c-2e2e-436d-a160-63030c498867",
+  "name": "Starfarer Black Livery",
+  "short_name": null,
+  "description": "Customize your Starfarer with this black chrome livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

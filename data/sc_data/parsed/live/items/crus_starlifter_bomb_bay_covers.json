@@ -1,0 +1,24 @@
+{
+  "key": "CRUS_Starlifter_Bomb_Bay_Covers",
+  "ref": "f3fe8784-8283-475c-b7a1-22daa7c7f1be",
+  "category": "module",
+  "type": "Misc",
+  "sub_type": null,
+  "size": "10",
+  "grade": "1",
+  "manufacturer_ref": "63685f47-b0cc-4ebe-8f16-72793a5cd6e0",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

@@ -183,22 +183,8 @@ namespace :search do
       within release_path do
         with rails_env: fetch(:rails_env) do
           info "Reindexing..."
-          execute(:bundle, :exec, :thor, "search:index")
+          execute(:bundle, :exec, :rails, "searchkick:reindex:all")
           info "Reindexing finished"
-        end
-      end
-    end
-  end
-end
-
-namespace :trading_data do
-  task :import do
-    on roles(:app) do
-      within release_path do
-        with rails_env: fetch(:rails_env) do
-          info "Import of Trading Data started..."
-          execute(:bundle, :exec, :thor, "trading_data:import")
-          info "Import finished"
         end
       end
     end

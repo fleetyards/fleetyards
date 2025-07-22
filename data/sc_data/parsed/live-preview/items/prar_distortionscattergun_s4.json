@@ -1,0 +1,65 @@
+{
+  "key": "PRAR_DistortionScatterGun_S4",
+  "ref": "76706adf-4687-4a7a-aaf1-c44af0a5d2ca",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "a2ba1db6-a7e8-49db-ba52-c61219693531",
+  "name": "Salvation Distortion Scattergun",
+  "short_name": "Salvation",
+  "description": "Manufacturer: Preacher Armaments\\nItem Type: Distortion Scattergun\\nSize: 4\\n\\nDisable an enemy's ship without damaging it with the Salvation scattergun from Preacher Armaments. With its wide spread and low rate of fire this size four scattergun is most potent at close range.",
+  "inventory_consumption": {
+    "micro_scu": 2100000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "durability": {
+    "health": 1650.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 8.1,
+    "StartIRTemperature": 250.0,
+    "OverpowerHeat": 0.67,
+    "OverclockThresholdMinHeat": 0.52,
+    "OverclockThresholdMaxHeat": 0.67,
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.5,
+    "Mass": 440.0,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 226.5,
+    "MaxTemperature": 700.0,
+    "OverheatTemperature": 650.0,
+    "RecoveryTemperature": 550.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "ammunition": {
+    "max_ammo_count": 10.0,
+    "initial_ammo_count": 10.0,
+    "max_restock_count": 3.0
+  },
+  "power_connection": {
+    "power_base": 134.0,
+    "power_draw": 366.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 20.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.32,
+    "overclock_threshold_max": 0.51,
+    "overpower_performance": 0.15,
+    "overclock_performance": 0.27,
+    "power_to_em": 5.44,
+    "decay_rate_of_em": 0.25
+  }
+}

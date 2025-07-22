@@ -7,13 +7,8 @@ module Admin
 
     def index
       authorize! :index, :admin_models
-      @q = Model.ransack(params[:q])
 
-      @q.sorts = "name asc" if @q.sorts.empty?
-
-      @models = @q.result
-        .page(params.fetch(:page) { nil })
-        .per(40)
+      @app_enabled = true
     end
 
     def name_diff
@@ -105,7 +100,7 @@ module Admin
       authorize! :reload, :admin_models
       respond_to do |format|
         format.js do
-          Loaders::ScDataShipsJob.perform_async(load_version_from_s3)
+          Loaders::ScData::ModelsJob.perform_async
           render json: true
         end
         format.html do
@@ -119,21 +114,13 @@ module Admin
       respond_to do |format|
         format.js do
           Loaders::ModelJob.perform_async(model.rsi_id)
-          Loaders::ScDataShipJob.perform_async(model.id) if model.sc_identifier.present?
+          Loaders::ScData::ModelJob.perform_async(model.id) if model.sc_identifier.present?
           render json: true
         end
         format.html do
           redirect_to root_path
         end
       end
-    end
-
-    private def load_version_from_s3
-      response = Typhoeus.get("#{ScData::BaseLoader.new.s3_base_url}/version")
-
-      raise "Failed to load version from S3" unless response.success?
-
-      response.body.strip
     end
 
     private def model_params
@@ -161,9 +148,9 @@ module Admin
     end
 
     private def save_filters
-      session[:models_filters] = query_params(
+      session[:models_filters] = params.permit(q: [
         :manufacturer_id_eq, :name_or_slug_cont
-      ).to_h
+      ]).fetch(:q, {})
       session[:models_page] = params[:page]
     end
 

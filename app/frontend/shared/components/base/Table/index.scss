@@ -1,0 +1,27 @@
+.base-table {
+  &__outer-wrapper {
+    position: relative;
+  }
+
+  &__wrapper {
+    overflow: auto;
+  }
+
+  &__inner {
+    width: 100%;
+    min-height: 180px;
+  }
+
+  &__loader {
+    top: 50%;
+    margin-top: -20px;
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .base-table {
+    &__inner {
+      min-width: 600px;
+    }
+  }
+}

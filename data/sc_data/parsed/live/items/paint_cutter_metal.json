@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Cutter_Metal",
+  "ref": "692618a7-7913-4c48-b834-82dd4406c187",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "7abf3d4b-5659-420f-9417-17c45ac22dbf",
+  "name": "Cutter Noble Livery",
+  "short_name": null,
+  "description": "A simple and sleek metallic finish makes the Noble livery a bold choice for the Cutter.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

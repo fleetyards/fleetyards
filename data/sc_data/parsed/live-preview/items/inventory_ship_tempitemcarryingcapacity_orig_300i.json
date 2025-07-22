@@ -1,0 +1,9 @@
+{
+  "key": "Ship_TempItemCarryingCapacity_ORIG_300i",
+  "ref": "a5229c64-e1f5-4b28-82d7-45775e04f2a7",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 8.0
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Prospector_Aphorite_Purple",
+  "ref": "44fd4baf-ecb2-40dd-909b-afc333edfbbe",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "750f9f18-108a-4968-887d-8c5a1f11b61b",
+  "name": "Prospector Aphorite Livery",
+  "short_name": null,
+  "description": "Decorate your Prospector with the Aphorite livery, which gets its name and color from the precious purple gemstone prized for its multi-hued tones.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

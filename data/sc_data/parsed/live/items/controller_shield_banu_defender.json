@@ -1,0 +1,21 @@
+{
+  "key": "Controller_Shield_BANU_Defender",
+  "ref": "c65cddd3-4717-4dc4-b446-5fa72bbcc2fd",
+  "category": "controller",
+  "type": "ShieldController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SHIELDS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

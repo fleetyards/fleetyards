@@ -1,0 +1,21 @@
+{
+  "key": "Controller_Missile_MISC_Starlancer",
+  "ref": "97dc0b1a-e282-47d1-98c9-1f01e4332162",
+  "category": "controller",
+  "type": "MissileController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "MISSILES",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

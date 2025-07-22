@@ -1,0 +1,40 @@
+{
+  "key": "CRUS_Star_Runner_CargoGrid_Small",
+  "ref": "6f99e577-e965-4763-882b-60da5a557dde",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 1.25,
+      "y": 3.75,
+      "z": 2.5
+    },
+    "capacity": 6.0,
+    "max_container_size": {
+      "size": 2,
+      "dimensions": {
+        "x": 2.5,
+        "y": 1.25,
+        "z": 1.25
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1.0
+      },
+      "max": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 2.5,
+          "z": 2.5
+        },
+        "capacity": 4.0
+      }
+    }
+  }
+}

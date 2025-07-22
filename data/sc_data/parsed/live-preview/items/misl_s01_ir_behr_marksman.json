@@ -1,0 +1,24 @@
+{
+  "key": "MISL_S01_IR_BEHR_Marksman",
+  "ref": "37a5512d-e5c2-4b41-869d-44cd91d80eeb",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "Missile",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "Marksman I Missile",
+  "short_name": "Marksman I",
+  "description": "Manufacturer: Behring\\nTracking Signal: Infrared\\nSize: 1\\n\\nBehring's Marksman series of proximity missiles has earned as much of a reputation for its ability to track a wide range of heat signatures as it has for its area-effect proximity damage.",
+  "inventory_consumption": {
+    "micro_scu": 15625.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 12.0
+  }
+}

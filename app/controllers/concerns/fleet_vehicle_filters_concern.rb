@@ -2,14 +2,14 @@
 
 module FleetVehicleFiltersConcern
   private def vehicle_query_params
-    @vehicle_query_params ||= query_params(
+    @vehicle_query_params ||= params.permit(q: [
       :model_name_cont, :model_name_or_model_description_cont, :on_sale_eq,
       :beam_gteq, :beam_lteq, :height_gteq, :height_lteq, :length_gteq, :length_lteq,
       :price_gteq, :price_lteq, :pledge_price_gteq, :pledge_price_lteq, :loaner_eq,
       model_slug_in: [], manufacturer_in: [], classification_in: [], focus_in: [],
       size_in: [], price_in: [], pledge_price_in: [],
       production_status_in: [], sorts: [], member_in: []
-    )
+    ]).fetch(:q, {})
   end
 
   private def loaner_param

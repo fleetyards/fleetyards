@@ -1,0 +1,24 @@
+{
+  "key": "CRUS_Starlifter_Turret_Cap",
+  "ref": "58fe26bb-bfb3-4ee7-a4fe-0ef1de1f75bb",
+  "category": "module",
+  "type": "Misc",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "63685f47-b0cc-4ebe-8f16-72793a5cd6e0",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

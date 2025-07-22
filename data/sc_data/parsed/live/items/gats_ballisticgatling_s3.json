@@ -1,0 +1,112 @@
+{
+  "key": "GATS_BallisticGatling_S3",
+  "ref": "b837397c-47b6-45e7-b409-db290a068b47",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "a834198a-3465-4b02-86a5-887e922ec06d",
+  "name": "Mantis GT-220 Gatling",
+  "short_name": "Mantis",
+  "description": "Manufacturer: Gallenson Tactical Systems\\nItem Type: Ballistic Gatling\\nSize: 3\\n\\nThe Mantis GT-220 is a hydraulically-driven Gatling-type rotary cannon designed to deliver smaller rounds at a very high rate of fire. The Mantis is designed to shred armor on very fast targets, sacrificing power for absolute saturation of the target area.",
+  "inventory_consumption": {
+    "micro_scu": 756000.0,
+    "dimensions": {
+      "x": 0.6699014,
+      "y": 4.422015,
+      "z": 1.202842
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "BAR1",
+      "key": "GATS_BallisticGatling_Barrel_S3",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "MEC",
+      "key": "GATS_BallisticGatling_FiringMechanism_S3",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "POW",
+      "key": "GATS_BallisticGatling_PowerArray_S3",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "VEN",
+      "key": "GATS_BallisticGatling_Ventilation_S3",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1500.0
+  },
+  "ammunition": {
+    "max_ammo_count": 2133.0,
+    "initial_ammo_count": 2133.0,
+    "max_restock_count": 3.0
+  },
+  "power_connection": {
+    "power_base": 50.0,
+    "power_draw": 70.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 20.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.0,
+    "overclock_threshold_max": 0.0,
+    "overpower_performance": 0.0,
+    "overclock_performance": 0.0,
+    "power_to_em": 1.75,
+    "decay_rate_of_em": 0.5
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "InstancedHangarGateway_Stanton_XLTop_GrimHEX",
+  "ref": "5f6f94f5-07bd-4028-9e52-cb0270ffc36a",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": null,
+  "grade": null,
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  }
+}

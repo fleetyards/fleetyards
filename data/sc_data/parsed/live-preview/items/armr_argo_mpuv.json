@@ -1,0 +1,24 @@
+{
+  "key": "ARMR_ARGO_MPUV",
+  "ref": "e8366bc3-ca67-41ee-913d-c83663cd84f0",
+  "category": "armor",
+  "type": "Armor",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "9e1f5a35-edcc-4d19-bede-08e2730043c5",
+  "name": "Argo MPUV Ship Armor",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  }
+}

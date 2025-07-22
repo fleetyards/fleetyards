@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Nox_Racing_Blue_White",
+  "ref": "0025926d-1659-44ad-9780-a9538a19a638",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f081c757-270e-4556-a9e5-619af7299085",
+  "name": "Nox Slipstream Livery",
+  "short_name": null,
+  "description": "The Slipstream livery will have your Nox ready and raring to race with this sleek blue and white paint scheme.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

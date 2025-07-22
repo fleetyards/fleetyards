@@ -1,0 +1,16 @@
+.base-table-row {
+  &:hover {
+    :deep(> div),
+    :deep(> td) {
+      background-color: rgba(#000, 0.1);
+
+      &:first-child,
+      &:last-child {
+        &::before,
+        &::after {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}

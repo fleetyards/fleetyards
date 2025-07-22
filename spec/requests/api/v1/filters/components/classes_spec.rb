@@ -3,26 +3,22 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/filters/components", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
+  let!(:components) { create_list(:component, 2) }
 
   path "/filters/components/classes" do
-    get("Commodity Types") do
-      operationId "componentClasses"
-      tags "ComponentFilters"
+    get("Components Classes Filters") do
+      operationId "componentClassesFilters"
+      tags "ComponentsFilters"
       produces "application/json"
 
       response(200, "successful") do
         schema type: :array, items: {"$ref": "#/components/schemas/FilterOption"}
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
+        run_test! do |response|
+          data = JSON.parse(response.body)
 
-        run_test!
+          expect(data.count).to be > 0
+        end
       end
     end
   end

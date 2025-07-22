@@ -3,15 +3,14 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
-  let(:user) { users :jeanluc }
-
-  let(:fleet) { fleets :starfleet }
+  let(:admin) { create(:user) }
+  let(:member) { create(:user) }
+  let(:officer) { create(:user) }
+  let(:another_member) { create(:user) }
+  let(:user) { admin }
+  let(:fleet) { create(:fleet, admins: [admin], officers: [officer], members: [member, another_member]) }
   let(:fleetSlug) { fleet.slug }
-
-  let(:member) { users :geordi }
-  let(:username) { member.username }
+  let(:username) { officer.username }
 
   before do
     sign_in(user) if user.present?
@@ -22,21 +21,13 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
     parameter name: "username", in: :path, type: :string, description: "Username"
 
     put("Demote Member") do
-      operationId "demoteMember"
+      operationId "demoteFleetMember"
       tags "FleetMembers"
       consumes "application/json"
       produces "application/json"
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/FleetMember"
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
 
         run_test!
       end
@@ -58,10 +49,18 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
         run_test!
       end
 
+      response(400, "bad request") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:username) { admin.username }
+
+        run_test!
+      end
+
       response(403, "forbidden") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:user) { users :data }
+        let(:user) { another_member }
 
         run_test!
       end

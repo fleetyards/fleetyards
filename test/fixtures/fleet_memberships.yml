@@ -17,18 +17,24 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  fleet_id          :uuid
+#  fleet_role_id     :uuid
 #  hangar_group_id   :uuid
 #  user_id           :uuid
 #
 # Indexes
 #
+#  index_fleet_memberships_on_fleet_role_id         (fleet_role_id)
 #  index_fleet_memberships_on_user_id_and_fleet_id  (user_id,fleet_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (fleet_role_id => fleet_roles.id)
 #
 
 starfleet_picard:
   fleet: starfleet
   user: jeanluc
-  role: :admin
+  fleet_role: starfleet_admin
   aasm_state: :accepted
   ships_filter: :all
   accepted_at: <%= Time.now %>
@@ -36,7 +42,7 @@ starfleet_picard:
 starfleet_data:
   fleet: starfleet
   user: data
-  role: :member
+  fleet_role: starfleet_member
   ships_filter: :all
   aasm_state: :accepted
   accepted_at: <%= Time.now %>
@@ -44,7 +50,7 @@ starfleet_data:
 starfleet_geordi:
   fleet: starfleet
   user: geordi
-  role: :officer
+  fleet_role: starfleet_officer
   ships_filter: :all
   aasm_state: :accepted
   accepted_at: <%= Time.now %>
@@ -52,7 +58,7 @@ starfleet_geordi:
 starfleet_riker:
   fleet: starfleet
   user: will
-  role: :member
+  fleet_role: starfleet_member
   ships_filter: :all
   aasm_state: :invited
   accepted_at: nil
@@ -60,7 +66,7 @@ starfleet_riker:
 starfleet_crusher:
   fleet: starfleet
   user: crusher
-  role: :member
+  fleet_role: starfleet_member
   ships_filter: :all
   aasm_state: :requested
   accepted_at: nil
@@ -68,5 +74,6 @@ starfleet_crusher:
 klingon_empire_worf:
   fleet: klingon_empire
   user: worf
+  fleet_role: klingon_empire_admin
   ships_filter: :all
   aasm_state: :accepted

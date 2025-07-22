@@ -1,0 +1,44 @@
+{
+  "key": "AEGS_Retaliator_Module_Front_Cargo",
+  "ref": "4cd10ac0-2c15-4753-9284-fafe5e8fa7db",
+  "category": "module",
+  "type": "Module",
+  "sub_type": null,
+  "size": "3",
+  "grade": "3",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Retaliator Cargo Front Module",
+  "short_name": null,
+  "description": "Retaliator owners can equip their ship with this front module to allow for storage of an additional 36 SCU of cargo.",
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_front_cargo_lift",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+        "Door"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_front_cargo_lift",
+      "key": "Door_RN_RoomConnector_Breachable_OpenClose_AEGS_Retaliator_Front_Module_Lift",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    }
+  ],
+  "durability": {
+    "health": 200.0
+  }
+}

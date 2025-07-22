@@ -1,0 +1,94 @@
+{
+  "key": "EAObjectiveDestructable_MiningLaser",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "Orbital Mining Laser",
+  "description": "Manufacturer: Chimera Communications \\nFocus: Recon\\n\\nThe Auris, from manufacturer Chimera Communications, allows you to easily collect and store transmissions, making it ideal for short-range activity monitoring. Designed to be virtually invisible while operating, this low-powered Passive Data Collection (PDC) Monitor is perfect for providing extra security to any station or facility with detailed logging of data transmissions and local ship traffic records. Plus, the included backup burst transmitter allows for the datastores to be transferred in the case of an emergency, providing extra peace of mind.",
+  "career": "Transporter",
+  "role": "Light Freight",
+  "insurance": {
+    "base_wait_time_minutes": "33.33",
+    "mandatory_wait_time_minutes": "3.33",
+    "base_expediting_fee": "333"
+  },
+  "mass": 200000.0,
+  "metrics": {
+    "x": 40.0,
+    "y": 18.0,
+    "z": 13.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_pilot_chair",
+      "ref": null,
+      "key": "ARGO_MPUV_SCItem_Seat_Pilot"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_Destructible_Probe"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_ARGO_MPUV"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_CHCO_S01_ObserverLite"
+    },
+    {
+      "name": "hardpoint_powerplant",
+      "ref": null,
+      "key": "POWR_LPLT_S03_FullForcePro_SCItem"
+    },
+    {
+      "name": "hardpoint_fuel_tank",
+      "ref": null,
+      "key": "HTNK_ARGO_MPUV"
+    },
+    {
+      "name": "hardpoint_fuel_intake",
+      "ref": null,
+      "key": "INTK_ARGO_MPUV"
+    },
+    {
+      "name": "hardpoint_cooler",
+      "ref": null,
+      "key": "COOL_JUST_S01_Hydrocel_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator",
+      "ref": null,
+      "key": "SHLD_SECO_S01_WEB_SCItem"
+    }
+  ]
+}

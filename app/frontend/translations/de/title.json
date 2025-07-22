@@ -1,0 +1,112 @@
+{
+  "de": {
+    "title": {
+      "default": "FleetYards.net",
+      "defaultShort": "FleetYards",
+      "defaultAdmin": "FleetYards.net Command",
+      "defaultAdminShort": "FltYrds Command",
+      "defaultDocs": "FleetYards.net Documentation",
+      "defaultDocsShort": "FleetYards Docs",
+      "home": "Startseite",
+      "search": "Suchergebnisse",
+      "ships": { "index": "Schiffe" },
+      "ship": "%{name} - %{manufacturer}",
+      "shipImages": "%{name} Bilder",
+      "shipVideos": "%{name} Videos",
+      "images": "Bilder",
+      "stats": "Statistiken",
+      "login": "Anmelden",
+      "signUp": "Registrieren",
+      "embed": "Widget Einbetten",
+      "apiV1": "API V1",
+      "hangar": {
+        "index": "Mein Hangar",
+        "preview": "Mein Hangar Vorschau",
+        "stats": "Meine Hangar Statistiken",
+        "import": "Importieren",
+        "public": "%{user} Hangar",
+        "wishlist": "Wunschliste",
+        "publicWishlist": "%{user} Wunschliste"
+      },
+      "requestPassword": "Passwort anfordern",
+      "changePassword": "Passwort ändern",
+      "fleets": {
+        "add": "Neue Flotte erstellen",
+        "preview": "Flotten Vorschau",
+        "invites": "Flotten Einladungen",
+        "members": "%{fleet} Mitglieder",
+        "stats": "%{fleet} Statistiken",
+        "settings": {
+          "index": "%{fleet} Einstellungen",
+          "fleet": "%{fleet} Einstellungen",
+          "membership": "%{fleet} Mitgliedschaft"
+        }
+      },
+      "roadmap": {
+        "index": "Roadmap",
+        "ships": "Schiff-Roadmap",
+        "changes": "Roadmap Änderungen"
+      },
+      "settings": {
+        "index": "Profil Einstellungen",
+        "account": "Konto",
+        "hangar": "Hangar Einstellungen",
+        "notifications": "Benachrichtigungseinstellungen",
+        "security": "Konto Sicherheit",
+        "twoFactor": {
+          "enable": "Zwei-Faktor-Authentifizierung aktivieren",
+          "disable": "Zwei-Faktor-Authentifizierung deaktivieren",
+          "backupCodes": "Zwei-Faktor-Backup-Codes generieren"
+        }
+      },
+      "compare": { "ships": "Schiffe vergleichen" },
+      "notFound": "404",
+      "tools": {
+        "index": "Werkzeuge",
+        "travelTimes": "Reisezeiten"
+      },
+      "impressum": "Impressum",
+      "privacyPolicy": "Datenschutzrichtlinie",
+      "cookiePolicy": "Cookie-Richtlinie",
+      "visualTests": {
+        "index": "Visuelle Tests",
+        "panels": "Panels - Visuelle Tests",
+        "buttons": "Buttons - Visuelle Tests",
+        "tables": "Tabellen - Visuelle Tests"
+      },
+      "admin": {
+        "models": {
+          "index": "Modelle",
+          "new": "Neues Modell",
+          "edit": {
+            "index": "Modell bearbeiten",
+            "metrics": "Modell Metriken bearbeiten",
+            "prices": "Modell Preise bearbeiten",
+            "fleetchart": "Modell Flottendiagramm-Bilder bearbeiten",
+            "hardpoints": "Modell Hardpoints bearbeiten",
+            "cargoAndFuel": "Fracht und Treibstoff",
+            "docks": "Modell Docks bearbeiten",
+            "videos": "Modell Videos bearbeiten"
+          }
+        },
+        "components": {
+          "index": "Komponenten",
+          "new": "Neue Komponente",
+          "edit": "Komponente bearbeiten"
+        },
+        "manufacturers": {
+          "index": "Hersteller",
+          "new": "Neuer Hersteller",
+          "edit": "Hersteller bearbeiten"
+        },
+        "users": {
+          "index": "Benutzer",
+          "edit": "Benutzer bearbeiten"
+        },
+        "vehicles": {
+          "index": "Fahrzeuge"
+        }
+      }
+    }
+  }
+}

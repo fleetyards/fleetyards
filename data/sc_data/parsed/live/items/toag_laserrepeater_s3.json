@@ -1,0 +1,133 @@
+{
+  "key": "TOAG_LaserRepeater_S3",
+  "ref": "a9780953-9488-4644-9b56-61464e9dd6b9",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "70ac7035-10a0-4bbb-90b0-9bddf047b504",
+  "name": "Yeng’tu Repeater",
+  "short_name": "Yeng’tu",
+  "description": "Item Type: Laser Repeater\\nManufacturer: Torral Aggregate\\nSize: 3\\n\\nInspired by Xi'an mil-tech and tailor-made by Torral Aggregate exclusively for the Aopoa San'tok.yāi, the Yeng'tu laser repeater accentuates the ship's dexterity with a fighter's edge.",
+  "inventory_consumption": {
+    "micro_scu": 756000.0,
+    "dimensions": {
+      "x": 0.6699014,
+      "y": 4.422015,
+      "z": 1.202842
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "BAR1",
+      "key": "TOAG_LaserRepeater_Barrel_S3",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "MEC",
+      "key": "TOAG_LaserRepeater_FiringMechanism_S3",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "POW",
+      "key": "TOAG_LaserRepeater_PowerArray_S3",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "VEN",
+      "key": "TOAG_LaserRepeater_Ventilation_S3",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1024.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 2.0,
+    "StartIRTemperature": 250.0,
+    "OverpowerHeat": 0.9,
+    "OverclockThresholdMinHeat": 0.59,
+    "OverclockThresholdMaxHeat": 0.86,
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 100.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.5,
+    "Mass": 320.0,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 160.0,
+    "MaxTemperature": 700.0,
+    "OverheatTemperature": 650.0,
+    "RecoveryTemperature": 550.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  },
+  "power_connection": {
+    "power_base": 200.0,
+    "power_draw": 200.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 20.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.0,
+    "overclock_threshold_max": 0.0,
+    "overpower_performance": 0.0,
+    "overclock_performance": 0.0,
+    "power_to_em": 1.5,
+    "decay_rate_of_em": 0.2
+  }
+}

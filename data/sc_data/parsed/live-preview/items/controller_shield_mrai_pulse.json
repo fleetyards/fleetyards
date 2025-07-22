@@ -1,0 +1,21 @@
+{
+  "key": "Controller_Shield_MRAI_Pulse",
+  "ref": "b60cc31d-9b0d-44d4-98ad-d3f750388c44",
+  "category": "controller",
+  "type": "ShieldController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SHIELDS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

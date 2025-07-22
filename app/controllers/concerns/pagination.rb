@@ -12,6 +12,10 @@ module Pagination
   end
 
   def pagination_header(name)
+    if response.status == 404
+      return
+    end
+
     links = {
       self: page_link(nil)
     }

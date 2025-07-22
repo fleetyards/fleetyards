@@ -81,9 +81,9 @@ module Admin
     end
 
     private def save_filters
-      session[:model_paints_filters] = query_params(
+      session[:model_paints_filters] = params.permit(q: [
         :model_id_eq, :name_cont
-      ).to_h
+      ]).fetch(:q, {})
       session[:model_paints_page] = params[:page]
     end
 

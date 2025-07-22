@@ -1,0 +1,12 @@
+.compare-title {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-size: 120%;
+  height: 40px;
+  position: sticky;
+  top: 0;
+  z-index: 500;
+  background-color: $gray-darker;
+  border-bottom-right-radius: $border-radius-base;
+  border-bottom-left-radius: $border-radius-base;
+}

@@ -52,9 +52,9 @@ module Admin
     end
 
     private def save_filters
-      session[:manufacturers_filters] = query_params(
+      session[:manufacturers_filters] = params.permit(q: [
         :name_or_slug_cont
-      ).to_h
+      ]).fetch(:q, {})
       session[:manufacturers_page] = params[:page]
     end
 

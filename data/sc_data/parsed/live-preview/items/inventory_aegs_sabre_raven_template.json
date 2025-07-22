@@ -1,0 +1,9 @@
+{
+  "key": "AEGS_Sabre_Raven_Template",
+  "ref": "8ed0bfa6-d709-4c3f-b68d-5b97fbb7950e",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 0.65
+  }
+}

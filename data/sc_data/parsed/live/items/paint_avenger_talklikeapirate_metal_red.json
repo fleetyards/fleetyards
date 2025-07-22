@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Avenger_TalkLikeAPirate_Metal_Red",
+  "ref": "da42297a-24b9-4c8e-9f44-f3e86a33e263",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "9282ef50-29dd-446f-b702-45321803987d",
+  "name": "Avenger Solar Winds Livery",
+  "short_name": null,
+  "description": "Fly in style with the Solar Winds livery that gives the Avenger a metallic silver finish with maroon highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

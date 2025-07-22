@@ -2,9 +2,10 @@ $background: #000;
 
 $text-color: #c8c8c8;
 $primary: #428bca;
+$admin-primary: #af0300;
 $success: #5cb85c;
 $danger: #dc3545;
-$warning: darken(#ffc107, 10%);
+$warning: #fa6800;
 
 $gray-lighter: #999;
 $gray-light: #7a8288;
@@ -13,7 +14,6 @@ $gray-dark: #3a3f44;
 $gray-darker: #272b30;
 $gray-black: #222;
 
-// $gold: goldenrod;
 $gold: #d4af37;
 
 $input-bg: $gray-dark;
@@ -52,6 +52,8 @@ $grid-breakpoints: (
   xxl: 2800px,
   3xl: 3200px,
 );
+
+$grid-gutter-width: 30px;
 
 $container-max-widths: (
   xs: 100%,

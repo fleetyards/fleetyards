@@ -1,0 +1,9 @@
+{
+  "key": "Ship_Capital_LuxuryYacht",
+  "ref": "bba82d98-efaa-4709-b1bb-3281dc03adb2",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 15.0
+  }
+}
