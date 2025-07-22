@@ -11,7 +11,7 @@ GEM
     aasm (5.5.0)
       concurrent-ruby (~> 1.0)
     abbrev (0.1.2)
-    accept_language (2.0.6)
+    accept_language (2.0.8)
     actioncable (7.2.2.1)
       actionpack (= 7.2.2.1)
       activesupport (= 7.2.2.1)
