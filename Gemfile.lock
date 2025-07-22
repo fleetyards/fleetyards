@@ -906,6 +906,8 @@ GEM
     with_advisory_lock (5.1.0)
       activerecord (>= 6.1)
       zeitwerk (>= 2.6)
+    x (0.16.0)
+      base64 (>= 0.2)
     xrpc (0.1.7.2)
       date
       httparty
@@ -1065,6 +1067,7 @@ DEPENDENCIES
   web-console
   webmock
   with_advisory_lock
+  x
 
 RUBY VERSION
    ruby 3.4.5p51
