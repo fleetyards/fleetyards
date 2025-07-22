@@ -14,7 +14,7 @@ module Api
 
           scope = scope.where(loaner: loaner_included?)
 
-          vehicle_query_params["sorts"] = sorting_params(FleetVehicle)
+          vehicle_query_params["sorts"] = sorting_params(FleetVehicle, vehicle_query_params["sorts"])
 
           @q = scope.ransack(vehicle_query_params)
 
@@ -45,7 +45,7 @@ module Api
 
           scope = @fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
 
-          vehicle_query_params["sorts"] = sorting_params(FleetVehicle)
+          vehicle_query_params["sorts"] = sorting_params(FleetVehicle, vehicle_query_params["sorts"])
 
           @q = scope.ransack(vehicle_query_params)
 

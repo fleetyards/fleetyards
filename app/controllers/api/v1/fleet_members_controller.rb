@@ -27,7 +27,7 @@ module Api
 
         scope = @fleet.fleet_memberships
 
-        member_query_params["sorts"] = sorting_params(FleetMembership)
+        member_query_params["sorts"] = sorting_params(FleetMembership, member_query_params["sorts"])
 
         @q = scope.ransack(member_query_params)
 

@@ -33,7 +33,7 @@ module Api
         scope = loaner_included?(scope)
         scope = will_it_fit?(scope) if vehicle_query_params["will_it_fit"].present?
 
-        vehicle_query_params["sorts"] = sorting_params(Vehicle, ["name asc", "model_name asc"])
+        vehicle_query_params["sorts"] = sorting_params(Vehicle, vehicle_query_params["sorts"], ["name asc", "model_name asc"])
 
         @q = scope.ransack(vehicle_query_params)
 

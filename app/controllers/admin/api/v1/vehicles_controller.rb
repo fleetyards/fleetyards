@@ -17,7 +17,7 @@ module Admin
         end
 
         private def index_scope
-          vehicle_query_params["sorts"] ||= sorting_params(Vehicle)
+          vehicle_query_params["sorts"] ||= sorting_params(Vehicle, vehicle_query_params["sorts"])
 
           scope = authorized_scope(Vehicle.all).includes(:user, model: :manufacturer).where(hidden: false)
 

@@ -9,7 +9,7 @@ module V1
         schema({
           type: :object,
           properties: {
-            fid: {type: :string, format: :uuid},
+            fid: {type: :string},
             name: {type: :string},
             description: {type: :string},
             publicFleet: {type: :boolean},

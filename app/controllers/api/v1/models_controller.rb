@@ -80,7 +80,7 @@ module Api
       end
 
       def cargo_options
-        model_query_params["sorts"] = sorting_params(Model)
+        model_query_params["sorts"] = sorting_params(Model, model_query_params["sorts"])
 
         @q = Model.visible
           .active
@@ -168,7 +168,7 @@ module Api
           scope = scope.where(price: price_range)
         end
 
-        model_query_params["sorts"] = sorting_params(Model)
+        model_query_params["sorts"] = sorting_params(Model, model_query_params["sorts"])
 
         @q = scope.ransack(model_query_params)
 
@@ -194,7 +194,7 @@ module Api
           scope = scope.where(price: price_range)
         end
 
-        model_query_params["sorts"] = sorting_params(Model)
+        model_query_params["sorts"] = sorting_params(Model, model_query_params["sorts"])
 
         @q = scope.ransack(model_query_params)
 
