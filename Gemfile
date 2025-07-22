@@ -204,3 +204,5 @@ gem "bskyrb", "~> 0.5.3"
 gem "x", "~> 0.14.0"
 
 gem "graphlient"
+
+gem "abbrev"
