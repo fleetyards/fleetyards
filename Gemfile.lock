@@ -217,10 +217,10 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
-    devise-two-factor (5.0.0)
-      activesupport (~> 7.0)
+    devise-two-factor (6.1.0)
+      activesupport (>= 7.0, < 8.1)
       devise (~> 4.0)
-      railties (~> 7.0)
+      railties (>= 7.0, < 8.1)
       rotp (~> 6.0)
     didkit (0.2.3)
     diff-lcs (1.5.1)
