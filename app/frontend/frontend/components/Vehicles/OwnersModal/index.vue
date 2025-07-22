@@ -52,8 +52,8 @@
 import { useRoute } from "vue-router";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import Loader from "@/frontend/core/components/Loader/index.vue";
-import Avatar from "@/frontend/core/components/Avatar/index.vue";
+import Loader from "@/shared/components/Loader/index.vue";
+import Avatar from "@/shared/components/Avatar/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { sortBy, uniqByField as uniqByFieldArray } from "@/shared/utils/Array";
 import { type VehiclePublic } from "@/services/fyApi";

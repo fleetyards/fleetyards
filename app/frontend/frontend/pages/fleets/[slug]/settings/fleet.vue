@@ -8,7 +8,7 @@ export default {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useForm } from "vee-validate";
 import Btn from "@/shared/components/base/Btn/index.vue";
-// import Avatar from "@/frontend/core/components/Avatar/index.vue";
+// import Avatar from "@/shared/components/Avatar/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";

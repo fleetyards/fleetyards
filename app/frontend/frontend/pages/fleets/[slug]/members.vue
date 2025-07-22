@@ -47,11 +47,11 @@ const crumbs = computed(() => {
 // import fleetsCollection from "@/frontend/api/collections/Fleets";
 // import debounce from "lodash.debounce";
 // import FilteredList from "@/shared/components/FilteredList/index.vue";
-// import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
+// import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 // import Btn from "@/shared/components/base/Btn/index.vue";
-// import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
+// import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 // import FleetMembersFilterForm from "@/frontend/components/Fleets/MembersFilterForm/index.vue";
-// import Avatar from "@/frontend/core/components/Avatar/index.vue";
+// import Avatar from "@/shared/components/Avatar/index.vue";
 // import FleetMembersList from "@/frontend/components/Fleets/MembersList/index.vue";
 // import Panel from "@/shared/components/base/Panel/index.vue";
 
