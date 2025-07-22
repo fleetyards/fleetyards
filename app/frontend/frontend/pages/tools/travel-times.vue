@@ -10,7 +10,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
-import { type BaseTableColumn } from "@/shared/components/base/Table/types";
+import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import TravelTime from "@/frontend/components/TravelTime/index.vue";
 import { usePagination } from "@/shared/composables/usePagination";
@@ -34,7 +34,7 @@ const { t } = useI18n();
 
 const route = useRoute();
 
-const columns = computed<BaseTableColumn[]>(() => {
+const columns = computed<BaseTableCol[]>(() => {
   return [
     {
       name: "store_image",

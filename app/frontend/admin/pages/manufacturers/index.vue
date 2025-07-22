@@ -9,7 +9,7 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
-import { type BaseTableColumn } from "@/shared/components/base/Table/types";
+import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import ManufacturerActions from "@/admin/components/Manufacturers/Actions/index.vue";
@@ -17,6 +17,7 @@ import FilterForm from "@/admin/components/Manufacturers/FilterForm/index.vue";
 import {
   useManufacturers,
   useManufacturersQueryOptions,
+  type Manufacturer,
 } from "@/services/fyAdminApi";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
@@ -60,7 +61,7 @@ const {
   ...asyncStatus
 } = useManufacturers(manufacturersQueryParams);
 
-const columns: BaseTableColumn[] = [
+const columns: BaseTableCol<Manufacturer>[] = [
   {
     name: "logo",
     label: "",

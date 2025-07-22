@@ -7,7 +7,10 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
 import Heading from "@/shared/components/base/Heading/index.vue";
-import { type ModelExtended, type ModelInput } from "@/services/fyAdminApi";
+import {
+  type ModelExtended,
+  type ModelUpdateInput,
+} from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -24,7 +27,7 @@ const { t } = useI18n();
 
 const submitting = ref(false);
 
-const initialValues = ref<ModelInput>({
+const initialValues = ref<ModelUpdateInput>({
   size: props.model.metrics.size,
   length: props.model.metrics.length,
   beam: props.model.metrics.beam,

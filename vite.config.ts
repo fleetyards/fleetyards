@@ -2,7 +2,6 @@ import { resolve } from "path";
 import { defineConfig } from "vite";
 import ViteRails from "vite-plugin-rails";
 import Vue from "@vitejs/plugin-vue";
-import tailwindcss from "tailwindcss";
 import { VitePWA } from "vite-plugin-pwa";
 import Components from "unplugin-vue-components/vite";
 import AutoImport from "unplugin-auto-import/vite";
@@ -32,39 +31,40 @@ export default defineConfig({
     Vue({
       ...templateCompilerOptions,
     }),
-    VitePWA({
-      registerType: "autoUpdate",
-      filename: "sw.js",
-      useCredentials: true,
-      scope: "/",
-      manifest: {
-        name: "My Awesome App",
-        short_name: "MyApp",
-        description: "My Awesome App description",
-        theme_color: "#ffffff",
-        icons: [
-          {
-            src: "pwa-192x192.png",
-            sizes: "192x192",
-            type: "image/png",
-          },
-          {
-            src: "pwa-512x512.png",
-            sizes: "512x512",
-            type: "image/png",
-          },
-        ],
-      },
-      workbox: {
-        modifyURLPrefix: {
-          "": "/vite/",
-        },
-        globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
-        clientsClaim: true,
-        skipWaiting: true,
-        navigateFallback: null,
-      },
-    }),
+    // VitePWA({ registerType: "autoUpdate" }),
+    // VitePWA({
+    //   registerType: "autoUpdate",
+    //   filename: "sw.js",
+    //   useCredentials: true,
+    //   scope: "/",
+    //   manifest: {
+    //     name: "My Awesome App",
+    //     short_name: "MyApp",
+    //     description: "My Awesome App description",
+    //     theme_color: "#ffffff",
+    //     icons: [
+    //       {
+    //         src: "pwa-192x192.png",
+    //         sizes: "192x192",
+    //         type: "image/png",
+    //       },
+    //       {
+    //         src: "pwa-512x512.png",
+    //         sizes: "512x512",
+    //         type: "image/png",
+    //       },
+    //     ],
+    //   },
+    //   workbox: {
+    //     modifyURLPrefix: {
+    //       "": "/vite/",
+    //     },
+    //     globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+    //     clientsClaim: true,
+    //     skipWaiting: true,
+    //     navigateFallback: null,
+    //   },
+    // }),
     Components({
       // generate `components.d.ts` global declarations
       // https://github.com/antfu/unplugin-vue-components#typescript

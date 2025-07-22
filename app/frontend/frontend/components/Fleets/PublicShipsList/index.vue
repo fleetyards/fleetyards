@@ -102,7 +102,7 @@ import { useFilters } from "@/shared/composables/useFilters";
 import { usePagination } from "@/shared/composables/usePagination";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
-  getPublicFleetVehiclesQueryKey,
+  usePublicFleetVehiclesQueryOptions,
   usePublicFleetStatsModelCounts as usePublicFleetStatsModelCountsQuery,
   usePublicFleetVehicles as usePublicFleetVehiclesQuery,
 } from "@/services/fyApi";
@@ -166,7 +166,10 @@ const refetch = () => {
 };
 
 const vehiclesQueryKey = computed(() => {
-  return getPublicFleetVehiclesQueryKey(props.fleet.slug, vehiclesQueryParams);
+  return usePublicFleetVehiclesQueryOptions(
+    props.fleet.slug,
+    vehiclesQueryParams,
+  ).queryKey;
 });
 
 const {

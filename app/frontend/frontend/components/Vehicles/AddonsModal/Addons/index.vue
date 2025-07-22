@@ -60,8 +60,11 @@
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type ModelModule, type ModelUpgrade } from "@/services/fyApi";
-import { FilterGroupOption } from "@/shared/components/base/FilterGroup/Option/index.vue";
+import {
+  type ModelModule,
+  type ModelUpgrade,
+  type FilterOption,
+} from "@/services/fyApi";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelImage from "@/shared/components/base/Panel/Image/index.vue";
 
@@ -88,7 +91,7 @@ const storeImage = (addon: ModelModule | ModelUpgrade) => {
   return addon.media?.storeImage?.small;
 };
 
-const options = computed((): FilterGroupOption[] => {
+const options = computed((): FilterOption[] => {
   return props.addons.map((addon) => {
     return {
       value: addon.id,

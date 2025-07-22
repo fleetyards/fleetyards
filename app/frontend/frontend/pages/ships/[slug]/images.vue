@@ -17,7 +17,7 @@ import { type Model } from "@/services/fyApi";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import {
   useModelImages as useModelImagesQuery,
-  getModelImagesQueryKey,
+  useModelImagesQueryOptions,
 } from "@/services/fyApi";
 
 type Props = {
@@ -88,7 +88,7 @@ const modelImagesQueryParams = computed(() => {
 });
 
 const imagesQueryKey = computed(() => {
-  return getModelImagesQueryKey(modelSlug, modelImagesQueryParams);
+  return useModelImagesQueryOptions(modelSlug, modelImagesQueryParams).queryKey;
 });
 
 const { page, perPage } = usePagination(imagesQueryKey);

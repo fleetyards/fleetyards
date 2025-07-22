@@ -9,7 +9,7 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
-import { type BaseTableColumn } from "@/shared/components/base/Table/types";
+import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import ModelPaintActions from "@/admin/components/ModelPaints/Actions/index.vue";
@@ -21,6 +21,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import {
   usePaintsQueryOptions,
   usePaints as usePaintsQuery,
+  type ModelPaint,
 } from "@/services/fyAdminApi";
 import { CustomQueryOptions } from "@/services/customQueryOptions";
 
@@ -61,7 +62,7 @@ const {
   ...asyncStatus
 } = usePaintsQuery(paintsQueryParams);
 
-const columns: BaseTableColumn[] = [
+const columns: BaseTableCol<ModelPaint>[] = [
   {
     name: "storeImage",
     label: "",

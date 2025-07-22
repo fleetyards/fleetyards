@@ -26,10 +26,9 @@
 
 <script lang="ts" setup>
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
-import type { FilterGroupOption } from "@/shared/components/base/FilterGroup/Option/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { FleetMemberQuery } from "@/services/fyApi";
+import { FleetMemberQuery, type FilterOption } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFilters } from "@/shared/composables/useFilters";
 
@@ -48,7 +47,7 @@ const { filter, resetFilter, isFilterSelected, routeQuery } =
 
 const form = ref<FleetMemberQuery>({});
 
-const roleOptions: FilterGroupOption[] = [
+const roleOptions: FilterOption[] = [
   {
     label: t("labels.fleet.members.roles.admin"),
     value: "admin",

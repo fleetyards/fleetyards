@@ -11,7 +11,7 @@ import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
 import ViewImage from "@/shared/components/ViewImage/index.vue";
-import { type BaseTableColumn } from "@/shared/components/base/Table/types";
+import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import FilterForm from "@/admin/components/Vehicles/FilterForm/index.vue";
 import { useVehicleFilters } from "@/admin/composables/useVehicleFilters";
@@ -63,7 +63,7 @@ const {
   ...asyncStatus
 } = useVehiclesQuery(vehiclesQueryParams);
 
-const columns: BaseTableColumn[] = [
+const columns: BaseTableCol<Vehicle>[] = [
   {
     name: "image",
     label: "",

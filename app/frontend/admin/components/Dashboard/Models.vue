@@ -9,7 +9,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
-import { type BaseTableColumn } from "@/shared/components/base/Table/types";
+import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Chart from "@/shared/components/Chart/index.vue";
@@ -18,7 +18,7 @@ import { useModelsByClassification as useModelsByClassificationQuery } from "@/s
 import { useModelsBySize as useModelsBySizeQuery } from "@/services/fyApi";
 import { useModelsByProductionStatus as useModelsByProductionStatusQuery } from "@/services/fyApi";
 import { useModelsPerMonth as useModelsPerMonthQuery } from "@/services/fyApi";
-import { useModels } from "@/services/fyAdminApi";
+import { useModels, type Model } from "@/services/fyAdminApi";
 import { useSessionStore } from "@/admin/stores/session";
 
 const { t, lUtc: l } = useI18n();
@@ -41,7 +41,7 @@ const { data: models, ...modelsStatus } = useModels(
   },
 );
 
-const columns: BaseTableColumn[] = [
+const columns: BaseTableCol<Model>[] = [
   {
     name: "name",
     label: t("labels.name"),
