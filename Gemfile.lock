@@ -85,7 +85,7 @@ GEM
       tzinfo (~> 2.0, >= 2.0.5)
     addressable (2.8.6)
       public_suffix (>= 2.0.2, < 6.0)
-    after_commit_everywhere (1.4.0)
+    after_commit_everywhere (1.6.0)
       activerecord (>= 4.2)
       activesupport
     ahoy_matey (5.1.0)
