@@ -161,6 +161,7 @@
     "workbox-window": "7.0.0"
   },
   "resolutions": {
+    "form-data": ">=4.0.4",
     "async": ">=3.2.2",
     "follow-redirects": ">=1.14.8",
     "json5": ">=2.2.2",
