@@ -170,6 +170,7 @@ GEM
     crass (1.0.6)
     css_parser (1.16.0)
       addressable
+    csv (3.3.5)
     dalli (3.2.8)
     data_migrate (9.4.0)
       activerecord (>= 6.1)
@@ -795,6 +796,7 @@ DEPENDENCIES
   capistrano-rbenv (~> 2.1)
   carrierwave
   coffee-rails
+  csv
   dalli
   data_migrate
   deep_merge
