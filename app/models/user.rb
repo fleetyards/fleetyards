@@ -195,7 +195,7 @@ class User < ApplicationRecord
   def resend_confirmation
     return if confirmed?
 
-    return if confirmation_sent_at.present? && confirmation_sent_at > (10.minutes.ago)
+    return if confirmation_sent_at.present? && confirmation_sent_at > 10.minutes.ago
 
     send_confirmation_instructions
   end

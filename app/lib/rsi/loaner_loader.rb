@@ -149,7 +149,7 @@ module Rsi
     end
 
     private def strip_name(name)
-      super(name).gsub(/(?:and)/, "").strip
+      super.gsub(/(?:and)/, "").strip
     end
   end
 end

@@ -4,7 +4,7 @@
 class Ahoy::Store < Ahoy::DatabaseStore
   def track_visit(data)
     data[:accept_language] = request.headers["Accept-Language"]
-    super(data)
+    super
   end
 end
 # rubocop:enable Style/ClassAndModuleChildren

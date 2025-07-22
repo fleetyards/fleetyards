@@ -220,7 +220,3 @@ gem "sprockets-rails"
 gem "jquery-rails"
 gem "js-routes"
 gem "uglifier"
-
-group :test do
-  gem "vcr"
-end
