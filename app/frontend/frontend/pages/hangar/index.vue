@@ -384,7 +384,7 @@ const openDisplayOptionsModal = () => {
         :size="BtnSizesEnum.SMALL"
         @click="openDisplayOptionsModal"
       >
-        <i class="fad fa-cog" />
+        <i class="fad fa-sliders" />
       </Btn>
       <HangarSyncBtn :size="BtnSizesEnum.SMALL" />
       <BtnDropdown :size="BtnSizesEnum.SMALL">

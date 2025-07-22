@@ -119,7 +119,7 @@ const openDisplayOptionsModal = () => {
         :size="BtnSizesEnum.SMALL"
         @click="openDisplayOptionsModal"
       >
-        <i class="fad fa-cog" />
+        <i class="fad fa-sliders" />
       </Btn>
     </template>
 

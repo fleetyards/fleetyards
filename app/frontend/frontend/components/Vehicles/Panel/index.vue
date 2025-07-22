@@ -136,7 +136,7 @@ const shouldHighlight = computed(() => {
     :store-image="image"
   >
     <template #heading-title>
-      <span class="flex items-baseline gap-1">
+      <span class="flex items-baseline gap-1 max-w-full">
         <router-link
           v-tooltip="name"
           :to="{
@@ -169,7 +169,7 @@ const shouldHighlight = computed(() => {
       </span>
     </template>
     <template #heading-subtitle>
-      <span class="flex items-start gap-1">
+      <span class="flex items-start gap-1 max-w-full">
         <router-link
           v-if="model.manufacturer"
           :to="{

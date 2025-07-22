@@ -9,6 +9,7 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 type Props = {
   selected: string[];
@@ -114,6 +115,8 @@ const showOnPublicHangar = async () => {
 };
 
 const destroyBulkMutation = useDestroyBulkMutation();
+
+const { displayConfirm } = useAppNotifications();
 
 const destroyBulk = async () => {
   deleting.value = true;
