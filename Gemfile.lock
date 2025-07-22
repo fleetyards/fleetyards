@@ -297,7 +297,15 @@ GEM
       rchardet (~> 1.9)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    google-protobuf (3.25.2)
+    google-protobuf (4.31.1)
+      bigdecimal
+      rake (>= 13)
+    google-protobuf (4.31.1-arm64-darwin)
+      bigdecimal
+      rake (>= 13)
+    google-protobuf (4.31.1-x86_64-linux-gnu)
+      bigdecimal
+      rake (>= 13)
     graphlient (0.8.0)
       faraday (~> 2.0)
       graphql-client
@@ -519,9 +527,9 @@ GEM
     parser (3.3.8.0)
       ast (~> 2.4.1)
       racc
-    pg (1.5.8)
-    pg_query (5.1.0)
-      google-protobuf (>= 3.22.3)
+    pg (1.5.9)
+    pg_query (6.1.0)
+      google-protobuf (>= 3.25.3)
     pghero (3.4.1)
       activerecord (>= 6)
     postmark (1.25.0)
@@ -979,7 +987,7 @@ DEPENDENCIES
   with_advisory_lock
 
 RUBY VERSION
-   ruby 3.4.1p0
+   ruby 3.4.5p51
 
 BUNDLED WITH
    2.6.3
