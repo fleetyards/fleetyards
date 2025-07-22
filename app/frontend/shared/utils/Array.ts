@@ -2,12 +2,8 @@ export const uniq = (value: unknown, index: number, self: unknown[]) =>
   self.indexOf(value) === index;
 
 export const uniqByField =
-  (field: string) =>
-  (
-    value: Record<string, unknown>,
-    index: number,
-    self: Record<string, unknown>[],
-  ) =>
+  <T>(field: keyof T) =>
+  (value: T, index: number, self: T[]) =>
     self.findIndex((item) => item[field] === value[field]) === index;
 
 export const sum = (list: number[]) =>
