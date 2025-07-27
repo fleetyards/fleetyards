@@ -153,8 +153,6 @@ group :development do
   gem "ed25519", require: false
 
   gem "letter_opener"
-
-  gem "foreman"
 end
 
 group :test do
@@ -189,6 +187,8 @@ group :development, :test do
   gem "knapsack"
 
   gem "cypress-on-rails"
+
+  gem "foreman"
 end
 
 gem "enum_attributes_validation", "~> 0.1.7"
