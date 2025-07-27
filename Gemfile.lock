@@ -288,8 +288,8 @@ GEM
     griddler (1.6.0)
       htmlentities
       rails (>= 3.2.0)
-    groupdate (6.4.0)
-      activesupport (>= 6.1)
+    groupdate (6.7.0)
+      activesupport (>= 7.1)
     haml (6.3.0)
       temple (>= 0.8.2)
       thor
