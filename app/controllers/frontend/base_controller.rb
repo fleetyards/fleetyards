@@ -206,7 +206,7 @@ module Frontend
         Flipper.enabled?(feature.name, current_user) ? feature.to_s : nil
       end
       fleet_features = Flipper.features.filter_map do |feature|
-        Flipper.enabled?(feature.name, current_user&.fleets) ? feature.to_s : nil
+        Flipper.enabled?(feature.name, current_user&.fleets.to_a) ? feature.to_s : nil
       end
 
       features = (user_features + fleet_features).uniq
