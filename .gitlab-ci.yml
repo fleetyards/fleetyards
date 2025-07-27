@@ -92,7 +92,7 @@ bundle:
       - .gitlab-ci.yml
       - Gemfile
       - Gemfile.lock
-      - .ruby-version
+      - .tool-versions
 
 ruby audit:
   stage: test

@@ -11,8 +11,15 @@ set :keep_assets, 5
 
 set :conditionally_migrate, true
 
+file_content = Bundler.read_file(Bundler.root.join(".tool-versions"))
+ruby_version = if /^ruby\s+(.*)$/ =~ file_content
+  $1.split("#", 2).first.strip
+else
+  file_content.strip
+end
+
 set :rbenv_type, :user
-set :rbenv_ruby, File.read(".ruby-version").strip
+set :rbenv_ruby, ruby_version
 set :bundler_version, "2.3.15"
 set :gem_version, "3.3.4"
 set :bundle_check_before_install, false # FIX: created failed deploys because dependencies where missing.
