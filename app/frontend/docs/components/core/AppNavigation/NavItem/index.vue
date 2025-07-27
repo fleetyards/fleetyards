@@ -164,7 +164,7 @@ const toggleMenu = () => {
     v-else-if="to"
     v-slot="{ href: linkHref, navigate }"
     :to="to"
-    :custom="true"
+    custom
   >
     <li
       role="link"
@@ -173,7 +173,6 @@ const toggleMenu = () => {
       }"
       :data-test="`nav-${String(navKey)}`"
       class="nav-item"
-      :exact="exact"
       @click="() => navigate"
       @keypress.enter="() => navigate"
     >
@@ -190,6 +189,7 @@ const toggleMenu = () => {
     </li>
   </router-link>
   <li v-else-if="href" class="nav-item" :data-test="`nav-${String(navKey)}`">
+    foo
     <a v-tooltip="tooltip" :href="href" target="_blank" rel="noopener">
       <slot v-if="hasDefaultSlot" />
       <NavItemInner

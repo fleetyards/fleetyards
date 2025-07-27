@@ -1,4 +1,9 @@
+/* Import Tailwind CSS v4 */
 @import "tailwindcss";
+
+/* Import custom Tailwind theme configuration */
+@import "@/stylesheets/shared/tailwind-custom";
+
 @import "@/stylesheets/shared/fontawesome";
 @import "highlight.js/styles/atom-one-dark.css";
 @import "@/stylesheets/shared/transitions";
@@ -11,4 +16,5 @@ body {
   background-color: black;
   text-rendering: optimizeLegibility;
   vertical-align: baseline;
+  font-family: var(--font-sans);
 }

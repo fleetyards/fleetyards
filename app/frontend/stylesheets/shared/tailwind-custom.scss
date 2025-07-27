@@ -1,0 +1,101 @@
+/* Tailwind v4 Configuration using @theme directive */
+/* Based on tailwind.config.ts */
+
+/* Load Tailwind plugins */
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/aspect-ratio";
+@plugin "@tailwindcss/typography";
+@plugin "@tailwindcss/container-queries";
+@plugin "tailwindcss-safe-area";
+
+@theme {
+  /* Brand Colors */
+  --color-brand-primary: #428bca;
+  --color-brand-primaryDark: #3071a9;
+  --color-brand-grayBg: #272b30;
+  --color-brand-grayBgDark: #1f1f1f;
+  --color-brand-grayBorder: #1e2226;
+  --color-brand-text: #c8c8c8;
+  --color-brand-textdark: #959595;
+
+  /* Panel Colors */
+  --color-panel-borderOuter: #6f6f6f;
+  --color-panel-borderInner: #c8c8c8;
+  --color-panel-borderInnerOverlay: #444444;
+
+  /* Font sizes */
+  --font-size-hero: 2.25rem;
+  --line-height-hero: 3rem;
+
+  /* Font families */
+  --font-family-opensans: Open Sans, sans-serif, Inter var, ui-sans-serif,
+    system-ui, sans-serif;
+  --font-family-hero: Orbitron, Inter var, ui-sans-serif, system-ui, sans-serif;
+
+  /* Border widths */
+  --width-3: 3px;
+  --width-5: 5px;
+
+  /* Border radius */
+  --radius-panel: 1.25rem;
+  --radius-button: 0.625rem;
+
+  /* Spacing */
+  --spacing-3px: 3px;
+
+  /* Breakpoints */
+  --breakpoint-lg: 992px;
+}
+
+/* Custom utility classes */
+.text-hero {
+  font-size: var(--font-size-hero);
+  line-height: var(--line-height-hero);
+}
+
+.font-opensans {
+  font-family: var(--font-family-opensans);
+}
+
+.font-hero {
+  font-family: var(--font-family-hero);
+}
+
+.border-3 {
+  border-width: var(--border-width-3);
+}
+
+.border-5 {
+  border-width: var(--border-width-5);
+}
+
+.rounded-panel {
+  border-radius: var(--radius-panel);
+}
+
+.rounded-button {
+  border-radius: var(--radius-button);
+}
+
+.h-3px {
+  height: var(--spacing-3px);
+}
+
+.transition-nav {
+  transition-property: var(--transition-property-nav);
+}
+
+/* Override lg breakpoint */
+@media (min-width: 992px) {
+  .lg\:block {
+    display: block;
+  }
+
+  .lg\:hidden {
+    display: none;
+  }
+
+  .lg\:flex {
+    display: flex;
+  }
+}

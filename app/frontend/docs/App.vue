@@ -1,42 +1,8 @@
-<template>
-  <div
-    id="docs"
-    class="transition-all lg:transition-none flex flex-col min-h-screen"
-  >
-    <AppBackground />
-
-    <div class="flex items-stretch">
-      <transition name="fade" mode="out-in">
-        <AppNavigationMobile v-if="mobile" />
-      </transition>
-      <transition name="fade" mode="out-in">
-        <AppNavigation />
-      </transition>
-      <div
-        class="flex flex-col flex-1 justify-between max-w-full h-full lg:pl-[300px]"
-      >
-        <div class="min-h-screen">
-          <router-view v-slot="{ Component, route }">
-            <transition name="fade" mode="out-in">
-              <component
-                :is="Component"
-                :key="`${locale}-${route.path}`"
-                class="transition-nav ease-[ease] duration-500 relative w-full max-w-full mb-12"
-                :class="[
-                  collapsed
-                    ? 'left-0 right-auto'
-                    : '-left-[300px] right-[300px]',
-                ]"
-              />
-            </transition>
-          </router-view>
-        </div>
-
-        <AppFooter />
-      </div>
-    </div>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "DocsApp",
+};
+</script>
 
 <script lang="ts" setup>
 import AppNavigation from "@/docs/components/core/AppNavigation/index.vue";
@@ -58,6 +24,8 @@ useNProgress();
 useMetaInfo({
   appTitle: t("title.defaultDocs"),
 });
+
+const route = useRoute();
 
 const navStore = useNavStore();
 
@@ -85,8 +53,46 @@ const checkMobile = () => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "DocsApp",
-};
-</script>
+<template>
+  <div
+    id="docs"
+    :key="locale"
+    :class="{
+      [`page-${String(route.name)}`]: true,
+    }"
+    class="transition-all lg:transition-none flex flex-col min-h-screen"
+  >
+    <AppBackground />
+
+    <div class="flex items-stretch">
+      <transition name="fade" mode="out-in">
+        <AppNavigationMobile v-if="mobile" />
+      </transition>
+      <transition name="fade" mode="out-in">
+        <AppNavigation />
+      </transition>
+      <div
+        class="flex flex-col flex-1 justify-between max-w-full h-full lg:pl-[300px]"
+      >
+        <div class="min-h-screen">
+          <router-view v-slot="{ Component, route: viewRoute }">
+            <transition name="fade" mode="out-in">
+              <component
+                :is="Component"
+                :key="`${locale}-${viewRoute.path}`"
+                class="transition-nav ease-[ease] duration-500 relative w-full max-w-full mb-12"
+                :class="[
+                  collapsed
+                    ? 'left-0 right-auto'
+                    : '-left-[300px] right-[300px]',
+                ]"
+              />
+            </transition>
+          </router-view>
+        </div>
+
+        <AppFooter />
+      </div>
+    </div>
+  </div>
+</template>

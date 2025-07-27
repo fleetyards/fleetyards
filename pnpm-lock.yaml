@@ -208,12 +208,12 @@ importers:
       '@tailwindcss/forms':
         specifier: ^0.5.10
         version: 0.5.10(tailwindcss@4.1.11)
+      '@tailwindcss/postcss':
+        specifier: ^4.1.11
+        version: 4.1.11
       '@tailwindcss/typography':
         specifier: ^0.5.16
         version: 0.5.16(tailwindcss@4.1.11)
-      '@tailwindcss/vite':
-        specifier: ^4.1.11
-        version: 4.1.11(vite@7.0.5(@types/node@22.16.5)(jiti@2.4.2)(lightningcss@1.30.1)(sass@1.75.0)(terser@5.43.1)(yaml@2.8.0))
       '@tanstack/eslint-plugin-query':
         specifier: ^5.81.2
         version: 5.81.2(eslint@8.57.0)(typescript@5.8.2)
@@ -272,8 +272,8 @@ importers:
         specifier: 7.18.0
         version: 7.18.0(eslint@8.57.0)(typescript@5.8.2)
       '@vitejs/plugin-vue':
-        specifier: ^5.2.4
-        version: 5.2.4(vite@7.0.5(@types/node@22.16.5)(jiti@2.4.2)(lightningcss@1.30.1)(sass@1.75.0)(terser@5.43.1)(yaml@2.8.0))(vue@3.5.17(typescript@5.8.2))
+        specifier: ^6.0.0
+        version: 6.0.0(vite@7.0.5(@types/node@22.16.5)(jiti@2.4.2)(lightningcss@1.30.1)(sass@1.75.0)(terser@5.43.1)(yaml@2.8.0))(vue@3.5.17(typescript@5.8.2))
       '@vue/compiler-sfc':
         specifier: ^3.5.17
         version: 3.5.17
@@ -328,9 +328,6 @@ importers:
       playwright:
         specifier: ^1.54.1
         version: 1.54.1
-      postcss:
-        specifier: 8.4.38
-        version: 8.4.38
       prettier:
         specifier: 3.2.5
         version: 3.2.5
@@ -359,8 +356,8 @@ importers:
         specifier: ^4.1.11
         version: 4.1.11
       tailwindcss-safe-area:
-        specifier: ^0.5.1
-        version: 0.5.1(tailwindcss@4.1.11)
+        specifier: ^0.8.0
+        version: 0.8.0(tailwindcss@4.1.11)
       typescript:
         specifier: 5.8.2
         version: 5.8.2
@@ -400,6 +397,10 @@ packages:
   '@aashutoshrathi/word-wrap@1.2.6':
     resolution: {integrity: sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==}
     engines: {node: '>=0.10.0'}
+
+  '@alloc/quick-lru@5.2.0':
+    resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
+    engines: {node: '>=10'}
 
   '@alvarosabu/utils@3.2.0':
     resolution: {integrity: sha512-aoGWRfaQjOo9TUwrBA6W0zwTHktgrXy69GIFNILT4gHsqscw6+X8P6uoSlZVQFr887SPm8x3aDin5EBVq8y4pw==}
@@ -1736,6 +1737,9 @@ packages:
   '@rails/activestorage@8.0.200':
     resolution: {integrity: sha512-V7GnZXsAMPDWVOBv4/XpHwj5sOw5bWjidWCuUbK3Zx1xt2pOfFaeJDUG7fEWb1MwP4aW1oVVlGkJBdXVyvru0A==}
 
+  '@rolldown/pluginutils@1.0.0-beta.19':
+    resolution: {integrity: sha512-3FL3mnMbPu0muGOCaKAhhFEYmqv9eTfPSJRJmANrCwtgK8VuxpsZDGK+m0LYAGoyO8+0j5uRe4PeyPDK1yA/hA==}
+
   '@rollup/plugin-babel@5.3.1':
     resolution: {integrity: sha512-WFfdLWU/xVWKeRQnKmIAQULUI7Il0gZnBIH/ZFO069wYIfPu+8zrfp/KMW0atmELoRDq8FbiP3VCss9MhCut7Q==}
     engines: {node: '>= 10.0.0'}
@@ -2138,15 +2142,13 @@ packages:
     resolution: {integrity: sha512-Q69XzrtAhuyfHo+5/HMgr1lAiPP/G40OMFAnws7xcFEYqcypZmdW8eGXaOUIeOl1dzPJBPENXgbjsOyhg2nkrg==}
     engines: {node: '>= 10'}
 
+  '@tailwindcss/postcss@4.1.11':
+    resolution: {integrity: sha512-q/EAIIpF6WpLhKEuQSEVMZNMIY8KhWoAemZ9eylNAih9jxMGAYPPWBn3I9QL/2jZ+e7OEz/tZkX5HwbBR4HohA==}
+
   '@tailwindcss/typography@0.5.16':
     resolution: {integrity: sha512-0wDLwCVF5V3x3b1SGXPCDcdsbDHMBe+lkFzBRaHeLvNi+nrrnZ1lA18u+OTWO8iSWU2GxUOCvlXtDuqftc1oiA==}
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders || >=4.0.0-alpha.20 || >=4.0.0-beta.1'
-
-  '@tailwindcss/vite@4.1.11':
-    resolution: {integrity: sha512-RHYhrR3hku0MJFRV+fN2gNbDNEh3dwKvY8XJvTxCSXeMOsCRSr+uKvDWQcbizrHgjML6ZmTE5OwMrl5wKcujCw==}
-    peerDependencies:
-      vite: ^5.2.0 || ^6 || ^7
 
   '@tanstack/eslint-plugin-query@5.81.2':
     resolution: {integrity: sha512-h4k6P6fm5VhKP5NkK+0TTVpGGyKQdx6tk7NYYG7J7PkSu7ClpLgBihw7yzK8N3n5zPaF3IMyErxfoNiXWH/3/A==}
@@ -2442,11 +2444,11 @@ packages:
   '@vee-validate/rules@4.15.1':
     resolution: {integrity: sha512-2TGXq2MYt21nT8ysuxyFY/LBVQDcMPKn1hY0w3uIDmG333vzBkOtXAylmvrS93AsJ7N5coHMJjcCGG4JxCO2hQ==}
 
-  '@vitejs/plugin-vue@5.2.4':
-    resolution: {integrity: sha512-7Yx/SXSOcQq5HiiV3orevHUFn+pmMB4cgbEkDYgnkUWb0WfeQ/wa2yFv6D5ICiCQOVpjA7vYDXrC7AGO8yjDHA==}
-    engines: {node: ^18.0.0 || >=20.0.0}
+  '@vitejs/plugin-vue@6.0.0':
+    resolution: {integrity: sha512-iAliE72WsdhjzTOp2DtvKThq1VBC4REhwRcaA+zPAAph6I+OQhUXv+Xu2KS7ElxYtb7Zc/3R30Hwv1DxEo7NXQ==}
+    engines: {node: ^20.19.0 || >=22.12.0}
     peerDependencies:
-      vite: ^5.0.0 || ^6.0.0
+      vite: ^5.0.0 || ^6.0.0 || ^7.0.0
       vue: ^3.2.25
 
   '@vitest/expect@3.2.4':
@@ -6077,8 +6079,8 @@ packages:
     resolution: {integrity: sha512-9kY+CygyYM6j02t5YFHbNz2FN5QmYGv9zAjVp4lCDjlCw7amdckXlEt/bjMhUIfj4ThGRE4gCUH5+yGnNuPo5A==}
     engines: {node: '>=10.0.0'}
 
-  tailwindcss-safe-area@0.5.1:
-    resolution: {integrity: sha512-aMHJYBi1NIrJ5ldZ9bk+uGLXw8UFCrFR8fheMyJEabV/kaI+qNozRm7UfEKZRgEmS3RMdrt2RQf2w/7S0ceLrQ==}
+  tailwindcss-safe-area@0.8.0:
+    resolution: {integrity: sha512-OIKZfSvinI9kZ3hduoSxqP8EfW2rXoKvHnNyTDY2zwem06IIRtLcKdMe0nF98o+Xluk5Fy7mmesr1rSXg/wkhA==}
     engines: {node: '>=16'}
     peerDependencies:
       tailwindcss: ^2.0.0 || >=3.0.0
@@ -6993,6 +6995,8 @@ packages:
 snapshots:
 
   '@aashutoshrathi/word-wrap@1.2.6': {}
+
+  '@alloc/quick-lru@5.2.0': {}
 
   '@alvarosabu/utils@3.2.0': {}
 
@@ -8441,6 +8445,8 @@ snapshots:
     dependencies:
       spark-md5: 3.0.2
 
+  '@rolldown/pluginutils@1.0.0-beta.19': {}
+
   '@rollup/plugin-babel@5.3.1(@babel/core@7.28.0)(@types/babel__core@7.20.5)(rollup@2.79.1)':
     dependencies:
       '@babel/core': 7.28.0
@@ -8893,6 +8899,14 @@ snapshots:
       '@tailwindcss/oxide-win32-arm64-msvc': 4.1.11
       '@tailwindcss/oxide-win32-x64-msvc': 4.1.11
 
+  '@tailwindcss/postcss@4.1.11':
+    dependencies:
+      '@alloc/quick-lru': 5.2.0
+      '@tailwindcss/node': 4.1.11
+      '@tailwindcss/oxide': 4.1.11
+      postcss: 8.5.6
+      tailwindcss: 4.1.11
+
   '@tailwindcss/typography@0.5.16(tailwindcss@4.1.11)':
     dependencies:
       lodash.castarray: 4.4.0
@@ -8900,13 +8914,6 @@ snapshots:
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
       tailwindcss: 4.1.11
-
-  '@tailwindcss/vite@4.1.11(vite@7.0.5(@types/node@22.16.5)(jiti@2.4.2)(lightningcss@1.30.1)(sass@1.75.0)(terser@5.43.1)(yaml@2.8.0))':
-    dependencies:
-      '@tailwindcss/node': 4.1.11
-      '@tailwindcss/oxide': 4.1.11
-      tailwindcss: 4.1.11
-      vite: 7.0.5(@types/node@22.16.5)(jiti@2.4.2)(lightningcss@1.30.1)(sass@1.75.0)(terser@5.43.1)(yaml@2.8.0)
 
   '@tanstack/eslint-plugin-query@5.81.2(eslint@8.57.0)(typescript@5.8.2)':
     dependencies:
@@ -9255,8 +9262,9 @@ snapshots:
     transitivePeerDependencies:
       - vue
 
-  '@vitejs/plugin-vue@5.2.4(vite@7.0.5(@types/node@22.16.5)(jiti@2.4.2)(lightningcss@1.30.1)(sass@1.75.0)(terser@5.43.1)(yaml@2.8.0))(vue@3.5.17(typescript@5.8.2))':
+  '@vitejs/plugin-vue@6.0.0(vite@7.0.5(@types/node@22.16.5)(jiti@2.4.2)(lightningcss@1.30.1)(sass@1.75.0)(terser@5.43.1)(yaml@2.8.0))(vue@3.5.17(typescript@5.8.2))':
     dependencies:
+      '@rolldown/pluginutils': 1.0.0-beta.19
       vite: 7.0.5(@types/node@22.16.5)(jiti@2.4.2)(lightningcss@1.30.1)(sass@1.75.0)(terser@5.43.1)(yaml@2.8.0)
       vue: 3.5.17(typescript@5.8.2)
 
@@ -9344,7 +9352,7 @@ snapshots:
   '@vue/compiler-sfc@2.7.16':
     dependencies:
       '@babel/parser': 7.28.0
-      postcss: 8.4.38
+      postcss: 8.5.6
       source-map: 0.6.1
     optionalDependencies:
       prettier: 2.8.8
@@ -13274,7 +13282,7 @@ snapshots:
       string-width: 4.2.3
       strip-ansi: 6.0.1
 
-  tailwindcss-safe-area@0.5.1(tailwindcss@4.1.11):
+  tailwindcss-safe-area@0.8.0(tailwindcss@4.1.11):
     dependencies:
       tailwindcss: 4.1.11
 

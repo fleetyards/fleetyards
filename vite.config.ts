@@ -3,7 +3,6 @@ import { defineConfig } from "vite";
 import ViteRails from "vite-plugin-rails";
 import Vue from "@vitejs/plugin-vue";
 import { VitePWA } from "vite-plugin-pwa";
-import tailwindcss from "@tailwindcss/vite";
 import Components from "unplugin-vue-components/vite";
 import AutoImport from "unplugin-auto-import/vite";
 import browserslistToEsbuild from "browserslist-to-esbuild";
@@ -32,7 +31,6 @@ export default defineConfig({
     Vue({
       ...templateCompilerOptions,
     }),
-    tailwindcss(),
     VitePWA({
       registerType: "autoUpdate",
       filename: "sw.js",

@@ -74,7 +74,7 @@
     v-else-if="to"
     v-slot="{ href: linkHref, navigate }"
     :to="to"
-    :custom="true"
+    custom
   >
     <li
       role="link"
