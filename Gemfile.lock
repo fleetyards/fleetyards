@@ -324,8 +324,8 @@ GEM
     griddler (1.6.0)
       htmlentities
       rails (>= 3.2.0)
-    groupdate (6.4.0)
-      activesupport (>= 6.1)
+    groupdate (6.7.0)
+      activesupport (>= 7.1)
     hashdiff (1.1.0)
     hashie (5.0.0)
     highline (2.1.0)
