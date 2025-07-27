@@ -189,7 +189,7 @@ group :development, :test do
 
   gem "bundler-audit"
 
-  gem "factory_bot_rails", "~> 6.4.2"
+  gem "factory_bot_rails", "~> 6.5.0"
 
   gem "byebug", platform: :mri
   gem "pry-byebug"

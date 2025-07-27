@@ -212,11 +212,11 @@ GEM
       ffi (>= 1.15.0)
     excon (0.110.0)
     execjs (2.9.1)
-    factory_bot (6.4.6)
-      activesupport (>= 5.0.0)
-    factory_bot_rails (6.4.3)
-      factory_bot (~> 6.4)
-      railties (>= 5.0.0)
+    factory_bot (6.5.4)
+      activesupport (>= 6.1.0)
+    factory_bot_rails (6.5.0)
+      factory_bot (~> 6.5)
+      railties (>= 6.1.0)
     faker (3.3.1)
       i18n (>= 1.8.11, < 2)
     faraday (2.13.3)
@@ -829,7 +829,7 @@ DEPENDENCIES
   dynamic_fields_for_rails
   ed25519
   enum_attributes_validation (~> 0.1.7)
-  factory_bot_rails (~> 6.4.2)
+  factory_bot_rails (~> 6.5.0)
   faker
   flipper
   flipper-active_record
