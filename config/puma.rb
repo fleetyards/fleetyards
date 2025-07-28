@@ -34,5 +34,5 @@ on_worker_boot do
 
   require "erb"
 
-  ActiveRecord::Base.establish_connection(YAML.safe_load(ERB.new(File.read("#{app_dir}/config/database.yml")).result)[rails_environment])
+  ActiveRecord::Base.establish_connection(YAML.safe_load(ERB.new(File.read("#{app_dir}/config/database.yml")).result, aliases: true)[rails_environment])
 end
