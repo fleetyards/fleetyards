@@ -58,6 +58,10 @@ jobs:
           sudo sysctl -w vm.max_map_count=262144
       - uses: ankane/setup-opensearch@v1
       - run: mkdir -p log && mkdir -p tmp/pids && rm -f tmp/pids/*
+      - name: install dependencies
+        uses: Eeems-Org/apt-cache-action@v1.3
+        with:
+          packages: imagemagick libmagickwand-dev
       - name: Setup DB
         run: bundle exec rails db:create db:schema:load
       - name: Create ES Index

@@ -3,7 +3,7 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
+  fixtures :fleets, :users
 
   let(:user) { nil }
 

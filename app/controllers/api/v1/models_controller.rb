@@ -193,8 +193,8 @@ module Api
 
         scope = model.variants.includes(:manufacturer).visible.active
         if pledge_price_range.present?
-          model_query_params["sorts"] = "last_pledge_price asc"
-          scope = scope.where(last_pledge_price: pledge_price_range)
+          model_query_params["sorts"] = "pledge_price asc"
+          scope = scope.where(pledge_price: pledge_price_range)
         end
         if price_range.present?
           model_query_params["sorts"] = "price asc"
@@ -218,8 +218,8 @@ module Api
         scope = model.loaners.includes(:manufacturer).visible.active
 
         if pledge_price_range.present?
-          model_query_params["sorts"] = "last_pledge_price asc"
-          scope = scope.where(last_pledge_price: pledge_price_range)
+          model_query_params["sorts"] = "pledge_price asc"
+          scope = scope.where(pledge_price: pledge_price_range)
         end
 
         if price_range.present?
@@ -357,8 +357,8 @@ module Api
         scope = Model.includes([:manufacturer]).visible.active
 
         if pledge_price_range.present?
-          model_query_params["sorts"] = "last_pledge_price asc"
-          scope = scope.where(last_pledge_price: pledge_price_range)
+          model_query_params["sorts"] = "pledge_price asc"
+          scope = scope.where(pledge_price: pledge_price_range)
         end
 
         if price_range.present?
@@ -380,53 +380,15 @@ module Api
 
         return scope if parent.blank? || parent.docks.blank?
 
-        vehicle_dock = parent.docks.where(dock_type: %i[vehiclepad garage]).order(length: :desc).first
-        ship_dock = parent.docks.where(dock_type: %i[landingpad hangar]).order(length: :desc).first
-
-        dock_metrics = extract_dock_metrics(ship_dock, vehicle_dock)
-
-        if ship_dock && vehicle_dock
-          will_it_fit_ship_or_vehicle_dock?(scope, dock_metrics)
-        elsif ship_dock
-          will_it_fit_ship_dock?(scope, dock_metrics)
-        else
-          will_it_fit_vehicle_dock?(scope, dock_metrics)
+        query = []
+        parent.docks.each do |dock|
+          query << "length <= #{dock.length - 0.5} and beam <= #{dock.beam - 0.5} and height <= #{dock.height - 0.5}"
+          query << "or" unless dock == parent.docks.last
         end
-      end
 
-      private def extract_dock_metrics(ship_dock, vehicle_dock)
-        {
-          ship_length: (ship_dock&.length || 0) - 2.0,
-          ship_beam: (ship_dock&.beam || 0) - 2.0,
-          ship_height: (ship_dock&.height || 0) - 1.0,
-          vehicle_length: (vehicle_dock&.length || 0) - 1.0,
-          vehicle_beam: (vehicle_dock&.beam || 0) - 1.0,
-          vehicle_height: (vehicle_dock&.height || 0) - 0.5
-        }
-      end
+        scope = scope.where(query.join(" ")) if query.present?
 
-      private def will_it_fit_ship_or_vehicle_dock?(scope, dock_metrics)
-        scope.where(
-          %{
-            ((ground = FALSE or ground IS NULL) and length <= :ship_length and beam <= :ship_beam and height <= :ship_height) or
-            (ground = TRUE and length <= :vehicle_length and beam <= :vehicle_beam and height <= :vehicle_height)
-          },
-          dock_metrics
-        )
-      end
-
-      private def will_it_fit_ship_dock?(scope, dock_metrics)
-        scope.where(
-          "(ground = FALSE or ground IS NULL) and length <= :ship_length and beam <= :ship_beam and height <= :ship_height",
-          dock_metrics
-        )
-      end
-
-      private def will_it_fit_vehicle_dock?(scope, dock_metrics)
-        scope.where(
-          "ground = TRUE and length <= :vehicle_length and beam <= :vehicle_beam and height <= :vehicle_height",
-          dock_metrics
-        )
+        scope
       end
 
       private def pledge_price_in

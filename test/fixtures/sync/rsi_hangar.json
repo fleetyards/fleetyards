@@ -32,12 +32,7 @@
     "type": "skin"
   },
   { "id": "00084544", "name": "Arrow", "type": "ship" },
-  {
-    "id": "00010727",
-    "name": "Carrack",
-    "customName": "Kasai",
-    "type": "ship"
-  },
+  { "id": "00010727", "name": "Carrack", "type": "ship" },
   { "id": "00082125", "name": "Dragonfly - Overdrive Paint", "type": "skin" },
   { "id": "00082125", "name": "Cyclone - Overdrive Paint", "type": "skin" },
   { "id": "00082125", "name": "Nox - Overdrive Paint", "type": "skin" },
@@ -179,14 +174,13 @@
   {
     "id": "00038978",
     "name": "600i Executive Edition",
-    "customName": "Grace Hopper 2",
     "type": "ship"
   },
   { "id": "00096750", "name": "HoverQuad", "type": "ship" },
   {
     "id": "00027641",
     "name": "Corsair",
-    "customName": "Contorta",
+    "customName": "Enterprise",
     "type": "ship"
   },
   { "id": "00017333", "name": "ROC Dolivine Livery", "type": "skin" },
@@ -248,10 +242,9 @@
   {
     "id": "00081592",
     "name": "600i Exploration Module",
-    "customName": "Grace Hopper",
     "type": "ship"
   },
-  { "id": "00081592", "name": "Retaliator Bomber", "type": "ship" },
+  { "id": "00081592", "name": "Retaliator", "type": "ship" },
   { "id": "00081592", "name": "Terrapin", "type": "ship" },
   {
     "id": "00002113",

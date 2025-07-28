@@ -51,7 +51,7 @@ RSpec.describe "api/v1/images", type: :request, swagger_doc: "v1/schema.yaml" do
 
         let(:q) do
           {
-            "modelIn" => ["andromeda"]
+            "modelIn" => ["constellation-andromeda"]
           }
         end
 

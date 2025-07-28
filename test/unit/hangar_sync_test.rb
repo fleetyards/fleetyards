@@ -3,6 +3,8 @@
 require "test_helper"
 
 class HangarSyncTest < ActiveSupport::TestCase
+  fixtures :users, :vehicles, :models
+
   let(:loader) { ::Rsi::ModelsLoader.new }
   let(:user) { users :troi }
   let(:input) { JSON.parse(Rails.root.join("test/fixtures/sync/rsi_hangar.json").read) }
@@ -10,9 +12,14 @@ class HangarSyncTest < ActiveSupport::TestCase
   let(:pirate_ship) { vehicles :pirate_troi }
 
   before do
+    Timecop.freeze("2017-01-01 14:00:00")
     VCR.use_cassette("rsi_models_loader_all") do
       loader.all
     end
+  end
+
+  after do
+    Timecop.return
   end
 
   test "syncs all data" do

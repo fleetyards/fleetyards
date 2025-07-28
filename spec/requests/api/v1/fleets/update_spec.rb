@@ -22,14 +22,14 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
       consumes "multipart/form-data"
       produces "application/json"
 
-      parameter name: :"", in: :formData, schema: {"$ref": "#/components/schemas/FleetUpdateInput"}, required: true
+      parameter name: :input, in: :formData, schema: {"$ref": "#/components/schemas/FleetUpdateInput"}, required: true
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Fleet"
 
         let(:slug) { fleet.slug }
         let(:user) { users :jeanluc }
-        let(:"") do
+        let(:input) do
           {
             discord: "https://discord.gg/1234567890"
           }
@@ -55,7 +55,7 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
 
         let(:slug) { "unknown-model" }
         let(:user) { users :data }
-        let(:"") { nil }
+        let(:input) { nil }
 
         run_test!
       end
@@ -66,7 +66,7 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
 
         let(:slug) { fleet.slug }
         let(:user) { users :data }
-        let(:"") { nil }
+        let(:input) { nil }
 
         run_test!
       end
@@ -75,7 +75,7 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:slug) { fleet.slug }
-        let(:"") { nil }
+        let(:input) { nil }
 
         run_test!
       end

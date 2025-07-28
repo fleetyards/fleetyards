@@ -66,6 +66,8 @@
 require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
+  fixtures :users
+
   let(:user_data) { users :data }
   let(:url) { "foo.bar" }
   let(:url_slash) { "//foo.bar" }

@@ -64,7 +64,7 @@ module Admin
 
       sign_in(:user, user)
 
-      redirect_to frontend_root_url(reload_session: true)
+      redirect_to frontend_root_url(reload_session: true), allow_other_host: true
     end
 
     private def user_params

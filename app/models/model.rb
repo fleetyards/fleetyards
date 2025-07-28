@@ -43,7 +43,6 @@
 #  hydrogen_fuel_tank_size    :decimal(15, 2)
 #  hydrogen_fuel_tanks        :string
 #  images_count               :integer          default(0)
-#  last_pledge_price          :decimal(15, 2)
 #  last_updated_at            :datetime
 #  length                     :decimal(15, 2)   default(0.0), not null
 #  loaners_count              :integer          default(0), not null
@@ -69,6 +68,7 @@
 #  rsi_beam                   :decimal(15, 2)   default(0.0), not null
 #  rsi_cargo                  :decimal(15, 2)
 #  rsi_classification         :string
+#  rsi_ctm_url                :string
 #  rsi_description            :text
 #  rsi_focus                  :string
 #  rsi_height                 :decimal(15, 2)   default(0.0), not null
@@ -79,6 +79,8 @@
 #  rsi_min_crew               :integer
 #  rsi_name                   :string
 #  rsi_pitch                  :decimal(15, 2)
+#  rsi_pledge_slug            :string
+#  rsi_pledge_value           :integer
 #  rsi_roll                   :decimal(15, 2)
 #  rsi_scm_speed              :decimal(15, 2)
 #  rsi_size                   :string
@@ -282,7 +284,7 @@ class Model < ApplicationRecord
       "front_view_height", "front_view_width", "ground", "ground_acceleration",
       "ground_decceleration", "ground_max_speed", "ground_reverse_speed", "height", "hidden",
       "holo", "holo_colored", "hydrogen_fuel_tank_size", "hydrogen_fuel_tanks", "id", "id_value",
-      "images_count", "last_pledge_price", "last_updated_at", "length", "loaners_count",
+      "images_count", "last_updated_at", "length", "loaners_count",
       "manufacturer", "manufacturer_id", "mass", "max_crew", "max_speed", "max_speed_acceleration",
       "max_speed_decceleration", "min_crew", "model_paints_count", "module_hardpoints_count",
       "name", "notified", "on_sale", "pitch", "pledge_price", "price", "production_note",
@@ -520,16 +522,6 @@ class Model < ApplicationRecord
 
     number_to_currency(
       pledge_price,
-      precision: 2,
-      strip_insignificant_zeros: true
-    )
-  end
-
-  def last_pledge_price_label
-    return if last_pledge_price.blank? || last_pledge_price.zero?
-
-    number_to_currency(
-      last_pledge_price,
       precision: 2,
       strip_insignificant_zeros: true
     )

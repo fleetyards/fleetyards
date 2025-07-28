@@ -10,7 +10,7 @@ module Rsi
         description: manufacturer_data["description"].presence
       )
 
-      if !Rails.env.test? && (manufacturer.logo.blank? && manufacturer_data["media"].present? && manufacturer_data["media"][0]["source_url"].present?)
+      if !Rails.env.test? && manufacturer.logo.blank? && manufacturer_data["media"].present? && manufacturer_data["media"][0]["source_url"].present?
         manufacturer.update(
           remote_logo_url: "#{base_url}#{manufacturer_data["media"][0]["source_url"]}"
         )

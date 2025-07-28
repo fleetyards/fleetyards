@@ -84,7 +84,9 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
         schema "$ref": "#/components/schemas/HangarImportResult"
 
         let(:import) do
-          Rack::Test::UploadedFile.new(File.new(Rails.root.join("test/fixtures/files/hangar_import.json")))
+          {
+            import: Rack::Test::UploadedFile.new(File.new(Rails.root.join("test/fixtures/files/hangar_import.json")))
+          }
         end
 
         run_test!

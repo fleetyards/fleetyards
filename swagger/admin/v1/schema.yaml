@@ -829,7 +829,6 @@ components:
       - fuel_tanks
       - jump_modules
       - quantum_fuel_tanks
-      - utility_items
       - power_plants
       - coolers
       - shield_generators
@@ -841,6 +840,7 @@ components:
       - missiles
       - qed
       - emp
+      - utility_items
       title: ModelHardpointTypeEnum
     OrderDirectionEnum:
       type: string
@@ -1830,10 +1830,6 @@ components:
         holoColored:
           type: boolean
           deprecated: true
-        lastPledgePrice:
-          type: number
-        lastPledgePriceLabel:
-          type: string
         lastUpdatedAt:
           type: string
           format: date-time

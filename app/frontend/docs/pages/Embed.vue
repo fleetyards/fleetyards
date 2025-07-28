@@ -36,9 +36,9 @@
       fleetchartSlider: false,
       // Replace the Array with a List of Shipnames (slugs) you want to display
       ships: [&quot;100i&quot;, &quot;300i&quot;, &quot;600i-touring&quot;, &quot;890-jump&quot;],
-      // Replace the Array with a list of Fleetyards.net usernames, alternative to the ships option.
+      // Replace the Array with a list of Fleetyards.net usernames, alternative to the ships option. Hint: make sure the users hangar is set to public.
       users: [&quot;torlekmaru&quot;, &quot;johndoe&quot;],
-      // Replace the value with a your Fleetyards.net fleet id, alternative to the ships option.
+      // Replace the value with a your Fleetyards.net fleet id, alternative to the ships option. Hint: make sure the fleets ship list is set to public.
       fleetId: &quot;maru&quot;,
     };
     (function () {

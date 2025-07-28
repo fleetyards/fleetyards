@@ -566,7 +566,7 @@ const price = computed(() => {
     return undefined;
   }
 
-  return model.value.pledgePrice || model.value.lastPledgePrice;
+  return model.value.pledgePrice;
 });
 
 onMounted(() => {

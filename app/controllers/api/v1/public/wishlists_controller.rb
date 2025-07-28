@@ -9,7 +9,7 @@ module Api
         after_action -> { pagination_header(:vehicles) }, only: %i[show]
 
         def show
-          user = User.find_by!("lower(username) = ?", params.fetch(:username, "").downcase)
+          user = User.find_by!(normalized_username: params.fetch(:username, "").downcase)
 
           unless user.public_wishlist?
             not_found

@@ -392,12 +392,6 @@
             = form.number_field :pledge_price, step: 'any', placeholder: model.price.to_s, class: 'form-control'
             = form_errors model, :pledge_price
 
-        .col-12.col-sm-6.col-md-4
-          .form-group{class: form_error?(model, :last_pledge_price)}
-            = form.label :last_pledge_price
-            = form.number_field :last_pledge_price, step: 'any', placeholder: model.price.to_s, class: 'form-control'
-            = form_errors model, :last_pledge_price
-
       .row.fields
         .col-12.col-sm-6.col-md-4
           .form-group

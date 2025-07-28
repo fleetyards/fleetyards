@@ -66,50 +66,6 @@ class HangarSync < HangarImporter
       query = generate_model_query(item[:name])
       params = default_params(user_id, item)
 
-      model_paint = ModelPaint.where(query).first
-      if model_paint.present?
-        vehicle_with_ref = vehicle_scope.where.not(id: vehicle_ids).find_by(
-          model_id: model_paint.model_id,
-          model_paint_id: model_paint.id,
-          rsi_pledge_id: item[:id]
-        )
-
-        if vehicle_with_ref.present?
-          vehicle_with_ref.update!(
-            rsi_pledge_synced_at: Time.current,
-            name: item[:custom_name]&.strip.presence || vehicle_with_ref.name,
-            wanted: false
-          )
-
-          vehicle_ids << vehicle_with_ref.id
-          found_vehicles << vehicle_with_ref.id
-
-          next
-        end
-
-        vehicle = vehicle_scope.where.not(id: vehicle_ids).find_by(
-          model_id: model_paint.model_id,
-          model_paint_id: model_paint.id
-        )
-
-        if vehicle.present?
-          vehicle.update!(
-            rsi_pledge_id: item[:id],
-            rsi_pledge_synced_at: Time.current,
-            name: item[:custom_name]&.strip.presence || vehicle.name,
-            wanted: false
-          )
-          vehicle_ids << vehicle.id
-          found_vehicles << vehicle.id
-          next
-        end
-
-        vehicle = vehicle_scope.create!(params.merge(model_id: model_paint.model_id, model_paint_id: model_paint.id))
-        vehicle_ids << vehicle.id
-        imported_vehicles << vehicle.id
-        next
-      end
-
       model = Model.where(query).first
       if model.present?
         vehicle_with_ref = vehicle_scope.where.not(id: vehicle_ids).find_by(
@@ -149,6 +105,50 @@ class HangarSync < HangarImporter
         end
 
         vehicle = vehicle_scope.create!(params.merge(model_id: model.id))
+        vehicle_ids << vehicle.id
+        imported_vehicles << vehicle.id
+        next
+      end
+
+      model_paint = ModelPaint.where(query).first
+      if model_paint.present?
+        vehicle_with_ref = vehicle_scope.where.not(id: vehicle_ids).find_by(
+          model_id: model_paint.model_id,
+          model_paint_id: model_paint.id,
+          rsi_pledge_id: item[:id]
+        )
+
+        if vehicle_with_ref.present?
+          vehicle_with_ref.update!(
+            rsi_pledge_synced_at: Time.current,
+            name: item[:custom_name]&.strip.presence || vehicle_with_ref.name,
+            wanted: false
+          )
+
+          vehicle_ids << vehicle_with_ref.id
+          found_vehicles << vehicle_with_ref.id
+
+          next
+        end
+
+        vehicle = vehicle_scope.where.not(id: vehicle_ids).find_by(
+          model_id: model_paint.model_id,
+          model_paint_id: model_paint.id
+        )
+
+        if vehicle.present?
+          vehicle.update!(
+            rsi_pledge_id: item[:id],
+            rsi_pledge_synced_at: Time.current,
+            name: item[:custom_name]&.strip.presence || vehicle.name,
+            wanted: false
+          )
+          vehicle_ids << vehicle.id
+          found_vehicles << vehicle.id
+          next
+        end
+
+        vehicle = vehicle_scope.create!(params.merge(model_id: model_paint.model_id, model_paint_id: model_paint.id))
         vehicle_ids << vehicle.id
         imported_vehicles << vehicle.id
         next
@@ -364,6 +364,10 @@ class HangarSync < HangarImporter
     name = name.tr("–", "-")
 
     mapping = {
+      "A.T.L.S" => "ATLS",
+      "A.T.L.S." => "ATLS",
+      "A.T.L.S Geo" => "ATLS Geo",
+      "A.T.L.S. Geo" => "ATLS Geo",
       "GreyCat Estate Geotack Planetary Beacon" => "Geotack Planetary Beacon",
       "GreyCat Estate Geotack-X Planetary Beacon" => "Geotack-X Planetary Beacon",
       "X1 Base" => "X1",
@@ -377,11 +381,11 @@ class HangarSync < HangarImporter
       "600i Touring Module" => "600i Touring",
       "Mercury Star Runner" => "Mercury",
       "Captured Vanduul Scythe" => "Scythe",
-      "Caterpillar 2949 Best in Show" => "Caterpillar Best In Show Edition",
-      "Cutlass 2949 Best In Show" => "cutlass black best in show edition",
+      "Caterpillar 2949 Best in Show" => "Caterpillar Best In Show Edition 2949",
+      "Cutlass 2949 Best In Show" => "Cutlass Black Best In Show Edition 2949",
       "Dragonfly" => "Dragonfly Black",
       "F8C Lightning Civilian" => "F8C Lightning",
-      "Hammerhead 2949 Best in Show" => "hammerhead best in show edition",
+      "Hammerhead 2949 Best in Show" => "Hammerhead Best In Show Edition 2949",
       "Hercules Starlifter A2" => "A2 Hercules",
       "Hercules Starlifter C2" => "C2 Hercules",
       "Hercules Starlifter M2" => "M2 Hercules",
@@ -403,7 +407,7 @@ class HangarSync < HangarImporter
       "Nova Tank" => "Nova",
       "Pisces" => "C8 Pisces",
       "Pisces - Expedition" => "C8X Pisces Expedition",
-      "Reclaimer 2949 Best in Show" => "reclaimer best in show edition",
+      "Reclaimer 2949 Best in Show" => "Reclaimer Best In Show Edition 2949",
       "Reliant Kore - Mini Hauler" => "Reliant Kore",
       "Reliant Mako - News Van" => "Reliant Mako",
       "Reliant Sen - Researcher" => "Reliant Sen",

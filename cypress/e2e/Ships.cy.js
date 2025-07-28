@@ -1,15 +1,15 @@
-describe('Ships', () => {
-  it('Loads', () => {
-    cy.visitApp('/')
+describe("Ships", () => {
+  it("Loads", () => {
+    cy.visitApp("/");
 
-    cy.acceptCookies()
+    cy.acceptCookies();
 
-    cy.clickNav('models')
+    cy.clickNav("models");
 
-    cy.url().should('include', '/ships')
+    cy.url().should("include", "/ships");
 
-    cy.get('.model-panel').should('have.length', 30)
+    cy.get(".model-panel").should("have.length", 5);
 
-    cy.get('.model-panel .panel-title a span').contains('100i').should('exist')
-  })
-})
+    cy.get(".model-panel .panel-title a span").contains("100i").should("exist");
+  });
+});

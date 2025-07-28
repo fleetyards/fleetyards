@@ -55,7 +55,7 @@ class Image < ApplicationRecord
   end
 
   def self.in_gallery
-    where("gallery_id IS NOT ?", nil)
+    where.not(gallery_id: nil)
   end
 
   def self.with_uniq_name

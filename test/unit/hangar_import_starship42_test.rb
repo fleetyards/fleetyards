@@ -3,6 +3,8 @@
 require "test_helper"
 
 class HangarImporterStarship42Test < ActiveSupport::TestCase
+  fixtures :users, :vehicles, :models
+
   let(:loader) { ::Rsi::ModelsLoader.new }
   let(:importer) { ::HangarImporter.new }
   let(:import) { ::Imports::HangarImport.create!(user_id: user.id, import: import_file) }
@@ -47,7 +49,7 @@ class HangarImporterStarship42Test < ActiveSupport::TestCase
       "Carrack",
       "Carrack Expedition",
       "Caterpillar",
-      "Caterpillar Best In Show Edition",
+      "Caterpillar",
       "Caterpillar Pirate Edition",
       "Constellation Andromeda",
       "Constellation Aquila",
@@ -57,7 +59,7 @@ class HangarImporterStarship42Test < ActiveSupport::TestCase
       "Corsair",
       "Crucible",
       "Cutlass Black",
-      "Cutlass Black Best In Show Edition",
+      "Cutlass Black",
       "Cutlass Blue",
       "Cutlass Red",
       "Cyclone",
@@ -71,15 +73,15 @@ class HangarImporterStarship42Test < ActiveSupport::TestCase
       "Dragonfly Yellowjacket",
       "Eclipse",
       "Endeavor",
-      "F7A Hornet",
-      "F7C Hornet",
-      "F7C Hornet Wildfire",
-      "F7C-M Super Hornet",
-      "F7C-M Super Hornet Heartseeker",
-      "F7C-R Hornet Tracker",
-      "F7C-S Hornet Ghost",
-      "F8C",
-      "F8C Lightning Executive-Edition",
+      "F7A Hornet Mk I",
+      "F7C Hornet Mk I",
+      "F7C Hornet Wildfire Mk I",
+      "F7C-M Super Hornet Mk I",
+      "F7C-M Super Hornet Mk I",
+      "F7C-R Hornet Tracker Mk I",
+      "F7C-S Hornet Ghost Mk I",
+      "F8C Lightning",
+      "F8C Lightning Executive Edition",
       "Freelancer",
       "Freelancer DUR",
       "Freelancer MAX",
@@ -90,7 +92,7 @@ class HangarImporterStarship42Test < ActiveSupport::TestCase
       "Gladius Valiant",
       "Glaive",
       "Hammerhead",
-      "Hammerhead Best In Show Edition",
+      "Hammerhead",
       "Hawk",
       "Herald",
       "Hull A",
@@ -144,14 +146,14 @@ class HangarImporterStarship42Test < ActiveSupport::TestCase
       "Razor EX",
       "Razor LX",
       "Reclaimer",
-      "Reclaimer Best In Show Edition",
+      "Reclaimer",
       "Redeemer",
       "Reliant Kore",
       "Reliant Mako",
       "Reliant Sen",
       "Reliant Tana",
       "Retaliator",
-      "Retaliator Bomber",
+      "Retaliator",
       "SRV",
       "Sabre",
       "Sabre Comet",
@@ -161,8 +163,8 @@ class HangarImporterStarship42Test < ActiveSupport::TestCase
       "Starfarer",
       "Starfarer Gemini",
       "Terrapin",
-      "Ursa Rover",
-      "Ursa Rover Fortuna",
+      "Ursa",
+      "Ursa Fortuna",
       "Valkyrie",
       "Valkyrie Liberator Edition",
       "Vanguard Harbinger",
@@ -179,6 +181,7 @@ class HangarImporterStarship42Test < ActiveSupport::TestCase
   let(:import_file) { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/imports/starship42.json")) }
 
   before do
+    Timecop.freeze("2017-01-01 14:00:00")
     VCR.use_cassette("rsi_models_loader_all") do
       loader.all
     end
@@ -186,6 +189,7 @@ class HangarImporterStarship42Test < ActiveSupport::TestCase
 
   after do
     Import.destroy_all
+    Timecop.return
   end
 
   it "imports all data" do

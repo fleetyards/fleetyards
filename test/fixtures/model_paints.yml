@@ -12,7 +12,6 @@
 #  fleetchart_image_height :integer
 #  fleetchart_image_width  :integer
 #  hidden                  :boolean          default(TRUE)
-#  last_pledge_price       :decimal(15, 2)
 #  last_updated_at         :datetime
 #  name                    :string
 #  on_sale                 :boolean          default(FALSE)

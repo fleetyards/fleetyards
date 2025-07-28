@@ -17,15 +17,12 @@ module Rsi
     end
 
     def load_roadmap_data
-      return JSON.parse(File.read(json_file_path))["data"]["releases"] if prevent_extra_server_requests? && File.exist?(json_file_path)
-
       response = fetch_remote("#{base_url}/api/roadmap/v1/boards/1?#{Time.zone.now.to_i}")
 
       return [] unless response.success?
 
       begin
         roadmap_data = JSON.parse(response.body)
-        File.write(json_file_path, roadmap_data.to_json)
         roadmap_data["data"]["releases"]
       rescue JSON::ParserError => e
         Sentry.capture_exception(e)
@@ -35,8 +32,6 @@ module Rsi
     end
 
     private def roadmap_maintenance_on?
-      return false if prevent_extra_server_requests?
-
       response = fetch_remote("#{base_url}/roadmap/board/1-Star-Citizen?#{Time.zone.now.to_i}")
 
       !response.success?
@@ -78,7 +73,7 @@ module Rsi
 
           if item.store_image.blank?
             image_url = card.dig("thumbnail", "urls", "source")
-            if image_url.present? && !prevent_extra_server_requests?
+            if image_url.present?
               image_url = "#{base_url}#{image_url}" unless image_url.starts_with?("https")
               item.remote_store_image_url = image_url
               item.save

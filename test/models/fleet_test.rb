@@ -14,6 +14,7 @@
 #  homepage           :string
 #  logo               :string
 #  name               :string
+#  normalized_fid     :string
 #  public_fleet       :boolean          default(FALSE)
 #  public_fleet_stats :boolean          default(FALSE)
 #  rsi_sid            :string
@@ -32,6 +33,8 @@
 require "test_helper"
 
 class FleetTest < ActiveSupport::TestCase
+  fixtures :fleets
+
   let(:klingon_empire) { fleets :klingon_empire }
   let(:url) { "foo.bar" }
   let(:url_slash) { "//foo.bar" }

@@ -63,8 +63,6 @@ module V1
             hasVideos: {type: :boolean},
             holo: {type: :string},
             holoColored: {type: :boolean, deprecated: true},
-            lastPledgePrice: {type: :number},
-            lastPledgePriceLabel: {type: :string},
             lastUpdatedAt: {type: :string, format: "date-time"},
             lastUpdatedAtLabel: {type: :string},
 

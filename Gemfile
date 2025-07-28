@@ -2,13 +2,14 @@
 
 source "https://rubygems.org"
 
-ruby File.read(".ruby-version").chomp
+ruby file: ".tool-versions"
+ruby "3.4.5"
 
-gem "rails", "7.1.3.2"
+gem "rails", "7.2.2.1"
 
 gem "pg", "~> 1.0"
 
-gem "sidekiq", "< 8"
+gem "sidekiq", "<= 8.0.6"
 gem "sidekiq-cron"
 
 gem "paper_trail"
@@ -45,7 +46,8 @@ gem "foundation_emails"
 gem "premailer-rails"
 
 gem "griddler"
-gem "griddler-mailgun"
+gem "griddler-postmark", github: "r38y/griddler-postmark"
+gem "postmark-rails"
 
 gem "cancancan"
 
@@ -126,7 +128,7 @@ gem "pg_query", ">= 0.9.0"
 gem "git"
 gem "rdoc"
 
-gem "psych", "~> 5.1.0"
+gem "psych", "~> 5.2.6"
 
 gem "progress_bar"
 
@@ -187,7 +189,7 @@ group :development, :test do
 
   gem "bundler-audit"
 
-  gem "factory_bot_rails", "~> 6.4.2"
+  gem "factory_bot_rails", "~> 6.5.0"
 
   gem "byebug", platform: :mri
   gem "pry-byebug"
@@ -200,3 +202,8 @@ gem "enum_attributes_validation", "~> 0.1.7"
 gem "bskyrb", "~> 0.5.3"
 
 gem "x", "~> 0.14.0"
+
+gem "graphlient"
+
+gem "abbrev"
+gem "csv"

@@ -68,7 +68,7 @@ RSpec.describe "api/v1/shops", type: :request, swagger_doc: "v1/schema.yaml" do
         let(:slug) { shop.slug }
         let(:query) do
           {
-            "name" => ["600i"]
+            "name" => ["600i Explorer"]
           }
         end
 
@@ -76,7 +76,7 @@ RSpec.describe "api/v1/shops", type: :request, swagger_doc: "v1/schema.yaml" do
           data = JSON.parse(response.body)
 
           expect(data.count).to eq(1)
-          expect(data.first["name"]).to eq("600i")
+          expect(data.first["name"]).to eq("600i Explorer")
         end
       end
 

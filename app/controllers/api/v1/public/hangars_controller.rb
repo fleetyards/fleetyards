@@ -9,7 +9,7 @@ module Api
         after_action -> { pagination_header(:vehicles) }, only: %i[show]
 
         def show
-          user = User.find_by!("lower(username) = ?", params.fetch(:username, "").downcase)
+          user = User.find_by!(normalized_username: params.fetch(:username, "").downcase)
 
           unless user.public_hangar?
             not_found
@@ -39,9 +39,7 @@ module Api
           end
 
           usernames = params.fetch(:usernames, []).map(&:downcase)
-          user_ids = User.where("lower(username) IN (?)", usernames)
-            .where(public_hangar: true)
-            .pluck(:id)
+          user_ids = User.where(normalized_username: usernames, public_hangar: true).pluck(:id)
 
           vehicle_query_params["sorts"] = sorting_params(Vehicle, ["model_name asc"])
 

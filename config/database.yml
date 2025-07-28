@@ -15,8 +15,8 @@ ci:
 
 development:
   <<: *default
-  database: fleetyards_dev
+  database: <%= ENV["DB_NAME"] || 'fleetyards_dev' %>
 
 test:
   <<: *default
-  database: fleetyards_test
+  database: <%= ENV["DB_NAME"] || 'fleetyards_test' %>
