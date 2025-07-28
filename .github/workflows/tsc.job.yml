@@ -9,5 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/workflows/js-setup-action
+      - name: Vite Build
+        run: bin/vite build --clear --mode=test
       - run: pnpm run vue-tsc
       - run: pnpm run tsc
