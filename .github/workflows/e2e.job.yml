@@ -76,3 +76,29 @@ jobs:
         run: pnpm test:e2e:install
       - name: Run e2e Tests
         run: pnpm test:e2e:run --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+  merge-reports:
+    # Merge reports after playwright-tests, even if some shards have failed
+    if: ${{ !cancelled() }}
+    needs: [e2e-test]
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: 101skills-gmbh/ci-actions/.github/actions/js-setup-pnpm@main
+
+      - name: Download blob reports from GitHub Actions Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: all-blob-reports
+          pattern: blob-report-*
+          merge-multiple: true
+
+      - name: Merge into HTML Report
+        run: pnpm playwright merge-reports --reporter html ./all-blob-reports
+
+      - name: Upload HTML report
+        uses: actions/upload-artifact@v4
+        with:
+          name: html-report--attempt-${{ github.run_attempt }}
+          path: playwright-report
+          retention-days: 2
