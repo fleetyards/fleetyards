@@ -13,12 +13,17 @@ config/*.key
 .env*
 !.env.example
 !.env.test.example
+!.env.test
 
 # test files
 coverage/*
 test/reports/*
 spec/reports
 spec/reports/*
+playwright-report
+playwright-report/*
+test-results
+test-results/*
 
 # generated auto-import files
 app/frontend/auto-imports.d.ts
