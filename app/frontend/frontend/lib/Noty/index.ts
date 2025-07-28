@@ -1,6 +1,7 @@
 import Noty from "noty";
 import { isBefore, addSeconds } from "date-fns";
 import { I18n } from "@/frontend/lib/I18n";
+import favIcon from "@/images/favicon.png";
 import { FleetyardsNotyOptions } from "./index.d";
 
 Noty.overrideDefaults({
@@ -66,7 +67,7 @@ const displayDesktopNotification = function displayDesktopNotification(
   // eslint-disable-next-line compat/compat
   const notification = new window.Notification(message, {
     // eslint-disable-next-line global-require
-    icon: `${window.FRONTEND_ENDPOINT}${require("@/images/favicon.png")}`,
+    icon: `${window.FRONTEND_ENDPOINT}${favIcon}`,
   });
 
   return notification;
