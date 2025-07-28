@@ -83,7 +83,7 @@
     "@types/rails__actioncable": "^6.1.11",
     "@types/swagger-ui": "^3.52.4",
     "@types/swagger-ui-dist": "^3.30.6",
-    "@types/uuid": "^9.0.8",
+    "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "8.38.0",
     "@typescript-eslint/parser": "8.38.0",
     "@vitejs/plugin-vue2": "2.3.1",
