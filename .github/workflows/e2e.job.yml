@@ -76,6 +76,13 @@ jobs:
         run: pnpm test:e2e:install
       - name: Run e2e Tests
         run: pnpm test:e2e:run --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: blob-report-${{ matrix.shardIndex }}-attempt-${{ github.run_attempt }}
+          path: blob-report
+          retention-days: 1
+
   merge-reports:
     # Merge reports after playwright-tests, even if some shards have failed
     if: ${{ !cancelled() }}
