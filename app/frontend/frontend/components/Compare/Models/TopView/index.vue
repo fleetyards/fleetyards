@@ -79,10 +79,12 @@ const visible = ref(false);
 
 const compareTopView = ref<HTMLElement | null>(null);
 
-const maxLength = computed(() => Math.max(
+const maxLength = computed(() =>
+  Math.max(
     ...props.models.map((model) => model.metrics.fleetchartLength || 1),
     0,
-  ));
+  ),
+);
 
 const shipLength = (model: Model) => model.metrics.fleetchartLength || 1;
 
