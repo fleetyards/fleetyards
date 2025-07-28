@@ -1,0 +1,15 @@
+<script>
+  window.ADMIN_API_ENDPOINT = '<%= ADMIN_API_ENDPOINT %>'
+  window.API_ENDPOINT = '<%= API_ENDPOINT %>'
+  window.ON_SUBDOMAIN = <%= Rails.configuration.app.on_subdomain? %>
+  window.APP_VERSION = '<%= Fleetyards::VERSION %>'
+  window.APP_CODENAME = '<%= Fleetyards::CODENAME %>'
+  window.NODE_ENV = '<%= Rails.env %>'
+  window.GIT_REVISION = '<%= Git.revision_short %>'
+  window.SC_DATA_VERSION = '<%= Imports::ScData::AllImport.current_version %>'
+  window.APP_NAME = '<%= Rails.configuration.app.name %>'
+  window.SENTRY_DSN = '<%= Rails.application.credentials.sentry_frontend_dsn %>'
+  window.DATA_PREFETCH = <%= @data_prefetch.to_json.html_safe %>
+  window.COPYRIGHT_OWNER = '<%= Rails.configuration.app.copyright_owner %>'
+  window.DIRECT_UPLOAD_URL = '<%= rails_direct_uploads_path %>'
+</script>

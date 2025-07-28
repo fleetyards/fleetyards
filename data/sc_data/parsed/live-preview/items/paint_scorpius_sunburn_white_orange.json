@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Scorpius_Sunburn_White_Orange",
+  "ref": "59e7bafb-b82a-4e5b-885d-ae18aa4e2efd",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "168306ad-cd40-42dc-8cb8-f5ac9121c3f6",
+  "name": "Scorpius Sunburn Livery",
+  "short_name": null,
+  "description": "A ship designed to be a daring dogfighter deserves an equally audacious look. The Scorpius Sunburn livery is primarily white with a dynamic mix of orange and black highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "key": "Door_RN_RoomConnector_Breachable_OpenClose_Corsair_Ramp",
+  "ref": "b0828db2-8c92-406a-988a-b40c562047f4",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  }
+}

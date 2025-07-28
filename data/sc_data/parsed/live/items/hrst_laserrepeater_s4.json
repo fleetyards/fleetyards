@@ -1,0 +1,133 @@
+{
+  "key": "HRST_LaserRepeater_S4",
+  "ref": "8d868b78-eccd-4ba5-a4a5-57e2f20bdc35",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "ee8b7bb3-d420-435c-924f-561e67e64588",
+  "name": "Attrition-4 Repeater",
+  "short_name": "Attrition-4",
+  "description": "Manufacturer: Hurston Dynamics\\nItem Type: Laser Repeater\\nSize: 4\\n\\nHurston Dynamics has fully integrated it's cascade laser technology into their Attrition-line of repeaters. The size four Attrition-4 is no exception, operating at peak performance when near its maximum thermal capacity.",
+  "inventory_consumption": {
+    "micro_scu": 2100000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "BAR1",
+      "key": "HRST_LaserRepeater_Barrel_S4",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "MEC",
+      "key": "HRST_LaserRepeater_FiringMechanism_S4",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "POW",
+      "key": "HRST_LaserRepeater_PowerArray_S4",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "VEN",
+      "key": "HRST_LaserRepeater_Ventilation_S4",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1650.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 2.0,
+    "StartIRTemperature": 250.0,
+    "OverpowerHeat": 0.9,
+    "OverclockThresholdMinHeat": 0.59,
+    "OverclockThresholdMaxHeat": 0.86,
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.5,
+    "Mass": 440.0,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 216.5,
+    "MaxTemperature": 700.0,
+    "OverheatTemperature": 650.0,
+    "RecoveryTemperature": 550.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  },
+  "power_connection": {
+    "power_base": 220.0,
+    "power_draw": 220.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 20.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.0,
+    "overclock_threshold_max": 0.0,
+    "overpower_performance": 0.0,
+    "overclock_performance": 0.0,
+    "power_to_em": 1.5,
+    "decay_rate_of_em": 0.2
+  }
+}

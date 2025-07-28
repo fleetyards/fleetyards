@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Redeemer_IAE2951_Grey_White_Camo",
+  "ref": "c185a54d-822c-4a9a-8bec-bcac5326bd6d",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "46daaebf-2220-49d6-b818-2d921bcc67ed",
+  "name": "Redeemer Polar Camo Livery",
+  "short_name": null,
+  "description": "Modify your Redeemer with this white and grey camo livery specifically designed for the 2951 IAE.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -11,8 +11,7 @@ module V1
           properties: {
             id: {type: :string, format: :uuid},
             username: {type: :string},
-            role: {"$ref": "#/components/schemas/FleetMembershipRoleEnum"},
-            roleLabel: {type: :string},
+            fleetRole: {"$ref": "#/components/schemas/FleetRole"},
             status: {"$ref": "#/components/schemas/FleetMembershipStatusEnum"},
             avatar: {type: :string},
             rsiHandle: {type: :string},
@@ -40,7 +39,7 @@ module V1
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id username role roleLabel shipsFilter fleetSlug fleetName createdAt updatedAt]
+          required: %w[id username fleetRole shipsFilter fleetSlug fleetName createdAt updatedAt]
         })
       end
     end

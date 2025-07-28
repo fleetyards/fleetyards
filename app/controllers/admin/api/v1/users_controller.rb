@@ -1,0 +1,32 @@
+# frozen_string_literal: true
+
+module Admin
+  module Api
+    module V1
+      class UsersController < ::Admin::Api::BaseController
+        rescue_from ActiveRecord::RecordNotFound do |_exception|
+          not_found(I18n.t("messages.record_not_found.user", slug: params[:slug]))
+        end
+
+        def index
+          authorize! with: ::Admin::UserPolicy
+
+          user_query_params["sorts"] = sorting_params(User, user_query_params[:sorts])
+
+          q = authorized_scope(User.all).ransack(user_query_params)
+
+          @users = q.result(distinct: true)
+            .page(params[:page])
+            .per(per_page(User))
+        end
+
+        private def user_query_params
+          @user_query_params ||= params.permit(q: [
+            :search_cont, :username_cont, :username_eq, :email_cont, :rsi_handle_cont, :sorts,
+            id_in: [], username_in: [], email_in: [], rsi_handle_in: [], sorts: []
+          ]).fetch(:q, {})
+        end
+      end
+    end
+  end
+end

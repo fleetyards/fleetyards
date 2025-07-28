@@ -1,146 +1,17 @@
-<template>
-  <li v-if="divider" class="nav-item divider" />
-  <li
-    v-else-if="hasSubmenuSlot"
-    :class="{
-      active: active || submenuActive,
-      open: open,
-      'nav-item-slim': slim,
-    }"
-    :data-test="`nav-${navKey}`"
-    class="nav-item sub-menu"
-  >
-    <ul
-      v-if="submenuDirection === 'up'"
-      :id="`${menuKey}-sub-menu`"
-      v-show-slide:400:ease-in-out="open"
-    >
-      <slot name="submenu" />
-    </ul>
-    <button v-tooltip="tooltip" @click="toggleMenu">
-      <slot v-if="hasDefaultSlot" />
-      <NavItemInner
-        v-else
-        :label="label"
-        :icon="icon"
-        :image="image"
-        :avatar="avatar"
-        :slim="slim"
-      />
-      <span
-        v-if="!slim"
-        class="submenu-icon"
-        :class="{ 'submenu-icon-up': submenuDirection === 'up' }"
-      >
-        <i class="fal fa-chevron-right" />
-      </span>
-    </button>
-    <ul
-      v-if="submenuDirection === 'down'"
-      :id="`${menuKey}-sub-menu`"
-      v-show-slide:400:ease-in-out="open"
-      :visible="open"
-    >
-      <slot name="submenu" />
-    </ul>
-  </li>
-  <li
-    v-else-if="action"
-    :class="{
-      'nav-item-slim': slim,
-    }"
-    :data-test="`nav-${navKey}`"
-    class="nav-item"
-    @click="action"
-  >
-    <a v-tooltip="tooltip">
-      <slot v-if="hasDefaultSlot" />
-      <NavItemInner
-        v-else
-        :label="label"
-        :icon="icon"
-        :image="image"
-        :avatar="avatar"
-        :slim="slim"
-      />
-    </a>
-  </li>
-  <router-link
-    v-else-if="to"
-    v-slot="{ href: linkHref, navigate }"
-    :to="to"
-    :class="{
-      active: active || routeActive,
-      'nav-item-slim': slim,
-    }"
-    :data-test="`nav-${navKey}`"
-    class="nav-item"
-    :exact="exact"
-    :custom="true"
-  >
-    <li role="link" @click="navigate" @keypress.enter="navigate">
-      <a v-tooltip="tooltip" :href="linkHref">
-        <slot v-if="hasDefaultSlot" />
-        <NavItemInner
-          v-else
-          :label="label"
-          :icon="icon"
-          :image="image"
-          :avatar="avatar"
-          :slim="slim"
-        />
-      </a>
-    </li>
-  </router-link>
-  <li
-    v-else-if="href"
-    :class="{
-      'nav-item-slim': slim,
-    }"
-    class="nav-item"
-    :data-test="`nav-${navKey}`"
-  >
-    <a v-tooltip="tooltip" :href="href" target="_blank" rel="noopener">
-      <slot v-if="hasDefaultSlot" />
-      <NavItemInner
-        v-else
-        :label="label"
-        :icon="icon"
-        :image="image"
-        :avatar="avatar"
-        :slim="slim"
-      />
-    </a>
-  </li>
-  <li
-    v-else
-    :class="{
-      'nav-item-slim': slim,
-    }"
-    class="nav-item"
-  >
-    <span>
-      <slot v-if="hasDefaultSlot" />
-      <NavItemInner
-        v-else
-        :label="label"
-        :icon="icon"
-        :image="image"
-        :avatar="avatar"
-        :slim="slim"
-      />
-    </span>
-  </li>
-</template>
+<script lang="ts">
+export default {
+  name: "NavItem",
+};
+</script>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router/composables";
-import type { RawLocation, Location } from "vue-router";
-import Store from "@/frontend/lib/Store";
+import { useRoute } from "vue-router";
+import type { RouteLocationRaw, RouteLocation } from "vue-router";
+import Collapsed from "@/shared/components/Collapsed.vue";
 import NavItemInner from "./NavItemInner/index.vue";
 
 type Props = {
-  to?: RawLocation;
+  to?: RouteLocationRaw;
   action?: () => void;
   href?: string;
   label?: string;
@@ -175,30 +46,18 @@ const open = ref(false);
 
 const route = useRoute();
 
-const mobile = computed(() => Store.getters.mobile);
-
-const navSlim = computed(() => Store.getters["app/navSlim"]);
-
-const slim = computed(() => navSlim.value && !mobile.value);
-
 const routeActive = computed(() => {
   if (props.to) {
-    return (props.to as Location).name === route.name;
+    return (props.to as RouteLocation).name === route.name;
   }
   return false;
 });
 
-const tooltip = computed(() => {
-  if (!slim.value) {
-    return null;
-  }
-
-  return {
-    content: props.label,
-    classes: "nav-item-tooltip",
-    placement: "right",
-  };
-});
+const tooltip = computed(() => ({
+  content: props.label,
+  popperClass: "nav-item-tooltip",
+  placement: "right",
+}));
 
 const slots = useSlots();
 
@@ -212,7 +71,7 @@ const navKey = computed(() => {
   }
 
   if (props.to) {
-    return (props.to as Location).name;
+    return (props.to as RouteLocation).name;
   }
 
   return "nav-item";
@@ -246,11 +105,115 @@ const toggleMenu = () => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "NavItem",
-};
-</script>
+<template>
+  <li v-if="divider" class="nav-item divider" />
+  <li
+    v-else-if="hasSubmenuSlot"
+    :class="{
+      active: active || submenuActive,
+      open: open,
+    }"
+    :data-test="`nav-${String(navKey)}`"
+    class="nav-item sub-menu"
+  >
+    <Collapsed
+      v-if="submenuDirection === 'up'"
+      :id="`${menuKey}-sub-menu`"
+      :visible="open"
+      as="ul"
+    >
+      <slot name="submenu" />
+    </Collapsed>
+    <button v-tooltip="tooltip" @click="toggleMenu">
+      <slot v-if="hasDefaultSlot" />
+      <NavItemInner
+        v-else
+        :label="label"
+        :icon="icon"
+        :image="image"
+        :avatar="avatar"
+      />
+    </button>
+    <Collapsed
+      v-if="submenuDirection === 'down'"
+      :id="`${menuKey}-sub-menu`"
+      :visible="open"
+      as="ul"
+    >
+      <slot name="submenu" />
+    </Collapsed>
+  </li>
+  <li
+    v-else-if="action"
+    :data-test="`nav-${String(navKey)}`"
+    class="nav-item"
+    @click="action"
+  >
+    <a v-tooltip="tooltip">
+      <slot v-if="hasDefaultSlot" />
+      <NavItemInner
+        v-else
+        :label="label"
+        :icon="icon"
+        :image="image"
+        :avatar="avatar"
+      />
+    </a>
+  </li>
+  <router-link
+    v-else-if="to"
+    v-slot="{ href: linkHref, navigate }"
+    :to="to"
+    custom
+  >
+    <li
+      role="link"
+      :class="{
+        active: active || routeActive,
+      }"
+      :data-test="`nav-${String(navKey)}`"
+      class="nav-item"
+      @click="() => navigate"
+      @keypress.enter="() => navigate"
+    >
+      <a v-tooltip="tooltip" :href="linkHref">
+        <slot v-if="hasDefaultSlot" />
+        <NavItemInner
+          v-else
+          :label="label"
+          :icon="icon"
+          :image="image"
+          :avatar="avatar"
+        />
+      </a>
+    </li>
+  </router-link>
+  <li v-else-if="href" class="nav-item" :data-test="`nav-${String(navKey)}`">
+    foo
+    <a v-tooltip="tooltip" :href="href" target="_blank" rel="noopener">
+      <slot v-if="hasDefaultSlot" />
+      <NavItemInner
+        v-else
+        :label="label"
+        :icon="icon"
+        :image="image"
+        :avatar="avatar"
+      />
+    </a>
+  </li>
+  <li v-else class="nav-item">
+    <span>
+      <slot v-if="hasDefaultSlot" />
+      <NavItemInner
+        v-else
+        :label="label"
+        :icon="icon"
+        :image="image"
+        :avatar="avatar"
+      />
+    </span>
+  </li>
+</template>
 
 <style lang="scss">
 @import "index";

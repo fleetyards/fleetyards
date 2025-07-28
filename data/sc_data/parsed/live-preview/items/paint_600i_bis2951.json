@@ -1,0 +1,21 @@
+{
+  "key": "Paint_600i_BIS2951",
+  "ref": "03caed87-84be-4674-ad09-8c4afcfa419c",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "68a63acd-d678-4124-933a-1a28c66d59cd",
+  "name": "600i 2951 Best in Show Livery",
+  "short_name": null,
+  "description": "Celebrate the 600i being voted a Best in Show finalist for 2951 with this special blue and black livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

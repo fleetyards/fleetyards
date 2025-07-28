@@ -1,0 +1,41 @@
+.vehicle-states {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  font-size: 150%;
+
+  > * {
+    margin: 0 5px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+
+  .on-sale {
+    color: $success;
+  }
+
+  .flagship-icon {
+    color: $gold;
+  }
+
+  .full-public-icon {
+    color: $gray-lighter;
+  }
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .vehicle-states,
+  .hangar-groups {
+    justify-content: center;
+  }
+}

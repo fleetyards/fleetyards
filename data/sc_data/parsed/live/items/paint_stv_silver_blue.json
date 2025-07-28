@@ -1,0 +1,21 @@
+{
+  "key": "Paint_STV_Silver_Blue",
+  "ref": "b9778ac5-26bf-4876-ae49-deabf83ab9ff",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ca4c0b26-6538-4ce1-96c5-f22a2bcbbd5f",
+  "name": "STV Blue Steel Livery",
+  "short_name": "STV Blue Steel Livery",
+  "description": "Ground adventures never looked so good with the Blue Steel livery, which gives the STV a sleek silver finish trimmed with vibrant blue.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

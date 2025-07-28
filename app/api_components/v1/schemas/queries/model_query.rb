@@ -22,7 +22,10 @@ module V1
             lengthLteq: {type: :number},
             manufacturerIn: {type: :array, items: {type: :string}},
             nameCont: {type: :string},
+            nameEq: {type: :string},
+            slugEq: {type: :string},
             nameIn: {type: :array, items: {type: :string}},
+            slugIn: {type: :array, items: {type: :string}},
             nameOrDescriptionCont: {type: :string},
             onSaleEq: {type: :boolean},
             pledgePriceGteq: {type: :number},
@@ -35,7 +38,8 @@ module V1
             searchCont: {type: :string},
             sizeIn: {type: :array, items: {type: :string}},
             willItFit: {type: :string, format: :uuid},
-            sorts: {oneOf: [{
+            withCargo: {type: :boolean},
+            sorts: {anyOf: [{
               type: :array, items: {"$ref": "#/components/schemas/ModelSortEnum"}
             }, {
               "$ref": "#/components/schemas/ModelSortEnum"

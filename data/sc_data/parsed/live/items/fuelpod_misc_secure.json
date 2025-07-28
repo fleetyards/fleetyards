@@ -1,0 +1,24 @@
+{
+  "key": "FuelPod_MISC_Secure",
+  "ref": "19e17c79-b73b-4a8c-b0a8-6ed4d134ffdc",
+  "category": "utility",
+  "type": "ExternalFuelTank",
+  "sub_type": null,
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "GSX-HP",
+  "short_name": null,
+  "description": "Manufacturer: Stor*All\\nItem Type: Fuel Pod\\nFlow Rate: 0.9 SCU/s\\nCapacity: 70 SCU\\n\\nBy using a triple reinforced outer plating rated far above industry standards, the GSX-HP fuel pod from Stor*All can handle higher pressures than your typical storage options. This allows you to transport more fuel and improves the safe flow rates of whichever nozzle you use.\\n",
+  "inventory_consumption": {
+    "micro_scu": 50036534.0,
+    "dimensions": {
+      "x": 10.99875,
+      "y": 8.516968,
+      "z": 10.6829
+    }
+  },
+  "durability": {
+    "health": 15000.0
+  }
+}

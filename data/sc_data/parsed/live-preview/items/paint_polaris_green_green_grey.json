@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Polaris_Green_Green_Grey",
+  "ref": "566f7415-fc71-4141-9b89-a0eb1a7f16c8",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "575c7545-dee7-489b-9b6b-85c703adfbc4",
+  "name": "Polaris Apex Livery",
+  "short_name": null,
+  "description": "Equip the Apex livery to give the mighty Polaris a distinct green and grey look.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hercules_Sylvan_Green",
+  "ref": "c665ffbe-8dac-4eda-8be2-c0ebcb8e151d",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "0a918c9b-47f4-4932-a5c5-387e361faa19",
+  "name": "Hercules Starlifter Sylvan Livery",
+  "short_name": null,
+  "description": "The Sylvan livery for the Hercules Starlifter is a distinct, no-nonsense matte green with light grey accents.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

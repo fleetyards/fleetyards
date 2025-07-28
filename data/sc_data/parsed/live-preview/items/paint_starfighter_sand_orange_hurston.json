@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Starfighter_Sand_Orange_Hurston",
+  "ref": "1416bcd2-0524-4ce3-8bd5-be682043cd3e",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a890eacb-dedd-4806-9517-576bd3d1db92",
+  "name": "Ares Star Fighter Central Tower Livery",
+  "short_name": null,
+  "description": "Give the Ares Star Fighter a dramatic new look with the Central Tower livery. The orange and black color scheme is inspired by the furnaces of industry powering Lorville, and also features a representation of the landing zone's iconic Central Headquarters and Shared Services Center, aka Central Tower.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

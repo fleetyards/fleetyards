@@ -1,0 +1,21 @@
+{
+  "key": "Paint_HoverQuad_Lightspeed_Orange_Yellow",
+  "ref": "7795a2b5-9fc8-4712-a23b-d6bb27a640a9",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "082d4671-6a79-4436-b65b-41c285e72c6d",
+  "name": "HoverQuad Lightspeed Livery",
+  "short_name": null,
+  "description": "Speed across picturesque landscapes in this sublime HoverQuad Lightspeed livery, which is orange with yellow flourishes.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

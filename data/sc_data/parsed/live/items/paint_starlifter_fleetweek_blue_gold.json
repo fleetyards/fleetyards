@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Starlifter_Fleetweek_Blue_Gold",
+  "ref": "cec048b6-8d9a-4e8d-818d-d909f65121ba",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ef646d32-2f24-4519-ab3f-0b445240222e",
+  "name": "Hercules Starlifter Invictus Blue and Gold Livery",
+  "short_name": null,
+  "description": "Featuring a vibrant blue base color and gold highlights, the Invictus Blue and Gold livery will give your Starlifter a striking style.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

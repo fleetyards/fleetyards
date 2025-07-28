@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_VNCL_Blade",
+  "ref": "c2037b91-9793-47b9-99f6-8ad97ca6cafc",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SELF STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "scm_speed": 225.0,
+    "scm_speed_boosted": 500.0,
+    "reverse_speed_boosted": 260.0,
+    "max_speed": 1200.0,
+    "angular_velocity": {
+      "pitch": 55.0,
+      "yaw": 65.0,
+      "roll": 200.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 66.0,
+      "yaw": 78.0,
+      "roll": 240.0
+    }
+  }
+}

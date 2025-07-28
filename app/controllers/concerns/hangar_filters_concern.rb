@@ -2,15 +2,7 @@
 
 module HangarFiltersConcern
   private def vehicle_query_params
-    @vehicle_query_params ||= query_params(
-      :search_cont, :name_cont, :model_name_or_model_description_cont, :on_sale_eq,
-      :public_eq, :length_gteq, :length_lteq, :beam_gteq, :beam_lteq, :height_gteq, :height_lteq,
-      :price_gteq, :price_lteq, :pledge_price_gteq, :pledge_price_lteq, :loaner_eq, :bought_via_eq,
-      :will_it_fit,
-      manufacturer_in: [], classification_in: [], focus_in: [],
-      size_in: [], price_in: [], pledge_price_in: [],
-      production_status_in: [], hangar_groups_in: [], hangar_groups_not_in: []
-    )
+    @vehicle_query_params ||= params.permit(q: [ParamsHelper.new("v1/schema.yaml").to_params("HangarQuery")]).fetch(:q, {})
   end
 
   private def will_it_fit?(scope)

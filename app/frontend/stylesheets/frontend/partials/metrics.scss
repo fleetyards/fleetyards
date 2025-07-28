@@ -49,6 +49,12 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+
+    li {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
   }
 }
 

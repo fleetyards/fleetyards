@@ -1,0 +1,24 @@
+{
+  "key": "ARMR_VNCL_Blade",
+  "ref": "3e079c98-45c0-4d08-b647-313fe1d1c584",
+  "category": "armor",
+  "type": "Armor",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4668760a-d8a1-48d0-be4d-42304b702de0",
+  "name": "Blade Ship Armor",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  }
+}

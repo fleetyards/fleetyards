@@ -3,12 +3,12 @@
 module Api
   module V1
     class ModelPaintsController < ::Api::BaseController
+      skip_verify_authorized only: %i[index]
+
       before_action :authenticate_user!, only: []
       after_action -> { pagination_header(:paints) }, only: %i[index]
 
       def index
-        authorize! :index, :api_models
-
         scope = ModelPaint.visible.active
 
         model_paint_query_params["sorts"] = "name asc"
@@ -21,10 +21,10 @@ module Api
       end
 
       private def model_paint_query_params
-        @model_paint_query_params ||= query_params(
+        @model_paint_query_params ||= params.permit(q: [
           :name_cont, :id_eq, :model_slug_eq,
           name_in: [], id_not_in: [], id_in: []
-        )
+        ]).fetch(:q, {})
       end
     end
   end

@@ -1,0 +1,2126 @@
+{
+  "key": "RSI_Bengal_PU_AI_UEE_FleetWeek_2021",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "RSI Bengal Carrier",
+  "description": "<-=MISSING=->",
+  "career": "Capital Ship",
+  "role": "Combat",
+  "insurance": {
+    "base_wait_time_minutes": "33.33",
+    "mandatory_wait_time_minutes": "3.33",
+    "base_expediting_fee": "333"
+  },
+  "mass": 113000000.0,
+  "metrics": {
+    "x": 0.0,
+    "y": 0.0,
+    "z": 0.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_door_front",
+      "ref": null,
+      "key": "Door_Ship_Exterior_RSI_Bengal_Front"
+    },
+    {
+      "name": "hardpoint_door_rear",
+      "ref": null,
+      "key": "Door_Ship_Exterior_RSI_Bengal_Rear"
+    },
+    {
+      "name": "hardpoint_landing_system",
+      "ref": null,
+      "key": "Default_LandingSystem"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_RSI_Bengal"
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Seat_Pilot"
+    },
+    {
+      "name": "hardpoint_seat_access_pilot",
+      "ref": null,
+      "key": "RSI_Bengal_SeatAccess_Pilot"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_Default"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_powerplant_01",
+      "ref": null,
+      "key": "POWR_RSI_S04_Bengal_SCItem"
+    },
+    {
+      "name": "hardpoint_powerplant_02",
+      "ref": null,
+      "key": "POWR_RSI_S04_Bengal_SCItem"
+    },
+    {
+      "name": "hardpoint_powerplant_03",
+      "ref": null,
+      "key": "POWR_RSI_S04_Bengal_SCItem"
+    },
+    {
+      "name": "hardpoint_powerplant_04",
+      "ref": null,
+      "key": "POWR_RSI_S04_Bengal_SCItem"
+    },
+    {
+      "name": "hardpoint_powerplant_05",
+      "ref": null,
+      "key": "POWR_RSI_S04_Bengal_SCItem"
+    },
+    {
+      "name": "hardpoint_powerplant_06",
+      "ref": null,
+      "key": "POWR_RSI_S04_Bengal_SCItem"
+    },
+    {
+      "name": "hardpoint_powerplant_07",
+      "ref": null,
+      "key": "POWR_RSI_S04_Bengal_SCItem"
+    },
+    {
+      "name": "hardpoint_powerplant_08",
+      "ref": null,
+      "key": "POWR_RSI_S04_Bengal_SCItem"
+    },
+    {
+      "name": "hardpoint_powerplant_09",
+      "ref": null,
+      "key": "POWR_RSI_S04_Bengal_SCItem"
+    },
+    {
+      "name": "hardpoint_powerplant_10",
+      "ref": null,
+      "key": "POWR_RSI_S04_Bengal_SCItem"
+    },
+    {
+      "name": "hardpoint_fuel_tank_left",
+      "ref": null,
+      "key": "HTNK_RSI_Bengal"
+    },
+    {
+      "name": "hardpoint_fuel_tank_middle",
+      "ref": null,
+      "key": "HTNK_RSI_Bengal"
+    },
+    {
+      "name": "hardpoint_fuel_tank_right",
+      "ref": null,
+      "key": "HTNK_RSI_Bengal"
+    },
+    {
+      "name": "hardpoint_fuel_intake_left",
+      "ref": null,
+      "key": "INTK_Default"
+    },
+    {
+      "name": "hardpoint_fuel_intake_right",
+      "ref": null,
+      "key": "INTK_Default"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_cooler_01",
+      "ref": null,
+      "key": "COOL_RSI_S04_Bengal_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_02",
+      "ref": null,
+      "key": "COOL_RSI_S04_Bengal_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_03",
+      "ref": null,
+      "key": "COOL_RSI_S04_Bengal_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_04",
+      "ref": null,
+      "key": "COOL_RSI_S04_Bengal_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_05",
+      "ref": null,
+      "key": "COOL_RSI_S04_Bengal_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_06",
+      "ref": null,
+      "key": "COOL_RSI_S04_Bengal_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_07",
+      "ref": null,
+      "key": "COOL_RSI_S04_Bengal_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_08",
+      "ref": null,
+      "key": "COOL_RSI_S04_Bengal_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_09",
+      "ref": null,
+      "key": "COOL_RSI_S04_Bengal_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_10",
+      "ref": null,
+      "key": "COOL_RSI_S04_Bengal_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_RSI_Bengal"
+    },
+    {
+      "name": "hardpoint_shield_generator",
+      "ref": null,
+      "key": "SHLD_GODI_S04_Bengal_SCItem"
+    },
+    {
+      "name": "hardpoint_thruster_retro_top_left",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Retro_Top_Left"
+    },
+    {
+      "name": "hardpoint_thruster_retro_top_right",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Retro_Top_Right"
+    },
+    {
+      "name": "hardpoint_thruster_retro_bottom_left",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Retro_Main_Left"
+    },
+    {
+      "name": "hardpoint_thruster_retro_bottom_right",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Retro_Main_Right"
+    },
+    {
+      "name": "hardpoint_thruster_front_left_top",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_front_right_top",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_front_left_bottom",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_front_right_bottom",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_mid_front_left_bottom",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_mid_front_right_bottom",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_mid_left_top",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_mid_right_top",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_mid_left_bottom",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_mid_right_bottom",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_mid_rear_left_top",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_mid_rear_right_top",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_rear_left_top",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_rear_right_top",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_rear_left_bottom",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_rear_right_bottom",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_AEGS_S04_Javelin_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": null,
+          "key": "JDRV_RSI_S04_Bengal_SCItem"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_fuel_tank",
+      "ref": null,
+      "key": "QTNK_RSI_Bengal"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_main_turret",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_Main_Gun"
+    },
+    {
+      "name": "hardpoint_missile_turret_01",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_missile_turret_04",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_missile_turret_06",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_MissileLauncher"
+    },
+    {
+      "name": "hardpoint_missile_turret_08",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_MissileLauncher"
+    },
+    {
+      "name": "hardpoint_missile_turret_09",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_missile_turret_10",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_missile_turret_11",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_MissileLauncher"
+    },
+    {
+      "name": "hardpoint_missile_turret_12",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_MissileLauncher"
+    },
+    {
+      "name": "hardpoint_ai_turret_01",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_STS_Turret"
+    },
+    {
+      "name": "hardpoint_ai_turret_controller_01",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_ai_turret_02",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_STS_Turret"
+    },
+    {
+      "name": "hardpoint_ai_turret_controller_02",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_ai_turret_03",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_STS_Turret"
+    },
+    {
+      "name": "hardpoint_ai_turret_controller_03",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_ai_turret_04",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_STS_Turret"
+    },
+    {
+      "name": "hardpoint_ai_turret_controller_04",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_ai_turret_05",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_STS_Turret"
+    },
+    {
+      "name": "hardpoint_ai_turret_controller_05",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_ai_turret_06",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_STS_Turret"
+    },
+    {
+      "name": "hardpoint_ai_turret_controller_06",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_ai_turret_07",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_STS_Turret"
+    },
+    {
+      "name": "hardpoint_ai_turret_controller_07",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_ai_turret_08",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_STS_Turret"
+    },
+    {
+      "name": "hardpoint_ai_turret_controller_08",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_ai_turret_09",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_STS_Turret"
+    },
+    {
+      "name": "hardpoint_ai_turret_controller_09",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_ai_turret_10",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_STS_Turret"
+    },
+    {
+      "name": "hardpoint_ai_turret_controller_10",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_ai_turret_11",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_STS_Turret"
+    },
+    {
+      "name": "hardpoint_ai_turret_controller_11",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_ai_turret_12",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_STS_Turret"
+    },
+    {
+      "name": "hardpoint_ai_turret_controller_12",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_ai_turret_13",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_STS_Turret"
+    },
+    {
+      "name": "hardpoint_ai_turret_controller_13",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_ai_turret_14",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_STS_Turret"
+    },
+    {
+      "name": "hardpoint_ai_turret_controller_14",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_ai_turret_15",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_STS_Turret"
+    },
+    {
+      "name": "hardpoint_ai_turret_controller_15",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_ai_turret_16",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_STS_Turret"
+    },
+    {
+      "name": "hardpoint_ai_turret_controller_16",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_ai_turret_17",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_STS_Turret"
+    },
+    {
+      "name": "hardpoint_ai_turret_controller_17",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_ai_turret_18",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_STS_Turret"
+    },
+    {
+      "name": "hardpoint_ai_turret_controller_18",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_ai_turret_19",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_STS_Turret"
+    },
+    {
+      "name": "hardpoint_ai_turret_controller_19",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_ai_turret_20",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_STS_Turret"
+    },
+    {
+      "name": "hardpoint_ai_turret_controller_20",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_ai_turret_21",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_STS_Turret"
+    },
+    {
+      "name": "hardpoint_ai_turret_controller_21",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_ai_turret_22",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_STS_Turret"
+    },
+    {
+      "name": "hardpoint_ai_turret_controller_22",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_01",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_controller_01",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_02",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_controller_02",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_03",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_controller_03",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_04",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_controller_04",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_05",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_controller_05",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_06",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_controller_06",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_07",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_controller_07",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_08",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_controller_08",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_09",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_controller_09",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_10",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_controller_10",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_11",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_controller_11",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_12",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_controller_12",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_01",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_01",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_02",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_02",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_03",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_03",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_04",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_04",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_05",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_05",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_06",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_06",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_07",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_07",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_08",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_08",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_09",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_09",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_10",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_10",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_11",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_11",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_12",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_12",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_13",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_13",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_14",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_14",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_15",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_15",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_16",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_16",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_17",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_17",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_18",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_18",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_19",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_19",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_20",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_20",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_21",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_21",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_22",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_22",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_23",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_23",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_24",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_24",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_25",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_25",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_26",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_26",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_29",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_29",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_30",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_30",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_31",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_31",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_32",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_32",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_33",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_33",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_34",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_34",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_35",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_35",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_36",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_36",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_37",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_37",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_38",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
+    },
+    {
+      "name": "hardpoint_AA_turret_controller_38",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_01",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_01",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_01"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_02",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_02",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_02"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_03",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_03",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_03"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_04",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_04",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_04"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_05",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_05",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_05"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_06",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_06",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_06"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_07",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_07",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_07"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_08",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_08",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_08"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_09",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_09",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_09"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_10",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_10",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_10"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_11",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_11",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_11"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_12",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_12",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_12"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_13",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_13",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_13"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_14",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_14",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_14"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_15",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_15",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_15"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_16",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_16",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_16"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_17",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_17",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_17"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_18",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_18",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_18"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_19",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_19",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_19"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_20",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_20",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_20"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_21",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_21",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_21"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_22",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_22",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_22"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_23",
+      "ref": null,
+      "key": "AIModule_Probe_Comms"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_23",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_23"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_24",
+      "ref": null,
+      "key": "AIModule_Probe_Comms"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_24",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_24"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_25",
+      "ref": null,
+      "key": "AIModule_Probe_Comms"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_25",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_25"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_26",
+      "ref": null,
+      "key": "AIModule_Probe_Comms"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_26",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_26"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_29",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_29",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_29"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_30",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_30",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_30"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_31",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_31",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_31"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_32",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_32",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_32"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_33",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_33",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_33"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_34",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_34",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_34"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_35",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_35",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_35"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_36",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_36",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_36"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_37",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_37",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_37"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_38",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AA_turret_seat_access_38",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AA_Turret_Seat_Access_38"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_01",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_01",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_01"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_02",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_02",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_02"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_03",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_03",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_03"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_04",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_04",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_04"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_05",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_05",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_05"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_06",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_06",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_06"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_07",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_07",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_07"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_08",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_08",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_08"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_09",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_09",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_09"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_10",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_10",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_10"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_11",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_11",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_11"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_12",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_12",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_12"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_13",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_13",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_13"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_14",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_14",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_14"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_15",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_15",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_15"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_16",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_16",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_16"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_17",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_17",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_17"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_18",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_18",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_18"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_19",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_19",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_19"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_20",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_20",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_20"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_21",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_21",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_21"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_22",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_AI_turret_seat_access_22",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_AI_Turret_Seat_Access_22"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_01",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_access_01",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_01"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_02",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_access_02",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_02"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_03",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_access_03",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_03"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_04",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_access_04",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_04"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_05",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_access_05",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_05"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_06",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_access_06",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_06"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_07",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_access_07",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_07"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_08",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_access_08",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_08"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_09",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_access_09",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_09"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_10",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_access_10",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_10"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_11",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_access_11",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_11"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_12",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_access_12",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_12"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_13",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_access_13",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_13"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_14",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_access_14",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_14"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_15",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_access_15",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_15"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_16",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_seat_access_16",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Phalanx_Turret_Seat_Access_16"
+    },
+    {
+      "name": "hardpoint_main_turret_seat_01",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_main_turret_seat_access_01",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Main_Turret_Seat_Access_01"
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": null,
+      "key": "ARMR_RSI_Bengal"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_13",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_controller_13",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_14",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_controller_14",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_15",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_controller_15",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_16",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
+    },
+    {
+      "name": "hardpoint_phalanx_turret_controller_16",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_thruster_main_small_upper_top_left",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Main_Small"
+    },
+    {
+      "name": "hardpoint_thruster_main_small_upper_bottom_left",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Main_Small"
+    },
+    {
+      "name": "hardpoint_thruster_main_small_lower_top_left",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Main_Small"
+    },
+    {
+      "name": "hardpoint_thruster_main_small_lower_bottom_left",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Main_Small"
+    },
+    {
+      "name": "hardpoint_thruster_main_small_upper_top_right",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Main_Small"
+    },
+    {
+      "name": "hardpoint_thruster_main_small_upper_bottom_right",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Main_Small"
+    },
+    {
+      "name": "hardpoint_thruster_main_small_lower_top_right",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Main_Small"
+    },
+    {
+      "name": "hardpoint_thruster_main_small_lower_bottom_right",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Main_Small"
+    },
+    {
+      "name": "hardpoint_thruster_main_medium_outer_left",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Main_Medium"
+    },
+    {
+      "name": "hardpoint_thruster_main_medium_inner_left",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Main_Medium"
+    },
+    {
+      "name": "hardpoint_thruster_main_medium_upper_left",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Main_Medium"
+    },
+    {
+      "name": "hardpoint_thruster_main_medium_outer_right",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Main_Medium"
+    },
+    {
+      "name": "hardpoint_thruster_main_medium_inner_right",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Main_Medium"
+    },
+    {
+      "name": "hardpoint_thruster_main_medium_upper_right",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Main_Medium"
+    },
+    {
+      "name": "hardpoint_thruster_main_lage_upper_left",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Main_Large"
+    },
+    {
+      "name": "hardpoint_thruster_main_lage_lower_left",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Main_Large"
+    },
+    {
+      "name": "hardpoint_thruster_main_lage_upper_right",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Main_Large"
+    },
+    {
+      "name": "hardpoint_thruster_main_lage_lower_right",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Main_Large"
+    },
+    {
+      "name": "hardpoint_aux_hangar_door",
+      "ref": null,
+      "key": "RSI_Bengal_Aux_Hangar_Door"
+    },
+    {
+      "name": "hardpoint_main_turret_controller",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_thruster_front_left_side",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_front_right_side",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_rear_right_side",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_rear_left_side",
+      "ref": null,
+      "key": "RSI_Bengal_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_medium_turret_01",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_Medium"
+    },
+    {
+      "name": "hardpoint_medium_turret_02",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_Medium"
+    },
+    {
+      "name": "hardpoint_medium_turret_03",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_Medium"
+    },
+    {
+      "name": "hardpoint_medium_turret_04",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_Medium"
+    },
+    {
+      "name": "hardpoint_medium_turret_05",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_Medium"
+    },
+    {
+      "name": "hardpoint_medium_turret_06",
+      "ref": null,
+      "key": "RSI_Bengal_SCItem_Remote_Turret_Medium"
+    },
+    {
+      "name": "hardpoint_medium_turret_controller_01",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_medium_turret_controller_02",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_medium_turret_controller_03",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_medium_turret_controller_04",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_medium_turret_controller_06",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_medium_turret_seat_01",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_medium_turret_seat_02",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_medium_turret_seat_03",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_medium_turret_seat_04",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_medium_turret_seat_05",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_medium_turret_seat_06",
+      "ref": null,
+      "key": "AIModule_Automated_PU_CIV"
+    },
+    {
+      "name": "hardpoint_medium_turret_seat_access_01",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_medium_turret_seat_access_02",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_medium_turret_seat_access_03",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_medium_turret_seat_access_04",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_medium_turret_seat_access_05",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_medium_turret_seat_access_06",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": "LFSP_S04_RSI_Bengal"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "",
+      "ref": null,
+      "key": null
+    }
+  ]
+}

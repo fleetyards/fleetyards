@@ -1,0 +1,93 @@
+.vehicle-panel {
+  &--add-to-hangar-button,
+  &--context-menu-button {
+    font-size: 18px;
+
+    > :first-child {
+      font-size: 18px;
+    }
+  }
+
+  :deep(.panel-heading-title-main) {
+    justify-content: flex-start;
+  }
+
+  &-flagship-icon {
+    color: $gold;
+  }
+
+  &-loaner-label {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $success;
+    border-radius: 10px 0 0 10px;
+
+    i,
+    svg {
+      color: #fff;
+    }
+  }
+
+  &-addons {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $gray;
+    border-radius: 0 10px 0 0;
+    cursor: pointer;
+
+    &-selected {
+      background-color: $success;
+    }
+
+    i,
+    svg {
+      color: #fff;
+    }
+  }
+
+  &-hangar-groups {
+    position: absolute;
+    right: 5px;
+    bottom: 0;
+  }
+}
+
+// Tailwind CSS Placeholder Classes
+.flex {
+  display: flex;
+}
+
+.items-baseline {
+  align-items: baseline;
+}
+
+.gap-1 {
+  gap: 0.25rem;
+}
+
+.truncate {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.max-w-full {
+  max-width: 100%;
+}
+
+.whitespace-nowrap {
+  white-space: nowrap;
+}

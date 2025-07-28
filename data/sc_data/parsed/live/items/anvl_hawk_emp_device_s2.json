@@ -1,0 +1,71 @@
+{
+  "key": "ANVL_Hawk_EMP_Device_S2",
+  "ref": "6557820b-a5d1-4630-80aa-44d41058e488",
+  "category": "weapons",
+  "type": "EMP",
+  "sub_type": null,
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "TroMag Burst Generator",
+  "short_name": "TroMag Burst Generator",
+  "description": "Manufacturer: MaxOx\\nItem Type: Burst Generator\\nSize: 1\\nDamage Type: EMP\\n\\nThe TroMag from MaxOx is a well-designed and reliable EMP-focused burst generator. Its popularity has risen over the years as pilots look for alternatives to Behring’s REP-8. The TroMag boasts a faster charge time than their main competitor but has a smaller effective radius, leaving pilots to decide whether they prefer speed or size.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 150.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 6.0,
+    "StartIRTemperature": 250.0,
+    "OverpowerHeat": 0.0,
+    "OverclockThresholdMinHeat": 0.0,
+    "OverclockThresholdMaxHeat": 0.0,
+    "ThermalEnergyBase": 37333.0,
+    "ThermalEnergyDraw": 40000.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.5,
+    "Mass": 1200.0,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 64.45,
+    "MaxTemperature": 700.0,
+    "OverheatTemperature": 650.0,
+    "RecoveryTemperature": 550.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "power_connection": {
+    "power_base": 250.0,
+    "power_draw": 750.0,
+    "time_to_reach_draw_request": 5.0,
+    "safeguard_priority": 35.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 1.0,
+    "is_overclockable": 1.0,
+    "overclock_threshold_min": 0.3,
+    "overclock_threshold_max": 0.5,
+    "overpower_performance": 0.1,
+    "overclock_performance": 0.2,
+    "power_to_em": 2.0,
+    "decay_rate_of_em": 0.15
+  },
+  "type_data": {
+    "charge_time": 12.0,
+    "distortion_damage": 2475.0,
+    "emp_radius": 750.0,
+    "min_emp_radius": 150.0,
+    "phys_radius": 400.0,
+    "min_phys_radius": 250.0,
+    "pressure": 0.0,
+    "unleash_time": 0.75,
+    "cooldown_time": 12.0
+  }
+}

@@ -10,17 +10,18 @@
 #  logo         :string(255)
 #  long_name    :string
 #  name         :string(255)
+#  sc_ref       :string
 #  slug         :string(255)
 #  created_at   :datetime
 #  updated_at   :datetime
 #  rsi_id       :integer
 #
 origin:
-  name: "Origin"
+  name: "Origin Jumpworks"
   slug: "origin"
 
 rsi:
-  name: "RSI"
+  name: "Roberts Space Industries"
   slug: "rsi"
 
 kastak:
@@ -42,3 +43,4 @@ aegis:
 kruger:
   name: "Kruger Intergalactic"
   slug: "kruger"
+  code: "KRI"

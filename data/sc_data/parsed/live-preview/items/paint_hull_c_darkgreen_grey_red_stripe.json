@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hull_C_DarkGreen_Grey_Red_Stripe",
+  "ref": "72e521ea-238c-4b89-93b8-6946f3b5e8f6",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "0c793674-ba8a-4ebe-a52c-176180167a15",
+  "name": "Hull C Trailblazer Livery",
+  "short_name": null,
+  "description": "The Trailblazer livery creates a cool, understated style for your Hull C with grey on top and dark red on the bottom.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

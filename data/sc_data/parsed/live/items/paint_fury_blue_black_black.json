@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Fury_Blue_Black_Black",
+  "ref": "a8e62bfa-da71-46b5-911f-e95ca9b59201",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cb69279c-a648-4724-85df-eaafa94f2dcc",
+  "name": "Fury Waverider Livery",
+  "short_name": null,
+  "description": "The Waverider livery gives the Fury a distinct blue finish with black highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

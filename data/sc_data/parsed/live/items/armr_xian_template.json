@@ -1,0 +1,24 @@
+{
+  "key": "ARMR_XIAN_Template",
+  "ref": "af83ccae-41a7-4843-bd94-ad0ae368aa1a",
+  "category": "armor",
+  "type": "Armor",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "70ac7035-10a0-4bbb-90b0-9bddf047b504",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  }
+}

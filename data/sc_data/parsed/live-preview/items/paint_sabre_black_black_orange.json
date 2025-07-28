@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Sabre_Black_Black_Orange",
+  "ref": "82198d1d-47ab-4404-8f62-f63049289b07",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "c0e72286-a591-4c80-ab13-b40223e3759a",
+  "name": "Sabre Harvest Livery",
+  "short_name": null,
+  "description": "The Harvest livery for the Sabre features orange highlights that stand in bold contrast to the black base paint.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

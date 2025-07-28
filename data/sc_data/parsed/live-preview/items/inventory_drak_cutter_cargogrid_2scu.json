@@ -1,0 +1,40 @@
+{
+  "key": "DRAK_Cutter_CargoGrid_2SCU",
+  "ref": "be3fd36e-45b2-4660-a96f-e5d19867ee1a",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 1.25,
+      "y": 1.25,
+      "z": 2.5
+    },
+    "capacity": 2.0,
+    "max_container_size": {
+      "size": 1,
+      "dimensions": {
+        "x": 1.25,
+        "y": 1.25,
+        "z": 1.25
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1.0
+      },
+      "max": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1.0
+      }
+    }
+  }
+}

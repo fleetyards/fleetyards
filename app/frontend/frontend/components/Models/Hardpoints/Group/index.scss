@@ -1,0 +1,11 @@
+.hardpoint-group {
+  &__label {
+    font-size: 20px;
+    font-family: "Orbitron", tahoma, sans-serif;
+    text-transform: uppercase;
+  }
+
+  &__inner {
+    padding: 20px 20px 10px;
+  }
+}

@@ -4,7 +4,7 @@ on:
   workflow_call:
 
 jobs:
-  ruby-tests:
+  ruby-api-tests:
     runs-on: ubuntu-latest
 
     env:
@@ -43,7 +43,7 @@ jobs:
         ci_node_index: [0, 1, 2, 3]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true

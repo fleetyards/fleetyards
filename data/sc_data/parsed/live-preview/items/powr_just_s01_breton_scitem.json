@@ -1,0 +1,60 @@
+{
+  "key": "POWR_JUST_S01_Breton_SCItem",
+  "ref": "e533d75c-9275-48e9-bc93-f49a2c113bc5",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d7cc897f-b760-4a73-93c0-27e23c52db0a",
+  "name": "Breton",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Juno Starwerk\\nSize: 1\\nGrade: A\\nClass: Industrial\\n\\nThe Breton embodies exactly what Juno Starwerk engineers wanted out of an industrial power plant — utilitarian, easy to repair and extremely powerful. You’ll be hard pressed to find a better balance of performance and durability from a unit this size.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 910.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 1.75,
+    "StartIRTemperature": 14.0,
+    "OverpowerHeat": 0.12,
+    "OverclockThresholdMinHeat": 0.38,
+    "OverclockThresholdMaxHeat": 0.81,
+    "ThermalEnergyBase": 82193.5,
+    "ThermalEnergyDraw": 86243.5,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.5,
+    "Mass": 923.4,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 185.0412,
+    "MaxTemperature": 700.0,
+    "OverheatTemperature": 600.0,
+    "RecoveryTemperature": 670.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 300.0,
+    "MisfireMaxTemperature": 900.0
+  },
+  "power_connection": {
+    "power_base": 0.0,
+    "power_draw": 4627.7,
+    "time_to_reach_draw_request": 21.25,
+    "safeguard_priority": 100.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 1.0,
+    "is_overclockable": 1.0,
+    "overclock_threshold_min": 0.136,
+    "overclock_threshold_max": 0.43,
+    "overpower_performance": 0.05,
+    "overclock_performance": 0.748,
+    "power_to_em": 0.634,
+    "decay_rate_of_em": 0.44
+  }
+}

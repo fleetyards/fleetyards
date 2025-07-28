@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Starfighter_IAE2951_Grey_White_Camo",
+  "ref": "34e27746-0cef-4eab-a97b-f24b04f3c452",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4eb9befe-dd85-40bf-8e43-51f6f4b92af6",
+  "name": "Ares Star Fighter Polar Camo Livery",
+  "short_name": null,
+  "description": "Modify your Ares Star Fighter with this white and grey camo livery specifically designed for the 2951 IAE.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

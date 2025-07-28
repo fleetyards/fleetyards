@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Starfighter_Lovestruck_Pink_Black",
+  "ref": "a6e4de77-54ec-486a-9210-c3f4a4d970dc",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2f2d49da-1547-48c9-bf11-dba059c683ec",
+  "name": "Ares Star Fighter Lovestruck Livery",
+  "short_name": null,
+  "description": "Inspired by the colors of Coramor, the Lovestruck livery is a stylish metallic pink and black look for your Ares Star Fighter.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

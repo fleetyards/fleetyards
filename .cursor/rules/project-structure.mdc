@@ -1,0 +1,69 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+
+# Project Structure
+
+This document outlines the overall structure of the Fleetyards application.
+
+## Directory Organization
+
+The application follows a Rails convention-based structure:
+
+```
+fleetyards/
+├── app/
+│   ├── models/                # ActiveRecord models
+│   ├── controllers/           # Rails controllers
+│   ├── views/                 # Rails views
+│   ├── helpers/               # View helpers
+│   ├── mailers/               # Mailers
+│   ├── jobs/                  # ActiveJob/Sidekiq jobs
+│   ├── policies/              # Authorization policies
+│   ├── uploaders/             # File uploaders
+│   ├── channels/              # ActionCable channels
+│   ├── api_components/        # API-specific code
+│   ├── lib/                   # Custom libraries
+│   ├── tasks/                 # Rake tasks
+│   └── frontend/              # Frontend code (Vue 3, TypeScript, SCSS)
+├── config/                    # Rails configuration
+├── db/                        # Database migrations, schema, seeds
+├── spec/                      # RSpec tests
+├── test/                      # Minitest tests
+├── bin/                       # Development scripts
+├── public/                    # Static files
+├── vendor/                    # Third-party code
+```
+
+## Key Components
+
+### Rails Application
+
+The application is built on Ruby on Rails, following standard Rails conventions.
+
+### Frontend
+
+The frontend is built using Vue.js 3 with TypeScript, following a component-based architecture. Key aspects include:
+
+- Vue 3 Single File Components with script setup
+- TypeScript for type safety
+- SCSS for styling
+- Tanstack Vue Query for API requests
+
+## Database Structure
+
+The application uses PostgreSQL as its primary database, with tables organized around the core entities:
+
+- Users and authentication
+- Fleets, vehicles, and related data
+- Content and materials
+
+## Docker Setup
+
+The application can be run with Docker Compose for local development, providing PostgreSQL, Redis, and other services as needed.
+
+## API Structure
+
+The application provides RESTful APIs structured around the core entities, with proper versioning and documentation.

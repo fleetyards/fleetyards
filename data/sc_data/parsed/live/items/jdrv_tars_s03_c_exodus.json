@@ -1,0 +1,39 @@
+{
+  "key": "JDRV_TARS_S03_C_Exodus",
+  "ref": "42104f98-b52f-4af6-a370-98c9f1c30e92",
+  "category": "jumpdrive",
+  "type": "JumpDrive",
+  "sub_type": "JumpDrive",
+  "size": "3",
+  "grade": "3",
+  "manufacturer_ref": "2b25a2dd-47ea-4ab0-8711-03d34be214b1",
+  "name": "Exodus",
+  "short_name": null,
+  "description": "Item Type: Jump Module\\nManufacturer: Tarsus\\nSize: 3\\nGrade: C\\nClass: Civilian\\n\\nJourney across the ‘verse with Tarsus’ Exodus jump module, offering greater reliability to help take your wanderlust to new heights.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 760.0
+  },
+  "power_connection": {
+    "power_base": 40.0,
+    "power_draw": 400.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 0.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.0,
+    "overclock_threshold_max": 0.0,
+    "overpower_performance": 0.0,
+    "overclock_performance": 0.0,
+    "power_to_em": 0.0,
+    "decay_rate_of_em": 0.15
+  }
+}

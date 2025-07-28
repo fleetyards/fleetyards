@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Intrepid_Black_Blue",
+  "ref": "ee6b42a1-df1d-47fa-b898-5ee452bc9868",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f808de28-c6cc-42f3-b7bb-f1aa79edfab6",
+  "name": "Intrepid Nocturne Livery",
+  "short_name": null,
+  "description": "Bold blue highlights pop against the black base paint of the Nocturne livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

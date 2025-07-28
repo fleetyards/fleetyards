@@ -1,0 +1,24 @@
+{
+  "key": "HTNK_ARGO_MPUV_1T",
+  "ref": "6f7ece2d-b429-4ea1-9393-6b7bb5c4775a",
+  "category": "fueltanks",
+  "type": "FuelTank",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Internal Tank",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "capacity": 1.5
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "SoftLock_EngineeringScreen_Template",
+  "ref": "26cd663d-9c7b-4ef6-8d08-e75ef0c43695",
+  "category": "utility",
+  "type": "SeatDashboard",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Screen",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

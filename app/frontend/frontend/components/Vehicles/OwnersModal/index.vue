@@ -49,15 +49,15 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router/composables";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
-import Loader from "@/frontend/core/components/Loader/index.vue";
-import Avatar from "@/frontend/core/components/Avatar/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
-import { sortBy } from "@/frontend/lib/Helpers";
-import { uniqByField as uniqByFieldArray } from "@/frontend/utils/Array";
-import { FleetVehiclesCollection } from "@/frontend/api/collections/FleetVehicles";
+import { useRoute } from "vue-router";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import Modal from "@/shared/components/AppModal/Inner/index.vue";
+import Loader from "@/shared/components/Loader/index.vue";
+import Avatar from "@/shared/components/Avatar/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { sortBy, uniqByField as uniqByFieldArray } from "@/shared/utils/Array";
+import { type VehiclePublic } from "@/services/fyApi";
+// import { FleetVehiclesCollection } from "@/frontend/api/collections/FleetVehicles";
 
 type Props = {
   modelSlug: string;
@@ -68,27 +68,30 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 
-const collection: FleetVehiclesCollection = new FleetVehiclesCollection();
+// const collection: FleetVehiclesCollection = new FleetVehiclesCollection();
 
 const loading = ref(true);
 
 const sortedVehicles = computed(() =>
-  sortBy(collection.records, "username").filter(uniqByFieldArray("username")),
+  // sortBy(collection.records, "username").filter(uniqByFieldArray("username")),
+  sortBy([] as VehiclePublic[], "username").filter(
+    uniqByFieldArray("username"),
+  ),
 );
 
 const route = useRoute();
 
-const query = computed(() => (route.query.q || {}) as VehiclesFilter);
+// const query = computed(() => (route.query.q || {}) as VehiclesFilter);
 
-const loanerEq = computed(() => query.value.loanerEq as boolean | "only");
+// const loanerEq = computed(() => query.value.loanerEq as boolean | "only");
 
 onMounted(async () => {
-  await collection.findAll({
-    slug: props.fleetSlug,
-    filters: { modelSlugIn: [props.modelSlug], loanerEq: loanerEq.value },
-    grouped: false,
-    perPage: "all",
-  });
+  // await collection.findAll({
+  //   slug: props.fleetSlug,
+  //   filters: { modelSlugIn: [props.modelSlug], loanerEq: loanerEq.value },
+  //   grouped: false,
+  //   perPage: "all",
+  // });
 
   loading.value = false;
 });

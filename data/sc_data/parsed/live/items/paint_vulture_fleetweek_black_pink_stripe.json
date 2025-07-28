@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Vulture_Fleetweek_Black_Pink_Stripe",
+  "ref": "23b81875-0c0d-44c2-a4cd-d0b1dba85380",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "e74b45b1-ecb3-48a3-911d-39f8b2472f03",
+  "name": "Vulture Carnival Livery",
+  "short_name": null,
+  "description": "A working salvage crew needs any advantage they can get to be noticed in a busy environment. Enter the Carnival livery, a stunning pink hull with black highlights and distinctive stripes running down the ship's arms.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

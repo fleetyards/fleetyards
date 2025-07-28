@@ -1,0 +1,44 @@
+{
+  "key": "Door_RN_RoomConnector_Breachable_OpenReverse_Intrepid_CargoLift_Right",
+  "ref": "6072f417-62b1-4263-b3fb-1653bf27410e",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_cargo_grid",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_cargo_grid",
+      "key": "CRUS_Intrepid_CargoGrid",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1000.0
+  }
+}

@@ -3,22 +3,22 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/fleets/membership", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
-  let(:user) { nil }
-
-  let(:fleet) { fleets :starfleet }
+  let(:member) { create(:user) }
+  let(:user) { member }
+  let(:fleet) { create(:fleet) }
   let(:fleetSlug) { fleet.slug }
 
   before do
     sign_in(user) if user.present?
+
+    create(:fleet_membership, fleet:, user: member)
   end
 
   path "/fleets/{fleetSlug}/membership" do
     parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
 
     put("Update Membership") do
-      operationId "updateMembership"
+      operationId "updateFleetMembership"
       tags "FleetMembership"
       consumes "application/json"
       produces "application/json"
@@ -34,16 +34,6 @@ RSpec.describe "api/v1/fleets/membership", type: :request, swagger_doc: "v1/sche
       response(200, "successful") do
         schema "$ref": "#/components/schemas/FleetMember"
 
-        let(:user) { users :jeanluc }
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
-
         run_test! do |response|
           data = JSON.parse(response.body)
 
@@ -54,7 +44,6 @@ RSpec.describe "api/v1/fleets/membership", type: :request, swagger_doc: "v1/sche
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:user) { users :jeanluc }
         let(:fleetSlug) { "unknown-fleet" }
 
         run_test!
@@ -64,7 +53,7 @@ RSpec.describe "api/v1/fleets/membership", type: :request, swagger_doc: "v1/sche
         description "Fleet for this slug and user does not exist"
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:user) { users :worf }
+        let(:user) { create(:user) }
 
         run_test!
       end
@@ -72,7 +61,6 @@ RSpec.describe "api/v1/fleets/membership", type: :request, swagger_doc: "v1/sche
       response(400, "bad request") do
         schema "$ref": "#/components/schemas/ValidationError"
 
-        let(:user) { users :jeanluc }
         let(:input) do
           {
             shipsFilter: "unknown"
@@ -84,6 +72,8 @@ RSpec.describe "api/v1/fleets/membership", type: :request, swagger_doc: "v1/sche
 
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { nil }
 
         run_test!
       end

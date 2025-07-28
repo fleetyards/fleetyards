@@ -31,8 +31,32 @@
 #  index_fleets_on_fid  (fid) UNIQUE
 #
 class Fleet < ApplicationRecord
-  include UrlFieldHelper
+  include UrlFieldConcern
 
+  attr_accessor :update_reason, :update_reason_description, :author_id
+
+  AVAILABLE_PRIVILEGES = [
+    "fleet:update",
+    "fleet:update:images",
+    "fleet:update:description",
+    "fleet:delete",
+    "fleet:manage"
+  ].freeze
+
+  DEFAULT_PRIVILEGES = {
+    admin: ["fleet:manage"],
+    officer: ["fleet:update:description", "fleet:update:images"],
+    member: []
+  }.freeze
+
+  has_paper_trail meta: {
+    author_id: :author_id,
+    reason: :update_reason,
+    reason_description: :update_reason_description
+  }
+
+  has_many :fleet_roles,
+    dependent: :destroy
   has_many :fleet_memberships,
     dependent: :destroy
   has_many :fleet_invite_urls,
@@ -48,6 +72,7 @@ class Fleet < ApplicationRecord
     length: {minimum: 3},
     presence: true,
     format: {with: /\A[a-zA-Z0-9\-_]{3,}\Z/}
+
   validates :name,
     length: {minimum: 3},
     presence: true,
@@ -67,6 +92,7 @@ class Fleet < ApplicationRecord
   before_validation :update_urls
   before_validation :set_normalized_fields
   before_save :update_slugs
+  after_create :setup_default_roles!
   after_create :setup_admin_user
 
   def self.accepted
@@ -86,27 +112,22 @@ class Fleet < ApplicationRecord
     self.ts = ensure_valid_ts_url(self, :ts, force:)
   end
 
+  def setup_default_roles!
+    FleetRole.setup_default_roles!(self)
+  end
+
   def setup_admin_user
     fleet_memberships.create(
       user_id: created_by,
-      role: :admin,
+      fleet_role: fleet_roles.ranked.first,
       aasm_state: :accepted,
       accepted_at: Time.zone.now
     )
   end
 
-  def role(user_id)
-    membership = fleet_memberships.find_by(user_id:)
-
-    return if membership.blank? || !membership.accepted?
-
-    membership.role
-  end
-
-  def my_fleet?(user_id)
-    membership = fleet_memberships.find_by(user_id:)
-
-    membership.present? && membership.accepted?
+  def update_role_privileges
+    fleet.fleet_roles.each do |role|
+    end
   end
 
   def invitation(user_id)
@@ -138,6 +159,6 @@ class Fleet < ApplicationRecord
   end
 
   private def update_slugs
-    self.slug = SlugHelper.generate_slug(fid)
+    self.slug = generate_slug(fid)
   end
 end

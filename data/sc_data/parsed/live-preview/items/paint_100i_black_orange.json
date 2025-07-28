@@ -1,0 +1,21 @@
+{
+  "key": "Paint_100i_Black_Orange",
+  "ref": "bc3e5699-023e-4eda-95d9-202e48d7dd94",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d595e38d-4a65-45be-9d95-93b41c57d2a3",
+  "name": "100 Series Flame Livery",
+  "short_name": null,
+  "description": "Customize your Origin 100 series ship with this grey and orange livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

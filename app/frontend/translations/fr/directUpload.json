@@ -1,0 +1,16 @@
+{
+  "fr": {
+    "directUpload": {
+      "title": "Télécharger",
+      "dropzone": {
+        "textMultiple": "Déposez les fichiers ici pour télécharger",
+        "text": "Déposez le fichier ici pour télécharger",
+        "or": "ou",
+        "browse": "parcourir"
+      },
+      "previewImage": {
+        "remove": "Supprimer"
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Herald_Ghoulish_Green",
+  "ref": "f25b0d64-9ea2-4a32-bb62-b9eacc24d6a7",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ebb954de-e1dd-42c6-8a32-e676ad40f8d0",
+  "name": "Herald Ghoulish Green Livery",
+  "short_name": null,
+  "description": "Embrace Day of the Vara mischievousness and mayhem any time of the year with this custom Herald livery. It combines metallic green and black for a striking look that highlights the holiday's classic colors.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

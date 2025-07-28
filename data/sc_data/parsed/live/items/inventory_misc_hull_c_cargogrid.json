@@ -1,0 +1,50 @@
+{
+  "key": "MISC_Hull_C_CargoGrid",
+  "ref": "c43d8bab-d70f-4b2f-8099-27119918752d",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 10.0,
+      "y": 10.0,
+      "z": 7.5,
+      "scu": 384.0,
+      "max_container_size": {
+        "size": 32,
+        "dimensions": {
+          "x": 10.0,
+          "y": 2.5,
+          "z": 2.5
+        }
+      }
+    },
+    "min_container": {
+      "x": 2.5,
+      "y": 10.0,
+      "z": 2.5,
+      "scu": 32.0,
+      "max_container_size": {
+        "size": 32,
+        "dimensions": {
+          "x": 10.0,
+          "y": 2.5,
+          "z": 2.5
+        }
+      }
+    },
+    "max_container": {
+      "x": 2.5,
+      "y": 10.0,
+      "z": 2.5,
+      "scu": 32.0,
+      "max_container_size": {
+        "size": 32,
+        "dimensions": {
+          "x": 10.0,
+          "y": 2.5,
+          "z": 2.5
+        }
+      }
+    }
+  }
+}

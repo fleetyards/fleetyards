@@ -1,0 +1,21 @@
+{
+  "key": "Salvage_Modifier_Scraper_Small",
+  "ref": "81d7c828-42b2-46e8-b2e3-6798bdc32c23",
+  "category": "utility",
+  "type": "SalvageModifier",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "name": "Cinch Scraper Module",
+  "short_name": null,
+  "description": "Manufacturer: Greycat Industrial\\nItem Type: Scraper Module\\nExtraction Speed: 0.5/1.5\\nRadius: 1.5m\\nExtraction Efficiency: 90%\\n\\nThe Cinch is a precision scraper module that produces a small, focused beam perfect for extracting resources from every nook and cranny on a hull. While the beam's relatively small size requires more time to remove Recycled Material Composite (RMC), its excellent extraction rate will make the added effort worth it.",
+  "inventory_consumption": {
+    "micro_scu": 340.0,
+    "dimensions": {
+      "x": 0.0549,
+      "y": 0.0424,
+      "z": 0.133
+    }
+  }
+}

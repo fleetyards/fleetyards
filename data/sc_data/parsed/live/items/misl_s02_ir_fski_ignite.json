@@ -1,0 +1,24 @@
+{
+  "key": "MISL_S02_IR_FSKI_Ignite",
+  "ref": "d358cf84-9c78-4929-a2ad-b9caade81962",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "Missile",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "5f81335d-44e6-4104-841e-c5af9df06829",
+  "name": "Ignite II Missile",
+  "short_name": "Ignite II",
+  "description": "Manufacturer: Firestorm Kinetics\\nTracking Signal: Infrared\\nSize: 2\\n\\nThe Ignite is Firestorm's premier brand of heat-seeking strike missile that is the definition of Fire and Forget. Simply let it fly and enjoy the show.",
+  "inventory_consumption": {
+    "micro_scu": 31250.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 2.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 15.0
+  }
+}

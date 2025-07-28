@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Avenger_Invictus_Blue_Gold",
+  "ref": "6e8b2371-5381-4542-be9a-f6d97bb74612",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ca59737e-9f4c-492d-b712-187ee7e34b0e",
+  "name": "Avenger Invictus Blue and Gold Livery",
+  "short_name": null,
+  "description": "Show your support for the newest batch of Navy recruits by customizing your Avenger with this special Blue and Gold livery to commemorate the 2950 Invictus Launch Week.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

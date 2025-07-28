@@ -1,0 +1,65 @@
+{
+  "key": "APAR_BallisticScatterGun_S1_Shark",
+  "ref": "15596dea-2429-41fe-ac84-593bae703686",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "77f7999a-b23b-4812-94c2-09b5e15e1b0e",
+  "name": "Havoc Scattergun Sharkmouth Edition",
+  "short_name": "Havoc  SHK",
+  "description": "Manufacturer: Apocalypse Arms\\nItem Type: Ballistic Scattergun\\nSize: 1\\n\\nSow dread across the battlefield with the Havoc from Apocalypse Arms. This size one scattergun deals massive damage at close range, making it the perfect weapon for finishing a fight.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 0.801895,
+      "z": 1.105504
+    }
+  },
+  "durability": {
+    "health": 1550.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 3.1,
+    "StartIRTemperature": 250.0,
+    "OverpowerHeat": 0.76,
+    "OverclockThresholdMinHeat": 0.38,
+    "OverclockThresholdMaxHeat": 0.52,
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.5,
+    "Mass": 210.0,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 49.189,
+    "MaxTemperature": 700.0,
+    "OverheatTemperature": 650.0,
+    "RecoveryTemperature": 550.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "ammunition": {
+    "max_ammo_count": 80.0,
+    "initial_ammo_count": 80.0,
+    "max_restock_count": 3.0
+  },
+  "power_connection": {
+    "power_base": 30.0,
+    "power_draw": 50.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 20.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.23,
+    "overclock_threshold_max": 0.39,
+    "overpower_performance": 0.2,
+    "overclock_performance": 0.23,
+    "power_to_em": 0.36,
+    "decay_rate_of_em": 0.5
+  }
+}

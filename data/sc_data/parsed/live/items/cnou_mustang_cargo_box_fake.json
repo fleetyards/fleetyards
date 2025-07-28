@@ -1,0 +1,60 @@
+{
+  "key": "CNOU_Mustang_Cargo_Box_Fake",
+  "ref": "093e108b-111a-4106-8bf2-b6666d02eb0a",
+  "category": "module",
+  "type": "Cargo",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_front_door",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_rear_door",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_front_door",
+      "key": "SimpleOpenableObject_CNOU_Mustang_CargoBox_Door",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_rear_door",
+      "key": "SimpleOpenableObject_CNOU_Mustang_CargoBox_Door",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    }
+  ],
+  "durability": {
+    "health": 800.0
+  }
+}

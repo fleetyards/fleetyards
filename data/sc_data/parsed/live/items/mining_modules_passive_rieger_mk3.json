@@ -1,0 +1,24 @@
+{
+  "key": "Mining_Modules_Passive_Rieger_MK3",
+  "ref": "2ceb0de9-105b-434e-a152-8af1fd1660d0",
+  "category": "utility",
+  "type": "MiningModifier",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ab35f85f-919f-4457-8d58-4e885ea6c5c0",
+  "name": "Rieger-C3 Module",
+  "short_name": null,
+  "description": "Manufacturer: Shubin Interstellar\\nItem Type: Mining Module (Passive)\\n\\nMining Laser Power: 125%\\n\\nOptimal Charge Window Size: -1%\\n\\nThe Rieger-C3 Module boosts laser power but requires more precision to find an effective mining area.",
+  "inventory_consumption": {
+    "micro_scu": 7710.0,
+    "dimensions": {
+      "x": 0.202347,
+      "y": 0.2902367,
+      "z": 0.1640999
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "key": "Door_NoRoomConnector_CSV_ComponentBay_Lifesupport",
+  "ref": "2138df39-e8a9-4df5-a1e6-3c31895817cf",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "9e1f5a35-edcc-4d19-bede-08e2730043c5",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_lifesupport",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_lifesupport",
+      "key": "LFSP_TYDT_S00_ComfortAirLite",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1234.0
+  }
+}

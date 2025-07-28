@@ -3,16 +3,14 @@
 json.id component.id
 json.name component.name
 json.slug component.slug
+json.hidden component.hidden
 
 json.availability do
   json.bought_at do
-    json.array! component.bought_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
-  end
-  json.listed_at do
-    json.array! component.listed_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
+    json.array! component.bought_at, partial: "api/v1/item_prices/base", as: :item_price
   end
   json.sold_at do
-    json.array! component.sold_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
+    json.array! component.sold_at, partial: "api/v1/item_prices/base", as: :item_price
   end
 end
 
@@ -29,7 +27,7 @@ end
 json.media({})
 json.media do
   json.store_image do
-    json.partial! "api/v1/shared/media_image", media_image: component.store_image
+    json.partial! "api/v1/shared/view_image", record: component, attr: :new_store_image, old_attr: :store_image, width: component.store_image_width, height: component.store_image_height
   end
 end
 

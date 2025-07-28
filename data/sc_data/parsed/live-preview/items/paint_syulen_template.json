@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Syulen_Template",
+  "ref": "9d7c0cb3-4e92-4e3a-98c3-c0aaf5626b12",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "31907472-a884-4ebc-86db-cd4f7797e514",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

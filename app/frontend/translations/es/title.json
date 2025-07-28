@@ -1,0 +1,112 @@
+{
+  "es": {
+    "title": {
+      "default": "FleetYards.net",
+      "defaultShort": "FleetYards",
+      "defaultAdmin": "FleetYards.net Command",
+      "defaultAdminShort": "FltYrds Command",
+      "defaultDocs": "FleetYards.net Documentation",
+      "defaultDocsShort": "FleetYards Docs",
+      "home": "Inicio",
+      "search": "Search Results",
+      "ships": { "index": "Ships" },
+      "ship": "%{name} - %{manufacturer}",
+      "shipImages": "%{name} Images",
+      "shipVideos": "%{name} Videos",
+      "images": "Images",
+      "stats": "Stats",
+      "login": "Login",
+      "signUp": "Registrarse",
+      "embed": "Widget Embebido",
+      "apiV1": "API V1",
+      "hangar": {
+        "index": "My Hangar",
+        "preview": "My Hangar Preview",
+        "stats": "My Hangar Stats",
+        "import": "Import",
+        "public": "%{user} Hangar",
+        "wishlist": "Wishlist",
+        "publicWishlist": "%{user} Wishlist"
+      },
+      "requestPassword": "Request Password",
+      "changePassword": "Change Password",
+      "fleets": {
+        "add": "Create a new Fleet",
+        "preview": "Fleet Preview",
+        "invites": "Fleet Invites",
+        "members": "%{fleet} Members",
+        "stats": "%{fleet} Stats",
+        "settings": {
+          "index": "Configuración de %{fleet}",
+          "fleet": "Configuración de %{fleet}",
+          "membership": "Membresía de %{fleet}"
+        }
+      },
+      "roadmap": {
+        "index": "Roadmap",
+        "ships": "Ship-Roadmap",
+        "changes": "Roadmap Changes"
+      },
+      "settings": {
+        "index": "Profile Settings",
+        "account": "Account",
+        "hangar": "Hangar Settings",
+        "notifications": "Notification Settings",
+        "security": "Account Security",
+        "twoFactor": {
+          "enable": "Enable Two-factor Authentiation",
+          "disable": "Disable Two-factor Authentiation",
+          "backupCodes": "Generate Two-Factor Backup Codes"
+        }
+      },
+      "compare": { "ships": "Compare Ships" },
+      "notFound": "404",
+      "tools": {
+        "index": "Herramientas",
+        "travelTimes": "Tiempos de Viaje"
+      },
+      "impressum": "Impressum",
+      "privacyPolicy": "Privacy policy",
+      "cookiePolicy": "Política de cookies",
+      "visualTests": {
+        "index": "Pruebas Visuales",
+        "panels": "Paneles - Pruebas Visuales",
+        "buttons": "Botones - Pruebas Visuales",
+        "tables": "Tablas - Pruebas Visuales"
+      },
+      "admin": {
+        "models": {
+          "index": "Modelos",
+          "new": "Nuevo Modelo",
+          "edit": {
+            "index": "Editar Modelo",
+            "metrics": "Editar Métricas del Modelo",
+            "prices": "Editar Precios del Modelo",
+            "fleetchart": "Editar Imágenes del Modelo",
+            "hardpoints": "Editar Puntos de Montaje del Modelo",
+            "cargoAndFuel": "Carga y Combustible",
+            "docks": "Editar Muelles del Modelo",
+            "videos": "Editar Videos del Modelo"
+          }
+        },
+        "components": {
+          "index": "Componentes",
+          "new": "Nuevo Componente",
+          "edit": "Editar Componente"
+        },
+        "manufacturers": {
+          "index": "Fabricantes",
+          "new": "Nuevo Fabricante",
+          "edit": "Editar Fabricante"
+        },
+        "users": {
+          "index": "Usuarios",
+          "edit": "Editar Usuario"
+        },
+        "vehicles": {
+          "index": "Vehículos"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,635 @@
+{
+  "zh-TW": {
+    "labels": {
+      "true": "是",
+      "false": "否",
+      "null": "-",
+      "and": "和",
+      "hide": "隱藏",
+      "show": "顯示",
+      "only": "僅",
+      "description": "描述",
+      "unavailable": "不可用",
+      "selected": "已選擇",
+      "actions": "操作",
+      "enabled": "已啟用",
+      "disabled": "已禁用",
+      "findModel": "輸入以查找飛船",
+      "find": "輸入以搜尋",
+      "collapse": "摺疊",
+      "price": "價格",
+      "expand": "展開",
+      "distance": "距離",
+      "anonymous": "匿名",
+      "toggleNavigation": "切換導航",
+      "enableYoutube": "點擊啟用YouTube嵌入或右鍵複製視頻鏈接",
+      "or": "或",
+      "deselect": "點擊取消選擇",
+      "networkStatusOffline": "網絡狀態：離線 - 服務不可用",
+      "groups": "分組",
+      "fleetInviteToken": "艦隊邀請",
+      "scDataVersion": "補丁版本",
+      "home": {
+        "search": "搜尋飛船..."
+      },
+      "shop": {
+        "rentalPrice": "租賃",
+        "sellPrice": "出售價格",
+        "buyPrice": "購買價格"
+      },
+      "shopCommodity": {
+        "item": "項目",
+        "shop": "商店",
+        "sellPrices": "出售價格",
+        "buyPrices": "購買價格",
+        "rentalPrices": "租賃價格",
+        "confirmed": "已確認？",
+        "submittedBy": "提交者",
+        "prices": {
+          "label": "價格",
+          "rentalPrice": "租賃",
+          "averageRentalPrice": "租賃 (Ø)",
+          "sellPrice": "出售價格",
+          "averageSellPrice": "出售價格 (Ø)",
+          "buyPrice": "購買價格",
+          "averageBuyPrice": "購買價格 (Ø)",
+          "rentalPrice1Day": "1 天",
+          "averageRentalPrice1Day": "1 天 (Ø)",
+          "rentalPrice3Days": "3 天",
+          "averageRentalPrice3Days": "3 天 (Ø)",
+          "rentalPrice7Days": "7 天",
+          "averageRentalPrice7Days": "7 天 (Ø)",
+          "rentalPrice30Days": "30 天",
+          "averageRentalPrice30Days": "30 天 (Ø)"
+        }
+      },
+      "stats": {
+        "quickStats": {
+          "newShips": "%{year} 年新飛船",
+          "totalShips": "飛船總數",
+          "totalMembers": "成員總數"
+        },
+        "modelsByClassification": "按分類劃分的飛船",
+        "modelsBySize": "按大小劃分的飛船",
+        "vehiclesByModel": "按型號劃分的飛船 (前 %{limit})",
+        "modelsPerMonth": "每月飛船數量",
+        "modelsByManufacturer": "按製造商劃分的飛船",
+        "modelsByProductionStatus": "按生產狀態劃分的飛船"
+      },
+      "roadmap": {
+        "selectWeek": "選擇週",
+        "shipRoadmap": "飛船路線圖",
+        "releases": "發佈",
+        "unscheduled": "未安排",
+        "lastUpdate": "最後更新",
+        "released": "已發佈",
+        "recentlyUpdated": "最近更新",
+        "committed": "已承諾",
+        "lastVersion": {
+          "active": {
+            "decreased": "項目已從路線圖中移除",
+            "increased": "項目已重新添加到路線圖"
+          },
+          "committed": "項目已標記為承諾",
+          "released": "項目已發佈到 PU",
+          "release": "項目從版本 %{old} 移動到 %{new}",
+          "addedToRelease": "項目在版本 %{release} 中新增"
+        },
+        "stories": {
+          "one": "%{count} 個故事",
+          "other": "%{count} 個故事"
+        },
+        "tasks": {
+          "one": "%{count} 個任務",
+          "other": "%{count} 個任務"
+        },
+        "ships": {
+          "one": "%{count} 艘飛船",
+          "other": "%{count} 艘飛船"
+        }
+      },
+      "rsiRoadmap": "RSI 路線圖",
+      "unknown": "未知",
+      "none": "-",
+      "notAvailable": "不可用",
+      "search": {
+        "default": "搜尋",
+        "shareTitle": "搜尋：%{query}"
+      },
+      "unknownModel": "%{slug} 未知",
+      "not-available": "不可用",
+      "receiveSaleNotifications": "",
+      "publicUrl": "公開網址",
+      "name": "名稱",
+      "homepage": "首頁",
+      "discord": "Discord 伺服器",
+      "youtube": "YouTube 頻道",
+      "twitch": "Twitch 頻道",
+      "guilded": "Guilded 伺服器",
+      "3dView": "3D",
+      "poweredByStarship42": "由 starship42.com 提供支援",
+      "exportStarship42": "在 Starship42 上查看",
+      "filter": "篩選",
+      "taxExcluded": "不含稅",
+      "hangar": "機庫",
+      "public": "公開",
+      "hangarStats": "統計",
+      "wishlist": "願望清單",
+      "fleetchart": "艦隊圖表",
+      "fleetchartApp": {
+        "screenHeight": "Screen Height",
+        "viewpoint": "Viewpoint",
+        "screenHeightOptions": {
+          "1x": "1x",
+          "1_5x": "1.5x",
+          "2x": "2x",
+          "3x": "3x",
+          "4x": "4x"
+        },
+        "viewpointOptions": {
+          "side": "Side",
+          "top": "Top",
+          "angled": "Angled"
+        },
+        "gridSize": "%{size} meter per grid box",
+        "mode": "Mode",
+        "modeOptions": {
+          "classic": "Classic",
+          "panzoom": "v2"
+        }
+      },
+      "fleetStats": "Stats",
+      "hangarMetrics": {
+        "total": "Total",
+        "totalMoney": "Money Value",
+        "totalCredits": "Credits",
+        "totalMinCrew": "Min. Crew",
+        "totalMaxCrew": "Max. Crew",
+        "totalCargo": "Total Cargo"
+      },
+      "selectModel": "Select a Ship",
+      "compare": {
+        "removeModel": "Remove Ship",
+        "addModel": {
+          "nullablePrompt": "Add a Ship"
+        },
+        "enough": "Don't you think 8 Ships are enough? ;)"
+      },
+      "cargoRoutes": "Cargo routes",
+      "uecPerUnit": "aUEC / Unit",
+      "au": "AU",
+      "uec": "aUEC",
+      "sell": "Sell",
+      "buy": "Buy",
+      "yourFlagship": "Your Flagship",
+      "flagship": "Flagship",
+      "fleet": {
+        "classes": "Fleet",
+        "fid": "Fleet ID",
+        "name": "Name",
+        "logo": "Logo",
+        "rsiSid": "SID",
+        "public": "Public Fleetview",
+        "ts": "Teamspeak Server",
+        "awaitingConfirmation": "Awaiting confirmation by Fleet",
+        "members": {
+          "primary": "Primary Fleet?",
+          "hideShips": "Hide your Ships for this Fleet?",
+          "shipsFilter": {
+            "label": "Which Ships should be added to the Fleet?",
+            "nullablePrompt": "No Option selected",
+            "field": "Ships Select",
+            "values": {
+              "all": "All Ships",
+              "hangar_group": "All Ships in a given Hangar Group",
+              "hide": "No Ships"
+            }
+          },
+          "hangarGroupId": {
+            "field": "Hangar Group",
+            "label": "Specify a Hangar Group",
+            "nullablePrompt": "No Group selected"
+          },
+          "total": "Total: %{count}",
+          "joined": "Joined at",
+          "invited": "Invited",
+          "requested": "Membership Requested",
+          "declined": "Declined",
+          "roles": {
+            "admin": "Admin",
+            "officer": "Officer",
+            "member": "Member"
+          }
+        },
+        "inviteUrls": {
+          "noLimit": "No limit",
+          "noExpiration": "Never expires",
+          "usesLeft": "%{count} uses left",
+          "expiresIn": "Expires in %{time}",
+          "expired": "Expired",
+          "expiresAfterOptions": {
+            "infinite": "Never",
+            "30_minutes": "30 minutes",
+            "1_hour": "1 hour",
+            "6_hours": "6 hours",
+            "12_hours": "12 hours",
+            "1_day": "1 day",
+            "7_days": "7 days"
+          },
+          "limitOptions": {
+            "infinite": "No limit",
+            "1": "1 use",
+            "5": "5 uses",
+            "10": "10 uses",
+            "25": "25 uses",
+            "50": "50 uses",
+            "100": "100 uses"
+          }
+        }
+      },
+      "hangarGroup": {
+        "name": "Name",
+        "color": "Color",
+        "sort": "Sort Order",
+        "public": "Show on Public Hangar?"
+      },
+      "source": "Source",
+      "model": {
+        "variants": "Variants",
+        "manufacturer": "Manufacturer",
+        "loaners": "Loaners",
+        "paints": "Paints",
+        "modules": "Modules",
+        "modulePackages": "Module Packages",
+        "upgrades": "Upgrade-Kits",
+        "brochure": "Brochure",
+        "onSale": "On Sale",
+        "salesPage": "Sales Page",
+        "addons": "Modules & Upgrade-Kits",
+        "productionStatus": {
+          "in-production": "In Production",
+          "in-concept": "In Concept",
+          "ready": "Hangar Ready",
+          "flight-ready": "Flight Ready",
+          "announced": "Announced"
+        }
+      },
+      "metrics": {
+        "info": "Info",
+        "levels": "Levels",
+        "topView": "Top View",
+        "base": "Base",
+        "crew": "Crew",
+        "speed": "Speed",
+        "missileOptions": "Missle Options (if available)"
+      },
+      "component": {
+        "size": "Size: %{size}"
+      },
+      "hardpoint": {
+        "legend": {
+          "headline": "Legend",
+          "slotTaken": "Slot taken",
+          "slotAvailable": "Slot available"
+        },
+        "size": "Size",
+        "rackSize": "Rack Size",
+        "details": "Details",
+        "group": "Group",
+        "groups": {
+          "avionic": "Avionics",
+          "system": "Systems",
+          "propulsion": "Propulsion",
+          "thruster": "Thruster",
+          "weapon": "Weapons"
+        },
+        "types": {
+          "radar": "Radar",
+          "computers": "Computers",
+          "power_plants": "Power Plants",
+          "coolers": "Coolers",
+          "shield_generators": "Shield Generators",
+          "fuel_intakes": "Fuel Intakes",
+          "fuel_tanks": "Fuel Tanks",
+          "quantum_drives": "Quantum Drives",
+          "jump_modules": "Jump Modules",
+          "quantum_fuel_tanks": "Quantum Fuel Tanks",
+          "main_thrusters": "Main Thrusters",
+          "maneuvering_thrusters": "Maneuvering Thrusters",
+          "weapons": "Weapons",
+          "turrets": "Turrets",
+          "missiles": "Missiles",
+          "utility_items": "Utility Items",
+          "emp": "EMP",
+          "qed": "QED"
+        }
+      },
+      "blank": {
+        "propulsion": "No Propulsion present",
+        "ordnance": "No Ordnance present",
+        "modular": "No Modular present",
+        "avionics": "No Avionics present",
+        "fleetInvites": "No Invites present",
+        "shopCommodities": "No Commodites available",
+        "shoppingCart": "Shopping Cart empty",
+        "userShips": "Your Hangar is currently Empty. To Add Ships / Vehicles to Your Hangar click the following Icon on Any Ship in the Database:"
+      },
+      "user": {
+        "rsiHandle": "Handle",
+        "avatar": "Avatar",
+        "unconfirmedEmail": "Unconfirmed email",
+        "saleNotify": "I want to receive Sale Notifications",
+        "publicHangar": "Public Hangar enabled",
+        "publicHangarLoaners": "Show Loaners Hint on Public Hangar",
+        "publicWishlist": "Public Wishlist enabled",
+        "hideOwner": "Hide Ownership for Fleets"
+      },
+      "vehicle": {
+        "name": "Name",
+        "serial": "Serial",
+        "owner": "commanded by",
+        "flagship": "Flagship",
+        "wanted": "Wanted",
+        "loaner": "Loaner",
+        "public": "Public Visible",
+        "fullPublic": "Public Visible including Name",
+        "publicShort": "Public",
+        "nameVisible": "Public Visible",
+        "saleNotify": "I want to receive Sale Notifications",
+        "hangarGroups": "Groups",
+        "selectGroup": "Select a Group",
+        "modelPaintSelect": {
+          "nullablePrompt": "Select a Paint",
+          "label": "Paint"
+        },
+        "bulkGroupEdit": {
+          "hint": "Existing Groups will be overridden!"
+        },
+        "hasLoaners": "Loaners",
+        "boughtViaSelect": {
+          "label": "Bought via"
+        }
+      },
+      "image": {
+        "background": "Use as Background?",
+        "enabled": "Enabled?",
+        "global": "Global?",
+        "delete": "Delete",
+        "start": "Start",
+        "cancel": "Cancel",
+        "processing": "Processing...",
+        "error": "Error",
+        "name": "Name",
+        "size": "File size",
+        "dropzone": "Drop images here",
+        "cancelUpload": "Cancel upload",
+        "startUpload": "Start upload",
+        "selectImages": "Add images...",
+        "selectFolder": "Add a folder..."
+      },
+      "signup": {
+        "link": "Don't have an Account?",
+        "privacyPolicy": "By creating a FleetYards account, you agree to our"
+      },
+      "privacyPolicy": "Privacy Policy",
+      "login": "Username or email",
+      "username": "Username",
+      "twoFactorCode": "Two-factor code",
+      "email": "Email",
+      "avatar": "Avatar",
+      "alreadyRegistered": "Already have an Account?",
+      "currentPassword": "Current Password",
+      "password": "Password",
+      "passwordConfirmation": "Password Confirmation",
+      "rememberMe": "Remember me",
+      "emptyList": "No %{name} present",
+      "all": "All",
+      "supportUs": "Support FleetYards.net",
+      "account": {
+        "destroyInfo": "If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can't be reverted."
+      },
+
+      "filters": {
+        "shops": {
+          "name": "Name",
+          "type": "Type",
+          "celestialObject": "Celestial object",
+          "model": "Ship",
+          "equipment": "Equipment",
+          "component": "Component",
+          "commodity": "Commodity",
+          "commodityType": "Commodity Type",
+          "starsystem": "Starsystem",
+          "station": "Station"
+        },
+        "shopCommodities": {
+          "commodityType": "Commodity Type",
+          "station": "Station",
+          "shopId": "Shop",
+          "equipment": "Equipment",
+          "component": "Component",
+          "componentItemTypeFilter": "Component Item Types",
+          "equipmentItemTypeFilter": "Equipment Item Types",
+          "equipmentTypeFilter": "Equipment Type",
+          "equipmentSlotFilter": "Equipment Slot",
+          "commodity": "Commodity",
+          "model": "Ship",
+          "name": "Name"
+        },
+        "shopItems": {
+          "category": "Category",
+          "subCategory": "Sub Category",
+          "name": "Name",
+          "manufacturer": "Manufacturer",
+          "minPrice": "min. Price",
+          "maxPrice": "max. Price"
+        },
+        "stations": {
+          "name": "Name",
+          "celestialObject": "Celestial Object",
+          "starsystem": "Starsystem",
+          "type": "Station Type",
+          "shops": "Shops",
+          "docks": "Docks",
+          "habs": "Habitation?",
+          "cargoHub": "Cargo Hub?",
+          "refinery": "Refinery Station?"
+        },
+        "vehicles": {
+          "name": "Name or Ship name",
+          "lengthLt": "Length <=",
+          "lengthGt": "Length >=",
+          "pledgePriceLt": "Pledge Price <=",
+          "pledgePriceGt": "Pledge Price >=",
+          "priceLt": "Price <=",
+          "priceGt": "Price >=",
+          "wanted": "Wanted",
+          "public": "Public",
+          "group": "Group",
+          "loaner": "Loaners",
+          "boughtVia": "Bought via?"
+        },
+        "tradeRoutes": {
+          "sortBy": "Sort by",
+          "sortByValues": {
+            "percent": "Max. Percent",
+            "profit": "Max. Profit"
+          },
+          "cargoShip": "With Cargoship?",
+          "origin": "From?",
+          "destination": "To?",
+          "excludeCommodityType": "Exclude Commodity Type",
+          "originCelestialObject": "Origin Celestial Object",
+          "destinationCelestialObject": "Destination Celestial Object",
+          "originStarsystem": "Origin Starsystem",
+          "destinationStarsystem": "Destination Starsystem"
+        },
+        "models": {
+          "shipRole": "Ship Role",
+          "classification": "Classification",
+          "focus": "Focus",
+          "manufacturer": "Manufacturer",
+          "onSale": "On Sale",
+          "size": "Size",
+          "price": "Price",
+          "pledgePrice": "Pledge Price",
+          "productionStatus": "Production Status",
+          "lengthLt": "Length <=",
+          "lengthGt": "Length >=",
+          "beamLt": "Beam <=",
+          "beamGt": "Beam >=",
+          "heightLt": "Height <=",
+          "heightGt": "Height >=",
+          "pledgePriceLt": "Pledge Price <=",
+          "pledgePriceGt": "Pledge Price >=",
+          "priceLt": "Price <=",
+          "priceGt": "Price >=",
+          "willItFit": "Will it Fit?"
+        },
+        "images": {
+          "station": "Station",
+          "model": "Ship"
+        },
+        "fleets": {
+          "member": "Member",
+          "members": {
+            "role": "Role"
+          },
+          "inviteUrls": {
+            "expiresAfter": "Expire after",
+            "limit": "Max number of uses"
+          }
+        },
+        "manufacturer": "Manufacturer"
+      },
+      "station": {
+        "docks": "Docks",
+        "location": "Location",
+        "type": "Type",
+        "habitation": "Habitation",
+        "habs": "Habs",
+        "shops": "Shops",
+        "locationPrefix": {
+          "default": "on",
+          "asteriod": "on asteroid near",
+          "orbit": "in orbit around"
+        },
+        "locationSuffix": "near %{location}"
+      },
+      "tradeRoutes": {
+        "buy": "Buy for: %{uec}",
+        "sell": "Sell for: %{uec}",
+        "cargoShip": "for %{cargo} SCU",
+        "sortByPercent": "Sort by Percent",
+        "sortByProfit": "Sort by Profit",
+        "sortByStation": "Sort by Station",
+        "showAveragePrices": "Display average Prices",
+        "showLatestPrices": "Display latest Prices"
+      },
+      "erkul": {
+        "prefix": "Tryout Loadouts with",
+        "link": "Erkul's DPS Calculator"
+      },
+      "scunpacked": {
+        "prefix": "Loadouts based on Gamefiles powered by",
+        "link": "SCunpacked"
+      },
+      "newVehicle": {
+        "nullablePrompt": "Select a Ship"
+      },
+      "addAddon": {
+        "nullablePrompt": ""
+      },
+      "table": {
+        "selected": "%{count} Selected"
+      },
+      "commodityPrice": {
+        "shopId": "Shop",
+        "station": "Station",
+        "commodityItemType": "Commodity Type",
+        "commodityItemId": "Commodity Item",
+        "item": "ShopCommodity",
+        "price": "Price",
+        "type": "Type",
+        "shop": "Shop",
+        "submittedBy": "Submitted By"
+      },
+      "shoppingCart": {
+        "total": "Total",
+        "itemTotal": "Item Total",
+        "perItem": "per Item",
+        "items": {
+          "one": "<b>%{count}</b> Item for <b>%{price}</b>",
+          "other": "<b>%{count}</b> Items for <b>%{price}</b>"
+        }
+      },
+      "syncExtension": {
+        "status": {
+          "started": "Import Started...",
+          "finished": "Import Finished",
+          "failed": "Import Failed!"
+        },
+        "processSteps": {
+          "fetchHangar": "Fetching Data from the RSI Hangar",
+          "submitData": "Submitting Data to the Fleetyards.net Backend"
+        },
+        "sessionStatus": "RSI Session status",
+        "checkIdentity": "Check RSI Session",
+        "identityStatus": {
+          "pending": "Checking...",
+          "notFound": "not found",
+          "connected": "connected"
+        },
+        "platforms": {
+          "chrome": "Google Chrome or Chromium based Browsers",
+          "firefox": "Mozilla Firefox",
+          "edge": "Microsoft Edge",
+          "opera": "Opera",
+          "github": "GitHub"
+        },
+        "pledgeItems": {
+          "pages": "Pages",
+          "all": "All Pledge Items",
+          "ships": "Ships",
+          "components": "Modules",
+          "skins": "Paints",
+          "upgrades": "Upgrades"
+        },
+        "importedItems": {
+          "importedVehicles": "Added Ships",
+          "foundVehicles": "Found Ships",
+          "movedVehiclesToWanted": "Moved Ships to Wishlist",
+          "missingModels": "Ships not found",
+          "importedComponents": "Added Components",
+          "foundComponents": "Found Components",
+          "missingComponents": "Components not found",
+          "missingComponentVehicles": "No matching Ship found for Components",
+          "importedUpgrades": "Added Upgrades",
+          "foundUpgrades": "Found Upgrades",
+          "missingUpgrades": "Upgrades not found",
+          "missingUpgradeVehicles": "No matching Ship found for Upgrades"
+        }
+      }
+    }
+  }
+}

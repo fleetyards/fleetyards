@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Lightning_Platinum",
+  "ref": "5b8a9c7e-bbaa-4772-a84f-dc199b177d82",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4df56538-499e-42ac-a877-79c27447eb37",
+  "name": "F8C Lightning Stormfire Livery",
+  "short_name": null,
+  "description": "Cut a classic profile through any battlefield with the Stormfire livery for Anvil's new F8C Lightning. Featuring a triple-coat of Kalding paint rated for a variety of atmospheres and conditions, this sleek platinum look will keep you looking good for years to come.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "key": "CNOU_Mustang_Beta_Cover_Back",
+  "ref": "584ab2f9-7ae4-48ff-90e3-f5a95f8b63e9",
+  "category": "module",
+  "type": "Container",
+  "sub_type": "Cargo",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "ec227ef3-fb08-4897-abdb-579eb4e87c25",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 50.0
+  }
+}

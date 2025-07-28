@@ -1,0 +1,21 @@
+{
+  "key": "DoorDefaultLightGroup_Template",
+  "ref": "527bbc7a-cc5f-4a2c-90e1-816364d46aa8",
+  "category": "doors",
+  "type": "Lightgroup",
+  "sub_type": "AirlockPart",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

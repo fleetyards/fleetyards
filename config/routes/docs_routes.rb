@@ -7,11 +7,11 @@ docs_options = {
 }.compact
 
 namespace :docs, **docs_options do
-  scope :api do
-    get :v1, to: "/docs#index"
-    get "/", to: "/docs#index"
-  end
-  get :embed, to: "/docs#index"
-
   root to: "/docs#index"
+end
+
+Rails.application.routes.append do
+  namespace :docs, **docs_options do
+    match "*path", to: "/docs#index", via: :all
+  end
 end

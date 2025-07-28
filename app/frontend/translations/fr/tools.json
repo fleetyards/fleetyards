@@ -1,0 +1,17 @@
+{
+  "fr": {
+    "tools": {
+      "descriptions": {
+        "verseGuide": "Guide de voyage complet avec cartes système détaillées, points d'intérêt et routes d'exploration dans l'univers Star Citizen",
+        "starCitizenTools": "Wiki communautaire avec documentation extensive sur les vaisseaux, armes, lieux, mécaniques de jeu et lore",
+        "starship42": "Visualiseur 3D interactif de vaisseaux avec modèles détaillés extérieurs et intérieurs, placement de composants et comparaisons de taille",
+        "erkul": "Calculatrice DPS avancée et optimiseur de configuration de vaisseaux avec statistiques détaillées d'armes et comparaisons de composants",
+        "starjump": "Outil de visualisation 2D de flottes pour créer de beaux layouts de vaisseaux et graphiques d'organisation de flottes",
+        "itemFinder": "Base de données complète de localisation d'objets et d'équipements avec suivi de disponibilité en temps réel dans l'univers",
+        "starHangar": "Marché de confiance pour les packages de vaisseaux Star Citizen avec trading sécurisé et suivi des prix",
+        "shinytracker": "Suivi de progression personnel pour missions, réputation, succès et objectifs d'exploration avec statistiques détaillées",
+        "uexCorp": "Plateforme de trading de matières premières en temps réel avec suivi des prix, optimisation des routes commerciales et outils d'analyse de marché"
+      }
+    }
+  }
+}

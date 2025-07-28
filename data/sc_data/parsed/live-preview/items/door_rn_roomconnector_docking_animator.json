@@ -1,0 +1,21 @@
+{
+  "key": "Door_RN_RoomConnector_Docking_Animator",
+  "ref": "14c3c643-7679-4d77-9bd2-06b7c23cbdd5",
+  "category": "doors",
+  "type": "DockingAnimator",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

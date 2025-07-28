@@ -1,0 +1,60 @@
+{
+  "key": "POWR_AMRS_S02_JS400_SCItem",
+  "ref": "f1763688-a3b6-496e-8d62-3e40e2098661",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "eccba58a-f6d9-42e8-95c6-d0a65763e583",
+  "name": "JS-400",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Amon & Reese Co.\\nSize: 2\\nGrade: A\\nClass: Military\\n\\nAs the UEE’s oldest energy weapon manufacturer, A&R expanded into power plants to interface more efficiently with their weapons. The JS-400 was their first attempt at a medium power plant, and it’s a testament to the quality of this military-grade component that it’s still around.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 1700.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 5.0,
+    "StartIRTemperature": 140.0,
+    "OverpowerHeat": 0.3,
+    "OverclockThresholdMinHeat": 0.64,
+    "OverclockThresholdMaxHeat": 0.77,
+    "ThermalEnergyBase": 129375.0,
+    "ThermalEnergyDraw": 137500.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.3,
+    "Mass": 1950.0,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 232.265,
+    "MaxTemperature": 700.0,
+    "OverheatTemperature": 600.0,
+    "RecoveryTemperature": 670.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 300.0,
+    "MisfireMaxTemperature": 900.0
+  },
+  "power_connection": {
+    "power_base": 0.0,
+    "power_draw": 10625.0,
+    "time_to_reach_draw_request": 10.0,
+    "safeguard_priority": 100.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 1.0,
+    "is_overclockable": 1.0,
+    "overclock_threshold_min": 0.34,
+    "overclock_threshold_max": 0.43,
+    "overpower_performance": 0.05,
+    "overclock_performance": 0.578,
+    "power_to_em": 0.55,
+    "decay_rate_of_em": 0.34
+  }
+}

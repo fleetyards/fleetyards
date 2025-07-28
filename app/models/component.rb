@@ -4,26 +4,36 @@
 #
 # Table name: components
 #
-#  id               :uuid             not null, primary key
-#  ammunition       :string
-#  component_class  :string
-#  description      :text
-#  durability       :string
-#  grade            :string
-#  heat_connection  :string
-#  item_class       :integer
-#  item_type        :string
-#  name             :string(255)
-#  power_connection :string
-#  sc_identifier    :string
-#  size             :string(255)
-#  slug             :string
-#  store_image      :string
-#  tracking_signal  :integer
-#  type_data        :string
-#  created_at       :datetime
-#  updated_at       :datetime
-#  manufacturer_id  :uuid
+#  id                    :uuid             not null, primary key
+#  ammunition            :string
+#  category              :string
+#  component_class       :string
+#  component_sub_type    :string
+#  component_type        :string
+#  description           :text
+#  durability            :string
+#  grade                 :string
+#  heat_connection       :string
+#  hidden                :boolean          default(FALSE)
+#  inventory_consumption :string
+#  item_class            :integer
+#  item_type             :string
+#  name                  :string(255)
+#  power_connection      :string
+#  sc_identifier         :string
+#  sc_key                :string
+#  sc_ref                :string
+#  size                  :string(255)
+#  slug                  :string
+#  store_image           :string
+#  store_image_height    :integer
+#  store_image_width     :integer
+#  tracking_signal       :integer
+#  type_data             :string
+#  version               :string
+#  created_at            :datetime
+#  updated_at            :datetime
+#  manufacturer_id       :uuid
 #
 # Indexes
 #
@@ -31,6 +41,7 @@
 #
 class Component < ApplicationRecord
   paginates_per 50
+  max_paginates_per 240
 
   searchkick searchable: %i[name manufacturer_name manufacturer_code item_type item_class],
     word_start: %i[name manufacturer_name item_type],
@@ -47,40 +58,50 @@ class Component < ApplicationRecord
   end
 
   def should_index?
-    listed_at.present? || sold_at.present? || bought_at.present?
+    sold_at.present? || bought_at.present?
   end
 
   belongs_to :manufacturer, optional: true
-  has_many :shop_commodities, as: :commodity_item, dependent: :destroy
 
-  validates :name, presence: true
+  has_many :hardpoints, as: :parent, dependent: :destroy, autosave: true
+  has_many :hardpoint_loadouts, class_name: "Hardpoint", dependent: :nullify
+
+  has_many :model_hardpoints, dependent: :nullify
+  has_many :item_prices, as: :item, dependent: :destroy
 
   before_save :update_slugs
-  after_save :touch_shop_commodities
+  before_save :extract_data_from_description
 
   mount_uploader :store_image, StoreImageUploader
+  has_one_attached :new_store_image
 
   serialize :type_data, coder: YAML
   serialize :durability, coder: YAML
   serialize :power_connection, coder: YAML
   serialize :heat_connection, coder: YAML
   serialize :ammunition, coder: YAML
+  serialize :inventory_consumption, coder: YAML
+
+  DEFAULT_SORTING_PARAMS = ["name asc", "created_at asc"]
+  ALLOWED_SORTING_PARAMS = [
+    "name asc", "name desc", "createdAt asc", "createdAt desc"
+  ]
 
   def self.ordered_by_name
     order(name: :asc)
   end
 
-  enum item_class: {stealth: 0, civilian: 1, industrial: 2, military: 3, competition: 4}
+  enum :item_class,
+    {stealth: 0, civilian: 1, industrial: 2, military: 3, competition: 4}
   ransacker :item_class, formatter: proc { |v| Component.item_classes[v] } do |parent|
     parent.table[:item_class]
   end
 
-  enum tracking_signal: {infrared: 0, cross_section: 1, electromagnetic: 2}
+  enum :tracking_signal,
+    {infrared: 0, cross_section: 1, electromagnetic: 2}
   ransacker :tracking_signal, formatter: proc { |v| Component.tracking_signals[v] } do |parent|
     parent.table[:tracking_signal]
   end
-
-  ransack_alias :name, :name_or_slug
 
   def self.ransackable_attributes(auth_object = nil)
     [
@@ -140,7 +161,7 @@ class Component < ApplicationRecord
     Component.item_types.map do |item|
       Filter.new(
         category: "item_type",
-        name: I18n.t("activerecord.attributes.component.item_types.#{item.downcase}"),
+        label: I18n.t("activerecord.attributes.component.item_types.#{item.downcase}"),
         value: item
       )
     end
@@ -150,22 +171,44 @@ class Component < ApplicationRecord
     Component.all.map(&:component_class).uniq.compact.map do |item|
       Filter.new(
         category: "class",
-        name: I18n.t("filter.component.class.items.#{item.downcase}"),
+        label: I18n.t("filter.component.class.items.#{item.downcase}"),
         value: item
       )
     end
   end
 
-  def listed_at
-    shop_commodities.where(sell_price: nil, buy_price: nil).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
+  def extract_data_from_description
+    return if description.blank?
+
+    cleaned_description, data = description.gsub("\\n", "\n").split("\n\n", 2).reverse
+
+    self.description = cleaned_description.delete("\n").gsub(/[[:space:]]+/, "").chomp
+
+    return if data.blank?
+
+    data.split("\n").each do |line|
+      key, value = line.split(":", 2)
+
+      case key.strip
+      when "Class"
+        self.item_class = value.gsub(/[[:space:]]+/, "").downcase
+      end
+    end
   end
 
   def sold_at
-    shop_commodities.where.not(sell_price: nil).order(sell_price: :asc).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
+    item_prices.sell.order(price: :asc).uniq(&:location)
   end
 
   def bought_at
-    shop_commodities.where.not(buy_price: nil).order(buy_price: :desc).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
+    item_prices.buy.order(price: :asc).uniq(&:location)
+  end
+
+  def grade_label
+    return if grade.blank?
+    return if grade.to_i > 4 || grade.to_i < 1
+
+    grade.to_s.tr("1234", "ABCD")
   end
 
   def item_class_label
@@ -182,11 +225,5 @@ class Component < ApplicationRecord
 
   def tracking_signal_label
     Component.human_enum_name(:tracking_signal, tracking_signal)
-  end
-
-  private def touch_shop_commodities
-    # rubocop:disable Rails/SkipsModelValidations
-    shop_commodities.update_all(updated_at: Time.zone.now)
-    # rubocop:enable Rails/SkipsModelValidations
   end
 end

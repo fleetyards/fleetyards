@@ -1,0 +1,21 @@
+{
+  "key": "RSI_Polaris_Elevator_Inner_Gate",
+  "ref": "f3d12f01-8211-4f31-bd2c-a7e463d680cb",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

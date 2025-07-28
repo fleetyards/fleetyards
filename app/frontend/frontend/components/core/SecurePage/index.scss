@@ -1,0 +1,12 @@
+form {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+button[type="submit"] {
+  transition: color $transition-base-speed ease;
+
+  .confirmed {
+    color: green;
+  }
+}

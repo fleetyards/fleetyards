@@ -1,0 +1,131 @@
+{
+  "zh-TW": {
+    "nav": {
+      "home": "首頁",
+      "back": "返回",
+      "ships": {
+        "index": "飛船"
+      },
+      "compare": {
+        "index": "比較",
+        "ships": "比較飛船"
+      },
+      "manufacturers": "製造商",
+      "images": "圖片",
+      "videos": "影片",
+      "hangar": "我的機庫",
+      "login": "登入",
+      "logout": "登出",
+      "apiV1": "API v1",
+      "embed": "嵌入小工具",
+      "signUp": "註冊",
+      "privacyPolicy": "隱私政策",
+      "privacySettings": "隱私設定",
+      "impressum": "法律聲明",
+      "fleets": {
+        "index": "艦隊",
+        "add": "建立新艦隊",
+        "invites": "邀請",
+        "ships": "飛船",
+        "members": "成員",
+        "stats": "統計",
+        "settings": {
+          "index": "設定",
+          "fleet": "艦隊設定",
+          "membership": "成員設定"
+        }
+      },
+      "rsiProfile": "RSI 檔案",
+      "rsiHangar": "RSI 機庫",
+      "tools": {
+        "index": "工具",
+        "travelTimes": "旅行時間",
+        "cargoGrids": "貨物網格"
+      },
+      "api": "API 文件",
+      "stats": "統計",
+      "toggleSlimCollapse": "摺疊",
+      "toggleSlimExpand": "展開",
+      "roadmap": {
+        "index": "路線圖",
+        "overview": "概覽",
+        "changes": "變更",
+        "ships": "飛船路線圖"
+      },
+      "rsiVerification": "RSI 驗證",
+      "settings": {
+        "index": "設定",
+        "profile": "檔案",
+        "account": "帳戶",
+        "security": "安全",
+        "notifications": "通知",
+        "hangar": "機庫",
+        "verify": "RSI 帳戶驗證"
+      },
+      "reload": "有可用更新！",
+      "visualTests": {
+        "index": "視覺測試",
+        "panels": "面板",
+        "buttons": "按鈕",
+        "tables": "表格"
+      },
+      "admin": {
+        "index": "管理員",
+        "models": {
+          "index": "模型",
+          "create": "建立模型",
+          "edit": {
+            "index": "基礎資料",
+            "metrics": "指標",
+            "prices": "價格",
+            "docks": "停靠點",
+            "videos": "影片",
+            "cargoAndFuel": "貨物和燃料",
+            "fleetchart": "艦隊圖表圖片",
+            "hardpoints": "武器掛點"
+          }
+        },
+        "modelPaints": {
+          "index": "塗裝",
+          "create": "建立塗裝"
+        },
+        "modelModules": {
+          "index": "模組",
+          "create": "建立模組"
+        },
+        "modelModulePackages": {
+          "index": "模組包",
+          "create": "建立模組包"
+        },
+        "components": {
+          "index": "組件"
+        },
+        "manufacturers": {
+          "index": "製造商"
+        },
+        "images": {
+          "index": "圖片"
+        },
+        "users": {
+          "index": "使用者"
+        },
+        "fleets": {
+          "index": "艦隊"
+        },
+        "vehicles": {
+          "index": "載具"
+        },
+        "admins": {
+          "index": "管理員"
+        },
+        "maintenance": {
+          "index": "維護",
+          "pghero": "PG-Hero",
+          "features": "功能",
+          "workers": "工作程序",
+          "rsiApiStatus": "RSI API 狀態"
+        }
+      }
+    }
+  }
+}

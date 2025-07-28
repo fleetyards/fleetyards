@@ -1,0 +1,112 @@
+{
+  "key": "ESPR_BallisticCannon_S6",
+  "ref": "a710fe11-49e3-4260-9f3b-de08d304c0e0",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "6",
+  "grade": "1",
+  "manufacturer_ref": "4ecc1a24-d228-4dd5-8857-21ba6145a1d3",
+  "name": "Deadbolt VI Cannon",
+  "short_name": "Deadbolt-6",
+  "description": "Manufacturer: Esperia\\nItem Type: Ballistic Cannon \\nSize: 6\\n\\nSpread dread with the Deadbolt VI ballistic cannon. Feared for its firepower at short range, this notorious Tevarin weapon earned its intimidating reputation during the First Tevarin War as part of the Tevarin fleet's devastating arsenal. Esperia has painstakingly recreated the Deadbolt VI out of respect to the original weapon and warriors who used it so effectively.",
+  "inventory_consumption": {
+    "micro_scu": 7560000.0,
+    "dimensions": {
+      "x": 1.339803,
+      "y": 11.05504,
+      "z": 2.405685
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "6",
+      "max_size": "6",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "6",
+      "max_size": "6",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "6",
+      "max_size": "6",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "6",
+      "max_size": "6",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "BAR1",
+      "key": "ESPR_BallisticCannon_Barrel_S6",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "MEC",
+      "key": "ESPR_BallisticCannon_FiringMechanism_S6",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "POW",
+      "key": "ESPR_BallisticCannon_PowerArray_S6",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "VEN",
+      "key": "ESPR_BallisticCannon_Ventilation_S6",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    }
+  ],
+  "durability": {
+    "health": 550.0
+  },
+  "ammunition": {
+    "max_ammo_count": 300.0,
+    "initial_ammo_count": 300.0,
+    "max_restock_count": 3.0
+  },
+  "power_connection": {
+    "power_base": 220.0,
+    "power_draw": 240.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 20.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.25,
+    "overclock_threshold_max": 0.46,
+    "overpower_performance": 0.3,
+    "overclock_performance": 0.25,
+    "power_to_em": 1.8,
+    "decay_rate_of_em": 0.5
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Aurora_Luminalia_2951_White_Blue",
+  "ref": "7ac0644e-6cf3-404a-a0bf-6feee7f1f469",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8ac88cf3-f2c5-4ccb-a389-515e599d1125",
+  "name": "Aurora IceBreak Livery",
+  "short_name": null,
+  "description": "Equip your Aurora with a paint scheme cooler than a snow storm. The IceBreak livery mixes crisp, cool white with a frostbitten blue for an exciting look suitable for any season.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -34,13 +34,13 @@
 class Station < ApplicationRecord
   paginates_per 10
 
-  searchkick(
-    searchable: %i[
-      name station_type classification celestial_object starsystem refinery
-      cargo_hub habitation tags
-    ],
-    word_start: %i[name]
-  )
+  # searchkick(
+  #   searchable: %i[
+  #     name station_type classification celestial_object starsystem refinery
+  #     cargo_hub habitation tags
+  #   ],
+  #   word_start: %i[name]
+  # )
 
   def search_data
     {

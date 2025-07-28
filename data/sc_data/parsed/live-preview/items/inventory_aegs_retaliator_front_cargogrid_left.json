@@ -1,0 +1,32 @@
+{
+  "key": "AEGS_Retaliator_Front_CargoGrid_Left",
+  "ref": "610ba880-7f53-49ba-aead-eb9656534a37",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 2.5,
+      "y": 1.25,
+      "z": 2.5
+    },
+    "capacity": 4.0,
+    "max_container_size": {
+      "size": 2,
+      "dimensions": {
+        "x": 2.5,
+        "y": 1.25,
+        "z": 1.25
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1.0
+      }
+    }
+  }
+}

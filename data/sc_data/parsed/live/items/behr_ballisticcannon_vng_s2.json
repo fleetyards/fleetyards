@@ -1,0 +1,44 @@
+{
+  "key": "BEHR_BallisticCannon_VNG_S2",
+  "ref": "8115a034-92bf-4766-b0ce-408398ddc7e7",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "CVSA Cannon",
+  "short_name": "CVSA",
+  "description": "Manufacturer: Behring\\nItem Type: Ballistic Cannon\\nSize: 2\\n\\nBehring designed the CVSA to be their Vanguard only ballistic cannon variant. This weapon features a slower rate of fire delivers a higher velocity round that is ideal for dealing major damage to targets at medium to long ranges.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 550.0
+  },
+  "ammunition": {
+    "max_ammo_count": 350.0,
+    "initial_ammo_count": 350.0,
+    "max_restock_count": 3.0
+  },
+  "power_connection": {
+    "power_base": 40.0,
+    "power_draw": 60.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 20.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.25,
+    "overclock_threshold_max": 0.46,
+    "overpower_performance": 0.3,
+    "overclock_performance": 0.25,
+    "power_to_em": 1.5,
+    "decay_rate_of_em": 0.5
+  }
+}

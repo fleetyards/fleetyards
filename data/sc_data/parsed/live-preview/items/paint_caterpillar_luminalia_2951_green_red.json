@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Caterpillar_Luminalia_2951_Green_Red",
+  "ref": "5f6eb22e-f7e0-4c87-9e68-27179f217b2a",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "9b9fd22f-39c5-4c60-85ec-a571149e5a64",
+  "name": "Caterpillar Deck the Hull Livery",
+  "short_name": null,
+  "description": "Express your holiday spirit with the Deck the Hull livery, which uses the traditional Luminalia colors of green and red to celebrate the popular Banu festival that's become beloved by Humans.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

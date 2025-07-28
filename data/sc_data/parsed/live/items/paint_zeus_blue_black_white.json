@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Zeus_Blue_Black_White",
+  "ref": "a134062c-f767-4872-bef5-56d171db3665",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "e6af1353-6ebb-4956-8e0c-86b0c306823c",
+  "name": "Zeus Mk II Firmament Livery",
+  "short_name": null,
+  "description": "The Firmament livery makes the Zeus Mk II a beautiful light blue with black and white highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

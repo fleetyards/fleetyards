@@ -1,0 +1,25 @@
+{
+  "key": "Spaceship_Template",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "<= UNINITIALIZED =>",
+  "description": "<= UNINITIALIZED =>",
+  "career": "<= PLACEHOLDER =>",
+  "role": "<= PLACEHOLDER =>",
+  "insurance": {
+    "base_wait_time_minutes": "33.33",
+    "mandatory_wait_time_minutes": "3.33",
+    "base_expediting_fee": "333"
+  },
+  "mass": null,
+  "metrics": {
+    "x": 0.0,
+    "y": 0.0,
+    "z": 0.0
+  },
+  "loadout": [
+
+  ]
+}

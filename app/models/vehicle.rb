@@ -70,7 +70,9 @@ class Vehicle < ApplicationRecord
 
   NULL_ATTRS = %w[name serial].freeze
 
-  enum bought_via: {pledge_store: 0, ingame: 1}, _prefix: true
+  enum :bought_via,
+    {pledge_store: 0, ingame: 1},
+    prefix: true
 
   before_validation :normalize_serial
   before_save :nil_if_blank
@@ -85,8 +87,15 @@ class Vehicle < ApplicationRecord
 
   DEFAULT_SORTING_PARAMS = ["flagship desc", "name asc", "model_name asc"]
   ALLOWED_SORTING_PARAMS = [
-    "flagship desc", "flagship asc", "name asc", "name desc", "model_name asc", "model_name desc",
-    "created_at asc", "created_at desc", "updated_at asc", "updated_at desc"
+    "flagship desc", "flagship asc", "name asc", "name desc", "modelName asc", "modelName desc",
+    "createdAt asc", "createdAt desc", "updatedAt asc", "updatedAt desc",
+    "modelManufacturerName asc", "modelManufacturerName desc", "modelLength asc",
+    "modelLength desc", "modelBeam asc", "modelBeam desc", "modelHeight asc",
+    "modelHeight desc", "modelMass asc", "modelMass desc", "modelCargo asc", "modelCargo desc",
+    "modelPledgePrice asc", "modelPledgePrice desc", "modelPrice asc", "modelPrice desc",
+    "modelScmSpeed asc", "modelScmSpeed desc", "modelMaxSpeed asc", "modelMaxSpeed desc",
+    "modelGroundMaxSpeed asc", "modelGroundMaxSpeed desc", "modelProductionStatus asc",
+    "modelProductionStatus desc", "modelFocus asc", "modelFocus desc"
   ]
 
   ransack_alias :search, :name_or_model_name_or_model_slug
@@ -132,7 +141,7 @@ class Vehicle < ApplicationRecord
     Vehicle.bought_via.map do |(item, _index)|
       Filter.new(
         category: "bought_via",
-        name: Vehicle.human_enum_name(:bought_via, item),
+        label: Vehicle.human_enum_name(:bought_via, item),
         value: item
       )
     end

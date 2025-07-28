@@ -1,0 +1,21 @@
+{
+  "key": "WEP_RepeaterPowerArray_Template",
+  "ref": "48d567ea-e135-468a-9fa8-c3953bc87d76",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "PowerArray",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

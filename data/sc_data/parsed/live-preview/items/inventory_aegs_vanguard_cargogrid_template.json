@@ -1,0 +1,32 @@
+{
+  "key": "AEGS_Vanguard_CargoGrid_Template",
+  "ref": "b6166e62-5c35-4680-be91-d47d179ad8ad",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 35.0,
+      "y": 35.0,
+      "z": 35.0
+    },
+    "capacity": 21952.0,
+    "max_container_size": {
+      "size": 32,
+      "dimensions": {
+        "x": 10.0,
+        "y": 2.5,
+        "z": 2.5
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1.0
+      }
+    }
+  }
+}

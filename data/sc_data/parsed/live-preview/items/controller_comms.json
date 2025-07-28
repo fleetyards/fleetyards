@@ -1,0 +1,21 @@
+{
+  "key": "Controller_Comms",
+  "ref": "ae1a186e-0f8c-4deb-8079-bfb54df4a8a7",
+  "category": "controller",
+  "type": "CommsController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "COMMS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

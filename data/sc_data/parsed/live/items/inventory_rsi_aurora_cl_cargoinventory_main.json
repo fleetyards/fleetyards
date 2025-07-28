@@ -1,0 +1,50 @@
+{
+  "key": "RSI_Aurora_CL_CargoInventory_Main",
+  "ref": "6194b81b-bdca-44d9-a27e-dbcdba4cd234",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 1.25,
+      "y": 7.5,
+      "z": 1.25,
+      "scu": 6.0,
+      "max_container_size": {
+        "size": 2,
+        "dimensions": {
+          "x": 2.5,
+          "y": 1.25,
+          "z": 1.25
+        }
+      }
+    },
+    "min_container": {
+      "x": 1.25,
+      "y": 1.25,
+      "z": 1.25,
+      "scu": 1.0,
+      "max_container_size": {
+        "size": 1,
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        }
+      }
+    },
+    "max_container": {
+      "x": 1.25,
+      "y": 2.5,
+      "z": 1.25,
+      "scu": 2.0,
+      "max_container_size": {
+        "size": 2,
+        "dimensions": {
+          "x": 2.5,
+          "y": 1.25,
+          "z": 1.25
+        }
+      }
+    }
+  }
+}

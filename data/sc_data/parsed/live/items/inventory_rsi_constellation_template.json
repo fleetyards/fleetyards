@@ -1,0 +1,9 @@
+{
+  "key": "RSI_Constellation_Template",
+  "ref": "a5611a41-0d8f-4fdf-a610-f95943f41385",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 0.0
+  }
+}

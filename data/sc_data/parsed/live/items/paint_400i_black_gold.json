@@ -1,0 +1,21 @@
+{
+  "key": "Paint_400i_Black_Gold",
+  "ref": "0b98f172-5ab8-403b-8a82-093a96911833",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2c6ce8c0-59e5-43c8-ad57-d6a149ca3704",
+  "name": "400i Penumbra Livery",
+  "short_name": null,
+  "description": "Inky black and shimmering gold combine for the Penumbra livery, making it an elegant option for the 400i.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

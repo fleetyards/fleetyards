@@ -1,0 +1,50 @@
+{
+  "key": "MISC_Reliant_CargoGrid_KORE",
+  "ref": "3e61a091-fe10-49c7-9a00-e3d3294bb931",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 3.75,
+      "y": 1.25,
+      "z": 1.25,
+      "scu": 3.0,
+      "max_container_size": {
+        "size": 2,
+        "dimensions": {
+          "x": 2.5,
+          "y": 1.25,
+          "z": 1.25
+        }
+      }
+    },
+    "min_container": {
+      "x": 1.25,
+      "y": 1.25,
+      "z": 1.25,
+      "scu": 1.0,
+      "max_container_size": {
+        "size": 1,
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        }
+      }
+    },
+    "max_container": {
+      "x": 2.5,
+      "y": 1.25,
+      "z": 1.25,
+      "scu": 2.0,
+      "max_container_size": {
+        "size": 2,
+        "dimensions": {
+          "x": 2.5,
+          "y": 1.25,
+          "z": 1.25
+        }
+      }
+    }
+  }
+}

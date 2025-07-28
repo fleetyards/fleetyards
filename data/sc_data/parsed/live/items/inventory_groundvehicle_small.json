@@ -1,0 +1,9 @@
+{
+  "key": "GroundVehicle_Small",
+  "ref": "56b28d71-d6ec-4c60-9f19-93c15cb4ff7f",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 0.125
+  }
+}

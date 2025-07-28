@@ -1,0 +1,24 @@
+{
+  "key": "Door_RN_NoRoomConnector_RSI_Polaris_Hangar_Door",
+  "ref": "5cfe0576-ae03-4eb4-a459-1f7e66af651d",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 162000.0
+  }
+}

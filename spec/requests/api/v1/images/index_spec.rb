@@ -3,7 +3,11 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/images", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :images
+  let(:images) { create_list(:image, 5) }
+
+  before do
+    images
+  end
 
   path "/images" do
     get("Images list") do
@@ -26,92 +30,44 @@ RSpec.describe "api/v1/images", type: :request, swagger_doc: "v1/schema.yaml" do
       parameter name: "cacheId", in: :query, type: :string, required: false
 
       response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/Image"}
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
+        schema "$ref": "#/components/schemas/Images"
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to be > 0
-          expect(data.count).to eq(2)
+          expect(items.count).to be > 0
+          expect(items.count).to eq(5)
         end
       end
 
       response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/Image"}
+        schema "$ref": "#/components/schemas/Images"
 
         let(:q) do
           {
-            "modelIn" => ["constellation-andromeda"]
+            "modelIn" => [images.first.gallery.slug]
           }
         end
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to eq(1)
+          expect(items.count).to eq(1)
         end
       end
 
       response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/Image"}
+        schema "$ref": "#/components/schemas/Images"
 
         let(:perPage) { 1 }
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to eq(1)
-        end
-      end
-    end
-  end
-
-  path "/images/random" do
-    get("Images random list") do
-      operationId "imagesRandom"
-      description "Get a randomized List of 14 Images"
-      tags "Images"
-      produces "application/json"
-
-      parameter name: "limit", in: :query, schema: {
-        type: :number,
-        minimum: 1,
-        maximum: Image.default_per_page,
-        default: 14
-      }, required: false
-
-      response(200, "successful") do
-        schema type: :array,
-          items: {"$ref" => "#/components/schemas/Image"}
-
-        run_test! do |response|
-          data = JSON.parse(response.body)
-
-          expect(data.count).to eq(2)
-        end
-      end
-
-      response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/Image"}
-
-        let(:limit) { 1 }
-
-        run_test! do |response|
-          data = JSON.parse(response.body)
-
-          expect(data.count).to eq(1)
+          expect(items.count).to eq(1)
         end
       end
     end

@@ -1,68 +1,29 @@
-import Vue from "vue";
-import VTooltip from "v-tooltip";
-import FleetyardsView from "@/embed/FleetyardsView.vue";
-import store from "@/embed/lib/Store";
-import I18nPlugin from "@/frontend/lib/I18n";
-import ApiClient from "@/embed/api/client";
-import "@/frontend/plugins/LazyLoad";
+import VueLazyload from "vue-lazyload";
+import App from "@/embed/App.vue";
+import router from "@/embed/plugins/Router";
+import { createPinia } from "pinia";
+import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
+import FloatingVue from "floating-vue";
+import "floating-vue/dist/style.css";
 
-Vue.use(ApiClient);
-Vue.use(I18nPlugin);
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
 
-Vue.config.productionTip = false;
-
-VTooltip.enabled = window.innerWidth > 768;
-Vue.use(VTooltip, {
-  defaultContainer: "#fleetyards-view",
-});
-
-window.FleetYardsFleetchart = null;
+window.FleetYardsFleetchart = undefined;
 
 setTimeout(() => {
-  if (store.state.storeVersion !== window.STORE_VERSION) {
-    console.info("Updating Store Version and resetting Store");
+  window.FleetYardsFleetchartConfig ||= {};
 
-    store.dispatch("reset");
-    store.commit("setStoreVersion", window.STORE_VERSION);
-  }
+  const app = createApp(App);
 
-  // eslint-disable-next-line no-undef
-  const config = window.FleetYardsFleetchartConfig || {};
-
-  // eslint-disable-next-line no-new
-  window.FleetYardsFleetchart = new Vue({
-    el: "#fleetyards-view",
-    store,
-    data: {
-      ships: config.ships || [],
-      users: config.users || [],
-      fleetId: config.fleetId || config.fleetID || null, // fleetID is deprecated, please use fleetId
-      groupedButton: config.groupedButton || false,
-      fleetchartSlider: config.fleetchartSlider || false,
-      frontendEndpoint: window.FRONTEND_ENDPOINT,
-    },
-    methods: {
-      updateShips(ships) {
-        const fleetview = (this.$children || [])[0];
-        if (fleetview) {
-          fleetview.updateShips(ships);
-        }
-      },
-
-      updateUsers(users) {
-        const fleetview = (this.$children || [])[0];
-        if (fleetview) {
-          fleetview.updateUsers(users);
-        }
-      },
-
-      updateFleet(fleetID) {
-        const fleetview = (this.$children || [])[0];
-        if (fleetview) {
-          fleetview.updateFleet(fleetID);
-        }
-      },
-    },
-    render: (h) => h(FleetyardsView),
+  app.use(router);
+  app.use(pinia);
+  app.use(VueLazyload);
+  app.use(FloatingVue, {
+    container: "#fleetyards-view",
   });
+
+  app.mount("#fleetyards-view");
+
+  window.FleetYardsFleetchart = app;
 }, 2000);

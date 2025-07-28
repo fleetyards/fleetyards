@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_MISC_Reliant_Sen",
+  "ref": "74050567-b5d2-4a86-9850-45ab2cf456a9",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SELF STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "scm_speed": 220.0,
+    "scm_speed_boosted": 480.0,
+    "reverse_speed_boosted": 250.0,
+    "max_speed": 1150.0,
+    "angular_velocity": {
+      "pitch": 56.0,
+      "yaw": 45.0,
+      "roll": 150.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 67.2,
+      "yaw": 54.0,
+      "roll": 180.0
+    }
+  }
+}

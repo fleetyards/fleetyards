@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Nox_AlienWeek_Platinum_Silver_Purple_Mosaic",
+  "ref": "fb9a5aca-0989-4933-a740-a20362b2ff8d",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1de3bb64-5885-4528-be6b-a77166401786",
+  "name": "Nox Wanderer Livery",
+  "short_name": null,
+  "description": "The Wanderer livery features crisscrossing purple and grey lines over a platinum foundation. Inspired by the sacred Xi'an gardens of R.aip’uāng, famous for its trails that wander in surprising ways and encourage a focus on the journey instead of the destination.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}
