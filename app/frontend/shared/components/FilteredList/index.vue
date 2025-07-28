@@ -63,7 +63,7 @@ const hasFilterSlot = computed(() => {
 const { t } = useI18n();
 
 const filterTooltip = computed(() => {
-  if (filterVisible) {
+  if (filterVisible.value) {
     return t("filteredList.actions.hideFilter");
   }
 

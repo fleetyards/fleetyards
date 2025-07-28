@@ -1,3 +1,4 @@
+import { formatISO, parseISO, differenceInMinutes } from "date-fns";
 import { defineStore } from "pinia";
 import { type AdminUser } from "@/services/fyAdminApi";
 import { me as fetchMe, destroySession } from "@/services/fyAdminApi";
@@ -5,12 +6,14 @@ import { me as fetchMe, destroySession } from "@/services/fyAdminApi";
 interface SessionState {
   authenticated: boolean;
   currentUser?: AdminUser;
+  accessConfirmed?: string;
 }
 
 export const useSessionStore = defineStore("session", {
   state: (): SessionState => ({
     authenticated: false,
     currentUser: undefined,
+    accessConfirmed: undefined,
   }),
   getters: {
     isSuperAdmin(state) {
@@ -21,6 +24,18 @@ export const useSessionStore = defineStore("session", {
     },
     resourceAccess(state) {
       return state.currentUser?.resourceAccess || [];
+    },
+    accessConfirmedDate(state) {
+      if (!state.accessConfirmed) {
+        return false;
+      }
+
+      const diff = differenceInMinutes(
+        new Date(),
+        parseISO(state.accessConfirmed),
+      );
+
+      return diff < 10;
     },
   },
   actions: {
@@ -49,6 +64,12 @@ export const useSessionStore = defineStore("session", {
         this.isSuperAdmin ||
         false
       );
+    },
+    confirmAccess() {
+      this.accessConfirmed = formatISO(new Date());
+    },
+    resetConfirmAccess() {
+      this.accessConfirmed = undefined;
     },
   },
   persist: {

@@ -10,6 +10,7 @@ import BackgroundImage from "@/shared/components/BackgroundImage/index.vue";
 import AdminNavigation from "@/admin/components/Navigation/index.vue";
 import AppNavigationHeader from "@/shared/components/AppNavigation/Header/index.vue";
 import AdminNavigationMobile from "@/admin/components/Navigation/Mobile/index.vue";
+import SecurePage from "@/admin/components/SecurePage/index.vue";
 import AccessCheck from "@/admin/components/AccessCheck.vue";
 import { useI18nStore } from "@/shared/stores/i18n";
 import { useAppStore } from "@/admin/stores/app";
@@ -176,7 +177,14 @@ const setNoScroll = () => {
             >
               <template #granted>
                 <transition name="fade" mode="out-in">
+                  <SecurePage
+                    v-if="
+                      viewRoute.meta.needsSecurityConfirm &&
+                      !sessionStore.accessConfirmedDate
+                    "
+                  />
                   <section
+                    v-else
                     class="container main"
                     :class="{
                       [route.name || '']: true,

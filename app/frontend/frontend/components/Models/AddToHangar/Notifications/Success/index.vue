@@ -23,6 +23,8 @@ const image = computed(() => {
   if (model.value.media.storeImage) {
     return model.value.media.storeImage.mediumUrl;
   }
+
+  return undefined;
 });
 
 const alt = computed(() => model.value.name);

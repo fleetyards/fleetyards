@@ -1,6 +1,6 @@
 <template>
   <transition name="back-to-top-fade">
-    <div class="primary-action">
+    <div v-if="action" class="primary-action">
       <div
         v-tooltip="label"
         :aria-label="label"
@@ -17,12 +17,13 @@
 
 <script lang="ts" setup>
 type Props = {
-  action: () => void;
+  action?: () => void;
   icon?: string;
   label?: string;
 };
 
 withDefaults(defineProps<Props>(), {
+  action: undefined,
   icon: "fal fa-plus",
   label: undefined,
 });

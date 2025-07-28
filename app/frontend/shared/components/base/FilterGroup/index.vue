@@ -230,10 +230,10 @@ const innerLabel = computed(() => {
 
 const labelFor = computed(() => {
   if (props.searchable) {
-    return `${props.name}-searchInput-${id}`;
+    return `${props.name}-searchInput-${id.value}`;
   }
 
-  return `${props.name}-options-${id}`;
+  return `${props.name}-options-${id.value}`;
 });
 
 const searchPlaceholder = computed(() => {
