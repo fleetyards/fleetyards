@@ -75,7 +75,7 @@
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/container-queries": "^0.1.1",
-    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/typography": "^0.5.10",
     "@types/downloadjs": "^1.4.6",
     "@types/i18n-js": "3.8.9",
