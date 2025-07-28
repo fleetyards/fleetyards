@@ -14,9 +14,10 @@ jobs:
     env:
       RAILS_ENV: test
       NODE_OPTIONS: "--max_old_space_size=4096"
-      DATABASE_URL: postgresql://root:root@127.0.0.1:8271/fleetyards_test
+      DATABASE_URL: postgresql://root:password@127.0.0.1:8271/fleetyards_test
       DATABASE_HOST: 127.0.0.1
       DATABASE_USER: root
+      DATABASE_PASSWORD: password
       ON_SUBDOMAIN: false
       RAILS_SERVE_STATIC_FILES: 1
       DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
@@ -28,7 +29,7 @@ jobs:
         env:
           POSTGRES_USER: root
           POSTGRES_DB: fleetyards_test
-          POSTGRES_PASSWORD: root
+          POSTGRES_PASSWORD: password
         ports:
           - 8271:5432
         options: >-
