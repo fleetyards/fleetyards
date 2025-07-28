@@ -2,7 +2,7 @@
   form {
     max-width: 300px;
     margin: 0 auto;
-    margin-top: 12%;
+    margin-top: 8%;
   }
 
   .form-control {
@@ -33,6 +33,12 @@
 
   .base-input label {
     display: none;
+  }
+
+  .logo {
+    display: block;
+    max-width: 180px;
+    margin-bottom: 10px;
   }
 
   @media (min-width: $desktop-breakpoint) {

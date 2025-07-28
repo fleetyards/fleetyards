@@ -26,6 +26,13 @@ import {
 } from "@/shared/components/base/Btn/types";
 import { type AxiosError } from "axios";
 import { useRedirectBack } from "@/shared/composables/useRedirectBack";
+import {
+  HeadingLevelEnum,
+  HeadingSizeEnum,
+  HeadingAlignmentEnum,
+} from "@/shared/components/base/Heading/types";
+import logo from "@/images/logo.png";
+import Heading from "@/shared/components/base/Heading/index.vue";
 
 const { t } = useI18n();
 
@@ -108,11 +115,17 @@ const signupRoute = computed(() => {
   <div class="row">
     <div class="col-12">
       <form @submit.prevent="onSubmit">
-        <h1>
-          <router-link to="/" exact>
+        <Heading
+          :level="HeadingLevelEnum.H1"
+          hero
+          :size="HeadingSizeEnum.HERO"
+          :alignment="HeadingAlignmentEnum.CENTER"
+        >
+          <img :src="logo" alt="Logo" class="logo" />
+          <router-link to="/" exact class="text-center">
             {{ t("title.default") }}
           </router-link>
-        </h1>
+        </Heading>
 
         <template v-if="twoFactorRequired">
           <FormInput

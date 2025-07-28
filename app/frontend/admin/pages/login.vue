@@ -23,9 +23,11 @@ import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import { BtnTypesEnum, BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
   HeadingLevelEnum,
+  HeadingSizeEnum,
   HeadingAlignmentEnum,
 } from "@/shared/components/base/Heading/types";
 import { useRedirectBack } from "@/shared/composables/useRedirectBack";
+import logo from "@/images/admin/logo.png";
 
 const { t } = useI18n();
 
@@ -98,9 +100,12 @@ const onSubmit = handleSubmit(async (values) => {
       <form @submit.prevent="onSubmit">
         <Heading
           :level="HeadingLevelEnum.H1"
+          hero
+          :size="HeadingSizeEnum.HERO"
           :alignment="HeadingAlignmentEnum.CENTER"
         >
-          <router-link to="/" exact>
+          <img :src="logo" alt="Logo" class="logo" />
+          <router-link to="/" exact class="text-center">
             {{ t("title.defaultAdmin") }}
           </router-link>
         </Heading>

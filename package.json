@@ -9,7 +9,7 @@
     "test:watch": "vitest watch",
     "dev:vite": "bin/vite dev --mode=test",
     "dev:playwright:ui": "DEBUG=pw:webserver playwright test --ui",
-    "test:e2e:startserver": "RAILS_ENV=test bundle exec foreman run --env .env.test rails s --pid tmp/pids/server_e2e.pid",
+    "test:e2e:startserver": "RAILS_ENV=test bundle exec foreman run rails s --pid tmp/pids/server_e2e.pid",
     "test:e2e:open": "concurrently \"pnpm dev:vite\" \"pnpm dev:playwright:ui\" --kill-others",
     "test:e2e:run": "playwright test",
     "test:e2e:report": "playwright show-report",
