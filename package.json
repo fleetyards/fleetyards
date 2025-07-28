@@ -122,8 +122,8 @@
     "vitest": "3.2.4",
     "vue-eslint-parser": "9.4.2",
     "vue-template-compiler": "2.7.16",
-    "workbox-build": "7.0.0",
-    "workbox-window": "7.0.0"
+    "workbox-build": "7.3.0",
+    "workbox-window": "7.3.0"
   },
   "resolutions": {
     "form-data": ">=4.0.4",
