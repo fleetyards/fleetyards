@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.63](///compare/v5.31.62...v5.31.63) (2025-07-27)
+
+
+### Bug Fixes
+
+* **hardpoint:** update erkul/spviewer buttons 8929b87
+
 ### [5.31.62](///compare/v5.31.61...v5.31.62) (2025-05-25)
 
 ### [5.31.61](///compare/v5.31.60...v5.31.61) (2025-05-25)
