@@ -703,7 +703,7 @@ GEM
     rswag-api (2.16.0)
       activesupport (>= 5.2, < 8.1)
       railties (>= 5.2, < 8.1)
-    rswag-schema_components (0.2.0)
+    rswag-schema_components (0.3.2)
       rails (>= 3.0.0, < 8.1.0)
     rswag-specs (2.16.0)
       activesupport (>= 5.2, < 8.1)

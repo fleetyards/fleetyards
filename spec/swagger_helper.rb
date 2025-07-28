@@ -60,7 +60,7 @@ RSpec.configure do |config|
       components: {
         parameters: shared_v1_components_loader.parameters.merge(v1_components_loader.parameters),
         schemas: shared_v1_components_loader.schemas.merge(v1_components_loader.schemas),
-        securitySchemes: shared_v1_components_loader.securitySchemes.merge(v1_components_loader.securitySchemes).symbolize_keys
+        securitySchemes: shared_v1_components_loader.security_schemes.merge(v1_components_loader.security_schemes).symbolize_keys
       }.compact
     },
     "admin/v1/schema.yaml" => {
@@ -85,7 +85,7 @@ RSpec.configure do |config|
       components: {
         parameters: shared_v1_components_loader.parameters.merge(admin_v1_components_loader.parameters),
         schemas: shared_v1_components_loader.schemas.merge(admin_v1_components_loader.schemas),
-        securitySchemes: shared_v1_components_loader.securitySchemes.merge(admin_v1_components_loader.securitySchemes).symbolize_keys
+        securitySchemes: shared_v1_components_loader.security_schemes.merge(admin_v1_components_loader.security_schemes).symbolize_keys
       }.compact
     }
   }
