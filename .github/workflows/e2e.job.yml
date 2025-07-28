@@ -14,7 +14,7 @@ jobs:
     env:
       RAILS_ENV: test
       NODE_OPTIONS: "--max_old_space_size=4096"
-      DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards_test
+      DATABASE_URL: postgresql://root:root@127.0.0.1:8271/fleetyards_test
       DATABASE_HOST: 127.0.0.1
       DATABASE_USER: root
       ON_SUBDOMAIN: false
@@ -30,7 +30,7 @@ jobs:
           POSTGRES_DB: fleetyards_test
           POSTGRES_PASSWORD: root
         ports:
-          - 5432:5432
+          - 8271:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -39,13 +39,12 @@ jobs:
       redis:
         image: redis:6.2.10-alpine
         ports:
-          - 6379:6379
+          - 8272:6379
         options: >-
           --health-cmd "redis-cli ping"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
