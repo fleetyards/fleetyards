@@ -4,7 +4,7 @@ on:
   workflow_call:
 
 jobs:
-  ruby-tests:
+  ruby-api-tests:
     runs-on: ubuntu-latest
 
     env:

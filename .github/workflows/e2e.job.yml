@@ -84,7 +84,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: 101skills-gmbh/ci-actions/.github/actions/js-setup-pnpm@main
+
+      - uses: ./.github/workflows/js-setup-action
 
       - name: Download blob reports from GitHub Actions Artifacts
         uses: actions/download-artifact@v4
