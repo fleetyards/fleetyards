@@ -166,6 +166,9 @@ GEM
       bigdecimal
       rexml
     crass (1.0.6)
+    cronex (0.15.0)
+      tzinfo
+      unicode (>= 0.4.4.5)
     css_parser (1.16.0)
       addressable
     csv (3.3.5)
@@ -187,7 +190,7 @@ GEM
       devise (~> 4.0)
       railties (>= 7.0, < 8.1)
       rotp (~> 6.0)
-    diff-lcs (1.5.1)
+    diff-lcs (1.6.2)
     discordrb-webhooks (3.5.0)
       rest-client (>= 2.0.0)
     docile (1.4.1)
@@ -217,7 +220,7 @@ GEM
     factory_bot_rails (6.5.0)
       factory_bot (~> 6.5)
       railties (>= 6.1.0)
-    faker (3.3.1)
+    faker (3.5.2)
       i18n (>= 1.8.11, < 2)
     faraday (2.13.3)
       faraday-net_http (>= 2.0, < 3.5)
@@ -348,7 +351,7 @@ GEM
       railties (>= 4)
     js_cookie_rails (2.2.0)
       railties (>= 3.1)
-    json (2.7.1)
+    json (2.13.1)
     json-schema (4.1.1)
       addressable (>= 2.8)
     kaminari (1.2.2)
@@ -445,7 +448,7 @@ GEM
     options (2.3.2)
     orm_adapter (0.5.0)
     ostruct (0.6.3)
-    paper_trail (15.1.0)
+    paper_trail (16.0.0)
       activerecord (>= 6.1)
       request_store (~> 1.4)
     parallel (1.24.0)
@@ -580,7 +583,7 @@ GEM
     regexp_parser (2.9.0)
     reline (0.6.2)
       io-console (~> 0.5)
-    request_store (1.5.1)
+    request_store (1.7.0)
       rack (>= 1.4)
     responders (3.1.1)
       actionpack (>= 5.2)
@@ -599,23 +602,23 @@ GEM
       chunky_png (~> 1.0)
       rqrcode_core (~> 2.0)
     rqrcode_core (2.0.0)
-    rspec-core (3.13.0)
+    rspec-core (3.13.5)
       rspec-support (~> 3.13.0)
-    rspec-expectations (3.13.0)
+    rspec-expectations (3.13.5)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
-    rspec-mocks (3.13.0)
+    rspec-mocks (3.13.5)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
-    rspec-rails (6.1.2)
-      actionpack (>= 6.1)
-      activesupport (>= 6.1)
-      railties (>= 6.1)
+    rspec-rails (8.0.1)
+      actionpack (>= 7.2)
+      activesupport (>= 7.2)
+      railties (>= 7.2)
       rspec-core (~> 3.13)
       rspec-expectations (~> 3.13)
       rspec-mocks (~> 3.13)
       rspec-support (~> 3.13)
-    rspec-support (3.13.1)
+    rspec-support (3.13.4)
     rswag-api (2.16.0)
       activesupport (>= 5.2, < 8.1)
       railties (>= 5.2, < 8.1)
@@ -681,20 +684,22 @@ GEM
     shoulda-context (2.0.0)
     shoulda-matchers (5.3.0)
       activesupport (>= 5.2.0)
-    sidekiq (7.2.4)
-      concurrent-ruby (< 2)
-      connection_pool (>= 2.3.0)
-      rack (>= 2.2.4)
-      redis-client (>= 0.19.0)
-    sidekiq-cron (1.12.0)
-      fugit (~> 1.8)
+    sidekiq (8.0.6)
+      connection_pool (>= 2.5.0)
+      json (>= 2.9.0)
+      logger (>= 1.6.2)
+      rack (>= 3.1.0)
+      redis-client (>= 0.23.2)
+    sidekiq-cron (2.3.0)
+      cronex (>= 0.13.0)
+      fugit (~> 1.8, >= 1.11.1)
       globalid (>= 1.0.1)
-      sidekiq (>= 6)
+      sidekiq (>= 6.5.0)
     simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
       simplecov_json_formatter (~> 0.1)
-    simplecov-console (0.9.3)
+    simplecov-console (0.9.4)
       ansi
       simplecov
       terminal-table
@@ -754,6 +759,7 @@ GEM
       concurrent-ruby (~> 1.0)
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
+    unicode (0.4.4.5)
     unicode-display_width (2.6.0)
     uniform_notifier (1.17.0)
     uri (1.0.3)
@@ -903,7 +909,7 @@ DEPENDENCIES
   sentry-sidekiq
   shoulda
   shoulda-matchers
-  sidekiq (< 8)
+  sidekiq (<= 8.0.6)
   sidekiq-cron
   simplecov
   simplecov-console
@@ -931,4 +937,4 @@ RUBY VERSION
    ruby 3.4.5p51
 
 BUNDLED WITH
-   2.4.4
+   2.7.1

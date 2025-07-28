@@ -41,7 +41,7 @@ COPY bin /fleetyards/bin
 COPY lib /fleetyards/lib
 COPY public /fleetyards/public
 COPY vendor /fleetyards/vendor
-COPY .ruby-version /fleetyards/.ruby-version
+COPY .tool-versions /fleetyards/.tool-versions
 COPY Rakefile /fleetyards/Rakefile
 COPY Gemfile /fleetyards/Gemfile
 COPY Gemfile.lock /fleetyards/Gemfile.lock
