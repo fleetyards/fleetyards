@@ -1887,10 +1887,10 @@
   resolved "https://registry.yarnpkg.com/@types/swagger-ui-dist/-/swagger-ui-dist-3.30.6.tgz#65680c32b7ef8d40b41865d3cbab74dbc51c25e1"
   integrity sha512-FVxN7wjLYRtJsZBscOcOcf8oR++m38vbUFjT33Mr9HBuasX9bRDrJsp7iwixcOtKSHEEa2B7o2+4wEiXqC+Ebw==
 
-"@types/swagger-ui@^3.52.4":
-  version "3.52.4"
-  resolved "https://registry.yarnpkg.com/@types/swagger-ui/-/swagger-ui-3.52.4.tgz#96c4886e8f86ae392f8d940bf7029cf490a51c72"
-  integrity sha512-7NV7q8BfupqdQxr26OkM0g0YEPB9uXnKGzXadgcearvI9MoCHt3F72lPTX3fZZIlrr21DC0IK26wcDMZ37oFDA==
+"@types/swagger-ui@^5.21.1":
+  version "5.21.1"
+  resolved "https://registry.yarnpkg.com/@types/swagger-ui/-/swagger-ui-5.21.1.tgz#e73e14914a6d4aee42a9bf457176476d9f9499ac"
+  integrity sha512-DUmUH59eeOtvAqcWwBduH2ws0cc5i95KHsXCS4FsOfbUq/clW8TN+HqRBj7q5p9MSsSNK43RziIGItNbrAGLxg==
 
 "@types/trusted-types@^2.0.2":
   version "2.0.2"
