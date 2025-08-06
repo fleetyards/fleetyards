@@ -130,9 +130,9 @@ const loading = computed(() => {
 
 watch(
   () => props.options,
-  () => {
+  async () => {
     if (instance.value) {
-      reloadChart();
+      await reloadChart();
     } else {
       setupChart();
     }
@@ -142,7 +142,7 @@ watch(
   },
 );
 
-const reloadChart = async () => {
+const reloadChart = () => {
   const series = instance.value?.series[0];
 
   if (!series) {

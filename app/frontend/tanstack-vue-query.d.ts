@@ -11,6 +11,7 @@ declare module "@tanstack/vue-query" {
     queryKey: DataTag<QueryKey, TData>;
     enabled?: MaybeRef<boolean>;
     retry?: number | boolean;
+    staleTime?: number;
     initialData?: MaybeRefDeep<TData | InitialDataFunction<TData> | undefined>;
     overrideQueryKey?: DataTag<QueryKey, TData>;
   }

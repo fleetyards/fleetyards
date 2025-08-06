@@ -15,7 +15,7 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
-/* eslint-disable no-useless-escape */
+ 
 const widgetExample = `\<div id="fleetyards-view"\>\</div\>
 \<script\>
     window.FleetYardsFleetchartConfig = {
@@ -38,7 +38,7 @@ const widgetExample = `\<div id="fleetyards-view"\>\</div\>
 \</script\>
 \<noscript\>Please enable JavaScript to view your custom Fleetview powered by FleetYards.net.\</noscript\>
 `;
-/* eslint-enable no-useless-escape */
+ 
 
 const { t } = useI18n();
 

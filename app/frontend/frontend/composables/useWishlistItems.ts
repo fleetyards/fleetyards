@@ -1,41 +1,33 @@
 import { useRoute } from "vue-router";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useWishlistStore } from "@/frontend/stores/wishlist";
-import { wishlistItems } from "@/services/fyApi";
+import { useWishlistItems as useWishlistItemsQuery } from "@/services/fyApi";
 
 export const useWishlistItems = () => {
   const sessionStore = useSessionStore();
   const wishlistStore = useWishlistStore();
 
-  const fetchWishlistItems = async () => {
-    if (!sessionStore.isAuthenticated) {
-      return;
-    }
+  const { data: wishlistItems, refetch } = useWishlistItemsQuery({
+    query: {
+      enabled: sessionStore.isAuthenticated,
+    },
+  });
 
-    await wishlistItems()
-      .then((response) => {
-        wishlistStore.save(response);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
-  fetchWishlistItems();
+  watch(
+    () => wishlistItems.value,
+    (items) => {
+      if (items) {
+        wishlistStore.save(items);
+      }
+    },
+  );
 
   const route = useRoute();
 
   watch(
     () => route.path,
-    () => {
-      fetchWishlistItems();
-    },
-  );
-
-  watch(
-    () => sessionStore.isAuthenticated,
-    () => {
-      fetchWishlistItems();
+    async () => {
+      await refetch();
     },
   );
 };

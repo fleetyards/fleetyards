@@ -48,7 +48,7 @@ const emit = defineEmits(["update:modelValue"]);
 
 watch(
   () => internalValue.value,
-  async () => {
+  () => {
     emit("update:modelValue", internalValue.value);
   },
 );

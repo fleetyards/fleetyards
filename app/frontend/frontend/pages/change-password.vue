@@ -41,9 +41,9 @@ const [passwordConfirmation, passwordConfirmationProps] = defineField(
   "passwordConfirmation",
 );
 
-onMounted(() => {
+onMounted(async () => {
   if (isAuthenticated.value) {
-    router.push({ name: "settings-change-password" });
+    await router.push({ name: "settings-change-password" });
   }
 });
 

@@ -48,11 +48,9 @@ const inputFilter = (
     }
   }
   if (newFile && (!oldFile || newFile.file !== oldFile.file)) {
-    // eslint-disable-next-line no-param-reassign
     newFile.url = "";
     const URL = window.URL || window.webkitURL;
     if (URL && URL.createObjectURL && newFile.file) {
-      // eslint-disable-next-line no-param-reassign
       newFile.url = URL.createObjectURL(newFile.file);
     }
   }

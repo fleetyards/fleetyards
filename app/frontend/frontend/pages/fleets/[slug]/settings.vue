@@ -86,7 +86,6 @@ const leave = () => {
             text: t("messages.fleet.leave.success"),
           });
 
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           await router.push({ name: "home" }).catch(() => {});
         })
         .catch((error) => {

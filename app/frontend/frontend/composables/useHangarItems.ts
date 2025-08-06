@@ -1,41 +1,33 @@
 import { useRoute } from "vue-router";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useHangarStore } from "@/frontend/stores/hangar";
-import { hangarItems } from "@/services/fyApi";
+import { useHangarItems as useHangarItemsQuery } from "@/services/fyApi";
 
 export const useHangarItems = () => {
   const sessionStore = useSessionStore();
   const hangarStore = useHangarStore();
 
-  const fetchHangarItems = async () => {
-    if (!sessionStore.isAuthenticated) {
-      return;
-    }
+  const { data: hangarItems, refetch } = useHangarItemsQuery({
+    query: {
+      enabled: sessionStore.isAuthenticated,
+    },
+  });
 
-    await hangarItems()
-      .then((response) => {
-        hangarStore.save(response);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
-  fetchHangarItems();
+  watch(
+    () => hangarItems.value,
+    (items) => {
+      if (items) {
+        hangarStore.save(items);
+      }
+    },
+  );
 
   const route = useRoute();
 
   watch(
     () => route.path,
-    () => {
-      fetchHangarItems();
-    },
-  );
-
-  watch(
-    () => sessionStore.isAuthenticated,
-    () => {
-      fetchHangarItems();
+    async () => {
+      await refetch();
     },
   );
 };

@@ -7,6 +7,7 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import { useComlink } from "@/shared/composables/useComlink";
 import { type AppConfirmOptions } from "@/shared/components/AppConfirm/types";
+import favicon from "@/images/favicon.png";
 
 export const useAppNotifications = () => {
   const { t } = useI18n();
@@ -16,12 +17,12 @@ export const useAppNotifications = () => {
   const notifyPermissionGranted = () =>
     "Notification" in window && window.Notification.permission === "granted";
 
-  const requestBrowserPermission = () => {
+  const requestBrowserPermission = async () => {
     if (!("Notification" in window) || notifyPermissionGranted()) {
       return;
     }
 
-    window.Notification.requestPermission((permission) => {
+    await window.Notification.requestPermission((permission) => {
       if (permission === "granted") {
         displayNativeNotification(t("messages.notification.granted"));
       }
@@ -30,8 +31,7 @@ export const useAppNotifications = () => {
 
   const displayDesktopNotification = (message: string) => {
     const notification = new window.Notification(message, {
-      // eslint-disable-next-line global-require
-      icon: `${window.FRONTEND_ENDPOINT}${require("@/images/favicon.png")}`,
+      icon: `${window.FRONTEND_ENDPOINT}${favicon}`,
     });
 
     return notification;
@@ -40,13 +40,13 @@ export const useAppNotifications = () => {
   const displayNativeNotification = (message: string) => {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.ready.then(
-        (registration) => {
+        async (registration) => {
           if (!registration.showNotification) {
             return;
           }
 
-          registration.showNotification(message, {
-            icon: `${window.FRONTEND_ENDPOINT}/images/favicon.png`,
+          await registration.showNotification(message, {
+            icon: `${window.FRONTEND_ENDPOINT}${favicon}`,
             // @ts-ignore vibrate is allowed here
             vibrate: [200, 100, 200, 100, 200, 100, 200],
           });

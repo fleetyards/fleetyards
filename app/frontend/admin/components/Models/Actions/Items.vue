@@ -23,7 +23,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const sync = async () => {
+const sync = () => {
   console.info("sync", props.model);
 };
 

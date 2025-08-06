@@ -85,8 +85,8 @@ export const useFilters = <T>({
           page: shouldResetPage(query) ? undefined : route.query.page,
         },
       })
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch((_error: Error) => {});
+
+      .catch(() => {});
   };
 
   const resetFilter = () => {
@@ -95,8 +95,8 @@ export const useFilters = <T>({
         ...route,
         query: {},
       })
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch((_error: Error) => {});
+
+      .catch(() => {});
   };
 
   const filter = debounce(debouncedFilter, 300);

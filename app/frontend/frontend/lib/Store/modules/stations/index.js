@@ -18,7 +18,6 @@ export default () => ({
     },
   },
 
-  /* eslint-disable no-param-reassign */
   mutations: {
     reset(state) {
       Object.assign(state, getDefaultState());
@@ -32,5 +31,4 @@ export default () => ({
       state.perPage = payload;
     },
   },
-  /* eslint-enable no-param-reassign */
 });

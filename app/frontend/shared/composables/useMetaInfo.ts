@@ -32,9 +32,7 @@ export const useMetaInfo = (options: MetaInfoOptions = {}) => {
   const appTitle = options.appTitle || t("title.default");
 
   const routeTitle = computed(() => {
-    const routeMetaTitle: string | undefined = route.meta?.title as
-      | string
-      | undefined;
+    const routeMetaTitle: string | undefined = route.meta?.title;
 
     if (!routeMetaTitle) {
       return undefined;

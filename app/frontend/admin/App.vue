@@ -86,22 +86,24 @@ const router = useRouter();
 
 watch(
   () => isAuthenticated.value,
-  () => {
+  async () => {
     if (isAuthenticated.value) {
-      requestBrowserPermission();
+      await requestBrowserPermission();
 
-      refetchCurrentUser();
+      await refetchCurrentUser();
     } else if (route.meta.needsAuthentication) {
-      router.push({ name: "admin-login" });
+      await router.push({ name: "admin-login" });
     }
   },
 );
+
+const onUserUpdateComlink = ref();
 
 onMounted(async () => {
   setNoScroll();
 
   if (isAuthenticated.value) {
-    requestBrowserPermission();
+    await requestBrowserPermission();
   }
 
   // checkVersion();
@@ -110,13 +112,15 @@ onMounted(async () => {
   //   checkVersion();
   // }, CHECK_VERSION_INTERVAL);
 
-  comlink.on("user-update", refetchCurrentUser);
+  onUserUpdateComlink.value = comlink.on("user-update", refetchCurrentUser);
 
   // setupLocale();
 });
 
 onUnmounted(() => {
-  comlink.off("user-update");
+  if (onUserUpdateComlink.value) {
+    onUserUpdateComlink.value();
+  }
 });
 
 const { data: user, refetch: refetchCurrentUser } = useMeQuery({

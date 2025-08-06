@@ -91,7 +91,7 @@ const imageByViewpoint = computed<MediaFile | undefined>(() => {
 
 const model = computed<Model>(() => {
   if (props.item && (props.item as Vehicle).model) {
-    return (props.item as Vehicle).model as Model;
+    return (props.item as Vehicle).model;
   }
 
   return props.item as Model;

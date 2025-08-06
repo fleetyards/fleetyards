@@ -1,7 +1,7 @@
 import { type ManufacturerQuery } from "@/services/fyAdminApi";
 import { useFilters } from "@/shared/composables/useFilters";
 
-interface AllowedFilters extends ManufacturerQuery {}
+export type AllowedFilters = ManufacturerQuery;
 
 export const useManufacturerFilters = (updateCallback?: () => void) => {
   return useFilters<AllowedFilters>({

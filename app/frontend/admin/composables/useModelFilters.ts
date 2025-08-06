@@ -1,7 +1,7 @@
 import { type ModelQuery } from "@/services/fyAdminApi";
 import { useFilters } from "@/shared/composables/useFilters";
 
-interface AllowedFilters extends ModelQuery {}
+export type AllowedFilters = ModelQuery;
 
 export const useModelFilters = (updateCallback?: () => void) => {
   return useFilters<AllowedFilters>({

@@ -18,7 +18,7 @@ const copyText = function copyText(text: string, container?: Element) {
     });
     clipboard.on("error", (e) => {
       clipboard.destroy();
-      reject(e);
+      reject(new Error(`Failed to copy text: ${e.text}`));
     });
     document.body.appendChild(fakeElement);
     fakeElement.click();

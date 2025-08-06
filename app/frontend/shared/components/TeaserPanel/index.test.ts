@@ -9,7 +9,7 @@ const item = {
   storeImageMedium: "TestImage",
 };
 
-describe("TeaserPanel", async () => {
+describe("TeaserPanel", () => {
   it("renders", async () => {
     const wrapper = await mountWithDefaults<typeof Component>(Component, {
       props: { item },

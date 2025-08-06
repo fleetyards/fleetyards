@@ -7,8 +7,6 @@ export const useRedirectBack = (fallbackRoute?: RouterLinkProps["to"]) => {
   const router = useRouter();
 
   const handleRedirect = async () => {
-    redirectBackStore.backRoute;
-
     if (redirectBackStore.backRoute) {
       await router.replace(redirectBackStore.backRoute);
     } else if (fallbackRoute) {

@@ -206,15 +206,15 @@ const updateItems = () => {
         (b as Vehicle).model?.metrics?.length
       ) {
         if (
-          (a as Vehicle).model!.metrics!.length! <
-          (b as Vehicle).model!.metrics!.length!
+          (a as Vehicle).model.metrics.length! <
+          (b as Vehicle).model.metrics.length!
         ) {
           return -1;
         }
 
         if (
-          (a as Vehicle).model!.metrics!.length! >
-          (b as Vehicle).model!.metrics!.length!
+          (a as Vehicle).model.metrics.length! >
+          (b as Vehicle).model.metrics.length!
         ) {
           return 1;
         }

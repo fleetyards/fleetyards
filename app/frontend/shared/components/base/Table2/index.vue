@@ -4,7 +4,7 @@ export default {
 };
 </script>
 
-<script lang="ts" setup generic="T">
+<script lang="ts" setup generic="T extends BaseTableItem">
 import Empty from "@/shared/components/Empty/index.vue";
 import { v4 as uuidv4 } from "uuid";
 import { uniq as uniqArray } from "@/shared/utils/Array";
@@ -16,7 +16,7 @@ import BulkActions from "@/shared/components/base/Table/BulkActions/index.vue";
 import TableHeader from "./Header/index.vue";
 import TableRow from "./Row/index.vue";
 import TableCell from "./Cell/index.vue";
-import { type BaseTableCol, type BaseTableItem } from "./types";
+import { type BaseTableItem, type BaseTableCol } from "./types";
 
 type Props = {
   records: T[];
@@ -95,8 +95,8 @@ type Slots = {
   title?: () => void;
   empty?: () => void;
   "selected-actions"?: (props: { selected: string[] }) => void;
-  actions?: (props: { record: T | BaseTableItem }) => void;
-  [key: `col-${string}`]: (props: { record: T | BaseTableItem }) => void;
+  actions?: (props: { record: T }) => void;
+  [key: `col-${string}`]: (props: { record: T }) => void;
 };
 
 const slots = defineSlots<Slots>();

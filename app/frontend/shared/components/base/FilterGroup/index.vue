@@ -197,10 +197,10 @@ const { isLoading, isFetching, data, refetch } = useQuery({
 
 watch(
   () => data.value,
-  () => {
+  async () => {
     if (data.value) {
       addOptions(data.value);
-      fetchMissingOption();
+      await fetchMissingOption();
     }
   },
 );
@@ -307,11 +307,11 @@ const documentClick = (event: Event) => {
   }
 };
 
-const debouncedOnSearch = () => {
+const debouncedOnSearch = async () => {
   if (search.value) {
     page.value = 1;
 
-    refetch();
+    await refetch();
   }
 };
 
@@ -330,13 +330,13 @@ const fetchMissingOption = async () => {
 
   missing.value = internalValue.value as string;
 
-  refetch();
+  await refetch();
 };
 
-const fetchMore = () => {
+const fetchMore = async () => {
   page.value += 1;
 
-  refetch();
+  await refetch();
 };
 
 const sort = (options: FilterOption[]) => {
@@ -376,7 +376,7 @@ const selected = (option: FilterOptionValue) => {
 
 const emits = defineEmits(["update:modelValue"]);
 
-const select = (optionValue: FilterOptionValue) => {
+const select = async (optionValue: FilterOptionValue) => {
   clearSearch();
 
   if (selected(optionValue)) {
@@ -408,7 +408,7 @@ const select = (optionValue: FilterOptionValue) => {
       emits("update:modelValue", values);
     }
 
-    focusSearch();
+    await focusSearch();
   } else {
     if (props.returnObject) {
       emits(
@@ -419,25 +419,25 @@ const select = (optionValue: FilterOptionValue) => {
       emits("update:modelValue", optionValue);
     }
 
-    toggle();
+    await toggle();
   }
 };
 
-const toggle = () => {
+const toggle = async () => {
   if (props.disabled) {
     return;
   }
 
   visible.value = !visible.value;
 
-  focusSearch();
+  await focusSearch();
 };
 
 const searchInput = ref<InstanceType<typeof FormInput> | null>(null);
 
-const focusSearch = () => {
+const focusSearch = async () => {
   if (props.searchable && visible.value) {
-    nextTick(() => {
+    await nextTick(() => {
       if (searchInput.value) {
         searchInput.value.setFocus();
       }

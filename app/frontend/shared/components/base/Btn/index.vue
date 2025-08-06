@@ -6,8 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import BtnInner from "@/shared/components/base/Btn/Inner/index.vue";
-import type { SpinnerAlignment } from "@/shared/components/SmallLoader/index.vue";
-import type { RouterLinkProps } from "vue-router";
+import { type SpinnerAlignment } from "@/shared/components/SmallLoader/index.vue";
+import { type RouterLinkProps } from "vue-router";
 import {
   BtnTypesEnum,
   BtnVariantsEnum,
@@ -21,7 +21,7 @@ export type Props = {
   target?: HTMLAnchorElement["target"];
   type?: `${BtnTypesEnum}`;
   loading?: boolean;
-  spinner?: boolean | SpinnerAlignment;
+  spinner?: boolean | `${SpinnerAlignment}`;
   variant?: `${BtnVariantsEnum}`;
   size?: `${BtnSizesEnum}`;
   exact?: boolean;

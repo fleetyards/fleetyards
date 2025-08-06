@@ -15,7 +15,6 @@ export const useSearchStore = defineStore("search", {
   }),
   actions: {
     save(payload: SearchHistoryEntry) {
-      // eslint-disable-next-line no-param-reassign
       this.history = this.history.filter(
         (item) => item.search !== payload.search,
       );

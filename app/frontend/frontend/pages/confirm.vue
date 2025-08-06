@@ -54,7 +54,6 @@ const confirmAccount = async () => {
       });
     })
     .finally(async () => {
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
       await router.push("/").catch(() => {});
     });
 };

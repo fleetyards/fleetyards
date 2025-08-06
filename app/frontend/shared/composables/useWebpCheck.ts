@@ -4,9 +4,9 @@ import { useWebpStore } from "@/shared/stores/webp";
 export const useWebpCheck = (write: boolean = false) => {
   const webpStore = useWebpStore();
 
-  onMounted(() => {
+  onMounted(async () => {
     if (write) {
-      check();
+      await check();
     }
   });
 

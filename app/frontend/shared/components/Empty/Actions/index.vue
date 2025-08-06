@@ -38,7 +38,7 @@ const resetPage = () => {
         q: route.query.q || {},
       },
     })
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
+
     .catch((_err) => {});
 };
 
@@ -47,7 +47,7 @@ const reset = () => {
     .replace({
       name: String(route.name),
     })
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
+
     .catch((_err) => {});
 };
 </script>

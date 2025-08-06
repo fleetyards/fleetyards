@@ -19,7 +19,7 @@ const route = useRoute();
 
 const backgroundImageKey = computed(() => {
   if (route.meta?.backgroundImage) {
-    return route.meta.backgroundImage as string;
+    return route.meta.backgroundImage;
   }
 
   return backgroundImageFallback;

@@ -127,7 +127,7 @@ const upload = () => {
 
 const clear = () => {
   if (input.value) {
-    (input.value as HTMLInputElement).value = "";
+    input.value.value = "";
   }
 
   files.value = [];

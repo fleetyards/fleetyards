@@ -1,5 +1,3 @@
-import { ModelSortEnum } from "@/services/fyAdminApi";
-
 export enum BaseTableColAlignmentEnum {
   LEFT = "left",
   CENTER = "center",

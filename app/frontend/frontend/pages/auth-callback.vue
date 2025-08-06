@@ -10,7 +10,7 @@ import { useRedirectBack } from "@/shared/composables/useRedirectBack";
 const { handleRedirect } = useRedirectBack();
 
 onMounted(async () => {
-  handleRedirect();
+  await handleRedirect();
 });
 </script>
 

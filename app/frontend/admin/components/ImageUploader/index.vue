@@ -268,17 +268,16 @@ const cancelSingleUpload = (image: VueUploadItem) => {
   uploadElement.value?.remove(image);
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const upload = async (
-  file: VueUploadItem,
-  component: typeof VueUploadComponent,
-) => {
-  return await component.uploadHtml4(file);
-};
+// const upload = async (
+//   file: VueUploadItem,
+//   component: typeof VueUploadComponent,
+// ) => {
+//   return await component.uploadHtml4(file);
+// };
 
 const emit = defineEmits(["image-uploaded", "image-deleted"]);
 
-const inputImage = async (newImage: VueUploadItem, oldImage: VueUploadItem) => {
+const inputImage = (newImage: VueUploadItem, oldImage: VueUploadItem) => {
   if (newImage && oldImage && !newImage.active && oldImage.active) {
     if (newImage.xhr && newImage.xhr.status === 200) {
       emit("image-uploaded", newImage);
@@ -305,7 +304,6 @@ const inputFilter = (
     return;
   }
 
-  /* eslint-disable no-param-reassign */
   newImage.blob = "";
   const URL = window.URL || window.webkitURL;
   if (URL && URL.createObjectURL) {
@@ -315,7 +313,6 @@ const inputFilter = (
   if (newImage.blob && newImage.type?.substring(0, 6) === "image/") {
     newImage.smallUrl = newImage.blob;
   }
-  /* eslint-enable no-param-reassign */
 };
 </script>
 

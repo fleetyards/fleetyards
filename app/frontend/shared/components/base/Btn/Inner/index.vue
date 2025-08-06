@@ -11,7 +11,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   loading?: boolean;
-  spinner?: boolean | SpinnerAlignment;
+  spinner?: boolean | `${SpinnerAlignment}`;
 };
 
 const props = withDefaults(defineProps<Props>(), {

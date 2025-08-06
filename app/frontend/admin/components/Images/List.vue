@@ -61,8 +61,8 @@ const { data, refetch, ...asyncStatus } = useImagesQuery({
 
 watch(
   () => route.query,
-  () => {
-    refetch();
+  async () => {
+    await refetch();
   },
   { deep: true },
 );

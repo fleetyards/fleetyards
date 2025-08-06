@@ -2,9 +2,8 @@ import { DirectUpload, type Blob } from "@rails/activestorage";
 
 const DIRECT_UPLOAD_URL = "/files/direct_uploads";
 
-// eslint-disable-next-line
 export function useDirectUpload() {
-  async function uploadFile(
+  function uploadFile(
     file: File,
     {
       errorHandler,

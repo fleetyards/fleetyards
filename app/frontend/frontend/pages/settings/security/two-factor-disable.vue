@@ -54,7 +54,7 @@ const disable = async () => {
 
     await router
       .push({ name: "settings-security", hash: "#two-factor" })
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
+
       .catch(() => {});
   } else if (response.error === "requires_access_confirmation") {
     comlink.emit("access-confirmation-required");

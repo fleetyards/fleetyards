@@ -85,7 +85,7 @@ const colorTooltip = computed(() => {
   return t("actions.holoViewer.color.enable");
 });
 
-onMounted(async () => {
+onMounted(() => {
   loading.value = true;
   progress.value = 0;
 });

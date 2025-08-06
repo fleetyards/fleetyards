@@ -80,7 +80,7 @@ export const i18nHelpers = (i18n: I18n) => {
   const toUEC = (value?: number, unit?: string) => {
     if (!unit) {
       /* tslint:disable:no-parameter-reassignment */
-      // eslint-disable-next-line no-param-reassign
+
       unit = i18n.t("number.units.uec");
       /* tslint:enable:no-parameter-reassignment */
     }
