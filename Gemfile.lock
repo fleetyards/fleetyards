@@ -210,7 +210,7 @@ GEM
       activesupport
     erb (5.0.2)
     erubi (1.13.1)
-    et-orbi (1.2.11)
+    et-orbi (1.3.0)
       tzinfo
     ethon (0.16.0)
       ffi (>= 1.15.0)
@@ -352,7 +352,7 @@ GEM
       railties (>= 4)
     js_cookie_rails (2.2.0)
       railties (>= 3.1)
-    json (2.13.1)
+    json (2.13.2)
     json-schema (4.1.1)
       addressable (>= 2.8)
     kaminari (1.2.2)
@@ -693,7 +693,7 @@ GEM
       logger (>= 1.6.2)
       rack (>= 3.1.0)
       redis-client (>= 0.23.2)
-    sidekiq-cron (2.3.0)
+    sidekiq-cron (2.3.1)
       cronex (>= 0.13.0)
       fugit (~> 1.8, >= 1.11.1)
       globalid (>= 1.0.1)
