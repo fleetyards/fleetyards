@@ -21,7 +21,7 @@
     "validate-admin-schema": "npx @redocly/cli@latest lint ./swagger/admin/v1/schema.yaml"
   },
   "dependencies": {
-    "@rails/actioncable": "7.1.3",
+    "@rails/actioncable": "8.0.201",
     "@sentry/tracing": "7.120.4",
     "@sentry/vue": "7.120.3",
     "ahoy.js": "0.4.4",
