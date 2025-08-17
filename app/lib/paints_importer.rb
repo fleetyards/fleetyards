@@ -277,6 +277,7 @@ class PaintsImporter
     alts = ["ATLS", "ATLS Geo"]
 
     models_map = {
+      "Wolf" => ["L-21 Wolf"],
       "A.T.L.S" => alts,
       "A.T.L.S." => alts,
       "ATLS" => alts,
