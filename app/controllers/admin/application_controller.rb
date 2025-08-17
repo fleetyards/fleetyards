@@ -23,7 +23,7 @@ module Admin
 
     def worker_running?(name)
       Sidekiq::Workers.new.any? do |_process_id, _thread_id, work|
-        work["queue"] == name
+        work.queue == name
       end
     end
     helper_method :worker_running?

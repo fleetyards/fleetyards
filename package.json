@@ -1,7 +1,7 @@
 {
   "name": "fleetyards",
   "private": true,
-  "version": "5.31.63",
+  "version": "5.31.64",
   "type": "module",
   "scripts": {
     "test": "vitest run",
@@ -136,6 +136,7 @@
     "orval": "^7.11.2",
     "playwright": "^1.54.2",
     "prettier": "3.6.2",
+    "sass": "1.90.0",
     "sass": "1.90.0",
     "standard-version": "9.5.0",
     "stylelint": "^16.23.0",
