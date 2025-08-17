@@ -101,7 +101,7 @@
     "eslint-plugin-compat": "6.0.2",
     "eslint-plugin-cypress": "2.15.1",
     "eslint-plugin-import": "2.32.0",
-    "eslint-plugin-prettier": "5.5.3",
+    "eslint-plugin-prettier": "5.5.4",
     "eslint-plugin-sort-class-members": "1.21.0",
     "eslint-plugin-vue": "8.4.1",
     "jsdom": "26.1.0",
