@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.64](///compare/v5.31.63...v5.31.64) (2025-08-17)
+
+
+### Bug Fixes
+
+* **paints:** update importer mapping for the L-21 Wolf 3305599
+
 ### [5.31.63](///compare/v5.31.62...v5.31.63) (2025-07-27)
 
 
