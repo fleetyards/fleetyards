@@ -214,7 +214,8 @@ GEM
       tzinfo
     ethon (0.16.0)
       ffi (>= 1.15.0)
-    excon (0.110.0)
+    excon (1.2.8)
+      logger
     execjs (2.9.1)
     factory_bot (6.5.4)
       activesupport (>= 6.1.0)
@@ -245,22 +246,24 @@ GEM
       rack-protection (>= 1.5.3, < 5.0.0)
       rack-session (>= 1.0.2, < 3.0.0)
       sanitize (< 8)
-    fog-aws (3.22.0)
-      fog-core (~> 2.1)
+    fog-aws (3.33.0)
+      base64 (>= 0.2, < 0.4)
+      fog-core (~> 2.6)
       fog-json (~> 1.1)
       fog-xml (~> 0.1)
-    fog-core (2.4.0)
+    fog-core (2.6.0)
       builder
-      excon (~> 0.71)
+      excon (~> 1.0)
       formatador (>= 0.2, < 2.0)
       mime-types
     fog-json (1.2.0)
       fog-core
       multi_json (~> 1.10)
-    fog-xml (0.1.4)
+    fog-xml (0.1.5)
       fog-core
       nokogiri (>= 1.5.11, < 2.0.0)
-    formatador (1.1.0)
+    formatador (1.2.0)
+      reline
     foundation_emails (2.2.1.0)
     fugit (1.11.1)
       et-orbi (~> 1, >= 1.2.11)
@@ -397,9 +400,10 @@ GEM
     metadown (1.0.1)
       redcarpet
     method_source (1.1.0)
-    mime-types (3.5.2)
-      mime-types-data (~> 3.2015)
-    mime-types-data (3.2024.0305)
+    mime-types (3.7.0)
+      logger
+      mime-types-data (~> 3.2025, >= 3.2025.0507)
+    mime-types-data (3.2025.0805)
     mini_magick (5.3.0)
       logger
     mini_mime (1.1.5)
