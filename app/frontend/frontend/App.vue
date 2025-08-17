@@ -97,11 +97,11 @@ const router = useRouter();
 
 watch(
   () => isAuthenticated.value,
-  () => {
+  async () => {
     if (isAuthenticated.value) {
-      requestBrowserPermission();
+      await requestBrowserPermission();
     } else if (route.meta.needsAuthentication) {
-      router.push({ name: "login" });
+      await router.push({ name: "login" });
     }
   },
 );
@@ -112,8 +112,8 @@ const comlink = useComlink();
 
 watch(
   () => route.name,
-  () => {
-    checkSessionReload();
+  async () => {
+    await checkSessionReload();
 
     if (infoVisible.value && route.name !== "privacy-policy") {
       openPrivacySettings();
@@ -127,31 +127,36 @@ watch(
 
 useCheckStoreVersion(appStore);
 
+const openPrivacySettingsComlink = ref();
+const userUpdateComlink = ref();
+const fleetCreateComlink = ref();
+const fleetUpdateComlink = ref();
+
 onMounted(async () => {
-  checkSessionReload();
+  await checkSessionReload();
   setNoScroll();
 
   if (isAuthenticated.value) {
-    requestBrowserPermission();
+    await requestBrowserPermission();
   }
 
   setInterval(() => {
     refetchVersion();
   }, CHECK_VERSION_INTERVAL);
 
-  comlink.on("open-privacy-settings", openPrivacySettings);
-  comlink.on("user-update", refetchCurrentUser);
-  comlink.on("fleet-create", refetchCurrentUser);
-  comlink.on("fleet-update", refetchCurrentUser);
+  openPrivacySettingsComlink.value = comlink.on("open-privacy-settings", openPrivacySettings);
+  userUpdateComlink.value = comlink.on("user-update", refetchCurrentUser);
+  fleetCreateComlink.value = comlink.on("fleet-create", refetchCurrentUser);
+  fleetUpdateComlink.value = comlink.on("fleet-update", refetchCurrentUser);
 
   setupLocale();
 });
 
 onUnmounted(() => {
-  comlink.off("open-privacy-settings");
-  comlink.off("user-update");
-  comlink.off("fleet-create");
-  comlink.off("fleet-update");
+  openPrivacySettingsComlink.value();
+  userUpdateComlink.value();
+  fleetCreateComlink.value();
+  fleetUpdateComlink.value();
 });
 
 const i18nStore = useI18nStore();
@@ -191,7 +196,7 @@ const setNoScroll = () => {
 
 const checkSessionReload = async () => {
   if (route.query.reload_session) {
-    sessionStore.fetchUserAndLogin();
+    await sessionStore.fetchUserAndLogin();
   }
 };
 

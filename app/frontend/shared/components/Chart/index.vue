@@ -6,14 +6,12 @@ export default {
 
 <script lang="ts" setup>
 import Highcharts from "highcharts";
-import accessibility from "highcharts/modules/accessibility";
+import "highcharts/modules/accessibility";
 import type { PieChartStats, BarChartStats } from "@/services/fyApi";
 import { v4 as uuidv4 } from "uuid";
 import defaultTheme from "./defaultTheme";
 import { type AsyncStatus } from "@/shared/components/AsyncData.types";
 import { useI18n } from "@/shared/composables/useI18n";
-
-accessibility(Highcharts);
 
 type TooltipLabelOption = {
   label?: number | string;

@@ -16,6 +16,7 @@ export default defineConfigWithVueTs(
     ]),
     {
       rules: {
+        "@typescript-eslint/no-floating-promises": false,
         "@typescript-eslint/no-unused-vars": [
           "error",
           {

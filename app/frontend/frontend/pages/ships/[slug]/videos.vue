@@ -47,7 +47,7 @@ const metaImage = computed(() => {
     return undefined;
   }
 
-  return props.model.media.storeImage?.large;
+  return props.model.media.storeImage?.largeUrl;
 });
 
 const route = useRoute();

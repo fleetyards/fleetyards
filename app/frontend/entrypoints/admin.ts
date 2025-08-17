@@ -34,7 +34,7 @@ const vueQueryPluginOptions: VueQueryPluginOptions = {
 app.use(VueQueryPlugin, vueQueryPluginOptions);
 app.use(router);
 app.use(pinia);
-app.use(sentry, router);
+app.use(sentry);
 app.use(VueLazyload);
 app.use(veeValidate);
 app.use(FloatingVue);

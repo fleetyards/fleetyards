@@ -29,12 +29,14 @@ const backupCodes = ref<string[]>();
 
 const comlink = useComlink();
 
+const accessConfirmedComlink = ref();
+
 onMounted(() => {
-  comlink.on("access-confirmed", generateBackupCodes);
+  accessConfirmedComlink.value = comlink.on("access-confirmed", generateBackupCodes);
 });
 
 onBeforeUnmount(() => {
-  comlink.off("access-confirmed", generateBackupCodes);
+  accessConfirmedComlink.value();
 });
 
 const generateBackupCodes = async () => {

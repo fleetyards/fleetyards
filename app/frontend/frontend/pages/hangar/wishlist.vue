@@ -97,24 +97,32 @@ watch(
   },
 );
 
+const vehicleSaveComlink = ref();
+const vehicleDestroyComlink = ref();
+const hangarChangeComlink = ref();
+const hangarDeleteAllComlink = ref();
+const hangarGroupDeleteComlink = ref();
+// const hangarGroupSaveComlink = ref();
+const hangarSyncFinishedComlink = ref();
+
 onMounted(() => {
-  comlink.on("vehicle-save", fetch);
-  comlink.on("vehicle-destroy", fetch);
-  comlink.on("hangar-change", fetch);
-  comlink.on("hangar-delete-all", fetch);
-  comlink.on("hangar-group-delete", fetch);
-  // comlink.on("hangar-group-save", groupsCollection.findAll);
-  comlink.on("hangar-sync-finished", fetch);
+  vehicleSaveComlink.value = comlink.on("vehicle-save", fetch);
+  vehicleDestroyComlink.value = comlink.on("vehicle-destroy", fetch);
+  hangarChangeComlink.value = comlink.on("hangar-change", fetch);
+  hangarDeleteAllComlink.value = comlink.on("hangar-delete-all", fetch);
+  hangarGroupDeleteComlink.value = comlink.on("hangar-group-delete", fetch);
+  // hangarGroupSaveComlink.value = comlink.on("hangar-group-save", groupsCollection.findAll);
+  hangarSyncFinishedComlink.value = comlink.on("hangar-sync-finished", fetch);
 });
 
 onUnmounted(() => {
-  comlink.off("vehicle-save");
-  comlink.off("vehicle-destroy");
-  comlink.off("hangar-change");
-  comlink.off("hangar-delete-all");
-  comlink.off("hangar-group-delete");
-  // comlink.off("hangar-group-save");
-  comlink.off("hangar-sync-finished");
+  vehicleSaveComlink.value();
+  vehicleDestroyComlink.value();
+  hangarChangeComlink.value();
+  hangarDeleteAllComlink.value();
+  hangarGroupDeleteComlink.value();
+  // hangarGroupSaveComlink.value();
+  hangarSyncFinishedComlink.value();
 });
 
 const toggleFleetchart = () => {

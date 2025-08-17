@@ -43,15 +43,18 @@ const handleKeyDown = (event: KeyboardEvent) => {
   }
 };
 
+const showConfirmComlink = ref();
+const hideConfirmComlink = ref();
+
 onMounted(() => {
-  comlink.on("show-confirm", show);
-  comlink.on("hide-confirm", hide);
+  showConfirmComlink.value = comlink.on("show-confirm", show);
+  hideConfirmComlink.value = comlink.on("hide-confirm", hide);
   window.addEventListener("keydown", handleKeyDown);
 });
 
 onUnmounted(() => {
-  comlink.off("show-confirm", show);
-  comlink.off("hide-confirm", hide);
+  showConfirmComlink.value();
+  hideConfirmComlink.value();
   window.removeEventListener("keydown", handleKeyDown);
 });
 

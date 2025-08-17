@@ -25,6 +25,7 @@ const sessionStore = useSessionStore();
 const { data: componentsByClass, ...componentsByClassStatus } =
   useComponentsByClass();
 
+
 const { data: components, ...componentsStatus } = useComponents(
   {
     perPage: "6",
@@ -33,7 +34,7 @@ const { data: components, ...componentsStatus } = useComponents(
   },
   {
     query: {
-      enabled: () => sessionStore.hasAccessTo("components"),
+      enabled: sessionStore.hasAccessTo("components"),
     },
   },
 );

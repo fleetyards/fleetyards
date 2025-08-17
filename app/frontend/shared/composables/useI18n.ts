@@ -8,7 +8,7 @@ const i18n = new I18n(translations);
 
 // const availableLocales = ["de", "en", "es", "fr", "it", "zh", "zh-CN", "zh-TW"];
 // Temporarly disable languages without translations
-i18n.availableLocales = ["de", "en", "fr", "it"];
+const availableLocales = ["de", "en", "fr", "it"];
 i18n.defaultLocale = "en";
 
 i18n.enableFallback = true;
@@ -30,7 +30,7 @@ export const useI18n = () => {
   return {
     t: (scope: Scope, options?: TranslateOptions) => i18n.t(scope, options),
     currentLocale: () => i18n.locale,
-    availableLocales: () => i18n.availableLocales,
+    availableLocales: () => availableLocales,
     tExists: (key: string) => !!i18n.get(key),
     ...i18nHelpers(i18n),
   };

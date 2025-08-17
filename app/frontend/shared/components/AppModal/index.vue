@@ -46,21 +46,24 @@ const isOpen = ref(false);
 
 const comlink = useComlink();
 
+const onOpenModalComlink = ref();
+const onCloseModalComlink = ref();
+
 onMounted(() => {
-  comlink.on("open-modal", open);
-  comlink.on("close-modal", close);
+  onOpenModalComlink.value = comlink.on("open-modal", open);
+  onCloseModalComlink.value = comlink.on("close-modal", close);
 });
 
 onUnmounted(() => {
-  comlink.off("open-modal", open);
-  comlink.off("close-modal", close);
+  onOpenModalComlink.value();
+  onCloseModalComlink.value();
 });
 
 const emit = defineEmits(["modal-opened", "modal-closed"]);
 
 const overlayStore = useOverlayStore();
 
-const open = (options: AppModalOptions) => {
+const open = async (options: AppModalOptions) => {
   componentProps.value = options.props;
   wide.value = !!options.wide;
   fixed.value = !!options.fixed;
@@ -71,7 +74,7 @@ const open = (options: AppModalOptions) => {
 
   overlayStore.show();
 
-  nextTick(() => {
+  await nextTick(() => {
     // make sure the component is present
     setTimeout(() => {
       // make sure initial animations have enough time
@@ -88,7 +91,7 @@ const { t } = useI18n();
 
 const { displayConfirm } = useAppNotifications();
 
-const close = (force = false) => {
+const close = async (force = false) => {
   if (fixed.value && !force) {
     return;
   }
@@ -96,21 +99,21 @@ const close = (force = false) => {
   if (modalComponent.value?.dirty) {
     displayConfirm({
       text: t("appModal.messages.confirm.dirty"),
-      onConfirm: () => {
-        internalHide();
+      onConfirm: async () => {
+        await internalHide();
       },
     });
   } else {
-    internalHide();
+    await internalHide();
   }
 };
 
-const internalHide = () => {
+const internalHide = async () => {
   isOpen.value = false;
 
   overlayStore.hide();
 
-  nextTick(function onHide() {
+  await nextTick(function onHide() {
     setTimeout(() => {
       isShow.value = false;
       component.value = undefined;

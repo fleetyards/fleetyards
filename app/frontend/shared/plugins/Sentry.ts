@@ -1,9 +1,8 @@
 import type { App } from "vue";
-import type { Router } from "vue-router";
 import * as Sentry from "@sentry/vue";
 
 export default {
-  install: (app: App<Element>, router: Router) => {
+  install: (app: App<Element>) => {
     if (window.SENTRY_DSN) {
       Sentry.init({
         app,
@@ -11,10 +10,8 @@ export default {
         release: window.GIT_REVISION,
         dsn: window.SENTRY_DSN,
         integrations: [
-          new Sentry.BrowserTracing({
-            routingInstrumentation: Sentry.vueRouterInstrumentation(router),
-          }),
-          new Sentry.Replay(),
+          Sentry.browserTracingIntegration(),
+          Sentry.replayIntegration(),
         ],
         tracePropagationTargets: [
           "localhost",
@@ -22,16 +19,13 @@ export default {
           /^https:\/\/fleetyards\.net/,
         ],
         tracesSampleRate: 0.2,
-        trackComponents: true,
         replaysSessionSampleRate: 0.1,
         replaysOnErrorSampleRate: 1.0,
       });
 
-      Sentry.configureScope((scope) => {
-        scope.setTag("version", window.APP_VERSION);
-        scope.setTag("codename", window.APP_CODENAME);
-        scope.setTag("store-version", window.STORE_VERSION);
-      });
+      Sentry.getCurrentScope().setTag("version", window.APP_VERSION);
+      Sentry.getCurrentScope().setTag("codename", window.APP_CODENAME);
+      Sentry.getCurrentScope().setTag("store-version", window.STORE_VERSION);
     }
   },
 };

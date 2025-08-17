@@ -25,12 +25,14 @@ const { data: membership, ...asyncMembershipStatus } =
 
 const comlink = useComlink();
 
+const fleetUpdateComlink = ref();
+
 onMounted(() => {
-  comlink.on("fleet-update", refetch);
+  fleetUpdateComlink.value = comlink.on("fleet-update", refetch);
 });
 
 onUnmounted(() => {
-  comlink.off("fleet-update", refetch);
+  fleetUpdateComlink.value();
 });
 
 useFleetMeta(fleet);
