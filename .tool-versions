@@ -1,4 +1,4 @@
-ruby 3.4.5
+ruby 3.4.6
 nodejs lts
 yarn 1.22.10
 bun 1.1.7
