@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.66](///compare/v5.31.65...v5.31.66) (2025-09-30)
+
+
+### Bug Fixes
+
+* **paints-import:** update mapping for apollo 615b39a
+
 ### [5.31.65](///compare/v5.31.64...v5.31.65) (2025-09-10)
 
 
