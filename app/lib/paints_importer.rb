@@ -275,9 +275,11 @@ class PaintsImporter
     reliant = ["Reliant Kore", "Reliant Mako", "Reliant Sen", "Reliant Tana"]
     idris = ["Idris-P", "Idris-M"]
     alts = ["ATLS", "ATLS Geo"]
+    apollo = ["Apollo Medivac", "Apollo Triage"]
 
     models_map = {
       "Wolf" => ["L-21 Wolf"],
+      "Apollo" => apollo,
       "A.T.L.S" => alts,
       "A.T.L.S." => alts,
       "ATLS" => alts,
