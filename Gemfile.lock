@@ -571,9 +571,10 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rchardet (1.9.0)
-    rdoc (6.14.2)
+    rdoc (6.15.0)
       erb
       psych (>= 4.0.0)
+      tsort
     redcarpet (3.6.1)
     redis (5.4.1)
       redis-client (>= 0.22.0)
@@ -762,6 +763,7 @@ GEM
     timecop (0.9.10)
     timeout (0.4.3)
     track_open_instances (0.1.15)
+    tsort (0.2.0)
     typhoeus (1.4.1)
       ethon (>= 0.9.0)
     tzinfo (2.0.6)
