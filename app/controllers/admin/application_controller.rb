@@ -3,8 +3,11 @@
 module Admin
   class ApplicationController < ActionController::Base
     include RansackHelper
+    include ActionPolicy::Controller
 
     layout "admin/application"
+
+    verify_authorized
 
     before_action :set_paper_trail_whodunnit
     before_action :configure_permitted_parameters, if: :devise_controller?

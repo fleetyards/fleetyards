@@ -47,9 +47,9 @@ import {
   useHangarGroups as useHangarGroupsQuery,
   hangarExport as fetchHangarExport,
   useDestroyHangar as useDestroyHangarMutation,
-  useHangarQueryOptions,
+  type HangarParams,
+  getHangarQueryKey,
 } from "@/services/fyApi";
-import { CustomQueryOptions } from "@/services/customQueryOptions";
 
 const { t, toDollar, toUEC, toNumber } = useI18n();
 
@@ -77,17 +77,20 @@ const fleetchartVisible = computed(() => fleetchartStore.isVisible("hangar"));
 
 const shareTitle = computed(() => t("title.hangar.index"));
 
-const { filters, isFilterSelected } = useHangarFilters(() => refetch());
+const { isFilterSelected, getQuery } = useHangarFilters(() => refetch());
 
-const hangarQueryParams = computed(() => ({
-  page: page.value,
-  perPage: perPage.value,
-  q: filters.value,
-}));
+const hangarQueryParams = computed(() => {
+  const params: HangarParams = {
+    page: page.value,
+    perPage: perPage.value,
+    q: getQuery(),
+  };
+
+  return params;
+});
 
 const hangarQueryKey = computed(() => {
-  return (useHangarQueryOptions(hangarQueryParams) as CustomQueryOptions)
-    .queryKey;
+  return getHangarQueryKey(hangarQueryParams);
 });
 
 const { perPage, page, updatePerPage } = usePagination(hangarQueryKey);

@@ -16,13 +16,6 @@ export default defineConfig({
           path: "../axiosClient.ts",
           name: "axiosClient",
         },
-        query: {
-          shouldExportQueryKey: false,
-          queryOptions: {
-            path: "./app/frontend/services/customQueryOptions.ts",
-            name: "customQueryOptions",
-          },
-        },
       },
     },
     input: {
@@ -43,13 +36,6 @@ export default defineConfig({
         mutator: {
           path: "../axiosAdminClient.ts",
           name: "axiosClient",
-        },
-        query: {
-          shouldExportQueryKey: false,
-          queryOptions: {
-            path: "./app/frontend/services/customQueryOptions.ts",
-            name: "customQueryOptions",
-          },
         },
       },
     },

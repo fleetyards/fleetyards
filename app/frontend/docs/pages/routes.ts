@@ -7,12 +7,18 @@ export const routes: RouteRecordRaw[] = [
     redirect: {
       name: "api-v1",
     },
+    meta: {
+      nav: "hidden",
+    },
   },
   {
     path: "/api/",
     name: "api",
     redirect: {
       name: "api-v1",
+    },
+    meta: {
+      nav: "hidden",
     },
   },
   {
@@ -24,6 +30,8 @@ export const routes: RouteRecordRaw[] = [
     },
     meta: {
       title: "apiV1",
+      icon: "fad fa-books",
+      mobileNav: 0,
     },
   },
   {
@@ -32,6 +40,8 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/docs/pages/embed.vue"),
     meta: {
       title: "embed",
+      icon: "fad fa-arrow-up-from-square",
+      mobileNav: 1,
     },
   },
 ];

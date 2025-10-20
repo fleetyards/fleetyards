@@ -23,8 +23,6 @@ import {
   useVehiclesQueryOptions,
 } from "@/services/fyAdminApi";
 
-import { CustomQueryOptions } from "@/services/customQueryOptions";
-
 const { t } = useI18n();
 
 const route = useRoute();
@@ -40,13 +38,13 @@ watch(
   },
 );
 
-const { filters } = useVehicleFilters(() => refetch());
+const { getQuery } = useVehicleFilters(() => refetch());
 
 const vehiclesQueryParams = computed(() => {
   return {
     page: page.value,
     perPage: perPage.value,
-    q: filters.value,
+    q: getQuery(),
     s: sorts.value,
   };
 });
@@ -67,12 +65,12 @@ const columns: BaseTableCol<Vehicle>[] = [
   {
     name: "image",
     label: "",
-    centered: true,
+    alignment: "center",
   },
   {
     name: "fleetchart",
     label: "",
-    centered: true,
+    alignment: "center",
     mobile: false,
   },
   {

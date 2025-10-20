@@ -5,17 +5,19 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
+import BaseText from "@/shared/components/base/Text/index.vue";
+import BaseSpacer from "@/shared/components/base/Spacer/index.vue";
+import BasePill from "@/shared/components/base/Pill/index.vue";
 import "highlight.js";
 import copyText from "@/shared/utils/CopyText";
 import Heading from "@/shared/components/base/Heading/index.vue";
-import {
-  HeadingSizeEnum,
-  HeadingLevelEnum,
-} from "@/shared/components/base/Heading/types";
+import { HeadingSizeEnum } from "@/shared/components/base/Heading/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
- 
 const widgetExample = `\<div id="fleetyards-view"\>\</div\>
 \<script\>
     window.FleetYardsFleetchartConfig = {
@@ -38,7 +40,6 @@ const widgetExample = `\<div id="fleetyards-view"\>\</div\>
 \</script\>
 \<noscript\>Please enable JavaScript to view your custom Fleetview powered by FleetYards.net.\</noscript\>
 `;
- 
 
 const { t } = useI18n();
 
@@ -61,149 +62,159 @@ const copyExample = () => {
 </script>
 
 <template>
-  <main class="embed-page">
-    <div class="px-4 sm:px-6 lg:px-8 py-6">
-      <Heading :size="HeadingSizeEnum.HERO" hero mb>Embed Fleetview</Heading>
-      <Heading :level="HeadingLevelEnum.H2" :size="HeadingSizeEnum.XXL"
-        >Setup</Heading
-      >
-      <div class="p-6 bg-brand-grayBgDark/80 rounded mt-4 mb-8">
-        <p>
-          To get a custom Ship List on your Website you can just paste the
-          example code on the right side at the position where you want to
-          render a Ship List.
-        </p>
+  <Heading :size="HeadingSizeEnum.HERO" hero mb>Embed Fleetview</Heading>
+  <Panel>
+    <PanelHeading>Setup</PanelHeading>
+    <PanelBody>
+      <BaseText>
+        To get a custom Ship List on your Website you can just paste the example
+        code on the right side at the position where you want to render a Ship
+        List.
+      </BaseText>
 
-        <div
-          class="md:mx-24 my-5 relative group cursor-pointer"
-          @click="copyExample"
-        >
-          <i
-            class="fas fa-copy absolute right-2 top-8 opacity-0 transition-opacity group-hover:opacity-100"
-          ></i>
-          <pre v-highlightjs="widgetExample">
-            <code class="javascript rounded !py-5 !px-4">
-            </code>
-          </pre>
-        </div>
+      <div class="code-highlight" @click="copyExample">
+        <i class="fas fa-copy copy-icon"></i>
+        <pre
+          v-highlightjs="widgetExample"
+        ><code class="javascript rounded !py-5 !px-4"></code></pre>
       </div>
-      <Heading :level="HeadingLevelEnum.H2" :size="HeadingSizeEnum.XXL"
-        >Options</Heading
+    </PanelBody>
+  </Panel>
+
+  <BaseSpacer />
+
+  <Panel>
+    <PanelHeading>Options</PanelHeading>
+    <PanelBody>
+      <Heading :size="HeadingSizeEnum.XL">Show Details</Heading>
+      <BaseText>
+        <BasePill> <strong>details</strong>: true|false </BasePill>
+        (boolean) default is `true`
+      </BaseText>
+
+      <BaseText
+        >Display details about the given Ship or just a minimal
+        version.</BaseText
       >
-      <div class="p-6 bg-brand-grayBgDark/80 rounded mt-4 mb-8">
-        <h3 class="text-xl my-5">Show Details</h3>
 
-        <p class="mb-3">
-          <span class="bg-gray-700 px-2 py-1 mr-1 rounded">
-            <strong>details</strong>: true|false
-          </span>
-          (boolean) default is `true`
-        </p>
+      <Heading :size="HeadingSizeEnum.XL">Grouped View</Heading>
 
-        <p>Display details about the given Ship or just a minimal version.</p>
+      <BaseText>
+        <BasePill> <strong>grouped</strong>: true|false </BasePill>
+        (boolean) default is `true`
+      </BaseText>
+      <BaseText
+        >Group duplicated Ships and Show a count on each Ship Panel.</BaseText
+      >
 
-        <h3 class="text-xl my-5">Grouped View</h3>
+      <Heading :size="HeadingSizeEnum.XL">Render as Fleetchart</Heading>
 
-        <p class="mb-3">
-          <span class="bg-gray-700 px-2 py-1 mr-1 rounded">
-            <strong>grouped</strong>: true|false
-          </span>
-          (boolean) default is `true`
-        </p>
-        <p>Group duplicated Ships and Show a count on each Ship Panel.</p>
+      <BaseText>
+        <BasePill> <strong>fleetchart</strong>: true|false </BasePill>
+        (boolean) default is `false`
+      </BaseText>
+      <BaseText
+        >Display the Fleetview as a Fleetchart with correct Ship Dimensions.
+      </BaseText>
 
-        <h3 class="text-xl my-5">Render as Fleetchart</h3>
+      <Heading :size="HeadingSizeEnum.XL">Grouped View for Fleetchart</Heading>
 
-        <p class="mb-3">
-          <span class="bg-gray-700 px-2 py-1 mr-1 rounded">
-            <strong>fleetchart</strong>: true|false
-          </span>
-          (boolean) default is `false`
-        </p>
-        <p>
-          Display the Fleetview as a Fleetchart with correct Ship Dimensions.
-        </p>
+      <BaseText>
+        <BasePill> <strong>fleetchartGrouped</strong>: true|false </BasePill>
+        (boolean) default is `false`
+      </BaseText>
+      <BaseText>Group duplicated Ships in the Fleetchart</BaseText>
 
-        <h3 class="text-xl my-5">Grouped View for Fleetchart</h3>
+      <Heading :size="HeadingSizeEnum.XL">Initial Fleetchart Scale</Heading>
 
-        <p class="mb-3">
-          <span class="bg-gray-700 px-2 py-1 mr-1 rounded">
-            <strong>fleetchartGrouped</strong>: true|false
-          </span>
-          (boolean) default is `false`
-        </p>
-        <p>Group duplicated Ships in the Fleetchart</p>
+      <BaseText>
+        <BasePill> <strong>fleetchartScale</strong>: 50 </BasePill>
+        (int) default is `50`
+      </BaseText>
+      <BaseText>
+        Set the initial Scale of the Fleetchart, can be between 10 - 300 for
+        Desktop and 10 - 100 for Mobile.
+      </BaseText>
 
-        <h3 class="text-xl my-5">Initial Fleetchart Scale</h3>
+      <Heading :size="HeadingSizeEnum.XL">Show Fleetchart Slider</Heading>
 
-        <p class="mb-3">
-          <span class="bg-gray-700 px-2 py-1 mr-1 rounded">
-            <strong>fleetchartScale</strong>: 50
-          </span>
-          (int) default is `50`
-        </p>
-        <p>
-          Set the initial Scale of the Fleetchart, can be between 10 - 300 for
-          Desktop and 10 - 100 for Mobile.
-        </p>
+      <BaseText>
+        <BasePill> <strong>fleetchartSlider</strong>: true|false </BasePill>
+        (boolean) default is `false`
+      </BaseText>
+      <BaseText
+        >Display a slider to allow users to scale the Fleetchart.</BaseText
+      >
 
-        <h3 class="text-xl my-5">Show Fleetchart Slider</h3>
+      <Heading :size="HeadingSizeEnum.XL">Ships List</Heading>
 
-        <p class="mb-3">
-          <span class="bg-gray-700 px-2 py-1 mr-1 rounded">
-            <strong>fleetchartSlider</strong>: true|false
-          </span>
-          (boolean) default is `false`
-        </p>
-        <p>Display a slider to allow users to scale the Fleetchart.</p>
+      <BaseText>
+        <BasePill> <strong>ships</strong>: [] </BasePill>
+        (Array of Strings) default is `[]`
+      </BaseText>
+      <BaseText>
+        The Fleetview expects a List of Shipnames (slugs). If you want to have
+        Ships multiple times in the Fleetview just add them multiple times to
+        the list. To be able to resolve the correct Ships from the
+        Fleetyards.net API you need to provide every Shipname (slug) in the
+        correct Format. Please use
+        <a href="https://api.fleetyards.net/v1/models/slugs" target="_blank">
+          https://api.fleetyards.net/v1/models/slugs
+        </a>
+        to fetch the latest Shipnames.
+      </BaseText>
 
-        <h3 class="text-xl my-5">Ships List</h3>
+      <Heading :size="HeadingSizeEnum.XL">Users List</Heading>
 
-        <p class="mb-3">
-          <span class="bg-gray-700 px-2 py-1 mr-1 rounded">
-            <strong>ships</strong>: []
-          </span>
-          (Array of Strings) default is `[]`
-        </p>
-        <p>
-          The Fleetview expects a List of Shipnames (slugs). If you want to have
-          Ships multiple times in the Fleetview just add them multiple times to
-          the list. To be able to resolve the correct Ships from the
-          Fleetyards.net API you need to provide every Shipname (slug) in the
-          correct Format. Please use
-          <a href="https://api.fleetyards.net/v1/models/slugs" target="_blank">
-            https://api.fleetyards.net/v1/models/slugs
-          </a>
-          to fetch the latest Shipnames.
-        </p>
-
-        <h3 class="text-xl my-5">Users List</h3>
-
-        <p class="mb-3">
-          <span class="bg-gray-700 px-2 py-1 mr-1 rounded">
-            <strong>users</strong>: []
-          </span>
-          (Array of Strings) default is `[]`
-        </p>
-        <p>
-          As an alternative to the Ships List you can also provide a list of
-          Fleetyards usernames. You will than get a list of all Ships those
-          Users have in there public Hangar.
-        </p>
-      </div>
-    </div>
-  </main>
+      <BaseText>
+        <BasePill><strong>users</strong>: []</BasePill>
+        (Array of Strings) default is `[]`
+      </BaseText>
+      <BaseText>
+        As an alternative to the Ships List you can also provide a list of
+        Fleetyards usernames. You will than get a list of all Ships those Users
+        have in there public Hangar.
+      </BaseText>
+    </PanelBody>
+  </Panel>
 </template>
 
 <style lang="scss">
 .code-highlight {
+  position: relative;
+  cursor: pointer;
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+  margin-left: 6rem;
+  margin-right: 6rem;
+
   .v-code-block--tab-highlightjs-atom-one-dark-icon {
     color: $primary !important;
     fill: $primary !important;
   }
 
+  pre {
+    margin: 0 !important;
+    border-radius: 0.375rem !important; // rounded
+    border: 0.3em solid hsl(30, 20%, 40%);
+    padding: 0.3rem;
+  }
+
   pre > code {
     padding: 20px 15px;
+    background: #282c34 !important; // atom-one-dark background
+  }
+
+  .copy-icon {
+    position: absolute;
+    right: 2rem;
+    top: 2rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  &:hover .copy-icon {
+    opacity: 1;
   }
 }
 </style>

@@ -12,14 +12,21 @@ import {
 } from "@/shared/components/base/Btn/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 
-const disabled = ref(false);
+const disabled = ref<string[]>([]);
 
-const toggleButton = () => {
-  disabled.value = true;
-
+const toggleButton = (name: string) => {
+  if (disabled.value.includes(name)) {
+    disabled.value = disabled.value.filter((n) => n !== name);
+  } else {
+    disabled.value.push(name);
+  }
   setTimeout(() => {
-    disabled.value = false;
+    disabled.value = disabled.value.filter((n) => n !== name);
   }, 2000);
+};
+
+const isDisabled = (name: string) => {
+  return disabled.value.includes(name);
 };
 </script>
 
@@ -29,29 +36,29 @@ const toggleButton = () => {
     <div class="col-12">
       <Btn
         :size="BtnSizesEnum.SMALL"
-        :disabled="disabled"
-        @click="toggleButton"
+        :disabled="isDisabled('Small')"
+        @click="toggleButton('Small')"
       >
         Small
       </Btn>
       <Btn
         :size="BtnSizesEnum.X_SMALL"
-        :disabled="disabled"
-        @click="toggleButton"
+        :disabled="isDisabled('X-Small')"
+        @click="toggleButton('X-Small')"
       >
         X-Small
       </Btn>
       <Btn
         :size="BtnSizesEnum.DEFAULT"
-        :disabled="disabled"
-        @click="toggleButton"
+        :disabled="isDisabled('DefaultSize')"
+        @click="toggleButton('DefaultSize')"
       >
         Default
       </Btn>
       <Btn
         :size="BtnSizesEnum.LARGE"
-        :disabled="disabled"
-        @click="toggleButton"
+        :disabled="isDisabled('Large')"
+        @click="toggleButton('Large')"
       >
         LARGE
       </Btn>
@@ -62,29 +69,29 @@ const toggleButton = () => {
     <div class="col-12">
       <Btn
         :variant="BtnVariantsEnum.DEFAULT"
-        :disabled="disabled"
-        @click="toggleButton"
+        :disabled="isDisabled('Default')"
+        @click="toggleButton('Default')"
       >
         Default
       </Btn>
       <Btn
         :variant="BtnVariantsEnum.DANGER"
-        :disabled="disabled"
-        @click="toggleButton"
+        :disabled="isDisabled('Danger')"
+        @click="toggleButton('Danger')"
       >
         DANGER
       </Btn>
       <Btn
         :variant="BtnVariantsEnum.TRANSPARENT"
-        :disabled="disabled"
-        @click="toggleButton"
+        :disabled="isDisabled('Transparent')"
+        @click="toggleButton('Transparent')"
       >
         TRANSPARENT
       </Btn>
       <Btn
         :variant="BtnVariantsEnum.LINK"
-        :disabled="disabled"
-        @click="toggleButton"
+        :disabled="isDisabled('Link')"
+        @click="toggleButton('Link')"
       >
         Link
       </Btn>

@@ -29,7 +29,6 @@ import { useMobile } from "@/shared/composables/useMobile";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAhoy } from "@/frontend/composables/useAhoy";
 import { useMe as useMeQuery } from "@/services/fyApi";
-import { useVersion as useVersionQuery } from "@/services/fyApi";
 import { useNProgress } from "@/shared/composables/useNProgress";
 import {
   BtnSizesEnum,
@@ -72,8 +71,6 @@ const { isAuthenticated } = storeToRefs(sessionStore);
 const cookiesStore = useCookiesStore();
 
 const { infoVisible } = storeToRefs(cookiesStore);
-
-const CHECK_VERSION_INTERVAL = 1800 * 1000; // 30 mins
 
 const { t, availableLocales, currentLocale } = useI18n();
 
@@ -140,11 +137,10 @@ onMounted(async () => {
     await requestBrowserPermission();
   }
 
-  setInterval(() => {
-    refetchVersion();
-  }, CHECK_VERSION_INTERVAL);
-
-  openPrivacySettingsComlink.value = comlink.on("open-privacy-settings", openPrivacySettings);
+  openPrivacySettingsComlink.value = comlink.on(
+    "open-privacy-settings",
+    openPrivacySettings,
+  );
   userUpdateComlink.value = comlink.on("user-update", refetchCurrentUser);
   fleetCreateComlink.value = comlink.on("fleet-create", refetchCurrentUser);
   fleetUpdateComlink.value = comlink.on("fleet-update", refetchCurrentUser);
@@ -211,17 +207,6 @@ watch(
   () => {
     if (user.value) {
       sessionStore.login(user.value);
-    }
-  },
-);
-
-const { data: version, refetch: refetchVersion } = useVersionQuery();
-
-watch(
-  () => version.value,
-  () => {
-    if (version.value) {
-      appStore.updateVersion(version.value);
     }
   },
 );

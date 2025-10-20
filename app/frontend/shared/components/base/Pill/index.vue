@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup>
 type Props = {
   tag?: "span" | "div" | "p";
-  variant?: "default" | "warning" | "danger";
+  variant?: "default" | "success" | "warning" | "danger";
 };
 
 const props = withDefaults(defineProps<Props>(), {

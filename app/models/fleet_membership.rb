@@ -89,7 +89,7 @@ class FleetMembership < ApplicationRecord
     "createdAt asc", "createdAt desc", "acceptedAt asc", "acceptedAt desc"
   ]
 
-  enum role: {admin: 0, officer: 1, member: 2}
+  enum :role, {admin: 0, officer: 1, member: 2}
 
   ransack_alias :username, :user_username
   ransack_alias :name, :user_username

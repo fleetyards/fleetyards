@@ -1,12 +1,19 @@
+$loader-size: 80px;
+$loader-margin: 40px;
+$cube-scale: 1.1;
+$animation-duration: 2.4s;
+$animation-delay-increment: 0.3s;
+$progress-bar-size: 5px;
+$progress-bar-offset: -10px;
+
 .loader {
   position: absolute;
   left: 50%;
   z-index: 3000;
-  width: 80px;
-  height: 80px;
-  margin: 40px auto;
-  margin-left: -40px;
-  -webkit-transform: rotateZ(45deg);
+  width: $loader-size;
+  height: $loader-size;
+  margin: $loader-margin auto;
+  margin-left: -($loader-size / 2);
   transform: rotateZ(45deg);
 
   &--fixed {
@@ -15,135 +22,108 @@
 
   &--relative {
     top: 50%;
-    margin-top: -20px;
+    margin-top: -($loader-margin / 2);
   }
 
   &--inline {
     top: 0;
     position: relative;
   }
-}
 
-.loader .cube {
-  position: relative;
-  float: left;
-  width: 50%;
-  height: 50%;
-  -webkit-transform: scale(1.1);
-  -ms-transform: scale(1.1);
-  transform: scale(1.1);
-}
+  .cube {
+    position: relative;
+    float: left;
+    width: 50%;
+    height: 50%;
+    transform: scale($cube-scale);
 
-.loader .cube::before {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: $primary;
-  -webkit-transform-origin: 100% 100%;
-  -ms-transform-origin: 100% 100%;
-  transform-origin: 100% 100%;
-  -webkit-animation: loader-foldcubeangle 2.4s infinite linear both;
-  animation: loader-foldCubeAngle 2.4s infinite linear both;
-  content: "";
-}
+    &::before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: $primary;
+      transform-origin: 100% 100%;
+      animation: loader-foldCubeAngle $animation-duration infinite linear both;
+      content: "";
+    }
 
-.loader .progress {
-  position: absolute;
-  border-radius: 0;
-  background-color: $primary;
-}
+    &.cube2 {
+      transform: scale($cube-scale) rotateZ(90deg);
 
-.loader .progress.progress-left {
-  bottom: -10px;
-  right: 0;
-  width: 0%;
-  height: 5px;
-  max-width: 100%;
-  transition: width $transition-base-speed ease;
-}
+      &::before {
+        animation-delay: $animation-delay-increment;
+      }
+    }
 
-.loader .progress.progress-right {
-  bottom: 0;
-  right: -10px;
-  height: 0%;
-  width: 5px;
-  max-height: 100%;
-  transition: height $transition-base-speed ease;
-}
+    &.cube3 {
+      transform: scale($cube-scale) rotateZ(180deg);
 
-.loader .cube2 {
-  -webkit-transform: scale(1.1) rotateZ(90deg);
-  transform: scale(1.1) rotateZ(90deg);
-}
+      &::before {
+        animation-delay: $animation-delay-increment * 2;
+      }
+    }
 
-.loader .cube3 {
-  -webkit-transform: scale(1.1) rotateZ(180deg);
-  transform: scale(1.1) rotateZ(180deg);
-}
+    &.cube4 {
+      transform: scale($cube-scale) rotateZ(270deg);
 
-.loader .cube4 {
-  -webkit-transform: scale(1.1) rotateZ(270deg);
-  transform: scale(1.1) rotateZ(270deg);
-}
-
-.loader .cube2::before {
-  -webkit-animation-delay: 0.3s;
-  animation-delay: 0.3s;
-}
-
-.loader .cube3::before {
-  -webkit-animation-delay: 0.6s;
-  animation-delay: 0.6s;
-}
-
-.loader .cube4::before {
-  -webkit-animation-delay: 0.9s;
-  animation-delay: 0.9s;
-}
-
-@-webkit-keyframes loader-foldCubeAngle {
-  0%,
-  10% {
-    -webkit-transform: perspective(140px) rotateX(-180deg);
-    transform: perspective(140px) rotateX(-180deg);
-    opacity: 0;
+      &::before {
+        animation-delay: $animation-delay-increment * 3;
+      }
+    }
   }
 
-  25%,
-  75% {
-    -webkit-transform: perspective(140px) rotateX(0deg);
-    transform: perspective(140px) rotateX(0deg);
-    opacity: 1;
+  .progress {
+    position: absolute;
+    border-radius: 0;
+    background-color: $primary;
+
+    &.progress-left {
+      bottom: $progress-bar-offset;
+      right: 0;
+      width: 0%;
+      height: $progress-bar-size;
+      max-width: 100%;
+      transition: width $transition-base-speed ease;
+    }
+
+    &.progress-right {
+      bottom: 0;
+      right: $progress-bar-offset;
+      height: 0%;
+      width: $progress-bar-size;
+      max-height: 100%;
+      transition: height $transition-base-speed ease;
+    }
   }
 
-  90%,
-  100% {
-    -webkit-transform: perspective(140px) rotateY(180deg);
-    transform: perspective(140px) rotateY(180deg);
-    opacity: 0;
+  &--admin {
+    .cube::before {
+      background-color: $admin-primary;
+    }
+
+    .progress {
+      background-color: $admin-primary;
+    }
   }
 }
 
 @keyframes loader-foldCubeAngle {
   0%,
   10% {
-    -webkit-transform: perspective(140px) rotateX(-180deg);
     transform: perspective(140px) rotateX(-180deg);
     opacity: 0;
   }
 
   25%,
   75% {
-    -webkit-transform: perspective(140px) rotateX(0deg);
     transform: perspective(140px) rotateX(0deg);
     opacity: 1;
   }
 
   90%,
   100% {
-    -webkit-transform: perspective(140px) rotateY(180deg);
     transform: perspective(140px) rotateY(180deg);
     opacity: 0;
   }

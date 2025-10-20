@@ -1,20 +1,15 @@
-/* Import Tailwind CSS v4 */
-@import "tailwindcss";
-
-/* Import custom Tailwind theme configuration */
-@import "@/stylesheets/shared/tailwind-custom";
-
-@import "@/stylesheets/shared/fontawesome";
 @import "highlight.js/styles/atom-one-dark.css";
-@import "@/stylesheets/shared/transitions";
-@import "@/stylesheets/shared/fonts";
 @import "swagger-ui-dist/swagger-ui.css";
 @import "@/stylesheets/docs/vendor/swagger-ui-dark";
-
-body {
-  position: relative;
-  background-color: black;
-  text-rendering: optimizeLegibility;
-  vertical-align: baseline;
-  font-family: var(--font-sans);
-}
+@import "@/stylesheets/variables";
+@import "@/stylesheets/shared/fontawesome";
+@import "photoswipe/style.css";
+@import "@/stylesheets/shared/fonts";
+@import "@/stylesheets/shared/vendor/pswp";
+@import "@/stylesheets/shared/bootstrap-custom";
+@import "@/stylesheets/shared/nprogress-custom";
+@import "@/stylesheets/shared/vue-swatches-custom";
+@import "@/stylesheets/shared/transitions";
+@import "@/stylesheets/shared/typography";
+@import "@/stylesheets/shared/links";
+@import "@/stylesheets/shared/layout";

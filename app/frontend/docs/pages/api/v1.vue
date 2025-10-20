@@ -5,11 +5,15 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
+import BaseText from "@/shared/components/base/Text/index.vue";
+import BaseSpacer from "@/shared/components/base/Spacer/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
-import {
-  HeadingSizeEnum,
-  HeadingLevelEnum,
-} from "@/shared/components/base/Heading/types";
+import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
+import BasePill from "@/shared/components/base/Pill/index.vue";
+import { HeadingSizeEnum } from "@/shared/components/base/Heading/types";
 import { SwaggerUIBundle } from "swagger-ui-dist";
 
 const schemaUrl = computed(() => `${window.API_ENDPOINT}/schema.yaml`);
@@ -46,139 +50,136 @@ onMounted(() => {
 </script>
 
 <template>
-  <main class="api-page">
-    <div class="px-4 sm:px-6 lg:px-8 py-6">
-      <Heading :size="HeadingSizeEnum.HERO" hero>
-        <span class="flex items-start gap-1">
-          FleetYards.net API
-          <span
-            class="bg-gray-500 font-sans text-white relative rounded-xl text-sm px-2 py-1"
-            >{{ apiVersion }}</span
-          >
-          <span
-            class="bg-lime-600 font-sans text-white relative rounded-xl text-sm px-2 py-1"
-            >OAS {{ oasVersion }}</span
-          >
-        </span>
-      </Heading>
-      <div class="p-6 bg-brand-grayBgDark/80 rounded mt-4 mb-8">
-        <p>
-          “Strap into one of dozens of ships and embark on a life within the
-          Star Citizen universe. Unbound by profession or skill sets, you choose
-          the path of your own life.”
-        </p>
-        <p class="mt-4">
-          This API provides basic Information about All Ships / Components /
-          Manufacturers for the upcomming Space Simulation Star Citizen.
-        </p>
-      </div>
-      <Heading :level="HeadingLevelEnum.H2" :size="HeadingSizeEnum.XXL"
-        >Pagination</Heading
-      >
-      <div class="p-6 bg-brand-grayBgDark/80 rounded mt-4 mb-8">
-        <p class="mb-4">
-          Requests that return multiple items will be paginated to
-          <code class="hljs p-1 rounded">30</code> items by default. You can
-          specify further pages with the
-          <code class="hljs p-1 rounded">?page</code> parameter. For some
-          resources, you can also set a custom page size up to
-          <code class="hljs p-1 rounded">200</code> with the
-          <code class="hljs p-1 rounded">?perPage</code> parameter. Note that
-          for technical reasons not all endpoints respect the
-          <code class="hljs p-1 rounded">?perPage</code> parameter, see events
-          for example.
-        </p>
+  <Heading :size="HeadingSizeEnum.HERO" hero>
+    FleetYards.net API
+    <HeadingSmall>
+      <BasePill>{{ apiVersion }}</BasePill>
+      <BasePill variant="success">OAS {{ oasVersion }}</BasePill>
+    </HeadingSmall>
+  </Heading>
 
-        <p class="mb-4">
-          <code class="hljs p-1 rounded"
-            >curl 'https://api.fleetyards.net/models?page=2&perPage=200'</code
-          >
-        </p>
-        <p class="mb-4">
-          Note that page numbering is 1-based and that omitting the
-          <code class="hljs p-1 rounded">?page</code> parameter will return the
-          first page.
-        </p>
+  <BaseText>
+    “Strap into one of dozens of ships and embark on a life within the Star
+    Citizen universe. Unbound by profession or skill sets, you choose the path
+    of your own life.”
+  </BaseText>
 
-        <h3 class="text-xl font-semibold">Link Header</h3>
-        <p class="mb-4">The Link header includes pagination information:</p>
+  <BaseText>
+    This API provides basic Information about All Ships / Components /
+    Manufacturers for the upcomming Space Simulation Star Citizen.
+  </BaseText>
 
-        <p class="mb-4">
-          <code class="hljs p-1 rounded"
-            >Link: &lt;https://api.fleetyards.net/models?page=1&perPage=200&gt;;
-            rel="next",<br />
-            &lt;https://api.fleetyards.net/models?page=2&perPage=200&gt;;
-            rel="last"</code
-          >
-        </p>
+  <BaseSpacer />
 
-        <p class="mb-4">The example includes a line break for readability.</p>
+  <Panel>
+    <PanelHeading>Pagination</PanelHeading>
+    <PanelBody>
+      <BaseText>
+        Requests that return multiple items will be paginated to
+        <code class="hljs p-1 rounded">30</code> items by default. You can
+        specify further pages with the
+        <code class="hljs p-1 rounded">?page</code> parameter. For some
+        resources, you can also set a custom page size up to
+        <code class="hljs p-1 rounded">200</code> with the
+        <code class="hljs p-1 rounded">?perPage</code> parameter. Note that for
+        technical reasons not all endpoints respect the
+        <code class="hljs p-1 rounded">?perPage</code> parameter, see events for
+        example.
+      </BaseText>
 
-        <p class="mb-4">
-          This Link response header contains one or more Hypermedia link
-          relations, some of which may require expansion as URI templates.
-        </p>
-
-        <p class="mb-4">
-          The possible <code class="hljs p-1 rounded">rel</code> values are:
-        </p>
-
-        <table class="table-auto w-full mb-4">
-          <thead>
-            <tr>
-              <th class="px-4 py-2">Name</th>
-              <th class="px-4 py-2">Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="border px-4 py-2">next</td>
-              <td class="border px-4 py-2">
-                The link relation for the immediate next page of results.
-              </td>
-            </tr>
-            <tr>
-              <td class="border px-4 py-2">last</td>
-              <td class="border px-4 py-2">
-                The link relation for the last page of results.
-              </td>
-            </tr>
-            <tr>
-              <td class="border px-4 py-2">first</td>
-              <td class="border px-4 py-2">
-                The link relation for the first page of results.
-              </td>
-            </tr>
-            <tr>
-              <td class="border px-4 py-2">prev</td>
-              <td class="border px-4 py-2">
-                The link relation for the immediate previous page of results.
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <Heading :level="HeadingLevelEnum.H2" :size="HeadingSizeEnum.XXL" mb
-        >Schema</Heading
-      >
-      <div class="p-6 bg-brand-grayBgDark/80 rounded mt-4 mb-8">
-        <a
-          :href="schemaUrl"
-          target="_blank"
-          rel="noopener"
-          class="text-brand-primary hover:text-brand-primary/80 transition-colors"
+      <BaseText>
+        <code class="hljs p-1 rounded"
+          >curl 'https://api.fleetyards.net/models?page=2&perPage=200'</code
         >
-          {{ schemaUrl }}
+      </BaseText>
+      <BaseText>
+        Note that page numbering is 1-based and that omitting the
+        <code class="hljs p-1 rounded">?page</code> parameter will return the
+        first page.
+      </BaseText>
+
+      <h3 class="text-xl font-semibold">Link Header</h3>
+
+      <BaseText>The Link header includes pagination information:</BaseText>
+
+      <BaseText>
+        <code class="hljs p-1 rounded"
+          >Link: &lt;https://api.fleetyards.net/models?page=1&perPage=200&gt;;
+          rel="next",<br />
+          &lt;https://api.fleetyards.net/models?page=2&perPage=200&gt;;
+          rel="last"</code
+        >
+      </BaseText>
+
+      <BaseText>The example includes a line break for readability.</BaseText>
+
+      <BaseText>
+        This Link response header contains one or more Hypermedia link
+        relations, some of which may require expansion as URI templates.
+      </BaseText>
+
+      <BaseText>
+        The possible <code class="hljs p-1 rounded">rel</code> values are:
+      </BaseText>
+
+      <table class="table-auto w-full mb-4">
+        <thead>
+          <tr>
+            <th class="px-4 py-2">Name</th>
+            <th class="px-4 py-2">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="border px-4 py-2">next</td>
+            <td class="border px-4 py-2">
+              The link relation for the immediate next page of results.
+            </td>
+          </tr>
+          <tr>
+            <td class="border px-4 py-2">last</td>
+            <td class="border px-4 py-2">
+              The link relation for the last page of results.
+            </td>
+          </tr>
+          <tr>
+            <td class="border px-4 py-2">first</td>
+            <td class="border px-4 py-2">
+              The link relation for the first page of results.
+            </td>
+          </tr>
+          <tr>
+            <td class="border px-4 py-2">prev</td>
+            <td class="border px-4 py-2">
+              The link relation for the immediate previous page of results.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </PanelBody>
+  </Panel>
+
+  <BaseSpacer />
+
+  <Panel>
+    <PanelHeading>Schema</PanelHeading>
+    <PanelBody>
+      <a
+        :href="schemaUrl"
+        target="_blank"
+        rel="noopener"
+        class="text-brand-primary hover:text-brand-primary/80 transition-colors"
+      >
+        {{ schemaUrl }}
+      </a>
+      <div id="swagger-ui" class="swagger-ui-wrapper"></div>
+      <div class="flex justify-end">
+        <a target="_blank" rel="noopener noreferrer" :href="validatorUrl">
+          <img :src="validatorIconUrl" alt="Online validator badge" />
         </a>
-        <div id="swagger-ui" class="swagger-ui-wrapper"></div>
-        <div class="flex justify-end">
-          <a target="_blank" rel="noopener noreferrer" :href="validatorUrl">
-            <img :src="validatorIconUrl" alt="Online validator badge" />
-          </a>
-        </div>
       </div>
-    </div>
-  </main>
+    </PanelBody>
+  </Panel>
 </template>
 
 <style lang="scss">

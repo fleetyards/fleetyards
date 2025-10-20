@@ -41,6 +41,7 @@ pinia.use(piniaPluginPersistedstate);
 const app = createApp(App);
 
 const vueQueryPluginOptions: VueQueryPluginOptions = {
+  enableDevtoolsV6Plugin: true,
   queryClientConfig: {
     defaultOptions: {
       queries: {

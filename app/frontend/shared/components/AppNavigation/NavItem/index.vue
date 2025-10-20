@@ -1,3 +1,125 @@
+<script lang="ts">
+export default {
+  name: "NavItem",
+};
+</script>
+
+<script lang="ts" setup>
+import { useRoute } from "vue-router";
+import type { RouteLocationNamedRaw, RouterLinkProps } from "vue-router";
+import NavItemInner from "./NavItemInner/index.vue";
+import { useMobile } from "@/shared/composables/useMobile";
+import Collapsed from "@/shared/components/Collapsed.vue";
+import { storeToRefs } from "pinia";
+import { useNavStore } from "@/shared/stores/nav";
+
+type Props = {
+  to?: RouterLinkProps["to"];
+  action?: () => void;
+  href?: string;
+  label?: string;
+  icon?: string;
+  image?: string;
+  avatar?: boolean;
+  menuKey?: string;
+  divider?: boolean;
+  active?: boolean;
+  prefix?: string;
+  submenuActive?: boolean;
+  submenuDirection?: string;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  to: undefined,
+  action: undefined,
+  href: undefined,
+  label: undefined,
+  icon: undefined,
+  image: undefined,
+  avatar: false,
+  menuKey: undefined,
+  divider: false,
+  active: false,
+  prefix: undefined,
+  submenuActive: false,
+  submenuDirection: "down",
+});
+
+const open = ref(false);
+
+const route = useRoute();
+
+const mobile = useMobile();
+
+const navStore = useNavStore();
+
+const { slim: navSlim } = storeToRefs(navStore);
+
+const slim = computed(() => navSlim.value && !mobile.value);
+
+const routeActive = computed(() => {
+  if (props.to) {
+    return (props.to as RouteLocationNamedRaw).name === route.name;
+  }
+  return false;
+});
+
+const tooltip = computed(() => {
+  if (!slim.value) {
+    return null;
+  }
+
+  return {
+    content: props.label,
+    popperClass: "nav-item-tooltip",
+    placement: "right",
+  };
+});
+
+const slots = useSlots();
+
+const hasSubmenuSlot = computed(() => !!slots.submenu);
+
+const navKey = computed(() => {
+  if (props.menuKey) {
+    return props.menuKey;
+  }
+
+  if (props.to && (props.to as RouteLocationNamedRaw).name) {
+    return String((props.to as RouteLocationNamedRaw).name);
+  }
+
+  return "nav-item";
+});
+
+watch(
+  () => route,
+  () => {
+    checkRoutes();
+  },
+  { deep: true },
+);
+
+watch(
+  () => props.submenuActive,
+  () => {
+    checkRoutes();
+  },
+);
+
+onMounted(() => {
+  checkRoutes();
+});
+
+const checkRoutes = () => {
+  open.value = props.submenuActive;
+};
+
+const toggleMenu = () => {
+  open.value = !open.value;
+};
+</script>
+
 <template>
   <li v-if="divider" class="nav-item__divider" />
   <li
@@ -140,128 +262,6 @@
     </span>
   </li>
 </template>
-
-<script lang="ts" setup>
-import { useRoute } from "vue-router";
-import type { RouteLocationNamedRaw, RouterLinkProps } from "vue-router";
-import NavItemInner from "./NavItemInner/index.vue";
-import { useMobile } from "@/shared/composables/useMobile";
-import Collapsed from "@/shared/components/Collapsed.vue";
-import { storeToRefs } from "pinia";
-import { useNavStore } from "@/shared/stores/nav";
-
-type Props = {
-  to?: RouterLinkProps["to"];
-  action?: () => void;
-  href?: string;
-  label?: string;
-  icon?: string;
-  image?: string;
-  avatar?: boolean;
-  menuKey?: string;
-  divider?: boolean;
-  active?: boolean;
-  prefix?: string;
-  submenuActive?: boolean;
-  submenuDirection?: string;
-};
-
-const props = withDefaults(defineProps<Props>(), {
-  to: undefined,
-  action: undefined,
-  href: undefined,
-  label: undefined,
-  icon: undefined,
-  image: undefined,
-  avatar: false,
-  menuKey: undefined,
-  divider: false,
-  active: false,
-  prefix: undefined,
-  submenuActive: false,
-  submenuDirection: "down",
-});
-
-const open = ref(false);
-
-const route = useRoute();
-
-const mobile = useMobile();
-
-const navStore = useNavStore();
-
-const { slim: navSlim } = storeToRefs(navStore);
-
-const slim = computed(() => navSlim.value && !mobile.value);
-
-const routeActive = computed(() => {
-  if (props.to) {
-    return (props.to as RouteLocationNamedRaw).name === route.name;
-  }
-  return false;
-});
-
-const tooltip = computed(() => {
-  if (!slim.value) {
-    return null;
-  }
-
-  return {
-    content: props.label,
-    popperClass: "nav-item-tooltip",
-    placement: "right",
-  };
-});
-
-const slots = useSlots();
-
-const hasSubmenuSlot = computed(() => !!slots.submenu);
-
-const navKey = computed(() => {
-  if (props.menuKey) {
-    return props.menuKey;
-  }
-
-  if (props.to && (props.to as RouteLocationNamedRaw).name) {
-    return String((props.to as RouteLocationNamedRaw).name);
-  }
-
-  return "nav-item";
-});
-
-watch(
-  () => route,
-  () => {
-    checkRoutes();
-  },
-  { deep: true },
-);
-
-watch(
-  () => props.submenuActive,
-  () => {
-    checkRoutes();
-  },
-);
-
-onMounted(() => {
-  checkRoutes();
-});
-
-const checkRoutes = () => {
-  open.value = props.submenuActive;
-};
-
-const toggleMenu = () => {
-  open.value = !open.value;
-};
-</script>
-
-<script lang="ts">
-export default {
-  name: "NavItem",
-};
-</script>
 
 <style lang="scss">
 @import "index";

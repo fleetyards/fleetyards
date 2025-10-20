@@ -118,6 +118,7 @@ const primaryValue = (record: T) => {
 type Slots = {
   title?: () => void;
   empty?: () => void;
+  loader?: (props: { loading: boolean }) => void;
   "selected-actions"?: (props: { selected: string[] }) => void;
   actions?: (props: { record: T }) => void;
   [key: `col-${string}`]: (props: { record: T }) => void;
@@ -146,11 +147,14 @@ const resetSelected = () => {
     </BulkActions>
     <div class="base-table__outer-wrapper">
       <div class="base-table__wrapper w-full">
-        <Loader
-          v-if="props.loading && !props.records.length"
-          :loading="props.loading"
+        <div
           class="base-table__loader"
-        />
+          v-if="props.loading && !props.records.length"
+        >
+          <slot name="loader" :loading="props.loading">
+            <Loader :loading="props.loading" />
+          </slot>
+        </div>
         <table class="base-table__inner">
           <TableHeader
             :id="props.id"

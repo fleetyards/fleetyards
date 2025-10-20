@@ -22,7 +22,8 @@ defineProps<Props>();
 
 <template>
   <Panel :bg-image="image" :shadow="PanelShadowsEnum.TOP" class="tool-card">
-    <PanelHeading :level="HeadingLevelEnum.H3" class="tool-card-heading">
+    <PanelHe
+    ading :level="HeadingLevelEnum.H3" class="tool-card-heading">
       <template #default>
         <a :href="url" target="_blank" rel="noopener" class="tool-card-link">
           {{ name }}

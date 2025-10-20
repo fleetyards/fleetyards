@@ -5,8 +5,8 @@ import {
   useDestroyVehicle as useDestroyVehicleMutation,
   useUpdateBulkVehicle as useUpdateBulkVehicleMutation,
   useDestroyBulkVehicle as useDestroyBulkVehicleMutation,
-  useHangarQueryOptions,
-  useWishlistQueryOptions,
+  getHangarQueryOptions,
+  getWishlistQueryOptions,
 } from "@/services/fyApi";
 import { type CustomQueryOptions } from "@/services/customQueryOptions";
 import { type Hangar, type Vehicle } from "@/services/fyApi";
@@ -17,8 +17,8 @@ import { getPreviousQueryData } from "@/shared/utils/QueryData";
 export const useVehicleMutations = () => {
   const queryClient = useQueryClient();
 
-  const hangarQueryOptions = useHangarQueryOptions() as CustomQueryOptions;
-  const wishlistQueryOptions = useWishlistQueryOptions() as CustomQueryOptions;
+  const hangarQueryOptions = getHangarQueryOptions() as CustomQueryOptions;
+  const wishlistQueryOptions = getWishlistQueryOptions() as CustomQueryOptions;
 
   const useCreateMutation = () => {
     return useCreateVehicleMutation({

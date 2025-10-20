@@ -170,7 +170,7 @@ const toggleFilter = () => {
           class="col-12 col-animated"
         >
           <slot v-if="!hideLoading && loading" name="loader" :loading="loading">
-            <Loader :loading="loading" :fixed="true" />
+            <Loader :loading="loading" fixed />
           </slot>
 
           <slot

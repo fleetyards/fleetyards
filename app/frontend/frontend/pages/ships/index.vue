@@ -27,10 +27,9 @@ import { useModelFilters } from "@/frontend/composables/useModelFilters";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import { useComlink } from "@/shared/composables/useComlink";
 import {
-  useModelsQueryOptions,
   useModels as useModelsQuery,
+  getModelsQueryKey,
 } from "@/services/fyApi";
-import { CustomQueryOptions } from "@/services/customQueryOptions";
 
 useHangarItems();
 useWishlistItems();
@@ -56,18 +55,17 @@ const modelsQueryParams = computed(() => {
   return {
     page: page.value,
     perPage: perPage.value,
-    q: filters.value,
+    q: getQuery(),
   };
 });
 
 const modelsQueryKey = computed(() => {
-  return (useModelsQueryOptions(modelsQueryParams) as CustomQueryOptions)
-    .queryKey;
+  return getModelsQueryKey(modelsQueryParams);
 });
 
 const { perPage, page, updatePerPage } = usePagination(modelsQueryKey);
 
-const { filters, isFilterSelected } = useModelFilters(() => refetch());
+const { isFilterSelected, getQuery } = useModelFilters(() => refetch());
 
 const {
   data: models,

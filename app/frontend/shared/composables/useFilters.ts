@@ -11,7 +11,7 @@ export const useFilters = <T>({
 } = {}) => {
   const route = useRoute();
 
-  const defaultAllowedKeys = ["page", "perPage", "limit", "s", "sorts"];
+  const defaultAllowedKeys = ["s", "sorts"];
 
   onMounted(() => {
     if (!updateCallback) return;
@@ -31,10 +31,10 @@ export const useFilters = <T>({
     { deep: true },
   );
 
-  const getQuery = (formData: T) => {
+  const getQuery = (formData?: T) => {
     const query = {
       ...route.query,
-      ...formData,
+      ...(formData || filters.value),
     };
 
     Object.keys(query)
@@ -53,7 +53,7 @@ export const useFilters = <T>({
   };
 
   const isFilterSelected = computed(() => {
-    const query = getQuery(filters.value);
+    const query = getQuery();
 
     Object.keys(query)
       .filter((key) => {
@@ -106,5 +106,6 @@ export const useFilters = <T>({
     resetFilter,
     filter,
     filters,
+    getQuery,
   };
 };

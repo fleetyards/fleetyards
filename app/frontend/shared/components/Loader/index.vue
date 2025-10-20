@@ -6,6 +6,7 @@
         'loader--fixed': fixed,
         'loader--relative': relative,
         'loader--inline': inline,
+        'loader--admin': admin,
       }"
       data-test="loader"
       class="loader"
@@ -40,6 +41,7 @@ type Props = {
   fixed?: boolean;
   relative?: boolean;
   inline?: boolean;
+  admin?: boolean;
   progress?: number;
 };
 
@@ -47,6 +49,7 @@ withDefaults(defineProps<Props>(), {
   loading: false,
   fixed: false,
   inline: false,
+  admin: false,
   progress: undefined,
 });
 </script>

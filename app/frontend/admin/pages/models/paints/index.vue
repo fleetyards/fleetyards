@@ -11,6 +11,7 @@ import FilteredList from "@/shared/components/FilteredList/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
+import Loader from "@/shared/components/Loader/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import ModelPaintActions from "@/admin/components/ModelPaints/Actions/index.vue";
 import FilterForm from "@/admin/components/ModelPaints/FilterForm/index.vue";
@@ -155,6 +156,9 @@ const { t, l } = useI18n();
         default-sort="name asc"
         selectable
       >
+        <template #loader="{ loading }">
+          <Loader :loading="loading" admin />
+        </template>
         <template #col-storeImage="{ record }">
           <LazyImage
             v-if="record.media.storeImage"

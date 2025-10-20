@@ -6,6 +6,8 @@ module Admin
 
     include PrefetchHelper
 
+    skip_verify_authorized only: [:index, :not_found, :manifest]
+
     def index
       route = request.fullpath.split("?").first.sub(%r{^/}, "").tr("/", "_")
       route = "dashboard" if route.blank?
@@ -18,7 +20,7 @@ module Admin
     def model
       @model = model_record.first
 
-      authorize! :read, @model
+      authorize! @model, with: ::Admin::ModelPolicy
 
       if @model.present?
         @title = "#{@model.name} - #{@model.manufacturer.name}"
@@ -32,8 +34,6 @@ module Admin
     end
 
     def not_found
-      authorize! :show, :admin
-
       respond_to do |format|
         format.html do
           render "admin/index", status: :not_found

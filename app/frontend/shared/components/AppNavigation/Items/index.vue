@@ -16,11 +16,12 @@ type NavTypes = "main" | "footer" | "hidden";
 type Props = {
   routes: RouteRecordRaw[];
   currentRoute: RouteLocationNormalizedLoaded;
-  authenticated: boolean;
+  authenticated?: boolean;
   hasAccessTo?: (access?: string[]) => boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  authenticated: false,
   hasAccessTo: undefined,
 });
 

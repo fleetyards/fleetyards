@@ -13,8 +13,13 @@
   }
 
   &__loader {
+    position: absolute;
     top: 50%;
-    margin-top: -20px;
+    left: 50%;
+
+    > * {
+      margin-top: -20px;
+    }
   }
 }
 

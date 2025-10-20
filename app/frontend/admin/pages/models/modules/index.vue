@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
+import Loader from "@/shared/components/Loader/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
@@ -20,10 +21,9 @@ import Paginator from "@/shared/components/Paginator/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   useModels as useModelsQuery,
-  useModelsQueryOptions,
+  getModelsQueryKey,
   type Model,
 } from "@/services/fyAdminApi";
-import { CustomQueryOptions } from "@/services/customQueryOptions";
 
 const route = useRoute();
 
@@ -42,19 +42,18 @@ const modelsQueryParams = computed(() => {
   return {
     page: page.value,
     perPage: perPage.value,
-    q: filters.value,
+    q: getQuery(),
     s: sorts.value,
   };
 });
 
 const modelsQueryKey = computed(() => {
-  return (useModelsQueryOptions(modelsQueryParams) as CustomQueryOptions)
-    .queryKey;
+  return getModelsQueryKey(modelsQueryParams);
 });
 
 const { perPage, page, updatePerPage } = usePagination(modelsQueryKey);
 
-const { filters, isFilterSelected } = useModelFilters(() => refetch());
+const { getQuery, isFilterSelected } = useModelFilters(() => refetch());
 
 const {
   data: models,
@@ -66,18 +65,17 @@ const columns: BaseTableCol<Model>[] = [
   {
     name: "storeImage",
     label: "",
-    centered: true,
+    alignment: "center",
   },
   {
     name: "rsiStoreImage",
     label: "",
-    centered: true,
     mobile: false,
   },
   {
     name: "angledView",
     label: "",
-    centered: true,
+    alignment: "center",
     mobile: false,
   },
   {
@@ -88,7 +86,7 @@ const columns: BaseTableCol<Model>[] = [
   {
     name: "rsiId",
     label: "RSI ID",
-    field: "rsi_id",
+    attributeKey: "rsiId",
     sortable: true,
   },
   {
@@ -149,6 +147,9 @@ const { t } = useI18n();
         default-sort="name asc"
         selectable
       >
+        <template #loader="{ loading }">
+          <Loader :loading="loading" admin />
+        </template>
         <template #col-storeImage="{ record }">
           <LazyImage
             v-if="record.media.storeImage"
