@@ -10,5 +10,7 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :test
 
+  config.active_storage.service = :test
+
   config.action_cable.allowed_request_origins = ["http://fleetyards.test", "http://www.fleetyards.test", "http://localhost:8270"]
 end
