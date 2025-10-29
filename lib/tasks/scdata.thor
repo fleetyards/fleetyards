@@ -19,7 +19,7 @@ class Scdata < Thor
 
   desc "upload", "Upload exported sc data files to s3"
   def upload(sc_version = "3.23.1-PTU", export_folder = EXPORT_FOLDER, dry_run = false)
-    system("s3cmd sync --delete-removed#{dry_run ? " --dry-run" : ""} #{EXPORT_FOLDER}/#{sc_version}/ s3://fleetyards/sc_data/")
+    system("s3cmd sync --delete-removed#{" --dry-run" if dry_run} #{EXPORT_FOLDER}/#{sc_version}/ s3://fleetyards/sc_data/")
 
     system("s3cmd setacl s3://fleetyards/sc_data/ --recursive --acl-public") unless dry_run
   end

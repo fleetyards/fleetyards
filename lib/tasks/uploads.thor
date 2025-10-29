@@ -14,6 +14,6 @@ class Uploads < Thor
 
   desc "sync", "Sync Uploads from S3"
   def sync_to_local(dry_run = false)
-    system("s3cmd sync --delete-removed#{dry_run ? " --dry-run" : ""} s3://#{S3_BUCKET} #{EXPORT_FOLDER}")
+    system("s3cmd sync --delete-removed#{" --dry-run" if dry_run} s3://#{S3_BUCKET} #{EXPORT_FOLDER}")
   end
 end

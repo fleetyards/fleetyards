@@ -54,6 +54,7 @@ Searchkick.disable_callbacks
 # rubocop:disable Style/ClassAndModuleChildren
 class ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
+
   ActiveRecord::Migration.check_all_pending!
 
   make_my_diffs_pretty!
