@@ -84,6 +84,7 @@ export default defineConfig({
     },
   },
   server: {
+    allowedHosts: true,
     fs: {
       allow: [".", accessEnv("FLEETYARDS_NODE_MODULES", "node_modules")],
     },

@@ -107,6 +107,12 @@
     <EmptyBox :visible="emptyBoxVisible" />
 
     <Loader :loading="loading" :fixed="true" />
+
+    <div class="row">
+      <div class="col-6">
+        <DirectUpload />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -121,6 +127,7 @@ import Loader from "@/frontend/core/components/Loader/index.vue";
 import EmptyBox from "@/frontend/core/components/EmptyBox/index.vue";
 import Panel from "@/frontend/core/components/Panel/index.vue";
 import ImageRow from "@/admin/components/ImageUploader/ImageRow/index.vue";
+import DirectUpload from "@/admin/components/DirectUpload/index.vue";
 
 @Component<ImageUploader>({
   components: {
@@ -130,6 +137,7 @@ import ImageRow from "@/admin/components/ImageUploader/ImageRow/index.vue";
     EmptyBox,
     Btn,
     Panel,
+    DirectUpload,
   },
 })
 export default class ImageUploader extends Vue {
