@@ -1,7 +1,7 @@
 {
   "name": "fleetyards",
   "private": true,
-  "version": "5.31.67",
+  "version": "5.31.71",
   "type": "module",
   "scripts": {
     "test": "vitest run",

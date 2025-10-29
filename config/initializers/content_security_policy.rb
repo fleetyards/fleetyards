@@ -29,7 +29,8 @@ Rails.application.configure do
       "https://fonts.gstatic.com", "https://pro.fontawesome.com", Rails.configuration.rsi.endpoint,
       "https://kit.fontawesome.com", "https://kit-pro.fontawesome.com",
       "https://kit-free.fontawesome.com", "https://ka-p.fontawesome.com", "https://starship42.com",
-      "https://www.gstatic.com", s3_endpoint,
+      s3_endpoint,
+      "https://www.gstatic.com",
       "https://cdn.jsdelivr.net",
       "https://stackpath.bootstrapcdn.com"
     ].compact
