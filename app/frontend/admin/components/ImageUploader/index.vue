@@ -108,12 +108,6 @@
     <Empty :visible="emptyVisible" />
 
     <Loader :loading="loading" :fixed="true" />
-
-    <div class="row">
-      <div class="col-6">
-        <DirectUpload />
-      </div>
-    </div>
   </div>
 </template>
 
