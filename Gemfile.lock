@@ -102,6 +102,25 @@ GEM
       logger
       rack (>= 2.0.0)
     ast (2.4.3)
+    aws-eventstream (1.4.0)
+    aws-partitions (1.1178.0)
+    aws-sdk-core (3.235.0)
+      aws-eventstream (~> 1, >= 1.3.0)
+      aws-partitions (~> 1, >= 1.992.0)
+      aws-sigv4 (~> 1.9)
+      base64
+      bigdecimal
+      jmespath (~> 1, >= 1.6.1)
+      logger
+    aws-sdk-kms (1.115.0)
+      aws-sdk-core (~> 3, >= 3.234.0)
+      aws-sigv4 (~> 1.5)
+    aws-sdk-s3 (1.202.0)
+      aws-sdk-core (~> 3, >= 3.234.0)
+      aws-sdk-kms (~> 1)
+      aws-sigv4 (~> 1.5)
+    aws-sigv4 (1.12.1)
+      aws-eventstream (~> 1, >= 1.0.2)
     base64 (0.3.0)
     bcrypt (3.1.20)
     bcrypt_pbkdf (1.1.1)
@@ -347,6 +366,7 @@ GEM
     jbuilder (2.14.1)
       actionview (>= 7.0.0)
       activesupport (>= 7.0.0)
+    jmespath (1.6.2)
     jquery-rails (4.6.0)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
@@ -407,7 +427,6 @@ GEM
     mini_magick (5.3.1)
       logger
     mini_mime (1.1.5)
-    mini_portile2 (2.8.9)
     minitest (5.25.5)
     minitest-ci (3.4.0)
       minitest (>= 5.0.6)
@@ -437,9 +456,6 @@ GEM
     net-ssh (7.3.0)
     netrc (0.11.0)
     nio4r (2.7.4)
-    nokogiri (1.18.9)
-      mini_portile2 (~> 2.8.2)
-      racc (~> 1.4)
     nokogiri (1.18.9-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.18.9-x86_64-linux-gnu)
@@ -798,7 +814,6 @@ GEM
       base64
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    x (0.14.1)
     xrpc (0.1.7.2)
       date
       httparty
@@ -807,7 +822,6 @@ GEM
 
 PLATFORMS
   arm64-darwin
-  ruby
   x86_64-linux
 
 DEPENDENCIES
@@ -818,6 +832,7 @@ DEPENDENCIES
   ahoy_matey
   annotate
   appsignal
+  aws-sdk-s3
   bcrypt_pbkdf
   bootsnap (>= 1.1.0)
   bourbon
@@ -940,7 +955,6 @@ DEPENDENCIES
   vite_rails
   web-console
   webmock
-  x (~> 0.14.0)
 
 RUBY VERSION
    ruby 3.4.5p51
