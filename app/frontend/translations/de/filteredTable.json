@@ -1,0 +1,15 @@
+{
+  "de": {
+    "filteredTable": {
+      "actions": {
+        "unselect": "Alle ausgewählten abwählen"
+      },
+      "labels": {
+        "selected": "%{count} ausgewählt"
+      },
+      "empty": {
+        "info": "Wir konnten keine Einträge finden."
+      }
+    }
+  }
+}

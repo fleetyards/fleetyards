@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Freelancer_Luminalia_2953_White_Blue",
+  "ref": "4257bfce-3cfc-4905-9ddb-e52ad4e17e13",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "926d3c2c-9233-47f8-a014-ac6338a1c435",
+  "name": "Freelancer IceBreak Livery",
+  "short_name": null,
+  "description": "Equip your Freelancer with a paint scheme cooler than a snow storm. The IceBreak livery mixes crisp, cool white with a frostbitten blue for an exciting look suitable for any season.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

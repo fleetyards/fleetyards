@@ -11,8 +11,9 @@
           @click="activatePackage(item)"
         >
           <div
+            v-if="item.media.storeImage"
             :style="{
-              'background-image': `url(${item.storeImage})`,
+              'background-image': `url(${item.media.storeImage.small})`,
             }"
             class="model-panel-image"
           />
@@ -21,7 +22,7 @@
           </div>
           <div
             v-if="selectedPackage(item)"
-            v-tooltip="editable && $t('labels.selected')"
+            v-tooltip="editable && t('labels.selected')"
             class="model-panel-selected"
           >
             <i class="fa fa-check" />
@@ -32,63 +33,73 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
-import Panel from "@/frontend/core/components/Panel/index.vue";
+<script lang="ts" setup>
+import { useI18n } from "@/shared/composables/useI18n";
+import { type ModelModulePackage } from "@/services/fyApi";
+import Panel from "@/shared/components/base/Panel/index.vue";
 
-@Component<AddonsModal>({
-  components: {
-    Panel,
+type Props = {
+  packages: ModelModulePackage[];
+  modelValue?: string[];
+  editable?: boolean;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  modelValue: undefined,
+  editable: false,
+});
+
+const { t } = useI18n();
+
+const internalValue = ref<string[]>([]);
+
+onMounted(() => {
+  internalValue.value = [...(props.modelValue || [])];
+});
+
+const emit = defineEmits(["upate:modelValue"]);
+
+watch(
+  () => internalValue.value,
+  () => {
+    emit("upate:modelValue", internalValue.value);
   },
-})
-export default class AddonsModal extends Vue {
-  @Prop({ required: true }) value: string[];
+);
 
-  @Prop({ required: true }) packages: ModelModulePackage[];
-
-  @Prop({ default: false }) editable: boolean;
-
-  internalValue: string[] = [];
-
-  mounted() {
-    this.internalValue = [...this.value];
+const activatePackage = (addonPackage: ModelModulePackage) => {
+  if (!props.editable) {
+    return;
   }
 
-  @Watch("internalValue")
-  onInternalValueChange() {
-    this.$emit("input", this.internalValue);
-  }
+  internalValue.value = [...(props.modelValue || [])];
 
-  activatePackage(addonPackage) {
-    if (!this.editable) {
-      return;
-    }
-
-    this.internalValue = [...this.value];
-
-    addonPackage.modules.forEach((module) => {
-      const additionalPackageModules = addonPackage.modules.filter(
-        (packageModule) => packageModule.id === module.id,
-      );
-      const foundModules = this.internalValue.filter((id) => id === module.id);
-
-      if (
-        !foundModules.length ||
-        foundModules.length < additionalPackageModules.length
-      ) {
-        this.internalValue.push(module.id);
-      }
-    });
-  }
-
-  selectedPackage(addonPackage) {
-    return (
-      JSON.stringify([...this.value].sort()) ===
-      JSON.stringify(addonPackage.modules.map((module) => module.id).sort())
+  addonPackage.modules.forEach((module) => {
+    const additionalPackageModules = addonPackage.modules.filter(
+      (packageModule) => packageModule.id === module.id,
     );
-  }
-}
+    const foundModules = internalValue.value.filter((id) => id === module.id);
+
+    if (
+      !foundModules.length ||
+      foundModules.length < additionalPackageModules.length
+    ) {
+      internalValue.value.push(module.id);
+    }
+  });
+};
+
+const selectedPackage = (addonPackage: ModelModulePackage) => {
+  return (
+    JSON.stringify([...(props.modelValue || [])].sort()) ===
+    JSON.stringify(addonPackage.modules.map((module) => module.id).sort())
+  );
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "AddonsModalPackages",
+};
 </script>
 
 <style lang="scss" scoped>

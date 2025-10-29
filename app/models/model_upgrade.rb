@@ -4,16 +4,18 @@
 #
 # Table name: model_upgrades
 #
-#  id           :uuid             not null, primary key
-#  active       :boolean          default(FALSE)
-#  description  :text
-#  hidden       :boolean          default(TRUE)
-#  name         :string
-#  pledge_price :decimal(15, 2)
-#  slug         :string
-#  store_image  :string
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  id                 :uuid             not null, primary key
+#  active             :boolean          default(FALSE)
+#  description        :text
+#  hidden             :boolean          default(TRUE)
+#  name               :string
+#  pledge_price       :decimal(15, 2)
+#  slug               :string
+#  store_image        :string
+#  store_image_height :integer
+#  store_image_width  :integer
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
 #
 class ModelUpgrade < ApplicationRecord
   paginates_per 30
@@ -21,14 +23,14 @@ class ModelUpgrade < ApplicationRecord
   has_many :upgrade_kits,
     dependent: :destroy
   has_many :models, through: :upgrade_kits
-  has_many :shop_commodities, as: :commodity_item, dependent: :destroy
+  has_many :item_prices, as: :item, dependent: :destroy
 
   mount_uploader :store_image, StoreImageUploader
+  has_one_attached :new_store_image
 
   accepts_nested_attributes_for :upgrade_kits, allow_destroy: true
 
   before_save :update_slugs
-  after_save :touch_shop_commodities
   after_save :touch_models
 
   def self.ransackable_attributes(auth_object = nil)
@@ -52,12 +54,6 @@ class ModelUpgrade < ApplicationRecord
 
   def self.active
     where(active: true)
-  end
-
-  private def touch_shop_commodities
-    # rubocop:disable Rails/SkipsModelValidations
-    shop_commodities.update_all(updated_at: Time.zone.now)
-    # rubocop:enable Rails/SkipsModelValidations
   end
 
   private def touch_models

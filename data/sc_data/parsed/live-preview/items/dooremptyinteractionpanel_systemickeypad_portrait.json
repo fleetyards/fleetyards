@@ -1,0 +1,21 @@
+{
+  "key": "DoorEmptyInteractionPanel_SystemicKeypad_Portrait",
+  "ref": "d402b9ad-9bd7-4604-974d-1f4203516cb9",
+  "category": "doors",
+  "type": "ControlPanel",
+  "sub_type": "DoorPart",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

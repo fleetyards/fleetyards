@@ -1,0 +1,15 @@
+{
+  "es": {
+    "filteredTable": {
+      "actions": {
+        "unselect": "Deseleccionar todos los seleccionados"
+      },
+      "labels": {
+        "selected": "%{count} seleccionados"
+      },
+      "empty": {
+        "info": "No pudimos encontrar ningún registro."
+      }
+    }
+  }
+}

@@ -1,87 +1,247 @@
+<script lang="ts">
+export default {
+  name: "VehiclesTable",
+};
+</script>
+
+<script lang="ts" setup>
+import BaseTable from "@/shared/components/base/Table/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index.vue";
+import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue";
+import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
+import ListActions from "@/frontend/components/Vehicles/Table/ListActions.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { type Vehicle } from "@/services/fyApi";
+import { useComlink } from "@/shared/composables/useComlink";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { type BaseTableCol } from "@/shared/components/base/Table/types";
+import ViewImage from "@/shared/components/ViewImage/index.vue";
+import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
+import {
+  useHangarStore,
+  HangarTableViewColsEnum,
+  HangarTableViewImageColsEnum,
+} from "@/frontend/stores/hangar";
+import {
+  useWishlistStore,
+  WishlistTableViewColsEnum,
+  WishlistTableViewImageColsEnum,
+} from "@/frontend/stores/wishlist";
+
+type Props = {
+  vehicles: Vehicle[];
+  editable?: boolean;
+  wishlist?: boolean;
+  loading?: boolean;
+  emptyVisible?: boolean;
+};
+
+const props = defineProps<Props>();
+
+const { t, toNumber, toUEC, toDollar } = useI18n();
+
+const selected = ref<string[]>([]);
+
+const hangarStore = useHangarStore();
+const wishlistStore = useWishlistStore();
+
+const extraColumns = computed(() => {
+  if (props.wishlist) {
+    return Object.values(WishlistTableViewColsEnum)
+      .map((col) => {
+        return {
+          name: col,
+          label: t(`labels.hangarTable.columns.${col}`),
+          sortable: true,
+        };
+      })
+      .filter((col) => {
+        return wishlistStore.tableViewCols.includes(col.name);
+      });
+  }
+
+  return Object.values(HangarTableViewColsEnum)
+    .map((col) => {
+      return {
+        name: col,
+        label: t(`labels.hangarTable.columns.${col}`),
+        sortable: true,
+      };
+    })
+    .filter((col) => {
+      return hangarStore.tableViewCols.includes(col.name);
+    });
+});
+
+const extraImageColumns = computed<BaseTableCol<Vehicle>[]>(() => {
+  if (props.wishlist) {
+    return Object.values(WishlistTableViewImageColsEnum)
+      .map((col) => {
+        return {
+          name: col,
+          label: "",
+          centered: true,
+        };
+      })
+      .filter((col) => {
+        return wishlistStore.tableViewImageCols.includes(col.name);
+      });
+  }
+
+  return Object.values(HangarTableViewImageColsEnum)
+    .map((col) => {
+      return {
+        name: col,
+        label: "",
+        width: col.endsWith("_wide") ? "270px" : "120px",
+        centered: true,
+      };
+    })
+    .filter((col) => {
+      return hangarStore.tableViewImageCols.includes(col.name);
+    });
+});
+
+const manufacturerColumnVisible = computed(() => {
+  return extraColumns.value.some(
+    (column) => column.name === "model_manufacturer_name",
+  );
+});
+
+const tableColumns = computed<BaseTableCol<Vehicle>[]>(() => {
+  return [
+    ...extraImageColumns.value,
+    {
+      name: "name",
+      label: t("labels.vehicle.name"),
+      width: "40%",
+      sortable: true,
+    },
+    ...extraColumns.value,
+    {
+      name: "states",
+      label: t("labels.vehicle.states"),
+      width: "10%",
+      mobile: false,
+    },
+    {
+      name: "groups",
+      label: t("labels.vehicle.hangarGroups"),
+      width: "10%",
+      mobile: false,
+    },
+  ];
+});
+
+const comlink = useComlink();
+
+onMounted(() => {
+  comlink.on("hangar-delete-all", resetSelected);
+});
+
+onBeforeUnmount(() => {
+  comlink.off("hangar-delete-all", resetSelected);
+});
+
+const openEditModal = (vehicle: Vehicle) => {
+  comlink.emit("open-modal", {
+    component: () => import("@/frontend/components/Vehicles/Modal/index.vue"),
+    props: {
+      vehicle,
+      wishlist: props.wishlist,
+    },
+  });
+};
+
+const storeImage = (record: Vehicle) => {
+  if (record && record.paint) {
+    return record.paint.media.storeImage;
+  }
+
+  if (record && record.upgrade) {
+    return record.upgrade.media.storeImage;
+  }
+
+  return record.model.media.storeImage;
+};
+
+const angledImage = (record: Vehicle) => {
+  if (record && record.model.media.angledViewColored) {
+    return record.model.media.angledViewColored;
+  }
+
+  return record.model.media.angledView;
+};
+
+const onSelectedChange = (value: string[]) => {
+  selected.value = value;
+};
+
+const resetSelected = () => {
+  selected.value = [];
+};
+</script>
+
 <template>
   <div>
-    <FilteredTable
+    <BaseTable
       :records="vehicles"
-      :primary-key="primaryKey"
+      primary-key="id"
       :columns="tableColumns"
       :selectable="editable"
       :selected="selected"
-      :empty-box-visible="!vehicles.length"
+      :loading="loading"
+      :empty-visible="emptyVisible"
       @selected-change="onSelectedChange"
     >
       <template #selected-actions>
-        <div class="d-flex">
-          <BtnGroup :inline="true">
-            <span>{{ $t("labels.public") }}</span>
-            <Btn
-              v-tooltip="$t('actions.hangar.showOnPublicHangar')"
-              size="small"
-              variant="dropdown"
-              :disabled="updating"
-              @click.native="showOnPublicHangar"
-            >
-              <i class="fad fa-eye" />
-            </Btn>
-            <Btn
-              v-tooltip="$t('actions.hangar.hideFromPublicHangar')"
-              size="small"
-              variant="dropdown"
-              :disabled="updating"
-              @click.native="hideFromPublicHangar"
-            >
-              <i class="fad fa-eye-slash" />
-            </Btn>
-          </BtnGroup>
-          <Btn
-            v-if="wishlist"
-            size="small"
-            :inline="true"
-            :disabled="updating"
-            @click.native="addToHangarBulk"
-          >
-            {{ $t("actions.addToHangar") }}
-          </Btn>
-          <Btn
-            v-else
-            size="small"
-            :inline="true"
-            :disabled="updating"
-            @click.native="addToWishlistBulk"
-          >
-            {{ $t("actions.addToWishlist") }}
-          </Btn>
-          <Btn
-            v-if="!wishlist"
-            size="small"
-            :inline="true"
-            @click.native="openBulkGroupEditModal"
-          >
-            {{ $t("actions.hangar.editGroupsSelected") }}
-          </Btn>
-          <Btn
-            v-tooltip="$t('actions.deleteSelected')"
-            size="small"
-            :inline="true"
-            :disabled="deleting"
-            @click.native="destroyBulk"
-          >
-            <i class="fal fa-trash" />
-          </Btn>
-        </div>
+        <ListActions :selected="selected" :wishlist="wishlist" />
       </template>
       <template #col-store_image="{ record }">
-        <div
-          :key="storeImage(record)"
-          v-lazy:background-image="storeImage(record)"
-          class="image lazy"
-          alt="storeImage"
+        <ViewImage
+          :image="storeImage(record)"
+          size="small"
+          alt="image"
+          :variant="LazyImageVariantsEnum.WIDE_SMALL"
+          shadow
+        />
+      </template>
+      <template #col-store_image_wide="{ record }">
+        <ViewImage
+          :image="storeImage(record)"
+          size="small"
+          alt="image"
+          :variant="LazyImageVariantsEnum.WIDE"
+          shadow
+        />
+      </template>
+      <template #col-angled_view="{ record }">
+        <ViewImage
+          :image="angledImage(record)"
+          size="small"
+          alt="image"
+          :variant="LazyImageVariantsEnum.WIDE_SMALL"
+          transparent
+          without-fallback
+        />
+      </template>
+      <template #col-angled_view_wide="{ record }">
+        <ViewImage
+          :image="angledImage(record)"
+          size="small"
+          alt="image"
+          :variant="LazyImageVariantsEnum.WIDE"
+          transparent
+          without-fallback
         />
       </template>
       <template #col-name="{ record }">
         <div class="name">
           <router-link
             :to="{
-              name: 'model',
+              name: 'ship',
               params: {
                 slug: record.model.slug,
               },
@@ -95,38 +255,115 @@
           </router-link>
           <br />
           <small>
-            <span v-html="record.model.manufacturer.name" />
+            <!-- eslint-disable vue/no-v-html -->
+            <span
+              v-if="record.model.manufacturer && !manufacturerColumnVisible"
+              v-html="record.model.manufacturer.name"
+            />
             <template v-if="record.name">
               {{ record.model.name }}
             </template>
           </small>
         </div>
       </template>
+      <template #col-model_manufacturer_name="{ record }">
+        {{ record.model.manufacturer?.name }}
+      </template>
+      <template #col-model_length="{ record }">
+        <span class="no-break">{{
+          toNumber(record.model.metrics.length || "", "distance")
+        }}</span>
+      </template>
+      <template #col-model_beam="{ record }">
+        <span class="no-break">{{
+          toNumber(record.model.metrics.beam || "", "distance")
+        }}</span>
+      </template>
+      <template #col-model_height="{ record }">
+        <span class="no-break">{{
+          toNumber(record.model.metrics.height || "", "distance")
+        }}</span>
+      </template>
+      <template #col-model_mass="{ record }">
+        <span class="no-break">{{
+          toNumber(record.model.metrics.mass || "", "weight")
+        }}</span>
+      </template>
+      <template #col-model_cargo="{ record }">
+        <span class="no-break">{{
+          toNumber(record.model.metrics.cargo || "", "cargo")
+        }}</span>
+      </template>
+      <template #col-model_min_crew="{ record }">
+        <span class="no-break">{{
+          toNumber(record.model.crew.min || "", "people")
+        }}</span>
+      </template>
+      <template #col-model_max_crew="{ record }">
+        <span class="no-break">{{
+          toNumber(record.model.crew.max || "", "people")
+        }}</span>
+      </template>
+      <template #col-model_ground_max_speed="{ record }">
+        <span class="no-break">{{
+          toNumber(record.model.speeds.groundMaxSpeed || "", "speed")
+        }}</span>
+      </template>
+      <template #col-model_scm_speed="{ record }">
+        <span class="no-break">{{
+          toNumber(record.model.speeds.scmSpeed || "", "speed")
+        }}</span>
+      </template>
+      <template #col-model_max_speed="{ record }">
+        <span class="no-break">{{
+          toNumber(record.model.speeds.maxSpeed || "", "speed")
+        }}</span>
+      </template>
+      <template #col-model_production_status="{ record }">
+        {{
+          t(`labels.model.productionStatus.${record.model.productionStatus}`)
+        }}
+      </template>
+      <template #col-model_focus="{ record }">
+        {{ record.model.focus }}
+      </template>
+      <template #col-model_price="{ record }">
+        <!-- eslint-disable vue/no-v-html -->
+        <div
+          v-tooltip="{ content: toUEC(record.model.price), html: true }"
+          class="no-break"
+          v-html="toUEC(record.model.price)"
+        />
+        <!-- eslint-enable vue/no-v-html -->
+      </template>
+      <template #col-model_pledge_price="{ record }">
+        <span class="no-break">{{ toDollar(record.model.pledgePrice) }}</span>
+      </template>
       <template #col-states="{ record }">
         <div class="vehicle-states">
           <i
             v-if="record.flagship && !wishlist"
-            v-tooltip="$t('labels.vehicle.flagship')"
+            v-tooltip="t('labels.vehicle.flagship')"
             class="fa fa-certificate flagship-icon"
           />
           <i
             v-if="record.model.onSale"
-            v-tooltip="$t('labels.model.onSale')"
+            v-tooltip="t('labels.model.onSale')"
             class="fad fa-dollar-sign on-sale"
           />
           <i
             v-if="record.public && record.nameVisible"
-            v-tooltip="$t('labels.vehicle.fullPublic')"
+            v-tooltip="t('labels.vehicle.fullPublic')"
             class="fad fa-eye-evil full-public-icon"
           />
           <i
             v-else-if="record.public"
-            v-tooltip="$t('labels.vehicle.public')"
+            v-tooltip="t('labels.vehicle.public')"
             class="fad fa-eye"
           />
           <i
             v-if="wishlist && record.saleNotify"
-            v-tooltip="$t('labels.vehicle.saleNotify')"
+            v-tooltip="t('labels.vehicle.saleNotify')"
             class="fad fa-bell"
           />
         </div>
@@ -134,219 +371,32 @@
       <template #col-groups="{ record }">
         <HangarGroups :groups="record.hangarGroups" size="large" />
       </template>
-      <template #col-actions="{ record }">
-        <BtnGroup :inline="true" class="vehicles-table-btn-group">
+      <template #actions="{ record }">
+        <BtnGroup inline class="vehicles-table-btn-group">
           <Btn
             v-if="record && editable && !record.loaner"
-            :aria-label="$t('actions.edit')"
-            size="small"
+            :aria-label="t('actions.edit')"
+            :size="BtnSizesEnum.SMALL"
             data-test="vehicle-edit"
-            :inline="true"
-            variant="link"
-            @click.native="openEditModal(record)"
+            @click="openEditModal(record)"
           >
-            {{ $t("actions.edit") }}
+            <i class="fad fa-pen-to-square" />
+            {{ t("actions.edit") }}
           </Btn>
           <VehicleContextMenu
             :vehicle="record"
             :editable="editable && !record.loaner"
             :wishlist="wishlist"
-            :hide-edit="true"
+            hide-edit
           />
         </BtnGroup>
       </template>
       <template #empty>
-        <WishlistEmptyTable v-if="wishlist" />
-        <HangarEmptyTable v-else />
+        <HangarEmpty :wishlist="wishlist" />
       </template>
-    </FilteredTable>
+    </BaseTable>
   </div>
 </template>
-
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import vehiclesCollection from "@/frontend/api/collections/Vehicles";
-import wishlistCollection from "@/frontend/api/collections/Wishlist";
-import { displayConfirm } from "@/frontend/lib/Noty";
-import FilteredTable from "@/frontend/core/components/FilteredTable/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import BtnGroup from "@/frontend/core/components/BtnGroup/index.vue";
-import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index.vue";
-import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue";
-import HangarEmptyTable from "@/frontend/components/HangarEmptyTable/index.vue";
-import WishlistEmptyTable from "@/frontend/components/WishlistEmptyTable/index.vue";
-
-@Component<FilteredGrid>({
-  components: {
-    FilteredTable,
-    VehicleContextMenu,
-    HangarGroups,
-    Btn,
-    BtnGroup,
-    HangarEmptyTable,
-    WishlistEmptyTable,
-  },
-})
-export default class FilteredGrid extends Vue {
-  @Prop({ required: true }) vehicles!: Vehicle[];
-
-  @Prop({ required: true }) primaryKey!: string;
-
-  @Prop({ default: false }) editable!: boolean;
-
-  @Prop({ default: false }) wishlist!: boolean;
-
-  selected: string[] = [];
-
-  deleting = false;
-
-  updating = false;
-
-  tableColumns: FilteredTableColumn[] = [
-    {
-      name: "store_image",
-      class: "store-image wide",
-      type: "store-image",
-    },
-    {
-      name: "name",
-      width: "40%",
-    },
-    {
-      name: "states",
-      width: "10%",
-    },
-    {
-      name: "groups",
-      label: this.$t("labels.vehicle.hangarGroups"),
-      width: "10%",
-    },
-    { name: "actions", label: this.$t("labels.actions"), minWidth: "140px" },
-  ];
-
-  mounted() {
-    this.$comlink.$on("vehicles-delete-all", this.resetSelected);
-  }
-
-  beforeDestroy() {
-    this.$comlink.$off("vehicles-delete-all");
-  }
-
-  hasAddons(vehicle) {
-    return vehicle.modelModuleIds.length || vehicle.modelUpgradeIds.length;
-  }
-
-  upgradable(vehicle) {
-    return (
-      (this.editable || this.hasAddons(vehicle)) &&
-      (vehicle.model.hasModules || vehicle.model.hasUpgrades)
-    );
-  }
-
-  openBulkGroupEditModal() {
-    this.$comlink.$emit("open-modal", {
-      component: () =>
-        import("@/frontend/components/Vehicles/BulkGroupModal/index.vue"),
-      props: {
-        vehicleIds: this.selected,
-      },
-    });
-  }
-
-  openEditModal(vehicle) {
-    this.$comlink.$emit("open-modal", {
-      component: () => import("@/frontend/components/Vehicles/Modal/index.vue"),
-      props: {
-        vehicle,
-        wishlist: this.wishlist,
-      },
-    });
-  }
-
-  storeImage(record: Vehicle) {
-    if (record && record.paint) {
-      return record.paint.storeImageSmall;
-    }
-
-    if (record && record.upgrade) {
-      return record.upgrade.storeImageMedium;
-    }
-
-    return record.model.storeImageMedium;
-  }
-
-  async addToWishlistBulk() {
-    this.updating = true;
-
-    await vehiclesCollection.addToWishlistBulk(this.selected);
-
-    this.resetSelected();
-
-    this.updating = false;
-  }
-
-  async addToHangarBulk() {
-    this.updating = true;
-
-    await vehiclesCollection.addToHangarBulk(this.selected);
-
-    wishlistCollection.refresh();
-
-    this.resetSelected();
-
-    this.updating = false;
-  }
-
-  async hideFromPublicHangar() {
-    this.updating = true;
-
-    await vehiclesCollection.hideFromPublicHangar(this.selected);
-
-    wishlistCollection.refresh();
-
-    this.updating = false;
-  }
-
-  async showOnPublicHangar() {
-    this.updating = true;
-
-    await vehiclesCollection.showOnPublicHangar(this.selected);
-
-    wishlistCollection.refresh();
-
-    this.updating = false;
-  }
-
-  onSelectedChange(value) {
-    this.selected = value;
-  }
-
-  async destroyBulk() {
-    this.deleting = true;
-
-    displayConfirm({
-      text: this.$t("messages.confirm.hangar.destroySelected"),
-      onConfirm: async () => {
-        await vehiclesCollection.destroyBulk(this.selected);
-
-        wishlistCollection.refresh();
-
-        this.resetSelected();
-
-        this.deleting = false;
-      },
-      onClose: () => {
-        this.deleting = false;
-      },
-    });
-  }
-
-  resetSelected() {
-    this.selected = [];
-  }
-}
-</script>
 
 <style lang="scss" scoped>
 @import "index";

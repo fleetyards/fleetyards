@@ -24,12 +24,16 @@
 #  rsi_name                :string
 #  rsi_slug                :string
 #  rsi_store_image         :string
+#  rsi_store_image_height  :integer
+#  rsi_store_image_width   :integer
 #  rsi_store_url           :string
 #  side_view               :string
 #  side_view_height        :integer
 #  side_view_width         :integer
 #  slug                    :string
 #  store_image             :string
+#  store_image_height      :integer
+#  store_image_width       :integer
 #  store_images_updated_at :datetime
 #  store_url               :string
 #  top_view                :string
@@ -46,7 +50,7 @@ class ModelPaint < ApplicationRecord
   belongs_to :model, optional: true, touch: true, counter_cache: true
 
   has_many :vehicles, dependent: :nullify
-  has_many :shop_commodities, as: :commodity_item, dependent: :destroy
+  has_many :item_prices, as: :item, dependent: :destroy
 
   mount_uploader :store_image, StoreImageUploader
   mount_uploader :rsi_store_image, StoreImageUploader
@@ -54,6 +58,14 @@ class ModelPaint < ApplicationRecord
   mount_uploader :top_view, FleetchartImageUploader
   mount_uploader :side_view, FleetchartImageUploader
   mount_uploader :angled_view, FleetchartImageUploader
+
+  has_one_attached :new_store_image
+  has_one_attached :new_rsi_store_image
+  has_one_attached :new_fleetchart_image
+  has_one_attached :new_top_view
+  has_one_attached :new_side_view
+  has_one_attached :front_view
+  has_one_attached :new_angled_view
 
   def self.ransackable_attributes(auth_object = nil)
     [
@@ -71,6 +83,12 @@ class ModelPaint < ApplicationRecord
     ["model", "shop_commodities", "vehicles"]
   end
 
+  DEFAULT_SORTING_PARAMS = "name asc"
+  ALLOWED_SORTING_PARAMS = [
+    "name asc", "name desc", "createdAt asc", "createdAt desc", "updatedAt asc",
+    "updatedAt desc", "model_slug asc", "model_slug desc"
+  ]
+
   before_save :update_slugs
 
   def self.visible
@@ -82,15 +100,11 @@ class ModelPaint < ApplicationRecord
   end
 
   def sold_at
-    shop_commodities.where.not(sell_price: nil).order(sell_price: :asc).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
+    item_prices.sell.order(price: :asc).uniq(&:location)
   end
 
   def bought_at
-    shop_commodities.where.not(buy_price: nil).order(buy_price: :desc).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
-  end
-
-  def listed_at
-    shop_commodities.where(sell_price: nil, buy_price: nil).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
+    item_prices.buy.order(price: :asc).uniq(&:location)
   end
 
   def name_with_model
@@ -99,6 +113,6 @@ class ModelPaint < ApplicationRecord
 
   private def update_slugs
     super
-    self.rsi_slug = SlugHelper.generate_slug(rsi_name)
+    self.rsi_slug = generate_slug(rsi_name)
   end
 end

@@ -1,0 +1,131 @@
+{
+  "fr": {
+    "nav": {
+      "home": "Accueil",
+      "back": "Retour",
+      "ships": {
+        "index": "Vaisseaux"
+      },
+      "compare": {
+        "index": "Comparer",
+        "ships": "Comparer les Vaisseaux"
+      },
+      "manufacturers": "Fabricants",
+      "images": "Images",
+      "videos": "Vidéos",
+      "hangar": "Mon Hangar",
+      "login": "Connexion",
+      "logout": "Déconnexion",
+      "apiV1": "API v1",
+      "embed": "Widget Intégré",
+      "signUp": "S'inscrire",
+      "privacyPolicy": "Politique de confidentialité",
+      "privacySettings": "Paramètres de confidentialité",
+      "impressum": "Mentions légales",
+      "fleets": {
+        "index": "Flottes",
+        "add": "Créer une nouvelle Flotte",
+        "invites": "Invitations",
+        "ships": "Vaisseaux",
+        "members": "Membres",
+        "stats": "Statistiques",
+        "settings": {
+          "index": "Paramètres",
+          "fleet": "Paramètres de Flotte",
+          "membership": "Paramètres d'Adhésion"
+        }
+      },
+      "rsiProfile": "Profil RSI",
+      "rsiHangar": "Hangar RSI",
+      "tools": {
+        "index": "Outils",
+        "travelTimes": "Temps de Voyage",
+        "cargoGrids": "Grilles de Fret"
+      },
+      "api": "Documentation API",
+      "stats": "Statistiques",
+      "toggleSlimCollapse": "Réduire",
+      "toggleSlimExpand": "Développer",
+      "roadmap": {
+        "index": "Feuille de Route",
+        "overview": "Vue d'ensemble",
+        "changes": "Changements",
+        "ships": "Feuille de Route des Vaisseaux"
+      },
+      "rsiVerification": "Vérification RSI",
+      "settings": {
+        "index": "Paramètres",
+        "profile": "Profil",
+        "account": "Compte",
+        "security": "Sécurité",
+        "notifications": "Notifications",
+        "hangar": "Hangar",
+        "verify": "Vérification du compte RSI"
+      },
+      "reload": "Mise à jour disponible!",
+      "visualTests": {
+        "index": "Tests Visuels",
+        "panels": "Panneaux",
+        "buttons": "Boutons",
+        "tables": "Tableaux"
+      },
+      "admin": {
+        "index": "Admin",
+        "models": {
+          "index": "Modèles",
+          "create": "Créer un Modèle",
+          "edit": {
+            "index": "Données de Base",
+            "metrics": "Métriques",
+            "prices": "Prix",
+            "docks": "Quais",
+            "videos": "Vidéos",
+            "cargoAndFuel": "Fret et Carburant",
+            "fleetchart": "Images Fleetchart",
+            "hardpoints": "Points de Fixation"
+          }
+        },
+        "modelPaints": {
+          "index": "Peintures",
+          "create": "Créer une Peinture"
+        },
+        "modelModules": {
+          "index": "Modules",
+          "create": "Créer un Module"
+        },
+        "modelModulePackages": {
+          "index": "Paquets de Modules",
+          "create": "Créer un Paquet de Modules"
+        },
+        "components": {
+          "index": "Composants"
+        },
+        "manufacturers": {
+          "index": "Fabricants"
+        },
+        "images": {
+          "index": "Images"
+        },
+        "users": {
+          "index": "Utilisateurs"
+        },
+        "fleets": {
+          "index": "Flottes"
+        },
+        "vehicles": {
+          "index": "Véhicules"
+        },
+        "admins": {
+          "index": "Administrateurs"
+        },
+        "maintenance": {
+          "index": "Maintenance",
+          "pghero": "PG-Hero",
+          "features": "Fonctionnalités",
+          "workers": "Travailleurs",
+          "rsiApiStatus": "État API RSI"
+        }
+      }
+    }
+  }
+}

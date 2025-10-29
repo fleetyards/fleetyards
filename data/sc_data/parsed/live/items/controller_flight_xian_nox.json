@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_XIAN_Nox",
+  "ref": "945df25d-3abc-4529-b8d0-80634372adc0",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SELF STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "scm_speed": 225.0,
+    "scm_speed_boosted": 305.0,
+    "reverse_speed_boosted": 145.0,
+    "max_speed": 619.0,
+    "angular_velocity": {
+      "pitch": 89.0,
+      "yaw": 89.0,
+      "roll": 138.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 106.8,
+      "yaw": 106.8,
+      "roll": 165.6
+    }
+  }
+}

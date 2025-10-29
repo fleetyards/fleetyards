@@ -1,0 +1,21 @@
+{
+  "key": "AEGS_Javelin_SCItem_Seat_Bridge_Left_RemoteTurret_Blocked",
+  "ref": "e7ea85e8-35fe-4b57-87e0-0bd1446260de",
+  "category": "seat",
+  "type": "Seat",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

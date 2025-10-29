@@ -1,0 +1,21 @@
+{
+  "key": "Paint_FuryLX_Black_Black_Black",
+  "ref": "5fc8bdb8-c5d3-4d3e-a7db-e00f518d92a6",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "244463ce-6810-4a08-a912-ac1c52f55b70",
+  "name": "Fury Black Star Livery",
+  "short_name": null,
+  "description": "The Black Star livery gives the Fury a classic black finish with bold brand decals in silver.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

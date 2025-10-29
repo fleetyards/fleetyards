@@ -3,7 +3,7 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
+  let!(:models) { create_list(:model, 6) }
 
   path "/models" do
     get("Models List") do
@@ -24,53 +24,45 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
       parameter name: "cacheId", in: :query, type: :string, required: false
 
       response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/Model"}
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
+        schema "$ref": "#/components/schemas/Models"
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to be > 0
-          expect(data.count).to eq(6)
+          expect(items.count).to be > 0
+          expect(items.count).to eq(6)
         end
       end
 
       response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/Model"}
+        schema "$ref": "#/components/schemas/Models"
 
         let(:q) do
           {
-            "nameOrDescriptionCont" => "Galaxy"
+            "nameOrDescriptionCont" => models.first.name
           }
         end
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to eq(1)
-          expect(data.first["name"]).to eq("Galaxy")
+          expect(items.count).to eq(1)
+          expect(items.first["name"]).to eq(models.first.name)
         end
       end
 
       response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/Model"}
+        schema "$ref": "#/components/schemas/Models"
 
         let(:perPage) { 2 }
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to eq(2)
+          expect(items.count).to eq(2)
         end
       end
     end

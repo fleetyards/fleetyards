@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Vulture_Invictus_Unity_Metal_Teal",
+  "ref": "350277c7-d1a4-485f-9046-a99cfcaa1611",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8e8ea863-f8d7-41df-beff-5d8b6bbd9fb3",
+  "name": "Vulture Foundation Fest Livery",
+  "short_name": null,
+  "description": "Foundation Festival is an opportunity for Citizens and Civilians to come together and strengthen the foundation of our community. Show your commitment to a better universe with this custom livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

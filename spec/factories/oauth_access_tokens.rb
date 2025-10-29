@@ -1,0 +1,33 @@
+# == Schema Information
+#
+# Table name: oauth_access_tokens
+#
+#  id                     :uuid             not null, primary key
+#  expires_in             :integer
+#  previous_refresh_token :string           default(""), not null
+#  refresh_token          :text
+#  revoked_at             :datetime
+#  scopes                 :string
+#  token                  :text             not null
+#  created_at             :datetime         not null
+#  application_id         :uuid             not null
+#  resource_owner_id      :uuid
+#
+# Indexes
+#
+#  index_oauth_access_tokens_on_application_id     (application_id)
+#  index_oauth_access_tokens_on_refresh_token      (refresh_token) UNIQUE
+#  index_oauth_access_tokens_on_resource_owner_id  (resource_owner_id)
+#  index_oauth_access_tokens_on_token              (token) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (application_id => oauth_applications.id)
+#  fk_rails_...  (resource_owner_id => users.id)
+#
+FactoryBot.define do
+  factory :oauth_access_token, class: Oauth::AccessToken do
+    application { create(:oauth_application) }
+    expires_in { 2.hours }
+  end
+end

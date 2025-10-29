@@ -1,0 +1,110 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+
+# Systematic Debugging and Problem-Solving Rule
+
+## Core Principles
+1. **No Immediate Code Changes**
+   - Never start modifying files without a documented plan
+   - Resist the urge to "try things" without analysis
+
+2. **Structured Analysis Required**
+   - Create a debug file in `.cursor/working/debug/[issue_name].md` before any action
+   - Document the current state, errors, and recent changes
+   - List all potentially involved files
+   - Create a clear investigation plan
+
+3. **Documentation First**
+   The debug file MUST include:
+   ```markdown
+   # [Issue Name]
+
+   ## Error Messages
+   - Exact error text
+   - Initial analysis of each error
+
+   ## Recent Changes
+   - What changed recently that might relate
+   - Current vs. previous state
+
+   ## Potentially Involved Files
+   - List of files that might need examination
+   - Why each file is relevant
+
+   ## Current State
+   - What is working
+   - What isn't working
+   - Environmental factors
+
+   ## Investigation Plan
+   - Ordered steps to investigate
+   - What to check at each step
+   - Expected outcomes
+
+   ## Hypothesis
+   - What you think is causing the issue
+   - Why you think this
+
+   ## Proposed Debug Steps
+   1. Specific steps to test hypothesis
+   2. How to verify each step
+   3. Success criteria
+   ```
+
+4. **Wait for Approval**
+   - Share debug file with user
+   - Get explicit approval before proceeding
+   - Update plan based on feedback
+
+5. **Systematic Execution**
+   - Follow approved plan step by step
+   - Document findings at each step
+   - Update debug file with results
+   - If plan needs changing, create new section in debug file and get approval
+
+6. **No Scope Creep**
+   - Stay focused on the specific issue
+   - Create separate debug files for new issues discovered
+   - Don't fix unrelated issues without approval
+
+7. **Document Learning**
+   - Update debug file with findings
+   - Note any patterns or common issues
+   - Create new rules if similar issues might recur
+
+## Example Usage
+
+```markdown
+# Button Click Handler Not Firing
+
+## Error Messages
+- Console error: "TypeError: onClick is not a function"
+- Stack trace points to Button.tsx:42
+
+[Rest of analysis following template...]
+```
+
+## Benefits
+- Prevents scattered, unfocused debugging
+- Creates clear paper trail
+- Helps spot patterns
+- Makes it easier to resume after interruptions
+- Supports knowledge sharing
+- Reduces cognitive load
+
+## When to Use
+- Any time there's an error or unexpected behavior
+- Before making significant changes
+- When investigating performance issues
+- When refactoring code
+- When upgrading dependencies
+
+## When to Update
+This rule should be updated when:
+- Common patterns emerge in debugging
+- New types of issues are encountered
+- Team feedback suggests improvements
+- New tools or processes are adopted

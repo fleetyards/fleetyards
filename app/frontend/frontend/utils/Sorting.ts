@@ -1,4 +1,4 @@
-import { Location } from "vue-router";
+import { LocationQueryRaw, RouteLocation, RouterLinkProps } from "vue-router";
 
 type QueryParams = {
   sorts: string[];
@@ -8,11 +8,11 @@ type Dictionary<T> = { [key: string]: T };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface FleetYardsRouteQuery extends Dictionary<any> {
-  q: QueryParams | null;
+  q?: QueryParams;
 }
 
-export interface FleetYardsLocation extends Location {
-  query?: FleetYardsRouteQuery;
+export interface FleetYardsLocation extends RouteLocation {
+  query: FleetYardsRouteQuery;
 }
 
 export const sortByToggle = function sortByToggle(
@@ -62,9 +62,9 @@ export const sortBy = function sortBy(
   currentRoute: FleetYardsLocation,
   field: string,
   direction = "asc",
-) {
+): RouterLinkProps["to"] {
   return {
-    name: currentRoute.name,
+    name: currentRoute.name || "",
     params: currentRoute.params,
     query: {
       ...currentRoute.query,
@@ -72,6 +72,6 @@ export const sortBy = function sortBy(
         ...currentRoute.query?.q,
         sorts: [`${field} ${direction}`],
       },
-    },
+    } as unknown as LocationQueryRaw,
   };
 };

@@ -1,0 +1,40 @@
+{
+  "key": "DRAK_Cutlass_Red_CargoGrid_Left",
+  "ref": "be25ffae-89ce-4537-bd10-9e3524822b8e",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 1.25,
+      "y": 3.75,
+      "z": 2.5
+    },
+    "capacity": 6.0,
+    "max_container_size": {
+      "size": 2,
+      "dimensions": {
+        "x": 2.5,
+        "y": 1.25,
+        "z": 1.25
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1.0
+      },
+      "max": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1.0
+      }
+    }
+  }
+}

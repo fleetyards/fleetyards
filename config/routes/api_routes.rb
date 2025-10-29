@@ -7,9 +7,8 @@ api_options = {
 }.compact
 
 namespace :api, **api_options do
-  devise_for :users, singular: :user, only: []
-
   draw "api/v1_routes"
+  draw "api/oauth_routes"
 
   get "docs", to: redirect(DOCS_ENDPOINT, allow_other_host: true)
 

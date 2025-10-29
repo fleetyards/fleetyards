@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Intrepid_Black_Gold",
+  "ref": "262d338c-f4c6-4609-bc67-335b6639654a",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a906ed82-99e6-444b-8b63-9c8ad62ce64f",
+  "name": "Intrepid Oblivion Livery",
+  "short_name": null,
+  "description": "The Oblivion livery cloaks the Intrepid in black with subtle but striking gold highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

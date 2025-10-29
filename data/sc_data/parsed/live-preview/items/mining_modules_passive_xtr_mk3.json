@@ -1,0 +1,24 @@
+{
+  "key": "Mining_Modules_Passive_XTR_MK3",
+  "ref": "a0595561-6252-4340-bd02-c9a748e2fe7b",
+  "category": "utility",
+  "type": "MiningModifier",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "name": "XTR-XL Module",
+  "short_name": null,
+  "description": "Manufacturer: Greycat Industrial\\nItem Type: Mining Module (Passive)\\n\\nOptimal Charge Window Size: +25%\\nInert Material Level: -6%\\n\\nExtraction Laser Power: 95%\\n\\nThe XTR-XL Module creates a wider mining window for deposits. It also makes the extraction laser less powerful so it can filter out more inert materials.",
+  "inventory_consumption": {
+    "micro_scu": 7559.0,
+    "dimensions": {
+      "x": 0.1831628,
+      "y": 0.3217757,
+      "z": 0.1603117
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

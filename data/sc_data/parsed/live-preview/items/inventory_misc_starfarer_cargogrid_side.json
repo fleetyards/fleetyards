@@ -1,0 +1,32 @@
+{
+  "key": "MISC_Starfarer_CargoGrid_Side",
+  "ref": "8bed69d5-06e4-4933-9cc7-b9c8b4813e00",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 6.25,
+      "y": 2.5,
+      "z": 6.25
+    },
+    "capacity": 50.0,
+    "max_container_size": {
+      "size": 16,
+      "dimensions": {
+        "x": 5.0,
+        "y": 2.5,
+        "z": 2.5
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1.0
+      }
+    }
+  }
+}

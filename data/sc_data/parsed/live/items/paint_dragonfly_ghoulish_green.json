@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Dragonfly_Ghoulish_Green",
+  "ref": "a04e569a-42da-46db-9718-e681f4f6eb30",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1b2e3994-e890-4554-a23c-86f13f08cf01",
+  "name": "Dragonfly Ghoulish Green Livery",
+  "short_name": null,
+  "description": "Embrace Day of the Vara mischievousness and mayhem any time of the year with this custom Dragonfly livery. It combines metallic green and black for a striking look that highlights the holiday's classic colors.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

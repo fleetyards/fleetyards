@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Cutlass_Hawthorn_Green_Camo",
+  "ref": "c98e77e8-c410-4d49-9e14-d3b2c8f772bf",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4a39f3e6-987e-4172-8411-b995e4299bfc",
+  "name": "Cutlass Hawthorn Livery",
+  "short_name": null,
+  "description": "The Cutlass Hawthorn livery features a black and grey camo pattern that'll make the ship blend into the vast expanse of space.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

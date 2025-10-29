@@ -1,0 +1,134 @@
+{
+  "zh-TW": {
+    "meta": {
+      "description": "FleetYards.net, Your Database for all Information related to Ships from “Star Citizen“.",
+      "keywords": "Star Citizen, Spaceships, Ships, Fighter, Database, Squadron, 42, Star, Citizen, English, Chris, Roberts, Online, Game, Space, Simulation"
+    },
+    "station": {
+      "type": "Type",
+      "location": "Location",
+      "classification": "Classification",
+      "habitable": "Habitable?",
+      "refinery": "Refinery Station",
+      "cargoHub": "Cargo Hub"
+    },
+    "model": {
+      "focus": "Focus",
+      "classification": "Classification",
+      "size": "Size",
+      "beam": "Beam",
+      "cargo": "Cargo",
+      "netCargo": "Cargo with Rover/Snub",
+      "crew": "Crew",
+      "speed": "Speed",
+      "minCrew": "min. Crew",
+      "maxCrew": "max. Crew",
+      "scmSpeed": "SCM速度",
+      "scmSpeedBoosted": "SCM速度增強",
+      "reverseSpeedBoosted": "倒車速度增強",
+      "maxSpeed": "最大速度",
+      "scm": "SCM",
+      "max": "最大",
+      "groundMaxSpeed": "最大速度",
+      "groundReverseSpeed": "倒車速度",
+      "pitch": "俯仰",
+      "pitchBoosted": "俯仰增強",
+      "yaw": "偏航",
+      "yawBoosted": "偏航增強",
+      "roll": "滾轉",
+      "rollBoosted": "滾轉增強",
+      "price": "價格",
+      "groundAcceleration": "加速度",
+      "groundDecceleration": "減速度",
+      "scmSpeedAcceleration": "零到SCM",
+      "scmSpeedDecceleration": "SCM到零",
+      "maxSpeedAcceleration": "零到最大",
+      "maxSpeedDecceleration": "最大到零",
+      "compare": {
+        "groundMaxSpeed": "地面最大速度",
+        "groundReverseSpeed": "地面倒車速度",
+        "groundAcceleration": "地面加速度",
+        "groundDecceleration": "地面減速度"
+      },
+      "quantumFuelTankSize": "Quantum Fuel",
+      "hydrogenFuelTankSize": "Fuel",
+      "pledgePrice": "Pledge Price",
+      "height": "Height",
+      "length": "Length",
+      "mass": "Mass",
+      "manufacturer": "Manufacturer",
+      "hardpoints": "Hardpoints",
+      "weapons": "Weapons",
+      "equipment": "Equipment",
+      "variants": "Variants",
+      "maxUpgrades": "Upgrades",
+      "productionStatus": "Production Status",
+      "propulsion": "Propulsion",
+      "ordnance": "Ordnance",
+      "modular": "Modular",
+      "soldAt": "Sold at?",
+      "rentalAt": "Rental at?",
+      "lastUpdatedAt": "Last updated at?"
+    },
+    "component": {
+      "manufacturer": "Manufacturer",
+      "size": "Size"
+    },
+    "celestialObject": {
+      "type": "Type",
+      "subType": "Sub Type",
+      "habitable": "Habitable?",
+      "fairchanceact": "Fair Chance Act?",
+      "population": "Population",
+      "economy": "Economy",
+      "danger": "Danger"
+    },
+    "starsystem": {
+      "type": "Type",
+      "size": "Size",
+      "population": "Population",
+      "economy": "Economy",
+      "danger": "Danger"
+    },
+    "shop": {
+      "type": "Type",
+      "celestialObject": "Location",
+      "station": "Station",
+      "location": "%{name} at %{location}",
+      "refineryTerminal": "Refinery Terminal"
+    },
+    "commodityItem": {
+      "grade": "Grade",
+      "type": "Type",
+      "itemType": "Item Type",
+      "itemClass": "Item Class",
+      "weaponClass": "Weapon Class",
+      "size": "Size",
+      "range": "Range",
+      "damageReduction": "Damage Reduction",
+      "rateOfFire": "Rate of Fire",
+      "extras": "Additional Info",
+      "location": "Location",
+      "slot": "Slot",
+      "storage": "Storage",
+      "shop": "Shop",
+      "unconfirmed": "Item is unconfirmed",
+      "manufacturer": "Manufacturer"
+    },
+    "availability": {
+      "listedAt": "Listed at",
+      "soldAt": "Sold at",
+      "boughtAt": "Bought at"
+    },
+    "resources": {
+      "models": "飛船",
+      "hardpoints": "掛載點",
+      "images": "圖片"
+    },
+    "pagination": {
+      "previous": "Previous Page",
+      "next": "Next Page",
+      "gap": "&hellip;"
+    }
+  }
+}

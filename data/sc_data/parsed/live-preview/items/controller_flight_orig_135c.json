@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_ORIG_135c",
+  "ref": "45a0d43f-8bcf-4f38-82c9-31d0e5222442",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SELF STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "scm_speed": 260.0,
+    "scm_speed_boosted": 610.0,
+    "reverse_speed_boosted": 305.0,
+    "max_speed": 1425.0,
+    "angular_velocity": {
+      "pitch": 53.0,
+      "yaw": 53.0,
+      "roll": 212.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 63.599999999999994,
+      "yaw": 63.599999999999994,
+      "roll": 254.39999999999998
+    }
+  }
+}

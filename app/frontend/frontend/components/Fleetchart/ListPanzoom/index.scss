@@ -1,0 +1,103 @@
+.fleetchart-list-panzoom {
+  .fleetchart-scroll-wrapper {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .fleetchart {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    flex-wrap: nowrap;
+    padding: 40px;
+    transition: height $transition-base-speed ease;
+
+    .fleetchart-column {
+      margin-left: 30px;
+      display: flex;
+      flex-direction: column-reverse;
+      justify-content: flex-end;
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      .status-in-concept {
+        filter: opacity(0.5) drop-shadow(0 0 0 black);
+      }
+
+      .status-in-production {
+        filter: opacity(0.5) drop-shadow(0 0 0 #06f);
+      }
+    }
+  }
+}
+
+.fleetchart-wrapper {
+  position: relative;
+
+  .fleetchart-controls {
+    position: fixed;
+    right: 20px;
+    bottom: 0;
+    z-index: 1000;
+    display: flex;
+  }
+
+  .fleetchart-grid-label {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 900;
+    text-shadow: 0 0 2px black;
+    opacity: 0;
+    transition: opacity $transition-base-speed ease;
+
+    &.fleetchart-grid-enabled {
+      opacity: 1;
+    }
+  }
+}
+
+.fleetchart-grid {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity $transition-base-speed ease;
+
+  &.fleetchart-grid-enabled {
+    opacity: 1;
+  }
+}
+
+.fleetchart-download-image {
+  display: none !important;
+}
+
+.fleetchart-download {
+  .fleetchart-download-image {
+    display: inherit !important;
+
+    img {
+      width: 120px;
+      height: 120px;
+    }
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .fleetchart-wrapper {
+    .fleetchart-grid-label {
+      right: 10px;
+      bottom: 90px;
+      left: 10px;
+      text-align: center;
+    }
+  }
+}

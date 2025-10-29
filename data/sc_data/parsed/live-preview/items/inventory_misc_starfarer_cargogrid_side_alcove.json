@@ -1,0 +1,32 @@
+{
+  "key": "MISC_Starfarer_CargoGrid_Side_Alcove",
+  "ref": "4af63ee8-eb4f-481e-9994-1d4126f668d6",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 2.5,
+      "y": 2.5,
+      "z": 2.5
+    },
+    "capacity": 8.0,
+    "max_container_size": {
+      "size": 8,
+      "dimensions": {
+        "x": 2.5,
+        "y": 2.5,
+        "z": 2.5
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1.0
+      }
+    }
+  }
+}

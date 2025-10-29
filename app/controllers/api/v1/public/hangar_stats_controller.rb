@@ -6,15 +6,10 @@ module Api
       class HangarStatsController < ::Api::PublicBaseController
         include HangarFiltersConcern
 
+        before_action :set_user
+
         def show
-          user = User.find_by!(normalized_username: params.fetch(:hangar_username, "").downcase)
-
-          unless user.public_hangar?
-            not_found
-            return
-          end
-
-          scope = user.vehicles
+          scope = @user.vehicles
             .includes(:vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, :model)
             .purchased
             .public
@@ -32,6 +27,7 @@ module Api
 
           @quick_stats = QuickStats.new(
             total: vehicles.count,
+            wishlist_total: @user.public_wishlist ? @user.vehicles.wanted.public.where(loaner: false).count : nil,
             classifications: Model.classifications.map do |classification|
               ClassificationCount.new(
                 classification_count: models.count { |model| model.classification == classification },
@@ -40,7 +36,7 @@ module Api
                 label: classification.humanize
               )
             end,
-            groups: HangarGroup.where(user:, public: true).order([{sort: :asc, name: :asc}]).map do |group|
+            groups: HangarGroup.where(user: @user, public: true).order([{sort: :asc, name: :asc}]).map do |group|
               HangarGroupCount.new(
                 group_count: group.vehicles.where(id: vehicles.map(&:id)).size,
                 id: group.id,
@@ -48,6 +44,12 @@ module Api
               )
             end
           )
+        end
+
+        private def set_user
+          @user = User.find_by!(normalized_username: params[:hangar_username].downcase)
+
+          authorize! @user, with: ::Public::UserPolicy
         end
       end
     end

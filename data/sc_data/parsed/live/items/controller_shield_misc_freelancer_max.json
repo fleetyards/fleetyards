@@ -1,0 +1,21 @@
+{
+  "key": "Controller_Shield_MISC_Freelancer_MAX",
+  "ref": "ebfd51a7-ffa7-45e8-b569-2b9516d33653",
+  "category": "controller",
+  "type": "ShieldController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SHIELDS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

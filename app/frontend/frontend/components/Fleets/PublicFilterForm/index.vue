@@ -10,7 +10,7 @@
 
     <FilterGroup
       v-model="form.manufacturerIn"
-      :label="$t('labels.filters.models.manufacturer')"
+      :label="t('labels.filters.models.manufacturer')"
       fetch-path="manufacturers/with-models"
       name="manufacturer"
       value-attr="slug"
@@ -23,7 +23,7 @@
 
     <FilterGroup
       v-model="form.productionStatusIn"
-      :label="$t('labels.filters.models.productionStatus')"
+      :label="t('labels.filters.models.productionStatus')"
       fetch-path="models/production-states"
       name="production-status"
       :multiple="true"
@@ -32,7 +32,7 @@
 
     <FilterGroup
       v-model="form.classificationIn"
-      :label="$t('labels.filters.models.classification')"
+      :label="t('labels.filters.models.classification')"
       fetch-path="models/classifications"
       name="classification"
       :searchable="true"
@@ -42,7 +42,7 @@
 
     <FilterGroup
       v-model="form.focusIn"
-      :label="$t('labels.filters.models.focus')"
+      :label="t('labels.filters.models.focus')"
       fetch-path="models/focus"
       name="focus"
       :searchable="true"
@@ -52,7 +52,7 @@
 
     <FilterGroup
       v-model="form.sizeIn"
-      :label="$t('labels.filters.models.size')"
+      :label="t('labels.filters.models.size')"
       fetch-path="models/sizes"
       name="size"
       :multiple="true"
@@ -62,7 +62,7 @@
     <FilterGroup
       v-model="form.pledgePriceIn"
       :options="pledgePriceOptions"
-      :label="$t('labels.filters.models.pledgePrice')"
+      :label="t('labels.filters.models.pledgePrice')"
       name="pledge-price"
       :multiple="true"
       :no-label="true"
@@ -71,7 +71,7 @@
     <FilterGroup
       v-model="form.priceIn"
       :options="priceOptions"
-      :label="$t('labels.filters.models.price')"
+      :label="t('labels.filters.models.price')"
       name="price"
       :multiple="true"
       :no-label="true"
@@ -136,124 +136,80 @@
 
     <RadioList
       v-model="form.onSaleEq"
-      :label="$t('labels.filters.models.onSale')"
-      :reset-label="$t('labels.all')"
+      :label="t('labels.filters.models.onSale')"
+      :reset-label="t('labels.all')"
       :options="booleanOptions"
       name="sale"
     />
 
     <RadioList
       v-model="form.loanerEq"
-      :label="$t('labels.filters.vehicles.loaner')"
-      :reset-label="$t('labels.hide')"
+      :label="t('labels.filters.vehicles.loaner')"
+      :reset-label="t('labels.hide')"
       :options="[
         {
-          name: 'Show',
+          label: 'Show',
           value: 'true',
         },
         {
-          name: 'Only',
+          label: 'Only',
           value: 'only',
         },
       ]"
       name="loaner"
     />
 
-    <Btn
-      :disabled="!isFilterSelected"
-      :block="true"
-      @click.native="resetFilter"
-    >
+    <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
       <i class="fal fa-times" />
-      {{ $t("actions.resetFilter") }}
+      {{ t("actions.resetFilter") }}
     </Btn>
   </form>
 </template>
 
-<script>
-import Filters from "@/frontend/mixins/Filters";
-import RadioList from "@/frontend/core/components/Form/RadioList/index.vue";
-import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import {
-  booleanOptions,
-  priceOptions,
-  pledgePriceOptions,
-} from "@/frontend/utils/FilterOptions";
+<script lang="ts" setup>
+import RadioList from "@/shared/components/base/RadioList/index.vue";
+import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useFilterOptions } from "@/shared/composables/useFilterOptions";
+import { FleetVehicleQuery } from "@/services/fyApi";
+import { useFilters } from "@/shared/composables/useFilters";
 
+const { t } = useI18n();
+
+const setupForm = () => {
+  form.value = {
+    modelNameCont: routeQuery.value.modelNameCont,
+    onSaleEq: routeQuery.value.onSaleEq,
+    loanerEq: routeQuery.value.loanerEq,
+    priceLteq: routeQuery.value.priceLteq,
+    priceGteq: routeQuery.value.priceGteq,
+    pledgePriceLteq: routeQuery.value.pledgePriceLteq,
+    pledgePriceGteq: routeQuery.value.pledgePriceGteq,
+    lengthLteq: routeQuery.value.lengthLteq,
+    lengthGteq: routeQuery.value.lengthGteq,
+    manufacturerIn: routeQuery.value.manufacturerIn || [],
+    classificationIn: routeQuery.value.classificationIn || [],
+    focusIn: routeQuery.value.focusIn || [],
+    sizeIn: routeQuery.value.sizeIn || [],
+    priceIn: routeQuery.value.priceIn || [],
+    pledgePriceIn: routeQuery.value.pledgePriceIn || [],
+    productionStatusIn: routeQuery.value.productionStatusIn || [],
+  };
+};
+
+const { filter, resetFilter, isFilterSelected, routeQuery } =
+  useFilters<FleetVehicleQuery>(setupForm);
+
+const form = ref<FleetVehicleQuery>({});
+
+const { booleanOptions, priceOptions, pledgePriceOptions } =
+  useFilterOptions(t);
+</script>
+
+<script lang="ts">
 export default {
   name: "PublicFleetFilterForm",
-
-  components: {
-    RadioList,
-    FilterGroup,
-    FormInput,
-    Btn,
-  },
-
-  mixins: [Filters],
-
-  data() {
-    const query = this.$route.query.q || {};
-    return {
-      form: {
-        modelNameCont: query.modelNameCont,
-        onSaleEq: query.onSaleEq,
-        loanerEq: query.loanerEq,
-        priceLteq: query.priceLteq,
-        priceGteq: query.priceGteq,
-        pledgePriceLteq: query.pledgePriceLteq,
-        pledgePriceGteq: query.pledgePriceGteq,
-        lengthLteq: query.lengthLteq,
-        lengthGteq: query.lengthGteq,
-        manufacturerIn: query.manufacturerIn || [],
-        classificationIn: query.classificationIn || [],
-        focusIn: query.focusIn || [],
-        sizeIn: query.sizeIn || [],
-        priceIn: query.priceIn || [],
-        pledgePriceIn: query.pledgePriceIn || [],
-        productionStatusIn: query.productionStatusIn || [],
-      },
-    };
-  },
-
-  computed: {
-    booleanOptions() {
-      return booleanOptions;
-    },
-
-    priceOptions() {
-      return priceOptions;
-    },
-
-    pledgePriceOptions() {
-      return pledgePriceOptions;
-    },
-  },
-
-  watch: {
-    $route() {
-      const query = this.$route.query.q || {};
-      this.form = {
-        modelNameCont: query.modelNameCont,
-        onSaleEq: query.onSaleEq,
-        loanerEq: query.loanerEq,
-        priceLteq: query.priceLteq,
-        priceGteq: query.priceGteq,
-        pledgePriceLteq: query.pledgePriceLteq,
-        pledgePriceGteq: query.pledgePriceGteq,
-        lengthLteq: query.lengthLteq,
-        lengthGteq: query.lengthGteq,
-        manufacturerIn: query.manufacturerIn || [],
-        classificationIn: query.classificationIn || [],
-        focusIn: query.focusIn || [],
-        sizeIn: query.sizeIn || [],
-        priceIn: query.priceIn || [],
-        pledgePriceIn: query.pledgePriceIn || [],
-        productionStatusIn: query.productionStatusIn || [],
-      };
-    },
-  },
 };
 </script>

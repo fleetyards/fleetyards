@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Mantis_IAE2950_Grey_White_Camo",
+  "ref": "4d4d7c54-33eb-4b12-892c-19ad66db61bb",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "7884afbe-e2ff-4ebc-8133-3d8f8b177d73",
+  "name": "Mantis Polar Camo Livery",
+  "short_name": null,
+  "description": "Modify your Mantis with this white and grey camo livery specifically designed for the 2950 IAE event on microTech.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

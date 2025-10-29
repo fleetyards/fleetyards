@@ -3,13 +3,15 @@
 json.id model_paint.id
 json.name model_paint.name
 json.slug model_paint.slug
+json.hidden model_paint.hidden
+json.active model_paint.active
 
 json.availability do
   json.bought_at do
-    json.array! model_paint.bought_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
+    json.array! model_paint.bought_at, partial: "api/v1/item_prices/base", as: :item_price
   end
   json.sold_at do
-    json.array! model_paint.sold_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
+    json.array! model_paint.sold_at, partial: "api/v1/item_prices/base", as: :item_price
   end
 end
 
@@ -20,21 +22,25 @@ json.last_updated_at_label((I18n.l(model_paint.last_updated_at.utc, format: :lab
 json.media({})
 json.media do
   json.angled_view do
-    json.partial! "api/v1/shared/view_image", view_image: model_paint.angled_view, width: model_paint.angled_view_width, height: model_paint.angled_view_height
+    json.partial! "api/v1/shared/view_image", record: model_paint, attr: :new_angled_view, old_attr: :angled_view, width: model_paint.angled_view_width, height: model_paint.angled_view_height
   end
   json.fleetchart_image model_paint.fleetchart_image.url
-  # json.front_view do
-  #   json.partial! "api/v1/shared/view_image", view_image: model_paint.front_view, width: model_paint.front_view_width, height: model_paint.front_view_height
-  # end
+  json.front_view do
+    json.partial! "api/v1/shared/view_image", record: model_paint, attr: :front_view
+  end
   json.side_view do
-    json.partial! "api/v1/shared/view_image", view_image: model_paint.side_view, width: model_paint.side_view_width, height: model_paint.side_view_height
+    json.partial! "api/v1/shared/view_image", record: model_paint, attr: :new_side_view, old_attr: :side_view, width: model_paint.side_view_width, height: model_paint.side_view_height
   end
   json.store_image do
-    json.partial! "api/v1/shared/media_image", media_image: model_paint.store_image
+    json.partial! "api/v1/shared/view_image", record: model_paint, attr: :new_store_image, old_attr: :store_image, width: model_paint.store_image_width, height: model_paint.store_image_height
   end
   json.top_view do
-    json.partial! "api/v1/shared/view_image", view_image: model_paint.top_view, width: model_paint.top_view_width, height: model_paint.top_view_height
+    json.partial! "api/v1/shared/view_image", record: model_paint, attr: :new_top_view, old_attr: :top_view, width: model_paint.top_view_width, height: model_paint.top_view_height
   end
+end
+
+json.model do
+  json.partial! "admin/api/v1/models/base", model: model_paint.model
 end
 
 json.name_with_model model_paint.name_with_model

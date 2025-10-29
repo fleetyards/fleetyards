@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Retaliator_Desert_Sand_Red",
+  "ref": "c71f1ab5-acd1-475c-af51-18ee453f900a",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8980bcb4-9429-4264-825a-267316bdfa6a",
+  "name": "Retaliator Calico Livery",
+  "short_name": null,
+  "description": "Inspired by the subtle shifts in color when sunlight strikes desert sands, the Calico livery for the Retaliator features shades of tan and brown with red highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

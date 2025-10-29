@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Prowler_AlienWeek_Platinum_Silver_Purple_Mosaic",
+  "ref": "ba1985ee-060c-4016-bed9-d68e54860bde",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a066efb1-5851-4a25-aeac-2635a94683d6",
+  "name": "Prowler Wanderer Livery",
+  "short_name": null,
+  "description": "The Wanderer livery features crisscrossing purple and grey lines over a platinum foundation. Inspired by the sacred Xi'an gardens of R.aip’uāng, famous for its trails that wander in surprising ways and encourage a focus on the journey instead of the destination.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

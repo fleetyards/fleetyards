@@ -1,0 +1,24 @@
+{
+  "key": "Mining_Modules_Active_Stampede",
+  "ref": "1bb6ee6d-3930-4c03-b6c6-38aad3a4703b",
+  "category": "utility",
+  "type": "MiningModifier",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d1a1bf03-89d9-4eae-ac34-11eeb8e45d8f",
+  "name": "Stampede Module",
+  "short_name": null,
+  "description": "Manufacturer: Thermyte Concern\\nItem Type: Mining Module (Active)\\n\\nLaser Instability: -10\\nMining Laser Power: 135%\\nShatter Damage: -10%\\n\\nExtraction Laser Power: 85%\\n\\nDuration: 30 seconds\\nUses: 6\\n\\nThe Stampede uses a state of the art lens to increase mining laser power and reduce potential hazard associated with the deposit shattering. These improvements do come at the expense of a less powerful extraction laser.",
+  "inventory_consumption": {
+    "micro_scu": 10644.0,
+    "dimensions": {
+      "x": 0.2113915,
+      "y": 0.3365072,
+      "z": 0.187045
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

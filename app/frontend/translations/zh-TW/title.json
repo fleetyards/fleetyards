@@ -1,0 +1,116 @@
+{
+  "zh-TW": {
+    "title": {
+      "default": "FleetYards.net",
+      "defaultShort": "FleetYards",
+      "defaultAdmin": "FleetYards.net Command",
+      "defaultAdminShort": "FltYrds Command",
+      "defaultDocs": "FleetYards.net Documentation",
+      "defaultDocsShort": "FleetYards Docs",
+      "home": "首頁",
+      "search": "搜尋結果",
+      "ships": {
+        "index": "艦船"
+      },
+      "ship": "%{name} - %{manufacturer}",
+      "shipImages": "%{name} 圖片",
+      "shipVideos": "%{name} 影片",
+      "images": "圖片",
+      "stats": "統計",
+      "login": "登入",
+      "signUp": "註冊",
+      "embed": "嵌入式小工具",
+      "apiV1": "API V1",
+      "hangar": {
+        "index": "我的機庫",
+        "preview": "我的機庫預覽",
+        "stats": "我的機庫統計",
+        "import": "匯入",
+        "public": "%{user} 機庫",
+        "wishlist": "心願清單",
+        "publicWishlist": "%{user} 心願清單"
+      },
+      "requestPassword": "請求密碼",
+      "changePassword": "更改密碼",
+      "fleets": {
+        "add": "建立新艦隊",
+        "preview": "艦隊預覽",
+        "invites": "艦隊邀請",
+        "members": "%{fleet} 成員",
+        "stats": "%{fleet} 統計",
+        "settings": {
+          "index": "%{fleet} 設定",
+          "fleet": "%{fleet} 設定",
+          "membership": "%{fleet} 成員資格"
+        }
+      },
+      "roadmap": {
+        "index": "路線圖",
+        "ships": "艦船路線圖",
+        "changes": "路線圖變更"
+      },
+      "settings": {
+        "index": "個人設定",
+        "account": "帳戶",
+        "hangar": "機庫設定",
+        "notifications": "通知設定",
+        "security": "帳戶安全",
+        "twoFactor": {
+          "enable": "啟用雙因素認證",
+          "disable": "停用雙因素認證",
+          "backupCodes": "產生雙因素備份代碼"
+        }
+      },
+      "compare": {
+        "ships": "比較艦船"
+      },
+      "notFound": "404",
+      "tools": {
+        "index": "工具",
+        "travelTimes": "旅行時間"
+      },
+      "impressum": "版權聲明",
+      "privacyPolicy": "隱私政策",
+      "cookiePolicy": "Cookie政策",
+      "visualTests": {
+        "index": "視覺測試",
+        "panels": "面板 - 視覺測試",
+        "buttons": "按鈕 - 視覺測試",
+        "tables": "表格 - 視覺測試"
+      },
+      "admin": {
+        "models": {
+          "index": "模型",
+          "new": "新模型",
+          "edit": {
+            "index": "編輯模型",
+            "metrics": "編輯模型指標",
+            "prices": "編輯模型價格",
+            "fleetchart": "編輯模型艦隊圖",
+            "hardpoints": "編輯模型硬點",
+            "cargoAndFuel": "貨物和燃料",
+            "docks": "編輯模型停靠點",
+            "videos": "編輯模型影片"
+          }
+        },
+        "components": {
+          "index": "組件",
+          "new": "新組件",
+          "edit": "編輯組件"
+        },
+        "manufacturers": {
+          "index": "製造商",
+          "new": "新製造商",
+          "edit": "編輯製造商"
+        },
+        "users": {
+          "index": "用戶",
+          "edit": "編輯用戶"
+        },
+        "vehicles": {
+          "index": "載具"
+        }
+      }
+    }
+  }
+}

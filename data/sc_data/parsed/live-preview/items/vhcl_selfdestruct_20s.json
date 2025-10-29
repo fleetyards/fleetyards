@@ -1,0 +1,29 @@
+{
+  "key": "VHCL_SelfDestruct_20s",
+  "ref": "e9655bd9-dd74-46ee-8a15-2ac3bd3dfde1",
+  "category": "selfdestruct",
+  "type": "SelfDestruct",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": "RSI Self Destruct",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "damage": "2500",
+    "min_radius": "10",
+    "radius": "30",
+    "min_phys_radius": "15",
+    "phys_radius": "30",
+    "time": "20"
+  }
+}

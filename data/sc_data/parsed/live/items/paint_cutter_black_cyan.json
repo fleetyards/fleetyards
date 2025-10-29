@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Cutter_Black_Cyan",
+  "ref": "85d00148-67ab-4392-a702-a918fd0d6ab5",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f2f85709-f8ac-4279-ace8-2390b9a93919",
+  "name": "Cutter Nightfall Livery",
+  "short_name": null,
+  "description": "The Nightfall livery gives the Cutter a sleek black paint job with pops of cyan.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

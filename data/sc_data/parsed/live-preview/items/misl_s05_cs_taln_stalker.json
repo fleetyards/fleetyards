@@ -1,0 +1,24 @@
+{
+  "key": "MISL_S05_CS_TALN_Stalker",
+  "ref": "9d2d7b0d-9f54-4fe1-8bff-c6ea2a5af5d3",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "Torpedo",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "587fcede-4fe9-4fb4-85ec-124abc8542b0",
+  "name": "Stalker V Missile",
+  "short_name": "Stalker V",
+  "description": "Manufacturer: Talon\\nTracking Signal: Cross Section\\nSize: 5\\n\\nWith dedicated cross section tracking, the Talon Stalker has endured over the years as a precision strike torpedo with maximum stopping power.",
+  "inventory_consumption": {
+    "micro_scu": 78125.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 5.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 28.0
+  }
+}

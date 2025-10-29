@@ -1,0 +1,24 @@
+{
+  "key": "MINE_Test_Placeable",
+  "ref": "6d1abfcd-cde1-4c67-b746-3ca4f7f3e774",
+  "category": "weapons",
+  "type": "SpaceMine",
+  "sub_type": null,
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "587fcede-4fe9-4fb4-85ec-124abc8542b0",
+  "name": "Argos IX Torpedo",
+  "short_name": null,
+  "description": "Manufacturer: Talon\\nTracking Signal: Cross Section\\nSize: 9\\n\\nThe Talon Argos strike torpedo features a classic, straightforward design that relies on exacting manufacturing standards and a classic cross section targeting system.",
+  "inventory_consumption": {
+    "micro_scu": 1000000.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 100.0
+  }
+}

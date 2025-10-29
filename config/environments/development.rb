@@ -22,6 +22,10 @@ Rails.application.configure do
 
   config.debug_exception_response_format = :api
 
+  # Store uploaded files on the local file system (see config/storage.yml for options).
+  config.active_storage.service = :local
+  config.active_storage.routes_prefix = "/files"
+
   # Enable server timing
   config.server_timing = true
 
@@ -73,14 +77,6 @@ Rails.application.configure do
   # Highlight code that enqueued background job in logs.
   config.active_job.verbose_enqueue_logs = true
 
-  # Debug mode disables concatenation and preprocessing of assets.
-  # This option may cause significant delays in view rendering with a large
-  # number of complex assets.
-  config.assets.debug = true
-
-  # Suppress logger output for asset requests.
-  config.assets.quiet = true
-
   # Raises error for missing translations.
   config.i18n.raise_on_missing_translations = true
 
@@ -92,9 +88,11 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
+  config.action_controller.asset_host = endpoints.frontend_endpoint
 
   config.action_cable.url = endpoints.cable_endpoint
   config.action_cable.allowed_request_origins = [
+    "http://localhost:#{ENV["PORT"]}",
     endpoints.frontend_endpoint,
     endpoints.admin_endpoint
   ]

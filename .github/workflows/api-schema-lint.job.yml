@@ -1,4 +1,4 @@
-name: JS Lint Job
+name: Api Schema Lint Job
 
 on:
   workflow_call:
@@ -7,7 +7,7 @@ jobs:
   api-schema-lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/workflows/js-setup-action
-      - run: yarn run validate-schema
-      - run: yarn run validate-admin-schema
+      - run: pnpm run validate-schema
+      - run: pnpm run validate-admin-schema

@@ -1,0 +1,60 @@
+{
+  "key": "POWR_AEGS_S01_FierellCascade_SCItem",
+  "ref": "50e95028-4764-416c-9380-7d9d52d8d82b",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "1",
+  "grade": "2",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Fierell Cascade",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Aegis Dynamics\\nSize: 1\\nGrade: B\\nClass: Military\\n\\nRely on Aegis’ expertise to power your ship. The Fierell Cascade is a military-grade power plant that prioritizes performance over everything else.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 940.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 1.75,
+    "StartIRTemperature": 14.0,
+    "OverpowerHeat": 0.25,
+    "OverclockThresholdMinHeat": 0.71,
+    "OverclockThresholdMaxHeat": 0.86,
+    "ThermalEnergyBase": 23878.88,
+    "ThermalEnergyDraw": 28048.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.5,
+    "Mass": 510.3,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 106.6595,
+    "MaxTemperature": 700.0,
+    "OverheatTemperature": 600.0,
+    "RecoveryTemperature": 670.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 300.0,
+    "MisfireMaxTemperature": 900.0
+  },
+  "power_connection": {
+    "power_base": 0.0,
+    "power_draw": 3365.6,
+    "time_to_reach_draw_request": 14.375,
+    "safeguard_priority": 100.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 1.0,
+    "is_overclockable": 1.0,
+    "overclock_threshold_min": 0.357,
+    "overclock_threshold_max": 0.473,
+    "overpower_performance": 0.055,
+    "overclock_performance": 0.357,
+    "power_to_em": 0.634,
+    "decay_rate_of_em": 0.18
+  }
+}

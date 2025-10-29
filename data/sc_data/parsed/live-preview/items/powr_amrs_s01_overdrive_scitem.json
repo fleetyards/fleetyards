@@ -1,0 +1,60 @@
+{
+  "key": "POWR_AMRS_S01_OverDrive_SCItem",
+  "ref": "13880fbe-7295-4f55-886d-251ad01e2677",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "1",
+  "grade": "3",
+  "manufacturer_ref": "eccba58a-f6d9-42e8-95c6-d0a65763e583",
+  "name": "OverDrive",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Amon & Reese Co.\\nSize: 1\\nGrade: C\\nClass: Military\\n\\nAmon & Reese knows from years of experience just how hard the military can push their ships. Their OverDrive power plant was designed from the ground up to not only handle those tough conditions with less overheating, but to provide the same dependability and power to civilians as well.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 820.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 1.75,
+    "StartIRTemperature": 14.0,
+    "OverpowerHeat": 0.3,
+    "OverclockThresholdMinHeat": 0.64,
+    "OverclockThresholdMaxHeat": 0.77,
+    "ThermalEnergyBase": 31010.0,
+    "ThermalEnergyDraw": 35060.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.5,
+    "Mass": 534.6,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 128.1332,
+    "MaxTemperature": 700.0,
+    "OverheatTemperature": 600.0,
+    "RecoveryTemperature": 670.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 300.0,
+    "MisfireMaxTemperature": 900.0
+  },
+  "power_connection": {
+    "power_base": 0.0,
+    "power_draw": 3260.43,
+    "time_to_reach_draw_request": 11.25,
+    "safeguard_priority": 100.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 1.0,
+    "is_overclockable": 1.0,
+    "overclock_threshold_min": 0.34,
+    "overclock_threshold_max": 0.43,
+    "overpower_performance": 0.05,
+    "overclock_performance": 0.51,
+    "power_to_em": 0.634,
+    "decay_rate_of_em": 0.25
+  }
+}

@@ -1,0 +1,14 @@
+.social-logins {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 15px;
+
+  &.block {
+    justify-content: center;
+
+    > * {
+      flex: 1;
+    }
+  }
+}

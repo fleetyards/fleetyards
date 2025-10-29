@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Talon_Default",
+  "ref": "5eeb1c87-8acf-41dd-ab37-4e82348b1553",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4ecc1a24-d228-4dd5-8857-21ba6145a1d3",
+  "name": "Esperia Talon",
+  "short_name": null,
+  "description": "Manufacturer: Esperia\\nFocus: Light Fighter\\n\\nThe Talon represents Esperia's continuing effort to preserve historically significant Tevarin ship designs. A maneuverable single-seat combat ship with light armor but powerful, directional \"Phalanx\" shields, the Talon is made to strike first and strike hard before using the shields to cover its escape.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

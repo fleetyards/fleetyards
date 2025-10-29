@@ -1,0 +1,39 @@
+{
+  "key": "JDRV_S01_Template",
+  "ref": "6e0cf708-f795-440c-898a-500ef2d1d503",
+  "category": "jumpdrive",
+  "type": "JumpDrive",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 91290.0,
+    "dimensions": {
+      "x": 0.7443,
+      "y": 0.4853,
+      "z": 0.2527
+    }
+  },
+  "durability": {
+    "health": 0.0
+  },
+  "power_connection": {
+    "power_base": 10.0,
+    "power_draw": 100.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 0.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.0,
+    "overclock_threshold_max": 0.0,
+    "overpower_performance": 0.0,
+    "overclock_performance": 0.0,
+    "power_to_em": 0.0,
+    "decay_rate_of_em": 0.15
+  }
+}

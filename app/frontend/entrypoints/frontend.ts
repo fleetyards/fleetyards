@@ -1,54 +1,20 @@
-import Vue from "vue";
+import { createApp } from "vue";
 import App from "@/frontend/App.vue";
-import router from "@/frontend/lib/Router";
-import store from "@/frontend/lib/Store";
-import "@/frontend/plugins/LazyLoad";
-import "@/frontend/lib/Sentry";
-import I18nPlugin from "@/frontend/lib/I18n";
-import ApiClient from "@/frontend/api/client";
-import Subscriptions from "@/frontend/plugins/Subscriptions";
-import Comlink from "@/frontend/plugins/Comlink";
-import Ahoy from "@/frontend/plugins/Ahoy";
-import Validations from "@/frontend/plugins/Validations";
-import VTooltip from "v-tooltip";
-import VShowSlide from "v-show-slide";
-
-Vue.use(VShowSlide);
-Vue.use(Subscriptions);
-Vue.use(ApiClient);
-Vue.use(Comlink);
-Vue.use(I18nPlugin);
-Vue.use(Ahoy);
-Vue.use(Validations);
-
-declare global {
-  interface Window {
-    APP_VERSION: string;
-    STORE_VERSION: string;
-    SC_DATA_VERSION: string;
-    APP_CODENAME: string;
-    API_VERSION: string;
-    API_OAS_VERSION: string;
-    API_ENDPOINT: string;
-    DATA_PREFILL: KeyValuePair;
-    FRONTEND_ENDPOINT: string;
-    CABLE_ENDPOINT: string;
-    RSI_ENDPOINT: string;
-  }
-}
-
-if (process.env.NODE_ENV !== "production") {
-  Vue.config.devtools = true;
-} else {
-  Vue.config.productionTip = false;
-}
-
-VTooltip.enabled = window.innerWidth > 768;
-Vue.use(VTooltip);
+import router from "@/frontend/plugins/Router";
+import { createPinia } from "pinia";
+import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
+import sentry from "@/shared/plugins/Sentry";
+import FloatingVue from "floating-vue";
+import "floating-vue/dist/style.css";
+import VueLazyload from "vue-lazyload";
+import veeValidate from "@/frontend/plugins/VeeValidate";
+import {
+  VueQueryPlugin,
+  type VueQueryPluginOptions,
+} from "@tanstack/vue-query";
 
 document.addEventListener("DOMContentLoaded", () => {
   if ("serviceWorker" in navigator) {
-    // eslint-disable-next-line compat/compat
     navigator.serviceWorker
       .register("/sw.js", {
         scope: "/",
@@ -67,19 +33,31 @@ document.addEventListener("DOMContentLoaded", () => {
         },
       );
   }
-
-  if (store.state.storeVersion !== window.STORE_VERSION) {
-    console.info("Updating Store Version and resetting Store");
-
-    store.dispatch("reset");
-    store.commit("setStoreVersion", window.STORE_VERSION);
-  }
-
-  // eslint-disable-next-line no-new
-  new Vue({
-    el: "#app",
-    router,
-    store,
-    render: (h) => h(App),
-  });
 });
+
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
+
+const app = createApp(App);
+
+const vueQueryPluginOptions: VueQueryPluginOptions = {
+  enableDevtoolsV6Plugin: true,
+  queryClientConfig: {
+    defaultOptions: {
+      queries: {
+        retry: 1,
+        refetchOnWindowFocus: false,
+      },
+    },
+  },
+};
+
+app.use(VueQueryPlugin, vueQueryPluginOptions);
+app.use(router);
+app.use(pinia);
+app.use(sentry);
+app.use(VueLazyload);
+app.use(FloatingVue);
+app.use(veeValidate);
+
+app.mount("#app");

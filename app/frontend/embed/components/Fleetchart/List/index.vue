@@ -32,7 +32,11 @@
 <script lang="ts" setup>
 import FleetchartSlider from "@/embed/components/Fleetchart/Slider/index.vue";
 import FleetchartItem from "@/embed/components/Fleetchart/Item/index.vue";
-import Store from "@/embed/lib/Store";
+import type { Model } from "@/services/fyApi";
+import { useEmbedStore } from "@/embed/stores/embed";
+import { storeToRefs } from "pinia";
+
+const embedStore = useEmbedStore();
 
 type Props = {
   models: Model[];
@@ -43,7 +47,7 @@ const props = withDefaults(defineProps<Props>(), {
   slider: true,
 });
 
-const fleetchartScale = computed(() => Store.getters.fleetchartScale);
+const { fleetchartScale } = storeToRefs(embedStore);
 
 const internalModels = ref<Model[]>([]);
 
@@ -55,19 +59,27 @@ watch(
   },
 );
 
+const getLength = (model: Model) => {
+  if (model.metrics.fleetchartLength) {
+    return model.metrics.fleetchartLength;
+  }
+
+  return model.metrics.length || 0;
+};
+
 const sortByFleetchartLength = (a: Model, b: Model) => {
-  if (a.fleetchartLength > b.fleetchartLength) {
+  if (getLength(a) > getLength(b)) {
     return -1;
   }
 
-  if (a.fleetchartLength < b.fleetchartLength) {
+  if (getLength(a) < getLength(b)) {
     return 1;
   }
 
   return 0;
 };
 const updateFleetchartScale = (value: number) => {
-  Store.commit("setFleetchartScale", value);
+  embedStore.fleetchartScale = value;
 };
 
 onMounted(() => {

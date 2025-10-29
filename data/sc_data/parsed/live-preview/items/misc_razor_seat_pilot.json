@@ -1,0 +1,21 @@
+{
+  "key": "MISC_Razor_Seat_Pilot",
+  "ref": "a962a30e-dbcb-4d78-9eee-29388338e39b",
+  "category": "seat",
+  "type": "Seat",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cdf6ea1e-7de3-4b58-bf9d-13c5fbafc49a",
+  "name": "TRGT. STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

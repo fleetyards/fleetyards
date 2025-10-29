@@ -11,74 +11,60 @@
     <FilterGroup
       v-model="form.roleIn"
       :options="roleOptions"
-      :label="$t('labels.filters.fleets.members.role')"
+      :label="t('labels.filters.fleets.members.role')"
       name="role"
       :multiple="true"
       :no-label="true"
     />
 
-    <Btn
-      :disabled="!isFilterSelected"
-      :block="true"
-      @click.native="resetFilter"
-    >
+    <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
       <i class="fal fa-times" />
-      {{ $t("actions.resetFilter") }}
+      {{ t("actions.resetFilter") }}
     </Btn>
   </form>
 </template>
 
-<script>
-import Filters from "@/frontend/mixins/Filters";
-import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+<script lang="ts" setup>
+import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { FleetMemberQuery, type FilterOption } from "@/services/fyApi";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useFilters } from "@/shared/composables/useFilters";
 
+const { t } = useI18n();
+
+const setupForm = () => {
+  form.value = {
+    usernameCont: routeQuery.value.usernameCont,
+    roleIn: routeQuery.value.roleIn || [],
+    sorts: routeQuery.value.sorts,
+  };
+};
+
+const { filter, resetFilter, isFilterSelected, routeQuery } =
+  useFilters<FleetMemberQuery>(setupForm);
+
+const form = ref<FleetMemberQuery>({});
+
+const roleOptions: FilterOption[] = [
+  {
+    label: t("labels.fleet.members.roles.admin"),
+    value: "admin",
+  },
+  {
+    label: t("labels.fleet.members.roles.officer"),
+    value: "officer",
+  },
+  {
+    label: t("labels.fleet.members.roles.member"),
+    value: "member",
+  },
+];
+</script>
+
+<script lang="ts">
 export default {
-  name: "FleetFilterForm",
-
-  components: {
-    FilterGroup,
-    FormInput,
-    Btn,
-  },
-
-  mixins: [Filters],
-
-  data() {
-    const query = this.$route.query.q || {};
-    return {
-      form: {
-        usernameCont: query.usernameCont,
-        roleIn: query.roleIn || [],
-      },
-
-      roleOptions: [
-        {
-          name: this.$t("labels.fleet.members.roles.admin"),
-          value: "admin",
-        },
-        {
-          name: this.$t("labels.fleet.members.roles.officer"),
-          value: "officer",
-        },
-        {
-          name: this.$t("labels.fleet.members.roles.member"),
-          value: "member",
-        },
-      ],
-    };
-  },
-
-  watch: {
-    $route() {
-      const query = this.$route.query.q || {};
-      this.form = {
-        usernameCont: query.usernameCont,
-        roleIn: query.roleIn || [],
-        sorts: query.sorts,
-      };
-    },
-  },
+  name: "FleetMembersFilterForm",
 };
 </script>

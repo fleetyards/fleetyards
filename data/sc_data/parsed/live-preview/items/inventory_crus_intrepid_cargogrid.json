@@ -1,0 +1,32 @@
+{
+  "key": "CRUS_Intrepid_CargoGrid",
+  "ref": "da04ea70-7911-4f7d-b259-88b5e13237f4",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 1.25,
+      "y": 5.0,
+      "z": 1.25
+    },
+    "capacity": 4.0,
+    "max_container_size": {
+      "size": 2,
+      "dimensions": {
+        "x": 2.5,
+        "y": 1.25,
+        "z": 1.25
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1.0
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Nox_AlienWeek_Green_Red",
+  "ref": "bd2c0372-f696-402d-bda3-cea77a73005b",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f6cf6471-9912-4a89-a6d4-f9f74cd402ee",
+  "name": "Nox Ocellus Livery",
+  "short_name": null,
+  "description": "The Ocellus livery adapts and updates the iconic colors and design used on some Tevarin ships to bring a striking new look to the Nox. The livery gives the top of the fuselage a prominent red ridge while shimmering green covers the rest of the ship. Thick grey lines swoop through both colors to provide a unique geometric element.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

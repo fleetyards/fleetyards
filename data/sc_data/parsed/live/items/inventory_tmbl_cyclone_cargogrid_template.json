@@ -1,0 +1,9 @@
+{
+  "key": "TMBL_Cyclone_CargoGrid_Template",
+  "ref": "94900204-1d17-443f-855e-cea47920fe67",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 1.0
+  }
+}

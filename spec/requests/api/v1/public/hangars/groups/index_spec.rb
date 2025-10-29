@@ -3,9 +3,12 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/hangars/groups", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :hangar_groups, :users
+  let(:user) { create(:user, public_hangar: true) }
+  let(:username) { user.username }
 
-  let(:user) { users :data }
+  before do
+    create_list(:hangar_group, 3, :public, user: user)
+  end
 
   path "/public/hangars/{username}/groups" do
     parameter name: "username", in: :path, type: :string, description: "Username", required: true
@@ -18,20 +21,10 @@ RSpec.describe "api/v1/hangars/groups", type: :request, swagger_doc: "v1/schema.
       response(200, "successful") do
         schema type: :array, items: {"$ref": "#/components/schemas/HangarGroupPublic"}
 
-        let(:username) { user.username }
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
-
         run_test! do |response|
           data = JSON.parse(response.body)
 
-          expect(data.size).to eq(1)
+          expect(data.size).to eq(3)
         end
       end
     end

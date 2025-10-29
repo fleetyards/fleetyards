@@ -1,0 +1,14 @@
+.app-environment {
+  position: fixed;
+  z-index: 1000;
+  bottom: 25px;
+  right: 15px;
+  display: flex;
+  gap: 5px;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+
+  &__git-revision {
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,95 @@
+<script lang="ts">
+export default {
+  name: "ModelWillItFitFilterGroup",
+};
+</script>
+
+<script lang="ts" setup>
+import { type ModelQuery, type Models } from "@/services/fyApi";
+import { useI18n } from "@/shared/composables/useI18n";
+import FilterGroup, {
+  type FilterGroupParams,
+} from "@/shared/components/base/FilterGroup/index.vue";
+import {
+  modelsWithDocks as fetchModelsWithDocks,
+  type Model,
+} from "@/services/fyApi";
+
+type Props = {
+  name: string;
+  modelValue?: string | string[];
+  searchable?: boolean;
+  multiple?: boolean;
+  noLabel?: boolean;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  modelValue: undefined,
+  searchable: true,
+  multiple: true,
+  noLabel: false,
+});
+
+const { t } = useI18n();
+
+const internalValue = ref<string | string[] | undefined>(props.modelValue);
+
+onMounted(() => {
+  internalValue.value = props.modelValue;
+});
+
+watch(
+  () => props.modelValue,
+  () => {
+    internalValue.value = props.modelValue;
+  },
+);
+
+const emit = defineEmits(["update:modelValue"]);
+
+watch(
+  () => internalValue.value,
+  () => {
+    emit("update:modelValue", internalValue.value);
+  },
+);
+
+const formatter = (response: Models) => {
+  return response.items.map((model) => {
+    return {
+      label: model.name,
+      value: model.slug,
+    };
+  });
+};
+
+const fetch = async (params: FilterGroupParams<Model>) => {
+  const q: ModelQuery = {};
+
+  if (params.search) {
+    q.nameCont = params.search;
+  }
+
+  if (params.missing) {
+    q.slugEq = params.missing as string;
+  }
+
+  return fetchModelsWithDocks({
+    page: String(params.page || 1),
+    q,
+  });
+};
+</script>
+
+<template>
+  <FilterGroup
+    v-model="internalValue"
+    :label="t('labels.filters.models.willItFit')"
+    :query-fn="fetch"
+    :query-response-formatter="formatter"
+    :name="name"
+    :searchable="searchable"
+    :multiple="multiple"
+    :no-label="noLabel"
+  />
+</template>

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hull_C_Brown_Cream_Bronze",
+  "ref": "631770c0-a3f0-4502-bb69-e806eb8dd2ae",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "c84509b1-e28a-4eb2-9b25-a7dfb204eaa5",
+  "name": "Hull C Horizon Livery",
+  "short_name": null,
+  "description": "Even a hard working spacecraft deserves to look its best. The Hull C Horizon Livery offers a stylish two-tone grey-and-white color scheme that's ideal for turning heads at the spaceport.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

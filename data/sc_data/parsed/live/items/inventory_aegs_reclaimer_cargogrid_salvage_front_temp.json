@@ -1,0 +1,50 @@
+{
+  "key": "AEGS_Reclaimer_CargoGrid_Salvage_Front_TEMP",
+  "ref": "df4a2c1b-824a-4290-8036-8c7d2b34d31e",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 8.75,
+      "y": 6.25,
+      "z": 2.5,
+      "scu": 70.0,
+      "max_container_size": {
+        "size": 24,
+        "dimensions": {
+          "x": 7.5,
+          "y": 2.5,
+          "z": 2.5
+        }
+      }
+    },
+    "min_container": {
+      "x": 1.25,
+      "y": 1.25,
+      "z": 1.25,
+      "scu": 1.0,
+      "max_container_size": {
+        "size": 1,
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        }
+      }
+    },
+    "max_container": {
+      "x": 1.25,
+      "y": 2.5,
+      "z": 1.25,
+      "scu": 2.0,
+      "max_container_size": {
+        "size": 2,
+        "dimensions": {
+          "x": 2.5,
+          "y": 1.25,
+          "z": 1.25
+        }
+      }
+    }
+  }
+}

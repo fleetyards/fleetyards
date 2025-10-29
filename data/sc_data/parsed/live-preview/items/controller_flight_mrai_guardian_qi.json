@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_MRAI_Guardian_QI",
+  "ref": "66b1ff14-95d2-4f29-a3c4-13e21599a835",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SELF STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "scm_speed": 210.0,
+    "scm_speed_boosted": 460.0,
+    "reverse_speed_boosted": 225.0,
+    "max_speed": 1100.0,
+    "angular_velocity": {
+      "pitch": 35.0,
+      "yaw": 35.0,
+      "roll": 120.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 42.0,
+      "yaw": 42.0,
+      "roll": 144.0
+    }
+  }
+}

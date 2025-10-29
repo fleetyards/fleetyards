@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_AEGS_Vanguard_Sentinel",
+  "ref": "f48d2da6-6484-4f25-a29b-754464e83fb8",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SELF STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "scm_speed": 217.0,
+    "scm_speed_boosted": 462.0,
+    "reverse_speed_boosted": 224.0,
+    "max_speed": 1111.0,
+    "angular_velocity": {
+      "pitch": 40.0,
+      "yaw": 34.0,
+      "roll": 126.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 48.0,
+      "yaw": 40.8,
+      "roll": 151.2
+    }
+  }
+}

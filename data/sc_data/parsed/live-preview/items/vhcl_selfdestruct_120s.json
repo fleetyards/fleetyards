@@ -1,0 +1,29 @@
+{
+  "key": "VHCL_SelfDestruct_120s",
+  "ref": "54046cfc-2891-4ba5-b7b3-a8e39da0dd95",
+  "category": "selfdestruct",
+  "type": "SelfDestruct",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6116471c-891d-4830-8968-650b6deafc00",
+  "name": "Drake Caterpillar Self Destruct",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "damage": "120000",
+    "min_radius": "100",
+    "radius": "175",
+    "min_phys_radius": "110",
+    "phys_radius": "150",
+    "time": "120"
+  }
+}

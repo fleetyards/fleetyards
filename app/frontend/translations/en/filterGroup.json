@@ -1,0 +1,34 @@
+{
+  "en": {
+    "filterGroup": {
+      "actions": {
+        "fetchMore": "Load more"
+      },
+      "labels": {
+        "search": "Type to search",
+        "nullablePrompt": "No Option selected",
+        "prompt": "Please select an Option",
+        "removeTooltip": "Click to remove Option"
+      },
+      "model": {
+        "baseModel": {
+          "label": "Base Model"
+        }
+      },
+      "fleet": {
+        "members": {
+          "shipsFilter": {
+            "label": "Ships Filter",
+            "prompt": "Select which ships to show",
+            "nullablePrompt": "Select an option"
+          },
+          "hangarGroupId": {
+            "label": "Hangar Group",
+            "prompt": "Select a hangar group",
+            "nullablePrompt": "Select a group"
+          }
+        }
+      }
+    }
+  }
+}

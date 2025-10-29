@@ -1,0 +1,44 @@
+{
+  "key": "Door_RN_RoomConnector_Breachable_OpenClose_IP_Spartan_Left",
+  "ref": "79bdaef0-0b27-45c2-a499-519afa2896a2",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "IP_Exterior_Right",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "ControlPanel"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "IP_Exterior_Right",
+      "key": "ControlPanel_Screen_DoorControl_Physical_Spartan",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1000.0
+  }
+}

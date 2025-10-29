@@ -1,0 +1,51 @@
+.nav-item-inner {
+  position: relative;
+  height: 30px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+
+  .nav-item-icon {
+    margin-inline-end: 15px;
+    display: flex;
+  }
+
+  .nav-item-prefix {
+    min-width: 30px;
+    font-family: "Major Mono Display", monospace;
+    margin-inline-end: 15px;
+    font-weight: bold;
+  }
+
+  .nav-item-image {
+    max-width: 30px;
+    vertical-align: middle;
+
+    &.nav-item-image-avatar {
+      margin: -5px;
+      height: 40px;
+      width: 40px;
+      max-width: 40px;
+      border-radius: 50%;
+    }
+  }
+
+  .nav-item-image-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    overflow: hidden;
+    font-size: 70%;
+    font-family: "Orbitron", sans-serif;
+    background-color: $gray-darker;
+    border-radius: 50%;
+  }
+
+  &--slim {
+    .nav-item-icon {
+      margin-inline-end: 6px;
+    }
+  }
+}

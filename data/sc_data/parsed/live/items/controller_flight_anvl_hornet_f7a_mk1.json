@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_ANVL_Hornet_F7A_Mk1",
+  "ref": "415471b4-fc53-4e52-86e0-8153664ab328",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SELF STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "scm_speed": 220.0,
+    "scm_speed_boosted": 479.0,
+    "reverse_speed_boosted": 249.0,
+    "max_speed": 1146.0,
+    "angular_velocity": {
+      "pitch": 56.0,
+      "yaw": 45.0,
+      "roll": 150.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 67.2,
+      "yaw": 54.0,
+      "roll": 180.0
+    }
+  }
+}

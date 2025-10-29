@@ -3,14 +3,20 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
-  let(:fleet) { fleets :starfleet }
-
-  let(:user) { nil }
+  let(:admin) { create(:user, vehicle_count: 2) }
+  let(:member) { create(:user, vehicle_count: 1) }
+  let(:user) { admin }
+  let(:fleet) { create(:fleet, admins: [admin], members: [member]) }
+  let(:fleetSlug) { fleet.slug }
 
   before do
+    Sidekiq::Testing.inline!
+
     sign_in(user) if user.present?
+  end
+
+  after do
+    Sidekiq::Testing.fake!
   end
 
   path "/fleets/{fleetSlug}/vehicles" do
@@ -35,95 +41,64 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
       parameter name: "cacheId", in: :query, type: :string, required: false
 
       response(200, "successful") do
-        schema type: :array,
-          items: {
-            oneOf: [
-              {"$ref": "#/components/schemas/Model"},
-              {"$ref": "#/components/schemas/VehiclePublic"}
-            ]
-          }
+        schema "$ref": "#/components/schemas/FleetVehicles"
 
-        let(:fleetSlug) { fleet.slug }
-        let(:user) { users :data }
+        run_test! do |response|
+          data = JSON.parse(response.body)
+          items = data["items"]
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
+          expect(items.count).to be > 0
+          expect(items.count).to eq(3)
+        end
+
+        context "with filter" do
+          let(:q) do
+            {
+              "modelNameCont" => fleet.models.first.name
             }
-          }
+          end
+
+          run_test! do |response|
+            data = JSON.parse(response.body)
+            items = data["items"]
+
+            expect(items.count).to eq(1)
+            expect(items.first.dig("model", "name")).to eq(fleet.models.first.name)
+          end
         end
 
-        run_test! do |response|
-          data = JSON.parse(response.body)
+        context "with perPage" do
+          let(:perPage) { 1 }
 
-          expect(data.count).to be > 0
-          expect(data.count).to eq(2)
-        end
-      end
+          run_test! do |response|
+            data = JSON.parse(response.body)
+            items = data["items"]
 
-      response(200, "successful") do
-        schema type: :array,
-          items: {
-            oneOf: [
-              {"$ref": "#/components/schemas/Model"},
-              {"$ref": "#/components/schemas/VehiclePublic"}
-            ]
-          }
-
-        let(:fleetSlug) { fleet.slug }
-        let(:user) { users :data }
-        let(:q) do
-          {
-            "modelNameCont" => "600i Explorer"
-          }
+            expect(items.count).to eq(1)
+          end
         end
 
-        run_test! do |response|
-          data = JSON.parse(response.body)
+        context "with grouped flag" do
+          let(:grouped) { true }
 
-          expect(data.count).to eq(1)
-          expect(data.first.dig("model", "name")).to eq("600i Explorer")
+          run_test! do |response|
+            data = JSON.parse(response.body)
+            items = data["items"]
+
+            expect(items.count).to eq(3)
+          end
         end
-      end
 
-      response(200, "successful") do
-        schema type: :array,
-          items: {
-            oneOf: [
-              {"$ref": "#/components/schemas/Model"},
-              {"$ref": "#/components/schemas/VehiclePublic"}
-            ]
-          }
+        context "with member" do
+          let(:user) { member }
 
-        let(:fleetSlug) { fleet.slug }
-        let(:user) { users :data }
-        let(:perPage) { 1 }
+          run_test! do |response|
+            data = JSON.parse(response.body)
+            items = data["items"]
 
-        run_test! do |response|
-          data = JSON.parse(response.body)
-
-          expect(data.count).to eq(1)
-        end
-      end
-
-      response(200, "successful") do
-        schema type: :array,
-          items: {
-            oneOf: [
-              {"$ref": "#/components/schemas/Model"},
-              {"$ref": "#/components/schemas/VehiclePublic"}
-            ]
-          }
-
-        let(:fleetSlug) { fleet.slug }
-        let(:user) { users :data }
-        let(:grouped) { true }
-
-        run_test! do |response|
-          data = JSON.parse(response.body)
-
-          expect(data.count).to eq(2)
+            expect(items.count).to be > 0
+            expect(items.count).to eq(3)
+          end
         end
       end
 
@@ -131,7 +106,6 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:fleetSlug) { "unknown-fleet" }
-        let(:user) { users :data }
 
         run_test!
       end
@@ -139,7 +113,7 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:fleetSlug) { fleet.slug }
+        let(:user) { nil }
 
         run_test!
       end

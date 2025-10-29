@@ -1,0 +1,21 @@
+{
+  "key": "RSI_Com_Brig_3StateTray",
+  "ref": "a6f1bb5d-a8b0-4dd3-8bf9-0d2e8a62a5a2",
+  "category": "module",
+  "type": "Misc",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

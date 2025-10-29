@@ -1,0 +1,533 @@
+{
+  "key": "ESPR_Talon_Shrike_PU_AI_CIV",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "Esperia Talon Shrike",
+  "description": "Manufacturer: Esperia\\nFocus: Light Fighter\\n\\nThe Talon represents Esperia's continuing effort to preserve historically significant Tevarin ship designs. A maneuverable single-seat combat ship with light armor but powerful, directional \"Phalanx\" shields, the Talon is made to strike first and strike hard before using the shields to cover its escape. The infamous Shrike variant model is armed with additional internal missile racks.",
+  "career": "Combat",
+  "role": "Fighter",
+  "insurance": {
+    "base_wait_time_minutes": "11.34",
+    "mandatory_wait_time_minutes": "3.78",
+    "base_expediting_fee": "7183"
+  },
+  "mass": 51352.06,
+  "metrics": {
+    "x": 15.0,
+    "y": 24.0,
+    "z": 8.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "ESPR_Talon_SeatAccess"
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "ESPR_Talon_Pilot_Seat",
+      "loadout": [
+        {
+          "name": "hardpoint_cockpit_radar",
+          "ref": "0403e324-96f4-4c4e-ab6f-445dafe3f148",
+          "key": null
+        },
+        {
+          "name": "Annunciator_right",
+          "ref": null,
+          "key": "Vehicle_Screen_Physical_Holo"
+        },
+        {
+          "name": "Annunciator_left",
+          "ref": null,
+          "key": "Vehicle_Screen_Physical_Holo"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_selfdestruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_10s"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_power_plant",
+      "ref": null,
+      "key": "POWR_TYDT_S01_Slipstream_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_cooler_left",
+      "ref": null,
+      "key": "COOL_LPLT_S01_FlashFreeze_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_right",
+      "ref": null,
+      "key": "COOL_LPLT_S01_FlashFreeze_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_ESPR_Talon"
+    },
+    {
+      "name": "hardpoint_shield_left",
+      "ref": null,
+      "key": "SHLD_BANU_S01_Placeholder_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_right",
+      "ref": null,
+      "key": "SHLD_BANU_S01_Placeholder_SCItem"
+    },
+    {
+      "name": "hardpoint_armour",
+      "ref": null,
+      "key": "ARMR_ESPR_Talon"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_ESPR_Talon"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_GRNP_S01_Ecouter"
+    },
+    {
+      "name": "hardpoint_controller_scanner",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_ping",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuel_intake_left",
+      "ref": null,
+      "key": "INTK_ESPR_Talon"
+    },
+    {
+      "name": "hardpoint_fuel_intake_right",
+      "ref": null,
+      "key": "INTK_ESPR_Talon"
+    },
+    {
+      "name": "hardpoint_fuel_tank",
+      "ref": null,
+      "key": "HTNK_ESPR_Talon"
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_RACO_S01_Drift_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": null,
+          "key": "JDRV_TARS_S01_C_Explorer"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_fuel_tank",
+      "ref": null,
+      "key": "QTNK_ESPR_Talon"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_gun_left",
+      "ref": "7fedca61-dfeb-4ecb-b421-e7c3ba55a584",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "1ee01303-ce47-447b-a2b6-ba0d0787be79",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_gun_right",
+      "ref": "7fedca61-dfeb-4ecb-b421-e7c3ba55a584",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "1ee01303-ce47-447b-a2b6-ba0d0787be79",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_missile_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_CML_left",
+      "ref": null,
+      "key": "ESPR_CML_Decoy_Talon"
+    },
+    {
+      "name": "hardpoint_CML_right",
+      "ref": null,
+      "key": "ESPR_CML_Noise_Talon"
+    },
+    {
+      "name": "hardpoint_weapon_rack",
+      "ref": null,
+      "key": "Weapon_Rack_ESPR_Talon"
+    },
+    {
+      "name": "hardpoint_main_top_left",
+      "ref": null,
+      "key": "ESPR_Talon_Thruster_Main_TL"
+    },
+    {
+      "name": "hardpoint_main_top_right",
+      "ref": null,
+      "key": "ESPR_Talon_Thruster_Main_TR"
+    },
+    {
+      "name": "hardpoint_main_bottom_left",
+      "ref": null,
+      "key": "ESPR_Talon_Thruster_Main_BL"
+    },
+    {
+      "name": "hardpoint_main_bottom_right",
+      "ref": null,
+      "key": "ESPR_Talon_Thruster_Main_BR"
+    },
+    {
+      "name": "hardpoint_retro_left",
+      "ref": null,
+      "key": "ESPR_Talon_Thruster_Retro_L"
+    },
+    {
+      "name": "hardpoint_retro_right",
+      "ref": null,
+      "key": "ESPR_Talon_Thruster_Retro_R"
+    },
+    {
+      "name": "hardpoint_mav_TR_right",
+      "ref": null,
+      "key": "ESPR_Talon_Thruster_Mav_Top"
+    },
+    {
+      "name": "hardpoint_mav_SR_right",
+      "ref": null,
+      "key": "ESPR_Talon_Thruster_Mav_Lateral"
+    },
+    {
+      "name": "hardpoint_mav_BR_right",
+      "ref": null,
+      "key": "ESPR_Talon_Thruster_Mav_Bottom"
+    },
+    {
+      "name": "hardpoint_mav_TF_right",
+      "ref": null,
+      "key": "ESPR_Talon_Thruster_Mav_Top"
+    },
+    {
+      "name": "hardpoint_mav_SF_right",
+      "ref": null,
+      "key": "ESPR_Talon_Thruster_Mav_Lateral"
+    },
+    {
+      "name": "hardpoint_mav_BF_right",
+      "ref": null,
+      "key": "ESPR_Talon_Thruster_Mav_Bottom"
+    },
+    {
+      "name": "hardpoint_mav_TR_left",
+      "ref": null,
+      "key": "ESPR_Talon_Thruster_Mav_Top"
+    },
+    {
+      "name": "hardpoint_mav_SR_left",
+      "ref": null,
+      "key": "ESPR_Talon_Thruster_Mav_Lateral"
+    },
+    {
+      "name": "hardpoint_mav_BR_left",
+      "ref": null,
+      "key": "ESPR_Talon_Thruster_Mav_Bottom"
+    },
+    {
+      "name": "hardpoint_mav_TF_left",
+      "ref": null,
+      "key": "ESPR_Talon_Thruster_Mav_Top"
+    },
+    {
+      "name": "hardpoint_mav_SF_left",
+      "ref": null,
+      "key": "ESPR_Talon_Thruster_Mav_Lateral"
+    },
+    {
+      "name": "hardpoint_mav_BF_left",
+      "ref": null,
+      "key": "ESPR_Talon_Thruster_Mav_Bottom"
+    },
+    {
+      "name": "hardpoint_leg_blankingplate_right",
+      "ref": null,
+      "key": "MRCK_S04_ESPR_Talon",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_05_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_06_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_07_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_08_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_09_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_10_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_11_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_12_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_leg_blankingplate_left",
+      "ref": null,
+      "key": "MRCK_S04_ESPR_Talon",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_05_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_06_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_07_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_08_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_09_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_10_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_11_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_12_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_thruster_bottom_right",
+      "ref": null,
+      "key": "ESPR_Talon_Thruster_Mav_VTOL"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_left",
+      "ref": null,
+      "key": "ESPR_Talon_Thruster_Mav_VTOL"
+    },
+    {
+      "name": "hardpoint_wing_glass_right",
+      "ref": null,
+      "key": "ESPR_Talon_Wing_Glass"
+    },
+    {
+      "name": "hardpoint_wing_glass_left",
+      "ref": null,
+      "key": "ESPR_Talon_Wing_Glass"
+    },
+    {
+      "name": "hardpoint_canopy",
+      "ref": null,
+      "key": "ESPR_Talon_Canopy_Frame",
+      "loadout": [
+        {
+          "name": "hardpoint_glass",
+          "ref": null,
+          "key": "AnimEntity_Attachable_ESPR_Talon_Glass"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_life_support",
+      "ref": null,
+      "key": "LFSP_TYDT_S01_ComfortAir"
+    },
+    {
+      "name": "hardpoint_avionics",
+      "ref": null,
+      "key": "COMP_BEHR_S01_CSR-RP"
+    },
+    {
+      "name": "hardpoint_battery",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_scanner",
+      "ref": null,
+      "key": "COMP_BEHR_S01_CSR-RP"
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": "Controller_Missile"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_ESPR_Talon"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "ESPR_Talon_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay",
+      "ref": null,
+      "key": "RELAY_2slot_slim"
+    }
+  ]
+}

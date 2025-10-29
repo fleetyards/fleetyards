@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Carrack_IAE2951_Grey_White",
+  "ref": "eb0068f4-f2da-47eb-af63-d9d99700b5c4",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "5b57fb6f-4a45-48fb-a1b9-e680d2c9e0e9",
+  "name": "Carrack Polar Livery",
+  "short_name": null,
+  "description": "Modify your Carrack with this white and grey livery specifically designed for the 2951 IAE.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

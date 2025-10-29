@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Scorpius_BIS2952_Black_Red",
+  "ref": "794db369-7918-4dc8-bf3c-a6a5d0e474ea",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "14c55160-d02d-4e16-877e-f32d23792e40",
+  "name": "Scorpius Red Alert Livery",
+  "short_name": null,
+  "description": "Embody the furious firepower of the Scorpius with the metallic red and black look of the Red Alert livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Door_NoRoomConnector_Syulen_Ground_FuelPort",
+  "ref": "78304e9f-d01a-49b8-89ad-6839b73276ad",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

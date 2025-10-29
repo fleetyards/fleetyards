@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Vulture_Luminalia_2953_White_Blue",
+  "ref": "82f191d3-0619-4d22-8b80-bba00e084e20",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "45d06a17-c1ae-4b61-8a91-b25ecea4f33a",
+  "name": "Vulture IceBreak Livery",
+  "short_name": null,
+  "description": "Equip your Vulture with a paint scheme cooler than a snow storm. The IceBreak livery mixes crisp, cool white with a frostbitten blue for an exciting look suitable for any season.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

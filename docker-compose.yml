@@ -6,6 +6,7 @@ services:
     restart: always
     environment:
       POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
       POSTGRES_HOST_AUTH_METHOD: trust
     ports:
       - 8271:5432

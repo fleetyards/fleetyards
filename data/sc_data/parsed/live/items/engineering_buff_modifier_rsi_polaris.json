@@ -1,0 +1,21 @@
+{
+  "key": "Engineering_Buff_Modifier_RSI_Polaris",
+  "ref": "5bb6b26a-6dd3-4a72-b8da-79a026ab2196",
+  "category": "utility",
+  "type": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 340.0,
+    "dimensions": {
+      "x": 0.0549,
+      "y": 0.0424,
+      "z": 0.133
+    }
+  }
+}

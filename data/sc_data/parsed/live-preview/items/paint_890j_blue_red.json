@@ -1,0 +1,21 @@
+{
+  "key": "Paint_890J_Blue_Red",
+  "ref": "ce0e1baa-7357-45bd-8427-192f73745c81",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b21509f7-6d72-4a2a-9a15-5a2a9ed2c775",
+  "name": "890 Jump Skyline Livery",
+  "short_name": null,
+  "description": "The Skyline livery for the 890 Jump is a beautiful blue with red highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,685 @@
+{
+  "key": "MISC_Starlancer_Max",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "MISC Starlancer MAX",
+  "description": "Manufacturer: MISC\\nFocus: Cargo\\n \\nFor those looking to expand their hauling operations, the engineers at MISC have upgraded the Starlancer MAX with an extra spacious hold ready to transport cargo and vehicles. Paired with comfortable accommodations for longer trips and a full defensive package for when you go off the beaten path, it’s easy to see why the Starlancer MAX is the hauler of choice for industrious pilots across the ‘verse.",
+  "career": "Exploration",
+  "role": "Industrial",
+  "insurance": {
+    "base_wait_time_minutes": "40",
+    "mandatory_wait_time_minutes": "15",
+    "base_expediting_fee": "15000"
+  },
+  "mass": 814270.5,
+  "metrics": {
+    "x": 60.0,
+    "y": 90.0,
+    "z": 20.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "MISC_Starlancer_Pilot_Seat"
+    },
+    {
+      "name": "hardpoint_seat_pilot_access",
+      "ref": null,
+      "key": "MISC_Starlancer_Seat_Access_Pilot"
+    },
+    {
+      "name": "hardpoint_seat_copilot",
+      "ref": null,
+      "key": "MISC_Starlancer_Copilot_Seat"
+    },
+    {
+      "name": "hardpoint_seat_copilot_access",
+      "ref": null,
+      "key": "MISC_Starlancer_Seat_Access_Copilot"
+    },
+    {
+      "name": "hardpoint_seat_support_left",
+      "ref": null,
+      "key": "MISC_Starlancer_Support_Seat"
+    },
+    {
+      "name": "hardpoint_seat_support_left_access",
+      "ref": null,
+      "key": "MISC_Starlancer_Seat_Access_Support_Left"
+    },
+    {
+      "name": "hardpoint_seat_support_right",
+      "ref": null,
+      "key": "MISC_Starlancer_Support_Seat"
+    },
+    {
+      "name": "hardpoint_seat_support_right_access",
+      "ref": null,
+      "key": "MISC_Starlancer_Seat_Access_Support_Right"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_MISC_Starlancer"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_MISC_Starlancer"
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": "Controller_Missile_MISC_Starlancer"
+    },
+    {
+      "name": "hardpoint_controller_weapon_pilot",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_controller_weapon_turret_front",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_controller_weapon_turret_rear",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_self_destruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_45s"
+    },
+    {
+      "name": "hardpoint_armour",
+      "ref": null,
+      "key": "ARMR_MISC_Starlancer"
+    },
+    {
+      "name": "hardpoint_quantum_fuel_1",
+      "ref": null,
+      "key": "QTNK_MISC_Starlancer"
+    },
+    {
+      "name": "hardpoint_fuel_1",
+      "ref": null,
+      "key": "HTNK_MISC_Starlancer"
+    },
+    {
+      "name": "hardpoint_fuel_2",
+      "ref": null,
+      "key": "HTNK_MISC_Starlancer"
+    },
+    {
+      "name": "hardpoint_fuel_intake_left",
+      "ref": null,
+      "key": "INTK_MISC_Starlancer"
+    },
+    {
+      "name": "hardpoint_fuel_intake_right",
+      "ref": null,
+      "key": "INTK_MISC_Starlancer"
+    },
+    {
+      "name": "hardpoint_power_plant_left",
+      "ref": null,
+      "key": "POWR_ACOM_S02_LuxCore_SCItem"
+    },
+    {
+      "name": "hardpoint_power_plant_right",
+      "ref": null,
+      "key": "POWR_ACOM_S02_LuxCore_SCItem"
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_ACAS_S02_SparkFire_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_Jump_Drive",
+          "ref": null,
+          "key": "JDRV_TARS_S02_C_Explorer"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_cooler_left",
+      "ref": null,
+      "key": "COOL_ACOM_S02_AbsoluteZero_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_right",
+      "ref": null,
+      "key": "COOL_ACOM_S02_AbsoluteZero_SCItem"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_CHCO_S02_Surveyor"
+    },
+    {
+      "name": "hardpoint_shield_generator",
+      "ref": null,
+      "key": "SHLD_BASL_S03_Stronghold_SCItem"
+    },
+    {
+      "name": "hardpoint_weapon_left",
+      "ref": null,
+      "key": "MISC_Starlancer_Dual_Gimbal",
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_01",
+          "ref": null,
+          "key": "BEHR_LaserCannon_S4"
+        },
+        {
+          "name": "hardpoint_weapon_02",
+          "ref": null,
+          "key": "BEHR_LaserCannon_S4"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_right",
+      "ref": null,
+      "key": "MISC_Starlancer_Dual_Gimbal",
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_01",
+          "ref": null,
+          "key": "BEHR_LaserCannon_S4"
+        },
+        {
+          "name": "hardpoint_weapon_02",
+          "ref": null,
+          "key": "BEHR_LaserCannon_S4"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_front",
+      "ref": null,
+      "key": "MISC_Starlancer_Remote_Turret",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "Mount_Gimbal_S4",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "KLWE_LaserRepeater_S4"
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": null,
+          "key": "Mount_Gimbal_S4",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "KLWE_LaserRepeater_S4"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_rear",
+      "ref": null,
+      "key": "MISC_Starlancer_Remote_Turret_Rear",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "Mount_Gimbal_S4",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "KLWE_LaserRepeater_S4"
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": null,
+          "key": "Mount_Gimbal_S4",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "KLWE_LaserRepeater_S4"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_rack_left",
+      "ref": null,
+      "key": "MRCK_S04_MISC_Starlancer",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_rack_right",
+      "ref": null,
+      "key": "MRCK_S04_MISC_Starlancer",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_rack_neck",
+      "ref": null,
+      "key": "MRCK_S04_MISC_Starlancer",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_rack_nose",
+      "ref": null,
+      "key": "MRCK_S04_MISC_Starlancer",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_countermeasures_left",
+      "ref": null,
+      "key": "MISC_Starlancer_CML_Flare"
+    },
+    {
+      "name": "hardpoint_countermeasures_right",
+      "ref": null,
+      "key": "MISC_Starlancer_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_ramp",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Exterior_MISC_Starlancer_Ramp"
+    },
+    {
+      "name": "hardpoint_docking_ring",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Docking_Animator_MISC_Starlancer"
+    },
+    {
+      "name": "hardpoint_docking_collar",
+      "ref": null,
+      "key": "MISC_Starlancer_DockingTube"
+    },
+    {
+      "name": "hardpoint_thruster_main_centre",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_main_left",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_Main_Side"
+    },
+    {
+      "name": "hardpoint_thruster_main_right",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_Main_Side"
+    },
+    {
+      "name": "hardpoint_thruster_main_left_aux_top",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_Main_Aux"
+    },
+    {
+      "name": "hardpoint_thruster_main_left_aux_bottom",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_Main_Aux"
+    },
+    {
+      "name": "hardpoint_thruster_main_right_aux_top",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_Main_Aux"
+    },
+    {
+      "name": "hardpoint_thruster_main_right_aux_bottom",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_Main_Aux"
+    },
+    {
+      "name": "hardpoint_thruster_retro_left",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_retro_right",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_FR",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_VTOL"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_FL",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_VTOL"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_RR",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_VTOL_Small"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_RL",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_VTOL_Small"
+    },
+    {
+      "name": "hardpoint_thruster_mav_FTL",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_Mav_Small"
+    },
+    {
+      "name": "hardpoint_thruster_mav_FTR",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_Mav_Small"
+    },
+    {
+      "name": "hardpoint_thruster_mav_MTL",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_Mav_Top"
+    },
+    {
+      "name": "hardpoint_thruster_mav_MTR",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_Mav_Top"
+    },
+    {
+      "name": "hardpoint_thruster_mav_RTL",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_Mav_Top"
+    },
+    {
+      "name": "hardpoint_thruster_mav_RTR",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_Mav_Top"
+    },
+    {
+      "name": "hardpoint_thruster_mav_FSL",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_thruster_mav_FSR",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_thruster_mav_RSL",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_Mav_Side"
+    },
+    {
+      "name": "hardpoint_thruster_mav_RSR",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_Mav_Side"
+    },
+    {
+      "name": "hardpoint_thruster_mav_FBR",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_Mav_Small_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_mav_FBL",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_Mav_Small_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_mav_MBR",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_Mav_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_mav_MBL",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_Mav_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_mav_RBR",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_Mav_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_mav_RBL",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_Mav_Bottom"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_MISC_Hull_C"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "MISC_Hull_C_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_cargogrid_left",
+      "ref": null,
+      "key": "MISC_Starlancer_CargoGrid"
+    },
+    {
+      "name": "hardpoint_cargogrid_right",
+      "ref": null,
+      "key": "MISC_Starlancer_CargoGrid"
+    },
+    {
+      "name": "hardpoint_fuelport_ground",
+      "ref": null,
+      "key": "Door_RN_NoRoomConnector_Breachable_OpenClose_IP_Starlancer_Fuel"
+    },
+    {
+      "name": "hardpoint_weapon_locker",
+      "ref": null,
+      "key": "Weapon_Rack_MISC_Starlancer"
+    },
+    {
+      "name": "hardpoint_docking_ring_inner",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Exterior_MISC_Starlancer_DockInt"
+    },
+    {
+      "name": "hardpoint_drone_seat",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_drone_seat_access",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cargogrid_left_small",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cargogrid_right_small",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_rear_left",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_relay_rear_right",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_relay_bridge",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_TYDT_S02_ComfortAirPlus"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_SL",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_VTOL_Small"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_SR",
+      "ref": null,
+      "key": "MISC_Starlancer_Thruster_VTOL_Small"
+    },
+    {
+      "name": "hardpoint_belly",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Exterior_MISC_Starlancer_Cargo"
+    },
+    {
+      "name": "hardpoint_cockpit_flair",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_door_elevator",
+      "ref": null,
+      "key": "MISC_Starlancer_Elevator_Exterior_Gate"
+    }
+  ]
+}

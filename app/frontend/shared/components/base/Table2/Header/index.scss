@@ -1,0 +1,8 @@
+// Base table header styles
+.base-table-header {
+  display: grid;
+  position: relative;
+  border-bottom: 1px solid $gray;
+  padding-left: 10px;
+  padding-right: 10px;
+}

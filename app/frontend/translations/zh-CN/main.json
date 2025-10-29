@@ -1,0 +1,134 @@
+{
+  "zh-CN": {
+    "meta": {
+      "description": "FleetYards.net, Your Database for all Information related to Ships from “Star Citizen“.",
+      "keywords": "Star Citizen, Spaceships, Ships, Fighter, Database, Squadron, 42, Star, Citizen, English, Chris, Roberts, Online, Game, Space, Simulation"
+    },
+    "station": {
+      "type": "类型",
+      "location": "位置",
+      "classification": "分类",
+      "habitable": "适居住？",
+      "refinery": "精炼站",
+      "cargoHub": "货运枢纽"
+    },
+    "model": {
+      "focus": "定位",
+      "classification": "分类",
+      "size": "尺寸",
+      "beam": "舰宽",
+      "cargo": "货舱",
+      "netCargo": "货舱（含探测器/战斗机）",
+      "crew": "船员",
+      "speed": "速度",
+      "minCrew": "最少船员",
+      "maxCrew": "最多船员",
+      "scmSpeed": "SCM速度",
+      "scmSpeedBoosted": "SCM增强速度",
+      "reverseSpeedBoosted": "倒车增强速度",
+      "maxSpeed": "最大速度",
+      "scm": "SCM",
+      "max": "最大",
+      "groundMaxSpeed": "最大速度",
+      "groundReverseSpeed": "倒车速度",
+      "pitch": "俯仰",
+      "pitchBoosted": "俯仰增强",
+      "yaw": "偏航",
+      "yawBoosted": "偏航增强",
+      "roll": "翻滚",
+      "rollBoosted": "翻滚增强",
+      "price": "价格",
+      "groundAcceleration": "加速度",
+      "groundDecceleration": "减速度",
+      "scmSpeedAcceleration": "零到SCM",
+      "scmSpeedDecceleration": "SCM到零",
+      "maxSpeedAcceleration": "零到最大",
+      "maxSpeedDecceleration": "最大到零",
+      "compare": {
+        "groundMaxSpeed": "最大地面速度",
+        "groundReverseSpeed": "倒车地面速度",
+        "groundAcceleration": "地面加速度",
+        "groundDecceleration": "地面减速度"
+      },
+      "quantumFuelTankSize": "量子燃料",
+      "hydrogenFuelTankSize": "燃料",
+      "pledgePrice": "承诺价格",
+      "height": "高度",
+      "length": "长度",
+      "mass": "质量",
+      "manufacturer": "制造商",
+      "hardpoints": "挂载点",
+      "weapons": "武器",
+      "equipment": "装备",
+      "variants": "变体",
+      "maxUpgrades": "升级",
+      "productionStatus": "生产状态",
+      "propulsion": "推进",
+      "ordnance": "武备",
+      "modular": "模块化",
+      "soldAt": "出售于？",
+      "rentalAt": "租赁于？",
+      "lastUpdatedAt": "最后更新于？"
+    },
+    "component": {
+      "manufacturer": "制造商",
+      "size": "尺寸"
+    },
+    "celestialObject": {
+      "type": "类型",
+      "subType": "子类型",
+      "habitable": "适居住？",
+      "fairchanceact": "公平机会法？",
+      "population": "人口",
+      "economy": "经济",
+      "danger": "危险"
+    },
+    "starsystem": {
+      "type": "类型",
+      "size": "尺寸",
+      "population": "人口",
+      "economy": "经济",
+      "danger": "危险"
+    },
+    "shop": {
+      "type": "类型",
+      "celestialObject": "位置",
+      "station": "空间站",
+      "location": "%{name} 于 %{location}",
+      "refineryTerminal": "精炼终端"
+    },
+    "commodityItem": {
+      "grade": "等级",
+      "type": "类型",
+      "itemType": "物品类型",
+      "itemClass": "物品等级",
+      "weaponClass": "武器等级",
+      "size": "尺寸",
+      "range": "射程",
+      "damageReduction": "伤害减免",
+      "rateOfFire": "射击速率",
+      "extras": "附加信息",
+      "location": "位置",
+      "slot": "插槽",
+      "storage": "存储",
+      "shop": "商店",
+      "unconfirmed": "物品未确认",
+      "manufacturer": "制造商"
+    },
+    "availability": {
+      "listedAt": "列出于",
+      "soldAt": "出售于",
+      "boughtAt": "购买于"
+    },
+    "resources": {
+      "models": "飞船",
+      "hardpoints": "挂载点",
+      "images": "图片"
+    },
+    "pagination": {
+      "previous": "上一页",
+      "next": "下一页",
+      "gap": "&hellip;"
+    }
+  }
+}

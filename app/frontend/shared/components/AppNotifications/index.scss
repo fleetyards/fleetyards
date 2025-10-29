@@ -1,0 +1,32 @@
+.app-notifications {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+/* transitions */
+.app-notifications-fade-move,
+.app-notifications-fade-enter-active,
+.app-notifications-fade-leave-active {
+  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+.app-notifications-fade-enter-from,
+.app-notifications-fade-leave-to {
+  opacity: 0;
+  transform: scaleY(0.01) translate(30px, 0);
+}
+
+.app-notifications-fade-leave-active {
+  position: absolute;
+}
+
+@media (max-width: $tablet-breakpoint) {
+  .app-notifications {
+    right: auto;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 90vw;
+  }
+}

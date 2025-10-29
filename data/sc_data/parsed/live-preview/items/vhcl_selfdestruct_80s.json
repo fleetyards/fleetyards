@@ -1,0 +1,29 @@
+{
+  "key": "VHCL_SelfDestruct_80s",
+  "ref": "cf46bb34-df66-4794-92f3-6aa35b652f86",
+  "category": "selfdestruct",
+  "type": "SelfDestruct",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6116471c-891d-4830-8968-650b6deafc00",
+  "name": "Drake Caterpillar Self Destruct",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "damage": "60000",
+    "min_radius": "80",
+    "radius": "150",
+    "min_phys_radius": "90",
+    "phys_radius": "120",
+    "time": "80"
+  }
+}

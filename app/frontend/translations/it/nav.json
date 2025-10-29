@@ -1,0 +1,131 @@
+{
+  "it": {
+    "nav": {
+      "home": "Home",
+      "back": "Indietro",
+      "ships": {
+        "index": "Navi"
+      },
+      "compare": {
+        "index": "Confronta",
+        "ships": "Confronta Navi"
+      },
+      "manufacturers": "Produttori",
+      "images": "Immagini",
+      "videos": "Video",
+      "hangar": "Il Mio Hangar",
+      "login": "Login",
+      "logout": "Esci",
+      "apiV1": "API v1",
+      "embed": "Widget Incorporato",
+      "signUp": "Registrati",
+      "privacyPolicy": "Informativa sulla privacy",
+      "privacySettings": "Impostazioni sulla privacy",
+      "impressum": "Info legali",
+      "fleets": {
+        "index": "Flotte",
+        "add": "Crea una nuova Flotta",
+        "invites": "Inviti",
+        "ships": "Navi",
+        "members": "Membri",
+        "stats": "Statistiche",
+        "settings": {
+          "index": "Impostazioni",
+          "fleet": "Impostazioni Della Flotta",
+          "membership": "Impostazioni dei Membri"
+        }
+      },
+      "rsiProfile": "Profilo RSI",
+      "rsiHangar": "Hangar RSI",
+      "tools": {
+        "index": "Strumenti",
+        "travelTimes": "Tempi di Viaggio",
+        "cargoGrids": "Griglie di Carico"
+      },
+      "api": "Documentazione delle API",
+      "stats": "Statistiche",
+      "toggleSlimCollapse": "Comprimi",
+      "toggleSlimExpand": "Espandi",
+      "roadmap": {
+        "index": "Roadmap",
+        "overview": "Panoramica",
+        "changes": "Modifiche",
+        "ships": "Roadmap Delle Navi"
+      },
+      "rsiVerification": "Verifica RSI",
+      "settings": {
+        "index": "Impostazioni",
+        "profile": "Profilo",
+        "account": "Account",
+        "security": "Sicurezza",
+        "notifications": "Notifiche",
+        "hangar": "Hangar",
+        "verify": "Verifica dell'account RSI"
+      },
+      "reload": "Aggiornamento disponibile!",
+      "visualTests": {
+        "index": "Test Visivi",
+        "panels": "Pannelli",
+        "buttons": "Pulsanti",
+        "tables": "Tabelle"
+      },
+      "admin": {
+        "index": "Admin",
+        "models": {
+          "index": "Modelli",
+          "create": "Crea Modello",
+          "edit": {
+            "index": "Dati di Base",
+            "metrics": "Metriche",
+            "prices": "Prezzi",
+            "docks": "Docks",
+            "videos": "Video",
+            "cargoAndFuel": "Carico e Carburante",
+            "fleetchart": "Immagini Fleetchart",
+            "hardpoints": "Punti di Attacco"
+          }
+        },
+        "modelPaints": {
+          "index": "Vernici",
+          "create": "Crea Vernice"
+        },
+        "modelModules": {
+          "index": "Moduli",
+          "create": "Crea Modulo"
+        },
+        "modelModulePackages": {
+          "index": "Pacchetti Moduli",
+          "create": "Crea Pacchetto Moduli"
+        },
+        "components": {
+          "index": "Componenti"
+        },
+        "manufacturers": {
+          "index": "Produttori"
+        },
+        "images": {
+          "index": "Immagini"
+        },
+        "users": {
+          "index": "Utenti"
+        },
+        "fleets": {
+          "index": "Flotte"
+        },
+        "vehicles": {
+          "index": "Veicoli"
+        },
+        "admins": {
+          "index": "Amministratori"
+        },
+        "maintenance": {
+          "index": "Manutenzione",
+          "pghero": "PG-Hero",
+          "features": "Funzionalità",
+          "workers": "Worker",
+          "rsiApiStatus": "Stato API RSI"
+        }
+      }
+    }
+  }
+}

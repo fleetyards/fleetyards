@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Prowler_Teal_Red",
+  "ref": "e6720b13-ea37-44bd-ac16-418d1b879fbc",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2e61ca8a-0fc8-40ee-9463-77aab55a5b0a",
+  "name": "Prowler Harmony Livery",
+  "short_name": null,
+  "description": "The Harmony livery is meant to showcase Humanity's peaceful relationship with aliens with a semi-pearlescent blue main coat marked with organic reflective red to suggest the coming together of disparate species and cultures. The Harmony livery has been designed and produced by the UEE's Diplomatic Corps and freely licensed to all spacecraft manufacturers. Now Esperia Prowler owners can celebrate the UEE's intentions of working toward a peaceful galaxy.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

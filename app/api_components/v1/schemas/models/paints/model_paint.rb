@@ -22,11 +22,11 @@ module V1
                 properties: {
                   boughtAt: {
                     type: :array,
-                    items: {"$ref": "#/components/schemas/ShopCommodity"}
+                    items: {"$ref": "#/components/schemas/ItemPrice"}
                   },
                   soldAt: {
                     type: :array,
-                    items: {"$ref": "#/components/schemas/ShopCommodity"}
+                    items: {"$ref": "#/components/schemas/ItemPrice"}
                   }
                 },
                 additionalProperties: false,
@@ -36,12 +36,12 @@ module V1
               media: {
                 type: :object,
                 properties: {
-                  angledView: {"$ref": "#/components/schemas/ViewImage"},
+                  angledView: {"$ref": "#/components/schemas/MediaFile"},
                   fleetchartImage: {type: :string},
-                  # frontView: {"$ref": "#/components/schemas/ViewImage"},
-                  sideView: {"$ref": "#/components/schemas/ViewImage"},
-                  storeImage: {"$ref": "#/components/schemas/MediaImage"},
-                  topView: {"$ref": "#/components/schemas/ViewImage"}
+                  # frontView: {"$ref": "#/components/schemas/MediaFile"},
+                  sideView: {"$ref": "#/components/schemas/MediaFile"},
+                  storeImage: {"$ref": "#/components/schemas/MediaFile"},
+                  topView: {"$ref": "#/components/schemas/MediaFile"}
                 },
                 additionalProperties: false
               },

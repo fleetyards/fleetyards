@@ -9,10 +9,6 @@ module Shared
         schema({
           type: :object,
           properties: {
-            items: {
-              type: :array,
-              items: {type: :object}
-            },
             meta: {"$ref": "#/components/schemas/Meta"}
           },
           additionalProperties: false,

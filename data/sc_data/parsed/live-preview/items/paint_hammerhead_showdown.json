@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hammerhead_Showdown",
+  "ref": "1392b5a5-23f3-4613-8686-97d8f56af4fa",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Aegis Hammerhead 2949 Best In Show Livery",
+  "short_name": null,
+  "description": "Customize your Hammerhead with this special 2949 Best in Show livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

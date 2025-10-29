@@ -1,0 +1,24 @@
+{
+  "key": "MISL_S02_CS_FSKI_Tempest",
+  "ref": "4317f2fc-4044-454e-8400-25c2e3c65136",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "Missile",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "5f81335d-44e6-4104-841e-c5af9df06829",
+  "name": "Tempest II Missile",
+  "short_name": "Tempest II",
+  "description": "Manufacturer: Firestorm Kinetics\\nTracking Signal: Cross Section\\nSize: 2\\n\\nThe Tempest was designed with nothing but annihilation in mind. Utilizing FireStorm Kinetics' targeting technology, this proximity missile locks onto a target's cross section to draw conflicts to a swift conclusion.",
+  "inventory_consumption": {
+    "micro_scu": 31250.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 2.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 15.0
+  }
+}

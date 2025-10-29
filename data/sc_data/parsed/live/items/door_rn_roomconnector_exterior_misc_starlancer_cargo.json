@@ -1,0 +1,60 @@
+{
+  "key": "Door_RN_RoomConnector_Exterior_MISC_Starlancer_Cargo",
+  "ref": "043da36f-839d-4dbb-958e-9f6201467367",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "cargo_grid_l",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "CargoGrid"
+      ]
+    },
+    {
+      "name": "cargo_grid_r",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "CargoGrid"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "cargo_grid_l",
+      "key": "MISC_Starlancer_CargoGrid_Max",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "cargo_grid_r",
+      "key": "MISC_Starlancer_CargoGrid_Max",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    }
+  ],
+  "durability": {
+    "health": 2000.0
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "key": "MISL_S01_EM_BEHR_Pioneer",
+  "ref": "1fcc8a40-af4a-4446-8a7a-354d9244b5d1",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "Missile",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "Pioneer I Missile",
+  "short_name": "Pioneer I",
+  "description": "Manufacturer: Behring\\nTracking Signal: Electromagnetic\\nSize: 1\\n\\nBehring prides itself on dependability and the Pioneer is no exception. The updated Oracle EM tracking system has proven itself time and again in numerous consumer-testing reports against similarly classed proximity missiles.",
+  "inventory_consumption": {
+    "micro_scu": 15625.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 12.0
+  }
+}

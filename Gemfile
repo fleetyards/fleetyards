@@ -3,7 +3,6 @@
 source "https://rubygems.org"
 
 ruby file: ".tool-versions"
-ruby "3.4.5"
 
 gem "rails", "7.2.2.2"
 
@@ -14,18 +13,12 @@ gem "sidekiq-cron"
 
 gem "paper_trail"
 
-gem "haml"
-gem "haml-rails"
-gem "slim-rails"
-
 gem "data_migrate"
 
 gem "opensearch-ruby"
 gem "searchkick"
 
 gem "discordrb-webhooks"
-
-gem "selectize-rails"
 
 gem "vite_rails"
 
@@ -49,11 +42,18 @@ gem "griddler"
 gem "griddler-postmark", github: "r38y/griddler-postmark"
 gem "postmark-rails"
 
-gem "cancancan"
+gem "action_policy"
 
 gem "devise"
 gem "devise-two-factor"
 gem "rqrcode"
+gem "omniauth-discord"
+gem "omniauth-github"
+gem "omniauth-twitch"
+gem "omniauth-google-oauth2"
+gem "omniauth-apple"
+gem "omniauth-atproto"
+gem "omniauth-rails_csrf_protection"
 
 gem "useragent"
 
@@ -66,32 +66,17 @@ gem "deep_merge", require: "deep_merge/rails_compat"
 gem "jbuilder"
 gem "oj"
 gem "responders"
-gem "rswag-api"
 
 gem "dalli"
 
 gem "kaminari"
 gem "url_plumber"
 
-gem "dynamic_fields_for_rails"
-
-gem "bourbon"
-gem "coffee-rails"
-gem "sass-rails"
-gem "sprockets-rails"
-
-gem "jquery-rails"
-gem "js-routes"
-
-gem "uglifier"
-
 gem "metadown"
 gem "redcarpet"
 
 gem "puma"
 gem "rack-attack"
-
-gem "bower-rails"
 
 gem "highline"
 gem "thor"
@@ -138,8 +123,11 @@ gem "flipper-ui"
 gem "flipper-active_record"
 
 # openapi
+gem "rswag-api"
 gem "rspec-rails", require: false
 gem "rswag-specs", require: false
+gem "rswag-schema_components"
+gem "committee"
 
 group :development do
   gem "annotate"
@@ -179,8 +167,9 @@ group :test do
   gem "simplecov-console", require: false
   gem "simplecov-html", require: false
   gem "timecop"
-  gem "vcr"
   gem "webmock", require: false
+  gem "vcr"
+  gem "database_cleaner-active_record"
 end
 
 group :development, :test do
@@ -191,17 +180,33 @@ group :development, :test do
 
   gem "factory_bot_rails", "~> 6.5.0"
 
+  gem "debug", ">= 1.0.0", platforms: %i[mri mingw x64_mingw]
   gem "byebug", platform: :mri
   gem "pry-byebug"
 
   gem "knapsack"
+
+  gem "cypress-on-rails"
+
+  gem "foreman"
 end
 
 gem "enum_attributes_validation", "~> 0.1.7"
 
 gem "bskyrb", "~> 0.5.3"
 
+gem "doorkeeper", "~> 5.6"
+gem "doorkeeper-jwt"
+gem "doorkeeper-openid_connect"
+
+gem "oauth2", "~> 2.0"
+
 gem "aws-sdk-s3", require: false
+
+gem "lexorank"
+gem "with_advisory_lock"
+
+gem "maintenance_tasks", "~> 2.11"
 
 gem "graphlient"
 

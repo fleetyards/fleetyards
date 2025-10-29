@@ -3,11 +3,21 @@
 require "swagger_helper"
 
 RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/schema.yaml" do
-  fixtures :admin_users, :images, :models
-
-  let(:user) { nil }
-  let(:model_image) { images :model_image }
-  let(:model) { models :andromeda }
+  let(:user) { create(:admin_user, resource_access: [:images]) }
+  let(:gallery) { create(:model) }
+  let(:blob) do
+    ActiveStorage::Blob.create_and_upload!(
+      io: File.open(Rails.root.join("spec/fixtures/files/test.png")),
+      filename: "test.png"
+    )
+  end
+  let(:input) do
+    {
+      file: blob.signed_id,
+      galleryId: gallery.id,
+      galleryType: gallery.class.name
+    }
+  end
 
   before do
     sign_in user if user.present?
@@ -16,38 +26,23 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
   path "/images" do
     post("Image create") do
       operationId "createImage"
-      description "Create a new Image"
-      consumes "multipart/form-data"
-      produces "application/json"
       tags "Images"
 
-      parameter name: :"", in: :formData, schema: {"$ref": "#/components/schemas/ImageInputCreate"}
+      consumes "application/json"
+      produces "application/json"
+
+      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/ImageInputCreate"}
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Image"
 
-        let(:user) { admin_users :jeanluc }
-        let(:"") do
-          {
-            file: ActionDispatch::Http::UploadedFile.new(
-              filename: "img.png",
-              type: "image/png",
-              tempfile: File.new(Rails.root.join("test/fixtures/files/test.png"))
-            ),
-            galleryId: model.id,
-            galleryType: "Model"
-          }
-        end
+        run_test!
+      end
 
-        after do |example|
-          if response&.body.present?
-            example.metadata[:response][:content] = {
-              "application/json": {
-                example: JSON.parse(response.body, symbolize_names: true)
-              }
-            }
-          end
-        end
+      response(403, "forbidden") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { create(:admin_user, resource_access: []) }
 
         run_test!
       end
@@ -55,7 +50,7 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:"") { nil }
+        let(:user) { nil }
 
         run_test!
       end

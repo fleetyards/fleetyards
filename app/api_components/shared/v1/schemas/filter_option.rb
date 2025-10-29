@@ -11,12 +11,17 @@ module Shared
           properties: {
             category: {type: :string},
             icon: {type: :string},
-            name: {type: :string, deprecated: true},
             label: {type: :string},
-            value: {type: :string}
+            value: {
+              anyOf: [
+                {type: :string, nullable: true},
+                {type: :number, nullable: true}
+              ]
+            },
+            name: {type: :string, deprecated: true}
           },
           additionalProperties: false,
-          required: %w[name value category]
+          required: %w[label value]
         })
       end
     end

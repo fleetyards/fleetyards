@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hornet_F7CS_Mk2_Black_Grey",
+  "ref": "d5008b87-9740-427e-b82d-6d90de225181",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1c20c7f0-0538-4cd3-a1f6-421511932404",
+  "name": "Hornet Mk II Blacksmith Livery",
+  "short_name": null,
+  "description": "While few would describe the Hornet Mk II as understated, the sleek two-tone black and grey finish of the Blacksmith livery comes close.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

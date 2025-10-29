@@ -252,8 +252,13 @@ class PaintsImporter
       "F7C-M Super Hornet Mk I", "F7C Hornet Wildfire Mk I", "F7C Hornet Mk I", "F7A Hornet Mk I"
     ]
     hornet_mk2 = [
-      "F7C Hornet Mk II", "F7A Hornet Mk II", "F7C-R Hornet Tracker Mk II",
-      "F7C-S Hornet Ghost Mk II", "Hornet Mk II"
+      "Hornet Mk II",
+      "F7C Hornet Mk II",
+      "F7A Hornet Mk II",
+      "F7C-R Hornet Tracker Mk II",
+      "F7C-S Hornet Ghost Mk II",
+      "F7C-R Hornet Tracker Mk II",
+      "F7C-S Hornet Ghost Mk II"
     ]
     mercury = ["Mercury", "Mercury Star Runner"]
     roc = %w[ROC ROC-DS]
@@ -303,6 +308,7 @@ class PaintsImporter
       "100 Series" => series_100,
       "Origin 100 Series" => series_100,
       "600i" => series_600,
+      "Archimedes & Merlin" => merlin,
       "600i BIS 2951" => series_600,
       "MPUV BIS 2951" => ["MPUV Personnel", "MPUV Cargo"],
       "Origin X1 Scarlet" => x1,
@@ -427,7 +433,6 @@ class PaintsImporter
       "Sabre" => sabre,
       "C1 Spirit 2954 Best In Show" => spirit,
       "F8C Lightning 2954 Best In Show" => f8c,
-      "Archimedes & Merlin" => merlin,
       "Guardian" => guardian,
       "Idris" => idris
     }

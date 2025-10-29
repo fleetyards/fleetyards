@@ -1,0 +1,21 @@
+{
+  "key": "Paint_ROC_Harvester_Orange",
+  "ref": "5ba4d6ed-8699-4933-919b-0937b8936f88",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "bdad6127-f6ed-4abe-8488-581882dfa152",
+  "name": "ROC Harvester Livery",
+  "short_name": null,
+  "description": "The Harvester livery for the ROC and ROC-DS brings a bold look to any jobsite.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_CRUS_Spirit_A1",
+  "ref": "62ee1944-9df6-4e60-a912-2fff1d3abaa1",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SELF STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "scm_speed": 203.5,
+    "scm_speed_boosted": 405.0,
+    "reverse_speed_boosted": 212.0,
+    "max_speed": 1130.0,
+    "angular_velocity": {
+      "pitch": 36.0,
+      "yaw": 36.0,
+      "roll": 101.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 43.199999999999996,
+      "yaw": 43.199999999999996,
+      "roll": 121.19999999999999
+    }
+  }
+}

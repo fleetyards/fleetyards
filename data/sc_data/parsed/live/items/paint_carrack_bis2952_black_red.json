@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Carrack_BIS2952_Black_Red",
+  "ref": "45e3b994-082e-4f2c-a515-0b4b60fdf376",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b852df2e-fede-4241-9324-fc7cf6301ac3",
+  "name": "Carrack Red Alert Livery",
+  "short_name": null,
+  "description": "Explore new frontiers in style with the Red Alert livery, which gives the Carrack an audacious metallic red and black look.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

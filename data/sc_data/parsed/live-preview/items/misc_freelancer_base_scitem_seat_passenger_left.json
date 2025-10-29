@@ -1,0 +1,21 @@
+{
+  "key": "MISC_Freelancer_Base_SCItem_Seat_Passenger_Left",
+  "ref": "5a84677f-090b-4b10-ad24-d0d8e7a4a6e2",
+  "category": "seat",
+  "type": "Seat",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

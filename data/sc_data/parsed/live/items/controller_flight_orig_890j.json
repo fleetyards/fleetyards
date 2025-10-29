@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_ORIG_890J",
+  "ref": "a4d82edd-82e2-4c4a-916a-b2fca2096e6b",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SELF STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "scm_speed": 125.0,
+    "scm_speed_boosted": 300.0,
+    "reverse_speed_boosted": 105.0,
+    "max_speed": 915.0,
+    "angular_velocity": {
+      "pitch": 16.0,
+      "yaw": 16.0,
+      "roll": 30.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 24.0,
+      "yaw": 24.0,
+      "roll": 60.0
+    }
+  }
+}

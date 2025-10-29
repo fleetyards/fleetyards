@@ -3,16 +3,14 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/public/wishlists", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
-  let(:user) { users :data }
-  let(:user_without_public_wishlist) { users :troi }
+  let(:user) { create(:user, public_wishlist: true, wanted_vehicle_count: 2) }
+  let(:user_without_public_wishlist) { create(:user, public_wishlist: false, wanted_vehicle_count: 2) }
 
   path "/public/wishlists/{username}" do
     parameter name: "username", in: :path, type: :string, required: true
 
     get("Your Wishlist") do
-      operationId "get"
+      operationId "publicWishlist"
       tags "PublicWishlist"
       produces "application/json"
 
@@ -28,37 +26,48 @@ RSpec.describe "api/v1/public/wishlists", type: :request, swagger_doc: "v1/schem
         required: false
 
       response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/VehiclePublic"}
+        schema "$ref": "#/components/schemas/HangarPublic"
 
         let(:username) { user.username }
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
+        run_test! do |response|
+          data = JSON.parse(response.body)
+          items = data["items"]
+
+          expect(items.count).to be > 0
+        end
+      end
+
+      response(200, "successful") do
+        schema "$ref": "#/components/schemas/HangarPublic"
+
+        let(:username) { user.username }
+        let(:q) do
+          {
+            "modelNameOrModelDescriptionCont" => user.vehicles.first.model.name
           }
         end
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to be > 0
+          expect(items.count).to eq(1)
+          expect(items.first.dig("model", "name")).to eq(user.vehicles.first.model.name)
         end
       end
 
       response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/VehiclePublic"}
+        schema "$ref": "#/components/schemas/HangarPublic"
 
-        let(:perPage) { 1 }
         let(:username) { user.username }
+        let(:perPage) { 1 }
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to eq(1)
+          expect(items.count).to eq(1)
         end
       end
 

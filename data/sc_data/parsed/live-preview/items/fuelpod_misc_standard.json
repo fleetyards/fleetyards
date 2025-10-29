@@ -1,0 +1,27 @@
+{
+  "key": "FuelPod_MISC_Standard",
+  "ref": "dec0f5dc-68c1-4058-b60d-a7a9911a8e73",
+  "category": "utility",
+  "type": "ExternalFuelTank",
+  "sub_type": null,
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": "CR-60",
+  "short_name": null,
+  "description": "Manufacturer: MISC\\nItem Type: Fuel Pod\\nFlow Rate: 1.15 SCU/s\\nCapacity: 60 SCU\\n\\nThe standard fuel pod of the Starfarer, the CR-60 was designed by MISC to be a well balanced fuel storage option ready to tackle a wide variety of jobs.\\n",
+  "inventory_consumption": {
+    "micro_scu": 50036534.0,
+    "dimensions": {
+      "x": 10.99875,
+      "y": 8.516968,
+      "z": 10.6829
+    }
+  },
+  "durability": {
+    "health": 10000.0
+  },
+  "type_data": {
+    "capacity": 60.0
+  }
+}

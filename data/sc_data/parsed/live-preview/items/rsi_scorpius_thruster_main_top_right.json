@@ -1,0 +1,66 @@
+{
+  "key": "RSI_Scorpius_Thruster_Main_Top_Right",
+  "ref": "791b1713-a71c-4d79-9f90-f3f3045101d7",
+  "category": "thrusters",
+  "type": "MainThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 8000.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 6.0,
+    "StartIRTemperature": 250.0,
+    "OverpowerHeat": 1.0,
+    "OverclockThresholdMinHeat": 1.0,
+    "OverclockThresholdMaxHeat": 1.0,
+    "ThermalEnergyBase": 500.0,
+    "ThermalEnergyDraw": 1250.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.5,
+    "Mass": 850.0,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 45.0,
+    "MaxTemperature": 1000.0,
+    "OverheatTemperature": 850.0,
+    "RecoveryTemperature": 800.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 400.0,
+    "MisfireMaxTemperature": 1100.0
+  },
+  "power_connection": {
+    "power_base": 20.0,
+    "power_draw": 24.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 0.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 1.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 1.0,
+    "overclock_threshold_max": 1.0,
+    "overpower_performance": 0.0,
+    "overclock_performance": 0.0,
+    "power_to_em": 0.0,
+    "decay_rate_of_em": 0.15
+  },
+  "type_data": {
+    "thrust_capacity": 3551000.0,
+    "fuel_burn_rate_per10_k_newton": 0.0655375,
+    "thruster_type": "Main",
+    "thruster_class": "main"
+  }
+}

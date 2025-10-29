@@ -1,0 +1,24 @@
+{
+  "key": "HTNK_RSI_Constellation_Aquila",
+  "ref": "b2a06ccf-6e96-431e-97bc-950ce9d1a0fd",
+  "category": "fueltanks",
+  "type": "FuelTank",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Internal Tank",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "capacity": 52.25
+  }
+}

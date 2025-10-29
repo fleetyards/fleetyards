@@ -1,0 +1,87 @@
+.fleetchart-app {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2000;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #111;
+  outline: 0;
+  transition:
+    opacity $transition-base-speed ease-in-out,
+    transform $transition-base-speed ease-in-out;
+
+  &.fade {
+    transform: scale(0);
+    opacity: 0;
+
+    &.in {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .fleetchart-app-mode {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    z-index: 1000;
+  }
+
+  &__filter {
+    display: flex;
+    position: absolute;
+    left: 20px;
+    bottom: 0;
+    z-index: 1000;
+  }
+
+  &__offcanvas {
+    position: absolute;
+    width: 400px;
+    overflow-y: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    left: -400px;
+    transition: left $transition-base-speed ease-in-out;
+    background-color: rgba($gray-darker, 0.5);
+    border-right: 1px solid rgba(30, 34, 38, 0.5);
+    padding: 20px;
+    z-index: 2000;
+
+    &--visible {
+      left: 0;
+    }
+  }
+
+  &__content {
+    position: relative;
+    transition: all $transition-base-speed ease-in-out;
+
+    &--filter-visible {
+      margin-left: 400px;
+    }
+  }
+
+  .fleetchart-app-close {
+    position: absolute;
+    top: 15px;
+    right: 5px;
+    z-index: 2001;
+    margin-top: env(safe-area-inset-top);
+    margin-right: env(safe-area-inset-right);
+    margin-left: env(safe-area-inset-left);
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .fleetchart-app {
+    .fleetchart-app-mode {
+      top: auto;
+      bottom: 0;
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "key": "RSI_Constellation_Taurus_CargoGrid_Main",
+  "ref": "affd0cad-539a-4dc6-a8c6-a902bef9527c",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 5.0,
+      "y": 17.5,
+      "z": 3.75
+    },
+    "capacity": 168.0,
+    "max_container_size": {
+      "size": 32,
+      "dimensions": {
+        "x": 10.0,
+        "y": 2.5,
+        "z": 2.5
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1.0
+      },
+      "max": {
+        "dimensions": {
+          "x": 2.5,
+          "y": 10.0,
+          "z": 2.5
+        },
+        "capacity": 32.0
+      }
+    }
+  }
+}

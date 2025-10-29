@@ -1,0 +1,78 @@
+{
+  "key": "APAR_BallisticGatling_S6",
+  "ref": "85726664-e16d-4a24-98f8-7cc8f0ba6f00",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "6",
+  "grade": "1",
+  "manufacturer_ref": "77f7999a-b23b-4812-94c2-09b5e15e1b0e",
+  "name": "Draugar Gatling",
+  "short_name": "Draugar",
+  "description": "Manufacturer: Apocalypse Arms\\nItem Type: Ballistic Gatling\\nSize: 6\\n\\nReminiscent of a bygone era of space combat, this brutal size six ballistic Gatling from Apocalypse Arms is a very deliberate weapon. Take a moment as the Draugar's drum spins up to speed to savor the ruin and destruction that you are about unleash.",
+  "inventory_consumption": {
+    "micro_scu": 7560000.0,
+    "dimensions": {
+      "x": 1.339803,
+      "y": 11.05504,
+      "z": 2.405685
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 4224.0
+  },
+  "ammunition": {
+    "max_ammo_count": 2800.0,
+    "initial_ammo_count": 2800.0,
+    "max_restock_count": 3.0
+  },
+  "power_connection": {
+    "power_base": 90.0,
+    "power_draw": 120.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 20.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.33,
+    "overclock_threshold_max": 0.52,
+    "overpower_performance": 0.5,
+    "overclock_performance": 0.3,
+    "power_to_em": 1.75,
+    "decay_rate_of_em": 0.5
+  }
+}

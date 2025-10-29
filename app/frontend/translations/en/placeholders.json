@@ -1,0 +1,123 @@
+{
+  "en": {
+    "placeholders": {
+      "name": "Name",
+      "description": "Description",
+      "login": "Username or email",
+      "username": "Username",
+      "twoFactorCode": "Two-factor code",
+      "email": "Email",
+      "currentPassword": "Current Password",
+      "password": "Password",
+      "passwordConfirmation": "Password Confirmation",
+      "homepage": "Homepage",
+      "discord": "Discord Server",
+      "youtube": "Youtube Channel",
+      "twitch": "Twitch Channel",
+      "distance": "Distance",
+      "guilded": "Guilded Server",
+      "color": "Color",
+      "fleetInviteToken": "Fleet Invite",
+      "quicksearch": {
+        "models": "Avenger, Carrack, Cutlass...",
+        "models-fleetchart": "Avenger, Carrack, Cutlass...",
+        "hangar": "Enterprise, Andromeda...",
+        "hangar-fleetchart": "Enterprise, Andromeda...",
+        "hangar-wishlist": "Avenger, Carrack, Cutlass...",
+        "stations": "Search for Stations...",
+        "shops": "Search for Shops..."
+      },
+      "search": {
+        "default": "Search...",
+        "roadmap-progress-tracker": "Search"
+      },
+      "home": {
+        "search": "Search for Ships..."
+      },
+      "model": {
+        "length": "Length",
+        "beam": "Beam",
+        "height": "Height",
+        "price": "Price",
+        "pledgePrice": "Pledge Price",
+        "mass": "Mass",
+        "minCrew": "Min. Crew",
+        "maxCrew": "Max. Crew",
+        "storeUrl": "Store URL",
+        "salesPageUrl": "Sales Page URL",
+        "rsiId": "RSI ID",
+        "scIdentifier": "SC Identifier",
+        "erkulIdentifier": "Erkul Identifier",
+        "productionNote": "Production Note",
+        "scmSpeed": "SCM Speed",
+        "scmSpeedBoosted": "SCM Speed Boosted",
+        "maxSpeed": "Max Speed",
+        "reverseSpeedBoosted": "Reverse Speed Boosted",
+        "yaw": "Yaw",
+        "pitch": "Pitch",
+        "roll": "Roll",
+        "yawBoosted": "Yaw Boosted",
+        "pitchBoosted": "Pitch Boosted",
+        "rollBoosted": "Roll Boosted"
+      },
+      "fleet": {
+        "fid": "Fleet ID",
+        "rsiSid": "RSI SID",
+        "ts": "Teamspeak Server"
+      },
+      "user": {
+        "rsiHandle": "RSI Handle"
+      },
+      "vehicle": {
+        "serial": "Serial (XX-XXXX-XX)"
+      },
+      "commodityPrice": {
+        "price": "100.00"
+      },
+      "filters": {
+        "shops": {
+          "name": "Casaba, Platinum Bay...",
+          "commodityName": "Aurora, L86..."
+        },
+        "stations": {
+          "name": "Port Olisar, Teasa..."
+        },
+        "shopItems": {
+          "name": "Aurora, L86...",
+          "minPrice": "minmal Price in UEC",
+          "maxPrice": "maximal Price in UEC"
+        },
+        "vehicles": {
+          "name": "Enterprise, Andromeda...",
+          "priceLt": "Price <=",
+          "priceGt": "Price >="
+        },
+        "models": {
+          "name": "Gladius, Andromeda...",
+          "shipRole": "Cargo, Capital Ship, Fighter...",
+          "classification": "Vehicle, Fighter, Cargo...",
+          "manufacturer": "Origin, Robert Space Industries, Aegis...",
+          "onSale": "Yes or No",
+          "productionStatus": "Announced, Flight Ready, In Concept..."
+        },
+        "manufacturers": {
+          "name": "Origin, Robert Space Industries, Aegis..."
+        },
+        "users": {
+          "search": "Username or Email",
+          "username": "Username",
+          "rsiHandle": "RSI Handle",
+          "email": "Email"
+        },
+        "fleets": {
+          "members": {
+            "username": "Username"
+          }
+        },
+        "shopCommodities": {
+          "name": "Name"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "key": "ARGO_MPUV_1T_CargoGrid",
+  "ref": "ed921b8a-17fb-4508-b806-ca12eb01a3d3",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 2.5,
+      "y": 5.0,
+      "z": 2.5
+    },
+    "capacity": 16.0,
+    "max_container_size": {
+      "size": 16,
+      "dimensions": {
+        "x": 5.0,
+        "y": 2.5,
+        "z": 2.5
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 2.5,
+          "y": 5.0,
+          "z": 2.5
+        },
+        "capacity": 16.0
+      },
+      "max": {
+        "dimensions": {
+          "x": 2.5,
+          "y": 5.0,
+          "z": 2.5
+        },
+        "capacity": 16.0
+      }
+    }
+  }
+}

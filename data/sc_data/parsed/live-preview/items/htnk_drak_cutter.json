@@ -1,0 +1,24 @@
+{
+  "key": "HTNK_DRAK_Cutter",
+  "ref": "2ff9ff6c-78f3-4e04-be9c-882b9e4fbd57",
+  "category": "fueltanks",
+  "type": "FuelTank",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Internal Tank",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "capacity": 28.0
+  }
+}

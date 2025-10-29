@@ -1,0 +1,9 @@
+{
+  "key": "Ship_TempItemCarryingCapacity_AEGS_Avenger",
+  "ref": "35e22d42-39f9-4ba0-a53b-67b12b197681",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 8.0
+  }
+}

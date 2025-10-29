@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Gladius_TalkLikeAPirate_Metal_Red",
+  "ref": "ea77577b-d7fc-460e-939d-878843cf945d",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "aa823c43-3fea-4688-8a38-79fd6d333f9e",
+  "name": "Gladius Solar Winds Livery",
+  "short_name": null,
+  "description": "Fly in style with the Solar Winds livery that gives the Gladius a metallic silver finish with maroon highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -20,6 +20,8 @@
 #  slug                   :string
 #  storage                :decimal(15, 2)
 #  store_image            :string
+#  store_image_height     :integer
+#  store_image_width      :integer
 #  temperature_rating     :string
 #  volume                 :decimal(15, 2)
 #  weapon_class           :integer

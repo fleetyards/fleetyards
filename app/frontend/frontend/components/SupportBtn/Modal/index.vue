@@ -1,0 +1,71 @@
+<template>
+  <Modal :title="t('headlines.support')">
+    <div class="support-body">
+      <br />
+      <div class="row">
+        <div class="col-12">
+          <p v-html="t('texts.support.info')" />
+        </div>
+      </div>
+      <br />
+      <div class="row">
+        <div class="col-12">
+          <p v-html="t('texts.support.code')" />
+          <a
+            href="https://robertsspaceindustries.com/enlist?referral=STAR-5F32-SJZ4"
+            class="support-referral-link"
+            target="_blank"
+            rel="noopener"
+          >
+            <b>STAR-5F32-SJZ4</b>
+          </a>
+        </div>
+      </div>
+      <br />
+      <p>
+        {{ t("texts.support.subline") }}
+      </p>
+      <div class="page-actions page-actions-center">
+        <Btn href="https://paypal.me/mortik" size="large">
+          <i class="fab fa-paypal" />
+          PayPal
+        </Btn>
+        <Btn href="https://www.patreon.com/fleetyards" size="large">
+          <i class="fab fa-patreon" />
+          Patreon
+        </Btn>
+        <Btn href="https://ko-fi.com/fleetyardsnet" size="large">
+          <img :src="kofiIcon" alt="Ko-fi Icon" width="30" />
+          Ko-fi
+        </Btn>
+        <a
+          href="https://www.buymeacoffee.com/mortik"
+          class="support-buymeacoffee"
+        >
+          <img
+            src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=martenk&button_colour=428bca&font_colour=ffffff&font_family=Cookie&outline_colour=ffffff&coffee_colour=FFDD00"
+          />
+        </a>
+      </div>
+    </div>
+  </Modal>
+</template>
+
+<script lang="ts" setup>
+import Modal from "@/shared/components/AppModal/Inner/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import kofiIcon from "@/images/icons/kofi_s_logo_nolabel.png";
+
+const { t } = useI18n();
+</script>
+
+<script lang="ts">
+export default {
+  name: "SupportModal",
+};
+</script>
+
+<style lang="scss" scoped>
+@import "./index.scss";
+</style>

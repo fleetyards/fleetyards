@@ -19,59 +19,105 @@ servers:
 security:
 - SessionCookie: []
 paths:
-  "/commodities":
+  "/admin_users/me":
     get:
-      summary: Commodities list
-      operationId: commodities
-      description: Get a List of Commodities
+      summary: My Data
+      operationId: me
       tags:
-      - Commotities
-      parameters:
-      - "$ref": "#/components/parameters/PageParameter"
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 30
-        required: false
-      - "$ref": "#/components/parameters/SortingParameter"
-      - name: q
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/CommodityQuery"
-        style: deepObject
-        explode: true
-        required: false
+      - AdminUsers
       responses:
         '200':
           description: successful
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/Commodities"
+                "$ref": "#/components/schemas/AdminUser"
         '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/components/item_type_filters":
+  "/components":
     get:
-      summary: Component Item Type Filters
-      operationId: itemTypes
-      description: Get a list of Component Item Types
+      summary: Components list
+      operationId: components
       tags:
-      - ComponentsFilters
+      - Components
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 50
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ComponentQuery"
+        style: deepObject
+        explode: true
+        required: false
+      - name: cacheId
+        in: query
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: successful
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
+                "$ref": "#/components/schemas/Components"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/components/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Component id
+      required: true
+    get:
+      summary: Component Detail
+      operationId: component
+      tags:
+      - Components
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Component"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '401':
           description: unauthorized
           content:
@@ -82,7 +128,6 @@ paths:
     post:
       summary: Image create
       operationId: createImage
-      description: Create a new Image
       tags:
       - Images
       parameters: []
@@ -93,6 +138,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Image"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '401':
           description: unauthorized
           content:
@@ -101,7 +152,7 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
       requestBody:
         content:
-          multipart/form-data:
+          application/json:
             schema:
               "$ref": "#/components/schemas/ImageInputCreate"
     get:
@@ -134,6 +185,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Images"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '401':
           description: unauthorized
           content:
@@ -151,16 +208,18 @@ paths:
       required: true
     delete:
       summary: Image destroy
-      operationId: destroy
+      operationId: destroyImage
       tags:
       - Images
       responses:
         '204':
           description: successful
-        '401':
-          description: unauthorized
         '404':
           description: not_found
+        '403':
+          description: forbidden
+        '401':
+          description: unauthorized
     put:
       summary: Image update
       operationId: updateImage
@@ -180,6 +239,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '404':
           description: not_found
           content:
@@ -191,11 +256,416 @@ paths:
           application/json:
             schema:
               "$ref": "#/components/schemas/ImageInput"
+  "/imports":
+    get:
+      summary: Imports list
+      operationId: imports
+      description: Get a List of Imports
+      tags:
+      - Imports
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 25
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ImportQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Imports"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/imports/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: id
+      required: true
+    get:
+      summary: Import Detail
+      operationId: import
+      tags:
+      - Imports
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Import"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/item-prices":
+    post:
+      summary: Create new Item Price
+      operationId: createItemPrice
+      tags:
+      - ItemPrices
+      parameters: []
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ItemPrice"
+        '400':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ItemPriceInput"
+        required: true
+    get:
+      summary: Item Prices list
+      operationId: itemPrices
+      tags:
+      - ItemPrices
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 25
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ItemPriceQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ItemPrices"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/item-prices/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: id
+      required: true
+    delete:
+      summary: Item price destroy
+      operationId: destroyItemPrice
+      tags:
+      - ItemPrices
+      responses:
+        '204':
+          description: successful
+        '404':
+          description: not_found
+        '403':
+          description: forbidden
+        '401':
+          description: unauthorized
+    get:
+      summary: Get Item Price
+      operationId: itemPrice
+      tags:
+      - ItemPrices
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ItemPrice"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    put:
+      summary: Update Item Price
+      operationId: updateItemPrice
+      tags:
+      - ItemPrices
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ItemPrice"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ItemPriceInput"
+        required: true
+  "/manufacturers":
+    get:
+      summary: Manufacturers list
+      operationId: manufacturers
+      tags:
+      - Manufacturers
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ManufacturerQuery"
+        style: deepObject
+        explode: true
+        required: false
+      - name: cacheId
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Manufacturers"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/manufacturers/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Manufacturer id
+      required: true
+    get:
+      summary: Manufacturer Detail
+      operationId: manufacturer
+      tags:
+      - Manufacturers
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Manufacturer"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/model-paints":
+    get:
+      summary: Paints list
+      operationId: paints
+      tags:
+      - Models
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ModelPaintQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelPaints"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/production-states":
+    get:
+      summary: Model Production states
+      operationId: modelProductionStates
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/models":
     get:
       summary: Models list
       operationId: models
-      description: Get a List of Models
       tags:
       - Models
       parameters:
@@ -222,35 +692,47 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Models"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/shop-commodities/{id}":
+  "/models/{id}":
     parameters:
     - name: id
       in: path
-      description: Shop Commodity ID
+      description: Model id
       schema:
         type: string
         format: uuid
       required: true
-    delete:
-      summary: Shop Commodity Destroy
-      operationId: destroyShopCommodity
+    get:
+      summary: Model Detail
+      operationId: model
       tags:
-      - ShopCommodities
+      - Models
       responses:
         '200':
           description: successful
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ModelExtended"
         '404':
           description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
           content:
             application/json:
               schema:
@@ -261,20 +743,239 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/shops/{shopId}/commodities":
-    parameters:
-    - name: shopId
-      in: path
-      schema:
-        type: string
-        format: uuid
-      required: true
-    get:
-      summary: Shop Commodities list
-      operationId: shopCommodities
-      description: Get a List of Shop Commodities
+    put:
+      summary: Update Model
+      operationId: updateModel
       tags:
-      - Shops
+      - Models
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelExtended"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelUpdateInput"
+        required: true
+  "/sessions":
+    post:
+      summary: create session
+      operationId: createSession
+      tags:
+      - Sessions
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminUser"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SessionInput"
+        required: true
+    delete:
+      summary: Destroy Session
+      operationId: destroySession
+      tags:
+      - Sessions
+      responses:
+        '200':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/stats/most-viewed-pages":
+    get:
+      summary: Stats most viewed Pages
+      operationId: mostViewedPages
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/BarChartStats"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/stats/registrations-per-month":
+    get:
+      summary: Stats Registrations per Month
+      operationId: registrationsPerMonth
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/BarChartStats"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/stats/quick-stats":
+    get:
+      summary: Stats
+      operationId: stats
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Stats"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/stats/visits-per-day":
+    get:
+      summary: Stats Visits per Day
+      operationId: visitsPerDay
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/BarChartStats"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/stats/visits-per-month":
+    get:
+      summary: Stats Visits per Month
+      operationId: visitsPerMonth
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/BarChartStats"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/users":
+    get:
+      summary: Users list
+      operationId: users
+      tags:
+      - Users
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 25
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/UserQuery"
+        style: deepObject
+        explode: true
+        required: false
+      - name: cacheId
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Users"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/vehicles":
+    get:
+      summary: Vehicles list
+      operationId: vehicles
+      tags:
+      - Vehicles
       parameters:
       - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
@@ -283,59 +984,12 @@ paths:
           type: string
           default: 30
         required: false
-      - name: order
-        in: query
-        schema:
-          "$ref": "#/components/schemas/ShopCommodityOrder"
-        required: false
-      - name: filters
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/ShopCommodityQuery"
-        style: deepObject
-        explode: true
-        required: false
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ShopCommodities"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/stations":
-    get:
-      summary: Stations list
-      operationId: stations
-      description: Get a List of Stations
-      tags:
-      - Stations
-      parameters:
-      - "$ref": "#/components/parameters/PageParameter"
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 10
-        required: false
       - "$ref": "#/components/parameters/SortingParameter"
       - name: q
         in: query
         schema:
           type: object
-          "$ref": "#/components/schemas/StationQuery"
+          "$ref": "#/components/schemas/VehicleQuery"
         style: deepObject
         explode: true
         required: false
@@ -345,7 +999,13 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/Stations"
+                "$ref": "#/components/schemas/Vehicles"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '401':
           description: unauthorized
           content:
@@ -389,10 +1049,6 @@ components:
     BaseList:
       type: object
       properties:
-        items:
-          type: array
-          items:
-            type: object
         meta:
           "$ref": "#/components/schemas/Meta"
       additionalProperties: false
@@ -400,82 +1056,80 @@ components:
       - items
       - meta
       title: BaseList
-    Commodity:
+    CargoHold:
       type: object
       properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        slug:
-          type: string
-        type:
-          "$ref": "#/components/schemas/CommodityTypeEnum"
-        typeLabel:
-          type: string
-        availability:
+        dimensions:
+          "$ref": "#/components/schemas/CargoHoldDimension"
+        capacity:
+          type: integer
+        maxContainerSize:
+          "$ref": "#/components/schemas/CargoHoldContainerSize"
+        limits:
           type: object
           properties:
-            listedAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ShopCommodity"
-            boughtAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ShopCommodity"
-            soldAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ShopCommodity"
+            min:
+              "$ref": "#/components/schemas/CargoHoldLimit"
+            max:
+              "$ref": "#/components/schemas/CargoHoldLimit"
           additionalProperties: false
           required:
-          - listedAt
-          - boughtAt
-          - soldAt
-        media:
-          type: object
-          properties:
-            storeImage:
-              "$ref": "#/components/schemas/MediaImage"
-          additionalProperties: false
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        storeImage:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageIsFallback:
-          type: boolean
-          format: uri
-          deprecated: true
-        storeImageLarge:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageMedium:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageSmall:
-          type: string
-          format: uri
-          deprecated: true
+          - min
       additionalProperties: false
       required:
-      - id
-      - name
-      - slug
-      - availability
-      - media
-      - createdAt
-      - updatedAt
-      title: Commodity
+      - dimensions
+      - capacity
+      - maxContainerSize
+      - limits
+      title: CargoHold
+    CargoHoldContainerSize:
+      type: object
+      properties:
+        size:
+          type: integer
+        dimensions:
+          "$ref": "#/components/schemas/CargoHoldDimension"
+      additionalProperties: false
+      required:
+      - size
+      - dimensions
+      title: CargoHoldContainerSize
+    CargoHoldDimension:
+      type: object
+      properties:
+        x:
+          type: number
+        "y":
+          type: number
+        z:
+          type: number
+      additionalProperties: false
+      required:
+      - x
+      - "y"
+      - z
+      title: CargoHoldDimension
+    CargoHoldLimit:
+      type: object
+      properties:
+        dimensions:
+          "$ref": "#/components/schemas/CargoHoldDimension"
+        capacity:
+          type: integer
+      additionalProperties: false
+      required:
+      - dimensions
+      - capacity
+      title: CargoHoldLimit
+    Check:
+      type: object
+      properties:
+        taken:
+          type: boolean
+      additionalProperties: false
+      required:
+      - taken
+      title: Check
     Component:
       type: object
       properties:
@@ -486,89 +1140,77 @@ components:
           type: string
         slug:
           type: string
-        availability:
-          type: object
-          properties:
-            listedAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ShopCommodity"
-            boughtAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ShopCommodity"
-            soldAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ShopCommodity"
-          additionalProperties: false
-          required:
-          - listedAt
-          - boughtAt
-          - soldAt
-        class:
+        scKey:
+          type: string
+        scRef:
+          type: string
+        hidden:
+          type: boolean
+        category:
+          type: string
+        type:
+          "$ref": "#/components/schemas/ComponentTypeEnum"
+        subType:
+          type: string
+        inventoryConsumption:
           type: string
         grade:
           type: string
-        itemClass:
+        gradeLabel:
           type: string
+        size:
+          type: string
+        class:
+          "$ref": "#/components/schemas/ComponentClassEnum"
+        itemClass:
+          "$ref": "#/components/schemas/ComponentItemClassEnum"
         itemClassLabel:
           type: string
-        itemType:
-          type: string
-        itemTypeLabel:
-          type: string
+        availability:
+          type: object
+          properties:
+            boughtAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ItemPrice"
+            soldAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ItemPrice"
+          additionalProperties: false
+          required:
+          - boughtAt
+          - soldAt
         manufacturer:
           "$ref": "#/components/schemas/Manufacturer"
         media:
           type: object
           properties:
             storeImage:
-              "$ref": "#/components/schemas/MediaImage"
+              "$ref": "#/components/schemas/MediaFile"
           additionalProperties: false
         typeData:
-          oneOf:
+          anyOf:
           - "$ref": "#/components/schemas/ComponentQuantumDrive"
-        size:
-          type: string
-        trackingSignal:
-          type: string
-        trackingSignalLabel:
-          type: string
-        type:
-          type: string
-        typeLabel:
-          type: string
+          - "$ref": "#/components/schemas/CargoHold"
+          - "$ref": "#/components/schemas/FuelTank"
+          - "$ref": "#/components/schemas/ComponentThruster"
+        hardpoints:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Hardpoint"
         createdAt:
           type: string
           format: date-time
         updatedAt:
           type: string
           format: date-time
-        storeImage:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageIsFallback:
-          type: boolean
-          deprecated: true
-        storeImageLarge:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageMedium:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageSmall:
-          type: string
-          format: uri
-          deprecated: true
       additionalProperties: false
       required:
       - id
       - name
       - slug
+      - hidden
       - availability
       - media
       - createdAt
@@ -613,6 +1255,37 @@ components:
       - spoolUpTime
       - cooldown
       title: ComponentQuantumDriveJump
+    ComponentThruster:
+      type: object
+      properties:
+        thrustCapacity:
+          type: number
+        thrusterType:
+          type: string
+        thrusterClass:
+          "$ref": "#/components/schemas/ThrusterClassEnum"
+        fuelBurnRatePer10KNewton:
+          type: number
+      additionalProperties: false
+      required:
+      - capacity
+      - thrusterType
+      - fuelBurnRatePer10KNewton
+      title: ComponentThruster
+    Components:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Component"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: Components
     Dock:
       type: object
       properties:
@@ -660,23 +1333,6 @@ components:
       - pledge_store
       - ingame
       title: BoughtViaEnum
-    CommodityTypeEnum:
-      type: string
-      enum:
-      - gas
-      - metal
-      - mineral
-      - non_metals
-      - agricultural_supply
-      - food
-      - medical_supply
-      - processed_goods
-      - waste
-      - scrap
-      - vice
-      - harvestable
-      - consumer_goods
-      title: CommodityTypeEnum
     ComponentClassEnum:
       type: string
       enum:
@@ -686,6 +1342,92 @@ components:
       - RSIPropulsion
       - RSIThruster
       title: ComponentClassEnum
+    ComponentItemClassEnum:
+      type: string
+      enum:
+      - stealth
+      - civilian
+      - industrial
+      - military
+      - competition
+      title: ComponentItemClassEnum
+    ComponentTypeEnum:
+      type: string
+      enum:
+      - Seat
+      - Door
+      - MainThruster
+      - Armor
+      - WeaponDefensive
+      - ManneuverThruster
+      - CargoGrid
+      - Cargo
+      - EMP
+      - Paints
+      - TurretBase
+      - ToolArm
+      - Turret
+      - Misc
+      - Module
+      - ControlPanel
+      - WeaponGun
+      - Container
+      - TractorBeam
+      - UtilityTurret
+      - TowingBeam
+      - MissileController
+      - Lightgroup
+      - Battery
+      - CapacitorAssignmentController
+      - CommsController
+      - CoolerController
+      - DoorController
+      - EnergyController
+      - FlightController
+      - MiningController
+      - BombLauncher
+      - Bomb
+      - FuelController
+      - SalvageController
+      - ShieldController
+      - TargetSelector
+      - WeaponController
+      - WheeledController
+      - Cooler
+      - DockingAnimator
+      - Button
+      - Sensor
+      - Usable
+      - ExternalFuelTank
+      - FuelTank
+      - WeaponMining
+      - SalvageHead
+      - JumpDrive
+      - FuelIntake
+      - MiningModifier
+      - Missile
+      - AttachedPart
+      - LifeSupportGenerator
+      - SpaceMine
+      - MissileLauncher
+      - DockingCollar
+      - PowerPlant
+      - QuantumFuelTank
+      - QuantumInterdictionGenerator
+      - QuantumDrive
+      - Relay
+      - Radar
+      - Scanner
+      - SalvageFillerStation
+      - Shield
+      - SeatDashboard
+      - Display
+      - SelfDestruct
+      - WeaponAttachment
+      - SalvageFieldEmitter
+      - SalvageFieldSupporter
+      - SalvageInternalStorage
+      title: ComponentTypeEnum
     DockShipSizeEnum:
       type: string
       enum:
@@ -718,13 +1460,6 @@ components:
       - weapon_attachment
       - hacking_tool
       title: EquipmentTypeEnum
-    FleetMembershipRoleEnum:
-      type: string
-      enum:
-      - admin
-      - officer
-      - member
-      title: FleetMembershipRoleEnum
     FleetMembershipShipsFilterEnum:
       type: string
       enum:
@@ -748,15 +1483,111 @@ components:
       - Station
       - Album
       title: GalleryTypeEnum
-    HabitationTypeEnum:
+    HardpointCategoryEnum:
       type: string
       enum:
-      - container
-      - small_apartment
-      - medium_apartment
-      - large_apartment
-      - suite
-      title: HabitationTypeEnum
+      - radar
+      - computers
+      - scanners
+      - powerplant
+      - cooler
+      - shieldgenerator
+      - module
+      - salvagefillerstation
+      - fueltanks
+      - fuel_intakes
+      - quantumdrive
+      - jumpdrive
+      - main_thrusters
+      - retro_thrusters
+      - vtol_thrusters
+      - maneuvering_thrusters
+      - weapons
+      - weapon_mounts
+      - turret
+      - missile_racks
+      - bombcompartments
+      - quantumenforcementdevice
+      - emp
+      - salvagemunching
+      - armor
+      - countermeasures
+      - selfdestruct
+      - lifesupport
+      - batteries
+      - utility
+      - seat
+      - relay
+      - paints
+      - doors
+      - cargogrid
+      - inventory
+      - controller
+      - unknown
+      title: HardpointCategoryEnum
+    HardpointGroupEnum:
+      type: string
+      enum:
+      - avionic
+      - system
+      - propulsion
+      - thruster
+      - weapon
+      - defense
+      - auxiliary
+      - seat
+      - relay
+      - other
+      - unknown
+      title: HardpointGroupEnum
+    HardpointSourceEnum:
+      type: string
+      enum:
+      - ship_matrix
+      - game_files
+      title: HardpointSourceEnum
+    ImportStatusEnum:
+      type: string
+      enum:
+      - created
+      - started
+      - finished
+      - failed
+      title: ImportStatusEnum
+    ImportTypeEnum:
+      type: string
+      enum:
+      - Imports::ModelImport
+      - Imports::ModelsImport
+      - Imports::ScData::AllImport
+      - Imports::ScData::ModelsImport
+      - Imports::ScData::ModelImport
+      - Imports::HangarSync
+      - Imports::HangarImport
+      title: ImportTypeEnum
+    ItemPriceItemTypeEnum:
+      type: string
+      enum:
+      - Model
+      - ModelModule
+      - ModelPaint
+      - Component
+      title: ItemPriceItemTypeEnum
+    ItemPriceTimeRangeEnum:
+      type: string
+      enum:
+      - 1-day
+      - 3-days
+      - 7-days
+      - 30-days
+      title: ItemPriceTimeRangeEnum
+    ItemPriceTypeEnum:
+      type: string
+      enum:
+      - buy
+      - sell
+      - rental
+      title: ItemPriceTypeEnum
     ModelHardpointCategoryEnum:
       type: string
       enum:
@@ -805,12 +1636,6 @@ components:
       - capital
       - tbd
       title: ModelHardpointSizeEnum
-    ModelHardpointSourceEnum:
-      type: string
-      enum:
-      - ship_matrix
-      - game_files
-      title: ModelHardpointSourceEnum
     ModelHardpointSubCategoryEnum:
       type: string
       enum:
@@ -842,6 +1667,13 @@ components:
       - emp
       - utility_items
       title: ModelHardpointTypeEnum
+    ModelProductionStatusEnum:
+      type: string
+      enum:
+      - in-concept
+      - in-production
+      - flight-ready
+      title: ModelProductionStatusEnum
     OrderDirectionEnum:
       type: string
       enum:
@@ -856,103 +1688,14 @@ components:
       - upgrade
       - skin
       title: RsiHangarItemKindEnum
-    SearchResultTypeEnum:
+    ThrusterClassEnum:
       type: string
       enum:
-      - Model
-      - Component
-      - Shop
-      - Station
-      - CelestialObject
-      - Starsystem
-      - Equipment
-      - Commodity
-      title: SearchResultTypeEnum
-    ShopCommodityCategoryEnum:
-      type: string
-      enum:
-      - model
-      - equipment
-      - commodity
-      - component
-      - modelmodule
-      - modelpaint
-      title: ShopCommodityCategoryEnum
-    ShopCommodityItemTypeEnum:
-      type: string
-      enum:
-      - Model
-      - Equipment
-      - Commodity
-      - Component
-      - ModelModule
-      - ModelPaint
-      title: ShopCommodityItemTypeEnum
-    ShopTypeEnum:
-      type: string
-      enum:
-      - clothing
-      - armor
-      - weapons
-      - components
-      - armor_and_weapons
-      - superstore
-      - ships
-      - admin
-      - bar
-      - hospital
-      - salvage
-      - resources
-      - rental
-      - computers
-      - blackmarket
-      - mining_equipment
-      - equipment
-      - courier
-      - refinery
-      - pharmacy
-      - cargo
-      - souvenirs
-      - kiosk
-      - ship_customizations
-      title: ShopTypeEnum
-    StationClassificationEnum:
-      type: string
-      enum:
-      - city
-      - trading
-      - mining
-      - salvaging
-      - farming
-      - science
-      - security
-      - rest_stop
-      - settlement
-      - town
-      - drug_lab
-      - cargo
-      - derelict
-      - prison
-      - spaceport
-      title: StationClassificationEnum
-    StationSizeEnum:
-      type: string
-      enum:
-      - small
-      - medium
-      - large
-      title: StationSizeEnum
-    StationTypeEnum:
-      type: string
-      enum:
-      - landing_zone
-      - station
-      - asteroid_station
-      - district
-      - outpost
-      - aid_shelter
-      - ugf
-      title: StationTypeEnum
+      - main
+      - retro
+      - vtol
+      - mav
+      title: ThrusterClassEnum
     VideoTypeEnum:
       type: string
       enum:
@@ -971,21 +1714,16 @@ components:
         availability:
           type: object
           properties:
-            listedAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ShopCommodity"
             boughtAt:
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ItemPrice"
             soldAt:
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ItemPrice"
           additionalProperties: false
           required:
-          - listedAt
           - boughtAt
           - soldAt
         backpackCompatibility:
@@ -1010,7 +1748,7 @@ components:
           type: object
           properties:
             storeImage:
-              "$ref": "#/components/schemas/MediaImage"
+              "$ref": "#/components/schemas/MediaFile"
           additionalProperties: false
         range:
           type: string
@@ -1042,25 +1780,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-        storeImage:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageIsFallback:
-          type: boolean
-          deprecated: true
-        storeImageLarge:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageMedium:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageSmall:
-          type: string
-          format: uri
-          deprecated: true
       additionalProperties: false
       required:
       - id
@@ -1092,19 +1811,31 @@ components:
           type: string
         icon:
           type: string
-        name:
-          type: string
-          deprecated: true
         label:
           type: string
         value:
+          anyOf:
+          - type: string
+            nullable: true
+          - type: number
+            nullable: true
+        name:
           type: string
+          deprecated: true
       additionalProperties: false
       required:
-      - name
+      - label
       - value
-      - category
       title: FilterOption
+    FuelTank:
+      type: object
+      properties:
+        capacity:
+          type: number
+      additionalProperties: false
+      required:
+      - capacity
+      title: FuelTank
     Gallery:
       type: object
       properties:
@@ -1124,51 +1855,40 @@ components:
       - name
       - slug
       title: Gallery
-    Habitation:
+    Hardpoint:
       type: object
       properties:
+        id:
+          type: string
+          format: uuid
+        group:
+          "$ref": "#/components/schemas/HardpointGroupEnum"
+        groupKey:
+          type: string
+        matrixKey:
+          type: string
+        category:
+          "$ref": "#/components/schemas/HardpointCategoryEnum"
         name:
           type: string
-        habitationName:
-          type: string
-        type:
-          "$ref": "#/components/schemas/HabitationTypeEnum"
-        typeLabel:
-          type: string
-      additionalProperties: false
-      required:
-      - name
-      - type
-      - typeLabel
-      title: Habitation
-    HabitationCount:
-      type: object
-      properties:
-        count:
+        minSize:
           type: integer
-        type:
+        maxSize:
+          type: integer
+        source:
+          "$ref": "#/components/schemas/HardpointSourceEnum"
+        types:
+          type: array
+          items:
+            type: string
+        details:
           type: string
-        typeLabel:
-          type: string
-      additionalProperties: false
-      required:
-      - count
-      - type
-      - typeLabel
-      title: HabitationCount
-    Manufacturer:
-      type: object
-      properties:
-        name:
-          type: string
-        slug:
-          type: string
-        code:
-          type: string
-        logo:
-          type: string
-        longName:
-          type: string
+        component:
+          "$ref": "#/components/schemas/Component"
+        hardpoints:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Hardpoint"
         createdAt:
           type: string
           format: date-time
@@ -1177,33 +1897,66 @@ components:
           format: date-time
       additionalProperties: false
       required:
+      - id
       - name
-      - slug
       - createdAt
       - updatedAt
-      title: Manufacturer
-    MediaImage:
+      title: Hardpoint
+    CheckInput:
       type: object
       properties:
-        large:
+        value:
           type: string
-          format: uri
-        medium:
-          type: string
-          format: uri
-        small:
-          type: string
-          format: uri
-        source:
-          type: string
-          format: uri
       additionalProperties: false
       required:
-      - source
-      - small
-      - medium
-      - large
-      title: MediaImage
+      - value
+      title: CheckInput
+    SetupOtpInput:
+      type: object
+      properties:
+        otpCode:
+          type: string
+      additionalProperties: false
+      title: SetupOtpInput
+    MediaFile:
+      type: object
+      properties:
+        name:
+          type: string
+        contentType:
+          type: string
+        size:
+          type: integer
+        url:
+          type: string
+          format: uri
+        smallUrl:
+          type: string
+          format: uri
+        mediumUrl:
+          type: string
+          format: uri
+        largeUrl:
+          type: string
+          format: uri
+        xlargeUrl:
+          type: string
+          format: uri
+        width:
+          type: integer
+        height:
+          type: integer
+        uploadedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - name
+      - contentType
+      - size
+      - url
+      - uploadedAt
+      title: MediaFile
     Meta:
       type: object
       properties:
@@ -1211,16 +1964,23 @@ components:
           "$ref": "#/components/schemas/Pagination"
       additionalProperties: false
       title: Meta
-    ShopCommodityOrder:
+    OtpBackupCodes:
       type: object
       properties:
-        name:
-          "$ref": "#/components/schemas/OrderDirectionEnum"
+        codes:
+          type: array
+          items:
+            type: string
+          additionalProperties: false
       additionalProperties: false
-      title: ShopCommodityOrder
+      required:
+      - codes
+      title: OtpBackupCodes
     Pagination:
       type: object
       properties:
+        totalCount:
+          type: integer
         currentPage:
           type: integer
         totalPages:
@@ -1232,7 +1992,7 @@ components:
         perPageSteps:
           type: array
           items:
-            oneOf:
+            anyOf:
             - type: string
             - type: integer
       additionalProperties: false
@@ -1274,156 +2034,90 @@ components:
           "$ref": "#/components/schemas/Pagination"
       additionalProperties: false
       title: Session
-    Shop:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        slug:
-          type: string
-        buying:
-          type: boolean
-        location:
-          type: string
-        locationLabel:
-          type: string
-        media:
-          type: object
-          properties:
-            storeImage:
-              "$ref": "#/components/schemas/MediaImage"
-          additionalProperties: false
-        refineryTerminal:
-          type: boolean
-        rental:
-          type: boolean
-        selling:
-          type: boolean
-        station:
-          "$ref": "#/components/schemas/StationShop"
-        stationLabel:
-          type: string
-        type:
-          "$ref": "#/components/schemas/ShopTypeEnum"
-        typeLabel:
-          type: string
-        celestialObject:
-          "$ref": "#/components/schemas/CelestialObject"
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        storeImage:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageSmall:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageMedium:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageLarge:
-          type: string
-          format: uri
-          deprecated: true
-      additionalProperties: false
-      required:
-      - id
-      - name
-      - slug
-      - type
-      - typeLabel
-      - stationLabel
-      - locationLabel
-      - rental
-      - buying
-      - selling
-      - media
-      - refineryTerminal
-      - station
-      - createdAt
-      - updatedAt
-      title: Shop
-    CelestialObjectSortEnum:
-      type: string
-      enum:
-      - name asc
-      - name desc
-      - parent_id asc
-      - parent_id desc
-      - designation asc
-      - designation desc
-      title: CelestialObjectSortEnum
     FleetMembershipSortEnum:
       type: string
       enum:
-      - user_rsi_handle asc
-      - user_rsi_handle desc
-      - user_username asc
-      - user_username desc
-      - created_at asc
-      - created_at desc
-      - accepted_at asc
-      - accepted_at desc
+      - userRsiHandle asc
+      - userRsiHandle desc
+      - userUsername asc
+      - userUsername desc
+      - createdAt asc
+      - createdAt desc
+      - acceptedAt asc
+      - acceptedAt desc
       title: FleetMembershipSortEnum
     FleetVehicleSortEnum:
       type: string
       enum:
-      - model_name asc
-      - model_name desc
-      - created_at asc
-      - created_at desc
-      - updated_at asc
-      - updated_at desc
+      - modelName asc
+      - modelName desc
+      - createdAt asc
+      - createdAt desc
+      - updatedAt asc
+      - updatedAt desc
       title: FleetVehicleSortEnum
+    ModelPaintSortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - createdAt asc
+      - createdAt desc
+      - updatedAt asc
+      - updatedAt desc
+      - model_slug asc
+      - model_slug desc
+      title: ModelPaintSortEnum
     ModelSortEnum:
       type: string
       enum:
       - name asc
       - name desc
-      - created_at asc
-      - created_at desc
+      - createdAt asc
+      - createdAt desc
+      - length asc
+      - length desc
+      - beam asc
+      - beam desc
+      - height asc
+      - height desc
+      - mass asc
+      - mass desc
+      - cargo asc
+      - cargo desc
+      - manufacturerName asc
+      - manufacturerName desc
+      - pledgePrice asc
+      - pledgePrice desc
+      - price asc
+      - price desc
+      - scmSpeed asc
+      - scmSpeed desc
+      - maxSpeed asc
+      - maxSpeed desc
+      - groundMaxSpeed asc
+      - groundMaxSpeed desc
+      - productionStatus asc
+      - productionStatus desc
+      - focus asc
+      - focus desc
+      - rsiId asc
+      - rsiId desc
       title: ModelSortEnum
-    RoadmapItemSortEnum:
+    UserSortEnum:
       type: string
       enum:
-      - name asc
-      - name desc
-      - rsi_category_id asc
-      - rsi_category_id desc
-      title: RoadmapItemSortEnum
-    StationSortEnum:
-      type: string
-      enum:
-      - name asc
-      - name desc
-      - station_type asc
-      - station_type desc
-      title: StationSortEnum
-    TradeRouteSortEnum:
-      type: string
-      enum:
-      - average_profit_per_unit_percent asc
-      - average_profit_per_unit_percent desc
-      - profit_per_unit_percent asc
-      - profit_per_unit_percent desc
-      - average_profit_per_unit asc
-      - average_profit_per_unit desc
-      - profit_per_unit asc
-      - profit_per_unit desc
-      - origin_shop_station_name asc
-      - origin_shop_station_name desc
-      - created_at asc
-      - created_at desc
-      title: TradeRouteSortEnum
+      - username asc
+      - username desc
+      - email asc
+      - email desc
+      - createdAt asc
+      - createdAt desc
+      - lastActiveAt asc
+      - lastActiveAt desc
+      - lastSignInAt asc
+      - lastSignInAt desc
+      title: UserSortEnum
     VehicleSortEnum:
       type: string
       enum:
@@ -1431,12 +2125,38 @@ components:
       - flagship asc
       - name asc
       - name desc
-      - model_name asc
-      - model_name desc
-      - created_at asc
-      - created_at desc
-      - updated_at asc
-      - updated_at desc
+      - modelName asc
+      - modelName desc
+      - createdAt asc
+      - createdAt desc
+      - updatedAt asc
+      - updatedAt desc
+      - modelManufacturerName asc
+      - modelManufacturerName desc
+      - modelLength asc
+      - modelLength desc
+      - modelBeam asc
+      - modelBeam desc
+      - modelHeight asc
+      - modelHeight desc
+      - modelMass asc
+      - modelMass desc
+      - modelCargo asc
+      - modelCargo desc
+      - modelPledgePrice asc
+      - modelPledgePrice desc
+      - modelPrice asc
+      - modelPrice desc
+      - modelScmSpeed asc
+      - modelScmSpeed desc
+      - modelMaxSpeed asc
+      - modelMaxSpeed desc
+      - modelGroundMaxSpeed asc
+      - modelGroundMaxSpeed desc
+      - modelProductionStatus asc
+      - modelProductionStatus desc
+      - modelFocus asc
+      - modelFocus desc
       title: VehicleSortEnum
     StandardError:
       type: object
@@ -1462,18 +2182,6 @@ components:
       - code
       - message
       title: StandardMessage
-    StationShop:
-      type: object
-      properties:
-        name:
-          type: string
-        slug:
-          type: string
-      additionalProperties: false
-      required:
-      - name
-      - slug
-      title: StationShop
     ValidationError:
       type: object
       properties:
@@ -1502,165 +2210,116 @@ components:
       - version
       - codename
       title: Version
-    ViewImage:
+    AdminUser:
       type: object
       properties:
-        source:
+        id:
           type: string
-          format: uri
-        small:
+          format: uuid
+        username:
           type: string
-          format: uri
-        medium:
+        email:
           type: string
-          format: uri
-        large:
-          type: string
-          format: uri
-        xlarge:
-          type: string
-          format: uri
-        width:
-          type: integer
-        height:
-          type: integer
-      additionalProperties: false
-      required:
-      - source
-      - small
-      - medium
-      - large
-      - xlarge
-      - width
-      - height
-      title: ViewImage
-    CelestialObject:
-      type: object
-      properties:
-        name:
-          type: string
-        slug:
-          type: string
-        designation:
-          type: string
-        description:
-          type: string
-          nullable: true
-        type:
-          type: string
-          nullable: true
-        habitable:
+        twoFactorRequired:
           type: boolean
-          nullable: true
-        fairchanceact:
-          type: boolean
-          nullable: true
-        subType:
+        twoFactorQrCodeUrl:
           type: string
-          nullable: true
-        size:
+        twoFactorProvisioningUrl:
           type: string
-          nullable: true
-        danger:
-          type: integer
-          nullable: true
-        economy:
-          type: integer
-          nullable: true
-        population:
-          type: integer
-          nullable: true
-        locationLabel:
-          type: string
-          nullable: true
-        media:
-          type: object
-          properties:
-            storeImage:
-              "$ref": "#/components/schemas/MediaImage"
-          additionalProperties: false
-        starsystem:
-          "$ref": "#/components/schemas/Starsystem"
-        parent:
-          "$ref": "#/components/schemas/CelestialObject"
-        moons:
+        resourceAccess:
           type: array
           items:
-            "$ref": "#/components/schemas/CelestialObject"
+            type: string
+        superAdmin:
+          type: boolean
         createdAt:
           type: string
           format: date-time
         updatedAt:
           type: string
           format: date-time
-        storeImage:
-          type: string
-          format: url
-          deprecated: true
-        storeImageLarge:
-          type: string
-          deprecated: true
-        storeImageMedium:
-          type: string
-          deprecated: true
-        storeImageSmall:
-          type: string
-          deprecated: true
+      additionalProperties: false
+      required:
+      - username
+      - email
+      - twoFactorRequired
+      - superAdmin
+      - resourceAccess
+      - createdAt
+      - updatedAt
+      title: AdminUser
+    HangarGroup:
+      type: object
+      properties:
         id:
           type: string
           format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        color:
+          type: string
+        public:
+          type: boolean
+        sort:
+          type: integer
+        vehiclesCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
       additionalProperties: false
       required:
+      - id
       - name
       - slug
-      - designation
-      - starsystem
-      - media
+      - color
+      - public
       - createdAt
       - updatedAt
-      title: CelestialObject
-    Commodities:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            type: object
-            "$ref": "#/components/schemas/Commodity"
-        meta:
-          "$ref": "#/components/schemas/Meta"
-      additionalProperties: false
-      required:
-      - items
-      - meta
-      title: Commodities
+      title: HangarGroup
     Image:
       type: object
       properties:
+        name:
+          type: string
+        contentType:
+          type: string
+        size:
+          type: integer
+        url:
+          type: string
+          format: uri
+        smallUrl:
+          type: string
+          format: uri
+        mediumUrl:
+          type: string
+          format: uri
+        largeUrl:
+          type: string
+          format: uri
+        xlargeUrl:
+          type: string
+          format: uri
+        width:
+          type: integer
+        height:
+          type: integer
+        uploadedAt:
+          type: string
+          format: date-time
         id:
           type: string
           format: uuid
         background:
           type: boolean
-        bigUrl:
-          type: string
-          format: uri
         caption:
           type: string
-        name:
-          type: string
-        smallUrl:
-          type: string
-          format: uri
-        type:
-          type: string
-        url:
-          type: string
-          format: uri
-        width:
-          type: number
-        height:
-          type: number
         gallery:
           "$ref": "#/components/schemas/Gallery"
         createdAt:
@@ -1669,21 +2328,19 @@ components:
         updatedAt:
           type: string
           format: date-time
-        size:
-          type: number
         enabled:
           type: boolean
         global:
           type: boolean
       additionalProperties: false
       required:
-      - id
       - name
+      - contentType
+      - size
       - url
-      - type
+      - uploadedAt
+      - id
       - background
-      - smallUrl
-      - bigUrl
       - createdAt
       - updatedAt
       - enabled
@@ -1692,18 +2349,75 @@ components:
     Images:
       type: object
       properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
-            type: object
             "$ref": "#/components/schemas/Image"
-        meta:
-          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
       - meta
       title: Images
+    Import:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          "$ref": "#/components/schemas/ImportTypeEnum"
+        status:
+          "$ref": "#/components/schemas/ImportStatusEnum"
+        info:
+          type: string
+        version:
+          type: string
+        input:
+          type: string
+        output:
+          type: string
+        import:
+          type: string
+        importData:
+          type: string
+        startedAt:
+          type: string
+          format: date-time
+        finishedAt:
+          type: string
+          format: date-time
+        failedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - type
+      - status
+      - createdAt
+      - updatedAt
+      title: Import
+    Imports:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Import"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: Imports
     ImageInput:
       type: object
       properties:
@@ -1742,6 +2456,328 @@ components:
           type: string
       additionalProperties: false
       title: ImageInputCreate
+    ItemPriceInput:
+      type: object
+      properties:
+        itemId:
+          type: string
+          format: uuid
+        itemType:
+          "$ref": "#/components/schemas/ItemPriceItemTypeEnum"
+        price:
+          type: number
+        priceType:
+          "$ref": "#/components/schemas/ItemPriceTypeEnum"
+        location:
+          type: string
+        locationUrl:
+          type: string
+          format: uri
+      additionalProperties: false
+      title: ItemPriceInput
+    ModelCreateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        hidden:
+          type: boolean
+        active:
+          type: boolean
+        ground:
+          type: boolean
+        mass:
+          type: number
+        minCrew:
+          type: integer
+        maxCrew:
+          type: integer
+        scmSpeed:
+          type: number
+        scmSpeedBoosted:
+          type: number
+        maxSpeed:
+          type: number
+        reverseSpeedBoosted:
+          type: number
+        yaw:
+          type: number
+        yawBoosted:
+          type: number
+        pitch:
+          type: number
+        pitchBoosted:
+          type: number
+        roll:
+          type: number
+        rollBoosted:
+          type: number
+        scIdentifier:
+          type: string
+        erkulIdentifier:
+          type: string
+        manufacturerId:
+          type: string
+          format: uuid
+        rsiId:
+          type: integer
+        baseModelId:
+          type: string
+          format: uuid
+        productionStatus:
+          type: string
+        productionNote:
+          type: string
+        classification:
+          type: string
+        focus:
+          type: string
+        size:
+          type: string
+        dockSize:
+          type: string
+        length:
+          type: number
+        beam:
+          type: number
+        height:
+          type: number
+        onSale:
+          type: boolean
+        storeUrl:
+          type: string
+        salesPageUrl:
+          type: string
+        price:
+          type: number
+        pledgePrice:
+          type: number
+        cargo:
+          type: number
+        cargoHolds:
+          type: string
+        hydrogenFuelTankSize:
+          type: number
+        hydrogenFuelTanks:
+          type: string
+        quantumFuelTankSize:
+          type: number
+        quantumFuelTanks:
+          type: string
+        storeImageNew:
+          type: string
+      additionalProperties: false
+      title: ModelCreateInput
+    ModelUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        hidden:
+          type: boolean
+        active:
+          type: boolean
+        ground:
+          type: boolean
+        mass:
+          type: number
+        minCrew:
+          type: integer
+        maxCrew:
+          type: integer
+        scmSpeed:
+          type: number
+        scmSpeedBoosted:
+          type: number
+        maxSpeed:
+          type: number
+        reverseSpeedBoosted:
+          type: number
+        yaw:
+          type: number
+        yawBoosted:
+          type: number
+        pitch:
+          type: number
+        pitchBoosted:
+          type: number
+        roll:
+          type: number
+        rollBoosted:
+          type: number
+        scIdentifier:
+          type: string
+        erkulIdentifier:
+          type: string
+        manufacturerId:
+          type: string
+          format: uuid
+        rsiId:
+          type: integer
+        baseModelId:
+          type: string
+          format: uuid
+        productionStatus:
+          type: string
+        productionNote:
+          type: string
+        classification:
+          type: string
+        focus:
+          type: string
+        size:
+          type: string
+        dockSize:
+          type: string
+        length:
+          type: number
+        beam:
+          type: number
+        height:
+          type: number
+        onSale:
+          type: boolean
+        storeUrl:
+          type: string
+        salesPageUrl:
+          type: string
+        price:
+          type: number
+        pledgePrice:
+          type: number
+        cargo:
+          type: number
+        cargoHolds:
+          type: string
+        hydrogenFuelTankSize:
+          type: number
+        hydrogenFuelTanks:
+          type: string
+        quantumFuelTankSize:
+          type: number
+        quantumFuelTanks:
+          type: string
+        newStoreImage:
+          type: string
+          nullable: true
+      additionalProperties: false
+      title: ModelUpdateInput
+    SessionInput:
+      type: object
+      properties:
+        login:
+          type: string
+        password:
+          type: string
+        rememberMe:
+          type: boolean
+        twoFactorCode:
+          type: string
+      additionalProperties: false
+      title: SessionInput
+    ItemPrice:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        price:
+          type: number
+        timeRange:
+          "$ref": "#/components/schemas/ItemPriceTimeRangeEnum"
+        priceType:
+          "$ref": "#/components/schemas/ItemPriceTypeEnum"
+        itemId:
+          type: string
+          format: uuid
+        itemType:
+          "$ref": "#/components/schemas/ItemPriceItemTypeEnum"
+        location:
+          type: string
+        locationUrl:
+          type: string
+          format: uri
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - price
+      - priceType
+      - itemId
+      - itemType
+      - location
+      - createdAt
+      - updatedAt
+      title: ItemPrice
+    ItemPrices:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ItemPrice"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: ItemPrices
+    Manufacturer:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        code:
+          type: string
+        logo:
+          type: string
+        longName:
+          type: string
+        scRef:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        id:
+          type: string
+          format: uuid
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      - createdAt
+      - updatedAt
+      - id
+      title: Manufacturer
+    Manufacturers:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Manufacturer"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: Manufacturers
     ModelLoaner:
       type: object
       properties:
@@ -1769,25 +2805,20 @@ components:
         availability:
           type: object
           properties:
-            listedAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ShopCommodity"
             boughtAt:
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ItemPrice"
             soldAt:
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ItemPrice"
             rentalAt:
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ItemPrice"
           additionalProperties: false
           required:
-          - listedAt
           - boughtAt
           - soldAt
           - rentalAt
@@ -1827,9 +2858,6 @@ components:
           type: boolean
         holo:
           type: string
-        holoColored:
-          type: boolean
-          deprecated: true
         lastUpdatedAt:
           type: string
           format: date-time
@@ -1853,25 +2881,27 @@ components:
           type: object
           properties:
             angledView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             angledViewColored:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             fleetchartImage:
               type: string
             frontView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             frontViewColored:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             sideView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             sideViewColored:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             storeImage:
-              "$ref": "#/components/schemas/MediaImage"
+              "$ref": "#/components/schemas/MediaFile"
             topView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             topViewColored:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
+            rsiStoreImage:
+              "$ref": "#/components/schemas/MediaFile"
           additionalProperties: false
         metrics:
           type: object
@@ -1908,7 +2938,21 @@ components:
               type: string
             sizeLabel:
               type: string
+            dockSize:
+              type: string
           additionalProperties: false
+        cargoHolds:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CargoHold"
+        hydrogenFuelTanks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FuelTank"
+        quantumFuelTanks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FuelTank"
         onSale:
           type: boolean
         pledgePrice:
@@ -1922,7 +2966,7 @@ components:
         productionNote:
           type: string
         productionStatus:
-          type: string
+          "$ref": "#/components/schemas/ModelProductionStatusEnum"
         rsiId:
           type: integer
         rsiName:
@@ -1942,21 +2986,23 @@ components:
               type: number
             maxSpeed:
               type: number
-            maxSpeedAcceleration:
-              type: number
-            maxSpeedDecceleration:
-              type: number
             pitch:
+              type: number
+            pitchBoosted:
               type: number
             roll:
               type: number
+            rollBoosted:
+              type: number
             scmSpeed:
               type: number
-            scmSpeedAcceleration:
+            scmSpeedBoosted:
               type: number
-            scmSpeedDecceleration:
+            reverseSpeedBoosted:
               type: number
             yaw:
+              type: number
+            yawBoosted:
               type: number
           additionalProperties: false
         createdAt:
@@ -1965,177 +3011,16 @@ components:
         updatedAt:
           type: string
           format: date-time
-        afterburnerGroundSpeed:
+        hidden:
+          type: boolean
+        active:
+          type: boolean
+        scLength:
           type: number
-          deprecated: true
-        afterburnerSpeed:
+        scBeam:
           type: number
-          deprecated: true
-        angledView:
-          type: string
-          deprecated: true
-        angledViewHeight:
+        scHeight:
           type: number
-          deprecated: true
-        angledViewLarge:
-          type: string
-          deprecated: true
-        angledViewMedium:
-          type: string
-          deprecated: true
-        angledViewSmall:
-          type: string
-          deprecated: true
-        angledViewWidth:
-          type: number
-          deprecated: true
-        angledViewXlarge:
-          type: string
-          deprecated: true
-        beam:
-          type: number
-          deprecated: true
-        beamLabel:
-          type: string
-          deprecated: true
-        cargo:
-          type: number
-          deprecated: true
-        cargoLabel:
-          type: string
-          deprecated: true
-        fleetchartImage:
-          type: string
-          deprecated: true
-        fleetchartLength:
-          type: number
-          deprecated: true
-        groundSpeed:
-          type: number
-          deprecated: true
-        height:
-          type: number
-          deprecated: true
-        heightLabel:
-          type: string
-          deprecated: true
-        hydrogenFuelTankSize:
-          type: number
-          deprecated: true
-        length:
-          type: number
-          deprecated: true
-        lengthLabel:
-          type: string
-          deprecated: true
-        mass:
-          type: number
-          deprecated: true
-        massLabel:
-          type: number
-          deprecated: true
-        maxCrew:
-          type: integer
-          deprecated: true
-        maxCrewLabel:
-          type: string
-          deprecated: true
-        minCrew:
-          type: integer
-          deprecated: true
-        minCrewLabel:
-          type: string
-          deprecated: true
-        pitchMax:
-          type: number
-          deprecated: true
-        quantumFuelTankSize:
-          type: number
-          deprecated: true
-        rollMax:
-          type: number
-          deprecated: true
-        salesPageUrl:
-          type: string
-          deprecated: true
-        scmSpeed:
-          type: number
-          deprecated: true
-        sideView:
-          type: string
-          deprecated: true
-        sideViewHeight:
-          type: number
-          deprecated: true
-        sideViewLarge:
-          type: string
-          deprecated: true
-        sideViewMedium:
-          type: string
-          deprecated: true
-        sideViewSmall:
-          type: string
-          deprecated: true
-        sideViewWidth:
-          type: number
-          deprecated: true
-        sideViewXlarge:
-          type: string
-          deprecated: true
-        size:
-          type: string
-          deprecated: true
-        sizeLabel:
-          type: string
-          deprecated: true
-        storeImage:
-          type: string
-          deprecated: true
-        storeImageLarge:
-          type: string
-          deprecated: true
-        storeImageMedium:
-          type: string
-          deprecated: true
-        storeImageSmall:
-          type: string
-          deprecated: true
-        storeUrl:
-          type: string
-          deprecated: true
-        topView:
-          type: string
-          deprecated: true
-        topViewHeight:
-          type: number
-          deprecated: true
-        topViewLarge:
-          type: string
-          deprecated: true
-        topViewMedium:
-          type: string
-          deprecated: true
-        topViewSmall:
-          type: string
-          deprecated: true
-        topViewWidth:
-          type: number
-          deprecated: true
-        topViewXlarge:
-          type: string
-          deprecated: true
-        xaxisAcceleration:
-          type: number
-          deprecated: true
-        yawMax:
-          type: number
-          deprecated: true
-        yaxisAcceleration:
-          type: number
-          deprecated: true
-        zaxisAcceleration:
-          type: number
-          deprecated: true
       additionalProperties: false
       required:
       - id
@@ -2156,29 +3041,20 @@ components:
       - speeds
       - createdAt
       - updatedAt
+      - hidden
+      - active
       title: Model
-    Models:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            type: object
-            "$ref": "#/components/schemas/Model"
-        meta:
-          "$ref": "#/components/schemas/Meta"
-      additionalProperties: false
-      required:
-      - items
-      - meta
-      title: Models
-    ModelModule:
+    ModelExtended:
       type: object
       properties:
         id:
           type: string
           format: uuid
+        scIdentifier:
+          type: string
         name:
+          type: string
+        slug:
           type: string
         availability:
           type: object
@@ -2186,29 +3062,300 @@ components:
             boughtAt:
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ItemPrice"
             soldAt:
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ItemPrice"
+            rentalAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ItemPrice"
           additionalProperties: false
           required:
           - boughtAt
           - soldAt
+          - rentalAt
+        brochure:
+          type: string
+        classification:
+          type: string
+        classificationLabel:
+          type: string
+        crew:
+          type: object
+          properties:
+            max:
+              type: integer
+            maxLabel:
+              type: string
+            min:
+              type: integer
+            minLabel:
+              type: string
+          additionalProperties: false
         description:
           type: string
+        erkulIdentifier:
+          type: string
+        focus:
+          type: string
+        hasImages:
+          type: boolean
+        hasModules:
+          type: boolean
+        hasPaints:
+          type: boolean
+        hasUpgrades:
+          type: boolean
+        hasVideos:
+          type: boolean
+        holo:
+          type: string
+        lastUpdatedAt:
+          type: string
+          format: date-time
+        lastUpdatedAtLabel:
+          type: string
+        links:
+          type: object
+          properties:
+            salesPageUrl:
+              type: string
+            storeUrl:
+              type: string
+            self:
+              type: string
+              format: uri
+            frontend:
+              type: string
+              format: uri
+          additionalProperties: false
+        loaners:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelLoaner"
+        manufacturer:
+          "$ref": "#/components/schemas/Manufacturer"
         media:
           type: object
           properties:
+            angledView:
+              "$ref": "#/components/schemas/MediaFile"
+            angledViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            fleetchartImage:
+              type: string
+            frontView:
+              "$ref": "#/components/schemas/MediaFile"
+            frontViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            sideView:
+              "$ref": "#/components/schemas/MediaFile"
+            sideViewColored:
+              "$ref": "#/components/schemas/MediaFile"
             storeImage:
-              "$ref": "#/components/schemas/MediaImage"
+              "$ref": "#/components/schemas/MediaFile"
+            topView:
+              "$ref": "#/components/schemas/MediaFile"
+            topViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            rsiStoreImage:
+              "$ref": "#/components/schemas/MediaFile"
           additionalProperties: false
+        metrics:
+          type: object
+          properties:
+            beam:
+              type: number
+            beamLabel:
+              type: string
+            cargo:
+              type: number
+            cargoLabel:
+              type: string
+            fleetchartLength:
+              type: number
+            height:
+              type: number
+            heightLabel:
+              type: string
+            hydrogenFuelTankSize:
+              type: number
+            isGroundVehicle:
+              type: boolean
+            length:
+              type: number
+            lengthLabel:
+              type: string
+            mass:
+              type: number
+            massLabel:
+              type: string
+            quantumFuelTankSize:
+              type: number
+            size:
+              type: string
+            sizeLabel:
+              type: string
+            dockSize:
+              type: string
+          additionalProperties: false
+        cargoHolds:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CargoHold"
+        hydrogenFuelTanks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FuelTank"
+        quantumFuelTanks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FuelTank"
+        onSale:
+          type: boolean
         pledgePrice:
           type: number
-        productionStatus:
+        pledgePriceLabel:
           type: string
-        manufacturer:
-          "$ref": "#/components/schemas/Manufacturer"
+        price:
+          type: number
+        priceLabel:
+          type: string
+        productionNote:
+          type: string
+        productionStatus:
+          "$ref": "#/components/schemas/ModelProductionStatusEnum"
+        rsiId:
+          type: integer
+        rsiName:
+          type: string
+        rsiSlug:
+          type: string
+        speeds:
+          type: object
+          properties:
+            groundAcceleration:
+              type: number
+            groundDecceleration:
+              type: number
+            groundMaxSpeed:
+              type: number
+            groundReverseSpeed:
+              type: number
+            maxSpeed:
+              type: number
+            pitch:
+              type: number
+            pitchBoosted:
+              type: number
+            roll:
+              type: number
+            rollBoosted:
+              type: number
+            scmSpeed:
+              type: number
+            scmSpeedBoosted:
+              type: number
+            reverseSpeedBoosted:
+              type: number
+            yaw:
+              type: number
+            yawBoosted:
+              type: number
+          additionalProperties: false
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        hidden:
+          type: boolean
+        active:
+          type: boolean
+        scLength:
+          type: number
+        scBeam:
+          type: number
+        scHeight:
+          type: number
+        baseModelId:
+          type: string
+          format: uuid
+        dockCounts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/DockCount"
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - availability
+      - crew
+      - hasImages
+      - hasModules
+      - hasPaints
+      - hasUpgrades
+      - hasVideos
+      - links
+      - loaners
+      - media
+      - metrics
+      - onSale
+      - speeds
+      - createdAt
+      - updatedAt
+      - hidden
+      - active
+      - dockCounts
+      title: ModelExtended
+    Models:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Model"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: Models
+    ModelModulePackage:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        pledgePrice:
+          type: number
+        modules:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelModule"
+        model:
+          "$ref": "#/components/schemas/Model"
+        media:
+          type: object
+          properties:
+            angledView:
+              "$ref": "#/components/schemas/MediaFile"
+            sideView:
+              "$ref": "#/components/schemas/MediaFile"
+            storeImage:
+              "$ref": "#/components/schemas/MediaFile"
+            topView:
+              "$ref": "#/components/schemas/MediaFile"
+          additionalProperties: false
         createdAt:
           type: string
           format: date-time
@@ -2234,6 +3381,142 @@ components:
           type: string
           format: uri
           deprecated: true
+        angledView:
+          type: string
+          deprecated: true
+        angledViewHeight:
+          type: number
+          deprecated: true
+        angledViewLarge:
+          type: string
+          deprecated: true
+        angledViewMedium:
+          type: string
+          deprecated: true
+        angledViewSmall:
+          type: string
+          deprecated: true
+        angledViewWidth:
+          type: number
+          deprecated: true
+        angledViewXlarge:
+          type: string
+          deprecated: true
+        sideView:
+          type: string
+          deprecated: true
+        sideViewHeight:
+          type: number
+          deprecated: true
+        sideViewLarge:
+          type: string
+          deprecated: true
+        sideViewMedium:
+          type: string
+          deprecated: true
+        sideViewSmall:
+          type: string
+          deprecated: true
+        sideViewWidth:
+          type: number
+          deprecated: true
+        sideViewXlarge:
+          type: string
+          deprecated: true
+        topView:
+          type: string
+          deprecated: true
+        topViewHeight:
+          type: number
+          deprecated: true
+        topViewLarge:
+          type: string
+          deprecated: true
+        topViewMedium:
+          type: string
+          deprecated: true
+        topViewSmall:
+          type: string
+          deprecated: true
+        topViewWidth:
+          type: number
+          deprecated: true
+        topViewXlarge:
+          type: string
+          deprecated: true
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - modules
+      - model
+      - media
+      - createdAt
+      - updatedAt
+      title: ModelModulePackage
+    ModelModule:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        scKey:
+          type: string
+        metrics:
+          type: object
+          properties:
+            cargo:
+              type: number
+          additionalProperties: false
+        cargoHolds:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CargoHold"
+        availability:
+          type: object
+          properties:
+            boughtAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ItemPrice"
+            soldAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ItemPrice"
+          additionalProperties: false
+          required:
+          - boughtAt
+          - soldAt
+        media:
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaFile"
+          additionalProperties: false
+        pledgePrice:
+          type: number
+        productionStatus:
+          type: string
+        manufacturer:
+          "$ref": "#/components/schemas/Manufacturer"
+        hardpoints:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Hardpoint"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        model:
+          "$ref": "#/components/schemas/Model"
       additionalProperties: false
       required:
       - id
@@ -2242,6 +3525,7 @@ components:
       - media
       - createdAt
       - updatedAt
+      - model
       title: ModelModule
     ModelPaint:
       type: object
@@ -2266,11 +3550,11 @@ components:
             boughtAt:
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ItemPrice"
             soldAt:
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ItemPrice"
           additionalProperties: false
           required:
           - boughtAt
@@ -2279,15 +3563,27 @@ components:
           type: object
           properties:
             angledView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             fleetchartImage:
               type: string
             sideView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
             storeImage:
-              "$ref": "#/components/schemas/MediaImage"
+              "$ref": "#/components/schemas/MediaFile"
             topView:
-              "$ref": "#/components/schemas/ViewImage"
+              "$ref": "#/components/schemas/MediaFile"
+            angledViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            frontView:
+              "$ref": "#/components/schemas/MediaFile"
+            frontViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            sideViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            rsiStoreImage:
+              "$ref": "#/components/schemas/MediaFile"
+            topViewColored:
+              "$ref": "#/components/schemas/MediaFile"
           additionalProperties: false
         nameWithModel:
           type: string
@@ -2403,6 +3699,12 @@ components:
           type: string
           format: uri
           deprecated: true
+        hidden:
+          type: boolean
+        active:
+          type: boolean
+        model:
+          "$ref": "#/components/schemas/Model"
       additionalProperties: false
       required:
       - id
@@ -2412,16 +3714,99 @@ components:
       - media
       - createdAt
       - updatedAt
+      - hidden
+      - active
+      - model
       title: ModelPaint
-    CommodityQuery:
+    ModelPaints:
       type: object
       properties:
-        commodityItemId:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelPaint"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: ModelPaints
+    ModelUpgrade:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        pledgePrice:
+          type: number
+        media:
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaFile"
+          additionalProperties: false
+        model:
+          "$ref": "#/components/schemas/Model"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        storeImage:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageLarge:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageMedium:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageSmall:
+          type: string
+          format: uri
+          deprecated: true
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - media
+      - model
+      - createdAt
+      - updatedAt
+      title: ModelUpgrade
+    ComponentQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        idIn:
+          type: array
+          items:
+            type: string
+            format: uuid
+        nameIn:
+          type: array
+          items:
+            type: string
+        itemTypeIn:
+          type: array
+          items:
+            type: string
+        componentClassIn:
           type: array
           items:
             type: string
       additionalProperties: false
-      title: CommodityQuery
+      title: ComponentQuery
     ImageQuery:
       type: object
       properties:
@@ -2432,6 +3817,104 @@ components:
           type: string
       additionalProperties: false
       title: ImageQuery
+    ImportQuery:
+      type: object
+      properties:
+        typeEq:
+          "$ref": "#/components/schemas/ImportTypeEnum"
+        typeIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ImportTypeEnum"
+      additionalProperties: false
+      title: ImportQuery
+    ItemPriceQuery:
+      type: object
+      properties:
+        locationCont:
+          type: string
+        itemIdEq:
+          type: string
+          format: uuid
+        itemIdIn:
+          type: array
+          items:
+            type: string
+            format: uuid
+        itemTypeEq:
+          "$ref": "#/components/schemas/ItemPriceItemTypeEnum"
+        itemTypeIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ItemPriceItemTypeEnum"
+        priceTypeEq:
+          "$ref": "#/components/schemas/ItemPriceTypeEnum"
+        priceTypeIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ItemPriceTypeEnum"
+      additionalProperties: false
+      title: ItemPriceQuery
+    ManufacturerQuery:
+      type: object
+      properties:
+        withModels:
+          type: boolean
+        logoBlank:
+          type: boolean
+        nameEq:
+          type: string
+        nameCont:
+          type: string
+        nameIn:
+          type: array
+          items:
+            type: string
+        slugEq:
+          type: string
+        slugCont:
+          type: string
+        slugIn:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      title: ManufacturerQuery
+    ModelPaintQuery:
+      type: object
+      properties:
+        nameEq:
+          type: string
+        nameCont:
+          type: string
+        idEq:
+          type: string
+        nameIn:
+          type: array
+          items:
+            type: string
+        idIn:
+          type: array
+          items:
+            type: string
+        idNotIn:
+          type: array
+          items:
+            type: string
+        modelSlugIn:
+          type: array
+          items:
+            type: string
+        modelSlugEq:
+          type: string
+        sorts:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/ModelPaintSortEnum"
+          - "$ref": "#/components/schemas/ModelPaintSortEnum"
+      additionalProperties: false
+      title: ModelPaintQuery
     ModelQuery:
       type: object
       properties:
@@ -2451,414 +3934,376 @@ components:
           type: array
           items:
             type: string
+        manufacturerIn:
+          type: array
+          items:
+            type: string
+        productionStatusIn:
+          type: array
+          items:
+            type: string
+        searchCont:
+          type: string
+        scIdentifierBlank:
+          type: boolean
+        fleetchartImageBlank:
+          type: boolean
+        holoBlank:
+          type: boolean
+        topViewColoredBlank:
+          type: boolean
+        frontViewBlank:
+          type: boolean
+        sorts:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/ModelSortEnum"
+          - "$ref": "#/components/schemas/ModelSortEnum"
       additionalProperties: false
       title: ModelQuery
-    ShopCommodityQuery:
-      type: object
-      properties:
-        search:
-          type: string
-        confirmed:
-          type: boolean
-        name:
-          type: array
-          items:
-            type: string
-        manufacturerSlug:
-          type: array
-          items:
-            type: string
-        category:
-          type: array
-          items:
-            type: string
-        subCategory:
-          type: array
-          items:
-            type: string
-        componentItemType:
-          type: array
-          items:
-            type: string
-        equipmentItemType:
-          type: array
-          items:
-            type: string
-        equipmentType:
-          type: array
-          items:
-            type: string
-        equipmentSlot:
-          type: array
-          items:
-            type: string
-      additionalProperties: false
-      title: ShopCommodityQuery
-    StationQuery:
+    UserQuery:
       type: object
       properties:
         searchCont:
           type: string
-        nameCont:
+        usernameCont:
+          type: string
+        usernameEq:
+          type: string
+        emailCont:
+          type: string
+        rsiHandleCont:
+          type: string
+        idIn:
+          type: array
+          items:
+            type: string
+            format: uuid
+        usernameIn:
+          type: array
+          items:
+            type: string
+        emailIn:
+          type: array
+          items:
+            type: string
+        rsihandleIn:
+          type: array
+          items:
+            type: string
+        sorts:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/UserSortEnum"
+          - "$ref": "#/components/schemas/UserSortEnum"
+      additionalProperties: false
+      title: UserQuery
+    VehicleQuery:
+      type: object
+      properties:
+        searchCont:
           type: string
         idEq:
+          type: string
+        idIn:
+          type: array
+          items:
+            type: string
+        idNotIn:
+          type: array
+          items:
+            type: string
+        nameCont:
           type: string
         nameIn:
           type: array
           items:
             type: string
-        idIn:
+        userUsernameIn:
           type: array
           items:
             type: string
-      additionalProperties: false
-      title: StationQuery
-    ShopCommodities:
-      type: object
-      properties:
-        items:
+        modelSlugIn:
           type: array
           items:
-            type: object
-            "$ref": "#/components/schemas/ShopCommodity"
-        meta:
-          "$ref": "#/components/schemas/Meta"
-      additionalProperties: false
-      required:
-      - items
-      - meta
-      title: ShopCommodities
-    ShopCommodity:
-      type: object
-      properties:
-        id:
+            type: string
+        manufacturerIn:
+          type: array
+          items:
+            type: string
+        modelIdEq:
           type: string
-          format: uuid
-        name:
+        modelIdIn:
+          type: array
+          items:
+            type: string
+        modelIdNotIn:
+          type: array
+          items:
+            type: string
+        modelNameCont:
           type: string
-        slug:
+        modelNameIn:
+          type: array
+          items:
+            type: string
+        modelProductionStatusIn:
+          type: array
+          items:
+            type: string
+        modelSearchCont:
           type: string
-        description:
-          type: string
-        media:
-          type: object
-          properties:
-            storeImage:
-              "$ref": "#/components/schemas/MediaImage"
-          additionalProperties: false
-        category:
-          "$ref": "#/components/schemas/ShopCommodityCategoryEnum"
-        subCategory:
+        loanerEq:
+          type: boolean
+        wantedEq:
+          type: boolean
+        sorts:
           anyOf:
-          - type: string
-          - "$ref": "#/components/schemas/ComponentClassEnum"
-          - "$ref": "#/components/schemas/EquipmentTypeEnum"
-          - "$ref": "#/components/schemas/CommodityTypeEnum"
-        subCategoryLabel:
-          type: string
-        prices:
-          type: object
-          properties:
-            averageBuyPrice:
-              type: number
-            averageRentalPrice1Day:
-              type: number
-            averageRentalPrice30Days:
-              type: number
-            averageRentalPrice3Days:
-              type: number
-            averageRentalPrice7Days:
-              type: number
-            averageSellPrice:
-              type: number
-            buyPrice:
-              type: number
-            rentalPrice1Day:
-              type: number
-            rentalPrice30Days:
-              type: number
-            rentalPrice3Days:
-              type: number
-            rentalPrice7Days:
-              type: number
-            sellPrice:
-              type: number
-            pricePerUnit:
-              type: boolean
-          additionalProperties: false
-          required:
-          - pricePerUnit
-        locationLabel:
-          type: string
-        confirmed:
-          type: boolean
-        commodityItemType:
-          "$ref": "#/components/schemas/ShopCommodityItemTypeEnum"
-        commodityItemId:
-          type: string
-          format: uuid
-        shop:
-          "$ref": "#/components/schemas/Shop"
-        item:
-          oneOf:
-          - "$ref": "#/components/schemas/Model"
-          - "$ref": "#/components/schemas/Component"
-          - "$ref": "#/components/schemas/Commodity"
-          - "$ref": "#/components/schemas/Equipment"
-          - "$ref": "#/components/schemas/ModelModule"
-          - "$ref": "#/components/schemas/ModelPaint"
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        storeImage:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageSmall:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageMedium:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageLarge:
-          type: string
-          format: uri
-          deprecated: true
-        submitter:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            username:
-              type: string
-          required:
-          - id
-          - username
-          additionalProperties: false
+          - type: array
+            items:
+              "$ref": "#/components/schemas/VehicleSortEnum"
+          - "$ref": "#/components/schemas/VehicleSortEnum"
       additionalProperties: false
-      required:
-      - id
-      - name
-      - slug
-      - prices
-      - confirmed
-      - commodityItemType
-      - commodityItemId
-      - shop
-      - media
-      - prices
-      - createdAt
-      - updatedAt
-      title: ShopCommodity
-    Starsystem:
+      title: VehicleQuery
+    Stats:
       type: object
       properties:
-        name:
-          type: string
-        slug:
-          type: string
-        danger:
-          type: string
-        description:
-          type: string
-        economy:
-          type: string
-        locationLabel:
-          type: string
-        mapX:
-          type: string
-        mapY:
-          type: string
-        population:
-          type: string
-        size:
-          type: string
-        status:
-          type: string
-        type:
-          type: string
-        media:
-          type: object
-          properties:
-            storeImage:
-              "$ref": "#/components/schemas/MediaImage"
-          additionalProperties: false
-        celestialObjects:
-          type: array
-          items:
-            "$ref": "#/components/schemas/CelestialObject"
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        storeImage:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageLarge:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageMedium:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageSmall:
-          type: string
-          format: uri
-          deprecated: true
+        onlineCount:
+          type: integer
+        shipsCountYear:
+          type: integer
+        shipsCountTotal:
+          type: integer
+        usersCountTotal:
+          type: integer
+        fleetsCountTotal:
+          type: integer
+      additionalProperties: false
+      required:
+      - onlineCount
+      - shipsCountYear
+      - shipsCountTotal
+      - usersCountTotal
+      - fleetsCountTotal
+      title: Stats
+    User:
+      type: object
+      properties:
         id:
           type: string
           format: uuid
-      additionalProperties: false
-      required:
-      - name
-      - slug
-      - media
-      - createdAt
-      - updatedAt
-      - id
-      title: Starsystem
-    Station:
-      type: object
-      properties:
-        name:
+        username:
           type: string
-        slug:
+        email:
           type: string
-        cargoHub:
+        unconfirmedEmail:
+          type: string
+        avatar:
+          type: string
+        rsiHandle:
+          type: string
+        discord:
+          type: string
+        youtube:
+          type: string
+        twitch:
+          type: string
+        guilded:
+          type: string
+        homepage:
+          type: string
+        saleNotify:
           type: boolean
-        type:
-          "$ref": "#/components/schemas/StationTypeEnum"
-        typeLabel:
-          type: string
-        size:
-          "$ref": "#/components/schemas/StationSizeEnum"
-        sizeLabel:
-          type: string
-        classification:
-          "$ref": "#/components/schemas/StationClassificationEnum"
-        classificationLabel:
-          type: string
-        description:
-          type: string
-        dockCounts:
-          type: array
-          items:
-            "$ref": "#/components/schemas/DockCount"
-        habitable:
+        publicHangar:
           type: boolean
-        habitationCounts:
-          type: array
-          items:
-            "$ref": "#/components/schemas/HabitationCount"
-        hasImages:
+        publicHangarUrl:
+          type: string
+        publicHangarLoaners:
           type: boolean
-        locationLabel:
-          type: string
-        location:
-          type: string
-        media:
-          type: object
-          properties:
-            backgroundImage:
-              type: string
-            storeImage:
-              "$ref": "#/components/schemas/MediaImage"
-          additionalProperties: false
-        refinery:
+        publicWishlist:
           type: boolean
-        shopListLabel:
+        publicWishlistUrl:
           type: string
-        celestialObject:
-          "$ref": "#/components/schemas/CelestialObject"
-        starsystem:
-          "$ref": "#/components/schemas/Starsystem"
-        shops:
-          type: array
-          items:
-            "$ref": "#/components/schemas/Shop"
-        docks:
-          type: array
-          items:
-            "$ref": "#/components/schemas/Dock"
-        habitations:
-          type: array
-          items:
-            "$ref": "#/components/schemas/Habitation"
+        hideOwner:
+          type: boolean
+        twoFactorRequired:
+          type: boolean
+        twoFactorQrCodeUrl:
+          type: string
+        twoFactorProvisioningUrl:
+          type: string
+        hangarUpdatedAt:
+          type: string
+          format: date-time
+        confirmedAt:
+          type: string
+          format: date-time
+        lastActiveAt:
+          type: string
+          format: date-time
         createdAt:
           type: string
           format: date-time
         updatedAt:
           type: string
           format: date-time
-        backgroundImage:
-          type: string
-          format: uri
-          deprecated: true
-        storeImage:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageLarge:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageMedium:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageSmall:
-          type: string
-          format: uri
-          deprecated: true
-        id:
-          type: string
-          format: uuid
       additionalProperties: false
       required:
-      - name
-      - slug
-      - type
-      - typeLabel
-      - size
-      - sizeLabel
-      - classification
-      - classificationLabel
-      - habitable
-      - hasImages
-      - media
-      - refinery
-      - cargoHub
-      - celestialObject
+      - username
+      - email
+      - saleNotify
+      - publicHangar
+      - publicHangarLoaners
+      - publicWishlist
+      - hideOwner
+      - twoFactorRequired
       - createdAt
       - updatedAt
-      - id
-      title: Station
-    Stations:
+      title: User
+    Users:
       type: object
       properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
-            type: object
-            "$ref": "#/components/schemas/Station"
-        meta:
-          "$ref": "#/components/schemas/Meta"
+            "$ref": "#/components/schemas/User"
       additionalProperties: false
       required:
       - items
       - meta
-      title: Stations
+      title: Users
+    Vehicle:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        serial:
+          type: string
+        user:
+          "$ref": "#/components/schemas/User"
+        alternativeNames:
+          type: array
+          items:
+            type: string
+        boughtVia:
+          "$ref": "#/components/schemas/BoughtViaEnum"
+        boughtViaLabel:
+          type: string
+        flagship:
+          type: boolean
+        hangarGroupIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        hangarGroups:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarGroup"
+        loaner:
+          type: boolean
+        model:
+          "$ref": "#/components/schemas/Model"
+        modelModuleIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        modelUpgradeIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        modulePackage:
+          "$ref": "#/components/schemas/ModelModulePackage"
+        nameVisible:
+          type: boolean
+        paint:
+          "$ref": "#/components/schemas/ModelPaint"
+        public:
+          type: boolean
+        saleNotify:
+          type: boolean
+        upgrade:
+          "$ref": "#/components/schemas/ModelUpgrade"
+        wanted:
+          type: boolean
+        hidden:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - model
+      - user
+      - wanted
+      - hidden
+      - boughtVia
+      - loaner
+      - flagship
+      - public
+      - nameVisible
+      - saleNotify
+      - alternativeNames
+      - modelUpgradeIds
+      - hangarGroupIds
+      - hangarGroups
+      - modelModuleIds
+      - createdAt
+      - updatedAt
+      title: Vehicle
+    Vehicles:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Vehicle"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: Vehicles
   securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+    Oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://fleetyards.net/oauth/authorize
+          tokenUrl: https://fleetyards.net/oauth/token
+          scopes:
+            public: Public Access
+            profile:read: Read Profile
+            profile:write: Manage Profile
+            hangar: Full Hangar Access
+            hangar:read: Read Hangar
+            hangar:write: Manage Hangar
+            fleet: Full Fleet Access
+            fleet:read: Read Fleet
+            fleet:write: Manage Fleet
+            openid: Authenticate your account
+    OpenId:
+      type: openIdConnect
+      openIdConnectUrl: http://fleetyards.test/.well-known/openid-configuration
     SessionCookie:
       type: apiKey
       description: Session Cookie

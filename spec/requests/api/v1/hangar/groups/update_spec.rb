@@ -3,10 +3,16 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/hangar/groups", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :hangar_groups, :users
+  let(:author) { create(:user) }
+  let(:user) { author }
+  let(:hangar_group) { create(:hangar_group, user: author) }
+  let(:id) { hangar_group.id }
 
-  let(:user) { nil }
-  let(:hangar_group) { hangar_groups :hangargroupone }
+  let(:input) do
+    {
+      name: "Hangar Group One Test"
+    }
+  end
 
   before do
     sign_in(user) if user.present?
@@ -16,7 +22,7 @@ RSpec.describe "api/v1/hangar/groups", type: :request, swagger_doc: "v1/schema.y
     parameter name: "id", in: :path, description: "HangarGroup ID", schema: {type: :string, format: :uuid}, required: true
 
     put("HangarGroup Update") do
-      operationId "hangarGroupUpdate"
+      operationId "updateHangarGroup"
       tags "HangarGroups"
       consumes "application/json"
       produces "application/json"
@@ -25,22 +31,6 @@ RSpec.describe "api/v1/hangar/groups", type: :request, swagger_doc: "v1/schema.y
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/HangarGroup"
-
-        let(:id) { hangar_group.id }
-        let(:user) { users :data }
-        let(:input) do
-          {
-            name: "Hangar Group One Test"
-          }
-        end
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
 
         run_test! do |response|
           data = JSON.parse(response.body)
@@ -53,8 +43,14 @@ RSpec.describe "api/v1/hangar/groups", type: :request, swagger_doc: "v1/schema.y
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:id) { SecureRandom.uuid }
-        let(:user) { users :data }
-        let(:input) { nil }
+
+        run_test!
+      end
+
+      response(403, "forbidden") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { create(:user) }
 
         run_test!
       end
@@ -62,8 +58,7 @@ RSpec.describe "api/v1/hangar/groups", type: :request, swagger_doc: "v1/schema.y
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:id) { hangar_group.id }
-        let(:input) { nil }
+        let(:user) { nil }
 
         run_test!
       end

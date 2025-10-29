@@ -12,60 +12,66 @@ module Shared
             id: {type: :string, format: :uuid},
             name: {type: :string},
             slug: {type: :string},
+            scKey: {type: :string},
+            scRef: {type: :string},
+
+            hidden: {type: :boolean},
+
+            category: {type: :string},
+            type: {"$ref": "#/components/schemas/ComponentTypeEnum"},
+            subType: {type: :string},
+
+            inventoryConsumption: {type: :string},
+
+            grade: {type: :string},
+            gradeLabel: {type: :string},
+            size: {type: :string},
+            class: {"$ref": "#/components/schemas/ComponentClassEnum"},
+            itemClass: {"$ref": "#/components/schemas/ComponentItemClassEnum"},
+            itemClassLabel: {type: :string},
 
             availability: {
               type: :object,
               properties: {
-                listedAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}},
-                boughtAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}},
-                soldAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}}
+                boughtAt: {
+                  type: :array,
+                  items: {"$ref": "#/components/schemas/ItemPrice"}
+                },
+                soldAt: {
+                  type: :array,
+                  items: {"$ref": "#/components/schemas/ItemPrice"}
+                }
               },
               additionalProperties: false,
-              required: %w[listedAt boughtAt soldAt]
+              required: %w[boughtAt soldAt]
             },
-
-            class: {type: :string},
-            grade: {type: :string},
-            itemClass: {type: :string},
-            itemClassLabel: {type: :string},
-            itemType: {type: :string},
-            itemTypeLabel: {type: :string},
 
             manufacturer: {"$ref": "#/components/schemas/Manufacturer"},
 
             media: {
               type: :object,
               properties: {
-                storeImage: {"$ref": "#/components/schemas/MediaImage"}
+                storeImage: {"$ref": "#/components/schemas/MediaFile"}
               },
               additionalProperties: false
             },
 
             typeData: {
-              oneOf: [
-                {"$ref": "#/components/schemas/ComponentQuantumDrive"}
+              anyOf: [
+                {"$ref": "#/components/schemas/ComponentQuantumDrive"},
+                {"$ref": "#/components/schemas/CargoHold"},
+                {"$ref": "#/components/schemas/FuelTank"},
+                {"$ref": "#/components/schemas/ComponentThruster"}
               ]
             },
 
-            size: {type: :string},
-            trackingSignal: {type: :string},
-            trackingSignalLabel: {type: :string},
-            type: {type: :string},
-            typeLabel: {type: :string},
+            hardpoints: {type: :array, items: {"$ref": "#/components/schemas/Hardpoint"}},
 
             createdAt: {type: :string, format: "date-time"},
-            updatedAt: {type: :string, format: "date-time"},
-
-            # DEPRECATED
-
-            storeImage: {type: :string, format: :uri, deprecated: true},
-            storeImageIsFallback: {type: :boolean, deprecated: true},
-            storeImageLarge: {type: :string, format: :uri, deprecated: true},
-            storeImageMedium: {type: :string, format: :uri, deprecated: true},
-            storeImageSmall: {type: :string, format: :uri, deprecated: true}
+            updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id name slug availability media createdAt updatedAt]
+          required: %w[id name slug hidden availability media createdAt updatedAt]
         })
       end
     end

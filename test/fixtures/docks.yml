@@ -15,36 +15,7 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  model_id      :uuid
-#  station_id    :uuid
 #
-# Indexes
-#
-#  index_docks_on_station_id  (station_id)
-#
-
-portolisar-pad-one:
-  dock_type: landingpad
-  station: portolisar
-  name: Landingpad 01
-  ship_size: large
-
-portolisar-pad-two:
-  dock_type: landingpad
-  station: portolisar
-  name: Landingpad 02
-  ship_size: large
-
-portolisar-dock-one:
-  dock_type: dockingport
-  station: portolisar
-  name: Dockingport 01
-  ship_size: medium
-
-covalex-dock-one:
-  dock_type: dockingport
-  station: covalex
-  name: Dockingport 01
-  ship_size: small
 
 galaxy-hangar:
   dock_type: hangar

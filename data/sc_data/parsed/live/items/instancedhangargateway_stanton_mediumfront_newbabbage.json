@@ -1,0 +1,21 @@
+{
+  "key": "InstancedHangarGateway_Stanton_MediumFront_NewBabbage",
+  "ref": "65cb7456-ce05-44d1-a45d-7a30d345d5a0",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": null,
+  "grade": null,
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  }
+}

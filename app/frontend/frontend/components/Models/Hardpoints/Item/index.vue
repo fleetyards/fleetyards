@@ -1,86 +1,44 @@
-<template>
-  <div
-    v-tooltip.left="tooltip"
-    class="hardpoint-item-inner"
-    :class="{ 'has-component': hardpoint.component }"
-  >
-    <div class="hardpoint-item-size">
-      {{ $t("labels.hardpoint.size") }} {{ hardpoint.sizeLabel }}
-    </div>
-    <div
-      v-if="hardpoint.itemSlots > 1 || showComponent"
-      class="hardpoint-item-component"
-    >
-      <span v-if="hardpoint.itemSlots > 1" class="hardpoint-item-quantity">
-        {{ hardpoint.itemSlots }}x
-      </span>
-      <template v-if="showComponent">
-        {{ hardpoint.component.name }}
-      </template>
-      <template v-else-if="hardpoint.itemSlots > 1">TBD</template>
-    </div>
-    <div
-      v-if="hardpoint.categoryLabel && showCategory"
-      class="hardpoint-item-component"
-    >
-      <span v-if="hardpoint.itemSlots > 1" class="hardpoint-item-quantity">
-        {{ hardpoint.itemSlots }}x
-      </span>
+<script lang="ts">
+export default {
+  name: "HardpointItemWrapper",
+};
+</script>
 
+<script lang="ts" setup>
+import loadoutListIcon from "@/images/icons/loadout-list-icon.svg";
+import HardpointQuantity from "@/frontend/components/Models/Hardpoints/Quantity/index.vue";
+
+type Props = {
+  count?: number;
+  intended?: boolean;
+};
+
+withDefaults(defineProps<Props>(), {
+  count: undefined,
+  intended: false,
+});
+</script>
+
+<template>
+  <div class="hardpoint-item">
+    <div v-if="count" class="hardpoint-item__list">
       <img
-        v-if="isMissileTurret"
-        v-tooltip="hardpoint.categoryLabel"
-        :src="turretIcon"
-        class="hardpoint-type-icon-small"
-        alt="icon-turrets"
+        v-if="intended"
+        :src="loadoutListIcon"
+        class="hardpoint-item__list-icon"
+        alt="hardpoint-list-icon"
       />
-      <span v-else>
-        {{ hardpoint.categoryLabel }}
-      </span>
+      <HardpointQuantity :quantity="count" tag="span" />
     </div>
-    <div
-      v-if="hardpoint.component && hardpoint.component.manufacturer"
-      class="hardpoint-item-component-manufacturer"
-      v-html="hardpoint.component.manufacturer.name"
-    />
+    <div class="hardpoint-item__wrapper">
+      <div class="hardpoint-item__inner">
+        <slot name="default" />
+      </div>
+      <slot name="loadout" />
+    </div>
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import turretIconUrl from "@/images/hardpoints/turrets-dark.svg";
-
-@Component<HardpointItem>({})
-export default class HardpointItem extends Vue {
-  @Prop({ required: true }) hardpoint: Hardpoint;
-
-  turretIcon = turretIconUrl;
-
-  get tooltip() {
-    if (
-      !this.showCategory &&
-      this.hardpoint.categoryLabel !== this.hardpoint?.component?.name
-    ) {
-      return this.hardpoint.categoryLabel;
-    }
-
-    return this.hardpoint.details;
-  }
-
-  get isMissileTurret() {
-    return this.hardpoint.category === "missile_turret";
-  }
-
-  get showCategory() {
-    return this.hardpoint.type !== "turrets";
-  }
-
-  get showComponent() {
-    return (
-      this.hardpoint.component &&
-      !["main_thrusters", "maneuvering_thrusters"].includes(this.hardpoint.type)
-    );
-  }
-}
-</script>
+<style lang="scss" scoped>
+@import "index";
+</style>

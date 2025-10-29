@@ -1,3 +1,4 @@
+import { type RSIHangarItem, type RSIHangarItemKind } from "@/frontend/types";
 const VALID_COMPONENT_NAMES = ["Galaxy", "Endeavor", "Retaliator"];
 
 const COMPONENT_FOR_MODELS = [
@@ -10,7 +11,7 @@ const COMPONENT_FOR_UPGRADES = ["F7A Military Hornet Upgrade"];
 export class RSIHangarParser {
   parser = new DOMParser();
 
-  extractPage(html: string): TRSIHangarItem[] | undefined {
+  extractPage(html: string): RSIHangarItem[] | undefined {
     const htmlDoc = this.parser.parseFromString(html, "text/html");
 
     if (this.checkForLastPage(htmlDoc)) {
@@ -25,7 +26,7 @@ export class RSIHangarParser {
 
     const entries = pledgeList.getElementsByTagName("li");
 
-    const pledges: TRSIHangarItem[] = [];
+    const pledges: RSIHangarItem[] = [];
 
     Array.from(entries).forEach((entry) => {
       const id = (
@@ -45,7 +46,7 @@ export class RSIHangarParser {
     return pledges;
   }
 
-  parseItem(id: string, item: Element): TRSIHangarItem | undefined {
+  parseItem(id: string, item: Element): RSIHangarItem | undefined {
     const kind = item.getElementsByClassName("kind")[0]?.textContent;
 
     if (!kind || !["Ship", "Component", "Skin"].includes(kind)) {
@@ -54,7 +55,7 @@ export class RSIHangarParser {
 
     const name = item.getElementsByClassName("title")[0].textContent || "";
 
-    let kindOverride: TRSIHangarItemKind | undefined;
+    let kindOverride: RSIHangarItemKind | undefined;
     if (
       COMPONENT_FOR_MODELS.some((validName) => name.includes(validName)) &&
       kind === "Component"
@@ -86,7 +87,7 @@ export class RSIHangarParser {
       customName:
         item.getElementsByClassName("custom-name-text")[0]?.textContent ||
         undefined,
-      type: kindOverride || (kind.toLowerCase() as TRSIHangarItemKind),
+      type: kindOverride || (kind.toLowerCase() as RSIHangarItemKind),
     };
   }
 

@@ -5,6 +5,7 @@ module Api
     include ActionController::Cookies
     include ActionController::MimeResponds
     include ActionController::Caching
+    include ActionPolicy::Controller
     include RansackHelper
     include Pagination
 
@@ -13,19 +14,34 @@ module Api
 
     respond_to :json
 
+    verify_authorized except: %i[root version provider]
+
     skip_before_action :track_ahoy_visit
 
-    before_action :authenticate_user!, except: %i[root version]
-    before_action :current_ability
+    before_action :authenticate_user!, except: %i[root version provider]
     before_action :set_locale
     before_action :set_last_active_at
 
-    check_authorization except: %i[root version]
-
     after_action :set_rate_limit_headers
 
-    rescue_from CanCan::AccessDenied do |exception|
-      render json: {code: "forbidden", message: exception.message}, status: :forbidden
+    authorize :user, through: :current_resource_owner
+
+    def oauth_token_url(*)
+      api_oauth_token_url(*)
+    end
+
+    def oauth_revoke_url(*)
+      api_oauth_revoke_url(*)
+    end
+
+    rescue_from Doorkeeper::Errors::TokenUnknown,
+      Doorkeeper::Errors::TokenExpired,
+      Doorkeeper::Errors::TokenForbidden do |exception|
+      render json: {code: "unauthorized", message: exception.message}, status: :unauthorized
+    end
+
+    rescue_from ActionPolicy::Unauthorized do |exception|
+      render json: {code: "forbidden", message: exception.result.message}, status: :forbidden
     end
 
     rescue_from ActionController::InvalidAuthenticityToken do |_exception|
@@ -38,14 +54,29 @@ module Api
       render json: {code: "pagination.max_per_page_reached", message: I18n.t("errors.pagination.max_per_page_reached")}, status: :bad_request
     end
 
+    def current_resource_owner
+      @current_user ||= if doorkeeper_token
+        User.find(doorkeeper_token.resource_owner_id)
+      else
+        warden.authenticate(scope: :user)
+      end
+    end
+
     def current_ability
-      @current_ability ||= Ability.new(current_user)
+      @current_ability ||= Ability.new(current_resource_owner)
+    end
+
+    def feature_enabled?(feature)
+      Flipper.enabled?(feature, current_resource_owner)
     end
 
     def access_cookie_valid?
       access_cookie = cookies.encrypted["#{Rails.configuration.cookie_prefix}_ACCESS_CONFIRMED"]
 
       access_cookie.present? && access_cookie == current_user.confirm_access_token
+    end
+
+    def provider
     end
 
     def root

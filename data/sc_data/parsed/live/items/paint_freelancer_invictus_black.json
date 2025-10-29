@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Freelancer_Invictus_Black",
+  "ref": "e5243581-914b-4eca-bf9a-b05168a531b9",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "0d980e20-09f0-4f96-9bb7-cefb5e58eccc",
+  "name": "Freelancer Black Livery",
+  "short_name": null,
+  "description": "Customize your Freelancer with this black chrome livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

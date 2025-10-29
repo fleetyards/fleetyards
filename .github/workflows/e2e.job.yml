@@ -6,15 +6,18 @@ on:
 jobs:
   e2e-test:
     runs-on: ubuntu-latest
-
+    strategy:
+      fail-fast: false
+      matrix:
+        shardIndex: [1, 2, 3, 4]
+        shardTotal: [4]
     env:
-      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-      DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards_test
+      RAILS_ENV: test
+      NODE_OPTIONS: "--max_old_space_size=4096"
+      DATABASE_URL: postgresql://root:password@127.0.0.1:8271/fleetyards_test
       DATABASE_HOST: 127.0.0.1
       DATABASE_USER: root
-      TEST_SEEDS: 1
-      RAILS_ENV: ci
-      VITE_RUBY_MODE: production
+      DATABASE_PASSWORD: password
       ON_SUBDOMAIN: false
       RAILS_SERVE_STATIC_FILES: 1
       DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
@@ -26,9 +29,9 @@ jobs:
         env:
           POSTGRES_USER: root
           POSTGRES_DB: fleetyards_test
-          POSTGRES_PASSWORD: root
+          POSTGRES_PASSWORD: password
         ports:
-          - 5432:5432
+          - 8271:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -37,15 +40,14 @@ jobs:
       redis:
         image: redis:6.2.10-alpine
         ports:
-          - 6379:6379
+          - 8272:6379
         options: >-
           --health-cmd "redis-cli ping"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
@@ -65,20 +67,46 @@ jobs:
       - name: Setup DB
         run: bundle exec rails db:create db:schema:load
       - name: Create ES Index
-        run: bundle exec thor search:index
+        run: bundle exec rails searchkick:reindex:all
       - name: Assets Compile
         run: bundle exec rails assets:precompile
       - name: Prefill DB
         run: bundle exec rails db:seed
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
+      - name: Install playwright browsers
+        run: pnpm test:e2e:install
+      - name: Run e2e Tests
+        run: pnpm test:e2e:run --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+      - uses: actions/upload-artifact@v4
+        if: always()
         with:
-          start: bundle exec puma -C config/puma.rb
-          wait-on: "http://localhost:8270"
-          wait-on-timeout: 120
-          browser: chrome
-          record: true
-          parallel: true
-        env:
-          PORT: 8270
-          CYPRESS_BASE_URL: http://localhost:8270
+          name: blob-report-${{ matrix.shardIndex }}-attempt-${{ github.run_attempt }}
+          path: blob-report
+          retention-days: 1
+
+  merge-reports:
+    # Merge reports after playwright-tests, even if some shards have failed
+    if: ${{ !cancelled() }}
+    needs: [e2e-test]
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/workflows/js-setup-action
+
+      - name: Download blob reports from GitHub Actions Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: all-blob-reports
+          pattern: blob-report-*
+          merge-multiple: true
+
+      - name: Merge into HTML Report
+        run: pnpm playwright merge-reports --reporter html ./all-blob-reports
+
+      - name: Upload HTML report
+        uses: actions/upload-artifact@v4
+        with:
+          name: html-report--attempt-${{ github.run_attempt }}
+          path: playwright-report
+          retention-days: 2

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Caterpillar_Fleetweek_Grey_Camo",
+  "ref": "3882f047-8ffb-4e61-abb9-c0f6c22cf57c",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6558312d-422a-4835-b93d-8a2cacbe09f1",
+  "name": "Caterpillar Mistwalker Livery",
+  "short_name": null,
+  "description": "Become one with the clouds with the Caterpillar Mistwalker livery and its grey camo pattern.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

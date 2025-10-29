@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hornet_F7C_Mk2_Black_Gold",
+  "ref": "c6c8b8e0-faf9-4a75-b2f2-a9f100a0a5c6",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4e072e05-1318-4168-9f37-2b32ec29ee5d",
+  "name": "Hornet Ironscale Livery",
+  "short_name": null,
+  "description": "Primarily black with bronze highlights, the Ironscale livery gives the Hornet Mk2 a subtle yet elegant style.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

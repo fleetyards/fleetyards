@@ -3,10 +3,11 @@
 module Api
   module V1
     class ModelsController < ::Api::BaseController
+      include ViteRails::TagHelpers
+
+      skip_verify_authorized
+
       before_action :authenticate_user!, only: []
-      after_action -> { pagination_header(:models) }, only: %i[index with_docks cargo_options]
-      after_action -> { pagination_header(:variants) }, only: [:variants]
-      after_action -> { pagination_header(:loaners) }, only: [:loaners]
       after_action -> { pagination_header(:images) }, only: [:images]
       after_action -> { pagination_header(:videos) }, only: [:videos]
 
@@ -15,8 +16,6 @@ module Api
       end
 
       def index
-        authorize! :index, :api_models
-
         @q = index_scope
 
         @models = @q.result
@@ -25,71 +24,49 @@ module Api
       end
 
       def with_docks
-        authorize! :index, :api_models
-
-        params[:withDock] = true
+        model_query_params[:with_dock] = true
 
         @q = index_scope
 
         @models = @q.result
           .page(params[:page])
           .per(per_page(Model))
+
+        render "api/v1/models/index"
       end
 
       def fleetchart
-        authorize! :index, :api_models
-
         @q = index_scope
 
         @models = @q.result
           .sort_by { |model| [-model.length, model.name] }
       end
 
-      def unscheduled
-        authorize! :index, :api_models
-
-        @models = Model.visible
-          .active
-          .where.not(id: RoadmapItem.pluck(:model_id).compact)
-          .where.not(rsi_id: nil)
-          .where.not(production_status: ["flight-ready"])
-          .order(name: :asc)
-          .all
-      end
-
       def slugs
-        authorize! :index, :api_models
-
         render json: Model.order(slug: :asc).all.pluck(:slug)
       end
 
       def production_states
-        authorize! :index, :api_models
-
         @production_states = Model.production_status_filters
       end
 
       def classifications
-        authorize! :index, :api_models
-
         @classifications = Model.classification_filters
       end
 
       def focus
-        authorize! :index, :api_models
-
         @focus = Model.focus_filters
       end
 
       def sizes
-        authorize! :index, :api_models
-
         @sizes = Model.size_filters
       end
 
-      def filters
-        authorize! :index, :api_models
+      def dock_sizes
+        @dock_sizes = Model.dock_size_filters
+      end
 
+      def filters
         @filters ||= begin
           filters = []
           filters << Manufacturer.model_filters
@@ -98,14 +75,12 @@ module Api
           filters << Model.focus_filters
           filters << Model.size_filters
           filters.flatten
-            .sort_by { |filter| [filter.category, filter.name] }
+            .sort_by { |filter| [filter.category, filter.label] }
         end
       end
 
       def cargo_options
-        authorize! :index, :api_models
-
-        model_query_params["sorts"] = sorting_params(Model)
+        model_query_params["sorts"] = sorting_params(Model, model_query_params["sorts"])
 
         @q = Model.visible
           .active
@@ -118,8 +93,6 @@ module Api
       end
 
       def latest
-        authorize! :index, :api_models
-
         @models = Model.visible.includes(:manufacturer)
           .active
           .order(last_updated_at: :desc, name: :asc)
@@ -127,16 +100,10 @@ module Api
       end
 
       def embed
-        authorize! :index, :api_models
-
         @models = Model.visible.active.where(slug: params[:models]).order(name: :asc).all
-
-        render "api/v1/models/index"
       end
 
       def updated
-        authorize! :index, :api_models
-
         if updated_range.present?
           scope = Model.visible.active.where(updated_at: updated_range)
           @models = scope.order(updated_at: :desc, name: :asc)
@@ -146,26 +113,30 @@ module Api
       end
 
       def show
-        authorize! :show, :api_models
-
         @model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
       end
 
       def hardpoints
-        authorize! :show, :api_models
-
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
-        scope = model.model_hardpoints.includes(:component).undeleted
+        scope = if feature_enabled?("hardpoints-v2")
+          model.hardpoints.includes(:component)
+        else
+          model.model_hardpoints.includes(:component).undeleted
+        end
 
         scope = scope.where(source: params[:source]) if params[:source].present?
 
         @hardpoints = scope
+
+        if feature_enabled?("hardpoints-v2")
+          render "api/v1/models/hardpoints"
+        else
+          render "api/v1/models/hardpoints_old"
+        end
       end
 
       def images
-        authorize! :show, :api_models
-
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
         @images = model.images
@@ -176,8 +147,6 @@ module Api
       end
 
       def videos
-        authorize! :show, :api_models
-
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
         @videos = model.videos
@@ -187,8 +156,6 @@ module Api
       end
 
       def variants
-        authorize! :show, :api_models
-
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
         scope = model.variants.includes(:manufacturer).visible.active
@@ -201,18 +168,18 @@ module Api
           scope = scope.where(price: price_range)
         end
 
-        model_query_params["sorts"] = sorting_params(Model)
+        model_query_params["sorts"] = sorting_params(Model, model_query_params["sorts"])
 
         @q = scope.ransack(model_query_params)
 
-        @variants = @q.result
+        @models = @q.result
           .page(params[:page])
           .per(per_page(Model))
+
+        render "api/v1/models/index"
       end
 
       def loaners
-        authorize! :show, :api_models
-
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
         scope = model.loaners.includes(:manufacturer).visible.active
@@ -227,18 +194,18 @@ module Api
           scope = scope.where(price: price_range)
         end
 
-        model_query_params["sorts"] = sorting_params(Model)
+        model_query_params["sorts"] = sorting_params(Model, model_query_params["sorts"])
 
         @q = scope.ransack(model_query_params)
 
-        @loaners = @q.result
+        @models = @q.result
           .page(params[:page])
           .per(per_page(Model))
+
+        render "api/v1/models/index"
       end
 
       def modules
-        authorize! :show, :api_models
-
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
         @model_modules = model.modules
@@ -250,8 +217,6 @@ module Api
       end
 
       def module_packages
-        authorize! :show, :api_models
-
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
         @module_packages = model.module_packages
@@ -263,8 +228,6 @@ module Api
       end
 
       def upgrades
-        authorize! :show, :api_models
-
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
         @model_upgrades = model.upgrades
@@ -274,8 +237,6 @@ module Api
       end
 
       def paints
-        authorize! :show, :api_models
-
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
         @paints = model.paints
@@ -285,18 +246,17 @@ module Api
       end
 
       def store_image
-        authorize! :show, :api_models
-
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first
         model = ModelUpgrade.visible.active.where(slug: params[:slug]).first if model.blank?
         model = Model.new if model.blank?
 
-        redirect_to model.store_image.url, allow_other_host: true
+        store_image_url = model.store_image.url
+        store_image_url = vite_asset_url("images/fallback/store_image.jpg") if store_image_url.blank?
+
+        redirect_to store_image_url, allow_other_host: true
       end
 
       def fleetchart_image
-        authorize! :show, :api_models
-
         model = Model
           .visible
           .active
@@ -309,8 +269,6 @@ module Api
       end
 
       def snub_crafts
-        authorize! :show, :api_models
-
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
         @snub_crafts = model.snub_crafts
@@ -366,10 +324,11 @@ module Api
           scope = scope.where(price: price_range)
         end
 
-        scope = scope.with_dock if params[:withDock]
+        scope = scope.with_dock if model_query_params.delete("with_dock")
+        scope = scope.where(cargo: 0.1..) if model_query_params.delete("with_cargo")
         scope = will_it_fit?(scope) if model_query_params["will_it_fit"].present?
 
-        model_query_params["sorts"] = sorting_params(Model)
+        model_query_params["sorts"] = sorting_params(Model, model_query_params["sorts"])
 
         scope.ransack(model_query_params)
       end
@@ -417,15 +376,17 @@ module Api
       end
 
       private def model_query_params
-        @model_query_params ||= query_params(
-          :name_cont, :description_cont, :name_or_description_cont, :on_sale_eq, :sorts,
-          :length_gteq, :length_lteq, :beam_gteq, :beam_lteq, :height_gteq, :height_lteq,
-          :price_gteq, :price_lteq, :pledge_price_gteq, :pledge_price_lteq, :will_it_fit,
-          :search_cont,
-          name_in: [], manufacturer_in: [], classification_in: [], focus_in: [],
-          production_status_in: [], price_in: [], pledge_price_in: [], size_in: [], sorts: [],
-          id_not_in: [], id_in: []
-        )
+        @model_query_params ||= params.permit(
+          q: [
+            :name_cont, :name_eq, :slug_eq, :description_cont, :name_or_description_cont, :on_sale_eq,
+            :sorts, :length_gteq, :length_lteq, :beam_gteq, :beam_lteq, :height_gteq, :height_lteq,
+            :price_gteq, :price_lteq, :pledge_price_gteq, :pledge_price_lteq, :search_cont,
+            :with_dock, :with_cargo,
+            will_it_fit: [], name_in: [], slug_in: [], manufacturer_in: [], classification_in: [],
+            focus_in: [], production_status_in: [], price_in: [], pledge_price_in: [], size_in: [],
+            sorts: [], id_not_in: [], id_in: []
+          ]
+        )[:q].presence || {}
       end
     end
   end

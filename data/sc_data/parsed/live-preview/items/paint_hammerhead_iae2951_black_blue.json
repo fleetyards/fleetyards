@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hammerhead_IAE2951_Black_Blue",
+  "ref": "16420086-531e-4d00-a37a-3999bf4173fe",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "e8f76b43-812c-4995-8a67-6d2052dd66e8",
+  "name": "Hammerhead Stormbringer Livery",
+  "short_name": null,
+  "description": "Celebrate the 2951 IAE with this custom Hammerhead livery. Blending blue and black with white accents, the paint scheme gives the ship an electric new look.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

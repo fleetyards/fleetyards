@@ -1,0 +1,21 @@
+{
+  "key": "Paint_100i_Sand_Red",
+  "ref": "ee3bd1ab-ed48-4944-87aa-543320c4193f",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "15338981-c0b4-4e17-a79d-11c21cad26e6",
+  "name": "100 Series Sand Wave Livery",
+  "short_name": null,
+  "description": "Customize your Origin 100 series ship with this sandstone, grey and orange livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

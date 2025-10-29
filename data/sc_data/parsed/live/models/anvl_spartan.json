@@ -1,0 +1,251 @@
+{
+  "key": "ANVL_Spartan",
+  "ground": true,
+  "movement_class": "ArcadeWheeled",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "Anvil Spartan",
+  "description": "Manufacturer: Anvil Aerospace\\nFocus: Troop Transport\\n\\nBuilt on Anvil’s robust Atlas Platform, the same chassis used for their devastating Ballista air defense system, the Spartan is a fully armored transport outfitted with eight jump seats. The Spartan’s rugged frame makes it perfect for all kinds of terrain, and its remote Gatling turret helps clear the area for easier deployment.",
+  "career": "Ground",
+  "role": "Ground",
+  "insurance": {
+    "base_wait_time_minutes": "6.19",
+    "mandatory_wait_time_minutes": "2.06",
+    "base_expediting_fee": "2475"
+  },
+  "mass": 36276.0,
+  "metrics": {
+    "x": 7.0,
+    "y": 17.0,
+    "z": 5.5
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_seat_driver",
+      "ref": null,
+      "key": "ANVL_Spartan_SCItem_Seat_Driver"
+    },
+    {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "ANVL_Ballista_SCItem_SeatAccess"
+    },
+    {
+      "name": "hardpoint_controller_wheel",
+      "ref": null,
+      "key": "Controller_Wheel"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_GRNP_S00_Sens"
+    },
+    {
+      "name": "hardpoint_selfdestruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_20s"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_power_plant",
+      "ref": null,
+      "key": "POWR_JUST_S00_Defiant_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_cooler",
+      "ref": null,
+      "key": "COOL_JSPN_S00_CryoStarSL_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_ANVL_Ballista"
+    },
+    {
+      "name": "hardpoint_shield_generator_left",
+      "ref": null,
+      "key": "SHLD_BASL_S00_Castra_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator_right",
+      "ref": null,
+      "key": "SHLD_BASL_S00_Castra_SCItem"
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": null,
+      "key": "ARMR_ANVL_Spartan"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_turret",
+      "ref": null,
+      "key": "ANVL_Spartan_Remote_Top_Turret",
+      "loadout": [
+        {
+          "name": "hardpoint_gunmount_left",
+          "ref": null,
+          "key": "GATS_BallisticGatling_S2"
+        },
+        {
+          "name": "hardpoint_gunmount_right",
+          "ref": null,
+          "key": "GATS_BallisticGatling_S2"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_door_ramp",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenClose_IP_Spartan_Left"
+    },
+    {
+      "name": "hardpoint_scanner",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_door_right_ramp",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenClose_IP_Spartan_Right"
+    },
+    {
+      "name": "hardpoint_rear_door",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenClose_IP_Spartan_Rear"
+    },
+    {
+      "name": "hardpoint_fuel_intake",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuel_tank",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_module_attach",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_ping",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_transponder",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_weapon_rack",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_relay",
+      "ref": null,
+      "key": "RELAY_3slot_slim"
+    },
+    {
+      "name": "hardpoint_weapon_seat_rack_001",
+      "ref": null,
+      "key": "Weapon_Rack_ANVL_Spartan_1Slot"
+    },
+    {
+      "name": "hardpoint_weapon_seat_rack_002",
+      "ref": null,
+      "key": "Weapon_Rack_ANVL_Spartan_1Slot"
+    },
+    {
+      "name": "hardpoint_weapon_seat_rack_003",
+      "ref": null,
+      "key": "Weapon_Rack_ANVL_Spartan_1Slot"
+    },
+    {
+      "name": "hardpoint_weapon_seat_rack_004",
+      "ref": null,
+      "key": "Weapon_Rack_ANVL_Spartan_1Slot"
+    },
+    {
+      "name": "hardpoint_weapon_seat_rack_005",
+      "ref": null,
+      "key": "Weapon_Rack_ANVL_Spartan_1Slot"
+    },
+    {
+      "name": "hardpoint_weapon_seat_rack_006",
+      "ref": null,
+      "key": "Weapon_Rack_ANVL_Spartan_1Slot"
+    },
+    {
+      "name": "hardpoint_weapon_seat_rack_007",
+      "ref": null,
+      "key": "Weapon_Rack_ANVL_Spartan_1Slot"
+    },
+    {
+      "name": "hardpoint_weapon_seat_rack_008",
+      "ref": null,
+      "key": "Weapon_Rack_ANVL_Spartan_1Slot"
+    },
+    {
+      "name": "hardpoint_weapon_cockpit_01",
+      "ref": null,
+      "key": "Weapon_Rack_ANVL_Atlas_1_Slot"
+    },
+    {
+      "name": "hardpoint_weapon_cockpit_02",
+      "ref": null,
+      "key": "Weapon_Rack_ANVL_Atlas_1_Slot"
+    },
+    {
+      "name": "hardpoint_personal_storage",
+      "ref": null,
+      "key": "PersonalStorage_SPARTAN"
+    },
+    {
+      "name": "hardpoint_cockpit_flair",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    }
+  ]
+}

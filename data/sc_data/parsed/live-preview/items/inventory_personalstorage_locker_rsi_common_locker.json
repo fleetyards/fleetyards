@@ -1,0 +1,9 @@
+{
+  "key": "PersonalStorage_Locker_RSI_Common_Locker",
+  "ref": "bcb997a1-664b-4eb1-98b0-e0f074509ad6",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 1.0
+  }
+}

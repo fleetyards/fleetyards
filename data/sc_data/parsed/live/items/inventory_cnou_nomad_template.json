@@ -1,0 +1,9 @@
+{
+  "key": "CNOU_Nomad_Template",
+  "ref": "65a2586f-12af-44b5-a32b-9942f6b57fb9",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 1.23
+  }
+}

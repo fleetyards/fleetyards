@@ -3,6 +3,8 @@
 module Api
   module V1
     class ManufacturersController < ::Api::BaseController
+      skip_verify_authorized
+
       before_action :authenticate_user!, only: []
       after_action -> { pagination_header(:manufacturers) }, only: [:index]
 
@@ -11,8 +13,6 @@ module Api
       end
 
       def index
-        authorize! :index, :api_manufacturers
-
         scope = Manufacturer.with_name
 
         scope = scope.with_model if manufacturer_query_params.delete(:with_models)
@@ -28,8 +28,6 @@ module Api
 
       # DEPRECATED
       def with_models
-        authorize! :index, :api_manufacturers
-
         scope = Manufacturer.with_name
 
         scope = scope.with_model
@@ -44,9 +42,9 @@ module Api
       end
 
       private def manufacturer_query_params
-        @manufacturer_query_params ||= query_params(
-          :with_models, :name_cont, name_in: []
-        )
+        @manufacturer_query_params ||= params.permit(q: [
+          :with_models, :name_eq, :name_cont, :slug_eq, :slug_cont, name_in: [], slug_in: []
+        ]).fetch(:q, {})
       end
     end
   end

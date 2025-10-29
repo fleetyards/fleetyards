@@ -12,9 +12,12 @@ export default () => ({
     filterVisible(state) {
       return state.filterVisible;
     },
+
+    perPage(state) {
+      return state.perPage;
+    },
   },
 
-  /* eslint-disable no-param-reassign */
   mutations: {
     reset(state) {
       Object.assign(state, getDefaultState());
@@ -23,6 +26,9 @@ export default () => ({
     setFilterVisible(state, payload) {
       state.filterVisible = payload;
     },
+
+    setPerPage(state, payload) {
+      state.perPage = payload;
+    },
   },
-  /* eslint-enable no-param-reassign */
 });

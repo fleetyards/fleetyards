@@ -1,0 +1,44 @@
+{
+  "key": "RSI_Constellation_CML_Noise",
+  "ref": "0bb8cd37-41ed-4bc9-a4b2-681c249d2418",
+  "category": "countermeasures",
+  "type": "WeaponDefensive",
+  "sub_type": "CountermeasureLauncher",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "19fbaf6d-d6dc-4e15-8fdf-67101934ff3c",
+  "name": "Joker Defcon - Noise Launcher",
+  "short_name": "Noise",
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  },
+  "ammunition": {
+    "max_ammo_count": 5.0,
+    "initial_ammo_count": 5.0,
+    "max_restock_count": 3.0
+  },
+  "power_connection": {
+    "power_base": 1.0,
+    "power_draw": 1.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 0.0,
+    "displayed_in_powered_item_list": 0.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.0,
+    "overclock_threshold_max": 0.0,
+    "overpower_performance": 0.0,
+    "overclock_performance": 0.0,
+    "power_to_em": 50.0,
+    "decay_rate_of_em": 0.15
+  }
+}

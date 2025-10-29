@@ -1,0 +1,279 @@
+{
+  "zh-CN": {
+    "messages": {
+      "copy": {
+        "success": "文本已复制！",
+        "failure": "无法复制文本"
+      },
+      "copyGitRevision": {
+        "success": "Git 版本已复制！",
+        "failure": "无法复制 Git 版本"
+      },
+      "copyImageUrl": {
+        "success": "图片链接已复制！",
+        "failure": "无法复制图片链接"
+      },
+      "copyVideoUrl": {
+        "success": "视频链接已复制！",
+        "failure": "无法复制视频链接"
+      },
+      "copyShareUrl": {
+        "success": "链接 \"%{url}\" 已复制！",
+        "failure": "无法复制链接"
+      },
+      "copyInviteUrl": {
+        "success": "邀请链接 \"%{url}\" 已复制！",
+        "failure": "无法复制邀请链接"
+      },
+      "copyTwoFactorProvisioningUrl": {
+        "success": "配置链接已复制！",
+        "failure": "无法复制配置链接"
+      },
+      "copyBackupCodes": {
+        "success": "备份代码已复制！",
+        "failure": "无法复制备份代码"
+      },
+      "signup": {
+        "success": "<b>欢迎来到 FleetYards.net！</b> 你的账户已创建。 <br>你将收到一封确认邮件来激活你的账户。",
+        "invalid": "请在创建账户之前解决错误。",
+        "failure": "我们无法创建你的账户。请稍后再试。"
+      },
+      "accountConfirm": {
+        "success": "你的账户已成功确认。<br>现在你可以登录了。",
+        "failure": "你的账户无法确认。"
+      },
+      "requestPasswordChange": {
+        "success": "如果您的邮箱地址存在于我们的数据库中，您将在几分钟内收到密码恢复链接。"
+      },
+      "changePassword": {
+        "success": "您的密码已成功更改。",
+        "failure": "无法更新您的密码。"
+      },
+      "updateProfile": {
+        "success": "资料已更新。",
+        "failure": "无法更新资料。"
+      },
+      "updateHangar": {
+        "success": "机库设置已更新。"
+      },
+      "updateNotifications": {
+        "success": "通知设置已更新。"
+      },
+      "updateAccount": {
+        "success": "账户已更新。"
+      },
+      "avatarUpload": {
+        "create": {
+          "success": "头像已上传",
+          "failure": "无法上传头像"
+        },
+        "destroy": {
+          "success": "头像已移除",
+          "failure": "无法移除头像"
+        },
+        "invalidExtension": "您提供的图片格式无效。支持的格式：%{extensions}。"
+      },
+      "hangarImport": {
+        "success": "导入完成",
+        "partialSuccess": "导入部分完成。<br><br>未找到的飞船：<br>%{missing}",
+        "failure": "导入失败",
+        "invalidExtension": "您提供的导入文件格式无效。支持的格式：%{extensions}。"
+      },
+      "hangarExport": {
+        "failure": "导出失败，请稍后再试。"
+      },
+      "vehicle": {
+        "add": {
+          "success": {
+            "noHtml": "您的新 %{model} 将被交付到您的机库",
+            "paragraph1": "您的新 ",
+            "paragraph2": "将被交付到您的 "
+          }
+        },
+        "addToWishlist": {
+          "success": {
+            "noHtml": "您的新 %{model} 已添加到您的愿望清单",
+            "paragraph2": "已添加到您的 "
+          }
+        },
+        "resetIngame": {
+          "moveToWishlist": {
+            "success": "已将所有游戏内购买的飞船移动到您的愿望清单。",
+            "failure": "无法将所有游戏内购买的飞船移动到您的愿望清单。"
+          },
+          "removeAll": {
+            "success": "已从您的机库中移除所有游戏内购买的飞船。",
+            "failure": "无法从您的机库中移除所有游戏内购买的飞船。"
+          }
+        }
+      },
+      "model": {
+        "onSale": "%{model} 现在特价销售！"
+      },
+      "notification": {
+        "granted": "欢迎使用 FleetYards.net 通知！"
+      },
+      "twoFactor": {
+        "enable": {
+          "success": "双因素认证已启用！",
+          "failure": "无法启用双因素认证。"
+        },
+        "disable": {
+          "success": "双因素认证已禁用！",
+          "failure": "无法禁用双因素认证。"
+        },
+        "backupCodes": {
+          "failure": "无法生成备份代码。"
+        }
+      },
+      "error": {
+        "usernameTaken": "用户名已被占用。",
+        "userNotFound": "用户未找到",
+        "urlInvalid": "URL 无效",
+        "emailTaken": "邮箱已被占用。",
+        "fleetTaken": "舰队名已被占用。",
+        "colorInvalid": "颜色无效",
+        "serialTaken": "序列号已被占用。",
+        "textInvalid": "%{field} 无效",
+        "hangar": {
+          "accountRequired": {
+            "noHtml": "您需要注册或登录以向机库添加飞船。",
+            "paragraph1": "您需要 ",
+            "paragraph2": " 以向机库添加飞船。",
+            "paragraph3": "获取更多信息 "
+          }
+        },
+        "commodityPrice": {
+          "accountRequired": "您需要 <a href=\"/sign-up/\">注册</a> 或 <a href=\"/login/\">登录</a> 以提交价格。"
+        },
+        "default": "<b>出现了一些问题。</b> <br>您是否尝试过关闭并重新打开？"
+      },
+      "account": {
+        "destroy": {
+          "success": "<b>您的账户已被删除。</b> <br>很遗憾看到您离开 :'(",
+          "failure": "我们无法删除您的账户！请稍后再试。"
+        }
+      },
+      "commodityPrice": {
+        "create": {
+          "success": "感谢您提交价格信息。"
+        }
+      },
+      "fleet": {
+        "create": {
+          "success": "您的舰队已创建。",
+          "failure": "舰队无法保存。"
+        },
+        "update": {
+          "success": "设置已保存。",
+          "failure": "设置无法保存。"
+        },
+        "destroy": {
+          "success": "您的舰队已被删除。",
+          "failure": "我们无法删除您的舰队。"
+        },
+        "leave": {
+          "success": "您已离开舰队。",
+          "failure": "无法离开舰队。"
+        },
+        "invites": {
+          "accept": {
+            "success": "邀请已接受。",
+            "failure": "无法接受邀请。"
+          },
+          "decline": {
+            "success": "邀请已拒绝。",
+            "failure": "无法拒绝邀请。"
+          },
+          "create": {
+            "failure": "无法邀请用户。"
+          }
+        },
+        "members": {
+          "update": {
+            "success": "设置已保存。",
+            "failure": "设置无法保存。"
+          },
+          "destroy": {
+            "success": "成员已移除。",
+            "failure": "无法移除成员。"
+          },
+          "demote": {
+            "success": "成员已降级。",
+            "failure": "无法降级成员。"
+          },
+          "promote": {
+            "success": "成员已升级。",
+            "failure": "无法升级成员。"
+          },
+          "accept": {
+            "success": "成员已接受。",
+            "failure": "无法接受成员。"
+          },
+          "decline": {
+            "success": "成员已拒绝。",
+            "failure": "无法拒绝成员。"
+          }
+        }
+      },
+      "fleetInvite": {
+        "used": "<b>%{fleet} 的加入请求已发送！</b><br>一旦您的会员资格被接受，您将通过电子邮件收到通知",
+        "failure": "邀请无法使用。",
+        "notFound": "邀请未找到。",
+        "confirm": "您确定要加入舰队：\"%{fleet}\"吗？"
+      },
+      "holoViewer": {
+        "modelLoader": {
+          "failure": "我们无法加载请求的3D模型！请稍后再试。"
+        }
+      },
+      "confirm": {
+        "vehicle": {
+          "destroy": "您确定要从机库中移除这艘飞船吗？"
+        },
+        "hangarGroup": {
+          "destroy": "您确定要从机库中移除这个群组吗？"
+        },
+        "hangar": {
+          "import": "导入的飞船将被添加到您的机库中，而不会与现有飞船进行匹配。<br><br>支持的格式：Fleetyards 导出、Starship42 或 HangarXplor。<br><br>您想继续吗？",
+          "destroySelected": "您确定要从机库中移除所有选定的飞船吗？此操作无法撤销。",
+          "destroyAll": "您确定要从机库中移除所有飞船吗？此操作无法撤销。"
+        },
+        "wishlist": {
+          "destroyAll": "您确定要从愿望清单中移除所有飞船吗？此操作无法撤销。"
+        },
+        "tradeRoutes": {
+          "reset": "您确定要重置所有商品价格吗？"
+        },
+        "account": {
+          "destroy": "您确定要删除您的账户吗？此操作无法撤销。"
+        },
+        "commodityPrice": {
+          "destroy": "您确定要删除此价格吗？此操作无法撤销。"
+        },
+        "shopCommodity": {
+          "destroy": "您确定要删除此商品吗？此操作无法撤销。"
+        },
+        "fleet": {
+          "leave": "您确定要离开舰队吗？此操作无法撤销。",
+          "destroy": "您确定要删除您的舰队吗？此操作无法撤销。",
+          "members": {
+            "destroy": "您确定要移除此成员吗？"
+          },
+          "invites": {
+            "decline": "您确定要拒绝此邀请吗？此操作无法撤销。"
+          }
+        },
+        "twoFactor": {
+          "generateBackupCodes": "您确定要重新生成您的双因素认证备份代码吗？"
+        }
+      },
+      "syncExtension": {
+        "started": "正在同步您的机库...",
+        "success": "您的机库已同步。",
+        "failure": "您的机库无法同步。",
+        "notLoggedIn": "您需要登录 <a href=\"https://robertsspaceindustries.com\" target=\"_blank\">https://robertsspaceindustries.com</a> 以同步您的机库。"
+      }
+    }
+  }
+}

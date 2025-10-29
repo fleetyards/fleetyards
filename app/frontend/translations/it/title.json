@@ -1,0 +1,112 @@
+{
+  "it": {
+    "title": {
+      "default": "FleetYards.net",
+      "defaultShort": "FleetYards",
+      "defaultAdmin": "FleetYards.net Command",
+      "defaultAdminShort": "FltYrds Command",
+      "defaultDocs": "FleetYards.net Documentation",
+      "defaultDocsShort": "FleetYards Docs",
+      "home": "Home",
+      "search": "Risultati Ricerca",
+      "ships": { "index": "Navi" },
+      "ship": "%{name} - %{manufacturer}",
+      "shipImages": "%{name} Immagini",
+      "shipVideos": "%{name} Video",
+      "images": "Immagini",
+      "stats": "Statistiche",
+      "login": "Login",
+      "signUp": "Registrati",
+      "embed": "Widget Incorporato",
+      "apiV1": "API V1",
+      "hangar": {
+        "index": "Il Mio Hangar",
+        "preview": "Anteprima del Mio Hangar",
+        "stats": "Statistiche del Mio Hangar",
+        "import": "Importa",
+        "public": "Hangar di %{user}",
+        "wishlist": "Wishlist",
+        "publicWishlist": "%{user} Wishlist"
+      },
+      "requestPassword": "Richiedi la password",
+      "changePassword": "Cambia la password",
+      "fleets": {
+        "add": "Crea una nuova Flotta",
+        "preview": "Anteprima della Flotta",
+        "invites": "Inviti Alla Flotta",
+        "members": "Membri di %{fleet}",
+        "stats": "Statistiche di %{fleet}",
+        "settings": {
+          "index": "Impostazioni di %{fleet}",
+          "fleet": "Impostazioni di %{fleet}",
+          "membership": "Appartenenza a %{fleet}"
+        }
+      },
+      "roadmap": {
+        "index": "Roadmap",
+        "ships": "Roadmap Delle Navi",
+        "changes": "Modifiche alla Roadmap"
+      },
+      "settings": {
+        "index": "Impostazioni del Profilo",
+        "account": "Account",
+        "hangar": "Impostazioni dell'Hangar",
+        "notifications": "Impostazioni Notifiche",
+        "security": "Sicurezza dell'account",
+        "twoFactor": {
+          "enable": "Attiva Autenticazione A Due Fattori",
+          "disable": "Disattiva Autenticazione A Due Fattori",
+          "backupCodes": "Genera Codici Di Backup Autenticazione a Due Fattori"
+        }
+      },
+      "compare": { "ships": "Confronta Navi" },
+      "notFound": "404",
+      "tools": {
+        "index": "Strumenti",
+        "travelTimes": "Tempi di Viaggio"
+      },
+      "impressum": "Info legali",
+      "privacyPolicy": "Informativa sulla privacy",
+      "cookiePolicy": "Informativa sui Cookie",
+      "visualTests": {
+        "index": "Test Visivi",
+        "panels": "Pannelli - Test Visivi",
+        "buttons": "Pulsanti - Test Visivi",
+        "tables": "Tabelle - Test Visivi"
+      },
+      "admin": {
+        "models": {
+          "index": "Modelli",
+          "new": "Nuovo Modello",
+          "edit": {
+            "index": "Modifica Modello",
+            "metrics": "Modifica Metriche Modello",
+            "prices": "Modifica Prezzi Modello",
+            "fleetchart": "Modifica Immagini Modello",
+            "hardpoints": "Modifica Hardpoint Modello",
+            "cargoAndFuel": "Carico e Carburante",
+            "docks": "Modifica Docks Modello",
+            "videos": "Modifica Video Modello"
+          }
+        },
+        "components": {
+          "index": "Componenti",
+          "new": "Nuovo Componente",
+          "edit": "Modifica Componente"
+        },
+        "manufacturers": {
+          "index": "Produttori",
+          "new": "Nuovo Produttore",
+          "edit": "Modifica Produttore"
+        },
+        "users": {
+          "index": "Utenti",
+          "edit": "Modifica Utente"
+        },
+        "vehicles": {
+          "index": "Veicoli"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "WEP_GatlingBarrel_Template",
+  "ref": "fb1addb5-8e2c-4e62-8c3b-fc70e47c0948",
+  "category": "weapons",
+  "type": "WeaponAttachment",
+  "sub_type": "Barrel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

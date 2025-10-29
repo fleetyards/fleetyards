@@ -3,7 +3,7 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/model_paints", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
+  let!(:model_paints) { create_list(:model_paint, 3) }
 
   path "/model-paints" do
     get("Model Paints List") do
@@ -48,7 +48,7 @@ RSpec.describe "api/v1/model_paints", type: :request, swagger_doc: "v1/schema.ya
 
         let(:q) do
           {
-            "modelSlugEq" => "galaxy"
+            "modelSlugEq" => model_paints.first.model.slug
           }
         end
 
@@ -56,7 +56,7 @@ RSpec.describe "api/v1/model_paints", type: :request, swagger_doc: "v1/schema.ya
           data = JSON.parse(response.body)
 
           expect(data.count).to eq(1)
-          expect(data.first["name"]).to eq("Protector")
+          expect(data.first["name"]).to eq(model_paints.first.name)
         end
       end
 

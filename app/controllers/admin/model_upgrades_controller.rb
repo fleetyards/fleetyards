@@ -63,9 +63,9 @@ module Admin
     end
 
     private def save_filters
-      session[:model_upgrades_filters] = query_params(
+      session[:model_upgrades_filters] = params.permit(q: [
         :name_or_slug_cont
-      ).to_h
+      ]).fetch(:q, {})
       session[:model_upgrades_page] = params[:page]
     end
 

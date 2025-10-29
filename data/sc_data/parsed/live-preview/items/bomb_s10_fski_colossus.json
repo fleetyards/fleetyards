@@ -1,0 +1,24 @@
+{
+  "key": "BOMB_S10_FSKI_Colossus",
+  "ref": "2b8a744d-c0a0-4f92-b0e6-bf4ae077cc11",
+  "category": "weapons",
+  "type": "Bomb",
+  "sub_type": null,
+  "size": "10",
+  "grade": "1",
+  "manufacturer_ref": "5f81335d-44e6-4104-841e-c5af9df06829",
+  "name": "Colossus Bomb",
+  "short_name": "Colossus",
+  "description": "Manufacturer: FireStorm Kinetics\\nItem Type: Explosive Bomb\\nSize: 10\\n\\nFoes below won't stand a chance against a Colossus. FireStorm Kinetics designed this massive S10 bomb to devastate ground targets, whether they're vehicles or structures alike. Meant to be dropped from high altitude, the Colossus features patented Atmo-Xact fins that deploy to provide additional guidance en route to target.",
+  "inventory_consumption": {
+    "micro_scu": 10000000.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 10.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  }
+}

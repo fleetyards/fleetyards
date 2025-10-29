@@ -1,0 +1,21 @@
+{
+  "key": "Salvage_Modifier_Scraper_Large",
+  "ref": "9dd4d8a5-49ab-493f-93cb-0536050cd9b4",
+  "category": "utility",
+  "type": "SalvageModifier",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "name": "Trawler Scraper Module",
+  "short_name": null,
+  "description": "Manufacturer: Greycat Industrial\\nItem Type: Scraper Module\\nExtraction Speed: 0.05/0.15\\nRadius: 6m\\nExtraction Efficiency: 65%\\n\\nScrape more of a hull in one pass with the Trawler scraper module. While the area of effect is larger than other modules, it is less efficient due to intense heat generating more burn off. Making the Trawler the ideal module to use when a job necessitates speed over efficiency.",
+  "inventory_consumption": {
+    "micro_scu": 340.0,
+    "dimensions": {
+      "x": 0.0549,
+      "y": 0.0424,
+      "z": 0.133
+    }
+  }
+}

@@ -1,0 +1,174 @@
+{
+  "key": "ARGO_CSV_Cargo",
+  "ground": true,
+  "movement_class": "ArcadeWheeled",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "Argo CSV-SM\\n",
+  "description": "Manufacturer: Argo Astronautics\\nFocus: Cargo\\n\\nYou got your plot of land, you’ve got the right construction materials, and now you’re ready to watch your dreams take shape. The ideal companion to the CSV-FM, the CSV Supply Model provides additional storage for all the resources required to build your next settlement.\\n",
+  "career": "Ground",
+  "role": "Ground",
+  "insurance": {
+    "base_wait_time_minutes": "0.33",
+    "mandatory_wait_time_minutes": "0.08",
+    "base_expediting_fee": "190"
+  },
+  "mass": 1000.0,
+  "metrics": {
+    "x": 8.75,
+    "y": 6.0,
+    "z": 3.5
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_driver",
+      "ref": null,
+      "key": "ARGO_CSV_Seat_Driver"
+    },
+    {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "ARGO_CSV_SCItem_SeatAccess"
+    },
+    {
+      "name": "hardpoint_controller_wheel",
+      "ref": null,
+      "key": "Controller_Wheel_ARGO_CSV"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_ARGO_CSV"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon_Vehicle"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_power_plant",
+      "ref": null,
+      "key": "POWR_LPLT_S00_Radix_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler",
+      "ref": null,
+      "key": "COOL_JSPN_S00_FrostStarSL_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator",
+      "ref": null,
+      "key": "SHLD_SECO_S00_PIN_SCItem"
+    },
+    {
+      "name": "hardpoint_comp_radar",
+      "ref": null,
+      "key": "Door_NoRoomConnector_CSV_ComponentBay_Radar"
+    },
+    {
+      "name": "hardpoint_selfdestruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_10s"
+    },
+    {
+      "name": "hardpoint_ping",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": null,
+      "key": "ARMR_ARGO_CSV"
+    },
+    {
+      "name": "hardpoint_battery",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_comp_lifesupport",
+      "ref": null,
+      "key": "Door_NoRoomConnector_CSV_ComponentBay_Lifesupport"
+    },
+    {
+      "name": "hardpoint_lifesupport_tank",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "Fuel_Port_PLACEHOLDER_CSV"
+    },
+    {
+      "name": "hardpoint_comp_computer",
+      "ref": null,
+      "key": "Door_NoRoomConnector_CSV_ComponentBay_Avionics"
+    },
+    {
+      "name": "hardpoint_relay_cockpit",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_cockpit_flair",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_weapon_storage_multitool",
+      "ref": null,
+      "key": "Weapon_Rack_ARGO_CSV"
+    },
+    {
+      "name": "hardpoint_modular_bed",
+      "ref": null,
+      "key": "ARGO_CSV_Cargo_Rack_Top"
+    },
+    {
+      "name": "hardpoint_modular_slot",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_item_roof",
+      "ref": null,
+      "key": "ARGO_CSV_Roof_Cap"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Controller_TargetSelector",
+  "ref": "620a5db4-92c8-4841-984e-1dc9e81f8e67",
+  "category": "controller",
+  "type": "TargetSelector",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "TARGET SELECTOR",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

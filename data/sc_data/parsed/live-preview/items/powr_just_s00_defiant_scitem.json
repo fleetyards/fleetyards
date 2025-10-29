@@ -1,0 +1,60 @@
+{
+  "key": "POWR_JUST_S00_Defiant_SCItem",
+  "ref": "ad59f651-83d0-42f3-839a-8f055243ba6b",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "0",
+  "grade": "2",
+  "manufacturer_ref": "d7cc897f-b760-4a73-93c0-27e23c52db0a",
+  "name": "Defiant",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Juno Starwerk\\nSize: 0\\nGrade: B\\nClass: Industrial\\n\\nIn this cutthroat universe, the competition doesn’t stop when you do. That’s why you need the Defiant industrial power plant equipped in your vehicle. It’s optimized by the experts at Juno Starwerk to provide unmatched performance compared to other components in its class.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 520.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 0.52,
+    "StartIRTemperature": 14.0,
+    "OverpowerHeat": 0.14,
+    "OverclockThresholdMinHeat": 0.34,
+    "OverclockThresholdMaxHeat": 0.72,
+    "ThermalEnergyBase": 4888.889,
+    "ThermalEnergyDraw": 6000.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.5,
+    "Mass": 200.0,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 65.0,
+    "MaxTemperature": 700.0,
+    "OverheatTemperature": 700.0,
+    "RecoveryTemperature": 550.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "power_connection": {
+    "power_base": 0.0,
+    "power_draw": 720.0,
+    "time_to_reach_draw_request": 15.0,
+    "safeguard_priority": 0.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 1.0,
+    "is_overclockable": 1.0,
+    "overclock_threshold_min": 0.26,
+    "overclock_threshold_max": 0.64,
+    "overpower_performance": 0.3,
+    "overclock_performance": 0.4,
+    "power_to_em": 0.13,
+    "decay_rate_of_em": 0.15
+  }
+}

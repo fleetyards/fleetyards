@@ -1,0 +1,30 @@
+/* stylelint-disable */
+.spacer {
+  height: 3px;
+  margin: 20px 5%;
+  background-color: $gray;
+  border: none;
+  border-radius: 50%;
+  /* Tailwind: h-[3px] my-5 mx-[5%] bg-gray-500 border-none rounded-full */
+
+  &--large {
+    margin: 60px 5%;
+    /* Tailwind: my-16 mx-[5%] (16 = 64px, close to 60px) */
+  }
+
+  &--dark {
+    background-color: $gray-black;
+    /* Tailwind: bg-gray-900 */
+  }
+
+  &--slim {
+    margin: 10px 5%;
+    /* Tailwind: my-2.5 mx-[5%] (2.5 = 10px) */
+  }
+
+  &--mb {
+    margin-bottom: 30px;
+    /* Tailwind: mb-8 (8 = 32px, close to 30px) */
+  }
+}
+/* stylelint-enable */

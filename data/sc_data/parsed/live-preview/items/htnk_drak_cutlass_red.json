@@ -1,0 +1,24 @@
+{
+  "key": "HTNK_DRAK_Cutlass_Red",
+  "ref": "ec4e8591-528d-481f-8642-c4eb84a757d3",
+  "category": "fueltanks",
+  "type": "FuelTank",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Internal Tank",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "capacity": 18.0
+  }
+}

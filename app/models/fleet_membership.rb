@@ -19,27 +19,53 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  fleet_id          :uuid
+#  fleet_role_id     :uuid
 #  hangar_group_id   :uuid
 #  user_id           :uuid
 #
 # Indexes
 #
+#  index_fleet_memberships_on_fleet_role_id         (fleet_role_id)
 #  index_fleet_memberships_on_user_id_and_fleet_id  (user_id,fleet_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (fleet_role_id => fleet_roles.id)
 #
 class FleetMembership < ApplicationRecord
   include AASM
 
+  attr_accessor :update_reason, :update_reason_description, :author_id
+
+  AVAILABLE_PRIVILEGES = [
+    "fleet:memberships:read",
+    "fleet:memberships:create",
+    "fleet:memberships:update",
+    "fleet:memberships:delete",
+    "fleet:memberships:manage"
+  ].freeze
+
+  DEFAULT_PRIVILEGES = {
+    admin: [],
+    officer: ["fleet:memberships:manage"],
+    member: ["fleet:memberships:read"]
+  }.freeze
+
+  has_paper_trail meta: {
+    author_id: :author_id,
+    reason: :update_reason,
+    reason_description: :update_reason_description
+  }
+
   belongs_to :fleet, touch: true
+  belongs_to :fleet_role, optional: true
   belongs_to :user, touch: true
 
   paginates_per 30
 
-  enum ships_filter: {all: 0, hangar_group: 1, hide: 2}, _prefix: true
-
-  enum role: {admin: 0, officer: 1, member: 2}
-  ransacker :role, formatter: proc { |v| FleetMembership.roles[v] } do |parent|
-    parent.table[:role]
-  end
+  enum :ships_filter,
+    {all: 0, hangar_group: 1, hide: 2},
+    prefix: true
 
   def self.ransackable_attributes(auth_object = nil)
     [
@@ -59,12 +85,15 @@ class FleetMembership < ApplicationRecord
 
   DEFAULT_SORTING_PARAMS = ["created_at desc", "accepted_at desc"]
   ALLOWED_SORTING_PARAMS = [
-    "user_rsi_handle asc", "user_rsi_handle desc", "user_username asc", "user_username desc",
-    "created_at asc", "created_at desc", "accepted_at asc", "accepted_at desc"
+    "userRsiHandle asc", "userRsiHandle desc", "userUsername asc", "userUsername desc",
+    "createdAt asc", "createdAt desc", "acceptedAt asc", "acceptedAt desc"
   ]
+
+  enum :role, {admin: 0, officer: 1, member: 2}
 
   ransack_alias :username, :user_username
   ransack_alias :name, :user_username
+  ransack_alias :role, :fleet_role_name
 
   before_validation :set_default_ships_filter
   after_create :broadcast_create
@@ -73,6 +102,16 @@ class FleetMembership < ApplicationRecord
   after_create_commit :schedule_setup_fleet_vehicles
   after_update_commit :schedule_update_fleet_vehicles
   after_commit :broadcast_update
+  before_destroy :check_if_can_be_destroyed
+
+  delegate :has_access?, to: :fleet_role
+
+  def check_if_can_be_destroyed
+    return unless fleet_role&.permanent?
+
+    errors.add(:base, I18n.t("activerecord.errors.models.fleet_membership.attributes.base.cannot_destroy_from_permanent_role"))
+    throw(:abort)
+  end
 
   aasm timestamps: true, whiny_transitions: false do
     state :created, initial: true
@@ -249,23 +288,33 @@ class FleetMembership < ApplicationRecord
   end
 
   def promote
-    return if admin?
+    return if next_fleet_role == fleet_role || next_fleet_role.nil?
 
-    if officer?
-      update(role: :admin)
-    else
-      update(role: :officer)
-    end
+    update(fleet_role: next_fleet_role)
   end
 
   def demote
-    return if member?
+    return if fleet_role.permanent? && fleet_role.fleet_memberships.count == 1
+    return if prev_fleet_role == fleet_role || prev_fleet_role.nil?
 
-    if admin?
-      update(role: :officer)
-    else
-      update(role: :member)
-    end
+    update(fleet_role: prev_fleet_role)
+  end
+
+  def next_fleet_role
+    return if fleet_role.nil?
+
+    index = fleet.fleet_roles.ranked.index(fleet_role)
+
+    return if index - 1 < 0
+
+    fleet.fleet_roles[index - 1]
+  end
+
+  def prev_fleet_role
+    return if fleet_role.nil?
+
+    index = fleet.fleet_roles.ranked.index(fleet_role)
+    fleet.fleet_roles[index + 1]
   end
 
   def to_json(*_args)

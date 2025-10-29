@@ -1,0 +1,21 @@
+{
+  "key": "Paint_600i_LunarNewYears2954_Red_Gold_Dragon",
+  "ref": "4295a217-453d-475c-b7b6-f486f6e98e68",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b95b48d6-0645-4564-bad3-2f3612171242",
+  "name": "600i 2954 Auspicious Red Dragon Livery",
+  "short_name": null,
+  "description": "Seek peace and prosperity in the new year with the Auspicious Red Dragon livery. Outfit your ship with this bold red base paint complemented by gold accents and a stylized graphic of a dragon.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

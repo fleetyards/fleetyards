@@ -3,11 +3,10 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/fleets/stats", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
-  let(:fleet) { fleets :starfleet }
-
-  let(:user) { nil }
+  let(:member) { create(:user, vehicle_count: 2) }
+  let(:fleet) { create(:fleet, members: [member]) }
+  let(:user) { member }
+  let(:fleetSlug) { fleet.slug }
 
   before do
     sign_in(user) if user.present?
@@ -23,17 +22,6 @@ RSpec.describe "api/v1/fleets/stats", type: :request, swagger_doc: "v1/schema.ya
 
       response(200, "successful") do
         schema "$ref" => "#/components/schemas/FleetMembersStats"
-
-        let(:fleetSlug) { fleet.slug }
-        let(:user) { users :data }
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
 
         run_test!
       end

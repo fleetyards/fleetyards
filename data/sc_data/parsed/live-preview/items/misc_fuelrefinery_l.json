@@ -1,0 +1,27 @@
+{
+  "key": "MISC_FuelRefinery_L",
+  "ref": "af55bd96-fa03-4139-ba09-aae46aa89a9a",
+  "category": "fueltanks",
+  "type": "FuelTank",
+  "sub_type": "Fuel",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 10000.0
+  },
+  "type_data": {
+    "capacity": 0.0
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Dragonfly_Fleetweek_Black_Red",
+  "ref": "6aaf6389-4898-46a7-b1ef-af5db0af8231",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "03d30194-9800-49c6-a18e-8bfa82fc98d2",
+  "name": "Dragonfly Coalfire Livery",
+  "short_name": null,
+  "description": "Style and speed meet with the Dragonfly Coalfire livery that blends red and grey for an alluring look.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -32,7 +32,7 @@ module V1
             modelNameOrModelDescriptionCont: {type: :string},
             loanerEq: {type: :boolean},
             memberIn: {type: :array, items: {type: :string}},
-            sorts: {oneOf: [{
+            sorts: {anyOf: [{
               type: :array, items: {"$ref": "#/components/schemas/FleetVehicleSortEnum"}
             }, {
               "$ref": "#/components/schemas/FleetVehicleSortEnum"

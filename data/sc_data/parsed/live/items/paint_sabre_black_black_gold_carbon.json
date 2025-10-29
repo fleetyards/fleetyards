@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Sabre_Black_Black_Gold_Carbon",
+  "ref": "cbd82715-40b5-48f1-9d3c-5597383c1b81",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "83904426-cf95-4050-934b-099386f13027",
+  "name": "Sabre Ashcloud Livery",
+  "short_name": null,
+  "description": "Equip the Sabre in this dark and discreet Ashcloud livery that's predominantly black with beautiful carbon fiber and copper details.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

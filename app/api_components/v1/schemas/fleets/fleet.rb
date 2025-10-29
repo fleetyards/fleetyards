@@ -9,9 +9,6 @@ module V1
         schema({
           type: :object,
           properties: {
-            myRole: {"$ref": "#/components/schemas/FleetMembershipRoleEnum"},
-            primary: {type: :boolean},
-            myFleet: {type: :boolean},
             id: {type: :string, format: :uuid},
             fid: {type: :string},
             rsiSid: {type: :string},

@@ -1,0 +1,24 @@
+{
+  "key": "ARMR_TMBL_Cyclone_AA",
+  "ref": "4ddf57ba-8031-48e1-a52c-0463dfe56296",
+  "category": "armor",
+  "type": "Armor",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "bb1024bc-b82e-491c-820c-36662c36feb3",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  }
+}

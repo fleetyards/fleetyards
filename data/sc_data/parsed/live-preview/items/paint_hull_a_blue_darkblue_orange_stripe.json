@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hull_A_Blue_DarkBlue_Orange_Stripe",
+  "ref": "9f99d159-e50a-4693-afb3-0ec99a64828d",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "c81f6681-d437-4ec8-95f8-27675af81b24",
+  "name": "Hull A Bombora Livery",
+  "short_name": null,
+  "description": "Featuring a color scheme that's vibrant blue on the top and a vivid orange on the bottom, the Bombora livery gives that Hull A a strikingly distinct look.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

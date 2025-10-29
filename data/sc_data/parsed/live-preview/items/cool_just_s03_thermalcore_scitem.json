@@ -1,0 +1,63 @@
+{
+  "key": "COOL_JUST_S03_ThermalCore_SCItem",
+  "ref": "fd9f41c7-f60b-4ac8-95be-cb501fc5dd5d",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "3",
+  "grade": "3",
+  "manufacturer_ref": "d7cc897f-b760-4a73-93c0-27e23c52db0a",
+  "name": "ThermalCore",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Juno Starwerk \\nSize: 3\\nGrade: C\\nClass: Industrial\\n\\nWhen you’re in the middle of an important job, you don’t want to waste time wondering if your cooler is doing its part. Now you don’t have to. With the dependable mid-level ThermalCore cooler from Juno Starwerk onboard, you can take all the guesswork out of heat management.",
+  "inventory_consumption": {
+    "micro_scu": 756000.0,
+    "dimensions": {
+      "x": 0.6699014,
+      "y": 4.422015,
+      "z": 1.202842
+    }
+  },
+  "durability": {
+    "health": 1100.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 20.0,
+    "StartIRTemperature": 250.0,
+    "OverpowerHeat": 0.14,
+    "OverclockThresholdMinHeat": 0.34,
+    "OverclockThresholdMaxHeat": 0.72,
+    "ThermalEnergyBase": 10.0,
+    "ThermalEnergyDraw": 20.0,
+    "ThermalConductivity": 3.0,
+    "SpecificHeatCapacity": 13.0,
+    "Mass": 8100.0,
+    "SurfaceArea": 50.0,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 1.0,
+    "MaxTemperature": 450.0,
+    "OverheatTemperature": 370.0,
+    "RecoveryTemperature": 350.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "power_connection": {
+    "power_base": 32.0,
+    "power_draw": 48.0,
+    "time_to_reach_draw_request": 10.0,
+    "safeguard_priority": 30.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.34,
+    "overclock_threshold_max": 0.43,
+    "overpower_performance": 0.279,
+    "overclock_performance": 0.05,
+    "power_to_em": 10.0,
+    "decay_rate_of_em": 0.18
+  },
+  "type_data": {
+    "cooling_rate": 16000000.0
+  }
+}

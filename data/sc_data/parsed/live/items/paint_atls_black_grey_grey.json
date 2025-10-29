@@ -1,0 +1,21 @@
+{
+  "key": "Paint_ATLS_Black_Grey_Grey",
+  "ref": "adc58623-3f7b-467c-b7f8-6034416febce",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "14b3cf25-5019-43e0-ac7c-b7383e4d4f19",
+  "name": "ATLS Carbon Black Livery",
+  "short_name": null,
+  "description": "The Carbon Black livery gives the ATLS power suit a sleek and professional appearance.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -18,6 +18,7 @@ v1_api_routes = lambda do
   end
 
   draw "api/users_routes"
+  draw "api/otp_routes"
   draw "api/models_routes"
   draw "api/hangar_routes"
   draw "api/vehicles_routes"
@@ -26,7 +27,6 @@ v1_api_routes = lambda do
   draw "api/shops_routes"
   draw "api/commodities_routes"
   draw "api/components_routes"
-  draw "api/commodity_prices_routes"
   draw "api/shop_commodities_routes"
 
   resources :manufacturers, param: :slug, only: %i[index] do

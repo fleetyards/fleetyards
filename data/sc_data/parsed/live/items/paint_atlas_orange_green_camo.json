@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Atlas_Orange_Green_Camo",
+  "ref": "d883e83e-ead4-49ac-a934-4e63db7d7cc7",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d87c027a-3582-4151-bf49-f97830f3f133",
+  "name": "Centurion Sandstorm Camo Livery",
+  "short_name": null,
+  "description": "Outfit the Centurion in dark tan and green camo with the Sandstorm Camo livery. The looks allows this battlefield beast to blend into a wide variety of terrains.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

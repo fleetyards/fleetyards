@@ -1,0 +1,24 @@
+{
+  "key": "RSI_Constellation_Taurus_Tractor_Beam",
+  "ref": "fc1bbd77-fdf8-4c13-bd37-8c28061cbe6b",
+  "category": "module",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "name": "SureGrip TH2 Tractor Beam",
+  "short_name": "SureGrip TH2 Tractor",
+  "description": "Manufacturer: Greycat Industrial\\nItem Type: Tractor Beam\\n\\nGreycat’s latest addition to their field-tested tractor beam line is a dependable addition to their catalog. Aside from a more efficient pull/draw ratio, the latest model does little to advance from the previous models. The SureGrip has settings to target and extract everything from asteroid fragments to drifting crewmen, backed by Greycat’s certified Soft-Touch® guarantee.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 50.0
+  }
+}

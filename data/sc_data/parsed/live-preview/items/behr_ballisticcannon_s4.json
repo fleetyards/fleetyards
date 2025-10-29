@@ -1,0 +1,54 @@
+{
+  "key": "BEHR_BallisticCannon_S4",
+  "ref": "6635dc5f-dfcd-4b72-9d9d-8d3620820352",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "C-788 Cannon",
+  "short_name": "C-788",
+  "description": "Manufacturer: Behring\\nItem Type: Ballistic Cannon\\nSize: 4\\n\\nHurtling high caliber rounds with devastating velocity, Behring’s C-788 Ballistic Autocannon was built to punch through ship armor. Extremely durable with exceptional heat resistance, the “Combine” can handle a heavy workload that, even with the weapon’s slower rate of fire, makes it an ideal choice for taking on larger, less maneuverable targets.",
+  "inventory_consumption": {
+    "micro_scu": 2100000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "loadout": [
+    {
+      "name": "magazine_attach",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1650.0
+  },
+  "ammunition": {
+    "max_ammo_count": 100.0,
+    "initial_ammo_count": 100.0,
+    "max_restock_count": 3.0
+  },
+  "power_connection": {
+    "power_base": 70.0,
+    "power_draw": 100.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 20.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.25,
+    "overclock_threshold_max": 0.46,
+    "overpower_performance": 0.3,
+    "overclock_performance": 0.25,
+    "power_to_em": 1.8,
+    "decay_rate_of_em": 0.5
+  }
+}

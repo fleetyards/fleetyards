@@ -1,0 +1,16 @@
+{
+  "zh-TW": {
+    "directUpload": {
+      "title": "上傳",
+      "dropzone": {
+        "textMultiple": "將檔案拖拽到這裡上傳",
+        "text": "將檔案拖拽到這裡上傳",
+        "or": "或",
+        "browse": "瀏覽"
+      },
+      "previewImage": {
+        "remove": "移除"
+      }
+    }
+  }
+}

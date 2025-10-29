@@ -3,19 +3,21 @@
 module Admin
   class ApplicationController < ActionController::Base
     include RansackHelper
+    include ActionPolicy::Controller
 
     layout "admin/application"
 
+    verify_authorized
+
+    before_action :set_paper_trail_whodunnit
     before_action :configure_permitted_parameters, if: :devise_controller?
-    before_action :authenticate_admin_user!, :set_default_nav
+    before_action :set_default_nav
 
     protect_from_forgery with: :exception
 
     skip_before_action :track_ahoy_visit
 
     add_flash_types :error, :warning
-
-    check_authorization unless: :unauthorized_controllers
 
     rescue_from ActionController::InvalidAuthenticityToken do
       @action_name = "unprocessable_entity"
@@ -31,11 +33,6 @@ module Admin
 
     private def unauthorized_controllers
       devise_controller?
-    end
-
-    rescue_from CanCan::AccessDenied do |exception|
-      sign_out
-      redirect_to new_admin_user_session_path, warning: exception.message
     end
 
     private def set_default_nav

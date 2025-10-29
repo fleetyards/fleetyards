@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Syulen_Purple_Bronze",
+  "ref": "727599b7-effe-411a-b848-3eb596389ef3",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2025583f-7c22-4bc1-b403-e82a9e3e7404",
+  "name": "Syulen Thlūn Livery",
+  "short_name": null,
+  "description": "Make your Syulen stand out from the crowd with the Thlūn livery that’s purple marbled with bronze accents.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

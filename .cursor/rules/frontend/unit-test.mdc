@@ -1,0 +1,32 @@
+---
+description: 
+globs: *.test.ts,*.spec.ts,*.vue
+alwaysApply: true
+---
+# Frontend Unit Testing Rules
+
+## Tools
+- Use Vitest or Jest for unit testing Vue components and utilities.
+- Use Vue Test Utils for component testing.
+
+## File Organization
+- Place test files next to the code they test, using `.spec.ts` or `.test.ts` suffixes.
+
+## Best Practices
+- Write tests for all components, composables, and utilities.
+- Use descriptive test names and group related tests with `describe` blocks.
+- Mock API calls and external dependencies.
+- Aim for high coverage but prioritize meaningful tests over 100% coverage.
+
+## Example
+```ts
+import { mount } from '@vue/test-utils';
+import MyComponent from './MyComponent.vue';
+
+describe('MyComponent', () => {
+  it('renders properly', () => {
+    const wrapper = mount(MyComponent);
+    expect(wrapper.text()).toContain('Hello');
+  });
+});
+```

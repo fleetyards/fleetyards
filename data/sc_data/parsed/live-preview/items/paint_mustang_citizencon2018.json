@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Mustang_CitizenCon2018",
+  "ref": "79b17dd6-638d-4c78-8bc3-d3092b994885",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ec227ef3-fb08-4897-abdb-579eb4e87c25",
+  "name": "Mustang Vindicator Livery",
+  "short_name": null,
+  "description": "Standard livery for the C.O. Mustang Alpha Vindicator.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

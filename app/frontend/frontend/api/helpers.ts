@@ -1,10 +1,11 @@
-// eslint-disable-next-line import/prefer-default-export
-export const transformErrors = function transformErrors(errors) {
+import type { FieldError } from "@/services/fyApi";
+
+export const transformErrors = function transformErrors(errors: FieldError[]) {
   if (!errors) {
-    return null;
+    return {};
   }
 
-  const errorData = {};
+  const errorData: Record<string, string[]> = {};
 
   errors.forEach((error) => {
     errorData[error.attribute] = error.messages.map(

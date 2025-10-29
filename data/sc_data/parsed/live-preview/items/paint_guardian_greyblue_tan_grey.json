@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Guardian_Greyblue_Tan_Grey",
+  "ref": "924778b7-f262-4443-ba0a-6bc180c5eacd",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "9ad49020-ae1b-4017-a923-8d8b413531b4",
+  "name": "Guardian Desert Dusk Livery",
+  "short_name": null,
+  "description": "Bold and adventurous, the Desert Dusk Guardian livery creates a gritty sense of sandblasted stone and darkened desert storms.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

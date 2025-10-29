@@ -21,10 +21,38 @@ shared:
   mailer_default_admin_to: <%= ENV["MAILER_DEFAULT_ADMIN_TO"] %>
 
   s3_endpoint: <%= ENV["S3_ENDPOINT"] || "https://fleetyards.fra1.digitaloceanspaces.com" %>
-  s3_sc_data_bucket: <%= ENV["S3_SC_DATA_BUCKET"] || "sc_data" %>
   s3_seeds_fleetchart_bucket: <%= ENV["S3_SEEDS_FLEETCHART_BUCKET"] || "seeds_fleetchart" %>
 
   opensearch_url: <%= ENV["OPENSEARCH_URL"] || 'localhost:9200' %>
+
+  sc_data:
+    # version: "3.24.3-live.9423704"
+    # environment: "live"
+
+    version: "4.0.0-live.9470730"
+    environment: "live-preview"
+
+  discord:
+    oauth_client_id: <%= ENV["DISCORD_OAUTH_CLIENT_ID"] %>
+    oauth_secret: <%= ENV["DISCORD_OAUTH_SECRET"] %>
+
+  github:
+    oauth_client_id: <%= ENV["GITHUB_OAUTH_CLIENT_ID"] %>
+    oauth_secret: <%= ENV["GITHUB_OAUTH_SECRET"] %>
+
+  twitch:
+    oauth_client_id: <%= ENV["TWITCH_OAUTH_CLIENT_ID"] %>
+    oauth_secret: <%= ENV["TWITCH_OAUTH_SECRET"] %>
+
+  google:
+    oauth_client_id: <%= ENV["GOOGLE_OAUTH_CLIENT_ID"] %>
+    oauth_secret: <%= ENV["GOOGLE_OAUTH_SECRET"] %>
+
+  apple:
+    bundle_id: <%= ENV["APPLE_BUNDLE_ID"] %>
+    id_prefix: <%= ENV["APPLE_ID_PREFIX"] %>
+    key: <%= ENV["APPLE_KEY_ID"] %>
+    pem: <%= ENV["APPLE_PEM"] %>
 
 staging:
   on_subdomain?: true

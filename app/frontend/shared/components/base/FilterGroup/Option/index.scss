@@ -1,0 +1,121 @@
+.filter-group-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 6px;
+  color: $input-color;
+  border-right: 4px solid transparent;
+  border-bottom: 1px solid $input-border;
+  border-left: 4px solid transparent;
+  cursor: pointer;
+
+  .filter-group-item-label {
+    padding-right: 14px;
+    flex-grow: 1;
+  }
+
+  .filter-group-item-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 26px;
+    height: auto;
+    margin-right: 10px;
+
+    img {
+      border-radius: 2px;
+      display: block;
+      max-width: 30px;
+      max-height: 26px;
+      width: auto;
+      height: auto;
+    }
+  }
+
+  i,
+  svg {
+    transition: all 0.5s ease;
+  }
+
+  &::before,
+  &::after {
+    position: absolute;
+    top: 50%;
+    width: 3px;
+    height: 26px;
+    margin-top: -13px;
+    opacity: 0;
+    transition: all ease 0.3s;
+    content: "";
+  }
+
+  &::before {
+    left: -4px;
+  }
+
+  &::after {
+    right: -4px;
+  }
+
+  &:hover {
+    &::before,
+    &::after {
+      background: $primary;
+      opacity: 1;
+    }
+
+    &::before {
+      border-top-right-radius: 2px;
+      border-bottom-right-radius: 2px;
+      box-shadow:
+        3px 0 10px rgba(darken($primary, 20%), 0.9),
+        0 3px 10px rgba(darken($primary, 20%), 0.9),
+        0 -3px 10px rgba(darken($primary, 20%), 0.9);
+    }
+
+    &::after {
+      border-top-left-radius: 2px;
+      border-bottom-left-radius: 2px;
+      box-shadow:
+        -3px 0 10px rgba(darken($primary, 20%), 0.9),
+        0 3px 10px rgba(darken($primary, 20%), 0.9),
+        0 -3px 10px rgba(darken($primary, 20%), 0.9);
+    }
+  }
+
+  &.active {
+    color: $primary;
+    animation-name: flash;
+    animation-duration: 0.5s;
+
+    i,
+    svg {
+      transform: rotate(45deg);
+    }
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &.bigIcon {
+    .filter-group-item-icon {
+      width: 60px;
+    }
+  }
+}
+
+@keyframes flash {
+  from,
+  50%,
+  to {
+    opacity: 1;
+  }
+
+  25%,
+  75% {
+    opacity: 0.5;
+  }
+}

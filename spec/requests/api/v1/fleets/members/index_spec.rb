@@ -3,11 +3,12 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
-  let(:fleet) { fleets :starfleet }
-
-  let(:user) { nil }
+  let(:admin) { create(:user) }
+  let(:member) { create(:user) }
+  let(:another_member) { create(:user) }
+  let(:user) { admin }
+  let(:fleet) { create(:fleet, admins: [admin], members: [member, another_member]) }
+  let(:fleetSlug) { fleet.slug }
 
   before do
     sign_in(user) if user.present?
@@ -37,22 +38,11 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
         schema type: :array,
           items: {"$ref": "#/components/schemas/FleetMember"}
 
-        let(:fleetSlug) { fleet.slug }
-        let(:user) { users :data }
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
-
         run_test! do |response|
           data = JSON.parse(response.body)
 
           expect(data.count).to be > 0
-          expect(data.count).to eq(5)
+          expect(data.count).to eq(3)
         end
       end
 
@@ -60,11 +50,9 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
         schema type: :array,
           items: {"$ref": "#/components/schemas/FleetMember"}
 
-        let(:fleetSlug) { fleet.slug }
-        let(:user) { users :data }
         let(:q) do
           {
-            "usernameCont" => "willriker"
+            "usernameCont" => member.username
           }
         end
 
@@ -72,7 +60,7 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
           data = JSON.parse(response.body)
 
           expect(data.count).to eq(1)
-          expect(data.first.dig("username")).to eq("willriker")
+          expect(data.first.dig("username")).to eq(member.username)
         end
       end
 
@@ -80,8 +68,6 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
         schema type: :array,
           items: {"$ref": "#/components/schemas/FleetMember"}
 
-        let(:fleetSlug) { fleet.slug }
-        let(:user) { users :data }
         let(:perPage) { 1 }
 
         run_test! do |response|
@@ -91,11 +77,23 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
         end
       end
 
+      response(200, "successful") do
+        schema type: :array,
+          items: {"$ref": "#/components/schemas/FleetMember"}
+
+        let(:user) { member }
+
+        run_test! do |response|
+          data = JSON.parse(response.body)
+
+          expect(data.count).to eq(3)
+        end
+      end
+
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:fleetSlug) { "unknown-fleet" }
-        let(:user) { users :data }
 
         run_test!
       end
@@ -103,7 +101,7 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:fleetSlug) { fleet.slug }
+        let(:user) { nil }
 
         run_test!
       end

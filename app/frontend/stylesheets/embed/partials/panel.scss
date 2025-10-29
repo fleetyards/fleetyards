@@ -178,11 +178,6 @@ $contentBorderRadius: $panelContentBorderRadius;
     border-bottom-left-radius: $contentBorderRadius;
   }
 
-  .panel-body {
-    padding: 15px;
-    padding-bottom: 0;
-  }
-
   .panel-details {
     overflow: hidden;
     transition: height $transition-base-speed ease;

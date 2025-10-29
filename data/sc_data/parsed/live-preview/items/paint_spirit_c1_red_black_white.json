@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Spirit_C1_Red_Black_White",
+  "ref": "cd950441-ed5b-4b71-8c1e-2943458406e0",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "7006d7f9-f43c-40f2-937b-d9ada1ae65a0",
+  "name": "Spirit Crimson Livery",
+  "short_name": null,
+  "description": "Strike a bold impression with this deep red paint scheme featuring an enlarged Crusader logo angling across both wings.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_RAFT_Lovestruck_Pink_Black",
+  "ref": "afb8a520-7bd4-42ee-9f5e-a20611825291",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "aea63cef-0720-4328-ae4f-d36afd0de838",
+  "name": "RAFT Lovestruck Livery",
+  "short_name": null,
+  "description": "Inspired by the colors of Coramor, the Lovestruck livery is a stylish metallic pink and black look for your RAFT.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,104 +1,106 @@
 module Rsi
   class HardpointsLoader < ::Rsi::BaseLoader
-    attr_accessor :components_loader
-
-    def initialize(options = {})
-      super
-
-      self.components_loader = ::Rsi::ComponentsLoader.new
-    end
-
-    def hardpoint_types(sc_identifier = nil)
-      return ModelHardpoint::SHIP_MATRIX_HARDPOINT_TYPES.keys if sc_identifier.present?
-
-      ModelHardpoint::GAME_FILE_HARDPOINT_TYPES.keys + ModelHardpoint::SHIP_MATRIX_HARDPOINT_TYPES.keys
-    end
-
-    def run(data, model)
+    def all(model, data = nil)
       hardpoint_ids = []
 
-      cleanup_game_file_hardpoints(model.id, model.sc_identifier)
+      if data.blank?
+        data = load_data.find do |entry|
+          entry["id"].to_s == model.rsi_id.to_s
+        end.dig("compiled")
+      end
 
-      hardpoints_data(data, model.sc_identifier).each do |hardpoint_data|
+      return if data.blank?
+
+      hardpoints_data(data).each do |hardpoint_data|
         (1..hardpoint_data[:mounts].to_i).each do |mount|
-          hardpoint_ids << create_or_update(hardpoint_data, model.id, mount).id
+          hardpoint_ids << create_or_update(hardpoint_data, model, mount).id
         end
       end
 
-      cleanup_old_hardpoints(model.id, model.sc_identifier, hardpoint_ids)
+      cleanup_old_hardpoints(model, hardpoint_ids)
     end
 
-    private def cleanup_game_file_hardpoints(model_id, model_sc_identifier)
-      ModelHardpoint.where(
-        source: :game_files,
-        model_id:,
-        hardpoint_type: hardpoint_types(model_sc_identifier)
-      ).update(deleted_at: Time.zone.now)
-    end
-
-    private def cleanup_old_hardpoints(model_id, model_sc_identifier, hardpoint_ids)
-      ModelHardpoint.where(
+    private def cleanup_old_hardpoints(model, hardpoint_ids)
+      Hardpoint.where(
         source: :ship_matrix,
-        model_id:,
-        hardpoint_type: hardpoint_types(model_sc_identifier)
+        parent: model
       ).where.not(id: hardpoint_ids)
-        .update(deleted_at: Time.zone.now)
+        .destroy_all
     end
 
-    private def hardpoints_data(data, sc_identifier)
+    private def hardpoints_data(data)
       data.values.map do |types|
         types.values.map do |values|
           values.each_with_index.map do |value, index|
             value.symbolize_keys.merge(index:)
           end
         end
-      end.flatten.select do |hardpoint_data|
-        hardpoint_types(sc_identifier).include?(hardpoint_data[:type].to_sym)
-      end
+      end.flatten
     end
 
-    private def create_or_update(hardpoint_data, model_id, mount)
-      size = extract_size(hardpoint_data)
+    private def create_or_update(hardpoint_data, model, mount)
+      size = size_mapping(hardpoint_data[:size])
 
-      hardpoint = ModelHardpoint.find_or_create_by!(
+      key = [
+        hardpoint_data[:name]&.strip&.tr(" ", "-"),
+        size,
+        hardpoint_data[:component_size],
+        hardpoint_data[:index],
+        mount
+      ].compact.join("_")
+
+      hardpoint = Hardpoint.find_or_create_by!(
+        matrix_key: key,
         source: :ship_matrix,
-        model_id:,
-        hardpoint_type: hardpoint_data[:type],
-        group: component_class_to_group(hardpoint_data[:component_class]),
-        key: "#{hardpoint_data[:type]}-#{hardpoint_data[:index]}",
-        mount:,
-        size:
+        parent: model
       )
+
+      group_key = [
+        hardpoint_data[:type],
+        hardpoint_data[:name]&.strip&.tr(" ", "-"),
+        size,
+        hardpoint_data[:component_size]
+      ].compact.join("-")
 
       hardpoint.update!(
+        sc_name: hardpoint_data[:name],
         details: hardpoint_data[:details],
-        item_slots: hardpoint_data[:quantity],
-        category: category_mapping(hardpoint_data[:category]),
-        deleted_at: nil
+        category: hardpoint_type_to_category(hardpoint_data[:type]),
+        group: component_class_to_group(hardpoint_data[:component_class], hardpoint_data[:type]),
+        group_key: group_key,
+        min_size: size,
+        max_size: size
       )
 
-      components_loader.run(hardpoint_data, hardpoint)
+      if hardpoint_data[:quantity].to_i > 1
+        hardpoint.hardpoints << (1..hardpoint_data[:quantity].to_i).map do |index|
+          sub_hardpoint = Hardpoint.find_or_create_by!(
+            matrix_key: "#{hardpoint_data[:name].strip}_#{size}_#{hardpoint_data[:index]}_#{mount}_#{index}",
+            source: :ship_matrix,
+            parent: hardpoint
+          )
+
+          sub_hardpoint.update!(
+            sc_name: hardpoint_data[:name],
+            group: component_class_to_group(hardpoint_data[:component_class], hardpoint_data[:type]),
+            category: hardpoint_type_to_category(hardpoint_data[:type]),
+            group_key: "#{hardpoint_data[:type]}-#{size}",
+            min_size: size,
+            max_size: size
+          )
+
+          sub_hardpoint
+        end
+      end
 
       hardpoint
     end
 
-    private def category_mapping(category)
-      return if category.blank?
+    private def component_class_to_group(component_class, hardpoint_type)
+      if hardpoint_type == "utility_items"
+        return :auxiliary
+      end
 
-      mapping = {
-        "M" => :main,
-        "R" => :retro,
-        "V" => :vtol,
-        "F" => :fixed,
-        "G" => :gimbal
-      }
-
-      raise "Category missing in Mapping \"#{category}\"" if mapping[category].blank?
-
-      mapping[category]
-    end
-
-    private def component_class_to_group(component_class)
       mapping = {
         "RSIPropulsion" => :propulsion,
         "RSIAvionic" => :avionic,
@@ -112,41 +114,54 @@ module Rsi
       mapping[component_class]
     end
 
+    private def hardpoint_type_to_category(hardpoint_type)
+      mapping = {
+        "fuel_tanks" => :fueltanks,
+        "quantum_drives" => :quantumdrive,
+        "jump_modules" => :jumpdrive,
+        "quantum_fuel_tanks" => :fueltanks,
+        "power_plants" => :powerplant,
+        "coolers" => :cooler,
+        "shield_generators" => :shieldgenerator,
+        "turrets" => :turret,
+        "missiles" => :missile_racks,
+        "utility_items" => :utility
+      }
+
+      return hardpoint_type if mapping[hardpoint_type].blank?
+
+      mapping[hardpoint_type]
+    end
+
     private def extract_size(hardpoint_data)
-      if hardpoint_data[:type] == "missiles"
-        size_from_name = (hardpoint_data[:name] || "").scan(/MSD-(\d{1})\d{2}/).last&.first
-
-        return size_mapping(size_from_name || hardpoint_data[:size])
-      end
-
       size_mapping(hardpoint_data[:size])
     end
 
     private def size_mapping(size)
       mapping = {
-        "TBD" => :tbd,
-        "-" => :tbd,
-        "V" => :vehicle,
-        "SN" => :snub,
-        "S" => :small,
-        "M" => :medium,
-        "L" => :large,
-        "C" => :capital,
-        "1" => :one,
-        "2" => :two,
-        "3" => :three,
-        "4" => :four,
-        "5" => :five,
-        "6" => :six,
-        "7" => :seven,
-        "8" => :eight,
-        "9" => :nine,
-        "10" => :ten,
-        "11" => :eleven,
-        "12" => :twelve
+        "TBD" => nil,
+        "-" => nil,
+        "V" => 0,
+        "SN" => 0,
+        "S" => 1,
+        "M" => 2,
+        "L" => 3,
+        "C" => 4,
+        "1" => 1,
+        "2" => 2,
+        "3" => 3,
+        "4" => 4,
+        "5" => 5,
+        "6" => 6,
+        "7" => 7,
+        "8" => 8,
+        "9" => 9,
+        "10" => 10,
+        "11" => 11,
+        "12" => 12
       }
 
-      raise "Size missing in Mapping \"#{size}\"" if mapping[size.strip].blank?
+      raise "Size missing in Mapping \"#{size}\"" if mapping.keys.exclude?(size.strip)
 
       mapping[size.strip]
     end

@@ -1,0 +1,15 @@
+---
+description:
+globs: *.html.erb,*.rb
+alwaysApply: true
+---
+
+# Linting and Formatting
+
+## Rubocop and standardrb
+
+Whenever you change files ensure to run standardrb to fix formatting.
+
+```bash
+bundle exec standardrb --fix packs/tools/test/models/timetable/ics_calendar_test.rb
+```

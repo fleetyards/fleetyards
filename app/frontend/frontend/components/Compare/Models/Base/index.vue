@@ -1,230 +1,28 @@
-<template>
-  <div>
-    <div class="row compare-row compare-section">
-      <div class="col-12 compare-row-label sticky-left">
-        <div
-          :class="{
-            active: visible,
-          }"
-          class="text-right metrics-title"
-          @click="toggle"
-        >
-          {{ t("labels.metrics.base") }}
-          <i class="fa fa-chevron-right" />
-        </div>
-      </div>
-      <div
-        v-for="model in models"
-        :key="`${model.slug}-placeholder`"
-        class="col-12 compare-row-item"
-      />
-    </div>
-    <Collapsed id="base" :visible="visible" class="row">
-      <div class="col-12">
-        <div class="row compare-row">
-          <div
-            class="col-12 compare-row-label text-right metrics-label sticky-left"
-          >
-            {{ t("model.manufacturer") }}
-          </div>
-          <div
-            v-for="model in models"
-            :key="`${model.slug}-manufacturer`"
-            class="col-6 text-center compare-row-item"
-          >
-            <span class="metrics-value" v-html="model.manufacturer.name" />
-          </div>
-        </div>
-        <div class="row compare-row">
-          <div
-            class="col-12 compare-row-label text-right metrics-label sticky-left"
-          >
-            {{ t("model.productionStatus") }}
-          </div>
-          <div
-            v-for="model in models"
-            :key="`${model.slug}-production-status`"
-            class="col-6 text-center compare-row-item"
-          >
-            <span class="metrics-value">
-              {{ t(`labels.model.productionStatus.${model.productionStatus}`) }}
-            </span>
-          </div>
-        </div>
-        <div class="row compare-row">
-          <div
-            class="col-12 compare-row-label text-right metrics-label sticky-left"
-          >
-            {{ t("model.focus") }}
-          </div>
-          <div
-            v-for="model in models"
-            :key="`${model.slug}-focus`"
-            class="col-6 text-center compare-row-item"
-          >
-            <span class="metrics-value">
-              {{ model.focus }}
-            </span>
-          </div>
-        </div>
-        <div class="row compare-row">
-          <div
-            class="col-12 compare-row-label text-right metrics-label sticky-left"
-          >
-            {{ t("model.classification") }}
-          </div>
-          <div
-            v-for="model in models"
-            :key="`${model.slug}-classification`"
-            class="col-6 text-center compare-row-item"
-          >
-            <span class="metrics-value">
-              {{ model.classificationLabel }}
-            </span>
-          </div>
-        </div>
-        <div class="row compare-row">
-          <div
-            class="col-12 compare-row-label text-right metrics-label sticky-left"
-          >
-            {{ t("model.size") }}
-          </div>
-          <div
-            v-for="model in models"
-            :key="`${model.slug}-size`"
-            class="col-6 text-center compare-row-item"
-          >
-            <span class="metrics-value">
-              {{ model.sizeLabel }}
-            </span>
-          </div>
-        </div>
-        <div class="row compare-row">
-          <div
-            class="col-12 compare-row-label text-right metrics-label sticky-left"
-          >
-            {{ t("model.length") }}
-          </div>
-          <div
-            v-for="model in models"
-            :key="`${model.slug}-length`"
-            class="col-6 text-center compare-row-item"
-          >
-            <span class="metrics-value">
-              {{ toNumber(model.length, "distance") }}
-            </span>
-          </div>
-        </div>
-        <div class="row compare-row">
-          <div
-            class="col-12 compare-row-label text-right metrics-label sticky-left"
-          >
-            {{ t("model.beam") }}
-          </div>
-          <div
-            v-for="model in models"
-            :key="`${model.slug}-beam`"
-            class="col-6 text-center compare-row-item"
-          >
-            <span class="metrics-value">
-              {{ toNumber(model.beam, "distance") }}
-            </span>
-          </div>
-        </div>
-        <div class="row compare-row">
-          <div
-            class="col-12 compare-row-label text-right metrics-label sticky-left"
-          >
-            {{ t("model.height") }}
-          </div>
-          <div
-            v-for="model in models"
-            :key="`${model.slug}-height`"
-            class="col-6 text-center compare-row-item"
-          >
-            <span class="metrics-value">
-              {{ toNumber(model.height, "distance") }}
-            </span>
-          </div>
-        </div>
-        <div class="row compare-row">
-          <div
-            class="col-12 compare-row-label text-right metrics-label sticky-left"
-          >
-            {{ t("model.mass") }}
-          </div>
-          <div
-            v-for="model in models"
-            :key="`${model.slug}-mass`"
-            class="col-6 text-center compare-row-item"
-          >
-            <span class="metrics-value">
-              {{ toNumber(model.mass, "weight") }}
-            </span>
-          </div>
-        </div>
-        <div class="row compare-row">
-          <div
-            class="col-12 compare-row-label text-right metrics-label sticky-left"
-          >
-            {{ t("model.cargo") }}
-          </div>
-          <div
-            v-for="model in models"
-            :key="`${model.slug}-cargo`"
-            class="col-6 text-center compare-row-item"
-          >
-            <span class="metrics-value">
-              {{ toNumber(model.cargo, "cargo") }}
-            </span>
-          </div>
-        </div>
-        <div class="row compare-row">
-          <div
-            class="col-12 compare-row-label text-right metrics-label sticky-left"
-          >
-            {{ t("model.price") }}
-          </div>
-          <div
-            v-for="model in models"
-            :key="`${model.slug}-cargo`"
-            class="col-6 text-center compare-row-item"
-          >
-            <span class="metrics-value" v-html="toUEC(model.price)" />
-          </div>
-        </div>
-        <div class="row compare-row">
-          <div
-            class="col-12 compare-row-label text-right metrics-label sticky-left"
-          >
-            {{ t("model.pledgePrice") }}
-          </div>
-          <div
-            v-for="model in models"
-            :key="`${model.slug}-cargo`"
-            class="col-6 text-center compare-row-item"
-          >
-            <span class="metrics-value">
-              {{ toDollar(model.pledgePrice) }}
-            </span>
-          </div>
-        </div>
-      </div>
-    </Collapsed>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "ModelsCompareBase",
+};
+</script>
 
 <script lang="ts" setup>
 import Collapsed from "@/shared/components/Collapsed.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import ModelsRow from "@/frontend/components/Compare/Models/Row/index.vue";
+import ModelsRowTitle from "@/frontend/components/Compare/Models/Row/Title/index.vue";
+import ModelsRowLabel from "@/frontend/components/Compare/Models/Row/Label/index.vue";
+import ModelsRowValue from "@/frontend/components/Compare/Models/Row/Value/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { Model } from "@/services/fyApi";
 
 type Props = {
   models: Model[];
+  slim?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  slim: false,
+});
 
-const { t, toNumber, toUEC, toDollar } = useI18n();
+const { t, toDollar, toNumber, toUEC } = useI18n();
 
 const visible = ref(false);
 
@@ -242,10 +40,104 @@ watch(
 const toggle = () => {
   visible.value = !visible.value;
 };
+
+const rows = [
+  {
+    key: "base-manufacturer",
+    label: t("model.manufacturer"),
+    value: (model: Model) => model.manufacturer?.name,
+  },
+  {
+    key: "base-production-status",
+    label: t("model.productionStatus"),
+    value: (model: Model) =>
+      t(`labels.model.productionStatus.${model.productionStatus}`),
+  },
+  {
+    key: "base-focus",
+    label: t("model.focus"),
+    value: (model: Model) => model.focus,
+  },
+  {
+    key: "base-classification",
+    label: t("model.classification"),
+    value: (model: Model) => model.classificationLabel,
+  },
+  {
+    key: "base-size",
+    label: t("model.size"),
+    value: (model: Model) => model.metrics.sizeLabel,
+  },
+  {
+    key: "base-length",
+    label: t("model.length"),
+    value: (model: Model) => toNumber(model.metrics.length, "distance"),
+  },
+  {
+    key: "base-beam",
+    label: t("model.beam"),
+    value: (model: Model) => toNumber(model.metrics.beam, "distance"),
+  },
+  {
+    key: "base-height",
+    label: t("model.height"),
+    value: (model: Model) => toNumber(model.metrics.height, "distance"),
+  },
+  {
+    key: "base-mass",
+    label: t("model.mass"),
+    value: (model: Model) => toNumber(model.metrics.mass, "weight"),
+  },
+  {
+    key: "base-cargo",
+    label: t("model.cargo"),
+    value: (model: Model) => toNumber(model.metrics.cargo, "cargo"),
+  },
+  {
+    key: "base-price",
+    label: t("model.price"),
+    value: (model: Model) => toUEC(model.price),
+  },
+  {
+    key: "base-pledge-price",
+    label: t("model.pledgePrice"),
+    value: (model: Model) => toDollar(model.pledgePrice),
+  },
+];
 </script>
 
-<script lang="ts">
-export default {
-  name: "ModelsCompareBase",
-};
-</script>
+<template>
+  <ModelsRow :models="models" row-key="base" :slim="slim" sticky-left section>
+    <template #label>
+      <ModelsRowTitle
+        :active="visible"
+        :title="t('labels.metrics.base')"
+        @click="toggle"
+      />
+    </template>
+  </ModelsRow>
+  <Collapsed id="base" :visible="visible" class="row">
+    <div class="col-12">
+      <ModelsRow
+        v-for="row in rows"
+        :key="row.key"
+        :models="models"
+        :row-key="row.key"
+        :slim="slim"
+        sticky-left
+      >
+        <template #label>
+          <ModelsRowLabel>
+            {{ row.label }}
+          </ModelsRowLabel>
+        </template>
+        <template #default="{ model }">
+          <ModelsRowValue>
+            <!-- eslint-disable-next-line vue/no-v-html -->
+            <span v-html="row.value(model)" />
+          </ModelsRowValue>
+        </template>
+      </ModelsRow>
+    </div>
+  </Collapsed>
+</template>

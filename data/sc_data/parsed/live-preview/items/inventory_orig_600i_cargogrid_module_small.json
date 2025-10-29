@@ -1,0 +1,40 @@
+{
+  "key": "ORIG_600i_CargoGrid_Module_Small",
+  "ref": "aa60ac6b-d226-4abe-8b05-7cedba2b0873",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 2.5,
+      "y": 1.25,
+      "z": 3.75
+    },
+    "capacity": 6.0,
+    "max_container_size": {
+      "size": 2,
+      "dimensions": {
+        "x": 2.5,
+        "y": 1.25,
+        "z": 1.25
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1.0
+      },
+      "max": {
+        "dimensions": {
+          "x": 2.5,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 2.0
+      }
+    }
+  }
+}

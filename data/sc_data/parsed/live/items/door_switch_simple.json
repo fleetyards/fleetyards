@@ -1,0 +1,21 @@
+{
+  "key": "Door_Switch_Simple",
+  "ref": "6dbf6ff6-92fb-48d4-ae41-ea79684ca0de",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

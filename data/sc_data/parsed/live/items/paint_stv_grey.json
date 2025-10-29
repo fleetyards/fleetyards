@@ -1,0 +1,21 @@
+{
+  "key": "Paint_STV_Grey",
+  "ref": "a297ea4e-6b1e-4192-bf97-b8dc18408949",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f461a0ab-f2a4-4bfb-a790-5a8a4934621f",
+  "name": "STV Cobalt Grey Livery",
+  "short_name": "STV Cobalt Grey Livery",
+  "description": "The Cobalt Grey livery for the STV is a black base with grey accents and features cool blue seat coverings.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

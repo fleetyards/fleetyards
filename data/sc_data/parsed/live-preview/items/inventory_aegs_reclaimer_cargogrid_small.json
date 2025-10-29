@@ -1,0 +1,40 @@
+{
+  "key": "AEGS_Reclaimer_CargoGrid_Small",
+  "ref": "b0d228c6-01ac-43b8-8c7a-6c747aeab072",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 3.75,
+      "y": 2.5,
+      "z": 3.75
+    },
+    "capacity": 18.0,
+    "max_container_size": {
+      "size": 8,
+      "dimensions": {
+        "x": 2.5,
+        "y": 2.5,
+        "z": 2.5
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1.0
+      },
+      "max": {
+        "dimensions": {
+          "x": 2.5,
+          "y": 2.5,
+          "z": 2.5
+        },
+        "capacity": 8.0
+      }
+    }
+  }
+}

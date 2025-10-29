@@ -1,0 +1,9 @@
+{
+  "key": "PersonalStorage_Locker_DRAK_Cutlass_01",
+  "ref": "cb51614e-34c0-454a-8abc-c91ff8153cb2",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 0.5
+  }
+}

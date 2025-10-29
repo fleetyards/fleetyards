@@ -1,0 +1,78 @@
+{
+  "key": "Mining_Laser_GRIN_Lancet_S2",
+  "ref": "c2006c91-f8f7-4bda-ae38-e0ca5af5c737",
+  "category": "weapons",
+  "type": "WeaponMining",
+  "sub_type": "Gun",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "name": "Lancet MH2 Mining Laser",
+  "short_name": null,
+  "description": "Manufacturer: Greycat Industrial\\nItem Type: Mining Laser \\nSize: 2\\n\\nOptimal Range: 45m\\nMaximum Range: 135m\\n\\nMining Laser Power: 900 - 3600\\nExtraction Laser Power: 2590\\n\\nModule Slots: 2\\n\\nLaser Instability: -10%\\nOptimal Charge Window Rate: +40%\\nInert Material Level: -40%\\n\\nOptimal Charge Window Size: -60%\\n\\nGreycat classifies the Lancet MH2 as a support laser best utilized when mining with others. While the mining laser's small optimal charge window size means precision is key, the Lancet MH2 excels at filling it once found and reducing the amount of inert materials collected by the extraction laser. For mining crews, it's an ideal support laser to use alongside other lasers.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "BONE_ItemPort_Consumable_1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "MiningModifier"
+      ]
+    },
+    {
+      "name": "BONE_ItemPort_Consumable_2",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "MiningModifier"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 8000.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 6.0,
+    "StartIRTemperature": 250.0,
+    "OverpowerHeat": 0.0,
+    "OverclockThresholdMinHeat": 0.0,
+    "OverclockThresholdMaxHeat": 0.0,
+    "ThermalEnergyBase": 11.5,
+    "ThermalEnergyDraw": 23.0,
+    "ThermalConductivity": 3.0,
+    "SpecificHeatCapacity": 13.0,
+    "Mass": 200.0,
+    "SurfaceArea": 50.0,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 1.0,
+    "MaxTemperature": 450.0,
+    "OverheatTemperature": 370.0,
+    "RecoveryTemperature": 350.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "power_connection": {
+    "power_base": 2125.0,
+    "power_draw": 2550.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 20.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.25,
+    "overclock_threshold_max": 0.53,
+    "overpower_performance": 0.3,
+    "overclock_performance": 0.24,
+    "power_to_em": 2.0,
+    "decay_rate_of_em": 0.15
+  }
+}

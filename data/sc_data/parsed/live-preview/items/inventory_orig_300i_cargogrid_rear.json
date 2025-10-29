@@ -1,0 +1,40 @@
+{
+  "key": "ORIG_300i_CargoGrid_Rear",
+  "ref": "ee68d155-ce3c-4028-aa67-75064ff97892",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 2.5,
+      "y": 2.5,
+      "z": 1.25
+    },
+    "capacity": 4.0,
+    "max_container_size": {
+      "size": 4,
+      "dimensions": {
+        "x": 2.5,
+        "y": 2.5,
+        "z": 1.25
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1.0
+      },
+      "max": {
+        "dimensions": {
+          "x": 2.5,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 2.0
+      }
+    }
+  }
+}

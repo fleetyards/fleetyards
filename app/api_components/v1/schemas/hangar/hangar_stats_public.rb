@@ -10,6 +10,7 @@ module V1
           type: :object,
           properties: {
             total: {type: :integer},
+            wishlistTotal: {type: :integer},
             classifications: {type: :array, items: {"$ref": "#/components/schemas/HangarClassificationMetric"}},
             groups: {type: :array, items: {"$ref": "#/components/schemas/HangarGroupMetric"}}
           },

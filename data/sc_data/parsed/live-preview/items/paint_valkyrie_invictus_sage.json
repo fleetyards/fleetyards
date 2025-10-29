@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Valkyrie_Invictus_Sage",
+  "ref": "a144a4b6-ad84-489c-8607-313b614350d7",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "9c2246fe-e8e8-4f4c-8505-8ad1cf679e46",
+  "name": "Valkyrie Sage Livery",
+  "short_name": null,
+  "description": "Customize your Valkyrie with this light green livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

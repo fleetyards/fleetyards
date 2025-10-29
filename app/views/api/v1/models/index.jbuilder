@@ -1,3 +1,6 @@
 # frozen_string_literal: true
 
-json.array! @models, partial: "api/v1/models/model", as: :model
+json.items do
+  json.array! @models, partial: "api/v1/models/model", as: :model
+end
+json.partial! "api/shared/meta", result: @models

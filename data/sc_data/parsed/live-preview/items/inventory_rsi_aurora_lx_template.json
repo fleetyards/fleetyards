@@ -1,0 +1,9 @@
+{
+  "key": "RSI_Aurora_LX_Template",
+  "ref": "bab8c647-63d7-49b7-8900-f652302500aa",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 1.01
+  }
+}

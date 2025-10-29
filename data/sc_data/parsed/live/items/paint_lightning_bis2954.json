@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Lightning_BIS2954",
+  "ref": "820ba605-9ec8-4ba7-8586-d0a3d61ee2c7",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "e5becefd-0572-4e11-a552-cbb62038cb29",
+  "name": "F8C Lightning 2954 Best in Show Livery",
+  "short_name": null,
+  "description": "This purple and white 2954 Best in Show Livery celebrates the F8C Lightning winning the 2954 Ship Showdown.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

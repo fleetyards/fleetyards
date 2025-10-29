@@ -1,0 +1,24 @@
+{
+  "key": "RSI_Zeus_Wing_Right_Cargo",
+  "ref": "ed670369-6d5e-4e4a-8817-d9290c6c0e3e",
+  "category": "module",
+  "type": "AttachedPart",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

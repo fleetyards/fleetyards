@@ -1,0 +1,21 @@
+{
+  "key": "DRAK_Cutlass_Switch_SideDoor_Right",
+  "ref": "247e4bf9-c7e3-4429-b7b3-c2159851adcc",
+  "category": "doors",
+  "type": "Usable",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

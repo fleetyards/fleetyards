@@ -10,15 +10,7 @@ RSpec.describe "api/v1/stats", type: :request, swagger_doc: "v1/schema.yaml" do
       produces "application/json"
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref" => "#/components/schemas/PieChartStats"}
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
+        schema type: :array, items: {"$ref" => "#/components/schemas/BarChartStats"}
 
         run_test!
       end

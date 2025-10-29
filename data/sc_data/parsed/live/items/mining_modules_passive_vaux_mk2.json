@@ -1,0 +1,24 @@
+{
+  "key": "Mining_Modules_Passive_Vaux_MK2",
+  "ref": "c60c2615-ec40-491b-9d60-adddf88782f0",
+  "category": "utility",
+  "type": "MiningModifier",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ab35f85f-919f-4457-8d58-4e885ea6c5c0",
+  "name": "Vaux-C2 Module",
+  "short_name": null,
+  "description": "Manufacturer: Shubin Interstellar\\nItem Type: Mining Module (Passive)\\n\\nExtraction Laser Power: 120%\\n\\nOptimal Charge Rate: -15%\\n\\nThe Vaux-C2 Module from Shubin Interstellar reduces the charge rate when mining but makes extracting valuable ore faster.",
+  "inventory_consumption": {
+    "micro_scu": 4918.0,
+    "dimensions": {
+      "x": 0.1962065,
+      "y": 0.2069893,
+      "z": 0.1513619
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

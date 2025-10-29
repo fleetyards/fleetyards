@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Nova_Ember_Storm_Tan_Red_Camo",
+  "ref": "8316aca2-859a-43bd-b8bf-2d9b0813314c",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "91ae6db2-7819-46a2-8edb-c35fc93fa830",
+  "name": "Nova Ember Storm Livery",
+  "short_name": null,
+  "description": "Featuring a tan, red and black camo paint scheme ideal for desert environments, the Nova Ember Storm livery offers a devastating combination of weaponry to eliminate threats on the ground and in the air.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

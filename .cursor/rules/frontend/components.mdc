@@ -1,0 +1,80 @@
+---
+description: 
+globs: *.vue
+alwaysApply: true
+---
+
+# Shared Components Directory (`app/frontend/shared/components`)
+
+This directory contains reusable Vue components used throughout the Fleetyards frontend. Components here should be:
+- Generic, composable, and not tightly coupled to a specific page or feature
+- Well-typed with TypeScript
+- Styled using SCSS (with BEM or similar conventions)
+- Documented and tested where appropriate
+
+## Structure & Conventions
+- Each component lives in its own directory (PascalCase or descriptive name)
+- Main entry: `index.vue` (with optional `index.scss`, `types.ts`, and tests)
+- Subcomponents or helpers go in subdirectories
+- Use `<script setup lang="ts">` and `<style lang="scss" scoped>`
+- Add a `README.md` or comment block for complex components
+
+## Component List
+
+### Top-level Components
+- **AccessCheck.vue** — Access control wrapper
+- **AsyncData.vue** / **AsyncData.types.ts** — Data loading utility
+- **Collapsed.vue** — Collapsible content panel
+
+### Major Component Directories
+- **OauthBtn/** — OAuth login button (with types and styles)
+- **SocialLogins/** — Social login button group
+- **base/** — Primitives: Button, Input, Table, Panel, etc.
+- **ViewImage/** — Image viewer/modal
+- **Box/** — Generic container box
+- **LazyImage/** — Lazy-loading image
+- **TabNavView/** — Tab navigation view
+- **HoloViewer/** — 3D model/asset viewer
+- **AppConfirm/** — Confirmation dialog/modal
+- **AppNotifications/** — Notification system
+- **DirectUpload/** — Direct file upload widget
+- **DirectUploadUppy/** — Uppy-based file upload
+- **NotAuthorized/** — Not authorized message
+- **Empty/** — Empty state display (with Headline, Info, Actions)
+- **SmallLoader/** — Small loading spinner
+- **StatsPanel/** — Statistics display panel
+- **TeaserPanel/**, **TeaserPanel2/** — Teaser/info panels
+- **Video/** — Video player
+- **PrimaryAction/** — Primary action button
+- **ServerError/** — Server error message
+- **Loader/** — General loading spinner
+- **MetricsList/** — Metrics/statistics list
+- **NotFound/** — Not found/404 message
+- **Paginator/** — Pagination controls (with PerPageDropdown)
+- **FilteredList/** — List with filtering
+- **BreadCrumbs/** — Breadcrumb navigation
+- **Chart/** — Chart/graph component
+- **CommunityLogo/** — Community/project logo
+- **AppNavigation/** — Main navigation (with NavItem, Items, Mobile, etc.)
+- **Avatar/** — User avatar
+- **BackgroundImage/** — Background image utility
+- **AppFooter/** — Application footer
+- **AppModal/** — Modal dialog (with Inner)
+- **AppEnvironment/** — Environment indicator
+
+## Adding New Components
+- Use a new directory for each major component
+- Include `index.vue`, `index.scss`, and `types.ts` as needed
+- Write unit tests (`index.test.ts`) for logic-heavy components
+- Follow naming and structure conventions
+- Update this file with a short description
+
+## Best Practices
+- Keep components focused and small
+- Use props and emits with full TypeScript typing
+- Prefer composition over inheritance
+- Document any non-obvious logic
+
+---
+This file should be updated whenever new shared components are added or conventions change.
+

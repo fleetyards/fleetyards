@@ -1,0 +1,56 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+
+# Git Workflow Rules
+
+This document outlines the Git workflow and branch management practices for contributing to this project.
+
+## Branch Naming Conventions
+
+When creating branches, follow these naming patterns:
+
+```
+feat/[short-description]    # For new features
+fix/[short-description]     # For bug fixes
+refactor/[short-description] # For code refactoring
+docs/[short-description]    # For documentation updates
+test/[short-description]    # For test additions/modifications
+chore/[short-description]   # For maintenance tasks
+```
+
+Examples:
+- `feat/1234-add-user-profile`
+- `fix/5678-resolve-login-redirect`
+
+## Commit Message Format
+
+Follow the conventional commits specification:
+
+```
+<type>(<scope>): <short summary>
+
+<body>
+
+<footer>
+```
+
+Where:
+- **type**: feat, fix, docs, style, refactor, test, chore
+- **scope**: optional, indicates section of codebase
+- **summary**: imperative, present tense description
+- **body**: optional, detailed description
+- **footer**: optional, reference issues and breaking changes
+
+Examples:
+```
+feat(auth): implement JWT authentication
+
+Implement JWT-based authentication system with refresh tokens.
+Includes middleware for token validation and user context.
+
+Resolves #1234
+```
+

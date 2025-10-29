@@ -1,0 +1,29 @@
+{
+  "de": {
+    "filterGroup": {
+      "actions": {
+        "fetchMore": "Mehr laden"
+      },
+      "labels": {
+        "search": "Tippe um zu suchen",
+        "nullablePrompt": "Keine Option ausgewählt",
+        "prompt": "Bitte wähle eine Option",
+        "removeTooltip": "Klicke um eine Option abzuwählen"
+      },
+      "fleet": {
+        "members": {
+          "shipsFilter": {
+            "label": "Schiffsfilter",
+            "prompt": "Wähle welche Schiffe angezeigt werden sollen",
+            "nullablePrompt": "Wähle eine Option"
+          },
+          "hangarGroupId": {
+            "label": "Hangar Gruppe",
+            "prompt": "Wähle eine Hangar Gruppe",
+            "nullablePrompt": "Wähle eine Gruppe"
+          }
+        }
+      }
+    }
+  }
+}

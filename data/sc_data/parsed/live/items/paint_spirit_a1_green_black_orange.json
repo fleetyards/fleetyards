@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Spirit_A1_Green_Black_Orange",
+  "ref": "e17d8189-666f-41aa-b1c8-af212b07a84d",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2af96d7c-ef97-414d-b022-6eb81aeafd5b",
+  "name": "Spirit Intrepid Livery",
+  "short_name": null,
+  "description": "Featuring a matte moss green with dusty orange highlights and accent stripes, this livery ensures your Crusader Spirit is one to watch.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

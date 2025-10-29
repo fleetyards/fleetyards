@@ -1,0 +1,40 @@
+{
+  "key": "Pushable_Trolley_2scu_x_2scu_x_1scu",
+  "ref": "2a17146b-acc5-4743-8109-216f25603808",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 2.5,
+      "y": 3.0,
+      "z": 1.25
+    },
+    "capacity": 4.8,
+    "max_container_size": {
+      "size": 4,
+      "dimensions": {
+        "x": 2.5,
+        "y": 2.5,
+        "z": 1.25
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "capacity": 0.0
+      },
+      "max": {
+        "dimensions": {
+          "x": 2.5,
+          "y": 2.5,
+          "z": 1.25
+        },
+        "capacity": 4.0
+      }
+    }
+  }
+}

@@ -4,39 +4,61 @@
 #
 # Table name: model_modules
 #
-#  id                :uuid             not null, primary key
-#  active            :boolean          default(TRUE)
-#  description       :text
-#  hidden            :boolean          default(TRUE)
-#  name              :string
-#  pledge_price      :decimal(15, 2)
-#  production_status :string
-#  slug              :string
-#  store_image       :string
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  manufacturer_id   :uuid
-#  model_id          :uuid
+#  id                 :uuid             not null, primary key
+#  active             :boolean          default(TRUE)
+#  cargo              :decimal(15, 2)
+#  cargo_holds        :string
+#  description        :text
+#  hidden             :boolean          default(TRUE)
+#  name               :string
+#  pledge_price       :decimal(15, 2)
+#  production_status  :string
+#  sc_key             :string
+#  slug               :string
+#  store_image        :string
+#  store_image_height :integer
+#  store_image_width  :integer
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  manufacturer_id    :uuid
+#  model_id           :uuid
 #
 class ModelModule < ApplicationRecord
   paginates_per 30
 
+  attr_accessor :update_reason, :update_reason_description, :author_id
+
+  has_paper_trail on: %i[update], only: %i[
+    min_size max_size component_id cargo cargo_holds
+  ], meta: {
+    author_id: :author_id,
+    reason: :update_reason,
+    reason_description: :update_reason_description
+  }
+
   belongs_to :manufacturer, optional: true
+
+  has_many :hardpoints, as: :parent, dependent: :destroy, autosave: true
+  has_many :components, through: :hardpoints
 
   has_many :module_hardpoints,
     dependent: :destroy
   has_many :models, through: :module_hardpoints
-  has_many :shop_commodities, as: :commodity_item, dependent: :destroy
   has_many :model_module_package_items, dependent: :destroy
   has_many :model_module_packages, through: :model_module_package_items
 
+  has_many :item_prices, as: :item, dependent: :destroy
+
+  serialize :cargo_holds, coder: YAML
+
   mount_uploader :store_image, StoreImageUploader
+  has_one_attached :new_store_image
 
   accepts_nested_attributes_for :module_hardpoints, allow_destroy: true
 
   before_save :update_slugs
+  before_save :update_from_hardpoints
 
-  after_save :touch_shop_commodities
   after_save :touch_models
 
   def self.ransackable_attributes(auth_object = nil)
@@ -66,21 +88,23 @@ class ModelModule < ApplicationRecord
   end
 
   def sold_at
-    shop_commodities.where.not(sell_price: nil).order(sell_price: :asc).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
+    item_prices.sell.order(price: :asc).uniq(&:location)
   end
 
   def bought_at
-    shop_commodities.where.not(buy_price: nil).order(buy_price: :desc).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
+    item_prices.buy.order(price: :asc).uniq(&:location)
   end
 
-  def listed_at
-    shop_commodities.where(sell_price: nil, buy_price: nil).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
+  def update_from_hardpoints
+    set_cargo_from_hardpoints
   end
 
-  private def touch_shop_commodities
-    # rubocop:disable Rails/SkipsModelValidations
-    shop_commodities.update_all(updated_at: Time.zone.now)
-    # rubocop:enable Rails/SkipsModelValidations
+  def set_cargo_from_hardpoints
+    return if cargo_holds.blank? || (cargo.present? && !cargo_holds_change_to_be_saved)
+
+    self.cargo = cargo_holds.sum do |cargo_hold|
+      cargo_hold.dig("dimensions", "scu")&.to_f || 0
+    end
   end
 
   private def touch_models

@@ -1,0 +1,104 @@
+<script lang="ts">
+export default {
+  name: "AppNavigationFleetNav",
+};
+</script>
+
+<script lang="ts" setup>
+import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
+import {
+  useFleet as useFleetQuery,
+  useFleetMembership as useFleetMembershipQuery,
+} from "@/services/fyApi";
+
+const { t } = useI18n();
+
+const currentFleet = computed(() => {
+  if (!fleet.value) {
+    return;
+  }
+  return fleet.value;
+});
+
+const route = useRoute();
+
+const fleetSlug = computed(() => {
+  return route.params.slug as string;
+});
+
+const { data: fleet, refetch } = useFleetQuery(fleetSlug, {
+  query: {
+    retry: false,
+    enabled: route.params.slug !== undefined,
+  },
+});
+
+const { data: membership } = useFleetMembershipQuery(fleetSlug, {
+  query: {
+    retry: false,
+    enabled: route.params.slug !== undefined,
+  },
+});
+
+const shipsNavActive = computed(() => {
+  return ["fleet-ships", "fleet-fleetchart"].includes(String(route.name));
+});
+
+const comlink = useComlink();
+
+onMounted(() => {
+  comlink.on("fleet-update", refetch);
+});
+</script>
+
+<template>
+  <div>
+    <NavItem
+      :to="{ name: 'home' }"
+      :label="t('nav.back')"
+      icon="fal fa-chevron-left"
+    />
+    <template v-if="currentFleet">
+      <NavItem
+        :to="{ name: 'fleet', params: { slug: currentFleet.slug } }"
+        :label="currentFleet.name"
+        :image="currentFleet.logo || undefined"
+        :active="route.name === 'fleet'"
+        prefix="00"
+      />
+      <NavItem
+        v-if="currentFleet.publicFleet || membership"
+        :to="{ name: 'fleet-ships', params: { slug: currentFleet.slug } }"
+        :label="t('nav.fleets.ships')"
+        :active="shipsNavActive"
+        prefix="01"
+        icon="fad fa-starship"
+      />
+      <template v-if="membership">
+        <NavItem
+          :to="{ name: 'fleet-members', params: { slug: currentFleet.slug } }"
+          :label="t('nav.fleets.members')"
+          :active="route.name === 'fleet-members'"
+          icon="fad fa-users"
+          prefix="02"
+        />
+        <NavItem
+          :to="{ name: 'fleet-stats', params: { slug: currentFleet.slug } }"
+          :label="t('nav.fleets.stats')"
+          :active="route.name === 'fleet-stats'"
+          icon="fad fa-chart-bar"
+          prefix="03"
+        />
+        <NavItem
+          :to="{ name: 'fleet-settings', params: { slug: currentFleet.slug } }"
+          :label="t('nav.fleets.settings.index')"
+          :active="route.name === 'fleet-settings'"
+          icon="fad fa-cogs"
+          prefix="04"
+        />
+      </template>
+    </template>
+  </div>
+</template>

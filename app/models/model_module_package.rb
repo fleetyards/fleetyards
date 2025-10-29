@@ -18,6 +18,8 @@
 #  side_view_width    :integer
 #  slug               :string
 #  store_image        :string
+#  store_image_height :integer
+#  store_image_width  :integer
 #  top_view           :string
 #  top_view_height    :integer
 #  top_view_width     :integer
@@ -39,6 +41,12 @@ class ModelModulePackage < ApplicationRecord
   mount_uploader :top_view, FleetchartImageUploader
   mount_uploader :side_view, FleetchartImageUploader
   mount_uploader :angled_view, FleetchartImageUploader
+
+  has_one_attached :new_store_image
+  has_one_attached :new_top_view
+  has_one_attached :new_side_view
+  has_one_attached :front_view
+  has_one_attached :new_angled_view
 
   accepts_nested_attributes_for :module_package_items, allow_destroy: true
 

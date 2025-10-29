@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Corsair_Beige_Tan_Beige_Pyro_Graffiti",
+  "ref": "0a0780c3-1d52-4977-894e-83b372aa61d2",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f15387e4-0ef9-4a92-bac1-ada137defefd",
+  "name": "Corsair Dying Star Livery (Modified)",
+  "short_name": null,
+  "description": "This version of the livery has been modified from its original form with the addition of graffiti. Sold in 2943 to celebrate the 450th anniversary of Pyro's discovery, the Dying Star livery is tan with brown and black highlights. It also features branding from Pyrotechnic Amalgamated, the now defunct mining company that found and named the system.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

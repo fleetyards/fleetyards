@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Terrapin_BIS2954",
+  "ref": "e8d1c8b4-bfd1-4b89-a435-1cbac4717161",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "9bb47b26-b9f5-4bc5-9382-84c85c42e796",
+  "name": "Terrapin 2954 Best in Show Livery",
+  "short_name": null,
+  "description": "This purple and white 2954 Best in Show Livery celebrates the Terrapin making it to the final four of the 2954 Ship Showdown.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

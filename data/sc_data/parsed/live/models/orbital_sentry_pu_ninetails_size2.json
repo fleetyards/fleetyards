@@ -1,0 +1,96 @@
+{
+  "key": "Orbital_Sentry_PU_NineTails_Size2",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "Broad & Rabiee Overseer Orbital Sentry",
+  "description": "The Overseer, from manufacturer Broad & Raibee, allows for defensive activity monitoring in a given area. When a threat is detected, the Overseer is capable of targeting and engaging trespassing hostiles with brutal efficiency making it perfect for providing extra security to any station, facility, or controlled sector.",
+  "career": "Combat",
+  "role": "Turret",
+  "insurance": {
+    "base_wait_time_minutes": "33.33",
+    "mandatory_wait_time_minutes": "3.33",
+    "base_expediting_fee": "333"
+  },
+  "mass": 80000.0,
+  "metrics": {
+    "x": 40.0,
+    "y": 18.0,
+    "z": 13.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_Orbital_Sentry_Turret"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_AEGS_Idris"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_GRNP_S01_Ecouter"
+    },
+    {
+      "name": "hardpoint_powerplant",
+      "ref": null,
+      "key": "POWR_AEGS_S03_Centurion_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler",
+      "ref": null,
+      "key": "COOL_AEGS_S03_Blizzard_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator",
+      "ref": null,
+      "key": "SHLD_SECO_S02_RPEL_SCItem"
+    },
+    {
+      "name": "hardpoint_turret",
+      "ref": null,
+      "key": "Orbital_Sentry_SCItem_AI_Turret",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "BEHR_LaserCannon_S2"
+        },
+        {
+          "name": "turret_right",
+          "ref": null,
+          "key": "BEHR_LaserCannon_S2"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_aimodule",
+      "ref": "888ff370-b005-4559-9c10-320bd8ade7c7",
+      "key": null
+    }
+  ]
+}

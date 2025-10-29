@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Starlifter_PirateWeek_Black_Clear",
+  "ref": "5553e9b0-0659-49fc-a4a7-9f95ae10243e",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "13325092-dd17-40f1-b031-1037ee5354b8",
+  "name": "Hercules Starlifter Meridian Livery",
+  "short_name": null,
+  "description": "The Meridian livery gives the Hercules Starlifter a simple yet stylish metallic silver finish.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

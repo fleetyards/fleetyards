@@ -1,18 +1,19 @@
-import featuresCollection from "@/frontend/api/collections/Features";
+import { useFeatures as useFeaturesQuery } from "@/services/fyApi";
+import { usePrefetch } from "@/shared/composables/usePrefetch";
 
 export const useFeatures = () => {
-  const features = ref<string[]>([]);
+  const { fetchData } = usePrefetch();
 
-  onMounted(() => {
-    fetch();
+  const { data: features } = useFeaturesQuery({
+    query: {
+      retry: false,
+      initialData: fetchData("features"),
+      staleTime: 1000,
+    },
   });
 
-  const fetch = async () => {
-    features.value = await featuresCollection.findAll();
-  };
-
   const isFeatureEnabled = (feature: string) =>
-    features.value.includes(feature);
+    features.value?.includes(feature) || false;
 
   return {
     features,

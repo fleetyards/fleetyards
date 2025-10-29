@@ -1,0 +1,16 @@
+{
+  "de": {
+    "directUpload": {
+      "title": "Hochladen",
+      "dropzone": {
+        "textMultiple": "Dateien hier ablegen zum Hochladen",
+        "text": "Datei hier ablegen zum Hochladen",
+        "or": "oder",
+        "browse": "durchsuchen"
+      },
+      "previewImage": {
+        "remove": "Entfernen"
+      }
+    }
+  }
+}

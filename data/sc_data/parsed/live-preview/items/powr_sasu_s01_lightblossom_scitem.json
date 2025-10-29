@@ -1,0 +1,60 @@
+{
+  "key": "POWR_SASU_S01_LightBlossom_SCItem",
+  "ref": "a117d541-aa61-49fd-ae53-469b0fdf7ccd",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "1",
+  "grade": "3",
+  "manufacturer_ref": "40c59850-8fb5-4a0e-ab61-7fd3871a632a",
+  "name": "LightBlossom",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Sakura Sun\\nSize: 1\\nGrade: C\\nClass: Civilian\\n\\nFeaturing stylish design and strong performance, the LightBlossom is a worthy addition to Sakura Sun’s line-up, continuing the reputation the conglomerate has for making everything and making it well.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 510.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 1.75,
+    "StartIRTemperature": 14.0,
+    "OverpowerHeat": 0.12,
+    "OverclockThresholdMinHeat": 0.47,
+    "OverclockThresholdMaxHeat": 0.6,
+    "ThermalEnergyBase": 11100.0,
+    "ThermalEnergyDraw": 15000.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.5,
+    "Mass": 525.0,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 60.76923,
+    "MaxTemperature": 700.0,
+    "OverheatTemperature": 600.0,
+    "RecoveryTemperature": 670.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 300.0,
+    "MisfireMaxTemperature": 900.0
+  },
+  "power_connection": {
+    "power_base": 0.0,
+    "power_draw": 1998.33,
+    "time_to_reach_draw_request": 12.5,
+    "safeguard_priority": 100.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 1.0,
+    "is_overclockable": 1.0,
+    "overclock_threshold_min": 0.34,
+    "overclock_threshold_max": 0.43,
+    "overpower_performance": 0.34,
+    "overclock_performance": 0.005,
+    "power_to_em": 0.634,
+    "decay_rate_of_em": 0.2
+  }
+}

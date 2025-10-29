@@ -16,13 +16,17 @@
 #  failed_attempts           :integer          default(0), not null
 #  last_sign_in_at           :datetime
 #  last_sign_in_ip           :string(255)
+#  normalized_email          :string
+#  normalized_username       :string
 #  otp_backup_codes          :string           is an Array
 #  otp_required_for_login    :boolean
 #  otp_secret                :string
 #  remember_created_at       :datetime
 #  reset_password_sent_at    :datetime
 #  reset_password_token      :string(255)
+#  resource_access           :string
 #  sign_in_count             :integer          default(0), not null
+#  super_admin               :boolean          default(FALSE)
 #  username                  :string(255)      default(""), not null
 #  created_at                :datetime
 #  updated_at                :datetime
@@ -34,10 +38,34 @@
 #  index_admin_users_on_username              (username) UNIQUE
 #
 class AdminUser < ApplicationRecord
+  include ResourceAccessConcern
+
   devise :two_factor_authenticatable, :two_factor_backupable, :recoverable, :trackable,
     :validatable, :timeoutable, :rememberable,
-    authentication_keys: [:username], otp_secret_encryption_key: Rails.application.credentials.devise_admin_otp_secret!,
+    authentication_keys: [:login], otp_secret_encryption_key: Rails.application.credentials.devise_admin_otp_secret!,
     otp_backup_code_length: 32, otp_number_of_backup_codes: 10
+
+  before_validation :set_normalized_login_fields
+
+  def self.find_for_database_authentication(warden_conditions)
+    conditions = warden_conditions.dup
+    login = conditions.delete(:login)
+    if login.present?
+      where(conditions.to_h)
+        .find_by(["normalized_username = :value OR normalized_email = :value", {value: login.downcase}])
+    elsif conditions.key?(:username) || conditions.key?(:email)
+      find_by(conditions.to_h)
+    end
+  end
+
+  def set_normalized_login_fields
+    self.normalized_email = email.downcase
+    self.normalized_username = username.downcase
+  end
+
+  def has_access?(privileges)
+    super_admin? || super
+  end
 
   def reset_otp
     # rubocop:disable Rails/SkipsModelValidations

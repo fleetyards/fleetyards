@@ -1,0 +1,375 @@
+{
+  "key": "ARGO_SRV",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "Argo SRV",
+  "description": "Manufacturer: Argo Astronautics\\nFocus: Industrial, Civilian\\n\\nWhen it comes to getting the job done, Argo doesn’t mess around. From simple freight and cargo towing to harrowing search-and-rescue operations, the SRV handles whatever you can throw at it. The bespoke tractor system utilizes an innovative plate and arm combination, allowing for effortless solo use as well as precision team towing for bigger jobs. Your crew and passengers stay safe too thanks to durable shields and heavy-duty armor that keep the cockpit and components secure when the situation gets hairy.",
+  "career": "Support",
+  "role": "Recovery",
+  "insurance": {
+    "base_wait_time_minutes": "13.22",
+    "mandatory_wait_time_minutes": "4.75",
+    "base_expediting_fee": "6200"
+  },
+  "mass": 458980.0,
+  "metrics": {
+    "x": 21.5,
+    "y": 31.5,
+    "z": 9.5
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "ARGO_SRV_SCItem_Seat"
+    },
+    {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "ARGO_SRV_SCItem_SeatAccess"
+    },
+    {
+      "name": "hardpoint_ping",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_MainTractorBeamArm",
+      "ref": null,
+      "key": "ARGO_SRV_MainTractorBeamArm",
+      "loadout": [
+        {
+          "name": "hardpoint_tractorbeam",
+          "ref": null,
+          "key": "ARGO_SRV_Remote_Turret",
+          "loadout": [
+            {
+              "name": "turret_left",
+              "ref": null,
+              "key": "ARGO_TowingBeam_S3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": null,
+      "key": "ARMR_ARGO_SRV"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_ARGO_SRV"
+    },
+    {
+      "name": "hardpoint_controller_scanner",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_ARGO_SRV"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_cooler",
+      "ref": null,
+      "key": "COOL_JUST_S02_CoolCore_SCItem"
+    },
+    {
+      "name": "hardpoint_heat_sink",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_power_plant",
+      "ref": null,
+      "key": "POWR_JUST_S02_Diligence_SCItem"
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_JUST_S02_Huracan_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": null,
+          "key": "JDRV_TARS_S02_C_Explorer"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_fuel_tank",
+      "ref": null,
+      "key": "QTNK_ARGO_SRV"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_CHCO_S01_SurveyorLite"
+    },
+    {
+      "name": "hardpoint_self_destruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_45s"
+    },
+    {
+      "name": "hardpoint_shield_generator",
+      "ref": null,
+      "key": "SHLD_BEHR_S02_5MA_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_fuel_tank",
+      "ref": null,
+      "key": "HTNK_ARGO_SRV"
+    },
+    {
+      "name": "hardpoint_fuel_intake_right",
+      "ref": null,
+      "key": "INTK_ARGO_SRV"
+    },
+    {
+      "name": "hardpoint_fuel_intake_left",
+      "ref": null,
+      "key": "INTK_ARGO_SRV"
+    },
+    {
+      "name": "hardpoint_countermeasure_launcher_left",
+      "ref": null,
+      "key": "ARGO_SRV_CML_Decoy_Small"
+    },
+    {
+      "name": "hardpoint_countermeasure_launcher_right",
+      "ref": null,
+      "key": "ARGO_SRV_CML_Chaff_Small"
+    },
+    {
+      "name": "hardpoint_thruster_main_left",
+      "ref": null,
+      "key": "ARGO_SRV_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_main_right",
+      "ref": null,
+      "key": "ARGO_SRV_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_retro_left",
+      "ref": null,
+      "key": "ARGO_SRV_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_retro_right",
+      "ref": null,
+      "key": "ARGO_SRV_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_VTOL_FLT",
+      "ref": null,
+      "key": "ARGO_SRV_Thruster_VTOL_Front"
+    },
+    {
+      "name": "hardpoint_thruster_VTOL_FRT",
+      "ref": null,
+      "key": "ARGO_SRV_Thruster_VTOL_Front"
+    },
+    {
+      "name": "hardpoint_thruster_VTOL_ML",
+      "ref": null,
+      "key": "ARGO_SRV_Thruster_VTOL"
+    },
+    {
+      "name": "hardpoint_thruster_VTOL_MR",
+      "ref": null,
+      "key": "ARGO_SRV_Thruster_VTOL"
+    },
+    {
+      "name": "hardpoint_thruster_VTOL_RL",
+      "ref": null,
+      "key": "ARGO_SRV_Thruster_VTOL_Small"
+    },
+    {
+      "name": "hardpoint_thruster_VTOL_RR",
+      "ref": null,
+      "key": "ARGO_SRV_Thruster_VTOL_Small"
+    },
+    {
+      "name": "hardpoint_thruster_RTL",
+      "ref": null,
+      "key": "ARGO_SRV_Thruster_Mav_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_RTR",
+      "ref": null,
+      "key": "ARGO_SRV_Thruster_Mav_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_RSL",
+      "ref": null,
+      "key": "ARGO_SRV_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_thruster_RSR",
+      "ref": null,
+      "key": "ARGO_SRV_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_thruster_RBL",
+      "ref": null,
+      "key": "ARGO_SRV_Thruster_Mav_Top"
+    },
+    {
+      "name": "hardpoint_thruster_RBR",
+      "ref": null,
+      "key": "ARGO_SRV_Thruster_Mav_Top"
+    },
+    {
+      "name": "hardpoint_thruster_FTL",
+      "ref": null,
+      "key": "ARGO_SRV_Thruster_Mav_Top"
+    },
+    {
+      "name": "hardpoint_thruster_FTR",
+      "ref": null,
+      "key": "ARGO_SRV_Thruster_Mav_Top"
+    },
+    {
+      "name": "hardpoint_thruster_FSL",
+      "ref": null,
+      "key": "ARGO_SRV_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_thruster_FSR",
+      "ref": null,
+      "key": "ARGO_SRV_Thruster_Mav"
+    },
+    {
+      "name": "hardpoint_thruster_FBL",
+      "ref": null,
+      "key": "ARGO_SRV_Thruster_Mav_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_FBR",
+      "ref": null,
+      "key": "ARGO_SRV_Thruster_Mav_Bottom"
+    },
+    {
+      "name": "hardpoint_lift",
+      "ref": null,
+      "key": "ARGO_SRV_Entrance_Lift"
+    },
+    {
+      "name": "hardpoint_external_doors",
+      "ref": null,
+      "key": "ARGO_SRV_Exterior_Door"
+    },
+    {
+      "name": "hardpoint_cargo_lift",
+      "ref": null,
+      "key": "ARGO_SRV_Cargo_Lift"
+    },
+    {
+      "name": "hardpoint_thruster_VTOL_FLB",
+      "ref": null,
+      "key": "ARGO_SRV_Thruster_VTOL_Front"
+    },
+    {
+      "name": "hardpoint_thruster_VTOL_FRB",
+      "ref": null,
+      "key": "ARGO_SRV_Thruster_VTOL_Front"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_ARGO_SRV"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "ARGO_SRV_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_personal_storage",
+      "ref": null,
+      "key": "PersonalStorage_ARGO_SRV"
+    },
+    {
+      "name": "hardpoint_relay",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_TYDT_S01_ComfortAir"
+    },
+    {
+      "name": "hardpoint_fuelport_ground",
+      "ref": null,
+      "key": "Door_Ship_Exterior_ARGO_SRV_Fuelport"
+    },
+    {
+      "name": "hardpoint_extinguisher",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_weapon_rack",
+      "ref": null,
+      "key": "Weapon_Rack_ARGO_SRV"
+    },
+    {
+      "name": "hardpoint_controller_salvage",
+      "ref": null,
+      "key": "Controller_Salvage_ARGO_SRV"
+    }
+  ]
+}

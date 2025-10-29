@@ -1,0 +1,21 @@
+{
+  "key": "Paint_PTV_Double",
+  "ref": "1aa886e1-8b79-4ce0-b403-d3dfbe5cc906",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "name": "PTV Agate Gray Livery",
+  "short_name": null,
+  "description": "One of the most popular liveries on the Greycat, Agate Gray is a two-toned paint scheme that brings the buggy’s interior colors as accents on the exterior, unifying the Greycat into a single cohesive aesthetic.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -22,7 +22,7 @@ state_path "#{app_dir}/tmp/pids/puma.state"
 
 activate_control_app
 
-# Allow puma to be restarted by `rails restart` command.
+# Allow puma to be restarted by `bin/rails restart` command.
 plugin :tmp_restart
 
 on_worker_boot do
@@ -34,5 +34,5 @@ on_worker_boot do
 
   require "erb"
 
-  ActiveRecord::Base.establish_connection(YAML.safe_load(ERB.new(File.read("#{app_dir}/config/database.yml")).result)[rails_environment])
+  ActiveRecord::Base.establish_connection(YAML.safe_load(ERB.new(File.read("#{app_dir}/config/database.yml")).result, aliases: true)[rails_environment])
 end

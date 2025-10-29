@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_RSI_Zeus_ES",
+  "ref": "91dd0aa2-fe69-4721-a55c-bdc54367a50e",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SELF STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "scm_speed": 200.0,
+    "scm_speed_boosted": 400.0,
+    "reverse_speed_boosted": 210.0,
+    "max_speed": 1050.0,
+    "angular_velocity": {
+      "pitch": 32.5,
+      "yaw": 32.5,
+      "roll": 110.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 39.0,
+      "yaw": 39.0,
+      "roll": 132.0
+    }
+  }
+}

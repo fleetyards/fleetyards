@@ -1,4 +1,3 @@
 ruby 3.4.5
 nodejs lts
-yarn 1.22.10
-bun 1.1.7
+pnpm 10.13.1

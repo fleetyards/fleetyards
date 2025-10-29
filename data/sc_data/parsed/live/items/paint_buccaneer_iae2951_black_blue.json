@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Buccaneer_IAE2951_Black_Blue",
+  "ref": "3c68a192-6518-4c6b-959a-a247e987935f",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "3e1b1609-0fd2-4092-8880-667839f41bae",
+  "name": "Buccaneer Stormbringer Livery",
+  "short_name": null,
+  "description": "Celebrate the 2951 IAE with this custom Buccaneer livery. Blending blue and black with white accents, the paint scheme gives the ship an electric new look.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

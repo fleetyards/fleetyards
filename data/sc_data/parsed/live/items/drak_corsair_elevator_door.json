@@ -1,0 +1,21 @@
+{
+  "key": "DRAK_Corsair_Elevator_Door",
+  "ref": "061d0157-81c3-43f2-ba8f-ab6c39bf6e02",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Elevator Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

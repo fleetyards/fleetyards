@@ -5,11 +5,11 @@ module Admin
     module V1
       class ModelModulesController < ::Admin::Api::BaseController
         def index
-          authorize! :index, :admin_api_model_modules
+          authorize! with: ::Admin::ModelModulePolicy
 
           model_module_query_params["sorts"] = "name asc"
 
-          @q = ModelModule.ransack(model_module_query_params)
+          @q = authorized_scope(ModelModule.all).ransack(model_module_query_params)
 
           @model_modules = @q.result
             .page(params[:page])
@@ -17,9 +17,9 @@ module Admin
         end
 
         private def model_module_query_params
-          @model_module_query_params ||= query_params(
+          @model_module_query_params ||= params.permit(q: [
             :name_in, :id_eq, :name_cont, :name_eq
-          )
+          ]).fetch(:q, {})
         end
       end
     end

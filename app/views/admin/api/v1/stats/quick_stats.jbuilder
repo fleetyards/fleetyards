@@ -1,0 +1,5 @@
+json.online_count @quick_stats[:online_count]
+json.ships_count_year @quick_stats[:ships_count_year]
+json.ships_count_total @quick_stats[:ships_count_total]
+json.users_count_total @quick_stats[:users_count_total]
+json.fleets_count_total @quick_stats[:fleets_count_total]

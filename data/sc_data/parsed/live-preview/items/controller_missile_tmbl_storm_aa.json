@@ -1,0 +1,21 @@
+{
+  "key": "Controller_Missile_TMBL_Storm_AA",
+  "ref": "ac235698-bae0-4f3a-868a-c82a451511f6",
+  "category": "controller",
+  "type": "MissileController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "MISSILES",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

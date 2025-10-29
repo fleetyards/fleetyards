@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Zeus_Green_Black_Yellow",
+  "ref": "2458d55f-a9cb-4281-adb9-2c73f2a1961b",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "7f1f98e6-025a-4ad0-bfd8-ce5177f3d6bf",
+  "name": "Zeus Mk II Monteverde Livery",
+  "short_name": null,
+  "description": "Featuring a lush green with yellow and black highlights, the Monteverde livery gives you a colorful option for the Zeus Mk II.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

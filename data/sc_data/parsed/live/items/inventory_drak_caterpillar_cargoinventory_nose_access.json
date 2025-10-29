@@ -1,0 +1,50 @@
+{
+  "key": "DRAK_Caterpillar_CargoInventory_Nose_Access",
+  "ref": "d656a5e1-5a3e-49c4-80ca-0b7119d84aee",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 6.25,
+      "y": 2.5,
+      "z": 2.5,
+      "scu": 20.0,
+      "max_container_size": {
+        "size": 16,
+        "dimensions": {
+          "x": 5.0,
+          "y": 2.5,
+          "z": 2.5
+        }
+      }
+    },
+    "min_container": {
+      "x": 1.25,
+      "y": 1.25,
+      "z": 1.25,
+      "scu": 1.0,
+      "max_container_size": {
+        "size": 1,
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        }
+      }
+    },
+    "max_container": {
+      "x": 5.0,
+      "y": 2.5,
+      "z": 2.5,
+      "scu": 16.0,
+      "max_container_size": {
+        "size": 16,
+        "dimensions": {
+          "x": 5.0,
+          "y": 2.5,
+          "z": 2.5
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Pulse_Silver_Silver_Silver",
+  "ref": "8b43f871-5737-4ac4-9648-037d5063334d",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "466a4115-dc20-47ac-b80c-f89c6e697003",
+  "name": "Pulse Nightrider Livery",
+  "short_name": null,
+  "description": "The Nightrider livery can easily blend into the blackness of space, but upon closer inspection reveals itself to be silver with lettering spelling Mirai across the bottom half.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

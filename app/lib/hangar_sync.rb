@@ -414,6 +414,7 @@ class HangarSync < HangarImporter
       "Reliant Tana - Skirmisher" => "Reliant Tana",
       "Rover" => "G12a Rover",
       "Retaliator Base" => "Retaliator",
+      "Retaliator Bomber" => "Retaliator",
       "Crusader A1 Spirit" => "A1 Spirit",
       "Crusader C1 Spirit" => "C1 Spirit",
       "Crusader E1 Spirit" => "E1 Spirit"

@@ -1,0 +1,44 @@
+{
+  "key": "ANVL_Hornet_F7C_Cargo_Mod",
+  "ref": "8661bcd6-9247-4376-8509-11af3d24a44c",
+  "category": "module",
+  "type": "Module",
+  "sub_type": null,
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": "Stor*All Big Box Model H",
+  "short_name": null,
+  "description": "Manufacturer: Stor*All\\nItem Type: Storage\\n\\nDesigned exclusively for the Hornet F7C, the Stor*All Big Box model H replaces the void left by the turret system of the military-spec craft with a respectable cargo hold. Transforming the flagship fighter of the UEEN into a durable hauling ship.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_cargo_grid",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Cargo"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_cargo_grid",
+      "key": "ANVL_Hornet_CargoGrid_F7C",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    }
+  ],
+  "durability": {
+    "health": 250.0
+  }
+}

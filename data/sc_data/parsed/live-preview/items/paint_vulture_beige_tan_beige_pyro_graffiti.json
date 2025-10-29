@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Vulture_Beige_Tan_Beige_Pyro_Graffiti",
+  "ref": "f33036f7-1764-46d2-be5b-c1d80e85ebc2",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "e4b9dfbb-1b02-48af-b66a-0d899eb34f12",
+  "name": "Vulture Dying Star Livery (Modified)",
+  "short_name": null,
+  "description": "This version of the livery has been modified from its original form with the addition of graffiti. Sold in 2943 to celebrate the 450th anniversary of Pyro's discovery, the Dying Star livery is tan with brown and black highlights. It also features branding from Pyrotechnic Amalgamated, the now defunct mining company that found and named the system.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

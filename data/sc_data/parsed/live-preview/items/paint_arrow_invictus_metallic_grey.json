@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Arrow_Invictus_Metallic_Grey",
+  "ref": "03a0e9cb-2d8d-4915-98a5-a15755c70f8b",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ffb94ac4-c575-4af2-bd55-ec8129f3b3d6",
+  "name": "Arrow Metallic Grey Livery",
+  "short_name": null,
+  "description": "Customize your Arrow with this sleek grey livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hull_A_DarkGreen_Grey_Red_Stripe",
+  "ref": "48a27c8a-bb93-4bbd-96ee-86885a46d2ad",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "e8e90b9c-298c-4597-95eb-b930cc946fea",
+  "name": "Hull A Trailblazer Livery",
+  "short_name": null,
+  "description": "The Trailblazer livery creates a cool, understated style for your Hull A with grey on top and dark red on the bottom.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

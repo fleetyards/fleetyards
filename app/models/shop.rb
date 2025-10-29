@@ -27,8 +27,8 @@
 class Shop < ApplicationRecord
   paginates_per 30
 
-  searchkick searchable: %i[name shop_type station celestial_object starsystem refinery],
-    word_start: %i[name]
+  # searchkick searchable: %i[name shop_type station celestial_object starsystem refinery],
+  #   word_start: %i[name]
 
   def search_data
     {

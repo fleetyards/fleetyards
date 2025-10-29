@@ -4,6 +4,7 @@
     "Shopify.ruby-lsp",
     "Vue.volar",
     "stylelint.vscode-stylelint",
-    "aliariff.vscode-erb-beautify"
+    "aliariff.vscode-erb-beautify",
+    "lokalise.i18n-ally"
   ]
 }

@@ -29,5 +29,9 @@
 module Imports
   class HangarSync < ::Import
     belongs_to :user
+
+    def notify_admin
+      # don't notify on hangar sync
+    end
   end
 end

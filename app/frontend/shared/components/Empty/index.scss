@@ -1,0 +1,20 @@
+.empty-list {
+  width: 600px;
+}
+
+.empty-list-inline {
+  width: auto;
+}
+
+.empty-list-box {
+  width: 90%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .empty-list {
+    max-width: 100%;
+    padding: 0;
+  }
+}

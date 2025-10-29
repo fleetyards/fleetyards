@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Nomad_LunarNewYear2951",
+  "ref": "8aef237a-ba65-4e36-9924-15fa2d9679d8",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "9bfb6f9c-6a82-489d-b28b-f4bd7c4a53f1",
+  "name": "Nomad 2951 Auspicious Red Ram Livery",
+  "short_name": null,
+  "description": "Seek peace and prosperity in the new year with the 2951 Auspicious Red Ram livery. Outfit your ship with this bold red base paint complimented by gold accents and a silhouette of a ram's head.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

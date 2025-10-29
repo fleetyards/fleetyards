@@ -1,0 +1,75 @@
+{
+  "key": "GAMA_Syulen_CargoArm",
+  "ref": "27af59ed-0eff-4107-bf53-6a5448de314e",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "Hardpoint_cargo_1",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+
+      ]
+    },
+    {
+      "name": "Hardpoint_cargo_2",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "Hardpoint_cargo_1",
+      "key": "GAMA_Syulen_CargoGrid_Main",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "Hardpoint_cargo_2",
+      "key": "GAMA_Syulen_CargoGrid_Main",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    }
+  ],
+  "durability": {
+    "health": 200.0
+  },
+  "power_connection": {
+    "power_base": 0.0,
+    "power_draw": 1.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 0.0,
+    "displayed_in_powered_item_list": 0.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.0,
+    "overclock_threshold_max": 0.0,
+    "overpower_performance": 0.0,
+    "overclock_performance": 0.0,
+    "power_to_em": 0.0,
+    "decay_rate_of_em": 0.15
+  }
+}

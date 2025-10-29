@@ -1,0 +1,21 @@
+{
+  "key": "Paint_MPUV_1T_Yellow_Black",
+  "ref": "628547e0-ca96-4394-bc3a-d30f756623fb",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "c794f8e3-c94b-476a-9306-4e508222533d",
+  "name": "MPUV-1T Sunlight Livery",
+  "short_name": null,
+  "description": "Announce your arrival with the Sunlight livery for the MPUV-1T. Featuring a bold yellow base color, the livery makes it easier to see the ship during recovery operations.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

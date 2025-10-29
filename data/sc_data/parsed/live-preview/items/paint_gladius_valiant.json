@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Gladius_Valiant",
+  "ref": "047d54d4-e288-4649-a369-412775d9a641",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Gladius Valiant Livery",
+  "short_name": null,
+  "description": "Part of the ‘Masters of Flight’ series, this special edition livery honors the look of the Gladius used by famed defense pilot Condi Hillard who became the first Human on record to defeat a Vanduul in combat.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

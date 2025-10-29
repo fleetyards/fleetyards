@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Pulse_Template",
+  "ref": "90146e1a-9ee3-4c0d-9bad-c6a906e73238",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cdf6ea1e-7de3-4b58-bf9d-13c5fbafc49a",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

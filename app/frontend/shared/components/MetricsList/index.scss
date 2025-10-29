@@ -1,0 +1,23 @@
+.metrics-list {
+  --gap: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: var(--gap);
+  row-gap: 10px;
+
+  &-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-center;
+    width: calc(50% - calc(var(--gap) / 2));
+
+    &-label {
+      color: darken($text-color, 20%);
+    }
+
+    &-value {
+      font-weight: bold;
+      text-align: right;
+    }
+  }
+}

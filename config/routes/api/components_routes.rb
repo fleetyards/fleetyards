@@ -1,7 +1,4 @@
-resources :components, only: [:index] do
-  get :class_filters, to: "filters/components#classes", on: :collection # DEPRECATED
-  get :item_type_filters, to: "filters/components#item_types", on: :collection # DEPRECATED
-end
+resources :components, only: [:index]
 
 namespace :filters do
   resources :components, only: [] do

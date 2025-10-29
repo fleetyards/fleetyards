@@ -7,15 +7,18 @@
 </template>
 
 <script lang="ts" setup>
-import Store from "@/frontend/lib/Store";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useAppStore } from "@/frontend/stores/app";
+import { storeToRefs } from "pinia";
 
 const { t } = useI18n();
 
-const online = computed(() => Store.getters.online);
+const appStore = useAppStore();
+
+const { online } = storeToRefs(appStore);
 
 const checkOnline = () => {
-  Store.commit("setOnlineStatus", window.navigator.onLine);
+  appStore.online = window.navigator.onLine;
 };
 
 checkOnline();

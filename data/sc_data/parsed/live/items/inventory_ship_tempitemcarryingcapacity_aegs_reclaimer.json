@@ -1,0 +1,9 @@
+{
+  "key": "Ship_TempItemCarryingCapacity_AEGS_Reclaimer",
+  "ref": "5d57434a-0108-4b1b-b130-8a67b7fb7f59",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 180.0
+  }
+}

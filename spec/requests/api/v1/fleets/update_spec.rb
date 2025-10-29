@@ -3,11 +3,16 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
-  let(:fleet) { fleets :starfleet }
-
-  let(:user) { nil }
+  let(:admin) { create(:user) }
+  let(:member) { create(:user) }
+  let(:fleet) { create(:fleet, admins: [admin], members: [member]) }
+  let(:user) { admin }
+  let(:slug) { fleet.slug }
+  let(:input) do
+    {
+      discord: "https://discord.gg/1234567890"
+    }
+  end
 
   before do
     sign_in(user) if user.present?
@@ -19,29 +24,13 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
     put("Update Fleet") do
       operationId "updateFleet"
       tags "Fleets"
-      consumes "multipart/form-data"
+      consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :formData, schema: {"$ref": "#/components/schemas/FleetUpdateInput"}, required: true
+      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/FleetUpdateInput"}, required: true
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Fleet"
-
-        let(:slug) { fleet.slug }
-        let(:user) { users :jeanluc }
-        let(:input) do
-          {
-            discord: "https://discord.gg/1234567890"
-          }
-        end
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
 
         run_test! do |response|
           data = JSON.parse(response.body)
@@ -53,9 +42,7 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:slug) { "unknown-model" }
-        let(:user) { users :data }
-        let(:input) { nil }
+        let(:slug) { "unknown-fleet" }
 
         run_test!
       end
@@ -64,9 +51,16 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
         description "You are not an Admin or Officer of this Fleet"
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:slug) { fleet.slug }
-        let(:user) { users :data }
-        let(:input) { nil }
+        let(:user) { member }
+
+        run_test!
+      end
+
+      response(403, "forbidden") do
+        description "You are not an Admin or Officer of this Fleet"
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { create(:user) }
 
         run_test!
       end
@@ -74,8 +68,7 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:slug) { fleet.slug }
-        let(:input) { nil }
+        let(:user) { nil }
 
         run_test!
       end

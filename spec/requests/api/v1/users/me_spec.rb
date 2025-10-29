@@ -3,9 +3,7 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
-  let(:user) { users :data }
+  let(:user) { create(:user) }
 
   before do
     sign_in(user) if user.present?
@@ -23,7 +21,7 @@ RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
         run_test! do |response|
           data = JSON.parse(response.body)
 
-          expect(data["username"]).to eq("data")
+          expect(data["username"]).to eq(user.username)
         end
       end
 

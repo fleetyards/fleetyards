@@ -21,6 +21,20 @@ module Rsi
       response
     end
 
+    private def load_data
+      response = fetch_remote("#{base_url}/ship-matrix/index?#{Time.zone.now.to_i}")
+
+      return [] unless response.success?
+
+      begin
+        JSON.parse(response.body).dig("data") || []
+      rescue JSON::ParserError => e
+        Sentry.capture_exception(e)
+        Rails.logger.error "Model Data could not be parsed: #{response.body}"
+        []
+      end
+    end
+
     private def fetch_graphql(body)
       response = Typhoeus.post("#{base_url}/graphql", body:, headers: {"Content-Type" => "application/json"})
 

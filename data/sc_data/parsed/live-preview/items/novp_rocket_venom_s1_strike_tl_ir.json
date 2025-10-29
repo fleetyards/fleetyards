@@ -1,0 +1,24 @@
+{
+  "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
+  "ref": "d0562627-1838-4fe7-bea7-788d6b8c4055",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "Rocket",
+  "size": "9",
+  "grade": "1",
+  "manufacturer_ref": "67fd3077-ee8c-4a7c-8bad-91500b2a9509",
+  "name": "Nova Pyrotechnica Venom Rocket",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  }
+}

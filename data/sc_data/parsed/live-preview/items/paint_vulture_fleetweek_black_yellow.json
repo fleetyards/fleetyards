@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Vulture_Fleetweek_Black_Yellow",
+  "ref": "82d9d4a8-d9b1-4502-88bc-17efeb1182c2",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4efc4427-d74c-4780-9c30-37d787dffd8a",
+  "name": "Vulture Pyrite Livery",
+  "short_name": null,
+  "description": "Vulture operators who choose the Pyrite livery never have to apologize for sporting a little style. A stealthy matte black and silver hull contrasts sharply with silver and yellow topped arms.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

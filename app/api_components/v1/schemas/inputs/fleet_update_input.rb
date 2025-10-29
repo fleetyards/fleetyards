@@ -17,6 +17,7 @@ module V1
             removeBackground: {type: :boolean},
             description: {type: :string},
             publicFleet: {type: :boolean},
+            publicFleetStats: {type: :boolean},
             homepage: {type: :string},
             rsiSid: {type: :string},
             discord: {type: :string},

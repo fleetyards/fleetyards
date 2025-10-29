@@ -1,0 +1,21 @@
+{
+  "key": "InstancedHangarGateway_Stanton_MediumFront_Orison",
+  "ref": "e7781992-b688-48bf-aad2-464e3a842ed4",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": null,
+  "grade": null,
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  }
+}

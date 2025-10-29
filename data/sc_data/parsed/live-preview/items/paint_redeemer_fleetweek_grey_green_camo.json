@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Redeemer_Fleetweek_Grey_Green_Camo",
+  "ref": "7874817d-fee0-4578-9f6c-5d2840182033",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2987c1e7-f1e0-45b4-a48e-f733fd1962fe",
+  "name": "Redeemer Scrubland Camo Livery",
+  "short_name": null,
+  "description": "Use the Scrubland Camo livery to outfit the Redeemer in green camo. A classic and commanding look that's also ideal for excursions across forests and grasslands.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

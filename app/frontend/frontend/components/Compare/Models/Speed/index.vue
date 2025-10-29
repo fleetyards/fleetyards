@@ -1,249 +1,26 @@
-<template>
-  <div>
-    <div class="row compare-row compare-section">
-      <div class="col-12 compare-row-label sticky-left">
-        <div
-          :class="{
-            active: visible,
-          }"
-          class="text-right metrics-title"
-          @click="toggle()"
-        >
-          {{ t("labels.metrics.speed") }}
-          <i class="fa fa-chevron-right" />
-        </div>
-      </div>
-      <div
-        v-for="model in models"
-        :key="`${model.slug}-placeholder`"
-        class="col-12 compare-row-item"
-      />
-    </div>
-
-    <Collapsed id="speed" :visible="visible" class="row">
-      <div class="col-12">
-        <div class="row compare-row">
-          <div
-            class="col-12 compare-row-label text-right metrics-label sticky-left"
-          >
-            {{ t("model.scmSpeed") }}
-          </div>
-          <div
-            v-for="model in models"
-            :key="`${model.slug}-scm-speed`"
-            class="col-6 text-center compare-row-item"
-          >
-            <span class="metrics-value">
-              {{ toNumber(model.speeds.scmSpeed, "speed") }}
-            </span>
-          </div>
-        </div>
-        <div class="row compare-row">
-          <div
-            class="col-12 compare-row-label text-right metrics-label sticky-left"
-          >
-            {{ t("model.maxSpeed") }}
-          </div>
-          <div
-            v-for="model in models"
-            :key="`${model.slug}-max-speed`"
-            class="col-6 text-center compare-row-item"
-          >
-            <span class="metrics-value">
-              {{ toNumber(model.speeds.maxSpeed, "speed") }}
-            </span>
-          </div>
-        </div>
-        <div class="row compare-row">
-          <div
-            class="col-12 compare-row-label text-right metrics-label sticky-left"
-          >
-            {{ t("model.compare.groundMaxSpeed") }}
-          </div>
-          <div
-            v-for="model in models"
-            :key="`${model.slug}-ground-max-speed`"
-            class="col-6 text-center compare-row-item"
-          >
-            <span class="metrics-value">
-              {{ toNumber(model.speeds.groundMaxSpeed, "speed") }}
-            </span>
-          </div>
-        </div>
-        <div class="row compare-row">
-          <div
-            class="col-12 compare-row-label text-right metrics-label sticky-left"
-          >
-            {{ t("model.compare.groundReverseSpeed") }}
-          </div>
-          <div
-            v-for="model in models"
-            :key="`${model.slug}-ground-reverse-speed`"
-            class="col-6 text-center compare-row-item"
-          >
-            <span class="metrics-value">
-              {{ toNumber(model.speeds.groundReverseSpeed, "speed") }}
-            </span>
-          </div>
-        </div>
-        <div class="row compare-row">
-          <div
-            class="col-12 compare-row-label text-right metrics-label sticky-left"
-          >
-            {{ t("model.pitch") }}
-          </div>
-          <div
-            v-for="model in models"
-            :key="`${model.slug}-pitch`"
-            class="col-6 text-center compare-row-item"
-          >
-            <span class="metrics-value">
-              {{ toNumber(model.speeds.pitch, "rotation") }}
-            </span>
-          </div>
-        </div>
-        <div class="row compare-row">
-          <div
-            class="col-12 compare-row-label text-right metrics-label sticky-left"
-          >
-            {{ t("model.yaw") }}
-          </div>
-          <div
-            v-for="model in models"
-            :key="`${model.slug}-yaw`"
-            class="col-6 text-center compare-row-item"
-          >
-            <span class="metrics-value">
-              {{ toNumber(model.speeds.yaw, "rotation") }}
-            </span>
-          </div>
-        </div>
-        <div class="row compare-row">
-          <div
-            class="col-12 compare-row-label text-right metrics-label sticky-left"
-          >
-            {{ t("model.roll") }}
-          </div>
-          <div
-            v-for="model in models"
-            :key="`${model.slug}-roll`"
-            class="col-6 text-center compare-row-item"
-          >
-            <span class="metrics-value">
-              {{ toNumber(model.speeds.roll, "rotation") }}
-            </span>
-          </div>
-        </div>
-        <div class="row compare-row">
-          <div
-            class="col-12 compare-row-label text-right metrics-label sticky-left"
-          >
-            {{ t("model.scmSpeedAcceleration") }}
-          </div>
-          <div
-            v-for="model in models"
-            :key="`${model.slug}-scm-speed-acceleration`"
-            class="col-6 text-center compare-row-item"
-          >
-            <span class="metrics-value">
-              {{ toNumber(model.speeds.scmSpeedAcceleration, "speed") }}
-            </span>
-          </div>
-        </div>
-        <div class="row compare-row">
-          <div
-            class="col-12 compare-row-label text-right metrics-label sticky-left"
-          >
-            {{ t("model.scmSpeedDecceleration") }}
-          </div>
-          <div
-            v-for="model in models"
-            :key="`${model.slug}-scm-speed-decceleration`"
-            class="col-6 text-center compare-row-item"
-          >
-            <span class="metrics-value">
-              {{ toNumber(model.speeds.scmSpeedDecceleration, "speed") }}
-            </span>
-          </div>
-        </div>
-        <div class="row compare-row">
-          <div
-            class="col-12 compare-row-label text-right metrics-label sticky-left"
-          >
-            {{ t("model.maxSpeedAcceleration") }}
-          </div>
-          <div
-            v-for="model in models"
-            :key="`${model.slug}-max-speed-acceleration`"
-            class="col-6 text-center compare-row-item"
-          >
-            <span class="metrics-value">
-              {{ toNumber(model.speeds.maxSpeedAcceleration, "speed") }}
-            </span>
-          </div>
-        </div>
-        <div class="row compare-row">
-          <div
-            class="col-12 compare-row-label text-right metrics-label sticky-left"
-          >
-            {{ t("model.maxSpeedDecceleration") }}
-          </div>
-          <div
-            v-for="model in models"
-            :key="`${model.slug}-max-speed-decceleration`"
-            class="col-6 text-center compare-row-item"
-          >
-            <span class="metrics-value">
-              {{ toNumber(model.speeds.maxSpeedDecceleration, "speed") }}
-            </span>
-          </div>
-        </div>
-        <div class="row compare-row">
-          <div
-            class="col-12 compare-row-label text-right metrics-label sticky-left"
-          >
-            {{ t("model.compare.groundAcceleration") }}
-          </div>
-          <div
-            v-for="model in models"
-            :key="`${model.slug}-ground-acceleration`"
-            class="col-6 text-center compare-row-item"
-          >
-            <span class="metrics-value">
-              {{ toNumber(model.speeds.groundAcceleration, "speed") }}
-            </span>
-          </div>
-        </div>
-        <div class="row compare-row">
-          <div
-            class="col-12 compare-row-label text-right metrics-label sticky-left"
-          >
-            {{ t("model.compare.groundDecceleration") }}
-          </div>
-          <div
-            v-for="model in models"
-            :key="`${model.slug}-ground-decceleration`"
-            class="col-6 text-center compare-row-item"
-          >
-            <span class="metrics-value">
-              {{ toNumber(model.speeds.groundDecceleration, "speed") }}
-            </span>
-          </div>
-        </div>
-      </div>
-    </Collapsed>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "ModelsCompareSpeed",
+};
+</script>
 
 <script lang="ts" setup>
 import Collapsed from "@/shared/components/Collapsed.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import ModelsRow from "@/frontend/components/Compare/Models/Row/index.vue";
+import RowTitle from "@/frontend/components/Compare/Models/Row/Title/index.vue";
+import RowLabel from "@/frontend/components/Compare/Models/Row/Label/index.vue";
+import RowValue from "@/frontend/components/Compare/Models/Row/Value/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { Model } from "@/services/fyApi";
 
 type Props = {
   models: Model[];
+  slim?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  slim: false,
+});
 
 const { t, toNumber } = useI18n();
 
@@ -263,10 +40,105 @@ watch(
 const toggle = () => {
   visible.value = !visible.value;
 };
+
+const rows = [
+  {
+    key: "speed-scm-speed",
+    label: t("model.scmSpeed"),
+    value: (model: Model) => toNumber(model.speeds.scmSpeed, "speed"),
+  },
+  {
+    key: "speed-scm-speed-boosted",
+    label: t("model.scmSpeedBoosted"),
+    value: (model: Model) => toNumber(model.speeds.scmSpeedBoosted, "speed"),
+  },
+  {
+    key: "speed-max-speed",
+    label: t("model.maxSpeed"),
+    value: (model: Model) => toNumber(model.speeds.maxSpeed, "speed"),
+  },
+  {
+    key: "speed-reverse-speed-boosted",
+    label: t("model.reverseSpeedBoosted"),
+    value: (model: Model) =>
+      toNumber(model.speeds.reverseSpeedBoosted, "speed"),
+  },
+  {
+    key: "speed-ground-max-speed",
+    label: t("model.compare.groundMaxSpeed"),
+    value: (model: Model) => toNumber(model.speeds.groundMaxSpeed, "speed"),
+  },
+  {
+    key: "speed-ground-reverse-speed",
+    label: t("model.compare.groundReverseSpeed"),
+    value: (model: Model) => toNumber(model.speeds.groundReverseSpeed, "speed"),
+  },
+  {
+    key: "speed-pitch",
+    label: t("model.pitch"),
+    value: (model: Model) => toNumber(model.speeds.pitch, "rotation"),
+  },
+  {
+    key: "speed-pitch-boosted",
+    label: t("model.pitchBoosted"),
+    value: (model: Model) => toNumber(model.speeds.pitchBoosted, "rotation"),
+  },
+  {
+    key: "speed-yaw",
+    label: t("model.yaw"),
+    value: (model: Model) => toNumber(model.speeds.yaw, "rotation"),
+  },
+  {
+    key: "speed-yaw-boosted",
+    label: t("model.yawBoosted"),
+    value: (model: Model) => toNumber(model.speeds.yawBoosted, "rotation"),
+  },
+  {
+    key: "speed-roll",
+    label: t("model.roll"),
+    value: (model: Model) => toNumber(model.speeds.roll, "rotation"),
+  },
+  {
+    key: "speed-roll-boosted",
+    label: t("model.rollBoosted"),
+    value: (model: Model) => toNumber(model.speeds.rollBoosted, "rotation"),
+  },
+];
 </script>
 
-<script lang="ts">
-export default {
-  name: "ModelsCompareSpeed",
-};
-</script>
+<template>
+  <ModelsRow :models="models" row-key="speed" :slim="slim" sticky-left section>
+    <template #label>
+      <RowTitle
+        :active="visible"
+        :title="t('labels.metrics.speed')"
+        @click="toggle"
+      />
+    </template>
+  </ModelsRow>
+
+  <Collapsed id="speed" :visible="visible" class="row">
+    <div class="col-12">
+      <ModelsRow
+        v-for="row in rows"
+        :key="row.key"
+        :models="models"
+        :row-key="row.key"
+        :slim="slim"
+        sticky-left
+      >
+        <template #label>
+          <RowLabel>
+            {{ row.label }}
+          </RowLabel>
+        </template>
+        <template #default="{ model }">
+          <RowValue>
+            <!-- eslint-disable-next-line vue/no-v-html -->
+            <span v-html="row.value(model)" />
+          </RowValue>
+        </template>
+      </ModelsRow>
+    </div>
+  </Collapsed>
+</template>

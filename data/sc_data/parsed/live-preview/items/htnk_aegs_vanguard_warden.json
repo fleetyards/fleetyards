@@ -1,0 +1,24 @@
+{
+  "key": "HTNK_AEGS_Vanguard_Warden",
+  "ref": "0a15831a-47f3-49ee-9ea4-c3a1b70acd22",
+  "category": "fueltanks",
+  "type": "FuelTank",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Internal Tank",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "capacity": 20.25
+  }
+}

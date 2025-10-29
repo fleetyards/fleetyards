@@ -1,0 +1,21 @@
+{
+  "key": "Col_AirlockDoorPanelScreen",
+  "ref": "775908ff-b4cf-4aa5-8fe3-09abbc3ddda6",
+  "category": "doors",
+  "type": "Misc",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "23788dd9-6222-4a4a-b233-0f421afc8eb1",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

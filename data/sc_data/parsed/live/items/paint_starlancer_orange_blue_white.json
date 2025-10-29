@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Starlancer_Orange_Blue_White",
+  "ref": "6c430487-c74b-4cc7-8016-ace36e1720b1",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "9b3a4fea-083b-422b-85af-21147acc1a16",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -3,7 +3,8 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/manufacturers", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :manufacturers
+  let!(:manufacturers) { create_list(:manufacturer, 2) }
+  let!(:manufacturers_with_models) { create_list(:manufacturer, 5, :with_models) }
 
   path "/manufacturers" do
     get("Manufacturers list") do
@@ -24,27 +25,19 @@ RSpec.describe "api/v1/manufacturers", type: :request, swagger_doc: "v1/schema.y
       parameter name: "cacheId", in: :query, type: :string, required: false
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/Manufacturer"}
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
+        schema "$ref": "#/components/schemas/Manufacturers"
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to be > 0
-          expect(data.count).to eq(7)
+          expect(items.count).to be > 0
+          expect(items.count).to eq(7)
         end
       end
 
       response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/Manufacturer"}
+        schema "$ref": "#/components/schemas/Manufacturers"
 
         let(:q) do
           {
@@ -54,20 +47,22 @@ RSpec.describe "api/v1/manufacturers", type: :request, swagger_doc: "v1/schema.y
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to eq(6)
+          expect(items.count).to eq(5)
         end
       end
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/Manufacturer"}
+        schema "$ref": "#/components/schemas/Manufacturers"
 
         let(:perPage) { 2 }
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to eq(2)
+          expect(items.count).to eq(2)
         end
       end
     end
@@ -79,15 +74,7 @@ RSpec.describe "api/v1/manufacturers", type: :request, swagger_doc: "v1/schema.y
       produces "application/json"
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/Manufacturer"}
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
+        schema "$ref": "#/components/schemas/Manufacturers"
 
         run_test!
       end

@@ -1,0 +1,140 @@
+{
+  "key": "MISL_S02_IR_NOVP_Rattler",
+  "ref": "8acc8f1f-47cb-46e4-bf58-bea2ac5ff52e",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "Missile",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "67fd3077-ee8c-4a7c-8bad-91500b2a9509",
+  "name": "Rattler II Missile",
+  "short_name": "Rattler II",
+  "description": "Manufacturer: Nova Pyrotechnica\\nTracking Signal: Infrared\\nSize: 2\\n\\nThe Rattler is a cost-effective cluster missile that will no doubt appeal to a wide variety of pilots. When fired, the Rattler will track the opponent’s IR signature and create an opening barrage that weakens the armor or shields, leaving the target vulnerable to the full payload that follows.",
+  "inventory_consumption": {
+    "micro_scu": 31250.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 2.0,
+      "z": 1.0
+    }
+  },
+  "loadout": [
+    {
+      "name": "cluster1",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+
+      ]
+    },
+    {
+      "name": "cluster2",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+
+      ]
+    },
+    {
+      "name": "cluster3",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+
+      ]
+    },
+    {
+      "name": "cluster4",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+
+      ]
+    },
+    {
+      "name": "cluster5",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+
+      ]
+    },
+    {
+      "name": "cluster6",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+
+      ]
+    },
+    {
+      "name": "cluster7",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "cluster1",
+      "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "cluster2",
+      "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "cluster3",
+      "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "cluster4",
+      "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "cluster5",
+      "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "cluster6",
+      "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "cluster7",
+      "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    }
+  ],
+  "durability": {
+    "health": 15.0
+  }
+}

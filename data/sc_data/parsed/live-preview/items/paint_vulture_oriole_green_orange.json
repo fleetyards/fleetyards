@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Vulture_Oriole_Green_Orange",
+  "ref": "9103a4a7-4ab1-4a18-aec0-e5442f65766d",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "9b118eca-a754-4818-be52-a7e1265136bc",
+  "name": "Vulture Oriole Livery",
+  "short_name": null,
+  "description": "The Oriole livery offers Vulture captains a no-nonsense matte grey toned hull patterned after those operated by military organizations. Understated orange highlights mark the craft's salvage-and-recovery role.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

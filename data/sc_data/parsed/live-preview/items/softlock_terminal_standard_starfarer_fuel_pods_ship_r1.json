@@ -1,0 +1,21 @@
+{
+  "key": "SoftLock_Terminal_Standard_Starfarer_Fuel_Pods_Ship_R1",
+  "ref": "67b6f26b-3a71-4092-92ce-a0d2057e9e0e",
+  "category": "utility",
+  "type": "Display",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

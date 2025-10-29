@@ -1,10 +1,37 @@
+<script lang="ts">
+export default {
+  name: "FleetchartListItemImage",
+};
+</script>
+
+<script lang="ts" setup>
+type Props = {
+  src: string;
+  label: string;
+  width?: number;
+  height?: number;
+  maxWidth?: string;
+  maxHeight?: string;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  height: undefined,
+  width: undefined,
+  maxWidth: undefined,
+});
+
+const internalWidth = computed(() => {
+  return `${props.width}px` || "auto";
+});
+</script>
+
 <template>
   <img
     v-if="src"
     :src="src"
     :style="{
-      width: `${width}px`,
-      'max-height': height ? `${height}px` : null,
+      width: internalWidth,
+      'max-height': height ? `${height}px` : undefined,
       'max-width': maxWidth,
     }"
     :alt="label"
@@ -15,21 +42,3 @@
     <p>{{ label }}</p>
   </span>
 </template>
-
-<script lang="ts">
-import { Component, Prop } from "vue-property-decorator";
-import Vue from "vue";
-
-@Component({})
-export default class FleetchartListItemImage extends Vue {
-  @Prop({ required: true }) src!: string;
-
-  @Prop({ required: true }) label!: string;
-
-  @Prop({ required: true }) width!: number;
-
-  @Prop({ default: null }) height!: number | null;
-
-  @Prop({ default: null }) maxWidth!: number | null;
-}
-</script>

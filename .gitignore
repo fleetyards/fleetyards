@@ -13,12 +13,26 @@ config/*.key
 .env*
 !.env.example
 !.env.test.example
+!.env.test
 
 # test files
 coverage/*
 test/reports/*
 spec/reports
 spec/reports/*
+playwright-report
+playwright-report/*
+test-results
+test-results/*
+
+# generated auto-import files
+app/frontend/auto-imports.d.ts
+app/frontend/components.d.ts
+.eslintrc-auto-import.json
+
+# generated api client
+app/frontend/services/fyApi
+app/frontend/services/fyAdminApi
 
 # app files
 public/uploads/*
@@ -65,4 +79,12 @@ swagger/todo
 /app/assets/builds/*
 !/app/assets/builds/.keep
 
-data/*
+data/sc_data/raw
+
+*storybook.log
+storybook-static
+
+# ai agent files
+.cursor/working/
+.augment/
+.claude/

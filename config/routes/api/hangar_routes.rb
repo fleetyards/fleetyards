@@ -33,11 +33,3 @@ namespace :public do
 
   resources :wishlists, param: :username, only: %i[show]
 end
-
-# DEPRECATED
-resources :hangar_groups, path: "hangar-groups", only: %i[index create update destroy] do
-  collection do
-    get ":hangar_username" => "public/hangar_groups#index", :as => :public
-    put :sort
-  end
-end

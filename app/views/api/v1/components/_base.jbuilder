@@ -4,24 +4,35 @@ json.id component.id
 json.name component.name
 json.slug component.slug
 
+json.sc_key component.sc_key
+json.sc_ref component.sc_ref
+
+json.category component.category
+json.type component.component_type
+json.sub_type component.component_sub_type
+
 json.availability do
-  json.listed_at do
-    json.array! component.listed_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
-  end
   json.bought_at do
-    json.array! component.bought_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
+    json.array! component.bought_at, partial: "api/v1/item_prices/base", as: :item_price
   end
   json.sold_at do
-    json.array! component.sold_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
+    json.array! component.sold_at, partial: "api/v1/item_prices/base", as: :item_price
   end
 end
 
-json.class component.component_class
 json.grade component.grade
+json.grade_label component.grade_label
+json.size component.size
 json.item_class component.item_class
 json.item_class_label component.item_class_label
-json.item_type component.item_type
-json.item_type_label component.item_type_label
+
+json.type_data component.type_data
+
+json.hidden component.hidden
+
+json.hardpoints do
+  json.array! component.hardpoints, partial: "api/v1/hardpoints/base", as: :hardpoint
+end
 
 json.manufacturer do
   json.null! if component.manufacturer.blank?
@@ -31,28 +42,8 @@ end
 json.media({})
 json.media do
   json.store_image do
-    json.partial! "api/v1/shared/media_image", media_image: component.store_image
-  end
-end
-
-json.size component.size
-json.tracking_signal component.tracking_signal
-json.tracking_signal_label component.tracking_signal_label
-json.type component.item_type
-json.type_label component.item_type_label
-
-json.type_data do
-  if component.type_data.present? && component.item_type.present? && lookup_context.exists?(component.item_type, "api/v1/components", true)
-    json.partial! "api/v1/components/#{component.item_type}", component: component
+    json.partial! "api/v1/shared/view_image", record: component, attr: :new_store_image, old_attr: :store_image, width: component.store_image_width, height: component.store_image_height
   end
 end
 
 json.partial! "api/shared/dates", record: component
-
-# DEPRECATED
-
-json.store_image component.store_image.url
-json.store_image_is_fallback component.store_image.identifier.nil?
-json.store_image_large component.store_image.large.url
-json.store_image_medium component.store_image.medium.url
-json.store_image_small component.store_image.small.url

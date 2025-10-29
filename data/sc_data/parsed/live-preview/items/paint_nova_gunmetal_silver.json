@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Nova_Gunmetal_Silver",
+  "ref": "d12dcd64-aaf5-485b-bda6-92ac337740a8",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "808ed9c3-f898-42d4-b367-5c6eb8b10836",
+  "name": "Nova Gunmetal Livery",
+  "short_name": null,
+  "description": "Featuring a metallic silver paint scheme, the Nova Gunmetal livery offers a devastating combination of weaponry to eliminate threats on the ground and in the air.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

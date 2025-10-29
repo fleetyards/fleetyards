@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Eclipse_IAE_2952_Blue_Red_Camo",
+  "ref": "eb826dee-a085-481d-9498-24d1e94aa8b8",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ac2ca85c-d048-4de0-917b-1f36d8b6c58d",
+  "name": "Eclipse Ambush Camo Livery",
+  "short_name": null,
+  "description": "Make the Eclipse harder to spot with the Ambush Camo livery, featuring a camouflage pattern to help break up the visual perception.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

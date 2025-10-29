@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Spirit_White_Blue_Black",
+  "ref": "29dbf289-c9b2-475d-84f6-aaaa56678c5b",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4240b910-33f3-4835-a0be-f69484556eed",
+  "name": "Spirit Ardent Livery",
+  "short_name": null,
+  "description": "With clean white panels and an azure trim, this livery elevates the look of the Crusader Spirit to the next level.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

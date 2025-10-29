@@ -32,3 +32,16 @@
     margin-left: 60px;
   }
 }
+
+.v-popper--theme-tooltip {
+  .v-popper__inner {
+    color: $text-color;
+    background: $gray-darker;
+  }
+
+  .v-popper__arrow-container {
+    .v-popper__arrow-outer {
+      border-color: $gray-darker;
+    }
+  }
+}

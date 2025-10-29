@@ -3,65 +3,69 @@
 module Api
   module V1
     class FleetsController < ::Api::BaseController
-      before_action :authenticate_user!, except: %i[show]
+      skip_verify_authorized only: %i[check find_by_invite]
+
+      before_action :authenticate_user!, only: []
+      before_action -> { doorkeeper_authorize! },
+        unless: :user_signed_in?,
+        only: %i[create]
+      before_action -> { doorkeeper_authorize! "fleet", "fleet:read" },
+        unless: :user_signed_in?,
+        only: %i[show check invites my find_by_invite]
+      before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
+        unless: :user_signed_in?,
+        only: %i[update destroy]
+
+      before_action :set_fleet, only: %i[show update destroy]
 
       rescue_from ActiveRecord::RecordNotFound do |_exception|
         not_found(I18n.t("messages.record_not_found.fleet", slug: params[:slug]))
       end
 
       def invites
-        authorize! :invites, :api_fleet
+        authorize!
 
-        @invites = current_user.fleet_memberships.where(aasm_state: %w[requested invited]).all
+        @invites = current_resource_owner.fleet_memberships.where(aasm_state: %w[requested invited]).all
       end
 
       def my
-        authorize! :read, :api_fleet
+        authorize!
 
-        @fleets = current_user.fleets.accepted.all
+        @fleets = authorized_scope(Fleet.all).accepted.all
       end
 
       def show
-        authorize! :read, :api_fleet
-        @fleet = Fleet.where(slug: params[:slug]).first!
       end
 
       def create
-        @fleet = Fleet.new(fleet_params.merge(created_by: current_user.id))
-        authorize! :create, fleet
+        @fleet = Fleet.new(fleet_create_params.merge(created_by: current_user.id))
 
-        if fleet.save
+        authorize! @fleet
+
+        if @fleet.save
           render :create, status: :created
         else
-          render json: ValidationError.new("fleet.create", errors: fleet.errors), status: :bad_request
+          render json: ValidationError.new("fleet.create", errors: @fleet.errors), status: :bad_request
         end
       end
 
       def update
-        authorize! :update, fleet
+        return if @fleet.update(fleet_params)
 
-        return if fleet.update(fleet_params)
-
-        render json: ValidationError.new("fleet.update", errors: fleet.errors), status: :bad_request
+        render json: ValidationError.new("fleet.update", errors: @fleet.errors), status: :bad_request
       end
 
       def destroy
-        authorize! :destroy, fleet
+        return if @fleet.destroy
 
-        return if fleet.destroy
-
-        render json: ValidationError.new("fleet.destroy", errors: fleet.errors), status: :bad_request
+        render json: ValidationError.new("fleet.destroy", errors: @fleet.errors), status: :bad_request
       end
 
       def check
-        authorize! :check, :api_fleet
-
-        render json: {taken: Fleet.exists?(normalized_fid: (fleet_params[:fid] || "").downcase)}
+        render json: {taken: Fleet.exists?(normalized_fid: params.fetch(:value, "").downcase)}
       end
 
       def find_by_invite
-        authorize! :check, :api_fleet
-
         invite_url = FleetInviteUrl.active.find_by!(token: params[:token])
 
         @fleet = invite_url.fleet
@@ -69,17 +73,18 @@ module Api
         render "show"
       end
 
-      private def fleet
-        @fleet ||= current_user.fleets.where(slug: params[:slug]).first!
+      private def set_fleet
+        @fleet = Fleet.find_by!(slug: params[:slug])
+
+        authorize! @fleet
+      end
+
+      private def fleet_create_params
+        authorized(params, as: :create)
       end
 
       private def fleet_params
-        @fleet_params ||= params.transform_keys(&:underscore)
-          .permit(
-            :fid, :name, :description, :logo, :background_image, :public_fleet, :public_fleet_stats,
-            :remove_logo, :remove_background, :homepage, :rsi_sid, :discord, :ts, :youtube,
-            :twitch, :guilded
-          )
+        authorized(params, context: {fleet: @fleet})
       end
     end
   end

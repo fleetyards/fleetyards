@@ -1,0 +1,40 @@
+{
+  "key": "MISC_Freelancer_CargoGrid_Mid",
+  "ref": "72b25eee-ea6d-42eb-9a70-f5c5ad1e09b3",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 2.5,
+      "y": 1.25,
+      "z": 3.75
+    },
+    "capacity": 6.0,
+    "max_container_size": {
+      "size": 2,
+      "dimensions": {
+        "x": 2.5,
+        "y": 1.25,
+        "z": 1.25
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1.0
+      },
+      "max": {
+        "dimensions": {
+          "x": 2.5,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 2.0
+      }
+    }
+  }
+}

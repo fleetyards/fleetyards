@@ -1,0 +1,24 @@
+{
+  "key": "MISC_Reliant_Missile_Cap_Right",
+  "ref": "bcfed3ab-5f55-4690-8638-07e3b883d5e4",
+  "category": "module",
+  "type": "MissileLauncher",
+  "sub_type": "MissileRack",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": "Reliant Missile Launcher Cap",
+  "short_name": null,
+  "description": "Item Type: Missile Launcher Cap\\nManufacturer: MISC\\nSize: 5 \\n\\nBespoke missile launcher cap used by the MISC Reliant.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

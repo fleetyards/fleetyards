@@ -23,7 +23,7 @@ cache: &global_cache
 
 .js_test_template:
   before_script:
-    - yarn --frozen-lockfile
+    - pnpm i --frozen-lockfile
 
 .ruby_test_template:
   extends: .ruby_template
@@ -62,7 +62,7 @@ cache: &global_cache
     # transport.host: localhost
     # network.host: 127.0.0.1
 
-yarn:
+pnpm:
   stage: prep
   cache:
     <<: *global_cache
@@ -70,12 +70,12 @@ yarn:
       - node_modules/
     policy: pull-push
   script:
-    - yarn --frozen-lockfile
+    - pnpm i --frozen-lockfile
   only:
     changes:
       - .gitlab-ci.yml
       - package.json
-      - yarn.lock
+      - pnpm-lock.yaml
       - .npmrc
 
 bundle:
@@ -101,11 +101,11 @@ ruby audit:
     - bundle exec bundle-audit update
     - bundle exec bundle-audit check
 
-yarn audit:
+js audit:
   stage: test
   extends: .js_test_template
   script:
-    - yarn audit
+    - pnpm audit
 
 rubocop:
   stage: test
@@ -117,15 +117,15 @@ js-lint:
   stage: test
   extends: .js_test_template
   script:
-    - yarn run lint:js
-    - yarn run lint:vue
-    - yarn run lint:style
+    - pnpm run lint:js
+    - pnpm run lint:vue
+    - pnpm run lint:style
 
 js tests:
   stage: test
   extends: .js_test_template
   script:
-    - yarn run test
+    - pnpm run test
 
 ruby tests:
   stage: test
