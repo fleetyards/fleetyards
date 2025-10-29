@@ -17,6 +17,7 @@ namespace :cache do
   desc "get stats for the rails cache"
   task stats: :environment do
     include ActionView::Helpers::NumberHelper
+
     puts "=> Rails cache stats:"
     if Rails.cache.respond_to? :stats
       Rails.cache.stats.each do |host, stats|

@@ -29,7 +29,9 @@ Rails.application.configure do
       "https://fonts.gstatic.com", "https://pro.fontawesome.com", Rails.configuration.rsi.endpoint,
       "https://kit.fontawesome.com", "https://kit-pro.fontawesome.com",
       "https://kit-free.fontawesome.com", "https://ka-p.fontawesome.com", "https://starship42.com",
-      "https://www.gstatic.com", s3_endpoint
+      "https://www.gstatic.com", s3_endpoint,
+      "https://cdn.jsdelivr.net",
+      "https://stackpath.bootstrapcdn.com"
     ].compact
 
     connect_src.push("ws://#{ViteRuby.config.host_with_port}") if Rails.env.development? || Rails.env.test?
@@ -38,7 +40,7 @@ Rails.application.configure do
     connect_src.push("ws://fleetyards.test:3035", "http://fleetyards.test:3035", "ws://fleetyards.test:3136", "http://fleetyards.test:3136") if Rails.env.development?
     connect_src.push("ws://api.fleetyards.test:3035", "http://api.fleetyards.test:3035", "ws://api.fleetyards.test:3136", "http://api.fleetyards.test:3136") if Rails.env.development?
     connect_src.push("ws://docs.fleetyards.test:3035", "http://docs.fleetyards.test:3035", "ws://docs.fleetyards.test:3136", "http://docs.fleetyards.test:3136") if Rails.env.development?
-    connect_src.push("ws://admin.fleetyards.test:3035", "http://admin.fleetyards.test:3035", "ws://admin.fleetyards.test:3136") if Rails.env.development?
+    connect_src.push("ws://admin.fleetyards.test:3035", "http://admin.fleetyards.test:3035", "ws://admin.fleetyards.test:3136", "http://admin.fleetyards.test:3136") if Rails.env.development?
 
     script_src = [
       :self, :unsafe_inline, :unsafe_eval, :blob, FRONTEND_ENDPOINT,
