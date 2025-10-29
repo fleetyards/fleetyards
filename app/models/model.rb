@@ -255,6 +255,8 @@ class Model < ApplicationRecord
   mount_uploader :brochure, BrochureUploader
   mount_uploader :holo, HoloUploader
 
+  has_one_attached :new_store_image
+
   before_save :update_slugs
 
   before_save :update_from_hardpoints
