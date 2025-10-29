@@ -21,7 +21,7 @@ const handleUploadProgress = (progress: number) => {
 };
 
 const handleUploadDone = (files: Blob[]) => {
-  console.log(files);
+  console.info(files);
   emit("upload:done", files);
 };
 

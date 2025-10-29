@@ -18,7 +18,9 @@ const handleFileSelect = (fileList?: FileList) => {
   }
 
   Array.from(fileList).forEach((file) => {
-    files.value.includes(file) || files.value.push(file);
+    if (!files.value.includes(file)) {
+      files.value.push(file);
+    }
   });
 
   upload();
