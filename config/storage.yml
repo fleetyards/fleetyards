@@ -14,6 +14,8 @@ cloud:
   bucket: <%= Rails.application.credentials.s3_bucket %>
   region: unused
   public: true
+  upload:
+    acl: "public-read"
 
 # Remember not to checkin your GCS keyfile to a repository
 # google:

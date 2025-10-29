@@ -40,6 +40,8 @@ public/assets
 public/compare/*
 public/vite*
 
+storage/*
+
 # js dependencies
 vendor/assets/.bowerrc
 vendor/assets/bower.json

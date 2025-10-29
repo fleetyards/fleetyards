@@ -23,7 +23,7 @@ Rails.application.configure do
   config.debug_exception_response_format = :api
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.service = :cloud
+  config.active_storage.service = :local
   config.active_storage.routes_prefix = "/files"
 
   # Enable server timing

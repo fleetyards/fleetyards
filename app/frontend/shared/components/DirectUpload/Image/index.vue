@@ -33,6 +33,7 @@ onMounted(() => {
 
 <template>
   <LazyImage
+    v-if="src"
     v-tooltip="t('directUpload.previewImage.remove')"
     :src="src"
     :alt="alt"

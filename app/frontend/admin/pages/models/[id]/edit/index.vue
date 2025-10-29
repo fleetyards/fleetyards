@@ -22,7 +22,6 @@ import ManufacturerFilterGroup from "@/admin/components/base/ManufacturerFilterG
 import ProductionStatusFilterGroup from "@/admin/components/base/ProductionStatusFilterGroup/index.vue";
 import ModelClassificationFilterGroup from "@/frontend/components/base/ModelClassificationFilterGroup/index.vue";
 import ModelFocusFilterGroup from "@/frontend/components/base/ModelFocusFilterGroup/index.vue";
-import DirectUpload from "@/shared/components/DirectUpload/index.vue";
 import { useModelUpdateMutation } from "@/admin/composables/useModelUpdateMutation";
 // import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
@@ -53,7 +52,7 @@ const initialValues = ref<ModelUpdateInput>({
   productionNote: props.model.productionNote,
   classification: props.model.classification,
   focus: props.model.focus,
-  storeImageNew: undefined,
+  newStoreImage: undefined,
 });
 
 const validationSchema = {
@@ -80,7 +79,7 @@ const [productionStatus, productionStatusProps] =
 const [productionNote, productionNoteProps] = defineField("productionNote");
 const [classification, classificationProps] = defineField("classification");
 const [focus, focusProps] = defineField("focus");
-const [storeImageNew, storeImageNewProps] = defineField("storeImageNew");
+const [newStoreImage, newStoreImageProps] = defineField("newStoreImage");
 
 const { updateMutation: mutation } = useModelUpdateMutation(props.model);
 
@@ -231,17 +230,14 @@ const onCancel = () => {
     </div>
 
     <div class="row">
-      <div class="col-12">
-        <DirectUpload multiple />
-      </div>
-
       <div class="col-12 col-md-4">
         <FormImageInput
-          v-model="storeImageNew"
-          :image="model.media.storeImage?.small"
+          v-model="newStoreImage"
+          :image="model.media.storeImage?.smallUrl"
           translation-key="model.storeImage"
-          v-bind="storeImageNewProps"
-          name="storeImageNew"
+          v-bind="newStoreImageProps"
+          name="newStoreImage"
+          clearable
         />
       </div>
     </div>

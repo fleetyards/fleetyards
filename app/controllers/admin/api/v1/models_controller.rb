@@ -153,7 +153,7 @@ module Admin
             :classification, :focus, :size, :dock_size, :length, :beam, :height, :on_sale,
             :store_url, :sales_page_url, :price, :pledge_price, :cargo,
             :cargo_holds, :hydrogen_fuel_tank_size, :hydrogen_fuel_tanks, :quantum_fuel_tank_size,
-            :quantum_fuel_tanks, :store_image_new
+            :quantum_fuel_tanks, :new_store_image
           )
         end
       end

@@ -53,7 +53,7 @@ module Admin
               hydrogenFuelTanks: {type: :string},
               quantumFuelTankSize: {type: :number},
               quantumFuelTanks: {type: :string},
-              storeImageNew: {type: :string}
+              newStoreImage: {type: :string, nullable: true}
             },
             additionalProperties: false
           })

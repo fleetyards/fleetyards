@@ -20,6 +20,9 @@ const galleryId = computed(() => {
 
 <template>
   <Heading>{{ t("headlines.admin.models.images") }}</Heading>
+  <form @submit.prevent="onSubmit">
+    <FormActions :submitting="submitting" @cancel="onCancel" />
+  </form>
   <ImagesList
     name="admin-model-images"
     gallery-type="Model"

@@ -46,13 +46,6 @@ const destroy = () => {
     <span v-if="withLabels">{{ t("actions.models.exchangeStoreImage") }}</span>
   </Btn>
   <Btn
-    :to="{ name: 'admin-model-images', params: { id: props.model.id } }"
-    :size="BtnSizesEnum.SMALL"
-  >
-    <i class="fad fa-images" />
-    <span v-if="withLabels">{{ t("actions.models.images") }}</span>
-  </Btn>
-  <Btn
     :size="BtnSizesEnum.SMALL"
     :to="{ name: 'admin-model-edit', params: { id: props.model.id } }"
   >

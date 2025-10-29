@@ -80,6 +80,17 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "images/",
+    name: "admin-model-edit-images",
+    component: () => import("@/admin/pages/models/[id]/edit/images.vue"),
+    meta: {
+      title: "admin.models.edit.images",
+      activeRoute: "admin-models",
+      nav: "editTabs",
+      needsAuthentication: true,
+    },
+  },
+  {
     path: "videos/",
     name: "admin-model-edit-videos",
     component: () => import("@/admin/pages/models/[id]/edit/videos.vue"),

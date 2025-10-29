@@ -11,6 +11,7 @@ import { useField } from "vee-validate";
 import { v4 as uuidv4 } from "uuid";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type Blob } from "@rails/activestorage";
+import Btn from "@/shared/components/base/Btn/index.vue";
 
 type Props = {
   name: string;
@@ -121,7 +122,7 @@ const emit = defineEmits(["update:modelValue"]);
 
 const clear = () => {
   handleReset();
-  emit("update:modelValue", undefined);
+  emit("update:modelValue", null);
 };
 
 const onChange = (event: Event) => {
@@ -170,6 +171,7 @@ defineExpose({
       >
         <DirectUpload
           :multiple="false"
+          class="base-image-input__direct-upload"
           @upload:done="onUploadDone"
           @clear="onUploadClear"
         />
@@ -190,8 +192,9 @@ defineExpose({
     <div v-if="slots.subline" class="base-image-input__subline">
       <slot name="subline"></slot>
     </div>
-
-    {{ inputValue }}
+    <Btn v-if="clearable && image" variant="link" @click="clear">
+      {{ t("actions.clear") }}
+    </Btn>
   </div>
 </template>
 

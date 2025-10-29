@@ -26,6 +26,10 @@
     cursor: pointer;
   }
 
+  &__direct-upload {
+    position: absolute;
+  }
+
   &__wrapper {
     position: relative;
     display: flex;

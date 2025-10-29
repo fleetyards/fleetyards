@@ -2661,8 +2661,9 @@ components:
           type: number
         quantumFuelTanks:
           type: string
-        storeImageNew:
+        newStoreImage:
           type: string
+          nullable: true
       additionalProperties: false
       title: ModelUpdateInput
     SessionInput:
