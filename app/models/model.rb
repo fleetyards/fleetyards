@@ -317,8 +317,10 @@ class Model < ApplicationRecord
     order(name: :asc)
   end
 
+  PRODUCTION_STATUSES = %w[in_concept in_production flight_ready].freeze
+
   def self.production_status_filters
-    Model.visible.active.all.map(&:production_status).compact_blank.compact.uniq.map do |item|
+    PRODUCTION_STATUSES.map do |item|
       Filter.new(
         category: "productionStatus",
         name: item.humanize,
