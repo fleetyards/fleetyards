@@ -317,7 +317,7 @@ class Model < ApplicationRecord
     order(name: :asc)
   end
 
-  PRODUCTION_STATUSES = %w[in_concept in_production flight_ready].freeze
+  PRODUCTION_STATUSES = %w[in-concept in-production flight-ready].freeze
 
   def self.production_status_filters
     PRODUCTION_STATUSES.map do |item|
