@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.73](///compare/v5.31.72...v5.31.73) (2025-11-12)
+
 ### [5.31.72](///compare/v5.31.71...v5.31.72) (2025-11-12)
 
 
