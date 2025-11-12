@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.72](///compare/v5.31.71...v5.31.72) (2025-11-12)
+
+
+### Bug Fixes
+
+* **paints-importer:** update mapping for current event paints cfb18ed
+
 ### [5.31.71](///compare/v5.31.70...v5.31.71) (2025-10-29)
 
 ### [5.31.70](///compare/v5.31.69...v5.31.70) (2025-10-29)
