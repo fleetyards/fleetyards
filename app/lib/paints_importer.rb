@@ -8,9 +8,15 @@ class PaintsImporter
       paints << extract_paints(import)
     end
 
-    results = paints.flatten.uniq.compact.map do |paint|
+    paints.flatten!
+    paints.uniq!
+    paints.compact!
+
+    results = paints.map do |paint|
       import_paint(paint)
-    end.flatten
+    end
+
+    results.flatten!
 
     {
       new: {
@@ -33,11 +39,17 @@ class PaintsImporter
   end
 
   def list_paints(filter = nil)
+    paints = []
+
     Imports::HangarSync.find_each do |import|
       paints << extract_paints(import)
     end
 
-    paints.flatten.uniq.compact.select do |paint|
+    paints.flatten!
+    paints.uniq!
+    paints.compact!
+
+    paints.select do |paint|
       return true if filter.blank?
 
       paint[:model_name].include?(filter) || paint[:name].include?(filter)
@@ -134,6 +146,12 @@ class PaintsImporter
     name = name.tr("–", "-")
 
     paint_map = {
+      "MTC Citizens for Prosperity Liberation" => "Citizens for Prosperity Liberation",
+      "MTC Headhunters Reaper" => "Headhunters Reaper",
+      "Arrow Citizens for Prosperity Liberation" => "Citizens for Prosperity Liberation",
+      "Arrow Headhunters Reaper" => "Headhunters Reaper",
+      "Spirit Citizens for Prosperity Liberation" => "Citizens for Prosperity Liberation",
+      "Spirit Headhunters Reaper" => "Headhunters Reaper",
       "2950 Invictus Constellation Blue and Gold" => "2950 Invictus Blue and Gold",
       "2950 Invictus Retaliator Midnight Blue and Gold" => "2950 Invictus Blue and Gold",
       "Retaliator -Invictus Blue and Gold" => "2950 Invictus Blue and Gold",
@@ -269,6 +287,7 @@ class PaintsImporter
     zeus = ["Zeus Mk II MR", "Zeus Mk II CL", "Zeus Mk II ES"]
     terrapin = ["Terrapin", "Terrapin Medic"]
     spirit = ["A1 Spirit", "C1 Spirit", "E1 Spirit"]
+    arrow = ["Arrow"]
     f8c = ["F8C Lightning", "F8C Lightning Executive Edition"]
     merlin = ["P-52 Merlin", "P-72 Archimedes"]
     guardian = ["Guardian", "Guardian QI", "Guardian MX"]
@@ -276,6 +295,7 @@ class PaintsImporter
     idris = ["Idris-P", "Idris-M"]
     alts = ["ATLS", "ATLS Geo"]
     apollo = ["Apollo Medivac", "Apollo Triage"]
+    mtc = ["MTC"]
 
     models_map = {
       "Wolf" => ["L-21 Wolf"],
@@ -297,6 +317,12 @@ class PaintsImporter
       "Ursa" => ursa,
       "MPUV TRACTOR" => mpuv,
       "MPUV" => mpuv,
+      "MTC Citizens for Prosperity Liberation" => mtc,
+      "MTC Headhunters Reaper" => mtc,
+      "Spirit Citizens for Prosperity Liberation" => spirit,
+      "Spirit Headhunters Reaper" => spirit,
+      "Arrow Citizens for Prosperity Liberation" => arrow,
+      "Arrow Headhunters Reaper" => arrow,
       "Origin 100 series" => series_100,
       "100 Series Deck the Hull" => series_100,
       "100 Series IceBreak" => series_100,
