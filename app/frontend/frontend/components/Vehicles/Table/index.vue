@@ -137,12 +137,14 @@ const tableColumns = computed<BaseTableCol<Vehicle>[]>(() => {
 
 const comlink = useComlink();
 
+const hangarDeleteAllComlink = ref();
+
 onMounted(() => {
-  comlink.on("hangar-delete-all", resetSelected);
+  hangarDeleteAllComlink.value = comlink.on("hangar-delete-all", resetSelected);
 });
 
 onBeforeUnmount(() => {
-  comlink.off("hangar-delete-all", resetSelected);
+  hangarDeleteAllComlink.value();
 });
 
 const openEditModal = (vehicle: Vehicle) => {

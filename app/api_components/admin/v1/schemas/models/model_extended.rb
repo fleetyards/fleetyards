@@ -5,7 +5,7 @@ module Admin
     module Schemas
       module Models
         class ModelExtended < Model
-          include SchemaConcern
+          include Rswag::SchemaComponents::Component
 
           schema({
             properties: {

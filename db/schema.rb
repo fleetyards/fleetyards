@@ -10,40 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_05_27_173654) do
+ActiveRecord::Schema[7.2].define(version: 2025_11_11_115928) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
-
-  create_table "active_storage_attachments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name", null: false
-    t.string "record_type", null: false
-    t.uuid "record_id", null: false
-    t.uuid "blob_id", null: false
-    t.datetime "created_at", null: false
-    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
-    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
-  end
-
-  create_table "active_storage_blobs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "key", null: false
-    t.string "filename", null: false
-    t.string "content_type"
-    t.text "metadata"
-    t.string "service_name", null: false
-    t.bigint "byte_size", null: false
-    t.string "checksum"
-    t.datetime "created_at", null: false
-    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
-  end
-
-  create_table "active_storage_variant_records", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "blob_id", null: false
-    t.string "variation_digest", null: false
-    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
-  end
 
   create_table "active_storage_attachments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
@@ -142,6 +114,42 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_27_173654) do
     t.boolean "enabled", default: false, null: false
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
+  end
+
+  create_table "cargo_hold_container_capacities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "cargo_hold_id", null: false
+    t.integer "container_size_scu", null: false
+    t.integer "max_quantity", default: 0, null: false
+    t.string "best_orientation"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cargo_hold_id", "container_size_scu"], name: "index_cargo_hold_capacities_on_hold_and_size", unique: true
+    t.index ["cargo_hold_id"], name: "index_cargo_hold_container_capacities_on_cargo_hold_id"
+    t.index ["container_size_scu"], name: "index_cargo_hold_container_capacities_on_container_size_scu"
+    t.index ["max_quantity"], name: "index_cargo_hold_container_capacities_on_max_quantity"
+  end
+
+  create_table "cargo_holds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "model_id", null: false
+    t.decimal "dimension_x", precision: 15, scale: 2, null: false
+    t.decimal "dimension_y", precision: 15, scale: 2, null: false
+    t.decimal "dimension_z", precision: 15, scale: 2, null: false
+    t.decimal "capacity_scu", precision: 15, scale: 2, null: false
+    t.integer "max_container_size_scu", null: false
+    t.decimal "max_container_dimension_x", precision: 15, scale: 2
+    t.decimal "max_container_dimension_y", precision: 15, scale: 2
+    t.decimal "max_container_dimension_z", precision: 15, scale: 2
+    t.integer "min_container_size_scu"
+    t.decimal "min_container_dimension_x", precision: 15, scale: 2
+    t.decimal "min_container_dimension_y", precision: 15, scale: 2
+    t.decimal "min_container_dimension_z", precision: 15, scale: 2
+    t.string "name"
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["capacity_scu"], name: "index_cargo_holds_on_capacity_scu"
+    t.index ["model_id", "max_container_size_scu"], name: "index_cargo_holds_on_model_id_and_max_container_size_scu"
+    t.index ["model_id"], name: "index_cargo_holds_on_model_id"
   end
 
   create_table "components", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -1014,6 +1022,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_27_173654) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "cargo_hold_container_capacities", "cargo_holds"
+  add_foreign_key "cargo_holds", "models"
   add_foreign_key "fleet_memberships", "fleet_roles"
   add_foreign_key "fleet_roles", "fleets"
   add_foreign_key "hardpoints", "components"

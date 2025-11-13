@@ -19,11 +19,18 @@ import { useModelFilters } from "@/admin/composables/useModelFilters";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
   useModels as useModelsQuery,
   getModelsQueryKey,
   type Model,
 } from "@/services/fyAdminApi";
+import {
+  useModelsStore,
+  AdminModelTableViewColsEnum,
+  AdminModelTableViewImageColsEnum,
+} from "@/admin/stores/models";
 
 const route = useRoute();
 
@@ -61,61 +68,51 @@ const {
   ...asyncStatus
 } = useModelsQuery(modelsQueryParams);
 
-const columns: BaseTableCol<Model>[] = [
-  {
-    name: "storeImage",
-    label: "",
-    alignment: "center",
-  },
-  {
-    name: "rsiStoreImage",
-    label: "",
-    alignment: "center",
-    mobile: false,
-  },
-  {
-    name: "angledView",
-    label: "",
-    alignment: "center",
-    mobile: false,
-  },
-  {
-    name: "name",
-    label: "Name",
-    sortable: true,
-  },
-  {
-    name: "rsiId",
-    label: "RSI ID",
-    sortable: true,
-  },
-  {
-    name: "hidden",
-    label: "hidden?",
-    mobile: false,
-    sortable: true,
-  },
-  {
-    name: "active",
-    label: "active?",
-    mobile: false,
-    sortable: true,
-  },
-  {
-    name: "createdAt",
-    label: "created at?",
-    mobile: false,
-    sortable: true,
-  },
-  {
-    name: "updatedAt",
-    label: "updated at?",
-    mobile: false,
-    sortable: true,
-  },
-];
+const modelsStore = useModelsStore();
 
-const { t, l } = useI18n();
+const extraColumns = computed<BaseTableCol<Model>[]>(() => {
+  return Object.values(AdminModelTableViewColsEnum)
+    .map((col) => {
+      return {
+        name: col,
+        label: t(`labels.models.table.columns.${col}`),
+        sortable: true,
+      };
+    })
+    .filter((col) => {
+      return modelsStore.tableViewCols.includes(col.name);
+    });
+});
+
+const extraImageColumns = computed(() => {
+  return Object.values(AdminModelTableViewImageColsEnum)
+    .map((col) => {
+      return {
+        name: col,
+        label: "",
+        width: col.endsWith("_wide") ? "270px" : "120px",
+        centered: true,
+      };
+    })
+    .filter((col) => {
+      return modelsStore.tableViewImageCols.includes(col.name);
+    });
+});
+
+const tableColumns = computed<BaseTableCol<Model>[]>(() => {
+  return [
+    ...extraImageColumns.value,
+    {
+      name: "name",
+      label: t("labels.vehicle.name"),
+      width: "auto",
+      sortable: true,
+    },
+    ...extraColumns.value,
+  ];
+});
+
+const { t, l, toNumber, toUEC, toDollar } = useI18n();
 
 const angledImage = (record: Model) => {
   if (record && record.media.angledViewColored) {
@@ -123,6 +120,15 @@ const angledImage = (record: Model) => {
   }
 
   return record.media.angledView;
+};
+
+const comlink = useComlink();
+
+const openDisplayOptionsModal = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/admin/components/Models/DisplayOptionsModal/index.vue"),
+  });
 };
 </script>
 
@@ -166,6 +172,16 @@ const angledImage = (record: Model) => {
     hide-empty
     :is-filter-selected="isFilterSelected"
   >
+    <template #actions-right>
+      <Btn
+        :aria-label="t('actions.models.openTableConfiguration')"
+        :size="BtnSizesEnum.SMALL"
+        @click="openDisplayOptionsModal"
+      >
+        <i class="fad fa-sliders" />
+      </Btn>
+    </template>
+
     <template #loader="{ loading }">
       <Loader :loading="loading" fixed admin />
     </template>
@@ -176,7 +192,7 @@ const angledImage = (record: Model) => {
       <BaseTable
         :records="models?.items || []"
         primary-key="id"
-        :columns="columns"
+        :columns="tableColumns"
         :loading="loading"
         :empty-visible="emptyVisible"
         default-sort="name asc"
@@ -185,7 +201,7 @@ const angledImage = (record: Model) => {
         <template #loader="{ loading }">
           <Loader :loading="loading" admin />
         </template>
-        <template #col-storeImage="{ record }">
+        <template #col-store_image="{ record }">
           <ViewImage
             :image="record.media.storeImage"
             size="small"
@@ -194,7 +210,7 @@ const angledImage = (record: Model) => {
             shadow
           />
         </template>
-        <template #col-rsiStoreImage="{ record }">
+        <template #col-rsi_store_image="{ record }">
           <ViewImage
             :image="record.media.storeImage"
             size="small"
@@ -203,7 +219,7 @@ const angledImage = (record: Model) => {
             shadow
           />
         </template>
-        <template #col-angledView="{ record }">
+        <template #col-angled_view="{ record }">
           <ViewImage
             :image="angledImage(record)"
             size="small"
@@ -225,7 +241,85 @@ const angledImage = (record: Model) => {
             {{ record.manufacturer?.code }} {{ record.name }}
           </router-link>
         </template>
-        <template #col-rsiId="{ record }">
+        <template #col-manufacturer_name="{ record }">
+          {{ record.manufacturer?.name }}
+        </template>
+        <template #col-length="{ record }">
+          <span class="no-break">{{
+            toNumber(record.metrics.length || "", "distance")
+          }}</span>
+        </template>
+        <template #col-beam="{ record }">
+          <span class="no-break">{{
+            toNumber(record.metrics.beam || "", "distance")
+          }}</span>
+        </template>
+        <template #col-height="{ record }">
+          <span class="no-break">{{
+            toNumber(record.metrics.height || "", "distance")
+          }}</span>
+        </template>
+        <template #col-mass="{ record }">
+          <span class="no-break">{{
+            toNumber(record.metrics.mass || "", "weight")
+          }}</span>
+        </template>
+        <template #col-cargo="{ record }">
+          <span class="no-break">{{
+            toNumber(record.metrics.cargo || "", "cargo")
+          }}</span>
+        </template>
+        <template #col-hydrogen_fuel_tank_size="{ record }">
+          <span class="no-break">{{
+            toNumber(record.metrics.hydrogenFuelTankSize || "", "cargo")
+          }}</span>
+        </template>
+        <template #col-quantum_fuel_tank_size="{ record }">
+          <span class="no-break">{{
+            toNumber(record.metrics.quantumFuelTankSize || "", "cargo")
+          }}</span>
+        </template>
+        <template #col-min_crew="{ record }">
+          <span class="no-break">{{
+            toNumber(record.crew.min || "", "people")
+          }}</span>
+        </template>
+        <template #col-max_crew="{ record }">
+          <span class="no-break">{{
+            toNumber(record.crew.max || "", "people")
+          }}</span>
+        </template>
+        <template #col-ground_max_speed="{ record }">
+          <span class="no-break">{{
+            toNumber(record.speeds.groundMaxSpeed || "", "speed")
+          }}</span>
+        </template>
+        <template #col-scm_speed="{ record }">
+          <span class="no-break">{{
+            toNumber(record.speeds.scmSpeed || "", "speed")
+          }}</span>
+        </template>
+        <template #col-max_speed="{ record }">
+          <span class="no-break">{{
+            toNumber(record.speeds.maxSpeed || "", "speed")
+          }}</span>
+        </template>
+        <template #col-production_status="{ record }">
+          {{ t(`labels.model.productionStatus.${record.productionStatus}`) }}
+        </template>
+        <template #col-price="{ record }">
+          <!-- eslint-disable vue/no-v-html -->
+          <div
+            v-tooltip="{ content: toUEC(record.price), html: true }"
+            class="no-break"
+            v-html="toUEC(record.price)"
+          />
+          <!-- eslint-enable vue/no-v-html -->
+        </template>
+        <template #col-pledge_price="{ record }">
+          <span class="no-break">{{ toDollar(record.pledgePrice) }}</span>
+        </template>
+        <template #col-rsi_id="{ record }">
           {{ record.rsiId }}
         </template>
         <template #col-hidden="{ record }">
@@ -236,10 +330,10 @@ const angledImage = (record: Model) => {
           <i v-if="record.active" class="fad fa-check" />
           <i v-else class="fad fa-times" />
         </template>
-        <template #col-createdAt="{ record }">
+        <template #col-created_at="{ record }">
           {{ l(record.createdAt, "datetime.formats.short") }}
         </template>
-        <template #col-updatedAt="{ record }">
+        <template #col-updated_at="{ record }">
           {{ l(record.updatedAt, "datetime.formats.short") }}
         </template>
         <template #actions="{ record }">

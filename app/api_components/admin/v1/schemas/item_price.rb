@@ -4,7 +4,7 @@ module Admin
   module V1
     module Schemas
       class ItemPrice < ::V1::Schemas::ItemPrice
-        include SchemaConcern
+        include Rswag::SchemaComponents::Component
 
         schema({
           properties: {}

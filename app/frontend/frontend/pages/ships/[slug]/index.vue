@@ -35,6 +35,7 @@ import fallbackImage from "@/images/fallback/store_image.webp";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 import { type Model } from "@/services/fyApi";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import starcitizenToolsLogo from "@/images/icons/starcitizentools.svg";
 
 type Props = {
   model: Model;
@@ -146,6 +147,14 @@ const crumbs = computed(() => {
 });
 
 const shareUrl = computed(() => window.location.href);
+
+const wikiUrl = computed(() => {
+  if (!props.model) {
+    return undefined;
+  }
+
+  return `https://starcitizen.tools/${props.model.rsiName}`;
+});
 
 const price = computed(() => {
   if (!props.model) {
@@ -380,6 +389,10 @@ const toggleHoloviewer = () => {
               >
                 <i class="fad fa-megaphone" />
                 <span>{{ t("labels.model.salesPage") }}</span>
+              </Btn>
+              <Btn :href="wikiUrl" :size="BtnSizesEnum.SMALL">
+                <img :src="starcitizenToolsLogo" alt="Starcitizen.tools" />
+                <span>{{ t("labels.model.wiki") }}</span>
               </Btn>
             </BtnDropdown>
           </div>

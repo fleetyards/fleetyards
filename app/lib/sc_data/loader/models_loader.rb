@@ -20,6 +20,8 @@ module ScData
 
         model_data = load_model_data(model.sc_identifier)
 
+        return if model_data.blank?
+
         update_loadout(model, model_data)
 
         model.reload

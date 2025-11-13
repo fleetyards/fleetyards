@@ -5,7 +5,7 @@ module Admin
     module Schemas
       module Inputs
         class ModelCreateInput
-          include SchemaConcern
+          include Rswag::SchemaComponents::Component
 
           schema({
             type: :object,

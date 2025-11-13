@@ -5,7 +5,7 @@ module Shared
     module Schemas
       module Inputs
         class SetupOtpInput
-          include SchemaConcern
+          include Rswag::SchemaComponents::Component
 
           schema({
             type: :object,

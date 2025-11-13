@@ -43,14 +43,19 @@ const tooltip = computed(() => {
   return t("actions.showStatusColor");
 });
 
+const fleetchartToggleStatusComlink = ref();
+
 onMounted(() => {
   showStatus.value = !!route.query?.showStatus;
 
-  comlink.on("fleetchart-toggle-status", setShowStatus);
+  fleetchartToggleStatusComlink.value = comlink.on(
+    "fleetchart-toggle-status",
+    setShowStatus,
+  );
 });
 
 onBeforeUnmount(() => {
-  comlink.off("fleetchart-toggle-status");
+  fleetchartToggleStatusComlink.value();
 });
 
 const setShowStatus = () => {

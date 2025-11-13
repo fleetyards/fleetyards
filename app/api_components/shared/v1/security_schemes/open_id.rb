@@ -4,7 +4,7 @@ module Shared
   module V1
     module SecuritySchemes
       class OpenId
-        include SchemaConcern
+        include Rswag::SchemaComponents::Component
 
         schema({
           type: :openIdConnect,

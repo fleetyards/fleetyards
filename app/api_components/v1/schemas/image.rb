@@ -3,7 +3,7 @@
 module V1
   module Schemas
     class Image < ::Shared::V1::Schemas::MediaFile
-      include SchemaConcern
+      include Rswag::SchemaComponents::Component
 
       schema({
         type: :object,

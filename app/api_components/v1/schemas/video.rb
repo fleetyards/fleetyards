@@ -3,7 +3,7 @@
 module V1
   module Schemas
     class Video
-      include SchemaConcern
+      include Rswag::SchemaComponents::Component
 
       schema({
         type: :object,

@@ -6,29 +6,54 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import DirectUploadUploader from "@/shared/components/DirectUpload/Uploader/index.vue";
+import { useComlink } from "@/shared/composables/useComlink";
 
 type Props = {
   uploader: InstanceType<typeof DirectUploadUploader>;
-  variant: BtnVariantsEnum;
+  inline?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  inline: false,
+});
 
 const upload = () => {
   props.uploader.upload();
 };
 
-const chooseFile = () => {
-  props.uploader.chooseFile();
+const comlink = useComlink();
+
+const close = () => {
+  comlink.emit("close-modal");
 };
+
+const cssClasses = computed(() => {
+  return {
+    "direct-upload-actions--inline": props.inline,
+  };
+});
 </script>
 
 <template>
-  <Btn v-if="uploader.files.length" :variant="variant" @click="upload"
-    >Upload</Btn
-  >
+  <div class="direct-upload-actions" :class="cssClasses">
+    <Btn
+      v-if="uploader.status === 'pending' || uploader.status === 'uploading'"
+      :disabled="uploader.status === 'uploading'"
+      @click="upload"
+      >Upload</Btn
+    >
+    <Btn
+      v-if="
+        !inline &&
+        uploader.status !== 'idle' &&
+        uploader.status !== 'pending' &&
+        uploader.status !== 'uploading'
+      "
+      @click="close"
+      >Close</Btn
+    >
+  </div>
 </template>
 
 <style lang="scss" scoped>

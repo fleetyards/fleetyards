@@ -8,6 +8,7 @@ if record.try(new_attr) && record.send(new_attr).attached?
 elsif old_attr.present? && !record.try(old_attr)&.nil?
   view_image = record.send(old_attr)
   json.url view_image.url
+  json.name view_image.file&.filename
   json.small_url view_image.small.url
   json.medium_url view_image.medium.present? ? view_image.medium.url : view_image.big.url
   json.large_url view_image.large.present? ? view_image.large.url : view_image.big.url

@@ -8,24 +8,24 @@ export default {
 import { useI18n } from "@/shared/composables/useI18n";
 import ImagesList from "@/admin/components/Images/List.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
+import { type ModelExtended } from "@/services/fyAdminApi";
 
 const { t } = useI18n();
 
-const route = useRoute();
+type Props = {
+  model: ModelExtended;
+};
 
-const galleryId = computed(() => {
-  return route.params.uuid as string;
-});
+const props = defineProps<Props>();
 </script>
 
 <template>
   <Heading>{{ t("headlines.admin.models.images") }}</Heading>
-  <form @submit.prevent="onSubmit">
-    <FormActions :submitting="submitting" @cancel="onCancel" />
-  </form>
+
   <ImagesList
+    ref="imagesList"
     name="admin-model-images"
     gallery-type="Model"
-    :gallery-id="galleryId"
+    :gallery-id="props.model.id"
   />
 </template>

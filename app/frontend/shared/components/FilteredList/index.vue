@@ -132,7 +132,10 @@ const toggleFilter = () => {
     <div class="col-12">
       <div class="row">
         <div class="col-12 filtered-list__header">
-          <div class="filtered-list__header-left">
+          <slot name="header" />
+        </div>
+        <div class="col-12 filtered-list__actions">
+          <div class="filtered-list__actions-left">
             <Btn
               v-if="hasFilterSlot"
               v-tooltip="filterTooltip"
@@ -146,7 +149,7 @@ const toggleFilter = () => {
             </Btn>
             <slot name="actions-left" :records="records" />
           </div>
-          <div class="filtered-list__header-right">
+          <div class="filtered-list__actions-right">
             <slot name="actions-right" :records="records" />
             <slot name="pagination-top" />
           </div>

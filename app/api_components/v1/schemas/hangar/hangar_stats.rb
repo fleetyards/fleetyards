@@ -4,7 +4,7 @@ module V1
   module Schemas
     module Hangar
       class HangarStats
-        include SchemaConcern
+        include Rswag::SchemaComponents::Component
 
         schema({
           type: :object,

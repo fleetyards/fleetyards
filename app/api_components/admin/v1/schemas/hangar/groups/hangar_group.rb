@@ -6,7 +6,7 @@ module Admin
       module Hangar
         module Groups
           class HangarGroup
-            include SchemaConcern
+            include Rswag::SchemaComponents::Component
 
             schema({
               type: :object,

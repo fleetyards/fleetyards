@@ -19,7 +19,11 @@ module ScData
       end
 
       def load_item(path)
-        JSON.parse(Rails.root.join("data/sc_data/parsed/#{sc_environment}/#{path}.json").read)
+        file_path = Rails.root.join("data/sc_data/parsed/#{sc_environment}/#{path}.json")
+
+        return unless file_path.exist?
+
+        JSON.parse(file_path.read)
       end
 
       def find_item_by_ref(path, ref)

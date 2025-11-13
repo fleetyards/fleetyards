@@ -6,7 +6,7 @@ module Admin
       module Models
         module ModulePackages
           class ModelModulePackage
-            include SchemaConcern
+            include Rswag::SchemaComponents::Component
 
             schema({
               type: :object,

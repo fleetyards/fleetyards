@@ -38,6 +38,8 @@ v1_admin_api_routes = lambda do
 
   resources :item_prices, path: "item-prices", only: %i[index show create update destroy]
 
+  resources :search, only: %i[index]
+
   resource :stats, only: [] do
     get "quick-stats" => "stats#quick_stats"
     get "most-viewed-pages" => "stats#most_viewed_pages"
@@ -46,7 +48,9 @@ v1_admin_api_routes = lambda do
     get "registrations-per-month" => "stats#registrations_per_month"
   end
 
-  resources :images, only: %i[index create destroy update]
+  resources :images, only: %i[index create destroy update] do
+    put :attach, on: :collection
+  end
 
   resources :imports, only: %i[index show]
 end

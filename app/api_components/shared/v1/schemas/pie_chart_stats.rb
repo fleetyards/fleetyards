@@ -4,7 +4,7 @@ module Shared
   module V1
     module Schemas
       class PieChartStats
-        include SchemaConcern
+        include Rswag::SchemaComponents::Component
 
         schema({
           type: :object,

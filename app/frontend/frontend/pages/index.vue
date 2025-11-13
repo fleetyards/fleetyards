@@ -70,6 +70,8 @@ const routeForImage = (image: Image) => {
     return undefined;
   }
 
+  console.log(image.gallery);
+
   return {
     name: "ship-images",
     params: { slug: image.gallery?.slug },

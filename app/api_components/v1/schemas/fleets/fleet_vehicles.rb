@@ -4,7 +4,7 @@ module V1
   module Schemas
     module Fleets
       class FleetVehicles < ::Shared::V1::Schemas::BaseList
-        include SchemaConcern
+        include Rswag::SchemaComponents::Component
 
         schema({
           properties: {

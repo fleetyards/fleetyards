@@ -1,4 +1,6 @@
 .direct-upload {
-  width: 100%;
-  height: 100%;
+  &--single {
+    width: 100%;
+    height: 100%;
+  }
 }

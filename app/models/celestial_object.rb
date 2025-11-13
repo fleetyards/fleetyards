@@ -5,24 +5,24 @@
 # Table name: celestial_objects
 #
 #  id                :uuid             not null, primary key
-#  code              :string
+#  code              :string(255)
 #  description       :text
-#  designation       :string
-#  fairchanceact     :boolean          default(FALSE)
-#  habitable         :boolean          default(FALSE)
+#  designation       :string(255)
+#  fairchanceact     :boolean
+#  habitable         :boolean
 #  hidden            :boolean          default(TRUE)
 #  last_updated_at   :datetime
-#  name              :string
-#  object_type       :string
-#  orbit_period      :string
+#  name              :string(255)
+#  object_type       :string(255)
+#  orbit_period      :string(255)
 #  sensor_danger     :integer
 #  sensor_economy    :integer
 #  sensor_population :integer
-#  size              :string
-#  slug              :string
-#  status            :string
-#  store_image       :string
-#  sub_type          :string
+#  size              :string(255)
+#  slug              :string(255)
+#  status            :string(255)
+#  store_image       :string(255)
+#  sub_type          :string(255)
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  parent_id         :uuid
@@ -31,7 +31,12 @@
 #
 # Indexes
 #
-#  index_celestial_objects_on_starsystem_id  (starsystem_id)
+#  celestial_objects_slug_index  (slug) UNIQUE
+#
+# Foreign Keys
+#
+#  celestial_objects_parent_id_fkey      (parent_id => celestial_objects.id)
+#  celestial_objects_starsystem_id_fkey  (starsystem_id => starsystems.id)
 #
 class CelestialObject < ApplicationRecord
   paginates_per 30

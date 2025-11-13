@@ -7,15 +7,15 @@
 #  id             :uuid             not null, primary key
 #  commodity_type :integer
 #  description    :text
-#  name           :string
-#  slug           :string
-#  store_image    :string
+#  name           :string(255)
+#  slug           :string(255)
+#  store_image    :string(255)
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #
 # Indexes
 #
-#  index_commodities_on_name  (name) UNIQUE
+#  commodities_name_index  (name)
 #
 class Commodity < ApplicationRecord
   paginates_per 50

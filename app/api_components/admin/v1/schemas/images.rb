@@ -4,7 +4,7 @@ module Admin
   module V1
     module Schemas
       class Images < ::Shared::V1::Schemas::BaseList
-        include SchemaConcern
+        include Rswag::SchemaComponents::Component
 
         schema({
           properties: {

@@ -36,6 +36,7 @@ const toolImages: Record<string, string> = {
   starHangar: starHangarImage,
   shinytracker: shinytrackerImage,
   uexCorp: uexCorpImage,
+  cargoGridViewer: "", // Placeholder for future tool
 };
 
 const tools: Array<Tool & { key: string }> = [
@@ -92,6 +93,12 @@ const tools: Array<Tool & { key: string }> = [
     url: "https://uexcorp.space/",
     name: "UEX Corp",
     description: t("tools.descriptions.uexCorp"),
+  },
+  {
+    key: "cargoGridViewer",
+    url: "https://sc-cargo.space/",
+    name: "Cargo Grid Viewer",
+    description: t("tools.descriptions.cargoGridViewer"),
   },
 ];
 

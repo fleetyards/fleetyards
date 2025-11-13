@@ -5,7 +5,7 @@ module V1
     module Models
       module Modules
         class ModelModules < Shared::V1::Schemas::BaseList
-          include SchemaConcern
+          include Rswag::SchemaComponents::Component
 
           schema({
             properties: {

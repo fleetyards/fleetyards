@@ -48,12 +48,17 @@ const { defineField, handleSubmit, resetForm } = useForm({
 
 const [password, passwordProps] = defineField("password");
 
+const accessConfirmationRequiredComlink = ref();
+
 onMounted(() => {
-  comlink.on("access-confirmation-required", resetConfirmation);
+  accessConfirmationRequiredComlink.value = comlink.on(
+    "access-confirmation-required",
+    resetConfirmation,
+  );
 });
 
 onUnmounted(() => {
-  comlink.off("access-confirmation-required");
+  accessConfirmationRequiredComlink.value();
 });
 
 watch(

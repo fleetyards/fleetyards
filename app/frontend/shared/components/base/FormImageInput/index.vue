@@ -6,18 +6,19 @@ export default {
 
 <script lang="ts" setup>
 import LazyImage from "@/shared/components/LazyImage/index.vue";
-import DirectUpload from "@/shared/components/DirectUpload/index.vue";
+import DirectUpload, {
+  type FileUpload,
+} from "@/shared/components/DirectUpload/index.vue";
 import { useField } from "vee-validate";
 import { v4 as uuidv4 } from "uuid";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type Blob } from "@rails/activestorage";
 import Btn from "@/shared/components/base/Btn/index.vue";
 
 type Props = {
   name: string;
   image?: string;
   icon?: string;
-  modelValue?: string | number;
+  modelValue?: string | null;
   translationKey?: string;
   autofocus?: boolean;
   autocomplete?: string;
@@ -99,6 +100,8 @@ const {
   label: innerLabel.value,
 });
 
+const internalImage = ref(props.image);
+
 const hasErrors = computed(() => {
   return errors.value.length;
 });
@@ -122,6 +125,7 @@ const emit = defineEmits(["update:modelValue"]);
 
 const clear = () => {
   handleReset();
+  internalImage.value = undefined;
   emit("update:modelValue", null);
 };
 
@@ -130,12 +134,12 @@ const onChange = (event: Event) => {
   emit("update:modelValue", inputValue.value);
 };
 
-const onUploadDone = (files: Blob[]) => {
-  if (!files.length) {
+const onUploadDone = (files: FileUpload[]) => {
+  if (!files.length || !files[0].blob) {
     return;
   }
 
-  inputValue.value = files[0].signed_id;
+  inputValue.value = files[0].blob.signed_id;
 };
 
 const onUploadClear = () => {
@@ -166,12 +170,12 @@ defineExpose({
     <div class="base-image-input__wrapper">
       <LazyImage
         v-tooltip.right="hasErrors && errorMessage"
-        :src="image"
+        :src="internalImage"
         shadow
       >
         <DirectUpload
-          :multiple="false"
           class="base-image-input__direct-upload"
+          :multiple="false"
           @upload:done="onUploadDone"
           @clear="onUploadClear"
         />

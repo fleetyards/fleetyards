@@ -4,7 +4,7 @@ module Shared
   module V1
     module Schemas
       class Pagination
-        include SchemaConcern
+        include Rswag::SchemaComponents::Component
 
         schema({
           type: :object,
@@ -12,6 +12,7 @@ module Shared
             totalCount: {type: :integer},
             currentPage: {type: :integer},
             totalPages: {type: :integer},
+            perPage: {type: :integer},
             defaultPerPage: {type: :integer},
             maxPerPage: {type: :integer},
             perPageSteps: {
@@ -25,7 +26,7 @@ module Shared
             }
           },
           additionalProperties: false,
-          required: %w[currentPage totalPages]
+          required: %w[currentPage totalPages totalCount perPage]
         })
       end
     end

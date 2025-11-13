@@ -6,7 +6,7 @@ module Admin
       module Models
         module Paints
           class ModelPaints < ::Shared::V1::Schemas::BaseList
-            include SchemaConcern
+            include Rswag::SchemaComponents::Component
 
             schema({
               properties: {

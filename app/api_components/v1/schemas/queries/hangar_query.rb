@@ -4,7 +4,7 @@ module V1
   module Schemas
     module Queries
       class HangarQuery
-        include SchemaConcern
+        include Rswag::SchemaComponents::Component
 
         schema({
           type: :object,

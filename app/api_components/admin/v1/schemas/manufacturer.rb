@@ -4,7 +4,7 @@ module Admin
   module V1
     module Schemas
       class Manufacturer < ::V1::Schemas::Manufacturer
-        include SchemaConcern
+        include Rswag::SchemaComponents::Component
 
         schema({
           properties: {

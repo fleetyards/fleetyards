@@ -5,7 +5,7 @@ module V1
     module Models
       module Hardpoints
         class ModelHardpointLoadout
-          include SchemaConcern
+          include Rswag::SchemaComponents::Component
 
           schema({
             type: :object,

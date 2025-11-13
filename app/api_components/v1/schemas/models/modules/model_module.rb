@@ -5,7 +5,7 @@ module V1
     module Models
       module Modules
         class ModelModule
-          include SchemaConcern
+          include Rswag::SchemaComponents::Component
 
           schema({
             type: :object,

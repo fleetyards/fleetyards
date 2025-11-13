@@ -1,5 +1,13 @@
 .preview-image {
-  cursor: pointer;
+  &--removable {
+    cursor: pointer;
+
+    &:hover {
+      .preview-image__remove {
+        display: block;
+      }
+    }
+  }
 
   &__remove {
     display: none;
@@ -11,9 +19,12 @@
     transform: translate(-50%, -50%);
   }
 
-  &:hover {
-    .preview-image__remove {
-      display: block;
-    }
+  &__progress-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    background-color: rgba(black, 0.6);
+    transition: width 0.3s ease;
   }
 }

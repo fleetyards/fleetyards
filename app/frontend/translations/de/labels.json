@@ -260,6 +260,7 @@
         "onSale": "On Sale",
         "salesPage": "Sales Page",
         "addons": "Modules & Upgrade-Kits",
+        "storeImage": "Store Image",
         "productionStatus": {
           "in-production": "In Production",
           "in-concept": "In Concept",

@@ -8,25 +8,29 @@
 #  aggregated_danger     :integer
 #  aggregated_economy    :integer
 #  aggregated_population :integer
-#  aggregated_size       :string
-#  code                  :string
+#  aggregated_size       :string(255)
+#  code                  :string(255)
 #  description           :text
-#  hidden                :boolean          default(TRUE)
+#  hidden                :boolean          default(FALSE)
 #  last_updated_at       :datetime
-#  map                   :string
-#  map_x                 :string
-#  map_y                 :string
-#  name                  :string
-#  position_x            :string
-#  position_y            :string
-#  position_z            :string
-#  slug                  :string
-#  status                :string
-#  store_image           :string
-#  system_type           :string
+#  map                   :text
+#  map_x                 :string(255)
+#  map_y                 :string(255)
+#  name                  :string(255)
+#  position_x            :string(255)
+#  position_y            :string(255)
+#  position_z            :string(255)
+#  slug                  :string(255)      not null
+#  status                :string(255)
+#  store_image           :string(255)
+#  system_type           :string(255)
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  rsi_id                :integer
+#
+# Indexes
+#
+#  starsystems_slug_index  (slug) UNIQUE
 #
 class Starsystem < ApplicationRecord
   paginates_per 15

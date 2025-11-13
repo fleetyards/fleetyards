@@ -200,12 +200,17 @@ const comlink = useComlink();
 
 const route = useRoute();
 
+const fleetchartToggleStatusComlink = ref();
+
 onMounted(() => {
   internalScale.value = scale.value;
 
   showStatus.value = !!route.query?.showStatus;
 
-  comlink.on("fleetchart-toggle-status", toggleStatus);
+  fleetchartToggleStatusComlink.value = comlink.on(
+    "fleetchart-toggle-status",
+    toggleStatus,
+  );
 
   updateScreenSize();
 
@@ -214,7 +219,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  comlink.off("fleetchart-toggle-status");
+  fleetchartToggleStatusComlink.value();
 
   window.removeEventListener("resize", updateScreenSize);
   window.removeEventListener("deviceorientation", updateScreenSize);

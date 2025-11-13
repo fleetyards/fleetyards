@@ -39,13 +39,7 @@ const mobile = useMobile();
 
 const modelsStore = useModelsStore();
 
-type ShipTableCol = {
-  name: ModelTableViewColsEnum;
-  label: string;
-  sortable?: boolean;
-};
-
-const extraColumns = computed<ShipTableCol[]>(() => {
+const extraColumns = computed<BaseTableCol<Model>[]>(() => {
   return Object.values(ModelTableViewColsEnum)
     .map((col) => {
       return {

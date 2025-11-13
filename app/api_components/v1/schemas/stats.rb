@@ -3,7 +3,7 @@
 module V1
   module Schemas
     class Stats
-      include SchemaConcern
+      include Rswag::SchemaComponents::Component
 
       schema({
         type: :object,

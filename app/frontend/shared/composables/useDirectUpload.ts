@@ -2,19 +2,15 @@ import { DirectUpload, type Blob } from "@rails/activestorage";
 
 const DIRECT_UPLOAD_URL = "/files/direct_uploads";
 
-export function useDirectUpload() {
-  function uploadFile(
+export const useDirectUpload = () => {
+  const uploadFile = (
     file: File,
     {
-      errorHandler,
-      successHandler,
       progressHandler,
     }: {
-      errorHandler: (error: unknown) => void;
-      successHandler: (blob: Blob) => void;
       progressHandler: (progress: number) => void;
     },
-  ): Promise<void> {
+  ) => {
     const callbacks = {
       directUploadWillStoreFileWithXHR(xhr: XMLHttpRequest) {
         xhr.setRequestHeader("x-amz-acl", "public-read");
@@ -24,23 +20,27 @@ export function useDirectUpload() {
       },
     };
 
-    try {
-      const upload = new DirectUpload(file, DIRECT_UPLOAD_URL, callbacks);
+    const promise = new Promise<Blob>((resolve, reject) => {
+      try {
+        const upload = new DirectUpload(file, DIRECT_UPLOAD_URL, callbacks);
 
-      upload.create((error: Error, blob: Blob) => {
-        if (error) {
-          errorHandler(error);
-        } else {
-          successHandler(blob);
-        }
-      });
-    } catch (error: unknown) {
-      console.error(error);
-      errorHandler(error);
-    }
-  }
+        upload.create((error: Error, blob: Blob) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(blob);
+          }
+        });
+      } catch (error: unknown) {
+        console.error(error);
+        reject(error);
+      }
+    });
+
+    return promise;
+  };
 
   return {
     uploadFile,
   };
-}
+};

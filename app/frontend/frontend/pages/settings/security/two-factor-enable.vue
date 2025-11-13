@@ -53,10 +53,6 @@ onMounted(() => {
   startProcess();
 });
 
-onBeforeUnmount(() => {
-  comlink.off("access-confirmed");
-});
-
 const startMutation = useStartOtpSetupMutation();
 
 const startProcess = async () => {

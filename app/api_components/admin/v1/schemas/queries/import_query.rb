@@ -5,7 +5,7 @@ module Admin
     module Schemas
       module Queries
         class ImportQuery
-          include SchemaConcern
+          include Rswag::SchemaComponents::Component
 
           schema({
             type: :object,

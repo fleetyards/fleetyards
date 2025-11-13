@@ -9,7 +9,6 @@ import { useI18n } from "@/shared/composables/useI18n";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import DirectUploadUploader from "@/shared/components/DirectUpload/Uploader/index.vue";
 import DirectUploadActions from "@/shared/components/DirectUpload/Actions/index.vue";
-import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 
 const { t } = useI18n();
 
@@ -25,11 +24,7 @@ const uploader = ref<InstanceType<typeof DirectUploadUploader>>();
     <DirectUploadUploader ref="uploader" multiple />
 
     <template #footer>
-      <DirectUploadActions
-        v-if="uploader"
-        :variant="BtnVariantsEnum.DEFAULT"
-        :uploader="uploader"
-      />
+      <DirectUploadActions v-if="uploader" :uploader="uploader" />
     </template>
   </Modal>
 </template>

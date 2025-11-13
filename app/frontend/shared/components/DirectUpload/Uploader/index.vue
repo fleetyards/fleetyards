@@ -9,22 +9,34 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import PreviewImage from "@/shared/components/DirectUpload/Image/index.vue";
+import ProgressBar from "@/shared/components/ProgressBar/index.vue";
 import { type Blob } from "@rails/activestorage";
 import { useDirectUpload } from "@/shared/composables/useDirectUpload";
+import { v4 as uuidv4 } from "uuid";
+
+export type FileUpload = {
+  key: string;
+  file: File;
+  progress: number;
+  status: "pending" | "uploading" | "done" | "error";
+  blob?: Blob;
+};
 
 type Props = {
   multiple?: boolean;
+  hideFinished?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   multiple: false,
+  hideFinished: false,
 });
 
 const { t } = useI18n();
 
 const { displayAlert } = useAppNotifications();
 
-const files = ref<File[]>([]);
+const files = ref<FileUpload[]>([]);
 const input = ref<HTMLInputElement | undefined>();
 const dropzone = ref<HTMLDivElement | undefined>();
 const isDragging = ref<boolean>(false);
@@ -39,7 +51,11 @@ const handleFileSelect = (fileList?: FileList) => {
   }
 
   Array.from(fileList).forEach((file) => {
-    files.value.includes(file) || files.value.push(file);
+    if (files.value.some((f) => f.file === file)) {
+      return;
+    }
+
+    files.value.push({ key: uuidv4(), file, progress: 0, status: "pending" });
   });
 
   if (!props.multiple) {
@@ -91,6 +107,15 @@ const chooseFile = () => {
 
 const { uploadFile } = useDirectUpload();
 
+const overallProgress = computed(() => {
+  if (!files.value.length) {
+    return 0;
+  }
+
+  const total = files.value.reduce((acc, file) => acc + file.progress, 0);
+  return Math.round(total / files.value.length);
+});
+
 const upload = () => {
   emit("upload:start", files.value);
 
@@ -105,24 +130,31 @@ const upload = () => {
     return;
   }
 
-  files.value.forEach((file) => {
-    uploadFile(file, {
-      successHandler: (blob) => {
-        emit("upload:done", [blob]);
-      },
-      progressHandler: (progress) => {
-        emit("upload:progress", progress);
-      },
-      errorHandler: (error) => {
-        clear();
-        displayAlert({
-          text: (error as string) || t("errors.upload.generic"),
+  Promise.all(
+    files.value.map((file) => {
+      return uploadFile(file.file, {
+        progressHandler: (progress) => {
+          file.progress = progress;
+          file.status = "uploading";
+          emit("upload:progress", overallProgress.value);
+        },
+      })
+        .then((blob) => {
+          file.blob = blob;
+          file.status = "done";
+        })
+        .catch((error) => {
+          file.status = "error";
+          clear();
+          displayAlert({
+            text: (error as string) || t("errors.upload.generic"),
+          });
         });
-      },
-    });
+    }),
+  ).then(() => {
+    emit("upload:done", files.value);
+    clear();
   });
-
-  emit("upload:done", []);
 };
 
 const clear = () => {
@@ -135,7 +167,7 @@ const clear = () => {
   emit("clear");
 };
 
-const removeFile = (file: File) => {
+const removeFile = (file: FileUpload) => {
   files.value = files.value.filter((f) => f !== file);
 
   if (!props.multiple || !files.value.length) {
@@ -144,16 +176,54 @@ const removeFile = (file: File) => {
 };
 
 const emit = defineEmits<{
-  "upload:start": [files: File[]];
+  "upload:start": [files: FileUpload[]];
   "upload:progress": [progress: number];
-  "upload:done": [files: Blob[]];
+  "upload:done": [files: FileUpload[]];
   clear: [];
 }>();
+
+const isProgressBarVisible = computed(() => {
+  return (
+    files.value.length &&
+    props.multiple &&
+    overallProgress.value > 0 &&
+    overallProgress.value < 100
+  );
+});
+
+const status = computed(() => {
+  if (!files.value.length) {
+    return "idle";
+  }
+
+  if (files.value.some((file) => file.status === "error")) {
+    return "error";
+  }
+
+  if (files.value.every((file) => file.status === "done")) {
+    return "done";
+  }
+
+  if (files.value.some((file) => file.status === "uploading")) {
+    return "uploading";
+  }
+
+  return "pending";
+});
+
+const filteredFiles = computed(() => {
+  if (props.hideFinished) {
+    return files.value.filter((file) => file.status !== "done");
+  }
+
+  return files.value;
+});
 
 defineExpose({
   upload,
   chooseFile,
   files,
+  status,
 });
 </script>
 
@@ -194,26 +264,34 @@ defineExpose({
       ref="input"
       type="file"
       class="direct-upload__input"
-      :multiple="multiple"
+      :multiple="props.multiple"
       @change="onInputChange"
     />
-    <div v-if="multiple" class="direct-upload__preview-files">
-      <PreviewImage
-        v-for="file in files"
-        :key="file.name"
-        class="direct-upload__file"
-        :file="file"
-        @click="removeFile(file)"
-      />
+    <Transition name="fade">
+      <ProgressBar :progress="overallProgress" v-if="isProgressBarVisible" />
+    </Transition>
+    <div v-if="props.multiple" class="direct-upload__preview-files">
+      <TransitionGroup name="fade">
+        <PreviewImage
+          v-for="file in filteredFiles"
+          :key="file.key"
+          class="direct-upload__file"
+          :file="file"
+          multiple
+          @click="file.status !== 'done' && removeFile(file)"
+        />
+      </TransitionGroup>
     </div>
     <div v-else-if="files.length" class="direct-upload__preview-file">
-      <PreviewImage
-        v-for="file in files"
-        :key="file.name"
-        class="direct-upload__file"
-        :file="file"
-        @click="removeFile(file)"
-      />
+      <TransitionGroup name="fade">
+        <PreviewImage
+          v-for="file in files"
+          :key="file.key"
+          class="direct-upload__file"
+          :file="file"
+          @click="removeFile(file)"
+        />
+      </TransitionGroup>
     </div>
   </div>
 </template>

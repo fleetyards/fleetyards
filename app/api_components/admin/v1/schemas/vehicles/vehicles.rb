@@ -5,7 +5,7 @@ module Admin
     module Schemas
       module Vehicles
         class Vehicles < ::Shared::V1::Schemas::BaseList
-          include SchemaConcern
+          include Rswag::SchemaComponents::Component
 
           schema({
             properties: {

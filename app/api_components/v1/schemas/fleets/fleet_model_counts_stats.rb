@@ -4,7 +4,7 @@ module V1
   module Schemas
     module Fleets
       class FleetModelCountsStats
-        include SchemaConcern
+        include Rswag::SchemaComponents::Component
 
         schema({
           type: :object,

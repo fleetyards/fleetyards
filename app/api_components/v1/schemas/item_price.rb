@@ -3,7 +3,7 @@
 module V1
   module Schemas
     class ItemPrice
-      include SchemaConcern
+      include Rswag::SchemaComponents::Component
 
       schema({
         type: :object,

@@ -5,7 +5,7 @@ module Shared
     module Schemas
       module Sorts
         class FleetMembershipSortEnum
-          include SchemaConcern
+          include Rswag::SchemaComponents::Component
 
           schema({
             type: :string,

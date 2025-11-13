@@ -5,7 +5,7 @@ module Shared
     module Schemas
       module Enums
         class HardpointSourceEnum
-          include SchemaConcern
+          include Rswag::SchemaComponents::Component
 
           schema({
             type: :string,

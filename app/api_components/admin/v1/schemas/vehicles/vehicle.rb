@@ -5,7 +5,7 @@ module Admin
     module Schemas
       module Vehicles
         class Vehicle
-          include SchemaConcern
+          include Rswag::SchemaComponents::Component
 
           schema({
             type: :object,

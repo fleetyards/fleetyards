@@ -3,7 +3,7 @@
 module V1
   module Schemas
     class UserPublic
-      include SchemaConcern
+      include Rswag::SchemaComponents::Component
 
       schema({
         type: :object,

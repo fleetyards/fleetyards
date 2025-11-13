@@ -6,7 +6,7 @@ module Admin
       module Models
         module Upgrades
           class ModelUpgrade
-            include SchemaConcern
+            include Rswag::SchemaComponents::Component
 
             schema({
               type: :object,

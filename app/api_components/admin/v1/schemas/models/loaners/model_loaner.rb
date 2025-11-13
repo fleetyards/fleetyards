@@ -6,7 +6,7 @@ module Admin
       module Models
         module Loaners
           class ModelLoaner < ::V1::Schemas::Models::Loaners::ModelLoaner
-            include SchemaConcern
+            include Rswag::SchemaComponents::Component
 
             schema({
               properties: {}

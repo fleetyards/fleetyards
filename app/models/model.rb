@@ -247,6 +247,9 @@ class Model < ApplicationRecord
 
   has_many :docks, dependent: :destroy
 
+  has_many :cargo_holds_db, class_name: "CargoHold", dependent: :destroy
+  has_many :cargo_hold_container_capacities, through: :cargo_holds_db
+
   enum :dock_size,
     Dock.ship_sizes.keys.map(&:to_sym)
 
@@ -284,6 +287,7 @@ class Model < ApplicationRecord
   has_one_attached :new_angled_view_colored
   has_one_attached :new_brochure
   has_one_attached :new_holo
+  has_many_attached :new_images
 
   before_save :update_slugs
 
@@ -351,7 +355,7 @@ class Model < ApplicationRecord
     order(name: :asc)
   end
 
-  PRODUCTION_STATUSES = ["in-concept", "in-production", "flight-ready"]
+  PRODUCTION_STATUSES = ["in-concept", "in-production", "flight-ready"].freeze
 
   def self.production_status_filters
     PRODUCTION_STATUSES.map do |item|
@@ -430,10 +434,39 @@ class Model < ApplicationRecord
   end
 
   def set_cargo_from_hardpoints
-    return if cargo_holds.blank? || (cargo.present? && !cargo_holds_change_to_be_saved)
+    return if cargo_holds.blank? || (cargo.present? && !cargo.zero? && !cargo_holds_change_to_be_saved)
 
     self.cargo = cargo_holds.sum do |cargo_hold|
-      cargo_hold.dig("dimensions", "scu")&.to_f || 0
+      cargo_hold.dig("capacity")&.to_f || 0
+    end
+
+    update_cargo_holds_db
+  end
+
+  def update_cargo_holds_db
+    cargo_holds_db.destroy_all
+
+    cargo_holds.each_with_index do |hold_data, index|
+      next if hold_data.blank? || hold_data["dimensions"].blank?
+
+      cargo_hold = cargo_holds_db.create!(
+        dimension_x: hold_data["dimensions"]["x"],
+        dimension_y: hold_data["dimensions"]["y"],
+        dimension_z: hold_data["dimensions"]["z"],
+        capacity_scu: hold_data["capacity"],
+        max_container_size_scu: hold_data.dig("max_container_size", "size"),
+        max_container_dimension_x: hold_data.dig("max_container_size", "dimensions", "x"),
+        max_container_dimension_y: hold_data.dig("max_container_size", "dimensions", "y"),
+        max_container_dimension_z: hold_data.dig("max_container_size", "dimensions", "z"),
+        min_container_size_scu: hold_data.dig("limits", "min", "capacity"),
+        min_container_dimension_x: hold_data.dig("limits", "min", "dimensions", "x"),
+        min_container_dimension_y: hold_data.dig("limits", "min", "dimensions", "y"),
+        min_container_dimension_z: hold_data.dig("limits", "min", "dimensions", "z"),
+        position: index
+      )
+
+      # Calculate container capacities
+      cargo_hold.calculate_container_capacities!
     end
   end
 

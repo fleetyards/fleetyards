@@ -4257,6 +4257,43 @@ components:
       - pledge_store
       - ingame
       title: BoughtViaEnum
+    ChannelsEnum:
+      type: string
+      enum:
+      - AppVersionChannel
+      - FleetMembersChannel
+      - FleetVehiclesChannel
+      - HangarChannel
+      - HangarCreateChannel
+      - HangarDestroyChannel
+      - ImportsChannel
+      - ModelsChannel
+      - NotificationsChannel
+      - OnSaleChannel
+      - OnSaleHangarChannel
+      - RoadmapChannel
+      - UserNotificationsChannel
+      - WishlistChannel
+      - WishlistCreateChannel
+      - WishlistDestroyChannel
+      x-enumNames:
+      - APP_VERSION_CHANNEL
+      - FLEET_MEMBERS_CHANNEL
+      - FLEET_VEHICLES_CHANNEL
+      - HANGAR_CHANNEL
+      - HANGAR_CREATE_CHANNEL
+      - HANGAR_DESTROY_CHANNEL
+      - IMPORTS_CHANNEL
+      - MODELS_CHANNEL
+      - NOTIFICATIONS_CHANNEL
+      - ON_SALE_CHANNEL
+      - ON_SALE_HANGAR_CHANNEL
+      - ROADMAP_CHANNEL
+      - USER_NOTIFICATIONS_CHANNEL
+      - WISHLIST_CHANNEL
+      - WISHLIST_CREATE_CHANNEL
+      - WISHLIST_DESTROY_CHANNEL
+      title: ChannelsEnum
     ComponentClassEnum:
       type: string
       enum:
@@ -4908,6 +4945,8 @@ components:
         currentPage:
           type: integer
         totalPages:
+          type: integer
+        perPage:
           type: integer
         defaultPerPage:
           type: integer

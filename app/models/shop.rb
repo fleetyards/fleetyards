@@ -7,22 +7,26 @@
 #  id                :uuid             not null, primary key
 #  buying            :boolean          default(FALSE)
 #  description       :text
-#  hidden            :boolean          default(TRUE)
-#  location          :string
-#  name              :string
-#  refinery_terminal :boolean          default(FALSE)
+#  hidden            :boolean          default(FALSE)
+#  location          :string(255)
+#  name              :string(255)
+#  refinery_terminal :boolean
 #  rental            :boolean          default(FALSE)
 #  selling           :boolean          default(FALSE)
 #  shop_type         :integer
-#  slug              :string
-#  store_image       :string
+#  slug              :string(255)      not null
+#  store_image       :string(255)
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  station_id        :uuid
 #
 # Indexes
 #
-#  index_shops_on_station_id  (station_id)
+#  shops_station_id_index  (station_id)
+#
+# Foreign Keys
+#
+#  shops_station_id_fkey  (station_id => stations.id)
 #
 class Shop < ApplicationRecord
   paginates_per 30

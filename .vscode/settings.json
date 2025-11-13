@@ -54,6 +54,9 @@
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "aliariff.vscode-erb-beautify"
   },
+  "eslint.workingDirectories": [
+    "./app/frontend"
+  ],
   "files.insertFinalNewline": true,
   "[javascript][typescript]": {
     "editor.codeActionsOnSave": {

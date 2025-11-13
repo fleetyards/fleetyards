@@ -147,10 +147,15 @@ const route = useRoute();
 
 const comlink = useComlink();
 
+const fleetchartToggleStatusComlink = ref();
+
 onMounted(() => {
   showStatus.value = !!route.query?.showStatus;
 
-  comlink.on("fleetchart-toggle-status", toggleStatus);
+  fleetchartToggleStatusComlink.value = comlink.on(
+    "fleetchart-toggle-status",
+    toggleStatus,
+  );
 
   updateScreenSize();
 
@@ -163,7 +168,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  comlink.off("fleetchart-toggle-status");
+  fleetchartToggleStatusComlink.value();
 
   panzoomInstance.value?.dispose();
 

@@ -6,18 +6,24 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import DirectUploadUploader from "@/shared/components/DirectUpload/Uploader/index.vue";
+import DirectUploadUploader, {
+  type FileUpload as InternalFileUpload,
+} from "@/shared/components/DirectUpload/Uploader/index.vue";
 import DirectUploadActions from "@/shared/components/DirectUpload/Actions/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
-import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
-import { type Blob } from "@rails/activestorage";
+
+export type FileUpload = InternalFileUpload;
 
 type Props = {
   multiple?: boolean;
+  inline?: boolean;
+  hideFinished?: boolean;
 };
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   multiple: false,
+  inline: false,
+  hideFinished: false,
 });
 
 const uploader = ref<InstanceType<typeof DirectUploadUploader>>();
@@ -32,13 +38,13 @@ const openModal = () => {
 };
 
 const emit = defineEmits<{
-  "upload:start": [files: File[]];
+  "upload:start": [files: FileUpload[]];
   "upload:progress": [progress: number];
-  "upload:done": [files: Blob[]];
+  "upload:done": [files: FileUpload[]];
   clear: [];
 }>();
 
-const handleUploadStart = (files: File[]) => {
+const handleUploadStart = (files: FileUpload[]) => {
   emit("upload:start", files);
 };
 
@@ -46,31 +52,40 @@ const handleUploadProgress = (progress: number) => {
   emit("upload:progress", progress);
 };
 
-const handleUploadDone = (files: Blob[]) => {
+const handleUploadDone = (files: FileUpload[]) => {
   emit("upload:done", files);
 };
 
 const handleClear = () => {
   emit("clear");
 };
+
+const cssClasses = computed(() => {
+  return {
+    "direct-upload--single": !props.multiple,
+  };
+});
 </script>
 
 <template>
-  <Btn v-if="multiple" @click="openModal">Choose files</Btn>
-  <div v-else class="direct-upload">
-    <DirectUploadUploader
-      ref="uploader"
-      :multiple="false"
-      @upload:done="handleUploadDone"
-      @upload:progress="handleUploadProgress"
-      @upload:start="handleUploadStart"
-      @clear="handleClear"
-    />
-    <DirectUploadActions
-      v-if="uploader"
-      :variant="BtnVariantsEnum.LINK"
-      :uploader="uploader"
-    />
+  <div class="direct-upload" :class="cssClasses">
+    <Btn v-if="multiple && !inline" @click="openModal">Choose files</Btn>
+    <template v-else>
+      <DirectUploadUploader
+        ref="uploader"
+        :multiple="multiple"
+        :hide-finished="hideFinished"
+        @upload:done="handleUploadDone"
+        @upload:progress="handleUploadProgress"
+        @upload:start="handleUploadStart"
+        @clear="handleClear"
+      />
+      <DirectUploadActions
+        v-if="uploader && multiple"
+        :uploader="uploader"
+        :inline="inline"
+      />
+    </template>
   </div>
 </template>
 

@@ -12,7 +12,7 @@
 #  average_rental_price_7_days  :decimal(15, 2)
 #  average_sell_price           :decimal(15, 2)
 #  buy_price                    :decimal(15, 2)
-#  commodity_item_type          :string
+#  commodity_item_type          :string(255)
 #  confirmed                    :boolean          default(FALSE)
 #  price_per_unit               :boolean          default(FALSE)
 #  rental_price_1_day           :decimal(15, 2)
@@ -26,11 +26,11 @@
 #  commodity_item_id            :uuid
 #  shop_id                      :uuid
 #
-# Indexes
+# Foreign Keys
 #
-#  index_shop_commodities_on_commodity_item_id      (commodity_item_id)
-#  index_shop_commodities_on_item_type_and_item_id  (commodity_item_type,commodity_item_id)
-#  index_shop_commodities_on_shop_id                (shop_id)
+#  shop_commodities_commodity_item_id_fkey  (commodity_item_id => commodities.id)
+#  shop_commodities_shop_id_fkey            (shop_id => shops.id)
+#  shop_commodities_submitted_by_fkey       (submitted_by => users.id)
 #
 class ShopCommodity < ApplicationRecord
   paginates_per 30

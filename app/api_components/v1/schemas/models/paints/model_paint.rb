@@ -5,7 +5,7 @@ module V1
     module Models
       module Paints
         class ModelPaint
-          include SchemaConcern
+          include Rswag::SchemaComponents::Component
 
           schema({
             type: :object,
