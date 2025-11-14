@@ -130,7 +130,6 @@ import ImageRow from "@/admin/components/ImageUploader/ImageRow/index.vue";
     EmptyBox,
     Btn,
     Panel,
-    DirectUpload,
   },
 })
 export default class ImageUploader extends Vue {
