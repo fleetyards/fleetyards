@@ -34,7 +34,7 @@
             <FleetchartItemImage
               v-if="model.media.sideView"
               :label="model.name"
-              :src="model.media.sideView?.small"
+              :src="model.media.sideView?.medium"
               :max-width="`${length(model)}%`"
             />
           </div>
@@ -51,7 +51,7 @@
             <FleetchartItemImage
               v-if="model.media.topView"
               :label="model.name"
-              :src="model.media.topView?.small"
+              :src="model.media.topView?.medium"
               :max-width="`${length(model)}%`"
             />
           </div>
