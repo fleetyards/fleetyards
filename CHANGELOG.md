@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.75](///compare/v5.31.74...v5.31.75) (2025-11-26)
+
+
+### Bug Fixes
+
+* **compare:** use bigger fleetchart images to prevent scaling issue b546c79
+* **sale-notifications:** respect user settings to suppress notifications 95ac6de
+
 ### [5.31.74](///compare/v5.31.73...v5.31.74) (2025-11-14)
 
 ### [5.31.73](///compare/v5.31.72...v5.31.73) (2025-11-12)
