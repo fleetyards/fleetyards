@@ -8,6 +8,7 @@ import { useCable } from "@/frontend/composables/useCable";
 import { useI18n } from "@/frontend/composables/useI18n";
 import type { Subscription } from "@rails/actioncable";
 import Store from "@/frontend/lib/Store";
+import { Vehicle } from "@/services/fyApi";
 
 type ChannelName =
   | "appVersion"
@@ -28,7 +29,7 @@ interface Channels {
   onSale?: Subscription;
 }
 
-export const useUpdates = () => {
+export const useUpdates = (currentUser: User) => {
   const channels = ref<Channels>({});
 
   const unsubscribeChannel = (channel: ChannelName) => {
@@ -216,7 +217,15 @@ export const useUpdates = () => {
   const { t } = useI18n();
 
   const notifyVehicleOnSale = (data: string) => {
-    const vehicle = JSON.parse(data);
+    if (!currentUser.saleNotify) {
+      return;
+    }
+
+    const vehicle = JSON.parse(data) as Vehicle;
+
+    if (!vehicle.saleNotify) {
+      return;
+    }
 
     displayInfo({
       text: t("messages.model.onSale", {
@@ -248,6 +257,10 @@ export const useUpdates = () => {
   };
 
   const notifyOnSale = (data: string) => {
+    if (!currentUser.saleNotify) {
+      return;
+    }
+
     const model = JSON.parse(data);
 
     displayInfo({

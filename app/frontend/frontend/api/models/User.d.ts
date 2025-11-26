@@ -4,6 +4,7 @@ type User = {
   twoFactorRequired: boolean;
   hideOwner: boolean;
   publicHangarUrl: string;
+  saleNotify: boolean;
 };
 
 type UserForm = {

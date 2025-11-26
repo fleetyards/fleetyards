@@ -160,7 +160,7 @@ export default class FrontendApp extends Vue {
     this.checkMobile();
 
     useMetaInfo();
-    useUpdates();
+    useUpdates(this.currentUser);
 
     if (this.isAuthenticated) {
       requestPermission();
