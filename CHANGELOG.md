@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.76](///compare/v5.31.75...v5.31.76) (2025-11-28)
+
+
+### Bug Fixes
+
+* **hangar-import:** import ships always into the hangar not the wishlist 9806162
+* **hangar-sync:** ignore ingame bought ships df112b4
+
 ### [5.31.75](///compare/v5.31.74...v5.31.75) (2025-11-26)
 
 
