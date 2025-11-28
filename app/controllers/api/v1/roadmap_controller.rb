@@ -12,7 +12,7 @@ module Api
 
         @q = RoadmapItem.ransack(roadmap_query_params)
 
-        @roadmap_items = @q.result(distinct: true).sort_by { |item| Gem::Version.new(item.release) }
+        @roadmap_items = @q.result(distinct: true).sort_by { |item| (item.release == "Star Citizen 1.0") ? Gem::Version.new("1000.0.0") : Gem::Version.new(item.release) }
       end
 
       def weeks
