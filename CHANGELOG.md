@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.81](///compare/v5.31.80...v5.31.81) (2025-12-01)
+
+
+### Bug Fixes
+
+* **fleetyards-sync:** update throttling to reenable sync d4ecfa6
+
 ### [5.31.80](///compare/v5.31.79...v5.31.80) (2025-12-01)
 
 
