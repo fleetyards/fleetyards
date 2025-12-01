@@ -538,7 +538,7 @@ const cancel = async () => {
   comlink.$emit("close-modal", true);
 };
 
-const start = async () => {
+const start = () => {
   started.value = true;
   pledges.value = [];
   currentPage.value = 1;
@@ -548,8 +548,8 @@ const start = async () => {
   displayInfo({ text: t("messages.syncExtension.started") });
 };
 
-const fetchPage = async () => {
-  await syncHandler.postMessage({
+const fetchPage = () => {
+  syncHandler.postMessage({
     direction: FleetyardsSyncDirection.FROM,
     message: {
       action: FleetyardsSyncAction.SYNC,

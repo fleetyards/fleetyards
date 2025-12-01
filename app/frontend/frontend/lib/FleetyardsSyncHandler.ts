@@ -48,7 +48,7 @@ class FleetyardsSyncHandler {
   async postMessage(
     data: FleetyardsSyncRequest,
     targetOrigin = window.location.origin,
-  ): Promise<void> {
+  ) {
     const now = new Date();
     const elapsedSeconds = differenceInSeconds(now, this.startTime);
 
@@ -65,6 +65,7 @@ class FleetyardsSyncHandler {
 
     if (this.postCount < allowedMessages || elapsedSeconds < 1) {
       this.postCount += 1;
+
       window.postMessage(
         {
           ...data,
@@ -72,15 +73,11 @@ class FleetyardsSyncHandler {
         },
         targetOrigin,
       );
-      return Promise.resolve();
-    }
-
-    // Wait and retry
-    return new Promise((resolve) => {
+    } else {
       setTimeout(() => {
-        this.postMessage(data, targetOrigin).then(resolve);
+        this.postMessage(data, targetOrigin);
       }, 500);
-    });
+    }
   }
 }
 
