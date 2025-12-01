@@ -311,7 +311,15 @@
           {{ t("actions.syncExtension.cancel") }}
         </Btn>
         <Btn
-          v-if="extensionReady"
+          v-if="retryable"
+          :inline="true"
+          data-test="start-sync"
+          @click.native="finishSync"
+        >
+          {{ t("actions.syncExtension.retry") }}
+        </Btn>
+        <Btn
+          v-else-if="extensionReady"
           :inline="true"
           data-test="start-sync"
           :loading="started || loadingIdentity"
@@ -351,6 +359,13 @@ import type { VehiclesCollection } from "@/frontend/api/collections/Vehicles";
 import Store from "@/frontend/lib/Store";
 import { useRouter, useRoute } from "vue-router/composables";
 import { extensionUrls } from "@/types/extension";
+import FleetyardsSyncHandler, {
+  type FleetyardsSyncMessage,
+  type FleetyardsSyncEvent,
+  type FleetyardsSyncSessionPayload,
+  FleetyardsSyncDirection,
+  FleetyardsSyncAction,
+} from "@/frontend/lib/FleetyardsSyncHandler";
 
 const started = ref(false);
 
@@ -359,6 +374,8 @@ const identityStatus = ref<"pending" | "connected" | "notFound">("pending");
 const loadingIdentity = ref(false);
 
 const currentPage = ref(1);
+
+const syncHandler = new FleetyardsSyncHandler(50);
 
 const extensionReady = computed(() => Store.getters["hangar/extensionReady"]);
 
@@ -405,11 +422,19 @@ const missingUpgradeVehicles = computed(
   () => result.value?.missingUpgradeVehicles || [],
 );
 
+const retryable = computed(() => {
+  const submitDataStatus = processSteps.value.find(
+    (step) => step.name === "submitData",
+  )?.status;
+
+  return submitDataStatus === "backendFailure" && pledges.value.length > 0;
+});
+
 const collection: VehiclesCollection = vehiclesCollection;
 
 type ProcessStep = {
   name: string;
-  status: "pending" | "processing" | "success" | "failure";
+  status: "pending" | "processing" | "success" | "failure" | "backendFailure";
 };
 
 const processSteps = ref<ProcessStep[]>([
@@ -440,11 +465,11 @@ onBeforeUnmount(() => {
 
 const handleExtensionMessage = (event: FleetyardsSyncEvent) => {
   if (event.data.direction === "fy-sync") {
-    const message = JSON.parse(event.data.message);
+    const message = JSON.parse(event.data.message) as FleetyardsSyncMessage;
 
     if (message.action === "sync") {
       if (message.code === 200) {
-        fetchRSIHangar(message.payload);
+        fetchRSIHangar(message.payload as string);
       } else {
         displayAlert({ text: t("messages.syncExtension.failure") });
         updateStep("fetchHangar", "failure");
@@ -453,7 +478,10 @@ const handleExtensionMessage = (event: FleetyardsSyncEvent) => {
 
     if (message.action === "identify") {
       loadingIdentity.value = false;
-      if (message.code !== 200 || !message.payload?.handle) {
+      if (
+        message.code !== 200 ||
+        !(message.payload as FleetyardsSyncSessionPayload)?.handle
+      ) {
         console.info("FY Extension: No RSI Session found");
         displayWarning({ text: t("messages.syncExtension.notLoggedIn") });
         identityStatus.value = "notFound";
@@ -477,9 +505,11 @@ const checkRSIIdentity = () => {
   identityStatus.value = "pending";
   loadingIdentity.value = true;
 
-  window.postMessage({
-    direction: "fy",
-    message: '{ "action": "identify" }',
+  syncHandler.postMessage({
+    direction: FleetyardsSyncDirection.FROM,
+    message: {
+      action: FleetyardsSyncAction.IDENTIFY,
+    },
   });
 };
 
@@ -517,10 +547,13 @@ const start = async () => {
   displayInfo({ text: t("messages.syncExtension.started") });
 };
 
-const fetchPage = () => {
-  window.postMessage({
-    direction: "fy",
-    message: `{ "action": "sync", "page": ${currentPage.value} }`,
+const fetchPage = async () => {
+  await syncHandler.postMessage({
+    direction: FleetyardsSyncDirection.FROM,
+    message: {
+      action: FleetyardsSyncAction.SYNC,
+      payload: currentPage.value.toString(),
+    },
   });
 };
 
@@ -552,7 +585,7 @@ const finishSync = async () => {
     updateStep("submitData", "success");
     comlink.$emit("hangar-sync-finished");
   } else {
-    updateStep("submitData", "failure");
+    updateStep("submitData", "backendFailure");
   }
 };
 

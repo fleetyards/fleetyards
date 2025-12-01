@@ -98,6 +98,7 @@ export default {
   syncExtension: {
     cancel: "Cancel",
     start: "Start Sync",
+    retry: "Retry Sync",
     close: "Close",
     refresh: "Refresh Page",
   },
