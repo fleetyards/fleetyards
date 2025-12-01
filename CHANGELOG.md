@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.78](///compare/v5.31.77...v5.31.78) (2025-12-01)
+
+
+### Bug Fixes
+
+* **fleetyards-sync:** limit requests to 50 per minute and add retry button dbc941f
+
 ### [5.31.77](///compare/v5.31.76...v5.31.77) (2025-11-28)
 
 ### [5.31.76](///compare/v5.31.75...v5.31.76) (2025-11-28)
