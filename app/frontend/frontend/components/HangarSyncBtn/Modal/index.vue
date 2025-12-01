@@ -32,6 +32,7 @@
             v-tooltip="t('labels.syncExtension.checkIdentity')"
             size="small"
             variant="link"
+            class="check-identity-btn"
             :text-inline="true"
             :disabled="loadingIdentity"
             @click.native="checkRSIIdentity"
