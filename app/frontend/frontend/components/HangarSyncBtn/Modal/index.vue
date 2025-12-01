@@ -360,13 +360,12 @@ import type { VehiclesCollection } from "@/frontend/api/collections/Vehicles";
 import Store from "@/frontend/lib/Store";
 import { useRouter, useRoute } from "vue-router/composables";
 import { extensionUrls } from "@/types/extension";
-import FleetyardsSyncHandler, {
+import {
   type FleetyardsSyncMessage,
   type FleetyardsSyncEvent,
   type FleetyardsSyncSessionPayload,
-  FleetyardsSyncDirection,
-  FleetyardsSyncAction,
 } from "@/frontend/lib/FleetyardsSyncHandler";
+import { differenceInMinutes } from "date-fns";
 
 const started = ref(false);
 
@@ -376,7 +375,11 @@ const loadingIdentity = ref(false);
 
 const currentPage = ref(1);
 
-const syncHandler = new FleetyardsSyncHandler(50);
+const syncStartedAt = ref<Date>(new Date());
+
+const fetchCount = ref(0);
+
+const maxMessagesPerMinute = 60;
 
 const extensionReady = computed(() => Store.getters["hangar/extensionReady"]);
 
@@ -506,11 +509,9 @@ const checkRSIIdentity = () => {
   identityStatus.value = "pending";
   loadingIdentity.value = true;
 
-  syncHandler.postMessage({
-    direction: FleetyardsSyncDirection.FROM,
-    message: {
-      action: FleetyardsSyncAction.IDENTIFY,
-    },
+  window.postMessage({
+    direction: "fy",
+    message: '{ "action": "identify" }',
   });
 };
 
@@ -542,19 +543,32 @@ const start = () => {
   started.value = true;
   pledges.value = [];
   currentPage.value = 1;
+  syncStartedAt.value = new Date();
+  fetchCount.value = 0;
 
-  fetchPage();
+  fetchPage(currentPage.value);
 
   displayInfo({ text: t("messages.syncExtension.started") });
 };
 
-const fetchPage = () => {
-  syncHandler.postMessage({
-    direction: FleetyardsSyncDirection.FROM,
-    message: {
-      action: FleetyardsSyncAction.SYNC,
-      payload: currentPage.value.toString(),
-    },
+const fetchPage = (page: number) => {
+  const elapsedMinutes = differenceInMinutes(new Date(), syncStartedAt.value);
+
+  const allowedMessages = (elapsedMinutes + 1) * maxMessagesPerMinute;
+
+  if (fetchCount.value >= allowedMessages) {
+    setTimeout(() => {
+      fetchPage(page);
+    }, 500);
+
+    return;
+  }
+
+  fetchCount.value += 1;
+
+  window.postMessage({
+    direction: "fy",
+    message: `{ "action": "sync", "page": ${page} }`,
   });
 };
 
@@ -568,7 +582,7 @@ const fetchRSIHangar = (htmlPage: string) => {
 
     currentPage.value += 1;
 
-    fetchPage();
+    setTimeout(() => fetchPage(currentPage.value), 500);
   } else {
     updateStep("fetchHangar", "success");
 
