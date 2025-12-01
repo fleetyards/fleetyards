@@ -45,10 +45,7 @@ class FleetyardsSyncHandler {
     this.maxPerMinute = maxPerMinute;
   }
 
-  async postMessage(
-    data: FleetyardsSyncRequest,
-    targetOrigin = window.location.origin,
-  ) {
+  async postMessage(data: FleetyardsSyncRequest) {
     const now = new Date();
     const elapsedSeconds = differenceInSeconds(now, this.startTime);
 
@@ -66,16 +63,13 @@ class FleetyardsSyncHandler {
     if (this.postCount < allowedMessages || elapsedSeconds < 1) {
       this.postCount += 1;
 
-      window.postMessage(
-        {
-          ...data,
-          message: JSON.stringify(data.message),
-        },
-        targetOrigin,
-      );
+      window.postMessage({
+        ...data,
+        message: JSON.stringify(data.message),
+      });
     } else {
       setTimeout(() => {
-        this.postMessage(data, targetOrigin);
+        this.postMessage(data);
       }, 500);
     }
   }
