@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.31.79](///compare/v5.31.78...v5.31.79) (2025-12-01)
+
+
+### Bug Fixes
+
+* **fleetyards-sync:** resolve async call which leads to endless loading of pages 81f4510
+
 ### [5.31.78](///compare/v5.31.77...v5.31.78) (2025-12-01)
 
 
