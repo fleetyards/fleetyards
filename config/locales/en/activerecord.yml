@@ -181,6 +181,7 @@ en:
         crew: Crew
         equipment: Equipment
         ground: Ground Vehicle?
+        map: Atlas 3d Map?
         hardpoints: Hardpoints
         height: Height
         hidden: hidden?

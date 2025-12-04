@@ -149,6 +149,7 @@ export default {
   twitch: "Twitch Channel",
   guilded: "Guilded Server",
   "3dView": "3D",
+  "3dMap": "Map",
   poweredByStarship42: "Powered by starship42.com",
   exportStarship42: "View on Starship42",
   filter: "Filter",

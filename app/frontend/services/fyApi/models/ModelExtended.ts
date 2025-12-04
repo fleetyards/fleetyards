@@ -22,6 +22,7 @@ export type ModelExtended = {
     brochure?: string;
     classification?: string;
     classificationLabel?: string;
+    map: boolean;
     crew: {
         max?: number;
         maxLabel?: string;

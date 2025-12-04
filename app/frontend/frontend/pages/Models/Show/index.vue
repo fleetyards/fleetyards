@@ -28,32 +28,33 @@
               }"
               class="image-wrapper"
             >
-              <Btn
-                :active="holoviewerVisible"
-                class="toggle-3d"
-                size="small"
-                @click.native="toggleHoloviewer"
+              <BtnGroup
+                v-if="modelMap || model.holo"
+                class="holo-controls"
+                :inline="true"
               >
-                {{ t("labels.3dView") }}
-              </Btn>
-              <a
-                v-show="holoviewerVisible"
-                :href="starship42Url"
-                class="starship42-link"
-                target="_blank"
-                rel="noopener"
-              >
-                {{ t("labels.poweredByStarship42") }}
-              </a>
+                <Btn
+                  v-if="model.holo"
+                  :active="holoviewerVisible"
+                  size="small"
+                  variant="dropdown"
+                  @click.native="toggleHoloviewer"
+                >
+                  {{ t("labels.3dView") }}
+                </Btn>
+                <Btn
+                  v-if="modelMap"
+                  size="small"
+                  :href="modelMap"
+                  variant="dropdown"
+                >
+                  <i class="fad fa-map-location" />
+                  {{ t("labels.3dMap") }}
+                </Btn>
+              </BtnGroup>
               <HoloViewer
                 v-if="holoviewerVisible && model.holo"
                 :holo="model.holo"
-              />
-              <iframe
-                v-else-if="holoviewerVisible"
-                class="holoviewer"
-                :src="starship42IframeUrl"
-                frameborder="0"
               />
               <LazyImage v-else :src="storeImage" class="image" />
             </div>
@@ -328,6 +329,7 @@ import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
 import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
 import TeaserPanel from "@/frontend/core/components/TeaserPanel/index.vue";
 import Panel from "@/frontend/core/components/Panel/index.vue";
+import BtnGroup from "@/frontend/core/components/BtnGroup/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
 import Hardpoints from "@/frontend/components/Models/Hardpoints/index.vue";
@@ -503,15 +505,6 @@ const fleetchartImageSide = computed(() => {
   return model.value?.media.sideView?.large;
 });
 
-const starship42Url = computed(
-  () => `https://starship42.com/inverse/?ship=${model.value?.name}&mode=color`,
-);
-
-const starship42IframeUrl = computed(
-  () =>
-    `https://starship42.com/fleetview/fleetyards/?s=${model.value?.rsiName}&type=matrix`,
-);
-
 const { t, toDollar } = useI18n();
 
 const metaTitle = computed(() => {
@@ -639,6 +632,14 @@ const fetch = async () => {
 
   loading.value = false;
 };
+
+const modelMap = computed(() => {
+  if (model.value?.map && model.value.scIdentifier) {
+    return `https://maps.adi.sc/?ship=${model.value.scIdentifier}`;
+  }
+
+  return undefined;
+});
 </script>
 
 <script lang="ts">

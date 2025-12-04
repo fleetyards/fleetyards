@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_05_09_143429) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_04_233457) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
@@ -707,6 +707,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_09_143429) do
     t.string "rsi_ctm_url"
     t.string "rsi_pledge_slug"
     t.integer "rsi_pledge_value"
+    t.boolean "map", default: false
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 

@@ -56,6 +56,11 @@
           = form.text_field :erkul_identifier, class: 'form-control'
           %small
             = form_errors model, :erkul_identifier
+        .col-12.col-sm-6.col-md-4
+          .form-group
+            = form.check_box :map, placeholder: I18n.t(:"helpers.placeholder.model.map"), class: 'checkbox'
+            = form.label :map do
+              = I18n.t(:"activerecord.attributes.model.map")
   .row
     .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :focus)}
       = form.label :focus

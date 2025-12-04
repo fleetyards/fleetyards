@@ -1797,6 +1797,9 @@ components:
           type: string
         classificationLabel:
           type: string
+        map:
+          type: boolean
+          default: false
         crew:
           type: object
           properties:
@@ -2154,6 +2157,7 @@ components:
       - metrics
       - onSale
       - speeds
+      - map
       - createdAt
       - updatedAt
       title: Model

@@ -46,6 +46,7 @@
 #  last_updated_at            :datetime
 #  length                     :decimal(15, 2)   default(0.0), not null
 #  loaners_count              :integer          default(0), not null
+#  map                        :boolean          default(FALSE)
 #  mass                       :decimal(15, 2)   default(0.0), not null
 #  max_crew                   :integer
 #  max_speed                  :decimal(15, 2)
