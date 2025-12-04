@@ -36,11 +36,16 @@ module Api
 
         vehicles = @q.result
         ingame_vehicles = vehicles.select(&:bought_via_ingame?)
+        pledge_store_vehicles = vehicles.select(&:bought_via_pledge_store?)
         models = vehicles.map(&:model)
-        models_without_loaners = vehicles.reject(&:loaner?).map(&:model)
+        pledge_store_models = pledge_store_vehicles.filter_map do |vehicle|
+          vehicle.model unless vehicle.loaner?
+        end
         ingame_models = ingame_vehicles.map(&:model)
-        upgrades = vehicles.map(&:model_upgrades).flatten
-        modules = vehicles.map(&:model_modules).flatten
+        upgrades = vehicles.map(&:model_upgrades)
+        upgrades.flatten!
+        modules = vehicles.map(&:model_modules)
+        modules.flatten!
 
         @quick_stats = QuickStats.new(
           total: vehicles.count,
@@ -53,7 +58,7 @@ module Api
             )
           end,
           metrics: {
-            total_money: models_without_loaners.map(&:pledge_price).sum(&:to_i) + modules.map(&:pledge_price).sum(&:to_i) + upgrades.map(&:pledge_price).sum(&:to_i),
+            total_money: pledge_store_models.map(&:pledge_price).sum(&:to_i) + modules.map(&:pledge_price).sum(&:to_i) + upgrades.map(&:pledge_price).sum(&:to_i),
             total_credits: ingame_models.map(&:price).sum(&:to_i),
             total_min_crew: models.map(&:min_crew).sum(&:to_i),
             total_max_crew: models.map(&:max_crew).sum(&:to_i),

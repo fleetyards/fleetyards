@@ -382,7 +382,7 @@ module Api
 
         query = []
         parent.docks.each do |dock|
-          query << "length <= #{dock.length - 0.5} and beam <= #{dock.beam - 0.5} and height <= #{dock.height - 0.5}"
+          query << "length <= #{(dock.length || 1) - 0.5} and beam <= #{(dock.beam || 1) - 0.5} and height <= #{(dock.height || 1) - 0.5}"
           query << "or" unless dock == parent.docks.last
         end
 
