@@ -14,8 +14,8 @@ Rails.application.configure do
     cable_endpoint = "#{cable_uri.scheme}://#{cable_uri.host}"
     admin_uri = URI.parse(ADMIN_ENDPOINT)
     admin_endpoint = "#{admin_uri.scheme}://#{admin_uri.host}"
-    cdn_endpoint = Rails.configuration.app.cdn_endpoint
-    legacy_cdn_endpoint = Rails.configuration.app.legacy_cdn_endpoint
+    cdn_endpoint = Rails.configuration.app.cdn_endpoint || FRONTEND_ENDPOINT
+    legacy_cdn_endpoint = Rails.configuration.app.legacy_cdn_endpoint || FRONTEND_ENDPOINT
     s3_endpoint = [
       "#{Rails.application.credentials.s3_protocol}://",
       Rails.application.credentials.s3_bucket,
