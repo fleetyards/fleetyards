@@ -24,6 +24,8 @@ json.brochure model.brochure.url
 json.classification model.classification
 json.classification_label model.classification&.humanize
 
+json.map model.map
+
 json.crew({})
 json.crew do
   json.max model.max_crew
