@@ -2,5 +2,5 @@
 
 module Fleetyards
   CODENAME = "Odyssey"
-  VERSION = "v5.32.3"
+  VERSION = "v5.32.4"
 end
