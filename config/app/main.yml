@@ -26,13 +26,13 @@ shared:
 
   opensearch_url: <%= ENV["OPENSEARCH_URL"] || 'localhost:9200' %>
 
-  cdn_endpoint: <%= ENV["CDN_ENDPOINT"] || "cdn.fltyrd.net" %>
-
 staging:
   on_subdomain?: true
 
 production:
   on_subdomain?: true
+
+  cdn_endpoint: <%= ENV["CDN_ENDPOINT"] || "cdn.fltyrd.net" %>
 
 review:
   domain: <%= ENV["HEROKU_APP_NAME"] %>.herokuapp.com
