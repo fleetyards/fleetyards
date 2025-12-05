@@ -14,7 +14,7 @@ Rails.application.configure do
     cable_endpoint = "#{cable_uri.scheme}://#{cable_uri.host}"
     admin_uri = URI.parse(ADMIN_ENDPOINT)
     admin_endpoint = "#{admin_uri.scheme}://#{admin_uri.host}"
-    cdn_endpoint = Rails.application.credentials.carrierwave_cloud_cdn_endpoint
+    cdn_endpoint = Rails.configuration.cdn_endpoint
     s3_endpoint = [
       "#{Rails.application.credentials.s3_protocol}://",
       Rails.application.credentials.s3_bucket,

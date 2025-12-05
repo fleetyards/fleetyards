@@ -26,6 +26,8 @@ shared:
 
   opensearch_url: <%= ENV["OPENSEARCH_URL"] || 'localhost:9200' %>
 
+  cdn_endpoint: <%= ENV["CDN_ENDPOINT"] || "cdn.fltyrd.net" %>
+
 staging:
   on_subdomain?: true
 
