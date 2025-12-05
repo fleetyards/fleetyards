@@ -43,7 +43,7 @@ Rails.application.configure do
     connect_src.push("ws://admin.fleetyards.test:3035", "http://admin.fleetyards.test:3035", "ws://admin.fleetyards.test:3136", "http://admin.fleetyards.test:3136") if Rails.env.development?
 
     script_src = [
-      :self, :unsafe_inline, :unsafe_eval, :blob, "https://www.youtube.com/iframe_api",
+      :self, :unsafe_inline, :unsafe_eval, :blob, cdn_endpoint, "https://www.youtube.com/iframe_api",
       "https://s.ytimg.com", "https://kit.fontawesome.com", "https://kit-pro.fontawesome.com",
       "https://kit-free.fontawesome.com", "https://code.jquery.com", "https://cdn.jsdelivr.net",
       "https://stackpath.bootstrapcdn.com", "https://starship42.com", "https://www.gstatic.com"
@@ -53,7 +53,7 @@ Rails.application.configure do
     worker_src = [:self, :blob, FRONTEND_ENDPOINT]
 
     style_src = [
-      :self, :unsafe_inline, "https://fonts.googleapis.com", "https://pro.fontawesome.com",
+      :self, :unsafe_inline, cdn_endpoint, "https://fonts.googleapis.com", "https://pro.fontawesome.com",
       "https://kit-pro.fontawesome.com", "https://kit-free.fontawesome.com", "https://ka-p.fontawesome.com"
     ]
 
@@ -64,7 +64,7 @@ Rails.application.configure do
     ].compact
 
     font_src = [
-      :self, :data, "https://fonts.gstatic.com", "https://pro.fontawesome.com",
+      :self, :data, cdn_endpoint, "https://fonts.gstatic.com", "https://pro.fontawesome.com",
       "https://kit-pro.fontawesome.com", "https://kit-free.fontawesome.com",
       "https://ka-p.fontawesome.com"
     ]
