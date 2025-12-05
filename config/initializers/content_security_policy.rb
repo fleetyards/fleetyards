@@ -15,6 +15,7 @@ Rails.application.configure do
     admin_uri = URI.parse(ADMIN_ENDPOINT)
     admin_endpoint = "#{admin_uri.scheme}://#{admin_uri.host}"
     cdn_endpoint = Rails.configuration.app.cdn_endpoint
+    legacy_cdn_endpoint = Rails.configuration.app.legacy_cdn_endpoint
     s3_endpoint = [
       "#{Rails.application.credentials.s3_protocol}://",
       Rails.application.credentials.s3_bucket,
@@ -23,7 +24,7 @@ Rails.application.configure do
     ].compact.join("")
 
     connect_src = [
-      :self, :data, cable_endpoint, api_endpoint, admin_endpoint, cdn_endpoint,
+      :self, :data, cable_endpoint, api_endpoint, admin_endpoint, cdn_endpoint, legacy_cdn_endpoint,
       "https://img.youtube.com", "https://sentry.io", "https://fonts.googleapis.com",
       "https://fonts.gstatic.com", "https://pro.fontawesome.com", Rails.configuration.rsi.endpoint,
       "https://kit.fontawesome.com", "https://kit-pro.fontawesome.com",
@@ -43,7 +44,7 @@ Rails.application.configure do
     connect_src.push("ws://admin.fleetyards.test:3035", "http://admin.fleetyards.test:3035", "ws://admin.fleetyards.test:3136", "http://admin.fleetyards.test:3136") if Rails.env.development?
 
     script_src = [
-      :self, :unsafe_inline, :unsafe_eval, :blob, cdn_endpoint, "https://www.youtube.com/iframe_api",
+      :self, :unsafe_inline, :unsafe_eval, :blob, cdn_endpoint, legacy_cdn_endpoint, "https://www.youtube.com/iframe_api",
       "https://s.ytimg.com", "https://kit.fontawesome.com", "https://kit-pro.fontawesome.com",
       "https://kit-free.fontawesome.com", "https://code.jquery.com", "https://cdn.jsdelivr.net",
       "https://stackpath.bootstrapcdn.com", "https://starship42.com", "https://www.gstatic.com"
@@ -53,18 +54,18 @@ Rails.application.configure do
     worker_src = [:self, :blob, FRONTEND_ENDPOINT]
 
     style_src = [
-      :self, :unsafe_inline, cdn_endpoint, "https://fonts.googleapis.com", "https://pro.fontawesome.com",
+      :self, :unsafe_inline, cdn_endpoint, legacy_cdn_endpoint, "https://fonts.googleapis.com", "https://pro.fontawesome.com",
       "https://kit-pro.fontawesome.com", "https://kit-free.fontawesome.com", "https://ka-p.fontawesome.com"
     ]
 
     img_src = [
-      :self, :data, :blob, FRONTEND_ENDPOINT, api_endpoint, cdn_endpoint,
+      :self, :data, :blob, FRONTEND_ENDPOINT, api_endpoint, cdn_endpoint, legacy_cdn_endpoint,
       Rails.configuration.rsi.endpoint, "https://img.youtube.com", "https://img.buymeacoffee.com",
       "https://validator.swagger.io"
     ].compact
 
     font_src = [
-      :self, :data, cdn_endpoint, "https://fonts.gstatic.com", "https://pro.fontawesome.com",
+      :self, :data, cdn_endpoint, legacy_cdn_endpoint, "https://fonts.gstatic.com", "https://pro.fontawesome.com",
       "https://kit-pro.fontawesome.com", "https://kit-free.fontawesome.com",
       "https://ka-p.fontawesome.com"
     ]
@@ -81,7 +82,7 @@ Rails.application.configure do
 
     policy.default_src :none
     policy.base_uri :self
-    policy.manifest_src :self, cdn_endpoint
+    policy.manifest_src :self, cdn_endpoint, legacy_cdn_endpoint
     policy.form_action(*form_src)
     policy.connect_src(*connect_src)
     policy.script_src(*script_src)
