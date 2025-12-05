@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.32.0](///compare/v5.31.82...v5.32.0) (2025-12-05)
+
+
+### Features
+
+* **models:** add link to Atlas Defense Industries Map tool 650d51e
+
 ### [5.31.82](///compare/v5.31.81...v5.31.82) (2025-12-04)
 
 
