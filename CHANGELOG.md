@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.32.7](///compare/v5.32.6...v5.32.7) (2025-12-05)
+
+
+### Bug Fixes
+
+* **cdn:** update image paths 8d0daea
+
 ### [5.32.6](///compare/v5.32.5...v5.32.6) (2025-12-05)
 
 
