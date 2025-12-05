@@ -110,7 +110,11 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = {host: Rails.configuration.app.domain, trailing_slash: true}
 
-  config.action_mailer.asset_host = Rails.configuration.app.cdn_endpoint || endpoints.frontend_endpoint
+  config.action_mailer.asset_host = if Rails.configuration.app.cdn_endpoint.present?
+    "https://#{Rails.configuration.app.cdn_endpoint}"
+  else
+    endpoints.frontend_endpoint
+  end
 
   config.action_mailer.postmark_settings = {
     api_token: Rails.application.credentials.postmark_api_token
