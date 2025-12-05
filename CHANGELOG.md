@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.32.8](///compare/v5.32.7...v5.32.8) (2025-12-05)
+
+
+### Bug Fixes
+
+* **mailer:** update asset host bc7b526
+
 ### [5.32.7](///compare/v5.32.6...v5.32.7) (2025-12-05)
 
 
