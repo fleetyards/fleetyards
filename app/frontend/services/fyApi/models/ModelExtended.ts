@@ -22,7 +22,7 @@ export type ModelExtended = {
     brochure?: string;
     classification?: string;
     classificationLabel?: string;
-    map: boolean;
+    adiMap: boolean;
     crew: {
         max?: number;
         maxLabel?: string;

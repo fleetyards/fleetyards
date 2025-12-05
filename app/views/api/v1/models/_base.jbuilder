@@ -24,7 +24,7 @@ json.brochure model.brochure.url
 json.classification model.classification
 json.classification_label model.classification&.humanize
 
-json.map model.map
+json.adi_map model.adi_map
 
 json.crew({})
 json.crew do

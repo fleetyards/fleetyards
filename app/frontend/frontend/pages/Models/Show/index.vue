@@ -634,7 +634,7 @@ const fetch = async () => {
 };
 
 const modelMap = computed(() => {
-  if (model.value?.map && model.value.scIdentifier) {
+  if (model.value?.adiMap && model.value.scIdentifier) {
     return `https://maps.adi.sc/?ship=${model.value.scIdentifier}`;
   }
 

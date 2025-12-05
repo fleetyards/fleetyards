@@ -42,7 +42,7 @@ module V1
             classification: {type: :string},
             classificationLabel: {type: :string},
 
-            map: {type: :boolean, default: false},
+            adiMap: {type: :boolean, default: false},
 
             crew: {
               type: :object,
@@ -221,7 +221,7 @@ module V1
           additionalProperties: false,
           required: %w[
             id name slug availability crew hasImages hasModules hasPaints hasUpgrades hasVideos
-            links loaners media metrics onSale speeds map createdAt updatedAt
+            links loaners media metrics onSale speeds adiMap createdAt updatedAt
           ]
         })
       end

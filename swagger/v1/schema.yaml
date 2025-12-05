@@ -7597,7 +7597,7 @@ components:
           type: string
         classificationLabel:
           type: string
-        map:
+        adiMap:
           type: boolean
           default: false
         crew:
@@ -7957,7 +7957,7 @@ components:
       - metrics
       - onSale
       - speeds
-      - map
+      - adiMap
       - createdAt
       - updatedAt
       title: Model
@@ -8004,7 +8004,7 @@ components:
           type: string
         classificationLabel:
           type: string
-        map:
+        adiMap:
           type: boolean
           default: false
         crew:
@@ -8374,7 +8374,7 @@ components:
       - metrics
       - onSale
       - speeds
-      - map
+      - adiMap
       - createdAt
       - updatedAt
       - dockCounts

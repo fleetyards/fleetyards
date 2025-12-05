@@ -707,7 +707,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_04_233457) do
     t.string "rsi_ctm_url"
     t.string "rsi_pledge_slug"
     t.integer "rsi_pledge_value"
-    t.boolean "map", default: false
+    t.boolean "adi_map", default: false
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 
