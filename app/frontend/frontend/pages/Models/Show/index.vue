@@ -48,7 +48,7 @@
                   :href="modelMap"
                   variant="dropdown"
                 >
-                  <i class="fad fa-map-location" />
+                  <img :src="adiIcon" class="adi-icon" />
                   {{ t("labels.3dMap") }}
                 </Btn>
               </BtnGroup>
@@ -353,6 +353,7 @@ import { useWishlistItems } from "@/frontend/composables/useWishlistItems";
 import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
 import Store from "@/frontend/lib/Store";
 import { type Model } from "@/services/fyApi";
+import adiIcon from "@/images/adi_icon.png";
 
 useHangarItems();
 useWishlistItems();
