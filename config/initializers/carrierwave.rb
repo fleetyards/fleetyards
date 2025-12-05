@@ -65,11 +65,7 @@ CarrierWave.configure do |config|
     config.fog_directory = Rails.application.credentials.carrierwave_cloud_space
     config.fog_public = true
 
-    config.asset_host = if Rails.configuration.app.legacy_cdn_endpoint.present?
-      "//#{Rails.configuration.app.legacy_cdn_endpoint}"
-    else
-      FRONTEND_ENDPOINT
-    end
+    config.asset_host = Rails.configuration.app.legacy_cdn_endpoint || FRONTEND_ENDPOINT
     # config.asset_host = FRONTEND_ENDPOINT
   else
     config.storage :file

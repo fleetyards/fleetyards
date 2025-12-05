@@ -32,7 +32,7 @@ staging:
 production:
   on_subdomain?: true
 
-  cdn_endpoint: <%= ENV["CDN_ENDPOINT"] || "cdn.fltyrd.net" %>
+  cdn_endpoint: <%= ENV["CDN_ENDPOINT"] || "https://cdn.fltyrd.net" %>
   legacy_cdn_endpoint: <%= ENV["LEGACY_CDN_ENDPOINT"] || "https://cdn.fleetyards.net" %>
 
 review:

@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   post "/emails/inbound" => "inbound_emails#create"
 
   if Rails.env.production?
-    match "/uploads/(*path)", to: redirect { |_params, request| "//#{Rails.configuration.app.legacy_cdn_endpoint}#{request.fullpath}" }, via: [:get, :head]
+    match "/uploads/(*path)", to: redirect { |_params, request| "#{Rails.configuration.app.legacy_cdn_endpoint}#{request.fullpath}" }, via: [:get, :head]
   end
 
   match "404" => "errors#not_found", :via => :all
