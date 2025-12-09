@@ -96,7 +96,7 @@ const missingUpgradeVehicles = computed(
 
 type ProcessStep = {
   name: string;
-  status: "pending" | "processing" | "success" | "failure";
+  status: "pending" | "processing" | "success" | "failure" | "backendFailure";
 };
 
 const processSteps = ref<ProcessStep[]>([
@@ -188,6 +188,14 @@ const finished = computed(() =>
 const finishedWithErrors = computed(() =>
   processSteps.value.some((step) => step.status === "failure"),
 );
+
+const retryable = computed(() => {
+  const submitDataStatus = processSteps.value.find(
+    (step) => step.name === "submitData",
+  )?.status;
+
+  return submitDataStatus === "backendFailure" && pledges.value.length > 0;
+});
 
 const comlink = useComlink();
 
@@ -316,6 +324,7 @@ const refreshPage = () => {
             v-tooltip="t('labels.syncExtension.checkIdentity')"
             :size="BtnSizesEnum.SMALL"
             :variant="BtnVariantsEnum.LINK"
+            class="check-identity-btn"
             :text-inline="true"
             :disabled="loadingIdentity"
             @click="checkRSIIdentity"
@@ -595,7 +604,15 @@ const refreshPage = () => {
           {{ t("actions.syncExtension.cancel") }}
         </Btn>
         <Btn
-          v-if="hangarStore.extensionReady"
+          v-if="retryable"
+          :inline="true"
+          data-test="start-sync"
+          @click.native="finishSync"
+        >
+          {{ t("actions.syncExtension.retry") }}
+        </Btn>
+        <Btn
+          v-else-if="hangarStore.extensionReady"
           :inline="true"
           data-test="start-sync"
           :loading="started || loadingIdentity"

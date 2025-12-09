@@ -61,6 +61,9 @@ staging:
 production:
   on_subdomain?: true
 
+  cdn_endpoint: <%= ENV["CDN_ENDPOINT"] || "https://cdn.fltyrd.net" %>
+  legacy_cdn_endpoint: <%= ENV["LEGACY_CDN_ENDPOINT"] || "https://cdn.fleetyards.net" %>
+
 review:
   domain: <%= ENV["HEROKU_APP_NAME"] %>.herokuapp.com
   elasticsearch_url: <%= ENV["BONSAI_URL"] %>

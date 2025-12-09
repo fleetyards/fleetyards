@@ -20,6 +20,8 @@ end
 json.classification model.classification
 json.classification_label model.classification&.humanize
 
+json.adi_map model.adi_map
+
 json.crew({})
 json.crew do
   json.max model.max_crew

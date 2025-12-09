@@ -4,6 +4,7 @@
 #
 #  id                         :uuid             not null, primary key
 #  active                     :boolean          default(TRUE)
+#  adi_map                    :boolean          default(FALSE)
 #  angled_view                :string
 #  angled_view_colored        :string
 #  angled_view_colored_height :integer

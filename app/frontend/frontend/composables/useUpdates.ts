@@ -66,7 +66,15 @@ export const useUpdates = () => {
   const { displayMessage, displayInfo } = useAppNotifications();
 
   const notifyVehicleOnSale = (data: string) => {
-    const vehicle = JSON.parse(data);
+    if (!currentUser.saleNotify) {
+      return;
+    }
+
+    const vehicle = JSON.parse(data) as Vehicle;
+
+    if (!vehicle.saleNotify) {
+      return;
+    }
 
     displayInfo({
       text: t("messages.model.onSale", {
@@ -77,6 +85,10 @@ export const useUpdates = () => {
   };
 
   const notifyOnSale = (data: string) => {
+    if (!currentUser.saleNotify) {
+      return;
+    }
+
     const model = JSON.parse(data);
 
     displayInfo({

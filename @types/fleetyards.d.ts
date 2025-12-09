@@ -3,7 +3,7 @@ interface KeyValuePair {
 }
 
 type FilterGroupItem = {
-  value: any;
+  value: unknown;
   name: string;
 };
 
@@ -24,10 +24,3 @@ type CartItem = {
   soldAt: CartItemSoldAt[];
   amount: number;
 };
-
-interface FleetyardsSyncEvent extends Event {
-  data: {
-    direction: "fy-sync" | "fy";
-    message: string;
-  };
-}

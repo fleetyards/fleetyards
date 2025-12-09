@@ -3202,6 +3202,9 @@ components:
           type: string
         classificationLabel:
           type: string
+        adiMap:
+          type: boolean
+          default: false
         crew:
           type: object
           properties:
@@ -3423,6 +3426,7 @@ components:
       - metrics
       - onSale
       - speeds
+      - adiMap
       - createdAt
       - updatedAt
       - hidden
@@ -3464,6 +3468,9 @@ components:
           type: string
         classificationLabel:
           type: string
+        adiMap:
+          type: boolean
+          default: false
         crew:
           type: object
           properties:
@@ -3698,6 +3705,7 @@ components:
       - metrics
       - onSale
       - speeds
+      - adiMap
       - createdAt
       - updatedAt
       - hidden

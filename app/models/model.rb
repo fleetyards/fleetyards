@@ -6,6 +6,7 @@
 #
 #  id                         :uuid             not null, primary key
 #  active                     :boolean          default(TRUE)
+#  adi_map                    :boolean          default(FALSE)
 #  angled_view                :string
 #  angled_view_colored        :string
 #  angled_view_colored_height :integer
@@ -355,7 +356,7 @@ class Model < ApplicationRecord
     order(name: :asc)
   end
 
-  PRODUCTION_STATUSES = ["in-concept", "in-production", "flight-ready"].freeze
+  PRODUCTION_STATUSES = %w[in-concept in-production flight-ready].freeze
 
   def self.production_status_filters
     PRODUCTION_STATUSES.map do |item|

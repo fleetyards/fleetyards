@@ -2,6 +2,117 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.32.10](///compare/v5.32.9...v5.32.10) (2025-12-05)
+
+### [5.32.9](///compare/v5.32.8...v5.32.9) (2025-12-05)
+
+### [5.32.8](///compare/v5.32.7...v5.32.8) (2025-12-05)
+
+
+### Bug Fixes
+
+* **mailer:** update asset host bc7b526
+
+### [5.32.7](///compare/v5.32.6...v5.32.7) (2025-12-05)
+
+
+### Bug Fixes
+
+* **cdn:** update image paths 8d0daea
+
+### [5.32.6](///compare/v5.32.5...v5.32.6) (2025-12-05)
+
+
+### Bug Fixes
+
+* **cdn:** update csp header to allow manifest from cdn bfb2f27
+
+### [5.32.5](///compare/v5.32.4...v5.32.5) (2025-12-05)
+
+
+### Bug Fixes
+
+* **cdn:** update csp headers 8e69339
+
+### [5.32.4](///compare/v5.32.3...v5.32.4) (2025-12-05)
+
+### [5.32.3](///compare/v5.32.2...v5.32.3) (2025-12-05)
+
+### [5.32.2](///compare/v5.32.1...v5.32.2) (2025-12-05)
+
+### [5.32.1](///compare/v5.32.0...v5.32.1) (2025-12-05)
+
+## [5.32.0](///compare/v5.31.82...v5.32.0) (2025-12-05)
+
+
+### Features
+
+* **models:** add link to Atlas Defense Industries Map tool 650d51e
+
+### [5.31.82](///compare/v5.31.81...v5.31.82) (2025-12-04)
+
+
+### Bug Fixes
+
+* **stats:** update fleet and hangar stats to calculate price values correctly 6ec972e
+
+### [5.31.81](///compare/v5.31.80...v5.31.81) (2025-12-01)
+
+
+### Bug Fixes
+
+* **fleetyards-sync:** update throttling to reenable sync d4ecfa6
+
+### [5.31.80](///compare/v5.31.79...v5.31.80) (2025-12-01)
+
+
+### Bug Fixes
+
+* **fleetyards-sync:** remove target origin to fix endless run e207cf5
+
+### [5.31.79](///compare/v5.31.78...v5.31.79) (2025-12-01)
+
+
+### Bug Fixes
+
+* **fleetyards-sync:** resolve async call which leads to endless loading of pages 81f4510
+
+### [5.31.78](///compare/v5.31.77...v5.31.78) (2025-12-01)
+
+
+### Bug Fixes
+
+* **fleetyards-sync:** limit requests to 50 per minute and add retry button dbc941f
+
+### [5.31.77](///compare/v5.31.76...v5.31.77) (2025-11-28)
+
+### [5.31.76](///compare/v5.31.75...v5.31.76) (2025-11-28)
+
+
+### Bug Fixes
+
+* **hangar-import:** import ships always into the hangar not the wishlist 9806162
+* **hangar-sync:** ignore ingame bought ships df112b4
+
+### [5.31.75](///compare/v5.31.74...v5.31.75) (2025-11-26)
+
+
+### Bug Fixes
+
+* **compare:** use bigger fleetchart images to prevent scaling issue b546c79
+* **sale-notifications:** respect user settings to suppress notifications 95ac6de
+
+### [5.31.74](///compare/v5.31.73...v5.31.74) (2025-11-14)
+
+### [5.31.73](///compare/v5.31.72...v5.31.73) (2025-11-12)
+
+### [5.31.72](///compare/v5.31.71...v5.31.72) (2025-11-12)
+
+
+### Bug Fixes
+
+* **paints-importer:** update mapping for current event paints cfb18ed
+
 ### [5.31.71](///compare/v5.31.70...v5.31.71) (2025-10-29)
 
 ### [5.31.70](///compare/v5.31.69...v5.31.70) (2025-10-29)

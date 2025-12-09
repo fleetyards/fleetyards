@@ -5,7 +5,7 @@ module Rsi
 
       data = load_pledge_store_data(model)
 
-      pledge_data = data.find { |item| item["id"] == model.rsi_id.to_s }
+      pledge_data = data&.find { |item| item["id"] == model.rsi_id.to_s }
 
       return if pledge_data.blank?
 

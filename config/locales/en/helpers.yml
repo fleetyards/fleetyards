@@ -61,6 +61,7 @@ en:
         hidden: Hidden?
         active: Active?
         ground: Ground?
+        map: Map?
         on_sale: On Sale?
     prompt:
       celestial_object:
