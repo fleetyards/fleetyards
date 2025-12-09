@@ -231,9 +231,7 @@ const length = computed(
   () => model.value.fleetchartLength * props.sizeMultiplicator,
 );
 
-const height = computed(
-  () => (length.value * sourceImageHeightMax.value) / sourceImageWidthMax.value,
-);
+const height = computed(() => model.value.height * props.sizeMultiplicator);
 
 const imageWidth = computed(() =>
   Math.min(
@@ -244,27 +242,7 @@ const imageWidth = computed(() =>
 
 const sourceImageHeight = computed(() => imageByViewpoint.value?.height);
 
-const sourceImageHeightMax = computed(() =>
-  Math.max(
-    ...([
-      angledView.value?.height,
-      sideView.value?.height,
-      topView.value?.height,
-    ].filter(Boolean) as number[]),
-  ),
-);
-
 const sourceImageWidth = computed(() => imageByViewpoint.value?.width);
-
-const sourceImageWidthMax = computed(() =>
-  Math.max(
-    ...([
-      angledView.value?.width,
-      sideView.value?.width,
-      topView.value?.width,
-    ].filter(Boolean) as number[]),
-  ),
-);
 
 const image = computed(() => {
   const width = length.value * props.sizeMultiplicator * props.scale;
