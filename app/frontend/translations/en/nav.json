@@ -79,6 +79,8 @@
             "metrics": "Metrics",
             "prices": "Prices",
             "docks": "Docks",
+            "modules": "Modules",
+            "paints": "Paints",
             "images": "Images",
             "videos": "Videos",
             "cargoAndFuel": "Cargo & Fuel",

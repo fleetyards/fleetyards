@@ -20,6 +20,8 @@ import TableRow from "./Row/index.vue";
 import TableCol from "./Col/index.vue";
 import BulkActions from "./BulkActions/index.vue";
 
+export type { BaseTableCol };
+
 type Props = {
   records: T[];
   columns: BaseTableCol<T>[];

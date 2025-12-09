@@ -21,7 +21,6 @@ json.availability do
   end
 end
 
-json.brochure model.brochure.url
 json.classification model.classification
 json.classification_label model.classification&.humanize
 
@@ -62,35 +61,41 @@ end
 json.media({})
 json.media do
   json.angled_view do
-    json.partial! "api/v1/shared/view_image", record: model, attr: :new_angled_view, old_attr: :angled_view, width: model.angled_view_width, height: model.angled_view_height
+    json.partial! "api/v1/shared/file", record: model, attr: :new_angled_view, old_attr: :angled_view, width: model.angled_view_width, height: model.angled_view_height
   end
   json.angled_view_colored do
-    json.partial! "api/v1/shared/view_image", record: model, attr: :new_angled_view_colored, old_attr: :angled_view_colored, width: model.angled_view_colored_width, height: model.angled_view_colored_height
+    json.partial! "api/v1/shared/file", record: model, attr: :new_angled_view_colored, old_attr: :angled_view_colored, width: model.angled_view_colored_width, height: model.angled_view_colored_height
   end
   json.fleetchart_image model.fleetchart_image.url
   json.front_view do
-    json.partial! "api/v1/shared/view_image", record: model, attr: :new_front_view, old_attr: :front_view, width: model.front_view_width, height: model.front_view_height
+    json.partial! "api/v1/shared/file", record: model, attr: :new_front_view, old_attr: :front_view, width: model.front_view_width, height: model.front_view_height
   end
   json.front_view_colored do
-    json.partial! "api/v1/shared/view_image", record: model, attr: :new_front_view_colored, old_attr: :front_view_colored, width: model.front_view_colored_width, height: model.front_view_colored_height
+    json.partial! "api/v1/shared/file", record: model, attr: :new_front_view_colored, old_attr: :front_view_colored, width: model.front_view_colored_width, height: model.front_view_colored_height
   end
   json.side_view do
-    json.partial! "api/v1/shared/view_image", record: model, attr: :new_side_view, old_attr: :side_view, width: model.side_view_width, height: model.side_view_height
+    json.partial! "api/v1/shared/file", record: model, attr: :new_side_view, old_attr: :side_view, width: model.side_view_width, height: model.side_view_height
   end
   json.side_view_colored do
-    json.partial! "api/v1/shared/view_image", record: model, attr: :new_side_view_colored, old_attr: :side_view_colored, width: model.side_view_colored_width, height: model.side_view_colored_height
+    json.partial! "api/v1/shared/file", record: model, attr: :new_side_view_colored, old_attr: :side_view_colored, width: model.side_view_colored_width, height: model.side_view_colored_height
   end
   json.store_image do
-    json.partial! "api/v1/shared/view_image", record: model, attr: :new_store_image, old_attr: :store_image, width: model.store_image_width, height: model.store_image_height
+    json.partial! "api/v1/shared/file", record: model, attr: :new_store_image, old_attr: :store_image, width: model.store_image_width, height: model.store_image_height
   end
   json.rsi_store_image do
-    json.partial! "api/v1/shared/view_image", record: model, attr: :new_rsi_store_image, old_attr: :rsi_store_image, width: model.rsi_store_image_width, height: model.rsi_store_image_height
+    json.partial! "api/v1/shared/file", record: model, attr: :new_rsi_store_image, old_attr: :rsi_store_image, width: model.rsi_store_image_width, height: model.rsi_store_image_height
   end
   json.top_view do
-    json.partial! "api/v1/shared/view_image", record: model, attr: :new_top_view, old_attr: :top_view, width: model.top_view_width, height: model.top_view_height
+    json.partial! "api/v1/shared/file", record: model, attr: :new_top_view, old_attr: :top_view, width: model.top_view_width, height: model.top_view_height
   end
   json.top_view_colored do
-    json.partial! "api/v1/shared/view_image", record: model, attr: :new_top_view_colored, old_attr: :top_view_colored, width: model.top_view_colored_width, height: model.top_view_colored_height
+    json.partial! "api/v1/shared/file", record: model, attr: :new_top_view_colored, old_attr: :top_view_colored, width: model.top_view_colored_width, height: model.top_view_colored_height
+  end
+  json.holo do
+    json.partial! "api/v1/shared/file", record: model, attr: :new_holo, old_attr: :holo
+  end
+  json.brochure do
+    json.partial! "api/v1/shared/file", record: model, attr: :new_brochure, old_attr: :brochure
   end
 end
 
@@ -100,7 +105,8 @@ json.metrics do
   json.beam_label model.beam_label
   json.cargo model.cargo.to_f
   json.cargo_label model.cargo_label
-  json.fleetchart_length (model.fleetchart_offset_length || model.length).to_f
+  json.fleetchart_offset_length (model.fleetchart_offset_length || model.length).to_f
+  json.fleetchart_offset_beam (model.fleetchart_offset_beam || model.beam).to_f
   json.height model.height.to_f
   json.height_label model.height_label
   json.hydrogen_fuel_tank_size model.hydrogen_fuel_tank_size&.to_f

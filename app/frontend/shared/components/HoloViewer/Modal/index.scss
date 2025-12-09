@@ -1,0 +1,15 @@
+.holo-viewer-modal {
+  .close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    margin: 0;
+    padding: 3px 10px;
+    color: white;
+    font-size: 1rem;
+    text-shadow: none;
+    cursor: pointer;
+    z-index: 1000;
+    opacity: 1;
+  }
+}

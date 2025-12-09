@@ -9,10 +9,11 @@ module V1
         schema({
           type: :object,
           properties: {
-            id: {type: :string, format: :uuid},
+            id: {type: :string},
             name: {type: :string},
-            customName: {type: :string, nullable: true},
-            type: {"$ref": "#/components/schemas/RsiHangarItemKindEnum"}
+            customName: {type: :string},
+            type: {"$ref": "#/components/schemas/RsiHangarItemKindEnum"},
+            image: {type: :string, format: :uri}
           },
           additionalProperties: false,
           required: %w[id name type]

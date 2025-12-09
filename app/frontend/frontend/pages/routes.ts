@@ -26,6 +26,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/index.vue"),
     meta: {
       title: "home",
+      nav: "main",
     },
   },
   {
@@ -34,6 +35,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/impressum.vue"),
     meta: {
       title: "impressum",
+      nav: "footer",
     },
   },
   {
@@ -42,6 +44,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/privacy-policy.vue"),
     meta: {
       title: "privacyPolicy",
+      nav: "footer",
     },
   },
   {
@@ -49,6 +52,9 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/hangar.vue"),
     children: hangarRoutes,
     redirect: { name: hangarRoutes[0].name },
+    meta: {
+      nav: "main",
+    },
   },
   {
     path: "/compare/",
@@ -56,6 +62,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/compare.vue"),
     meta: {
       title: "compare.ships",
+      nav: "main",
     },
   },
   {
@@ -63,6 +70,9 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/ships.vue"),
     children: shipsRoutes,
     redirect: { name: shipsRoutes[0].name },
+    meta: {
+      nav: "main",
+    },
   },
   {
     path: "/stats/",
@@ -70,6 +80,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/stats.vue"),
     meta: {
       title: "stats",
+      nav: "main",
     },
   },
   {
@@ -78,6 +89,9 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/fleets.vue"),
     children: fleetsRoutes,
     redirect: { name: fleetsRoutes[0].name },
+    meta: {
+      nav: "main",
+    },
   },
   {
     path: "/images/",
@@ -85,6 +99,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/images.vue"),
     meta: {
       title: "images",
+      nav: "main",
     },
   },
   {
@@ -92,6 +107,9 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/tools.vue"),
     children: toolsRoutes,
     redirect: { name: toolsRoutes[0].name },
+    meta: {
+      nav: "main",
+    },
   },
   {
     path: "/settings/",
@@ -99,6 +117,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/settings.vue"),
     meta: {
       needsAuthentication: true,
+      nav: "sub",
     },
     redirect: {
       name: "settings-profile",
@@ -111,6 +130,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/signup.vue"),
     meta: {
       title: "signUp",
+      nav: "sub",
     },
   },
   {
@@ -128,6 +148,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "login",
       needsNoAuthentication: true,
+      nav: "sub",
     },
   },
   {

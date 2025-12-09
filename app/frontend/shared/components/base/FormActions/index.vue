@@ -7,20 +7,37 @@ export default {
 <script lang="ts" setup>
 import { BtnTypesEnum, BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 type Props = {
+  formId: string;
   submitting?: boolean;
-  formId?: string;
+  dirty?: boolean;
 };
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   submitting: false,
-  formId: undefined,
+  dirty: false,
 });
 
 const { t } = useI18n();
 
-const emit = defineEmits(["cancel", "submit"]);
+const emit = defineEmits(["cancel"]);
+
+const { displayConfirm } = useAppNotifications();
+
+const handleCancel = () => {
+  if (props.dirty) {
+    displayConfirm({
+      text: t("appModal.messages.confirm.dirty"),
+      onConfirm: () => {
+        emit("cancel");
+      },
+    });
+  } else {
+    emit("cancel");
+  }
+};
 </script>
 
 <template>
@@ -30,7 +47,7 @@ const emit = defineEmits(["cancel", "submit"]);
       <Btn
         :type="BtnTypesEnum.BUTTON"
         data-test="submit-cancel"
-        @click="emit('cancel')"
+        @click="handleCancel"
       >
         {{ t("actions.cancel") }}
       </Btn>
@@ -39,7 +56,7 @@ const emit = defineEmits(["cancel", "submit"]);
         :type="BtnTypesEnum.SUBMIT"
         data-test="submit-form"
         :size="BtnSizesEnum.LARGE"
-        :form="formId"
+        :formId="formId"
       >
         {{ t("actions.save") }}
       </Btn>

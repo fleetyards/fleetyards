@@ -662,6 +662,42 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/models/{id}/hardpoints":
+    parameters:
+    - name: id
+      in: path
+      description: Model ID
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Model Hardpoints
+      operationId: modelHardpoints
+      tags:
+      - Models
+      parameters:
+      - name: source
+        in: query
+        schema:
+          "$ref": "#/components/schemas/HardpointSourceEnum"
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  anyOf:
+                  - "$ref": "#/components/schemas/Hardpoint"
+                  - "$ref": "#/components/schemas/ModelHardpoint"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/models":
     get:
       summary: Models list
@@ -700,6 +736,151 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '401':
           description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/{slug}/loaners":
+    parameters:
+    - name: slug
+      in: path
+      description: Model slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Model Loaners
+      operationId: modelLoaners
+      tags:
+      - Models
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Models"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/{slug}/module-packages":
+    parameters:
+    - name: slug
+      in: path
+      description: Model slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Model Module Packages
+      operationId: modelModulePackages
+      tags:
+      - Models
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelModulePackages"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/{slug}/modules":
+    parameters:
+    - name: slug
+      in: path
+      description: Model slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Model Modules
+      operationId: modelModules
+      tags:
+      - Models
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelModules"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/{slug}/paints":
+    parameters:
+    - name: slug
+      in: path
+      description: Model slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Model Paints
+      operationId: modelPaints
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ModelPaint"
+        '404':
+          description: not found
           content:
             application/json:
               schema:
@@ -780,6 +961,45 @@ paths:
             schema:
               "$ref": "#/components/schemas/ModelUpdateInput"
         required: true
+  "/models/{id}/videos":
+    parameters:
+    - name: id
+      in: path
+      description: Model id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Model Videos
+      operationId: modelVideos
+      tags:
+      - Models
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 8
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Videos"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/sessions":
     post:
       summary: create session
@@ -1979,6 +2199,9 @@ components:
         xlargeUrl:
           type: string
           format: uri
+        previewUrl:
+          type: string
+          format: uri
         width:
           type: integer
         height:
@@ -1992,7 +2215,6 @@ components:
       - contentType
       - size
       - url
-      - uploadedAt
       title: MediaFile
     Meta:
       type: object
@@ -2038,6 +2260,8 @@ components:
       required:
       - currentPage
       - totalPages
+      - totalCount
+      - perPage
       title: Pagination
     PieChartStats:
       type: object
@@ -2345,6 +2569,9 @@ components:
         xlargeUrl:
           type: string
           format: uri
+        previewUrl:
+          type: string
+          format: uri
         width:
           type: integer
         height:
@@ -2377,7 +2604,6 @@ components:
       - contentType
       - size
       - url
-      - uploadedAt
       - id
       - background
       - createdAt
@@ -2678,6 +2904,10 @@ components:
           type: number
         height:
           type: number
+        fleetchartOffsetLength:
+          type: number
+        fleetchartOffsetBeam:
+          type: number
         onSale:
           type: boolean
         storeUrl:
@@ -2701,6 +2931,39 @@ components:
         quantumFuelTanks:
           type: string
         newStoreImage:
+          type: string
+          nullable: true
+        newFleetchartImage:
+          type: string
+          nullable: true
+        newTopView:
+          type: string
+          nullable: true
+        newSideView:
+          type: string
+          nullable: true
+        newFrontView:
+          type: string
+          nullable: true
+        newAngledView:
+          type: string
+          nullable: true
+        newTopViewColored:
+          type: string
+          nullable: true
+        newSideViewColored:
+          type: string
+          nullable: true
+        newFrontViewColored:
+          type: string
+          nullable: true
+        newAngledViewColored:
+          type: string
+          nullable: true
+        newBrochure:
+          type: string
+          nullable: true
+        newHolo:
           type: string
           nullable: true
       additionalProperties: false
@@ -2817,6 +3080,80 @@ components:
       - items
       - meta
       title: Manufacturers
+    ModelHardpoint:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        category:
+          "$ref": "#/components/schemas/ModelHardpointCategoryEnum"
+        categoryLabel:
+          type: string
+        component:
+          "$ref": "#/components/schemas/Component"
+        details:
+          type: string
+        group:
+          "$ref": "#/components/schemas/ModelHardpointGroupEnum"
+        itemSlots:
+          type: integer
+        key:
+          type: string
+        loadoutIdentifier:
+          type: string
+          format: uuid
+        loadouts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelHardpointLoadout"
+        mount:
+          type: string
+        name:
+          type: string
+        size:
+          "$ref": "#/components/schemas/ModelHardpointSizeEnum"
+        sizeLabel:
+          type: string
+        source:
+          "$ref": "#/components/schemas/HardpointSourceEnum"
+        subCategory:
+          "$ref": "#/components/schemas/ModelHardpointSubCategoryEnum"
+        subCategoryLabel:
+          type: string
+        type:
+          "$ref": "#/components/schemas/ModelHardpointTypeEnum"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - key
+      - type
+      - group
+      - createdAt
+      - updatedAt
+      title: ModelHardpoint
+    ModelHardpointLoadout:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        component:
+          "$ref": "#/components/schemas/Component"
+          nullable: true
+        name:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - name
+      title: ModelHardpointLoadout
     ModelLoaner:
       type: object
       properties:
@@ -2861,8 +3198,6 @@ components:
           - boughtAt
           - soldAt
           - rentalAt
-        brochure:
-          type: string
         classification:
           type: string
         classificationLabel:
@@ -2895,8 +3230,6 @@ components:
           type: boolean
         hasVideos:
           type: boolean
-        holo:
-          type: string
         lastUpdatedAt:
           type: string
           format: date-time
@@ -2939,6 +3272,10 @@ components:
               "$ref": "#/components/schemas/MediaFile"
             topViewColored:
               "$ref": "#/components/schemas/MediaFile"
+            holo:
+              "$ref": "#/components/schemas/MediaFile"
+            brochure:
+              "$ref": "#/components/schemas/MediaFile"
             rsiStoreImage:
               "$ref": "#/components/schemas/MediaFile"
           additionalProperties: false
@@ -2953,7 +3290,9 @@ components:
               type: number
             cargoLabel:
               type: string
-            fleetchartLength:
+            fleetchartOffsetLength:
+              type: number
+            fleetchartOffsetBeam:
               type: number
             height:
               type: number
@@ -3044,6 +3383,12 @@ components:
             yawBoosted:
               type: number
           additionalProperties: false
+        holo:
+          type: string
+          deprecated: true
+        brochure:
+          type: string
+          deprecated: true
         createdAt:
           type: string
           format: date-time
@@ -3115,8 +3460,6 @@ components:
           - boughtAt
           - soldAt
           - rentalAt
-        brochure:
-          type: string
         classification:
           type: string
         classificationLabel:
@@ -3149,8 +3492,6 @@ components:
           type: boolean
         hasVideos:
           type: boolean
-        holo:
-          type: string
         lastUpdatedAt:
           type: string
           format: date-time
@@ -3199,6 +3540,10 @@ components:
               "$ref": "#/components/schemas/MediaFile"
             topViewColored:
               "$ref": "#/components/schemas/MediaFile"
+            holo:
+              "$ref": "#/components/schemas/MediaFile"
+            brochure:
+              "$ref": "#/components/schemas/MediaFile"
             rsiStoreImage:
               "$ref": "#/components/schemas/MediaFile"
           additionalProperties: false
@@ -3213,7 +3558,9 @@ components:
               type: number
             cargoLabel:
               type: string
-            fleetchartLength:
+            fleetchartOffsetLength:
+              type: number
+            fleetchartOffsetBeam:
               type: number
             height:
               type: number
@@ -3304,6 +3651,12 @@ components:
             yawBoosted:
               type: number
           additionalProperties: false
+        holo:
+          type: string
+          deprecated: true
+        brochure:
+          type: string
+          deprecated: true
         createdAt:
           type: string
           format: date-time
@@ -3493,6 +3846,20 @@ components:
       - createdAt
       - updatedAt
       title: ModelModulePackage
+    ModelModulePackages:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelModulePackage"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: ModelModulePackages
     ModelModule:
       type: object
       properties:
@@ -3566,6 +3933,20 @@ components:
       - updatedAt
       - model
       title: ModelModule
+    ModelModules:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelModule"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: ModelModules
     ModelPaint:
       type: object
       properties:
@@ -4319,6 +4700,48 @@ components:
       - items
       - meta
       title: Vehicles
+    Video:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          "$ref": "#/components/schemas/VideoTypeEnum"
+        url:
+          type: string
+          format: uri
+        videoId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - url
+      - videoId
+      - type
+      - createdAt
+      - updatedAt
+      title: Video
+    Videos:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Video"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: Videos
   securitySchemes:
     BearerAuth:
       type: http

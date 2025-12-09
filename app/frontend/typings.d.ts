@@ -11,7 +11,7 @@ declare module "vue-router" {
     exact?: boolean;
     activeRoute?: string;
     access?: string[];
-    nav?: "main" | "footer" | "editTabs" | "hidden";
+    nav?: "main" | "sub" | "footer" | "editTabs" | "hidden";
     mobileNav?: number;
   }
 }

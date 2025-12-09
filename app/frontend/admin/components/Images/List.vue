@@ -58,14 +58,6 @@ const routeQuery = computed(() => {
   return (route.query.q || {}) as ImageQuery;
 });
 
-const internalGalleryId = computed(() => {
-  return props.galleryId || routeQuery.value.galleryIdEq;
-});
-
-const internalGalleryType = computed(() => {
-  return props.galleryType || routeQuery.value.galleryTypeEq;
-});
-
 const { perPage, page, updatePerPage } = usePagination(props.name);
 
 const { data, refetch, ...asyncStatus } = useImagesQuery({
@@ -184,14 +176,6 @@ const columns: BaseTableCol<Image>[] = [
         </template>
         <template #actions="{ record }"> Actions </template>
       </BaseTable>
-      <!-- <ImageUploader
-        :loading="loading"
-        :images="data?.items || []"
-        :gallery-id="internalGalleryId"
-        :gallery-type="internalGalleryType"
-        @image-deleted="refetch"
-        @image-uploaded="refetch"
-      /> -->
     </template>
     <template #pagination-bottom>
       <Paginator

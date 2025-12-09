@@ -22,8 +22,14 @@ module Admin
 
       authorize! @model, with: ::Admin::ModelPolicy
 
+      route = request.fullpath.split("?").first.sub("/#{params[:id]}", "").sub(%r{^/}, "").tr("/", "_")
+
       if @model.present?
-        @title = "#{@model.name} - #{@model.manufacturer.name}"
+        @title = if route.present? && I18n.exists?("title.admin.#{route}")
+          I18n.t("title.admin.#{route}", model: @model.name, manufacturer: @model.manufacturer.code)
+        else
+          "#{@model.manufacturer.code} #{@model.name}"
+        end
         @description = @model.description
         @og_type = "article"
         @og_image = @model.store_image.url

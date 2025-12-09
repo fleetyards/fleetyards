@@ -7,8 +7,13 @@ module V1
         include Rswag::SchemaComponents::Component
 
         schema({
-          type: :array,
-          items: {"$ref": "#/components/schemas/RsiHangarItemInput"}
+          type: :object,
+          properties: {
+            items: {
+              type: :array,
+              items: {"$ref": "#/components/schemas/RsiHangarItemInput"}
+            }
+          }
         })
       end
     end

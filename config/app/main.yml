@@ -20,7 +20,8 @@ shared:
   mailer_default_from: <%= ENV["MAILER_DEFAULT_FROM"] %>
   mailer_default_admin_to: <%= ENV["MAILER_DEFAULT_ADMIN_TO"] %>
 
-  s3_endpoint: <%= ENV["S3_ENDPOINT"] || "https://fleetyards.fra1.digitaloceanspaces.com" %>
+  cdn_endpoint: <%= ENV["CDN_ENDPOINT"] || "cdn.fltyrd.net" %>
+
   s3_seeds_fleetchart_bucket: <%= ENV["S3_SEEDS_FLEETCHART_BUCKET"] || "seeds_fleetchart" %>
 
   opensearch_url: <%= ENV["OPENSEARCH_URL"] || 'localhost:9200' %>

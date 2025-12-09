@@ -19,9 +19,9 @@ const fleetStore = useFleetStore();
 const redirectBackStore = useRedirectBackStore();
 
 const setBackRoute = () => {
-  redirectBackStore.backRoute = {
+  redirectBackStore.setBackRoute({
     name: "fleet-add",
-  };
+  });
 };
 
 const handleLogin = () => {

@@ -5,6 +5,7 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
 import { routes as editRoutes } from "./edit/routes";
 import { RouteRecordName } from "vue-router";
+import { useModelsStore } from "@/admin/stores/models";
 
 type Props = {
   model: ModelExtended;
@@ -26,10 +27,17 @@ const route = useRoute();
 const activeRoute = (routeName?: RouteRecordName) => {
   return routeName === route.name;
 };
+
+const modelsStore = useModelsStore();
 </script>
 
 <template>
-  <BreadCrumbs :crumbs="crumbs" />
+  <BreadCrumbs
+    :crumbs="crumbs"
+    :stepper-list="modelsStore.list"
+    :stepper-list-meta="modelsStore.listMeta"
+    :current-id="model.id"
+  />
   <TabNavView>
     <template #nav>
       <router-link

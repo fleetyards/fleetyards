@@ -83,14 +83,14 @@
           "index": "Models",
           "new": "New Model",
           "edit": {
-            "index": "Edit Model",
-            "metrics": "Edit Model Metrics",
-            "prices": "Edit Model Prices",
-            "fleetchart": "Edit Model Fleetchart Images",
-            "hardpoints": "Edit Model Hardpoints",
-            "cargoAndFuel": "Cargo & Fuel",
-            "docks": "Edit Model Docks",
-            "videos": "Edit Model Videos"
+            "index": "Edit %{manufacturer} %{model}",
+            "metrics": "Edit %{manufacturer} %{model} Metrics",
+            "prices": "Edit %{manufacturer} %{model} Prices",
+            "fleetchart": "Edit %{manufacturer} %{model} Fleetchart Images",
+            "hardpoints": "Edit %{manufacturer} %{model} Hardpoints",
+            "cargoAndFuel": "Edit %{manufacturer} %{model} Cargo & Fuel",
+            "docks": "Edit %{manufacturer} %{model} Docks",
+            "videos": "Edit %{manufacturer} %{model} Videos"
           }
         },
         "components": {

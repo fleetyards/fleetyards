@@ -1,8 +1,21 @@
+.breadcrumbs {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-inline: 20px;
+}
+
 .breadcrumb {
   display: flex;
   flex-wrap: wrap;
   margin: 0;
-  margin-bottom: 15px;
   padding: 0;
   list-style: none;
   background-color: transparent;

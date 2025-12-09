@@ -37,7 +37,7 @@ const beforeResolve = (to: RouteLocation): FyRedirectRoute | undefined => {
 
   if (to.meta.needsAuthentication && !sessionStore.isAuthenticated) {
     const redirectBackStore = useRedirectBackStore();
-    redirectBackStore.backRoute = to;
+    redirectBackStore.setBackRoute(to);
 
     return {
       routeName: "login",

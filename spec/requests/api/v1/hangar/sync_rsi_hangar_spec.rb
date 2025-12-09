@@ -4,7 +4,7 @@ require "swagger_helper"
 
 RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
   let(:user) { create(:user) }
-  let(:data) do
+  let(:input) do
     {
       items: [{
         id: 1,
@@ -25,12 +25,10 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :data, in: :body, schema: {
-        type: :object,
-        properties: {
-          items: {"$ref": "#/components/schemas/SyncRsiHangarInput"}
-        }, required: ["import"]
-      }, required: true
+      parameter name: :input,
+        in: :body,
+        schema: {"$ref": "#/components/schemas/SyncRsiHangarInput"},
+        required: true
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/HangarSyncResult"
@@ -41,7 +39,7 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
       response(400, "bad request") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:data) { nil }
+        let(:input) { nil }
 
         run_test!
       end

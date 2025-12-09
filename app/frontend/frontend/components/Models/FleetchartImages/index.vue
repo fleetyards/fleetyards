@@ -147,19 +147,19 @@ const beam = computed(() => {
 });
 
 const modelLength = computed(() => {
-  if (!props.model || !props.model.metrics.fleetchartLength) {
+  if (!props.model || !props.model.metrics.fleetchartOffsetLength) {
     return 1;
   }
 
-  return props.model.metrics.fleetchartLength;
+  return props.model.metrics.fleetchartOffsetLength;
 });
 
 const modelBeam = computed(() => {
-  if (!props.model || !props.model.metrics.beam) {
+  if (!props.model || !props.model.metrics.fleetchartOffsetBeam) {
     return 1;
   }
 
-  return props.model.metrics.beam;
+  return props.model.metrics.fleetchartOffsetBeam;
 });
 
 onMounted(() => {

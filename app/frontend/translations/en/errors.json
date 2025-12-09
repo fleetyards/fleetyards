@@ -1,7 +1,11 @@
 {
   "en": {
     "errors": {
-      "generic": "An error occurred"
+      "generic": "An error occurred",
+      "upload": {
+        "fileTooLarge": "The file \"%{filename}\" exceeds the maximum allowed size of %{size} MB.",
+        "invalidFileType": "The file \"%{filename}\" is not of an allowed type. Allowed types are: %{types}."
+      }
     }
   }
 }

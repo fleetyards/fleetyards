@@ -23,6 +23,7 @@
 #  fleetchart_image           :string
 #  fleetchart_image_height    :integer
 #  fleetchart_image_width     :integer
+#  fleetchart_offset_beam     :decimal(15, 2)
 #  fleetchart_offset_length   :decimal(15, 2)
 #  focus                      :string(255)
 #  front_view                 :string
@@ -287,7 +288,6 @@ class Model < ApplicationRecord
   has_one_attached :new_angled_view_colored
   has_one_attached :new_brochure
   has_one_attached :new_holo
-  has_many_attached :new_images
 
   before_save :update_slugs
 

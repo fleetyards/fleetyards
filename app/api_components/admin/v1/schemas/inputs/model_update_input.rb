@@ -42,6 +42,8 @@ module Admin
               length: {type: :number},
               beam: {type: :number},
               height: {type: :number},
+              fleetchartOffsetLength: {type: :number},
+              fleetchartOffsetBeam: {type: :number},
               onSale: {type: :boolean},
               storeUrl: {type: :string},
               salesPageUrl: {type: :string},
@@ -53,7 +55,18 @@ module Admin
               hydrogenFuelTanks: {type: :string},
               quantumFuelTankSize: {type: :number},
               quantumFuelTanks: {type: :string},
-              newStoreImage: {type: :string, nullable: true}
+              newStoreImage: {type: :string, nullable: true},
+              newFleetchartImage: {type: :string, nullable: true},
+              newTopView: {type: :string, nullable: true},
+              newSideView: {type: :string, nullable: true},
+              newFrontView: {type: :string, nullable: true},
+              newAngledView: {type: :string, nullable: true},
+              newTopViewColored: {type: :string, nullable: true},
+              newSideViewColored: {type: :string, nullable: true},
+              newFrontViewColored: {type: :string, nullable: true},
+              newAngledViewColored: {type: :string, nullable: true},
+              newBrochure: {type: :string, nullable: true},
+              newHolo: {type: :string, nullable: true}
             },
             additionalProperties: false
           })

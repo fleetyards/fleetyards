@@ -20,9 +20,9 @@ const hangarStore = useHangarStore();
 const redirectBackStore = useRedirectBackStore();
 
 const setBackRoute = () => {
-  redirectBackStore.backRoute = {
+  redirectBackStore.setBackRoute({
     name: "hangar",
-  };
+  });
 };
 
 const handleLogin = () => {

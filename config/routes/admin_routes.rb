@@ -67,6 +67,7 @@ namespace :admin, **admin_options do
   get "models/modules", to: "base#index"
   get "models/:id", to: "base#model", as: :model
   get "models/:id/edit", to: "base#model", as: :model_edit
+  get "models/:id/edit/:detail", to: "base#model", as: :model_edit_detail
   get "models/:id/images", to: "base#model", as: :model_images
   get "models/:id/videos", to: "base#model", as: :model_videos
 

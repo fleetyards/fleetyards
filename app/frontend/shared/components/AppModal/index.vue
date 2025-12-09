@@ -17,6 +17,7 @@ export type AppModalOptions = {
   title?: string;
   wide?: boolean;
   fixed?: boolean;
+  fullscreen?: boolean;
   dirty?: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   props?: any;
@@ -37,6 +38,8 @@ const componentProps = ref({});
 const wide = ref(false);
 
 const fixed = ref(false);
+
+const fullscreen = ref(false);
 
 const dirty = ref(false);
 
@@ -68,6 +71,7 @@ const open = async (options: AppModalOptions) => {
   wide.value = !!options.wide;
   fixed.value = !!options.fixed;
   dirty.value = !!options.dirty;
+  fullscreen.value = !!options.fullscreen;
   component.value = markRaw(defineAsyncComponent(options.component));
 
   isShow.value = true;
@@ -124,6 +128,22 @@ const internalHide = async () => {
   });
 };
 
+const modalClasses = computed(() => {
+  return {
+    in: isOpen.value,
+    show: isShow.value,
+    wide: wide.value,
+    fixed: fixed.value,
+    fullscreen: fullscreen.value,
+  };
+});
+
+const modalDialogClasses = computed(() => {
+  return {
+    fullscreen: fullscreen.value,
+  };
+});
+
 defineExpose({
   open,
   close,
@@ -134,16 +154,11 @@ defineExpose({
   <div
     v-if="component"
     ref="modal"
-    :class="{
-      in: isOpen,
-      show: isShow,
-      wide: wide,
-      fixed: fixed,
-    }"
+    :class="modalClasses"
     class="app-modal fade"
     @click.self="() => close()"
   >
-    <div class="modal-dialog">
+    <div class="modal-dialog" :class="modalDialogClasses">
       <Component :is="component" ref="modalComponent" v-bind="componentProps" />
     </div>
   </div>

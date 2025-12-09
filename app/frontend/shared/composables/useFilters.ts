@@ -13,12 +13,6 @@ export const useFilters = <T>({
 
   const defaultAllowedKeys = ["s", "sorts"];
 
-  onMounted(() => {
-    if (!updateCallback) return;
-
-    updateCallback();
-  });
-
   const filters = computed<T>(() => (route.query || {}) as T);
 
   watch(
@@ -80,12 +74,12 @@ export const useFilters = <T>({
     router
       .replace({
         ...route,
+        hash: undefined,
         query: {
           ...query,
           page: shouldResetPage(query) ? undefined : route.query.page,
         },
       })
-
       .catch(() => {});
   };
 

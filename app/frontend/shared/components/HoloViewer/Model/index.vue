@@ -1,26 +1,38 @@
+<script lang="ts">
+export default {
+  name: "HoloViewerModel",
+};
+</script>
+
 <script setup lang="ts">
 import { useGLTF } from "@tresjs/cientos";
 import {
   type Mesh,
-  type Scene,
   DoubleSide,
   Box3,
   Vector3,
+  type Group,
   MeshPhongMaterial,
+  DefaultLoadingManager,
 } from "three";
+import { type HoloModel } from "../index.vue";
 
 type Props = {
-  path: string;
+  model: HoloModel;
   color?: string;
+  onGrid?: boolean;
+  offsetModel?: HoloModel;
   windowColor?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   color: "#428bca",
+  onGrid: false,
+  offsetModel: undefined,
   windowColor: "#1d3d59",
 });
 
-const setMaterials = (scene: Scene) => {
+const setMaterials = (scene: Group) => {
   const material = new MeshPhongMaterial({
     color: props.color,
     side: DoubleSide,
@@ -47,38 +59,54 @@ const setMaterials = (scene: Scene) => {
 
 const emit = defineEmits(["loaded", "error", "progress"]);
 
-const scene = await useGLTF(props.path, { draco: true }, (loader) => {
-  loader.manager.onProgress = (_item, loaded, total) => {
-    emit("progress", loaded, total);
-  };
-})
-  .then(({ scene }) => {
-    setMaterials(scene);
+DefaultLoadingManager.onProgress = (_item, loaded, total) => {
+  emit("progress", loaded, total);
+};
 
-    scene.rotation.set(0, 45, 0);
+DefaultLoadingManager.onError = (error) => {
+  emit("error", error);
+  console.error("Error loading GLTF model", error);
+};
 
-    const box = new Box3().setFromObject(scene);
-    const size = box.getSize(new Vector3());
+const { state } = useGLTF(props.model.path, { draco: true });
 
-    emit("loaded", size);
+const setup = (scene: Group) => {
+  setMaterials(scene);
 
-    return scene;
-  })
-  .catch((error) => {
-    emit("error", error);
-    console.error("Error loading GLTF model", error);
-  });
+  const box = new Box3().setFromObject(scene);
+  const size = box.getSize(new Vector3());
+
+  if (props.onGrid) {
+    scene.scale.setScalar(props.model.length / size.x);
+  }
+
+  if (props.offsetModel) {
+    const offset = props.offsetModel.length;
+    scene.position.setY(offset);
+  }
+
+  emit("loaded", size, scene);
+};
+
+watch(
+  () => state.value,
+  () => {
+    if (state.value) {
+      setup(state.value.scene);
+    }
+  },
+);
 
 watch(
   () => props.color,
   () => {
-    if (scene) {
-      setMaterials(scene);
+    if (state.value) {
+      setMaterials(state.value.scene);
     }
   },
 );
 </script>
 
 <template>
-  <primitive v-if="scene" :object="scene" />
+  <primitive v-if="state" :object="state.scene" />
 </template>

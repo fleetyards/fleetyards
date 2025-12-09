@@ -31,6 +31,7 @@ import {
   AdminModelTableViewColsEnum,
   AdminModelTableViewImageColsEnum,
 } from "@/admin/stores/models";
+import { useBreadCrumbsStore } from "@/shared/stores/breadCrumbs";
 
 const route = useRoute();
 
@@ -130,6 +131,24 @@ const openDisplayOptionsModal = () => {
       import("@/admin/components/Models/DisplayOptionsModal/index.vue"),
   });
 };
+
+const breadcrumbsStore = useBreadCrumbsStore();
+
+watch(
+  () => route.query,
+  () => {
+    breadcrumbsStore.setCrumbs("admin-models", route.fullPath);
+  },
+  { immediate: true },
+);
+
+watch(
+  () => models?.value,
+  () => {
+    modelsStore.setList(models?.value);
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
@@ -146,19 +165,15 @@ const openDisplayOptionsModal = () => {
   </Heading>
 
   <Teleport to="#header-right">
-    <Btn>
+    <Btn :size="BtnSizesEnum.SMALL">
       <i class="fa fa-rotate" />
       {{ t("actions.admin.dashboard.reloadModels") }}
     </Btn>
-    <Btn>
+    <Btn :size="BtnSizesEnum.SMALL">
       <i class="fa fa-rotate" />
       {{ t("actions.admin.dashboard.reloadScData") }}
     </Btn>
-    <Btn :to="{ name: 'admin-model-create' }">
-      <i class="fa fa-plus" />
-      {{ t("actions.create") }}
-    </Btn>
-    <Btn :to="{ name: 'admin-components' }">
+    <Btn :size="BtnSizesEnum.SMALL" :to="{ name: 'admin-model-create' }">
       <i class="fa fa-plus" />
       {{ t("actions.create") }}
     </Btn>

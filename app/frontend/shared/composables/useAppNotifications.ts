@@ -96,6 +96,7 @@ export const useAppNotifications = () => {
 
   const displayAlert = (notification: Partial<AppNotification>) => {
     displayMessage({
+      timeout: 10000,
       ...notification,
       type: MessageTypesEnum.ALERT,
     });

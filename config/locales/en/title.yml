@@ -63,6 +63,7 @@ en:
     admin:
       dashboard: Dashboard
       models: Models
+      models_edit_fleetchart: Edit %{manufacturer} %{model} Fleetchart Images
     # admin_user:
     #   edit: Edit Admin User
     #   index: Admin Users

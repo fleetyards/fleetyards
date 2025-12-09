@@ -21,6 +21,12 @@ import { extensionUrls } from "@/types/extension";
 import SmallLoader from "@/shared/components/SmallLoader/index.vue";
 import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
 import { useSyncRsiHangar as useSyncRsiHangarMutation } from "@/services/fyApi";
+import { differenceInMinutes } from "date-fns";
+import {
+  type FleetyardsSyncMessage,
+  type FleetyardsSyncEvent,
+  type FleetyardsSyncSessionPayload,
+} from "@/frontend/lib/FleetyardsSyncHandler";
 
 const { t } = useI18n();
 
@@ -34,6 +40,12 @@ const identityStatus = ref<"pending" | "connected" | "notFound">("pending");
 const loadingIdentity = ref(false);
 
 const currentPage = ref(1);
+
+const syncStartedAt = ref<Date>(new Date());
+
+const fetchCount = ref(0);
+
+const maxMessagesPerMinute = 60;
 
 const hangarStore = useHangarStore();
 
@@ -115,11 +127,11 @@ onBeforeUnmount(() => {
 
 const handleExtensionMessage = (event: FleetyardsSyncEvent) => {
   if (event.data.direction === "fy-sync") {
-    const message = JSON.parse(event.data.message);
+    const message = JSON.parse(event.data.message) as FleetyardsSyncMessage;
 
     if (message.action === "sync") {
       if (message.code === 200) {
-        fetchRSIHangar(message.payload);
+        fetchRSIHangar(message.payload as string);
       } else {
         displayAlert({ text: t("messages.syncExtension.failure") });
         updateStep("fetchHangar", "failure");
@@ -128,7 +140,10 @@ const handleExtensionMessage = (event: FleetyardsSyncEvent) => {
 
     if (message.action === "identify") {
       loadingIdentity.value = false;
-      if (message.code !== 200 || !message.payload?.handle) {
+      if (
+        message.code !== 200 ||
+        !(message.payload as FleetyardsSyncSessionPayload)?.handle
+      ) {
         console.info("FY Extension: No RSI Session found");
         displayWarning({ text: t("messages.syncExtension.notLoggedIn") });
         identityStatus.value = "notFound";
@@ -184,16 +199,32 @@ const start = async () => {
   started.value = true;
   pledges.value = [];
   currentPage.value = 1;
+  syncStartedAt.value = new Date();
+  fetchCount.value = 0;
 
-  fetchPage();
+  fetchPage(currentPage.value);
 
   displayInfo({ text: t("messages.syncExtension.started") });
 };
 
-const fetchPage = () => {
+const fetchPage = (page: number) => {
+  const elapsedMinutes = differenceInMinutes(new Date(), syncStartedAt.value);
+
+  const allowedMessages = (elapsedMinutes + 1) * maxMessagesPerMinute;
+
+  if (fetchCount.value >= allowedMessages) {
+    setTimeout(() => {
+      fetchPage(page);
+    }, 500);
+
+    return;
+  }
+
+  fetchCount.value += 1;
+
   window.postMessage({
     direction: "fy",
-    message: `{ "action": "sync", "page": ${currentPage.value} }`,
+    message: `{ "action": "sync", "page": ${page} }`,
   });
 };
 
@@ -207,7 +238,7 @@ const fetchRSIHangar = (htmlPage: string) => {
 
     currentPage.value += 1;
 
-    fetchPage();
+    setTimeout(() => fetchPage(currentPage.value), 500);
   } else {
     updateStep("fetchHangar", "success");
 

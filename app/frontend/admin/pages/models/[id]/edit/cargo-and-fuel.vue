@@ -12,12 +12,11 @@ import {
   type ModelUpdateInput,
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
-import FormActions from "@/shared/components/base/FormActions/index.vue";
 import {
   InputAlignmentsEnum,
   InputTypesEnum,
 } from "@/shared/components/base/FormInput/types";
-import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import ModelForm from "@/admin/components/Models/Form/index.vue";
 
 type Props = {
   model: ModelExtended;
@@ -27,10 +26,6 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 
-const { displayAlert } = useAppNotifications();
-
-const submitting = ref(false);
-
 const initialValues = ref<ModelUpdateInput>({
   cargo: props.model.metrics.cargo,
   hydrogenFuelTankSize: props.model.metrics.hydrogenFuelTankSize,
@@ -39,7 +34,7 @@ const initialValues = ref<ModelUpdateInput>({
 
 const validationSchema = {};
 
-const { defineField, handleSubmit } = useForm({
+const { defineField } = useForm({
   initialValues: initialValues.value,
   validationSchema,
 });
@@ -51,20 +46,15 @@ const [hydrogenFuelTankSize, hydrogenFuelTankSizeProps] = defineField(
 const [quantumFuelTankSize, quantumFuelTankSizeProps] = defineField(
   "quantumFuelTankSize",
 );
-
-const onSubmit = handleSubmit(async (values) => {
-  submitting.value = true;
-  console.info(values);
-});
-
-const onCancel = () => {
-  displayAlert({ text: "cancel" });
-};
 </script>
 
 <template>
   <Heading>{{ t("headlines.admin.models.edit.cargoAndFuel") }}</Heading>
-  <form @submit.prevent="onSubmit">
+  <ModelForm
+    :model="model"
+    :validation-schema="validationSchema"
+    :initial-values="initialValues"
+  >
     <div class="row">
       <div class="col-12 col-md-6">
         <FormInput
@@ -127,8 +117,7 @@ const onCancel = () => {
         />
       </div>
     </div>
-    <FormActions :submitting="submitting" @cancel="onCancel" />
-  </form>
+  </ModelForm>
 </template>
 
 <style lang="scss" scoped>

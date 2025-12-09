@@ -9,7 +9,7 @@ const beforeResolve = (to: RouteLocation): FyRedirectRoute | undefined => {
 
   if (to.name != "admin-login" && !sessionStore.isAuthenticated) {
     const redirectBackStore = useRedirectBackStore();
-    redirectBackStore.backRoute = to;
+    redirectBackStore.setBackRoute(to);
 
     return {
       routeName: "admin-login",

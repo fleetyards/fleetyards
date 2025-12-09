@@ -10,6 +10,7 @@
   border: $panel-border-width solid $panel-inner-border;
   border-radius: $panel-border-radius;
   opacity: 1;
+  transition: all $transition-base-speed ease-in-out;
 
   &::before {
     position: absolute;
@@ -19,6 +20,7 @@
     height: $panel-border-width;
     background-color: #444;
     content: "";
+    transition: all $transition-base-speed ease-in-out;
   }
 
   &::after {
@@ -29,6 +31,7 @@
     height: $panel-border-width;
     background-color: #444;
     content: "";
+    transition: all $transition-base-speed ease-in-out;
   }
 
   &:last-child {
@@ -141,10 +144,6 @@
 
     &:first-child {
       padding-right: 1.5px;
-    }
-
-    &:last-child {
-      padding-left: 1.5px;
     }
 
     .panel-btn-inner {

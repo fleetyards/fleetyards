@@ -8,7 +8,7 @@ export default {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
-import PreviewImage from "@/shared/components/DirectUpload/Image/index.vue";
+import DirectUploadPreview from "@/shared/components/DirectUpload/Preview/index.vue";
 import ProgressBar from "@/shared/components/ProgressBar/index.vue";
 import { type Blob } from "@rails/activestorage";
 import { useDirectUpload } from "@/shared/composables/useDirectUpload";
@@ -25,11 +25,19 @@ export type FileUpload = {
 type Props = {
   multiple?: boolean;
   hideFinished?: boolean;
+  transparent?: boolean;
+  active?: boolean;
+  allowedTypes?: string[];
+  allowedSizeMb?: number;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   multiple: false,
   hideFinished: false,
+  transparent: false,
+  active: false,
+  allowedTypes: undefined,
+  allowedSizeMb: undefined,
 });
 
 const { t } = useI18n();
@@ -53,6 +61,40 @@ const handleFileSelect = (fileList?: FileList) => {
   Array.from(fileList).forEach((file) => {
     if (files.value.some((f) => f.file === file)) {
       return;
+    }
+
+    if (props.allowedTypes && props.allowedTypes.length) {
+      const fileType = file.type;
+
+      const isAllowed = props.allowedTypes.some((type) => {
+        return fileType === type;
+      });
+
+      if (!isAllowed) {
+        displayAlert({
+          text: t("errors.upload.invalidFileType", {
+            filename: file.name,
+            types: props.allowedTypes.join(", "),
+          }),
+        });
+        return;
+      }
+    }
+
+    if (props.allowedSizeMb) {
+      const fileSizeMB = file.size / (1024 * 1024);
+
+      const isAllowed = fileSizeMB <= props.allowedSizeMb;
+
+      if (!isAllowed) {
+        displayAlert({
+          text: t("errors.upload.fileTooLarge", {
+            filename: file.name,
+            size: props.allowedSizeMb.toString(),
+          }),
+        });
+        return;
+      }
     }
 
     files.value.push({ key: uuidv4(), file, progress: 0, status: "pending" });
@@ -153,7 +195,7 @@ const upload = () => {
     }),
   ).then(() => {
     emit("upload:done", files.value);
-    clear();
+    // clear();
   });
 };
 
@@ -224,6 +266,7 @@ defineExpose({
   chooseFile,
   files,
   status,
+  clear,
 });
 </script>
 
@@ -240,6 +283,7 @@ defineExpose({
       class="direct-upload__dropzone"
       :class="{
         'direct-upload__dropzone--dragging': isDragging,
+        'direct-upload__dropzone--active': props.active,
       }"
       @drop.prevent.stop="onDrop"
       @dragover.prevent="dragover"
@@ -272,11 +316,12 @@ defineExpose({
     </Transition>
     <div v-if="props.multiple" class="direct-upload__preview-files">
       <TransitionGroup name="fade">
-        <PreviewImage
+        <DirectUploadPreview
           v-for="file in filteredFiles"
           :key="file.key"
           class="direct-upload__file"
           :file="file"
+          :transparent="transparent"
           multiple
           @click="file.status !== 'done' && removeFile(file)"
         />
@@ -284,11 +329,12 @@ defineExpose({
     </div>
     <div v-else-if="files.length" class="direct-upload__preview-file">
       <TransitionGroup name="fade">
-        <PreviewImage
+        <DirectUploadPreview
           v-for="file in files"
           :key="file.key"
           class="direct-upload__file"
           :file="file"
+          :transparent="transparent"
           @click="removeFile(file)"
         />
       </TransitionGroup>

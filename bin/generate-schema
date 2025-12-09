@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-bundle exec rake rswag:specs:swaggerize
+SKIP_COMMITTEE=true bundle exec rake rswag:specs:swaggerize
 
 echo "cleanup old generated files"
 

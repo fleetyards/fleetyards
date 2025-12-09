@@ -18,12 +18,20 @@ type Props = {
   multiple?: boolean;
   inline?: boolean;
   hideFinished?: boolean;
+  transparent?: boolean;
+  active?: boolean;
+  allowedTypes?: string[];
+  allowedSizeMb?: number;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   multiple: false,
   inline: false,
   hideFinished: false,
+  transparent: false,
+  active: false,
+  allowedTypes: undefined,
+  allowedSizeMb: undefined,
 });
 
 const uploader = ref<InstanceType<typeof DirectUploadUploader>>();
@@ -65,6 +73,12 @@ const cssClasses = computed(() => {
     "direct-upload--single": !props.multiple,
   };
 });
+
+defineExpose({
+  clear: () => {
+    uploader.value?.clear();
+  },
+});
 </script>
 
 <template>
@@ -75,6 +89,10 @@ const cssClasses = computed(() => {
         ref="uploader"
         :multiple="multiple"
         :hide-finished="hideFinished"
+        :transparent="transparent"
+        :active="active"
+        :allowed-types="allowedTypes"
+        :allowed-size-mb="allowedSizeMb"
         @upload:done="handleUploadDone"
         @upload:progress="handleUploadProgress"
         @upload:start="handleUploadStart"

@@ -11,6 +11,14 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "viewer/",
+    name: "ships-viewer",
+    component: () => import("@/frontend/pages/ships/viewer.vue"),
+    meta: {
+      title: "ships.viewer",
+    },
+  },
+  {
     path: ":slug/",
     component: () => import("@/frontend/pages/ships/[slug].vue"),
     children: shipRoutes,

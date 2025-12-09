@@ -29,13 +29,12 @@
             "metrics": "Metrics",
             "prices": "Prices",
             "docks": "Docks",
+            "modules": "Modules",
+            "paints": "Paints",
             "videos": "Videos"
           },
           "new": "New Model",
           "show": "Model",
-          "images": "Images",
-          "videos": "Videos",
-          "prices": "Prices",
           "tableConfigurationModal": "Table Configuration"
         },
         "components": {

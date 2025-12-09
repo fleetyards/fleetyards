@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import Hardpoints from "@/frontend/components/Models/Hardpoints/index.vue";
 import PaintsList from "@/frontend/components/Models/PaintsList/index.vue";
@@ -19,7 +20,9 @@ import ModelBaseMetrics from "@/frontend/components/Models/BaseMetrics/index.vue
 import ModelCrewMetrics from "@/frontend/components/Models/CrewMetrics/index.vue";
 import ModelSpeedMetrics from "@/frontend/components/Models/SpeedMetrics/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
-import HoloViewer from "@/shared/components/HoloViewer/index.vue";
+import HoloViewer, {
+  HoloModel,
+} from "@/shared/components/HoloViewer/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useHangarItems } from "@/frontend/composables/useHangarItems";
@@ -36,6 +39,8 @@ import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 import { type Model } from "@/services/fyApi";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import starcitizenToolsLogo from "@/images/icons/starcitizentools.svg";
+import { useComlink } from "@/shared/composables/useComlink";
+import adiIcon from "@/images/adi_icon.png";
 
 type Props = {
   model: Model;
@@ -93,15 +98,6 @@ const storeImage = computed(() => {
 
   return fallbackImageJpg;
 });
-
-const starship42Url = computed(
-  () => `https://starship42.com/inverse/?ship=${props.model?.name}&mode=color`,
-);
-
-const starship42IframeUrl = computed(
-  () =>
-    `https://starship42.com/fleetview/fleetyards/?s=${props.model?.rsiName}&type=matrix`,
-);
 
 const metaTitle = computed(() => {
   if (!props.model) {
@@ -196,6 +192,39 @@ const scrollToHash = () => {
 const toggleHoloviewer = () => {
   modelsStore.toggleHoloviewer();
 };
+
+const comlink = useComlink();
+
+const openHoloviewerModal = () => {
+  modelsStore.toggleHoloviewer();
+
+  comlink.emit("open-modal", {
+    component: () => import("@/shared/components/HoloViewer/Modal/index.vue"),
+    fullscreen: true,
+    props: {
+      paths: [props.model.media.holo?.url],
+    },
+  });
+};
+
+const holoModel = computed(() => {
+  if (!props.model.media.holo || !props.model.metrics.fleetchartOffsetLength) {
+    return;
+  }
+
+  return {
+    path: props.model.media.holo?.url,
+    length: props.model.metrics.fleetchartOffsetLength,
+  };
+});
+
+const adiMap = computed(() => {
+  if (!props.model.adiMap || !props.model.scIdentifier) {
+    return;
+  }
+
+  return `https://maps.adi.sc/?ship=${props.model.scIdentifier}`;
+});
 </script>
 
 <template>
@@ -227,32 +256,42 @@ const toggleHoloviewer = () => {
             }"
             class="image-wrapper"
           >
-            <Btn
-              :active="holoviewerVisible"
-              class="toggle-3d"
-              :size="BtnSizesEnum.SMALL"
-              @click="toggleHoloviewer"
-            >
-              {{ t("labels.3dView") }}
-            </Btn>
-            <a
-              v-show="holoviewerVisible && !model.holo"
-              :href="starship42Url"
-              class="starship42-link"
-              target="_blank"
-              rel="noopener"
-            >
-              {{ t("labels.poweredByStarship42") }}
-            </a>
+            <BtnGroup class="toggle-3d" v-if="model.media.holo">
+              <Btn
+                v-if="holoviewerVisible"
+                :size="BtnSizesEnum.SMALL"
+                :to="{
+                  name: 'ship-viewer',
+                  params: {
+                    slug: model.slug,
+                  },
+                }"
+                v-tooltip="t('labels.openInNewWindow')"
+              >
+                <i class="fal fa-external-link-alt" />
+              </Btn>
+              <Btn
+                :active="holoviewerVisible"
+                :size="BtnSizesEnum.SMALL"
+                @click="toggleHoloviewer"
+              >
+                {{ t("labels.3dView") }}
+              </Btn>
+
+                <Btn
+                  v-if="adiMap"
+                :size="BtnSizesEnum.SMALL"
+                  :href="adiMap"
+                >
+                  <img :src="adiIcon" class="adi-icon" />
+                  {{ t("labels.3dMap") }}
+                </Btn>
+              </BtnGroup>
+            </BtnGroup>
+
             <HoloViewer
-              v-if="holoviewerVisible && model.holo"
-              :holo="model.holo"
-            />
-            <iframe
-              v-else-if="holoviewerVisible"
-              class="holoviewer"
-              :src="starship42IframeUrl"
-              frameborder="0"
+              v-if="holoviewerVisible && holoModel"
+              :models="[holoModel]"
             />
             <LazyImage v-else :src="storeImage" class="image" />
           </div>
@@ -282,7 +321,7 @@ const toggleHoloviewer = () => {
           </blockquote>
         </div>
         <div class="col-12 col-lg-4">
-          <template v-if="model.holo">
+          <template v-if="holoModel && !mobile">
             <LazyImage
               v-if="holoviewerVisible"
               :src="storeImage"
@@ -290,7 +329,7 @@ const toggleHoloviewer = () => {
             />
             <HoloViewer
               v-else
-              :holo="model.holo"
+              :models="[holoModel]"
               :controllable="false"
               inline
             />
@@ -357,8 +396,8 @@ const toggleHoloviewer = () => {
                 <span>{{ t("nav.videos") }}</span>
               </Btn>
               <Btn
-                v-if="model.brochure"
-                :href="model.brochure"
+                v-if="model.media.brochure?.url"
+                :href="model.media.brochure.url"
                 :size="BtnSizesEnum.SMALL"
               >
                 <i class="fal fa-download" />

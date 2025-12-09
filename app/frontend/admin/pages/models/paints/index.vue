@@ -20,11 +20,10 @@ import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
-  usePaintsQueryOptions,
+  getPaintsQueryKey,
   usePaints as usePaintsQuery,
   type ModelPaint,
 } from "@/services/fyAdminApi";
-import { CustomQueryOptions } from "@/services/customQueryOptions";
 
 const route = useRoute();
 
@@ -49,8 +48,7 @@ const paintsQueryParams = computed(() => {
 });
 
 const paintsQueryKey = computed(() => {
-  return (usePaintsQueryOptions(paintsQueryParams) as CustomQueryOptions)
-    .queryKey;
+  return getPaintsQueryKey(paintsQueryParams.value);
 });
 
 const { perPage, page, updatePerPage } = usePagination(paintsQueryKey);
@@ -67,12 +65,12 @@ const columns: BaseTableCol<ModelPaint>[] = [
   {
     name: "storeImage",
     label: "",
-    centered: true,
+    alignment: "center",
   },
   {
     name: "rsiStoreImage",
     label: "",
-    centered: true,
+    alignment: "center",
     mobile: false,
   },
   {
@@ -83,7 +81,7 @@ const columns: BaseTableCol<ModelPaint>[] = [
   {
     name: "model",
     label: "Model",
-    field: "model_slug",
+    attributeKey: "slug",
     sortable: true,
   },
   {

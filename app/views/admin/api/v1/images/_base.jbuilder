@@ -7,7 +7,7 @@ json.background image.background?
 json.enabled image.enabled
 json.global image.global
 
-json.partial!("api/v1/shared/view_image", record: image, attr: :file, old_attr: :name, width: image.width, height: image.height)
+json.partial!("api/v1/shared/file", record: image, attr: :file, old_attr: :name, width: image.width, height: image.height)
 
 json.gallery do
   json.id image.gallery_id

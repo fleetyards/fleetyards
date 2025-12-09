@@ -24,6 +24,7 @@ const vueQueryPluginOptions: VueQueryPluginOptions = {
   queryClientConfig: {
     defaultOptions: {
       queries: {
+        placeholderData: (prev: unknown) => prev,
         retry: 1,
         refetchOnWindowFocus: false,
       },

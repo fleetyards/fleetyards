@@ -5,8 +5,16 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { type RouteLocationNamedRaw, type RouterLinkProps } from "vue-router";
+import { type RouterLinkProps } from "vue-router";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
+
+export type ListMeta = {
+  totalCount: number;
+  perPage: number;
+  currentPage: number;
+  totalPages: number;
+};
 
 export type Crumb = {
   to: RouterLinkProps["to"];
@@ -15,60 +23,65 @@ export type Crumb = {
 
 type Props = {
   crumbs?: Crumb[];
+  currentId?: string;
+  stepperList?: string[];
+  stepperListMeta?: ListMeta;
 };
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   crumbs: undefined,
 });
 
 const { t } = useI18n();
 
-const router = useRouter();
+const { extend } = useBreadCrumbs();
 
-const lastRoute = computed(() => {
-  if (!router.options.history.state.back) {
-    return undefined;
+const prevItem = computed(() => {
+  const index = props.stepperList?.findIndex((id) => id === props.currentId);
+
+  if (index !== undefined && index > 0 && props.stepperList) {
+    return props.stepperList[index - 1];
   }
-
-  return router.resolve(router.options.history.state.back as string);
 });
 
-const extend = (route: RouterLinkProps["to"]): RouterLinkProps["to"] => {
-  if (
-    lastRoute.value &&
-    lastRoute.value.name === (route as RouteLocationNamedRaw).name
-  ) {
-    return {
-      name: (route as RouteLocationNamedRaw).name,
-      hash: (route as RouteLocationNamedRaw).hash,
-      params: {
-        ...lastRoute.value.params,
-        ...(route as RouteLocationNamedRaw).params,
-      },
-      query: {
-        ...lastRoute.value.query,
-        ...(route as RouteLocationNamedRaw).query,
-      },
-    };
-  }
+const nextItem = computed(() => {
+  const index = props.stepperList?.findIndex((id) => id === props.currentId);
 
-  return route;
-};
+  if (index !== undefined && index >= 0 && props.stepperList) {
+    return props.stepperList[index + 1];
+  }
+});
 </script>
 
 <template>
-  <ol v-if="crumbs" aria-label="breadcrumb" class="breadcrumb">
-    <li class="breadcrumb-item">
-      <router-link :to="{ name: 'home' }">
-        {{ t("nav.home") }}
-      </router-link>
-    </li>
-    <li v-for="(crumb, index) in crumbs" :key="index" class="breadcrumb-item">
-      <router-link :to="extend(crumb.to)">
-        {{ crumb.label }}
-      </router-link>
-    </li>
-  </ol>
+  <div class="breadcrumbs" v-if="crumbs || stepperList">
+    <ol v-if="crumbs" aria-label="breadcrumb" class="breadcrumb">
+      <li class="breadcrumb-item">
+        <router-link :to="{ name: 'home' }">
+          {{ t("nav.home") }}
+        </router-link>
+      </li>
+      <li v-for="(crumb, index) in crumbs" :key="index" class="breadcrumb-item">
+        <router-link :to="extend(crumb.to)">
+          {{ crumb.label }}
+        </router-link>
+      </li>
+    </ol>
+    <div v-if="stepperList" class="stepper">
+      <router-link
+        v-if="prevItem"
+        :to="{ name: 'admin-model-edit', params: { id: prevItem } }"
+        ><i class="fa fa-chevron-left"></i
+      ></router-link>
+      <a v-else class="disabled"><i class="fa fa-chevron-left"></i></a>
+      <router-link
+        v-if="nextItem"
+        :to="{ name: 'admin-model-edit', params: { id: nextItem } }"
+        ><i class="fa fa-chevron-right"></i
+      ></router-link>
+      <a v-else class="disabled"><i class="fa fa-chevron-right"></i></a>
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>

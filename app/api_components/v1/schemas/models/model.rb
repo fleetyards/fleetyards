@@ -34,7 +34,6 @@ module V1
               required: %w[boughtAt soldAt rentalAt]
             },
 
-            brochure: {type: :string},
             classification: {type: :string},
             classificationLabel: {type: :string},
 
@@ -57,7 +56,6 @@ module V1
             hasPaints: {type: :boolean},
             hasUpgrades: {type: :boolean},
             hasVideos: {type: :boolean},
-            holo: {type: :string},
             lastUpdatedAt: {type: :string, format: "date-time"},
             lastUpdatedAtLabel: {type: :string},
 
@@ -89,7 +87,9 @@ module V1
                 sideViewColored: {"$ref": "#/components/schemas/MediaFile"},
                 storeImage: {"$ref": "#/components/schemas/MediaFile"},
                 topView: {"$ref": "#/components/schemas/MediaFile"},
-                topViewColored: {"$ref": "#/components/schemas/MediaFile"}
+                topViewColored: {"$ref": "#/components/schemas/MediaFile"},
+                holo: {"$ref": "#/components/schemas/MediaFile"},
+                brochure: {"$ref": "#/components/schemas/MediaFile"}
               },
               additionalProperties: false
             },
@@ -101,7 +101,8 @@ module V1
                 beamLabel: {type: :string},
                 cargo: {type: :number},
                 cargoLabel: {type: :string},
-                fleetchartLength: {type: :number},
+                fleetchartOffsetLength: {type: :number},
+                fleetchartOffsetBeam: {type: :number},
                 height: {type: :number},
                 heightLabel: {type: :string},
                 hydrogenFuelTankSize: {type: :number},
@@ -153,6 +154,9 @@ module V1
               },
               additionalProperties: false
             },
+
+            holo: {type: :string, deprecated: true},
+            brochure: {type: :string, deprecated: true},
 
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}

@@ -21,6 +21,7 @@
 #  fleetchart_image           :string
 #  fleetchart_image_height    :integer
 #  fleetchart_image_width     :integer
+#  fleetchart_offset_beam     :decimal(15, 2)
 #  fleetchart_offset_length   :decimal(15, 2)
 #  focus                      :string(255)
 #  front_view                 :string

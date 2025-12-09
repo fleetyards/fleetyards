@@ -45,6 +45,8 @@ set :linked_files, [
   "reserved_usernames.json"
 ]
 
+append :assets_manifests, "public/vite/.vite/manifest*.*"
+
 before :"rbenv:validate", :"ruby:prepare"
 before :"deploy:migrate", :"db:load_schema"
 after :"deploy:published", :"bundler:clean"

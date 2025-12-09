@@ -12,8 +12,7 @@ import {
   type ModelUpdateInput,
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
-import FormActions from "@/shared/components/base/FormActions/index.vue";
-import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import ModelForm from "@/admin/components/Models/Form/index.vue";
 
 type Props = {
   model: ModelExtended;
@@ -22,10 +21,6 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
-
-// const { displayAlert } = useAppNotifications();
-
-const submitting = ref(false);
 
 const initialValues = ref<ModelUpdateInput>({
   size: props.model.metrics.size,
@@ -36,26 +31,20 @@ const initialValues = ref<ModelUpdateInput>({
 
 const validationSchema = {};
 
-const { defineField, handleSubmit } = useForm({
+const { defineField } = useForm({
   initialValues: initialValues.value,
   validationSchema,
 });
 
-const [size, sizeProps] = defineField("size");
-
-const onSubmit = handleSubmit(async (values) => {
-  submitting.value = true;
-  console.info(values);
-});
-
-const onCancel = () => {
-  alert("cancel");
-};
+// const [size, sizeProps] = defineField("size");
 </script>
 
 <template>
   <Heading>{{ t("headlines.admin.models.edit.docks") }}</Heading>
-  <form @submit.prevent="onSubmit">
-    <FormActions :submitting="submitting" @cancel="onCancel" />
-  </form>
+  <ModelForm
+    :model="model"
+    :validation-schema="validationSchema"
+    :initial-values="initialValues"
+  >
+  </ModelForm>
 </template>

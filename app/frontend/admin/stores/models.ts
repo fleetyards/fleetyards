@@ -1,5 +1,7 @@
 import { type AdminShipListState } from "@/admin/types";
+import { type Models } from "@/services/fyAdminApi";
 import { defineStore } from "pinia";
+import { type ListMeta } from "@/shared/components/BreadCrumbs/index.vue";
 
 export enum AdminModelTableViewImageColsEnum {
   STORE_IMAGE = "store_image",
@@ -35,6 +37,8 @@ export enum AdminModelTableViewColsEnum {
 interface AdminModelsState extends AdminShipListState {
   tableViewCols: AdminModelTableViewColsEnum[];
   tableViewImageCols: AdminModelTableViewImageColsEnum[];
+  list?: string[];
+  listMeta?: ListMeta;
 }
 
 export const useModelsStore = defineStore("adminModels", {
@@ -60,6 +64,15 @@ export const useModelsStore = defineStore("adminModels", {
     },
     setTableViewImageCols(cols: AdminModelTableViewImageColsEnum[]) {
       this.tableViewImageCols = cols;
+    },
+    setList(models?: Models) {
+      this.list = models?.items.map((model) => model.id);
+      this.listMeta = {
+        totalCount: models?.meta.pagination?.totalCount || 0,
+        perPage: models?.meta.pagination?.perPage || 0,
+        currentPage: models?.meta.pagination?.currentPage || 0,
+        totalPages: models?.meta.pagination?.totalPages || 0,
+      };
     },
   },
   persist: {

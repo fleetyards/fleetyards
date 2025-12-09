@@ -1,4 +1,10 @@
-if file.attached?
+# frozen_string_literal: true
+
+new_attr = local_assigns.fetch(:attr, nil)
+old_attr = local_assigns.fetch(:old_attr, nil)
+
+if record.try(new_attr) && record.send(new_attr).attached?
+  file = record.send(new_attr)
   json.name file.filename
   json.content_type file.content_type
   json.size file.byte_size
@@ -9,10 +15,22 @@ if file.attached?
     json.large_url rails_representation_url(file.representation(resize_to_limit: [2000, 2000], saver: {quality: 90}))
     json.xlarge_url rails_representation_url(file.representation(resize_to_limit: [3000, 3000]))
   end
-  if file.previewable?
-    json.preview_url rails_preview_url(file.preview(resize_to_limit: [500, 500], saver: {quality: 80}))
-  end
   json.width file.metadata[:width]
   json.height file.metadata[:height]
+  json.signed_id file.signed_id
   json.uploaded_at file.blob.created_at
+elsif old_attr.present? && !record.try(old_attr)&.nil?
+  view_image = record.send(old_attr)
+  json.name view_image.file&.filename
+  json.content_type view_image.file&.content_type
+  json.size view_image.file&.size
+  json.url view_image.url
+  if view_image.file&.content_type&.start_with?("image/")
+    json.small_url view_image.small.url
+    json.medium_url view_image.medium.present? ? view_image.medium.url : view_image.big.url
+    json.large_url view_image.large.present? ? view_image.large.url : view_image.big.url
+    json.xlarge_url view_image.xlarge.present? ? view_image.xlarge.url : view_image.big.url
+    json.width local_assigns.fetch(:width, nil)
+    json.height local_assigns.fetch(:height, nil)
+  end
 end

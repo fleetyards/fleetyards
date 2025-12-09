@@ -11,7 +11,7 @@ import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import loadingImage from "@/images/loading.svg";
 import placeholderImage from "@/images/fallback/store_image.webp";
 
-type Props = {
+export type Props = {
   src?: string;
   alt?: string;
   href?: string;

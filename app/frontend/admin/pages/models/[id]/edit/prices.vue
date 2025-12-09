@@ -12,12 +12,11 @@ import {
   type ModelUpdateInput,
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
-import FormActions from "@/shared/components/base/FormActions/index.vue";
 import {
   InputAlignmentsEnum,
   InputTypesEnum,
 } from "@/shared/components/base/FormInput/types";
-// import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import ModelForm from "@/admin/components/Models/Form/index.vue";
 
 type Props = {
   model: ModelExtended;
@@ -26,10 +25,6 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
-
-// const { displayAlert } = useAppNotifications();
-
-const submitting = ref(false);
 
 const initialValues = ref<ModelUpdateInput>({
   price: props.model.price,
@@ -41,7 +36,7 @@ const initialValues = ref<ModelUpdateInput>({
 
 const validationSchema = {};
 
-const { defineField, handleSubmit } = useForm({
+const { defineField } = useForm({
   initialValues: initialValues.value,
   validationSchema,
 });
@@ -51,22 +46,15 @@ const [pledgePrice, pledgePriceProps] = defineField("pledgePrice");
 const [onSale, onSaleProps] = defineField("onSale");
 const [salesPageUrl, salesPageUrlProps] = defineField("salesPageUrl");
 const [storeUrl, storeUrlProps] = defineField("storeUrl");
-
-// const { updateMutation } = useModels();
-
-const onSubmit = handleSubmit(async (values) => {
-  submitting.value = true;
-  console.info(values);
-});
-
-const onCancel = () => {
-  alert("cancel");
-};
 </script>
 
 <template>
   <Heading>{{ t("headlines.admin.models.edit.prices") }}</Heading>
-  <form @submit.prevent="onSubmit">
+  <ModelForm
+    :model="model"
+    :validation-schema="validationSchema"
+    :initial-values="initialValues"
+  >
     <div class="row">
       <div class="col-12 col-md-4">
         <FormInput
@@ -109,6 +97,5 @@ const onCancel = () => {
         />
       </div>
     </div>
-    <FormActions :submitting="submitting" @cancel="onCancel" />
-  </form>
+  </ModelForm>
 </template>

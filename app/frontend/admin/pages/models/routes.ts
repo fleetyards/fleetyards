@@ -38,24 +38,4 @@ export const routes: RouteRecordRaw[] = [
       activeRoute: "admin-models",
     },
   },
-  {
-    path: "modules/",
-    component: () => import("@/admin/pages/models/modules.vue"),
-    children: modelModulesRoutes,
-    redirect: { name: modelModulesRoutes[0].name },
-    meta: {
-      needsAuthentication: true,
-      access: ["model_modules"],
-    },
-  },
-  {
-    path: "paints/",
-    component: () => import("@/admin/pages/models/paints.vue"),
-    children: modelPaintsRoutes,
-    redirect: { name: modelPaintsRoutes[0].name },
-    meta: {
-      needsAuthentication: true,
-      access: ["model_paints"],
-    },
-  },
 ];

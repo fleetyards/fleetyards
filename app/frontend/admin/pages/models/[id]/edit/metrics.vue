@@ -13,11 +13,10 @@ import {
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import FormActions from "@/shared/components/base/FormActions/index.vue";
+import ModelForm from "@/admin/components/Models/Form/index.vue";
 import { InputAlignmentsEnum } from "@/shared/components/base/FormInput/types";
 import ModelSizeFilterGroup from "@/frontend/components/base/ModelSizeFilterGroup/index.vue";
 import ModelDockSizeFilterGroup from "@/admin/components/base/ModelDockSizeFilterGroup/index.vue";
-// import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 type Props = {
   model: ModelExtended;
@@ -26,10 +25,6 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
-
-// const { displayAlert } = useAppNotifications();
-
-const submitting = ref(false);
 
 const initialValues = ref<ModelUpdateInput>({
   size: props.model.metrics.size,
@@ -54,7 +49,7 @@ const initialValues = ref<ModelUpdateInput>({
 
 const validationSchema = {};
 
-const { defineField, handleSubmit } = useForm({
+const { defineField } = useForm({
   initialValues: initialValues.value,
   validationSchema,
 });
@@ -62,6 +57,12 @@ const { defineField, handleSubmit } = useForm({
 const [size, sizeProps] = defineField("size");
 const [dockSize, dockSizeProps] = defineField("dockSize");
 const [length, lengthProps] = defineField("length");
+const [fleetchartOffsetLength, fleetchartOffsetLengthProps] = defineField(
+  "fleetchartOffsetLength",
+);
+const [fleetchartOffsetBeam, fleetchartOffsetBeamProps] = defineField(
+  "fleetchartOffsetBeam",
+);
 const [beam, beamProps] = defineField("beam");
 const [height, heightProps] = defineField("height");
 const [mass, massProps] = defineField("mass");
@@ -79,20 +80,15 @@ const [roll, rollProps] = defineField("roll");
 const [pitchBoosted, pitchBoostedProps] = defineField("pitchBoosted");
 const [yawBoosted, yawBoostedProps] = defineField("yawBoosted");
 const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
-
-const onSubmit = handleSubmit(async (values) => {
-  submitting.value = true;
-  console.info(values);
-});
-
-const onCancel = () => {
-  alert("cancel");
-};
 </script>
 
 <template>
   <Heading>{{ t("headlines.admin.models.edit.metrics") }}</Heading>
-  <form @submit.prevent="onSubmit">
+  <ModelForm
+    :model="model"
+    :validation-schema="validationSchema"
+    :initial-values="initialValues"
+  >
     <div class="row">
       <div class="col-12 col-md-4">
         <ModelSizeFilterGroup
@@ -151,6 +147,28 @@ const onCancel = () => {
         >
           <template #subline>SC Height: {{ model.scHeight }}</template>
         </FormInput>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <FormInput
+          v-model="fleetchartOffsetLength"
+          v-bind="fleetchartOffsetLengthProps"
+          :alignment="InputAlignmentsEnum.RIGHT"
+          name="fleetchartOffsetLength"
+          translation-key="model.fleetchartOffsetLength"
+          :suffix="t('number.units.distance')"
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <FormInput
+          v-model="fleetchartOffsetBeam"
+          v-bind="fleetchartOffsetBeamProps"
+          name="fleetchartOffsetBeam"
+          :alignment="InputAlignmentsEnum.RIGHT"
+          translation-key="model.fleetchartOffsetBeam"
+          :suffix="t('number.units.distance')"
+        />
       </div>
     </div>
     <div class="row">
@@ -295,6 +313,5 @@ const onCancel = () => {
         />
       </div>
     </div>
-    <FormActions :submitting="submitting" @cancel="onCancel" />
-  </form>
+  </ModelForm>
 </template>

@@ -1905,12 +1905,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                items:
-                  "$ref": "#/components/schemas/SyncRsiHangarInput"
-              required:
-              - import
+              "$ref": "#/components/schemas/SyncRsiHangarInput"
         required: true
   "/images":
     get:
@@ -4903,6 +4898,9 @@ components:
         xlargeUrl:
           type: string
           format: uri
+        previewUrl:
+          type: string
+          format: uri
         width:
           type: integer
         height:
@@ -4916,7 +4914,6 @@ components:
       - contentType
       - size
       - url
-      - uploadedAt
       title: MediaFile
     Meta:
       type: object
@@ -4962,6 +4959,8 @@ components:
       required:
       - currentPage
       - totalPages
+      - totalCount
+      - perPage
       title: Pagination
     PieChartStats:
       type: object
@@ -5856,6 +5855,9 @@ components:
         xlargeUrl:
           type: string
           format: uri
+        previewUrl:
+          type: string
+          format: uri
         width:
           type: integer
         height:
@@ -5884,7 +5886,6 @@ components:
       - contentType
       - size
       - url
-      - uploadedAt
       - id
       - background
       - createdAt
@@ -6110,14 +6111,15 @@ components:
       properties:
         id:
           type: string
-          format: uuid
         name:
           type: string
         customName:
           type: string
-          nullable: true
         type:
           "$ref": "#/components/schemas/RsiHangarItemKindEnum"
+        image:
+          type: string
+          format: uri
       additionalProperties: false
       required:
       - id
@@ -6139,9 +6141,12 @@ components:
       additionalProperties: false
       title: SessionInput
     SyncRsiHangarInput:
-      type: array
-      items:
-        "$ref": "#/components/schemas/RsiHangarItemInput"
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/RsiHangarItemInput"
       title: SyncRsiHangarInput
     UserCreateInput:
       type: object
@@ -6565,8 +6570,6 @@ components:
           - boughtAt
           - soldAt
           - rentalAt
-        brochure:
-          type: string
         classification:
           type: string
         classificationLabel:
@@ -6599,8 +6602,6 @@ components:
           type: boolean
         hasVideos:
           type: boolean
-        holo:
-          type: string
         lastUpdatedAt:
           type: string
           format: date-time
@@ -6643,6 +6644,10 @@ components:
               "$ref": "#/components/schemas/MediaFile"
             topViewColored:
               "$ref": "#/components/schemas/MediaFile"
+            holo:
+              "$ref": "#/components/schemas/MediaFile"
+            brochure:
+              "$ref": "#/components/schemas/MediaFile"
           additionalProperties: false
         metrics:
           type: object
@@ -6655,7 +6660,9 @@ components:
               type: number
             cargoLabel:
               type: string
-            fleetchartLength:
+            fleetchartOffsetLength:
+              type: number
+            fleetchartOffsetBeam:
               type: number
             height:
               type: number
@@ -6746,6 +6753,12 @@ components:
             yawBoosted:
               type: number
           additionalProperties: false
+        holo:
+          type: string
+          deprecated: true
+        brochure:
+          type: string
+          deprecated: true
         createdAt:
           type: string
           format: date-time
@@ -6805,8 +6818,6 @@ components:
           - boughtAt
           - soldAt
           - rentalAt
-        brochure:
-          type: string
         classification:
           type: string
         classificationLabel:
@@ -6839,8 +6850,6 @@ components:
           type: boolean
         hasVideos:
           type: boolean
-        holo:
-          type: string
         lastUpdatedAt:
           type: string
           format: date-time
@@ -6889,6 +6898,10 @@ components:
               "$ref": "#/components/schemas/MediaFile"
             topViewColored:
               "$ref": "#/components/schemas/MediaFile"
+            holo:
+              "$ref": "#/components/schemas/MediaFile"
+            brochure:
+              "$ref": "#/components/schemas/MediaFile"
           additionalProperties: false
         metrics:
           type: object
@@ -6901,7 +6914,9 @@ components:
               type: number
             cargoLabel:
               type: string
-            fleetchartLength:
+            fleetchartOffsetLength:
+              type: number
+            fleetchartOffsetBeam:
               type: number
             height:
               type: number
@@ -6992,6 +7007,12 @@ components:
             yawBoosted:
               type: number
           additionalProperties: false
+        holo:
+          type: string
+          deprecated: true
+        brochure:
+          type: string
+          deprecated: true
         createdAt:
           type: string
           format: date-time

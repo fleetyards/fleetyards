@@ -17,12 +17,13 @@ module Shared
             mediumUrl: {type: :string, format: :uri},
             largeUrl: {type: :string, format: :uri},
             xlargeUrl: {type: :string, format: :uri},
+            previewUrl: {type: :string, format: :uri},
             width: {type: :integer},
             height: {type: :integer},
             uploadedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[name contentType size url uploadedAt]
+          required: %w[name contentType size url]
         })
       end
     end

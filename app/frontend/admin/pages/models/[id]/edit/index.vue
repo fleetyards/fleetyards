@@ -13,8 +13,9 @@ import {
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import FormImageInput from "@/shared/components/base/FormImageInput/index.vue";
-import FormActions from "@/shared/components/base/FormActions/index.vue";
+import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
+import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
+import ModelForm from "@/admin/components/Models/Form/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import ModelFilterGroup from "@/admin/components/base/ModelFilterGroup/index.vue";
@@ -22,8 +23,6 @@ import ManufacturerFilterGroup from "@/admin/components/base/ManufacturerFilterG
 import ProductionStatusFilterGroup from "@/admin/components/base/ProductionStatusFilterGroup/index.vue";
 import ModelClassificationFilterGroup from "@/frontend/components/base/ModelClassificationFilterGroup/index.vue";
 import ModelFocusFilterGroup from "@/frontend/components/base/ModelFocusFilterGroup/index.vue";
-import { useModelUpdateMutation } from "@/admin/composables/useModelUpdateMutation";
-// import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 type Props = {
   model: ModelExtended;
@@ -32,10 +31,6 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
-
-// const { displayAlert } = useAppNotifications();
-
-const submitting = ref(false);
 
 const initialValues = ref<ModelUpdateInput>({
   name: props.model.name,
@@ -53,13 +48,15 @@ const initialValues = ref<ModelUpdateInput>({
   classification: props.model.classification,
   focus: props.model.focus,
   newStoreImage: undefined,
+  newBrochure: undefined,
+  newHolo: undefined,
 });
 
 const validationSchema = {
   name: "required",
 };
 
-const { defineField, handleSubmit } = useForm<ModelUpdateInput>({
+const { defineField } = useForm<ModelUpdateInput>({
   initialValues: initialValues.value,
   validationSchema,
 });
@@ -80,30 +77,17 @@ const [productionNote, productionNoteProps] = defineField("productionNote");
 const [classification, classificationProps] = defineField("classification");
 const [focus, focusProps] = defineField("focus");
 const [newStoreImage, newStoreImageProps] = defineField("newStoreImage");
-
-const { updateMutation: mutation } = useModelUpdateMutation(props.model);
-
-const onSubmit = handleSubmit(async (values) => {
-  submitting.value = true;
-
-  await mutation
-    .mutateAsync({
-      id: props.model.id,
-      data: values,
-    })
-    .finally(() => {
-      submitting.value = false;
-    });
-});
-
-const onCancel = () => {
-  alert("cancel");
-};
+const [newBrochure, newBrochureProps] = defineField("newBrochure");
+const [newHolo, newHoloProps] = defineField("newHolo");
 </script>
 
 <template>
   <Heading>{{ t("headlines.admin.models.edit.index") }}</Heading>
-  <form @submit.prevent="onSubmit">
+  <ModelForm
+    :model="model"
+    :validation-schema="validationSchema"
+    :initial-values="initialValues"
+  >
     <div class="row">
       <div class="col-12 col-md-6">
         <FormInput v-model="name" v-bind="nameProps" name="name" />
@@ -231,17 +215,38 @@ const onCancel = () => {
 
     <div class="row">
       <div class="col-12 col-md-4">
-        <FormImageInput
+        <FormFileInput
           v-model="newStoreImage"
-          :image="model.media.storeImage?.smallUrl"
+          :file="model.media.storeImage"
           translation-key="model.storeImage"
           v-bind="newStoreImageProps"
           name="newStoreImage"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          clearable
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <FormFileInput
+          v-model="newHolo"
+          :file="model.media.holo"
+          translation-key="model.holo"
+          v-bind="newHoloProps"
+          name="newHolo"
+          :allowed-types="AllowedFileTypes.HOLO"
+          clearable
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <FormFileInput
+          v-model="newBrochure"
+          :file="model.media.brochure"
+          translation-key="model.brochure"
+          v-bind="newBrochureProps"
+          :allowed-types="AllowedFileTypes.PDF"
+          name="newBrochure"
           clearable
         />
       </div>
     </div>
-
-    <FormActions :submitting="submitting" @cancel="onCancel" />
-  </form>
+  </ModelForm>
 </template>

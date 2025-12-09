@@ -6,7 +6,7 @@ class ActiveStorage::BaseController < ActionController::Base
 
   include ActiveStorage::SetCurrent
 
-  protect_from_forgery with: :exception
+  protect_from_forgery with: :null_session
 
   self.etag_with_template_digest = false
 

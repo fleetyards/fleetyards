@@ -4,7 +4,7 @@ module Admin
   module Api
     module V1
       class ModelsController < ::Admin::Api::BaseController
-        before_action :set_model, only: %i[show update destroy use_rsi_image images reload_one]
+        before_action :set_model, only: %i[show update destroy use_rsi_image videos reload_one]
 
         rescue_from ActiveRecord::RecordNotFound do |_exception|
           not_found(I18n.t("messages.record_not_found.model", slug: params[:slug]))
@@ -81,7 +81,11 @@ module Admin
           render json: ValidationError.new("model.use_rsi_image", errors: @model.errors), status: :bad_request
         end
 
-        def images
+        def videos
+          @videos = @model.videos
+            .order("videos.created_at desc")
+            .page(params[:page])
+            .per(per_page(Video))
         end
 
         def reload_matrix
@@ -151,9 +155,13 @@ module Admin
             :pitch, :pitch_boosted, :roll, :roll_boosted, :sc_identifier, :erkul_identifier,
             :manufacturer_id, :rsi_id, :base_model_id, :production_status, :production_note,
             :classification, :focus, :size, :dock_size, :length, :beam, :height, :on_sale,
-            :store_url, :sales_page_url, :price, :pledge_price, :cargo,
+            :store_url, :sales_page_url, :price, :pledge_price, :cargo, :fleetchart_offset_length,
+            :fleetchart_offset_beam,
             :cargo_holds, :hydrogen_fuel_tank_size, :hydrogen_fuel_tanks, :quantum_fuel_tank_size,
-            :quantum_fuel_tanks, :new_store_image
+            :quantum_fuel_tanks, :new_store_image, :new_rsi_store_image, :new_holo, :new_brochure,
+            :new_fleetchart_image, :new_top_view, :new_side_view, :new_front_view, :new_angled_view,
+            :new_top_view_colored, :new_side_view_colored, :new_front_view_colored,
+            :new_angled_view_colored
           )
         end
       end

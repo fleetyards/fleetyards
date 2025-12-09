@@ -53,6 +53,8 @@
         "scmSpeedBoosted": "SCM Speed Boosted",
         "maxSpeed": "Max Speed",
         "reverseSpeedBoosted": "Reverse Speed Boosted",
+        "quantumFuelTankSize": "Quantum Fuel Tank Size",
+        "hydrogenFuelTankSize": "Hydrogen Fuel Tank Size",
         "yaw": "Yaw",
         "pitch": "Pitch",
         "roll": "Roll",

@@ -7,6 +7,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/models/[id]/edit/index.vue"),
     meta: {
       title: "admin.models.edit.index",
+      customTitle: true,
       needsAuthentication: true,
       nav: "editTabs",
       activeRoute: "admin-models",
@@ -52,6 +53,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/models/[id]/edit/fleetchart.vue"),
     meta: {
       title: "admin.models.edit.fleetchart",
+      customTitle: true,
       activeRoute: "admin-models",
       nav: "editTabs",
       needsAuthentication: true,
@@ -74,6 +76,28 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/models/[id]/edit/docks.vue"),
     meta: {
       title: "admin.models.edit.docks",
+      activeRoute: "admin-models",
+      nav: "editTabs",
+      needsAuthentication: true,
+    },
+  },
+  {
+    path: "modules/",
+    name: "admin-model-edit-modules",
+    component: () => import("@/admin/pages/models/[id]/edit/modules.vue"),
+    meta: {
+      title: "admin.models.edit.modules",
+      activeRoute: "admin-models",
+      nav: "editTabs",
+      needsAuthentication: true,
+    },
+  },
+  {
+    path: "paints/",
+    name: "admin-model-edit-paints",
+    component: () => import("@/admin/pages/models/[id]/edit/paints.vue"),
+    meta: {
+      title: "admin.models.edit.paints",
       activeRoute: "admin-models",
       nav: "editTabs",
       needsAuthentication: true,

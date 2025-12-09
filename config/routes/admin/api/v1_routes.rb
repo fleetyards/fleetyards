@@ -21,7 +21,7 @@ v1_admin_api_routes = lambda do
       get "production-states" => "models#production_states"
     end
 
-    get :images, on: :member
+    get :videos, on: :member
   end
 
   resources :model_modules, path: "model-modules", only: %i[index]
