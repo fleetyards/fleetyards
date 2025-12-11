@@ -232,11 +232,19 @@ const modelName = computed(() => {
 });
 
 const length = computed(
-  () => (model.value.metrics.fleetchartLength || 0) * props.sizeMultiplicator,
+  () =>
+    (model.value.metrics.fleetchartOffsetLength || 0) * props.sizeMultiplicator,
+);
+
+const beam = computed(
+  () =>
+    (model.value.metrics.fleetchartOffsetBeam || 0) * props.sizeMultiplicator,
 );
 
 const height = computed(
-  () => (length.value * sourceImageHeightMax.value) / sourceImageWidthMax.value,
+  () =>
+    (Math.max(length.value, beam.value) * sourceImageHeightMax.value) /
+    sourceImageWidthMax.value,
 );
 
 const imageWidth = computed(() => {

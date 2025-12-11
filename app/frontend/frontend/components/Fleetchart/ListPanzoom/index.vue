@@ -257,7 +257,7 @@ const setupColumns = () => {
   props.items.forEach((item) => {
     const model = (item as Vehicle).model || item;
     const length =
-      (model.metrics.fleetchartLength || 0) * sizeMultiplicator.value;
+      (model.metrics.fleetchartOffsetLength || 0) * sizeMultiplicator.value;
 
     const height = (length * imageMaxHeight(item)) / imageMaxWidth(item);
 

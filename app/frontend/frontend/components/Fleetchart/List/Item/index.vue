@@ -177,7 +177,15 @@ const modelName = computed(() => {
 
 const length = computed(() => {
   return (
-    (model.value.metrics.fleetchartLength || 0) *
+    (model.value.metrics.fleetchartOffsetLength || 0) *
+    props.sizeMultiplicator *
+    props.scale
+  );
+});
+
+const beam = computed(() => {
+  return (
+    (model.value.metrics.fleetchartOffsetBeam || 0) *
     props.sizeMultiplicator *
     props.scale
   );
@@ -185,7 +193,8 @@ const length = computed(() => {
 
 const height = computed(() => {
   return (
-    (length.value * sourceImageHeightMax.value) / sourceImageWidthMax.value
+    (Math.max(length.value, beam.value) * sourceImageHeightMax.value) /
+    sourceImageWidthMax.value
   );
 });
 
@@ -203,9 +212,9 @@ const imageWidth = computed(() => {
 const sourceImageHeightMax = computed(() => {
   if (
     modulePackage.value &&
-    (modulePackage.value.topView ||
-      modulePackage.value.sideView ||
-      modulePackage.value.angledView)
+    (modulePackage.value.media.topView ||
+      modulePackage.value.media.sideView ||
+      modulePackage.value.media.angledView)
   ) {
     const height = extractMaxHeightFromModel(modulePackage.value);
     if (height) {
@@ -215,7 +224,9 @@ const sourceImageHeightMax = computed(() => {
 
   if (
     paint.value &&
-    (paint.value.topView || paint.value.sideView || paint.value.angledView)
+    (paint.value.media.topView ||
+      paint.value.media.sideView ||
+      paint.value.media.angledView)
   ) {
     const height = extractMaxHeightFromModel(paint.value);
     if (height) {
@@ -297,7 +308,9 @@ const sourceImageWidthMax = computed(() => {
 
   if (
     paint.value &&
-    (paint.value.topView || paint.value.sideView || paint.value.angledView)
+    (paint.value.media.topView ||
+      paint.value.media.sideView ||
+      paint.value.media.angledView)
   ) {
     const width = extractMaxWidthFromModel(paint.value);
     if (width) {
