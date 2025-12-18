@@ -5,10 +5,9 @@ import {
   useDestroyVehicle as useDestroyVehicleMutation,
   useUpdateBulkVehicle as useUpdateBulkVehicleMutation,
   useDestroyBulkVehicle as useDestroyBulkVehicleMutation,
-  getHangarQueryOptions,
-  getWishlistQueryOptions,
+  getHangarQueryKey,
+  getWishlistQueryKey,
 } from "@/services/fyApi";
-import { type CustomQueryOptions } from "@/services/customQueryOptions";
 import { type Hangar, type Vehicle } from "@/services/fyApi";
 import { QueryKey, useQueryClient } from "@tanstack/vue-query";
 import { type ComputedRef } from "vue";
@@ -16,9 +15,6 @@ import { getPreviousQueryData } from "@/shared/utils/QueryData";
 
 export const useVehicleMutations = () => {
   const queryClient = useQueryClient();
-
-  const hangarQueryOptions = getHangarQueryOptions() as CustomQueryOptions;
-  const wishlistQueryOptions = getWishlistQueryOptions() as CustomQueryOptions;
 
   const useCreateMutation = () => {
     return useCreateVehicleMutation({
@@ -123,7 +119,7 @@ export const useVehicleMutations = () => {
 
             queryClient.setQueryData(queryKey, {
               ...previousVehicles,
-              items: previousVehicles.items.filter((item) => {
+              items: (previousVehicles.items || []).filter((item) => {
                 return item.id !== vehicleForMutation.id;
               }),
             });
@@ -161,24 +157,24 @@ export const useVehicleMutations = () => {
 
   const invalidateHangarQueries = () => {
     queryClient.invalidateQueries({
-      queryKey: [hangarQueryOptions.queryKey],
+      queryKey: [getHangarQueryKey()],
     });
     queryClient.invalidateQueries({
-      queryKey: [wishlistQueryOptions.queryKey],
+      queryKey: [getWishlistQueryKey()],
     });
   };
 
   const getPreviousHangarQueryData = async () => {
     await queryClient.cancelQueries({
-      queryKey: [hangarQueryOptions.queryKey],
+      queryKey: [getHangarQueryKey()],
     });
     await queryClient.cancelQueries({
-      queryKey: [wishlistQueryOptions.queryKey],
+      queryKey: [getWishlistQueryKey()],
     });
 
     return getPreviousQueryData(queryClient, [
-      hangarQueryOptions.queryKey,
-      wishlistQueryOptions.queryKey,
+      getHangarQueryKey(),
+      getWishlistQueryKey(),
     ]);
   };
 

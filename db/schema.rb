@@ -761,6 +761,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_04_233457) do
     t.string "rsi_ctm_url"
     t.string "rsi_pledge_slug"
     t.integer "rsi_pledge_value"
+    t.boolean "adi_map", default: false
     t.decimal "scm_speed_boosted", precision: 15, scale: 2
     t.decimal "pitch_boosted", precision: 15, scale: 2
     t.decimal "yaw_boosted", precision: 15, scale: 2
@@ -772,7 +773,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_04_233457) do
     t.integer "rsi_store_image_width"
     t.integer "rsi_store_image_height"
     t.decimal "fleetchart_offset_beam", precision: 15, scale: 2
-    t.boolean "adi_map", default: false
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 
