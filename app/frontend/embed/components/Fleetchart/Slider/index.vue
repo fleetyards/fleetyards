@@ -1,17 +1,8 @@
-<template>
-  <VueSlider
-    v-model="scale"
-    :min="10"
-    :max="max"
-    :interval="10"
-    :dot-size="20"
-    :marks="mark"
-    :tooltip-formatter="label"
-    :process="false"
-    lazy
-    @change="updateScale"
-  />
-</template>
+<script lang="ts">
+export default {
+  name: "SliderComponent",
+};
+</script>
 
 <script lang="ts" setup>
 import VueSlider from "vue-slider-component";
@@ -44,8 +35,17 @@ const updateScale = (value: number) => {
 const label = (value: number) => `${value} %`;
 </script>
 
-<script lang="ts">
-export default {
-  name: "SliderComponent",
-};
-</script>
+<template>
+  <VueSlider
+    v-model="scale"
+    :min="10"
+    :max="max"
+    :interval="10"
+    :dot-size="20"
+    :marks="mark"
+    :tooltip-formatter="label"
+    :process="false"
+    lazy
+    @change="updateScale"
+  />
+</template>

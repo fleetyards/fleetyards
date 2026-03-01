@@ -1,3 +1,31 @@
+<script lang="ts">
+export default {
+  name: "ModelHardpointsComponentModal",
+};
+</script>
+
+<script lang="ts" setup>
+import Modal from "@/shared/components/AppModal/Inner/index.vue";
+import type { ModelHardpoint } from "@/services/fyApi";
+import { useI18n } from "@/shared/composables/useI18n";
+
+const { t } = useI18n();
+
+type Props = {
+  hardpoint: ModelHardpoint;
+};
+
+const props = defineProps<Props>();
+
+const component = computed(() => {
+  return props.hardpoint.component;
+});
+
+const title = computed(() => {
+  return component.value?.name || "";
+});
+</script>
+
 <template>
   <Modal :title="title">
     <div v-if="component" class="col-12 metrics-block">
@@ -27,31 +55,3 @@
     <div class="clearfix" />
   </Modal>
 </template>
-
-<script lang="ts" setup>
-import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import type { ModelHardpoint } from "@/services/fyApi";
-import { useI18n } from "@/shared/composables/useI18n";
-
-const { t } = useI18n();
-
-type Props = {
-  hardpoint: ModelHardpoint;
-};
-
-const props = defineProps<Props>();
-
-const component = computed(() => {
-  return props.hardpoint.component;
-});
-
-const title = computed(() => {
-  return component.value?.name || "";
-});
-</script>
-
-<script lang="ts">
-export default {
-  name: "ModelHardpointsComponentModal",
-};
-</script>

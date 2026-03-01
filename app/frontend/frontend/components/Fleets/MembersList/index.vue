@@ -1,22 +1,8 @@
-<template>
-  <Panel v-if="members.length">
-    <transition-group
-      name="fade"
-      class="flex-list flex-list-users"
-      tag="div"
-      :appear="true"
-    >
-      <MembersListHead key="heading" :actions-visible="actionsVisible" />
-      <MembersListItem
-        v-for="(member, index) in members"
-        :key="`members-${index}`"
-        :member="member"
-        :actions-visible="actionsVisible"
-        :role="role"
-      />
-    </transition-group>
-  </Panel>
-</template>
+<script lang="ts">
+export default {
+  name: "MembersList",
+};
+</script>
 
 <script lang="ts" setup>
 import Panel from "@/shared/components/base/Panel/index.vue";
@@ -36,8 +22,22 @@ const actionsVisible = computed(() =>
 );
 </script>
 
-<script lang="ts">
-export default {
-  name: "MembersList",
-};
-</script>
+<template>
+  <Panel v-if="members.length">
+    <transition-group
+      name="fade"
+      class="flex-list flex-list-users"
+      tag="div"
+      :appear="true"
+    >
+      <MembersListHead key="heading" :actions-visible="actionsVisible" />
+      <MembersListItem
+        v-for="(member, index) in members"
+        :key="`members-${index}`"
+        :member="member"
+        :actions-visible="actionsVisible"
+        :role="role"
+      />
+    </transition-group>
+  </Panel>
+</template>

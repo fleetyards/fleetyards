@@ -1,26 +1,8 @@
-<template>
-  <a
-    :class="{
-      active: selected,
-      bigIcon,
-    }"
-    class="filter-group-item fade-list-item"
-    @click="select(option)"
-  >
-    <span v-if="option.icon" class="filter-group-item-icon">
-      <img :src="option.icon" :alt="`option-icon`" />
-    </span>
-    <span class="filter-group-item-label">
-      {{ option.label }}
-    </span>
-    <span
-      v-if="multiple || (selected && nullable)"
-      v-tooltip="t('filterGroup.labels.removeTooltip')"
-    >
-      <i class="fal fa-plus" />
-    </span>
-  </a>
-</template>
+<script lang="ts">
+export default {
+  name: "FilterGroupOption",
+};
+</script>
 
 <script lang="ts" setup>
 import { FilterOption } from "@/services/fyApi";
@@ -50,11 +32,29 @@ const select = (option: FilterOption) => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "FilterGroupOption",
-};
-</script>
+<template>
+  <a
+    :class="{
+      active: selected,
+      bigIcon,
+    }"
+    class="filter-group-item fade-list-item"
+    @click="select(option)"
+  >
+    <span v-if="option.icon" class="filter-group-item-icon">
+      <img :src="option.icon" :alt="`option-icon`" />
+    </span>
+    <span class="filter-group-item-label">
+      {{ option.label }}
+    </span>
+    <span
+      v-if="multiple || (selected && nullable)"
+      v-tooltip="t('filterGroup.labels.removeTooltip')"
+    >
+      <i class="fal fa-plus" />
+    </span>
+  </a>
+</template>
 
 <style lang="scss" scoped>
 @import "./index.scss";

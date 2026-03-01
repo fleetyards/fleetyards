@@ -1,35 +1,8 @@
-<template>
-  <div v-if="hasImages" class="fleetchart-views">
-    <div>
-      <img
-        v-if="fleetchartImageAngled"
-        :src="fleetchartImageAngled"
-        :width="length > beam ? length : beam"
-      />
-    </div>
-    <div>
-      <img
-        v-if="fleetchartImageTop"
-        :src="fleetchartImageTop"
-        :width="length"
-      />
-    </div>
-    <div>
-      <img
-        v-if="fleetchartImageFront"
-        :src="fleetchartImageFront"
-        :width="beam"
-      />
-    </div>
-    <div>
-      <img
-        v-if="fleetchartImageSide"
-        :src="fleetchartImageSide"
-        :width="length"
-      />
-    </div>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "ModelsFleetchartImages",
+};
+</script>
 
 <script lang="ts" setup>
 import { useMobile } from "@/shared/composables/useMobile";
@@ -169,11 +142,38 @@ onMounted(() => {
 });
 </script>
 
-<script lang="ts">
-export default {
-  name: "ModelsFleetchartImages",
-};
-</script>
+<template>
+  <div v-if="hasImages" class="fleetchart-views">
+    <div>
+      <img
+        v-if="fleetchartImageAngled"
+        :src="fleetchartImageAngled"
+        :width="length > beam ? length : beam"
+      />
+    </div>
+    <div>
+      <img
+        v-if="fleetchartImageTop"
+        :src="fleetchartImageTop"
+        :width="length"
+      />
+    </div>
+    <div>
+      <img
+        v-if="fleetchartImageFront"
+        :src="fleetchartImageFront"
+        :width="beam"
+      />
+    </div>
+    <div>
+      <img
+        v-if="fleetchartImageSide"
+        :src="fleetchartImageSide"
+        :width="length"
+      />
+    </div>
+  </div>
+</template>
 
 <style scoped lang="scss">
 @import "index.scss";

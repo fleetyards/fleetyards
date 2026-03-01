@@ -1,20 +1,8 @@
-<template>
-  <div class="fleetchart-slider">
-    <VueSlider
-      ref="scaleSlider"
-      v-model="innerValue"
-      :min="minScale"
-      :max="maxScale"
-      :interval="interval"
-      :marks="marks"
-      :dot-size="20"
-      :tooltip-formatter="label"
-      :process="false"
-      :lazy="true"
-      @change="update"
-    />
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "FleetchartSlider",
+};
+</script>
 
 <script lang="ts" setup>
 import VueSlider from "vue-slider-component";
@@ -76,8 +64,20 @@ const label = (value: number) => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "FleetchartSlider",
-};
-</script>
+<template>
+  <div class="fleetchart-slider">
+    <VueSlider
+      ref="scaleSlider"
+      v-model="innerValue"
+      :min="minScale"
+      :max="maxScale"
+      :interval="interval"
+      :marks="marks"
+      :dot-size="20"
+      :tooltip-formatter="label"
+      :process="false"
+      :lazy="true"
+      @change="update"
+    />
+  </div>
+</template>

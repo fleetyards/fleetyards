@@ -1,3 +1,22 @@
+<script lang="ts">
+export default {
+  name: "FleetchartListPanzoomItemImage",
+};
+</script>
+
+<script lang="ts" setup>
+type Props = {
+  src: string;
+  label: string;
+  width: number;
+  height?: number;
+};
+
+withDefaults(defineProps<Props>(), {
+  height: undefined,
+});
+</script>
+
 <template>
   <img
     v-if="src"
@@ -14,22 +33,3 @@
     <p>{{ label }}</p>
   </span>
 </template>
-
-<script lang="ts" setup>
-type Props = {
-  src: string;
-  label: string;
-  width: number;
-  height?: number;
-};
-
-withDefaults(defineProps<Props>(), {
-  height: undefined,
-});
-</script>
-
-<script lang="ts">
-export default {
-  name: "FleetchartListPanzoomItemImage",
-};
-</script>

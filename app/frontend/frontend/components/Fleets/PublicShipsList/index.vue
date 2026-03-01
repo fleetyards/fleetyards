@@ -1,3 +1,111 @@
+<script lang="ts">
+export default {
+  name: "FleetPublicShipsList",
+};
+</script>
+
+<script lang="ts" setup>
+import FilteredList from "@/shared/components/FilteredList/index.vue";
+import Grid from "@/shared/components/base/Grid/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
+import FleetVehiclePanel from "@/frontend/components/Fleets/VehiclePanel/index.vue";
+import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
+import Paginator from "@/shared/components/Paginator/index.vue";
+import PublicFleetVehiclesFilterForm from "@/frontend/components/Fleets/PublicFilterForm/index.vue";
+import type { Fleet, FleetVehicleQuery } from "@/services/fyApi";
+import { useMobile } from "@/shared/composables/useMobile";
+import { usePublicFleetStore } from "@/frontend/stores/publicFleet";
+import { useFleetchartStore } from "@/shared/stores/fleetchart";
+import { storeToRefs } from "pinia";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useFilters } from "@/shared/composables/useFilters";
+import { usePagination } from "@/shared/composables/usePagination";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import {
+  usePublicFleetStatsModelCounts as usePublicFleetStatsModelCountsQuery,
+  usePublicFleetVehicles as usePublicFleetVehiclesQuery,
+  getPublicFleetVehiclesQueryKey,
+} from "@/services/fyApi";
+
+type Props = {
+  fleet: Fleet;
+};
+
+const props = defineProps<Props>();
+
+const { t } = useI18n();
+
+const mobile = useMobile();
+
+const fleetStore = usePublicFleetStore();
+
+const { grouped, detailsVisible } = storeToRefs(fleetStore);
+
+const fleetchartStore = useFleetchartStore();
+
+const fleetchartVisible = computed(() => {
+  return fleetchartStore.isVisible("publicFleet");
+});
+
+const toggleFleetchart = () => {
+  fleetchartStore.toggleFleetchart("publicFleet");
+};
+
+const toggleDetailsTooltip = computed(() => {
+  if (detailsVisible.value) {
+    return t("actions.hideDetails");
+  }
+
+  return t("actions.showDetails");
+});
+
+watch(
+  () => grouped.value,
+  () => refetch,
+);
+
+watch(
+  () => props.fleet,
+  () => refetch,
+);
+
+const vehiclesQueryParams = computed(() => {
+  return {
+    page: page.value,
+    perPage: perPage.value,
+    q: filters.value,
+  };
+});
+
+const { data: modelCounts, refetch: refetchModelCounts } =
+  usePublicFleetStatsModelCountsQuery(props.fleet.slug, vehiclesQueryParams);
+
+const refetch = () => {
+  refetchVehicles();
+  refetchModelCounts();
+};
+
+const vehiclesQueryKey = computed(() => {
+  return getPublicFleetVehiclesQueryKey(
+    props.fleet.slug,
+    vehiclesQueryParams.value,
+  );
+});
+
+const {
+  data: fleetVehicles,
+  refetch: refetchVehicles,
+  ...asyncStatus
+} = usePublicFleetVehiclesQuery(props.fleet.slug, vehiclesQueryParams);
+
+const { filters } = useFilters<FleetVehicleQuery>({
+  updateCallback: refetch,
+});
+
+const { perPage, page, updatePerPage } = usePagination(vehiclesQueryKey);
+</script>
+
 <template>
   <div>
     <FilteredList
@@ -82,111 +190,3 @@
     </FilteredList>
   </div>
 </template>
-
-<script lang="ts" setup>
-import FilteredList from "@/shared/components/FilteredList/index.vue";
-import Grid from "@/shared/components/base/Grid/index.vue";
-import Btn from "@/shared/components/base/Btn/index.vue";
-import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
-import FleetVehiclePanel from "@/frontend/components/Fleets/VehiclePanel/index.vue";
-import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
-import Paginator from "@/shared/components/Paginator/index.vue";
-import PublicFleetVehiclesFilterForm from "@/frontend/components/Fleets/PublicFilterForm/index.vue";
-import type { Fleet, FleetVehicleQuery } from "@/services/fyApi";
-import { useMobile } from "@/shared/composables/useMobile";
-import { usePublicFleetStore } from "@/frontend/stores/publicFleet";
-import { useFleetchartStore } from "@/shared/stores/fleetchart";
-import { storeToRefs } from "pinia";
-import { useI18n } from "@/shared/composables/useI18n";
-import { useFilters } from "@/shared/composables/useFilters";
-import { usePagination } from "@/shared/composables/usePagination";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
-import {
-  usePublicFleetVehiclesQueryOptions,
-  usePublicFleetStatsModelCounts as usePublicFleetStatsModelCountsQuery,
-  usePublicFleetVehicles as usePublicFleetVehiclesQuery,
-} from "@/services/fyApi";
-
-type Props = {
-  fleet: Fleet;
-};
-
-const props = defineProps<Props>();
-
-const { t } = useI18n();
-
-const mobile = useMobile();
-
-const fleetStore = usePublicFleetStore();
-
-const { grouped, detailsVisible } = storeToRefs(fleetStore);
-
-const fleetchartStore = useFleetchartStore();
-
-const fleetchartVisible = computed(() => {
-  return fleetchartStore.isVisible("publicFleet");
-});
-
-const toggleFleetchart = () => {
-  fleetchartStore.toggleFleetchart("publicFleet");
-};
-
-const toggleDetailsTooltip = computed(() => {
-  if (detailsVisible.value) {
-    return t("actions.hideDetails");
-  }
-
-  return t("actions.showDetails");
-});
-
-watch(
-  () => grouped.value,
-  () => refetch,
-);
-
-watch(
-  () => props.fleet,
-  () => refetch,
-);
-
-const vehiclesQueryParams = computed(() => {
-  return {
-    page: page.value,
-    perPage: perPage.value,
-    q: filters.value,
-  };
-});
-
-const { data: modelCounts, refetch: refetchModelCounts } =
-  usePublicFleetStatsModelCountsQuery(props.fleet.slug, vehiclesQueryParams);
-
-const refetch = () => {
-  refetchVehicles();
-  refetchModelCounts();
-};
-
-const vehiclesQueryKey = computed(() => {
-  return usePublicFleetVehiclesQueryOptions(
-    props.fleet.slug,
-    vehiclesQueryParams,
-  ).queryKey;
-});
-
-const {
-  data: fleetVehicles,
-  refetch: refetchVehicles,
-  ...asyncStatus
-} = usePublicFleetVehiclesQuery(props.fleet.slug, vehiclesQueryParams);
-
-const { filters } = useFilters<FleetVehicleQuery>({
-  updateCallback: refetch,
-});
-
-const { perPage, page, updatePerPage } = usePagination(vehiclesQueryKey);
-</script>
-
-<script lang="ts">
-export default {
-  name: "FleetPublicShipsList",
-};
-</script>

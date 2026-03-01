@@ -1,33 +1,8 @@
-<template>
-  <div>
-    <div v-if="slider" class="row justify-content-lg-center">
-      <div class="col-12 col-lg-4">
-        <FleetchartSlider
-          :initial-scale="fleetchartScale"
-          @change="updateFleetchartScale"
-        />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12 fleetchart-wrapper">
-        <transition-group
-          id="fleetchart"
-          name="fade-list"
-          class="row fleetchart"
-          tag="div"
-          :appear="true"
-        >
-          <FleetchartItem
-            v-for="(model, index) in internalModels"
-            :key="`fleetchart-item-${index}-${model.slug}`"
-            :model="model"
-            :scale="fleetchartScale"
-          />
-        </transition-group>
-      </div>
-    </div>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "FleetchartList",
+};
+</script>
 
 <script lang="ts" setup>
 import FleetchartSlider from "@/embed/components/Fleetchart/Slider/index.vue";
@@ -88,8 +63,33 @@ onMounted(() => {
 });
 </script>
 
-<script lang="ts">
-export default {
-  name: "FleetchartList",
-};
-</script>
+<template>
+  <div>
+    <div v-if="slider" class="row justify-content-lg-center">
+      <div class="col-12 col-lg-4">
+        <FleetchartSlider
+          :initial-scale="fleetchartScale"
+          @change="updateFleetchartScale"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 fleetchart-wrapper">
+        <transition-group
+          id="fleetchart"
+          name="fade-list"
+          class="row fleetchart"
+          tag="div"
+          :appear="true"
+        >
+          <FleetchartItem
+            v-for="(model, index) in internalModels"
+            :key="`fleetchart-item-${index}-${model.slug}`"
+            :model="model"
+            :scale="fleetchartScale"
+          />
+        </transition-group>
+      </div>
+    </div>
+  </div>
+</template>

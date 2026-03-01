@@ -1,46 +1,8 @@
-<template>
-  <BtnDropdown
-    v-if="mobile"
-    :mobile-block="true"
-    size="small"
-    class="labels-dropdown"
-  >
-    <template #label>Classifications</template>
-    <template #default>
-      <Btn
-        v-for="classification in countData"
-        :key="`dropdown-${classification.name}`"
-        variant="dropdown"
-        class="labels-dropdown-item"
-        :class="{
-          active: isActive(classification.name),
-        }"
-        @click="filter(classification.name)"
-      >
-        {{ classification.label }}
-        <span class="label-count">{{ classification.count }}</span>
-      </Btn>
-    </template>
-  </BtnDropdown>
-  <div v-else class="labels">
-    <transition-group name="fade-list" appear>
-      <a
-        v-for="classification in countData"
-        :key="classification.name"
-        :class="{
-          'label-link': filterKey,
-          active: isActive(classification.name),
-        }"
-        class="label fade-list-item"
-        @click="filter(classification.name)"
-      >
-        <span class="label-inner">
-          {{ classification.label }}: {{ classification.count }}
-        </span>
-      </a>
-    </transition-group>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "ModelClassLabels",
+};
+</script>
 
 <script lang="ts" setup>
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
@@ -116,8 +78,46 @@ const isActive = (classification: string) => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "ModelClassLabels",
-};
-</script>
+<template>
+  <BtnDropdown
+    v-if="mobile"
+    :mobile-block="true"
+    size="small"
+    class="labels-dropdown"
+  >
+    <template #label>Classifications</template>
+    <template #default>
+      <Btn
+        v-for="classification in countData"
+        :key="`dropdown-${classification.name}`"
+        variant="dropdown"
+        class="labels-dropdown-item"
+        :class="{
+          active: isActive(classification.name),
+        }"
+        @click="filter(classification.name)"
+      >
+        {{ classification.label }}
+        <span class="label-count">{{ classification.count }}</span>
+      </Btn>
+    </template>
+  </BtnDropdown>
+  <div v-else class="labels">
+    <transition-group name="fade-list" appear>
+      <a
+        v-for="classification in countData"
+        :key="classification.name"
+        :class="{
+          'label-link': filterKey,
+          active: isActive(classification.name),
+        }"
+        class="label fade-list-item"
+        @click="filter(classification.name)"
+      >
+        <span class="label-inner">
+          {{ classification.label }}: {{ classification.count }}
+        </span>
+      </a>
+    </transition-group>
+  </div>
+</template>

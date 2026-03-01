@@ -1,109 +1,8 @@
-<template>
-  <div>
-    <Panel
-      v-if="model"
-      :id="id"
-      class="model-panel"
-      :class="`model-panel-${model.slug}`"
-    >
-      <div class="panel-heading">
-        <h2 class="panel-title">
-          <router-link
-            :to="{
-              name: 'ship',
-              params: {
-                slug: model.slug,
-              },
-            }"
-          >
-            <span v-if="customName">{{ customName }}</span>
-            <span v-else>{{ countLabel }}{{ modelName }}</span>
-          </router-link>
-
-          <transition name="fade" appear>
-            <small v-if="serial">
-              <span class="serial">
-                {{ serial }}
-              </span>
-            </small>
-          </transition>
-
-          <br />
-
-          <small>
-            <router-link
-              v-if="model.manufacturer"
-              :to="
-                {
-                  query: {
-                    q: filterManufacturerQuery(model.manufacturer.slug),
-                  },
-                } as any
-              "
-            >
-              {{ model.manufacturer.name }}
-            </router-link>
-            <template v-if="customName">
-              {{ modelName }}
-            </template>
-          </small>
-        </h2>
-      </div>
-      <div
-        :class="{
-          'no-details': !details,
-        }"
-        class="panel-image text-center"
-      >
-        <LazyImage
-          :to="{ name: 'ship', params: { slug: model.slug } }"
-          :aria-label="model.name"
-          :src="storeImage"
-          :alt="model.name"
-          class="image"
-        >
-          <div
-            v-if="loaner"
-            v-tooltip="t('labels.vehicle.loaner')"
-            class="loaner-label"
-          >
-            <i class="fal fa-exchange" />
-          </div>
-          <div
-            v-show="model.onSale"
-            v-tooltip="t('labels.model.onSale')"
-            class="on-sale"
-          >
-            <i class="fal fa-dollar-sign" />
-          </div>
-        </LazyImage>
-        <VehicleOwner
-          v-if="showOwner"
-          :owner="username"
-          :model-slug="fleetVehicle.slug"
-          :fleet-slug="fleetSlug"
-        />
-      </div>
-
-      <Collapsed
-        :key="`details-${model.slug}-${uuid}-wrapper`"
-        :visible="details"
-      >
-        <div class="production-status">
-          <strong class="text-uppercase">
-            <template v-if="model.productionStatus">
-              {{ t(`labels.model.productionStatus.${model.productionStatus}`) }}
-            </template>
-            <template v-else>
-              {{ t(`labels.not-available`) }}
-            </template>
-          </strong>
-        </div>
-        <ModelPanelMetrics :model="model" />
-      </Collapsed>
-    </Panel>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "FleetVehiclePanel",
+};
+</script>
 
 <script lang="ts" setup>
 import VehicleOwner from "@/frontend/components/Vehicles/OwnerLabel/index.vue";
@@ -232,11 +131,112 @@ const filterManufacturerQuery = (manufacturer: string) => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "FleetVehiclePanel",
-};
-</script>
+<template>
+  <div>
+    <Panel
+      v-if="model"
+      :id="id"
+      class="model-panel"
+      :class="`model-panel-${model.slug}`"
+    >
+      <div class="panel-heading">
+        <h2 class="panel-title">
+          <router-link
+            :to="{
+              name: 'ship',
+              params: {
+                slug: model.slug,
+              },
+            }"
+          >
+            <span v-if="customName">{{ customName }}</span>
+            <span v-else>{{ countLabel }}{{ modelName }}</span>
+          </router-link>
+
+          <transition name="fade" appear>
+            <small v-if="serial">
+              <span class="serial">
+                {{ serial }}
+              </span>
+            </small>
+          </transition>
+
+          <br />
+
+          <small>
+            <router-link
+              v-if="model.manufacturer"
+              :to="
+                {
+                  query: {
+                    q: filterManufacturerQuery(model.manufacturer.slug),
+                  },
+                } as any
+              "
+            >
+              {{ model.manufacturer.name }}
+            </router-link>
+            <template v-if="customName">
+              {{ modelName }}
+            </template>
+          </small>
+        </h2>
+      </div>
+      <div
+        :class="{
+          'no-details': !details,
+        }"
+        class="panel-image text-center"
+      >
+        <LazyImage
+          :to="{ name: 'ship', params: { slug: model.slug } }"
+          :aria-label="model.name"
+          :src="storeImage"
+          :alt="model.name"
+          class="image"
+        >
+          <div
+            v-if="loaner"
+            v-tooltip="t('labels.vehicle.loaner')"
+            class="loaner-label"
+          >
+            <i class="fal fa-exchange" />
+          </div>
+          <div
+            v-show="model.onSale"
+            v-tooltip="t('labels.model.onSale')"
+            class="on-sale"
+          >
+            <i class="fal fa-dollar-sign" />
+          </div>
+        </LazyImage>
+        <VehicleOwner
+          v-if="showOwner"
+          :owner="username"
+          :model-slug="fleetVehicle.slug"
+          :fleet-slug="fleetSlug"
+        />
+      </div>
+
+      <Collapsed
+        :key="`details-${model.slug}-${uuid}-wrapper`"
+        :visible="details"
+      >
+        <div class="production-status">
+          <strong class="text-uppercase">
+            <template v-if="model.productionStatus">
+              {{ t(`labels.model.productionStatus.${model.productionStatus}`) }}
+            </template>
+            <template v-else>
+              {{ t(`labels.not-available`) }}
+            </template>
+          </strong>
+        </div>
+        <ModelPanelMetrics :model="model" />
+      </Collapsed>
+    </Panel>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 @import "index";

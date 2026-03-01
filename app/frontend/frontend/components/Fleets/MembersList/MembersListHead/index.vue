@@ -1,3 +1,31 @@
+<script lang="ts">
+export default {
+  name: "MembersListHead",
+};
+</script>
+
+<script lang="ts" setup>
+import { sortByToggle } from "@/frontend/utils/Sorting";
+import { useRoute } from "vue-router";
+import { useI18n } from "@/shared/composables/useI18n";
+import type { FleetYardsLocation } from "@/frontend/utils/Sorting";
+
+type Props = {
+  actionsVisible: boolean;
+};
+
+withDefaults(defineProps<Props>(), {
+  actionsVisible: false,
+});
+
+const { t } = useI18n();
+
+const route = useRoute();
+
+const sort = (field: string) =>
+  sortByToggle(route as unknown as FleetYardsLocation, field);
+</script>
+
 <template>
   <div class="fade-list-item col-12 flex-list-heading">
     <div class="flex-list-row">
@@ -23,31 +51,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { sortByToggle } from "@/frontend/utils/Sorting";
-import { useRoute } from "vue-router";
-import { useI18n } from "@/shared/composables/useI18n";
-import type { FleetYardsLocation } from "@/frontend/utils/Sorting";
-
-type Props = {
-  actionsVisible: boolean;
-};
-
-withDefaults(defineProps<Props>(), {
-  actionsVisible: false,
-});
-
-const { t } = useI18n();
-
-const route = useRoute();
-
-const sort = (field: string) =>
-  sortByToggle(route as unknown as FleetYardsLocation, field);
-</script>
-
-<script lang="ts">
-export default {
-  name: "MembersListHead",
-};
-</script>

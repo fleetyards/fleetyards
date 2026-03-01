@@ -1,35 +1,8 @@
-<template>
-  <div v-if="hardpoints.length" class="hardpoint-group">
-    <h2 v-if="!withoutTitle" class="hardpoint-group-label">
-      {{ t(`labels.hardpoint.groups.${group.toLowerCase()}`) }}
-    </h2>
-    <Panel slim>
-      <div class="hardpoint-group-inner">
-        <div
-          v-for="(items, type) in groupByType(filteredHardpoints)"
-          :key="type"
-          class="hardpoint-type"
-        >
-          <div class="hardpoint-type-label">
-            <img
-              :src="icons[type as keyof typeof icons]"
-              class="hardpoint-type-icon"
-              :alt="`icon-${type}`"
-            />
-            {{ t(`labels.hardpoint.types.${type}`) }}
-          </div>
-          <div class="hardpoint-items">
-            <HardpointItems
-              v-for="(groupedItems, key) in groupByKey(items)"
-              :key="`${type}-${key}`"
-              :hardpoints="groupedItems"
-            />
-          </div>
-        </div>
-      </div>
-    </Panel>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "HardpointGroup",
+};
+</script>
 
 <script lang="ts" setup>
 import { groupBy, sortBy } from "@/shared/utils/Array";
@@ -117,8 +90,35 @@ const groupByKey = (hardpoints: ModelHardpoint[]) => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "HardpointGroup",
-};
-</script>
+<template>
+  <div v-if="hardpoints.length" class="hardpoint-group">
+    <h2 v-if="!withoutTitle" class="hardpoint-group-label">
+      {{ t(`labels.hardpoint.groups.${group.toLowerCase()}`) }}
+    </h2>
+    <Panel slim>
+      <div class="hardpoint-group-inner">
+        <div
+          v-for="(items, type) in groupByType(filteredHardpoints)"
+          :key="type"
+          class="hardpoint-type"
+        >
+          <div class="hardpoint-type-label">
+            <img
+              :src="icons[type as keyof typeof icons]"
+              class="hardpoint-type-icon"
+              :alt="`icon-${type}`"
+            />
+            {{ t(`labels.hardpoint.types.${type}`) }}
+          </div>
+          <div class="hardpoint-items">
+            <HardpointItems
+              v-for="(groupedItems, key) in groupByKey(items)"
+              :key="`${type}-${key}`"
+              :hardpoints="groupedItems"
+            />
+          </div>
+        </div>
+      </div>
+    </Panel>
+  </div>
+</template>

@@ -278,15 +278,10 @@ const adiMap = computed(() => {
                 {{ t("labels.3dView") }}
               </Btn>
 
-                <Btn
-                  v-if="adiMap"
-                :size="BtnSizesEnum.SMALL"
-                  :href="adiMap"
-                >
-                  <img :src="adiIcon" class="adi-icon" />
-                  {{ t("labels.3dMap") }}
-                </Btn>
-              </BtnGroup>
+              <Btn v-if="adiMap" :size="BtnSizesEnum.SMALL" :href="adiMap">
+                <img :src="adiIcon" class="adi-icon" />
+                {{ t("labels.3dMap") }}
+              </Btn>
             </BtnGroup>
 
             <HoloViewer

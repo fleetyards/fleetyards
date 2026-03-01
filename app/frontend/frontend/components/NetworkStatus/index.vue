@@ -1,10 +1,8 @@
-<template>
-  <transition name="fade">
-    <div v-if="!online" class="network-status">
-      {{ t("labels.networkStatusOffline") }}
-    </div>
-  </transition>
-</template>
+<script lang="ts">
+export default {
+  name: "NetworkStatus",
+};
+</script>
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
@@ -34,11 +32,13 @@ onBeforeUnmount(() => {
 });
 </script>
 
-<script lang="ts">
-export default {
-  name: "NetworkStatus",
-};
-</script>
+<template>
+  <transition name="fade">
+    <div v-if="!online" class="network-status">
+      {{ t("labels.networkStatusOffline") }}
+    </div>
+  </transition>
+</template>
 
 <style lang="scss" scoped>
 @import "index";

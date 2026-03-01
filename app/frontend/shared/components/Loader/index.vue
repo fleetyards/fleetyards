@@ -1,3 +1,28 @@
+<script lang="ts">
+export default {
+  name: "LoaderComponent",
+};
+</script>
+
+<script lang="ts" setup>
+type Props = {
+  loading?: boolean;
+  fixed?: boolean;
+  relative?: boolean;
+  inline?: boolean;
+  admin?: boolean;
+  progress?: number;
+};
+
+withDefaults(defineProps<Props>(), {
+  loading: false,
+  fixed: false,
+  inline: false,
+  admin: false,
+  progress: undefined,
+});
+</script>
+
 <template>
   <transition name="fade">
     <div
@@ -34,31 +59,6 @@
     </div>
   </transition>
 </template>
-
-<script lang="ts" setup>
-type Props = {
-  loading?: boolean;
-  fixed?: boolean;
-  relative?: boolean;
-  inline?: boolean;
-  admin?: boolean;
-  progress?: number;
-};
-
-withDefaults(defineProps<Props>(), {
-  loading: false,
-  fixed: false,
-  inline: false,
-  admin: false,
-  progress: undefined,
-});
-</script>
-
-<script lang="ts">
-export default {
-  name: "LoaderComponent",
-};
-</script>
 
 <style lang="scss" scoped>
 @import "./index.scss";

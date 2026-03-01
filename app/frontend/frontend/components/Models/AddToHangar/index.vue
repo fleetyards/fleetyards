@@ -1,20 +1,8 @@
-<template>
-  <Btn
-    :key="`add-to-hangar-${model.slug}`"
-    v-tooltip.bottom="t('actions.addToHangar')"
-    :variant="btnVariant"
-    :size="btnSize"
-    :inline="variant === 'menu'"
-    data-test="add-to-hangar"
-    @click="add"
-  >
-    <i v-if="inHangar || onWishlist" class="fa fa-bookmark" />
-    <i v-else class="fal fa-bookmark" />
-    <slot name="label">
-      <span v-if="label">{{ t("labels.addToHangar") }}</span>
-    </slot>
-  </Btn>
-</template>
+<script lang="ts">
+export default {
+  name: "AddToHangar",
+};
+</script>
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -101,8 +89,20 @@ const add = async () => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "AddToHangar",
-};
-</script>
+<template>
+  <Btn
+    :key="`add-to-hangar-${model.slug}`"
+    v-tooltip.bottom="t('actions.addToHangar')"
+    :variant="btnVariant"
+    :size="btnSize"
+    :inline="variant === 'menu'"
+    data-test="add-to-hangar"
+    @click="add"
+  >
+    <i v-if="inHangar || onWishlist" class="fa fa-bookmark" />
+    <i v-else class="fal fa-bookmark" />
+    <slot name="label">
+      <span v-if="label">{{ t("labels.addToHangar") }}</span>
+    </slot>
+  </Btn>
+</template>

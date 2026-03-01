@@ -1,37 +1,8 @@
-<template>
-  <div class="row">
-    <div v-for="item in packages" :key="item.id" class="col-12 col-md-6 addon">
-      <Panel>
-        <div
-          v-tooltip="editable"
-          class="model-panel"
-          :class="{
-            editable,
-          }"
-          @click="activatePackage(item)"
-        >
-          <div
-            v-if="item.media.storeImage"
-            :style="{
-              'background-image': `url(${item.media.storeImage.small})`,
-            }"
-            class="model-panel-image"
-          />
-          <div class="model-panel-body">
-            <h3>{{ item.name }}</h3>
-          </div>
-          <div
-            v-if="selectedPackage(item)"
-            v-tooltip="editable && t('labels.selected')"
-            class="model-panel-selected"
-          >
-            <i class="fa fa-check" />
-          </div>
-        </div>
-      </Panel>
-    </div>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "AddonsModalPackages",
+};
+</script>
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
@@ -96,11 +67,40 @@ const selectedPackage = (addonPackage: ModelModulePackage) => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "AddonsModalPackages",
-};
-</script>
+<template>
+  <div class="row">
+    <div v-for="item in packages" :key="item.id" class="col-12 col-md-6 addon">
+      <Panel>
+        <div
+          v-tooltip="editable"
+          class="model-panel"
+          :class="{
+            editable,
+          }"
+          @click="activatePackage(item)"
+        >
+          <div
+            v-if="item.media.storeImage"
+            :style="{
+              'background-image': `url(${item.media.storeImage.small})`,
+            }"
+            class="model-panel-image"
+          />
+          <div class="model-panel-body">
+            <h3>{{ item.name }}</h3>
+          </div>
+          <div
+            v-if="selectedPackage(item)"
+            v-tooltip="editable && t('labels.selected')"
+            class="model-panel-selected"
+          >
+            <i class="fa fa-check" />
+          </div>
+        </div>
+      </Panel>
+    </div>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 @import "index";

@@ -1,3 +1,59 @@
+<script lang="ts">
+export default {
+  name: "HangarGuideModal",
+};
+</script>
+
+<script lang="ts" setup>
+import Modal from "@/shared/components/AppModal/Inner/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import VideoEmbed from "@/shared/components/Video/index.vue";
+import { useHangarStore } from "@/frontend/stores/hangar";
+import type { Video } from "@/services/fyApi";
+import { VideoTypeEnum } from "@/services/fyApi";
+
+const hangarStore = useHangarStore();
+
+const { t } = useI18n();
+
+type VideoList = {
+  [key: string]: Partial<Video>;
+};
+
+const videos = computed<VideoList>(() => ({
+  add: {
+    videoId: "eWS8korWw58",
+    type: VideoTypeEnum.youtube,
+    url: "https://www.youtube-nocookie.com/embed/eWS8korWw58",
+  },
+  edit: {
+    videoId: "6IR251NRb54",
+    type: VideoTypeEnum.youtube,
+    url: "https://www.youtube-nocookie.com/embed/6IR251NRb54",
+  },
+  wishlist: {
+    videoId: "eJ5wSE2Yy6w",
+    type: VideoTypeEnum.youtube,
+    url: "https://www.youtube-nocookie.com/embed/eJ5wSE2Yy6w",
+  },
+  public: {
+    videoId: "_FW1OrErciA",
+    type: VideoTypeEnum.youtube,
+    url: "https://www.youtube-nocookie.com/embed/_FW1OrErciA",
+  },
+  fleetchart: {
+    videoId: "EMgyE6oKyd0",
+    type: VideoTypeEnum.youtube,
+    url: "https://www.youtube-nocookie.com/embed/EMgyE6oKyd0",
+  },
+  groups: {
+    videoId: "1-ssNQRjVIA",
+    type: VideoTypeEnum.youtube,
+    url: "https://www.youtube-nocookie.com/embed/1-ssNQRjVIA",
+  },
+}));
+</script>
+
 <template>
   <Modal>
     <template #title>
@@ -95,62 +151,6 @@
     </div>
   </Modal>
 </template>
-
-<script lang="ts" setup>
-import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import { useI18n } from "@/shared/composables/useI18n";
-import VideoEmbed from "@/shared/components/Video/index.vue";
-import { useHangarStore } from "@/frontend/stores/hangar";
-import type { Video } from "@/services/fyApi";
-import { VideoTypeEnum } from "@/services/fyApi";
-
-const hangarStore = useHangarStore();
-
-const { t } = useI18n();
-
-type VideoList = {
-  [key: string]: Partial<Video>;
-};
-
-const videos = computed<VideoList>(() => ({
-  add: {
-    videoId: "eWS8korWw58",
-    type: VideoTypeEnum.youtube,
-    url: "https://www.youtube-nocookie.com/embed/eWS8korWw58",
-  },
-  edit: {
-    videoId: "6IR251NRb54",
-    type: VideoTypeEnum.youtube,
-    url: "https://www.youtube-nocookie.com/embed/6IR251NRb54",
-  },
-  wishlist: {
-    videoId: "eJ5wSE2Yy6w",
-    type: VideoTypeEnum.youtube,
-    url: "https://www.youtube-nocookie.com/embed/eJ5wSE2Yy6w",
-  },
-  public: {
-    videoId: "_FW1OrErciA",
-    type: VideoTypeEnum.youtube,
-    url: "https://www.youtube-nocookie.com/embed/_FW1OrErciA",
-  },
-  fleetchart: {
-    videoId: "EMgyE6oKyd0",
-    type: VideoTypeEnum.youtube,
-    url: "https://www.youtube-nocookie.com/embed/EMgyE6oKyd0",
-  },
-  groups: {
-    videoId: "1-ssNQRjVIA",
-    type: VideoTypeEnum.youtube,
-    url: "https://www.youtube-nocookie.com/embed/1-ssNQRjVIA",
-  },
-}));
-</script>
-
-<script lang="ts">
-export default {
-  name: "HangarGuideModal",
-};
-</script>
 
 <style lang="scss" scoped>
 @import "index";

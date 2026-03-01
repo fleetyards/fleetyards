@@ -1,60 +1,8 @@
-<template>
-  <div class="row">
-    <div class="col-12">
-      <div class="row">
-        <template v-for="addon in addons">
-          <div
-            v-for="(addonId, index) in idsForAddon(addon.id)"
-            :key="`${index}-${addonId}`"
-            class="col-12 col-md-6 addon"
-          >
-            <Panel
-              v-tooltip="editable && selectTooltip(addon.id)"
-              alignment="left"
-              slim
-              class="addon-panel"
-              :class="{
-                'addon-panel-editable': editable,
-              }"
-              @click.capture="changeAddon(addon.id)"
-            >
-              <PanelImage
-                :image="storeImage(addon)"
-                image-size="auto"
-                rounded="left"
-                class="addon-image"
-                :alt="addon.name"
-              />
-              <div>
-                <PanelHeading level="h3" title-align="right" multiline>{{
-                  addon.name
-                }}</PanelHeading>
-                <div
-                  v-if="selectedAddon(addon.id)"
-                  v-tooltip="editable && t('labels.selected')"
-                  class="addon-panel-selected"
-                >
-                  <i class="fa fa-check" />
-                </div>
-              </div>
-            </Panel>
-          </div>
-        </template>
-      </div>
-    </div>
-    <div v-if="editable" class="col-12 col-md-6 add-addons">
-      <FilterGroup
-        v-model="addonToAdd"
-        :label="label"
-        :options="options"
-        name="addons"
-        value-attr="id"
-        :searchable="true"
-        @update:model-value="addAddon"
-      />
-    </div>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "VehicleAddonsModalAddons",
+};
+</script>
 
 <script lang="ts" setup>
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
@@ -172,11 +120,63 @@ const selectedAddon = (addonId: string) => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "VehicleAddonsModalAddons",
-};
-</script>
+<template>
+  <div class="row">
+    <div class="col-12">
+      <div class="row">
+        <template v-for="addon in addons">
+          <div
+            v-for="(addonId, index) in idsForAddon(addon.id)"
+            :key="`${index}-${addonId}`"
+            class="col-12 col-md-6 addon"
+          >
+            <Panel
+              v-tooltip="editable && selectTooltip(addon.id)"
+              alignment="left"
+              slim
+              class="addon-panel"
+              :class="{
+                'addon-panel-editable': editable,
+              }"
+              @click.capture="changeAddon(addon.id)"
+            >
+              <PanelImage
+                :image="storeImage(addon)"
+                image-size="auto"
+                rounded="left"
+                class="addon-image"
+                :alt="addon.name"
+              />
+              <div>
+                <PanelHeading level="h3" title-align="right" multiline>{{
+                  addon.name
+                }}</PanelHeading>
+                <div
+                  v-if="selectedAddon(addon.id)"
+                  v-tooltip="editable && t('labels.selected')"
+                  class="addon-panel-selected"
+                >
+                  <i class="fa fa-check" />
+                </div>
+              </div>
+            </Panel>
+          </div>
+        </template>
+      </div>
+    </div>
+    <div v-if="editable" class="col-12 col-md-6 add-addons">
+      <FilterGroup
+        v-model="addonToAdd"
+        :label="label"
+        :options="options"
+        name="addons"
+        value-attr="id"
+        :searchable="true"
+        @update:model-value="addAddon"
+      />
+    </div>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 @import "index";

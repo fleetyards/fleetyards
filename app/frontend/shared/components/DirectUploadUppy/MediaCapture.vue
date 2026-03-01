@@ -1,3 +1,18 @@
+<script setup lang="ts">
+defineProps<{
+  title: string;
+  close: () => void;
+  videoProps: Record<string, unknown>;
+  primaryActionButtonProps: Record<string, unknown>;
+  primaryActionButtonLabel: string;
+  recordButtonProps: Record<string, unknown>;
+  stopRecordingButtonProps: Record<string, unknown>;
+  submitButtonProps: Record<string, unknown>;
+  discardButtonProps: Record<string, unknown>;
+  mediaError?: Error | null;
+}>();
+</script>
+
 <template>
   <div class="p-4 max-w-lg w-full">
     <div class="flex justify-between items-center mb-4">
@@ -63,18 +78,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-defineProps<{
-  title: string;
-  close: () => void;
-  videoProps: Record<string, unknown>;
-  primaryActionButtonProps: Record<string, unknown>;
-  primaryActionButtonLabel: string;
-  recordButtonProps: Record<string, unknown>;
-  stopRecordingButtonProps: Record<string, unknown>;
-  submitButtonProps: Record<string, unknown>;
-  discardButtonProps: Record<string, unknown>;
-  mediaError?: Error | null;
-}>();
-</script>

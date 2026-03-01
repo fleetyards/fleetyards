@@ -1,8 +1,106 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-if ! gem list foreman -i --silent; then
-  echo "Installing foreman..."
-  gem install foreman
+# Load worktree overrides before foreman so they take precedence over .env
+if [ -f .env.local ]; then
+  set -a
+  source .env.local
+  set +a
 fi
 
-exec foreman start -f Procfile.dev "$@"
+dev_port="${PORT:-8270}"
+services=(web worker vite)
+
+for arg in "$@"; do
+  case "$arg" in
+    --docker)      use_docker=1 ;;
+    --rdbg)        use_rdbg=1 ;;
+    --open)        open_browser=1 ;;
+    --no-web)      no_web=1 ;;
+    --no-worker)   no_worker=1 ;;
+    --no-vite)     no_vite=1 ;;
+    --only=*)      only="${arg#--only=}" ;;
+    --help|-h)
+      cat <<EOF
+Usage: bin/dev [OPTIONS]
+
+Start the development server (Rails, Sidekiq, Vite).
+
+Options:
+  --docker       Include Docker Compose services
+  --rdbg         Attach Ruby debugger (rdbg) to the Rails server
+  --open         Open browser when server is ready
+
+  --no-web       Skip Rails server
+  --no-worker    Skip Sidekiq worker
+  --no-vite      Skip Vite dev server
+
+  --only=SVC     Start only the listed services (comma-separated)
+                 Available: web, worker, vite
+                 Example: --only=web,vite
+
+  --help         Show this help message
+EOF
+      exit 0
+      ;;
+    *)
+      echo "Unknown option: $arg" >&2
+      echo "Run 'bin/dev --help' for usage." >&2
+      exit 1
+      ;;
+  esac
+done
+
+if [ -n "$only" ] && { [ -n "$no_web" ] || [ -n "$no_worker" ] || [ -n "$no_vite" ]; }; then
+  echo "Error: --only and --no-* flags cannot be combined." >&2
+  exit 1
+fi
+
+if [ -n "$use_rdbg" ]; then
+  export RUBY_DEBUG_SESSION_NAME="fobizz-rails-web"
+  export RAILS_SERVER_CMD="bundle exec rdbg -O -n -c -- bin/rails s -b 0.0.0.0"
+fi
+
+# Determine which services to start
+if [ -n "$only" ]; then
+  # Reset all, then enable only the requested ones
+  run_web=0; run_worker=0; run_vite=0
+  IFS=',' read -ra selected <<< "$only"
+  for svc in "${selected[@]}"; do
+    case "$svc" in
+      web)    run_web=1 ;;
+      worker) run_worker=1 ;;
+      vite)   run_vite=1 ;;
+      *)
+        echo "Unknown service: $svc (available: ${services[*]})" >&2
+        exit 1
+        ;;
+    esac
+  done
+else
+  run_web=1; run_worker=1; run_vite=1
+  [ -n "$no_web" ]    && run_web=0
+  [ -n "$no_worker" ] && run_worker=0
+  [ -n "$no_vite" ]   && run_vite=0
+fi
+
+run_docker=0
+[ -n "$use_docker" ] && run_docker=1
+
+formation="web=${run_web},worker=${run_worker},vite=${run_vite},docker-compose=${run_docker}"
+
+if [ -n "$open_browser" ]; then
+  (
+    elapsed=0
+    while ! nc -z localhost "$dev_port" 2>/dev/null; do
+      sleep 0.5
+      elapsed=$((elapsed + 1))
+      if [ "$elapsed" -ge 60 ]; then
+        echo "Timed out waiting for server on port ${dev_port}" >&2
+        exit 1
+      fi
+    done
+    open "http://localhost:${dev_port}"
+  ) &
+fi
+
+foreman start -f Procfile.dev -m "$formation" -p "$dev_port"

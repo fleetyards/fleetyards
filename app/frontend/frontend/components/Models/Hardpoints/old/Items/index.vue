@@ -1,21 +1,8 @@
-<template>
-  <div class="hardpoint-item">
-    <div class="hardpoint-item-quantity">
-      {{ hardpoints.length }}
-      <span class="text-muted">x</span>
-    </div>
-    <div class="hardpoint-item-slots">
-      <div
-        v-for="(itemsByKey, key) in groupByCategory(hardpoints)"
-        :key="`${key}`"
-        class="hardpoint-item-slot"
-      >
-        <HardpointItem :hardpoint="itemsByKey[0]" />
-        <HardpointLoadout :hardpoint="itemsByKey[0]" />
-      </div>
-    </div>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "HardpointItems",
+};
+</script>
 
 <script lang="ts" setup>
 import { groupBy } from "@/shared/utils/Array";
@@ -34,8 +21,21 @@ const groupByCategory = (hardpoints: ModelHardpoint[]) => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "HardpointItems",
-};
-</script>
+<template>
+  <div class="hardpoint-item">
+    <div class="hardpoint-item-quantity">
+      {{ hardpoints.length }}
+      <span class="text-muted">x</span>
+    </div>
+    <div class="hardpoint-item-slots">
+      <div
+        v-for="(itemsByKey, key) in groupByCategory(hardpoints)"
+        :key="`${key}`"
+        class="hardpoint-item-slot"
+      >
+        <HardpointItem :hardpoint="itemsByKey[0]" />
+        <HardpointLoadout :hardpoint="itemsByKey[0]" />
+      </div>
+    </div>
+  </div>
+</template>

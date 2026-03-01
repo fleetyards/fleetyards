@@ -1,3 +1,23 @@
+<script lang="ts">
+export default {
+  name: "PrimaryAction",
+};
+</script>
+
+<script lang="ts" setup>
+type Props = {
+  action?: () => void;
+  icon?: string;
+  label?: string;
+};
+
+withDefaults(defineProps<Props>(), {
+  action: undefined,
+  icon: "fal fa-plus",
+  label: undefined,
+});
+</script>
+
 <template>
   <transition name="back-to-top-fade">
     <div v-if="action" class="primary-action">
@@ -14,26 +34,6 @@
     </div>
   </transition>
 </template>
-
-<script lang="ts" setup>
-type Props = {
-  action?: () => void;
-  icon?: string;
-  label?: string;
-};
-
-withDefaults(defineProps<Props>(), {
-  action: undefined,
-  icon: "fal fa-plus",
-  label: undefined,
-});
-</script>
-
-<script lang="ts">
-export default {
-  name: "PrimaryAction",
-};
-</script>
 
 <style lang="scss" scoped>
 @import "./index.scss";

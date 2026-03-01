@@ -1,23 +1,8 @@
-<template>
-  <div class="owner">
-    <template v-if="modelSlug">
-      <Btn
-        variant="link"
-        :text-inline="true"
-        class="owner-more-action"
-        @click="openOwnersModal"
-      >
-        {{ t("labels.vehicle.owner") }} <i class="fa fa-bars-staggered" />
-      </Btn>
-    </template>
-    <template v-else-if="owner">
-      {{ t("labels.vehicle.owner") }}
-      <Btn :href="`/hangar/${owner}`" variant="link" :text-inline="true">
-        {{ owner }}
-      </Btn>
-    </template>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "OwnerLabel",
+};
+</script>
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -51,8 +36,23 @@ const openOwnersModal = () => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "OwnerLabel",
-};
-</script>
+<template>
+  <div class="owner">
+    <template v-if="modelSlug">
+      <Btn
+        variant="link"
+        :text-inline="true"
+        class="owner-more-action"
+        @click="openOwnersModal"
+      >
+        {{ t("labels.vehicle.owner") }} <i class="fa fa-bars-staggered" />
+      </Btn>
+    </template>
+    <template v-else-if="owner">
+      {{ t("labels.vehicle.owner") }}
+      <Btn :href="`/hangar/${owner}`" variant="link" :text-inline="true">
+        {{ owner }}
+      </Btn>
+    </template>
+  </div>
+</template>

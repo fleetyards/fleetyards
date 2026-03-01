@@ -16,14 +16,13 @@ import ManufacturerActions from "@/admin/components/Manufacturers/Actions/index.
 import FilterForm from "@/admin/components/Manufacturers/FilterForm/index.vue";
 import {
   useManufacturers,
-  useManufacturersQueryOptions,
+  getManufacturersQueryKey,
   type Manufacturer,
 } from "@/services/fyAdminApi";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useManufacturerFilters } from "@/admin/composables/useManufacturerFilters";
-import { CustomQueryOptions } from "@/services/customQueryOptions";
 
 const route = useRoute();
 
@@ -39,7 +38,7 @@ watch(
 );
 
 const manufacturersQueryKey = computed(() => {
-  return (useManufacturersQueryOptions() as CustomQueryOptions).queryKey;
+  return getManufacturersQueryKey(manufacturersQueryParams.value);
 });
 
 const { perPage, page, updatePerPage } = usePagination(manufacturersQueryKey);
@@ -65,7 +64,7 @@ const columns: BaseTableCol<Manufacturer>[] = [
   {
     name: "logo",
     label: "",
-    centered: true,
+    alignment: "center",
   },
   {
     name: "name",

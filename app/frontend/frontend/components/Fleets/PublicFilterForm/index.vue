@@ -1,3 +1,51 @@
+<script lang="ts">
+export default {
+  name: "PublicFleetFilterForm",
+};
+</script>
+
+<script lang="ts" setup>
+import RadioList from "@/shared/components/base/RadioList/index.vue";
+import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useFilterOptions } from "@/shared/composables/useFilterOptions";
+import { FleetVehicleQuery } from "@/services/fyApi";
+import { useFilters } from "@/shared/composables/useFilters";
+
+const { t } = useI18n();
+
+const setupForm = () => {
+  form.value = {
+    modelNameCont: routeQuery.value.modelNameCont,
+    onSaleEq: routeQuery.value.onSaleEq,
+    loanerEq: routeQuery.value.loanerEq,
+    priceLteq: routeQuery.value.priceLteq,
+    priceGteq: routeQuery.value.priceGteq,
+    pledgePriceLteq: routeQuery.value.pledgePriceLteq,
+    pledgePriceGteq: routeQuery.value.pledgePriceGteq,
+    lengthLteq: routeQuery.value.lengthLteq,
+    lengthGteq: routeQuery.value.lengthGteq,
+    manufacturerIn: routeQuery.value.manufacturerIn || [],
+    classificationIn: routeQuery.value.classificationIn || [],
+    focusIn: routeQuery.value.focusIn || [],
+    sizeIn: routeQuery.value.sizeIn || [],
+    priceIn: routeQuery.value.priceIn || [],
+    pledgePriceIn: routeQuery.value.pledgePriceIn || [],
+    productionStatusIn: routeQuery.value.productionStatusIn || [],
+  };
+};
+
+const { filter, resetFilter, isFilterSelected, routeQuery } =
+  useFilters<FleetVehicleQuery>(setupForm);
+
+const form = ref<FleetVehicleQuery>({});
+
+const { booleanOptions, priceOptions, pledgePriceOptions } =
+  useFilterOptions(t);
+</script>
+
 <template>
   <form @submit.prevent="filter">
     <FormInput
@@ -165,51 +213,3 @@
     </Btn>
   </form>
 </template>
-
-<script lang="ts" setup>
-import RadioList from "@/shared/components/base/RadioList/index.vue";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
-import FormInput from "@/shared/components/base/FormInput/index.vue";
-import Btn from "@/shared/components/base/Btn/index.vue";
-import { useI18n } from "@/shared/composables/useI18n";
-import { useFilterOptions } from "@/shared/composables/useFilterOptions";
-import { FleetVehicleQuery } from "@/services/fyApi";
-import { useFilters } from "@/shared/composables/useFilters";
-
-const { t } = useI18n();
-
-const setupForm = () => {
-  form.value = {
-    modelNameCont: routeQuery.value.modelNameCont,
-    onSaleEq: routeQuery.value.onSaleEq,
-    loanerEq: routeQuery.value.loanerEq,
-    priceLteq: routeQuery.value.priceLteq,
-    priceGteq: routeQuery.value.priceGteq,
-    pledgePriceLteq: routeQuery.value.pledgePriceLteq,
-    pledgePriceGteq: routeQuery.value.pledgePriceGteq,
-    lengthLteq: routeQuery.value.lengthLteq,
-    lengthGteq: routeQuery.value.lengthGteq,
-    manufacturerIn: routeQuery.value.manufacturerIn || [],
-    classificationIn: routeQuery.value.classificationIn || [],
-    focusIn: routeQuery.value.focusIn || [],
-    sizeIn: routeQuery.value.sizeIn || [],
-    priceIn: routeQuery.value.priceIn || [],
-    pledgePriceIn: routeQuery.value.pledgePriceIn || [],
-    productionStatusIn: routeQuery.value.productionStatusIn || [],
-  };
-};
-
-const { filter, resetFilter, isFilterSelected, routeQuery } =
-  useFilters<FleetVehicleQuery>(setupForm);
-
-const form = ref<FleetVehicleQuery>({});
-
-const { booleanOptions, priceOptions, pledgePriceOptions } =
-  useFilterOptions(t);
-</script>
-
-<script lang="ts">
-export default {
-  name: "PublicFleetFilterForm",
-};
-</script>

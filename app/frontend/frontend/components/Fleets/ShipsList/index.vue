@@ -33,13 +33,11 @@ import {
   useFleetVehiclesStats as useFleetVehiclesStatsQuery,
   fleetVehiclesExport as fetchFleetVehiclesExport,
   useFleetVehicles as useFleetVehiclesQuery,
-  useFleetVehiclesQueryOptions,
+  getFleetVehiclesQueryKey,
   type FleetVehicleQuery,
   type Fleet,
   type VehicleExport,
-  type FleetVehicles,
 } from "@/services/fyApi";
-import { useApiQueryOptions } from "@/shared/composables/useApiQueryOptions";
 
 type Props = {
   fleet: Fleet;
@@ -152,11 +150,10 @@ const downloadExport = (data?: VehicleExport[]) => {
 
 const route = useRoute();
 
-const { getQueryKey } = useApiQueryOptions();
-
 const fleetVehiclesQueryKey = computed(() => {
-  return getQueryKey<FleetVehicles>(
-    useFleetVehiclesQueryOptions(fleetSlug, fleetVehiclesQueryParams),
+  return getFleetVehiclesQueryKey(
+    fleetSlug.value,
+    fleetVehiclesQueryParams.value,
   );
 });
 

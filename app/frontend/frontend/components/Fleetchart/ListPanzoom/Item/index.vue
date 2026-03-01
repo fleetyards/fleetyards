@@ -1,43 +1,8 @@
-<template>
-  <div
-    class="fleetchart-item fade-list-item"
-    :style="{
-      'min-height': `${height}px`,
-    }"
-    :class="cssClasses"
-  >
-    <div v-if="showLabel" class="fleetchart-item-label">
-      <template v-if="name">
-        <span>{{ name }}</span>
-        <small>
-          <span>{{ modelName }}</span>
-          <template v-if="showStatus"><br />{{ productionStatus }}</template>
-        </small>
-      </template>
-      <template v-else>
-        <span>{{ modelName }}</span>
-        <small v-if="showStatus">
-          {{ productionStatus }}
-        </small>
-      </template>
-    </div>
-    <div
-      class="fleetchart-item-image-wrapper"
-      :style="{
-        width: `${length}px`,
-        height: `${height}px`,
-      }"
-    >
-      <FleetchartItemImage
-        v-if="image"
-        :label="name || modelName"
-        :src="image"
-        :width="imageWidth"
-        :height="height"
-      />
-    </div>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "FleetchartListItem",
+};
+</script>
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
@@ -297,11 +262,46 @@ const image = computed(() => {
 });
 </script>
 
-<script lang="ts">
-export default {
-  name: "FleetchartListItem",
-};
-</script>
+<template>
+  <div
+    class="fleetchart-item fade-list-item"
+    :style="{
+      'min-height': `${height}px`,
+    }"
+    :class="cssClasses"
+  >
+    <div v-if="showLabel" class="fleetchart-item-label">
+      <template v-if="name">
+        <span>{{ name }}</span>
+        <small>
+          <span>{{ modelName }}</span>
+          <template v-if="showStatus"><br />{{ productionStatus }}</template>
+        </small>
+      </template>
+      <template v-else>
+        <span>{{ modelName }}</span>
+        <small v-if="showStatus">
+          {{ productionStatus }}
+        </small>
+      </template>
+    </div>
+    <div
+      class="fleetchart-item-image-wrapper"
+      :style="{
+        width: `${length}px`,
+        height: `${height}px`,
+      }"
+    >
+      <FleetchartItemImage
+        v-if="image"
+        :label="name || modelName"
+        :src="image"
+        :width="imageWidth"
+        :height="height"
+      />
+    </div>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 @import "index.scss";

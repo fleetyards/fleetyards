@@ -1,3 +1,18 @@
+<script lang="ts">
+export default {
+  name: "SupportModal",
+};
+</script>
+
+<script lang="ts" setup>
+import Modal from "@/shared/components/AppModal/Inner/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import kofiIcon from "@/images/icons/kofi_s_logo_nolabel.png";
+
+const { t } = useI18n();
+</script>
+
 <template>
   <Modal :title="t('headlines.support')">
     <div class="support-body">
@@ -50,21 +65,6 @@
     </div>
   </Modal>
 </template>
-
-<script lang="ts" setup>
-import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import Btn from "@/shared/components/base/Btn/index.vue";
-import { useI18n } from "@/shared/composables/useI18n";
-import kofiIcon from "@/images/icons/kofi_s_logo_nolabel.png";
-
-const { t } = useI18n();
-</script>
-
-<script lang="ts">
-export default {
-  name: "SupportModal",
-};
-</script>
 
 <style lang="scss" scoped>
 @import "./index.scss";

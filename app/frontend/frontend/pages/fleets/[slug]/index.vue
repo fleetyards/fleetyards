@@ -1,3 +1,32 @@
+<script lang="ts">
+export default {
+  name: "FleetShow",
+};
+</script>
+
+<script lang="ts" setup>
+import Avatar from "@/shared/components/Avatar/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { type Fleet, type FleetMember } from "@/services/fyApi";
+
+type Props = {
+  fleet: Fleet;
+  membership: FleetMember;
+};
+
+const props = defineProps<Props>();
+
+const { t } = useI18n();
+
+const description = computed(() => {
+  if (!props.fleet || !props.fleet.description) {
+    return undefined;
+  }
+
+  return props.fleet.description.replaceAll("\n", "<br>");
+});
+</script>
+
 <template>
   <div class="row">
     <div class="col-12">
@@ -87,35 +116,6 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import Avatar from "@/shared/components/Avatar/index.vue";
-import { useI18n } from "@/shared/composables/useI18n";
-import { type Fleet, type FleetMember } from "@/services/fyApi";
-
-type Props = {
-  fleet: Fleet;
-  membership: FleetMember;
-};
-
-const props = defineProps<Props>();
-
-const { t } = useI18n();
-
-const description = computed(() => {
-  if (!props.fleet || !props.fleet.description) {
-    return undefined;
-  }
-
-  return props.fleet.description.replaceAll("\n", "<br>");
-});
-</script>
-
-<script lang="ts">
-export default {
-  name: "FleetShow",
-};
-</script>
 
 <style lang="scss" scoped>
 @import "./index.scss";

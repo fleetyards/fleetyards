@@ -1,17 +1,8 @@
-<template>
-  <div class="metrics-list">
-    <div
-      v-for="metric in metrics"
-      :key="key(metric.id)"
-      class="metrics-list-item"
-    >
-      <div class="metrics-list-item-label">{{ metric.label }}:</div>
-      <div class="metrics-list-item-value">
-        {{ metric.value }}
-      </div>
-    </div>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "MetricsList",
+};
+</script>
 
 <script lang="ts" setup>
 import { v4 as uuidv4 } from "uuid";
@@ -37,11 +28,20 @@ onMounted(() => {
 const key = (id: string) => `metric-${uuid.value}-${id}`;
 </script>
 
-<script lang="ts">
-export default {
-  name: "MetricsList",
-};
-</script>
+<template>
+  <div class="metrics-list">
+    <div
+      v-for="metric in metrics"
+      :key="key(metric.id)"
+      class="metrics-list-item"
+    >
+      <div class="metrics-list-item-label">{{ metric.label }}:</div>
+      <div class="metrics-list-item-value">
+        {{ metric.value }}
+      </div>
+    </div>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 @import "index";

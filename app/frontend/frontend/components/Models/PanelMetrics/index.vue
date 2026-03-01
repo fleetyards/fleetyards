@@ -1,3 +1,44 @@
+<script lang="ts">
+export default {
+  name: "PanelMetrics",
+};
+</script>
+
+<script lang="ts" setup>
+import { useI18n } from "@/shared/composables/useI18n";
+import type { Model } from "@/services/fyApi";
+
+type Props = {
+  model: Model;
+};
+
+const props = defineProps<Props>();
+
+const { t, toNumber, toUEC } = useI18n();
+
+const isGroundVehicle = computed(() => {
+  return props.model.classification === "ground";
+});
+
+const crew = computed(() => {
+  let { min, max } = props.model.crew;
+
+  if (min && min <= 0) {
+    min = undefined;
+  }
+
+  if (max && max <= 0) {
+    max = undefined;
+  }
+
+  if (min === max) {
+    return toNumber(props.model.crew.min, "people");
+  }
+
+  return toNumber([min, max].filter((item) => item).join(" - "), "people");
+});
+</script>
+
 <template>
   <div>
     <div class="row metrics-block top-metrics metrics-padding">
@@ -77,44 +118,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { useI18n } from "@/shared/composables/useI18n";
-import type { Model } from "@/services/fyApi";
-
-type Props = {
-  model: Model;
-};
-
-const props = defineProps<Props>();
-
-const { t, toNumber, toUEC } = useI18n();
-
-const isGroundVehicle = computed(() => {
-  return props.model.classification === "ground";
-});
-
-const crew = computed(() => {
-  let { min, max } = props.model.crew;
-
-  if (min && min <= 0) {
-    min = undefined;
-  }
-
-  if (max && max <= 0) {
-    max = undefined;
-  }
-
-  if (min === max) {
-    return toNumber(props.model.crew.min, "people");
-  }
-
-  return toNumber([min, max].filter((item) => item).join(" - "), "people");
-});
-</script>
-
-<script lang="ts">
-export default {
-  name: "PanelMetrics",
-};
-</script>

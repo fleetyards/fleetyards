@@ -1,3 +1,22 @@
+<script lang="ts">
+export default {
+  name: "ModelCrewMetrics",
+};
+</script>
+
+<script lang="ts" setup>
+import { useI18n } from "@/shared/composables/useI18n";
+import type { Model } from "@/services/fyApi";
+
+type Props = {
+  model: Model;
+};
+
+defineProps<Props>();
+
+const { t, toNumber } = useI18n();
+</script>
+
 <template>
   <div class="row metrics-padding">
     <div class="col-12 col-lg-3">
@@ -23,22 +42,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { useI18n } from "@/shared/composables/useI18n";
-import type { Model } from "@/services/fyApi";
-
-type Props = {
-  model: Model;
-};
-
-defineProps<Props>();
-
-const { t, toNumber } = useI18n();
-</script>
-
-<script lang="ts">
-export default {
-  name: "ModelCrewMetrics",
-};
-</script>

@@ -1,115 +1,8 @@
-<template>
-  <div id="fileupload">
-    <div v-if="isUploadActive" class="row fileupload-buttonbar">
-      <div class="col-xl-7">
-        <VueUploadComponent
-          ref="uploadElement"
-          v-model="newImages"
-          post-action="/admin/images"
-          drop="body"
-          :headers="headers()"
-          :data="metaData"
-          multiple
-          :add-index="true"
-          @input-file="inputImage"
-          @input-filter="inputFilter"
-        />
-
-        <Btn @click="selectImages">
-          <i class="fa fa-plus" />
-          {{ t("models.image.selectImages") }}
-        </Btn>
-
-        <Btn @click="selectFolder">
-          <i class="fa fa-plus" />
-          {{ t("models.image.selectFolder") }}
-        </Btn>
-
-        <Btn v-if="newImages.length" @click="startUpload">
-          <i class="fa fa-upload" />
-          {{ t("models.image.startUpload") }}
-        </Btn>
-
-        <Btn v-if="newImages.length" @click="cancelUpload">
-          <i class="fa fa-ban" />
-          {{ t("models.image.cancelUpload") }}
-        </Btn>
-      </div>
-
-      <div
-        v-show="uploadElement?.active"
-        class="col-xl-5 fileupload-progress fade in"
-      >
-        <span class="fileupload-process">
-          {{ formatSize(speed) }}
-        </span>
-
-        <div class="progress">
-          <div
-            class="progress-bar progress-bar-animated progress-bar-info progress-bar-striped"
-            role="progressbar"
-            :style="{ width: progress + '%' }"
-          >
-            {{ progress }} %
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <slot name="header" />
-
-    <Panel
-      v-if="isUploadActive"
-      :variant="uploadElement?.dropActive ? 'success' : undefined"
-      slim
-      @click="selectImages"
-    >
-      <div class="dropzone">
-        <i class="fal fa-file-plus fa-2x" />
-        <h3>
-          {{ t("models.image.dropzone") }}
-        </h3>
-      </div>
-    </Panel>
-
-    <Panel v-if="allImages.length" slim>
-      <transition-group name="fade" class="flex-list" tag="div" appear>
-        <div key="heading" class="fade-list-item col-12 flex-list-heading">
-          <div class="flex-list-row">
-            <div class="store-image wide" />
-
-            <div class="description">
-              {{ t("models.image.name") }}
-            </div>
-
-            <div class="size">
-              {{ t("models.image.size") }}
-            </div>
-
-            <div class="actions" />
-          </div>
-        </div>
-
-        <div
-          v-for="image in allImages"
-          :key="image.id"
-          class="fade-list-item col-12 flex-list-item"
-        >
-          <ImageRow
-            :image="image"
-            @start="startSingleUpload"
-            @cancel="cancelSingleUpload"
-            @image-deleted="$emit('image-deleted')"
-          />
-        </div>
-      </transition-group>
-    </Panel>
-
-    <Empty :visible="emptyVisible" />
-
-    <Loader :loading="loading" :fixed="true" />
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "AdminImageUploader",
+};
+</script>
 
 <script lang="ts" setup>
 import VueUploadComponent from "vue-upload-component";
@@ -316,11 +209,118 @@ const inputFilter = (
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "AdminImageUploader",
-};
-</script>
+<template>
+  <div id="fileupload">
+    <div v-if="isUploadActive" class="row fileupload-buttonbar">
+      <div class="col-xl-7">
+        <VueUploadComponent
+          ref="uploadElement"
+          v-model="newImages"
+          post-action="/admin/images"
+          drop="body"
+          :headers="headers()"
+          :data="metaData"
+          multiple
+          :add-index="true"
+          @input-file="inputImage"
+          @input-filter="inputFilter"
+        />
+
+        <Btn @click="selectImages">
+          <i class="fa fa-plus" />
+          {{ t("models.image.selectImages") }}
+        </Btn>
+
+        <Btn @click="selectFolder">
+          <i class="fa fa-plus" />
+          {{ t("models.image.selectFolder") }}
+        </Btn>
+
+        <Btn v-if="newImages.length" @click="startUpload">
+          <i class="fa fa-upload" />
+          {{ t("models.image.startUpload") }}
+        </Btn>
+
+        <Btn v-if="newImages.length" @click="cancelUpload">
+          <i class="fa fa-ban" />
+          {{ t("models.image.cancelUpload") }}
+        </Btn>
+      </div>
+
+      <div
+        v-show="uploadElement?.active"
+        class="col-xl-5 fileupload-progress fade in"
+      >
+        <span class="fileupload-process">
+          {{ formatSize(speed) }}
+        </span>
+
+        <div class="progress">
+          <div
+            class="progress-bar progress-bar-animated progress-bar-info progress-bar-striped"
+            role="progressbar"
+            :style="{ width: progress + '%' }"
+          >
+            {{ progress }} %
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <slot name="header" />
+
+    <Panel
+      v-if="isUploadActive"
+      :variant="uploadElement?.dropActive ? 'success' : undefined"
+      slim
+      @click="selectImages"
+    >
+      <div class="dropzone">
+        <i class="fal fa-file-plus fa-2x" />
+        <h3>
+          {{ t("models.image.dropzone") }}
+        </h3>
+      </div>
+    </Panel>
+
+    <Panel v-if="allImages.length" slim>
+      <transition-group name="fade" class="flex-list" tag="div" appear>
+        <div key="heading" class="fade-list-item col-12 flex-list-heading">
+          <div class="flex-list-row">
+            <div class="store-image wide" />
+
+            <div class="description">
+              {{ t("models.image.name") }}
+            </div>
+
+            <div class="size">
+              {{ t("models.image.size") }}
+            </div>
+
+            <div class="actions" />
+          </div>
+        </div>
+
+        <div
+          v-for="image in allImages"
+          :key="image.id"
+          class="fade-list-item col-12 flex-list-item"
+        >
+          <ImageRow
+            :image="image"
+            @start="startSingleUpload"
+            @cancel="cancelSingleUpload"
+            @image-deleted="$emit('image-deleted')"
+          />
+        </div>
+      </transition-group>
+    </Panel>
+
+    <Empty :visible="emptyVisible" />
+
+    <Loader :loading="loading" :fixed="true" />
+  </div>
+</template>
 
 <style lang="scss" scoped>
 @import "index.scss";

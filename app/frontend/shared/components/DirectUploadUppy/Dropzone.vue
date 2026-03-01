@@ -1,3 +1,16 @@
+<script setup lang="ts">
+import { ProviderIcon, useDropzone, useFileInput } from "@uppy/vue";
+
+const props = defineProps<{
+  openModal: (plugin: "webcam" | "dropbox" | "screen-capture") => void;
+}>();
+
+const { getRootProps, getInputProps } = useDropzone({
+  noClick: true,
+});
+const { getButtonProps, getInputProps: getFileInputProps } = useFileInput();
+</script>
+
 <template>
   <input v-bind="getInputProps()" class="hidden" />
   <div
@@ -49,16 +62,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { ProviderIcon, useDropzone, useFileInput } from "@uppy/vue";
-
-const props = defineProps<{
-  openModal: (plugin: "webcam" | "dropbox" | "screen-capture") => void;
-}>();
-
-const { getRootProps, getInputProps } = useDropzone({
-  noClick: true,
-});
-const { getButtonProps, getInputProps: getFileInputProps } = useFileInput();
-</script>

@@ -1,28 +1,8 @@
-<template>
-  <form @submit.prevent="filter">
-    <FormInput
-      id="username"
-      v-model="form.usernameCont"
-      translation-key="filters.fleets.members.username"
-      :no-label="true"
-      :clearable="true"
-    />
-
-    <FilterGroup
-      v-model="form.roleIn"
-      :options="roleOptions"
-      :label="t('labels.filters.fleets.members.role')"
-      name="role"
-      :multiple="true"
-      :no-label="true"
-    />
-
-    <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
-      <i class="fal fa-times" />
-      {{ t("actions.resetFilter") }}
-    </Btn>
-  </form>
-</template>
+<script lang="ts">
+export default {
+  name: "FleetMembersFilterForm",
+};
+</script>
 
 <script lang="ts" setup>
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
@@ -63,8 +43,28 @@ const roleOptions: FilterOption[] = [
 ];
 </script>
 
-<script lang="ts">
-export default {
-  name: "FleetMembersFilterForm",
-};
-</script>
+<template>
+  <form @submit.prevent="filter">
+    <FormInput
+      id="username"
+      v-model="form.usernameCont"
+      translation-key="filters.fleets.members.username"
+      :no-label="true"
+      :clearable="true"
+    />
+
+    <FilterGroup
+      v-model="form.roleIn"
+      :options="roleOptions"
+      :label="t('labels.filters.fleets.members.role')"
+      name="role"
+      :multiple="true"
+      :no-label="true"
+    />
+
+    <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
+      <i class="fal fa-times" />
+      {{ t("actions.resetFilter") }}
+    </Btn>
+  </form>
+</template>

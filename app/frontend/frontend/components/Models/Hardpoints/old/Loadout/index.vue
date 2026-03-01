@@ -1,3 +1,39 @@
+<script lang="ts">
+export default {
+  name: "HardpointsLoadout",
+};
+</script>
+
+<script lang="ts" setup>
+import loadoutListIcon from "@/images/icons/loadout-list-icon.svg";
+import type { ModelHardpoint } from "@/services/fyApi";
+import { useI18n } from "@/shared/composables/useI18n";
+
+type Props = {
+  hardpoint: ModelHardpoint;
+};
+
+const props = defineProps<Props>();
+
+const { t } = useI18n();
+
+const showComponent = computed(() => {
+  return loadout.value?.component;
+});
+
+const loadoutsCount = computed(() => {
+  return props.hardpoint.loadouts?.length;
+});
+
+const loadout = computed(() => {
+  if (!props.hardpoint.loadouts?.length) {
+    return undefined;
+  }
+
+  return props.hardpoint.loadouts[0];
+});
+</script>
+
 <template>
   <div v-if="loadout" class="hardpoint-item-loadout">
     <div class="hardpoint-item-loadout-quantity">
@@ -39,39 +75,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import loadoutListIcon from "@/images/icons/loadout-list-icon.svg";
-import type { ModelHardpoint } from "@/services/fyApi";
-import { useI18n } from "@/shared/composables/useI18n";
-
-type Props = {
-  hardpoint: ModelHardpoint;
-};
-
-const props = defineProps<Props>();
-
-const { t } = useI18n();
-
-const showComponent = computed(() => {
-  return loadout.value?.component;
-});
-
-const loadoutsCount = computed(() => {
-  return props.hardpoint.loadouts?.length;
-});
-
-const loadout = computed(() => {
-  if (!props.hardpoint.loadouts?.length) {
-    return undefined;
-  }
-
-  return props.hardpoint.loadouts[0];
-});
-</script>
-
-<script lang="ts">
-export default {
-  name: "HardpointsLoadout",
-};
-</script>

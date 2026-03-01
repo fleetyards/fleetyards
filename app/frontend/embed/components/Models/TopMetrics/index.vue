@@ -1,28 +1,8 @@
-<template>
-  <div
-    class="row metrics-block top-metrics"
-    :class="{
-      'metrics-padding': padding,
-    }"
-  >
-    <div v-if="model.focus" class="col-6 col-md-4">
-      <div class="metrics-label">{{ t("model.focus") }}:</div>
-      <div class="metrics-value">
-        {{ model.focus }}
-      </div>
-    </div>
-    <div v-if="model.crew.min || model.crew.max" class="col-6 col-md-4">
-      <div class="metrics-label">{{ t("model.crew") }}:</div>
-      <div class="metrics-value">
-        {{ crew }}
-      </div>
-    </div>
-    <div class="col-12 col-md-4">
-      <div class="metrics-label">{{ t("model.speed") }}:</div>
-      <div class="metrics-value" v-html="speeds" />
-    </div>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "ModelTopMetrics",
+};
+</script>
 
 <script lang="ts" setup>
 import type { Model } from "@/services/fyApi";
@@ -79,8 +59,28 @@ const groundSpeeds = computed(
 );
 </script>
 
-<script lang="ts">
-export default {
-  name: "ModelTopMetrics",
-};
-</script>
+<template>
+  <div
+    class="row metrics-block top-metrics"
+    :class="{
+      'metrics-padding': padding,
+    }"
+  >
+    <div v-if="model.focus" class="col-6 col-md-4">
+      <div class="metrics-label">{{ t("model.focus") }}:</div>
+      <div class="metrics-value">
+        {{ model.focus }}
+      </div>
+    </div>
+    <div v-if="model.crew.min || model.crew.max" class="col-6 col-md-4">
+      <div class="metrics-label">{{ t("model.crew") }}:</div>
+      <div class="metrics-value">
+        {{ crew }}
+      </div>
+    </div>
+    <div class="col-12 col-md-4">
+      <div class="metrics-label">{{ t("model.speed") }}:</div>
+      <div class="metrics-value" v-html="speeds" />
+    </div>
+  </div>
+</template>

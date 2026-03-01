@@ -1,3 +1,28 @@
+<script setup lang="ts">
+import type { PartialTreeFolderNode } from "@uppy/core";
+import type { AvailablePluginsKeys } from "@uppy/remote-sources";
+import { useRemoteSource } from "@uppy/vue";
+
+const props = defineProps<{
+  close: () => void;
+  id: AvailablePluginsKeys;
+}>();
+
+const remoteSource = useRemoteSource(props.id);
+const dtf = new Intl.DateTimeFormat("en-US", {
+  dateStyle: "short",
+  timeStyle: "short",
+});
+const setIndeterminate = (
+  el: HTMLInputElement | null,
+  item: PartialTreeFolderNode,
+) => {
+  if (el && item.status === "partial") {
+    el.indeterminate = true;
+  }
+};
+</script>
+
 <template>
   <div
     v-if="!remoteSource.state.authenticated"
@@ -130,28 +155,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import type { PartialTreeFolderNode } from "@uppy/core";
-import type { AvailablePluginsKeys } from "@uppy/remote-sources";
-import { useRemoteSource } from "@uppy/vue";
-
-const props = defineProps<{
-  close: () => void;
-  id: AvailablePluginsKeys;
-}>();
-
-const remoteSource = useRemoteSource(props.id);
-const dtf = new Intl.DateTimeFormat("en-US", {
-  dateStyle: "short",
-  timeStyle: "short",
-});
-const setIndeterminate = (
-  el: HTMLInputElement | null,
-  item: PartialTreeFolderNode,
-) => {
-  if (el && item.status === "partial") {
-    el.indeterminate = true;
-  }
-};
-</script>

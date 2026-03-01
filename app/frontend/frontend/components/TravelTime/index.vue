@@ -1,8 +1,8 @@
-<template>
-  <div>
-    {{ toTime(travelTime) }}
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "TravelTime",
+};
+</script>
 
 <script lang="ts" setup>
 import { type Component } from "@/services/fyApi";
@@ -44,8 +44,8 @@ const travelTime = computed(() => {
 });
 </script>
 
-<script lang="ts">
-export default {
-  name: "TravelTime",
-};
-</script>
+<template>
+  <div>
+    {{ toTime(travelTime) }}
+  </div>
+</template>

@@ -18,7 +18,7 @@ import { usePagination } from "@/shared/composables/usePagination";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import {
   useUsers as useUsersQuery,
-  useUsersQueryOptions,
+  getUsersQueryKey,
   type User,
 } from "@/services/fyAdminApi";
 import { useUserFilters } from "@/admin/composables/useUserFilters";
@@ -48,7 +48,7 @@ const usersQueryParams = computed(() => {
 });
 
 const usersQueryKey = computed(() => {
-  return useUsersQueryOptions(usersQueryParams).queryKey;
+  return getUsersQueryKey(usersQueryParams.value);
 });
 
 const { perPage, page, updatePerPage } = usePagination(usersQueryKey);
@@ -78,25 +78,25 @@ const columns: BaseTableCol<User>[] = [
   },
   {
     name: "rsiHandle",
-    field: "rsi_handle",
+    attributeKey: "rsiHandle",
     label: t("labels.user.rsiHandle"),
     sortable: true,
   },
   {
     name: "lastActiveAt",
-    field: "last_active_at",
+    attributeKey: "lastActiveAt",
     label: t("labels.user.lastActiveAt"),
     sortable: true,
   },
   {
     name: "confirmedAt",
-    field: "confirmed_at",
+    attributeKey: "confirmedAt",
     label: t("labels.user.confirmedAt"),
     sortable: true,
   },
   {
     name: "createdAt",
-    field: "created_at",
+    attributeKey: "createdAt",
     label: t("labels.createdAt"),
     sortable: true,
   },

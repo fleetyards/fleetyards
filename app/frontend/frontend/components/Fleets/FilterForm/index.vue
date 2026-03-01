@@ -1,3 +1,97 @@
+<script lang="ts">
+export default {
+  name: "FleetFilterForm",
+};
+</script>
+
+<script lang="ts" setup>
+import RadioList from "@/shared/components/base/RadioList/index.vue";
+import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useFilters } from "@/shared/composables/useFilters";
+import { useFilterOptions } from "@/shared/composables/useFilterOptions";
+
+const { t } = useI18n();
+const { booleanOptions, priceOptions, pledgePriceOptions } =
+  useFilterOptions(t);
+
+type FleetsFilterForm = {
+  modelNameCont?: string;
+  onSaleEq?: string;
+  loanerEq?: string;
+  priceLteq?: string;
+  priceGteq?: string;
+  pledgePriceLteq?: string;
+  pledgePriceGteq?: string;
+  lengthLteq?: string;
+  lengthGteq?: string;
+  manufacturerIn?: string[];
+  classificationIn?: string[];
+  focusIn?: string[];
+  sizeIn?: string[];
+  priceIn?: string[];
+  pledgePriceIn?: string[];
+  productionStatusIn?: string[];
+  memberIn?: string[];
+};
+
+const query = computed(() => (route.query.q || {}) as FleetsFilterForm);
+
+const form = ref<FleetsFilterForm>({});
+
+const route = useRoute();
+
+const { resetFilter, isFilterSelected, filter } = useFilters();
+
+watch(
+  () => route.query,
+  () => {
+    setupForm();
+  },
+  { deep: true },
+);
+
+watch(
+  () => form.value,
+  () => {
+    filter(form.value);
+  },
+  { deep: true },
+);
+
+onMounted(() => {
+  setupForm();
+});
+
+const setupForm = () => {
+  form.value = {
+    modelNameCont: query.value.modelNameCont,
+    onSaleEq: query.value.onSaleEq,
+    loanerEq: query.value.loanerEq,
+    priceLteq: query.value.priceLteq,
+    priceGteq: query.value.priceGteq,
+    pledgePriceLteq: query.value.pledgePriceLteq,
+    pledgePriceGteq: query.value.pledgePriceGteq,
+    lengthLteq: query.value.lengthLteq,
+    lengthGteq: query.value.lengthGteq,
+    manufacturerIn: query.value.manufacturerIn || [],
+    classificationIn: query.value.classificationIn || [],
+    focusIn: query.value.focusIn || [],
+    sizeIn: query.value.sizeIn || [],
+    priceIn: query.value.priceIn || [],
+    pledgePriceIn: query.value.pledgePriceIn || [],
+    productionStatusIn: query.value.productionStatusIn || [],
+    memberIn: query.value.memberIn || [],
+  };
+};
+
+const submit = () => {
+  filter(form.value);
+};
+</script>
+
 <template>
   <form @submit.prevent="submit">
     <FormInput
@@ -179,97 +273,3 @@
     </Btn>
   </form>
 </template>
-
-<script lang="ts" setup>
-import RadioList from "@/shared/components/base/RadioList/index.vue";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
-import FormInput from "@/shared/components/base/FormInput/index.vue";
-import Btn from "@/shared/components/base/Btn/index.vue";
-import { useI18n } from "@/shared/composables/useI18n";
-import { useFilters } from "@/shared/composables/useFilters";
-import { useFilterOptions } from "@/shared/composables/useFilterOptions";
-
-const { t } = useI18n();
-const { booleanOptions, priceOptions, pledgePriceOptions } =
-  useFilterOptions(t);
-
-type FleetsFilterForm = {
-  modelNameCont?: string;
-  onSaleEq?: string;
-  loanerEq?: string;
-  priceLteq?: string;
-  priceGteq?: string;
-  pledgePriceLteq?: string;
-  pledgePriceGteq?: string;
-  lengthLteq?: string;
-  lengthGteq?: string;
-  manufacturerIn?: string[];
-  classificationIn?: string[];
-  focusIn?: string[];
-  sizeIn?: string[];
-  priceIn?: string[];
-  pledgePriceIn?: string[];
-  productionStatusIn?: string[];
-  memberIn?: string[];
-};
-
-const query = computed(() => (route.query.q || {}) as FleetsFilterForm);
-
-const form = ref<FleetsFilterForm>({});
-
-const route = useRoute();
-
-const { resetFilter, isFilterSelected, filter } = useFilters();
-
-watch(
-  () => route.query,
-  () => {
-    setupForm();
-  },
-  { deep: true },
-);
-
-watch(
-  () => form.value,
-  () => {
-    filter(form.value);
-  },
-  { deep: true },
-);
-
-onMounted(() => {
-  setupForm();
-});
-
-const setupForm = () => {
-  form.value = {
-    modelNameCont: query.value.modelNameCont,
-    onSaleEq: query.value.onSaleEq,
-    loanerEq: query.value.loanerEq,
-    priceLteq: query.value.priceLteq,
-    priceGteq: query.value.priceGteq,
-    pledgePriceLteq: query.value.pledgePriceLteq,
-    pledgePriceGteq: query.value.pledgePriceGteq,
-    lengthLteq: query.value.lengthLteq,
-    lengthGteq: query.value.lengthGteq,
-    manufacturerIn: query.value.manufacturerIn || [],
-    classificationIn: query.value.classificationIn || [],
-    focusIn: query.value.focusIn || [],
-    sizeIn: query.value.sizeIn || [],
-    priceIn: query.value.priceIn || [],
-    pledgePriceIn: query.value.pledgePriceIn || [],
-    productionStatusIn: query.value.productionStatusIn || [],
-    memberIn: query.value.memberIn || [],
-  };
-};
-
-const submit = () => {
-  filter(form.value);
-};
-</script>
-
-<script lang="ts">
-export default {
-  name: "FleetFilterForm",
-};
-</script>

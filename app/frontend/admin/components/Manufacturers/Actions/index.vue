@@ -1,11 +1,8 @@
-<template>
-  <BtnDropdown v-if="mobile" :size="BtnSizesEnum.SMALL" inline>
-    <Items :manufacturer="props.manufacturer" with-labels />
-  </BtnDropdown>
-  <BtnGroup v-else inline>
-    <Items :manufacturer="props.manufacturer" />
-  </BtnGroup>
-</template>
+<script lang="ts">
+export default {
+  name: "ManufacturerActions",
+};
+</script>
 
 <script lang="ts" setup>
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
@@ -22,8 +19,11 @@ const props = defineProps<Props>();
 const mobile = useMobile();
 </script>
 
-<script lang="ts">
-export default {
-  name: "ManufacturerActions",
-};
-</script>
+<template>
+  <BtnDropdown v-if="mobile" :size="BtnSizesEnum.SMALL" inline>
+    <Items :manufacturer="props.manufacturer" with-labels />
+  </BtnDropdown>
+  <BtnGroup v-else inline>
+    <Items :manufacturer="props.manufacturer" />
+  </BtnGroup>
+</template>

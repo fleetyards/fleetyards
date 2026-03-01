@@ -1,117 +1,8 @@
-<template>
-  <div class="row fleetchart-list">
-    <div class="col-12 fleetchart-wrapper">
-      <div class="fleetchart-controls">
-        <Starship42Btn v-if="!mobile" size="small" :items="items" />
-
-        <BtnDropdown size="small">
-          <template #label>
-            <template v-if="!mobile">
-              {{ t("labels.fleetchartApp.viewpoint") }}:
-            </template>
-            {{ t(`labels.fleetchartApp.viewpointOptions.${viewpoint}`) }}
-          </template>
-          <Btn
-            v-for="(option, index) in FleetchartViewpoints"
-            :key="`fleetchart-screen-height-drowndown-${index}-${option}`"
-            size="small"
-            variant="link"
-            :active="viewpoint === option"
-            @click="setViewpoint(option)"
-          >
-            {{ t(`labels.fleetchartApp.viewpointOptions.${option}`) }}
-          </Btn>
-        </BtnDropdown>
-
-        <Btn size="small" :active="gridEnabled" @click="toggleGrid">
-          <i class="fad fa-th" />
-        </Btn>
-
-        <BtnDropdown size="small">
-          <template v-if="downloadName">
-            <DownloadScreenshotBtn
-              element="#fleetchart"
-              :filename="downloadName"
-              size="small"
-            />
-
-            <hr />
-          </template>
-
-          <Starship42Btn
-            v-if="mobile"
-            :items="items"
-            size="small"
-            :with-icon="true"
-          />
-
-          <Btn size="small" @click="toggleLabels">
-            <i class="fad fa-tags" />
-            <span v-if="showLabels">
-              {{ t("actions.hideLabels") }}
-            </span>
-            <span v-else>
-              {{ t("actions.showLabels") }}
-            </span>
-          </Btn>
-
-          <FleetChartStatusBtn size="small" />
-        </BtnDropdown>
-      </div>
-
-      <div
-        class="fleetchart-grid-label"
-        :class="{
-          'fleetchart-grid-enabled': gridEnabled,
-        }"
-      >
-        {{ t("labels.fleetchartApp.gridSize", { size: gridSizeLabel }) }}
-      </div>
-
-      <div class="fleetchart-scroll-wrapper">
-        <transition-group
-          id="fleetchart"
-          name="fade-list"
-          :appear="true"
-          tag="div"
-          class="fleetchart"
-        >
-          <FleetchartItem
-            v-for="item in items"
-            :key="item.id"
-            :item="item"
-            :viewpoint="viewpoint"
-            :show-label="showLabels"
-            :show-status="showStatus"
-            :size-multiplicator="sizeMultiplicator"
-            :scale="scale"
-          />
-          <div
-            key="made-by-the-community"
-            class="fleetchart-item fade-list-item fleetchart-download-image"
-          >
-            <CommunityLogo />
-          </div>
-        </transition-group>
-        <canvas
-          ref="fleetchartGrid"
-          class="fleetchart-grid"
-          :class="{
-            'fleetchart-grid-enabled': gridEnabled,
-          }"
-          :width="screenWidth"
-          :height="screenHeight"
-        />
-      </div>
-
-      <FleetchartSlider
-        v-model="internalScale"
-        :min-scale="minScale"
-        :max-scale="maxScale"
-      />
-    </div>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "FleetchartList",
+};
+</script>
 
 <script lang="ts" setup>
 import FleetchartSlider from "@/frontend/components/Fleetchart/Slider/index.vue";
@@ -310,11 +201,120 @@ const drawGridLines = async () => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "FleetchartList",
-};
-</script>
+<template>
+  <div class="row fleetchart-list">
+    <div class="col-12 fleetchart-wrapper">
+      <div class="fleetchart-controls">
+        <Starship42Btn v-if="!mobile" size="small" :items="items" />
+
+        <BtnDropdown size="small">
+          <template #label>
+            <template v-if="!mobile">
+              {{ t("labels.fleetchartApp.viewpoint") }}:
+            </template>
+            {{ t(`labels.fleetchartApp.viewpointOptions.${viewpoint}`) }}
+          </template>
+          <Btn
+            v-for="(option, index) in FleetchartViewpoints"
+            :key="`fleetchart-screen-height-drowndown-${index}-${option}`"
+            size="small"
+            variant="link"
+            :active="viewpoint === option"
+            @click="setViewpoint(option)"
+          >
+            {{ t(`labels.fleetchartApp.viewpointOptions.${option}`) }}
+          </Btn>
+        </BtnDropdown>
+
+        <Btn size="small" :active="gridEnabled" @click="toggleGrid">
+          <i class="fad fa-th" />
+        </Btn>
+
+        <BtnDropdown size="small">
+          <template v-if="downloadName">
+            <DownloadScreenshotBtn
+              element="#fleetchart"
+              :filename="downloadName"
+              size="small"
+            />
+
+            <hr />
+          </template>
+
+          <Starship42Btn
+            v-if="mobile"
+            :items="items"
+            size="small"
+            :with-icon="true"
+          />
+
+          <Btn size="small" @click="toggleLabels">
+            <i class="fad fa-tags" />
+            <span v-if="showLabels">
+              {{ t("actions.hideLabels") }}
+            </span>
+            <span v-else>
+              {{ t("actions.showLabels") }}
+            </span>
+          </Btn>
+
+          <FleetChartStatusBtn size="small" />
+        </BtnDropdown>
+      </div>
+
+      <div
+        class="fleetchart-grid-label"
+        :class="{
+          'fleetchart-grid-enabled': gridEnabled,
+        }"
+      >
+        {{ t("labels.fleetchartApp.gridSize", { size: gridSizeLabel }) }}
+      </div>
+
+      <div class="fleetchart-scroll-wrapper">
+        <transition-group
+          id="fleetchart"
+          name="fade-list"
+          :appear="true"
+          tag="div"
+          class="fleetchart"
+        >
+          <FleetchartItem
+            v-for="item in items"
+            :key="item.id"
+            :item="item"
+            :viewpoint="viewpoint"
+            :show-label="showLabels"
+            :show-status="showStatus"
+            :size-multiplicator="sizeMultiplicator"
+            :scale="scale"
+          />
+          <div
+            key="made-by-the-community"
+            class="fleetchart-item fade-list-item fleetchart-download-image"
+          >
+            <CommunityLogo />
+          </div>
+        </transition-group>
+        <canvas
+          ref="fleetchartGrid"
+          class="fleetchart-grid"
+          :class="{
+            'fleetchart-grid-enabled': gridEnabled,
+          }"
+          :width="screenWidth"
+          :height="screenHeight"
+        />
+      </div>
+
+      <FleetchartSlider
+        v-model="internalScale"
+        :min-scale="minScale"
+        :max-scale="maxScale"
+      />
+    </div>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 @import "index.scss";

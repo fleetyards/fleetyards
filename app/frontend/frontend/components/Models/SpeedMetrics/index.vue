@@ -1,3 +1,24 @@
+<script lang="ts">
+export default {
+  name: "SpeedMetrics",
+};
+</script>
+
+<script lang="ts" setup>
+import { useI18n } from "@/shared/composables/useI18n";
+import type { Model } from "@/services/fyApi";
+
+type Props = {
+  model: Model;
+};
+
+const props = defineProps<Props>();
+
+const { t, toNumber } = useI18n();
+
+const isGroundVehicle = computed(() => props.model.metrics.isGroundVehicle);
+</script>
+
 <template>
   <div class="row metrics-padding">
     <div class="col-12 col-lg-3">
@@ -114,24 +135,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { useI18n } from "@/shared/composables/useI18n";
-import type { Model } from "@/services/fyApi";
-
-type Props = {
-  model: Model;
-};
-
-const props = defineProps<Props>();
-
-const { t, toNumber } = useI18n();
-
-const isGroundVehicle = computed(() => props.model.metrics.isGroundVehicle);
-</script>
-
-<script lang="ts">
-export default {
-  name: "SpeedMetrics",
-};
-</script>

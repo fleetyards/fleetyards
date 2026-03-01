@@ -1,13 +1,8 @@
-<template>
-  <router-view
-    :key="locale"
-    :ships="ships"
-    :users="users"
-    :fleet-id="fleetId"
-    :grouped-button="groupedButton"
-    :fleetchart-slider="fleetchartSlider"
-  />
-</template>
+<script lang="ts">
+export default {
+  name: "FleetyardsEmbedApp",
+};
+</script>
 
 <script lang="ts" setup>
 import { useI18nStore } from "@/shared/stores/i18n";
@@ -50,8 +45,13 @@ defineExpose({
 });
 </script>
 
-<script lang="ts">
-export default {
-  name: "FleetyardsEmbedApp",
-};
-</script>
+<template>
+  <router-view
+    :key="locale"
+    :ships="ships"
+    :users="users"
+    :fleet-id="fleetId"
+    :grouped-button="groupedButton"
+    :fleetchart-slider="fleetchartSlider"
+  />
+</template>

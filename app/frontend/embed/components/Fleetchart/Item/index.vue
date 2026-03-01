@@ -1,20 +1,8 @@
-<template>
-  <div
-    v-tooltip.bottom="label"
-    class="fleetchart-item fade-list-item"
-    :class="`model-${model.slug}`"
-  >
-    <a :href="url" target="_blank" rel="noopener">
-      <FleetchartItemImage
-        v-if="model.media.fleetchartImage"
-        :src="model.media.fleetchartImage"
-        :length="length"
-        :label="model.name"
-        :scale="scale"
-      />
-    </a>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "FleetchartItem",
+};
+</script>
 
 <script lang="ts" setup>
 import FleetchartItemImage from "@/embed/components/Fleetchart/Image/index.vue";
@@ -44,8 +32,20 @@ const label = computed(
 );
 </script>
 
-<script lang="ts">
-export default {
-  name: "FleetchartItem",
-};
-</script>
+<template>
+  <div
+    v-tooltip.bottom="label"
+    class="fleetchart-item fade-list-item"
+    :class="`model-${model.slug}`"
+  >
+    <a :href="url" target="_blank" rel="noopener">
+      <FleetchartItemImage
+        v-if="model.media.fleetchartImage"
+        :src="model.media.fleetchartImage"
+        :length="length"
+        :label="model.name"
+        :scale="scale"
+      />
+    </a>
+  </div>
+</template>

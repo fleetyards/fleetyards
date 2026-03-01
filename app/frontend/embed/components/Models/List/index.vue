@@ -1,14 +1,8 @@
-<template>
-  <transition-group name="fade-list" class="row" tag="div" :appear="true">
-    <div
-      v-for="(model, index) in internalModels"
-      :key="`panel-${index}-${model.slug}`"
-      class="col-12 col-md-6 col-xl-4 col-xxl-4 fade-list-item"
-    >
-      <ModelPanel :model="model" :details="details" :count="count(model)" />
-    </div>
-  </transition-group>
-</template>
+<script lang="ts">
+export default {
+  name: "ModelList",
+};
+</script>
 
 <script lang="ts" setup>
 import ModelPanel from "@/embed/components/Models/Panel/index.vue";
@@ -49,8 +43,14 @@ const count = (model: EnhancedModelMinimal | Model) => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "ModelList",
-};
-</script>
+<template>
+  <transition-group name="fade-list" class="row" tag="div" :appear="true">
+    <div
+      v-for="(model, index) in internalModels"
+      :key="`panel-${index}-${model.slug}`"
+      class="col-12 col-md-6 col-xl-4 col-xxl-4 fade-list-item"
+    >
+      <ModelPanel :model="model" :details="details" :count="count(model)" />
+    </div>
+  </transition-group>
+</template>

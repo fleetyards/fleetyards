@@ -1,25 +1,8 @@
-<template>
-  <Panel class="codes-panel" inset>
-    <p>
-      {{ t("texts.twoFactor.backupCodes") }}
-    </p>
-    <div class="row d-flex justify-content-center codes-panel-inner">
-      <div
-        v-for="backupCode in codes"
-        :key="backupCode"
-        class="col-6 text-center"
-      >
-        {{ backupCode }}
-      </div>
-    </div>
-    <hr />
-    <div class="d-flex justify-content-center">
-      <Btn :variant="BtnVariantsEnum.LINK" @click="copyCodes">
-        {{ t("actions.copyBackupCodes") }}
-      </Btn>
-    </div>
-  </Panel>
-</template>
+<script lang="ts">
+export default {
+  name: "TwoFactorBackupCodesPanel",
+};
+</script>
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -55,11 +38,28 @@ const copyCodes = () => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "TwoFactorBackupCodesPanel",
-};
-</script>
+<template>
+  <Panel class="codes-panel" inset>
+    <p>
+      {{ t("texts.twoFactor.backupCodes") }}
+    </p>
+    <div class="row d-flex justify-content-center codes-panel-inner">
+      <div
+        v-for="backupCode in codes"
+        :key="backupCode"
+        class="col-6 text-center"
+      >
+        {{ backupCode }}
+      </div>
+    </div>
+    <hr />
+    <div class="d-flex justify-content-center">
+      <Btn :variant="BtnVariantsEnum.LINK" @click="copyCodes">
+        {{ t("actions.copyBackupCodes") }}
+      </Btn>
+    </div>
+  </Panel>
+</template>
 
 <style lang="scss" scoped>
 .codes-panel {

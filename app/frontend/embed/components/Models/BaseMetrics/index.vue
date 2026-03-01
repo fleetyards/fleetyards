@@ -1,3 +1,28 @@
+<script lang="ts">
+export default {
+  name: "ModelBaseMetrics",
+};
+</script>
+
+<script lang="ts" setup>
+import { useI18n } from "@/embed/composables/useI18n";
+import type { Model } from "@/services/fyApi";
+
+const { t, toNumber, toUEC } = useI18n();
+
+type Props = {
+  model: Model;
+  title?: boolean;
+  padding?: boolean;
+};
+
+withDefaults(defineProps<Props>(), {
+  title: false,
+  detailed: false,
+  padding: false,
+});
+</script>
+
 <template>
   <div
     class="row base-metrics"
@@ -61,28 +86,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { useI18n } from "@/embed/composables/useI18n";
-import type { Model } from "@/services/fyApi";
-
-const { t, toNumber, toUEC } = useI18n();
-
-type Props = {
-  model: Model;
-  title?: boolean;
-  padding?: boolean;
-};
-
-withDefaults(defineProps<Props>(), {
-  title: false,
-  detailed: false,
-  padding: false,
-});
-</script>
-
-<script lang="ts">
-export default {
-  name: "ModelBaseMetrics",
-};
-</script>

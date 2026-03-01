@@ -1,3 +1,51 @@
+<script lang="ts">
+export default {
+  name: "ModelsPanel",
+};
+</script>
+
+<script lang="ts" setup>
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelImage from "@/shared/components/base/Panel/Image/index.vue";
+import Collapsed from "@/shared/components/Collapsed.vue";
+import ModelTopMetrics from "@/embed/components/Models/TopMetrics/index.vue";
+import ModelBaseMetrics from "@/embed/components/Models/BaseMetrics/index.vue";
+import LazyImage from "@/shared/components/LazyImage/index.vue";
+import { useI18n } from "@/embed/composables/useI18n";
+import { v4 as uuidv4 } from "uuid";
+import type { Model } from "@/services/fyApi";
+
+type Props = {
+  model: Model;
+  details?: boolean;
+  count?: number;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  details: false,
+  count: undefined,
+});
+
+const { t } = useI18n();
+
+const uuid = ref<string>(uuidv4());
+
+const url = computed(
+  () => `${window.FRONTEND_ENDPOINT}/ships/${props.model.slug}`,
+);
+
+const countLabel = computed(() => {
+  if (!props.count) {
+    return "";
+  }
+  return `${props.count}x `;
+});
+
+onMounted(() => {
+  uuid.value = uuidv4();
+});
+</script>
+
 <template>
   <div>
     <Panel v-if="model" :class="`model-${model.slug}`">
@@ -44,51 +92,3 @@
     </Panel>
   </div>
 </template>
-
-<script lang="ts" setup>
-import Panel from "@/shared/components/base/Panel/index.vue";
-import PanelImage from "@/shared/components/base/Panel/Image/index.vue";
-import Collapsed from "@/shared/components/Collapsed.vue";
-import ModelTopMetrics from "@/embed/components/Models/TopMetrics/index.vue";
-import ModelBaseMetrics from "@/embed/components/Models/BaseMetrics/index.vue";
-import LazyImage from "@/shared/components/LazyImage/index.vue";
-import { useI18n } from "@/embed/composables/useI18n";
-import { v4 as uuidv4 } from "uuid";
-import type { Model } from "@/services/fyApi";
-
-type Props = {
-  model: Model;
-  details?: boolean;
-  count?: number;
-};
-
-const props = withDefaults(defineProps<Props>(), {
-  details: false,
-  count: undefined,
-});
-
-const { t } = useI18n();
-
-const uuid = ref<string>(uuidv4());
-
-const url = computed(
-  () => `${window.FRONTEND_ENDPOINT}/ships/${props.model.slug}`,
-);
-
-const countLabel = computed(() => {
-  if (!props.count) {
-    return "";
-  }
-  return `${props.count}x `;
-});
-
-onMounted(() => {
-  uuid.value = uuidv4();
-});
-</script>
-
-<script lang="ts">
-export default {
-  name: "ModelsPanel",
-};
-</script>
