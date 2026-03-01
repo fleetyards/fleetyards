@@ -31,7 +31,7 @@ const initialValues = ref<ModelUpdateInput>({
 
 const validationSchema = {};
 
-const { defineField } = useForm({
+useForm({
   initialValues: initialValues.value,
   validationSchema,
 });

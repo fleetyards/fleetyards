@@ -15,9 +15,8 @@ import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import {
   useImages as useImagesQuery,
-  useImagesQueryOptions,
+  getImagesQueryKey,
 } from "@/services/fyApi";
-import { CustomQueryOptions } from "@/services/customQueryOptions";
 
 const { t } = useI18n();
 
@@ -29,8 +28,7 @@ const imagesQueryParams = computed(() => {
 });
 
 const imagesQueryKey = computed(() => {
-  return (useImagesQueryOptions(imagesQueryParams) as CustomQueryOptions)
-    .queryKey;
+  return getImagesQueryKey(imagesQueryParams.value);
 });
 
 const { page, perPage } = usePagination(imagesQueryKey);

@@ -12,8 +12,11 @@ import Loader from "@/shared/components/Loader/index.vue";
 import Avatar from "@/shared/components/Avatar/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { sortBy, uniqByField as uniqByFieldArray } from "@/shared/utils/Array";
-import { type VehiclePublic } from "@/services/fyApi";
-// import { FleetVehiclesCollection } from "@/frontend/api/collections/FleetVehicles";
+import {
+  type VehiclePublic,
+  type FleetVehiclesParams,
+  useFleetVehicles as useFleetVehiclesQuery,
+} from "@/services/fyApi";
 
 type Props = {
   modelSlug: string;
@@ -24,33 +27,32 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 
-// const collection: FleetVehiclesCollection = new FleetVehiclesCollection();
+const route = useRoute();
 
-const loading = ref(true);
+const loanerEq = computed(
+  () =>
+    (route.query.q as unknown as Record<string, unknown> | undefined)
+      ?.loanerEq as boolean | undefined,
+);
+
+const params = computed<FleetVehiclesParams>(() => ({
+  grouped: false,
+  perPage: "all",
+  q: {
+    modelSlugIn: [props.modelSlug],
+    loanerEq: loanerEq.value,
+  },
+}));
+
+const { data, status } = useFleetVehiclesQuery(props.fleetSlug, params);
+
+const loading = computed(() => status.value === "pending");
 
 const sortedVehicles = computed(() =>
-  // sortBy(collection.records, "username").filter(uniqByFieldArray("username")),
-  sortBy([] as VehiclePublic[], "username").filter(
+  sortBy((data.value?.items || []) as VehiclePublic[], "username").filter(
     uniqByFieldArray("username"),
   ),
 );
-
-const route = useRoute();
-
-// const query = computed(() => (route.query.q || {}) as VehiclesFilter);
-
-// const loanerEq = computed(() => query.value.loanerEq as boolean | "only");
-
-onMounted(async () => {
-  // await collection.findAll({
-  //   slug: props.fleetSlug,
-  //   filters: { modelSlugIn: [props.modelSlug], loanerEq: loanerEq.value },
-  //   grouped: false,
-  //   perPage: "all",
-  // });
-
-  loading.value = false;
-});
 </script>
 
 <template>

@@ -10,16 +10,15 @@ import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useComlink } from "@/shared/composables/useComlink";
 import {
-  useHangarGroupSort as useHangarGroupSortMutation,
-  type HangarQuery,
   type HangarGroup,
   type HangarGroupPublic,
   type HangarGroupMetric,
+  useHangarGroupSort as useHangarGroupSortMutation,
 } from "@/services/fyApi";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
 
 type Props = {
@@ -51,15 +50,13 @@ watch(
 
 const { filter, filters } = useHangarFilters();
 
-const groupCount = (group: HangarGroup) => {
+const groupCount = (group: HangarGroup | HangarGroupPublic) => {
   return (
     props.hangarGroupCounts.find((count) => count.id === group.id) || {
       count: 0,
     }
   );
 };
-
-const route = useRoute();
 
 const filterGroup = (group: string) => {
   const hangarGroupsIn = filters.value.hangarGroupsIn;
@@ -119,40 +116,40 @@ const isInverted = (group: string) => {
 
 const drag = ref(false);
 
-const groups = ref<HangarGroup[]>([]);
+const groups = ref<(HangarGroup | HangarGroupPublic)[]>([]);
 
-// watch(
-//   () => groups.value,
-//   () => {
-//     if (groups.value !== props.hangarGroups) {
-//       updateSort();
-//     }
-//   },
-// );
+const { displayAlert } = useAppNotifications();
 
-// const sortIndex = computed(() => {
-//   return groups.value.map((item) => item.id);
-// });
+const sortMutation = useHangarGroupSortMutation();
 
-// const sortMutation = useHangarGroupSortMutation();
+watch(
+  () => groups.value,
+  () => {
+    if (groups.value !== props.hangarGroups) {
+      updateSort();
+    }
+  },
+);
 
-// const { displayAlert } = useAppNotifications();
+const sortIndex = computed(() => {
+  return groups.value.map((item) => item.id);
+});
 
-// const updateSort = async () => {
-//   await sortMutation
-//     .mutateAsync({
-//       sorting: sortIndex.value,
-//     })
-//     .catch((error) => {
-//       displayAlert({
-//         text: error.response.data.message,
-//       });
-//     });
-// };
+const updateSort = async () => {
+  await sortMutation
+    .mutateAsync({
+      data: { sorting: sortIndex.value },
+    })
+    .catch((error) => {
+      displayAlert({
+        text: error.response?.data?.message,
+      });
+    });
+};
 
 const comlink = useComlink();
 
-const openGroupModal = (hangarGroup?: HangarGroup) => {
+const openGroupModal = (hangarGroup?: HangarGroup | HangarGroupPublic) => {
   comlink.emit("open-modal", {
     component: () =>
       import("@/frontend/components/Vehicles/GroupModal/index.vue"),
@@ -171,7 +168,7 @@ const openNewGroupModal = () => {
 
 const emit = defineEmits(["highlight"]);
 
-const highlight = (group?: HangarGroup) => {
+const highlight = (group?: HangarGroup | HangarGroupPublic) => {
   emit("highlight", group);
 };
 </script>

@@ -14,16 +14,16 @@ import { useFilters } from "@/shared/composables/useFilters";
 
 const { t } = useI18n();
 
-const setupForm = () => {
-  form.value = {
-    usernameCont: routeQuery.value.usernameCont,
-    roleIn: routeQuery.value.roleIn || [],
-    sorts: routeQuery.value.sorts,
-  };
-};
+const { filter, resetFilter, isFilterSelected, filters } =
+  useFilters<FleetMemberQuery>({ updateCallback: setupForm });
 
-const { filter, resetFilter, isFilterSelected, routeQuery } =
-  useFilters<FleetMemberQuery>(setupForm);
+function setupForm() {
+  form.value = {
+    usernameCont: filters.value.usernameCont,
+    roleIn: filters.value.roleIn || [],
+    sorts: filters.value.sorts,
+  };
+}
 
 const form = ref<FleetMemberQuery>({});
 
@@ -44,9 +44,10 @@ const roleOptions: FilterOption[] = [
 </script>
 
 <template>
-  <form @submit.prevent="filter">
+  <form @submit.prevent="filter(form)">
     <FormInput
       id="username"
+      name="username"
       v-model="form.usernameCont"
       translation-key="filters.fleets.members.username"
       :no-label="true"

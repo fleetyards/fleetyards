@@ -49,8 +49,9 @@ const update = (value: number) => {
   emit("update:modelValue", value);
 };
 
-const marks = (value: number) => {
-  if (value % innerMark.value === 0) {
+const marks = (value: number | string) => {
+  const num = Number(value);
+  if (num % innerMark.value === 0) {
     return {
       label: label(value),
     };
@@ -59,8 +60,8 @@ const marks = (value: number) => {
   return false;
 };
 
-const label = (value: number) => {
-  return `${value}x`;
+const label = (value: number | string) => {
+  return `${Number(value)}x`;
 };
 </script>
 

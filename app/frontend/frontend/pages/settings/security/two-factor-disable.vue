@@ -13,6 +13,14 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useSessionStore } from "@/frontend/stores/session";
+import { storeToRefs } from "pinia";
+import { useForm } from "vee-validate";
+import {
+  useDisableOtpSetup as useDisableOtpSetupMutation,
+  type ValidationError,
+} from "@/services/fyApi";
+import { type ErrorType } from "@/services/axiosClient";
 
 const { displaySuccess, displayAlert } = useAppNotifications();
 
@@ -20,50 +28,56 @@ const { t } = useI18n();
 
 const comlink = useComlink();
 
+const sessionStore = useSessionStore();
+const { currentUser } = storeToRefs(sessionStore);
+
 const submitting = ref(false);
 
-const form = ref<TwoFactorForm>();
-
-onMounted(() => {
-  setupForm();
-});
-
-const setupForm = () => {
-  form.value = {
-    twoFactorCode: null,
-  };
+const validationSchema = {
+  twoFactorCode: "required",
 };
+
+const { defineField, handleSubmit } = useForm();
+
+const [twoFactorCode, twoFactorCodeProps] = defineField("twoFactorCode");
 
 const router = useRouter();
 
-const disable = async () => {
+const disableMutation = useDisableOtpSetupMutation();
+
+const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
-  const response = await twoFactorCollection.disable(this.form.twoFactorCode);
+  await disableMutation
+    .mutateAsync({
+      data: values,
+    })
+    .then(() => {
+      comlink.emit("user-update");
 
-  submitting.value = false;
+      displaySuccess({
+        text: t("messages.twoFactor.disable.success"),
+      });
 
-  setupForm();
+      router
+        .push({ name: "settings-security", hash: "#two-factor" })
+        .catch(() => {});
+    })
+    .catch((error) => {
+      const response = error as unknown as ErrorType<ValidationError>;
 
-  if (!response.error) {
-    comlink.emit("user-update");
-
-    displaySuccess({
-      text: t("messages.twoFactor.disable.success"),
+      if (response.code === "requires_access_confirmation") {
+        comlink.emit("access-confirmation-required");
+      } else {
+        displayAlert({
+          text: t("messages.twoFactor.disable.failure"),
+        });
+      }
+    })
+    .finally(() => {
+      submitting.value = false;
     });
-
-    await router
-      .push({ name: "settings-security", hash: "#two-factor" })
-
-      .catch(() => {});
-  } else if (response.error === "requires_access_confirmation") {
-    comlink.emit("access-confirmation-required");
-  } else {
-    displayAlert({
-      text: t("messages.twoFactor.disable.failure"),
-    });
-  }
-};
+});
 </script>
 
 <template>
@@ -71,51 +85,37 @@ const disable = async () => {
     <div class="col-12">
       <div class="row">
         <div class="col-12">
-          <h1>{{ $t("headlines.settings.twoFactor.disable") }}</h1>
+          <h1>{{ t("headlines.settings.twoFactor.disable") }}</h1>
         </div>
       </div>
       <div class="row">
         <div class="col-12">
           <p class="text-center">
-            {{ $t("texts.twoFactor.disable") }}
+            {{ t("texts.twoFactor.disable") }}
           </p>
 
-          <ValidationObserver
-            v-if="form"
-            v-slot="{ handleSubmit }"
-            :slim="true"
-          >
-            <form
-              class="two-factor-form"
-              @submit.prevent="handleSubmit(disable)"
-            >
-              <div class="row">
-                <div class="col-12 two-factor-form-inner">
-                  <ValidationProvider
-                    vid="twoFactorCode"
-                    rules="required"
-                    :name="$t('labels.twoFactorCode')"
-                    :slim="true"
-                  >
-                    <FormInput
-                      id="twoFactorCode"
-                      v-model="form.twoFactorCode"
-                      class="two-factor-input"
-                      :autofocus="true"
-                      :no-label="true"
-                      translation-key="twoFactorCode"
-                    />
-                  </ValidationProvider>
+          <form class="two-factor-form" @submit.prevent="onSubmit">
+            <div class="row">
+              <div class="col-12 two-factor-form-inner">
+                <FormInput
+                  v-model="twoFactorCode"
+                  name="twoFactorCode"
+                  v-bind="twoFactorCodeProps"
+                  :rules="validationSchema.twoFactorCode"
+                  class="two-factor-input"
+                  :autofocus="true"
+                  :no-label="true"
+                  translation-key="twoFactorCode"
+                />
 
-                  <br />
+                <br />
 
-                  <Btn :loading="submitting" type="submit" size="large">
-                    {{ $t("actions.twoFactor.disable") }}
-                  </Btn>
-                </div>
+                <Btn :loading="submitting" type="submit" size="large">
+                  {{ t("actions.twoFactor.disable") }}
+                </Btn>
               </div>
-            </form>
-          </ValidationObserver>
+            </div>
+          </form>
         </div>
       </div>
     </div>

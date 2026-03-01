@@ -174,7 +174,7 @@ const columns: BaseTableCol<Image>[] = [
         <template #col-updatedAt="{ record }">
           {{ l(record.updatedAt, "datetime.formats.short") }}
         </template>
-        <template #actions="{ record }"> Actions </template>
+        <template #actions> Actions </template>
       </BaseTable>
     </template>
     <template #pagination-bottom>

@@ -82,7 +82,7 @@ const selectedPackage = (addonPackage: ModelModulePackage) => {
           <div
             v-if="item.media.storeImage"
             :style="{
-              'background-image': `url(${item.media.storeImage.small})`,
+              'background-image': `url(${item.media.storeImage.smallUrl})`,
             }"
             class="model-panel-image"
           />

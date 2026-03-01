@@ -1,7 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
 import { routes as modelRoutes } from "@/admin/pages/models/[id]/routes";
-import { routes as modelModulesRoutes } from "@/admin/pages/models/modules/routes";
-import { routes as modelPaintsRoutes } from "@/admin/pages/models/paints/routes";
 
 export const routes: RouteRecordRaw[] = [
   {

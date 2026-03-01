@@ -31,12 +31,11 @@ import {
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import {
   usePublicHangar as usePublicHangarQuery,
-  usePublicHangarQueryOptions,
+  getPublicHangarQueryKey,
   usePublicHangarStats,
   usePublicHangarGroups,
   type HangarGroupMetric,
 } from "@/services/fyApi";
-import { CustomQueryOptions } from "@/services/customQueryOptions";
 
 const { t } = useI18n();
 
@@ -69,12 +68,7 @@ const publicHangarQueryParams = computed(() => {
 });
 
 const publicHangarQueryKey = computed(() => {
-  return (
-    usePublicHangarQueryOptions(
-      username,
-      publicHangarQueryParams,
-    ) as CustomQueryOptions
-  ).queryKey;
+  return getPublicHangarQueryKey(username.value, publicHangarQueryParams.value);
 });
 
 const { perPage, page, updatePerPage } = usePagination(publicHangarQueryKey);

@@ -21,10 +21,6 @@ export type HoloModel = {
   length?: number;
 };
 
-interface ModelClickEvent extends PointerEvent {
-  object: Mesh;
-}
-
 type Props = {
   models: HoloModel[];
   colored?: boolean;
@@ -147,7 +143,7 @@ const cameraAngle = computed(() => {
   return props.inline ? 15 : 30;
 });
 
-const handleModelLoaded = (size: Vector3, scene: Mesh) => {
+const handleModelLoaded = (size: Vector3, _scene: Mesh) => {
   // if (props.grid) {
   //   currentModel.value = scene;
   // }

@@ -90,7 +90,7 @@ const isActive = (classification: string) => {
       <Btn
         v-for="classification in countData"
         :key="`dropdown-${classification.name}`"
-        variant="dropdown"
+        variant="link"
         class="labels-dropdown-item"
         :class="{
           active: isActive(classification.name),

@@ -13,6 +13,7 @@ import Empty from "@/shared/components/Empty/index.vue";
 import ImageRow from "@/admin/components/ImageUploader/ImageRow/index.vue";
 import type { Image } from "@/services/fyAdminApi";
 import Panel from "@/shared/components/base/Panel/index.vue";
+import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 import Loader from "@/shared/components/Loader/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { formatSize } from "@/shared/utils/Format";
@@ -271,7 +272,7 @@ const inputFilter = (
 
     <Panel
       v-if="isUploadActive"
-      :variant="uploadElement?.dropActive ? 'success' : undefined"
+      :variant="uploadElement?.dropActive ? PanelVariantsEnum.SUCCESS : undefined"
       slim
       @click="selectImages"
     >

@@ -76,42 +76,6 @@ const isGroundVehicle = computed(() => props.model.metrics.isGroundVehicle);
       </div>
       <template v-else>
         <div class="row">
-          <div class="col-6">
-            <div class="metrics-label">
-              {{ t("model.scmSpeedAcceleration") }}:
-            </div>
-            <div class="metrics-value">
-              {{ toNumber(model.speeds.scmSpeedAcceleration, "seconds") }}
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="metrics-label">
-              {{ t("model.scmSpeedDecceleration") }}:
-            </div>
-            <div class="metrics-value">
-              {{ toNumber(model.speeds.scmSpeedDecceleration, "seconds") }}
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-6">
-            <div class="metrics-label">
-              {{ t("model.maxSpeedAcceleration") }}:
-            </div>
-            <div class="metrics-value">
-              {{ toNumber(model.speeds.maxSpeedAcceleration, "seconds") }}
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="metrics-label">
-              {{ t("model.maxSpeedDecceleration") }}:
-            </div>
-            <div class="metrics-value">
-              {{ toNumber(model.speeds.maxSpeedDecceleration, "seconds") }}
-            </div>
-          </div>
-        </div>
-        <div class="row">
           <div class="col-6 col-lg-4">
             <div class="metrics-label">{{ t("model.pitch") }}:</div>
             <div class="metrics-value">

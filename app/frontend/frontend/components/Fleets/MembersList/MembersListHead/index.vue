@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { sortByToggle } from "@/frontend/utils/Sorting";
-import { useRoute } from "vue-router";
+import { useRoute, type RouteLocationRaw, type LocationQueryRaw } from "vue-router";
 import { useI18n } from "@/shared/composables/useI18n";
 import type { FleetYardsLocation } from "@/frontend/utils/Sorting";
 
@@ -22,8 +22,14 @@ const { t } = useI18n();
 
 const route = useRoute();
 
-const sort = (field: string) =>
-  sortByToggle(route as unknown as FleetYardsLocation, field);
+const sort = (field: string): RouteLocationRaw => {
+  const result = sortByToggle(route as unknown as FleetYardsLocation, field);
+  return {
+    name: result.name || "",
+    params: result.params,
+    query: result.query as unknown as LocationQueryRaw,
+  };
+};
 </script>
 
 <template>

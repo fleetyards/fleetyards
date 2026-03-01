@@ -17,7 +17,7 @@ import { type Model } from "@/services/fyApi";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import {
   useModelImages as useModelImagesQuery,
-  useModelImagesQueryOptions,
+  getModelImagesQueryKey,
 } from "@/services/fyApi";
 
 type Props = {
@@ -53,7 +53,7 @@ const metaImage = computed(() => {
     return undefined;
   }
 
-  return props.model.media.storeImage?.large;
+  return props.model.media.storeImage?.largeUrl;
 });
 
 const route = useRoute();
@@ -88,7 +88,7 @@ const modelImagesQueryParams = computed(() => {
 });
 
 const imagesQueryKey = computed(() => {
-  return useModelImagesQueryOptions(modelSlug, modelImagesQueryParams).queryKey;
+  return getModelImagesQueryKey(modelSlug.value, modelImagesQueryParams.value);
 });
 
 const { page, perPage } = usePagination(imagesQueryKey);
@@ -153,7 +153,7 @@ useGallery(".images");
       >
         <template #default="{ record }">
           <LazyImage
-            :src="record.bigUrl"
+            :src="record.largeUrl"
             :href="record.url"
             :alt="record.name"
             :width="record.width"

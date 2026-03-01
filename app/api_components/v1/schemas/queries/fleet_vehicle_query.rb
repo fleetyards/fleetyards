@@ -28,6 +28,7 @@ module V1
             productionStatusIn: {type: :array, items: {type: :string}},
             searchCont: {type: :string},
             sizeIn: {type: :array, items: {type: :string}},
+            modelSlugIn: {type: :array, items: {type: :string}},
             modelNameCont: {type: :string},
             modelNameOrModelDescriptionCont: {type: :string},
             loanerEq: {type: :boolean},

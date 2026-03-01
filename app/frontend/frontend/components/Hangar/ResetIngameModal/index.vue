@@ -10,6 +10,10 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import {
+  useMoveAllIngameToWishlist as useMoveAllIngameToWishlistMutation,
+  useDestroyAllIngameVehicles as useDestroyAllIngameVehiclesMutation,
+} from "@/services/fyApi";
 
 const { displaySuccess, displayAlert } = useAppNotifications();
 
@@ -17,36 +21,42 @@ const { t } = useI18n();
 
 const comlink = useComlink();
 
+const moveToWishlistMutation = useMoveAllIngameToWishlistMutation();
+
 const moveToWishlist = async () => {
-  const success = await vehiclesCollection.ingameMoveToWishlist();
+  await moveToWishlistMutation
+    .mutateAsync()
+    .then(() => {
+      displaySuccess({
+        text: t("messages.vehicle.resetIngame.moveToWishlist.success"),
+      });
 
-  if (success) {
-    displaySuccess({
-      text: t("messages.vehicle.resetIngame.moveToWishlist.success"),
+      comlink.emit("close-modal");
+    })
+    .catch(() => {
+      displayAlert({
+        text: t("messages.vehicle.resetIngame.moveToWishlist.failure"),
+      });
     });
-
-    comlink.emit("close-modal");
-  } else {
-    displayAlert({
-      text: t("messages.vehicle.resetIngame.moveToWishlist.failure"),
-    });
-  }
 };
 
+const destroyAllIngameMutation = useDestroyAllIngameVehiclesMutation();
+
 const removeAll = async () => {
-  const success = await vehiclesCollection.destroyAllIngame();
+  await destroyAllIngameMutation
+    .mutateAsync()
+    .then(() => {
+      displaySuccess({
+        text: t("messages.vehicle.resetIngame.removeAll.success"),
+      });
 
-  if (success) {
-    displaySuccess({
-      text: t("messages.vehicle.resetIngame.removeAll.success"),
+      comlink.emit("close-modal");
+    })
+    .catch(() => {
+      displayAlert({
+        text: t("messages.vehicle.resetIngame.removeAll.failure"),
+      });
     });
-
-    comlink.emit("close-modal");
-  } else {
-    displayAlert({
-      text: t("messages.vehicle.resetIngame.removeAll.failure"),
-    });
-  }
 };
 </script>
 

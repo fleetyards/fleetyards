@@ -28,5 +28,10 @@ export const useEmbedStore = defineStore("embed", {
     grouping: config.grouped || true,
     fleetchartGrouping: config.fleetchartGrouped || false,
   }),
+  actions: {
+    updateVersion(_payload: { version?: string; codename?: string }) {
+      // Embed app does not need version update handling
+    },
+  },
   persist: true,
 });

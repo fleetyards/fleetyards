@@ -15,6 +15,8 @@ import {
 } from "@/services/fyApi";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelImage from "@/shared/components/base/Panel/Image/index.vue";
+import { PanelAlignmentsEnum } from "@/shared/components/base/Panel/types";
+import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 
 type Props = {
   addons: (ModelModule | ModelUpgrade)[];
@@ -36,7 +38,7 @@ const addonToAdd = ref<string | undefined>();
 const internalAddons = ref<string[]>(props.modelValue || []);
 
 const storeImage = (addon: ModelModule | ModelUpgrade) => {
-  return addon.media?.storeImage?.small;
+  return addon.media?.storeImage?.smallUrl;
 };
 
 const options = computed((): FilterOption[] => {
@@ -44,7 +46,7 @@ const options = computed((): FilterOption[] => {
     return {
       value: addon.id,
       label: addon.name,
-      icon: addon.media.storeImage?.small,
+      icon: addon.media.storeImage?.smallUrl,
     };
   });
 });
@@ -132,7 +134,7 @@ const selectedAddon = (addonId: string) => {
           >
             <Panel
               v-tooltip="editable && selectTooltip(addon.id)"
-              alignment="left"
+              :alignment="PanelAlignmentsEnum.LEFT"
               slim
               class="addon-panel"
               :class="{
@@ -148,7 +150,7 @@ const selectedAddon = (addonId: string) => {
                 :alt="addon.name"
               />
               <div>
-                <PanelHeading level="h3" title-align="right" multiline>{{
+                <PanelHeading :level="HeadingLevelEnum.H3" title-align="right" multiline>{{
                   addon.name
                 }}</PanelHeading>
                 <div

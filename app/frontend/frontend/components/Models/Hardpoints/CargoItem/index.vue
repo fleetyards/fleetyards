@@ -5,7 +5,6 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { groupBy } from "@/shared/utils/Array";
 import HardpointItem from "@/frontend/components/Models/Hardpoints/Item/index.vue";
 import HardpointComponent from "@/frontend/components/Models/Hardpoints/Component/index.vue";
 import { type Hardpoint, type CargoHold } from "@/services/fyApi";
@@ -32,37 +31,6 @@ const typeData = computed(() => {
 
 const count = computed(() => {
   return props.hardpoints.length;
-});
-
-const loadout = computed(() => {
-  if (hardpoint.value.hardpoints?.length) {
-    return hardpoint.value.hardpoints;
-  }
-
-  if (
-    hardpoint.value.component?.hardpoints?.length &&
-    hardpoint.value.component.hardpoints[0].component
-  ) {
-    return hardpoint.value.component.hardpoints;
-  }
-
-  return [];
-});
-
-const groupedLoadout = computed(() => {
-  return groupBy<Hardpoint>(loadout.value, "groupKey");
-});
-
-const hardpointNames = computed(() => {
-  return props.hardpoints
-    .map((hp) => {
-      return hp.name
-        .split("_")
-        .join(" ")
-        .replace("hardpoint", "")
-        .replace(/\b\w/g, (l) => l.toUpperCase());
-    })
-    .join(", ");
 });
 
 const name = computed(() => {

@@ -12,6 +12,7 @@ import { useMobile } from "@/shared/composables/useMobile";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import type { SpinnerAlignment } from "@/shared/components/SmallLoader/index.vue";
 import type { RouteLocationRaw } from "vue-router";
+import type { FleetyardsSyncEvent } from "@/frontend/lib/FleetyardsSyncHandler";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,

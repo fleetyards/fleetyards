@@ -47,7 +47,7 @@ const defaultTheme: Options = {
     tickColor: "#707073",
     tickWidth: 1,
     title: {
-      text: null,
+      text: undefined,
       style: {
         color: "#A0A0A3",
       },
@@ -67,7 +67,7 @@ const defaultTheme: Options = {
     tickColor: "#707073",
     tickWidth: 1,
     title: {
-      text: null,
+      text: undefined,
       style: {
         color: "#A0A0A3",
       },

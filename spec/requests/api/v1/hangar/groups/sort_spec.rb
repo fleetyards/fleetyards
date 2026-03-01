@@ -7,6 +7,12 @@ RSpec.describe "api/v1/hangar/groups", type: :request, swagger_doc: "v1/schema.y
   let(:user) { author }
   let(:hangar_groups) { create_list(:hangar_group, 3, user: author) }
 
+  let(:input) do
+    {
+      sorting: hangar_groups.reverse.map(&:id)
+    }
+  end
+
   before do
     sign_in(user) if user.present?
 
@@ -17,14 +23,19 @@ RSpec.describe "api/v1/hangar/groups", type: :request, swagger_doc: "v1/schema.y
     put("HangarGroup sort") do
       operationId "hangarGroupSort"
       tags "HangarGroups"
+      consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/HangarGroupUpdateInput"}, required: true
+      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/HangarGroupSortInput"}, required: true
 
       response(200, "successful") do
         schema type: :object, properties: {success: {type: :boolean}}
 
-        run_test!
+        run_test! do
+          hangar_groups.reverse.each_with_index do |group, index|
+            expect(group.reload.sort).to eq(index)
+          end
+        end
       end
 
       response(401, "unauthorized") do

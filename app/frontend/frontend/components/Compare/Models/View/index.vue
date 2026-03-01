@@ -27,13 +27,13 @@ const visible = ref(false);
 
 const maxLength = computed(() => {
   return Math.max(
-    ...props.models.map((model) => model.metrics.fleetchartLength || 1),
+    ...props.models.map((model) => model.metrics.fleetchartOffsetLength || 1),
     0,
   );
 });
 
 const shipLength = (model: Model) => {
-  return model.metrics.fleetchartLength || 1;
+  return model.metrics.fleetchartOffsetLength || 1;
 };
 
 const length = (model: Model) => {

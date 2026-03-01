@@ -62,10 +62,10 @@ const categories = computed(() => {
 
   Object.keys(items).forEach((category) => {
     if (
-      [
+      ([
         HardpointCategoryEnum.controller,
         HardpointCategoryEnum.unknown,
-      ].includes(category as HardpointCategoryEnum)
+      ] as HardpointCategoryEnum[]).includes(category as HardpointCategoryEnum)
     ) {
       return;
     }

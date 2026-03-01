@@ -9,6 +9,7 @@ import {
 } from "@/shared/composables/useSubscription";
 import { storeToRefs } from "pinia";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { type Vehicle } from "@/services/fyApi";
 
 export const useUpdates = () => {
   const appStore = useAppStore();
@@ -65,8 +66,12 @@ export const useUpdates = () => {
 
   const { displayMessage, displayInfo } = useAppNotifications();
 
+  const sessionStore = useSessionStore();
+
+  const { currentUser, isAuthenticated } = storeToRefs(sessionStore);
+
   const notifyVehicleOnSale = (data: string) => {
-    if (!currentUser.saleNotify) {
+    if (!currentUser?.value?.saleNotify) {
       return;
     }
 
@@ -80,12 +85,12 @@ export const useUpdates = () => {
       text: t("messages.model.onSale", {
         model: vehicle.model.name,
       }),
-      icon: vehicle.model.storeImageSmall,
+      icon: vehicle.model.media.storeImage?.smallUrl,
     });
   };
 
   const notifyOnSale = (data: string) => {
-    if (!currentUser.saleNotify) {
+    if (!currentUser?.value?.saleNotify) {
       return;
     }
 
@@ -93,7 +98,7 @@ export const useUpdates = () => {
 
     displayInfo({
       text: t("messages.model.onSale", { model: model.name }),
-      icon: model.storeImageSmall,
+      icon: model.media?.storeImage?.smallUrl,
     });
   };
 
@@ -108,10 +113,6 @@ export const useUpdates = () => {
       background: notification.background,
     });
   };
-
-  const sessionStore = useSessionStore();
-
-  const { isAuthenticated } = storeToRefs(sessionStore);
 
   useSubscription({
     channelName: ChannelsEnum.APP_VERSION,

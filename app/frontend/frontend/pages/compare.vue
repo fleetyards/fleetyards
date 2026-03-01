@@ -21,7 +21,10 @@ import { useNavStore } from "@/shared/stores/nav";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import Empty from "@/shared/components/Empty/index.vue";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
-import { ModelsParams, useModels as useModelsQuery } from "@/services/fyApi";
+import {
+  type ModelsParams,
+  useModels as useModelsQuery,
+} from "@/services/fyApi";
 import { useCompareModelFilters } from "@/frontend/composables/useCompareModelFilters";
 
 const { t } = useI18n();
@@ -44,11 +47,7 @@ const params = computed<ModelsParams>(() => {
   };
 });
 
-const { data, refetch, ...asyncStatus } = useModelsQuery(params, {
-  query: {
-    overrideQueryKey: ["compare-models", params],
-  },
-});
+const { data, refetch, ...asyncStatus } = useModelsQuery(params);
 
 const models = computed(() => {
   return (

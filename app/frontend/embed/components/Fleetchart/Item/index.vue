@@ -16,8 +16,8 @@ type Props = {
 const props = defineProps<Props>();
 
 const length = computed(() => {
-  if (props.model.metrics.fleetchartLength) {
-    return props.model.metrics.fleetchartLength;
+  if (props.model.metrics.fleetchartOffsetLength) {
+    return props.model.metrics.fleetchartOffsetLength;
   }
 
   return props.model.metrics.length || 0;

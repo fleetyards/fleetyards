@@ -10,7 +10,6 @@ import HardpointSize from "@/frontend/components/Models/Hardpoints/Size/index.vu
 import HardpointComponent from "@/frontend/components/Models/Hardpoints/Component/index.vue";
 import {
   HardpointSourceEnum,
-  HardpointCategoryEnum,
   type Hardpoint,
   type FuelTank,
 } from "@/services/fyApi";

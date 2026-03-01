@@ -16,9 +16,11 @@ import TravelTime from "@/frontend/components/TravelTime/index.vue";
 import { usePagination } from "@/shared/composables/usePagination";
 import {
   useComponents as useComponentsQuery,
+  getComponentsQueryKey,
   ComponentTypeEnum,
   type ComponentQuantumDrive,
   type Component,
+  type ComponentTypeData,
 } from "@/services/fyApi";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
@@ -34,13 +36,12 @@ const { t } = useI18n();
 
 const route = useRoute();
 
-const columns = computed<BaseTableCol[]>(() => {
+const columns = computed<BaseTableCol<Component>[]>(() => {
   return [
     {
       name: "store_image",
       label: "",
       class: "store-image extra-small",
-      type: "store-image",
     },
     { name: "name", label: "", class: "name", width: "30%" },
     { name: "fuel_usage", label: "", class: "fuel-usage", width: "30%" },
@@ -68,6 +69,19 @@ const storeImage = (component: Component) => {
   }
 
   return fallbackImageJpg;
+};
+
+const isQuantumDrive = (
+  typeData?: ComponentTypeData,
+): typeData is ComponentQuantumDrive => {
+  return !!typeData && "fuelRate" in typeData;
+};
+
+const getFuelRate = (component: Component): number | undefined => {
+  if (isQuantumDrive(component.typeData)) {
+    return component.typeData.fuelRate;
+  }
+  return undefined;
 };
 
 const travelTime = (quantumDrive: Component) => {
@@ -185,8 +199,8 @@ const {
           {{ record.name }}
         </template>
         <template #col-fuel_usage="{ record }">
-          <template v-if="record.typeData?.fuelRate">
-            {{ Math.round(record.typeData?.fuelRate * distance * 100) / 100.0 }}
+          <template v-if="getFuelRate(record)">
+            {{ Math.round(getFuelRate(record)! * distance * 100) / 100.0 }}
           </template>
           <template v-else> - </template>
         </template>

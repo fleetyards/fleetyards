@@ -35,8 +35,8 @@ watch(
 );
 
 const getLength = (model: Model) => {
-  if (model.metrics.fleetchartLength) {
-    return model.metrics.fleetchartLength;
+  if (model.metrics.fleetchartOffsetLength) {
+    return model.metrics.fleetchartOffsetLength;
   }
 
   return model.metrics.length || 0;

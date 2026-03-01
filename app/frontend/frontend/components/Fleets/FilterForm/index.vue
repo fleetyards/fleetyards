@@ -15,7 +15,7 @@ import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 
 const { t } = useI18n();
 const { booleanOptions, priceOptions, pledgePriceOptions } =
-  useFilterOptions(t);
+  useFilterOptions();
 
 type FleetsFilterForm = {
   modelNameCont?: string;
@@ -96,6 +96,7 @@ const submit = () => {
   <form @submit.prevent="submit">
     <FormInput
       id="model-name"
+      name="model-name"
       v-model="form.modelNameCont"
       translation-key="filters.models.name"
       :no-label="true"
@@ -189,6 +190,7 @@ const submit = () => {
       <div class="col-6">
         <FormInput
           id="model-length-gteq"
+          name="model-length-gteq"
           v-model="form.lengthGteq"
           type="number"
           translation-key="filters.vehicles.lengthGt"
@@ -198,6 +200,7 @@ const submit = () => {
       <div class="col-6">
         <FormInput
           id="model-length-lteq"
+          name="model-length-lteq"
           v-model="form.lengthLteq"
           type="number"
           translation-key="filters.vehicles.lengthLt"
@@ -210,6 +213,7 @@ const submit = () => {
       <div class="col-6">
         <FormInput
           id="model-pledge-price-gteq"
+          name="model-pledge-price-gteq"
           v-model="form.pledgePriceGteq"
           type="number"
           translation-key="filters.vehicles.pledgePriceGt"
@@ -220,6 +224,7 @@ const submit = () => {
       <div class="col-6">
         <FormInput
           id="model-pledge-price-lteq"
+          name="model-pledge-price-lteq"
           v-model="form.pledgePriceLteq"
           type="number"
           translation-key="filters.vehicles.pledgePriceLt"
@@ -230,6 +235,7 @@ const submit = () => {
 
     <FormInput
       id="model-price-gteq"
+      name="model-price-gteq"
       v-model="form.priceGteq"
       type="number"
       translation-key="filters.vehicles.priceGt"
@@ -237,6 +243,7 @@ const submit = () => {
 
     <FormInput
       id="model-price-lteq"
+      name="model-price-lteq"
       v-model="form.priceLteq"
       type="number"
       translation-key="filters.vehicles.priceLt"
@@ -256,11 +263,11 @@ const submit = () => {
       :reset-label="t('labels.hide')"
       :options="[
         {
-          name: 'Show',
+          label: 'Show',
           value: 'true',
         },
         {
-          name: 'Only',
+          label: 'Only',
           value: 'only',
         },
       ]"

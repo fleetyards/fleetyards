@@ -85,7 +85,7 @@ const addToHangar = async () => {
         componentProps: {
           vehicle: vehicle,
         },
-        icon: props.model.media.storeImage?.small,
+        icon: props.model.media.storeImage?.smallUrl,
       });
 
       comlink.emit("close-modal");

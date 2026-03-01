@@ -227,7 +227,7 @@ const closeFleetchart = () => {
           v-for="(option, index) in FleetchartModes"
           :key="`fleetchart-screen-height-drowndown-${index}-${option}`"
           size="small"
-          variant="dropdown"
+          variant="link"
           :active="mode === option"
           @click="setMode(option)"
         >

@@ -105,7 +105,6 @@ const {
   errors,
   handleReset,
   resetField,
-  meta,
 } = useField(props.name, undefined, {
   initialValue: props.modelValue,
   label: innerLabel.value,

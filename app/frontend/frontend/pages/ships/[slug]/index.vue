@@ -20,9 +20,7 @@ import ModelBaseMetrics from "@/frontend/components/Models/BaseMetrics/index.vue
 import ModelCrewMetrics from "@/frontend/components/Models/CrewMetrics/index.vue";
 import ModelSpeedMetrics from "@/frontend/components/Models/SpeedMetrics/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
-import HoloViewer, {
-  HoloModel,
-} from "@/shared/components/HoloViewer/index.vue";
+import HoloViewer from "@/shared/components/HoloViewer/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useHangarItems } from "@/frontend/composables/useHangarItems";
@@ -39,7 +37,6 @@ import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 import { type Model } from "@/services/fyApi";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import starcitizenToolsLogo from "@/images/icons/starcitizentools.svg";
-import { useComlink } from "@/shared/composables/useComlink";
 import adiIcon from "@/images/adi_icon.png";
 
 type Props = {
@@ -191,20 +188,6 @@ const scrollToHash = () => {
 
 const toggleHoloviewer = () => {
   modelsStore.toggleHoloviewer();
-};
-
-const comlink = useComlink();
-
-const openHoloviewerModal = () => {
-  modelsStore.toggleHoloviewer();
-
-  comlink.emit("open-modal", {
-    component: () => import("@/shared/components/HoloViewer/Modal/index.vue"),
-    fullscreen: true,
-    props: {
-      paths: [props.model.media.holo?.url],
-    },
-  });
 };
 
 const holoModel = computed(() => {

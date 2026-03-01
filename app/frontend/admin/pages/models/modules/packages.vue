@@ -19,11 +19,10 @@ import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
-  useModelsQueryOptions,
+  getModelsQueryKey,
   useModels as useModelsQuery,
   type Model,
 } from "@/services/fyAdminApi";
-import { CustomQueryOptions } from "@/services/customQueryOptions";
 
 const route = useRoute();
 
@@ -48,8 +47,7 @@ const modelsQueryParams = computed(() => {
 });
 
 const modelsQueryKey = computed(() => {
-  return (useModelsQueryOptions(modelsQueryParams) as CustomQueryOptions)
-    .queryKey;
+  return getModelsQueryKey(modelsQueryParams.value);
 });
 
 const { perPage, page, updatePerPage } = usePagination(modelsQueryKey);
@@ -66,18 +64,18 @@ const columns: BaseTableCol<Model>[] = [
   {
     name: "storeImage",
     label: "",
-    centered: true,
+    alignment: "center",
   },
   {
     name: "rsiStoreImage",
     label: "",
-    centered: true,
+    alignment: "center",
     mobile: false,
   },
   {
     name: "angledView",
     label: "",
-    centered: true,
+    alignment: "center",
     mobile: false,
   },
   {
@@ -88,7 +86,7 @@ const columns: BaseTableCol<Model>[] = [
   {
     name: "rsiId",
     label: "RSI ID",
-    field: "rsi_id",
+    attributeKey: "rsiId",
     sortable: true,
   },
   {
@@ -152,7 +150,7 @@ const { t } = useI18n();
           <LazyImage
             v-if="record.media.storeImage"
             :variant="LazyImageVariantsEnum.WIDE_SMALL"
-            :src="record.media.storeImage.small"
+            :src="record.media.storeImage.smallUrl"
             alt="Model storeImage"
             shadow
           />
@@ -161,7 +159,7 @@ const { t } = useI18n();
           <LazyImage
             v-if="record.media.storeImage"
             :variant="LazyImageVariantsEnum.WIDE_SMALL"
-            :src="record.media.storeImage.small"
+            :src="record.media.storeImage.smallUrl"
             alt="Model rsiStoreImage"
             shadow
           />
@@ -170,7 +168,7 @@ const { t } = useI18n();
           <LazyImage
             v-if="record.media.angledView"
             :variant="LazyImageVariantsEnum.WIDE_SMALL"
-            :src="record.media.angledView.small"
+            :src="record.media.angledView.smallUrl"
             alt="Model angledView"
           />
         </template>

@@ -41,7 +41,7 @@ const initialValues = ref<ModelUpdateInput>({
 
 const validationSchema = {};
 
-const { defineField } = useForm({
+useForm({
   initialValues: initialValues.value,
   validationSchema,
 });
@@ -117,7 +117,7 @@ const columns: BaseTableCol<Video>[] = [
         <template #col-updatedAt="{ record }">
           {{ l(record.updatedAt, "datetime.formats.short") }}
         </template>
-        <template #actions="{ record }"> Actions </template>
+        <template #actions> Actions </template>
       </BaseTable>
     </template>
     <template #pagination-bottom>

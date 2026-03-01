@@ -106,7 +106,7 @@ onMounted(() => {
   }
 });
 
-const tooltipFormat = (tooltip: Highcharts.TooltipFormatterContextObject) => {
+const tooltipFormat = (tooltip: Highcharts.Point) => {
   const options: TooltipLabelOption = {
     label: tooltip.key,
     count: tooltip.y || undefined,

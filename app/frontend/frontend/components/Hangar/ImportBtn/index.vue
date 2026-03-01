@@ -28,7 +28,8 @@ withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const { displayWarning, displayAlert, displaySuccess } = useAppNotifications();
+const { displayWarning, displayAlert, displaySuccess, displayConfirm } =
+  useAppNotifications();
 
 const fileExtensions = "json";
 const acceptedMimeTypes = "application/json";
@@ -49,7 +50,7 @@ const selectFile = () => {
     onConfirm: async () => {
       upload.value?.$el.querySelector("input").click();
     },
-    onCancel: () => {
+    onClose: () => {
       disabled.value = false;
     },
   });

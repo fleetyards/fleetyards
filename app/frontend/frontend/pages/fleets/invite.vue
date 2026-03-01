@@ -15,7 +15,8 @@ import {
 
 const { t } = useI18n();
 
-const { displayAlert, displaySuccess } = useAppNotifications();
+const { displayAlert, displaySuccess, displayConfirm } =
+  useAppNotifications();
 
 const fleetStore = useFleetStore();
 

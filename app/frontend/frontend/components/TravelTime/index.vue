@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { type Component } from "@/services/fyApi";
+import { type Component, type ComponentQuantumDrive } from "@/services/fyApi";
 import { calculateTravelTime } from "@/frontend/utils/travelTimes";
 import { toTime } from "@/shared/utils/Time";
 
@@ -16,22 +16,20 @@ type Props = {
 
 const props = defineProps<Props>();
 
+const typeData = computed(
+  () => props.quantumDrive.typeData as ComponentQuantumDrive | undefined,
+);
+
 const stage1Acceleration = computed(() => {
-  return (
-    (props.quantumDrive.typeData?.standardJump.stage1AccelerationRate || 0) /
-    1000
-  );
+  return (typeData.value?.standardJump.stage1AccelerationRate || 0) / 1000;
 });
 
 const stage2Acceleration = computed(() => {
-  return (
-    (props.quantumDrive.typeData?.standardJump.stage2AccelerationRate || 0) /
-    1000
-  );
+  return (typeData.value?.standardJump.stage2AccelerationRate || 0) / 1000;
 });
 
 const speed = computed(() => {
-  return (props.quantumDrive.typeData?.standardJump.speed || 0) / 1000;
+  return (typeData.value?.standardJump.speed || 0) / 1000;
 });
 
 const travelTime = computed(() => {

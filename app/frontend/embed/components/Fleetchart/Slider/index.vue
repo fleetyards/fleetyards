@@ -17,8 +17,9 @@ const scale = ref<number>(props.initialScale);
 
 const max = computed(() => 300);
 
-const mark = (value: number) => {
-  if (value % 50 === 0 || value === 10) {
+const mark = (value: number | string) => {
+  const num = Number(value);
+  if (num % 50 === 0 || num === 10) {
     return {
       label: label(value),
     };
@@ -32,7 +33,7 @@ const updateScale = (value: number) => {
   emit("change", value);
 };
 
-const label = (value: number) => `${value} %`;
+const label = (value: number | string) => `${Number(value)} %`;
 </script>
 
 <template>

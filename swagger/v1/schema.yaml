@@ -1695,6 +1695,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/HangarGroupSortInput"
+        required: true
   "/hangar/import":
     put:
       summary: Import to your personal Hangar
@@ -6064,6 +6070,18 @@ components:
       - name
       - color
       title: HangarGroupCreateInput
+    HangarGroupSortInput:
+      type: object
+      properties:
+        sorting:
+          type: array
+          items:
+            type: string
+            format: uuid
+      required:
+      - sorting
+      additionalProperties: false
+      title: HangarGroupSortInput
     HangarGroupUpdateInput:
       type: object
       properties:
@@ -7621,6 +7639,10 @@ components:
         searchCont:
           type: string
         sizeIn:
+          type: array
+          items:
+            type: string
+        modelSlugIn:
           type: array
           items:
             type: string

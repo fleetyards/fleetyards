@@ -26,7 +26,6 @@ const props = defineProps<Props>();
 const {
   handleSubmit: handleFormSubmit,
   meta,
-  setErrors,
 } = useForm<ModelUpdateInput>({
   initialValues: unref(props.initialValues),
   validationSchema: props.validationSchema,

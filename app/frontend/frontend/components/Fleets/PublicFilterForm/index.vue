@@ -16,40 +16,41 @@ import { useFilters } from "@/shared/composables/useFilters";
 
 const { t } = useI18n();
 
-const setupForm = () => {
-  form.value = {
-    modelNameCont: routeQuery.value.modelNameCont,
-    onSaleEq: routeQuery.value.onSaleEq,
-    loanerEq: routeQuery.value.loanerEq,
-    priceLteq: routeQuery.value.priceLteq,
-    priceGteq: routeQuery.value.priceGteq,
-    pledgePriceLteq: routeQuery.value.pledgePriceLteq,
-    pledgePriceGteq: routeQuery.value.pledgePriceGteq,
-    lengthLteq: routeQuery.value.lengthLteq,
-    lengthGteq: routeQuery.value.lengthGteq,
-    manufacturerIn: routeQuery.value.manufacturerIn || [],
-    classificationIn: routeQuery.value.classificationIn || [],
-    focusIn: routeQuery.value.focusIn || [],
-    sizeIn: routeQuery.value.sizeIn || [],
-    priceIn: routeQuery.value.priceIn || [],
-    pledgePriceIn: routeQuery.value.pledgePriceIn || [],
-    productionStatusIn: routeQuery.value.productionStatusIn || [],
-  };
-};
+const { filter, resetFilter, isFilterSelected, filters } =
+  useFilters<FleetVehicleQuery>({ updateCallback: setupForm });
 
-const { filter, resetFilter, isFilterSelected, routeQuery } =
-  useFilters<FleetVehicleQuery>(setupForm);
+function setupForm() {
+  form.value = {
+    modelNameCont: filters.value.modelNameCont,
+    onSaleEq: filters.value.onSaleEq,
+    loanerEq: filters.value.loanerEq,
+    priceLteq: filters.value.priceLteq,
+    priceGteq: filters.value.priceGteq,
+    pledgePriceLteq: filters.value.pledgePriceLteq,
+    pledgePriceGteq: filters.value.pledgePriceGteq,
+    lengthLteq: filters.value.lengthLteq,
+    lengthGteq: filters.value.lengthGteq,
+    manufacturerIn: filters.value.manufacturerIn || [],
+    classificationIn: filters.value.classificationIn || [],
+    focusIn: filters.value.focusIn || [],
+    sizeIn: filters.value.sizeIn || [],
+    priceIn: filters.value.priceIn || [],
+    pledgePriceIn: filters.value.pledgePriceIn || [],
+    productionStatusIn: filters.value.productionStatusIn || [],
+  };
+}
 
 const form = ref<FleetVehicleQuery>({});
 
 const { booleanOptions, priceOptions, pledgePriceOptions } =
-  useFilterOptions(t);
+  useFilterOptions();
 </script>
 
 <template>
-  <form @submit.prevent="filter">
+  <form @submit.prevent="filter(form)">
     <FormInput
       id="model-name"
+      name="model-name"
       v-model="form.modelNameCont"
       translation-key="filters.models.name"
       :no-label="true"
@@ -129,6 +130,7 @@ const { booleanOptions, priceOptions, pledgePriceOptions } =
       <div class="col-6">
         <FormInput
           id="model-length-gteq"
+          name="model-length-gteq"
           v-model="form.lengthGteq"
           type="number"
           translation-key="filters.vehicles.lengthGt"
@@ -138,6 +140,7 @@ const { booleanOptions, priceOptions, pledgePriceOptions } =
       <div class="col-6">
         <FormInput
           id="model-length-lteq"
+          name="model-length-lteq"
           v-model="form.lengthLteq"
           type="number"
           translation-key="filters.vehicles.lengthLt"
@@ -150,6 +153,7 @@ const { booleanOptions, priceOptions, pledgePriceOptions } =
       <div class="col-6">
         <FormInput
           id="model-pledge-price-gteq"
+          name="model-pledge-price-gteq"
           v-model="form.pledgePriceGteq"
           type="number"
           translation-key="filters.vehicles.pledgePriceGt"
@@ -160,6 +164,7 @@ const { booleanOptions, priceOptions, pledgePriceOptions } =
       <div class="col-6">
         <FormInput
           id="model-pledge-price-lteq"
+          name="model-pledge-price-lteq"
           v-model="form.pledgePriceLteq"
           type="number"
           translation-key="filters.vehicles.pledgePriceLt"
@@ -170,6 +175,7 @@ const { booleanOptions, priceOptions, pledgePriceOptions } =
 
     <FormInput
       id="model-price-gteq"
+      name="model-price-gteq"
       v-model="form.priceGteq"
       type="number"
       translation-key="filters.vehicles.priceGt"
@@ -177,6 +183,7 @@ const { booleanOptions, priceOptions, pledgePriceOptions } =
 
     <FormInput
       id="model-price-lteq"
+      name="model-price-lteq"
       v-model="form.priceLteq"
       type="number"
       translation-key="filters.vehicles.priceLt"
