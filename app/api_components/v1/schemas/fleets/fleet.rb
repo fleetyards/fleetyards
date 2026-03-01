@@ -25,6 +25,7 @@ module V1
             publicFleetStats: {type: :boolean},
             logo: {type: :string},
             backgroundImage: {type: :string},
+            myFleet: {type: :boolean},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },

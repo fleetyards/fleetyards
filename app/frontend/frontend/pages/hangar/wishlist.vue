@@ -100,7 +100,7 @@ const vehicleDestroyComlink = ref();
 const hangarChangeComlink = ref();
 const hangarDeleteAllComlink = ref();
 const hangarGroupDeleteComlink = ref();
-// const hangarGroupSaveComlink = ref();
+const hangarGroupSaveComlink = ref();
 const hangarSyncFinishedComlink = ref();
 
 onMounted(() => {
@@ -109,7 +109,7 @@ onMounted(() => {
   hangarChangeComlink.value = comlink.on("hangar-change", fetch);
   hangarDeleteAllComlink.value = comlink.on("hangar-delete-all", fetch);
   hangarGroupDeleteComlink.value = comlink.on("hangar-group-delete", fetch);
-  // hangarGroupSaveComlink.value = comlink.on("hangar-group-save", groupsCollection.findAll);
+  hangarGroupSaveComlink.value = comlink.on("hangar-group-save", fetch);
   hangarSyncFinishedComlink.value = comlink.on("hangar-sync-finished", fetch);
 });
 
@@ -119,7 +119,7 @@ onUnmounted(() => {
   hangarChangeComlink.value();
   hangarDeleteAllComlink.value();
   hangarGroupDeleteComlink.value();
-  // hangarGroupSaveComlink.value();
+  hangarGroupSaveComlink.value();
   hangarSyncFinishedComlink.value();
 });
 

@@ -26,6 +26,7 @@ module V1
             fleetName: {type: :string},
             fleet: {"$ref": "#/components/schemas/Fleet"},
             primary: {type: :boolean},
+            isDestroyAllowed: {type: :boolean},
             hangarUpdatedAt: {type: :string, format: "date-time"},
             invitedAt: {type: :string, format: "date-time"},
             invitedAtLabel: {type: :string},

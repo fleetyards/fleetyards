@@ -17,6 +17,7 @@ module Api
 
       def show
         @member = @membership
+        @is_destroy_allowed = !@membership.fleet_role&.permanent?
       end
 
       def create_by_invite

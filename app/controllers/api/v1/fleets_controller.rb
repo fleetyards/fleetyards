@@ -35,6 +35,8 @@ module Api
       end
 
       def show
+        @my_fleet = current_resource_owner.present? &&
+          @fleet.fleet_memberships.accepted.exists?(user: current_resource_owner)
       end
 
       def create
@@ -69,6 +71,8 @@ module Api
         invite_url = FleetInviteUrl.active.find_by!(token: params[:token])
 
         @fleet = invite_url.fleet
+        @my_fleet = current_resource_owner.present? &&
+          @fleet.fleet_memberships.accepted.exists?(user: current_resource_owner)
 
         render "show"
       end

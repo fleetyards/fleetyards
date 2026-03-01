@@ -5,13 +5,30 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import debounce from "lodash.debounce";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useMobile } from "@/shared/composables/useMobile";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
+import FilteredList from "@/shared/components/FilteredList/index.vue";
+import FleetMembersFilterForm from "@/frontend/components/Fleets/MembersFilterForm/index.vue";
+import FleetMembersList from "@/frontend/components/Fleets/MembersList/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import {
+  ChannelsEnum,
+  useSubscription,
+} from "@/shared/composables/useSubscription";
+import { useFilters } from "@/shared/composables/useFilters";
 import {
   useFleetMembersStats as useFleetMembersStatsQuery,
+  useFleetMembers as useFleetMembersQuery,
   type Fleet,
   type FleetMember,
+  type FleetMemberQuery,
+  type FleetMembersParams,
 } from "@/services/fyApi";
 
 type Props = {
@@ -23,7 +40,68 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 
-const { data: stats } = useFleetMembersStatsQuery(props.fleet.slug);
+const comlink = useComlink();
+
+const mobile = useMobile();
+
+const route = useRoute();
+
+const canInvite = computed(() =>
+  ["admin", "officer"].includes(props.membership.fleetRole.name),
+);
+
+const { isFilterSelected, getQuery } = useFilters<FleetMemberQuery>({
+  allowedKeys: ["usernameCont", "roleIn", "sorts"],
+  updateCallback: () => refetch(),
+});
+
+const membersQueryParams = computed<FleetMembersParams>(() => ({
+  page: route.query.page as string | undefined,
+  q: getQuery() as FleetMemberQuery,
+}));
+
+const {
+  data: members,
+  refetch,
+  ...asyncStatus
+} = useFleetMembersQuery(props.fleet.slug, membersQueryParams);
+
+const { data: stats, refetch: refetchStats } = useFleetMembersStatsQuery(
+  props.fleet.slug,
+);
+
+const fetch = () => {
+  refetch();
+  refetchStats();
+};
+
+watch(
+  () => route.query.q,
+  () => {
+    fetch();
+  },
+);
+
+const fleetMemberInvitedComlink = ref();
+const fleetMemberUpdateComlink = ref();
+
+onMounted(() => {
+  fleetMemberInvitedComlink.value = comlink.on(
+    "fleet-member-invited",
+    fetch,
+  );
+  fleetMemberUpdateComlink.value = comlink.on("fleet-member-update", fetch);
+});
+
+onUnmounted(() => {
+  fleetMemberInvitedComlink.value();
+  fleetMemberUpdateComlink.value();
+});
+
+useSubscription({
+  channelName: ChannelsEnum.FLEET_MEMBERS,
+  received: () => debounce(fetch, 500),
+});
 
 const crumbs = computed(() => {
   return [
@@ -39,124 +117,25 @@ const crumbs = computed(() => {
   ];
 });
 
-// import Vue from "vue";
-// import { Component } from "vue-property-decorator";
-// import { Getter } from "vuex-class";
-// import fleetMembersCollection from "@/frontend/api/collections/FleetMembers";
-// import { fleetRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";
-// import fleetsCollection from "@/frontend/api/collections/Fleets";
-// import debounce from "lodash.debounce";
-// import FilteredList from "@/shared/components/FilteredList/index.vue";
-// import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
-// import Btn from "@/shared/components/base/Btn/index.vue";
-// import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
-// import FleetMembersFilterForm from "@/frontend/components/Fleets/MembersFilterForm/index.vue";
-// import Avatar from "@/shared/components/Avatar/index.vue";
-// import FleetMembersList from "@/frontend/components/Fleets/MembersList/index.vue";
-// import Panel from "@/shared/components/base/Panel/index.vue";
+const openInviteUrlModal = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Fleets/InviteUrlModal/index.vue"),
+    props: {
+      fleet: props.fleet,
+    },
+  });
+};
 
-// @Component<FleetMembers>({
-//   components: {
-//     Btn,
-//     BtnDropdown,
-//     BreadCrumbs,
-//     Panel,
-//     FilteredList,
-//     FleetMembersFilterForm,
-//     Avatar,
-//     FleetMembersList,
-//   },
-//   beforeRouteEnter: fleetRouteGuard,
-// })
-// export default class FleetMemmbers extends Vue {
-//   collection: FleetMembersCollection = fleetMembersCollection;
-
-//   fleetMembersChannel = null;
-
-//   @Getter("mobile") mobile;
-
-//   get fleet() {
-//     return fleetsCollection.record;
-//   }
-
-//   get metaTitle(): string {
-//     if (!this.fleet) {
-//       return null;
-//     }
-
-//     return this.$t("title.fleets.members", { fleet: this.fleet.name });
-//   }
-
-//   get filters(): FleetMembersParams {
-//     return {
-//       slug: this.$route.params.slug,
-//       filters: this.$route.query.q,
-//       page: this.$route.query.page,
-//     };
-//   }
-
-//   get canInvite(): boolean {
-//     return ["admin", "officer"].includes(this.fleet.myRole);
-//   }
-
-//   mounted() {
-//     this.fetchFleet();
-//     this.fetch();
-//     this.setupUpdates();
-
-//     this.$comlink.$on("fleet-member-invited", this.fetch);
-//     this.$comlink.$on("fleet-member-update", this.fetch);
-//   }
-
-//   beforeDestroy() {
-//     this.$comlink.$off("fleet-member-invited");
-//     this.$comlink.$off("fleet-member-update");
-//   }
-
-//   async fetch() {
-//     await this.collection.findAll(this.filters);
-//     await this.collection.findStats(this.filters);
-//   }
-
-//   openInviteUrlModal() {
-//     this.$comlink.$emit("open-modal", {
-//       component: () =>
-//         import("@/frontend/components/Fleets/InviteUrlModal/index.vue"),
-//       props: {
-//         fleet: this.fleet,
-//       },
-//     });
-//   }
-
-//   openInviteModal() {
-//     this.$comlink.$emit("open-modal", {
-//       component: () =>
-//         import("@/frontend/components/Fleets/MemberModal/index.vue"),
-//       props: {
-//         fleet: this.fleet,
-//       },
-//     });
-//   }
-
-//   setupUpdates() {
-//     if (this.fleetMembersChannel) {
-//       this.fleetMembersChannel.unsubscribe();
-//     }
-
-//     this.fleetMembersChannel = this.$cable.consumer.subscriptions.create(
-//       {
-//         channel: "FleetMembersChannel",
-//       },
-//       {
-//         received: debounce(this.fetch, 500),
-//       },
-//     );
-//   }
-
-//   async fetchFleet() {
-//     await fleetsCollection.findBySlug(this.$route.params.slug);
-//   }
-// }
+const openInviteModal = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Fleets/MemberModal/index.vue"),
+    props: {
+      fleet: props.fleet,
+    },
+  });
+};
 </script>
 
 <template>
@@ -171,55 +150,47 @@ const crumbs = computed(() => {
       }}
     </small>
   </Heading>
-  <!-- <div class="col-4">
-        <div v-if="!mobile" class="page-main-actions">
-          <Btn
-            v-if="canInvite"
-            :inline="true"
-            @click.native="openInviteUrlModal"
-          >
-            <i class="fal fa-plus" />
-            {{ $t("actions.fleet.createInviteUrl") }}
-          </Btn>
-          <Btn v-if="canInvite" :inline="true" @click.native="openInviteModal">
-            <i class="fad fa-user-plus" />
-            {{ $t("actions.fleet.inviteMember") }}
-          </Btn>
-        </div>
-      </div>
-    </div>
 
-    <FilteredList
-      key="fleet-members"
-      :collection="collection"
-      :name="$route.name"
-      :route-query="$route.query"
-      :params="$route.params"
-      :hash="$route.hash"
-      :paginated="true"
-    >
-      <template v-if="mobile && canInvite" #actions>
-        <BtnDropdown size="small">
-          <Btn
-            size="small"
-            variant="dropdown"
-            @click.native="openInviteUrlModal"
-          >
-            <i class="fal fa-plus" />
-            <span>{{ $t("actions.fleet.createInviteUrl") }}</span>
-          </Btn>
-          <Btn size="small" variant="dropdown" @click.native="openInviteModal">
-            <i class="fad fa-user-plus" />
-            <span>{{ $t("actions.fleet.inviteMember") }}</span>
-          </Btn>
-        </BtnDropdown>
-      </template>
+  <Teleport v-if="!mobile && canInvite" to="#header-right">
+    <Btn :inline="true" @click="openInviteUrlModal">
+      <i class="fal fa-plus" />
+      {{ t("actions.fleet.createInviteUrl") }}
+    </Btn>
+    <Btn :inline="true" @click="openInviteModal">
+      <i class="fad fa-user-plus" />
+      {{ t("actions.fleet.inviteMember") }}
+    </Btn>
+  </Teleport>
 
-      <FleetMembersFilterForm slot="filter" />
+  <FilteredList
+    key="fleet-members"
+    :records="members || []"
+    :name="route.name?.toString() || ''"
+    :async-status="asyncStatus"
+    :is-filter-selected="isFilterSelected"
+  >
+    <template v-if="mobile && canInvite" #actions-right>
+      <BtnDropdown :size="BtnSizesEnum.SMALL">
+        <Btn :size="BtnSizesEnum.SMALL" @click="openInviteUrlModal">
+          <i class="fal fa-plus" />
+          <span>{{ t("actions.fleet.createInviteUrl") }}</span>
+        </Btn>
+        <Btn :size="BtnSizesEnum.SMALL" @click="openInviteModal">
+          <i class="fad fa-user-plus" />
+          <span>{{ t("actions.fleet.inviteMember") }}</span>
+        </Btn>
+      </BtnDropdown>
+    </template>
 
-      <template #default="{ records }">
-        <FleetMembersList :members="records" :role="fleet.myRole" />
-      </template>
-    </FilteredList>
-  </section> -->
+    <template #filter>
+      <FleetMembersFilterForm />
+    </template>
+
+    <template #default="{ records }">
+      <FleetMembersList
+        :members="records"
+        :role="membership.fleetRole.name as 'admin' | 'officer' | 'member'"
+      />
+    </template>
+  </FilteredList>
 </template>

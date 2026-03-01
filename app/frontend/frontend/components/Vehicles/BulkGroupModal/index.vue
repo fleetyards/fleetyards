@@ -9,26 +9,32 @@ import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
-// import vehiclesCollection from "@/frontend/api/collections/Vehicles";
-// import hangarGroupsCollection from "@/frontend/api/collections/HangarGroups";
-import type { HangarGroup } from "@/services/fyApi";
-import { useComlink } from "@/shared/composables/useComlink";
+import {
+  type HangarGroup,
+  useHangarGroups as useHangarGroupsQuery,
+  useUpdateBulkVehicle as useUpdateBulkVehicleMutation,
+} from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
 
 type Props = {
   vehicleIds: string[];
 };
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 const { t } = useI18n();
+
+const comlink = useComlink();
 
 const submitting = ref(false);
 
 const hangarGroupIds = ref<string[]>([]);
 
-const hangarGroups = computed(() => {
-  return hangarGroupsCollection.records;
+const { data: hangarGroupsData } = useHangarGroupsQuery();
+
+const hangarGroups = computed<HangarGroup[]>(() => {
+  return hangarGroupsData.value || [];
 });
 
 const selected = (groupId: string) => {
@@ -48,21 +54,24 @@ const changeGroup = (group: HangarGroup) => {
   }
 };
 
-const comlink = useComlink();
+const bulkUpdateMutation = useUpdateBulkVehicleMutation();
 
 const save = async () => {
   submitting.value = true;
 
-  if (
-    await vehiclesCollection.updateHangarGroupsBulk(
-      this.vehicleIds,
-      this.hangarGroupIds,
-    )
-  ) {
-    comlink.emit("close-modal");
-  }
-
-  submitting.value = false;
+  await bulkUpdateMutation
+    .mutateAsync({
+      data: {
+        ids: props.vehicleIds,
+        hangarGroupIds: hangarGroupIds.value,
+      },
+    })
+    .then(() => {
+      comlink.emit("close-modal");
+    })
+    .finally(() => {
+      submitting.value = false;
+    });
 };
 </script>
 

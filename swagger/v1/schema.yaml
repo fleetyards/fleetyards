@@ -5214,6 +5214,8 @@ components:
           type: string
         backgroundImage:
           type: string
+        myFleet:
+          type: boolean
         createdAt:
           type: string
           format: date-time
@@ -5301,6 +5303,8 @@ components:
         fleet:
           "$ref": "#/components/schemas/Fleet"
         primary:
+          type: boolean
+        isDestroyAllowed:
           type: boolean
         hangarUpdatedAt:
           type: string

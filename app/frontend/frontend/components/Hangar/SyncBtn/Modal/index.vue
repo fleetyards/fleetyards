@@ -92,8 +92,6 @@ const missingUpgradeVehicles = computed(
   () => result.value?.missingUpgradeVehicles || [],
 );
 
-// const collection: VehiclesCollection = vehiclesCollection;
-
 type ProcessStep = {
   name: string;
   status: "pending" | "processing" | "success" | "failure" | "backendFailure";

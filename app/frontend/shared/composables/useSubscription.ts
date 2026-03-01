@@ -12,6 +12,8 @@ export enum ChannelsEnum {
   ON_SALE = "OnSaleChannel",
   ROADMAP = "RoadmapChannel",
   IMPORTS = "ImportsChannel",
+  FLEET_MEMBERS = "FleetMembersChannel",
+  FLEET_VEHICLES = "FleetVehiclesChannel",
   NOTIFICATIONS = "NotificationsChannel",
   USER_NOTIFICATIONS = "UserNotificationsChannel",
 }

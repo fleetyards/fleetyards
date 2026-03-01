@@ -53,11 +53,13 @@ const fleetSlug = computed(() => {
   return route.params.slug as string;
 });
 
-const { data: currentFleet } = useFleetQuery(fleetSlug, {
+const { data: currentFleetData } = useFleetQuery(fleetSlug, {
   query: {
     enabled: isFleetRoute,
   },
 });
+
+const currentFleet = computed(() => currentFleetData.value);
 </script>
 
 <template>
