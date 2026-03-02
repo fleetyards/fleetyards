@@ -106,6 +106,10 @@
   &--avatar {
     .base-image-input__wrapper {
       width: 200px;
+
+      :deep(img) {
+        border-radius: 50%;
+      }
     }
 
     .base-image-input__clear {
