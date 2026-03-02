@@ -1,4 +1,4 @@
-import { request, expect } from "@playwright/test";
+import { request } from "@playwright/test";
 import config from "../../../playwright.config";
 
 const contextPromise = request.newContext({
@@ -9,7 +9,12 @@ const appCommands = async (data) => {
   const context = await contextPromise;
   const response = await context.post("/__e2e__/command", { data });
 
-  expect(response.ok()).toBeTruthy();
+  if (!response.ok()) {
+    const body = await response.text();
+    throw new Error(
+      `/__e2e__/command failed with status ${response.status()}: ${body}`,
+    );
+  }
   return response.body;
 };
 
