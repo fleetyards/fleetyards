@@ -272,7 +272,9 @@ const inputFilter = (
 
     <Panel
       v-if="isUploadActive"
-      :variant="uploadElement?.dropActive ? PanelVariantsEnum.SUCCESS : undefined"
+      :variant="
+        uploadElement?.dropActive ? PanelVariantsEnum.SUCCESS : undefined
+      "
       slim
       @click="selectImages"
     >

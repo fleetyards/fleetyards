@@ -32,7 +32,10 @@ const comlink = useComlink();
 const accessConfirmedComlink = ref();
 
 onMounted(() => {
-  accessConfirmedComlink.value = comlink.on("access-confirmed", generateBackupCodes);
+  accessConfirmedComlink.value = comlink.on(
+    "access-confirmed",
+    generateBackupCodes,
+  );
 });
 
 onBeforeUnmount(() => {

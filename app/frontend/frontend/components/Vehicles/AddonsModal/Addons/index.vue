@@ -150,9 +150,12 @@ const selectedAddon = (addonId: string) => {
                 :alt="addon.name"
               />
               <div>
-                <PanelHeading :level="HeadingLevelEnum.H3" title-align="right" multiline>{{
-                  addon.name
-                }}</PanelHeading>
+                <PanelHeading
+                  :level="HeadingLevelEnum.H3"
+                  title-align="right"
+                  multiline
+                  >{{ addon.name }}</PanelHeading
+                >
                 <div
                   v-if="selectedAddon(addon.id)"
                   v-tooltip="editable && t('labels.selected')"

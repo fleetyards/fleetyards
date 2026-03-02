@@ -3,7 +3,9 @@ import { useFilters } from "@/shared/composables/useFilters";
 
 export type AllowedFilters = ImageQuery;
 
-export const useImageFilters = (updateCallback?: (() => void) | (() => Promise<void>)) => {
+export const useImageFilters = (
+  updateCallback?: (() => void) | (() => Promise<void>),
+) => {
   return useFilters<AllowedFilters>({
     allowedKeys: [],
     updateCallback,

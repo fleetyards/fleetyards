@@ -25,8 +25,7 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 const { t } = useI18n();
 
-const { displaySuccess, displayAlert, displayConfirm } =
-  useAppNotifications();
+const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 
 type Props = {
   member: FleetMember;
@@ -385,7 +384,9 @@ const declineRequest = async (member: FleetMember) => {
           <i class="fal fa-times" />
         </Btn>
         <Btn
-          v-if="member.fleetRole?.slug !== 'admin' && member.status === 'accepted'"
+          v-if="
+            member.fleetRole?.slug !== 'admin' && member.status === 'accepted'
+          "
           v-tooltip="t('actions.fleet.members.promote')"
           :size="BtnSizesEnum.SMALL"
           :disabled="!canEditAdminActions(member) || updating"
@@ -395,7 +396,9 @@ const declineRequest = async (member: FleetMember) => {
           <i class="fal fa-chevron-up" />
         </Btn>
         <Btn
-          v-if="member.fleetRole?.slug !== 'member' && member.status === 'accepted'"
+          v-if="
+            member.fleetRole?.slug !== 'member' && member.status === 'accepted'
+          "
           v-tooltip="t('actions.fleet.members.demote')"
           :size="BtnSizesEnum.SMALL"
           :disabled="!canEditAdminActions(member) || updating"

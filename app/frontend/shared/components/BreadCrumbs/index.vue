@@ -73,13 +73,17 @@ const nextItem = computed(() => {
         :to="{ name: 'admin-model-edit', params: { id: prevItem } }"
         ><i class="fa fa-chevron-left"></i
       ></router-link>
-      <a v-else class="disabled" :aria-label="t('pagination.previous')"><i class="fa fa-chevron-left"></i></a>
+      <a v-else class="disabled" :aria-label="t('pagination.previous')"
+        ><i class="fa fa-chevron-left"></i
+      ></a>
       <router-link
         v-if="nextItem"
         :to="{ name: 'admin-model-edit', params: { id: nextItem } }"
         ><i class="fa fa-chevron-right"></i
       ></router-link>
-      <a v-else class="disabled" :aria-label="t('pagination.next')"><i class="fa fa-chevron-right"></i></a>
+      <a v-else class="disabled" :aria-label="t('pagination.next')"
+        ><i class="fa fa-chevron-right"></i
+      ></a>
     </div>
   </div>
 </template>

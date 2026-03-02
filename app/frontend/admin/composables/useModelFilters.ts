@@ -3,7 +3,9 @@ import { useFilters } from "@/shared/composables/useFilters";
 
 export type AllowedFilters = ModelQuery;
 
-export const useModelFilters = (updateCallback?: (() => void) | (() => Promise<void>)) => {
+export const useModelFilters = (
+  updateCallback?: (() => void) | (() => Promise<void>),
+) => {
   return useFilters<AllowedFilters>({
     allowedKeys: [
       "searchCont",

@@ -3,7 +3,9 @@ import { useFilters } from "@/shared/composables/useFilters";
 
 interface AllowedFilters extends VehicleQuery {}
 
-export const useVehicleFilters = (updateCallback?: (() => void) | (() => Promise<void>)) => {
+export const useVehicleFilters = (
+  updateCallback?: (() => void) | (() => Promise<void>),
+) => {
   return useFilters<AllowedFilters>({
     allowedKeys: [
       "searchCont",

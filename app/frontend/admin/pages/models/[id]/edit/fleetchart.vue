@@ -44,8 +44,7 @@ const [sideView, sideViewProps] = defineField("sideView");
 const [frontView, frontViewProps] = defineField("frontView");
 const [angledView, angledViewProps] = defineField("angledView");
 const [topViewColored, topViewColoredProps] = defineField("topViewColored");
-const [sideViewColored, sideViewColoredProps] =
-  defineField("sideViewColored");
+const [sideViewColored, sideViewColoredProps] = defineField("sideViewColored");
 const [frontViewColored, frontViewColoredProps] =
   defineField("frontViewColored");
 const [angledViewColored, angledViewColoredProps] =

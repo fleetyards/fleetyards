@@ -25,7 +25,6 @@ const sessionStore = useSessionStore();
 const { data: componentsByClass, ...componentsByClassStatus } =
   useComponentsByClass();
 
-
 const { data: components, ...componentsStatus } = useComponents(
   {
     perPage: "6",

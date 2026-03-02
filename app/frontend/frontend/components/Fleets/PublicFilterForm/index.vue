@@ -42,8 +42,7 @@ function setupForm() {
 
 const form = ref<FleetVehicleQuery>({});
 
-const { booleanOptions, priceOptions, pledgePriceOptions } =
-  useFilterOptions();
+const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
 </script>
 
 <template>

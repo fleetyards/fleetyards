@@ -14,8 +14,7 @@ import { useFilters } from "@/shared/composables/useFilters";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 
 const { t } = useI18n();
-const { booleanOptions, priceOptions, pledgePriceOptions } =
-  useFilterOptions();
+const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
 
 type FleetsFilterForm = {
   modelNameCont?: string;

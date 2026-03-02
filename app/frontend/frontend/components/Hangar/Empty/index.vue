@@ -77,7 +77,9 @@ const openGuide = () => {
                 v-for="link in extensionUrls"
                 :key="`extension-link-${link.platform}`"
                 v-tooltip="t(`labels.syncExtension.platforms.${link.platform}`)"
-                :aria-label="t(`labels.syncExtension.platforms.${link.platform}`)"
+                :aria-label="
+                  t(`labels.syncExtension.platforms.${link.platform}`)
+                "
                 :href="link.url"
                 target="_blank"
               >

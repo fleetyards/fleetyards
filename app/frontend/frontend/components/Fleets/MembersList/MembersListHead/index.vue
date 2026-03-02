@@ -6,7 +6,11 @@ export default {
 
 <script lang="ts" setup>
 import { sortByToggle } from "@/frontend/utils/Sorting";
-import { useRoute, type RouteLocationRaw, type LocationQueryRaw } from "vue-router";
+import {
+  useRoute,
+  type RouteLocationRaw,
+  type LocationQueryRaw,
+} from "vue-router";
 import { useI18n } from "@/shared/composables/useI18n";
 import type { FleetYardsLocation } from "@/frontend/utils/Sorting";
 

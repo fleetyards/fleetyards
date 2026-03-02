@@ -88,10 +88,7 @@ const fleetMemberInvitedComlink = ref();
 const fleetMemberUpdateComlink = ref();
 
 onMounted(() => {
-  fleetMemberInvitedComlink.value = comlink.on(
-    "fleet-member-invited",
-    fetch,
-  );
+  fleetMemberInvitedComlink.value = comlink.on("fleet-member-invited", fetch);
   fleetMemberUpdateComlink.value = comlink.on("fleet-member-update", fetch);
 });
 
