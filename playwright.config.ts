@@ -11,7 +11,7 @@ export default defineConfig({
   expect: { timeout: 20 * 1000 },
   globalTimeout: 60 * 60 * 1000,
   use: {
-    baseURL: "http:/localhost:8280",
+    baseURL: "http://localhost:8280",
     trace: "on-first-retry",
     testIdAttribute: "data-test",
   },
