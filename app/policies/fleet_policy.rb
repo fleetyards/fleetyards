@@ -46,7 +46,7 @@ class FleetPolicy < FleetBasePolicy
 
     if accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:update"])
       allowed_params << [
-        :fid, :name, :description, :logo, :background_image, :public_fleet, :public_fleet_stats,
+        :fid, :name, :description, :logo, :background_image, :new_logo, :public_fleet, :public_fleet_stats,
         :remove_logo, :remove_background, :homepage, :rsi_sid, :discord, :ts, :youtube,
         :twitch, :guilded
       ]
@@ -57,7 +57,7 @@ class FleetPolicy < FleetBasePolicy
     end
 
     if accepted_fleet_membership&.has_access?(["fleet:update:images"])
-      allowed_params << [:logo, :background_image, :remove_logo, :remove_background]
+      allowed_params << [:logo, :background_image, :new_logo, :remove_logo, :remove_background]
     end
 
     params.permit(*allowed_params.flatten)

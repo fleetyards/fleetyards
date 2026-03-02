@@ -44,6 +44,7 @@ type Props = {
   prefix?: string;
   suffix?: string;
   transparent?: boolean;
+  avatar?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -70,6 +71,7 @@ const props = withDefaults(defineProps<Props>(), {
   prefix: undefined,
   suffix: undefined,
   transparent: false,
+  avatar: false,
 });
 
 watch(
@@ -130,8 +132,9 @@ const hasErrors = computed(() => {
 
 const cssClasses = computed(() => {
   return {
-    "base-input--with-error": hasErrors.value,
-    "base-input--disabled": props.disabled,
+    "base-image-input--with-error": hasErrors.value,
+    "base-image-input--disabled": props.disabled,
+    "base-image-input--avatar": props.avatar,
   };
 });
 
@@ -258,8 +261,8 @@ defineExpose({
           v-if="(isImage || isPdf) && internalSrc"
           v-tooltip.right="hasErrors && errorMessage"
           :src="internalSrc"
-          :transparent="transparent"
-          :shadow="!transparent"
+          :transparent="transparent || avatar"
+          :shadow="!transparent && !avatar"
         />
         <HoloViewer
           v-else-if="holoModel"
@@ -276,7 +279,7 @@ defineExpose({
         :multiple="false"
         :allowed-types="fileTypeMap[props.allowedTypes as AllowedFileTypes]"
         :allowed-size-mb="props.allowedSizeMb"
-        :transparent="transparent"
+        :transparent="transparent || avatar"
         :active="!internalSrc"
         @upload:done="onUploadDone"
         @clear="onUploadClear"
@@ -291,20 +294,20 @@ defineExpose({
         :name="name"
         hidden
       />
+      <Btn
+        v-if="clearable && (internalSrc || inputValue)"
+        variant="link"
+        v-tooltip="clearLabel"
+        inline
+        @click="clear"
+        class="base-image-input__clear"
+      >
+        <i class="fa fa-times" />
+      </Btn>
     </div>
     <div v-if="slots.subline" class="base-image-input__subline">
       <slot name="subline"></slot>
     </div>
-    <Btn
-      v-if="clearable && (internalSrc || inputValue)"
-      variant="link"
-      v-tooltip="clearLabel"
-      inline
-      @click="clear"
-      class="clear"
-    >
-      <i class="fa fa-times" />
-    </Btn>
   </div>
 </template>
 

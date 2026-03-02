@@ -12,6 +12,7 @@ module V1
             fid: {type: :string},
             name: {type: :string},
             logo: {type: :string, format: :binary},
+            newLogo: {type: :string},
             removeLogo: {type: :boolean},
             backgroundImage: {type: :string, format: :binary},
             removeBackground: {type: :boolean},

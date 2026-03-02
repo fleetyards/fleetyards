@@ -8,16 +8,22 @@ export default {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useForm } from "vee-validate";
 import Btn from "@/shared/components/base/Btn/index.vue";
-// import Avatar from "@/shared/components/Avatar/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
+import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
+import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import {
   type Fleet,
   type FleetMember,
   type FleetUpdateInput,
+  type ValidationError,
+  useUpdateFleet as useUpdateFleetMutation,
+  useDestroyFleet as useDestroyFleetMutation,
 } from "@/services/fyApi";
+import { type ErrorType } from "@/services/axiosClient";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useComlink } from "@/shared/composables/useComlink";
 
 type Props = {
   fleet: Fleet;
@@ -28,13 +34,38 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 
-const { displayConfirm } = useAppNotifications();
+const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
+
+const comlink = useComlink();
+
+const router = useRouter();
+
+const route = useRoute();
+
+const updateMutation = useUpdateFleetMutation();
+
+const destroyMutation = useDestroyFleetMutation();
 
 const submitting = ref(false);
 
 const deleting = ref(false);
 
+const logoFile = computed(() => {
+  if (!props.fleet.logo) {
+    return undefined;
+  }
+
+  return {
+    name: "logo",
+    contentType: "image/png",
+    size: 0,
+    url: props.fleet.logo,
+    smallUrl: props.fleet.logo,
+  };
+});
+
 const initialValues = ref<FleetUpdateInput>({
+  newLogo: undefined,
   fid: props.fleet.fid,
   name: props.fleet.name,
   description: props.fleet.description,
@@ -71,179 +102,47 @@ const [guilded, guildedProps] = defineField("guilded");
 const [publicFleet, publicFleetProps] = defineField("publicFleet");
 const [publicFleetStats, publicFleetStatsProps] =
   defineField("publicFleetStats");
+const [newLogo, newLogoProps] = defineField("newLogo");
 
-// // eslint-disable-next-line @typescript-eslint/no-explicit-any
-// files: any[] = [];
+const onSubmit = handleSubmit(async (values) => {
+  submitting.value = true;
 
-// fileExtensions = "jpg,jpeg,png,webp";
+  await updateMutation
+    .mutateAsync({
+      slug: route.params.slug as string,
+      data: values,
+    })
+    .then(async (updatedFleet) => {
+      displaySuccess({
+        text: t("messages.fleet.update.success"),
+      });
 
-// acceptedMimeTypes = "image/png,image/jpeg,image/webp";
+      comlink.emit("fleet-update");
 
-// form: FleetForm = {
-//   fid: null,
-//   name: null,
-//   description: null,
-//   rsiSid: null,
-//   discord: null,
-//   ts: null,
-//   homepage: null,
-//   twitch: null,
-//   youtube: null,
-//   guilded: null,
-//   publicFleet: false,
-//   publicFleetStats: false,
-//   removeLogo: false,
-// };
+      if (updatedFleet.slug !== route.params.slug) {
+        await router.replace({
+          name: "fleet-settings",
+          params: { slug: updatedFleet.slug },
+        });
+      }
+    })
+    .catch((error) => {
+      const response = error as unknown as ErrorType<ValidationError>;
 
-// get logoUrl() {
-//   if (this.fleet) {
-//     return this.newLogo.url || this.fleet.logo;
-//   }
-
-//   return this.newLogo.url;
-// }
-
-// get newLogo() {
-//   return (this.files && this.files[0]) || {};
-// }
-
-// get canEdit() {
-//   return this.fleet?.myRole === "admin";
-// }
-
-// @Watch("fleet")
-// onFleetChange() {
-//   this.setupForm();
-// }
-
-// selectLogo() {
-//   this.form.removeLogo = false;
-//   this.$refs.upload.$el.querySelector("input").click();
-// }
-
-// removeLogo() {
-//   this.files = [];
-//   this.fleet.logo = null;
-//   this.form.removeLogo = true;
-// }
-
-// setupForm() {
-//   this.form = {
-//     fid: this.fleet.fid,
-//     rsiSid: this.fleet.rsiSid,
-//     name: this.fleet.name,
-//     description: this.fleet.description,
-//     discord: this.fleet.discord,
-//     ts: this.fleet.ts,
-//     homepage: this.fleet.homepage,
-//     twitch: this.fleet.twitch,
-//     youtube: this.fleet.youtube,
-//     guilded: this.fleet.guilded,
-//     publicFleet: this.fleet.publicFleet,
-//     publicFleetStats: this.fleet.publicFleetStats,
-//     removeLogo: false,
-//   };
-// }
-
-// async submit() {
-//   this.submitting = true;
-
-//   await this.uploadLogo();
-
-//   const response = await this.$api.put(
-//     `fleets/${this.$route.params.slug}`,
-//     this.form,
-//   );
-
-//   this.submitting = false;
-
-//   if (!response.error) {
-//     displaySuccess({
-//       text: this.$t("messages.fleet.update.success"),
-//     });
-
-//     this.$comlink.$emit("fleet-update");
-
-//     if (response.data.slug !== this.$route.params.slug) {
-//       await this.$router.replace({
-//         name: "fleet-settings",
-//         params: { slug: response.data.slug },
-//       });
-//     }
-//   } else {
-//     this.handleUpdateError(response.error);
-//   }
-// }
-
-// async uploadLogo() {
-//   if (!this.newLogo || !this.newLogo.file) {
-//     return;
-//   }
-
-//   const uploadData = new FormData();
-//   uploadData.append("logo", this.newLogo.file);
-
-//   const response = await this.$api.upload(
-//     `fleets/${this.$route.params.slug}`,
-//     uploadData,
-//   );
-
-//   if (!response.error) {
-//     displaySuccess({
-//       text: this.$t("messages.fleet.update.logo.success"),
-//     });
-
-//     this.$comlink.$emit("fleet-update");
-
-//     setTimeout(() => {
-//       this.files = [];
-//     }, 1000);
-//   } else {
-//     this.handleUpdateError(response.error);
-//   }
-// }
-
-// handleUpdateError(error) {
-//   if (error.response && error.response.data) {
-//     const { data: errorData } = error.response;
-
-//     this.$refs.form.setErrors(transformErrors(errorData.errors));
-
-//     displayAlert({
-//       text: errorData.message,
-//     });
-//   } else {
-//     displayAlert({
-//       text: this.$t("messages.fleet.update.failure"),
-//     });
-//   }
-// }
-
-// updatedValue(value) {
-//   this.files = value;
-// }
-
-// inputFilter(newFile, oldFile, prevent) {
-//   if (newFile && !oldFile) {
-//     if (!/\.(gif|jpg|jpeg|png|webp)$/i.test(newFile.name)) {
-//       this.alert("Your choice is not a picture");
-//       return prevent();
-//     }
-//   }
-//   if (newFile && (!oldFile || newFile.file !== oldFile.file)) {
-//     // eslint-disable-next-line no-param-reassign
-//     newFile.url = "";
-//     const URL = window.URL || window.webkitURL;
-//     if (URL && URL.createObjectURL) {
-//       // eslint-disable-next-line no-param-reassign
-//       newFile.url = URL.createObjectURL(newFile.file);
-//     }
-//   }
-
-//   return null;
-// }
-
-const onSubmit = handleSubmit((values) => {});
+      if (response.message) {
+        displayAlert({
+          text: response.message,
+        });
+      } else {
+        displayAlert({
+          text: t("messages.fleet.update.failure"),
+        });
+      }
+    })
+    .finally(() => {
+      submitting.value = false;
+    });
+});
 
 const onDestroy = async () => {
   deleting.value = true;
@@ -251,26 +150,27 @@ const onDestroy = async () => {
   displayConfirm({
     text: t("messages.confirm.fleet.destroy"),
     onConfirm: async () => {
-      deleting.value = false;
-      //     const response = await this.$api.destroy(
-      //       `fleets/${this.$route.params.slug}`,
-      //     );
+      await destroyMutation
+        .mutateAsync({
+          slug: route.params.slug as string,
+        })
+        .then(async () => {
+          comlink.emit("fleet-update");
 
-      //     if (!response.error) {
-      //       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      //       this.$router.push({ name: "home" }).catch(() => {});
+          displaySuccess({
+            text: t("messages.fleet.destroy.success"),
+          });
 
-      //       this.$comlink.$emit("fleet-update");
-
-      //       displaySuccess({
-      //         text: this.$t("messages.fleet.destroy.success"),
-      //       });
-      //     } else {
-      //       displayAlert({
-      //         text: this.$t("messages.fleet.destroy.failure"),
-      //       });
-      //       this.deleting = false;
-      //     }
+          await router.push({ name: "home" }).catch(() => {});
+        })
+        .catch(() => {
+          displayAlert({
+            text: t("messages.fleet.destroy.failure"),
+          });
+        })
+        .finally(() => {
+          deleting.value = false;
+        });
     },
     onClose: () => {
       deleting.value = false;
@@ -281,6 +181,20 @@ const onDestroy = async () => {
 
 <template>
   <form @submit.prevent="onSubmit">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <FormFileInput
+          v-model="newLogo"
+          v-bind="newLogoProps"
+          :file="logoFile"
+          name="newLogo"
+          translation-key="fleet.logo"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          clearable
+          avatar
+        />
+      </div>
+    </div>
     <div class="row">
       <div class="col-12 col-md-6">
         <FormInput

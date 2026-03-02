@@ -87,6 +87,8 @@ class Fleet < ApplicationRecord
   mount_uploader :logo, LogoUploader
   mount_uploader :background_image, ImageUploader
 
+  has_one_attached :new_logo
+
   accepts_nested_attributes_for :fleet_memberships
 
   before_validation :update_urls

@@ -12,20 +12,6 @@
     margin-top: 5px;
   }
 
-  &__clear {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    height: 100%;
-    margin: 0;
-    cursor: pointer;
-  }
-
   &__direct-upload {
     position: absolute;
   }
@@ -75,6 +61,33 @@
     }
   }
 
+  &__clear {
+    position: absolute;
+    cursor: pointer;
+    top: 5px;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $danger !important;
+    border-radius: 10px 0 0 10px;
+    z-index: 1;
+    opacity: 0;
+
+    i,
+    svg {
+      color: #fff;
+    }
+  }
+
+  &:hover {
+    .base-image-input__clear {
+      opacity: 1;
+    }
+  }
+
   &--disabled {
     input {
       color: darken($input-color, 10%);
@@ -90,11 +103,24 @@
     }
   }
 
-  .clear {
-    position: absolute;
-    top: -10px;
-    right: 0;
-    z-index: 1000;
-    font-size: 18px;
+  &--avatar {
+    .base-image-input__wrapper {
+      width: 200px;
+    }
+
+    .base-image-input__clear {
+      background: transparent !important;
+      top: -10px;
+      right: -10px;
+    }
+
+    :deep(.direct-upload__dropzone) {
+      flex-direction: column;
+
+      &::before {
+        border-radius: 50%;
+        overflow: hidden;
+      }
+    }
   }
 }
