@@ -120,6 +120,7 @@ watch(
 
     setupLocale();
   },
+  { immediate: true },
 );
 
 useCheckStoreVersion(appStore);
