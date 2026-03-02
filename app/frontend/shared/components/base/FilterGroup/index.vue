@@ -165,7 +165,7 @@ const { isLoading, isFetching, data, refetch } = useQuery({
     props.name,
     page.value,
     search.value,
-    missing.value,
+    missing.value as unknown,
   ],
   queryFn: async () => {
     if (!props.queryFn) {
