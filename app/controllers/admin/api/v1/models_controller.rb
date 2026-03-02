@@ -4,7 +4,7 @@ module Admin
   module Api
     module V1
       class ModelsController < ::Admin::Api::BaseController
-        before_action :set_model, only: %i[show update destroy use_rsi_image videos reload_one]
+        before_action :set_model, only: %i[show update destroy use_rsi_image videos hardpoints loaners modules module_packages paints reload_one]
 
         rescue_from ActiveRecord::RecordNotFound do |_exception|
           not_found(I18n.t("messages.record_not_found.model", slug: params[:slug]))
@@ -86,6 +86,32 @@ module Admin
             .order("videos.created_at desc")
             .page(params[:page])
             .per(per_page(Video))
+        end
+
+        def hardpoints
+          @model_hardpoints = @model.model_hardpoints.includes(:component)
+        end
+
+        def loaners
+          @models = @model.loaners
+            .page(params[:page])
+            .per(per_page(Model))
+        end
+
+        def modules
+          @model_modules = @model.modules
+            .page(params[:page])
+            .per(per_page(ModelModule))
+        end
+
+        def module_packages
+          @model_module_packages = @model.module_packages
+            .page(params[:page])
+            .per(per_page(ModelModulePackage))
+        end
+
+        def paints
+          @model_paints = @model.paints
         end
 
         def reload_matrix

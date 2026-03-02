@@ -14,7 +14,7 @@ RSpec.describe "api/v1/otp", type: :request, swagger_doc: "v1/schema.yaml" do
   before do
     sign_in(user) if user.present?
 
-    post confirm_access_api_v1_sessions_path, params: {password: password}
+    post confirm_access_api_v1_sessions_path, params: {password: password}, as: :json
   end
 
   path "/otp/enable" do
@@ -60,6 +60,7 @@ RSpec.describe "api/v1/otp", type: :request, swagger_doc: "v1/schema.yaml" do
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:user) { nil }
+        let(:input) { {otpCode: "000000"} }
 
         run_test!
       end

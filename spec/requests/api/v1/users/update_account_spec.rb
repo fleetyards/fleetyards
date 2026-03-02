@@ -14,7 +14,7 @@ RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
     if user.present?
       sign_in(user)
 
-      post confirm_access_api_v1_sessions_path, params: {password: "enterprise"}
+      post confirm_access_api_v1_sessions_path, params: {password: "enterprise"}, as: :json
     end
   end
 

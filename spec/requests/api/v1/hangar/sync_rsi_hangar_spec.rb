@@ -7,9 +7,9 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
   let(:input) do
     {
       items: [{
-        id: 1,
+        id: "1",
         name: "Constellation Andromeda",
-        kind: "ship"
+        type: "ship"
       }]
     }
   end

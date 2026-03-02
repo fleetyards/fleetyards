@@ -63,7 +63,7 @@ module Admin
                 topViewXlarge: {type: :string, deprecated: true}
               },
               additionalProperties: false,
-              required: %w[id name modules model media createdAt updatedAt]
+              required: %w[id name modules media createdAt updatedAt]
             })
           end
         end

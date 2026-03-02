@@ -2117,6 +2117,8 @@ paths:
           type: array
           items:
             type: string
+        style: form
+        explode: true
         required: true
       responses:
         '200':
@@ -6105,9 +6107,9 @@ components:
       properties:
         import:
           type: string
+        newImport:
+          type: string
       additionalProperties: false
-      required:
-      - import
       title: ImportInput
     PasswordInput:
       type: object

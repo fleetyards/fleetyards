@@ -17,7 +17,6 @@ if record.try(new_attr) && record.send(new_attr).attached?
   end
   json.width file.metadata[:width]
   json.height file.metadata[:height]
-  json.signed_id file.signed_id
   json.uploaded_at file.blob.created_at
 elsif old_attr.present? && record.try(old_attr).present?
   view_image = record.send(old_attr)

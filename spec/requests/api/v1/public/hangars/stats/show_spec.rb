@@ -27,14 +27,19 @@ RSpec.describe "api/v1/public/hangars/stats", type: :request, swagger_doc: "v1/s
         schema "$ref": "#/components/schemas/HangarStatsPublic"
 
         context "with public_wishlist enabled" do
-          let(:user) { create(:user, vehicle_count: 2, wanted_vehicle_count: 3, public_wishlist: true) }
+          let(:user) do
+            u = create(:user, public_wishlist: true)
+            create_list(:vehicle, 2, user: u)
+            create_list(:vehicle, 3, user: u, wanted: true, public: true)
+            u
+          end
 
           it "includes wishlist_total in response" do
             get "/api/v1/public/hangars/#{username}/stats"
             expect(response.status).to eq(200)
 
             response_data = JSON.parse(response.body)
-            expect(response_data["wishlist_total"]).to eq(3)
+            expect(response_data["wishlistTotal"]).to eq(3)
           end
         end
 
@@ -46,7 +51,7 @@ RSpec.describe "api/v1/public/hangars/stats", type: :request, swagger_doc: "v1/s
             expect(response.status).to eq(200)
 
             response_data = JSON.parse(response.body)
-            expect(response_data["wishlist_total"]).to be_nil
+            expect(response_data["wishlistTotal"]).to be_nil
           end
         end
 

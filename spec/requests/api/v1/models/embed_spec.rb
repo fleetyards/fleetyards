@@ -4,7 +4,6 @@ require "swagger_helper"
 
 RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
   let(:embeded_models) { create_list(:model, 3) }
-  let(:models) { embeded_models.map(&:slug) }
 
   path "/models/embed" do
     get("Embed Models") do
@@ -12,13 +11,23 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
       tags "Models"
       produces "application/json"
 
-      parameter name: :models, in: :query, schema: {type: :array, items: {type: :string}}, required: true
+      parameter name: :models, in: :query, schema: {type: :array, items: {type: :string}}, style: :form, explode: true, required: true
 
       response(200, "successful") do
         schema type: :array,
           items: {"$ref": "#/components/schemas/Model"}
 
-        run_test!
+        it "returns embedded models" do |example|
+          slugs = embeded_models.map(&:slug)
+          query = slugs.map { |s| "models[]=#{s}" }.join("&")
+          get "/api/v1/models/embed?#{query}"
+
+          expect(response).to have_http_status(:ok)
+          data = JSON.parse(response.body)
+          expect(data.count).to eq(3)
+
+          example.metadata[:response] = {code: response.status.to_s}
+        end
       end
     end
   end

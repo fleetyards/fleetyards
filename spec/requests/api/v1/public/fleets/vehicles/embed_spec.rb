@@ -39,8 +39,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
         run_test! do |response|
           data = JSON.parse(response.body)
 
-          expect(data.count).to be > 0
-          expect(data.count).to eq(2)
+          expect(data.count).to eq(3)
         end
       end
 

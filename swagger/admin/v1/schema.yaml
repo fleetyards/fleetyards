@@ -698,6 +698,18 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/models":
     get:
       summary: Models list
@@ -740,14 +752,15 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/models/{slug}/loaners":
+  "/models/{id}/loaners":
     parameters:
-    - name: slug
+    - name: id
       in: path
-      description: Model slug
-      required: true
       schema:
         type: string
+        format: uuid
+      description: Model id
+      required: true
     get:
       summary: Model Loaners
       operationId: modelLoaners
@@ -779,14 +792,27 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/models/{slug}/module-packages":
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/{id}/module-packages":
     parameters:
-    - name: slug
+    - name: id
       in: path
-      description: Model slug
-      required: true
       schema:
         type: string
+        format: uuid
+      description: Model id
+      required: true
     get:
       summary: Model Module Packages
       operationId: modelModulePackages
@@ -818,14 +844,27 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/models/{slug}/modules":
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/{id}/modules":
     parameters:
-    - name: slug
+    - name: id
       in: path
-      description: Model slug
-      required: true
       schema:
         type: string
+        format: uuid
+      description: Model id
+      required: true
     get:
       summary: Model Modules
       operationId: modelModules
@@ -857,14 +896,27 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/models/{slug}/paints":
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/{id}/paints":
     parameters:
-    - name: slug
+    - name: id
       in: path
-      description: Model slug
-      required: true
       schema:
         type: string
+        format: uuid
+      description: Model id
+      required: true
     get:
       summary: Model Paints
       operationId: modelPaints
@@ -881,6 +933,18 @@ paths:
                   "$ref": "#/components/schemas/ModelPaint"
         '404':
           description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -996,6 +1060,18 @@ paths:
                 "$ref": "#/components/schemas/Videos"
         '404':
           description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -3849,7 +3925,6 @@ components:
       - id
       - name
       - modules
-      - model
       - media
       - createdAt
       - updatedAt
@@ -3939,7 +4014,6 @@ components:
       - media
       - createdAt
       - updatedAt
-      - model
       title: ModelModule
     ModelModules:
       type: object

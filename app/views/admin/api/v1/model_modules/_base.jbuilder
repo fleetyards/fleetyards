@@ -22,8 +22,10 @@ json.media do
   end
 end
 
-json.model do
-  json.partial! "api/v1/models/base", model: model_paint.model
+if model_module.models.any?
+  json.model do
+    json.partial! "api/v1/models/base", model: model_module.models.first
+  end
 end
 
 json.pledge_price model_module.pledge_price

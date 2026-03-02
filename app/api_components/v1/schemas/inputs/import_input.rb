@@ -9,10 +9,10 @@ module V1
         schema({
           type: :object,
           properties: {
-            import: {type: :string}
+            import: {type: :string},
+            newImport: {type: :string}
           },
-          additionalProperties: false,
-          required: %w[import]
+          additionalProperties: false
         })
       end
     end
