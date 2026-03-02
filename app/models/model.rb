@@ -290,6 +290,21 @@ class Model < ApplicationRecord
   has_one_attached :new_brochure
   has_one_attached :new_holo
 
+  %i[
+    store_image rsi_store_image fleetchart_image
+    top_view side_view front_view angled_view
+    top_view_colored side_view_colored front_view_colored angled_view_colored
+    brochure holo
+  ].each do |attr|
+    define_method(:"#{attr}=") do |value|
+      if value.is_a?(String) && value.present?
+        send(:"new_#{attr}=", value)
+      else
+        super(value)
+      end
+    end
+  end
+
   before_save :update_slugs
 
   before_save :update_from_hardpoints

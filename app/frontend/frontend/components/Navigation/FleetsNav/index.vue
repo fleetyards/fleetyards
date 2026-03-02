@@ -72,7 +72,7 @@ watch(
         :menu-key="fleet.slug"
         :to="{ name: 'fleet', params: { slug: fleet.slug } }"
         :label="fleet.name"
-        :image="fleet.logo || undefined"
+        :image="fleet.logo?.smallUrl || undefined"
       />
       <NavItem
         v-if="isAuthenticated && fleetInvites && fleetInvites.length"

@@ -12,7 +12,7 @@ module V1
           username: {type: :string},
           email: {type: :string},
           unconfirmedEmail: {type: :string},
-          avatar: {type: :string},
+          avatar: {"$ref": "#/components/schemas/MediaFile"},
           rsiHandle: {type: :string},
           discord: {type: :string},
           youtube: {type: :string},

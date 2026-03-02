@@ -152,6 +152,16 @@ class User < ApplicationRecord
 
   mount_uploader :avatar, AvatarUploader
 
+  has_one_attached :new_avatar
+
+  def avatar=(value)
+    if value.is_a?(String) && value.present?
+      self.new_avatar = value
+    else
+      super
+    end
+  end
+
   DEFAULT_SORTING_PARAMS = "username asc"
   ALLOWED_SORTING_PARAMS = [
     "username asc", "username desc", "email asc", "email desc", "createdAt asc", "createdAt desc",

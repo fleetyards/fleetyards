@@ -19,17 +19,17 @@ if record.try(new_attr) && record.send(new_attr).attached?
   json.height file.metadata[:height]
   json.signed_id file.signed_id
   json.uploaded_at file.blob.created_at
-elsif old_attr.present? && !record.try(old_attr)&.nil?
+elsif old_attr.present? && record.try(old_attr).present?
   view_image = record.send(old_attr)
   json.name view_image.file&.filename
   json.content_type view_image.file&.content_type
   json.size view_image.file&.size
   json.url view_image.url
   if view_image.file&.content_type&.start_with?("image/")
-    json.small_url view_image.small.url
-    json.medium_url view_image.medium.present? ? view_image.medium.url : view_image.big.url
-    json.large_url view_image.large.present? ? view_image.large.url : view_image.big.url
-    json.xlarge_url view_image.xlarge.present? ? view_image.xlarge.url : view_image.big.url
+    json.small_url view_image.try(:small)&.url || view_image.url
+    json.medium_url view_image.try(:medium)&.url || view_image.try(:big)&.url || view_image.try(:small)&.url || view_image.url
+    json.large_url view_image.try(:large)&.url || view_image.try(:big)&.url || view_image.try(:small)&.url || view_image.url
+    json.xlarge_url view_image.try(:xlarge)&.url || view_image.try(:big)&.url || view_image.url
     json.width local_assigns.fetch(:width, nil)
     json.height local_assigns.fetch(:height, nil)
   end

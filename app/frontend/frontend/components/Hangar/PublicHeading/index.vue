@@ -38,7 +38,7 @@ const props = defineProps<Props>();
 <template>
   <Heading size="hero" alignment="left" hero>
     <div class="flex justify-center items-center">
-      <Avatar :avatar="props.user.avatar" />
+      <Avatar :avatar="props.user.avatar?.smallUrl" />
       <span>
         {{ t("headlines.hangar.public", { user: usernamePlural }) }}
       </span>

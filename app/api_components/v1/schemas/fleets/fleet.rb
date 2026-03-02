@@ -23,7 +23,7 @@ module V1
             description: {type: :string},
             publicFleet: {type: :boolean},
             publicFleetStats: {type: :boolean},
-            logo: {type: :string},
+            logo: {"$ref": "#/components/schemas/MediaFile"},
             backgroundImage: {type: :string},
             myFleet: {type: :boolean},
             createdAt: {type: :string, format: "date-time"},

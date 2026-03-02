@@ -33,7 +33,7 @@ const description = computed(() => {
       <h1 class="large heading">
         <Avatar
           v-if="fleet.logo"
-          :avatar="fleet.logo"
+          :avatar="fleet.logo.smallUrl"
           :transparent="!!fleet.logo"
           :round="false"
           size="large"

@@ -25,34 +25,31 @@ defineProps<Props>();
 const { t } = useI18n();
 
 const initialValues = ref<ModelUpdateInput>({
-  newTopView: undefined,
-  newSideView: undefined,
-  newFrontView: undefined,
-  newAngledView: undefined,
-  newTopViewColored: undefined,
-  newSideViewColored: undefined,
-  newFrontViewColored: undefined,
-  newAngledViewColored: undefined,
+  topView: undefined,
+  sideView: undefined,
+  frontView: undefined,
+  angledView: undefined,
+  topViewColored: undefined,
+  sideViewColored: undefined,
+  frontViewColored: undefined,
+  angledViewColored: undefined,
 });
 
 const { defineField } = useForm<ModelUpdateInput>({
   initialValues: initialValues.value,
 });
 
-const [newTopView, newTopViewProps] = defineField("newTopView");
-const [newSideView, newSideViewProps] = defineField("newSideView");
-const [newFrontView, newFrontViewProps] = defineField("newFrontView");
-const [newAngledView, newAngledViewProps] = defineField("newAngledView");
-const [newTopViewColored, newTopViewColoredProps] =
-  defineField("newTopViewColored");
-const [newSideViewColored, newSideViewColoredProps] =
-  defineField("newSideViewColored");
-const [newFrontViewColored, newFrontViewColoredProps] = defineField(
-  "newFrontViewColored",
-);
-const [newAngledViewColored, newAngledViewColoredProps] = defineField(
-  "newAngledViewColored",
-);
+const [topView, topViewProps] = defineField("topView");
+const [sideView, sideViewProps] = defineField("sideView");
+const [frontView, frontViewProps] = defineField("frontView");
+const [angledView, angledViewProps] = defineField("angledView");
+const [topViewColored, topViewColoredProps] = defineField("topViewColored");
+const [sideViewColored, sideViewColoredProps] =
+  defineField("sideViewColored");
+const [frontViewColored, frontViewColoredProps] =
+  defineField("frontViewColored");
+const [angledViewColored, angledViewColoredProps] =
+  defineField("angledViewColored");
 </script>
 
 <template>
@@ -61,48 +58,48 @@ const [newAngledViewColored, newAngledViewColoredProps] = defineField(
     <div class="row">
       <div class="col-12 col-md-4">
         <FormFileInput
-          v-model="newTopView"
+          v-model="topView"
           :file="model.media.topView"
           translation-key="model.topView"
-          v-bind="newTopViewProps"
+          v-bind="topViewProps"
           :allowed-types="AllowedFileTypes.IMAGE"
-          name="newTopView"
+          name="topView"
           transparent
           clearable
         />
       </div>
       <div class="col-12 col-md-4">
         <FormFileInput
-          v-model="newSideView"
+          v-model="sideView"
           :file="model.media.sideView"
           translation-key="model.sideView"
           :allowed-types="AllowedFileTypes.IMAGE"
-          v-bind="newSideViewProps"
-          name="newSideView"
+          v-bind="sideViewProps"
+          name="sideView"
           transparent
           clearable
         />
       </div>
       <div class="col-12 col-md-4">
         <FormFileInput
-          v-model="newFrontView"
+          v-model="frontView"
           :file="model.media.frontView"
           translation-key="model.frontView"
           :allowed-types="AllowedFileTypes.IMAGE"
-          v-bind="newFrontViewProps"
-          name="newFrontView"
+          v-bind="frontViewProps"
+          name="frontView"
           transparent
           clearable
         />
       </div>
       <div class="col-12 col-md-4">
         <FormFileInput
-          v-model="newAngledView"
+          v-model="angledView"
           :file="model.media.angledView"
           translation-key="model.angledView"
           :allowed-types="AllowedFileTypes.IMAGE"
-          v-bind="newAngledViewProps"
-          name="newAngledView"
+          v-bind="angledViewProps"
+          name="angledView"
           transparent
           clearable
         />
@@ -112,48 +109,48 @@ const [newAngledViewColored, newAngledViewColoredProps] = defineField(
     <div class="row">
       <div class="col-12 col-md-4">
         <FormFileInput
-          v-model="newTopViewColored"
+          v-model="topViewColored"
           :file="model.media.topViewColored"
           translation-key="model.topViewColored"
           :allowed-types="AllowedFileTypes.IMAGE"
-          v-bind="newTopViewColoredProps"
-          name="newTopViewColored"
+          v-bind="topViewColoredProps"
+          name="topViewColored"
           transparent
           clearable
         />
       </div>
       <div class="col-12 col-md-4">
         <FormFileInput
-          v-model="newSideViewColored"
+          v-model="sideViewColored"
           :file="model.media.sideViewColored"
           translation-key="model.sideViewColored"
           :allowed-types="AllowedFileTypes.IMAGE"
-          v-bind="newSideViewColoredProps"
-          name="newSideViewColored"
+          v-bind="sideViewColoredProps"
+          name="sideViewColored"
           transparent
           clearable
         />
       </div>
       <div class="col-12 col-md-4">
         <FormFileInput
-          v-model="newFrontViewColored"
+          v-model="frontViewColored"
           :file="model.media.frontViewColored"
           translation-key="model.frontViewColored"
           :allowed-types="AllowedFileTypes.IMAGE"
-          v-bind="newFrontViewColoredProps"
-          name="newFrontViewColored"
+          v-bind="frontViewColoredProps"
+          name="frontViewColored"
           transparent
           clearable
         />
       </div>
       <div class="col-12 col-md-4">
         <FormFileInput
-          v-model="newAngledViewColored"
+          v-model="angledViewColored"
           :file="model.media.angledViewColored"
           translation-key="model.angledViewColored"
           :allowed-types="AllowedFileTypes.IMAGE"
-          v-bind="newAngledViewColoredProps"
-          name="newAngledViewColored"
+          v-bind="angledViewColoredProps"
+          name="angledViewColored"
           transparent
           clearable
         />

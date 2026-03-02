@@ -65,7 +65,7 @@ const toggleFleetchart = () => {
       <h1 class="heading">
         <Avatar
           v-if="fleet.logo"
-          :avatar="fleet.logo"
+          :avatar="fleet.logo.smallUrl"
           :transparent="!!fleet.logo"
           icon="fad fa-image"
         />

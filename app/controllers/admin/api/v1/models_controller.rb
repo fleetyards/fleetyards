@@ -158,10 +158,10 @@ module Admin
             :store_url, :sales_page_url, :price, :pledge_price, :cargo, :fleetchart_offset_length,
             :fleetchart_offset_beam,
             :cargo_holds, :hydrogen_fuel_tank_size, :hydrogen_fuel_tanks, :quantum_fuel_tank_size,
-            :quantum_fuel_tanks, :new_store_image, :new_rsi_store_image, :new_holo, :new_brochure,
-            :new_fleetchart_image, :new_top_view, :new_side_view, :new_front_view, :new_angled_view,
-            :new_top_view_colored, :new_side_view_colored, :new_front_view_colored,
-            :new_angled_view_colored
+            :quantum_fuel_tanks, :store_image, :rsi_store_image, :holo, :brochure,
+            :fleetchart_image, :top_view, :side_view, :front_view, :angled_view,
+            :top_view_colored, :side_view_colored, :front_view_colored,
+            :angled_view_colored
           )
         end
       end

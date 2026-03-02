@@ -47,9 +47,9 @@ const initialValues = ref<ModelUpdateInput>({
   productionNote: props.model.productionNote,
   classification: props.model.classification,
   focus: props.model.focus,
-  newStoreImage: undefined,
-  newBrochure: undefined,
-  newHolo: undefined,
+  storeImage: undefined,
+  brochure: undefined,
+  holo: undefined,
 });
 
 const validationSchema = {
@@ -76,9 +76,9 @@ const [productionStatus, productionStatusProps] =
 const [productionNote, productionNoteProps] = defineField("productionNote");
 const [classification, classificationProps] = defineField("classification");
 const [focus, focusProps] = defineField("focus");
-const [newStoreImage, newStoreImageProps] = defineField("newStoreImage");
-const [newBrochure, newBrochureProps] = defineField("newBrochure");
-const [newHolo, newHoloProps] = defineField("newHolo");
+const [storeImage, storeImageProps] = defineField("storeImage");
+const [brochure, brochureProps] = defineField("brochure");
+const [holo, holoProps] = defineField("holo");
 </script>
 
 <template>
@@ -216,34 +216,34 @@ const [newHolo, newHoloProps] = defineField("newHolo");
     <div class="row">
       <div class="col-12 col-md-4">
         <FormFileInput
-          v-model="newStoreImage"
+          v-model="storeImage"
           :file="model.media.storeImage"
           translation-key="model.storeImage"
-          v-bind="newStoreImageProps"
-          name="newStoreImage"
+          v-bind="storeImageProps"
+          name="storeImage"
           :allowed-types="AllowedFileTypes.IMAGE"
           clearable
         />
       </div>
       <div class="col-12 col-md-4">
         <FormFileInput
-          v-model="newHolo"
+          v-model="holo"
           :file="model.media.holo"
           translation-key="model.holo"
-          v-bind="newHoloProps"
-          name="newHolo"
+          v-bind="holoProps"
+          name="holo"
           :allowed-types="AllowedFileTypes.HOLO"
           clearable
         />
       </div>
       <div class="col-12 col-md-4">
         <FormFileInput
-          v-model="newBrochure"
+          v-model="brochure"
           :file="model.media.brochure"
           translation-key="model.brochure"
-          v-bind="newBrochureProps"
+          v-bind="brochureProps"
           :allowed-types="AllowedFileTypes.PDF"
-          name="newBrochure"
+          name="brochure"
           clearable
         />
       </div>

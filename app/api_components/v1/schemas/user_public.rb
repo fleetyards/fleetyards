@@ -9,7 +9,7 @@ module V1
         type: :object,
         properties: {
           username: {type: :string},
-          avatar: {type: :string},
+          avatar: {"$ref": "#/components/schemas/MediaFile"},
           rsiHandle: {type: :string},
           discord: {type: :string},
           youtube: {type: :string},

@@ -64,7 +64,7 @@ onMounted(() => {
       <NavItem
         :to="{ name: 'fleet', params: { slug: currentFleet.slug } }"
         :label="currentFleet.name"
-        :image="currentFleet.logo || undefined"
+        :image="currentFleet.logo?.smallUrl || undefined"
         :active="route.name === 'fleet'"
         prefix="00"
       />

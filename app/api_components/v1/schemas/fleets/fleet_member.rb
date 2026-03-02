@@ -13,7 +13,7 @@ module V1
             username: {type: :string},
             fleetRole: {"$ref": "#/components/schemas/FleetRole"},
             status: {"$ref": "#/components/schemas/FleetMembershipStatusEnum"},
-            avatar: {type: :string},
+            avatar: {"$ref": "#/components/schemas/MediaFile"},
             rsiHandle: {type: :string},
             homepage: {type: :string},
             discord: {type: :string},

@@ -50,22 +50,8 @@ const submitting = ref(false);
 
 const deleting = ref(false);
 
-const logoFile = computed(() => {
-  if (!props.fleet.logo) {
-    return undefined;
-  }
-
-  return {
-    name: "logo",
-    contentType: "image/png",
-    size: 0,
-    url: props.fleet.logo,
-    smallUrl: props.fleet.logo,
-  };
-});
-
 const initialValues = ref<FleetUpdateInput>({
-  newLogo: undefined,
+  logo: undefined,
   fid: props.fleet.fid,
   name: props.fleet.name,
   description: props.fleet.description,
@@ -102,7 +88,7 @@ const [guilded, guildedProps] = defineField("guilded");
 const [publicFleet, publicFleetProps] = defineField("publicFleet");
 const [publicFleetStats, publicFleetStatsProps] =
   defineField("publicFleetStats");
-const [newLogo, newLogoProps] = defineField("newLogo");
+const [logo, logoProps] = defineField("logo");
 
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
@@ -184,10 +170,10 @@ const onDestroy = async () => {
     <div class="row">
       <div class="col-12 col-md-4">
         <FormFileInput
-          v-model="newLogo"
-          v-bind="newLogoProps"
-          :file="logoFile"
-          name="newLogo"
+          v-model="logo"
+          v-bind="logoProps"
+          :file="fleet.logo"
+          name="logo"
           translation-key="fleet.logo"
           :allowed-types="AllowedFileTypes.IMAGE"
           clearable

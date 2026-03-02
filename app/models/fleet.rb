@@ -89,6 +89,14 @@ class Fleet < ApplicationRecord
 
   has_one_attached :new_logo
 
+  def logo=(value)
+    if value.is_a?(String) && value.present?
+      self.new_logo = value
+    else
+      super
+    end
+  end
+
   accepts_nested_attributes_for :fleet_memberships
 
   before_validation :update_urls

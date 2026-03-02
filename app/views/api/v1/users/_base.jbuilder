@@ -7,7 +7,9 @@ json.username user.username
 json.email user.email
 json.unconfirmed_email user.unconfirmed_email if user.unconfirmed_email.present?
 
-json.avatar user.avatar.small.url if user.avatar.present?
+json.avatar do
+  json.partial! "api/v1/shared/file", record: user, attr: :new_avatar, old_attr: :avatar
+end
 
 json.rsi_handle user.rsi_handle if user.rsi_handle.present?
 

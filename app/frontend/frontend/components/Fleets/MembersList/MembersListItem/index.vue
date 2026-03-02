@@ -236,7 +236,7 @@ const declineRequest = async (member: FleetMember) => {
   <div v-if="member" class="fade-list-item col-12 flex-list-item">
     <div class="flex-list-row">
       <div class="username">
-        <Avatar :avatar="member.avatar" size="small" />
+        <Avatar :avatar="member.avatar?.smallUrl" size="small" />
         <div class="username-inner">
           {{ member.username }}
           <div

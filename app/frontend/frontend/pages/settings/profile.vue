@@ -9,7 +9,8 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import AvatarUpload from "@/frontend/components/AvatarUpload/index.vue";
+import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
+import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useForm } from "vee-validate";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -24,6 +25,7 @@ const { displaySuccess, displayAlert } = useAppNotifications();
 const sessionStore = useSessionStore();
 
 const initialValues = ref<UserUpdateInput>({
+  avatar: undefined,
   rsiHandle: sessionStore.currentUser?.rsiHandle,
   homepage: sessionStore.currentUser?.homepage,
   discord: sessionStore.currentUser?.discord,
@@ -36,6 +38,7 @@ const { defineField, handleSubmit } = useForm({
   initialValues: initialValues.value,
 });
 
+const [avatar, avatarProps] = defineField("avatar");
 const [rsiHandle, rsiHandleProps] = defineField("rsiHandle");
 const [homepage, homepageProps] = defineField("homepage");
 const [discord, discordProps] = defineField("discord");
@@ -105,8 +108,17 @@ const onSubmit = handleSubmit(async (values) => {
     </div>
 
     <div class="row">
-      <div class="col-12 col-md-6">
-        <AvatarUpload />
+      <div class="col-12 col-md-4">
+        <FormFileInput
+          v-model="avatar"
+          v-bind="avatarProps"
+          :file="sessionStore.currentUser?.avatar"
+          name="avatar"
+          translation-key="user.avatar"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          clearable
+          avatar
+        />
       </div>
     </div>
     <div class="row">

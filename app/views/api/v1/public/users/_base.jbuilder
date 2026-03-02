@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 json.username user.username
-json.avatar user.avatar.small.url
+json.avatar do
+  json.partial! "api/v1/shared/file", record: user, attr: :new_avatar, old_attr: :avatar
+end
 json.rsi_handle user.rsi_handle
 json.discord user.discord
 json.youtube user.youtube

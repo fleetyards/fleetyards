@@ -11,8 +11,7 @@ module V1
           properties: {
             fid: {type: :string},
             name: {type: :string},
-            logo: {type: :string, format: :binary},
-            newLogo: {type: :string},
+            logo: {type: :string},
             removeLogo: {type: :boolean},
             backgroundImage: {type: :string, format: :binary},
             removeBackground: {type: :boolean},

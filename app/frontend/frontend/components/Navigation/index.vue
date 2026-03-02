@@ -201,7 +201,7 @@ const settingsActive = computed(() => {
         />
         <NavItem
           menu-key="user-menu"
-          :image="currentUser.avatar"
+          :image="currentUser.avatar?.smallUrl"
           :avatar="true"
           :label="currentUser.username"
           class="user-menu mt-1"
