@@ -120,7 +120,6 @@ watch(
 
     setupLocale();
   },
-  { immediate: true },
 );
 
 useCheckStoreVersion(appStore);
@@ -145,6 +144,10 @@ onMounted(async () => {
   userUpdateComlink.value = comlink.on("user-update", refetchCurrentUser);
   fleetCreateComlink.value = comlink.on("fleet-create", refetchCurrentUser);
   fleetUpdateComlink.value = comlink.on("fleet-update", refetchCurrentUser);
+
+  if (infoVisible.value && route.name !== "privacy-policy") {
+    openPrivacySettings();
+  }
 
   setupLocale();
 });
