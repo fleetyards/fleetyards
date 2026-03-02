@@ -1,7 +1,7 @@
 import { type AdminShipListState } from "@/admin/types";
 import { type Models } from "@/services/fyAdminApi";
 import { defineStore } from "pinia";
-import { type ListMeta } from "@/shared/components/BreadCrumbs/index.vue";
+import { type ListMeta } from "@/shared/components/BreadCrumbs/types";
 
 export enum AdminModelTableViewImageColsEnum {
   STORE_IMAGE = "store_image",

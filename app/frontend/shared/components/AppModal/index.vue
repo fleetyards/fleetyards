@@ -6,22 +6,12 @@ export default {
 
 <script lang="ts" setup>
 import { defineAsyncComponent } from "vue";
-import type { Component, Raw } from "vue";
+import type { Raw } from "vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useOverlayStore } from "@/shared/stores/overlay";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-
-export type AppModalOptions = {
-  component: () => Promise<Component>;
-  title?: string;
-  wide?: boolean;
-  fixed?: boolean;
-  fullscreen?: boolean;
-  dirty?: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  props?: any;
-};
+import { type AppModalOptions } from "./types";
 
 interface ModalComponent extends HTMLElement {
   dirty?: boolean;

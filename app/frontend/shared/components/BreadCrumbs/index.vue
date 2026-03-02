@@ -5,21 +5,9 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { type RouterLinkProps } from "vue-router";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
-
-export type ListMeta = {
-  totalCount: number;
-  perPage: number;
-  currentPage: number;
-  totalPages: number;
-};
-
-export type Crumb = {
-  to: RouterLinkProps["to"];
-  label?: string;
-};
+import { type ListMeta, type Crumb } from "./types";
 
 type Props = {
   crumbs?: Crumb[];

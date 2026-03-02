@@ -1,4 +1,4 @@
-import { type AppModalOptions } from "@/shared/components/AppModal/index.vue";
+import { type AppModalOptions } from "@/shared/components/AppModal/types";
 import { type AppConfirmOptions } from "@/shared/components/AppConfirm/types";
 import { type FleetMember, type HangarGroup } from "@/services/fyApi";
 import { createNanoEvents } from "nanoevents";
