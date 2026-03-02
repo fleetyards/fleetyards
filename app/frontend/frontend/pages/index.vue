@@ -42,12 +42,12 @@ setTimeout(() => {
 
 const router = useRouter();
 
-const search = () => {
+const search = async () => {
   if (!searchQuery.value) {
     return;
   }
 
-  router.push(
+  await router.push(
     {
       name: "ships",
       query: {
@@ -69,8 +69,6 @@ const routeForImage = (image: Image) => {
   if (!image.gallery) {
     return undefined;
   }
-
-  console.log(image.gallery);
 
   return {
     name: "ship-images",

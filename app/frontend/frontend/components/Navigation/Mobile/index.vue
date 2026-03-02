@@ -68,7 +68,7 @@ const currentFleet = computed(() => currentFleetData.value);
       <template v-if="currentFleet">
         <NavItem
           :to="{ name: 'fleet', params: { slug: currentFleet.slug } }"
-          :image="currentFleet.logo"
+          :image="currentFleet.logo?.smallUrl"
           :active="routeActive('fleet')"
           :label="currentFleet.name"
         />

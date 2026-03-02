@@ -261,6 +261,3 @@ end
 # Example usage:
 # container_set = { 8 => 11, 4 => 1 }  # 11x 8 SCU + 1x 4 SCU
 # models = ScData::CargoFinder.find_fitting_models(container_set)
-
-
-

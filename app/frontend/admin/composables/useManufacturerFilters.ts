@@ -3,7 +3,7 @@ import { useFilters } from "@/shared/composables/useFilters";
 
 export type AllowedFilters = ManufacturerQuery;
 
-export const useManufacturerFilters = (updateCallback?: () => void) => {
+export const useManufacturerFilters = (updateCallback?: (() => void) | (() => Promise<void>)) => {
   return useFilters<AllowedFilters>({
     allowedKeys: ["nameCont", "withModels", "logoBlank"],
     updateCallback,

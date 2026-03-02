@@ -20,7 +20,7 @@ export const useAxiosInterceptors = () => {
     (response) => {
       return response;
     },
-    (error) => {
+    async (error) => {
       const sessionStore = useSessionStore();
 
       if (
@@ -28,7 +28,7 @@ export const useAxiosInterceptors = () => {
         error.response.status === 401 &&
         sessionStore.isAuthenticated
       ) {
-        sessionStore.logout();
+        await sessionStore.logout();
       }
 
       return Promise.reject(error);

@@ -33,8 +33,8 @@ const sorts = computed(() => {
 
 watch(
   () => sorts.value,
-  () => {
-    refetch();
+  async () => {
+    await refetch();
   },
 );
 
@@ -53,7 +53,9 @@ const paintsQueryKey = computed(() => {
 
 const { perPage, page, updatePerPage } = usePagination(paintsQueryKey);
 
-const { filters, isFilterSelected } = useModelPaintFilters(() => refetch());
+const { filters, isFilterSelected } = useModelPaintFilters(async () => {
+  await refetch();
+});
 
 const {
   data: paints,

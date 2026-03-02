@@ -48,10 +48,10 @@ const { data: fleetInvites, refetch: refetchInvites } = useFleetInvitesQuery({
 
 watch(
   () => isAuthenticated.value,
-  () => {
+  async () => {
     if (isAuthenticated.value) {
-      refetchMyFleets();
-      refetchInvites();
+      await refetchMyFleets();
+      await refetchInvites();
     }
   },
 );

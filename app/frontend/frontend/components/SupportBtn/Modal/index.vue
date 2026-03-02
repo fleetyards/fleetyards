@@ -55,6 +55,7 @@ const { t } = useI18n();
         </Btn>
         <a
           href="https://www.buymeacoffee.com/mortik"
+          aria-label="Buy me a coffee"
           class="support-buymeacoffee"
         >
           <img

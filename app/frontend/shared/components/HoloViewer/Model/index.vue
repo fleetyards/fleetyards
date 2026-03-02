@@ -1,3 +1,4 @@
+<!-- eslint-disable import/no-self-import -->
 <script lang="ts">
 export default {
   name: "HoloViewerModel",

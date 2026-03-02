@@ -7,7 +7,7 @@ export const useFilters = <T>({
 }: {
   allowedKeys?: (keyof T)[];
   ignoreKeys?: string[];
-  updateCallback?: () => void;
+  updateCallback?: (() => void) | (() => Promise<void>);
 } = {}) => {
   const route = useRoute();
 
@@ -17,10 +17,10 @@ export const useFilters = <T>({
 
   watch(
     () => filters.value,
-    () => {
+    async () => {
       if (!updateCallback) return;
 
-      updateCallback();
+      await updateCallback();
     },
     { deep: true },
   );

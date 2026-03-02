@@ -149,7 +149,15 @@ const comlink = useComlink();
 
 const fleetchartToggleStatusComlink = ref();
 
-onMounted(() => {
+const handleResize = () => {
+  updateScreenSize().catch(() => {});
+};
+
+const handleOrientation = () => {
+  updateScreenSize().catch(() => {});
+};
+
+onMounted(async () => {
   showStatus.value = !!route.query?.showStatus;
 
   fleetchartToggleStatusComlink.value = comlink.on(
@@ -157,14 +165,14 @@ onMounted(() => {
     toggleStatus,
   );
 
-  updateScreenSize();
+  await updateScreenSize();
 
   setupColumns();
 
-  setupZoom();
+  await setupZoom();
 
-  window.addEventListener("resize", updateScreenSize);
-  window.addEventListener("deviceorientation", updateScreenSize);
+  window.addEventListener("resize", handleResize);
+  window.addEventListener("deviceorientation", handleOrientation);
 });
 
 onUnmounted(() => {
@@ -174,8 +182,8 @@ onUnmounted(() => {
 
   panzoomInstance.value = undefined;
 
-  window.removeEventListener("resize", updateScreenSize);
-  window.removeEventListener("deviceorientation", updateScreenSize);
+  window.removeEventListener("resize", handleResize);
+  window.removeEventListener("deviceorientation", handleOrientation);
 });
 
 const updateZoomData = () => {
@@ -242,11 +250,11 @@ const checkReset = () => {
 
 const debouncedCheckReset = debounce(checkReset, 300);
 
-const updateScreenSize = () => {
+const updateScreenSize = async () => {
   screenWidth.value = window.innerWidth;
   screenHeight.value = window.innerHeight;
 
-  drawGridLines();
+  await drawGridLines();
 };
 
 const setupColumns = () => {
@@ -281,10 +289,10 @@ const setupColumns = () => {
   });
 };
 
-const toggleGrid = () => {
+const toggleGrid = async () => {
   gridEnabled.value = !gridEnabled.value;
 
-  drawGridLines();
+  await drawGridLines();
 };
 
 const toggleColored = () => {

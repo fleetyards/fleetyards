@@ -188,6 +188,7 @@ const updateCaption = debounce(debouncedUpdateCaption, 500);
         :href="internalImage.url"
         :title="internalImage.name"
         :download="internalImage.name"
+        :aria-label="internalImage.name"
         target="_blank"
         rel="noopener"
       >

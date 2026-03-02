@@ -52,7 +52,9 @@ const canInvite = computed(() =>
 
 const { isFilterSelected, getQuery } = useFilters<FleetMemberQuery>({
   allowedKeys: ["usernameCont", "roleIn", "sorts"],
-  updateCallback: () => refetch(),
+  updateCallback: async () => {
+    await refetch();
+  },
 });
 
 const membersQueryParams = computed<FleetMembersParams>(() => ({
@@ -70,15 +72,15 @@ const { data: stats, refetch: refetchStats } = useFleetMembersStatsQuery(
   props.fleet.slug,
 );
 
-const fetch = () => {
-  refetch();
-  refetchStats();
+const fetch = async () => {
+  await refetch();
+  await refetchStats();
 };
 
 watch(
   () => route.query.q,
-  () => {
-    fetch();
+  async () => {
+    await fetch();
   },
 );
 

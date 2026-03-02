@@ -48,7 +48,7 @@ useForm({
 
 const { perPage, page, updatePerPage } = usePagination("admin-model-videos");
 
-const { data, refetch, ...asyncStatus } = useModelVideosQuery(props.model.id, {
+const { data, ...asyncStatus } = useModelVideosQuery(props.model.id, {
   page: page.value,
   perPage: perPage.value,
 });

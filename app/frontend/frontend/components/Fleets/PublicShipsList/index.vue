@@ -81,9 +81,9 @@ const vehiclesQueryParams = computed(() => {
 const { data: modelCounts, refetch: refetchModelCounts } =
   usePublicFleetStatsModelCountsQuery(props.fleet.slug, vehiclesQueryParams);
 
-const refetch = () => {
-  refetchVehicles();
-  refetchModelCounts();
+const refetch = async () => {
+  await refetchVehicles();
+  await refetchModelCounts();
 };
 
 const vehiclesQueryKey = computed(() => {
@@ -100,7 +100,9 @@ const {
 } = usePublicFleetVehiclesQuery(props.fleet.slug, vehiclesQueryParams);
 
 const { filters } = useFilters<FleetVehicleQuery>({
-  updateCallback: refetch,
+  updateCallback: async () => {
+    await refetch();
+  },
 });
 
 const { perPage, page, updatePerPage } = usePagination(vehiclesQueryKey);

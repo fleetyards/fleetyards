@@ -158,13 +158,14 @@ const loading = computed(() => {
 
 const { isLoading, isFetching, data, refetch } = useQuery({
   refetchOnWindowFocus: false,
+  // eslint-disable-next-line @tanstack/query/exhaustive-deps
   queryKey: [
     "filterGroupOptions",
     id.value,
     props.name,
     page.value,
     search.value,
-    missing.value as string,
+    missing.value,
   ],
   queryFn: async () => {
     if (!props.queryFn) {

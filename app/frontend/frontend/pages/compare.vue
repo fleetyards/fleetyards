@@ -57,9 +57,9 @@ const models = computed(() => {
 
 watch(
   () => filters.value.models,
-  () => {
+  async () => {
     if (filters.value.models) {
-      refetch();
+      await refetch();
     }
   },
   { deep: true },

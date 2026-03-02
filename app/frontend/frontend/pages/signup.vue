@@ -90,7 +90,7 @@ const onSubmit = handleSubmit(async (values) => {
 
       fleetStore.resetInviteToken();
 
-      handleRedirect();
+      await handleRedirect();
     })
     .catch((error) => {
       const response = (error as AxiosError<ValidationError>).response;

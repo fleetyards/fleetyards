@@ -49,8 +49,8 @@ const { defineField, handleSubmit } = useForm();
 
 const [twoFactorCode, twoFactorCodeProps] = defineField("twoFactorCode");
 
-onMounted(() => {
-  startProcess();
+onMounted(async () => {
+  await startProcess();
 });
 
 const startMutation = useStartOtpSetupMutation();

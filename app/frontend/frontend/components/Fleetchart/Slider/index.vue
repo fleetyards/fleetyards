@@ -5,7 +5,6 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import VueSlider from "vue-slider-component";
 import { useMobile } from "@/shared/composables/useMobile";
 
 type Props = {
@@ -49,9 +48,8 @@ const update = (value: number) => {
   emit("update:modelValue", value);
 };
 
-const marks = (value: number | string) => {
-  const num = Number(value);
-  if (num % innerMark.value === 0) {
+const marks = (value: number) => {
+  if (value % innerMark.value === 0) {
     return {
       label: label(value),
     };
@@ -60,15 +58,14 @@ const marks = (value: number | string) => {
   return false;
 };
 
-const label = (value: number | string) => {
-  return `${Number(value)}x`;
+const label = (value: number) => {
+  return `${value}x`;
 };
 </script>
 
 <template>
   <div class="fleetchart-slider">
-    <VueSlider
-      ref="scaleSlider"
+    <Slider
       v-model="innerValue"
       :min="minScale"
       :max="maxScale"

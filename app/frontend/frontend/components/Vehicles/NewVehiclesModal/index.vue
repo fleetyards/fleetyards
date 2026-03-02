@@ -44,12 +44,12 @@ const models = ref<Model[]>([]);
 
 watch(
   () => newModel.value,
-  (value) => {
+  async (value) => {
     if (!value) {
       return;
     }
 
-    add();
+    await add();
   },
 );
 

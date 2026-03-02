@@ -86,12 +86,12 @@ const confirmAccess = handleSubmit(async () => {
         password: password.value,
       },
     })
-    .then(async () => {
+    .then(() => {
       resetForm();
 
       submitting.value = false;
 
-      await sessionStore.confirmAccess();
+      sessionStore.confirmAccess();
 
       confirmed.value = true;
     })

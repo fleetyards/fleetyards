@@ -1,3 +1,4 @@
+<!-- eslint-disable import/no-self-import -->
 <script lang="ts">
 export default {
   name: "HoloViewer",
@@ -193,9 +194,9 @@ const handleModelProgress = (loaded: number, total: number) => {
 
 const currentModel = ref<Mesh>();
 
-const traverseEventObjects = (object: Mesh): Mesh => {
+const _traverseEventObjects = (object: Mesh): Mesh => {
   if (object.parent && object.parent.type !== "Scene") {
-    return traverseEventObjects(object.parent as Mesh);
+    return _traverseEventObjects(object.parent as Mesh);
   }
 
   return object;

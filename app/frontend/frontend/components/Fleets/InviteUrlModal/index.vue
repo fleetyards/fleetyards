@@ -120,8 +120,8 @@ const create = async () => {
       fleetSlug: props.fleet.slug,
       data: form.value,
     })
-    .then(() => {
-      refetch();
+    .then(async () => {
+      await refetch();
     })
     .catch((error) => {
       console.error(error);
@@ -136,8 +136,8 @@ const remove = async (inviteUrl: FleetInviteUrl) => {
       fleetSlug: props.fleet.slug,
       token: inviteUrl.token,
     })
-    .then(() => {
-      refetch();
+    .then(async () => {
+      await refetch();
     })
     .catch((error) => {
       console.error(error);

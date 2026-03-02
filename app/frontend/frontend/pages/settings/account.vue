@@ -118,7 +118,7 @@ const destroy = async () => {
             text: t("messages.account.destroy.success"),
           });
 
-          sessionStore.logout();
+          await sessionStore.logout();
 
           await router.push({ name: "home" }).catch(() => {});
         })

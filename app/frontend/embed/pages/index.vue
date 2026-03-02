@@ -60,32 +60,32 @@ const models = computed(() => {
 
 watch(
   () => props.ships,
-  () => {
-    fetchModels();
+  async () => {
+    await fetchModels();
   },
 );
 
 watch(
   () => props.users,
-  () => {
-    fetchHangarVehicles();
+  async () => {
+    await fetchHangarVehicles();
   },
 );
 
 watch(
   () => props.fleetId,
-  () => {
-    fetchFleetVehicles();
+  async () => {
+    await fetchFleetVehicles();
   },
 );
 
-onMounted(() => {
+onMounted(async () => {
   if (props.fleetId) {
-    fetchFleetVehicles();
+    await fetchFleetVehicles();
   } else if (props.users?.length) {
-    fetchHangarVehicles();
+    await fetchHangarVehicles();
   } else {
-    fetchModels();
+    await fetchModels();
   }
 });
 

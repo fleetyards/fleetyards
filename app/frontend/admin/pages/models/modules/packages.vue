@@ -32,8 +32,8 @@ const sorts = computed(() => {
 
 watch(
   () => sorts.value,
-  () => {
-    refetch();
+  async () => {
+    await refetch();
   },
 );
 
@@ -52,7 +52,9 @@ const modelsQueryKey = computed(() => {
 
 const { perPage, page, updatePerPage } = usePagination(modelsQueryKey);
 
-const { filters } = useModelFilters(() => refetch());
+const { filters } = useModelFilters(async () => {
+  await refetch();
+});
 
 const {
   data: models,

@@ -137,11 +137,9 @@ const componentsQueryKey = computed(() => {
 
 const { page, perPage, updatePerPage } = usePagination(componentsQueryKey);
 
-const {
-  data: quantumDrives,
-  refetch,
-  ...asyncStatus
-} = useComponentsQuery(componentsQueryParams);
+const { data: quantumDrives, ...asyncStatus } = useComponentsQuery(
+  componentsQueryParams,
+);
 </script>
 
 <template>

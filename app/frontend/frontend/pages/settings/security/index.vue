@@ -23,8 +23,8 @@ const { displayConfirm } = useAppNotifications();
 const generateBackupCodes = () => {
   displayConfirm({
     text: t("messages.confirm.twoFactor.generateBackupCodes"),
-    onConfirm: () => {
-      router.push({ name: "settings-two-factor-backup-codes" });
+    onConfirm: async () => {
+      await router.push({ name: "settings-two-factor-backup-codes" });
     },
   });
 };

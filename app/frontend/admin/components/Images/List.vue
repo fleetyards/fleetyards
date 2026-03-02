@@ -81,7 +81,7 @@ const handleUploadDone = async (files: FileUpload[]) => {
     .map((file) => file.blob?.signed_id)
     .filter((id): id is string => !!id);
 
-  blobIds.forEach(async (blobId) => {
+  for (const blobId of blobIds) {
     await attachMutation.mutateAsync({
       data: {
         galleryId: props.galleryId,
@@ -90,8 +90,8 @@ const handleUploadDone = async (files: FileUpload[]) => {
       },
     });
 
-    refetch();
-  });
+    await refetch();
+  }
 };
 
 const columns: BaseTableCol<Image>[] = [

@@ -63,13 +63,13 @@ const mobile = useMobile();
 const router = useRouter();
 const route = useRoute();
 
-onMounted(() => {
+onMounted(async () => {
   window.addEventListener("message", handleExtensionMessage);
 
   checkExtension();
 
   if (route.query.openSync) {
-    router.replace({
+    await router.replace({
       name: "hangar",
       query: { ...route.query, openSync: undefined },
     });

@@ -1,7 +1,11 @@
 <script lang="ts">
+import { type BaseTableCol } from "./types";
+
 export default {
   name: "BaseTable",
 };
+
+export type { BaseTableCol };
 </script>
 
 <script lang="ts" setup generic="T">
@@ -14,13 +18,10 @@ import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import Loader from "@/shared/components/Loader/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
-import { type BaseTableCol } from "./types";
 import TableHeader from "./Header/index.vue";
 import TableRow from "./Row/index.vue";
 import TableCol from "./Col/index.vue";
 import BulkActions from "./BulkActions/index.vue";
-
-export type { BaseTableCol };
 
 type Props = {
   records: T[];

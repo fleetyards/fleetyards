@@ -20,8 +20,8 @@ const hangarStore = useHangarStore();
 
 const mutation = useConfirmAccountMutation();
 
-onMounted(() => {
-  confirmAccount();
+onMounted(async () => {
+  await confirmAccount();
 });
 
 const route = useRoute();

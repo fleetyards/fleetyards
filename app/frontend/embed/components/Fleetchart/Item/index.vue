@@ -38,7 +38,7 @@ const label = computed(
     class="fleetchart-item fade-list-item"
     :class="`model-${model.slug}`"
   >
-    <a :href="url" target="_blank" rel="noopener">
+    <a :href="url" target="_blank" rel="noopener" :aria-label="label">
       <FleetchartItemImage
         v-if="model.media.fleetchartImage"
         :src="model.media.fleetchartImage"

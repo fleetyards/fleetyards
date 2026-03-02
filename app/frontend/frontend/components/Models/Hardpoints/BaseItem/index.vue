@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { groupBy } from "@/shared/utils/Array";
 import HardpointItem from "@/frontend/components/Models/Hardpoints/Item/index.vue";
+// eslint-disable-next-line import/no-self-import
 import HardpointBaseItem from "@/frontend/components/Models/Hardpoints/BaseItem/index.vue";
 import HardpointSize from "@/frontend/components/Models/Hardpoints/Size/index.vue";
 import HardpointComponent from "@/frontend/components/Models/Hardpoints/Component/index.vue";

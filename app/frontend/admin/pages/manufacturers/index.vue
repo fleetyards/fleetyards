@@ -32,8 +32,8 @@ const sorts = computed(() => {
 
 watch(
   () => sorts.value,
-  () => {
-    refetch();
+  async () => {
+    await refetch();
   },
 );
 
@@ -43,7 +43,9 @@ const manufacturersQueryKey = computed(() => {
 
 const { perPage, page, updatePerPage } = usePagination(manufacturersQueryKey);
 
-const { filters, isFilterSelected } = useManufacturerFilters(() => refetch());
+const { filters, isFilterSelected } = useManufacturerFilters(async () => {
+  await refetch();
+});
 
 const manufacturersQueryParams = computed(() => {
   return {

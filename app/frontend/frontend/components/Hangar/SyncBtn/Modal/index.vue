@@ -108,11 +108,15 @@ const processSteps = ref<ProcessStep[]>([
   },
 ]);
 
+const onExtensionMessage = (event: FleetyardsSyncEvent) => {
+  handleExtensionMessage(event).catch(() => {});
+};
+
 onMounted(() => {
   started.value = false;
   currentPage.value = 1;
 
-  window.addEventListener("message", handleExtensionMessage);
+  window.addEventListener("message", onExtensionMessage as EventListener);
 
   if (hangarStore.extensionReady) {
     checkRSIIdentity();
@@ -120,16 +124,16 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  window.removeEventListener("message", handleExtensionMessage);
+  window.removeEventListener("message", onExtensionMessage as EventListener);
 });
 
-const handleExtensionMessage = (event: FleetyardsSyncEvent) => {
+const handleExtensionMessage = async (event: FleetyardsSyncEvent) => {
   if (event.data.direction === "fy-sync") {
     const message = JSON.parse(event.data.message) as FleetyardsSyncMessage;
 
     if (message.action === "sync") {
       if (message.code === 200) {
-        fetchRSIHangar(message.payload as string);
+        await fetchRSIHangar(message.payload as string);
       } else {
         displayAlert({ text: t("messages.syncExtension.failure") });
         updateStep("fetchHangar", "failure");
@@ -234,7 +238,7 @@ const fetchPage = (page: number) => {
   });
 };
 
-const fetchRSIHangar = (htmlPage: string) => {
+const fetchRSIHangar = async (htmlPage: string) => {
   updateStep("fetchHangar", "processing");
 
   const items = new RSIHangarParser().extractPage(htmlPage);
@@ -248,7 +252,7 @@ const fetchRSIHangar = (htmlPage: string) => {
   } else {
     updateStep("fetchHangar", "success");
 
-    finishSync();
+    await finishSync();
   }
 };
 
@@ -279,8 +283,8 @@ const finishSync = async () => {
 const router = useRouter();
 const route = useRoute();
 
-const refreshPage = () => {
-  router.replace({
+const refreshPage = async () => {
+  await router.replace({
     name: "hangar",
     query: { ...route.query, openSync: "1" },
   });
@@ -298,6 +302,7 @@ const refreshPage = () => {
             v-for="link in extensionUrls"
             :key="`extension-link-${link.platform}`"
             v-tooltip="t(`labels.syncExtension.platforms.${link.platform}`)"
+            :aria-label="t(`labels.syncExtension.platforms.${link.platform}`)"
             :href="link.url"
             target="_blank"
           >

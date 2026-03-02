@@ -93,7 +93,15 @@ const route = useRoute();
 
 const fleetchartToggleStatusComlink = ref();
 
-onMounted(() => {
+const handleResize = () => {
+  updateScreenSize().catch(() => {});
+};
+
+const handleOrientation = () => {
+  updateScreenSize().catch(() => {});
+};
+
+onMounted(async () => {
   internalScale.value = scale.value;
 
   showStatus.value = !!route.query?.showStatus;
@@ -103,30 +111,30 @@ onMounted(() => {
     toggleStatus,
   );
 
-  updateScreenSize();
+  await updateScreenSize();
 
-  window.addEventListener("resize", updateScreenSize);
-  window.addEventListener("deviceorientation", updateScreenSize);
+  window.addEventListener("resize", handleResize);
+  window.addEventListener("deviceorientation", handleOrientation);
 });
 
 onUnmounted(() => {
   fleetchartToggleStatusComlink.value();
 
-  window.removeEventListener("resize", updateScreenSize);
-  window.removeEventListener("deviceorientation", updateScreenSize);
+  window.removeEventListener("resize", handleResize);
+  window.removeEventListener("deviceorientation", handleOrientation);
 });
 
-const updateScreenSize = () => {
+const updateScreenSize = async () => {
   screenWidth.value = window.innerWidth;
   screenHeight.value = window.innerHeight;
 
-  drawGridLines();
+  await drawGridLines();
 };
 
-const toggleGrid = () => {
+const toggleGrid = async () => {
   gridEnabled.value = !gridEnabled.value;
 
-  drawGridLines();
+  await drawGridLines();
 };
 
 const setViewpoint = (viewpoint: FleetchartViewpoints) => {

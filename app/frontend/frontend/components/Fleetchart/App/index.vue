@@ -84,18 +84,18 @@ watch(
 
 watch(
   () => visible.value,
-  () => {
+  async () => {
     if (visible.value) {
-      open();
+      await open();
     } else {
-      closeFleetchart();
+      await closeFleetchart();
     }
   },
 );
 
 const route = useRoute();
 
-onMounted(() => {
+onMounted(async () => {
   updateItems();
 
   if (route.query.fleetchart) {
@@ -103,7 +103,7 @@ onMounted(() => {
   }
 
   if (visible.value) {
-    open();
+    await open();
   }
 });
 
@@ -154,12 +154,12 @@ const emit = defineEmits(["fleetchart-opened", "fleetchart-closed"]);
 
 const overlayStore = useOverlayStore();
 
-const open = () => {
+const open = async () => {
   isShow.value = true;
 
   overlayStore.show();
 
-  nextTick(() => {
+  await nextTick(() => {
     // make sure the component is present
     setTimeout(() => {
       // make sure initial animations have enough time
@@ -178,12 +178,12 @@ const setMode = (mode: FleetchartModes) => {
   fleetchartStore.updateMode({ namespace: props.namespace, mode });
 };
 
-const closeFleetchart = () => {
+const closeFleetchart = async () => {
   isOpen.value = false;
 
   overlayStore.hide();
 
-  nextTick(() => {
+  await nextTick(() => {
     setTimeout(() => {
       isShow.value = false;
 

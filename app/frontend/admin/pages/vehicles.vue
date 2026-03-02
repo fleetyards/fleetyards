@@ -33,12 +33,14 @@ const sorts = computed(() => {
 
 watch(
   () => sorts.value,
-  () => {
-    refetch();
+  async () => {
+    await refetch();
   },
 );
 
-const { getQuery } = useVehicleFilters(() => refetch());
+const { getQuery } = useVehicleFilters(async () => {
+  await refetch();
+});
 
 const vehiclesQueryParams = computed(() => {
   return {

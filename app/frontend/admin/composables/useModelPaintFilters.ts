@@ -3,7 +3,7 @@ import { useFilters } from "@/shared/composables/useFilters";
 
 interface AllowedFilters extends ModelPaintQuery {}
 
-export const useModelPaintFilters = (updateCallback?: () => void) => {
+export const useModelPaintFilters = (updateCallback?: (() => void) | (() => Promise<void>)) => {
   return useFilters<AllowedFilters>({
     allowedKeys: [
       "nameCont",

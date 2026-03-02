@@ -12,7 +12,7 @@ export const useCheckStoreVersion = (store: FltYrdsStore) => {
 
   onMounted(() => {
     setInterval(() => {
-      refetch();
+      void refetch();
     }, CHECK_VERSION_INTERVAL);
   });
 

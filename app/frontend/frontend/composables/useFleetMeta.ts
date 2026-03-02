@@ -34,7 +34,7 @@ export const useFleetMeta = (fleet?: MaybeRef<Fleet | undefined>) => {
     updateMetaInfo({
       title: fleetTitle.value,
       description: unref(fleet)?.description,
-      image: unref(fleet)?.logo,
+      image: unref(fleet)?.logo?.smallUrl,
       type: "article",
     });
   };

@@ -126,8 +126,8 @@ const remove = () => {
 
   displayConfirm({
     text: t("messages.confirm.vehicle.destroy"),
-    onConfirm: () => {
-      destroy();
+    onConfirm: async () => {
+      await destroy();
     },
     onClose: () => {
       deleting.value = false;

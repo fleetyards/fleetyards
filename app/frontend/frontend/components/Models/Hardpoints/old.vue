@@ -47,8 +47,8 @@ const hardpointsForGroup = (group: ModelHardpointGroupEnum) => {
 
 watch(
   () => props.model,
-  () => {
-    refetch();
+  async () => {
+    await refetch();
   },
 );
 

@@ -12,7 +12,7 @@ const route = useRoute();
 
 const username = computed(() => route.params.username as string);
 
-const { data: user, refetch, ...asyncStatus } = usePublicUserQuery(username);
+const { data: user, ...asyncStatus } = usePublicUserQuery(username);
 </script>
 
 <template>

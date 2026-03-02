@@ -80,7 +80,7 @@ const onSubmit = handleSubmit(async (values) => {
     .then(async (user) => {
       sessionStore.login(user);
 
-      handleRedirect();
+      await handleRedirect();
     })
     .catch((error) => {
       const response = (error as AxiosError<ValidationError>).response;

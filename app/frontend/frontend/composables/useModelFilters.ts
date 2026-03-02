@@ -5,7 +5,9 @@ interface AllowedFilters extends ModelQuery {
   fleetchart?: boolean;
 }
 
-export const useModelFilters = (updateCallback?: () => void) => {
+export const useModelFilters = (
+  updateCallback?: (() => void) | (() => Promise<void>),
+) => {
   return useFilters<AllowedFilters>({
     allowedKeys: [
       "searchCont",

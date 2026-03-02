@@ -49,7 +49,7 @@ const input = ref<HTMLInputElement | undefined>();
 const dropzone = ref<HTMLDivElement | undefined>();
 const isDragging = ref<boolean>(false);
 
-const handleFileSelect = (fileList?: FileList) => {
+const handleFileSelect = async (fileList?: FileList) => {
   if (!fileList) {
     return;
   }
@@ -101,23 +101,23 @@ const handleFileSelect = (fileList?: FileList) => {
   });
 
   if (!props.multiple) {
-    upload();
+    await upload();
   }
 };
 
-const onDrop = (event: DragEvent) => {
+const onDrop = async (event: DragEvent) => {
   event.preventDefault();
   event.stopPropagation();
 
-  handleFileSelect(event.dataTransfer?.files);
+  await handleFileSelect(event.dataTransfer?.files);
 
   isDragging.value = false;
 };
 
-const onInputChange = (event: Event) => {
+const onInputChange = async (event: Event) => {
   const target = event.target as HTMLInputElement;
 
-  handleFileSelect(target.files || undefined);
+  await handleFileSelect(target.files || undefined);
 };
 
 const dragover = (event: DragEvent) => {
@@ -158,7 +158,7 @@ const overallProgress = computed(() => {
   return Math.round(total / files.value.length);
 });
 
-const upload = () => {
+const upload = async () => {
   emit("upload:start", files.value);
 
   if (!files.value.length) {
@@ -172,7 +172,7 @@ const upload = () => {
     return;
   }
 
-  Promise.all(
+  await Promise.all(
     files.value.map((file) => {
       return uploadFile(file.file, {
         progressHandler: (progress) => {

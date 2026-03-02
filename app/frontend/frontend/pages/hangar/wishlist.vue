@@ -62,7 +62,9 @@ const fleetchartStore = useFleetchartStore();
 
 const fleetchartVisible = computed(() => fleetchartStore.isVisible("wishlist"));
 
-const { filters, isFilterSelected } = useHangarFilters(() => refetch());
+const { filters, isFilterSelected } = useHangarFilters(async () => {
+  await refetch();
+});
 
 const wishlistQueryParams = computed(() => ({
   page: page.value,
@@ -82,16 +84,16 @@ const {
   ...asyncStatus
 } = useWishlistQuery(wishlistQueryParams);
 
-const fetch = () => {
-  refetch();
+const fetch = async () => {
+  await refetch();
 };
 
 const route = useRoute();
 
 watch(
   () => route.query.q,
-  () => {
-    fetch();
+  async () => {
+    await fetch();
   },
 );
 

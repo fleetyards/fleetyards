@@ -20,8 +20,8 @@ const { displayAlert, displaySuccess, displayConfirm } =
 
 const fleetStore = useFleetStore();
 
-onMounted(() => {
-  useInvite();
+onMounted(async () => {
+  await useInvite();
 });
 
 const route = useRoute();
@@ -37,8 +37,8 @@ const useInvite = async () => {
         text: t("messages.fleetInvite.confirm", {
           fleet: fleet.name,
         }),
-        onConfirm: () => {
-          handleFleetInvite();
+        onConfirm: async () => {
+          await handleFleetInvite();
         },
         onClose: async () => {
           await router

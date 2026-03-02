@@ -76,9 +76,9 @@ const toggleFleetchart = () => {
 
 const router = useRouter();
 
-onMounted(() => {
+onMounted(async () => {
   if (!props.user.publicWishlist) {
-    router.replace({
+    await router.replace({
       name: "hangar-public",
       params: { username: username.value },
     });
@@ -106,6 +106,7 @@ onMounted(() => {
       <a
         v-if="user.homepage"
         v-tooltip="t('labels.homepage')"
+        :aria-label="t('labels.homepage')"
         :href="`//${user.homepage}`"
         target="_blank"
         rel="noopener"
@@ -115,6 +116,7 @@ onMounted(() => {
       <a
         v-if="user.rsiHandle"
         v-tooltip="t('nav.rsiProfile')"
+        :aria-label="t('nav.rsiProfile')"
         :href="`https://robertsspaceindustries.com/citizens/${user.rsiHandle}`"
         target="_blank"
         rel="noopener"
@@ -124,6 +126,7 @@ onMounted(() => {
       <a
         v-if="user.guilded"
         v-tooltip="t('labels.guilded')"
+        :aria-label="t('labels.guilded')"
         :href="`//${user.guilded}`"
         target="_blank"
         rel="noopener"
@@ -133,6 +136,7 @@ onMounted(() => {
       <a
         v-if="user.discord"
         v-tooltip="t('labels.discord')"
+        :aria-label="t('labels.discord')"
         :href="`//${user.discord}`"
         target="_blank"
         rel="noopener"
@@ -142,6 +146,7 @@ onMounted(() => {
       <a
         v-if="user.youtube"
         v-tooltip="t('labels.youtube')"
+        :aria-label="t('labels.youtube')"
         :href="`//${user.youtube}`"
         target="_blank"
         rel="noopener"
@@ -151,6 +156,7 @@ onMounted(() => {
       <a
         v-if="user.twitch"
         v-tooltip="t('labels.twitch')"
+        :aria-label="t('labels.twitch')"
         :href="`//${user.twitch}`"
         target="_blank"
         rel="noopener"

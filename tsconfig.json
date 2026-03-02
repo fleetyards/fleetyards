@@ -12,6 +12,9 @@
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
+    "allowImportingTsExtensions": true,
+    "allowSyntheticDefaultImports": true,
+    "noEmit": true,
     "lib": ["esnext", "dom", "dom.iterable"],
     "skipLibCheck": true,
     "baseUrl": ".",
@@ -32,8 +35,6 @@
     "spec/cypress/**/*.ts"
   ],
   "exclude": [
-    "node_modules",
-    "./node_modules",
-    "./node_modules/*",
+    "**/node_modules/**"
   ]
 }

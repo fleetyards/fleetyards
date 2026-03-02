@@ -17,16 +17,13 @@ import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
 
 type Props = {
   model: ModelExtended;
-  validationSchema?: Record<string, any>;
+  validationSchema?: Record<string, unknown>;
   initialValues?: MaybeRef<ModelUpdateInput | ModelCreateInput>;
 };
 
 const props = defineProps<Props>();
 
-const {
-  handleSubmit: handleFormSubmit,
-  meta,
-} = useForm<ModelUpdateInput>({
+const { handleSubmit: handleFormSubmit, meta } = useForm<ModelUpdateInput>({
   initialValues: unref(props.initialValues),
   validationSchema: props.validationSchema,
 });
@@ -53,8 +50,8 @@ const onSubmit = handleFormSubmit(async (values) => {
     });
 });
 
-const handleCancel = () => {
-  redirectBack();
+const handleCancel = async () => {
+  await redirectBack();
 };
 
 const { extend } = useBreadCrumbs();
@@ -66,8 +63,8 @@ const backRoute = computed(() => ({
   hash: `#${props.model.id}`,
 }));
 
-const redirectBack = () => {
-  router.push(extend(backRoute.value));
+const redirectBack = async () => {
+  await router.push(extend(backRoute.value));
 };
 </script>
 

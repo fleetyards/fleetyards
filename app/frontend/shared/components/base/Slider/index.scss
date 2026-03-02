@@ -1,0 +1,115 @@
+.base-slider {
+  width: 100%;
+  padding: 7px 0;
+  box-sizing: content-box;
+  cursor: pointer;
+  outline: none;
+
+  &__rail {
+    position: relative;
+    width: 100%;
+    height: 6px;
+    background-color: $input-bg;
+    border: 1px solid $input-border;
+    border-radius: 15px;
+    cursor: pointer;
+  }
+
+  &__process {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: $primary;
+    border-radius: 15px;
+  }
+
+  &__dot {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    cursor: grab;
+
+    &-handle {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background-color: #fff;
+      box-shadow: 0.5px 0.5px 2px 1px rgba(0, 0, 0, 0.32);
+      box-sizing: border-box;
+      transition: box-shadow $transition-base-speed ease;
+    }
+  }
+
+  &__tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding-bottom: 8px;
+    visibility: visible;
+    opacity: 0;
+    transition: opacity $transition-base-speed ease;
+
+    &-inner {
+      font-size: 14px;
+      white-space: nowrap;
+      padding: 2px 5px;
+      min-width: 20px;
+      text-align: center;
+      color: #fff;
+      border-radius: 5px;
+      background-color: $primary;
+      box-sizing: content-box;
+      position: relative;
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 5px solid transparent;
+        border-top-color: $primary;
+      }
+    }
+  }
+
+  &__mark {
+    position: absolute;
+    top: 100%;
+    transform: translateX(-50%);
+    z-index: 4;
+    padding-top: 8px;
+
+    &-label {
+      font-size: 14px;
+      white-space: nowrap;
+      color: $text-color;
+      visibility: visible;
+      opacity: 0;
+      transition: opacity $transition-base-speed ease;
+    }
+  }
+
+  &:hover,
+  &--dragging {
+    .base-slider__mark-label,
+    .base-slider__tooltip {
+      opacity: 1;
+    }
+  }
+
+  &:focus-visible {
+    .base-slider__dot-handle {
+      box-shadow: 0 0 1px 2px rgba($primary, 0.36);
+    }
+  }
+
+  &--dragging {
+    .base-slider__dot {
+      cursor: grabbing;
+    }
+  }
+}

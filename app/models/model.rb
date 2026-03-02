@@ -510,7 +510,7 @@ class Model < ApplicationRecord
     end
 
     self.fuel_consumption = thrusters.sum do |thruster|
-      thruster.dig("fuel_burn_rate_per10_k_newton").to_f || 0
+      thruster.dig("fuel_burn_rate_per10_k_newton").to_f
     end
   end
 

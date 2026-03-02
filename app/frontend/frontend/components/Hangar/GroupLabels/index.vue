@@ -124,9 +124,9 @@ const sortMutation = useHangarGroupSortMutation();
 
 watch(
   () => groups.value,
-  () => {
+  async () => {
     if (groups.value !== props.hangarGroups) {
-      updateSort();
+      await updateSort();
     }
   },
 );
@@ -246,6 +246,7 @@ const highlight = (group?: HangarGroup | HangarGroupPublic) => {
     <a
       v-if="editable"
       v-tooltip="t('actions.addGroup')"
+      :aria-label="t('actions.addGroup')"
       class="label label-link"
       @click="openNewGroupModal"
     >

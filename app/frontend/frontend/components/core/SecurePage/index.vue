@@ -91,7 +91,7 @@ const confirmAccess = handleSubmit(async () => {
 
       submitting.value = false;
 
-      await sessionStore.confirmAccess();
+      sessionStore.confirmAccess();
 
       confirmed.value = true;
     })

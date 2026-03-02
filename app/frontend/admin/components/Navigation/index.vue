@@ -40,7 +40,7 @@ const mutation = useDestroySessionMutation();
 const logout = async () => {
   await mutation.mutateAsync();
 
-  sessionStore.logout();
+  await sessionStore.logout();
 };
 
 const hasAccessTo = (access?: string[]) => {

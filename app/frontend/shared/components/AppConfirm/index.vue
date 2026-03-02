@@ -11,8 +11,8 @@ import { useComlink } from "@/shared/composables/useComlink";
 const text = ref<string>();
 const confirmText = ref<string>();
 const cancelText = ref<string>();
-const onConfirm = ref<() => void>();
-const onClose = ref<() => void>();
+const onConfirm = ref<() => void | Promise<unknown>>();
+const onClose = ref<() => void | Promise<unknown>>();
 
 const visible = ref(false);
 
@@ -33,13 +33,11 @@ const hide = () => {
 const comlink = useComlink();
 
 const handleKeyDown = (event: KeyboardEvent) => {
-  if (event.keyCode == 13) {
-    // If enter key was pressed...
-    handleConfirm();
+  if (event.key === "Enter") {
+    handleConfirm().catch(console.error);
   }
-  if (event.keyCode == 27) {
-    // If escape key was pressed...
-    handleCancel();
+  if (event.key === "Escape") {
+    handleCancel().catch(console.error);
   }
 };
 
@@ -58,13 +56,13 @@ onUnmounted(() => {
   window.removeEventListener("keydown", handleKeyDown);
 });
 
-const handleConfirm = () => {
-  onConfirm.value?.();
+const handleConfirm = async () => {
+  await onConfirm.value?.();
   hide();
 };
 
-const handleCancel = () => {
-  onClose.value?.();
+const handleCancel = async () => {
+  await onClose.value?.();
   hide();
 };
 </script>

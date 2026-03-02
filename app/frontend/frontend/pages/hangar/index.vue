@@ -77,7 +77,9 @@ const fleetchartVisible = computed(() => fleetchartStore.isVisible("hangar"));
 
 const shareTitle = computed(() => t("title.hangar.index"));
 
-const { isFilterSelected, getQuery } = useHangarFilters(() => refetch());
+const { isFilterSelected, getQuery } = useHangarFilters(async () => {
+  await refetch();
+});
 
 const hangarQueryParams = computed(() => {
   const params: HangarParams = {
@@ -106,10 +108,10 @@ const { data: hangarStats, refetch: refetchStats } =
 
 const { data: hangarGroups, refetch: refetchGroups } = useHangarGroupsQuery();
 
-const fetch = () => {
-  refetch();
-  refetchStats();
-  refetchGroups();
+const fetch = async () => {
+  await refetch();
+  await refetchStats();
+  await refetchGroups();
 };
 
 const hangarGroupCounts = computed<HangarGroupMetric[]>(() => {
@@ -132,8 +134,8 @@ const route = useRoute();
 
 watch(
   () => route.query.q,
-  () => {
-    fetch();
+  async () => {
+    await fetch();
   },
 );
 

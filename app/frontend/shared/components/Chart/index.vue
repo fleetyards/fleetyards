@@ -128,9 +128,9 @@ const loading = computed(() => {
 
 watch(
   () => props.options,
-  async () => {
+  () => {
     if (instance.value) {
-      await reloadChart();
+      reloadChart();
     } else {
       setupChart();
     }

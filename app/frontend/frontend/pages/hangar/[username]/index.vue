@@ -57,7 +57,9 @@ const fleetchartStore = useFleetchartStore();
 
 const fleetchartVisible = computed(() => fleetchartStore.isVisible("hangar"));
 
-const { filters } = useHangarFilters(() => refetch());
+const { filters } = useHangarFilters(async () => {
+  await refetch();
+});
 
 const publicHangarQueryParams = computed(() => {
   return {
@@ -87,10 +89,10 @@ const { data: hangarStats, refetch: refetchStats } = usePublicHangarStats(
 const { data: hangarGroups, refetch: refetchGroups } =
   usePublicHangarGroups(username);
 
-const fetch = () => {
-  refetch();
-  refetchStats();
-  refetchGroups();
+const fetch = async () => {
+  await refetch();
+  await refetchStats();
+  await refetchGroups();
 };
 
 const hangarGroupCounts = computed<HangarGroupMetric[]>(() => {
@@ -105,8 +107,8 @@ const route = useRoute();
 
 watch(
   () => route.query.q,
-  () => {
-    fetch();
+  async () => {
+    await fetch();
   },
 );
 
@@ -139,6 +141,7 @@ useSubscription({
       <a
         v-if="user.homepage"
         v-tooltip="t('labels.homepage')"
+        :aria-label="t('labels.homepage')"
         :href="`//${user.homepage}`"
         target="_blank"
         rel="noopener"
@@ -148,6 +151,7 @@ useSubscription({
       <a
         v-if="user.rsiHandle"
         v-tooltip="t('nav.rsiProfile')"
+        :aria-label="t('nav.rsiProfile')"
         :href="`https://robertsspaceindustries.com/citizens/${user.rsiHandle}`"
         target="_blank"
         rel="noopener"
@@ -157,6 +161,7 @@ useSubscription({
       <a
         v-if="user.guilded"
         v-tooltip="t('labels.guilded')"
+        :aria-label="t('labels.guilded')"
         :href="`//${user.guilded}`"
         target="_blank"
         rel="noopener"
@@ -166,6 +171,7 @@ useSubscription({
       <a
         v-if="user.discord"
         v-tooltip="t('labels.discord')"
+        :aria-label="t('labels.discord')"
         :href="`//${user.discord}`"
         target="_blank"
         rel="noopener"
@@ -175,6 +181,7 @@ useSubscription({
       <a
         v-if="user.youtube"
         v-tooltip="t('labels.youtube')"
+        :aria-label="t('labels.youtube')"
         :href="`//${user.youtube}`"
         target="_blank"
         rel="noopener"
@@ -184,6 +191,7 @@ useSubscription({
       <a
         v-if="user.twitch"
         v-tooltip="t('labels.twitch')"
+        :aria-label="t('labels.twitch')"
         :href="`//${user.twitch}`"
         target="_blank"
         rel="noopener"

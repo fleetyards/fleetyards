@@ -36,7 +36,7 @@ const { data: quickStats, refetch } = useStatsQuery({
 
 onMounted(() => {
   setInterval(() => {
-    refetch();
+    void refetch();
   }, 30 * 1000);
 });
 

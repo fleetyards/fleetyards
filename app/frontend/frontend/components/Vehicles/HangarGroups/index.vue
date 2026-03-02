@@ -21,7 +21,7 @@ withDefaults(defineProps<Props>(), {
 const router = useRouter();
 const route = useRoute();
 
-const filter = (event: Event, filter: string) => {
+const filter = async (event: Event, filter: string) => {
   event.preventDefault();
 
   if (!filter || !route.name) {
@@ -44,7 +44,7 @@ const filter = (event: Event, filter: string) => {
     query.hangarGroupsIn.push(filter);
   }
 
-  router.replace({
+  await router.replace({
     name: route.name,
     query: {
       q: query,

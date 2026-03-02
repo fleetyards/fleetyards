@@ -48,6 +48,7 @@ const description = computed(() => {
       <a
         v-if="fleet.homepage"
         v-tooltip="t('labels.homepage')"
+        :aria-label="t('labels.homepage')"
         :href="`//${fleet.homepage}`"
         target="_blank"
         rel="noopener"
@@ -57,6 +58,7 @@ const description = computed(() => {
       <a
         v-if="fleet.rsiSid"
         v-tooltip="t('nav.rsiProfile')"
+        :aria-label="t('nav.rsiProfile')"
         :href="`https://robertsspaceindustries.com/orgs/${fleet.rsiSid}`"
         target="_blank"
         rel="noopener"
@@ -66,6 +68,7 @@ const description = computed(() => {
       <a
         v-if="fleet.guilded"
         v-tooltip="t('labels.guilded')"
+        :aria-label="t('labels.guilded')"
         :href="`//${fleet.guilded}`"
         target="_blank"
         rel="noopener"
@@ -75,6 +78,7 @@ const description = computed(() => {
       <a
         v-if="fleet.discord"
         v-tooltip="t('labels.discord')"
+        :aria-label="t('labels.discord')"
         :href="`//${fleet.discord}`"
         target="_blank"
         rel="noopener"
@@ -84,6 +88,7 @@ const description = computed(() => {
       <a
         v-if="fleet.ts"
         v-tooltip="t('labels.fleet.ts')"
+        :aria-label="t('labels.fleet.ts')"
         :href="fleet.ts"
         target="_blank"
         rel="noopener"
@@ -93,6 +98,7 @@ const description = computed(() => {
       <a
         v-if="fleet.youtube"
         v-tooltip="t('labels.youtube')"
+        :aria-label="t('labels.youtube')"
         :href="`//${fleet.youtube}`"
         target="_blank"
         rel="noopener"
@@ -102,6 +108,7 @@ const description = computed(() => {
       <a
         v-if="fleet.twitch"
         v-tooltip="t('labels.twitch')"
+        :aria-label="t('labels.twitch')"
         :href="`//${fleet.twitch}`"
         target="_blank"
         rel="noopener"

@@ -31,7 +31,7 @@ const route = useRoute();
 
 const router = useRouter();
 
-const filter = (filter: string) => {
+const filter = async (filter: string) => {
   if (!props.filterKey) {
     return;
   }
@@ -51,7 +51,7 @@ const filter = (filter: string) => {
     query[props.filterKey].push(filter);
   }
 
-  router.replace({
+  await router.replace({
     name: route.name || "home",
     query: {
       q: query,

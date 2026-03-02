@@ -53,13 +53,13 @@ export const useModelUpdateMutation = (model: Model) => {
           );
         }
       },
-      onSettled: (updatedModel) => {
+      onSettled: async (updatedModel) => {
         if (updatedModel) {
-          queryClient.invalidateQueries({
+          await queryClient.invalidateQueries({
             queryKey: modelsQueryKey.value,
           });
         }
-        queryClient.invalidateQueries({
+        await queryClient.invalidateQueries({
           queryKey: modelsQueryKey.value,
         });
       },

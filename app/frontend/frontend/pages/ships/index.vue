@@ -65,7 +65,9 @@ const modelsQueryKey = computed(() => {
 
 const { perPage, page, updatePerPage } = usePagination(modelsQueryKey);
 
-const { isFilterSelected, getQuery } = useModelFilters(() => refetch());
+const { isFilterSelected, getQuery } = useModelFilters(async () => {
+  await refetch();
+});
 
 const {
   data: models,

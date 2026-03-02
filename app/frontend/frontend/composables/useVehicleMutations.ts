@@ -19,8 +19,8 @@ export const useVehicleMutations = () => {
   const useCreateMutation = () => {
     return useCreateVehicleMutation({
       mutation: {
-        onSettled: () => {
-          invalidateHangarQueries();
+        onSettled: async () => {
+          await invalidateHangarQueries();
         },
       },
     });
@@ -29,8 +29,8 @@ export const useVehicleMutations = () => {
   const useCreateBulkMutation = () => {
     return useCreateBulkVehicleMutation({
       mutation: {
-        onSettled: () => {
-          invalidateHangarQueries();
+        onSettled: async () => {
+          await invalidateHangarQueries();
         },
       },
     });
@@ -83,8 +83,8 @@ export const useVehicleMutations = () => {
             queryClient.setQueryData([queryKey], previousVehicles);
           });
         },
-        onSettled: (_updatedVehicle) => {
-          invalidateHangarQueries();
+        onSettled: async (_updatedVehicle) => {
+          await invalidateHangarQueries();
         },
       },
     });
@@ -93,8 +93,8 @@ export const useVehicleMutations = () => {
   const useUpdateBulkMutation = () => {
     return useUpdateBulkVehicleMutation({
       mutation: {
-        onSettled: () => {
-          invalidateHangarQueries();
+        onSettled: async () => {
+          await invalidateHangarQueries();
         },
       },
     });
@@ -138,8 +138,8 @@ export const useVehicleMutations = () => {
             queryClient.setQueryData([queryKey], previousVehicles);
           });
         },
-        onSettled: () => {
-          invalidateHangarQueries();
+        onSettled: async () => {
+          await invalidateHangarQueries();
         },
       },
     });
@@ -148,18 +148,18 @@ export const useVehicleMutations = () => {
   const useDestroyBulkMutation = () => {
     return useDestroyBulkVehicleMutation({
       mutation: {
-        onSettled: () => {
-          invalidateHangarQueries();
+        onSettled: async () => {
+          await invalidateHangarQueries();
         },
       },
     });
   };
 
-  const invalidateHangarQueries = () => {
-    queryClient.invalidateQueries({
+  const invalidateHangarQueries = async () => {
+    await queryClient.invalidateQueries({
       queryKey: [getHangarQueryKey()],
     });
-    queryClient.invalidateQueries({
+    await queryClient.invalidateQueries({
       queryKey: [getWishlistQueryKey()],
     });
   };

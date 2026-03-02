@@ -295,6 +295,7 @@ const declineRequest = async (member: FleetMember) => {
       <div class="links">
         <a
           v-tooltip="t('labels.hangar')"
+          :aria-label="t('labels.hangar')"
           :href="`/hangar/${member.username}`"
           target="_blank"
           rel="noopener"
@@ -304,6 +305,7 @@ const declineRequest = async (member: FleetMember) => {
         <a
           v-if="member.homepage"
           v-tooltip="t('labels.homepage')"
+          :aria-label="t('labels.homepage')"
           :href="`//${member.homepage}`"
           target="_blank"
           rel="noopener"
@@ -313,6 +315,7 @@ const declineRequest = async (member: FleetMember) => {
         <a
           v-if="member.rsiHandle"
           v-tooltip="t('nav.rsiProfile')"
+          :aria-label="t('nav.rsiProfile')"
           :href="`https://robertsspaceindustries.com/citizens/${member.rsiHandle}`"
           target="_blank"
           rel="noopener"
@@ -322,6 +325,7 @@ const declineRequest = async (member: FleetMember) => {
         <a
           v-if="member.youtube"
           v-tooltip="t('labels.youtube')"
+          :aria-label="t('labels.youtube')"
           :href="`//${member.youtube}`"
           target="_blank"
           rel="noopener"
@@ -331,6 +335,7 @@ const declineRequest = async (member: FleetMember) => {
         <a
           v-if="member.twitch"
           v-tooltip="t('labels.twitch')"
+          :aria-label="t('labels.twitch')"
           :href="`//${member.twitch}`"
           target="_blank"
           rel="noopener"
@@ -340,6 +345,7 @@ const declineRequest = async (member: FleetMember) => {
         <a
           v-if="member.guilded"
           v-tooltip="t('labels.guilded')"
+          :aria-label="t('labels.guilded')"
           :href="`//${member.guilded}`"
           target="_blank"
           rel="noopener"
@@ -349,6 +355,7 @@ const declineRequest = async (member: FleetMember) => {
         <a
           v-if="member.discord"
           v-tooltip="t('labels.discord')"
+          :aria-label="t('labels.discord')"
           :href="`//${member.discord}`"
           target="_blank"
           rel="noopener"
