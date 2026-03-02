@@ -6,9 +6,7 @@ class BaseUploader < CarrierWave::Uploader::Base
   end
 
   def filename
-    return if original_filename.blank?
-
-    if Rails.env.test?
+    if Rails.env.test? || original_filename.blank?
       super
     else
       "#{File.basename(original_filename, File.extname(original_filename))}-#{secure_token}.#{file.extension}"

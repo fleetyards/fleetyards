@@ -5,7 +5,7 @@ class PrefillFleetRoles < ActiveRecord::Migration[7.2]
       fleet.setup_default_roles!
     end
 
-    FleetMembership.find_each do |membership|
+    FleetMembership.where(fleet_role: nil).find_each do |membership|
       membership.update(fleet_role: membership.fleet.fleet_roles.find_by(slug: membership.role))
     end
   end

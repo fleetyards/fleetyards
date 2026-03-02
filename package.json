@@ -20,7 +20,7 @@
     "lint:ts": "pnpm run vue-tsc && pnpm run tsc",
     "lint:prettier": "prettier app/frontend --check",
     "lint:prettier:fix": "prettier app/frontend --write",
-    "vue-tsc": "vue-tsc --noEmit",
+    "vue-tsc": "vue-tsc --noEmit --pretty",
     "tsc": "tsc --noEmit --pretty",
     "preinstall": "npx only-allow pnpm",
     "postinstall": "pnpm generate-api-client",
