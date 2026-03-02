@@ -81,18 +81,18 @@ class Station < ApplicationRecord
     dependent: :destroy,
     inverse_of: :gallery
 
-  enum station_type: {
+  enum :station_type, {
     landing_zone: 0, station: 1, asteroid_station: 2, district: 3, outpost: 4, aid_shelter: 5,
     ugf: 6
   }
 
-  enum classification: {
+  enum :classification, {
     city: 0, trading: 1, mining: 2, salvaging: 3, farming: 4, science: 5, security: 6,
     rest_stop: 7, settlement: 8, town: 9, drug_lab: 10, cargo: 11, derelict: 12, prison: 13,
     spaceport: 14
   }
 
-  enum size: {
+  enum :size, {
     small: 0, medium: 1, large: 2
   }
 
