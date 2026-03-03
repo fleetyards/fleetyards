@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: "MembersList",
+  name: "InvitesList",
 };
 </script>
 
@@ -24,7 +24,7 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { t, l, timeDistance } = useI18n();
+const { t, l } = useI18n();
 
 const comlink = useComlink();
 
@@ -60,18 +60,10 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
     width: "10%",
   },
   {
-    name: "acceptedAt",
-    label: t("labels.fleet.members.joined"),
+    name: "invitedAt",
+    label: t("labels.fleet.members.invitedAt"),
     width: "15%",
     mobile: false,
-    sortable: true,
-  },
-  {
-    name: "lastActiveAt",
-    label: t("labels.user.lastActiveAt"),
-    width: "15%",
-    mobile: false,
-    sortable: true,
   },
   {
     name: "links",
@@ -125,18 +117,35 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
     </template>
 
     <template #col-role="{ record }">
-      {{ record.fleetRole.name }}
-    </template>
-
-    <template #col-acceptedAt="{ record }">
-      <span v-if="record.acceptedAt" v-tooltip="l(record.acceptedAt)">
-        {{ l(record.acceptedAt, "datetime.formats.short") }}
+      <template v-if="record.status === 'invited'">
+        {{ t("labels.fleet.members.invited") }}
+      </template>
+      <template v-else-if="record.status === 'requested'">
+        {{ t("labels.fleet.members.requested") }}
+      </template>
+      <span v-else-if="record.status === 'declined'" class="text-danger">
+        {{ t("labels.fleet.members.declined") }}
       </span>
     </template>
 
-    <template #col-lastActiveAt="{ record }">
-      <span v-if="record.lastActiveAt" v-tooltip="l(record.lastActiveAt)">
-        {{ timeDistance(record.lastActiveAt) }}
+    <template #col-invitedAt="{ record }">
+      <span
+        v-if="record.status === 'invited' && record.invitedAt"
+        v-tooltip="l(record.invitedAt)"
+      >
+        {{ l(record.invitedAt, "datetime.formats.short") }}
+      </span>
+      <span
+        v-else-if="record.status === 'declined' && record.declinedAt"
+        v-tooltip="l(record.declinedAt)"
+      >
+        {{ l(record.declinedAt, "datetime.formats.short") }}
+      </span>
+      <span
+        v-else-if="record.status === 'requested' && record.requestedAt"
+        v-tooltip="l(record.requestedAt)"
+      >
+        {{ l(record.requestedAt, "datetime.formats.short") }}
       </span>
     </template>
 
@@ -148,7 +157,7 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
       <MemberActions :member="record" :resource-access="props.resourceAccess" />
     </template>
     <template #empty>
-      <Empty :name="t('labels.fleet.members.accepted')" inline />
+      <Empty :name="t('labels.fleet.members.pending')" inline />
     </template>
   </BaseTable>
 </template>

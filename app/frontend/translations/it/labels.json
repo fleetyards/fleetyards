@@ -207,6 +207,7 @@
           "total": "Totale: %{count}",
           "joined": "Iscritto il",
           "invited": "Invitato",
+          "invitedAt": "Invitato / Richiesto il",
           "requested": "Iscrizione Richiesta",
           "declined": "Rifiutata",
           "roles": {

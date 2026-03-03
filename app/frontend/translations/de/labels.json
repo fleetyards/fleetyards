@@ -207,6 +207,7 @@
           "total": "Total: %{count}",
           "joined": "Joined at",
           "invited": "Invited",
+          "invitedAt": "Eingeladen / Angefragt am",
           "requested": "Membership Requested",
           "declined": "Declined",
           "pending": "Ausstehende Einladungen & Anfragen",

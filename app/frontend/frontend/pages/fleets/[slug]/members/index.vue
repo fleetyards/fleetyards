@@ -25,19 +25,19 @@ import {
 } from "@/shared/composables/useSubscription";
 import {
   useFleetMembers as useFleetMembersQuery,
+  useFleetMembersStats as useFleetMembersStatsQuery,
   getFleetMembersQueryKey,
   type Fleet,
   type FleetMember,
   type FleetMemberQuery,
   type FleetMembersParams,
-  type FleetMembersStats,
+  type FleetMembersStatsParams,
 } from "@/services/fyApi";
 
 type Props = {
   fleet: Fleet;
   membership: FleetMember;
   resourceAccess?: string[];
-  stats?: FleetMembersStats;
 };
 
 const props = defineProps<Props>();
@@ -86,8 +86,19 @@ const {
 
 const memberItems = computed(() => members.value?.items || []);
 
+const statsQueryParams = computed<FleetMembersStatsParams>(() => ({
+  q: {
+    stateIn: ["accepted"],
+  } as FleetMemberQuery,
+}));
+
+const { data: stats, refetch: refetchStats } = useFleetMembersStatsQuery(
+  props.fleet.slug,
+  statsQueryParams,
+);
+
 const fetch = async () => {
-  await refetch();
+  await Promise.all([refetch(), refetchStats()]);
 };
 
 watch(
@@ -156,6 +167,7 @@ const crumbs = computed(() => {
     :name="route.name?.toString() || ''"
     :async-status="asyncStatus"
     :is-filter-selected="isFilterSelected"
+    hide-empty
   >
     <template v-if="mobile && canManageInvites" #actions-right>
       <Btn
@@ -170,10 +182,11 @@ const crumbs = computed(() => {
       <FleetMembersFilterForm />
     </template>
 
-    <template #default>
+    <template #default="{ emptyVisible }">
       <FleetMembersList
         :members="memberItems"
         :resource-access="resourceAccess"
+        :empty-visible="emptyVisible"
       />
     </template>
 

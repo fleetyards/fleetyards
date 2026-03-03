@@ -5,11 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import {
-  useFleetMembersStats as useFleetMembersStatsQuery,
-  type Fleet,
-  type FleetMember,
-} from "@/services/fyApi";
+import { type Fleet, type FleetMember } from "@/services/fyApi";
 
 type Props = {
   fleet: Fleet;
@@ -21,8 +17,6 @@ const props = defineProps<Props>();
 const resourceAccess = computed(
   () => props.membership.fleetRole.resourceAccess,
 );
-
-const { data: stats } = useFleetMembersStatsQuery(props.fleet.slug);
 </script>
 
 <template>
@@ -30,6 +24,5 @@ const { data: stats } = useFleetMembersStatsQuery(props.fleet.slug);
     :fleet="props.fleet"
     :membership="props.membership"
     :resource-access="resourceAccess"
-    :stats="stats"
   />
 </template>

@@ -14,7 +14,7 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import FleetMembersList from "@/frontend/components/Fleets/MembersList/index.vue";
+import FleetInvitesList from "@/frontend/components/Fleets/InvitesList/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { checkAccess } from "@/shared/utils/Access";
 import {
@@ -23,18 +23,18 @@ import {
 } from "@/shared/composables/useSubscription";
 import {
   useFleetMembers as useFleetMembersQuery,
+  useFleetMembersStats as useFleetMembersStatsQuery,
   type Fleet,
   type FleetMember,
   type FleetMemberQuery,
   type FleetMembersParams,
-  type FleetMembersStats,
+  type FleetMembersStatsParams,
 } from "@/services/fyApi";
 
 type Props = {
   fleet: Fleet;
   membership: FleetMember;
   resourceAccess?: string[];
-  stats?: FleetMembersStats;
 };
 
 const props = defineProps<Props>();
@@ -69,8 +69,19 @@ const {
 
 const memberItems = computed(() => members.value?.items || []);
 
+const statsQueryParams = computed<FleetMembersStatsParams>(() => ({
+  q: {
+    stateIn: ["invited", "requested", "declined"],
+  } as FleetMemberQuery,
+}));
+
+const { data: stats, refetch: refetchStats } = useFleetMembersStatsQuery(
+  props.fleet.slug,
+  statsQueryParams,
+);
+
 const fetch = async () => {
-  await refetch();
+  await Promise.all([refetch(), refetchStats()]);
 };
 
 const fleetMemberInvitedComlink = ref();
@@ -139,6 +150,13 @@ const openInviteModal = () => {
   <BreadCrumbs :crumbs="crumbs" />
   <Heading>
     {{ t("headlines.fleets.invites") }}
+    <small v-if="stats" class="text-muted">
+      {{
+        t("labels.fleet.members.total", {
+          count: stats.total,
+        })
+      }}
+    </small>
   </Heading>
 
   <Teleport v-if="!mobile && canInvite" to="#header-right">
@@ -158,6 +176,7 @@ const openInviteModal = () => {
     :name="route.name?.toString() || ''"
     :async-status="asyncStatus"
     :is-filter-selected="false"
+    hide-empty
   >
     <template v-if="mobile && canInvite" #actions-right>
       <BtnDropdown :size="BtnSizesEnum.SMALL">
@@ -172,10 +191,11 @@ const openInviteModal = () => {
       </BtnDropdown>
     </template>
 
-    <template #default>
-      <FleetMembersList
+    <template #default="{ emptyVisible }">
+      <FleetInvitesList
         :members="memberItems"
         :resource-access="resourceAccess"
+        :empty-visible="emptyVisible"
       />
     </template>
   </FilteredList>

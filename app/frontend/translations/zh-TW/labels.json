@@ -213,6 +213,7 @@
           "total": "Total: %{count}",
           "joined": "Joined at",
           "invited": "Invited",
+          "invitedAt": "Invited / Requested at",
           "requested": "Membership Requested",
           "declined": "Declined",
           "roles": {

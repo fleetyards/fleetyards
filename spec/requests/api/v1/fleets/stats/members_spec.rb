@@ -20,6 +20,15 @@ RSpec.describe "api/v1/fleets/stats", type: :request, swagger_doc: "v1/schema.ya
       tags "FleetStats"
       produces "application/json"
 
+      parameter name: "q", in: :query,
+        schema: {
+          type: :object,
+          "$ref": "#/components/schemas/FleetMemberQuery"
+        },
+        style: :deepObject,
+        explode: true,
+        required: false
+
       response(200, "successful") do
         schema "$ref" => "#/components/schemas/FleetMembersStats"
 
