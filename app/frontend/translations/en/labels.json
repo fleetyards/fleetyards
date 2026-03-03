@@ -224,6 +224,9 @@
           "invited": "Invited",
           "requested": "Membership Requested",
           "declined": "Declined",
+          "pending": "Pending Invites & Requests",
+          "accepted": "Members",
+          "declinedMembers": "Declined",
           "role": "Role",
           "roles": {
             "admin": "Admin",
@@ -231,10 +234,48 @@
             "member": "Member"
           }
         },
+        "roles": {
+          "permanent": "Permanent",
+          "privilegeGroups": {
+            "fleet": "Fleet",
+            "memberships": "Members",
+            "invites": "Invites",
+            "vehicles": "Vehicles",
+            "roles": "Roles"
+          },
+          "privileges": {
+            "fleet:update": "Update Fleet",
+            "fleet:update:images": "Update Images",
+            "fleet:update:description": "Update Description",
+            "fleet:delete": "Delete Fleet",
+            "fleet:manage": "Manage Fleet",
+            "fleet:memberships:read": "View Members",
+            "fleet:memberships:create": "Invite Members",
+            "fleet:memberships:update": "Update Members",
+            "fleet:memberships:delete": "Remove Members",
+            "fleet:memberships:manage": "Manage Members",
+            "fleet:invites:read": "View Invites",
+            "fleet:invites:create": "Create Invites",
+            "fleet:invites:delete": "Delete Invites",
+            "fleet:invites:manage": "Manage Invites",
+            "fleet:vehicles:read": "View Vehicles",
+            "fleet:vehicles:create": "Add Vehicles",
+            "fleet:vehicles:update": "Update Vehicles",
+            "fleet:vehicles:delete": "Remove Vehicles",
+            "fleet:vehicles:manage": "Manage Vehicles",
+            "fleet:roles:read": "View Roles",
+            "fleet:roles:create": "Create Roles",
+            "fleet:roles:update": "Update Roles",
+            "fleet:roles:delete": "Delete Roles",
+            "fleet:roles:manage": "Manage Roles"
+          }
+        },
         "inviteUrls": {
           "noLimit": "No limit",
           "noExpiration": "Never expires",
           "usesLeft": "%{count} uses left",
+          "used": "Used %{count} times",
+          "usedOfLimit": "Used %{count} of %{limit}",
           "expiresIn": "Expires in %{time}",
           "expired": "Expired",
           "expiresAfterOptions": {
@@ -831,6 +872,30 @@
           "modelProductionStatus": "Production Status",
           "modelPrice": "Price",
           "modelPledgePrice": "Pledge Price"
+        }
+      },
+      "fleetTable": {
+        "extraColumns": "Columns",
+        "columns": {
+          "storeImage": "Image",
+          "storeImageWide": "Wide Image",
+          "angledView": "3D Image",
+          "angledViewWide": "Wide 3D Image",
+          "modelManufacturerName": "Manufacturer",
+          "modelLength": "Length",
+          "modelBeam": "Beam",
+          "modelHeight": "Height",
+          "modelMass": "Mass",
+          "modelCargo": "Cargo",
+          "modelMinCrew": "Crew",
+          "modelMaxCrew": "Max. Crew",
+          "modelScmSpeed": "SCM Speed",
+          "modelMaxSpeed": "Max Speed",
+          "modelGroundMaxSpeed": "Ground Speed",
+          "modelProductionStatus": "Production Status",
+          "modelPrice": "Price",
+          "modelPledgePrice": "Pledge Price",
+          "owner": "Owner"
         }
       }
     }

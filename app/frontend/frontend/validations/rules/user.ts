@@ -10,7 +10,7 @@ export const useRule = () => {
     checkUsername({
       value,
     })
-      .then((response) => (response.taken ? errorMessage : true))
+      .then((response) => (response.taken ? true : errorMessage))
       .catch(() => errorMessage);
 
   return validate;

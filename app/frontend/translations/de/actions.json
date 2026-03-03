@@ -128,6 +128,7 @@
         "leave": "%{fleet} verlassen",
         "createInviteUrl": "Einladungs-Urls erstellen",
         "inviteMember": "Neues Mitglied einladen",
+        "manageInvites": "Einladungen",
         "acceptInvite": "Einladung annehmen",
         "declineInvite": "Einladung ablehnen",
         "acceptRequest": "Anfrage akzeptieren",

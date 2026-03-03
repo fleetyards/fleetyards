@@ -27,12 +27,16 @@
         "add": "Neue Flotte erstellen",
         "invites": "Einladungen",
         "ships": "Schiffe",
-        "members": "Mitglieder",
+        "members": {
+          "index": "Mitglieder",
+          "invites": "Einladungen"
+        },
         "stats": "Statistiken",
         "settings": {
           "index": "Einstellungen",
           "fleet": "Flotteneinstellungen",
-          "membership": "Mitgliedschaftseinstellungen"
+          "membership": "Mitgliedschaftseinstellungen",
+          "roles": "Rollen"
         }
       },
       "rsiProfile": "RSI-Profil",

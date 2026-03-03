@@ -56,3 +56,23 @@ const openOwnersModal = () => {
     </template>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.owner {
+  position: absolute;
+  bottom: 10px;
+  right: 0;
+  padding: 4px 10px;
+  background-color: $primary;
+  border-radius: 10px 0 0 10px;
+  font-size: 0.85em;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #fff;
+
+  .btn {
+    color: #fff;
+  }
+}
+</style>

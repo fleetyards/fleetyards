@@ -27,12 +27,16 @@
         "add": "Create a new Fleet",
         "invites": "Invites",
         "ships": "Ships",
-        "members": "Members",
+        "members": {
+          "index": "Members",
+          "invites": "Invites"
+        },
         "stats": "Stats",
         "settings": {
           "index": "Settings",
           "fleet": "Fleet Settings",
-          "membership": "Membership Settings"
+          "membership": "Membership Settings",
+          "roles": "Roles"
         }
       },
       "rsiProfile": "RSI Profile",

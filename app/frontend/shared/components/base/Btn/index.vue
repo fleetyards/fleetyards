@@ -26,6 +26,7 @@ export type Props = {
   size?: `${BtnSizesEnum}`;
   exact?: boolean;
   block?: boolean;
+  alignStart?: boolean;
   mobileBlock?: boolean;
   inline?: boolean;
   textInline?: boolean;
@@ -46,6 +47,7 @@ const props = withDefaults(defineProps<Props>(), {
   size: BtnSizesEnum.DEFAULT,
   exact: false,
   block: false,
+  alignStart: false,
   mobileBlock: false,
   inline: false,
   textInline: false,
@@ -113,6 +115,7 @@ const cssClasses = computed(() => ({
   "panel-btn-xsmall": props.size === BtnSizesEnum.X_SMALL,
   "panel-btn-large": props.size === BtnSizesEnum.LARGE,
   "panel-btn-block": props.block,
+  "panel-btn-align-start": props.alignStart,
   "panel-btn-inline": props.inline,
   "panel-btn-text-inline": props.textInline,
   "panel-btn-mobile-block": props.mobileBlock,

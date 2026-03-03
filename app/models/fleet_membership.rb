@@ -71,7 +71,7 @@ class FleetMembership < ApplicationRecord
     [
       "aasm_state", "accepted_at", "created_at", "declined_at", "fleet_id", "hangar_group_id",
       "hide_ships", "id", "id_value", "invited_at", "invited_by", "name", "primary", "requested_at",
-      "role", "ships_filter", "updated_at", "used_invite_token", "user_id", "username"
+      "role", "ships_filter", "updated_at", "used_invite_token", "user_id", "username", "state"
     ]
   end
 
@@ -97,6 +97,7 @@ class FleetMembership < ApplicationRecord
   ransack_alias :last_active_at, :user_last_active_at
   ransack_alias :name, :user_username
   ransack_alias :role, :fleet_role_name
+  ransack_alias :state, :aasm_state
 
   before_validation :set_default_ships_filter
   after_create :broadcast_create

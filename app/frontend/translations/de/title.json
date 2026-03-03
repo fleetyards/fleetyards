@@ -34,12 +34,16 @@
         "add": "Neue Flotte erstellen",
         "preview": "Flotten Vorschau",
         "invites": "Flotten Einladungen",
-        "members": "%{fleet} Mitglieder",
+        "members": {
+          "index": "%{fleet} Mitglieder",
+          "invites": "%{fleet} Einladungen"
+        },
         "stats": "%{fleet} Statistiken",
         "settings": {
           "index": "%{fleet} Einstellungen",
           "fleet": "%{fleet} Einstellungen",
-          "membership": "%{fleet} Mitgliedschaft"
+          "membership": "%{fleet} Mitgliedschaft",
+          "roles": "%{fleet} Rollen"
         }
       },
       "roadmap": {

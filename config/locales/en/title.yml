@@ -13,7 +13,10 @@ en:
       cookie-policy: Cookie Policy
       fleet_invite: Join %{fleet}
       fleet_members: "%{fleet} Members"
+      fleet_members_index: "%{fleet} Members"
+      fleet_members_invites: "%{fleet} Invites"
       fleet_settings: "%{fleet} Settings"
+      fleet_settings_roles: "%{fleet} Roles"
       fleet_stats: "%{fleet} Stats"
       fleets: Fleets
       fleets_add: Create new Fleet

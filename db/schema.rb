@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_04_233457) do
+ActiveRecord::Schema[7.2].define(version: 2026_03_03_204529) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
@@ -246,6 +246,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_04_233457) do
     t.datetime "updated_at", null: false
     t.datetime "expires_after", precision: nil
     t.integer "limit"
+    t.integer "usage_count", default: 0, null: false
     t.index ["token"], name: "index_fleet_invite_urls_on_token", unique: true
   end
 

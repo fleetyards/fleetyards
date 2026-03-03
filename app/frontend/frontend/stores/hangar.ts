@@ -46,7 +46,10 @@ export const useHangarStore = defineStore("hangar", {
     starterGuideVisible: false,
     gridView: true,
     extensionReady: false,
-    tableViewImageCols: [HangarTableViewImageColsEnum.STORE_IMAGE],
+    tableViewImageCols: [
+      HangarTableViewImageColsEnum.STORE_IMAGE,
+      HangarTableViewImageColsEnum.ANGLED_VIEW,
+    ],
     tableViewCols: [HangarTableViewColsEnum.MANUFACTURER_NAME],
   }),
   getters: {

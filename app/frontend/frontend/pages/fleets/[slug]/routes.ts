@@ -1,4 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
+import { routes as membersRoutes } from "@/frontend/pages/fleets/[slug]/members/routes";
 import { routes as settingsRoutes } from "@/frontend/pages/fleets/[slug]/settings/routes";
 
 export const routes: RouteRecordRaw[] = [
@@ -33,8 +34,11 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       needsAuthentication: true,
       backgroundImage: "bg-8",
-      quickSearch: "searchCont",
     },
+    redirect: {
+      name: membersRoutes[0].name,
+    },
+    children: membersRoutes,
   },
   {
     path: "settings/",

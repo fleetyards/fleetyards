@@ -27,6 +27,8 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
 
   resources :fleet_invite_urls, path: "invite-urls", param: :token, only: %i[index create destroy]
 
+  resources :fleet_roles, path: "roles", only: %i[index]
+
   resource :fleet_stats, path: "stats", only: %i[] do
     get "model-counts", to: "fleet_stats#model_counts"
     get "vehicles", to: "fleet_stats#vehicles"

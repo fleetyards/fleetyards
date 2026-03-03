@@ -209,6 +209,9 @@
           "invited": "Invited",
           "requested": "Membership Requested",
           "declined": "Declined",
+          "pending": "Ausstehende Einladungen & Anfragen",
+          "accepted": "Mitglieder",
+          "declinedMembers": "Abgelehnt",
           "roles": {
             "admin": "Admin",
             "officer": "Officer",
@@ -216,11 +219,13 @@
           }
         },
         "inviteUrls": {
-          "noLimit": "No limit",
-          "noExpiration": "Never expires",
-          "usesLeft": "%{count} uses left",
-          "expiresIn": "Expires in %{time}",
-          "expired": "Expired",
+          "noLimit": "Kein Limit",
+          "noExpiration": "Läuft nie ab",
+          "usesLeft": "%{count} Nutzungen übrig",
+          "used": "%{count} mal verwendet",
+          "usedOfLimit": "%{count} von %{limit} verwendet",
+          "expiresIn": "Läuft ab in %{time}",
+          "expired": "Abgelaufen",
           "expiresAfterOptions": {
             "infinite": "Never",
             "30_minutes": "30 minutes",
@@ -238,6 +243,42 @@
             "25": "25 uses",
             "50": "50 uses",
             "100": "100 uses"
+          }
+        },
+        "roles": {
+          "permanent": "Permanent",
+          "privilegeGroups": {
+            "fleet": "Flotte",
+            "memberships": "Mitglieder",
+            "invites": "Einladungen",
+            "vehicles": "Fahrzeuge",
+            "roles": "Rollen"
+          },
+          "privileges": {
+            "fleet:update": "Flotte bearbeiten",
+            "fleet:update:images": "Bilder bearbeiten",
+            "fleet:update:description": "Beschreibung bearbeiten",
+            "fleet:delete": "Flotte löschen",
+            "fleet:manage": "Flotte verwalten",
+            "fleet:memberships:read": "Mitglieder ansehen",
+            "fleet:memberships:create": "Mitglieder einladen",
+            "fleet:memberships:update": "Mitglieder bearbeiten",
+            "fleet:memberships:delete": "Mitglieder entfernen",
+            "fleet:memberships:manage": "Mitglieder verwalten",
+            "fleet:invites:read": "Einladungen ansehen",
+            "fleet:invites:create": "Einladungen erstellen",
+            "fleet:invites:delete": "Einladungen löschen",
+            "fleet:invites:manage": "Einladungen verwalten",
+            "fleet:vehicles:read": "Fahrzeuge ansehen",
+            "fleet:vehicles:create": "Fahrzeuge hinzufügen",
+            "fleet:vehicles:update": "Fahrzeuge bearbeiten",
+            "fleet:vehicles:delete": "Fahrzeuge entfernen",
+            "fleet:vehicles:manage": "Fahrzeuge verwalten",
+            "fleet:roles:read": "Rollen ansehen",
+            "fleet:roles:create": "Rollen erstellen",
+            "fleet:roles:update": "Rollen bearbeiten",
+            "fleet:roles:delete": "Rollen löschen",
+            "fleet:roles:manage": "Rollen verwalten"
           }
         }
       },
@@ -595,6 +636,30 @@
           "updated": "Updated",
           "movedToWanted": "Moved to Wishlist",
           "missing": "Unable to Import"
+        }
+      },
+      "fleetTable": {
+        "extraColumns": "Spalten",
+        "columns": {
+          "storeImage": "Bild",
+          "storeImageWide": "Breites Bild",
+          "angledView": "3D Bild",
+          "angledViewWide": "Breites 3D Bild",
+          "modelManufacturerName": "Hersteller",
+          "modelLength": "Länge",
+          "modelBeam": "Breite",
+          "modelHeight": "Höhe",
+          "modelMass": "Masse",
+          "modelCargo": "Fracht",
+          "modelMinCrew": "Crew",
+          "modelMaxCrew": "Max. Crew",
+          "modelScmSpeed": "SCM Geschwindigkeit",
+          "modelMaxSpeed": "Max Geschwindigkeit",
+          "modelGroundMaxSpeed": "Bodengeschwindigkeit",
+          "modelProductionStatus": "Produktionsstatus",
+          "modelPrice": "Preis",
+          "modelPledgePrice": "Pledge Preis",
+          "owner": "Besitzer"
         }
       }
     }

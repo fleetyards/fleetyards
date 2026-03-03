@@ -5,21 +5,14 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import VehicleOwner from "@/frontend/components/Vehicles/OwnerLabel/index.vue";
-import ModelPanelMetrics from "@/frontend/components/Models/PanelMetrics/index.vue";
-import Panel from "@/shared/components/base/Panel/index.vue";
-import LazyImage from "@/shared/components/LazyImage/index.vue";
-import Collapsed from "@/shared/components/Collapsed.vue";
 import type {
   VehiclePublic,
   Model,
   FleetModelCountsStats,
 } from "@/services/fyApi";
-import { v4 as uuidv4 } from "uuid";
 import { useI18n } from "@/shared/composables/useI18n";
-import fallbackImageJpg from "@/images/fallback/store_image.jpg";
-import fallbackImage from "@/images/fallback/store_image.webp";
-import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 
 const { t } = useI18n();
 
@@ -32,60 +25,9 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  details: true,
+  details: false,
   showOwner: true,
   modelCounts: undefined,
-});
-
-const uuid = ref(uuidv4());
-
-onMounted(() => {
-  uuid.value = uuidv4();
-});
-
-const { supported: webpSupported } = useWebpCheck();
-
-const storeImage = computed(() => {
-  if (paint.value?.media.storeImage) {
-    return paint.value.media.storeImage.mediumUrl;
-  }
-
-  if (upgrade.value?.media.storeImage) {
-    return upgrade.value.media.storeImage.mediumUrl;
-  }
-
-  if (model.value.media.storeImage) {
-    return model.value.media.storeImage.mediumUrl;
-  }
-
-  if (webpSupported) {
-    return fallbackImage;
-  }
-
-  return fallbackImageJpg;
-});
-
-const modelName = computed(() => {
-  return model.value.name;
-});
-
-const loaner = computed(() => {
-  return (props.fleetVehicle as VehiclePublic).loaner;
-});
-const upgrade = computed(() => {
-  return (props.fleetVehicle as VehiclePublic).upgrade;
-});
-
-const paint = computed(() => {
-  return (props.fleetVehicle as VehiclePublic).paint;
-});
-
-const username = computed(() => {
-  return (props.fleetVehicle as VehiclePublic).username;
-});
-
-const serial = computed(() => {
-  return (props.fleetVehicle as VehiclePublic).serial;
 });
 
 const model = computed(() => {
@@ -104,6 +46,36 @@ const id = computed(() => {
   return model.value.slug;
 });
 
+const storeImage = computed(() => {
+  const vehicle = props.fleetVehicle as VehiclePublic;
+
+  if (vehicle.paint?.media.storeImage) {
+    return vehicle.paint.media.storeImage.mediumUrl;
+  }
+
+  if (vehicle.upgrade?.media.storeImage) {
+    return vehicle.upgrade.media.storeImage.mediumUrl;
+  }
+
+  if (model.value?.media.storeImage) {
+    return model.value.media.storeImage.mediumUrl;
+  }
+
+  return undefined;
+});
+
+const loaner = computed(() => {
+  return (props.fleetVehicle as VehiclePublic).loaner;
+});
+
+const username = computed(() => {
+  return (props.fleetVehicle as VehiclePublic).username;
+});
+
+const serial = computed(() => {
+  return (props.fleetVehicle as VehiclePublic).serial;
+});
+
 const customName = computed(() => {
   if ((props.fleetVehicle as VehiclePublic).model && props.fleetVehicle.name) {
     return props.fleetVehicle.name;
@@ -111,6 +83,8 @@ const customName = computed(() => {
 
   return null;
 });
+
+const modelName = computed(() => model.value.name);
 
 const countLabel = computed(() => {
   if (!props.fleetVehicle.slug) {
@@ -132,112 +106,86 @@ const filterManufacturerQuery = (manufacturer: string) => {
 </script>
 
 <template>
-  <div>
-    <Panel
-      v-if="model"
-      :id="id"
-      class="model-panel"
-      :class="`model-panel-${model.slug}`"
-    >
-      <div class="panel-heading">
-        <h2 class="panel-title">
-          <router-link
-            :to="{
-              name: 'ship',
-              params: {
-                slug: model.slug,
-              },
-            }"
-          >
-            <span v-if="customName">{{ customName }}</span>
-            <span v-else>{{ countLabel }}{{ modelName }}</span>
-          </router-link>
-
-          <transition name="fade" appear>
-            <small v-if="serial">
-              <span class="serial">
-                {{ serial }}
-              </span>
-            </small>
-          </transition>
-
-          <br />
-
-          <small>
-            <router-link
-              v-if="model.manufacturer"
-              :to="
-                {
-                  query: {
-                    q: filterManufacturerQuery(model.manufacturer.slug),
-                  },
-                } as any
-              "
-            >
-              {{ model.manufacturer.name }}
-            </router-link>
-            <template v-if="customName">
-              {{ modelName }}
-            </template>
-          </small>
-        </h2>
-      </div>
-      <div
-        :class="{
-          'no-details': !details,
+  <ModelPanel
+    :id="id"
+    :model="model"
+    class="fleet-vehicle-panel"
+    :details="details"
+    :store-image="storeImage"
+  >
+    <template #heading-title>
+      <router-link
+        :to="{
+          name: 'ship',
+          params: {
+            slug: model.slug,
+          },
         }"
-        class="panel-image text-center"
       >
-        <LazyImage
-          :to="{ name: 'ship', params: { slug: model.slug } }"
-          :aria-label="model.name"
-          :src="storeImage"
-          :alt="model.name"
-          class="image"
-        >
-          <div
-            v-if="loaner"
-            v-tooltip="t('labels.vehicle.loaner')"
-            class="loaner-label"
-          >
-            <i class="fal fa-exchange" />
-          </div>
-          <div
-            v-show="model.onSale"
-            v-tooltip="t('labels.model.onSale')"
-            class="on-sale"
-          >
-            <i class="fal fa-dollar-sign" />
-          </div>
-        </LazyImage>
-        <VehicleOwner
-          v-if="showOwner"
-          :owner="username"
-          :model-slug="fleetVehicle.slug"
-          :fleet-slug="fleetSlug"
-        />
-      </div>
+        <span v-if="customName">{{ customName }}</span>
+        <span v-else>{{ countLabel }}{{ modelName }}</span>
+      </router-link>
 
-      <Collapsed
-        :key="`details-${model.slug}-${uuid}-wrapper`"
-        :visible="details"
+      <transition name="fade" appear>
+        <small v-if="serial" class="serial">
+          {{ serial }}
+        </small>
+      </transition>
+    </template>
+
+    <template #heading-subtitle>
+      <router-link
+        v-if="model.manufacturer"
+        :to="
+          {
+            query: {
+              q: filterManufacturerQuery(model.manufacturer.slug),
+            },
+          } as any
+        "
       >
-        <div class="production-status">
-          <strong class="text-uppercase">
-            <template v-if="model.productionStatus">
-              {{ t(`labels.model.productionStatus.${model.productionStatus}`) }}
-            </template>
-            <template v-else>
-              {{ t(`labels.not-available`) }}
-            </template>
-          </strong>
-        </div>
-        <ModelPanelMetrics :model="model" />
-      </Collapsed>
-    </Panel>
-  </div>
+        {{ model.manufacturer.name }}
+      </router-link>
+      <template v-if="customName">
+        {{ modelName }}
+      </template>
+    </template>
+
+    <template #heading-actions>
+      <span />
+    </template>
+
+    <template #default>
+      <div
+        v-if="loaner"
+        v-tooltip="t('labels.vehicle.loaner')"
+        class="fleet-vehicle-panel-loaner"
+      >
+        <i class="fal fa-exchange" />
+      </div>
+      <VehicleOwner
+        v-if="showOwner"
+        :owner="username"
+        :model-slug="fleetVehicle.slug"
+        :fleet-slug="fleetSlug"
+      />
+    </template>
+  </ModelPanel>
 </template>
 
 <style lang="scss" scoped>
-@import "index";
+.fleet-vehicle-panel-loaner {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  padding: 2px 5px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 3px;
+  font-size: 0.85em;
+}
+
+.serial {
+  font-size: 0.85em;
+  opacity: 0.8;
+}
 </style>

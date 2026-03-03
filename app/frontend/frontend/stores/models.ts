@@ -40,6 +40,10 @@ export const useModelsStore = defineStore("models", {
     detailsVisible: false,
     filterVisible: true,
     gridView: true,
+    tableViewImageCols: [
+      ModelTableViewImageColsEnum.STORE_IMAGE,
+      ModelTableViewImageColsEnum.ANGLED_VIEW,
+    ],
     tableViewCols: [
       ModelTableViewColsEnum.LENGTH,
       ModelTableViewColsEnum.BEAM,
@@ -48,7 +52,6 @@ export const useModelsStore = defineStore("models", {
       ModelTableViewColsEnum.CARGO,
       ModelTableViewColsEnum.MIN_CREW,
     ],
-    tableViewImageCols: [ModelTableViewImageColsEnum.STORE_IMAGE],
   }),
   actions: {
     toggleHoloviewer() {

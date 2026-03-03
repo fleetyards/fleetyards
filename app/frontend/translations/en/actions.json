@@ -132,6 +132,7 @@
         "leave": "Leave %{fleet}",
         "createInviteUrl": "Create Invite Urls",
         "inviteMember": "Invite new Member",
+        "manageInvites": "Invites",
         "acceptInvite": "Accept Invitation",
         "declineInvite": "Decline Invitation",
         "acceptRequest": "accept Request",

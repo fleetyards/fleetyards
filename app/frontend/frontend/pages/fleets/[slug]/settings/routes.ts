@@ -22,4 +22,15 @@ export const routes: RouteRecordRaw[] = [
       access: ["fleet:manage"],
     },
   },
+  {
+    path: "roles/",
+    name: "fleet-settings-roles",
+    component: () =>
+      import("@/frontend/pages/fleets/[slug]/settings/roles.vue"),
+    meta: {
+      title: "fleets.settings.roles",
+      needsAuthentication: true,
+      access: ["fleet:roles:read", "fleet:roles:manage", "fleet:manage"],
+    },
+  },
 ];

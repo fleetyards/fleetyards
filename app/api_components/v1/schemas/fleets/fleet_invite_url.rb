@@ -16,11 +16,12 @@ module V1
             expired: {type: :boolean},
             limit: {type: :integer},
             limitReached: {type: :boolean},
+            usageCount: {type: :integer},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[token url createdAt updatedAt]
+          required: %w[token url usageCount createdAt updatedAt]
         })
       end
     end

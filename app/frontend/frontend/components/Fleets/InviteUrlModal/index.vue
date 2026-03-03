@@ -144,13 +144,16 @@ const remove = async (inviteUrl: FleetInviteUrl) => {
     });
 };
 
-const usesLeft = (inviteUrl: FleetInviteUrl) => {
+const usageLabel = (inviteUrl: FleetInviteUrl) => {
   if (!inviteUrl.limit && inviteUrl.limit !== 0) {
-    return t("labels.fleet.inviteUrls.noLimit");
+    return t("labels.fleet.inviteUrls.used", {
+      count: inviteUrl.usageCount,
+    });
   }
 
-  return t("labels.fleet.inviteUrls.usesLeft", {
-    count: inviteUrl.limit,
+  return t("labels.fleet.inviteUrls.usedOfLimit", {
+    count: inviteUrl.usageCount,
+    limit: inviteUrl.limit + inviteUrl.usageCount,
   });
 };
 
@@ -215,7 +218,7 @@ const copy = (inviteUrl: FleetInviteUrl) => {
         <div v-else>
           {{ t("labels.fleet.inviteUrls.noExpiration") }}
         </div>
-        <div>{{ usesLeft(inviteUrl) }}</div>
+        <div>{{ usageLabel(inviteUrl) }}</div>
       </div>
     </div>
 

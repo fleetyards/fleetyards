@@ -36,12 +36,16 @@
         "add": "Create a new Fleet",
         "preview": "Fleet Preview",
         "invites": "Fleet Invites",
-        "members": "%{fleet} Members",
+        "members": {
+          "index": "%{fleet} Members",
+          "invites": "%{fleet} Invites"
+        },
         "stats": "%{fleet} Stats",
         "settings": {
           "index": "%{fleet} Settings",
           "fleet": "%{fleet} Settings",
-          "membership": "%{fleet} Membership"
+          "membership": "%{fleet} Membership",
+          "roles": "%{fleet} Roles"
         }
       },
       "roadmap": {

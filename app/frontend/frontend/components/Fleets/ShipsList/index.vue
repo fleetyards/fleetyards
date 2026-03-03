@@ -12,6 +12,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import FleetVehiclePanel from "@/frontend/components/Fleets/VehiclePanel/index.vue";
+import FleetVehiclesTable from "@/frontend/components/Fleets/VehiclesTable/index.vue";
 import FleetVehiclesFilterForm from "@/frontend/components/Fleets/FilterForm/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import ModelClassLabels from "@/frontend/components/Models/ClassLabels/index.vue";
@@ -22,6 +23,7 @@ import { format } from "date-fns";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useFilters } from "@/shared/composables/useFilters";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
 import { useCable } from "@/shared/composables/useCable";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useFleetStore } from "@/frontend/stores/fleet";
@@ -51,13 +53,22 @@ const { t, toDollar, toUEC, toNumber } = useI18n();
 
 const { displayAlert } = useAppNotifications();
 
+const comlink = useComlink();
+
+const openDisplayOptionsModal = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Fleets/DisplayOptionsModal/index.vue"),
+  });
+};
+
 const fleetVehiclesChannel = ref<Subscription>();
 
 const mobile = useMobile();
 
 const fleetStore = useFleetStore();
 
-const { grouped, money, detailsVisible } = storeToRefs(fleetStore);
+const { grouped, money, detailsVisible, gridView } = storeToRefs(fleetStore);
 
 const fleetchartStore = useFleetchartStore();
 
@@ -68,13 +79,6 @@ const fleetchartVisible = computed(() => {
 const toggleFleetchart = () => {
   fleetchartStore.toggleFleetchart("fleet");
 };
-
-const toggleDetailsTooltip = computed(() => {
-  if (detailsVisible.value) {
-    return t("actions.hideDetails");
-  }
-  return t("actions.showDetails");
-});
 
 watch(
   () => grouped.value,
@@ -170,6 +174,7 @@ const fleetVehiclesQueryParams = computed(() => {
     page: page.value,
     perPage: perPage.value,
     q: filters.value,
+    grouped: grouped.value,
   };
 });
 
@@ -270,9 +275,17 @@ const {
         :records="fleetVehicles?.items || []"
         :async-status="asyncStatus"
         primary-key="id"
-        :hide-loading="fleetchartVisible"
+        :hide-loading="fleetchartVisible || !gridView"
+        :hide-empty="!gridView"
       >
         <template #actions-right>
+          <Btn
+            :aria-label="t('actions.models.openTableConfiguration')"
+            :size="BtnSizesEnum.SMALL"
+            @click="openDisplayOptionsModal"
+          >
+            <i class="fad fa-sliders" />
+          </Btn>
           <BtnDropdown :size="BtnSizesEnum.SMALL">
             <template v-if="mobile">
               <Btn
@@ -294,27 +307,6 @@ const {
               <hr />
             </template>
             <Btn
-              :active="detailsVisible"
-              :aria-label="toggleDetailsTooltip"
-              :size="BtnSizesEnum.SMALL"
-              @click="fleetStore.toggleDetails"
-            >
-              <i class="fad fa-info-square" />
-              <span>{{ toggleDetailsTooltip }}</span>
-            </Btn>
-
-            <Btn :size="BtnSizesEnum.SMALL" @click="fleetStore.toggleGrouped">
-              <template v-if="grouped">
-                <i class="fas fa-object-intersect" />
-                <span>{{ t("actions.ungrouped") }}</span>
-              </template>
-              <template v-else>
-                <i class="fas fa-object-union" />
-                <span>{{ t("actions.groupedByModel") }}</span>
-              </template>
-            </Btn>
-
-            <Btn
               :size="BtnSizesEnum.SMALL"
               :aria-label="t('actions.export')"
               @click="exportJson"
@@ -328,8 +320,9 @@ const {
         <template #filter>
           <FleetVehiclesFilterForm />
         </template>
-        <template #default="{ records, loading, filterVisible }">
+        <template #default="{ records, loading, filterVisible, emptyVisible }">
           <Grid
+            v-if="gridView"
             :records="records"
             :filter-visible="filterVisible"
             primary-key="id"
@@ -343,6 +336,14 @@ const {
               />
             </template>
           </Grid>
+
+          <FleetVehiclesTable
+            v-else
+            :fleet-slug="fleet.slug"
+            :loading="loading"
+            :empty-visible="emptyVisible"
+            :vehicles="fleetVehicles?.items || []"
+          />
 
           <FleetchartApp
             :items="fleetVehicles?.items || []"

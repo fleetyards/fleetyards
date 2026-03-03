@@ -60,7 +60,8 @@
         },
         "settings": {
           "fleet": "Fleet Settings",
-          "membership": "Membership Settings"
+          "membership": "Membership Settings",
+          "roles": "Flottenrollen"
         },
         "inviteMember": "Invite new Member"
       },

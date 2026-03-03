@@ -131,7 +131,8 @@
         },
         "settings": {
           "fleet": "Fleet Settings",
-          "membership": "Membership Settings"
+          "membership": "Membership Settings",
+          "roles": "Fleet Roles"
         },
         "inviteMember": "Invite new Member"
       },

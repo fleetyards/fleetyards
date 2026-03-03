@@ -79,8 +79,8 @@ onMounted(() => {
       <template v-if="membership">
         <NavItem
           :to="{ name: 'fleet-members', params: { slug: currentFleet.slug } }"
-          :label="t('nav.fleets.members')"
-          :active="route.name === 'fleet-members'"
+          :label="t('nav.fleets.members.index')"
+          :active="String(route.name).startsWith('fleet-members')"
           icon="fad fa-users"
           prefix="02"
         />
@@ -94,7 +94,7 @@ onMounted(() => {
         <NavItem
           :to="{ name: 'fleet-settings', params: { slug: currentFleet.slug } }"
           :label="t('nav.fleets.settings.index')"
-          :active="route.name === 'fleet-settings'"
+          :active="String(route.name).startsWith('fleet-settings')"
           icon="fad fa-cogs"
           prefix="04"
         />

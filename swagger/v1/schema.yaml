@@ -729,9 +729,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FleetMember"
+                "$ref": "#/components/schemas/FleetMembersList"
         '404':
           description: not found
           content:
@@ -1113,6 +1111,40 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Fleet"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/roles":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Fleet Role List
+      operationId: fleetRoles
+      tags:
+      - FleetRoles
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FleetRoleExtended"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '401':
           description: unauthorized
           content:
@@ -5256,6 +5288,8 @@ components:
           type: integer
         limitReached:
           type: boolean
+        usageCount:
+          type: integer
         createdAt:
           type: string
           format: date-time
@@ -5266,6 +5300,7 @@ components:
       required:
       - token
       - url
+      - usageCount
       - createdAt
       - updatedAt
       title: FleetInviteUrl
@@ -5353,6 +5388,20 @@ components:
       - createdAt
       - updatedAt
       title: FleetMember
+    FleetMembersList:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetMember"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: FleetMembersList
     FleetMembersStats:
       type: object
       properties:
@@ -5463,7 +5512,6 @@ components:
       - name
       - slug
       - rank
-      - permanent
       - createdAt
       - updatedAt
       title: FleetRoleExtended
@@ -7586,6 +7634,10 @@ components:
           deprecated: true
           description: Use usernameCont instead
         roleIn:
+          type: array
+          items:
+            type: string
+        stateIn:
           type: array
           items:
             type: string

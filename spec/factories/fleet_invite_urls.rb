@@ -6,6 +6,7 @@
 #  expires_after :datetime
 #  limit         :integer
 #  token         :string
+#  usage_count   :integer          default(0), not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  fleet_id      :uuid

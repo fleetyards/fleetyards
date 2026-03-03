@@ -186,6 +186,13 @@
   &.panel-btn-block {
     width: 100%;
   }
+
+  &.panel-btn-align-start {
+    .panel-btn-inner {
+      justify-content: flex-start;
+      text-align: left;
+    }
+  }
 }
 
 @keyframes flash {

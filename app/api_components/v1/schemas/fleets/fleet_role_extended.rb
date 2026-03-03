@@ -15,7 +15,7 @@ module V1
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[rank permanent createdAt updatedAt]
+          required: %w[rank createdAt updatedAt]
         })
       end
     end
