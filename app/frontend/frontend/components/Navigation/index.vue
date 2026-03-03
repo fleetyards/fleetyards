@@ -19,7 +19,6 @@ import { useHangarStore } from "@/frontend/stores/hangar";
 import { useFiltersStore } from "@/shared/stores/filters";
 import { storeToRefs } from "pinia";
 import rsiLogo from "@/images/rsi_logo.png";
-import { useDestroySession as useDestroySessionMutation } from "@/services/fyApi";
 import favicon from "@/images/favicon-small.png";
 
 const { t } = useI18n();
@@ -84,11 +83,7 @@ const filterFor = (routeName: string) => {
   } as unknown as LocationQueryRaw;
 };
 
-const mutation = useDestroySessionMutation();
-
 const logout = async () => {
-  await mutation.mutateAsync();
-
   await sessionStore.logout();
 };
 
