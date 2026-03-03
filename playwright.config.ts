@@ -15,11 +15,24 @@ export default defineConfig({
     trace: "on-first-retry",
     testIdAttribute: "data-test",
   },
-  webServer: {
-    command: "pnpm test:e2e:startserver",
-    url: "http://localhost:8280/health_check",
-    reuseExistingServer: !process.env.CI,
-    stdout: "pipe",
-    stderr: "pipe",
-  },
+  webServer: [
+    ...(!process.env.CI
+      ? [
+          {
+            command: "RAILS_ENV=test pnpm dev:vite",
+            url: "http://127.0.0.1:3137/vite-test/@vite/client",
+            reuseExistingServer: true,
+            stdout: "pipe" as const,
+            stderr: "pipe" as const,
+          },
+        ]
+      : []),
+    {
+      command: "pnpm test:e2e:startserver",
+      url: "http://localhost:8280/health_check",
+      reuseExistingServer: !process.env.CI,
+      stdout: "pipe",
+      stderr: "pipe",
+    },
+  ],
 });

@@ -18,15 +18,9 @@ jobs:
       DATABASE_HOST: 127.0.0.1
       DATABASE_USER: root
       DATABASE_PASSWORD: password
-      DB_HOST: 127.0.0.1
-      DB_PORT: 8271
-      DB_PASSWORD: password
-      REDIS_URL: redis://localhost:8272
       OPENSEARCH_URL: http://localhost:9200
-      ON_SUBDOMAIN: false
       RAILS_SERVE_STATIC_FILES: 1
       DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
-      CYPRESS_RAILS_PORT: 8280
       JOBS: 1
 
     services:
