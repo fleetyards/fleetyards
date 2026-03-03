@@ -13,7 +13,7 @@ jobs:
       DATABASE_HOST: 127.0.0.1
       DATABASE_USER: root
       REDIS_URL: redis://localhost:6379
-      OPENSEARCH_URL: http://localhost:8273
+      OPENSEARCH_URL: http://localhost:9200
 
     services:
       postgres:
