@@ -4,34 +4,34 @@ import { defineStore } from "pinia";
 import { type ListMeta } from "@/shared/components/BreadCrumbs/types";
 
 export enum AdminModelTableViewImageColsEnum {
-  STORE_IMAGE = "store_image",
-  RSI_STORE_IMAGE = "rsi_store_image",
-  ANGLED_VIEW = "angled_view",
+  STORE_IMAGE = "storeImage",
+  RSI_STORE_IMAGE = "rsiStoreImage",
+  ANGLED_VIEW = "angledView",
 }
 
 export enum AdminModelTableViewColsEnum {
-  MANUFACTURER_NAME = "manufacturer_name",
+  MANUFACTURER_NAME = "manufacturerName",
   LENGTH = "length",
   BEAM = "beam",
   HEIGHT = "height",
   MASS = "mass",
   CARGO = "cargo",
-  QUANTUM_FUEL = "quantum_fuel_tank_size",
-  HYDROGEN_FUEL = "hydrogen_fuel_tank_size",
-  MIN_CREW = "min_crew",
-  MAX_CREW = "max_crew",
-  SCM_SPEED = "scm_speed",
-  MAX_SPEED = "max_speed",
-  GROUND_MAX_SPEED = "ground_max_speed",
+  QUANTUM_FUEL = "quantumFuelTankSize",
+  HYDROGEN_FUEL = "hydrogenFuelTankSize",
+  MIN_CREW = "minCrew",
+  MAX_CREW = "maxCrew",
+  SCM_SPEED = "scmSpeed",
+  MAX_SPEED = "maxSpeed",
+  GROUND_MAX_SPEED = "groundMaxSpeed",
   FOCUS = "focus",
-  PRODUCTION_STATUS = "production_status",
+  PRODUCTION_STATUS = "productionStatus",
   PRICE = "price",
-  PLEDGE_PRICE = "pledge_price",
-  RSI_ID = "rsi_id",
+  PLEDGE_PRICE = "pledgePrice",
+  RSI_ID = "rsiId",
   HIDDEN = "hidden",
   ACTIVE = "active",
-  CREATED_AT = "created_at",
-  UPDATED_AT = "updated_at",
+  CREATED_AT = "createdAt",
+  UPDATED_AT = "updatedAt",
 }
 
 interface AdminModelsState extends AdminShipListState {

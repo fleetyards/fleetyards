@@ -174,7 +174,7 @@ class User < ApplicationRecord
     [
       "avatar", "confirmed_at", "created_at", "current_sign_in_at", "discord", "email",
       "guilded", "hangar_updated_at", "homepage", "last_active_at", "last_sign_in_at", "locale",
-      "twitch", "updated_at", "username", "wanted_vehicles_count", "youtube", "search"
+      "rsi_handle", "twitch", "updated_at", "username", "wanted_vehicles_count", "youtube", "search"
     ]
   end
 

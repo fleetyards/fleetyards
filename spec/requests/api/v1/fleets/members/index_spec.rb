@@ -44,49 +44,82 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
           expect(data.count).to be > 0
           expect(data.count).to eq(3)
         end
-      end
 
-      response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/FleetMember"}
+        context "with filter" do
+          let(:q) do
+            {
+              "usernameCont" => member.username
+            }
+          end
 
-        let(:q) do
-          {
-            "usernameCont" => member.username
-          }
+          run_test! do |response|
+            data = JSON.parse(response.body)
+
+            expect(data.count).to eq(1)
+            expect(data.first.dig("username")).to eq(member.username)
+          end
         end
 
-        run_test! do |response|
-          data = JSON.parse(response.body)
+        context "with perPage" do
+          let(:perPage) { 1 }
 
-          expect(data.count).to eq(1)
-          expect(data.first.dig("username")).to eq(member.username)
+          run_test! do |response|
+            data = JSON.parse(response.body)
+
+            expect(data.count).to eq(1)
+          end
         end
-      end
 
-      response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/FleetMember"}
+        context "with member" do
+          let(:user) { member }
 
-        let(:perPage) { 1 }
+          run_test! do |response|
+            data = JSON.parse(response.body)
 
-        run_test! do |response|
-          data = JSON.parse(response.body)
-
-          expect(data.count).to eq(1)
+            expect(data.count).to eq(3)
+          end
         end
-      end
 
-      response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/FleetMember"}
+        context "sorted by rsiHandle asc" do
+          let(:q) do
+            {
+              "sorts" => "rsiHandle asc"
+            }
+          end
 
-        let(:user) { member }
+          before do
+            admin.update!(rsi_handle: "charlie")
+            member.update!(rsi_handle: "alpha")
+            another_member.update!(rsi_handle: "bravo")
+          end
 
-        run_test! do |response|
-          data = JSON.parse(response.body)
+          run_test! do |response|
+            data = JSON.parse(response.body)
 
-          expect(data.count).to eq(3)
+            expect(data.count).to eq(3)
+            expect(data.map { |m| m["rsiHandle"] }).to eq(%w[alpha bravo charlie])
+          end
+        end
+
+        context "sorted by rsiHandle desc" do
+          let(:q) do
+            {
+              "sorts" => "rsiHandle desc"
+            }
+          end
+
+          before do
+            admin.update!(rsi_handle: "charlie")
+            member.update!(rsi_handle: "alpha")
+            another_member.update!(rsi_handle: "bravo")
+          end
+
+          run_test! do |response|
+            data = JSON.parse(response.body)
+
+            expect(data.count).to eq(3)
+            expect(data.map { |m| m["rsiHandle"] }).to eq(%w[charlie bravo alpha])
+          end
         end
       end
 

@@ -2,28 +2,28 @@ import type { ShipListState } from "@/frontend/types";
 import { defineStore } from "pinia";
 
 export enum WishlistTableViewImageColsEnum {
-  STORE_IMAGE = "store_image",
-  STORE_IMAGE_WIDE = "store_image_wide",
-  ANGLED_VIEW = "angled_view",
-  ANGLED_VIEW_WIDE = "angled_view_wide",
+  STORE_IMAGE = "storeImage",
+  STORE_IMAGE_WIDE = "storeImageWide",
+  ANGLED_VIEW = "angledView",
+  ANGLED_VIEW_WIDE = "angledViewWide",
 }
 
 export enum WishlistTableViewColsEnum {
-  MANUFACTURER_NAME = "model_manufacturer_name",
-  LENGTH = "model_length",
-  BEAM = "model_beam",
-  HEIGHT = "model_height",
-  MASS = "model_mass",
-  CARGO = "model_cargo",
-  MIN_CREW = "model_min_crew",
-  MAX_CREW = "model_max_crew",
-  SCM_SPEED = "model_scm_speed",
-  MAX_SPEED = "model_max_speed",
-  GROUND_MAX_SPEED = "model_ground_max_speed",
-  FOCUS = "model_focus",
-  PRODUCTION_STATUS = "model_production_status",
-  PRICE = "model_price",
-  PLEDGE_PRICE = "model_pledge_price",
+  MANUFACTURER_NAME = "modelManufacturerName",
+  LENGTH = "modelLength",
+  BEAM = "modelBeam",
+  HEIGHT = "modelHeight",
+  MASS = "modelMass",
+  CARGO = "modelCargo",
+  MIN_CREW = "modelMinCrew",
+  MAX_CREW = "modelMaxCrew",
+  SCM_SPEED = "modelScmSpeed",
+  MAX_SPEED = "modelMaxSpeed",
+  GROUND_MAX_SPEED = "modelGroundMaxSpeed",
+  FOCUS = "modelFocus",
+  PRODUCTION_STATUS = "modelProductionStatus",
+  PRICE = "modelPrice",
+  PLEDGE_PRICE = "modelPledgePrice",
 }
 
 interface WishlistState extends ShipListState {

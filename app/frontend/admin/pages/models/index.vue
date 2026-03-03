@@ -93,7 +93,7 @@ const extraImageColumns = computed(() => {
       return {
         name: col,
         label: "",
-        width: col.endsWith("_wide") ? "270px" : "120px",
+        width: col.endsWith("Wide") ? "270px" : "120px",
         centered: true,
       };
     })
@@ -218,7 +218,7 @@ watch(
         <template #loader="{ loading }">
           <Loader :loading="loading" admin />
         </template>
-        <template #col-store_image="{ record }">
+        <template #col-storeImage="{ record }">
           <ViewImage
             :image="record.media.storeImage"
             size="small"
@@ -227,7 +227,7 @@ watch(
             shadow
           />
         </template>
-        <template #col-rsi_store_image="{ record }">
+        <template #col-rsiStoreImage="{ record }">
           <ViewImage
             :image="record.media.storeImage"
             size="small"
@@ -236,7 +236,7 @@ watch(
             shadow
           />
         </template>
-        <template #col-angled_view="{ record }">
+        <template #col-angledView="{ record }">
           <ViewImage
             :image="angledImage(record)"
             size="small"
@@ -258,7 +258,7 @@ watch(
             {{ record.manufacturer?.code }} {{ record.name }}
           </router-link>
         </template>
-        <template #col-manufacturer_name="{ record }">
+        <template #col-manufacturerName="{ record }">
           {{ record.manufacturer?.name }}
         </template>
         <template #col-length="{ record }">
@@ -286,42 +286,42 @@ watch(
             toNumber(record.metrics.cargo || "", "cargo")
           }}</span>
         </template>
-        <template #col-hydrogen_fuel_tank_size="{ record }">
+        <template #col-hydrogenFuelTankSize="{ record }">
           <span class="no-break">{{
             toNumber(record.metrics.hydrogenFuelTankSize || "", "cargo")
           }}</span>
         </template>
-        <template #col-quantum_fuel_tank_size="{ record }">
+        <template #col-quantumFuelTankSize="{ record }">
           <span class="no-break">{{
             toNumber(record.metrics.quantumFuelTankSize || "", "cargo")
           }}</span>
         </template>
-        <template #col-min_crew="{ record }">
+        <template #col-minCrew="{ record }">
           <span class="no-break">{{
             toNumber(record.crew.min || "", "people")
           }}</span>
         </template>
-        <template #col-max_crew="{ record }">
+        <template #col-maxCrew="{ record }">
           <span class="no-break">{{
             toNumber(record.crew.max || "", "people")
           }}</span>
         </template>
-        <template #col-ground_max_speed="{ record }">
+        <template #col-groundMaxSpeed="{ record }">
           <span class="no-break">{{
             toNumber(record.speeds.groundMaxSpeed || "", "speed")
           }}</span>
         </template>
-        <template #col-scm_speed="{ record }">
+        <template #col-scmSpeed="{ record }">
           <span class="no-break">{{
             toNumber(record.speeds.scmSpeed || "", "speed")
           }}</span>
         </template>
-        <template #col-max_speed="{ record }">
+        <template #col-maxSpeed="{ record }">
           <span class="no-break">{{
             toNumber(record.speeds.maxSpeed || "", "speed")
           }}</span>
         </template>
-        <template #col-production_status="{ record }">
+        <template #col-productionStatus="{ record }">
           {{ t(`labels.model.productionStatus.${record.productionStatus}`) }}
         </template>
         <template #col-price="{ record }">
@@ -333,10 +333,10 @@ watch(
           />
           <!-- eslint-enable vue/no-v-html -->
         </template>
-        <template #col-pledge_price="{ record }">
+        <template #col-pledgePrice="{ record }">
           <span class="no-break">{{ toDollar(record.pledgePrice) }}</span>
         </template>
-        <template #col-rsi_id="{ record }">
+        <template #col-rsiId="{ record }">
           {{ record.rsiId }}
         </template>
         <template #col-hidden="{ record }">
@@ -347,10 +347,10 @@ watch(
           <i v-if="record.active" class="fad fa-check" />
           <i v-else class="fad fa-times" />
         </template>
-        <template #col-created_at="{ record }">
+        <template #col-createdAt="{ record }">
           {{ l(record.createdAt, "datetime.formats.short") }}
         </template>
-        <template #col-updated_at="{ record }">
+        <template #col-updatedAt="{ record }">
           {{ l(record.updatedAt, "datetime.formats.short") }}
         </template>
         <template #actions="{ record }">

@@ -46,7 +46,7 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
     sortable: true,
   },
   {
-    name: "rsi_handle",
+    name: "rsiHandle",
     label: t("labels.user.rsiHandle"),
     width: "15%",
     mobile: false,
@@ -64,15 +64,17 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
     mobile: false,
   },
   {
-    name: "last_active",
+    name: "lastActiveAt",
     label: t("labels.user.lastActiveAt"),
     width: "15%",
     mobile: false,
+    sortable: true,
   },
   {
     name: "links",
     label: "",
     mobile: false,
+    alignment: "right",
   },
 ]);
 </script>
@@ -106,7 +108,7 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
       </div>
     </template>
 
-    <template #col-rsi_handle="{ record }">
+    <template #col-rsiHandle="{ record }">
       <a
         v-if="record.rsiHandle"
         v-tooltip="t('nav.rsiProfile')"
@@ -157,7 +159,7 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
       </span>
     </template>
 
-    <template #col-last_active="{ record }">
+    <template #col-lastActiveAt="{ record }">
       <span v-if="record.lastActiveAt" v-tooltip="l(record.lastActiveAt)">
         {{ timeDistance(record.lastActiveAt) }}
       </span>

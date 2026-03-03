@@ -39,7 +39,7 @@ const route = useRoute();
 const columns = computed<BaseTableCol<Component>[]>(() => {
   return [
     {
-      name: "store_image",
+      name: "storeImage",
       label: "",
       class: "store-image extra-small",
     },
@@ -185,7 +185,7 @@ const { data: quantumDrives, ...asyncStatus } = useComponentsQuery(
         primary-key="slug"
         :columns="columns"
       >
-        <template #col-store_image="{ record }">
+        <template #col-storeImage="{ record }">
           <div
             :key="storeImage(record)"
             v-lazy:background-image="storeImage(record)"

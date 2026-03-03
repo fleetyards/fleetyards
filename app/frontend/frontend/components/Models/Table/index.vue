@@ -59,7 +59,7 @@ const extraImageColumns = computed(() => {
       return {
         name: col,
         label: "",
-        width: col.endsWith("_wide") ? "270px" : "120px",
+        width: col.endsWith("Wide") ? "270px" : "120px",
         centered: true,
       };
     })
@@ -70,7 +70,7 @@ const extraImageColumns = computed(() => {
 
 const manufacturerColumnVisible = computed(() => {
   return extraColumns.value.some(
-    (column) => column.name === "manufacturer_name",
+    (column) => column.name === "manufacturerName",
   );
 });
 
@@ -106,7 +106,7 @@ const angledImage = (record: Model) => {
       :loading="loading"
       :empty-visible="emptyVisible"
     >
-      <template #col-store_image="{ record }">
+      <template #col-storeImage="{ record }">
         <ViewImage
           :image="record.media.storeImage"
           size="small"
@@ -115,7 +115,7 @@ const angledImage = (record: Model) => {
           shadow
         />
       </template>
-      <template #col-store_image_wide="{ record }">
+      <template #col-storeImageWide="{ record }">
         <ViewImage
           :image="record.media.storeImage"
           size="small"
@@ -124,7 +124,7 @@ const angledImage = (record: Model) => {
           shadow
         />
       </template>
-      <template #col-angled_view="{ record }">
+      <template #col-angledView="{ record }">
         <ViewImage
           :image="angledImage(record)"
           size="small"
@@ -134,7 +134,7 @@ const angledImage = (record: Model) => {
           without-fallback
         />
       </template>
-      <template #col-angled_view_wide="{ record }">
+      <template #col-angledViewWide="{ record }">
         <ViewImage
           :image="angledImage(record)"
           size="small"
@@ -144,7 +144,7 @@ const angledImage = (record: Model) => {
           without-fallback
         />
       </template>
-      <template #col-manufacturer_name="{ record }">
+      <template #col-manufacturerName="{ record }">
         {{ record.manufacturer?.name }}
       </template>
       <template #col-length="{ record }">
@@ -172,42 +172,42 @@ const angledImage = (record: Model) => {
           toNumber(record.metrics.cargo || "", "cargo")
         }}</span>
       </template>
-      <template #col-hydrogen_fuel_tank_size="{ record }">
+      <template #col-hydrogenFuelTankSize="{ record }">
         <span class="no-break">{{
           toNumber(record.metrics.hydrogenFuelTankSize || "", "cargo")
         }}</span>
       </template>
-      <template #col-quantum_fuel_tank_size="{ record }">
+      <template #col-quantumFuelTankSize="{ record }">
         <span class="no-break">{{
           toNumber(record.metrics.quantumFuelTankSize || "", "cargo")
         }}</span>
       </template>
-      <template #col-min_crew="{ record }">
+      <template #col-minCrew="{ record }">
         <span class="no-break">{{
           toNumber(record.crew.min || "", "people")
         }}</span>
       </template>
-      <template #col-max_crew="{ record }">
+      <template #col-maxCrew="{ record }">
         <span class="no-break">{{
           toNumber(record.crew.max || "", "people")
         }}</span>
       </template>
-      <template #col-ground_max_speed="{ record }">
+      <template #col-groundMaxSpeed="{ record }">
         <span class="no-break">{{
           toNumber(record.speeds.groundMaxSpeed || "", "speed")
         }}</span>
       </template>
-      <template #col-scm_speed="{ record }">
+      <template #col-scmSpeed="{ record }">
         <span class="no-break">{{
           toNumber(record.speeds.scmSpeed || "", "speed")
         }}</span>
       </template>
-      <template #col-max_speed="{ record }">
+      <template #col-maxSpeed="{ record }">
         <span class="no-break">{{
           toNumber(record.speeds.maxSpeed || "", "speed")
         }}</span>
       </template>
-      <template #col-production_status="{ record }">
+      <template #col-productionStatus="{ record }">
         {{ t(`labels.model.productionStatus.${record.productionStatus}`) }}
       </template>
       <template #col-price="{ record }">
@@ -219,7 +219,7 @@ const angledImage = (record: Model) => {
         />
         <!-- eslint-enable vue/no-v-html -->
       </template>
-      <template #col-pledge_price="{ record }">
+      <template #col-pledgePrice="{ record }">
         <span class="no-break">{{ toDollar(record.pledgePrice) }}</span>
       </template>
       <template #col-name="{ record }">

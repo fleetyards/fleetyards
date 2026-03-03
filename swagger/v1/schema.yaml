@@ -5007,14 +5007,16 @@ components:
     FleetMembershipSortEnum:
       type: string
       enum:
-      - userRsiHandle asc
-      - userRsiHandle desc
-      - userUsername asc
-      - userUsername desc
+      - rsiHandle asc
+      - rsiHandle desc
+      - username asc
+      - username desc
       - createdAt asc
       - createdAt desc
       - acceptedAt asc
       - acceptedAt desc
+      - lastActiveAt asc
+      - lastActiveAt desc
       title: FleetMembershipSortEnum
     FleetVehicleSortEnum:
       type: string

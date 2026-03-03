@@ -95,7 +95,7 @@ const extraImageColumns = computed<BaseTableCol<Vehicle>[]>(() => {
       return {
         name: col,
         label: "",
-        width: col.endsWith("_wide") ? "270px" : "120px",
+        width: col.endsWith("Wide") ? "270px" : "120px",
         centered: true,
       };
     })
@@ -106,7 +106,7 @@ const extraImageColumns = computed<BaseTableCol<Vehicle>[]>(() => {
 
 const manufacturerColumnVisible = computed(() => {
   return extraColumns.value.some(
-    (column) => column.name === "model_manufacturer_name",
+    (column) => column.name === "modelManufacturerName",
   );
 });
 
@@ -201,7 +201,7 @@ const resetSelected = () => {
       <template #selected-actions>
         <ListActions :selected="selected" :wishlist="wishlist" />
       </template>
-      <template #col-store_image="{ record }">
+      <template #col-storeImage="{ record }">
         <ViewImage
           :image="storeImage(record)"
           size="small"
@@ -210,7 +210,7 @@ const resetSelected = () => {
           shadow
         />
       </template>
-      <template #col-store_image_wide="{ record }">
+      <template #col-storeImageWide="{ record }">
         <ViewImage
           :image="storeImage(record)"
           size="small"
@@ -219,7 +219,7 @@ const resetSelected = () => {
           shadow
         />
       </template>
-      <template #col-angled_view="{ record }">
+      <template #col-angledView="{ record }">
         <ViewImage
           :image="angledImage(record)"
           size="small"
@@ -229,7 +229,7 @@ const resetSelected = () => {
           without-fallback
         />
       </template>
-      <template #col-angled_view_wide="{ record }">
+      <template #col-angledViewWide="{ record }">
         <ViewImage
           :image="angledImage(record)"
           size="small"
@@ -268,68 +268,68 @@ const resetSelected = () => {
           </small>
         </div>
       </template>
-      <template #col-model_manufacturer_name="{ record }">
+      <template #col-modelManufacturerName="{ record }">
         {{ record.model.manufacturer?.name }}
       </template>
-      <template #col-model_length="{ record }">
+      <template #col-modelLength="{ record }">
         <span class="no-break">{{
           toNumber(record.model.metrics.length || "", "distance")
         }}</span>
       </template>
-      <template #col-model_beam="{ record }">
+      <template #col-modelBeam="{ record }">
         <span class="no-break">{{
           toNumber(record.model.metrics.beam || "", "distance")
         }}</span>
       </template>
-      <template #col-model_height="{ record }">
+      <template #col-modelHeight="{ record }">
         <span class="no-break">{{
           toNumber(record.model.metrics.height || "", "distance")
         }}</span>
       </template>
-      <template #col-model_mass="{ record }">
+      <template #col-modelMass="{ record }">
         <span class="no-break">{{
           toNumber(record.model.metrics.mass || "", "weight")
         }}</span>
       </template>
-      <template #col-model_cargo="{ record }">
+      <template #col-modelCargo="{ record }">
         <span class="no-break">{{
           toNumber(record.model.metrics.cargo || "", "cargo")
         }}</span>
       </template>
-      <template #col-model_min_crew="{ record }">
+      <template #col-modelMinCrew="{ record }">
         <span class="no-break">{{
           toNumber(record.model.crew.min || "", "people")
         }}</span>
       </template>
-      <template #col-model_max_crew="{ record }">
+      <template #col-modelMaxCrew="{ record }">
         <span class="no-break">{{
           toNumber(record.model.crew.max || "", "people")
         }}</span>
       </template>
-      <template #col-model_ground_max_speed="{ record }">
+      <template #col-modelGroundMaxSpeed="{ record }">
         <span class="no-break">{{
           toNumber(record.model.speeds.groundMaxSpeed || "", "speed")
         }}</span>
       </template>
-      <template #col-model_scm_speed="{ record }">
+      <template #col-modelScmSpeed="{ record }">
         <span class="no-break">{{
           toNumber(record.model.speeds.scmSpeed || "", "speed")
         }}</span>
       </template>
-      <template #col-model_max_speed="{ record }">
+      <template #col-modelMaxSpeed="{ record }">
         <span class="no-break">{{
           toNumber(record.model.speeds.maxSpeed || "", "speed")
         }}</span>
       </template>
-      <template #col-model_production_status="{ record }">
+      <template #col-modelProductionStatus="{ record }">
         {{
           t(`labels.model.productionStatus.${record.model.productionStatus}`)
         }}
       </template>
-      <template #col-model_focus="{ record }">
+      <template #col-modelFocus="{ record }">
         {{ record.model.focus }}
       </template>
-      <template #col-model_price="{ record }">
+      <template #col-modelPrice="{ record }">
         <!-- eslint-disable vue/no-v-html -->
         <div
           v-tooltip="{ content: toUEC(record.model.price), html: true }"
@@ -338,7 +338,7 @@ const resetSelected = () => {
         />
         <!-- eslint-enable vue/no-v-html -->
       </template>
-      <template #col-model_pledge_price="{ record }">
+      <template #col-modelPledgePrice="{ record }">
         <span class="no-break">{{ toDollar(record.model.pledgePrice) }}</span>
       </template>
       <template #col-states="{ record }">

@@ -2,30 +2,30 @@ import { type ShipListState } from "@/frontend/types";
 import { defineStore } from "pinia";
 
 export enum ModelTableViewImageColsEnum {
-  STORE_IMAGE = "store_image",
-  STORE_IMAGE_WIDE = "store_image_wide",
-  ANGLED_VIEW = "angled_view",
-  ANGLED_VIEW_WIDE = "angled_view_wide",
+  STORE_IMAGE = "storeImage",
+  STORE_IMAGE_WIDE = "storeImageWide",
+  ANGLED_VIEW = "angledView",
+  ANGLED_VIEW_WIDE = "angledViewWide",
 }
 
 export enum ModelTableViewColsEnum {
-  MANUFACTURER_NAME = "manufacturer_name",
+  MANUFACTURER_NAME = "manufacturerName",
   LENGTH = "length",
   BEAM = "beam",
   HEIGHT = "height",
   MASS = "mass",
   CARGO = "cargo",
-  QUANTUM_FUEL = "quantum_fuel_tank_size",
-  HYDROGEN_FUEL = "hydrogen_fuel_tank_size",
-  MIN_CREW = "min_crew",
-  MAX_CREW = "max_crew",
-  SCM_SPEED = "scm_speed",
-  MAX_SPEED = "max_speed",
-  GROUND_MAX_SPEED = "ground_max_speed",
+  QUANTUM_FUEL = "quantumFuelTankSize",
+  HYDROGEN_FUEL = "hydrogenFuelTankSize",
+  MIN_CREW = "minCrew",
+  MAX_CREW = "maxCrew",
+  SCM_SPEED = "scmSpeed",
+  MAX_SPEED = "maxSpeed",
+  GROUND_MAX_SPEED = "groundMaxSpeed",
   FOCUS = "focus",
-  PRODUCTION_STATUS = "production_status",
+  PRODUCTION_STATUS = "productionStatus",
   PRICE = "price",
-  PLEDGE_PRICE = "pledge_price",
+  PLEDGE_PRICE = "pledgePrice",
 }
 
 interface ModelsState extends ShipListState {

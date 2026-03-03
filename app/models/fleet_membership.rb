@@ -85,13 +85,16 @@ class FleetMembership < ApplicationRecord
 
   DEFAULT_SORTING_PARAMS = ["created_at desc", "accepted_at desc"]
   ALLOWED_SORTING_PARAMS = [
-    "userRsiHandle asc", "userRsiHandle desc", "userUsername asc", "userUsername desc",
-    "createdAt asc", "createdAt desc", "acceptedAt asc", "acceptedAt desc"
+    "rsiHandle asc", "rsiHandle desc", "username asc", "username desc",
+    "createdAt asc", "createdAt desc", "acceptedAt asc", "acceptedAt desc",
+    "lastActiveAt asc", "lastActiveAt desc"
   ]
 
   enum :role, {admin: 0, officer: 1, member: 2}
 
   ransack_alias :username, :user_username
+  ransack_alias :rsi_handle, :user_rsi_handle
+  ransack_alias :last_active_at, :user_last_active_at
   ransack_alias :name, :user_username
   ransack_alias :role, :fleet_role_name
 
