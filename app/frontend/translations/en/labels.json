@@ -224,6 +224,7 @@
           "invited": "Invited",
           "requested": "Membership Requested",
           "declined": "Declined",
+          "role": "Role",
           "roles": {
             "admin": "Admin",
             "officer": "Officer",

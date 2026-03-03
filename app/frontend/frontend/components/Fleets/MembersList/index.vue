@@ -5,39 +5,188 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import Panel from "@/shared/components/base/Panel/index.vue";
-import MembersListHead from "./MembersListHead/index.vue";
-import MembersListItem from "./MembersListItem/index.vue";
+import BaseTable from "@/shared/components/base/Table/index.vue";
+import Avatar from "@/shared/components/Avatar/index.vue";
+import MemberActions from "@/frontend/components/Fleets/MemberActions/index.vue";
+import MemberLinks from "@/frontend/components/Fleets/MemberLinks/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useMobile } from "@/shared/composables/useMobile";
+import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import type { FleetMember } from "@/services/fyApi";
 
 type Props = {
   members: FleetMember[];
-  role: "admin" | "officer" | "member";
+  resourceAccess?: string[];
 };
 
 const props = defineProps<Props>();
 
-const actionsVisible = computed(() =>
-  ["admin", "officer"].includes(props.role),
-);
+const { t, l, timeDistance } = useI18n();
+
+const comlink = useComlink();
+
+const mobile = useMobile();
+
+const onRowClick = (member: FleetMember) => {
+  if (!mobile.value) return;
+
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Fleets/MemberDetailModal/index.vue"),
+    props: { member },
+  });
+};
+
+const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
+  {
+    name: "username",
+    label: t("labels.username"),
+    width: "30%",
+    sortable: true,
+  },
+  {
+    name: "rsi_handle",
+    label: t("labels.user.rsiHandle"),
+    width: "15%",
+    mobile: false,
+    sortable: true,
+  },
+  {
+    name: "role",
+    label: "",
+    width: "10%",
+  },
+  {
+    name: "joined",
+    label: `${t("labels.fleet.members.invited")} / ${t("labels.fleet.members.joined")}`,
+    width: "15%",
+    mobile: false,
+  },
+  {
+    name: "last_active",
+    label: t("labels.user.lastActiveAt"),
+    width: "15%",
+    mobile: false,
+  },
+  {
+    name: "links",
+    label: "",
+    mobile: false,
+  },
+]);
 </script>
 
 <template>
-  <Panel v-if="members.length">
-    <transition-group
-      name="fade"
-      class="flex-list flex-list-users"
-      tag="div"
-      :appear="true"
-    >
-      <MembersListHead key="heading" :actions-visible="actionsVisible" />
-      <MembersListItem
-        v-for="(member, index) in members"
-        :key="`members-${index}`"
-        :member="member"
-        :actions-visible="actionsVisible"
-        :role="role"
-      />
-    </transition-group>
-  </Panel>
+  <BaseTable
+    :records="members"
+    primary-key="id"
+    :columns="tableColumns"
+    :row-clickable="mobile"
+    @row-click="onRowClick"
+  >
+    <template #col-username="{ record }">
+      <div class="member-username">
+        <Avatar :avatar="record.avatar?.smallUrl" size="small" />
+        <div class="member-username-inner">
+          {{ record.username }}
+          <div
+            v-if="mobile && record.rsiHandle"
+            v-tooltip="t('nav.rsiProfile')"
+            class="rsi-handle-inline"
+          >
+            (<a
+              :href="`https://robertsspaceindustries.com/citizens/${record.rsiHandle}`"
+              target="_blank"
+              rel="noopener"
+              >{{ record.rsiHandle }}</a
+            >)
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <template #col-rsi_handle="{ record }">
+      <a
+        v-if="record.rsiHandle"
+        v-tooltip="t('nav.rsiProfile')"
+        :href="`https://robertsspaceindustries.com/citizens/${record.rsiHandle}`"
+        target="_blank"
+        rel="noopener"
+      >
+        {{ record.rsiHandle }}
+      </a>
+    </template>
+
+    <template #col-role="{ record }">
+      <template v-if="record.status === 'invited'">
+        {{ t("labels.fleet.members.invited") }}
+      </template>
+      <template v-else-if="record.status === 'requested'">
+        {{ t("labels.fleet.members.requested") }}
+      </template>
+      <span v-else-if="record.status === 'declined'" class="text-danger">
+        {{ t("labels.fleet.members.declined") }}
+      </span>
+      <template v-else>
+        {{ record.fleetRole.name }}
+      </template>
+    </template>
+
+    <template #col-joined="{ record }">
+      <span
+        v-if="record.status === 'invited' && record.invitedAt"
+        v-tooltip="l(record.invitedAt)"
+      >
+        {{ l(record.invitedAt, "datetime.formats.short") }}
+      </span>
+      <span
+        v-else-if="record.status === 'declined' && record.declinedAt"
+        v-tooltip="l(record.declinedAt)"
+      >
+        {{ l(record.declinedAt, "datetime.formats.short") }}
+      </span>
+      <span
+        v-else-if="record.status === 'requested' && record.requestedAt"
+        v-tooltip="l(record.requestedAt)"
+      >
+        {{ l(record.requestedAt, "datetime.formats.short") }}
+      </span>
+      <span v-else-if="record.acceptedAt" v-tooltip="l(record.acceptedAt)">
+        {{ l(record.acceptedAt, "datetime.formats.short") }}
+      </span>
+    </template>
+
+    <template #col-last_active="{ record }">
+      <span v-if="record.lastActiveAt" v-tooltip="l(record.lastActiveAt)">
+        {{ timeDistance(record.lastActiveAt) }}
+      </span>
+    </template>
+
+    <template #col-links="{ record }">
+      <MemberLinks :member="record" />
+    </template>
+
+    <template #actions="{ record }">
+      <MemberActions :member="record" :resource-access="props.resourceAccess" />
+    </template>
+  </BaseTable>
 </template>
+
+<style lang="scss" scoped>
+.member-username {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.member-username-inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.rsi-handle-inline {
+  font-size: 0.85em;
+  opacity: 0.8;
+}
+</style>

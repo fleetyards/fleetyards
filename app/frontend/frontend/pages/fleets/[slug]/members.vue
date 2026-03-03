@@ -22,6 +22,7 @@ import {
   useSubscription,
 } from "@/shared/composables/useSubscription";
 import { useFilters } from "@/shared/composables/useFilters";
+import { checkAccess } from "@/shared/utils/Access";
 import {
   useFleetMembersStats as useFleetMembersStatsQuery,
   useFleetMembers as useFleetMembersQuery,
@@ -46,8 +47,16 @@ const mobile = useMobile();
 
 const route = useRoute();
 
+const resourceAccess = computed(
+  () => props.membership.fleetRole.resourceAccess,
+);
+
 const canInvite = computed(() =>
-  ["admin", "officer"].includes(props.membership.fleetRole.name),
+  checkAccess(resourceAccess.value, [
+    "fleet:invites:create",
+    "fleet:invites:manage",
+    "fleet:manage",
+  ]),
 );
 
 const { isFilterSelected, getQuery } = useFilters<FleetMemberQuery>({
@@ -186,10 +195,7 @@ const openInviteModal = () => {
     </template>
 
     <template #default="{ records }">
-      <FleetMembersList
-        :members="records"
-        :role="membership.fleetRole.name as 'admin' | 'officer' | 'member'"
-      />
+      <FleetMembersList :members="records" :resource-access="resourceAccess" />
     </template>
   </FilteredList>
 </template>

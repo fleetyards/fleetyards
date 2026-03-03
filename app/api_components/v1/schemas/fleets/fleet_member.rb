@@ -28,6 +28,7 @@ module V1
             primary: {type: :boolean},
             isDestroyAllowed: {type: :boolean},
             hangarUpdatedAt: {type: :string, format: "date-time"},
+            lastActiveAt: {type: :string, format: "date-time"},
             invitedAt: {type: :string, format: "date-time"},
             invitedAtLabel: {type: :string},
             requestedAt: {type: :string, format: "date-time"},

@@ -22,11 +22,3 @@
     }
   }
 }
-
-@media (max-width: $desktop-breakpoint) {
-  .base-table {
-    &__inner {
-      min-width: 600px;
-    }
-  }
-}

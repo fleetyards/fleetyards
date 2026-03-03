@@ -4,10 +4,18 @@ export default {
 };
 </script>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+type Props = {
+  clickable?: boolean;
+};
+
+withDefaults(defineProps<Props>(), {
+  clickable: false,
+});
+</script>
 
 <template>
-  <tr class="base-table-row">
+  <tr class="base-table-row" :class="{ clickable }">
     <slot />
   </tr>
 </template>

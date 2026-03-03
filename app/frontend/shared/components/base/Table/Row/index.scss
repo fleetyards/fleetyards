@@ -1,4 +1,8 @@
 .base-table-row {
+  &.clickable {
+    cursor: pointer;
+  }
+
   &:hover {
     :deep(> div),
     :deep(> td) {

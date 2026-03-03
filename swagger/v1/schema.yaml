@@ -5311,6 +5311,9 @@ components:
         hangarUpdatedAt:
           type: string
           format: date-time
+        lastActiveAt:
+          type: string
+          format: date-time
         invitedAt:
           type: string
           format: date-time

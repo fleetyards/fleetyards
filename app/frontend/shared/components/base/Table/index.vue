@@ -36,6 +36,7 @@ type Props = {
   emptyVisible?: boolean;
   selectable?: boolean;
   selected?: string[];
+  rowClickable?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -48,6 +49,7 @@ const props = withDefaults(defineProps<Props>(), {
   emptyVisible: false,
   selectable: false,
   selected: () => [],
+  rowClickable: false,
 });
 
 const internalSelected = ref<string[]>([]);
@@ -81,7 +83,7 @@ watch(
   },
 );
 
-const emit = defineEmits(["selected-change"]);
+const emit = defineEmits(["selected-change", "row-click"]);
 
 watch(
   () => internalSelected.value,
@@ -195,6 +197,8 @@ const resetSelected = () => {
               v-else
               :id="String(primaryValue(record))"
               :key="primaryValue(record)"
+              :clickable="props.rowClickable"
+              @click="props.rowClickable && emit('row-click', record)"
             >
               <TableCol v-if="props.selectable" variant="selection">
                 <FormCheckbox

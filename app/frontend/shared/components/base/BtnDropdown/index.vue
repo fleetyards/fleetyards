@@ -35,9 +35,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const visible = ref(false);
 
-const innerExpandLeft = ref(false);
-
-const innerExpandTop = ref(false);
+const listPosition = ref<Record<string, string>>({});
 
 const cssClasses = computed(() => {
   return {
@@ -47,9 +45,6 @@ const cssClasses = computed(() => {
 
 onMounted(() => {
   document.addEventListener("click", documentClick);
-
-  innerExpandLeft.value = props.expandLeft;
-  innerExpandTop.value = props.expandTop;
 });
 
 onUnmounted(() => {
@@ -62,11 +57,29 @@ const toggle = (event: MouseEvent) => {
   if (target) {
     const bounding = (target as HTMLElement).getBoundingClientRect();
 
-    innerExpandLeft.value =
+    const expandLeft =
       props.expandLeft || window.innerWidth - bounding.left < 300;
-    innerExpandTop.value =
+    const expandTop =
       (props.expandTop || window.innerHeight - bounding.top < 300) &&
       !props.expandBottom;
+
+    const position: Record<string, string> = {};
+
+    if (expandTop) {
+      position.top = `${bounding.top + window.scrollY - 10}px`;
+      position.transform = "translateY(-100%)";
+    } else {
+      position.top = `${bounding.bottom + window.scrollY + 10}px`;
+    }
+
+    if (expandLeft) {
+      position.left = `${bounding.right + window.scrollX}px`;
+      position.transform = (position.transform || "") + " translateX(-100%)";
+    } else {
+      position.left = `${bounding.left + window.scrollX}px`;
+    }
+
+    listPosition.value = position;
   }
 
   visible.value = !visible.value;
@@ -82,8 +95,8 @@ const documentClick = (event: MouseEvent) => {
 
   if (
     target !== wrapper.value &&
-    (!wrapper.value?.contains(target as HTMLElement) ||
-      btnList.value?.contains(target as HTMLElement))
+    !wrapper.value?.contains(target as HTMLElement) &&
+    !btnList.value?.contains(target as HTMLElement)
   ) {
     visible.value = false;
   }
@@ -105,17 +118,18 @@ const documentClick = (event: MouseEvent) => {
         <i class="fas fa-ellipsis-v" />
       </slot>
     </Btn>
-    <div
-      ref="btnList"
-      class="panel-btn-dropdown__list"
-      :class="{
-        visible,
-        'expand-left': innerExpandLeft,
-        'expand-top': innerExpandTop,
-      }"
-    >
-      <slot />
-    </div>
+    <Teleport to="body">
+      <div
+        ref="btnList"
+        class="panel-btn-dropdown__list"
+        :class="{
+          visible,
+        }"
+        :style="listPosition"
+      >
+        <slot />
+      </div>
+    </Teleport>
   </div>
 </template>
 

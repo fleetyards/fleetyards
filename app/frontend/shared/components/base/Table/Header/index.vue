@@ -89,7 +89,7 @@ const cssClasses = (column: BaseTableCol<T>) => {
         </span>
       </TableCol>
       <TableCol v-if="props.hasActions" as="th" variant="actions">
-        {{ t("labels.actions") }}
+        <span class="sr-only">{{ t("labels.actions") }}</span>
       </TableCol>
     </TableRow>
   </thead>

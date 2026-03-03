@@ -2,7 +2,7 @@
   position: relative;
   display: flex;
   justify-content: space-between;
-  min-width: 50px;
+  min-width: fit-content;
   margin-right: 10px;
   margin-bottom: 20px;
   vertical-align: middle;
@@ -142,7 +142,7 @@
       }
     }
 
-    &:first-child {
+    &:first-child:not(:only-child) {
       padding-right: 1.5px;
     }
 
