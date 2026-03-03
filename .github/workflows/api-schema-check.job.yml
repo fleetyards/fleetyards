@@ -6,7 +6,8 @@ on:
   workflow_call:
 
 jobs:
-  api-schema-lint:
+  api-schema-check:
+    name: API Schema Check
     runs-on: ubuntu-latest
 
     env:
