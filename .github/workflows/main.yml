@@ -34,6 +34,7 @@ jobs:
     uses: ./.github/workflows/js-prettier.job.yml
 
   api-schema-lint:
+    name: API Schema Lint
     needs: js-setup
     uses: ./.github/workflows/api-schema-lint.job.yml
 
@@ -72,6 +73,7 @@ jobs:
 
 
   api-schema-check:
+    name: API Schema Check
     needs: [ruby-setup, js-setup]
     uses: ./.github/workflows/api-schema-check.job.yml
 

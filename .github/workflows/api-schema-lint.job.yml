@@ -5,7 +5,6 @@ on:
 
 jobs:
   api-schema-lint:
-    name: API Schema Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

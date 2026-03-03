@@ -7,7 +7,6 @@ on:
 
 jobs:
   api-schema-check:
-    name: API Schema Check
     runs-on: ubuntu-latest
 
     env:
