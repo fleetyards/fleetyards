@@ -3,6 +3,8 @@
 module Api
   module V1
     class FleetMembershipsController < ::Api::BaseController
+      skip_verify_authorized only: %i[create_by_invite]
+
       rescue_from ActiveRecord::RecordNotFound do |exception|
         not_found(I18n.t("messages.record_not_found.#{exception.model.downcase}", slug: params[:slug]))
       end
@@ -26,13 +28,11 @@ module Api
 
         @member = invite_url.fleet.fleet_memberships.new(user_id: user.id, role: :member, invited_by: invite_url.user_id, used_invite_token: invite_url.token)
 
-        authorize! :create_by_invite, member
-
-        if member.save
-          member.request!
+        if @member.save
+          @member.request!
           invite_url.reduce_limit
         else
-          render json: ValidationError.new("fleet_memberships.create", errors: member.errors), status: :bad_request
+          render json: ValidationError.new("fleet_memberships.create", errors: @member.errors), status: :bad_request
         end
       end
 

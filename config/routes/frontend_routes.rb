@@ -21,6 +21,7 @@ namespace :frontend, **frontend_options do
 
   get "compare/ships", to: "base#compare_models"
 
+  get "fleets/invites", to: "base#index", as: :fleets_invites
   get "fleets/invites/:token", to: "fleets#invite", as: :fleet_invite
   get "fleets/:slug:", to: "fleets#show", as: :fleet
   get "fleets/:slug/ships", to: "fleets#show"
@@ -41,6 +42,7 @@ namespace :frontend, **frontend_options do
   get "embed-v2-username-test", to: "embed#test_v2_username"
   get "embed-v2-fleet-test", to: "embed#test_v2_fleet"
 
+  get "settings", to: "base#index", as: :settings_account
   get "settings/notifications", to: "base#index"
   get "settings/security", to: "base#index", as: :security_settings
 

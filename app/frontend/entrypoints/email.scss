@@ -1,7 +1,7 @@
 $primary-color: #428bca;
 $global-font-color: #c8c8c8;
 $body-background: #272b30;
-$container-background: #272b30;
+$container-background: #22262a;
 $global-width: 640px;
 $body-font-family: "Open Sans", sans-serif;
 $h1-font-size: 30px;
@@ -278,7 +278,7 @@ html,
 }
 
 .container.content {
-  background: darken($body-background, 5%);
+  background: $container-background;
   border-radius: 2px;
 }
 
