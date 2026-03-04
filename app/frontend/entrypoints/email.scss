@@ -277,8 +277,12 @@ html,
   background: $body-background !important;
 }
 
+.container {
+  background: transparent !important;
+}
+
 .container.content {
-  background: $container-background;
+  background: $container-background !important;
   border-radius: 2px;
 }
 
