@@ -162,14 +162,14 @@ export const useMetaInfo = (options: MetaInfoOptions = {}) => {
   watch(
     () => route.meta?.title,
     () => {
-      if (!route.meta.customTitle) {
+      if (!options.custom && !route.meta.customTitle) {
         updateMetaInfo();
       }
     },
   );
 
   onMounted(() => {
-    if (!route.meta.customTitle) {
+    if (!options.custom && !route.meta.customTitle) {
       updateMetaInfo();
     }
   });

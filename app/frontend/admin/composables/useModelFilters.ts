@@ -1,23 +1,10 @@
 import { type ModelQuery } from "@/services/fyAdminApi";
 import { useFilters } from "@/shared/composables/useFilters";
 
-export type AllowedFilters = ModelQuery;
-
 export const useModelFilters = (
   updateCallback?: (() => void) | (() => Promise<void>),
 ) => {
-  return useFilters<AllowedFilters>({
-    allowedKeys: [
-      "searchCont",
-      "nameCont",
-      "scIdentifierBlank",
-      "fleetchartImageBlank",
-      "holoBlank",
-      "topViewColoredBlank",
-      "frontViewBlank",
-      "manufacturerIn",
-      "productionStatusIn",
-    ],
+  return useFilters<ModelQuery>({
     updateCallback,
   });
 };

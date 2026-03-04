@@ -1,17 +1,16 @@
 import debounce from "lodash.debounce";
 
 export const useFilters = <T>({
-  allowedKeys,
   ignoreKeys,
   updateCallback,
 }: {
-  allowedKeys?: (keyof T)[];
   ignoreKeys?: string[];
   updateCallback?: (() => void) | (() => Promise<void>);
 } = {}) => {
   const route = useRoute();
 
-  const defaultAllowedKeys = ["s", "sorts"];
+  const defaultIgnoreKeys = ["s", "sorts"];
+  const paginationKeys = ["page", "perPage"];
 
   const filters = computed<T>(() => (route.query || {}) as T);
 
@@ -36,11 +35,7 @@ export const useFilters = <T>({
       .forEach((key) => delete query[key]);
 
     Object.keys(query)
-      .filter((key) => {
-        return ![...(allowedKeys || []), ...defaultAllowedKeys].includes(
-          key as keyof T,
-        );
-      })
+      .filter((key) => paginationKeys.includes(key))
       .forEach((key) => delete query[key]);
 
     return query;
@@ -51,7 +46,7 @@ export const useFilters = <T>({
 
     Object.keys(query)
       .filter((key) => {
-        return [...(ignoreKeys || []), ...defaultAllowedKeys].includes(key);
+        return [...(ignoreKeys || []), ...defaultIgnoreKeys].includes(key);
       })
       .forEach((key) => delete query[key]);
 

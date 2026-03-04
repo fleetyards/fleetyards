@@ -23,27 +23,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const variantKeys: Record<string, (keyof FleetMemberQuery)[]> = {
-  members: ["acceptedAtGteq", "acceptedAtLteq"],
-  invites: [
-    "stateIn",
-    "invitedAtGteq",
-    "invitedAtLteq",
-    "requestedAtGteq",
-    "requestedAtLteq",
-    "declinedAtGteq",
-    "declinedAtLteq",
-  ],
-};
-
 const { filter, resetFilter, isFilterSelected, filters } =
   useFilters<FleetMemberQuery>({
-    allowedKeys: [
-      "usernameCont",
-      "roleIn",
-      "sorts",
-      ...variantKeys[props.variant],
-    ],
     updateCallback: setupForm,
   });
 

@@ -60,18 +60,6 @@ const canInvite = computed(() =>
 const defaultStates = ["invited", "requested", "declined"];
 
 const { isFilterSelected, getQuery } = useFilters<FleetMemberQuery>({
-  allowedKeys: [
-    "usernameCont",
-    "roleIn",
-    "sorts",
-    "stateIn",
-    "invitedAtGteq",
-    "invitedAtLteq",
-    "requestedAtGteq",
-    "requestedAtLteq",
-    "declinedAtGteq",
-    "declinedAtLteq",
-  ],
   updateCallback: async () => {
     await refetch();
   },

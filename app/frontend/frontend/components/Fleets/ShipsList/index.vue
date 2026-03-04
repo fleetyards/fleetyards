@@ -161,7 +161,7 @@ const fleetVehiclesQueryKey = computed(() => {
   );
 });
 
-const { filters } = useFilters<FleetVehicleQuery>({
+const { getQuery } = useFilters<FleetVehicleQuery>({
   updateCallback: async () => {
     await refetch();
   },
@@ -173,7 +173,7 @@ const fleetVehiclesQueryParams = computed(() => {
   return {
     page: page.value,
     perPage: perPage.value,
-    q: filters.value,
+    q: getQuery(),
     grouped: grouped.value,
   };
 });

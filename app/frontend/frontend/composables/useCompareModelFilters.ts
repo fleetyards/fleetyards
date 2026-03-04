@@ -6,7 +6,6 @@ type AllowedFilters = {
 
 export const useCompareModelFilters = (updateCallback?: () => void) => {
   return useFilters<AllowedFilters>({
-    allowedKeys: ["models"],
     updateCallback,
   });
 };

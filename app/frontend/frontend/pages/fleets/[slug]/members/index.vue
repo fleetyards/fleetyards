@@ -59,13 +59,6 @@ const canManageInvites = computed(() =>
 );
 
 const { isFilterSelected, getQuery } = useFilters<FleetMemberQuery>({
-  allowedKeys: [
-    "usernameCont",
-    "roleIn",
-    "sorts",
-    "acceptedAtGteq",
-    "acceptedAtLteq",
-  ],
   updateCallback: async () => {
     await refetch();
   },

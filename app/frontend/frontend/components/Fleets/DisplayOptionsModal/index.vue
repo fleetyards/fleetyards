@@ -116,40 +116,43 @@ const displayAsList = () => {
         />
       </div>
     </div>
-    <div v-if="!fleetStore.gridView" class="row">
-      <div class="col-12">
-        <fieldset>
-          <legend>
-            <h3>{{ t("labels.fleetTable.extraColumns") }}:</h3>
-          </legend>
-          <div class="row">
-            <div
-              v-for="option in imageColumnOptions"
-              :key="option"
-              class="col-12 col-md-6"
-            >
-              <FormCheckbox
-                v-model="tableViewImageCols"
-                :checkbox-value="option"
-                :name="option"
-                :label="t('labels.fleetTable.columns.' + option)"
-              />
+    <template v-if="!fleetStore.gridView">
+      <hr />
+      <div class="row">
+        <div class="col-12">
+          <fieldset>
+            <legend>
+              <h3>{{ t("labels.fleetTable.extraColumns") }}:</h3>
+            </legend>
+            <div class="row">
+              <div
+                v-for="option in imageColumnOptions"
+                :key="option"
+                class="col-12 col-md-6"
+              >
+                <FormCheckbox
+                  v-model="tableViewImageCols"
+                  :checkbox-value="option"
+                  :name="option"
+                  :label="t('labels.fleetTable.columns.' + option)"
+                />
+              </div>
+              <div
+                v-for="option in columnOptions"
+                :key="option"
+                class="col-12 col-md-6"
+              >
+                <FormCheckbox
+                  v-model="tableViewCols"
+                  :checkbox-value="option"
+                  :name="option"
+                  :label="t('labels.fleetTable.columns.' + option)"
+                />
+              </div>
             </div>
-            <div
-              v-for="option in columnOptions"
-              :key="option"
-              class="col-12 col-md-6"
-            >
-              <FormCheckbox
-                v-model="tableViewCols"
-                :checkbox-value="option"
-                :name="option"
-                :label="t('labels.fleetTable.columns.' + option)"
-              />
-            </div>
-          </div>
-        </fieldset>
+          </fieldset>
+        </div>
       </div>
-    </div>
+    </template>
   </Modal>
 </template>
