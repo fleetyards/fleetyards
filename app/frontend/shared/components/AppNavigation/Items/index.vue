@@ -138,7 +138,8 @@ const routeTo = (route: RouteRecordRaw, nav: NavTypes = "main") => {
       <NavItem
         v-for="child in filteredChildRoutes(route.children || [])"
         :key="child.name"
-        :to="{ name: child.name }"
+        :to="child.meta?.href ? undefined : { name: child.name }"
+        :href="child.meta?.href"
         :label="t(`nav.${child.meta?.title}`)"
         :icon="child.meta?.icon"
         :active="isActive(child)"

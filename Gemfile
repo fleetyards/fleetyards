@@ -108,6 +108,7 @@ gem "bootsnap", ">= 1.1.0", require: false
 gem "appsignal"
 
 gem "pghero"
+gem "pghero_assets"
 gem "pg_query", ">= 0.9.0"
 
 gem "git"

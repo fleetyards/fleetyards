@@ -10,6 +10,7 @@ export const routes: RouteRecordRaw[] = [
       icon: "fad fa-database",
       needsAuthentication: true,
       access: ["pghero"],
+      href: "/pghero",
     },
   },
   {
@@ -21,6 +22,7 @@ export const routes: RouteRecordRaw[] = [
       icon: "fad fa-circle-star",
       needsAuthentication: true,
       access: ["features"],
+      href: "/features",
     },
   },
   {
@@ -32,6 +34,7 @@ export const routes: RouteRecordRaw[] = [
       icon: "fad fa-list-timeline",
       needsAuthentication: true,
       access: ["workers"],
+      href: "/workers",
     },
   },
   {
@@ -43,6 +46,7 @@ export const routes: RouteRecordRaw[] = [
       icon: "fad fa-list-timeline",
       needsAuthentication: true,
       access: ["maintenance"],
+      href: "/maintenance_tasks",
     },
   },
   {

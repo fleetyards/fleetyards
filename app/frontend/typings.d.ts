@@ -13,6 +13,7 @@ declare module "vue-router" {
     access?: string[];
     nav?: "main" | "sub" | "footer" | "editTabs" | "hidden";
     mobileNav?: number;
+    href?: string;
   }
 }
 
