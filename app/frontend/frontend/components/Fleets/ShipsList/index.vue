@@ -352,6 +352,15 @@ const {
             :download-name="`${fleet.slug}-fleetchart`"
           />
         </template>
+        <template #pagination-top>
+          <Paginator
+            v-if="fleetVehicles"
+            :query-result-ref="fleetVehicles"
+            :per-page="perPage"
+            :update-per-page="updatePerPage"
+          />
+        </template>
+
         <template #pagination-bottom>
           <Paginator
             v-if="fleetVehicles"

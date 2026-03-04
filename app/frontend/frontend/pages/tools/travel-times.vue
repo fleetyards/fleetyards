@@ -208,6 +208,15 @@ const { data: quantumDrives, ...asyncStatus } = useComponentsQuery(
       </BaseTable>
     </template>
 
+    <template #pagination-top>
+      <Paginator
+        v-if="quantumDrives"
+        :query-result-ref="quantumDrives"
+        :per-page="perPage"
+        :update-per-page="updatePerPage"
+      />
+    </template>
+
     <template #pagination-bottom>
       <Paginator
         v-if="quantumDrives"

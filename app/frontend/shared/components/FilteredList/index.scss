@@ -8,6 +8,10 @@
 
   &__actions-right {
     display: flex;
+
+    :deep(.pagination) {
+      width: auto;
+    }
   }
 }
 

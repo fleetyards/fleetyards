@@ -221,6 +221,15 @@ onMounted(async () => {
       </FleetchartApp>
     </template>
 
+    <template #pagination-top>
+      <Paginator
+        v-if="wishlist"
+        :query-result-ref="wishlist"
+        :per-page="wishlist?.meta?.pagination?.defaultPerPage || 20"
+        :update-per-page="() => refetch()"
+      />
+    </template>
+
     <template #pagination-bottom>
       <Paginator
         v-if="wishlist"

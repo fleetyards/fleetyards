@@ -295,6 +295,15 @@ useSubscription({
       </FleetchartApp>
     </template>
 
+    <template #pagination-top>
+      <Paginator
+        v-if="vehicles"
+        :query-result-ref="vehicles"
+        :per-page="perPage"
+        :update-per-page="updatePerPage"
+      />
+    </template>
+
     <template #pagination-bottom>
       <Paginator
         v-if="vehicles"
