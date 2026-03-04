@@ -64,6 +64,9 @@
         "vehicles": {
           "index": "Vehicles"
         },
+        "fleets": {
+          "index": "Fleets"
+        },
         "admins": {
           "index": "Admins",
           "new": "New Admin",

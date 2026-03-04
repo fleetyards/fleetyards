@@ -30,6 +30,7 @@ const destroy = () => {
 
 <template>
   <Btn
+    v-tooltip="!withLabels && t('actions.edit')"
     :size="BtnSizesEnum.SMALL"
     :to="{
       name: 'admin-model-paint-edit',
@@ -40,6 +41,7 @@ const destroy = () => {
     <span v-if="withLabels">{{ t("actions.edit") }}</span>
   </Btn>
   <Btn
+    v-tooltip="!withLabels && t('actions.delete')"
     :size="BtnSizesEnum.SMALL"
     :variant="BtnVariantsEnum.DANGER"
     @click="destroy"

@@ -415,9 +415,29 @@
         "hardpoints": "Hardpoints",
         "missileOptions": "Missle Options (if available)"
       },
+      "manufacturer": {
+        "longName": "Long Name",
+        "code": "Code",
+        "scRef": "SC Ref"
+      },
+      "modelPaint": {
+        "hidden": "Hidden?",
+        "active": "Active?",
+        "onSale": "On Sale",
+        "pledgePrice": "Pledge Price",
+        "productionStatus": "Production Status",
+        "productionNote": "Production Note"
+      },
       "component": {
         "size": "Size: %{size}",
-        "grade": "grade"
+        "grade": "Grade",
+        "hidden": "Hidden?",
+        "componentClass": "Component Class",
+        "componentType": "Component Type",
+        "componentSubType": "Component Sub Type",
+        "itemType": "Item Type",
+        "scKey": "SC Key",
+        "scRef": "SC Ref"
       },
       "hardpoint": {
         "legend": {
@@ -529,6 +549,7 @@
       },
       "user": {
         "rsiHandle": "Handle",
+        "tester": "Tester?",
         "avatar": "Avatar",
         "unconfirmedEmail": "Unconfirmed email",
         "saleNotify": "I want to receive Sale Notifications",
@@ -606,6 +627,11 @@
       },
 
       "filters": {
+        "components": {
+          "name": "Name",
+          "itemType": "Item Type",
+          "componentClass": "Component Class"
+        },
         "shops": {
           "name": "Name",
           "type": "Type",
@@ -719,6 +745,8 @@
           "model": "Ship"
         },
         "fleets": {
+          "name": "Name",
+          "fid": "FID",
           "member": "Member",
           "members": {
             "role": "Role",

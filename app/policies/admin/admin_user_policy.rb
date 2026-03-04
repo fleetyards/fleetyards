@@ -7,7 +7,19 @@ module Admin
     end
 
     def manage?
-      user&.id == record.id
+      user&.super_admin? || user&.id == record.id
+    end
+
+    def index?
+      user&.super_admin?
+    end
+
+    def create?
+      user&.super_admin?
+    end
+
+    def destroy?
+      user&.super_admin? && user&.id != record.id
     end
   end
 end

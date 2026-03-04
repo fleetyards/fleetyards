@@ -37,6 +37,8 @@ en:
     resend_confirmation:
       failure: "%{resource} could not resend confirmation."
       success: "%{resource} confirmation send."
+    send_password_reset:
+      success: "%{resource} password reset instructions sent."
     rsi_verification:
       failure: Account could not be verified.
       success: Account successfully verified.

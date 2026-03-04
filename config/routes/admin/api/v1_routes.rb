@@ -3,15 +3,17 @@
 v1_admin_api_routes = lambda do
   resource :sessions, only: %i[create destroy]
 
-  resources :admin_users, only: %i[index create update destroy] do
+  resources :admin_users, only: %i[index show create update destroy] do
     collection do
       get :me
     end
   end
 
-  resources :users, only: %i[index create update destroy] do
+  resources :users, only: %i[index show update destroy] do
     member do
       get "login-as", to: "users#login_as"
+      post "resend-confirmation", to: "users#resend_confirmation"
+      post "send-password-reset", to: "users#send_password_reset"
     end
   end
 
@@ -32,14 +34,16 @@ v1_admin_api_routes = lambda do
   end
 
   resources :model_modules, path: "model-modules", only: %i[index]
-  resources :model_paints, path: "model-paints", only: %i[index]
+  resources :model_paints, path: "model-paints", only: %i[index show create update destroy]
 
-  resources :manufacturers, only: %i[index show]
+  resources :manufacturers, only: %i[index show create update destroy]
 
-  resources :components, only: %i[index show] do
+  resources :components, only: %i[index show create update destroy] do
     get :class_filters, on: :collection
     get :item_type_filters, on: :collection
   end
+
+  resources :fleets, only: %i[index show create update destroy]
 
   resources :vehicles, only: %i[index]
 

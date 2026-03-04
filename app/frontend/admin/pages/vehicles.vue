@@ -68,11 +68,13 @@ const columns: BaseTableCol<Vehicle>[] = [
     name: "image",
     label: "",
     alignment: "center",
+    width: "120px",
   },
   {
     name: "fleetchart",
     label: "",
     alignment: "center",
+    width: "120px",
     mobile: false,
   },
   {
@@ -158,6 +160,7 @@ const image = (record: Vehicle) => {
             size="small"
             alt="Model angledView"
             :variant="LazyImageVariantsEnum.WIDE_SMALL"
+            transparent
           />
         </template>
         <template #col-model_name="{ record }">

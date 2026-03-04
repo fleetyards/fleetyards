@@ -4,7 +4,7 @@ module Admin
   module Api
     module V1
       class ManufacturersController < ::Admin::Api::BaseController
-        before_action :set_manufacturer, only: %i[show]
+        before_action :set_manufacturer, only: %i[show update destroy]
 
         rescue_from ActiveRecord::RecordNotFound do |_exception|
           not_found(I18n.t("messages.record_not_found.manufacturer", slug: params[:slug]))
@@ -29,10 +29,38 @@ module Admin
         def show
         end
 
+        def create
+          @manufacturer = Manufacturer.new(manufacturer_params)
+
+          authorize! @manufacturer, with: ::Admin::ManufacturerPolicy
+
+          return if @manufacturer.save
+
+          render json: ValidationError.new("manufacturer.create", errors: @manufacturer.errors), status: :bad_request
+        end
+
+        def update
+          return if @manufacturer.update(manufacturer_params)
+
+          render json: ValidationError.new("manufacturer.update", errors: @manufacturer.errors), status: :bad_request
+        end
+
+        def destroy
+          return if @manufacturer.destroy
+
+          render json: ValidationError.new("manufacturer.destroy", errors: @manufacturer.errors), status: :bad_request
+        end
+
         private def set_manufacturer
           @manufacturer = Manufacturer.find(params[:id])
 
           authorize! @manufacturer, with: ::Admin::ManufacturerPolicy
+        end
+
+        private def manufacturer_params
+          @manufacturer_params ||= params.permit(
+            :name, :long_name, :code, :description, :known_for, :logo, :sc_ref
+          )
         end
 
         private def manufacturer_query_params

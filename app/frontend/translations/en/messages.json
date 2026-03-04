@@ -266,6 +266,11 @@
         },
         "twoFactor": {
           "generateBackupCodes": "Are you sure you want to regenerate your Two-factor Backup Codes?"
+        },
+        "user": {
+          "loginAs": "Are you sure you want to login as this user?",
+          "resendConfirmation": "Are you sure you want to resend the confirmation email for this user?",
+          "sendPasswordReset": "Are you sure you want to send a password reset email for this user?"
         }
       },
       "syncExtension": {

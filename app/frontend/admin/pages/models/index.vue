@@ -7,7 +7,6 @@ export default {
 <script lang="ts" setup>
 import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
-import Loader from "@/shared/components/Loader/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
@@ -198,10 +197,6 @@ watch(
         <i class="fad fa-sliders" />
       </Btn>
     </template>
-
-    <template #loader="{ loading }">
-      <Loader :loading="loading" fixed admin />
-    </template>
     <template #filter>
       <FilterForm />
     </template>
@@ -215,9 +210,6 @@ watch(
         default-sort="name asc"
         selectable
       >
-        <template #loader="{ loading }">
-          <Loader :loading="loading" admin />
-        </template>
         <template #col-storeImage="{ record }">
           <ViewImage
             :image="record.media.storeImage"

@@ -37,15 +37,24 @@ const destroy = () => {
 </script>
 
 <template>
-  <Btn :size="BtnSizesEnum.SMALL" @click="sync">
+  <Btn
+    v-tooltip="!withLabels && t('actions.models.sync')"
+    :size="BtnSizesEnum.SMALL"
+    @click="sync"
+  >
     <i class="fad fa-rotate" />
     <span v-if="withLabels">{{ t("actions.models.sync") }}</span>
   </Btn>
-  <Btn :size="BtnSizesEnum.SMALL" @click="exchangeStoreImage">
+  <Btn
+    v-tooltip="!withLabels && t('actions.models.exchangeStoreImage')"
+    :size="BtnSizesEnum.SMALL"
+    @click="exchangeStoreImage"
+  >
     <i class="fad fa-arrow-right-arrow-left" />
     <span v-if="withLabels">{{ t("actions.models.exchangeStoreImage") }}</span>
   </Btn>
   <Btn
+    v-tooltip="!withLabels && t('actions.edit')"
     :size="BtnSizesEnum.SMALL"
     :to="{ name: 'admin-model-edit', params: { id: props.model.id } }"
   >
@@ -53,6 +62,7 @@ const destroy = () => {
     <span v-if="withLabels">{{ t("actions.edit") }}</span>
   </Btn>
   <Btn
+    v-tooltip="!withLabels && t('actions.delete')"
     :size="BtnSizesEnum.SMALL"
     :variant="BtnVariantsEnum.DANGER"
     @click="destroy"

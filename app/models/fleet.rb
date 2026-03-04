@@ -84,6 +84,21 @@ class Fleet < ApplicationRecord
       multiline: true
     }
 
+  DEFAULT_SORTING_PARAMS = "name asc"
+  ALLOWED_SORTING_PARAMS = ["name asc", "name desc", "createdAt asc", "createdAt desc"]
+
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "created_at", "created_by", "description", "fid", "id", "id_value",
+      "name", "normalized_fid", "public_fleet", "public_fleet_stats",
+      "slug", "updated_at"
+    ]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    []
+  end
+
   mount_uploader :logo, LogoUploader
   mount_uploader :background_image, ImageUploader
 

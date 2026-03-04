@@ -39,4 +39,5 @@ export enum PanelBgRoundedEnum {
 export enum PanelBgColorsEnum {
   DEFAULT = "default",
   PRIMARY = "primary",
+  ADMIN = "admin",
 }

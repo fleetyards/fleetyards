@@ -66,6 +66,7 @@ const columns: BaseTableCol<Manufacturer>[] = [
   {
     name: "logo",
     label: "",
+    width: "120px",
     alignment: "center",
   },
   {

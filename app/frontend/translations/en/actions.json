@@ -161,6 +161,11 @@
         "images": "Images",
         "openTableConfiguration": "Open Table Configuration"
       },
+      "users": {
+        "loginAs": "Login as User",
+        "resendConfirmation": "Resend Confirmation",
+        "sendPasswordReset": "Send Password Reset"
+      },
       "unselect": "Unselect all Selected",
       "openPriceModal": "Submit Price",
       "shoppingCart": {
