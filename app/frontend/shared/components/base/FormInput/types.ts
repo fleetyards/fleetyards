@@ -5,6 +5,7 @@ export enum InputTypesEnum {
   EMAIL = "email",
   URL = "url",
   COLOR = "color",
+  DATE = "date",
 }
 
 export enum InputSizesEnum {

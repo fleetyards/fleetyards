@@ -497,7 +497,18 @@
         },
         "fleets": {
           "member": "Membro",
-          "members": { "role": "Ruolo" },
+          "members": {
+            "role": "Ruolo",
+            "state": "Stato",
+            "acceptedAtGt": "Iscritto dal",
+            "acceptedAtLt": "Iscritto fino al",
+            "invitedAtGt": "Invitato dal",
+            "invitedAtLt": "Invitato fino al",
+            "requestedAtGt": "Richiesto dal",
+            "requestedAtLt": "Richiesto fino al",
+            "declinedAtGt": "Rifiutato dal",
+            "declinedAtLt": "Rifiutato fino al"
+          },
           "inviteUrls": {
             "expiresAfter": "Scade dopo",
             "limit": "Numero massimo di utilizzi"

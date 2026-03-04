@@ -18,7 +18,7 @@
               <row>
                 <columns small="12" large="3">
                   <center>
-                    <img src="<%= vite_asset_url('images/logo-small.png') %>" alt="logo">
+                    <img src="<%= vite_asset_url('images/logo.png') %>" alt="logo">
                   </center>
                 </columns>
                 <columns small="12" large="9">

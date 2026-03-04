@@ -81,8 +81,7 @@ const handleFleetInvite = async () => {
 
       await router
         .push({
-          name: "fleet",
-          params: { slug: member.fleetSlug },
+          name: "home",
         })
         .catch(() => {});
     })

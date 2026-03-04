@@ -42,7 +42,7 @@ class FleetInviteUrl < ApplicationRecord
   belongs_to :user
 
   validates :token, uniqueness: true, presence: true
-  validates :limit, numericality: {greater_than: 0}, allow_nil: true
+  validates :limit, numericality: {greater_than_or_equal_to: 0}, allow_nil: true
 
   before_validation :generate_token
 
@@ -76,7 +76,7 @@ class FleetInviteUrl < ApplicationRecord
 
   def reduce_limit
     if limit.present? && !limit_reached?
-      update(limit: limit - 1, usage_count: usage_count + 1)
+      update!(limit: limit - 1, usage_count: usage_count + 1)
     else
       increment!(:usage_count)
     end

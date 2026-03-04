@@ -59,7 +59,13 @@ const canManageInvites = computed(() =>
 );
 
 const { isFilterSelected, getQuery } = useFilters<FleetMemberQuery>({
-  allowedKeys: ["usernameCont", "roleIn", "sorts"],
+  allowedKeys: [
+    "usernameCont",
+    "roleIn",
+    "sorts",
+    "acceptedAtGteq",
+    "acceptedAtLteq",
+  ],
   updateCallback: async () => {
     await refetch();
   },
@@ -179,7 +185,7 @@ const crumbs = computed(() => {
     </template>
 
     <template #filter>
-      <FleetMembersFilterForm />
+      <FleetMembersFilterForm variant="members" />
     </template>
 
     <template #default="{ emptyVisible }">

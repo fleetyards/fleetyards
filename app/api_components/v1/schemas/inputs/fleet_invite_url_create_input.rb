@@ -9,8 +9,8 @@ module V1
         schema({
           type: :object,
           properties: {
-            limit: {type: :integer},
-            expiresAfterMinutes: {type: :integer}
+            limit: {type: :integer, nullable: true},
+            expiresAfterMinutes: {type: :integer, nullable: true}
           },
           additionalProperties: false
         })

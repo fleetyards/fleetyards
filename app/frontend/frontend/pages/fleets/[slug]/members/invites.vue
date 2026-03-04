@@ -14,8 +14,10 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
+import FleetMembersFilterForm from "@/frontend/components/Fleets/MembersFilterForm/index.vue";
 import FleetInvitesList from "@/frontend/components/Fleets/InvitesList/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { useFilters } from "@/shared/composables/useFilters";
 import { checkAccess } from "@/shared/utils/Access";
 import {
   ChannelsEnum,
@@ -55,11 +57,35 @@ const canInvite = computed(() =>
   ]),
 );
 
-const membersQueryParams = computed<FleetMembersParams>(() => ({
-  q: {
-    stateIn: ["invited", "requested", "declined"],
-  } as FleetMemberQuery,
-}));
+const defaultStates = ["invited", "requested", "declined"];
+
+const { isFilterSelected, getQuery } = useFilters<FleetMemberQuery>({
+  allowedKeys: [
+    "usernameCont",
+    "roleIn",
+    "sorts",
+    "stateIn",
+    "invitedAtGteq",
+    "invitedAtLteq",
+    "requestedAtGteq",
+    "requestedAtLteq",
+    "declinedAtGteq",
+    "declinedAtLteq",
+  ],
+  updateCallback: async () => {
+    await refetch();
+  },
+});
+
+const membersQueryParams = computed<FleetMembersParams>(() => {
+  const query = getQuery();
+  return {
+    q: {
+      ...query,
+      stateIn: query.stateIn?.length ? query.stateIn : defaultStates,
+    } as FleetMemberQuery,
+  };
+});
 
 const {
   data: members,
@@ -69,11 +95,14 @@ const {
 
 const memberItems = computed(() => members.value?.items || []);
 
-const statsQueryParams = computed<FleetMembersStatsParams>(() => ({
-  q: {
-    stateIn: ["invited", "requested", "declined"],
-  } as FleetMemberQuery,
-}));
+const statsQueryParams = computed<FleetMembersStatsParams>(() => {
+  const query = getQuery();
+  return {
+    q: {
+      stateIn: query.stateIn?.length ? query.stateIn : defaultStates,
+    } as FleetMemberQuery,
+  };
+});
 
 const { data: stats, refetch: refetchStats } = useFleetMembersStatsQuery(
   props.fleet.slug,
@@ -83,6 +112,13 @@ const { data: stats, refetch: refetchStats } = useFleetMembersStatsQuery(
 const fetch = async () => {
   await Promise.all([refetch(), refetchStats()]);
 };
+
+watch(
+  () => route.query.q,
+  async () => {
+    await fetch();
+  },
+);
 
 const fleetMemberInvitedComlink = ref();
 const fleetMemberUpdateComlink = ref();
@@ -175,9 +211,13 @@ const openInviteModal = () => {
     :records="memberItems"
     :name="route.name?.toString() || ''"
     :async-status="asyncStatus"
-    :is-filter-selected="false"
+    :is-filter-selected="isFilterSelected"
     hide-empty
   >
+    <template #filter>
+      <FleetMembersFilterForm variant="invites" />
+    </template>
+
     <template v-if="mobile && canInvite" #actions-right>
       <BtnDropdown :size="BtnSizesEnum.SMALL">
         <Btn :size="BtnSizesEnum.SMALL" @click="openInviteUrlModal">

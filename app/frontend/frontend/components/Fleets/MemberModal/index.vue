@@ -38,11 +38,12 @@ const validationSchema = {
 
 const { displayAlert } = useAppNotifications();
 
-const { defineField, handleSubmit, setErrors } = useForm<FleetMemberCreateInput>({
-  initialValues: {
-    username: undefined,
-  },
-});
+const { defineField, handleSubmit, setErrors } =
+  useForm<FleetMemberCreateInput>({
+    initialValues: {
+      username: undefined,
+    },
+  });
 
 const [username, usernameProps] = defineField("username");
 
@@ -89,10 +90,7 @@ const onSubmit = handleSubmit(async (values) => {
 
 <template>
   <Modal v-if="fleet" :title="t('headlines.fleets.inviteMember')">
-    <form
-      :id="`fleet-member-${fleet.id}`"
-      @submit.prevent="onSubmit"
-    >
+    <form :id="`fleet-member-${fleet.id}`" @submit.prevent="onSubmit">
       <div class="row">
         <div class="col-12">
           <FormInput
