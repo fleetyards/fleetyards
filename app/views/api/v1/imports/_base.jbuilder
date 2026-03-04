@@ -5,9 +5,9 @@ json.type import.type
 json.status import.aasm_state
 json.info import.info
 json.version import.version
+json.input import.input
 
 if local_assigns.fetch(:extended, false)
-  json.input import.input
   json.output import.output
   json.import import.import
   json.import_data import.import_data

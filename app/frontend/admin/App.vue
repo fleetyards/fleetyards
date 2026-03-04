@@ -42,7 +42,7 @@ useMetaInfo({
   appTitle: t("title.defaultAdmin"),
 });
 
-useImportUpdates("ModelsImport");
+useImportUpdates();
 
 const route = useRoute();
 

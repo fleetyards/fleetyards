@@ -10,9 +10,9 @@ module Loaders
 
         import.start!
 
-        loader = ::ScData::ModelsLoader.new(sc_version: version)
+        loader = ::ScData::Loader::ModelsLoader.new(sc_version: version)
 
-        loader.run_single(Model.find(model_id))
+        loader.one(Model.find(model_id))
 
         import.finish!
       rescue => e

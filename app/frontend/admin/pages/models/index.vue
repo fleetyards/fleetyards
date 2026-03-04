@@ -36,6 +36,16 @@ import {
   useReloadModelsScData,
 } from "@/services/fyAdminApi";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useImportLoading } from "@/admin/composables/useImportLoading";
+import { ImportTypeEnum } from "@/services/fyAdminApi";
+
+const { isImporting: isReloadingMatrix } = useImportLoading(
+  ImportTypeEnum["Imports::ModelsImport"],
+);
+
+const { isImporting: isReloadingScData } = useImportLoading(
+  ImportTypeEnum["Imports::ScData::ModelsImport"],
+);
 
 const route = useRoute();
 
@@ -194,11 +204,21 @@ watch(
   </Heading>
 
   <Teleport to="#header-right">
-    <Btn :size="BtnSizesEnum.SMALL" @click="reloadModels">
+    <Btn
+      :size="BtnSizesEnum.SMALL"
+      :loading="isReloadingMatrix"
+      spinner
+      @click="reloadModels"
+    >
       <i class="fa fa-rotate" />
       {{ t("actions.admin.dashboard.reloadModels") }}
     </Btn>
-    <Btn :size="BtnSizesEnum.SMALL" @click="reloadScData">
+    <Btn
+      :size="BtnSizesEnum.SMALL"
+      :loading="isReloadingScData"
+      spinner
+      @click="reloadScData"
+    >
       <i class="fa fa-rotate" />
       {{ t("actions.admin.dashboard.reloadScData") }}
     </Btn>

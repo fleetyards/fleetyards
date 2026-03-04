@@ -10,7 +10,7 @@ module Loaders
 
         import.start!
 
-        ::ScData::BaseLoader.run_all(sc_version: version)
+        ::ScData::Loader::BaseLoader.all(sc_version: version)
 
         import.finish!
       rescue => e

@@ -19,6 +19,8 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useQueryClient } from "@tanstack/vue-query";
+import { useImportLoading } from "@/admin/composables/useImportLoading";
+import { ImportTypeEnum } from "@/services/fyAdminApi";
 
 type Props = {
   model: Model;
@@ -32,6 +34,19 @@ const props = withDefaults(defineProps<Props>(), {
 const { t } = useI18n();
 const { displayConfirm } = useAppNotifications();
 const queryClient = useQueryClient();
+
+const syncInputMatch = computed(() => ({
+  modelId: props.model.id,
+  rsiId: props.model.rsiId,
+}));
+
+const { isImporting: isSyncing } = useImportLoading(
+  [
+    ImportTypeEnum["Imports::ModelImport"],
+    ImportTypeEnum["Imports::ScData::ModelImport"],
+  ],
+  syncInputMatch,
+);
 
 const invalidateModels = async () => {
   await queryClient.invalidateQueries({
@@ -95,6 +110,8 @@ const destroy = () => {
   <Btn
     v-tooltip="!withLabels && t('actions.models.sync')"
     :size="BtnSizesEnum.SMALL"
+    :loading="isSyncing"
+    spinner
     @click="sync"
   >
     <i class="fad fa-rotate" />

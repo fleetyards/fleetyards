@@ -305,6 +305,11 @@
       "confirmAccess": {
         "failure": "Access could not be confirmed. Please check your password and try again."
       },
+      "import": {
+        "started": "%{type} import started...",
+        "finished": "%{type} import completed successfully.",
+        "failed": "%{type} import failed: %{info}"
+      },
       "syncExtension": {
         "started": "Syncing your Hangar...",
         "success": "Your Hangar has been synced.",
