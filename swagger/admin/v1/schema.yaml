@@ -116,6 +116,36 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: Admin User Detail
+      operationId: adminUser
+      tags:
+      - AdminUsers
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminUser"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
     put:
       summary: Update Admin User
       operationId: updateAdminUser
@@ -1345,6 +1375,112 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/models/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Model id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    delete:
+      summary: Destroy Model
+      operationId: destroyModel
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelExtended"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: Model Detail
+      operationId: model
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelExtended"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    put:
+      summary: Update Model
+      operationId: updateModel
+      tags:
+      - Models
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelExtended"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelUpdateInput"
+        required: true
   "/models/production-states":
     get:
       summary: Model Production states
@@ -1617,7 +1753,37 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/models/{id}":
+  "/models/reload-matrix":
+    put:
+      summary: Reload Models Matrix
+      operationId: reloadModelsMatrix
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/{id}/reload-one":
     parameters:
     - name: id
       in: path
@@ -1626,42 +1792,85 @@ paths:
         type: string
         format: uuid
       required: true
-    get:
-      summary: Model Detail
-      operationId: model
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ModelExtended"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
     put:
-      summary: Update Model
-      operationId: updateModel
+      summary: Reload Single Model
+      operationId: reloadOneModel
       tags:
       - Models
-      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/reload-scdata":
+    put:
+      summary: Reload Models SC Data
+      operationId: reloadModelsScData
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/{id}/use-rsi-image":
+    parameters:
+    - name: id
+      in: path
+      description: Model id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Use RSI Image
+      operationId: useRsiImage
+      tags:
+      - Models
       responses:
         '200':
           description: successful
@@ -1687,12 +1896,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ModelUpdateInput"
-        required: true
   "/models/{id}/videos":
     parameters:
     - name: id
@@ -1887,6 +2090,112 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/users/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: User id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    delete:
+      summary: Destroy User
+      operationId: destroyUser
+      tags:
+      - Users
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/User"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: User Detail
+      operationId: user
+      tags:
+      - Users
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/User"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    put:
+      summary: Update User
+      operationId: updateUser
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/User"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UserInput"
+        required: true
   "/users":
     get:
       summary: Users list
@@ -2039,27 +2348,57 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/users/{id}":
+  "/vehicles/{id}":
     parameters:
     - name: id
       in: path
-      description: User id
+      description: Vehicle id
       schema:
         type: string
         format: uuid
       required: true
-    get:
-      summary: User Detail
-      operationId: user
+    delete:
+      summary: Destroy Vehicle
+      operationId: destroyVehicle
       tags:
-      - Users
+      - Vehicles
       responses:
         '200':
           description: successful
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/User"
+                "$ref": "#/components/schemas/Vehicle"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: Vehicle Detail
+      operationId: vehicle
+      tags:
+      - Vehicles
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Vehicle"
         '404':
           description: not found
           content:
@@ -2079,10 +2418,10 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
     put:
-      summary: Update User
-      operationId: updateUser
+      summary: Update Vehicle
+      operationId: updateVehicle
       tags:
-      - Users
+      - Vehicles
       parameters: []
       responses:
         '200':
@@ -2090,7 +2429,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/User"
+                "$ref": "#/components/schemas/Vehicle"
         '404':
           description: not found
           content:
@@ -2113,7 +2452,7 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/UserInput"
+              "$ref": "#/components/schemas/VehicleInput"
         required: true
   "/vehicles":
     get:
@@ -5796,6 +6135,29 @@ components:
       - items
       - meta
       title: Users
+    VehicleInput:
+      type: object
+      properties:
+        name:
+          type: string
+        serial:
+          type: string
+        wanted:
+          type: boolean
+        flagship:
+          type: boolean
+        public:
+          type: boolean
+        nameVisible:
+          type: boolean
+        saleNotify:
+          type: boolean
+        hidden:
+          type: boolean
+        loaner:
+          type: boolean
+        boughtVia:
+          type: string
     Vehicle:
       type: object
       properties:

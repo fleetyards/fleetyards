@@ -19,8 +19,8 @@ pnpm lint               # Run all linting (ESLint + Stylelint + TypeScript + for
 pnpm lint:fix           # Fix auto-fixable issues
 pnpm lint:js            # Fix JavaScript/TypeScript ESLint issues only
 pnpm lint:ts            # TypeScript type checking for Vue/TypeScript files
-pnpm lint:prettier      # prettier
-pnpm lint:prettier:fix  # prettier with fix
+pnpm format             # Format frontend with prettier
+pnpm format:fix         # Format and fix frontend with prettier
 ```
 
 ## Important Notes

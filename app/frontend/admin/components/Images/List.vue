@@ -26,6 +26,7 @@ import {
 } from "@/services/fyAdminApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
+import ImageActions from "@/admin/components/Images/Actions/index.vue";
 
 type Props = {
   name?: string;
@@ -174,7 +175,9 @@ const columns: BaseTableCol<Image>[] = [
         <template #col-updatedAt="{ record }">
           {{ l(record.updatedAt, "datetime.formats.short") }}
         </template>
-        <template #actions> Actions </template>
+        <template #actions="{ record }">
+          <ImageActions :image="record" />
+        </template>
       </BaseTable>
     </template>
     <template #pagination-top>

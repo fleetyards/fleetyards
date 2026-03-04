@@ -21,6 +21,10 @@ v1_admin_api_routes = lambda do
     collection do
       get :options
       get "production-states" => "models#production_states"
+      put "reload-matrix" => "models#reload_matrix"
+      put "reload-scdata" => "models#reload_scdata"
+      put "reload-loaners" => "models#reload_loaners"
+      put "reload-paints" => "models#reload_paints"
     end
 
     member do
@@ -30,6 +34,8 @@ v1_admin_api_routes = lambda do
       get :modules
       get "module-packages" => "models#module_packages"
       get :paints
+      put "use-rsi-image" => "models#use_rsi_image"
+      put "reload-one" => "models#reload_one"
     end
   end
 
@@ -45,7 +51,7 @@ v1_admin_api_routes = lambda do
 
   resources :fleets, only: %i[index show create update destroy]
 
-  resources :vehicles, only: %i[index]
+  resources :vehicles, only: %i[index show update destroy]
 
   resources :item_prices, path: "item-prices", only: %i[index show create update destroy]
 

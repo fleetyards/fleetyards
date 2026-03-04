@@ -1,16 +1,22 @@
 <script lang="ts">
 export default {
-  name: "ModelActions",
+  name: "ManufacturerActionItems",
 };
 </script>
 
 <script lang="ts" setup>
-import { type Manufacturer } from "@/services/fyAdminApi";
+import {
+  type Manufacturer,
+  useDestroyManufacturer,
+  getManufacturersQueryKey,
+} from "@/services/fyAdminApi";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useQueryClient } from "@tanstack/vue-query";
 
 type Props = {
   manufacturer: Manufacturer;
@@ -22,25 +28,34 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
+const { displayConfirm } = useAppNotifications();
+const queryClient = useQueryClient();
 
-const sync = () => {
-  console.info("sync", props.manufacturer);
+const invalidateManufacturers = async () => {
+  await queryClient.invalidateQueries({
+    queryKey: getManufacturersQueryKey(),
+  });
 };
 
+const destroyMutation = useDestroyManufacturer({
+  mutation: {
+    onSettled: invalidateManufacturers,
+  },
+});
+
 const destroy = () => {
-  console.info("destroy", props.manufacturer);
+  if (!props.manufacturer.id) return;
+
+  displayConfirm({
+    text: t("messages.confirm.manufacturer.destroy"),
+    onConfirm: async () => {
+      await destroyMutation.mutateAsync({ id: props.manufacturer.id! });
+    },
+  });
 };
 </script>
 
 <template>
-  <Btn
-    v-tooltip="!withLabels && t('actions.models.sync')"
-    :size="BtnSizesEnum.SMALL"
-    @click="sync"
-  >
-    <i class="fad fa-rotate" />
-    <span v-if="withLabels">{{ t("actions.models.sync") }}</span>
-  </Btn>
   <Btn
     v-tooltip="!withLabels && t('actions.edit')"
     :size="BtnSizesEnum.SMALL"

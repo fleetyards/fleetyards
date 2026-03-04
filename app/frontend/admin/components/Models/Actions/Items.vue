@@ -1,16 +1,24 @@
 <script lang="ts">
 export default {
-  name: "ModelActions",
+  name: "ModelActionItems",
 };
 </script>
 
 <script lang="ts" setup>
-import { type Model } from "@/services/fyAdminApi";
+import {
+  type Model,
+  useDestroyModel,
+  useReloadOneModel,
+  useUseRsiImage,
+  getModelsQueryKey,
+} from "@/services/fyAdminApi";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useQueryClient } from "@tanstack/vue-query";
 
 type Props = {
   model: Model;
@@ -22,17 +30,64 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
+const { displayConfirm } = useAppNotifications();
+const queryClient = useQueryClient();
+
+const invalidateModels = async () => {
+  await queryClient.invalidateQueries({
+    queryKey: getModelsQueryKey(),
+  });
+};
+
+const destroyMutation = useDestroyModel({
+  mutation: {
+    onSettled: invalidateModels,
+  },
+});
+
+const reloadOneMutation = useReloadOneModel({
+  mutation: {
+    onSettled: invalidateModels,
+  },
+});
+
+const useRsiImageMutation = useUseRsiImage({
+  mutation: {
+    onSettled: invalidateModels,
+  },
+});
 
 const sync = () => {
-  console.info("sync", props.model);
+  if (!props.model.id) return;
+
+  displayConfirm({
+    text: t("messages.confirm.model.sync"),
+    onConfirm: async () => {
+      await reloadOneMutation.mutateAsync({ id: props.model.id! });
+    },
+  });
 };
 
 const exchangeStoreImage = () => {
-  console.info("exchangeStoreImage", props.model);
+  if (!props.model.id) return;
+
+  displayConfirm({
+    text: t("messages.confirm.model.exchangeStoreImage"),
+    onConfirm: async () => {
+      await useRsiImageMutation.mutateAsync({ id: props.model.id! });
+    },
+  });
 };
 
 const destroy = () => {
-  console.info("destroy", props.model);
+  if (!props.model.id) return;
+
+  displayConfirm({
+    text: t("messages.confirm.model.destroy"),
+    onConfirm: async () => {
+      await destroyMutation.mutateAsync({ id: props.model.id! });
+    },
+  });
 };
 </script>
 

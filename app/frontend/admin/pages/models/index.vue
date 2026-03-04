@@ -31,6 +31,11 @@ import {
   AdminModelTableViewImageColsEnum,
 } from "@/admin/stores/models";
 import { useBreadCrumbsStore } from "@/shared/stores/breadCrumbs";
+import {
+  useReloadModelsMatrix,
+  useReloadModelsScData,
+} from "@/services/fyAdminApi";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 const route = useRoute();
 
@@ -133,6 +138,29 @@ const openDisplayOptionsModal = () => {
   });
 };
 
+const { displayConfirm } = useAppNotifications();
+
+const reloadMatrixMutation = useReloadModelsMatrix();
+const reloadScDataMutation = useReloadModelsScData();
+
+const reloadModels = () => {
+  displayConfirm({
+    text: t("messages.confirm.model.reloadMatrix"),
+    onConfirm: async () => {
+      await reloadMatrixMutation.mutateAsync();
+    },
+  });
+};
+
+const reloadScData = () => {
+  displayConfirm({
+    text: t("messages.confirm.model.reloadScData"),
+    onConfirm: async () => {
+      await reloadScDataMutation.mutateAsync();
+    },
+  });
+};
+
 const breadcrumbsStore = useBreadCrumbsStore();
 
 watch(
@@ -166,11 +194,11 @@ watch(
   </Heading>
 
   <Teleport to="#header-right">
-    <Btn :size="BtnSizesEnum.SMALL">
+    <Btn :size="BtnSizesEnum.SMALL" @click="reloadModels">
       <i class="fa fa-rotate" />
       {{ t("actions.admin.dashboard.reloadModels") }}
     </Btn>
-    <Btn :size="BtnSizesEnum.SMALL">
+    <Btn :size="BtnSizesEnum.SMALL" @click="reloadScData">
       <i class="fa fa-rotate" />
       {{ t("actions.admin.dashboard.reloadScData") }}
     </Btn>

@@ -9,4 +9,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/workflows/js-setup-action
-      - run: pnpm run lint:prettier
+      - run: pnpm run format

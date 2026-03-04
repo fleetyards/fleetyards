@@ -60,12 +60,45 @@
         "roll": "Roll",
         "yawBoosted": "Yaw Boosted",
         "pitchBoosted": "Pitch Boosted",
-        "rollBoosted": "Roll Boosted"
+        "rollBoosted": "Roll Boosted",
+        "fleetchartOffsetLength": "Fleetchart Offset Length",
+        "fleetchartOffsetBeam": "Fleetchart Offset Beam",
+        "cargo": "Cargo",
+        "baseModel": "Base Model"
+      },
+      "manufacturer": {
+        "longName": "Long Name",
+        "code": "Code",
+        "scRef": "SC Ref"
+      },
+      "component": {
+        "componentClass": "Component Class",
+        "componentType": "Component Type",
+        "componentSubType": "Component Sub Type",
+        "itemType": "Item Type",
+        "size": "Size",
+        "grade": "Grade",
+        "scKey": "SC Key",
+        "scRef": "SC Ref"
+      },
+      "modelPaint": {
+        "pledgePrice": "Pledge Price",
+        "productionStatus": "Production Status",
+        "productionNote": "Production Note"
       },
       "fleet": {
         "fid": "Fleet ID",
         "rsiSid": "RSI SID",
-        "ts": "Teamspeak Server"
+        "ts": "Teamspeak Server",
+        "description": "Description",
+        "discord": "Discord Server",
+        "guilded": "Guilded Server",
+        "homepage": "Homepage",
+        "twitch": "Twitch Channel",
+        "youtube": "Youtube Channel"
+      },
+      "adminUser": {
+        "passwordConfirmation": "Password Confirmation"
       },
       "user": {
         "rsiHandle": "RSI Handle"
@@ -111,7 +144,14 @@
           "rsiHandle": "RSI Handle",
           "email": "Email"
         },
+        "components": {
+          "name": "Name",
+          "itemType": "Item Type",
+          "componentClass": "Component Class"
+        },
         "fleets": {
+          "name": "Name",
+          "fid": "FID",
           "members": {
             "username": "Username"
           }

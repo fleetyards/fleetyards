@@ -31,10 +31,12 @@
             "docks": "Docks",
             "modules": "Modules",
             "paints": "Paints",
-            "videos": "Videos"
+            "videos": "Videos",
+            "images": "Images"
           },
           "new": "New Model",
           "show": "Model",
+          "images": "Images",
           "tableConfigurationModal": "Table Configuration"
         },
         "components": {
@@ -62,15 +64,20 @@
           "edit": "Edit User"
         },
         "vehicles": {
-          "index": "Vehicles"
+          "index": "Vehicles",
+          "edit": "Edit Vehicle"
         },
         "fleets": {
-          "index": "Fleets"
+          "index": "Fleets",
+          "edit": "Edit Fleet"
         },
         "admins": {
           "index": "Admins",
           "new": "New Admin",
           "edit": "Edit Admin"
+        },
+        "images": {
+          "index": "Images"
         }
       },
       "welcome": "Welcome to",

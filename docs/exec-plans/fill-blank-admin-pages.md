@@ -423,14 +423,14 @@ Files to modify:
 | Step 7: Admin Users Management | Done |
 | Step 8: Fleets Management | Done |
 | Step 9: User Actions | Done |
-| Step 10: Models Global & Row Actions | Pending |
-| Step 11: Manufacturers Row Actions | Pending |
-| Step 12: ModelPaints Row Delete | Pending |
-| Step 13: Users Row Delete | Pending |
-| Step 14: Components List Actions | Pending |
-| Step 15: Fleets List Actions | Pending |
-| Step 16: AdminUsers List Actions | Pending |
-| Step 17: Vehicles List Actions | Pending |
+| Step 10: Models Global & Row Actions | Done |
+| Step 11: Manufacturers Row Actions | Done |
+| Step 12: ModelPaints Row Delete | Done |
+| Step 13: Users Row Delete | Done |
+| Step 14: Components List Actions | Done |
+| Step 15: Fleets List Actions | Done |
+| Step 16: AdminUsers List Actions | Done |
+| Step 17: Vehicles List Actions | Skipped (read-only) |
 
 ---
 

@@ -197,8 +197,16 @@
         "name": "Name",
         "logo": "Logo",
         "rsiSid": "SID",
+        "description": "Description",
         "public": "Public Fleetview",
+        "publicFleet": "Public Fleet",
         "publicStats": "Public Stats",
+        "publicFleetStats": "Public Fleet Stats",
+        "discord": "Discord Server",
+        "guilded": "Guilded Server",
+        "homepage": "Homepage",
+        "twitch": "Twitch Channel",
+        "youtube": "Youtube Channel",
         "ts": "Teamspeak Server",
         "awaitingConfirmation": "Awaiting confirmation by Fleet",
         "members": {
@@ -362,6 +370,9 @@
         "addons": "Modules & Upgrade-Kits",
         "storeImage": "Store Image",
         "wiki": "Star Citizen Wiki",
+        "baseModel": "Base Model",
+        "fleetchartOffsetLength": "Fleetchart Offset Length",
+        "fleetchartOffsetBeam": "Fleetchart Offset Beam",
         "productionStatus": {
           "in-production": "In Production",
           "in-concept": "In Concept",
@@ -560,6 +571,10 @@
         "lastActiveAt": "Last Active",
         "confirmedAt": "Confirmed at"
       },
+      "adminUser": {
+        "superAdmin": "Super Admin",
+        "passwordConfirmation": "Password Confirmation"
+      },
       "vehicle": {
         "name": "Name",
         "states": "States",
@@ -708,6 +723,7 @@
           "destinationStarsystem": "Destination Starsystem"
         },
         "models": {
+          "name": "Name",
           "shipRole": "Ship Role",
           "classification": "Classification",
           "focus": "Focus",
@@ -737,12 +753,19 @@
           "topViewColoredBlank": "Without Top View Colored Image?"
         },
         "manufacturers": {
+          "name": "Name",
           "withModels": "With Models",
           "logoBlank": "Without Logo"
         },
         "images": {
           "station": "Station",
           "model": "Ship"
+        },
+        "users": {
+          "search": "Search",
+          "username": "Username",
+          "email": "Email",
+          "rsiHandle": "RSI Handle"
         },
         "fleets": {
           "name": "Name",

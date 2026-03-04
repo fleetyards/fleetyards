@@ -10,6 +10,7 @@ import {
   loginAsUser,
   useResendUserConfirmation,
   useSendUserPasswordReset,
+  useDestroyUser,
   getUsersQueryKey,
 } from "@/services/fyAdminApi";
 import {
@@ -51,6 +52,12 @@ const sendPasswordResetMutation = useSendUserPasswordReset({
   },
 });
 
+const destroyMutation = useDestroyUser({
+  mutation: {
+    onSettled: invalidateUsers,
+  },
+});
+
 const loginAs = () => {
   if (!props.user.id) return;
 
@@ -86,7 +93,14 @@ const sendPasswordReset = () => {
 };
 
 const destroy = () => {
-  console.info("destroy", props.user);
+  if (!props.user.id) return;
+
+  displayConfirm({
+    text: t("messages.confirm.user.destroy"),
+    onConfirm: async () => {
+      await destroyMutation.mutateAsync({ id: props.user.id! });
+    },
+  });
 };
 </script>
 

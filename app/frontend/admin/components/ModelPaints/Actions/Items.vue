@@ -1,16 +1,22 @@
 <script lang="ts">
 export default {
-  name: "ModelActions",
+  name: "ModelPaintActionItems",
 };
 </script>
 
 <script lang="ts" setup>
-import { type ModelPaint } from "@/services/fyAdminApi";
+import {
+  type ModelPaint,
+  useDestroyModelPaint,
+  getModelPaintsQueryKey,
+} from "@/services/fyAdminApi";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useQueryClient } from "@tanstack/vue-query";
 
 type Props = {
   modelPaint: ModelPaint;
@@ -22,9 +28,30 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
+const { displayConfirm } = useAppNotifications();
+const queryClient = useQueryClient();
+
+const invalidateModelPaints = async () => {
+  await queryClient.invalidateQueries({
+    queryKey: getModelPaintsQueryKey(),
+  });
+};
+
+const destroyMutation = useDestroyModelPaint({
+  mutation: {
+    onSettled: invalidateModelPaints,
+  },
+});
 
 const destroy = () => {
-  console.info("destroy", props.modelPaint);
+  if (!props.modelPaint.id) return;
+
+  displayConfirm({
+    text: t("messages.confirm.modelPaint.destroy"),
+    onConfirm: async () => {
+      await destroyMutation.mutateAsync({ id: props.modelPaint.id! });
+    },
+  });
 };
 </script>
 

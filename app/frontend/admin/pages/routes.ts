@@ -1,6 +1,9 @@
 import { routes as modelsRoutes } from "@/admin/pages/models/routes";
 import { routes as manufacturersRoutes } from "@/admin/pages/manufacturers/routes";
 import { routes as componentsRoutes } from "@/admin/pages/components/routes";
+import { routes as fleetsRoutes } from "@/admin/pages/fleets/routes";
+import { routes as vehiclesRoutes } from "@/admin/pages/vehicles/routes";
+import { routes as adminsRoutes } from "@/admin/pages/admins/routes";
 import { routes as maintenanceRoutes } from "@/admin/pages/maintenance/routes";
 import { routes as usersRoutes } from "@/admin/pages/users/routes";
 import { RouteRecordRaw } from "vue-router";
@@ -67,9 +70,10 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "/vehicles",
-    name: "admin-vehicles",
+    path: "/vehicles/",
     component: () => import("@/admin/pages/vehicles.vue"),
+    children: vehiclesRoutes,
+    redirect: { name: vehiclesRoutes[0].name },
     meta: {
       title: "admin.vehicles.index",
       needsAuthentication: true,
@@ -78,9 +82,10 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "/fleets",
-    name: "admin-fleets",
+    path: "/fleets/",
     component: () => import("@/admin/pages/fleets.vue"),
+    children: fleetsRoutes,
+    redirect: { name: fleetsRoutes[0].name },
     meta: {
       title: "admin.fleets.index",
       needsAuthentication: true,
@@ -103,9 +108,10 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "/admins",
-    name: "admin-admins",
+    path: "/admins/",
     component: () => import("@/admin/pages/admins.vue"),
+    children: adminsRoutes,
+    redirect: { name: adminsRoutes[0].name },
     meta: {
       title: "admin.admins.index",
       needsAuthentication: true,

@@ -6,6 +6,12 @@ module Admin
       class VehiclesController < ::Admin::Api::BaseController
         include HangarFiltersConcern
 
+        before_action :set_vehicle, only: %i[show update destroy]
+
+        rescue_from ActiveRecord::RecordNotFound do |_exception|
+          not_found(I18n.t("messages.record_not_found.base"))
+        end
+
         def index
           authorize! with: ::Admin::VehiclePolicy
 
@@ -14,6 +20,34 @@ module Admin
           @vehicles = @q.result
             .page(params[:page])
             .per(per_page(Model))
+        end
+
+        def show
+        end
+
+        def update
+          return if @vehicle.update(vehicle_params)
+
+          render json: ValidationError.new("vehicle.update", errors: @vehicle.errors), status: :bad_request
+        end
+
+        def destroy
+          return if @vehicle.destroy
+
+          render json: ValidationError.new("vehicle.destroy", errors: @vehicle.errors), status: :bad_request
+        end
+
+        private def set_vehicle
+          @vehicle = Vehicle.find(params[:id])
+
+          authorize! @vehicle, with: ::Admin::VehiclePolicy
+        end
+
+        private def vehicle_params
+          @vehicle_params ||= params.permit(
+            :name, :serial, :wanted, :flagship, :public,
+            :name_visible, :sale_notify, :hidden, :loaner, :bought_via
+          )
         end
 
         private def index_scope

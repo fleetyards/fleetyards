@@ -20,6 +20,7 @@ import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComponentFilters } from "@/admin/composables/useComponentFilters";
+import ComponentActions from "@/admin/components/Components/Actions/index.vue";
 
 const route = useRoute();
 
@@ -190,6 +191,9 @@ const { t, l } = useI18n();
         </template>
         <template #col-updatedAt="{ record }">
           {{ l(record.updatedAt, "datetime.formats.short") }}
+        </template>
+        <template #actions="{ record }">
+          <ComponentActions :component="record" />
         </template>
       </BaseTable>
     </template>
