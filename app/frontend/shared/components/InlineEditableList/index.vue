@@ -21,7 +21,6 @@ type Props = {
   addLabel?: string;
   emptyText?: string;
   emptyName?: string;
-  hideAddButton?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -30,7 +29,6 @@ const props = withDefaults(defineProps<Props>(), {
   addLabel: undefined,
   emptyText: undefined,
   emptyName: "entries",
-  hideAddButton: false,
 });
 
 const { t } = useI18n();
@@ -112,9 +110,11 @@ defineExpose({
 <template>
   <div class="inline-editable-list">
     <TransitionGroup name="list">
-      <div v-if="creating" key="__create__" class="inline-editable-list-row">
-        <div class="inline-form">
+      <div v-if="creating" key="__create__" class="inline-editable-list__row">
+        <div class="inline-editable-list__form">
           <slot name="create" />
+        </div>
+        <div class="inline-editable-list__actions">
           <BtnGroup inline>
             <Btn :size="BtnSizesEnum.SMALL" @click="saveCreate">
               <i class="fad fa-check" />
@@ -129,11 +129,13 @@ defineExpose({
       <div
         v-for="item in items"
         :key="item.id"
-        class="inline-editable-list-row"
+        class="inline-editable-list__row"
       >
         <template v-if="editingId === item.id">
-          <div class="inline-form">
+          <div class="inline-editable-list__form">
             <slot name="edit" :item="item" />
+          </div>
+          <div class="inline-editable-list__actions">
             <BtnGroup inline>
               <Btn :size="BtnSizesEnum.SMALL" @click="saveEdit">
                 <i class="fad fa-check" />
@@ -145,25 +147,23 @@ defineExpose({
           </div>
         </template>
         <template v-else>
-          <div class="row align-items-center">
-            <div class="col inline-editable-list-display">
-              <slot name="display" :item="item" />
-            </div>
-            <div class="col-auto">
-              <BtnGroup inline>
-                <slot name="actions" :item="item" />
-                <Btn :size="BtnSizesEnum.SMALL" @click="startEdit(item)">
-                  <i class="fad fa-pencil" />
-                </Btn>
-                <Btn
-                  :size="BtnSizesEnum.SMALL"
-                  :variant="BtnVariantsEnum.DANGER"
-                  @click="destroy(item)"
-                >
-                  <i class="fad fa-trash" />
-                </Btn>
-              </BtnGroup>
-            </div>
+          <div class="inline-editable-list__display">
+            <slot name="display" :item="item" />
+          </div>
+          <div class="inline-editable-list__actions">
+            <BtnGroup inline>
+              <slot name="actions" :item="item" />
+              <Btn :size="BtnSizesEnum.SMALL" @click="startEdit(item)">
+                <i class="fad fa-pencil" />
+              </Btn>
+              <Btn
+                :size="BtnSizesEnum.SMALL"
+                :variant="BtnVariantsEnum.DANGER"
+                @click="destroy(item)"
+              >
+                <i class="fad fa-trash" />
+              </Btn>
+            </BtnGroup>
           </div>
         </template>
       </div>
@@ -180,17 +180,7 @@ defineExpose({
       <template v-if="emptyText" #headline>
         {{ emptyText }}
       </template>
-      <template #info>
-        <!-- no info text needed -->
-      </template>
     </Empty>
-
-    <div v-if="!creating && !hideAddButton" class="mt-2">
-      <Btn :size="BtnSizesEnum.SMALL" @click="startCreate">
-        <i class="fad fa-plus" />
-        {{ innerAddLabel }}
-      </Btn>
-    </div>
   </div>
 </template>
 

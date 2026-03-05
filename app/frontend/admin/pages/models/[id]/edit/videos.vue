@@ -156,7 +156,6 @@ const videoTypeOptions: FilterOption[] = Object.values(VideoTypeEnum).map(
   </div>
 
   <InlineEditableList
-    hide-add-button
     empty-name="Videos"
     :loading="isLoading"
     ref="editableList"

@@ -50,9 +50,10 @@ const nextItem = computed(() => {
         </router-link>
       </li>
       <li v-for="(crumb, index) in crumbs" :key="index" class="breadcrumb-item">
-        <router-link :to="extend(crumb.to)">
+        <router-link v-if="crumb.to" :to="extend(crumb.to)">
           {{ crumb.label }}
         </router-link>
+        <span v-else>{{ crumb.label }}</span>
       </li>
     </ol>
     <div v-if="stepperList" class="stepper">

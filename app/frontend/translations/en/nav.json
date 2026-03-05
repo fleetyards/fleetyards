@@ -89,7 +89,9 @@
             "videos": "Videos",
             "cargoAndFuel": "Cargo & Fuel",
             "fleetchart": "Fleetchart Images",
-            "hardpoints": "Hardpoints"
+            "hardpoints": "Hardpoints",
+            "upgrades": "Upgrades",
+            "packages": "Packages"
           }
         },
         "modelPaints": {

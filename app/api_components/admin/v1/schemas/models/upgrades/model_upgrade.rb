@@ -14,6 +14,8 @@ module Admin
                 id: {type: :string, format: :uuid},
                 name: {type: :string},
                 description: {type: :string},
+                active: {type: :boolean},
+                hidden: {type: :boolean},
                 pledgePrice: {type: :number},
 
                 media: {
@@ -23,8 +25,6 @@ module Admin
                   },
                   additionalProperties: false
                 },
-
-                model: {"$ref": "#/components/schemas/Model"},
 
                 createdAt: {type: :string, format: "date-time"},
                 updatedAt: {type: :string, format: "date-time"},
@@ -37,7 +37,7 @@ module Admin
                 storeImageSmall: {type: :string, format: :uri, deprecated: true}
               },
               additionalProperties: false,
-              required: %w[id name media model createdAt updatedAt]
+              required: %w[id name active hidden media createdAt updatedAt]
             })
           end
         end

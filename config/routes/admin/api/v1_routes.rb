@@ -47,6 +47,13 @@ v1_admin_api_routes = lambda do
     end
   end
   resources :model_paints, path: "model-paints", only: %i[index show create update destroy]
+  resources :model_upgrades, path: "model-upgrades", only: %i[index show create update destroy] do
+    member do
+      put :link
+      put :unlink
+    end
+  end
+  resources :model_module_packages, path: "model-module-packages", only: %i[index show create update destroy]
   resources :docks, only: %i[index show create update destroy]
 
   resources :manufacturers, only: %i[index show create update destroy]

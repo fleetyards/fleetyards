@@ -1291,6 +1291,181 @@ paths:
             schema:
               "$ref": "#/components/schemas/ManufacturerInput"
         required: true
+  "/model-module-packages":
+    post:
+      summary: Create Model Module Package
+      operationId: createModelModulePackage
+      tags:
+      - ModelModulePackages
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelModulePackage"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelModulePackageInput"
+        required: true
+    get:
+      summary: Model Module Packages list
+      operationId: listModelModulePackages
+      tags:
+      - ModelModulePackages
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ModelModulePackageQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelModulePackages"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/model-module-packages/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Model Module Package id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    delete:
+      summary: Destroy Model Module Package
+      operationId: destroyModelModulePackage
+      tags:
+      - ModelModulePackages
+      responses:
+        '204':
+          description: successful
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: Model Module Package Detail
+      operationId: modelModulePackage
+      tags:
+      - ModelModulePackages
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelModulePackage"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    put:
+      summary: Update Model Module Package
+      operationId: updateModelModulePackage
+      tags:
+      - ModelModulePackages
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelModulePackage"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelModulePackageInput"
+        required: true
   "/model-modules":
     post:
       summary: Create new Model Module
@@ -1719,6 +1894,257 @@ paths:
           application/json:
             schema:
               "$ref": "#/components/schemas/ModelPaintInput"
+        required: true
+  "/model-upgrades":
+    post:
+      summary: Create Model Upgrade
+      operationId: createModelUpgrade
+      tags:
+      - ModelUpgrades
+      parameters: []
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelUpgrade"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelUpgradeInput"
+        required: true
+    get:
+      summary: Model Upgrades list
+      operationId: listModelUpgrades
+      tags:
+      - ModelUpgrades
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ModelUpgradeQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelUpgrades"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/model-upgrades/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Model Upgrade id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    delete:
+      summary: Destroy Model Upgrade
+      operationId: destroyModelUpgrade
+      tags:
+      - ModelUpgrades
+      responses:
+        '204':
+          description: successful
+        '404':
+          description: not found
+        '403':
+          description: forbidden
+        '401':
+          description: unauthorized
+    get:
+      summary: Model Upgrade Detail
+      operationId: modelUpgrade
+      tags:
+      - ModelUpgrades
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelUpgrade"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    put:
+      summary: Update Model Upgrade
+      operationId: updateModelUpgrade
+      tags:
+      - ModelUpgrades
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelUpgrade"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelUpgradeInput"
+        required: true
+  "/model-upgrades/{id}/link":
+    put:
+      summary: Link Model Upgrade to Model
+      operationId: linkModelUpgrade
+      tags:
+      - ModelUpgrades
+      parameters:
+      - name: id
+        in: path
+        format: uuid
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelUpgrade"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                modelId:
+                  type: string
+                  format: uuid
+              required:
+              - modelId
+        required: true
+  "/model-upgrades/{id}/unlink":
+    put:
+      summary: Unlink Model Upgrade from Model
+      operationId: unlinkModelUpgrade
+      tags:
+      - ModelUpgrades
+      parameters:
+      - name: id
+        in: path
+        format: uuid
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelUpgrade"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                modelId:
+                  type: string
+                  format: uuid
+              required:
+              - modelId
         required: true
   "/models":
     post:
@@ -4983,6 +5409,39 @@ components:
           type: string
       additionalProperties: false
       title: ModelModuleInput
+    ModelModulePackageInput:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        modelId:
+          type: string
+          format: uuid
+        pledgePrice:
+          type: number
+          nullable: true
+        active:
+          type: boolean
+        hidden:
+          type: boolean
+        storeImage:
+          type: string
+        angledView:
+          type: string
+        sideView:
+          type: string
+        topView:
+          type: string
+        moduleIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+      additionalProperties: false
+      title: ModelModulePackageInput
     ModelPaintInput:
       type: object
       properties:
@@ -5154,6 +5613,29 @@ components:
           nullable: true
       additionalProperties: false
       title: ModelUpdateInput
+    ModelUpgradeInput:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        modelId:
+          type: string
+          format: uuid
+          nullable: true
+        pledgePrice:
+          type: number
+          nullable: true
+        active:
+          type: boolean
+        hidden:
+          type: boolean
+        storeImage:
+          type: string
+      additionalProperties: false
+      title: ModelUpgradeInput
     SessionInput:
       type: object
       properties:
@@ -5985,6 +6467,10 @@ components:
           type: string
         description:
           type: string
+        active:
+          type: boolean
+        hidden:
+          type: boolean
         pledgePrice:
           type: number
         modules:
@@ -6097,6 +6583,8 @@ components:
       required:
       - id
       - name
+      - active
+      - hidden
       - modules
       - media
       - createdAt
@@ -6423,6 +6911,10 @@ components:
           type: string
         description:
           type: string
+        active:
+          type: boolean
+        hidden:
+          type: boolean
         pledgePrice:
           type: number
         media:
@@ -6431,8 +6923,6 @@ components:
             storeImage:
               "$ref": "#/components/schemas/MediaFile"
           additionalProperties: false
-        model:
-          "$ref": "#/components/schemas/Model"
         createdAt:
           type: string
           format: date-time
@@ -6459,11 +6949,26 @@ components:
       required:
       - id
       - name
+      - active
+      - hidden
       - media
-      - model
       - createdAt
       - updatedAt
       title: ModelUpgrade
+    ModelUpgrades:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelUpgrade"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: ModelUpgrades
     ComponentQuery:
       type: object
       properties:
@@ -6593,6 +7098,21 @@ components:
             type: string
       additionalProperties: false
       title: ManufacturerQuery
+    ModelModulePackageQuery:
+      type: object
+      properties:
+        idEq:
+          type: string
+          format: uuid
+        nameCont:
+          type: string
+        nameEq:
+          type: string
+        modelIdEq:
+          type: string
+          format: uuid
+      additionalProperties: false
+      title: ModelModulePackageQuery
     ModelModuleQuery:
       type: object
       properties:
@@ -6701,6 +7221,21 @@ components:
           - "$ref": "#/components/schemas/ModelSortEnum"
       additionalProperties: false
       title: ModelQuery
+    ModelUpgradeQuery:
+      type: object
+      properties:
+        idEq:
+          type: string
+          format: uuid
+        nameCont:
+          type: string
+        nameEq:
+          type: string
+        upgradeKitsModelIdEq:
+          type: string
+          format: uuid
+      additionalProperties: false
+      title: ModelUpgradeQuery
     UserQuery:
       type: object
       properties:

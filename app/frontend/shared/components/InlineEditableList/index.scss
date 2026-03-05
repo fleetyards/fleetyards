@@ -1,41 +1,41 @@
-.inline-editable-list-row {
-  padding: 8px 12px;
-  margin-bottom: 4px;
-  background: rgba(#fff, 0.05);
-  border: 1px solid rgba(#fff, 0.1);
-  border-radius: 6px;
-}
-
-.inline-editable-list-display {
-  display: flex;
-  align-items: center;
+.inline-editable-list {
   gap: 8px;
-}
-
-.inline-form {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: nowrap;
-}
+  flex-direction: column;
 
-.inline-form-field {
-  flex: 1;
-  min-width: 0;
-
-  :deep(.base-input) {
-    margin-bottom: 0;
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-inline: 0;
+    padding: 8px 12px;
+    gap: 8px;
+    background: rgba(#fff, 0.05);
+    border: 1px solid rgba(#fff, 0.1);
+    border-radius: 6px;
   }
 
-  :deep(.filter-group) {
-    margin-bottom: 0;
+  &__display {
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+    gap: 8px;
+    align-items: center;
   }
 
-  :deep(.base-image-input) {
-    margin-bottom: 0;
+  &__form {
+    display: flex;
+    gap: 8px;
+    flex: 1;
+
+    & > * {
+      flex: 1;
+    }
   }
 
-  :deep(.base-checkbox) {
-    margin-bottom: 0;
+  &__actions {
+    display: flex;
+    gap: 4px;
+    padding: 0;
   }
 }

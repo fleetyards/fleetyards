@@ -34,7 +34,10 @@
             "videos": "Videos",
             "images": "Images",
             "itemPrices": "Item Prices",
-            "linkModule": "Link Existing Module"
+            "linkModule": "Link Existing Module",
+            "upgrades": "Upgrades",
+            "packages": "Packages",
+            "linkUpgrade": "Link Existing Upgrade"
           },
           "new": "New Model",
           "show": "Model",

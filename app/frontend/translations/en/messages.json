@@ -296,6 +296,13 @@
           "destroy": "Are you sure you want to delete this module? This action can't be reverted.",
           "unlink": "Are you sure you want to unlink this module from the model? The module will still exist but won't be associated with this model."
         },
+        "modelUpgrade": {
+          "destroy": "Are you sure you want to delete this upgrade? This action can't be reverted.",
+          "unlink": "Are you sure you want to unlink this upgrade from the model? The upgrade will still exist but won't be associated with this model."
+        },
+        "modelModulePackage": {
+          "destroy": "Are you sure you want to delete this module package? This action can't be reverted."
+        },
         "dock": {
           "destroy": "Are you sure you want to delete this dock? This action can't be reverted."
         },

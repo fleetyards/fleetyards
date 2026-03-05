@@ -18,7 +18,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 type Props = {
   name: string;
   icon?: string;
-  modelValue?: string | number;
+  modelValue?: string | number | null;
   type?: InputTypesEnum;
   translationKey?: string;
   autofocus?: boolean;

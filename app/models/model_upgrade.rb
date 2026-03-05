@@ -30,6 +30,11 @@ class ModelUpgrade < ApplicationRecord
 
   accepts_nested_attributes_for :upgrade_kits, allow_destroy: true
 
+  ALLOWED_SORTING_PARAMS = [
+    "name asc", "name desc", "createdAt asc", "createdAt desc",
+    "updatedAt asc", "updatedAt desc"
+  ]
+
   before_save :update_slugs
   after_save :touch_models
 

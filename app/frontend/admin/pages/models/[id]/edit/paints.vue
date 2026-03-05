@@ -143,7 +143,6 @@ const onSaveCreate = async () => {
   </div>
 
   <InlineEditableList
-    hide-add-button
     empty-name="Paints"
     :loading="isLoading"
     ref="editableList"

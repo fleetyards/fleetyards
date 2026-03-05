@@ -126,6 +126,16 @@
         "pledgePrice": "0.00",
         "search": "Search modules by name..."
       },
+      "modelUpgrade": {
+        "name": "Upgrade Name",
+        "pledgePrice": "0.00",
+        "description": "Description"
+      },
+      "modelModulePackage": {
+        "name": "Package Name",
+        "pledgePrice": "0.00",
+        "description": "Description"
+      },
       "dock": {
         "name": "Dock Name"
       },

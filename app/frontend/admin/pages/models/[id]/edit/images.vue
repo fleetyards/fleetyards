@@ -138,7 +138,6 @@ const handleUploadDone = async (files: FileUpload[]) => {
   <DirectUpload multiple inline hide-finished @upload:done="handleUploadDone" />
 
   <InlineEditableList
-    hide-add-button
     empty-name="Images"
     :loading="isLoading"
     ref="editableList"

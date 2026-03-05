@@ -20,6 +20,10 @@ const crumbs = [
     to: { name: "admin-models", hash: `#${props.model.id}` },
     label: t("nav.admin.models.index"),
   },
+  {
+    to: { name: "admin-model-edit", params: { id: props.model.id } },
+    label: props.model.name,
+  },
 ];
 
 const route = useRoute();

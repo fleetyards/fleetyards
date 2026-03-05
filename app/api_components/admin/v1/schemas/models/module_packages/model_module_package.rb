@@ -14,6 +14,8 @@ module Admin
                 id: {type: :string, format: :uuid},
                 name: {type: :string},
                 description: {type: :string},
+                active: {type: :boolean},
+                hidden: {type: :boolean},
                 pledgePrice: {type: :number},
 
                 modules: {type: :array, items: {"$ref": "#/components/schemas/ModelModule"}},
@@ -63,7 +65,7 @@ module Admin
                 topViewXlarge: {type: :string, deprecated: true}
               },
               additionalProperties: false,
-              required: %w[id name modules media createdAt updatedAt]
+              required: %w[id name active hidden modules media createdAt updatedAt]
             })
           end
         end

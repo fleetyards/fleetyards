@@ -166,7 +166,6 @@ defineExpose({
 <template>
   <InlineEditableList
     ref="editableList"
-    hide-add-button
     empty-name="Prices"
     :loading="isLoading"
     :items="(data?.items as ItemPrice[]) || []"

@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: "AdminModelEditModulesPage",
+  name: "AdminModelEditUpgradesPage",
 };
 </script>
 
@@ -12,24 +12,23 @@ import InlineEditableList from "@/shared/components/InlineEditableList/index.vue
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
+import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import {
   type ModelExtended,
-  type ModelModule,
-  type ModelModuleInput,
-  useListModelModules as useListModelModulesQuery,
-  useCreateModelModule as useCreateModelModuleMutation,
-  useUpdateModelModule as useUpdateModelModuleMutation,
-  useDestroyModelModule as useDestroyModelModuleMutation,
-  useUnlinkModelModule as useUnlinkModelModuleMutation,
-  getListModelModulesQueryKey,
+  type ModelUpgrade,
+  type ModelUpgradeInput,
+  useListModelUpgrades as useListModelUpgradesQuery,
+  useCreateModelUpgrade as useCreateModelUpgradeMutation,
+  useUpdateModelUpgrade as useUpdateModelUpgradeMutation,
+  useDestroyModelUpgrade as useDestroyModelUpgradeMutation,
+  useUnlinkModelUpgrade as useUnlinkModelUpgradeMutation,
+  getListModelUpgradesQueryKey,
 } from "@/services/fyAdminApi";
 import { useQueryClient } from "@tanstack/vue-query";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import ManufacturerFilterGroup from "@/admin/components/base/ManufacturerFilterGroup/index.vue";
-import ProductionStatusFilterGroup from "@/admin/components/base/ProductionStatusFilterGroup/index.vue";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
@@ -54,40 +53,38 @@ const editableList = ref<{
   finishCreate: () => void;
 } | null>(null);
 
-const { data, isLoading } = useListModelModulesQuery({
+const { data, isLoading } = useListModelUpgradesQuery({
   perPage: "100",
   q: {
-    moduleHardpointsModelIdEq: props.model.id,
+    upgradeKitsModelIdEq: props.model.id,
   },
 });
 
-const invalidateModules = async () => {
+const invalidateUpgrades = async () => {
   await queryClient.invalidateQueries({
-    queryKey: getListModelModulesQueryKey(),
+    queryKey: getListModelUpgradesQueryKey(),
   });
 };
 
 // Edit
-const editForm = ref<ModelModuleInput>({});
+const editForm = ref<ModelUpgradeInput>({});
 
-const onStartEdit = (record: ModelModule) => {
+const onStartEdit = (record: ModelUpgrade) => {
   editForm.value = {
     name: record.name,
-    description: record.description,
-    manufacturerId: record.manufacturer?.id,
+    description: record.description ?? undefined,
     pledgePrice: record.pledgePrice,
-    productionStatus: record.productionStatus,
     storeImage: undefined,
   };
 };
 
-const updateMutation = useUpdateModelModuleMutation({
+const updateMutation = useUpdateModelUpgradeMutation({
   mutation: {
-    onSettled: invalidateModules,
+    onSettled: invalidateUpgrades,
   },
 });
 
-const toggleField = async (item: ModelModule, field: "active" | "hidden") => {
+const toggleField = async (item: ModelUpgrade, field: "active" | "hidden") => {
   await updateMutation.mutateAsync({
     id: item.id,
     data: { [field]: !item[field] },
@@ -107,18 +104,18 @@ const onSaveEdit = async () => {
 };
 
 // Delete
-const destroyMutation = useDestroyModelModuleMutation({
+const destroyMutation = useDestroyModelUpgradeMutation({
   mutation: {
-    onSettled: invalidateModules,
+    onSettled: invalidateUpgrades,
   },
 });
 
-const onDestroy = async (record: ModelModule) => {
+const onDestroy = async (record: ModelUpgrade) => {
   await destroyMutation.mutateAsync({ id: record.id });
 };
 
 // Create
-const createForm = ref<ModelModuleInput>({
+const createForm = ref<ModelUpgradeInput>({
   modelId: props.model.id,
 });
 
@@ -128,9 +125,9 @@ const onStartCreate = () => {
   };
 };
 
-const createMutation = useCreateModelModuleMutation({
+const createMutation = useCreateModelUpgradeMutation({
   mutation: {
-    onSettled: invalidateModules,
+    onSettled: invalidateUpgrades,
   },
 });
 
@@ -142,11 +139,11 @@ const onSaveCreate = async () => {
   editableList.value?.finishCreate();
 };
 
-// Link existing module via modal
+// Link existing upgrade via modal
 const openLinkModal = () => {
   comlink.emit("open-modal", {
     component: () =>
-      import("@/admin/components/Models/LinkModuleModal/index.vue"),
+      import("@/admin/components/Models/LinkUpgradeModal/index.vue"),
     props: {
       modelId: props.model.id,
     },
@@ -154,15 +151,15 @@ const openLinkModal = () => {
 };
 
 // Unlink
-const unlinkMutation = useUnlinkModelModuleMutation({
+const unlinkMutation = useUnlinkModelUpgradeMutation({
   mutation: {
-    onSettled: invalidateModules,
+    onSettled: invalidateUpgrades,
   },
 });
 
-const onUnlink = (record: ModelModule) => {
+const onUnlink = (record: ModelUpgrade) => {
   displayConfirm({
-    text: t("messages.confirm.modelModule.unlink"),
+    text: t("messages.confirm.modelUpgrade.unlink"),
     onConfirm: async () => {
       await unlinkMutation.mutateAsync({
         id: record.id,
@@ -175,7 +172,7 @@ const onUnlink = (record: ModelModule) => {
 
 <template>
   <div class="d-flex align-items-center justify-content-between">
-    <Heading>{{ t("headlines.admin.models.edit.modules") }}</Heading>
+    <Heading>{{ t("headlines.admin.models.edit.upgrades") }}</Heading>
     <BtnGroup>
       <Btn
         :size="BtnSizesEnum.SMALL"
@@ -193,11 +190,12 @@ const onUnlink = (record: ModelModule) => {
   </div>
 
   <InlineEditableList
-    empty-name="Modules"
+    stacked
+    empty-name="Upgrades"
     :loading="isLoading"
     ref="editableList"
-    :items="(data?.items as ModelModule[]) || []"
-    :confirm-destroy-text="t('messages.confirm.modelModule.destroy')"
+    :items="(data?.items as ModelUpgrade[]) || []"
+    :confirm-destroy-text="t('messages.confirm.modelUpgrade.destroy')"
     @start-edit="onStartEdit"
     @save-edit="onSaveEdit"
     @start-create="onStartCreate"
@@ -210,12 +208,9 @@ const onUnlink = (record: ModelModule) => {
         :src="item.media.storeImage.smallUrl"
         :variant="LazyImageVariantsEnum.WIDE_SMALL"
         :alt="item.name"
-        class="module-thumbnail"
+        class="upgrade-thumbnail"
       />
       <span>{{ item.name }}</span>
-      <template v-if="item.manufacturer">
-        <span class="text-muted">{{ item.manufacturer.name }}</span>
-      </template>
       <template v-if="item.pledgePrice">
         <span class="text-muted" v-html="toUEC(item.pledgePrice)" />
       </template>
@@ -231,7 +226,7 @@ const onUnlink = (record: ModelModule) => {
         <i class="fad fa-unlink text-muted" />
       </Btn>
       <Btn
-        v-tooltip="t('labels.modelModule.hidden')"
+        v-tooltip="t('labels.modelUpgrade.hidden')"
         :size="BtnSizesEnum.SMALL"
         :variant="BtnVariantsEnum.TRANSPARENT"
         @click="toggleField(item, 'hidden')"
@@ -242,7 +237,7 @@ const onUnlink = (record: ModelModule) => {
         />
       </Btn>
       <Btn
-        v-tooltip="t('labels.modelModule.active')"
+        v-tooltip="t('labels.modelUpgrade.active')"
         :size="BtnSizesEnum.SMALL"
         :variant="BtnVariantsEnum.TRANSPARENT"
         @click="toggleField(item, 'active')"
@@ -265,31 +260,23 @@ const onUnlink = (record: ModelModule) => {
           clearable
           small
         />
-        <FormInput
-          v-model="editForm.name"
-          name="edit-name"
-          translation-key="modelModule.name"
+        <FormTextarea
+          v-model="editForm.description"
+          name="edit-description"
+          translation-key="modelUpgrade.description"
         />
       </div>
       <div>
-        <ManufacturerFilterGroup
-          v-model="editForm.manufacturerId"
-          name="edit-manufacturer"
-          :multiple="false"
-          :no-label="false"
-          value-attr="id"
-        />
-        <ProductionStatusFilterGroup
-          v-model="editForm.productionStatus"
-          name="edit-production-status"
-          :no-label="false"
-          :multiple="false"
+        <FormInput
+          v-model="editForm.name"
+          name="edit-name"
+          translation-key="modelUpgrade.name"
         />
         <FormInput
           v-model="editForm.pledgePrice"
           name="edit-pledge-price"
           :type="InputTypesEnum.NUMBER"
-          translation-key="modelModule.pledgePrice"
+          translation-key="modelUpgrade.pledgePrice"
         />
       </div>
     </template>
@@ -306,28 +293,20 @@ const onUnlink = (record: ModelModule) => {
         <FormInput
           v-model="createForm.name"
           name="create-name"
-          translation-key="modelModule.name"
+          translation-key="modelUpgrade.name"
         />
       </div>
       <div>
-        <ManufacturerFilterGroup
-          v-model="createForm.manufacturerId"
-          name="create-manufacturer"
-          :multiple="false"
-          :no-label="false"
-          value-attr="id"
-        />
-        <ProductionStatusFilterGroup
-          v-model="createForm.productionStatus"
-          name="create-production-status"
-          :multiple="false"
-          :no-label="false"
+        <FormTextarea
+          v-model="createForm.description"
+          name="create-description"
+          translation-key="modelUpgrade.description"
         />
         <FormInput
           v-model="createForm.pledgePrice"
           name="create-pledge-price"
           :type="InputTypesEnum.NUMBER"
-          translation-key="modelModule.pledgePrice"
+          translation-key="modelUpgrade.pledgePrice"
         />
       </div>
     </template>
@@ -335,7 +314,7 @@ const onUnlink = (record: ModelModule) => {
 </template>
 
 <style lang="scss" scoped>
-.module-thumbnail {
+.upgrade-thumbnail {
   width: 80px;
   flex-shrink: 0;
 }

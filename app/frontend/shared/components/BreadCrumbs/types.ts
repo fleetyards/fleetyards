@@ -8,6 +8,6 @@ export type ListMeta = {
 };
 
 export type Crumb = {
-  to: RouterLinkProps["to"];
+  to?: RouterLinkProps["to"];
   label?: string;
 };

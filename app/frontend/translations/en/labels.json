@@ -451,6 +451,21 @@
         "dockType": "Dock Type",
         "shipSize": "Ship Size"
       },
+      "modelUpgrade": {
+        "name": "Name",
+        "description": "Description",
+        "pledgePrice": "Pledge Price",
+        "active": "Active?",
+        "hidden": "Hidden?"
+      },
+      "modelModulePackage": {
+        "name": "Name",
+        "description": "Description",
+        "pledgePrice": "Pledge Price",
+        "modules": "Modules",
+        "active": "Active?",
+        "hidden": "Hidden?"
+      },
       "modelPaint": {
         "hidden": "Hidden?",
         "active": "Active?",

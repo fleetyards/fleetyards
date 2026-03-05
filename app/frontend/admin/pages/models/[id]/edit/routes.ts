@@ -63,6 +63,30 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "images/",
+    name: "admin-model-edit-images",
+    component: () => import("@/admin/pages/models/[id]/edit/images.vue"),
+    meta: {
+      title: "admin.models.edit.images",
+      customTitle: true,
+      activeRoute: "admin-models",
+      nav: "editTabs",
+      needsAuthentication: true,
+    },
+  },
+  {
+    path: "videos/",
+    name: "admin-model-edit-videos",
+    component: () => import("@/admin/pages/models/[id]/edit/videos.vue"),
+    meta: {
+      title: "admin.models.edit.videos",
+      customTitle: true,
+      activeRoute: "admin-models",
+      nav: "editTabs",
+      needsAuthentication: true,
+    },
+  },
+  {
     path: "hardpoints/",
     name: "admin-model-edit-hardpoints",
     component: () => import("@/admin/pages/models/[id]/edit/hardpoints.vue"),
@@ -87,18 +111,6 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "modules/",
-    name: "admin-model-edit-modules",
-    component: () => import("@/admin/pages/models/[id]/edit/modules.vue"),
-    meta: {
-      title: "admin.models.edit.modules",
-      customTitle: true,
-      activeRoute: "admin-models",
-      nav: "editTabs",
-      needsAuthentication: true,
-    },
-  },
-  {
     path: "paints/",
     name: "admin-model-edit-paints",
     component: () => import("@/admin/pages/models/[id]/edit/paints.vue"),
@@ -111,11 +123,11 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "images/",
-    name: "admin-model-edit-images",
-    component: () => import("@/admin/pages/models/[id]/edit/images.vue"),
+    path: "modules/",
+    name: "admin-model-edit-modules",
+    component: () => import("@/admin/pages/models/[id]/edit/modules.vue"),
     meta: {
-      title: "admin.models.edit.images",
+      title: "admin.models.edit.modules",
       customTitle: true,
       activeRoute: "admin-models",
       nav: "editTabs",
@@ -123,11 +135,23 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "videos/",
-    name: "admin-model-edit-videos",
-    component: () => import("@/admin/pages/models/[id]/edit/videos.vue"),
+    path: "upgrades/",
+    name: "admin-model-edit-upgrades",
+    component: () => import("@/admin/pages/models/[id]/edit/upgrades.vue"),
     meta: {
-      title: "admin.models.edit.videos",
+      title: "admin.models.edit.upgrades",
+      customTitle: true,
+      activeRoute: "admin-models",
+      nav: "editTabs",
+      needsAuthentication: true,
+    },
+  },
+  {
+    path: "packages/",
+    name: "admin-model-edit-packages",
+    component: () => import("@/admin/pages/models/[id]/edit/packages.vue"),
+    meta: {
+      title: "admin.models.edit.packages",
       customTitle: true,
       activeRoute: "admin-models",
       nav: "editTabs",

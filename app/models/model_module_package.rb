@@ -50,7 +50,20 @@ class ModelModulePackage < ApplicationRecord
 
   accepts_nested_attributes_for :module_package_items, allow_destroy: true
 
+  ALLOWED_SORTING_PARAMS = [
+    "name asc", "name desc", "createdAt asc", "createdAt desc",
+    "updatedAt asc", "updatedAt desc"
+  ]
+
   before_save :update_slugs
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["active", "created_at", "description", "hidden", "id", "model_id", "name", "pledge_price", "slug", "updated_at"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["model", "model_modules", "module_package_items"]
+  end
 
   def self.ordered_by_name
     order(name: :asc)
