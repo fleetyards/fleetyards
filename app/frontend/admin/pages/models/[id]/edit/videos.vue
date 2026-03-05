@@ -7,22 +7,23 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
 import Heading from "@/shared/components/base/Heading/index.vue";
+import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
 import {
   type ModelExtended,
-  type ModelUpdateInput,
-} from "@/services/fyAdminApi";
-import { useForm } from "vee-validate";
-import {
-  useModelVideos as useModelVideosQuery,
   type Video,
+  type VideoInput,
+  type FilterOption,
+  VideoTypeEnum,
+  useVideos as useVideosQuery,
+  useCreateVideo as useCreateVideoMutation,
+  useUpdateVideo as useUpdateVideoMutation,
+  useDestroyVideo as useDestroyVideoMutation,
+  getVideosQueryKey,
 } from "@/services/fyAdminApi";
-import { usePagination } from "@/shared/composables/usePagination";
-import FilteredList from "@/shared/components/FilteredList/index.vue";
-import BaseTable, {
-  type BaseTableCol,
-} from "@/shared/components/base/Table/index.vue";
-import Paginator from "@/shared/components/Paginator/index.vue";
-import Loader from "@/shared/components/Loader/index.vue";
+import { useQueryClient } from "@tanstack/vue-query";
+import LazyImage from "@/shared/components/LazyImage/index.vue";
+import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
   model: ModelExtended;
@@ -30,112 +31,195 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { t, l } = useI18n();
+const { t } = useI18n();
+const queryClient = useQueryClient();
 
-const initialValues = ref<ModelUpdateInput>({
-  size: props.model.metrics.size,
-  length: props.model.metrics.length,
-  beam: props.model.metrics.beam,
-  height: props.model.metrics.height,
+const editableList = ref<{
+  editingId: string | null;
+  creating: boolean;
+  startCreate: () => void;
+  finishEdit: () => void;
+  finishCreate: () => void;
+} | null>(null);
+
+const { data, isLoading } = useVideosQuery({
+  perPage: "100",
+  q: {
+    modelIdEq: props.model.id,
+  },
 });
 
-const validationSchema = {};
+const invalidateVideos = async () => {
+  await queryClient.invalidateQueries({
+    queryKey: getVideosQueryKey(),
+  });
+};
 
-useForm({
-  initialValues: initialValues.value,
-  validationSchema,
+// Edit
+const editForm = ref<VideoInput>({});
+
+const onStartEdit = (record: Video) => {
+  editForm.value = {
+    url: record.url,
+    videoType: record.type,
+  };
+};
+
+const updateMutation = useUpdateVideoMutation({
+  mutation: {
+    onSettled: invalidateVideos,
+  },
 });
 
-const { perPage, page, updatePerPage } = usePagination("admin-model-videos");
+const onSaveEdit = async () => {
+  const id = editableList.value?.editingId;
+  if (!id) return;
 
-const { data, ...asyncStatus } = useModelVideosQuery(props.model.id, {
-  page: page.value,
-  perPage: perPage.value,
+  await updateMutation.mutateAsync({
+    id,
+    data: editForm.value,
+  });
+
+  editableList.value?.finishEdit();
+};
+
+// Delete
+const destroyMutation = useDestroyVideoMutation({
+  mutation: {
+    onSettled: invalidateVideos,
+  },
 });
 
-const columns: BaseTableCol<Video>[] = [
-  {
-    name: "url",
-    label: "",
-    alignment: "center",
-  },
-  {
-    name: "type",
-    label: "Type",
-    sortable: true,
-  },
-  {
-    name: "createdAt",
-    label: "created at?",
-    mobile: false,
-    sortable: true,
-  },
-  {
-    name: "updatedAt",
-    label: "updated at?",
-    mobile: false,
-    sortable: true,
-  },
-];
+const onDestroy = async (record: Video) => {
+  await destroyMutation.mutateAsync({ id: record.id });
+};
 
-// const [size, sizeProps] = defineField("size");
+// Create
+const createForm = ref<VideoInput>({
+  modelId: props.model.id,
+  videoType: VideoTypeEnum.youtube,
+});
+
+const onStartCreate = () => {
+  createForm.value = {
+    modelId: props.model.id,
+    videoType: VideoTypeEnum.youtube,
+  };
+};
+
+const createMutation = useCreateVideoMutation({
+  mutation: {
+    onSettled: invalidateVideos,
+  },
+});
+
+const onSaveCreate = async () => {
+  await createMutation.mutateAsync({
+    data: createForm.value,
+  });
+
+  editableList.value?.finishCreate();
+};
+
+// Helpers
+const videoTypeIcons: Record<string, string> = {
+  [VideoTypeEnum.youtube]: "fab fa-youtube",
+};
+
+const thumbnailUrl = (video: Video) => {
+  if (video.type === VideoTypeEnum.youtube && video.videoId) {
+    return `https://img.youtube.com/vi/${video.videoId}/mqdefault.jpg`;
+  }
+  return undefined;
+};
+
+// Dropdown options
+const videoTypeOptions: FilterOption[] = Object.values(VideoTypeEnum).map(
+  (value) => ({
+    label: value,
+    value,
+  }),
+);
 </script>
 
 <template>
-  <Heading>{{ t("headlines.admin.models.edit.videos") }}</Heading>
+  <div class="d-flex align-items-center justify-content-between">
+    <Heading>{{ t("headlines.admin.models.edit.videos") }}</Heading>
+    <Btn
+      :size="BtnSizesEnum.SMALL"
+      :disabled="editableList?.creating"
+      @click="editableList?.startCreate()"
+    >
+      <i class="fad fa-plus" />
+      {{ t("actions.add") }}
+    </Btn>
+  </div>
 
-  <FilteredList
-    name="admin-model-videos"
-    :records="data?.items || []"
-    :async-status="asyncStatus"
-    primary-key="id"
+  <InlineEditableList
+    hide-add-button
+    empty-name="Videos"
+    :loading="isLoading"
+    ref="editableList"
+    :items="(data?.items as Video[]) || []"
+    :confirm-destroy-text="t('messages.confirm.video.destroy')"
+    @start-edit="onStartEdit"
+    @save-edit="onSaveEdit"
+    @start-create="onStartCreate"
+    @save-create="onSaveCreate"
+    @destroy="onDestroy"
   >
-    <template v-slot:header> Form </template>
-
-    <template #default="{ loading, emptyVisible }">
-      <BaseTable
-        :records="data?.items || []"
-        primary-key="id"
-        :columns="columns"
-        :loading="loading"
-        :empty-visible="emptyVisible"
-        default-sort="name asc"
-        selectable
-      >
-        <template #loader="{ loading }">
-          <Loader :loading="loading" admin />
-        </template>
-        <template #col-url="{ record }">
-          {{ record.url }}
-        </template>
-        <template #col-type="{ record }">
-          {{ record.type }}
-        </template>
-        <template #col-createdAt="{ record }">
-          {{ l(record.createdAt, "datetime.formats.short") }}
-        </template>
-        <template #col-updatedAt="{ record }">
-          {{ l(record.updatedAt, "datetime.formats.short") }}
-        </template>
-        <template #actions> Actions </template>
-      </BaseTable>
+    <template #display="{ item }">
+      <LazyImage
+        v-if="thumbnailUrl(item)"
+        :src="thumbnailUrl(item)"
+        :variant="LazyImageVariantsEnum.WIDE_SMALL"
+        :alt="item.url"
+        class="video-thumbnail"
+      />
+      <i :class="videoTypeIcons[item.type]" class="video-type-icon" />
+      <a :href="item.url" target="_blank">{{ item.url }}</a>
     </template>
-    <template #pagination-top>
-      <Paginator
-        v-if="data"
-        :query-result-ref="data"
-        :per-page="perPage"
-        :update-per-page="updatePerPage"
+
+    <template #edit>
+      <FilterGroup
+        v-model="editForm.videoType"
+        name="edit-video-type"
+        :options="videoTypeOptions"
+        :nullable="false"
+        label="Type"
+      />
+      <FormInput
+        v-model="editForm.url"
+        name="edit-url"
+        translation-key="video.url"
       />
     </template>
 
-    <template #pagination-bottom>
-      <Paginator
-        v-if="data"
-        :query-result-ref="data"
-        :per-page="perPage"
-        :update-per-page="updatePerPage"
+    <template #create>
+      <FilterGroup
+        v-model="createForm.videoType"
+        name="create-video-type"
+        :options="videoTypeOptions"
+        :nullable="false"
+        label="Type"
+      />
+      <FormInput
+        v-model="createForm.url"
+        name="create-url"
+        translation-key="video.url"
       />
     </template>
-  </FilteredList>
+  </InlineEditableList>
 </template>
+
+<style lang="scss" scoped>
+.video-thumbnail {
+  width: 80px;
+  flex-shrink: 0;
+}
+
+.video-type-icon {
+  font-size: 1.2rem;
+  opacity: 0.7;
+}
+</style>

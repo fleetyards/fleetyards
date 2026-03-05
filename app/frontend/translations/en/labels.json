@@ -431,6 +431,26 @@
         "code": "Code",
         "scRef": "SC Ref"
       },
+      "itemPrice": {
+        "price": "Price",
+        "location": "Location",
+        "locationUrl": "Location URL"
+      },
+      "video": {
+        "url": "URL",
+        "videoType": "Type"
+      },
+      "modelModule": {
+        "name": "Name",
+        "pledgePrice": "Pledge Price",
+        "active": "Active?",
+        "hidden": "Hidden?"
+      },
+      "dock": {
+        "name": "Name",
+        "dockType": "Dock Type",
+        "shipSize": "Ship Size"
+      },
       "modelPaint": {
         "hidden": "Hidden?",
         "active": "Active?",
@@ -604,7 +624,9 @@
       },
       "image": {
         "background": "Use as Background?",
+        "caption": "Caption",
         "enabled": "Enabled?",
+        "file": "Image File",
         "global": "Global?",
         "delete": "Delete",
         "start": "Start",

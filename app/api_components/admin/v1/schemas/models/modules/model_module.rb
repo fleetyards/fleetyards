@@ -10,6 +10,8 @@ module Admin
 
             schema({
               properties: {
+                active: {type: :boolean},
+                hidden: {type: :boolean},
                 model: {"$ref": "#/components/schemas/Model"}
               }
             })

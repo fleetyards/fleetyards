@@ -34,12 +34,16 @@
       "home": {
         "search": "Search for Ships..."
       },
+      "image": {
+        "caption": "Caption"
+      },
       "model": {
         "length": "Length",
         "beam": "Beam",
         "height": "Height",
         "price": "Price",
         "pledgePrice": "Pledge Price",
+        "onSale": "On Sale",
         "mass": "Mass",
         "minCrew": "Min. Crew",
         "maxCrew": "Max. Crew",
@@ -108,6 +112,22 @@
       },
       "commodityPrice": {
         "price": "100.00"
+      },
+      "itemPrice": {
+        "price": "0.00",
+        "location": "Location",
+        "locationUrl": "Location URL"
+      },
+      "video": {
+        "url": "YouTube Video ID"
+      },
+      "modelModule": {
+        "name": "Module Name",
+        "pledgePrice": "0.00",
+        "search": "Search modules by name..."
+      },
+      "dock": {
+        "name": "Dock Name"
       },
       "filters": {
         "shops": {

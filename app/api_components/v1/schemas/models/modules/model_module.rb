@@ -14,6 +14,7 @@ module V1
               name: {type: :string},
               slug: {type: :string},
               description: {type: :string},
+              hasStoreImage: {type: :boolean},
 
               scKey: {type: :string},
 

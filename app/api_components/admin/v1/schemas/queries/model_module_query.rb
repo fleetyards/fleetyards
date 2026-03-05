@@ -1,0 +1,27 @@
+# frozen_string_literal: true
+
+module Admin
+  module V1
+    module Schemas
+      module Queries
+        class ModelModuleQuery
+          include Rswag::SchemaComponents::Component
+
+          schema({
+            type: :object,
+            properties: {
+              nameIn: {type: :string},
+              idEq: {type: :string, format: :uuid},
+              nameCont: {type: :string},
+              nameEq: {type: :string},
+              modelIdEq: {type: :string, format: :uuid},
+              moduleHardpointsModelIdEq: {type: :string, format: :uuid},
+              moduleHardpointsModelIdNotEq: {type: :string, format: :uuid}
+            },
+            additionalProperties: false
+          })
+        end
+      end
+    end
+  end
+end

@@ -7305,6 +7305,8 @@ components:
           type: string
         description:
           type: string
+        hasStoreImage:
+          type: boolean
         scKey:
           type: string
         metrics:

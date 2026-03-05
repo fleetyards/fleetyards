@@ -2,6 +2,8 @@
 
 json.id model_module.id
 json.name model_module.name
+json.active model_module.active
+json.hidden model_module.hidden
 
 json.availability do
   json.bought_at do
@@ -24,11 +26,17 @@ end
 
 if model_module.models.any?
   json.model do
-    json.partial! "api/v1/models/base", model: model_module.models.first
+    json.partial! "admin/api/v1/models/base", model: model_module.models.first
   end
 end
 
 json.pledge_price model_module.pledge_price
 json.production_status model_module.production_status
+
+if model_module.manufacturer.present?
+  json.manufacturer do
+    json.partial! "api/v1/manufacturers/base", manufacturer: model_module.manufacturer
+  end
+end
 
 json.partial! "api/shared/dates", record: model_module

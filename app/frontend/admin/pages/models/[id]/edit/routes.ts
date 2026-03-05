@@ -19,6 +19,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/models/[id]/edit/metrics.vue"),
     meta: {
       title: "admin.models.edit.metrics",
+      customTitle: true,
       activeRoute: "admin-models",
       nav: "editTabs",
       needsAuthentication: true,
@@ -31,6 +32,7 @@ export const routes: RouteRecordRaw[] = [
       import("@/admin/pages/models/[id]/edit/cargo-and-fuel.vue"),
     meta: {
       title: "admin.models.edit.cargoAndFuel",
+      customTitle: true,
       activeRoute: "admin-models",
       nav: "editTabs",
       needsAuthentication: true,
@@ -42,6 +44,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/models/[id]/edit/prices.vue"),
     meta: {
       title: "admin.models.edit.prices",
+      customTitle: true,
       activeRoute: "admin-models",
       nav: "editTabs",
       needsAuthentication: true,
@@ -65,6 +68,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/models/[id]/edit/hardpoints.vue"),
     meta: {
       title: "admin.models.edit.hardpoints",
+      customTitle: true,
       activeRoute: "admin-models",
       nav: "editTabs",
       needsAuthentication: true,
@@ -76,6 +80,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/models/[id]/edit/docks.vue"),
     meta: {
       title: "admin.models.edit.docks",
+      customTitle: true,
       activeRoute: "admin-models",
       nav: "editTabs",
       needsAuthentication: true,
@@ -87,6 +92,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/models/[id]/edit/modules.vue"),
     meta: {
       title: "admin.models.edit.modules",
+      customTitle: true,
       activeRoute: "admin-models",
       nav: "editTabs",
       needsAuthentication: true,
@@ -98,6 +104,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/models/[id]/edit/paints.vue"),
     meta: {
       title: "admin.models.edit.paints",
+      customTitle: true,
       activeRoute: "admin-models",
       nav: "editTabs",
       needsAuthentication: true,
@@ -109,6 +116,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/models/[id]/edit/images.vue"),
     meta: {
       title: "admin.models.edit.images",
+      customTitle: true,
       activeRoute: "admin-models",
       nav: "editTabs",
       needsAuthentication: true,
@@ -120,6 +128,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/models/[id]/edit/videos.vue"),
     meta: {
       title: "admin.models.edit.videos",
+      customTitle: true,
       activeRoute: "admin-models",
       nav: "editTabs",
       needsAuthentication: true,

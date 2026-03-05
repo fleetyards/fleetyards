@@ -94,6 +94,9 @@
             "hardpoints": "Edit %{manufacturer} %{model} Hardpoints",
             "cargoAndFuel": "Edit %{manufacturer} %{model} Cargo & Fuel",
             "docks": "Edit %{manufacturer} %{model} Docks",
+            "modules": "Edit %{manufacturer} %{model} Modules",
+            "paints": "Edit %{manufacturer} %{model} Paints",
+            "images": "Edit %{manufacturer} %{model} Images",
             "videos": "Edit %{manufacturer} %{model} Videos"
           }
         },

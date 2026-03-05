@@ -25,6 +25,10 @@ class Video < ApplicationRecord
 
   validates :url, :video_type, presence: true
 
+  def self.ransackable_attributes(auth_object = nil)
+    %w[id url video_type model_id created_at updated_at]
+  end
+
   def video_url
     return url unless youtube?
 

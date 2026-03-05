@@ -82,6 +82,9 @@
       "addUpgrade": "Add another Upgrade",
       "showTableView": "Display as List",
       "showGridView": "Display as Grid",
+      "linkExisting": "Link Existing",
+      "loadMore": "Load more",
+      "unlink": "Unlink",
       "syncRsiHangar": "Sync RSI Hangar",
       "oauth": {
         "apple": "Apple",

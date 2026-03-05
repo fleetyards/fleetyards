@@ -7,12 +7,26 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
 import Heading from "@/shared/components/base/Heading/index.vue";
+import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
 import {
   type ModelExtended,
-  type ModelUpdateInput,
+  type ModelPaint,
+  type ModelPaintInput,
+  useListModelPaints as useListModelPaintsQuery,
+  useCreateModelPaint as useCreateModelPaintMutation,
+  useUpdateModelPaint as useUpdateModelPaintMutation,
+  useDestroyModelPaint as useDestroyModelPaintMutation,
+  getListModelPaintsQueryKey,
 } from "@/services/fyAdminApi";
-import { useForm } from "vee-validate";
-import ModelForm from "@/admin/components/Models/Form/index.vue";
+import { useQueryClient } from "@tanstack/vue-query";
+import LazyImage from "@/shared/components/LazyImage/index.vue";
+import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
+import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
+import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 
 type Props = {
   model: ModelExtended;
@@ -21,30 +35,198 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
+const queryClient = useQueryClient();
 
-const initialValues = ref<ModelUpdateInput>({
-  size: props.model.metrics.size,
-  length: props.model.metrics.length,
-  beam: props.model.metrics.beam,
-  height: props.model.metrics.height,
+const editableList = ref<{
+  editingId: string | null;
+  creating: boolean;
+  startCreate: () => void;
+  finishEdit: () => void;
+  finishCreate: () => void;
+} | null>(null);
+
+const { data, isLoading } = useListModelPaintsQuery({
+  perPage: "100",
+  q: {
+    modelIdEq: props.model.id,
+  },
 });
 
-const validationSchema = {};
+const invalidatePaints = async () => {
+  await queryClient.invalidateQueries({
+    queryKey: getListModelPaintsQueryKey(),
+  });
+};
 
-useForm({
-  initialValues: initialValues.value,
-  validationSchema,
+// Edit
+const editForm = ref<ModelPaintInput>({});
+
+const onStartEdit = (record: ModelPaint) => {
+  editForm.value = {
+    name: record.name,
+  };
+};
+
+const updateMutation = useUpdateModelPaintMutation({
+  mutation: {
+    onSettled: invalidatePaints,
+  },
 });
 
-// const [size, sizeProps] = defineField("size");
+const toggleField = async (item: ModelPaint, field: "active" | "hidden") => {
+  await updateMutation.mutateAsync({
+    id: item.id,
+    data: { [field]: !item[field] },
+  });
+};
+
+const onSaveEdit = async () => {
+  const id = editableList.value?.editingId;
+  if (!id) return;
+
+  await updateMutation.mutateAsync({
+    id,
+    data: editForm.value,
+  });
+
+  editableList.value?.finishEdit();
+};
+
+// Delete
+const destroyMutation = useDestroyModelPaintMutation({
+  mutation: {
+    onSettled: invalidatePaints,
+  },
+});
+
+const onDestroy = async (record: ModelPaint) => {
+  await destroyMutation.mutateAsync({ id: record.id });
+};
+
+// Create
+const createForm = ref<ModelPaintInput>({
+  modelId: props.model.id,
+});
+
+const onStartCreate = () => {
+  createForm.value = {
+    modelId: props.model.id,
+  };
+};
+
+const createMutation = useCreateModelPaintMutation({
+  mutation: {
+    onSettled: invalidatePaints,
+  },
+});
+
+const onSaveCreate = async () => {
+  await createMutation.mutateAsync({
+    data: createForm.value,
+  });
+
+  editableList.value?.finishCreate();
+};
 </script>
 
 <template>
-  <Heading>{{ t("headlines.admin.models.edit.paints") }}</Heading>
-  <ModelForm
-    :model="model"
-    :validation-schema="validationSchema"
-    :initial-values="initialValues"
+  <div class="d-flex align-items-center justify-content-between">
+    <Heading>{{ t("headlines.admin.models.edit.paints") }}</Heading>
+    <Btn
+      :size="BtnSizesEnum.SMALL"
+      :disabled="editableList?.creating"
+      @click="editableList?.startCreate()"
+    >
+      <i class="fad fa-plus" />
+      {{ t("actions.add") }}
+    </Btn>
+  </div>
+
+  <InlineEditableList
+    hide-add-button
+    empty-name="Paints"
+    :loading="isLoading"
+    ref="editableList"
+    :items="(data?.items as ModelPaint[]) || []"
+    :confirm-destroy-text="t('messages.confirm.modelPaint.destroy')"
+    @start-edit="onStartEdit"
+    @save-edit="onSaveEdit"
+    @start-create="onStartCreate"
+    @save-create="onSaveCreate"
+    @destroy="onDestroy"
   >
-  </ModelForm>
+    <template #display="{ item }">
+      <LazyImage
+        v-if="item.media?.storeImage"
+        :src="item.media.storeImage.smallUrl"
+        :variant="LazyImageVariantsEnum.WIDE_SMALL"
+        :alt="item.name"
+        class="paint-thumbnail"
+      />
+      <span>{{ item.name }}</span>
+    </template>
+
+    <template #actions="{ item }">
+      <Btn
+        v-tooltip="t('labels.modelPaint.hidden')"
+        :size="BtnSizesEnum.SMALL"
+        :variant="BtnVariantsEnum.TRANSPARENT"
+        @click="toggleField(item, 'hidden')"
+      >
+        <i
+          class="fad fa-eye-slash"
+          :class="item.hidden ? 'text-warning' : 'text-muted'"
+        />
+      </Btn>
+      <Btn
+        v-tooltip="t('labels.modelPaint.active')"
+        :size="BtnSizesEnum.SMALL"
+        :variant="BtnVariantsEnum.TRANSPARENT"
+        @click="toggleField(item, 'active')"
+      >
+        <i
+          class="fad fa-ban"
+          :class="!item.active ? 'text-warning' : 'text-muted'"
+        />
+      </Btn>
+    </template>
+
+    <template #edit="{ item }">
+      <FormFileInput
+        v-model="editForm.storeImage"
+        :file="item.media?.storeImage"
+        name="edit-store-image"
+        translation-key="model.storeImage"
+        :allowed-types="AllowedFileTypes.IMAGE"
+        clearable
+      />
+      <FormInput
+        v-model="editForm.name"
+        name="edit-name"
+        translation-key="name"
+      />
+    </template>
+
+    <template #create>
+      <FormFileInput
+        v-model="createForm.storeImage"
+        name="create-store-image"
+        translation-key="model.storeImage"
+        :allowed-types="AllowedFileTypes.IMAGE"
+        small
+      />
+      <FormInput
+        v-model="createForm.name"
+        name="create-name"
+        translation-key="name"
+      />
+    </template>
+  </InlineEditableList>
 </template>
+
+<style lang="scss" scoped>
+.paint-thumbnail {
+  width: 80px;
+  flex-shrink: 0;
+}
+</style>

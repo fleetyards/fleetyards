@@ -20,8 +20,8 @@ import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
-  getPaintsQueryKey,
-  usePaints as usePaintsQuery,
+  getListModelPaintsQueryKey,
+  useListModelPaints as usePaintsQuery,
   type ModelPaint,
 } from "@/services/fyAdminApi";
 
@@ -48,7 +48,7 @@ const paintsQueryParams = computed(() => {
 });
 
 const paintsQueryKey = computed(() => {
-  return getPaintsQueryKey(paintsQueryParams.value);
+  return getListModelPaintsQueryKey(paintsQueryParams.value);
 });
 
 const { perPage, page, updatePerPage } = usePagination(paintsQueryKey);

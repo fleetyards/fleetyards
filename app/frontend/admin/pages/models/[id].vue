@@ -15,9 +15,9 @@ const { data: model, ...asyncStatus } = useModelQuery(
 const { updateMetaInfo } = useMetaInfo();
 
 const title = computed(() => {
-  if (route.meta.title && model.value && model.value.manufacturer) {
+  if (route.meta.title && model.value) {
     return t(`title.${route.meta.title}`, {
-      manufacturer: model.value.manufacturer.code,
+      manufacturer: model.value.manufacturer?.code ?? "",
       model: model.value.name,
     });
   }
@@ -26,7 +26,7 @@ const title = computed(() => {
 });
 
 watch(
-  () => model.value,
+  [() => model.value, () => route.meta.title],
   () => {
     if (title.value && model.value) {
       updateMetaInfo({

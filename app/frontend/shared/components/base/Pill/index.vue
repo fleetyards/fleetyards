@@ -8,21 +8,23 @@ export default {
 type Props = {
   tag?: "span" | "div" | "p";
   variant?: "default" | "success" | "warning" | "danger";
+  uppercase?: boolean;
+  marginRight?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   tag: "span",
   variant: "default",
+  uppercase: false,
+  marginRight: false,
 });
 
 const cssClasses = computed(() => {
   return {
     "base-pill": true,
-    "text-white text-base leading-none text-center": true,
-    "align-baseline whitespace-nowrap": true,
-    "bg-brand-primary": true,
-    "rounded px-2.5 py-1.5": true,
     [`base-pill--${props.variant}`]: props.variant !== "default",
+    "base-pill--uppercase": props.uppercase,
+    "base-pill--margin-right": props.marginRight,
   };
 });
 </script>

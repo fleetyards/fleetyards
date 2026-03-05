@@ -251,6 +251,9 @@
         "commodityPrice": {
           "destroy": "Are you sure you want to destroy this Price? This Action can't be reverted."
         },
+        "itemPrice": {
+          "destroy": "Are you sure you want to destroy this Item Price? This Action can't be reverted."
+        },
         "shopCommodity": {
           "destroy": "Are you sure you want to destroy this Commodity? This Action can't be reverted."
         },
@@ -285,6 +288,16 @@
         },
         "modelPaint": {
           "destroy": "Are you sure you want to delete this paint? This action can't be reverted."
+        },
+        "video": {
+          "destroy": "Are you sure you want to delete this video? This action can't be reverted."
+        },
+        "modelModule": {
+          "destroy": "Are you sure you want to delete this module? This action can't be reverted.",
+          "unlink": "Are you sure you want to unlink this module from the model? The module will still exist but won't be associated with this model."
+        },
+        "dock": {
+          "destroy": "Are you sure you want to delete this dock? This action can't be reverted."
         },
         "component": {
           "destroy": "Are you sure you want to delete this component? This action can't be reverted."

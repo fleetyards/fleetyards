@@ -6,26 +6,208 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
-import ImagesList from "@/admin/components/Images/List.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
-import { type ModelExtended } from "@/services/fyAdminApi";
-
-const { t } = useI18n();
+import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
+import {
+  type ModelExtended,
+  type Image,
+  type ImageInput,
+  GalleryTypeEnum,
+  useImages as useImagesQuery,
+  useCreateImage as useCreateImageMutation,
+  useUpdateImage as useUpdateImageMutation,
+  useDestroyImage as useDestroyImageMutation,
+  getImagesQueryKey,
+} from "@/services/fyAdminApi";
+import { useQueryClient } from "@tanstack/vue-query";
+import LazyImage from "@/shared/components/LazyImage/index.vue";
+import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
+import DirectUpload, {
+  type FileUpload,
+} from "@/shared/components/DirectUpload/index.vue";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 
 type Props = {
   model: ModelExtended;
 };
 
 const props = defineProps<Props>();
+
+const { t } = useI18n();
+const queryClient = useQueryClient();
+
+const editableList = ref<{
+  editingId: string | null;
+  finishEdit: () => void;
+} | null>(null);
+
+const { data, isLoading } = useImagesQuery({
+  perPage: "100",
+  q: {
+    galleryIdEq: props.model.id,
+    galleryTypeEq: GalleryTypeEnum.Model,
+  },
+});
+
+const invalidateImages = async () => {
+  await queryClient.invalidateQueries({
+    queryKey: getImagesQueryKey(),
+  });
+};
+
+// Edit
+const editForm = ref<ImageInput>({});
+
+const onStartEdit = (record: Image) => {
+  editForm.value = {
+    caption: record.caption,
+  };
+};
+
+const updateMutation = useUpdateImageMutation({
+  mutation: {
+    onSettled: invalidateImages,
+  },
+});
+
+const toggleField = async (
+  item: Image,
+  field: "enabled" | "global" | "background",
+) => {
+  await updateMutation.mutateAsync({
+    id: item.id,
+    data: { [field]: !item[field] },
+  });
+};
+
+const onSaveEdit = async () => {
+  const id = editableList.value?.editingId;
+  if (!id) return;
+
+  await updateMutation.mutateAsync({
+    id,
+    data: editForm.value,
+  });
+
+  editableList.value?.finishEdit();
+};
+
+// Delete
+const destroyMutation = useDestroyImageMutation({
+  mutation: {
+    onSettled: invalidateImages,
+  },
+});
+
+const onDestroy = async (record: Image) => {
+  await destroyMutation.mutateAsync({ id: record.id });
+};
+
+// Direct Upload
+const uploadMutation = useCreateImageMutation({
+  mutation: {
+    onSettled: invalidateImages,
+  },
+});
+
+const handleUploadDone = async (files: FileUpload[]) => {
+  const blobIds = files
+    .map((file) => file.blob?.signed_id)
+    .filter((id): id is string => !!id);
+
+  for (const blobId of blobIds) {
+    await uploadMutation.mutateAsync({
+      data: {
+        galleryId: props.model.id,
+        galleryType: GalleryTypeEnum.Model,
+        file: blobId,
+      },
+    });
+  }
+
+  await invalidateImages();
+};
 </script>
 
 <template>
   <Heading>{{ t("headlines.admin.models.images") }}</Heading>
 
-  <ImagesList
-    ref="imagesList"
-    name="admin-model-images"
-    gallery-type="Model"
-    :gallery-id="props.model.id"
-  />
+  <DirectUpload multiple inline hide-finished @upload:done="handleUploadDone" />
+
+  <InlineEditableList
+    hide-add-button
+    empty-name="Images"
+    :loading="isLoading"
+    ref="editableList"
+    :items="(data?.items as Image[]) || []"
+    :confirm-destroy-text="t('messages.confirm.image.destroy')"
+    @start-edit="onStartEdit"
+    @save-edit="onSaveEdit"
+    @destroy="onDestroy"
+  >
+    <template #display="{ item }">
+      <LazyImage
+        v-if="item.smallUrl"
+        :src="item.smallUrl"
+        :variant="LazyImageVariantsEnum.WIDE_SMALL"
+        :alt="item.name"
+        class="image-thumbnail"
+      />
+      <span>{{ item.name }}</span>
+    </template>
+
+    <template #actions="{ item }">
+      <Btn
+        v-tooltip="t('labels.image.enabled')"
+        :size="BtnSizesEnum.SMALL"
+        :variant="BtnVariantsEnum.TRANSPARENT"
+        @click="toggleField(item, 'enabled')"
+      >
+        <i
+          class="fad fa-ban"
+          :class="!item.enabled ? 'text-warning' : 'text-muted'"
+        />
+      </Btn>
+      <Btn
+        v-tooltip="t('labels.image.global')"
+        :size="BtnSizesEnum.SMALL"
+        :variant="BtnVariantsEnum.TRANSPARENT"
+        @click="toggleField(item, 'global')"
+      >
+        <i
+          class="fad fa-globe"
+          :class="!item.global ? 'text-warning' : 'text-muted'"
+        />
+      </Btn>
+      <Btn
+        v-tooltip="t('labels.image.background')"
+        :size="BtnSizesEnum.SMALL"
+        :variant="BtnVariantsEnum.TRANSPARENT"
+        @click="toggleField(item, 'background')"
+      >
+        <i
+          class="fad fa-image"
+          :class="item.background ? 'text-info' : 'text-muted'"
+        />
+      </Btn>
+    </template>
+
+    <template #edit>
+      <FormInput
+        v-model="editForm.caption"
+        name="edit-caption"
+        translation-key="image.caption"
+      />
+    </template>
+  </InlineEditableList>
 </template>
+
+<style lang="scss" scoped>
+.image-thumbnail {
+  width: 80px;
+  flex-shrink: 0;
+}
+</style>

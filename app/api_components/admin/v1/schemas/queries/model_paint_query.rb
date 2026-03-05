@@ -10,6 +10,7 @@ module Admin
           schema({
             type: :object,
             properties: {
+              modelIdEq: {type: :string, format: :uuid},
               nameEq: {type: :string},
               nameCont: {type: :string},
               idEq: {type: :string},

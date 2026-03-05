@@ -14,8 +14,8 @@ RSpec.describe "admin/api/v1/model_paints", type: :request, swagger_doc: "admin/
 
   path "/model-paints" do
     get("Paints list") do
-      operationId "paints"
-      tags "Models"
+      operationId "listModelPaints"
+      tags "ModelPaints"
 
       produces "application/json"
 

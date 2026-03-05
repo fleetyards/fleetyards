@@ -17,6 +17,8 @@ import {
   InputTypesEnum,
 } from "@/shared/components/base/FormInput/types";
 import ModelForm from "@/admin/components/Models/Form/index.vue";
+import ItemPricesList from "@/admin/components/ItemPrices/List.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
   model: ModelExtended;
@@ -46,6 +48,11 @@ const [pledgePrice, pledgePriceProps] = defineField("pledgePrice");
 const [onSale, onSaleProps] = defineField("onSale");
 const [salesPageUrl, salesPageUrlProps] = defineField("salesPageUrl");
 const [storeUrl, storeUrlProps] = defineField("storeUrl");
+
+const itemPricesList = ref<{
+  creating: boolean;
+  startCreate: () => void;
+} | null>(null);
 </script>
 
 <template>
@@ -98,4 +105,22 @@ const [storeUrl, storeUrlProps] = defineField("storeUrl");
       </div>
     </div>
   </ModelForm>
+
+  <div class="d-flex align-items-center justify-content-between">
+    <Heading>{{ t("headlines.admin.models.edit.itemPrices") }}</Heading>
+    <Btn
+      :size="BtnSizesEnum.SMALL"
+      :disabled="itemPricesList?.creating"
+      @click="itemPricesList?.startCreate()"
+    >
+      <i class="fad fa-plus" />
+      {{ t("actions.add") }}
+    </Btn>
+  </div>
+
+  <ItemPricesList
+    ref="itemPricesList"
+    :item-id="props.model.id"
+    item-type="Model"
+  />
 </template>

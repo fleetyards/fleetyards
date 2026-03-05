@@ -32,7 +32,9 @@
             "modules": "Modules",
             "paints": "Paints",
             "videos": "Videos",
-            "images": "Images"
+            "images": "Images",
+            "itemPrices": "Item Prices",
+            "linkModule": "Link Existing Module"
           },
           "new": "New Model",
           "show": "Model",

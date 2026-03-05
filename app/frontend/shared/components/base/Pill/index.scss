@@ -1,24 +1,39 @@
 .base-pill {
   display: inline-block;
   padding: 6px 10px;
-  color: #fff;
   font-size: 15px;
   line-height: 1;
   white-space: nowrap;
   text-align: center;
   vertical-align: baseline;
-  background-color: $primary;
   border-radius: 4px;
+  background: rgba($primary, 0.2);
+  border: 1px solid rgba($primary, 0.4);
+  color: lighten($primary, 20%);
 
   &--danger {
-    background-color: $danger;
+    background: rgba($danger, 0.2);
+    border-color: rgba($danger, 0.4);
+    color: lighten($danger, 20%);
   }
 
   &--warning {
-    background-color: $warning;
+    background: rgba($warning, 0.2);
+    border-color: rgba($warning, 0.4);
+    color: lighten($warning, 10%);
   }
 
   &--success {
-    background-color: $success;
+    background: rgba($success, 0.2);
+    border-color: rgba($success, 0.4);
+    color: lighten($success, 20%);
+  }
+
+  &--uppercase {
+    text-transform: uppercase;
+  }
+
+  &--margin-right {
+    margin-right: 6px;
   }
 }

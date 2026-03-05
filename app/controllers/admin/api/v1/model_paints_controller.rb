@@ -64,7 +64,7 @@ module Admin
 
         private def model_paint_query_params
           @model_paint_query_params ||= params.permit(q: [
-            :name_in, :id_eq, :name_cont, :name_eq, :sorts,
+            :name_in, :id_eq, :name_cont, :name_eq, :model_id_eq, :sorts,
             sorts: []
           ]).fetch(:q, {})
         end
