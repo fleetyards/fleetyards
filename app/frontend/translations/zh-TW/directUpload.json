@@ -2,6 +2,7 @@
   "zh-TW": {
     "directUpload": {
       "title": "上傳",
+      "chooseFiles": "選擇檔案",
       "dropzone": {
         "textMultiple": "將檔案拖拽到這裡上傳",
         "text": "將檔案拖拽到這裡上傳",
@@ -10,6 +11,10 @@
       },
       "previewImage": {
         "remove": "移除"
+      },
+      "actions": {
+        "upload": "上傳",
+        "close": "關閉"
       }
     }
   }

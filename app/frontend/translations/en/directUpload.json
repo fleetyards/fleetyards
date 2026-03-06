@@ -2,6 +2,7 @@
   "en": {
     "directUpload": {
       "title": "Upload",
+      "chooseFiles": "Choose files",
       "dropzone": {
         "textMultiple": "Drop files here to upload",
         "text": "Drop file here to upload",
@@ -10,6 +11,10 @@
       },
       "previewImage": {
         "remove": "Remove"
+      },
+      "actions": {
+        "upload": "Upload",
+        "close": "Close"
       }
     }
   }

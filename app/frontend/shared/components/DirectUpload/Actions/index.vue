@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { useI18n } from "@/shared/composables/useI18n";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import DirectUploadUploader from "@/shared/components/DirectUpload/Uploader/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -17,6 +18,8 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   inline: false,
 });
+
+const { t } = useI18n();
 
 const upload = () => {
   props.uploader.upload();
@@ -41,7 +44,7 @@ const cssClasses = computed(() => {
       v-if="uploader.status === 'pending' || uploader.status === 'uploading'"
       :disabled="uploader.status === 'uploading'"
       @click="upload"
-      >Upload</Btn
+      >{{ t("directUpload.actions.upload") }}</Btn
     >
     <Btn
       v-if="
@@ -51,7 +54,7 @@ const cssClasses = computed(() => {
         uploader.status !== 'uploading'
       "
       @click="close"
-      >Close</Btn
+      >{{ t("directUpload.actions.close") }}</Btn
     >
   </div>
 </template>

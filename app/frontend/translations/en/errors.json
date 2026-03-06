@@ -3,6 +3,8 @@
     "errors": {
       "generic": "An error occurred",
       "upload": {
+        "oneFile": "Only one file can be uploaded at a time.",
+        "generic": "An error occurred during the upload.",
         "fileTooLarge": "The file \"%{filename}\" exceeds the maximum allowed size of %{size} MB.",
         "invalidFileType": "The file \"%{filename}\" is not of an allowed type. Allowed types are: %{types}."
       }

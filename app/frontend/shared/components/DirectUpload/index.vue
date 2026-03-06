@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { useI18n } from "@/shared/composables/useI18n";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import DirectUploadUploader, {
   type FileUpload as InternalFileUpload,
@@ -22,6 +23,7 @@ type Props = {
   active?: boolean;
   allowedTypes?: string[];
   allowedSizeMb?: number;
+  directUpload?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -32,10 +34,12 @@ const props = withDefaults(defineProps<Props>(), {
   active: false,
   allowedTypes: undefined,
   allowedSizeMb: undefined,
+  directUpload: false,
 });
 
 const uploader = ref<InstanceType<typeof DirectUploadUploader>>();
 
+const { t } = useI18n();
 const comlink = useComlink();
 
 const openModal = () => {
@@ -83,7 +87,9 @@ defineExpose({
 
 <template>
   <div class="direct-upload" :class="cssClasses">
-    <Btn v-if="multiple && !inline" @click="openModal">Choose files</Btn>
+    <Btn v-if="multiple && !inline" @click="openModal">{{
+      t("directUpload.chooseFiles")
+    }}</Btn>
     <template v-else>
       <DirectUploadUploader
         ref="uploader"
@@ -93,13 +99,14 @@ defineExpose({
         :active="active"
         :allowed-types="allowedTypes"
         :allowed-size-mb="allowedSizeMb"
+        :direct-upload="directUpload"
         @upload:done="handleUploadDone"
         @upload:progress="handleUploadProgress"
         @upload:start="handleUploadStart"
         @clear="handleClear"
       />
       <DirectUploadActions
-        v-if="uploader && multiple"
+        v-if="uploader && multiple && !directUpload"
         :uploader="uploader"
         :inline="inline"
       />

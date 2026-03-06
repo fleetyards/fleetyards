@@ -1,7 +1,13 @@
 {
   "zh-CN": {
     "errors": {
-      "generic": "发生了错误"
+      "generic": "发生了错误",
+      "upload": {
+        "oneFile": "一次只能上传一个文件。",
+        "generic": "上传过程中发生了错误。",
+        "fileTooLarge": "文件 \"%{filename}\" 超过了最大允许大小 %{size} MB。",
+        "invalidFileType": "文件 \"%{filename}\" 不是允许的类型。允许的类型为：%{types}。"
+      }
     }
   }
 }

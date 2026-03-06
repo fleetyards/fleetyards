@@ -1,7 +1,13 @@
 {
   "de": {
     "errors": {
-      "generic": "Ein Fehler ist aufgetreten"
+      "generic": "Ein Fehler ist aufgetreten",
+      "upload": {
+        "oneFile": "Es kann nur eine Datei gleichzeitig hochgeladen werden.",
+        "generic": "Beim Hochladen ist ein Fehler aufgetreten.",
+        "fileTooLarge": "Die Datei \"%{filename}\" überschreitet die maximal erlaubte Größe von %{size} MB.",
+        "invalidFileType": "Die Datei \"%{filename}\" hat keinen erlaubten Dateityp. Erlaubte Dateitypen sind: %{types}."
+      }
     }
   }
 }

@@ -2,6 +2,7 @@
   "it": {
     "directUpload": {
       "title": "Carica",
+      "chooseFiles": "Scegli file",
       "dropzone": {
         "textMultiple": "Trascina i file qui per caricare",
         "text": "Trascina il file qui per caricare",
@@ -10,6 +11,10 @@
       },
       "previewImage": {
         "remove": "Rimuovi"
+      },
+      "actions": {
+        "upload": "Carica",
+        "close": "Chiudi"
       }
     }
   }

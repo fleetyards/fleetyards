@@ -1,7 +1,13 @@
 {
   "fr": {
     "errors": {
-      "generic": "Une erreur s'est produite"
+      "generic": "Une erreur s'est produite",
+      "upload": {
+        "oneFile": "Un seul fichier peut être téléchargé à la fois.",
+        "generic": "Une erreur s'est produite lors du téléchargement.",
+        "fileTooLarge": "Le fichier \"%{filename}\" dépasse la taille maximale autorisée de %{size} Mo.",
+        "invalidFileType": "Le fichier \"%{filename}\" n'est pas d'un type autorisé. Les types autorisés sont : %{types}."
+      }
     }
   }
 }
