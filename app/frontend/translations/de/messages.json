@@ -233,7 +233,66 @@
         },
         "twoFactor": {
           "generateBackupCodes": "Bist du sicher, dass du deine Zwei-Faktor-Backup-Codes neu generieren möchtest?"
+        },
+        "user": {
+          "loginAs": "Bist du sicher, dass du dich als dieser Benutzer anmelden möchtest?",
+          "resendConfirmation": "Bist du sicher, dass du die Bestätigungs-E-Mail für diesen Benutzer erneut senden möchtest?",
+          "sendPasswordReset": "Bist du sicher, dass du eine Passwort-Zurücksetzungs-E-Mail für diesen Benutzer senden möchtest?",
+          "destroy": "Bist du sicher, dass du diesen Benutzer löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+        },
+        "model": {
+          "destroy": "Bist du sicher, dass du dieses Modell löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
+          "sync": "Bist du sicher, dass du dieses Modell von RSI synchronisieren möchtest?",
+          "exchangeStoreImage": "Bist du sicher, dass du das Store-Bild durch das RSI-Bild ersetzen möchtest?",
+          "reloadMatrix": "Bist du sicher, dass du die Modell-Matrix neu laden möchtest? Dies wird Hintergrund-Jobs einreihen.",
+          "reloadScData": "Bist du sicher, dass du die SC-Daten neu laden möchtest? Dies wird Hintergrund-Jobs einreihen."
+        },
+        "manufacturer": {
+          "destroy": "Bist du sicher, dass du diesen Hersteller löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+        },
+        "modelPaint": {
+          "destroy": "Bist du sicher, dass du diese Lackierung löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+        },
+        "video": {
+          "destroy": "Bist du sicher, dass du dieses Video löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+        },
+        "modelModule": {
+          "destroy": "Bist du sicher, dass du dieses Modul löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
+          "unlink": "Bist du sicher, dass du dieses Modul vom Modell trennen möchtest? Das Modul wird weiterhin existieren, aber nicht mehr mit diesem Modell verknüpft sein."
+        },
+        "modelUpgrade": {
+          "destroy": "Bist du sicher, dass du dieses Upgrade löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
+          "unlink": "Bist du sicher, dass du dieses Upgrade vom Modell trennen möchtest? Das Upgrade wird weiterhin existieren, aber nicht mehr mit diesem Modell verknüpft sein."
+        },
+        "modelModulePackage": {
+          "destroy": "Bist du sicher, dass du dieses Modulpaket löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+        },
+        "dock": {
+          "destroy": "Bist du sicher, dass du diesen Dock löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+        },
+        "component": {
+          "destroy": "Bist du sicher, dass du diese Komponente löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+        },
+        "adminFleet": {
+          "destroy": "Bist du sicher, dass du diese Flotte löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+        },
+        "adminUser": {
+          "destroy": "Bist du sicher, dass du diesen Admin-Benutzer löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+        },
+        "itemPrice": {
+          "destroy": "Bist du sicher, dass du diesen Artikelpreis löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+        },
+        "image": {
+          "destroy": "Bist du sicher, dass du dieses Bild löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+        },
+        "adminVehicle": {
+          "destroy": "Bist du sicher, dass du dieses Fahrzeug löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
         }
+      },
+      "import": {
+        "started": "%{type} Import gestartet...",
+        "finished": "%{type} Import erfolgreich abgeschlossen.",
+        "failed": "%{type} Import fehlgeschlagen: %{info}"
       },
       "syncExtension": {
         "started": "Synchronisiere deinen Hangar...",

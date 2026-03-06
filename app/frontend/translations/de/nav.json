@@ -83,10 +83,15 @@
             "metrics": "Metriken",
             "prices": "Preise",
             "docks": "Docks",
+            "modules": "Module",
+            "paints": "Lackierungen",
+            "images": "Bilder",
             "videos": "Videos",
             "cargoAndFuel": "Fracht und Treibstoff",
             "fleetchart": "Flottenkarten-Bilder",
-            "hardpoints": "Hardpoints"
+            "hardpoints": "Hardpoints",
+            "upgrades": "Upgrades",
+            "packages": "Pakete"
           }
         },
         "modelPaints": {

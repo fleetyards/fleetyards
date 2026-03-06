@@ -81,6 +81,9 @@
       "addUpgrade": "Neues Upgrade hinzufügen",
       "showTableView": "Als Liste anzeigen",
       "showGridView": "Als Raster anzeigen",
+      "linkExisting": "Vorhandenes verknüpfen",
+      "loadMore": "Mehr laden",
+      "unlink": "Verknüpfung aufheben",
       "syncRsiHangar": "Sync RSI Hangar",
       "oauth": {
         "apple": "Apple",
@@ -154,6 +157,11 @@
         "exchangeStoreImage": "RSI-Bild verwenden",
         "images": "Bilder",
         "openTableConfiguration": "Tabellenkonfiguration öffnen"
+      },
+      "users": {
+        "loginAs": "Als Benutzer anmelden",
+        "resendConfirmation": "Bestätigung erneut senden",
+        "sendPasswordReset": "Passwort-Zurücksetzung senden"
       },
       "unselect": "Auswahl aufheben",
       "openPriceModal": "Preis einreichen",

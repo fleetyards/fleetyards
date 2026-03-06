@@ -39,6 +39,68 @@
       "user": { "rsiHandle": "RSI Handle" },
       "vehicle": { "serial": "Serial" },
       "commodityPrice": { "price": "100.00" },
+      "model": {
+        "length": "Länge",
+        "beam": "Breite",
+        "height": "Höhe",
+        "price": "Preis",
+        "pledgePrice": "Pledge-Preis",
+        "onSale": "Im Verkauf",
+        "mass": "Masse",
+        "minCrew": "Min. Crew",
+        "maxCrew": "Max. Crew",
+        "storeUrl": "Store URL",
+        "salesPageUrl": "Verkaufsseiten-URL",
+        "rsiId": "RSI ID",
+        "scIdentifier": "SC Identifier",
+        "erkulIdentifier": "Erkul Identifier",
+        "productionNote": "Produktionsnotiz",
+        "scmSpeed": "SCM Geschwindigkeit",
+        "scmSpeedBoosted": "SCM Geschwindigkeit (Boosted)",
+        "maxSpeed": "Max Geschwindigkeit",
+        "reverseSpeedBoosted": "Rückwärtsgeschwindigkeit (Boosted)",
+        "quantumFuelTankSize": "Quantum-Treibstofftankgröße",
+        "hydrogenFuelTankSize": "Wasserstoff-Treibstofftankgröße",
+        "yaw": "Gieren",
+        "pitch": "Nicken",
+        "roll": "Rollen",
+        "yawBoosted": "Gieren (Boosted)",
+        "pitchBoosted": "Nicken (Boosted)",
+        "rollBoosted": "Rollen (Boosted)",
+        "fleetchartOffsetLength": "Flottenkarten-Versatz Länge",
+        "fleetchartOffsetBeam": "Flottenkarten-Versatz Breite",
+        "cargo": "Fracht",
+        "baseModel": "Basismodell"
+      },
+      "modelModule": {
+        "name": "Modulname",
+        "pledgePrice": "0.00",
+        "search": "Module nach Name suchen..."
+      },
+      "modelUpgrade": {
+        "name": "Upgrade-Name",
+        "pledgePrice": "0.00",
+        "description": "Beschreibung"
+      },
+      "modelModulePackage": {
+        "name": "Paketname",
+        "pledgePrice": "0.00",
+        "description": "Beschreibung"
+      },
+      "dock": {
+        "name": "Dock-Name"
+      },
+      "video": {
+        "url": "YouTube Video ID"
+      },
+      "itemPrice": {
+        "price": "0.00",
+        "location": "Standort",
+        "locationUrl": "Standort-URL"
+      },
+      "image": {
+        "caption": "Beschriftung"
+      },
       "filters": {
         "shops": {
           "name": "Casaba, Platinum Bay...",

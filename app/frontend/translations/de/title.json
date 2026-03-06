@@ -90,7 +90,12 @@
             "hardpoints": "Modell Hardpoints bearbeiten",
             "cargoAndFuel": "Fracht und Treibstoff",
             "docks": "Modell Docks bearbeiten",
-            "videos": "Modell Videos bearbeiten"
+            "modules": "Modell Module bearbeiten",
+            "paints": "Modell Lackierungen bearbeiten",
+            "images": "Modell Bilder bearbeiten",
+            "videos": "Modell Videos bearbeiten",
+            "upgrades": "Modell Upgrades bearbeiten",
+            "packages": "Modell Pakete bearbeiten"
           }
         },
         "components": {

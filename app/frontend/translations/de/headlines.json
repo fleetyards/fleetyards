@@ -1,6 +1,96 @@
 {
   "de": {
     "headlines": {
+      "admin": {
+        "dashboard": {
+          "title": "Dashboard",
+          "modelsByClassification": "Modelle nach Klassifizierung",
+          "models": "Neu geladene Modelle",
+          "modelsByManufacturer": "Modelle nach Hersteller",
+          "manufacturers": "Hersteller",
+          "modelsByStatus": "Modelle nach Status",
+          "modelsBySize": "Modelle nach Größe",
+          "modelsPerMonth": "Modelle pro Monat",
+          "componentsByClass": "Komponenten nach Klasse",
+          "components": "Komponenten",
+          "visitsPerDay": "Besuche pro Tag",
+          "visitsPerMonth": "Besuche pro Monat",
+          "mostViewedPages": "Meistbesuchte Seiten",
+          "registrationsPerMonth": "Registrierungen pro Monat",
+          "users": "Benutzer"
+        },
+        "models": {
+          "index": "Modelle",
+          "edit": {
+            "index": "Modell bearbeiten",
+            "fleetchart": "Flottenkarten-Bilder",
+            "hardpoints": "Hardpoints",
+            "cargoAndFuel": "Fracht & Treibstoff",
+            "metrics": "Metriken",
+            "prices": "Preise",
+            "docks": "Docks",
+            "modules": "Module",
+            "paints": "Lackierungen",
+            "videos": "Videos",
+            "images": "Bilder",
+            "itemPrices": "Artikelpreise",
+            "linkModule": "Vorhandenes Modul verknüpfen",
+            "upgrades": "Upgrades",
+            "packages": "Pakete",
+            "linkUpgrade": "Vorhandenes Upgrade verknüpfen"
+          },
+          "new": "Neues Modell",
+          "show": "Modell",
+          "images": "Bilder",
+          "tableConfigurationModal": "Tabellenkonfiguration"
+        },
+        "components": {
+          "index": "Komponenten",
+          "new": "Neue Komponente",
+          "edit": "Komponente bearbeiten"
+        },
+        "modelPaints": {
+          "index": "Lackierungen",
+          "new": "Neue Lackierung",
+          "edit": "Lackierung bearbeiten"
+        },
+        "modelModules": {
+          "index": "Module",
+          "new": "Neues Modul",
+          "edit": "Modul bearbeiten"
+        },
+        "manufacturers": {
+          "index": "Hersteller",
+          "new": "Neuer Hersteller",
+          "edit": "Hersteller bearbeiten"
+        },
+        "users": {
+          "index": "Benutzer",
+          "edit": "Benutzer bearbeiten"
+        },
+        "vehicles": {
+          "index": "Fahrzeuge",
+          "edit": "Fahrzeug bearbeiten"
+        },
+        "fleets": {
+          "index": "Flotten",
+          "edit": "Flotte bearbeiten"
+        },
+        "admins": {
+          "index": "Administratoren",
+          "new": "Neuer Administrator",
+          "edit": "Administrator bearbeiten"
+        },
+        "images": {
+          "index": "Bilder"
+        }
+      },
+      "pagination": {
+        "count": "%{current} von %{total}"
+      },
+      "models": {
+        "index": "Modelle"
+      },
       "welcome": "Willkommen auf",
       "welcomeShips": "Latest Ships",
       "welcomeImages": "Random Images",

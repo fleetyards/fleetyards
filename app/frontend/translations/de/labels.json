@@ -650,6 +650,36 @@
           "missing": "Unable to Import"
         }
       },
+      "modelModule": {
+        "name": "Name",
+        "pledgePrice": "Pledge-Preis",
+        "active": "Aktiv?",
+        "hidden": "Versteckt?"
+      },
+      "modelUpgrade": {
+        "name": "Name",
+        "description": "Beschreibung",
+        "pledgePrice": "Pledge-Preis",
+        "active": "Aktiv?",
+        "hidden": "Versteckt?"
+      },
+      "modelModulePackage": {
+        "name": "Name",
+        "description": "Beschreibung",
+        "pledgePrice": "Pledge-Preis",
+        "modules": "Module",
+        "active": "Aktiv?",
+        "hidden": "Versteckt?"
+      },
+      "dock": {
+        "name": "Name",
+        "dockType": "Dock-Typ",
+        "shipSize": "Schiffsgröße"
+      },
+      "video": {
+        "url": "URL",
+        "videoType": "Typ"
+      },
       "fleetTable": {
         "extraColumns": "Spalten",
         "columns": {

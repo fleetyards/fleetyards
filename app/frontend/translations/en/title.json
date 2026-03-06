@@ -97,7 +97,9 @@
             "modules": "Edit %{manufacturer} %{model} Modules",
             "paints": "Edit %{manufacturer} %{model} Paints",
             "images": "Edit %{manufacturer} %{model} Images",
-            "videos": "Edit %{manufacturer} %{model} Videos"
+            "videos": "Edit %{manufacturer} %{model} Videos",
+            "upgrades": "Edit %{manufacturer} %{model} Upgrades",
+            "packages": "Edit %{manufacturer} %{model} Packages"
           }
         },
         "components": {
