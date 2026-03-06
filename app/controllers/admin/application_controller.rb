@@ -24,13 +24,6 @@ module Admin
       render "errors/error", status: :unprocessable_entity
     end
 
-    def worker_running?(name)
-      Sidekiq::Workers.new.any? do |_process_id, _thread_id, work|
-        work.queue == name
-      end
-    end
-    helper_method :worker_running?
-
     private def unauthorized_controllers
       devise_controller?
     end
