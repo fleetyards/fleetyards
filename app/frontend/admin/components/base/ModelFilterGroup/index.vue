@@ -21,6 +21,7 @@ type Props = {
   returnObject?: boolean;
   translationKey?: string;
   hideSelected?: boolean;
+  valueAttr?: "slug" | "id";
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -30,6 +31,7 @@ const props = withDefaults(defineProps<Props>(), {
   noLabel: true,
   returnObject: false,
   hideSelected: false,
+  valueAttr: "slug",
 });
 
 const { t } = useI18n();
@@ -62,7 +64,7 @@ const formatter = (response: Models) => {
   return response.items.map((model) => {
     return {
       label: model.name,
-      value: model.slug,
+      value: model[props.valueAttr],
     };
   });
 };
@@ -75,10 +77,18 @@ const fetch = async (params: FilterGroupParams<Model>) => {
   }
 
   if (params.missing) {
-    if (props.multiple) {
-      q.slugIn = params.missing as string[];
+    if (props.valueAttr === "id") {
+      if (props.multiple) {
+        q.idIn = params.missing as string[];
+      } else {
+        q.idIn = [params.missing as string];
+      }
     } else {
-      q.slugEq = params.missing as string;
+      if (props.multiple) {
+        q.slugIn = params.missing as string[];
+      } else {
+        q.slugEq = params.missing as string;
+      }
     }
   }
 

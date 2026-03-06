@@ -98,6 +98,7 @@
             "paints": "Edit %{manufacturer} %{model} Paints",
             "images": "Edit %{manufacturer} %{model} Images",
             "videos": "Edit %{manufacturer} %{model} Videos",
+            "loaners": "Edit %{manufacturer} %{model} Loaners",
             "upgrades": "Edit %{manufacturer} %{model} Upgrades",
             "packages": "Edit %{manufacturer} %{model} Packages"
           }

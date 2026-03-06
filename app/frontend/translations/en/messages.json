@@ -286,6 +286,9 @@
         "manufacturer": {
           "destroy": "Are you sure you want to delete this manufacturer? This action can't be reverted."
         },
+        "modelLoaner": {
+          "destroy": "Are you sure you want to delete this loaner? This action can't be reverted."
+        },
         "modelPaint": {
           "destroy": "Are you sure you want to delete this paint? This action can't be reverted."
         },

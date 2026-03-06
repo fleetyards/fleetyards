@@ -466,6 +466,10 @@
         "active": "Active?",
         "hidden": "Hidden?"
       },
+      "modelLoaner": {
+        "hidden": "Hidden?",
+        "loanerModel": "Loaner Model"
+      },
       "modelPaint": {
         "hidden": "Hidden?",
         "active": "Active?",
