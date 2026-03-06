@@ -29,6 +29,7 @@ type Props = {
   active?: boolean;
   allowedTypes?: string[];
   allowedSizeMb?: number;
+  directUpload?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -38,6 +39,7 @@ const props = withDefaults(defineProps<Props>(), {
   active: false,
   allowedTypes: undefined,
   allowedSizeMb: undefined,
+  directUpload: false,
 });
 
 const { t } = useI18n();
@@ -54,7 +56,7 @@ const handleFileSelect = async (fileList?: FileList) => {
     return;
   }
 
-  if (!props.multiple) {
+  if (!props.multiple || props.directUpload) {
     files.value = [];
   }
 
@@ -100,7 +102,7 @@ const handleFileSelect = async (fileList?: FileList) => {
     files.value.push({ key: uuidv4(), file, progress: 0, status: "pending" });
   });
 
-  if (!props.multiple) {
+  if (!props.multiple || props.directUpload) {
     await upload();
   }
 };
@@ -173,29 +175,27 @@ const upload = async () => {
   }
 
   await Promise.all(
-    files.value.map((file) => {
-      return uploadFile(file.file, {
-        progressHandler: (progress) => {
-          file.progress = progress;
-          file.status = "uploading";
-          emit("upload:progress", overallProgress.value);
-        },
-      })
-        .then((blob) => {
-          file.blob = blob;
-          file.status = "done";
-        })
-        .catch((error) => {
-          file.status = "error";
-          clear();
-          displayAlert({
-            text: (error as string) || t("errors.upload.generic"),
-          });
+    files.value.map(async (file) => {
+      try {
+        const blob = await uploadFile(file.file, {
+          progressHandler: (progress_1) => {
+            file.progress = progress_1;
+            file.status = "uploading";
+            emit("upload:progress", overallProgress.value);
+          },
         });
+        file.blob = blob;
+        file.status = "done";
+      } catch (error) {
+        file.status = "error";
+        clear();
+        displayAlert({
+          text: (error as string) || t("errors.upload.generic"),
+        });
+      }
     }),
   ).then(() => {
     emit("upload:done", files.value);
-    // clear();
   });
 };
 
@@ -314,31 +314,33 @@ defineExpose({
     <Transition name="fade">
       <ProgressBar :progress="overallProgress" v-if="isProgressBarVisible" />
     </Transition>
-    <div v-if="props.multiple" class="direct-upload__preview-files">
-      <TransitionGroup name="fade">
-        <DirectUploadPreview
-          v-for="file in filteredFiles"
-          :key="file.key"
-          class="direct-upload__file"
-          :file="file"
-          :transparent="transparent"
-          multiple
-          @click="file.status !== 'done' && removeFile(file)"
-        />
-      </TransitionGroup>
-    </div>
-    <div v-else-if="files.length" class="direct-upload__preview-file">
-      <TransitionGroup name="fade">
-        <DirectUploadPreview
-          v-for="file in files"
-          :key="file.key"
-          class="direct-upload__file"
-          :file="file"
-          :transparent="transparent"
-          @click="removeFile(file)"
-        />
-      </TransitionGroup>
-    </div>
+    <template v-if="!props.directUpload">
+      <div v-if="props.multiple" class="direct-upload__preview-files">
+        <TransitionGroup name="fade">
+          <DirectUploadPreview
+            v-for="file in filteredFiles"
+            :key="file.key"
+            class="direct-upload__file"
+            :file="file"
+            :transparent="transparent"
+            multiple
+            @click="file.status !== 'done' && removeFile(file)"
+          />
+        </TransitionGroup>
+      </div>
+      <div v-else-if="files.length" class="direct-upload__preview-file">
+        <TransitionGroup name="fade">
+          <DirectUploadPreview
+            v-for="file in files"
+            :key="file.key"
+            class="direct-upload__file"
+            :file="file"
+            :transparent="transparent"
+            @click="removeFile(file)"
+          />
+        </TransitionGroup>
+      </div>
+    </template>
   </div>
 </template>
 
