@@ -67,6 +67,15 @@ class Hardpoint < ApplicationRecord
       unknown: 999
     }, suffix: true
 
+  def self.ransackable_attributes(auth_object = nil)
+    ["category", "component_id", "created_at", "group", "id", "parent_id", "parent_type",
+      "sc_name", "source", "updated_at"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["component", "hardpoints", "parent"]
+  end
+
   before_validation :set_group, :set_category, :set_group_key
 
   def set_group

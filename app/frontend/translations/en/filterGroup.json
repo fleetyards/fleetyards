@@ -20,6 +20,32 @@
           "label": "Loaner Model"
         }
       },
+      "modelHardpoint": {
+        "source": {
+          "label": "Source",
+          "prompt": "Select Source"
+        },
+        "group": {
+          "label": "Group",
+          "prompt": "Select Group"
+        },
+        "hardpointType": {
+          "label": "Type",
+          "prompt": "Select Type"
+        },
+        "size": {
+          "label": "Size",
+          "nullablePrompt": "Select Size"
+        },
+        "category": {
+          "label": "Category",
+          "nullablePrompt": "Select Category"
+        },
+        "subCategory": {
+          "label": "Sub Category",
+          "nullablePrompt": "Select Sub Category"
+        }
+      },
       "fleet": {
         "members": {
           "shipsFilter": {

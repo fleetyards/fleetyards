@@ -451,6 +451,23 @@
         "dockType": "Dock Type",
         "shipSize": "Ship Size"
       },
+      "modelHardpoint": {
+        "name": "Name",
+        "key": "Key",
+        "source": "Source",
+        "group": "Group",
+        "hardpointType": "Type",
+        "size": "Size",
+        "category": "Category",
+        "subCategory": "Sub Category",
+        "details": "Details",
+        "mount": "Mount",
+        "itemSlots": "Item Slots",
+        "loadoutIdentifier": "Loadout Identifier"
+      },
+      "modelHardpointLoadout": {
+        "name": "Name"
+      },
       "modelUpgrade": {
         "name": "Name",
         "description": "Description",
@@ -950,6 +967,9 @@
             "newShipsInYear": "New Ships in %{year}",
             "totalFleets": "Total Fleets"
           }
+        },
+        "modelHardpoint": {
+          "loadouts": "Loadouts"
         }
       },
       "hangarTable": {

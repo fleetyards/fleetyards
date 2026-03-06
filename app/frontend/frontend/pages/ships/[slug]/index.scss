@@ -146,6 +146,13 @@
   margin-right: 0;
 }
 
+.toggle-3d {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+}
+
 .starship42-link {
   position: absolute;
   top: 18px;

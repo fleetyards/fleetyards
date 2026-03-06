@@ -4,6 +4,12 @@
   flex-direction: column;
   margin-bottom: 20px;
 
+  &__item {
+    background: rgba(#fff, 0.05);
+    border: 1px solid rgba(#fff, 0.1);
+    border-radius: 6px;
+  }
+
   &__row {
     display: flex;
     align-items: center;
@@ -11,9 +17,6 @@
     margin-inline: 0;
     padding: 8px 12px;
     gap: 8px;
-    background: rgba(#fff, 0.05);
-    border: 1px solid rgba(#fff, 0.1);
-    border-radius: 6px;
   }
 
   &__display {

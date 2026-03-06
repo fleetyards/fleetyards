@@ -29,6 +29,7 @@ module Admin
                 itemSlots: {type: :integer},
                 modelId: {type: :string, format: :uuid},
                 component: {"$ref": "#/components/schemas/Component"},
+                loadouts: {type: :array, items: {"$ref": "#/components/schemas/ModelHardpointLoadout"}},
                 createdAt: {type: :string, format: "date-time"},
                 updatedAt: {type: :string, format: "date-time"}
               },

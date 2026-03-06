@@ -142,10 +142,6 @@
       }
     }
 
-    &:first-child:not(:only-child) {
-      padding-right: 1.5px;
-    }
-
     .panel-btn-inner {
       border-radius: $border-radius-base - 1px;
     }

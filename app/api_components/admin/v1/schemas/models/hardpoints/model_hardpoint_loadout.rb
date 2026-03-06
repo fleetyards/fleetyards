@@ -11,10 +11,13 @@ module Admin
             schema({
               type: :object,
               properties: {
-                id: {type: :string, format: :uuid}
+                id: {type: :string, format: :uuid},
+                modelHardpointId: {type: :string, format: :uuid},
+                createdAt: {type: :string, format: "date-time"},
+                updatedAt: {type: :string, format: "date-time"}
               },
               additionalProperties: false,
-              required: %w[id]
+              required: %w[id name modelHardpointId createdAt updatedAt]
             })
           end
         end

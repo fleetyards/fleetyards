@@ -1291,6 +1291,174 @@ paths:
             schema:
               "$ref": "#/components/schemas/ManufacturerInput"
         required: true
+  "/model-hardpoint-loadouts":
+    post:
+      summary: Create Model Hardpoint Loadout
+      operationId: createModelHardpointLoadout
+      tags:
+      - ModelHardpointLoadouts
+      parameters: []
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelHardpointLoadout"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelHardpointLoadoutInput"
+        required: true
+    get:
+      summary: Model Hardpoint Loadouts list
+      operationId: listModelHardpointLoadouts
+      tags:
+      - ModelHardpointLoadouts
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ModelHardpointLoadoutQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelHardpointLoadouts"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/model-hardpoint-loadouts/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: id
+      required: true
+    delete:
+      summary: Destroy Model Hardpoint Loadout
+      operationId: destroyModelHardpointLoadout
+      tags:
+      - ModelHardpointLoadouts
+      responses:
+        '204':
+          description: successful
+        '404':
+          description: not_found
+        '403':
+          description: forbidden
+        '401':
+          description: unauthorized
+    get:
+      summary: Get Model Hardpoint Loadout
+      operationId: modelHardpointLoadout
+      tags:
+      - ModelHardpointLoadouts
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelHardpointLoadout"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    put:
+      summary: Update Model Hardpoint Loadout
+      operationId: updateModelHardpointLoadout
+      tags:
+      - ModelHardpointLoadouts
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelHardpointLoadout"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelHardpointLoadoutInput"
+        required: true
   "/model-hardpoints":
     post:
       summary: Create Model Hardpoint
@@ -5470,6 +5638,22 @@ components:
           nullable: true
       additionalProperties: false
       title: ModelHardpointInput
+    ModelHardpointLoadoutInput:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        componentId:
+          type: string
+          format: uuid
+          nullable: true
+        modelHardpointId:
+          type: string
+          format: uuid
+          nullable: true
+      additionalProperties: false
+      title: ModelHardpointLoadoutInput
     ModelLoanerInput:
       type: object
       properties:
@@ -5956,6 +6140,10 @@ components:
           format: uuid
         component:
           "$ref": "#/components/schemas/Component"
+        loadouts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelHardpointLoadout"
         createdAt:
           type: string
           format: date-time
@@ -5983,11 +6171,37 @@ components:
           nullable: true
         name:
           type: string
+        modelHardpointId:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
       additionalProperties: false
       required:
       - id
       - name
+      - modelHardpointId
+      - createdAt
+      - updatedAt
       title: ModelHardpointLoadout
+    ModelHardpointLoadouts:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelHardpointLoadout"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: ModelHardpointLoadouts
     ModelHardpoints:
       type: object
       properties:
@@ -7274,6 +7488,16 @@ components:
             type: string
       additionalProperties: false
       title: ManufacturerQuery
+    ModelHardpointLoadoutQuery:
+      type: object
+      properties:
+        modelHardpointIdEq:
+          type: string
+          format: uuid
+        nameCont:
+          type: string
+      additionalProperties: false
+      title: ModelHardpointLoadoutQuery
     ModelHardpointQuery:
       type: object
       properties:

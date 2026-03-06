@@ -100,62 +100,67 @@ defineExpose({
 <template>
   <div class="inline-editable-list">
     <TransitionGroup name="list">
-      <div v-if="creating" key="__create__" class="inline-editable-list__row">
-        <div class="inline-editable-list__form">
-          <slot name="create" />
-        </div>
-        <div class="inline-editable-list__actions">
-          <BtnGroup inline>
-            <Btn :size="BtnSizesEnum.SMALL" @click="saveCreate">
-              <i class="fad fa-check" />
-            </Btn>
-            <Btn :size="BtnSizesEnum.SMALL" @click="cancelCreate">
-              <i class="fad fa-times" />
-            </Btn>
-          </BtnGroup>
+      <div v-if="creating" key="__create__" class="inline-editable-list__item">
+        <div class="inline-editable-list__row">
+          <div class="inline-editable-list__form">
+            <slot name="create" />
+          </div>
+          <div class="inline-editable-list__actions">
+            <BtnGroup inline>
+              <Btn :size="BtnSizesEnum.SMALL" @click="saveCreate">
+                <i class="fad fa-check" />
+              </Btn>
+              <Btn :size="BtnSizesEnum.SMALL" @click="cancelCreate">
+                <i class="fad fa-times" />
+              </Btn>
+            </BtnGroup>
+          </div>
         </div>
       </div>
 
       <div
         v-for="item in items"
         :key="item.id"
-        class="inline-editable-list__row"
+        class="inline-editable-list__item"
       >
-        <template v-if="editingId === item.id">
-          <div class="inline-editable-list__form">
-            <slot name="edit" :item="item" />
-          </div>
-          <div class="inline-editable-list__actions">
-            <BtnGroup inline>
-              <Btn :size="BtnSizesEnum.SMALL" @click="saveEdit">
-                <i class="fad fa-check" />
-              </Btn>
-              <Btn :size="BtnSizesEnum.SMALL" @click="cancelEdit">
-                <i class="fad fa-times" />
-              </Btn>
-            </BtnGroup>
-          </div>
-        </template>
-        <template v-else>
-          <div class="inline-editable-list__display">
-            <slot name="display" :item="item" />
-          </div>
-          <div class="inline-editable-list__actions">
-            <BtnGroup inline>
-              <slot name="actions" :item="item" />
-              <Btn :size="BtnSizesEnum.SMALL" @click="startEdit(item)">
-                <i class="fad fa-pencil" />
-              </Btn>
-              <Btn
-                :size="BtnSizesEnum.SMALL"
-                :variant="BtnVariantsEnum.DANGER"
-                @click="destroy(item)"
-              >
-                <i class="fad fa-trash" />
-              </Btn>
-            </BtnGroup>
-          </div>
-        </template>
+        <div class="inline-editable-list__row">
+          <template v-if="editingId === item.id">
+            <div class="inline-editable-list__form">
+              <slot name="edit" :item="item" />
+            </div>
+            <div class="inline-editable-list__actions">
+              <BtnGroup inline>
+                <Btn :size="BtnSizesEnum.SMALL" @click="saveEdit">
+                  <i class="fad fa-check" />
+                </Btn>
+                <Btn :size="BtnSizesEnum.SMALL" @click="cancelEdit">
+                  <i class="fad fa-times" />
+                </Btn>
+              </BtnGroup>
+            </div>
+          </template>
+          <template v-else>
+            <div class="inline-editable-list__display">
+              <slot name="display" :item="item" />
+            </div>
+            <div class="inline-editable-list__actions">
+              <BtnGroup inline>
+                <slot name="actions" :item="item" />
+                <Btn :size="BtnSizesEnum.SMALL" @click="startEdit(item)">
+                  <i class="fad fa-pencil" />
+                </Btn>
+                <Btn
+                  :size="BtnSizesEnum.SMALL"
+                  :variant="BtnVariantsEnum.DANGER"
+                  @click="destroy(item)"
+                >
+                  <i class="fad fa-trash" />
+                </Btn>
+              </BtnGroup>
+            </div>
+          </template>
+        </div>
+        <slot name="expanded" :item="item" />
       </div>
     </TransitionGroup>
 

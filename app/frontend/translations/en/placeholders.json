@@ -139,6 +139,17 @@
       "dock": {
         "name": "Dock Name"
       },
+      "modelHardpoint": {
+        "name": "Hardpoint Name",
+        "key": "hardpoint_key",
+        "details": "Details",
+        "mount": "Mount Type",
+        "itemSlots": "0",
+        "loadoutIdentifier": "Loadout Identifier"
+      },
+      "modelHardpointLoadout": {
+        "name": "Loadout Name"
+      },
       "filters": {
         "shops": {
           "name": "Casaba, Platinum Bay...",
