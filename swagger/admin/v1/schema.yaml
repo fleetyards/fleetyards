@@ -1291,6 +1291,342 @@ paths:
             schema:
               "$ref": "#/components/schemas/ManufacturerInput"
         required: true
+  "/model-hardpoints":
+    post:
+      summary: Create Model Hardpoint
+      operationId: createModelHardpoint
+      tags:
+      - ModelHardpoints
+      parameters: []
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelHardpoint"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelHardpointInput"
+        required: true
+    get:
+      summary: Model Hardpoints list
+      operationId: listModelHardpoints
+      tags:
+      - ModelHardpoints
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ModelHardpointQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelHardpoints"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/model-hardpoints/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: id
+      required: true
+    delete:
+      summary: Destroy Model Hardpoint
+      operationId: destroyModelHardpoint
+      tags:
+      - ModelHardpoints
+      responses:
+        '204':
+          description: successful
+        '404':
+          description: not_found
+        '403':
+          description: forbidden
+        '401':
+          description: unauthorized
+    get:
+      summary: Get Model Hardpoint
+      operationId: modelHardpoint
+      tags:
+      - ModelHardpoints
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelHardpoint"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    put:
+      summary: Update Model Hardpoint
+      operationId: updateModelHardpoint
+      tags:
+      - ModelHardpoints
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelHardpoint"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelHardpointInput"
+        required: true
+  "/model-loaners":
+    post:
+      summary: Create Model Loaner
+      operationId: createModelLoaner
+      tags:
+      - ModelLoaners
+      parameters: []
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelLoaner"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelLoanerInput"
+        required: true
+    get:
+      summary: Model Loaners list
+      operationId: listModelLoaners
+      tags:
+      - ModelLoaners
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ModelLoanerQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelLoaners"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/model-loaners/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: id
+      required: true
+    delete:
+      summary: Destroy Model Loaner
+      operationId: destroyModelLoaner
+      tags:
+      - ModelLoaners
+      responses:
+        '204':
+          description: successful
+        '404':
+          description: not_found
+        '403':
+          description: forbidden
+        '401':
+          description: unauthorized
+    get:
+      summary: Get Model Loaner
+      operationId: modelLoaner
+      tags:
+      - ModelLoaners
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelLoaner"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    put:
+      summary: Update Model Loaner
+      operationId: updateModelLoaner
+      tags:
+      - ModelLoaners
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelLoaner"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelLoanerInput"
+        required: true
   "/model-module-packages":
     post:
       summary: Create Model Module Package
@@ -2352,251 +2688,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/models/{id}/hardpoints":
-    parameters:
-    - name: id
-      in: path
-      description: Model ID
-      required: true
-      schema:
-        type: string
-    get:
-      summary: Model Hardpoints
-      operationId: modelHardpoints
-      tags:
-      - Models
-      parameters:
-      - name: source
-        in: query
-        schema:
-          "$ref": "#/components/schemas/HardpointSourceEnum"
-        required: false
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  anyOf:
-                  - "$ref": "#/components/schemas/Hardpoint"
-                  - "$ref": "#/components/schemas/ModelHardpoint"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/models/{id}/loaners":
-    parameters:
-    - name: id
-      in: path
-      schema:
-        type: string
-        format: uuid
-      description: Model id
-      required: true
-    get:
-      summary: Model Loaners
-      operationId: modelLoaners
-      tags:
-      - Models
-      parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 30
-        required: false
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Models"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/models/{id}/module-packages":
-    parameters:
-    - name: id
-      in: path
-      schema:
-        type: string
-        format: uuid
-      description: Model id
-      required: true
-    get:
-      summary: Model Module Packages
-      operationId: modelModulePackages
-      tags:
-      - Models
-      parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 30
-        required: false
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ModelModulePackages"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/models/{id}/modules":
-    parameters:
-    - name: id
-      in: path
-      schema:
-        type: string
-        format: uuid
-      description: Model id
-      required: true
-    get:
-      summary: Model Modules
-      operationId: modelModules
-      tags:
-      - Models
-      parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 30
-        required: false
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ModelModules"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/models/{id}/paints":
-    parameters:
-    - name: id
-      in: path
-      schema:
-        type: string
-        format: uuid
-      description: Model id
-      required: true
-    get:
-      summary: Model Paints
-      operationId: modelPaints
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/ModelPaint"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
   "/models/reload-matrix":
     put:
       summary: Reload Models Matrix
@@ -2722,57 +2813,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ModelExtended"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/models/{id}/videos":
-    parameters:
-    - name: id
-      in: path
-      description: Model id
-      required: true
-      schema:
-        type: string
-    get:
-      summary: Model Videos
-      operationId: modelVideos
-      tags:
-      - Models
-      parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 8
-        required: false
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Videos"
         '404':
           description: not found
           content:
@@ -5381,6 +5421,69 @@ components:
           type: string
       additionalProperties: false
       title: ModelCreateInput
+    ModelHardpointInput:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        source:
+          type: string
+          nullable: true
+        key:
+          type: string
+          nullable: true
+        hardpointType:
+          type: string
+          nullable: true
+        group:
+          type: string
+          nullable: true
+        category:
+          type: string
+          nullable: true
+        subCategory:
+          type: string
+          nullable: true
+        size:
+          type: string
+          nullable: true
+        details:
+          type: string
+          nullable: true
+        mount:
+          type: string
+          nullable: true
+        itemSlots:
+          type: integer
+          nullable: true
+        loadoutIdentifier:
+          type: string
+          nullable: true
+        componentId:
+          type: string
+          format: uuid
+          nullable: true
+        modelId:
+          type: string
+          format: uuid
+          nullable: true
+      additionalProperties: false
+      title: ModelHardpointInput
+    ModelLoanerInput:
+      type: object
+      properties:
+        modelId:
+          type: string
+          format: uuid
+        loanerModelId:
+          type: string
+          format: uuid
+        hidden:
+          type: boolean
+          nullable: true
+      additionalProperties: false
+      title: ModelLoanerInput
     ModelModuleInput:
       type: object
       properties:
@@ -5817,43 +5920,42 @@ components:
         id:
           type: string
           format: uuid
+        name:
+          type: string
+        type:
+          "$ref": "#/components/schemas/ModelHardpointTypeEnum"
+        group:
+          "$ref": "#/components/schemas/ModelHardpointGroupEnum"
+        source:
+          "$ref": "#/components/schemas/HardpointSourceEnum"
         category:
           "$ref": "#/components/schemas/ModelHardpointCategoryEnum"
         categoryLabel:
           type: string
-        component:
-          "$ref": "#/components/schemas/Component"
-        details:
-          type: string
-        group:
-          "$ref": "#/components/schemas/ModelHardpointGroupEnum"
-        itemSlots:
-          type: integer
-        key:
-          type: string
-        loadoutIdentifier:
-          type: string
-          format: uuid
-        loadouts:
-          type: array
-          items:
-            "$ref": "#/components/schemas/ModelHardpointLoadout"
-        mount:
-          type: string
-        name:
+        subCategory:
+          "$ref": "#/components/schemas/ModelHardpointSubCategoryEnum"
+        subCategoryLabel:
           type: string
         size:
           "$ref": "#/components/schemas/ModelHardpointSizeEnum"
         sizeLabel:
           type: string
-        source:
-          "$ref": "#/components/schemas/HardpointSourceEnum"
-        subCategory:
-          "$ref": "#/components/schemas/ModelHardpointSubCategoryEnum"
-        subCategoryLabel:
+        key:
           type: string
-        type:
-          "$ref": "#/components/schemas/ModelHardpointTypeEnum"
+        loadoutIdentifier:
+          type: string
+          format: uuid
+        details:
+          type: string
+        mount:
+          type: string
+        itemSlots:
+          type: integer
+        modelId:
+          type: string
+          format: uuid
+        component:
+          "$ref": "#/components/schemas/Component"
         createdAt:
           type: string
           format: date-time
@@ -5866,6 +5968,7 @@ components:
       - key
       - type
       - group
+      - modelId
       - createdAt
       - updatedAt
       title: ModelHardpoint
@@ -5885,18 +5988,91 @@ components:
       - id
       - name
       title: ModelHardpointLoadout
+    ModelHardpoints:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelHardpoint"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: ModelHardpoints
     ModelLoaner:
       type: object
       properties:
-        name:
+        id:
           type: string
-        slug:
+          format: uuid
+        modelId:
           type: string
+          format: uuid
+        loanerModelId:
+          type: string
+          format: uuid
+        hidden:
+          type: boolean
+        model:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+            slug:
+              type: string
+          required:
+          - id
+          - name
+          - slug
+        loanerModel:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+            slug:
+              type: string
+          required:
+          - id
+          - name
+          - slug
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
       additionalProperties: false
       required:
-      - name
-      - slug
+      - id
+      - modelId
+      - loanerModelId
+      - hidden
+      - createdAt
+      - updatedAt
       title: ModelLoaner
+    ModelLoaners:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelLoaner"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: ModelLoaners
     Model:
       type: object
       properties:
@@ -7098,6 +7274,35 @@ components:
             type: string
       additionalProperties: false
       title: ManufacturerQuery
+    ModelHardpointQuery:
+      type: object
+      properties:
+        modelIdEq:
+          type: string
+          format: uuid
+        groupEq:
+          type: string
+        hardpointTypeEq:
+          type: string
+        sourceEq:
+          type: string
+        nameCont:
+          type: string
+      additionalProperties: false
+      title: ModelHardpointQuery
+    ModelLoanerQuery:
+      type: object
+      properties:
+        modelIdEq:
+          type: string
+          format: uuid
+        loanerModelIdEq:
+          type: string
+          format: uuid
+        hiddenEq:
+          type: boolean
+      additionalProperties: false
+      title: ModelLoanerQuery
     ModelModulePackageQuery:
       type: object
       properties:

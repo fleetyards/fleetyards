@@ -105,6 +105,17 @@ class ModelHardpoint < ApplicationRecord
     model.update_from_hardpoints
   end
 
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "category", "component_id", "created_at", "group", "hardpoint_type", "id",
+      "key", "model_id", "name", "size", "source", "updated_at"
+    ]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["component", "model"]
+  end
+
   def self.undeleted
     where(deleted_at: nil)
   end

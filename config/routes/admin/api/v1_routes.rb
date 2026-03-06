@@ -28,12 +28,6 @@ v1_admin_api_routes = lambda do
     end
 
     member do
-      get :videos
-      get :hardpoints
-      get :loaners
-      get :modules
-      get "module-packages" => "models#module_packages"
-      get :paints
       put "use-rsi-image" => "models#use_rsi_image"
       put "reload-one" => "models#reload_one"
     end
@@ -55,6 +49,8 @@ v1_admin_api_routes = lambda do
   end
   resources :model_module_packages, path: "model-module-packages", only: %i[index show create update destroy]
   resources :docks, only: %i[index show create update destroy]
+  resources :model_hardpoints, path: "model-hardpoints", only: %i[index show create update destroy]
+  resources :model_loaners, path: "model-loaners", only: %i[index show create update destroy]
 
   resources :manufacturers, only: %i[index show create update destroy]
 
