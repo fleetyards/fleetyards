@@ -21,6 +21,8 @@ import {
   getVideosQueryKey,
 } from "@/services/fyAdminApi";
 import { useQueryClient } from "@tanstack/vue-query";
+import { usePagination } from "@/shared/composables/usePagination";
+import Paginator from "@/shared/components/Paginator/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
@@ -42,12 +44,21 @@ const editableList = ref<{
   finishCreate: () => void;
 } | null>(null);
 
-const { data, isLoading } = useVideosQuery({
-  perPage: "100",
+const videosQueryParams = computed(() => ({
+  page: page.value,
+  perPage: perPage.value,
   q: {
     modelIdEq: props.model.id,
   },
-});
+}));
+
+const videosQueryKey = computed(() =>
+  getVideosQueryKey(videosQueryParams.value),
+);
+
+const { perPage, page, updatePerPage } = usePagination(videosQueryKey);
+
+const { data, isLoading } = useVideosQuery(videosQueryParams);
 
 const invalidateVideos = async () => {
   await queryClient.invalidateQueries({
@@ -209,6 +220,13 @@ const videoTypeOptions: FilterOption[] = Object.values(VideoTypeEnum).map(
       />
     </template>
   </InlineEditableList>
+
+  <Paginator
+    v-if="data"
+    :query-result-ref="data"
+    :per-page="perPage"
+    :update-per-page="updatePerPage"
+  />
 </template>
 
 <style lang="scss" scoped>

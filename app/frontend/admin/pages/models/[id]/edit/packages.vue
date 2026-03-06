@@ -31,6 +31,8 @@ import {
   getListModelModulePackagesQueryKey,
 } from "@/services/fyAdminApi";
 import { useQueryClient } from "@tanstack/vue-query";
+import { usePagination } from "@/shared/composables/usePagination";
+import Paginator from "@/shared/components/Paginator/index.vue";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
@@ -53,12 +55,21 @@ const editableList = ref<{
   finishCreate: () => void;
 } | null>(null);
 
-const { data, isLoading } = useListModelModulePackagesQuery({
-  perPage: "100",
+const packagesQueryParams = computed(() => ({
+  page: page.value,
+  perPage: perPage.value,
   q: {
     modelIdEq: props.model.id,
   },
-});
+}));
+
+const packagesQueryKey = computed(() =>
+  getListModelModulePackagesQueryKey(packagesQueryParams.value),
+);
+
+const { perPage, page, updatePerPage } = usePagination(packagesQueryKey);
+
+const { data, isLoading } = useListModelModulePackagesQuery(packagesQueryParams);
 
 const invalidatePackages = async () => {
   await queryClient.invalidateQueries({
@@ -341,6 +352,13 @@ const onSaveCreate = async () => {
       </div>
     </template>
   </InlineEditableList>
+
+  <Paginator
+    v-if="data"
+    :query-result-ref="data"
+    :per-page="perPage"
+    :update-per-page="updatePerPage"
+  />
 </template>
 
 <style lang="scss" scoped>

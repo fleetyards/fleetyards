@@ -28,6 +28,8 @@ import {
 import { useQueryClient } from "@tanstack/vue-query";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { usePagination } from "@/shared/composables/usePagination";
+import Paginator from "@/shared/components/Paginator/index.vue";
 import ManufacturerFilterGroup from "@/admin/components/base/ManufacturerFilterGroup/index.vue";
 import ProductionStatusFilterGroup from "@/admin/components/base/ProductionStatusFilterGroup/index.vue";
 import {
@@ -54,12 +56,21 @@ const editableList = ref<{
   finishCreate: () => void;
 } | null>(null);
 
-const { data, isLoading } = useListModelModulesQuery({
-  perPage: "100",
+const modulesQueryParams = computed(() => ({
+  page: page.value,
+  perPage: perPage.value,
   q: {
     moduleHardpointsModelIdEq: props.model.id,
   },
-});
+}));
+
+const modulesQueryKey = computed(() =>
+  getListModelModulesQueryKey(modulesQueryParams.value),
+);
+
+const { perPage, page, updatePerPage } = usePagination(modulesQueryKey);
+
+const { data, isLoading } = useListModelModulesQuery(modulesQueryParams);
 
 const invalidateModules = async () => {
   await queryClient.invalidateQueries({
@@ -332,6 +343,13 @@ const onUnlink = (record: ModelModule) => {
       </div>
     </template>
   </InlineEditableList>
+
+  <Paginator
+    v-if="data"
+    :query-result-ref="data"
+    :per-page="perPage"
+    :update-per-page="updatePerPage"
+  />
 </template>
 
 <style lang="scss" scoped>

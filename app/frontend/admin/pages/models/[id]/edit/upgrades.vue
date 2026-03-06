@@ -29,6 +29,8 @@ import {
 import { useQueryClient } from "@tanstack/vue-query";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { usePagination } from "@/shared/composables/usePagination";
+import Paginator from "@/shared/components/Paginator/index.vue";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
@@ -53,12 +55,21 @@ const editableList = ref<{
   finishCreate: () => void;
 } | null>(null);
 
-const { data, isLoading } = useListModelUpgradesQuery({
-  perPage: "100",
+const upgradesQueryParams = computed(() => ({
+  page: page.value,
+  perPage: perPage.value,
   q: {
     upgradeKitsModelIdEq: props.model.id,
   },
-});
+}));
+
+const upgradesQueryKey = computed(() =>
+  getListModelUpgradesQueryKey(upgradesQueryParams.value),
+);
+
+const { perPage, page, updatePerPage } = usePagination(upgradesQueryKey);
+
+const { data, isLoading } = useListModelUpgradesQuery(upgradesQueryParams);
 
 const invalidateUpgrades = async () => {
   await queryClient.invalidateQueries({
@@ -311,6 +322,13 @@ const onUnlink = (record: ModelUpgrade) => {
       </div>
     </template>
   </InlineEditableList>
+
+  <Paginator
+    v-if="data"
+    :query-result-ref="data"
+    :per-page="perPage"
+    :update-per-page="updatePerPage"
+  />
 </template>
 
 <style lang="scss" scoped>

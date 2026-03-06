@@ -20,6 +20,8 @@ import {
   getImagesQueryKey,
 } from "@/services/fyAdminApi";
 import { useQueryClient } from "@tanstack/vue-query";
+import { usePagination } from "@/shared/composables/usePagination";
+import Paginator from "@/shared/components/Paginator/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import DirectUpload, {
@@ -44,13 +46,22 @@ const editableList = ref<{
   finishEdit: () => void;
 } | null>(null);
 
-const { data, isLoading } = useImagesQuery({
-  perPage: "100",
+const imagesQueryParams = computed(() => ({
+  page: page.value,
+  perPage: perPage.value,
   q: {
     galleryIdEq: props.model.id,
     galleryTypeEq: GalleryTypeEnum.Model,
   },
-});
+}));
+
+const imagesQueryKey = computed(() =>
+  getImagesQueryKey(imagesQueryParams.value),
+);
+
+const { perPage, page, updatePerPage } = usePagination(imagesQueryKey);
+
+const { data, isLoading } = useImagesQuery(imagesQueryParams);
 
 const invalidateImages = async () => {
   await queryClient.invalidateQueries({
@@ -208,6 +219,13 @@ const handleUploadDone = async (files: FileUpload[]) => {
       />
     </template>
   </InlineEditableList>
+
+  <Paginator
+    v-if="data"
+    :query-result-ref="data"
+    :per-page="perPage"
+    :update-per-page="updatePerPage"
+  />
 </template>
 
 <style lang="scss" scoped>

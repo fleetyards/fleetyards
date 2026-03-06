@@ -20,6 +20,8 @@ import {
   getDocksQueryKey,
 } from "@/services/fyAdminApi";
 import { useQueryClient } from "@tanstack/vue-query";
+import { usePagination } from "@/shared/composables/usePagination";
+import Paginator from "@/shared/components/Paginator/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
@@ -40,12 +42,21 @@ const editableList = ref<{
   finishCreate: () => void;
 } | null>(null);
 
-const { data, isLoading } = useDocksQuery({
-  perPage: "100",
+const docksQueryParams = computed(() => ({
+  page: page.value,
+  perPage: perPage.value,
   q: {
     modelIdEq: props.model.id,
   },
-});
+}));
+
+const docksQueryKey = computed(() =>
+  getDocksQueryKey(docksQueryParams.value),
+);
+
+const { perPage, page, updatePerPage } = usePagination(docksQueryKey);
+
+const { data, isLoading } = useDocksQuery(docksQueryParams);
 
 const invalidateDocks = async () => {
   await queryClient.invalidateQueries({
@@ -217,4 +228,11 @@ const onSaveCreate = async () => {
       />
     </template>
   </InlineEditableList>
+
+  <Paginator
+    v-if="data"
+    :query-result-ref="data"
+    :per-page="perPage"
+    :update-per-page="updatePerPage"
+  />
 </template>

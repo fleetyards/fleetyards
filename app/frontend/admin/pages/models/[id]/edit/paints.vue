@@ -19,6 +19,8 @@ import {
   getListModelPaintsQueryKey,
 } from "@/services/fyAdminApi";
 import { useQueryClient } from "@tanstack/vue-query";
+import { usePagination } from "@/shared/composables/usePagination";
+import Paginator from "@/shared/components/Paginator/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
@@ -45,12 +47,21 @@ const editableList = ref<{
   finishCreate: () => void;
 } | null>(null);
 
-const { data, isLoading } = useListModelPaintsQuery({
-  perPage: "100",
+const paintsQueryParams = computed(() => ({
+  page: page.value,
+  perPage: perPage.value,
   q: {
     modelIdEq: props.model.id,
   },
-});
+}));
+
+const paintsQueryKey = computed(() =>
+  getListModelPaintsQueryKey(paintsQueryParams.value),
+);
+
+const { perPage, page, updatePerPage } = usePagination(paintsQueryKey);
+
+const { data, isLoading } = useListModelPaintsQuery(paintsQueryParams);
 
 const invalidatePaints = async () => {
   await queryClient.invalidateQueries({
@@ -221,6 +232,13 @@ const onSaveCreate = async () => {
       />
     </template>
   </InlineEditableList>
+
+  <Paginator
+    v-if="data"
+    :query-result-ref="data"
+    :per-page="perPage"
+    :update-per-page="updatePerPage"
+  />
 </template>
 
 <style lang="scss" scoped>
