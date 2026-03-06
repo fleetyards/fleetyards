@@ -11,27 +11,21 @@ import {
 } from "@/shared/components/base/Btn/types";
 import Empty from "@/shared/components/Empty/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
-import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 type Props = {
   items: T[];
   loading?: boolean;
   confirmDestroyText?: string;
-  addLabel?: string;
-  emptyText?: string;
   emptyName?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   loading: false,
   confirmDestroyText: undefined,
-  addLabel: undefined,
-  emptyText: undefined,
   emptyName: "entries",
 });
 
-const { t } = useI18n();
 const { displayConfirm } = useAppNotifications();
 
 const emit = defineEmits<{
@@ -93,10 +87,6 @@ const finishEdit = () => {
 const finishCreate = () => {
   creating.value = false;
 };
-
-const innerAddLabel = computed(() => {
-  return props.addLabel || t("actions.add");
-});
 
 defineExpose({
   editingId,
@@ -176,11 +166,7 @@ defineExpose({
       variant="box"
       hide-actions
       :name="emptyName"
-    >
-      <template v-if="emptyText" #headline>
-        {{ emptyText }}
-      </template>
-    </Empty>
+    />
   </div>
 </template>
 
