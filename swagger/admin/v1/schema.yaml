@@ -3763,6 +3763,9 @@ components:
     CargoHold:
       type: object
       properties:
+        name:
+          type: string
+          nullable: true
         dimensions:
           "$ref": "#/components/schemas/CargoHoldDimension"
         capacity:

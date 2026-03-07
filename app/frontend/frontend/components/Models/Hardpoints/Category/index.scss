@@ -15,8 +15,18 @@
     align-items: center;
     width: 100%;
     margin-block: 10px;
-    padding-right: 20px;
     color: darken($text-color, 20%);
+  }
+
+  &__link {
+    margin-left: auto;
+    color: $text-color;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 1;
+    }
   }
 
   &__icon {

@@ -45,7 +45,7 @@ module ScData
       end
 
       def update_cargo_holds(hardpoints, update_params)
-        cargo_holds = extract_type_data(hardpoints, "CargoGrid")
+        cargo_holds = extract_cargo_holds(hardpoints)
 
         return update_params if cargo_holds.blank?
 
@@ -63,6 +63,19 @@ module ScData
             next if hardpoint.component.component_type != component_type
 
             hardpoint.component.type_data
+          end
+        end.flatten
+      end
+
+      def extract_cargo_holds(hardpoints)
+        hardpoints.filter_map do |hardpoint|
+          if hardpoint.hardpoints.present?
+            extract_cargo_holds(hardpoint.hardpoints)
+          else
+            next if hardpoint.component.blank?
+            next if hardpoint.component.component_type != "CargoGrid"
+
+            hardpoint.component.type_data&.merge("name" => hardpoint.sc_name)
           end
         end.flatten
       end

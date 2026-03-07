@@ -958,6 +958,13 @@
           "missingUpgradeVehicles": "No matching Ship found for Upgrades"
         }
       },
+      "cargoGridViewer": {
+        "capacity": "Capacity",
+        "maxContainerSize": "Max. Container",
+        "packed": "Packed",
+        "didNotFit": "Did not fit",
+        "openInTool": "Open in Cargo Grid Tool"
+      },
       "admin": {
         "dashboard": {
           "quickStats": {

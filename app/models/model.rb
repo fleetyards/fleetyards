@@ -464,6 +464,7 @@ class Model < ApplicationRecord
       next if hold_data.blank? || hold_data["dimensions"].blank?
 
       cargo_hold = cargo_holds_db.create!(
+        name: hold_data["name"],
         dimension_x: hold_data["dimensions"]["x"],
         dimension_y: hold_data["dimensions"]["y"],
         dimension_z: hold_data["dimensions"]["z"],

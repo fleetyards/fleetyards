@@ -1,0 +1,12 @@
+.container-fields {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.5rem;
+
+  &__actions {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 1rem;
+  }
+}

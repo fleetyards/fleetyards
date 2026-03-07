@@ -34,6 +34,13 @@
       "home": {
         "search": "Search for Ships..."
       },
+      "container-1": "0",
+      "container-2": "0",
+      "container-4": "0",
+      "container-8": "0",
+      "container-16": "0",
+      "container-24": "0",
+      "container-32": "0",
       "image": {
         "caption": "Caption"
       },

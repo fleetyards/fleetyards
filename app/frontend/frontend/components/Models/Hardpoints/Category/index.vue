@@ -5,10 +5,13 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { type ComputedRef } from "vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { HardpointCategoryEnum } from "@/services/fyAdminApi";
 import { type Hardpoint } from "@/services/fyApi";
 import HardpointItems from "@/frontend/components/Models/Hardpoints/Items/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import radarIconUrl from "@/images/hardpoints/radar.svg";
 import computersIconUrl from "@/images/hardpoints/computers.svg";
 import powerPlantsIconUrl from "@/images/hardpoints/power_plants.svg";
@@ -38,6 +41,13 @@ type Props = {
 defineProps<Props>();
 
 const { t } = useI18n();
+
+const modelSlug = inject<ComputedRef<string>>("modelSlug");
+
+const cargoGridsRoute = computed(() => ({
+  name: "cargo-grids",
+  query: { ship: modelSlug?.value },
+}));
 
 const icons = {
   radar: radarIconUrl,
@@ -125,6 +135,16 @@ const icons = {
         :alt="`icon-${category}`"
       />
       {{ t(`labels.hardpoint.categories.${category}`) }}
+      <Btn
+        v-if="category === HardpointCategoryEnum.cargogrid && modelSlug"
+        :to="cargoGridsRoute"
+        :size="BtnSizesEnum.SMALL"
+        inline
+        class="hardpoint-category__link"
+      >
+        <i class="fal fa-cube" />
+        3D
+      </Btn>
     </div>
     <HardpointItems
       :hardpoints="hardpoints"

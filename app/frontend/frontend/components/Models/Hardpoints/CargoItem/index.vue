@@ -9,6 +9,7 @@ import HardpointItem from "@/frontend/components/Models/Hardpoints/Item/index.vu
 import HardpointComponent from "@/frontend/components/Models/Hardpoints/Component/index.vue";
 import { type Hardpoint, type CargoHold } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { humanizeHoldName } from "@/shared/utils/CargoHolds";
 
 type Props = {
   hardpoints: Hardpoint[];
@@ -40,13 +41,7 @@ const name = computed(() => {
 });
 
 const label = computed(() => {
-  return name.value
-    .split("_")
-    .join(" ")
-    .replace("hardpoint", "")
-    .replace("cargogrid", "")
-    .replace("temp", "")
-    .replace(/\b\w/g, (l) => l.toUpperCase());
+  return humanizeHoldName(name.value);
 });
 </script>
 

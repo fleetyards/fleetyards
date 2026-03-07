@@ -227,6 +227,9 @@
           "failure": "We could not load the requested 3D model! Please try again later."
         }
       },
+      "cargoGridViewer": {
+        "noCargoHolds": "This ship has no cargo holds."
+      },
       "confirm": {
         "vehicle": {
           "destroy": "Are you sure you want to remove this Ship from you Hangar?"

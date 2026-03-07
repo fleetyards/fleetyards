@@ -25,6 +25,8 @@ type Props = {
 
 const props = defineProps<Props>();
 
+provide("modelSlug", computed(() => props.model.slug));
+
 const { t } = useI18n();
 
 const erkulUrl = computed(() => {

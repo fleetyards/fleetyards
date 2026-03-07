@@ -56,7 +56,7 @@ const categories = computed(() => {
     v-if="hardpoints.length && Object.values(categories).length"
     class="hardpoint-group"
   >
-    <h2 v-if="!withoutTitle" class="hardpoint-group-label">
+    <h2 v-if="!withoutTitle" class="hardpoint-group__label">
       {{ t(`labels.hardpoint.groups.${group.toLowerCase()}`) }}
     </h2>
     <Panel slim>

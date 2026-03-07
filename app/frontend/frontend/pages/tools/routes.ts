@@ -14,6 +14,7 @@ export const routes = [
     component: () => import("@/frontend/pages/tools/travel-times.vue"),
     meta: {
       title: "tools.travelTimes",
+      feature: "tools_travel_times",
       backgroundImage: "bg-8",
     },
   },
@@ -23,6 +24,7 @@ export const routes = [
     component: () => import("@/frontend/pages/tools/cargo-grids.vue"),
     meta: {
       title: "tools.cargoGrids",
+      feature: "tools_cargo_grids",
       backgroundImage: "bg-8",
     },
   },
