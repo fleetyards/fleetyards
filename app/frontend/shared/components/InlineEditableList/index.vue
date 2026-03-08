@@ -18,12 +18,16 @@ type Props = {
   loading?: boolean;
   confirmDestroyText?: string;
   emptyName?: string;
+  hideDestroy?: boolean;
+  hideEdit?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   loading: false,
   confirmDestroyText: undefined,
   emptyName: "entries",
+  hideDestroy: false,
+  hideEdit: false,
 });
 
 const { displayConfirm } = useAppNotifications();
@@ -146,10 +150,15 @@ defineExpose({
             <div class="inline-editable-list__actions">
               <BtnGroup inline>
                 <slot name="actions" :item="item" />
-                <Btn :size="BtnSizesEnum.SMALL" @click="startEdit(item)">
+                <Btn
+                  v-if="!hideEdit"
+                  :size="BtnSizesEnum.SMALL"
+                  @click="startEdit(item)"
+                >
                   <i class="fad fa-pencil" />
                 </Btn>
                 <Btn
+                  v-if="!hideDestroy"
                   :size="BtnSizesEnum.SMALL"
                   :variant="BtnVariantsEnum.DANGER"
                   @click="destroy(item)"
