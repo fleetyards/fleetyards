@@ -6,6 +6,13 @@ v1_api_routes = lambda do
 
   resource :features, only: %i[show]
 
+  resources :user_features, path: "user-features", only: %i[index] do
+    member do
+      put :enable
+      put :disable
+    end
+  end
+
   resource :sessions, only: %i[create destroy] do
     post "confirm-access", to: "sessions#confirm_access", on: :collection
   end

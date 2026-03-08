@@ -15,14 +15,36 @@ export const routes: RouteRecordRaw[] = [
   },
   {
     path: "features/",
-    name: "features",
+    name: "admin-features",
     component: () => import("@/admin/pages/maintenance/features.vue"),
     meta: {
       title: "admin.maintenance.features",
       icon: "fad fa-circle-star",
       needsAuthentication: true,
       access: ["features"],
-      href: "/features",
+    },
+  },
+  {
+    path: "features/:name",
+    name: "admin-feature",
+    component: () => import("@/admin/pages/features/[name].vue"),
+    meta: {
+      title: "admin.features.show",
+      needsAuthentication: true,
+      access: ["features"],
+      nav: "hidden",
+    },
+  },
+  {
+    path: "flipper/",
+    name: "flipper",
+    component: () => import("@/admin/pages/maintenance/flipper.vue"),
+    meta: {
+      title: "admin.maintenance.flipper",
+      icon: "fad fa-sliders",
+      needsAuthentication: true,
+      access: ["features"],
+      href: "/flipper",
     },
   },
   {

@@ -25,6 +25,28 @@
       "deselect": "Click to deselect",
       "networkStatusOffline": "Network Status: Offline - Service Unavailable",
       "groups": "Groups",
+      "features": {
+        "stateOn": "Enabled",
+        "stateOff": "Disabled",
+        "stateConditional": "Conditional",
+        "selfService": "Self-service",
+        "selfServiceEnabled": "Users can toggle this feature",
+        "selfServiceDisabled": "Users cannot toggle this feature",
+        "actors": "Actors",
+        "groups": "Groups",
+        "noGroups": "No groups enabled for this feature.",
+        "noActors": "No individual actors enabled for this feature.",
+        "user": "User",
+        "fleet": "Fleet",
+        "actorType": "Actor Type",
+        "currentState": "Current State",
+        "settingsIntro": "Enable or disable experimental features for your account. These features may be incomplete or change without notice.",
+        "noFeaturesAvailable": "No self-service features are currently available.",
+        "descriptions": {
+          "tools_travel_times": "Show estimated travel times between locations.",
+          "tools_cargo_grids": "Show interactive cargo grid viewer for ships."
+        }
+      },
       "fleetInviteToken": "Fleet Invite",
       "scDataVersion": "Patch Version",
       "lastReload": "Last Reload",
@@ -176,6 +198,8 @@
       "find": "Type to search",
       "selectUser": "Select a User",
       "findUser": "Type to find a User",
+      "selectFleet": "Select a Fleet",
+      "findFleet": "Type to find a Fleet",
       "compare": {
         "removeModel": "Remove Ship",
         "addModel": {
@@ -482,6 +506,12 @@
         "modules": "Modules",
         "active": "Active?",
         "hidden": "Hidden?"
+      },
+      "cargoHold": {
+        "offsetX": "Offset X (SCU)",
+        "offsetY": "Offset Y (SCU)",
+        "offsetZ": "Offset Z (SCU)",
+        "rotation": "Rotation (°)"
       },
       "modelLoaner": {
         "hidden": "Hidden?",

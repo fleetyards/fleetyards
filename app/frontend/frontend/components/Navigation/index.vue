@@ -92,6 +92,7 @@ const settingsActive = computed(() => {
     "settings-profile",
     "settings-account",
     "settings-hangar",
+    "settings-features",
     "settings-notifications",
     "settings-security-status",
     "settings-two-factor-enable",

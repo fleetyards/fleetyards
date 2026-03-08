@@ -242,6 +242,14 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_09_120000) do
     t.index ["manufacturer_id"], name: "index_equipment_on_manufacturer_id"
   end
 
+  create_table "feature_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "feature_name", null: false
+    t.boolean "self_service", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["feature_name"], name: "index_feature_settings_on_feature_name", unique: true
+  end
+
   create_table "fleet_invite_urls", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "fleet_id"
     t.uuid "user_id"

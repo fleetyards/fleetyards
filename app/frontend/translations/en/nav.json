@@ -64,6 +64,7 @@
         "security": "Security",
         "notifications": "Notifications",
         "hangar": "Hangar",
+        "features": "Features",
         "verify": "RSI Account Verification"
       },
       "reload": "Update available!",
@@ -87,7 +88,8 @@
             "paints": "Paints",
             "images": "Images",
             "videos": "Videos",
-            "cargoAndFuel": "Cargo & Fuel",
+            "cargoAndFuel": "Fuel",
+            "cargoHolds": "Cargo Holds",
             "fleetchart": "Fleetchart Images",
             "hardpoints": "Hardpoints",
             "loaners": "Loaners",

@@ -82,6 +82,18 @@ v1_admin_api_routes = lambda do
   end
 
   resources :imports, only: %i[index show]
+
+  resources :features, only: %i[index show] do
+    member do
+      put :enable
+      put :disable
+      put "enable-actor", to: "features#enable_actor"
+      put "disable-actor", to: "features#disable_actor"
+      put "enable-group", to: "features#enable_group"
+      put "disable-group", to: "features#disable_group"
+      put "toggle-self-service", to: "features#toggle_self_service"
+    end
+  end
 end
 
 scope :v1, as: :v1 do

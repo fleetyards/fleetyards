@@ -40,6 +40,15 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "features/",
+    name: "settings-features",
+    component: () => import("@/frontend/pages/settings/features.vue"),
+    meta: {
+      title: "settings.features",
+      needsAuthentication: true,
+    },
+  },
+  {
     path: "security/",
     component: () => import("@/frontend/pages/settings/security.vue"),
     meta: {

@@ -57,6 +57,7 @@
         "index": "Profile Settings",
         "account": "Account",
         "hangar": "Hangar Settings",
+        "features": "Feature Flags",
         "notifications": "Notification Settings",
         "security": "Account Security",
         "twoFactor": {
@@ -92,7 +93,8 @@
             "prices": "Edit %{manufacturer} %{model} Prices",
             "fleetchart": "Edit %{manufacturer} %{model} Fleetchart Images",
             "hardpoints": "Edit %{manufacturer} %{model} Hardpoints",
-            "cargoAndFuel": "Edit %{manufacturer} %{model} Cargo & Fuel",
+            "cargoAndFuel": "Edit %{manufacturer} %{model} Fuel",
+            "cargoHolds": "Edit %{manufacturer} %{model} Cargo Holds",
             "docks": "Edit %{manufacturer} %{model} Docks",
             "modules": "Edit %{manufacturer} %{model} Modules",
             "paints": "Edit %{manufacturer} %{model} Paints",
@@ -129,6 +131,10 @@
           "index": "Fleets",
           "edit": "Edit Fleet"
         },
+        "features": {
+          "index": "Feature Flags",
+          "show": "Feature Details"
+        },
         "images": {
           "index": "Images"
         },
@@ -136,6 +142,7 @@
           "index": "Maintenance",
           "pghero": "PgHero",
           "features": "Features",
+          "flipper": "Flipper UI",
           "workers": "Workers",
           "tasks": "Tasks",
           "rsiApiStatus": "RSI API Status"

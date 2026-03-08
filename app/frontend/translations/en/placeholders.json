@@ -17,6 +17,10 @@
       "distance": "Distance",
       "guilded": "Guilded Server",
       "color": "Color",
+      "features": {
+        "username": "Username or User ID",
+        "fleetFid": "Fleet FID or Fleet ID"
+      },
       "fleetInviteToken": "Fleet Invite",
       "quicksearch": {
         "models": "Avenger, Carrack, Cutlass...",
@@ -76,6 +80,12 @@
         "fleetchartOffsetBeam": "Fleetchart Offset Beam",
         "cargo": "Cargo",
         "baseModel": "Base Model"
+      },
+      "cargoHold": {
+        "offsetX": "Offset X",
+        "offsetY": "Offset Y",
+        "offsetZ": "Offset Z",
+        "rotation": "0 or 90"
       },
       "manufacturer": {
         "longName": "Long Name",

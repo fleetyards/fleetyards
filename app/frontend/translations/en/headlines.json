@@ -25,7 +25,8 @@
             "index": "Edit Model",
             "fleetchart": "Fleetchart Images",
             "hardpoints": "Hardpoints",
-            "cargoAndFuel": "Cargo & Fuel",
+            "cargoAndFuel": "Fuel",
+            "cargoHolds": "Cargo Holds",
             "metrics": "Metrics",
             "prices": "Prices",
             "docks": "Docks",
@@ -81,6 +82,15 @@
           "index": "Admins",
           "new": "New Admin",
           "edit": "Edit Admin"
+        },
+        "features": {
+          "index": "Feature Flags",
+          "show": "Feature Details",
+          "globalState": "Global State",
+          "groups": "Groups",
+          "actors": "Actors",
+          "selfService": "Self-Service",
+          "addActor": "Add Actor"
         },
         "images": {
           "index": "Images"
@@ -164,6 +174,7 @@
         "account": "Account",
         "profile": "Profile Settings",
         "hangar": "Hangar Settings",
+        "features": "Feature Flags",
         "notifications": "Notification Settings",
         "verify": "Verify your RSI Account",
         "security": {
