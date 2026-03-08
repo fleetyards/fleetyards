@@ -25,7 +25,7 @@ export const routes = [
     meta: {
       title: "tools.cargoGrids",
       feature: "tools_cargo_grids",
-      backgroundImage: "bg-8",
+      backgroundImage: "bg-7",
     },
   },
 ];

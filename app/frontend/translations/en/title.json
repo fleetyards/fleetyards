@@ -118,7 +118,37 @@
           "edit": "Edit User"
         },
         "vehicles": {
-          "index": "Vehicles"
+          "index": "Vehicles",
+          "edit": "Edit Vehicle"
+        },
+        "admins": {
+          "index": "Admins",
+          "edit": "Edit Admin"
+        },
+        "fleets": {
+          "index": "Fleets",
+          "edit": "Edit Fleet"
+        },
+        "images": {
+          "index": "Images"
+        },
+        "maintenance": {
+          "index": "Maintenance",
+          "pghero": "PgHero",
+          "features": "Features",
+          "workers": "Workers",
+          "tasks": "Tasks",
+          "rsiApiStatus": "RSI API Status"
+        },
+        "modelPaints": {
+          "index": "Model Paints",
+          "edit": "Edit Model Paint"
+        },
+        "modelModules": {
+          "index": "Model Modules"
+        },
+        "modelModulePackages": {
+          "index": "Model Module Packages"
         }
       }
     }

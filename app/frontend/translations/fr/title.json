@@ -86,7 +86,13 @@
             "hardpoints": "Éditer les Points de Montage du Modèle",
             "cargoAndFuel": "Cargaison et Carburant",
             "docks": "Éditer les Quais du Modèle",
-            "videos": "Éditer les Vidéos du Modèle"
+            "modules": "Éditer les Modules du Modèle",
+            "paints": "Éditer les Peintures du Modèle",
+            "images": "Éditer les Images du Modèle",
+            "videos": "Éditer les Vidéos du Modèle",
+            "loaners": "Éditer les Prêts du Modèle",
+            "upgrades": "Éditer les Améliorations du Modèle",
+            "packages": "Éditer les Paquets du Modèle"
           }
         },
         "components": {
@@ -104,7 +110,37 @@
           "edit": "Éditer l'Utilisateur"
         },
         "vehicles": {
-          "index": "Véhicules"
+          "index": "Véhicules",
+          "edit": "Éditer le Véhicule"
+        },
+        "admins": {
+          "index": "Admins",
+          "edit": "Éditer l'Admin"
+        },
+        "fleets": {
+          "index": "Flottes",
+          "edit": "Éditer la Flotte"
+        },
+        "images": {
+          "index": "Images"
+        },
+        "maintenance": {
+          "index": "Maintenance",
+          "pghero": "PgHero",
+          "features": "Features",
+          "workers": "Workers",
+          "tasks": "Tâches",
+          "rsiApiStatus": "RSI API Status"
+        },
+        "modelPaints": {
+          "index": "Peintures de Modèles",
+          "edit": "Éditer la Peinture du Modèle"
+        },
+        "modelModules": {
+          "index": "Modules de Modèles"
+        },
+        "modelModulePackages": {
+          "index": "Paquets de Modules de Modèles"
         }
       }
     }

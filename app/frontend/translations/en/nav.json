@@ -134,6 +134,7 @@
           "pghero": "PG-Hero",
           "features": "Features",
           "workers": "Workers",
+          "tasks": "Tasks",
           "rsiApiStatus": "RSI API Status"
         }
       }

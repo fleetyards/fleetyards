@@ -18,11 +18,13 @@ type Props = {
   currentRoute: RouteLocationNormalizedLoaded;
   authenticated?: boolean;
   hasAccessTo?: (access?: string[]) => boolean;
+  isFeatureEnabled?: (feature: string) => boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   authenticated: false,
   hasAccessTo: undefined,
+  isFeatureEnabled: undefined,
 });
 
 const { t } = useI18n();
@@ -42,6 +44,13 @@ const filteredRoutes = computed(() => {
       }
 
       return props.hasAccessTo(route.meta?.access);
+    })
+    .filter((route) => {
+      if (!props.isFeatureEnabled || !route.meta?.feature) {
+        return true;
+      }
+
+      return props.isFeatureEnabled(route.meta.feature);
     });
 });
 
@@ -64,6 +73,13 @@ const filteredChildRoutes = (
       }
 
       return false;
+    })
+    .filter((child) => {
+      if (!props.isFeatureEnabled || !child.meta?.feature) {
+        return true;
+      }
+
+      return props.isFeatureEnabled(child.meta.feature);
     })
     .map((child) => {
       if (child.children) {

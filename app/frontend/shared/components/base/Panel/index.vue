@@ -24,6 +24,7 @@ type Props = {
   bgAlign?: PanelBgAlignmentsEnum;
   bgImage?: string;
   bgColor?: PanelBgColorsEnum;
+  bgOverlay?: boolean;
   bgRounded?: PanelBgRoundedEnum;
   animated?: boolean;
   highlight?: boolean;
@@ -42,6 +43,7 @@ const props = withDefaults(defineProps<Props>(), {
   bgAlign: undefined,
   bgImage: undefined,
   bgColor: PanelBgColorsEnum.DEFAULT,
+  bgOverlay: false,
   bgRounded: PanelBgRoundedEnum.ALL,
   animated: false,
   highlight: false,
@@ -96,6 +98,7 @@ const transparencyClass = computed(
           :rounded="bgRounded"
           :alignment="bgAlign"
         />
+        <div v-if="bgImage && bgOverlay" class="panel-bg-overlay" />
         <PanelShadow v-if="shadow" :alignment="shadow" />
         <PanelLink v-if="to && linkLabel" :to="to" :label="linkLabel" />
         <slot name="default" />

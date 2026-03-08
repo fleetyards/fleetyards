@@ -94,6 +94,7 @@
             "paints": "Modell Lackierungen bearbeiten",
             "images": "Modell Bilder bearbeiten",
             "videos": "Modell Videos bearbeiten",
+            "loaners": "Modell Leihgaben bearbeiten",
             "upgrades": "Modell Upgrades bearbeiten",
             "packages": "Modell Pakete bearbeiten"
           }
@@ -113,7 +114,37 @@
           "edit": "Benutzer bearbeiten"
         },
         "vehicles": {
-          "index": "Fahrzeuge"
+          "index": "Fahrzeuge",
+          "edit": "Fahrzeug bearbeiten"
+        },
+        "admins": {
+          "index": "Admins",
+          "edit": "Admin bearbeiten"
+        },
+        "fleets": {
+          "index": "Flotten",
+          "edit": "Flotte bearbeiten"
+        },
+        "images": {
+          "index": "Bilder"
+        },
+        "maintenance": {
+          "index": "Wartung",
+          "pghero": "PgHero",
+          "features": "Features",
+          "workers": "Workers",
+          "tasks": "Aufgaben",
+          "rsiApiStatus": "RSI API Status"
+        },
+        "modelPaints": {
+          "index": "Modell Lackierungen",
+          "edit": "Modell Lackierung bearbeiten"
+        },
+        "modelModules": {
+          "index": "Modell Module"
+        },
+        "modelModulePackages": {
+          "index": "Modell Modul Pakete"
         }
       }
     }

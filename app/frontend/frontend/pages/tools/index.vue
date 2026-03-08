@@ -21,6 +21,7 @@ import itemFinderImage from "@/images/tools/item-finder.webp";
 import starHangarImage from "@/images/tools/star-hangar.webp";
 import shinytrackerImage from "@/images/tools/shinytracker.webp";
 import uexCorpImage from "@/images/tools/uex-corp.webp";
+import cargoGridViewerImage from "@/images/tools/cargo-grid-viewer.webp";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -36,7 +37,7 @@ const toolImages: Record<string, string> = {
   starHangar: starHangarImage,
   shinytracker: shinytrackerImage,
   uexCorp: uexCorpImage,
-  cargoGridViewer: "", // Placeholder for future tool
+  cargoGridViewer: cargoGridViewerImage,
 };
 
 const tools: Array<Tool & { key: string }> = [
@@ -57,6 +58,7 @@ const tools: Array<Tool & { key: string }> = [
     url: "https://starship42.com/",
     name: "Starship42",
     description: t("tools.descriptions.starship42"),
+    disabled: true,
   },
   {
     key: "erkul",
@@ -123,6 +125,7 @@ const toolsWithImages = computed(() =>
         :name="tool.name"
         :description="tool.description"
         :image="tool.image"
+        :disabled="tool.disabled"
       />
     </div>
   </div>

@@ -86,7 +86,13 @@
             "hardpoints": "Modifica Hardpoint Modello",
             "cargoAndFuel": "Carico e Carburante",
             "docks": "Modifica Docks Modello",
-            "videos": "Modifica Video Modello"
+            "modules": "Modifica Moduli Modello",
+            "paints": "Modifica Verniciature Modello",
+            "images": "Modifica Immagini Modello",
+            "videos": "Modifica Video Modello",
+            "loaners": "Modifica Prestiti Modello",
+            "upgrades": "Modifica Miglioramenti Modello",
+            "packages": "Modifica Pacchetti Modello"
           }
         },
         "components": {
@@ -104,7 +110,37 @@
           "edit": "Modifica Utente"
         },
         "vehicles": {
-          "index": "Veicoli"
+          "index": "Veicoli",
+          "edit": "Modifica Veicolo"
+        },
+        "admins": {
+          "index": "Admins",
+          "edit": "Modifica Admin"
+        },
+        "fleets": {
+          "index": "Flotte",
+          "edit": "Modifica Flotta"
+        },
+        "images": {
+          "index": "Immagini"
+        },
+        "maintenance": {
+          "index": "Manutenzione",
+          "pghero": "PgHero",
+          "features": "Features",
+          "workers": "Workers",
+          "tasks": "Attività",
+          "rsiApiStatus": "RSI API Status"
+        },
+        "modelPaints": {
+          "index": "Verniciature Modelli",
+          "edit": "Modifica Verniciatura Modello"
+        },
+        "modelModules": {
+          "index": "Moduli Modelli"
+        },
+        "modelModulePackages": {
+          "index": "Pacchetti Moduli Modelli"
         }
       }
     }

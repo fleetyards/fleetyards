@@ -14,6 +14,9 @@ declare module "vue-router" {
     nav?: "main" | "sub" | "footer" | "editTabs" | "hidden";
     mobileNav?: number;
     href?: string;
+    feature?: string;
+    hideWhenAuthenticated?: boolean;
+    needsNoAuthentication?: boolean;
   }
 }
 

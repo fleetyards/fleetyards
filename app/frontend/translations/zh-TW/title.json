@@ -90,7 +90,13 @@
             "hardpoints": "編輯模型硬點",
             "cargoAndFuel": "貨物和燃料",
             "docks": "編輯模型停靠點",
-            "videos": "編輯模型影片"
+            "modules": "編輯模型模組",
+            "paints": "編輯模型塗裝",
+            "images": "編輯模型圖片",
+            "videos": "編輯模型影片",
+            "loaners": "編輯模型借用",
+            "upgrades": "編輯模型升級",
+            "packages": "編輯模型套件"
           }
         },
         "components": {
@@ -108,7 +114,37 @@
           "edit": "編輯用戶"
         },
         "vehicles": {
-          "index": "載具"
+          "index": "載具",
+          "edit": "編輯載具"
+        },
+        "admins": {
+          "index": "管理員",
+          "edit": "編輯管理員"
+        },
+        "fleets": {
+          "index": "艦隊",
+          "edit": "編輯艦隊"
+        },
+        "images": {
+          "index": "圖片"
+        },
+        "maintenance": {
+          "index": "維護",
+          "pghero": "PgHero",
+          "features": "功能",
+          "workers": "工作程序",
+          "tasks": "任務",
+          "rsiApiStatus": "RSI API 狀態"
+        },
+        "modelPaints": {
+          "index": "模型塗裝",
+          "edit": "編輯模型塗裝"
+        },
+        "modelModules": {
+          "index": "模型模組"
+        },
+        "modelModulePackages": {
+          "index": "模型模組套件"
         }
       }
     }

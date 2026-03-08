@@ -11,7 +11,8 @@
         "starHangar": "Marché de confiance pour les packages de vaisseaux Star Citizen avec trading sécurisé et suivi des prix",
         "shinytracker": "Suivi de progression personnel pour missions, réputation, succès et objectifs d'exploration avec statistiques détaillées",
         "uexCorp": "Plateforme de trading de matières premières en temps réel avec suivi des prix, optimisation des routes commerciales et outils d'analyse de marché"
-      }
+      },
+      "discontinued": "Ce projet a été abandonné."
     }
   }
 }

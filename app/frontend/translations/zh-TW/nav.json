@@ -123,6 +123,7 @@
           "pghero": "PG-Hero",
           "features": "功能",
           "workers": "工作程序",
+          "tasks": "任務",
           "rsiApiStatus": "RSI API 狀態"
         }
       }

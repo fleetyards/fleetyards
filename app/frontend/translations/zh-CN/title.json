@@ -90,7 +90,13 @@
             "hardpoints": "编辑模型硬点",
             "cargoAndFuel": "货物和燃料",
             "docks": "编辑模型停靠点",
-            "videos": "编辑模型视频"
+            "modules": "编辑模型模块",
+            "paints": "编辑模型涂装",
+            "images": "编辑模型图片",
+            "videos": "编辑模型视频",
+            "loaners": "编辑模型借用",
+            "upgrades": "编辑模型升级",
+            "packages": "编辑模型包"
           }
         },
         "components": {
@@ -108,7 +114,37 @@
           "edit": "编辑用户"
         },
         "vehicles": {
-          "index": "载具"
+          "index": "载具",
+          "edit": "编辑载具"
+        },
+        "admins": {
+          "index": "管理员",
+          "edit": "编辑管理员"
+        },
+        "fleets": {
+          "index": "舰队",
+          "edit": "编辑舰队"
+        },
+        "images": {
+          "index": "图片"
+        },
+        "maintenance": {
+          "index": "维护",
+          "pghero": "PgHero",
+          "features": "功能",
+          "workers": "工作进程",
+          "tasks": "任务",
+          "rsiApiStatus": "RSI API 状态"
+        },
+        "modelPaints": {
+          "index": "模型涂装",
+          "edit": "编辑模型涂装"
+        },
+        "modelModules": {
+          "index": "模型模块"
+        },
+        "modelModulePackages": {
+          "index": "模型模块包"
         }
       }
     }

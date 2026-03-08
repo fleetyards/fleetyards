@@ -3,4 +3,5 @@ export interface Tool {
   name: string;
   description: string;
   image?: string;
+  disabled?: boolean;
 }
