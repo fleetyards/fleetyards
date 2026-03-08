@@ -111,14 +111,14 @@ const onDestroy = async (record: ItemPrice) => {
 const createForm = ref<ItemPriceFormData>({
   itemId: props.itemId,
   itemType: props.itemType,
-  priceType: ItemPriceTypeEnum.buy,
+  priceType: ItemPriceTypeEnum.BUY,
 });
 
 const onStartCreate = () => {
   createForm.value = {
     itemId: props.itemId,
     itemType: props.itemType,
-    priceType: ItemPriceTypeEnum.buy,
+    priceType: ItemPriceTypeEnum.BUY,
   };
 };
 
@@ -215,7 +215,7 @@ defineExpose({
         translation-key="itemPrice.price"
       />
       <FilterGroup
-        v-if="editForm.priceType === ItemPriceTypeEnum.rental"
+        v-if="editForm.priceType === ItemPriceTypeEnum.RENTAL"
         v-model="editForm.timeRange"
         name="edit-time-range"
         :options="timeRangeOptions"
@@ -251,7 +251,7 @@ defineExpose({
         translation-key="itemPrice.price"
       />
       <FilterGroup
-        v-if="createForm.priceType === ItemPriceTypeEnum.rental"
+        v-if="createForm.priceType === ItemPriceTypeEnum.RENTAL"
         v-model="createForm.timeRange"
         name="create-time-range"
         :options="timeRangeOptions"

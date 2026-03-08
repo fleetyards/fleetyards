@@ -93,8 +93,8 @@ const {
         <div class="col-12 col-md-6 col-lg-4">
           <HardpointGroup
             v-for="group in [
-              ModelHardpointGroupEnum.avionic,
-              ModelHardpointGroupEnum.system,
+              ModelHardpointGroupEnum.AVIONIC,
+              ModelHardpointGroupEnum.SYSTEM,
             ]"
             :key="group"
             :group="group"
@@ -104,8 +104,8 @@ const {
         <div class="col-12 col-md-6 col-lg-4">
           <HardpointGroup
             v-for="group in [
-              ModelHardpointGroupEnum.propulsion,
-              ModelHardpointGroupEnum.thruster,
+              ModelHardpointGroupEnum.PROPULSION,
+              ModelHardpointGroupEnum.THRUSTER,
             ]"
             :key="group"
             :group="group"
@@ -114,7 +114,7 @@ const {
         </div>
         <div class="col-12 col-md-6 col-lg-4">
           <HardpointGroup
-            v-for="group in [ModelHardpointGroupEnum.weapon]"
+            v-for="group in [ModelHardpointGroupEnum.WEAPON]"
             :key="group"
             :group="group"
             :hardpoints="hardpointsForGroup(group)"

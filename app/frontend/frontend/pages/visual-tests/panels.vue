@@ -94,7 +94,7 @@ const vehicle = computed<Vehicle | undefined>(() => {
 
   return {
     id: "1",
-    boughtVia: BoughtViaEnum.pledge_store,
+    boughtVia: BoughtViaEnum.PLEDGE_STORE,
     wanted: false,
     flagship: vehiclePanelFlagship.value,
     name: "USS Enterprise",

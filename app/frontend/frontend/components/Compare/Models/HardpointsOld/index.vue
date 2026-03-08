@@ -32,11 +32,11 @@ const { t } = useI18n();
 const hardpoints = ref<{ slug: string; hardpoints: ModelHardpoint[] }[]>([]);
 
 const groups = [
-  ModelHardpointGroupEnum.avionic,
-  ModelHardpointGroupEnum.system,
-  ModelHardpointGroupEnum.propulsion,
-  ModelHardpointGroupEnum.thruster,
-  ModelHardpointGroupEnum.weapon,
+  ModelHardpointGroupEnum.AVIONIC,
+  ModelHardpointGroupEnum.SYSTEM,
+  ModelHardpointGroupEnum.PROPULSION,
+  ModelHardpointGroupEnum.THRUSTER,
+  ModelHardpointGroupEnum.WEAPON,
 ];
 
 const avionicVisible = ref(false);
@@ -73,8 +73,8 @@ const fetch = async () => {
 const fetchHardpoints = async (model: Model) => {
   const hardpoints = await fetchModelHardpoints(model.slug, {
     source: model.scIdentifier
-      ? HardpointSourceEnum.game_files
-      : HardpointSourceEnum.ship_matrix,
+      ? HardpointSourceEnum.GAME_FILES
+      : HardpointSourceEnum.SHIP_MATRIX,
   });
 
   return {
@@ -92,19 +92,19 @@ const setupVisibles = () => {
 };
 
 const isVisible = (group: ModelHardpointGroupEnum) => {
-  if (group === ModelHardpointGroupEnum.avionic) {
+  if (group === ModelHardpointGroupEnum.AVIONIC) {
     return avionicVisible.value;
   }
-  if (group === ModelHardpointGroupEnum.system) {
+  if (group === ModelHardpointGroupEnum.SYSTEM) {
     return systemVisible.value;
   }
-  if (group === ModelHardpointGroupEnum.propulsion) {
+  if (group === ModelHardpointGroupEnum.PROPULSION) {
     return propulsionVisible.value;
   }
-  if (group === ModelHardpointGroupEnum.thruster) {
+  if (group === ModelHardpointGroupEnum.THRUSTER) {
     return thrusterVisible.value;
   }
-  if (group === ModelHardpointGroupEnum.weapon) {
+  if (group === ModelHardpointGroupEnum.WEAPON) {
     return weaponVisible.value;
   }
 
@@ -112,19 +112,19 @@ const isVisible = (group: ModelHardpointGroupEnum) => {
 };
 
 const toggle = (group: ModelHardpointGroupEnum) => {
-  if (group === ModelHardpointGroupEnum.avionic) {
+  if (group === ModelHardpointGroupEnum.AVIONIC) {
     avionicVisible.value = !avionicVisible.value;
   }
-  if (group === ModelHardpointGroupEnum.system) {
+  if (group === ModelHardpointGroupEnum.SYSTEM) {
     systemVisible.value = !systemVisible.value;
   }
-  if (group === ModelHardpointGroupEnum.propulsion) {
+  if (group === ModelHardpointGroupEnum.PROPULSION) {
     propulsionVisible.value = !propulsionVisible.value;
   }
-  if (group === ModelHardpointGroupEnum.thruster) {
+  if (group === ModelHardpointGroupEnum.THRUSTER) {
     thrusterVisible.value = !thrusterVisible.value;
   }
-  if (group === ModelHardpointGroupEnum.weapon) {
+  if (group === ModelHardpointGroupEnum.WEAPON) {
     weaponVisible.value = !weaponVisible.value;
   }
 };

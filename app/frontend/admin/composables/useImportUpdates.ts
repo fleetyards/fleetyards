@@ -41,17 +41,17 @@ export const useImportUpdates = () => {
     const label = formatImportLabel(importData);
 
     switch (importData.status) {
-      case ImportStatusEnum.started:
+      case ImportStatusEnum.STARTED:
         displayInfo({
           text: t("messages.import.started", { type: label }),
         });
         break;
-      case ImportStatusEnum.finished:
+      case ImportStatusEnum.FINISHED:
         displaySuccess({
           text: t("messages.import.finished", { type: label }),
         });
         break;
-      case ImportStatusEnum.failed:
+      case ImportStatusEnum.FAILED:
         displayAlert({
           text: t("messages.import.failed", {
             type: label,
@@ -84,8 +84,8 @@ export const useImportUpdates = () => {
       if (data?.items) {
         const active = data.items.filter(
           (imp) =>
-            imp.status === ImportStatusEnum.created ||
-            imp.status === ImportStatusEnum.started,
+            imp.status === ImportStatusEnum.CREATED ||
+            imp.status === ImportStatusEnum.STARTED,
         );
         importsStore.seedImports(active);
       }

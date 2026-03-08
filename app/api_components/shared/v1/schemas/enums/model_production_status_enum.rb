@@ -9,7 +9,8 @@ module Shared
 
           schema({
             type: :string,
-            enum: ::Model::PRODUCTION_STATUSES
+            enum: ::Model::PRODUCTION_STATUSES,
+            "x-enumNames": ::Model::PRODUCTION_STATUSES.map { |v| transform_enum_key(v) }
           })
         end
       end

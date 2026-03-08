@@ -326,11 +326,39 @@ module Api
 
         scope = scope.with_dock if model_query_params.delete("with_dock")
         scope = scope.where(cargo: 0.1..) if model_query_params.delete("with_cargo")
+        scope = scope.joins(:cargo_holds_db).distinct if model_query_params.delete("with_cargo_grids")
+        scope = scope.where(id: current_user.models.select(:id)) if model_query_params.delete("in_hangar") && current_user.present?
+        scope = container_fit(scope) if model_query_params["container_fit"].present?
         scope = will_it_fit?(scope) if model_query_params["will_it_fit"].present?
 
         model_query_params["sorts"] = sorting_params(Model, model_query_params["sorts"])
 
         scope.ransack(model_query_params)
+      end
+
+      private def container_fit(scope)
+        container_fit_params = model_query_params.delete("container_fit")
+        return scope if container_fit_params.blank?
+
+        # container_fit is a hash like {"1" => "5", "8" => "2"} meaning 5x 1SCU + 2x 8SCU
+        # For each requested size, find models where the total capacity across all holds
+        # meets or exceeds the requested quantity
+        container_fit_params.each do |size, quantity|
+          size = size.to_i
+          quantity = quantity.to_i
+          next if quantity <= 0
+
+          matching_model_ids = CargoHold
+            .joins(:cargo_hold_container_capacities)
+            .where(cargo_hold_container_capacities: {container_size_scu: size})
+            .group(:model_id)
+            .having("SUM(cargo_hold_container_capacities.max_quantity) >= ?", quantity)
+            .select(:model_id)
+
+          scope = scope.where(id: matching_model_ids)
+        end
+
+        scope
       end
 
       private def will_it_fit?(scope)
@@ -381,8 +409,9 @@ module Api
             :name_cont, :name_eq, :slug_eq, :description_cont, :name_or_description_cont, :on_sale_eq,
             :sorts, :length_gteq, :length_lteq, :beam_gteq, :beam_lteq, :height_gteq, :height_lteq,
             :price_gteq, :price_lteq, :pledge_price_gteq, :pledge_price_lteq, :search_cont,
-            :with_dock, :with_cargo,
+            :with_dock, :with_cargo, :with_cargo_grids, :in_hangar,
             will_it_fit: [], name_in: [], slug_in: [], manufacturer_in: [], classification_in: [],
+            container_fit: {},
             focus_in: [], production_status_in: [], price_in: [], pledge_price_in: [], size_in: [],
             sorts: [], id_not_in: [], id_in: []
           ]

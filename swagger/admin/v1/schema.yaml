@@ -3765,7 +3765,6 @@ components:
       properties:
         name:
           type: string
-          nullable: true
         dimensions:
           "$ref": "#/components/schemas/CargoHoldDimension"
         capacity:
@@ -4071,6 +4070,9 @@ components:
       enum:
       - pledge_store
       - ingame
+      x-enumNames:
+      - PLEDGE_STORE
+      - INGAME
       title: BoughtViaEnum
     ChannelsEnum:
       type: string
@@ -4117,6 +4119,12 @@ components:
       - RSIAvionic
       - RSIPropulsion
       - RSIThruster
+      x-enumNames:
+      - RSI_MODULAR
+      - RSI_WEAPON
+      - RSI_AVIONIC
+      - RSI_PROPULSION
+      - RSI_THRUSTER
       title: ComponentClassEnum
     ComponentItemClassEnum:
       type: string
@@ -4126,6 +4134,12 @@ components:
       - industrial
       - military
       - competition
+      x-enumNames:
+      - STEALTH
+      - CIVILIAN
+      - INDUSTRIAL
+      - MILITARY
+      - COMPETITION
       title: ComponentItemClassEnum
     ComponentTypeEnum:
       type: string
@@ -4203,6 +4217,80 @@ components:
       - SalvageFieldEmitter
       - SalvageFieldSupporter
       - SalvageInternalStorage
+      x-enumNames:
+      - SEAT
+      - DOOR
+      - MAIN_THRUSTER
+      - ARMOR
+      - WEAPON_DEFENSIVE
+      - MANNEUVER_THRUSTER
+      - CARGO_GRID
+      - CARGO
+      - EMP
+      - PAINTS
+      - TURRET_BASE
+      - TOOL_ARM
+      - TURRET
+      - MISC
+      - MODULE
+      - CONTROL_PANEL
+      - WEAPON_GUN
+      - CONTAINER
+      - TRACTOR_BEAM
+      - UTILITY_TURRET
+      - TOWING_BEAM
+      - MISSILE_CONTROLLER
+      - LIGHTGROUP
+      - BATTERY
+      - CAPACITOR_ASSIGNMENT_CONTROLLER
+      - COMMS_CONTROLLER
+      - COOLER_CONTROLLER
+      - DOOR_CONTROLLER
+      - ENERGY_CONTROLLER
+      - FLIGHT_CONTROLLER
+      - MINING_CONTROLLER
+      - BOMB_LAUNCHER
+      - BOMB
+      - FUEL_CONTROLLER
+      - SALVAGE_CONTROLLER
+      - SHIELD_CONTROLLER
+      - TARGET_SELECTOR
+      - WEAPON_CONTROLLER
+      - WHEELED_CONTROLLER
+      - COOLER
+      - DOCKING_ANIMATOR
+      - BUTTON
+      - SENSOR
+      - USABLE
+      - EXTERNAL_FUEL_TANK
+      - FUEL_TANK
+      - WEAPON_MINING
+      - SALVAGE_HEAD
+      - JUMP_DRIVE
+      - FUEL_INTAKE
+      - MINING_MODIFIER
+      - MISSILE
+      - ATTACHED_PART
+      - LIFE_SUPPORT_GENERATOR
+      - SPACE_MINE
+      - MISSILE_LAUNCHER
+      - DOCKING_COLLAR
+      - POWER_PLANT
+      - QUANTUM_FUEL_TANK
+      - QUANTUM_INTERDICTION_GENERATOR
+      - QUANTUM_DRIVE
+      - RELAY
+      - RADAR
+      - SCANNER
+      - SALVAGE_FILLER_STATION
+      - SHIELD
+      - SEAT_DASHBOARD
+      - DISPLAY
+      - SELF_DESTRUCT
+      - WEAPON_ATTACHMENT
+      - SALVAGE_FIELD_EMITTER
+      - SALVAGE_FIELD_SUPPORTER
+      - SALVAGE_INTERNAL_STORAGE
       title: ComponentTypeEnum
     DockShipSizeEnum:
       type: string
@@ -4214,6 +4302,14 @@ components:
       - large
       - extra_large
       - capital
+      x-enumNames:
+      - EXTRA_EXTRA_SMALL
+      - EXTRA_SMALL
+      - SMALL
+      - MEDIUM
+      - LARGE
+      - EXTRA_LARGE
+      - CAPITAL
       title: DockShipSizeEnum
     DockTypeEnum:
       type: string
@@ -4223,6 +4319,12 @@ components:
       - landingpad
       - dockingport
       - hangar
+      x-enumNames:
+      - VEHICLEPAD
+      - GARAGE
+      - LANDINGPAD
+      - DOCKINGPORT
+      - HANGAR
       title: DockTypeEnum
     EquipmentTypeEnum:
       type: string
@@ -4235,6 +4337,15 @@ components:
       - medical
       - weapon_attachment
       - hacking_tool
+      x-enumNames:
+      - UNDERSUIT
+      - ARMOR
+      - WEAPON
+      - TOOL
+      - CLOTHING
+      - MEDICAL
+      - WEAPON_ATTACHMENT
+      - HACKING_TOOL
       title: EquipmentTypeEnum
     FleetMembershipShipsFilterEnum:
       type: string
@@ -4242,6 +4353,10 @@ components:
       - all
       - hangar_group
       - hide
+      x-enumNames:
+      - ALL
+      - HANGAR_GROUP
+      - HIDE
       title: FleetMembershipShipsFilterEnum
     FleetMembershipStatusEnum:
       type: string
@@ -4251,6 +4366,12 @@ components:
       - requested
       - accepted
       - declined
+      x-enumNames:
+      - CREATED
+      - INVITED
+      - REQUESTED
+      - ACCEPTED
+      - DECLINED
       title: FleetMembershipStatusEnum
     GalleryTypeEnum:
       type: string
@@ -4258,6 +4379,10 @@ components:
       - Model
       - Station
       - Album
+      x-enumNames:
+      - MODEL
+      - STATION
+      - ALBUM
       title: GalleryTypeEnum
     HardpointCategoryEnum:
       type: string
@@ -4300,6 +4425,45 @@ components:
       - inventory
       - controller
       - unknown
+      x-enumNames:
+      - RADAR
+      - COMPUTERS
+      - SCANNERS
+      - POWERPLANT
+      - COOLER
+      - SHIELDGENERATOR
+      - MODULE
+      - SALVAGEFILLERSTATION
+      - FUELTANKS
+      - FUEL_INTAKES
+      - QUANTUMDRIVE
+      - JUMPDRIVE
+      - MAIN_THRUSTERS
+      - RETRO_THRUSTERS
+      - VTOL_THRUSTERS
+      - MANEUVERING_THRUSTERS
+      - WEAPONS
+      - WEAPON_MOUNTS
+      - TURRET
+      - MISSILE_RACKS
+      - BOMBCOMPARTMENTS
+      - QUANTUMENFORCEMENTDEVICE
+      - EMP
+      - SALVAGEMUNCHING
+      - ARMOR
+      - COUNTERMEASURES
+      - SELFDESTRUCT
+      - LIFESUPPORT
+      - BATTERIES
+      - UTILITY
+      - SEAT
+      - RELAY
+      - PAINTS
+      - DOORS
+      - CARGOGRID
+      - INVENTORY
+      - CONTROLLER
+      - UNKNOWN
       title: HardpointCategoryEnum
     HardpointGroupEnum:
       type: string
@@ -4315,12 +4479,27 @@ components:
       - relay
       - other
       - unknown
+      x-enumNames:
+      - AVIONIC
+      - SYSTEM
+      - PROPULSION
+      - THRUSTER
+      - WEAPON
+      - DEFENSE
+      - AUXILIARY
+      - SEAT
+      - RELAY
+      - OTHER
+      - UNKNOWN
       title: HardpointGroupEnum
     HardpointSourceEnum:
       type: string
       enum:
       - ship_matrix
       - game_files
+      x-enumNames:
+      - SHIP_MATRIX
+      - GAME_FILES
       title: HardpointSourceEnum
     ImportStatusEnum:
       type: string
@@ -4329,6 +4508,11 @@ components:
       - started
       - finished
       - failed
+      x-enumNames:
+      - CREATED
+      - STARTED
+      - FINISHED
+      - FAILED
       title: ImportStatusEnum
     ImportTypeEnum:
       type: string
@@ -4340,6 +4524,14 @@ components:
       - Imports::ScData::ModelImport
       - Imports::HangarSync
       - Imports::HangarImport
+      x-enumNames:
+      - IMPORTS_MODEL_IMPORT
+      - IMPORTS_MODELS_IMPORT
+      - IMPORTS_SC_DATA_ALL_IMPORT
+      - IMPORTS_SC_DATA_MODELS_IMPORT
+      - IMPORTS_SC_DATA_MODEL_IMPORT
+      - IMPORTS_HANGAR_SYNC
+      - IMPORTS_HANGAR_IMPORT
       title: ImportTypeEnum
     ItemPriceItemTypeEnum:
       type: string
@@ -4348,6 +4540,11 @@ components:
       - ModelModule
       - ModelPaint
       - Component
+      x-enumNames:
+      - MODEL
+      - MODEL_MODULE
+      - MODEL_PAINT
+      - COMPONENT
       title: ItemPriceItemTypeEnum
     ItemPriceTimeRangeEnum:
       type: string
@@ -4356,6 +4553,11 @@ components:
       - 3-days
       - 7-days
       - 30-days
+      x-enumNames:
+      - 1_DAY
+      - 3_DAYS
+      - 7_DAYS
+      - 30_DAYS
       title: ItemPriceTimeRangeEnum
     ItemPriceTypeEnum:
       type: string
@@ -4363,6 +4565,10 @@ components:
       - buy
       - sell
       - rental
+      x-enumNames:
+      - BUY
+      - SELL
+      - RENTAL
       title: ItemPriceTypeEnum
     ModelHardpointCategoryEnum:
       type: string
@@ -4379,6 +4585,19 @@ components:
       - missile_rack
       - qed
       - emp
+      x-enumNames:
+      - MAIN
+      - RETRO
+      - VTOL
+      - FIXED
+      - GIMBAL
+      - JOINT
+      - MANNED_TURRET
+      - REMOTE_TURRET
+      - MISSILE_TURRET
+      - MISSILE_RACK
+      - QED
+      - EMP
       title: ModelHardpointCategoryEnum
     ModelHardpointGroupEnum:
       type: string
@@ -4388,6 +4607,12 @@ components:
       - propulsion
       - thruster
       - weapon
+      x-enumNames:
+      - AVIONIC
+      - SYSTEM
+      - PROPULSION
+      - THRUSTER
+      - WEAPON
       title: ModelHardpointGroupEnum
     ModelHardpointSizeEnum:
       type: string
@@ -4411,6 +4636,26 @@ components:
       - large
       - capital
       - tbd
+      x-enumNames:
+      - VEHICLE
+      - ONE
+      - TWO
+      - THREE
+      - FOUR
+      - FIVE
+      - SIX
+      - SEVEN
+      - EIGHT
+      - NINE
+      - TEN
+      - ELEVEN
+      - TWELVE
+      - SNUB
+      - SMALL
+      - MEDIUM
+      - LARGE
+      - CAPITAL
+      - TBD
       title: ModelHardpointSizeEnum
     ModelHardpointSubCategoryEnum:
       type: string
@@ -4420,6 +4665,12 @@ components:
       - manned_turrets
       - remote_turrets
       - missile_turret
+      x-enumNames:
+      - RETRO_THRUSTERS
+      - VTOL_THRUSTERS
+      - MANNED_TURRETS
+      - REMOTE_TURRETS
+      - MISSILE_TURRET
       title: ModelHardpointSubCategoryEnum
     ModelHardpointTypeEnum:
       type: string
@@ -4442,6 +4693,25 @@ components:
       - qed
       - emp
       - utility_items
+      x-enumNames:
+      - RADAR
+      - COMPUTERS
+      - FUEL_INTAKES
+      - FUEL_TANKS
+      - JUMP_MODULES
+      - QUANTUM_FUEL_TANKS
+      - POWER_PLANTS
+      - COOLERS
+      - SHIELD_GENERATORS
+      - QUANTUM_DRIVES
+      - MAIN_THRUSTERS
+      - MANEUVERING_THRUSTERS
+      - WEAPONS
+      - TURRETS
+      - MISSILES
+      - QED
+      - EMP
+      - UTILITY_ITEMS
       title: ModelHardpointTypeEnum
     ModelProductionStatusEnum:
       type: string
@@ -4449,12 +4719,19 @@ components:
       - in-concept
       - in-production
       - flight-ready
+      x-enumNames:
+      - IN_CONCEPT
+      - IN_PRODUCTION
+      - FLIGHT_READY
       title: ModelProductionStatusEnum
     OrderDirectionEnum:
       type: string
       enum:
       - asc
       - desc
+      x-enumNames:
+      - ASC
+      - DESC
       title: OrderDirectionEnum
     RsiHangarItemKindEnum:
       type: string
@@ -4463,6 +4740,11 @@ components:
       - component
       - upgrade
       - skin
+      x-enumNames:
+      - SHIP
+      - COMPONENT
+      - UPGRADE
+      - SKIN
       title: RsiHangarItemKindEnum
     ThrusterClassEnum:
       type: string
@@ -4471,11 +4753,18 @@ components:
       - retro
       - vtol
       - mav
+      x-enumNames:
+      - MAIN
+      - RETRO
+      - VTOL
+      - MAV
       title: ThrusterClassEnum
     VideoTypeEnum:
       type: string
       enum:
       - youtube
+      x-enumNames:
+      - YOUTUBE
       title: VideoTypeEnum
     Equipment:
       type: object
@@ -4829,6 +5118,17 @@ components:
       - acceptedAt desc
       - lastActiveAt asc
       - lastActiveAt desc
+      x-enumNames:
+      - RSI_HANDLE_ASC
+      - RSI_HANDLE_DESC
+      - USERNAME_ASC
+      - USERNAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - ACCEPTED_AT_ASC
+      - ACCEPTED_AT_DESC
+      - LAST_ACTIVE_AT_ASC
+      - LAST_ACTIVE_AT_DESC
       title: FleetMembershipSortEnum
     FleetVehicleSortEnum:
       type: string
@@ -4839,6 +5139,13 @@ components:
       - createdAt desc
       - updatedAt asc
       - updatedAt desc
+      x-enumNames:
+      - MODEL_NAME_ASC
+      - MODEL_NAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - UPDATED_AT_ASC
+      - UPDATED_AT_DESC
       title: FleetVehicleSortEnum
     ModelPaintSortEnum:
       type: string
@@ -4851,6 +5158,15 @@ components:
       - updatedAt desc
       - model_slug asc
       - model_slug desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - UPDATED_AT_ASC
+      - UPDATED_AT_DESC
+      - MODEL_SLUG_ASC
+      - MODEL_SLUG_DESC
       title: ModelPaintSortEnum
     ModelSortEnum:
       type: string
@@ -4887,6 +5203,39 @@ components:
       - focus desc
       - rsiId asc
       - rsiId desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - LENGTH_ASC
+      - LENGTH_DESC
+      - BEAM_ASC
+      - BEAM_DESC
+      - HEIGHT_ASC
+      - HEIGHT_DESC
+      - MASS_ASC
+      - MASS_DESC
+      - CARGO_ASC
+      - CARGO_DESC
+      - MANUFACTURER_NAME_ASC
+      - MANUFACTURER_NAME_DESC
+      - PLEDGE_PRICE_ASC
+      - PLEDGE_PRICE_DESC
+      - PRICE_ASC
+      - PRICE_DESC
+      - SCM_SPEED_ASC
+      - SCM_SPEED_DESC
+      - MAX_SPEED_ASC
+      - MAX_SPEED_DESC
+      - GROUND_MAX_SPEED_ASC
+      - GROUND_MAX_SPEED_DESC
+      - PRODUCTION_STATUS_ASC
+      - PRODUCTION_STATUS_DESC
+      - FOCUS_ASC
+      - FOCUS_DESC
+      - RSI_ID_ASC
+      - RSI_ID_DESC
       title: ModelSortEnum
     UserSortEnum:
       type: string
@@ -4901,6 +5250,17 @@ components:
       - lastActiveAt desc
       - lastSignInAt asc
       - lastSignInAt desc
+      x-enumNames:
+      - USERNAME_ASC
+      - USERNAME_DESC
+      - EMAIL_ASC
+      - EMAIL_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - LAST_ACTIVE_AT_ASC
+      - LAST_ACTIVE_AT_DESC
+      - LAST_SIGN_IN_AT_ASC
+      - LAST_SIGN_IN_AT_DESC
       title: UserSortEnum
     VehicleSortEnum:
       type: string
@@ -4941,6 +5301,43 @@ components:
       - modelProductionStatus desc
       - modelFocus asc
       - modelFocus desc
+      x-enumNames:
+      - FLAGSHIP_DESC
+      - FLAGSHIP_ASC
+      - NAME_ASC
+      - NAME_DESC
+      - MODEL_NAME_ASC
+      - MODEL_NAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - UPDATED_AT_ASC
+      - UPDATED_AT_DESC
+      - MODEL_MANUFACTURER_NAME_ASC
+      - MODEL_MANUFACTURER_NAME_DESC
+      - MODEL_LENGTH_ASC
+      - MODEL_LENGTH_DESC
+      - MODEL_BEAM_ASC
+      - MODEL_BEAM_DESC
+      - MODEL_HEIGHT_ASC
+      - MODEL_HEIGHT_DESC
+      - MODEL_MASS_ASC
+      - MODEL_MASS_DESC
+      - MODEL_CARGO_ASC
+      - MODEL_CARGO_DESC
+      - MODEL_PLEDGE_PRICE_ASC
+      - MODEL_PLEDGE_PRICE_DESC
+      - MODEL_PRICE_ASC
+      - MODEL_PRICE_DESC
+      - MODEL_SCM_SPEED_ASC
+      - MODEL_SCM_SPEED_DESC
+      - MODEL_MAX_SPEED_ASC
+      - MODEL_MAX_SPEED_DESC
+      - MODEL_GROUND_MAX_SPEED_ASC
+      - MODEL_GROUND_MAX_SPEED_DESC
+      - MODEL_PRODUCTION_STATUS_ASC
+      - MODEL_PRODUCTION_STATUS_DESC
+      - MODEL_FOCUS_ASC
+      - MODEL_FOCUS_DESC
       title: VehicleSortEnum
     StandardError:
       type: object

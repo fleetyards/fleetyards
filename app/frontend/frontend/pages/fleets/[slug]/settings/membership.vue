@@ -79,21 +79,21 @@ const [hangarGroupId, hangarGroupIdProps] = defineField("hangarGroupId");
 // }
 
 const shipsFilterIsHangarGroup = computed(() => {
-  return shipsFilter.value === FleetMembershipShipsFilterEnum.hangar_group;
+  return shipsFilter.value === FleetMembershipShipsFilterEnum.HANGAR_GROUP;
 });
 
 const shipsFilterOptions = computed<FilterOption[]>(() => [
   {
     label: t("labels.fleet.members.shipsFilter.values.all"),
-    value: FleetMembershipShipsFilterEnum.all,
+    value: FleetMembershipShipsFilterEnum.ALL,
   },
   {
     label: t("labels.fleet.members.shipsFilter.values.hangar_group"),
-    value: FleetMembershipShipsFilterEnum.hangar_group,
+    value: FleetMembershipShipsFilterEnum.HANGAR_GROUP,
   },
   {
     label: t("labels.fleet.members.shipsFilter.values.hide"),
-    value: FleetMembershipShipsFilterEnum.hide,
+    value: FleetMembershipShipsFilterEnum.HIDE,
   },
 ]);
 

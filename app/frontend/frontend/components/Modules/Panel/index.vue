@@ -64,8 +64,8 @@ const categories = computed(() => {
     if (
       (
         [
-          HardpointCategoryEnum.controller,
-          HardpointCategoryEnum.unknown,
+          HardpointCategoryEnum.CONTROLLER,
+          HardpointCategoryEnum.UNKNOWN,
         ] as HardpointCategoryEnum[]
       ).includes(category as HardpointCategoryEnum)
     ) {

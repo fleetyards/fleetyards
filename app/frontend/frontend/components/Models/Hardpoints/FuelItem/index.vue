@@ -52,7 +52,7 @@ const label = computed(() => {
     <template #default>
       <HardpointSize :size="hardpoint.maxSize" />
       <HardpointComponent>
-        <template v-if="hardpoint.source === HardpointSourceEnum.game_files">
+        <template v-if="hardpoint.source === HardpointSourceEnum.GAME_FILES">
           {{ label }}
           <span>
             {{ toNumber(typeData.capacity, "cargo") }}

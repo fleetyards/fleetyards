@@ -9,7 +9,8 @@ module Shared
 
           schema({
             type: :string,
-            enum: ::HangarSync::ITEM_TYPES
+            enum: ::HangarSync::ITEM_TYPES,
+            "x-enumNames": ::HangarSync::ITEM_TYPES.map { |v| transform_enum_key(v) }
           })
         end
       end

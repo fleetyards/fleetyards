@@ -962,8 +962,11 @@
         "capacity": "Capacity",
         "maxContainerSize": "Max. Container",
         "packed": "Packed",
+        "totalCargo": "Total Cargo",
         "didNotFit": "Did not fit",
-        "openInTool": "Open in Cargo Grid Tool"
+        "openInTool": "Open in Cargo Grid Tool",
+        "myHangar": "My Hangar",
+        "filterShips": "Filter Ships"
       },
       "admin": {
         "dashboard": {

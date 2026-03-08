@@ -10,7 +10,7 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import {
   type ModelPaintInput,
   useCreateModelPaint,
-  getModelPaintsQueryKey,
+  getListModelPaintsQueryKey,
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
@@ -51,7 +51,7 @@ const createMutation = useCreateModelPaint({
   mutation: {
     onSettled: async () => {
       await queryClient.invalidateQueries({
-        queryKey: getModelPaintsQueryKey(),
+        queryKey: getListModelPaintsQueryKey(),
       });
     },
   },

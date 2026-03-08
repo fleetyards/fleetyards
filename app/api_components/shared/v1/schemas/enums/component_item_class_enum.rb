@@ -9,7 +9,8 @@ module Shared
 
           schema({
             type: :string,
-            enum: ::Component.item_classes.keys
+            enum: ::Component.item_classes.keys,
+            "x-enumNames": ::Component.item_classes.keys.map { |v| transform_enum_key(v) }
           })
         end
       end

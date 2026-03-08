@@ -108,13 +108,13 @@ const onDestroy = async (record: Video) => {
 // Create
 const createForm = ref<VideoInput>({
   modelId: props.model.id,
-  videoType: VideoTypeEnum.youtube,
+  videoType: VideoTypeEnum.YOUTUBE,
 });
 
 const onStartCreate = () => {
   createForm.value = {
     modelId: props.model.id,
-    videoType: VideoTypeEnum.youtube,
+    videoType: VideoTypeEnum.YOUTUBE,
   };
 };
 
@@ -134,11 +134,11 @@ const onSaveCreate = async () => {
 
 // Helpers
 const videoTypeIcons: Record<string, string> = {
-  [VideoTypeEnum.youtube]: "fab fa-youtube",
+  [VideoTypeEnum.YOUTUBE]: "fab fa-youtube",
 };
 
 const thumbnailUrl = (video: Video) => {
-  if (video.type === VideoTypeEnum.youtube && video.videoId) {
+  if (video.type === VideoTypeEnum.YOUTUBE && video.videoId) {
     return `https://img.youtube.com/vi/${video.videoId}/mqdefault.jpg`;
   }
   return undefined;

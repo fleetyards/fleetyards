@@ -42,8 +42,8 @@ const syncInputMatch = computed(() => ({
 
 const { isImporting: isSyncing } = useImportLoading(
   [
-    ImportTypeEnum["Imports::ModelImport"],
-    ImportTypeEnum["Imports::ScData::ModelImport"],
+    ImportTypeEnum.IMPORTS_MODEL_IMPORT,
+    ImportTypeEnum.IMPORTS_SC_DATA_MODEL_IMPORT,
   ],
   syncInputMatch,
 );

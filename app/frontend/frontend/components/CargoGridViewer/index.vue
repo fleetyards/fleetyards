@@ -106,15 +106,11 @@ export function computeGreedyFill(
 <script lang="ts" setup>
 import { TresCanvas } from "@tresjs/core";
 import { OrbitControls, Grid } from "@tresjs/cientos";
-import {
-  BoxGeometry,
-  EdgesGeometry,
-  LineBasicMaterial,
-  Color,
-} from "three";
+import { BoxGeometry, EdgesGeometry, LineBasicMaterial, Color } from "three";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { humanizeHoldName } from "@/shared/utils/CargoHolds";
 
 const { t } = useI18n();
 
@@ -164,8 +160,6 @@ function getHoldGroupKey(name: string, allNames: string[]): string {
   return name;
 }
 
-import { humanizeHoldName } from "@/shared/utils/CargoHolds";
-
 // Group cargo holds by name prefix, preserving original indices
 function groupCargoHolds(
   holds: CargoHold[],
@@ -187,9 +181,7 @@ function groupCargoHolds(
   }
 
   const singleKeys = new Set(
-    [...keyCounts.entries()]
-      .filter(([, c]) => c === 1)
-      .map(([k]) => k),
+    [...keyCounts.entries()].filter(([, c]) => c === 1).map(([k]) => k),
   );
 
   if (singleKeys.size > 1) {
@@ -233,23 +225,43 @@ function groupCargoHolds(
 
   return groupOrder.map((key) => ({
     key,
-    label: key.startsWith("hold_") ? `Hold ${key.slice(5)}` : humanizeHoldName(key),
+    label: key.startsWith("hold_")
+      ? `Hold ${key.slice(5)}`
+      : humanizeHoldName(key),
     holdIndices: groupMap.get(key)!,
   }));
 }
 
 // 2D hold arrangement: find layout with minimum bounding volume
-type Placement = { hi: number; ox: number; oz: number; gx: number; gy: number; gz: number };
+type Placement = {
+  hi: number;
+  ox: number;
+  oz: number;
+  gx: number;
+  gy: number;
+  gz: number;
+};
 type ArrangeResult = {
   boundingVolume: number;
   groupWidthSCU: number;
   groupDepthSCU: number;
   groupHeightSCU: number;
-  positions: { hi: number; pos: [number, number, number]; dims: [number, number, number]; gridX: number; gridY: number; gridZ: number }[];
+  positions: {
+    hi: number;
+    pos: [number, number, number];
+    dims: [number, number, number];
+    gridX: number;
+    gridY: number;
+    gridZ: number;
+  }[];
 };
 
 function placementsToResult(placements: Placement[]): ArrangeResult {
-  let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity, maxH = 0;
+  let minX = Infinity,
+    maxX = -Infinity,
+    minZ = Infinity,
+    maxZ = -Infinity,
+    maxH = 0;
   for (const p of placements) {
     minX = Math.min(minX, p.ox);
     maxX = Math.max(maxX, p.ox + p.gx);
@@ -273,7 +285,11 @@ function placementsToResult(placements: Placement[]): ArrangeResult {
         (p.gz * SCU_UNIT) / 2,
         (p.oz - minZ + p.gy / 2) * SCU_UNIT,
       ] as [number, number, number],
-      dims: [p.gx * SCU_UNIT, p.gz * SCU_UNIT, p.gy * SCU_UNIT] as [number, number, number],
+      dims: [p.gx * SCU_UNIT, p.gz * SCU_UNIT, p.gy * SCU_UNIT] as [
+        number,
+        number,
+        number,
+      ],
       gridX: p.gx,
       gridY: p.gy,
       gridZ: p.gz,
@@ -281,7 +297,10 @@ function placementsToResult(placements: Placement[]): ArrangeResult {
   };
 }
 
-function findBestHoldArrangement(cargoHolds: CargoHold[], holdIndices: number[]): ArrangeResult {
+function findBestHoldArrangement(
+  cargoHolds: CargoHold[],
+  holdIndices: number[],
+): ArrangeResult {
   type HoldDim = { hi: number; x: number; y: number; z: number };
   const dims: HoldDim[] = holdIndices.map((hi) => {
     const h = cargoHolds[hi];
@@ -347,7 +366,14 @@ function findBestHoldArrangement(cargoHolds: CargoHold[], holdIndices: number[])
         candidates.push(
           placementsToResult([
             ...mainPl,
-            { hi: side.hi, ox: mainWidth, oz: 0, gx: side.x, gy: side.y, gz: side.z },
+            {
+              hi: side.hi,
+              ox: mainWidth,
+              oz: 0,
+              gx: side.x,
+              gy: side.y,
+              gz: side.z,
+            },
           ]),
         );
 
@@ -355,7 +381,14 @@ function findBestHoldArrangement(cargoHolds: CargoHold[], holdIndices: number[])
         candidates.push(
           placementsToResult([
             ...mainPl,
-            { hi: side.hi, ox: 0, oz: mainDepth, gx: side.x, gy: side.y, gz: side.z },
+            {
+              hi: side.hi,
+              ox: 0,
+              oz: mainDepth,
+              gx: side.x,
+              gy: side.y,
+              gz: side.z,
+            },
           ]),
         );
       }
@@ -366,6 +399,78 @@ function findBestHoldArrangement(cargoHolds: CargoHold[], holdIndices: number[])
     c.boundingVolume < best.boundingVolume ? c : best,
   );
 }
+
+const isPreviewMode = computed(
+  () => !props.cargoHolds?.length && props.containerRequests.length > 0,
+);
+
+// Preview layout: render containers in a row without cargo holds
+const previewContainers = computed<PlacedContainer[]>(() => {
+  if (!isPreviewMode.value) return [];
+
+  const containers: PlacedContainer[] = [];
+  let offsetX = 0;
+
+  for (const req of props.containerRequests) {
+    const def = CONTAINER_DEFS.find((d) => d.size === req.size);
+    if (!def) continue;
+
+    for (let i = 0; i < req.quantity; i++) {
+      const dims: [number, number, number] = [
+        def.x * SCU_UNIT,
+        def.z * SCU_UNIT,
+        def.y * SCU_UNIT,
+      ];
+
+      containers.push({
+        size: def.size,
+        position: [offsetX + dims[0] / 2, dims[1] / 2, 0],
+        dimensions: dims,
+        color: CONTAINER_COLORS[def.size] || "#ffffff",
+      });
+
+      offsetX += dims[0] + 0.15;
+    }
+  }
+
+  // Center all containers
+  if (containers.length > 0) {
+    const totalWidth = offsetX - 0.15;
+    for (const c of containers) {
+      c.position[0] -= totalWidth / 2;
+    }
+  }
+
+  return containers;
+});
+
+const previewGeometry = computed(() => {
+  if (!isPreviewMode.value || previewContainers.value.length === 0) return null;
+
+  let maxX = 0;
+  let maxY = 0;
+  let maxZ = 0;
+
+  for (const c of previewContainers.value) {
+    maxX = Math.max(maxX, Math.abs(c.position[0]) + c.dimensions[0] / 2);
+    maxY = Math.max(maxY, c.position[1] + c.dimensions[1] / 2);
+    maxZ = Math.max(maxZ, Math.abs(c.position[2]) + c.dimensions[2] / 2);
+  }
+
+  return {
+    totalWidth: maxX * 2,
+    maxY: maxY,
+    maxZ: maxZ * 2,
+  };
+});
+
+const previewTotalSCU = computed(() => {
+  let total = 0;
+  for (const req of props.containerRequests) {
+    total += req.size * req.quantity;
+  }
+  return total;
+});
 
 const packResult = computed<PackResult>(() => {
   if (!props.cargoHolds?.length) {
@@ -388,18 +493,28 @@ const packResult = computed<PackResult>(() => {
   let groupOffsetX = 0; // in SCU units
 
   const groups: HoldGroupLayout[] = [];
-  const holdGridsByIndex: (HoldGrid | null)[] = new Array(props.cargoHolds.length).fill(null);
-  const layoutsByIndex: (HoldLayout | null)[] = new Array(props.cargoHolds.length).fill(null);
+  const holdGridsByIndex: (HoldGrid | null)[] = new Array(
+    props.cargoHolds.length,
+  ).fill(null);
+  const layoutsByIndex: (HoldLayout | null)[] = new Array(
+    props.cargoHolds.length,
+  ).fill(null);
 
   const placed: Record<number, number> = {};
   const notPlaced: Record<number, number> = {};
 
   // Pre-calculate group layouts with optimal 2D arrangement
-  const groupInfos: { arrangement: ArrangeResult; group: (typeof holdGroups)[number] }[] = [];
+  const groupInfos: {
+    arrangement: ArrangeResult;
+    group: (typeof holdGroups)[number];
+  }[] = [];
 
   let totalSceneWidthSCU = 0;
   for (const group of holdGroups) {
-    const arrangement = findBestHoldArrangement(props.cargoHolds, group.holdIndices);
+    const arrangement = findBestHoldArrangement(
+      props.cargoHolds,
+      group.holdIndices,
+    );
     groupInfos.push({ arrangement, group });
     totalSceneWidthSCU += arrangement.groupWidthSCU;
   }
@@ -504,7 +619,7 @@ function tryPlaceOne(
   hg: HoldGrid,
   layout: HoldLayout,
 ): boolean {
-  const { gridX, gridY, gridZ, occupied, holdPosition, hold } = hg;
+  const { gridX, gridY, gridZ, occupied, hold } = hg;
 
   const idx = (x: number, y: number, z: number) =>
     x + y * gridX + z * gridX * gridY;
@@ -516,8 +631,7 @@ function tryPlaceOne(
   ];
 
   for (const orient of orientations) {
-    if (orient.cx > gridX || orient.cy > gridY || orient.cz > gridZ)
-      continue;
+    if (orient.cx > gridX || orient.cy > gridY || orient.cz > gridZ) continue;
 
     for (let gz = 0; gz <= gridZ - orient.cz; gz++) {
       for (let gy = 0; gy <= gridY - orient.cy; gy++) {
@@ -623,13 +737,13 @@ const holdGeometry = computed(() => {
 });
 
 const sceneCenter = computed<[number, number, number]>(() => {
-  const g = holdGeometry.value;
+  const g = previewGeometry.value || holdGeometry.value;
   if (!g) return [0, 0, 0];
   return [0, g.maxY / 2, 0];
 });
 
 const cameraPosition = computed<[number, number, number]>(() => {
-  const g = holdGeometry.value;
+  const g = previewGeometry.value || holdGeometry.value;
   if (!g) return [10, 10, 10];
 
   // Use diagonal of bounding box for distance, with FOV-aware scaling
@@ -653,9 +767,8 @@ const containerEdgeMaterial = (color: string) =>
 const createEdgesGeometry = (dims: [number, number, number]) =>
   new EdgesGeometry(new BoxGeometry(...dims));
 
-
 const gridFadeDistance = computed(() => {
-  const g = holdGeometry.value;
+  const g = previewGeometry.value || holdGeometry.value;
   if (!g) return 20;
   const sceneSize = Math.max(g.totalWidth, g.maxZ);
   return sceneSize + 8 * SCU_UNIT;
@@ -667,7 +780,9 @@ const totalSCU = computed(() => {
 });
 
 const maxContainerSize = computed(() => {
-  return Math.max(...props.cargoHolds.map((h) => h.maxContainerSize?.size || 0));
+  return Math.max(
+    ...props.cargoHolds.map((h) => h.maxContainerSize?.size || 0),
+  );
 });
 
 const containerCounts = computed(() => packResult.value.placed);
@@ -703,45 +818,83 @@ const resetCamera = () => {
 <template>
   <div class="cargo-grid-viewer">
     <div class="cargo-grid-viewer__stats">
-      <div class="cargo-grid-viewer__stat">
-        <span class="cargo-grid-viewer__stat-label">{{ t("labels.cargoGridViewer.capacity") }}</span>
-        <span class="cargo-grid-viewer__stat-value">{{ totalSCU }} SCU</span>
-      </div>
-      <div class="cargo-grid-viewer__stat">
-        <span class="cargo-grid-viewer__stat-label">{{ t("labels.cargoGridViewer.maxContainerSize") }}</span>
-        <span class="cargo-grid-viewer__stat-value">{{ maxContainerSize }} SCU</span>
-      </div>
-      <div class="cargo-grid-viewer__stat">
-        <span class="cargo-grid-viewer__stat-label">{{ t("labels.cargoGridViewer.packed") }}</span>
-        <span class="cargo-grid-viewer__stat-value">{{ packedSCU }} SCU</span>
-      </div>
-      <div
-        v-for="(count, size) in containerCounts"
-        :key="size"
-        class="cargo-grid-viewer__stat"
-      >
-        <span
-          class="cargo-grid-viewer__stat-color"
-          :style="{ backgroundColor: CONTAINER_COLORS[Number(size)] }"
-        />
-        <span class="cargo-grid-viewer__stat-label">{{ size }} SCU</span>
-        <span class="cargo-grid-viewer__stat-value">&times;{{ count }}</span>
-      </div>
-      <template v-if="hasNotPlaced">
-        <div class="cargo-grid-viewer__stat cargo-grid-viewer__stat--warning">
-          <span class="cargo-grid-viewer__stat-label">{{ t("labels.cargoGridViewer.didNotFit") }}</span>
+      <template v-if="isPreviewMode">
+        <div class="cargo-grid-viewer__stat">
+          <span class="cargo-grid-viewer__stat-label">{{
+            t("labels.cargoGridViewer.totalCargo")
+          }}</span>
           <span class="cargo-grid-viewer__stat-value"
-            >{{ notPlacedSCU }} SCU</span
+            >{{ previewTotalSCU }} SCU</span
           >
         </div>
         <div
-          v-for="(count, size) in notPlacedCounts"
-          :key="`np-${size}`"
-          class="cargo-grid-viewer__stat cargo-grid-viewer__stat--warning"
+          v-for="req in containerRequests"
+          :key="`preview-stat-${req.size}`"
+          class="cargo-grid-viewer__stat"
         >
+          <span
+            class="cargo-grid-viewer__stat-color"
+            :style="{ backgroundColor: CONTAINER_COLORS[req.size] }"
+          />
+          <span class="cargo-grid-viewer__stat-label">{{ req.size }} SCU</span>
+          <span class="cargo-grid-viewer__stat-value"
+            >&times;{{ req.quantity }}</span
+          >
+        </div>
+      </template>
+      <template v-else>
+        <div class="cargo-grid-viewer__stat">
+          <span class="cargo-grid-viewer__stat-label">{{
+            t("labels.cargoGridViewer.capacity")
+          }}</span>
+          <span class="cargo-grid-viewer__stat-value">{{ totalSCU }} SCU</span>
+        </div>
+        <div class="cargo-grid-viewer__stat">
+          <span class="cargo-grid-viewer__stat-label">{{
+            t("labels.cargoGridViewer.maxContainerSize")
+          }}</span>
+          <span class="cargo-grid-viewer__stat-value"
+            >{{ maxContainerSize }} SCU</span
+          >
+        </div>
+        <div class="cargo-grid-viewer__stat">
+          <span class="cargo-grid-viewer__stat-label">{{
+            t("labels.cargoGridViewer.packed")
+          }}</span>
+          <span class="cargo-grid-viewer__stat-value">{{ packedSCU }} SCU</span>
+        </div>
+        <div
+          v-for="(count, size) in containerCounts"
+          :key="size"
+          class="cargo-grid-viewer__stat"
+        >
+          <span
+            class="cargo-grid-viewer__stat-color"
+            :style="{ backgroundColor: CONTAINER_COLORS[Number(size)] }"
+          />
           <span class="cargo-grid-viewer__stat-label">{{ size }} SCU</span>
           <span class="cargo-grid-viewer__stat-value">&times;{{ count }}</span>
         </div>
+        <template v-if="hasNotPlaced">
+          <div class="cargo-grid-viewer__stat cargo-grid-viewer__stat--warning">
+            <span class="cargo-grid-viewer__stat-label">{{
+              t("labels.cargoGridViewer.didNotFit")
+            }}</span>
+            <span class="cargo-grid-viewer__stat-value"
+              >{{ notPlacedSCU }} SCU</span
+            >
+          </div>
+          <div
+            v-for="(count, size) in notPlacedCounts"
+            :key="`np-${size}`"
+            class="cargo-grid-viewer__stat cargo-grid-viewer__stat--warning"
+          >
+            <span class="cargo-grid-viewer__stat-label">{{ size }} SCU</span>
+            <span class="cargo-grid-viewer__stat-value"
+              >&times;{{ count }}</span
+            >
+          </div>
+        </template>
       </template>
     </div>
 
@@ -794,47 +947,69 @@ const resetCamera = () => {
           :fade-strength="2"
         />
 
-        <!-- Cargo Hold Groups -->
-        <TresGroup
-          v-for="group in groupLayouts"
-          :key="`group-${group.key}-${packVersion}`"
-          :position="group.position"
-        >
-          <!-- Individual holds within group -->
+        <!-- Preview mode: containers without holds -->
+        <template v-if="isPreviewMode">
           <TresGroup
-            v-for="layout in group.holds"
-            :key="`hold-${layout.holdIndex}`"
-            :position="layout.position"
+            v-for="(container, cIdx) in previewContainers"
+            :key="`preview-${cIdx}`"
           >
-            <!-- Hold wireframe outline -->
-            <TresLineSegments
-              :geometry="createEdgesGeometry(layout.dimensions)"
-              :material="holdEdgeMaterial"
-            />
-
-            <!-- Containers inside hold -->
-            <TresGroup
-              v-for="(container, cIdx) in layout.containers"
-              :key="`c-${layout.holdIndex}-${cIdx}`"
-            >
-              <TresMesh
-                :position="container.position"
-              >
-                <TresBoxGeometry :args="container.dimensions" />
-                <TresMeshStandardMaterial
-                  :color="container.color"
-                  :transparent="true"
-                  :opacity="0.6"
-                />
-              </TresMesh>
-              <TresLineSegments
-                :position="container.position"
-                :geometry="createEdgesGeometry(container.dimensions)"
-                :material="containerEdgeMaterial(container.color)"
+            <TresMesh :position="container.position">
+              <TresBoxGeometry :args="container.dimensions" />
+              <TresMeshStandardMaterial
+                :color="container.color"
+                :transparent="true"
+                :opacity="0.6"
               />
+            </TresMesh>
+            <TresLineSegments
+              :position="container.position"
+              :geometry="createEdgesGeometry(container.dimensions)"
+              :material="containerEdgeMaterial(container.color)"
+            />
+          </TresGroup>
+        </template>
+
+        <!-- Cargo Hold Groups -->
+        <template v-else>
+          <TresGroup
+            v-for="group in groupLayouts"
+            :key="`group-${group.key}-${packVersion}`"
+            :position="group.position"
+          >
+            <!-- Individual holds within group -->
+            <TresGroup
+              v-for="layout in group.holds"
+              :key="`hold-${layout.holdIndex}`"
+              :position="layout.position"
+            >
+              <!-- Hold wireframe outline -->
+              <TresLineSegments
+                :geometry="createEdgesGeometry(layout.dimensions)"
+                :material="holdEdgeMaterial"
+              />
+
+              <!-- Containers inside hold -->
+              <TresGroup
+                v-for="(container, cIdx) in layout.containers"
+                :key="`c-${layout.holdIndex}-${cIdx}`"
+              >
+                <TresMesh :position="container.position">
+                  <TresBoxGeometry :args="container.dimensions" />
+                  <TresMeshStandardMaterial
+                    :color="container.color"
+                    :transparent="true"
+                    :opacity="0.6"
+                  />
+                </TresMesh>
+                <TresLineSegments
+                  :position="container.position"
+                  :geometry="createEdgesGeometry(container.dimensions)"
+                  :material="containerEdgeMaterial(container.color)"
+                />
+              </TresGroup>
             </TresGroup>
           </TresGroup>
-        </TresGroup>
+        </template>
       </TresCanvas>
     </div>
   </div>

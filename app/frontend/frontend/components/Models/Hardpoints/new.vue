@@ -25,7 +25,10 @@ type Props = {
 
 const props = defineProps<Props>();
 
-provide("modelSlug", computed(() => props.model.slug));
+provide(
+  "modelSlug",
+  computed(() => props.model.slug),
+);
 
 const { t } = useI18n();
 
@@ -59,8 +62,8 @@ watch(
 
 const source = ref(
   props.model.scIdentifier
-    ? HardpointSourceEnum.game_files
-    : HardpointSourceEnum.ship_matrix,
+    ? HardpointSourceEnum.GAME_FILES
+    : HardpointSourceEnum.SHIP_MATRIX,
 );
 
 const modelHardpointsQueryParams = computed(() => {
@@ -103,20 +106,20 @@ const {
       <div class="d-flex justify-content-end">
         <BtnGroup>
           <Btn
-            :active="source === HardpointSourceEnum.game_files"
+            :active="source === HardpointSourceEnum.GAME_FILES"
             :disabled="!model.scIdentifier"
-            @click="source = HardpointSourceEnum.game_files"
+            @click="source = HardpointSourceEnum.GAME_FILES"
           >
             {{
-              t(`labels.hardpoint.sources.${HardpointSourceEnum.game_files}`)
+              t(`labels.hardpoint.sources.${HardpointSourceEnum.GAME_FILES}`)
             }}
           </Btn>
           <Btn
-            :active="source === HardpointSourceEnum.ship_matrix"
-            @click="source = HardpointSourceEnum.ship_matrix"
+            :active="source === HardpointSourceEnum.SHIP_MATRIX"
+            @click="source = HardpointSourceEnum.SHIP_MATRIX"
           >
             {{
-              t(`labels.hardpoint.sources.${HardpointSourceEnum.ship_matrix}`)
+              t(`labels.hardpoint.sources.${HardpointSourceEnum.SHIP_MATRIX}`)
             }}
           </Btn>
         </BtnGroup>
@@ -125,9 +128,9 @@ const {
         <div class="col-12 col-md-6 col-lg-4">
           <HardpointGroup
             v-for="group in [
-              HardpointGroupEnum.avionic,
-              HardpointGroupEnum.system,
-              HardpointGroupEnum.other,
+              HardpointGroupEnum.AVIONIC,
+              HardpointGroupEnum.SYSTEM,
+              HardpointGroupEnum.OTHER,
             ]"
             :key="group"
             :group="group"
@@ -137,8 +140,8 @@ const {
         <div class="col-12 col-md-6 col-lg-4">
           <HardpointGroup
             v-for="group in [
-              HardpointGroupEnum.propulsion,
-              HardpointGroupEnum.thruster,
+              HardpointGroupEnum.PROPULSION,
+              HardpointGroupEnum.THRUSTER,
             ]"
             :key="group"
             :group="group"
@@ -148,15 +151,15 @@ const {
         <div class="col-12 col-md-6 col-lg-4">
           <HardpointGroup
             v-for="group in [
-              HardpointGroupEnum.weapon,
-              HardpointGroupEnum.auxiliary,
+              HardpointGroupEnum.WEAPON,
+              HardpointGroupEnum.AUXILIARY,
             ]"
             :key="group"
             :group="group"
             :hardpoints="hardpointsForGroup(group)"
           />
           <HardpointGroup
-            v-for="group in [HardpointGroupEnum.seat]"
+            v-for="group in [HardpointGroupEnum.SEAT]"
             :key="group"
             :group="group"
             :hardpoints="hardpointsForGroup(group)"

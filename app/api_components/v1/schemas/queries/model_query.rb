@@ -39,6 +39,9 @@ module V1
             sizeIn: {type: :array, items: {type: :string}},
             willItFit: {type: :string, format: :uuid},
             withCargo: {type: :boolean},
+            withCargoGrids: {type: :boolean},
+            inHangar: {type: :boolean},
+            containerFit: {type: :object, additionalProperties: {type: :integer}},
             sorts: {anyOf: [{
               type: :array, items: {"$ref": "#/components/schemas/ModelSortEnum"}
             }, {

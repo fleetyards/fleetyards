@@ -9,7 +9,8 @@ module Shared
 
           schema({
             type: :string,
-            enum: ::Import.aasm.states.map(&:name)
+            enum: ::Import.aasm.states.map(&:name),
+            "x-enumNames": ::Import.aasm.states.map { |s| transform_enum_key(s.name) }
           })
         end
       end

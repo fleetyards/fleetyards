@@ -85,7 +85,7 @@ const getFuelRate = (component: Component): number | undefined => {
 };
 
 const travelTime = (quantumDrive: Component) => {
-  if (quantumDrive.type !== ComponentTypeEnum.QuantumDrive) {
+  if (quantumDrive.type !== ComponentTypeEnum.QUANTUM_DRIVE) {
     return undefined;
   }
 

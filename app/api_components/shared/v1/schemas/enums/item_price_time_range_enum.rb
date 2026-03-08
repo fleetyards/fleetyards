@@ -9,7 +9,8 @@ module Shared
 
           schema({
             type: :string,
-            enum: ItemPrice.time_ranges.keys
+            enum: ItemPrice.time_ranges.keys,
+            "x-enumNames": ItemPrice.time_ranges.keys.map { |v| transform_enum_key(v) }
           })
         end
       end

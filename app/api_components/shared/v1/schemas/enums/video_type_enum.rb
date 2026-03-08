@@ -9,7 +9,8 @@ module Shared
 
           schema({
             type: :string,
-            enum: ::Video.video_types.keys
+            enum: ::Video.video_types.keys,
+            "x-enumNames": ::Video.video_types.keys.map { |v| transform_enum_key(v) }
           })
         end
       end

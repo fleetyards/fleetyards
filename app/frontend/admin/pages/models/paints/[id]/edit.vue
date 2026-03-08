@@ -11,7 +11,7 @@ import {
   type ModelPaint,
   type ModelPaintInput,
   useUpdateModelPaint,
-  getModelPaintsQueryKey,
+  getListModelPaintsQueryKey,
   getModelPaintQueryKey,
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
@@ -73,7 +73,7 @@ const updateMutation = useUpdateModelPaint({
   mutation: {
     onSettled: async () => {
       await queryClient.invalidateQueries({
-        queryKey: getModelPaintsQueryKey(),
+        queryKey: getListModelPaintsQueryKey(),
       });
       await queryClient.invalidateQueries({
         queryKey: getModelPaintQueryKey(props.modelPaint.id),

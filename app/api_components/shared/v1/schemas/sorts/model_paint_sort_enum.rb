@@ -9,7 +9,8 @@ module Shared
 
           schema({
             type: :string,
-            enum: ModelPaint::ALLOWED_SORTING_PARAMS
+            enum: ModelPaint::ALLOWED_SORTING_PARAMS,
+            "x-enumNames": ModelPaint::ALLOWED_SORTING_PARAMS.map { |v| transform_enum_key(v) }
           })
         end
       end

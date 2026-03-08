@@ -7,9 +7,12 @@ module Shared
         class ThrusterClassEnum
           include Rswag::SchemaComponents::Component
 
+          TYPES = %w[main retro vtol mav].freeze
+
           schema({
             type: :string,
-            enum: %w[main retro vtol mav]
+            enum: TYPES,
+            "x-enumNames": TYPES.map { |v| transform_enum_key(v) }
           })
         end
       end

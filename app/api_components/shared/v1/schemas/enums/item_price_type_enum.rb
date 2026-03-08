@@ -9,7 +9,8 @@ module Shared
 
           schema({
             type: :string,
-            enum: ::ItemPrice.price_types.keys
+            enum: ::ItemPrice.price_types.keys,
+            "x-enumNames": ::ItemPrice.price_types.keys.map { |v| transform_enum_key(v) }
           })
         end
       end

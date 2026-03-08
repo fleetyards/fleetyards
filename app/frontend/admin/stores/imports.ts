@@ -26,7 +26,7 @@ export const useImportsStore = defineStore("adminImports", {
         const typeArray = Array.isArray(types) ? types : [types];
         return Object.values(state.imports).some((imp) => {
           if (!typeArray.includes(imp.type)) return false;
-          if (imp.status !== ImportStatusEnum.started) return false;
+          if (imp.status !== ImportStatusEnum.STARTED) return false;
 
           if (inputMatch) {
             const impInput = imp.input as unknown as ImportInput | undefined;
@@ -42,8 +42,8 @@ export const useImportsStore = defineStore("adminImports", {
     activeImports: (state): Import[] =>
       Object.values(state.imports).filter(
         (imp) =>
-          imp.status === ImportStatusEnum.created ||
-          imp.status === ImportStatusEnum.started,
+          imp.status === ImportStatusEnum.CREATED ||
+          imp.status === ImportStatusEnum.STARTED,
       ),
   },
   actions: {
@@ -51,8 +51,8 @@ export const useImportsStore = defineStore("adminImports", {
       this.imports[importData.id] = importData;
 
       if (
-        importData.status === ImportStatusEnum.finished ||
-        importData.status === ImportStatusEnum.failed
+        importData.status === ImportStatusEnum.FINISHED ||
+        importData.status === ImportStatusEnum.FAILED
       ) {
         setTimeout(() => {
           delete this.imports[importData.id];

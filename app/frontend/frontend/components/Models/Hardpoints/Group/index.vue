@@ -37,8 +37,8 @@ const categories = computed(() => {
   Object.keys(items).forEach((category) => {
     if (
       [
-        `${HardpointCategoryEnum.controller}`,
-        `${HardpointCategoryEnum.unknown}`,
+        `${HardpointCategoryEnum.CONTROLLER}`,
+        `${HardpointCategoryEnum.UNKNOWN}`,
       ].includes(category as HardpointCategoryEnum)
     ) {
       return;

@@ -69,7 +69,8 @@ const packagesQueryKey = computed(() =>
 
 const { perPage, page, updatePerPage } = usePagination(packagesQueryKey);
 
-const { data, isLoading } = useListModelModulePackagesQuery(packagesQueryParams);
+const { data, isLoading } =
+  useListModelModulePackagesQuery(packagesQueryParams);
 
 const invalidatePackages = async () => {
   await queryClient.invalidateQueries({

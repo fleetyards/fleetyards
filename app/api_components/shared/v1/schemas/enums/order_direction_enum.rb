@@ -7,9 +7,12 @@ module Shared
         class OrderDirectionEnum
           include Rswag::SchemaComponents::Component
 
+          DIRECTIONS = %w[asc desc].freeze
+
           schema({
             type: :string,
-            enum: ["asc", "desc"]
+            enum: DIRECTIONS,
+            "x-enumNames": DIRECTIONS.map { |v| transform_enum_key(v) }
           })
         end
       end

@@ -81,49 +81,49 @@ const icons = {
   <div class="hardpoint-category">
     <div class="hardpoint-category__label">
       <span
-        v-if="category === HardpointCategoryEnum.cargogrid"
+        v-if="category === HardpointCategoryEnum.CARGOGRID"
         class="hardpoint-category__icon"
       >
         <i class="fad fa-boxes fa-lg" />
       </span>
       <span
-        v-else-if="category === HardpointCategoryEnum.seat"
+        v-else-if="category === HardpointCategoryEnum.SEAT"
         class="hardpoint-category__icon"
       >
         <i class="fad fa-person-seat-reclined fa-lg" />
       </span>
       <span
-        v-else-if="category === HardpointCategoryEnum.module"
+        v-else-if="category === HardpointCategoryEnum.MODULE"
         class="hardpoint-category__icon"
       >
         <i class="fad fa-puzzle fa-lg" />
       </span>
       <span
-        v-else-if="category === HardpointCategoryEnum.salvagefillerstation"
+        v-else-if="category === HardpointCategoryEnum.SALVAGEFILLERSTATION"
         class="hardpoint-category__icon"
       >
         <i class="fad fa-bin-recycle fa-lg" />
       </span>
       <span
-        v-else-if="category === HardpointCategoryEnum.armor"
+        v-else-if="category === HardpointCategoryEnum.ARMOR"
         class="hardpoint-category__icon"
       >
         <i class="fad fa-shield-halved fa-lg" />
       </span>
       <span
-        v-else-if="category === HardpointCategoryEnum.countermeasures"
+        v-else-if="category === HardpointCategoryEnum.COUNTERMEASURES"
         class="hardpoint-category__icon"
       >
         <i class="fad fa-shield-quartered fa-lg" />
       </span>
       <span
-        v-else-if="category === HardpointCategoryEnum.lifesupport"
+        v-else-if="category === HardpointCategoryEnum.LIFESUPPORT"
         class="hardpoint-category__icon"
       >
         <i class="fad fa-star-of-life fa-lg" />
       </span>
       <span
-        v-else-if="category === HardpointCategoryEnum.relay"
+        v-else-if="category === HardpointCategoryEnum.RELAY"
         class="hardpoint-category__icon"
       >
         <i class="fad fa-transformer-bolt fa-lg" />
@@ -136,7 +136,7 @@ const icons = {
       />
       {{ t(`labels.hardpoint.categories.${category}`) }}
       <Btn
-        v-if="category === HardpointCategoryEnum.cargogrid && modelSlug"
+        v-if="category === HardpointCategoryEnum.CARGOGRID && modelSlug"
         :to="cargoGridsRoute"
         :size="BtnSizesEnum.SMALL"
         inline

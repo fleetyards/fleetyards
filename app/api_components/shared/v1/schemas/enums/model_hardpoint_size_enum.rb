@@ -9,7 +9,8 @@ module Shared
 
           schema({
             type: :string,
-            enum: ::ModelHardpoint.sizes.keys
+            enum: ::ModelHardpoint.sizes.keys,
+            "x-enumNames": ::ModelHardpoint.sizes.keys.map { |v| transform_enum_key(v) }
           })
         end
       end

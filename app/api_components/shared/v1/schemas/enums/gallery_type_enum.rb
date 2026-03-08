@@ -7,9 +7,12 @@ module Shared
         class GalleryTypeEnum
           include Rswag::SchemaComponents::Component
 
+          TYPES = %w[Model Station Album].freeze
+
           schema({
             type: :string,
-            enum: %w[Model Station Album]
+            enum: TYPES,
+            "x-enumNames": TYPES.map { |v| transform_enum_key(v) }
           })
         end
       end

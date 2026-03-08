@@ -19,6 +19,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import {
   useModel as useModelQuery,
   models as fetchModels,
+  ModelProductionStatusEnum,
   type Model,
   type ModelQuery,
   type Models,
@@ -29,11 +30,16 @@ import {
 } from "@/shared/components/base/FormInput/types";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import type { ContainerRequest } from "@/frontend/components/CargoGridViewer/index.vue";
+import { useSessionStore } from "@/frontend/stores/session";
 
 const { t } = useI18n();
 
 const route = useRoute();
 const router = useRouter();
+
+const sessionStore = useSessionStore();
+
+const hangarOnly = ref(false);
 
 const CONTAINER_SIZES = [1, 2, 4, 8, 16, 24, 32] as const;
 
@@ -74,9 +80,12 @@ const clearContainers = () => {
   }
 };
 
-// Model filter that only shows ships with cargo
+// Model filter that only shows flight-ready ships with cargo grids
 const fetchCargoModels = async (params: FilterGroupParams<Model>) => {
-  const q: ModelQuery = { withCargo: true };
+  const q: ModelQuery = {
+    withCargoGrids: true,
+    productionStatusIn: [ModelProductionStatusEnum.FLIGHT_READY],
+  };
 
   if (params.search) {
     q.nameCont = params.search;
@@ -84,6 +93,21 @@ const fetchCargoModels = async (params: FilterGroupParams<Model>) => {
 
   if (params.missing && !params.search) {
     q.slugEq = params.missing as string;
+  }
+
+  if (hangarOnly.value) {
+    q.inHangar = true;
+  }
+
+  if (hasContainerRequests.value) {
+    const fit: Record<string, number> = {};
+    for (const size of CONTAINER_SIZES) {
+      const qty = Number(containerRequests.value[size]);
+      if (qty > 0) {
+        fit[String(size)] = qty;
+      }
+    }
+    q.containerFit = fit;
   }
 
   return fetchModels({
@@ -114,10 +138,8 @@ watch(
   (data) => {
     if (data) {
       selectedModel.value = data;
-      if (data.cargoHolds?.length) {
+      if (data.cargoHolds?.length && !hasContainerRequests.value) {
         fillGreedy();
-      } else {
-        clearContainers();
       }
     }
   },
@@ -125,12 +147,36 @@ watch(
 );
 
 watch(selectedModel, (model) => {
-  if (model?.cargoHolds?.length) {
+  if (model?.cargoHolds?.length && !hasContainerRequests.value) {
     fillGreedy();
-  } else {
-    clearContainers();
   }
 });
+
+const containerFilterVersion = ref(0);
+
+const filterKey = computed(
+  () => `cargo-grid-model-${hangarOnly.value}-${containerFilterVersion.value}`,
+);
+
+const applyContainerFilter = () => {
+  containerFilterVersion.value++;
+  selectedSlug.value = undefined;
+  selectedModel.value = undefined;
+
+  const query = { ...route.query };
+  delete query.ship;
+  void router.replace({ query });
+};
+
+const toggleHangarOnly = () => {
+  hangarOnly.value = !hangarOnly.value;
+  selectedSlug.value = undefined;
+  selectedModel.value = undefined;
+
+  const query = { ...route.query };
+  delete query.ship;
+  void router.replace({ query });
+};
 
 const onModelSelect = (value: ValueType<Model> | undefined) => {
   selectedSlug.value = (value as string) || undefined;
@@ -144,7 +190,7 @@ const onModelSelect = (value: ValueType<Model> | undefined) => {
   } else {
     delete query.ship;
   }
-  router.replace({ query });
+  void router.replace({ query });
 };
 </script>
 
@@ -154,6 +200,7 @@ const onModelSelect = (value: ValueType<Model> | undefined) => {
   <div class="row">
     <div class="col-12 col-md-4">
       <FilterGroup
+        :key="filterKey"
         :model-value="selectedSlug"
         :label="t('labels.selectModel')"
         :search-label="t('labels.findModel')"
@@ -166,42 +213,62 @@ const onModelSelect = (value: ValueType<Model> | undefined) => {
         :no-label="false"
         @update:model-value="onModelSelect"
       />
+      <Btn
+        v-if="sessionStore.isAuthenticated"
+        :size="BtnSizesEnum.SMALL"
+        :active="hangarOnly"
+        inline
+        @click="toggleHangarOnly"
+      >
+        {{ t("labels.cargoGridViewer.myHangar") }}
+      </Btn>
     </div>
-    <template v-if="selectedModel?.cargoHolds?.length">
-      <div class="col-12 col-md-8">
-        <div class="container-fields">
-          <div
-            v-for="size in CONTAINER_SIZES"
-            :key="size"
-            style="width: 5rem; flex-shrink: 0"
-            class="container-field"
+    <div class="col-12 col-md-8">
+      <div class="container-fields">
+        <div
+          v-for="size in CONTAINER_SIZES"
+          :key="size"
+          style="width: 5rem; flex-shrink: 0"
+          class="container-field"
+        >
+          <FormInput
+            v-model.number="containerRequests[size]"
+            :name="`container-${size}`"
+            :label="`${size} SCU`"
+            :type="InputTypesEnum.NUMBER"
+            :min="0"
+            :step="1"
+            :alignment="InputAlignmentsEnum.RIGHT"
+          />
+        </div>
+        <div class="container-fields__actions">
+          <Btn
+            v-if="hasContainerRequests"
+            :size="BtnSizesEnum.SMALL"
+            inline
+            @click="applyContainerFilter"
           >
-            <FormInput
-              v-model.number="containerRequests[size]"
-              :name="`container-${size}`"
-              :label="`${size} SCU`"
-              :type="InputTypesEnum.NUMBER"
-              :min="0"
-              :step="1"
-              :alignment="InputAlignmentsEnum.RIGHT"
-            />
-          </div>
-          <div class="container-fields__actions">
-            <Btn
-              v-if="hasContainerRequests"
-              :size="BtnSizesEnum.SMALL"
-              inline
-              @click="clearContainers"
-            >
-              {{ t("actions.clear") }}
-            </Btn>
-            <Btn :size="BtnSizesEnum.SMALL" inline @click="fillGreedy">
-              {{ t("actions.reset") }}
-            </Btn>
-          </div>
+            {{ t("labels.cargoGridViewer.filterShips") }}
+          </Btn>
+          <Btn
+            v-if="hasContainerRequests"
+            :size="BtnSizesEnum.SMALL"
+            inline
+            @click="clearContainers"
+          >
+            {{ t("actions.clear") }}
+          </Btn>
+          <Btn
+            v-if="selectedModel?.cargoHolds?.length"
+            :size="BtnSizesEnum.SMALL"
+            inline
+            @click="fillGreedy"
+          >
+            {{ t("actions.reset") }}
+          </Btn>
         </div>
       </div>
-    </template>
+    </div>
   </div>
 
   <template v-if="selectedModel">
@@ -218,6 +285,16 @@ const onModelSelect = (value: ValueType<Model> | undefined) => {
     <div v-else class="row mt-3">
       <div class="col-12">
         <p>{{ t("messages.cargoGridViewer.noCargoHolds") }}</p>
+      </div>
+    </div>
+  </template>
+  <template v-else-if="hasContainerRequests">
+    <div class="row">
+      <div class="col-12">
+        <CargoGridViewer
+          :cargo-holds="[]"
+          :container-requests="requestedContainers"
+        />
       </div>
     </div>
   </template>

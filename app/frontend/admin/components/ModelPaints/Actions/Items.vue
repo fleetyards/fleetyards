@@ -8,7 +8,7 @@ export default {
 import {
   type ModelPaint,
   useDestroyModelPaint,
-  getModelPaintsQueryKey,
+  getListModelPaintsQueryKey,
 } from "@/services/fyAdminApi";
 import {
   BtnSizesEnum,
@@ -33,7 +33,7 @@ const queryClient = useQueryClient();
 
 const invalidateModelPaints = async () => {
   await queryClient.invalidateQueries({
-    queryKey: getModelPaintsQueryKey(),
+    queryKey: getListModelPaintsQueryKey(),
   });
 };
 

@@ -23,32 +23,32 @@ type VideoList = {
 const videos = computed<VideoList>(() => ({
   add: {
     videoId: "eWS8korWw58",
-    type: VideoTypeEnum.youtube,
+    type: VideoTypeEnum.YOUTUBE,
     url: "https://www.youtube-nocookie.com/embed/eWS8korWw58",
   },
   edit: {
     videoId: "6IR251NRb54",
-    type: VideoTypeEnum.youtube,
+    type: VideoTypeEnum.YOUTUBE,
     url: "https://www.youtube-nocookie.com/embed/6IR251NRb54",
   },
   wishlist: {
     videoId: "eJ5wSE2Yy6w",
-    type: VideoTypeEnum.youtube,
+    type: VideoTypeEnum.YOUTUBE,
     url: "https://www.youtube-nocookie.com/embed/eJ5wSE2Yy6w",
   },
   public: {
     videoId: "_FW1OrErciA",
-    type: VideoTypeEnum.youtube,
+    type: VideoTypeEnum.YOUTUBE,
     url: "https://www.youtube-nocookie.com/embed/_FW1OrErciA",
   },
   fleetchart: {
     videoId: "EMgyE6oKyd0",
-    type: VideoTypeEnum.youtube,
+    type: VideoTypeEnum.YOUTUBE,
     url: "https://www.youtube-nocookie.com/embed/EMgyE6oKyd0",
   },
   groups: {
     videoId: "1-ssNQRjVIA",
-    type: VideoTypeEnum.youtube,
+    type: VideoTypeEnum.YOUTUBE,
     url: "https://www.youtube-nocookie.com/embed/1-ssNQRjVIA",
   },
 }));

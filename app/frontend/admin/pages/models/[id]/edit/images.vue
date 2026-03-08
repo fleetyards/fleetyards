@@ -51,7 +51,7 @@ const imagesQueryParams = computed(() => ({
   perPage: perPage.value,
   q: {
     galleryIdEq: props.model.id,
-    galleryTypeEq: GalleryTypeEnum.Model,
+    galleryTypeEq: GalleryTypeEnum.MODEL,
   },
 }));
 
@@ -133,7 +133,7 @@ const handleUploadDone = async (files: FileUpload[]) => {
     await uploadMutation.mutateAsync({
       data: {
         galleryId: props.model.id,
-        galleryType: GalleryTypeEnum.Model,
+        galleryType: GalleryTypeEnum.MODEL,
         file: blobId,
       },
     });

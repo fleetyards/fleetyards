@@ -50,9 +50,7 @@ const docksQueryParams = computed(() => ({
   },
 }));
 
-const docksQueryKey = computed(() =>
-  getDocksQueryKey(docksQueryParams.value),
-);
+const docksQueryKey = computed(() => getDocksQueryKey(docksQueryParams.value));
 
 const { perPage, page, updatePerPage } = usePagination(docksQueryKey);
 

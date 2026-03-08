@@ -9,7 +9,8 @@ module Shared
 
           schema({
             type: :string,
-            enum: FleetMembership::ALLOWED_SORTING_PARAMS
+            enum: FleetMembership::ALLOWED_SORTING_PARAMS,
+            "x-enumNames": FleetMembership::ALLOWED_SORTING_PARAMS.map { |v| transform_enum_key(v) }
           })
         end
       end

@@ -23,6 +23,7 @@ import {
   ModelHardpointCategoryEnum,
   ModelHardpointSubCategoryEnum,
   HardpointSourceEnum,
+  type FilterOption,
 } from "@/services/fyAdminApi";
 import { useQueryClient } from "@tanstack/vue-query";
 import { usePagination } from "@/shared/composables/usePagination";
@@ -49,7 +50,7 @@ const editableList = ref<{
 } | null>(null);
 
 const expandedId = ref<string | null>(null);
-const sourceFilter = ref<string>(HardpointSourceEnum.game_files);
+const sourceFilter = ref<string>(HardpointSourceEnum.GAME_FILES);
 
 const toggleExpand = (id: string) => {
   expandedId.value = expandedId.value === id ? null : id;

@@ -40,11 +40,11 @@ import { useImportLoading } from "@/admin/composables/useImportLoading";
 import { ImportTypeEnum } from "@/services/fyAdminApi";
 
 const { isImporting: isReloadingMatrix } = useImportLoading(
-  ImportTypeEnum["Imports::ModelsImport"],
+  ImportTypeEnum.IMPORTS_MODELS_IMPORT,
 );
 
 const { isImporting: isReloadingScData } = useImportLoading(
-  ImportTypeEnum["Imports::ScData::ModelsImport"],
+  ImportTypeEnum.IMPORTS_SC_DATA_MODELS_IMPORT,
 );
 
 const route = useRoute();

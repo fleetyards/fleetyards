@@ -7,9 +7,12 @@ module Shared
         class ItemPriceItemTypeEnum
           include Rswag::SchemaComponents::Component
 
+          TYPES = %w[Model ModelModule ModelPaint Component].freeze
+
           schema({
             type: :string,
-            enum: ["Model", "ModelModule", "ModelPaint", "Component"]
+            enum: TYPES,
+            "x-enumNames": TYPES.map { |v| transform_enum_key(v) }
           })
         end
       end

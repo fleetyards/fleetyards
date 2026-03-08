@@ -33,7 +33,7 @@ type HoldGroupEntry = {
 };
 
 const cargoHoldGroups = computed(() => {
-  if (props.category !== HardpointCategoryEnum.cargogrid) return null;
+  if (props.category !== HardpointCategoryEnum.CARGOGRID) return null;
 
   const byGroupKey = groupBy<Hardpoint>(props.hardpoints, "groupKey");
   const entries: HoldGroupEntry[] = Object.entries(byGroupKey).map(
@@ -48,21 +48,21 @@ const cargoHoldGroups = computed(() => {
 });
 
 const itemComponent = computed(() => {
-  if (props.category === HardpointCategoryEnum.cargogrid) {
+  if (props.category === HardpointCategoryEnum.CARGOGRID) {
     return HardpointCargoItem;
   }
-  if (props.category === HardpointCategoryEnum.fueltanks) {
+  if (props.category === HardpointCategoryEnum.FUELTANKS) {
     return HardpointFuelItem;
   }
   if (
-    props.category === HardpointCategoryEnum.main_thrusters ||
-    props.category === HardpointCategoryEnum.maneuvering_thrusters ||
-    props.category === HardpointCategoryEnum.retro_thrusters ||
-    props.category === HardpointCategoryEnum.vtol_thrusters
+    props.category === HardpointCategoryEnum.MAIN_THRUSTERS ||
+    props.category === HardpointCategoryEnum.MANEUVERING_THRUSTERS ||
+    props.category === HardpointCategoryEnum.RETRO_THRUSTERS ||
+    props.category === HardpointCategoryEnum.VTOL_THRUSTERS
   ) {
     return HardpointThrusterItem;
   }
-  if (props.category === HardpointCategoryEnum.seat) {
+  if (props.category === HardpointCategoryEnum.SEAT) {
     return HardpointSeatItem;
   }
   return HardpointBaseItem;

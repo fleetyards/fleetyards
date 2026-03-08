@@ -9,7 +9,8 @@ module Shared
 
           schema({
             type: :string,
-            enum: ::FleetMembership.aasm.states.map(&:name)
+            enum: ::FleetMembership.aasm.states.map(&:name),
+            "x-enumNames": ::FleetMembership.aasm.states.map { |s| transform_enum_key(s.name) }
           })
         end
       end

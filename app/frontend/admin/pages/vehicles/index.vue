@@ -17,8 +17,8 @@ import FilterForm from "@/admin/components/Vehicles/FilterForm/index.vue";
 import { useVehicleFilters } from "@/admin/composables/useVehicleFilters";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import { Vehicle } from "@/services/fyApi";
 import {
+  type Vehicle,
   useVehicles as useVehiclesQuery,
   getVehiclesQueryKey,
 } from "@/services/fyAdminApi";
