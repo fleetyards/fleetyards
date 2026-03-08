@@ -20,7 +20,7 @@ RSpec.describe "admin/api/v1/model_upgrades", type: :request, swagger_doc: "admi
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :id, in: :path, type: :string, format: :uuid, required: true
+      parameter name: :id, in: :path, required: true, schema: {type: :string, format: :uuid}
       parameter name: :input, in: :body, schema: {
         type: :object,
         properties: {
@@ -65,7 +65,7 @@ RSpec.describe "admin/api/v1/model_upgrades", type: :request, swagger_doc: "admi
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :id, in: :path, type: :string, format: :uuid, required: true
+      parameter name: :id, in: :path, required: true, schema: {type: :string, format: :uuid}
       parameter name: :input, in: :body, schema: {
         type: :object,
         properties: {
