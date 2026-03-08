@@ -2141,10 +2141,10 @@ paths:
       parameters:
       - name: id
         in: path
-        format: uuid
         required: true
         schema:
           type: string
+          format: uuid
       responses:
         '200':
           description: successful
@@ -2185,10 +2185,10 @@ paths:
       parameters:
       - name: id
         in: path
-        format: uuid
         required: true
         schema:
           type: string
+          format: uuid
       responses:
         '200':
           description: successful
@@ -2571,10 +2571,10 @@ paths:
       parameters:
       - name: id
         in: path
-        format: uuid
         required: true
         schema:
           type: string
+          format: uuid
       responses:
         '200':
           description: successful
@@ -2615,10 +2615,10 @@ paths:
       parameters:
       - name: id
         in: path
-        format: uuid
         required: true
         schema:
           type: string
+          format: uuid
       responses:
         '200':
           description: successful
@@ -3757,7 +3757,6 @@ components:
           "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
-      - items
       - meta
       title: BaseList
     CargoHold:
@@ -3974,7 +3973,7 @@ components:
           type: number
       additionalProperties: false
       required:
-      - capacity
+      - thrustCapacity
       - thrusterType
       - fuelBurnRatePer10KNewton
       title: ComponentThruster
@@ -3989,8 +3988,8 @@ components:
             "$ref": "#/components/schemas/Component"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: Components
     Dock:
       type: object
@@ -5440,8 +5439,8 @@ components:
             "$ref": "#/components/schemas/AdminUser"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: AdminUsers
     Docks:
       type: object
@@ -5454,8 +5453,8 @@ components:
             "$ref": "#/components/schemas/Dock"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: Docks
     Fleet:
       type: object
@@ -5521,8 +5520,8 @@ components:
             "$ref": "#/components/schemas/Fleet"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: Fleets
     HangarGroup:
       type: object
@@ -5635,8 +5634,8 @@ components:
             "$ref": "#/components/schemas/Image"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: Images
     Import:
       type: object
@@ -5693,8 +5692,8 @@ components:
             "$ref": "#/components/schemas/Import"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: Imports
     AdminUserInput:
       type: object
@@ -6449,8 +6448,8 @@ components:
             "$ref": "#/components/schemas/ItemPrice"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: ItemPrices
     Manufacturer:
       type: object
@@ -6495,8 +6494,8 @@ components:
             "$ref": "#/components/schemas/Manufacturer"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: Manufacturers
     ModelHardpoint:
       type: object
@@ -6599,8 +6598,8 @@ components:
             "$ref": "#/components/schemas/ModelHardpointLoadout"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: ModelHardpointLoadouts
     ModelHardpoints:
       type: object
@@ -6613,8 +6612,8 @@ components:
             "$ref": "#/components/schemas/ModelHardpoint"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: ModelHardpoints
     ModelLoaner:
       type: object
@@ -6684,8 +6683,8 @@ components:
             "$ref": "#/components/schemas/ModelLoaner"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: ModelLoaners
     Model:
       type: object
@@ -7244,8 +7243,8 @@ components:
             "$ref": "#/components/schemas/Model"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: Models
     ModelModulePackage:
       type: object
@@ -7391,8 +7390,8 @@ components:
             "$ref": "#/components/schemas/ModelModulePackage"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: ModelModulePackages
     ModelModule:
       type: object
@@ -7483,8 +7482,8 @@ components:
             "$ref": "#/components/schemas/ModelModule"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: ModelModules
     ModelPaint:
       type: object
@@ -7688,8 +7687,8 @@ components:
             "$ref": "#/components/schemas/ModelPaint"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: ModelPaints
     ModelUpgrade:
       type: object
@@ -7756,8 +7755,8 @@ components:
             "$ref": "#/components/schemas/ModelUpgrade"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: ModelUpgrades
     ComponentQuery:
       type: object
@@ -8286,8 +8285,8 @@ components:
             "$ref": "#/components/schemas/User"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: Users
     Vehicle:
       type: object
@@ -8390,8 +8389,8 @@ components:
             "$ref": "#/components/schemas/Vehicle"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: Vehicles
     Video:
       type: object
@@ -8432,8 +8431,8 @@ components:
             "$ref": "#/components/schemas/Video"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: Videos
   securitySchemes:
     BearerAuth:

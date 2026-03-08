@@ -4021,7 +4021,6 @@ components:
           "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
-      - items
       - meta
       title: BaseList
     CargoHold:
@@ -4238,7 +4237,7 @@ components:
           type: number
       additionalProperties: false
       required:
-      - capacity
+      - thrustCapacity
       - thrusterType
       - fuelBurnRatePer10KNewton
       title: ComponentThruster
@@ -4253,8 +4252,8 @@ components:
             "$ref": "#/components/schemas/Component"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: Components
     Dock:
       type: object
@@ -5808,8 +5807,8 @@ components:
             "$ref": "#/components/schemas/FleetMember"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: FleetMembersList
     FleetMembersStats:
       type: object
@@ -5868,8 +5867,8 @@ components:
             - "$ref": "#/components/schemas/VehiclePublic"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: FleetPublicVehicles
     FleetRole:
       type: object
@@ -6002,8 +6001,8 @@ components:
             - "$ref": "#/components/schemas/VehiclePublic"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: FleetVehicles
     FleetVehiclesStats:
       type: object
@@ -6114,8 +6113,8 @@ components:
             "$ref": "#/components/schemas/Vehicle"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: Hangar
     HangarClassificationMetric:
       type: object
@@ -6183,8 +6182,8 @@ components:
             "$ref": "#/components/schemas/VehiclePublic"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: HangarPublic
     HangarStats:
       type: object
@@ -6376,8 +6375,8 @@ components:
             "$ref": "#/components/schemas/Image"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: Images
     AccountUpdateInput:
       type: object
@@ -6936,8 +6935,8 @@ components:
             "$ref": "#/components/schemas/Manufacturer"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: Manufacturers
     ModelHardpoint:
       type: object
@@ -7551,8 +7550,8 @@ components:
             "$ref": "#/components/schemas/Model"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: Models
     ModelModulePackage:
       type: object
@@ -7690,8 +7689,8 @@ components:
             "$ref": "#/components/schemas/ModelModulePackage"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: ModelModulePackages
     ModelModule:
       type: object
@@ -7776,8 +7775,8 @@ components:
             "$ref": "#/components/schemas/ModelModule"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: ModelModules
     ModelPaint:
       type: object
@@ -8806,8 +8805,8 @@ components:
             "$ref": "#/components/schemas/Video"
       additionalProperties: false
       required:
-      - items
       - meta
+      - items
       title: Videos
   securitySchemes:
     BearerAuth:

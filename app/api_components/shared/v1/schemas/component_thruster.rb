@@ -15,7 +15,7 @@ module Shared
             fuelBurnRatePer10KNewton: {type: :number}
           },
           additionalProperties: false,
-          required: %w[capacity thrusterType fuelBurnRatePer10KNewton]
+          required: %w[thrustCapacity thrusterType fuelBurnRatePer10KNewton]
         })
       end
     end

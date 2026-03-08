@@ -12,7 +12,7 @@ module Shared
             meta: {"$ref": "#/components/schemas/Meta"}
           },
           additionalProperties: false,
-          required: %w[items meta]
+          required: %w[meta]
         })
       end
     end
