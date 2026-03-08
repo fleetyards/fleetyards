@@ -18,7 +18,11 @@
 #  min_container_dimension_z :decimal(15, 2)
 #  min_container_size_scu    :integer
 #  name                      :string
+#  offset_x                  :decimal(15, 2)
+#  offset_y                  :decimal(15, 2)
+#  offset_z                  :decimal(15, 2)
 #  position                  :integer
+#  rotation                  :integer
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
 #  model_id                  :uuid             not null
@@ -45,6 +49,10 @@ class CargoHold < ApplicationRecord
     numericality: {greater_than: 0, only_integer: true}
 
   scope :ordered, -> { order(:position, :id) }
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[model_id name position]
+  end
 
   # Calculate and populate container capacities for all container sizes
   def calculate_container_capacities!

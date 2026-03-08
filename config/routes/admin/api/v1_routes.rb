@@ -52,6 +52,7 @@ v1_admin_api_routes = lambda do
   resources :model_hardpoints, path: "model-hardpoints", only: %i[index show create update destroy]
   resources :model_hardpoint_loadouts, path: "model-hardpoint-loadouts", only: %i[index show create update destroy]
   resources :model_loaners, path: "model-loaners", only: %i[index show create update destroy]
+  resources :cargo_holds, path: "cargo-holds", only: %i[index show update]
 
   resources :manufacturers, only: %i[index show create update destroy]
 

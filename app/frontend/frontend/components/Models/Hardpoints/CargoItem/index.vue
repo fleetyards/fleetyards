@@ -50,10 +50,10 @@ const label = computed(() => {
     <template #default>
       <div class="hardpoint-item__cargo-container text-muted">
         {{ t("labels.hardpoint.maxContainerSize") }}:
-        {{ toNumber(typeData.maxContainerSize?.size || "", "cargo") }}
+        {{ toNumber(typeData?.maxContainerSize?.size || "", "cargo") }}
       </div>
       <div class="hardpoint-item__cargo">
-        {{ toNumber(typeData.capacity || "", "cargo") }}
+        {{ toNumber(typeData?.capacity || "", "cargo") }}
       </div>
       <HardpointComponent class="hardpoint-item__cargo-component">
         <template v-if="hardpoint.component">

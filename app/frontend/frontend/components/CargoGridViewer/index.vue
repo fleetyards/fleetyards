@@ -153,8 +153,12 @@ type PackResult = {
 function getHoldGroupKey(name: string, allNames: string[]): string {
   if (!name) return name;
   for (const other of allNames) {
-    if (other !== name && name.startsWith(other + "_")) {
-      return other;
+    if (other !== name && name.startsWith(other)) {
+      const suffix = name.slice(other.length);
+      // Match underscore separator (e.g. cargo_walkway) or numeric suffix (e.g. cargo2)
+      if (suffix.startsWith("_") || /^\d+$/.test(suffix)) {
+        return other;
+      }
     }
   }
   return name;
@@ -236,6 +240,7 @@ function groupCargoHolds(
 type Placement = {
   hi: number;
   ox: number;
+  oy: number;
   oz: number;
   gx: number;
   gy: number;
@@ -259,30 +264,33 @@ type ArrangeResult = {
 function placementsToResult(placements: Placement[]): ArrangeResult {
   let minX = Infinity,
     maxX = -Infinity,
+    minY = Infinity,
+    maxY = -Infinity,
     minZ = Infinity,
-    maxZ = -Infinity,
-    maxH = 0;
+    maxZ = -Infinity;
   for (const p of placements) {
     minX = Math.min(minX, p.ox);
     maxX = Math.max(maxX, p.ox + p.gx);
+    minY = Math.min(minY, p.oy);
+    maxY = Math.max(maxY, p.oy + p.gz);
     minZ = Math.min(minZ, p.oz);
     maxZ = Math.max(maxZ, p.oz + p.gy);
-    maxH = Math.max(maxH, p.gz);
   }
   const widthSCU = maxX - minX;
   const depthSCU = maxZ - minZ;
+  const heightSCU = maxY - minY;
 
   return {
-    boundingVolume: widthSCU * depthSCU * maxH,
+    boundingVolume: widthSCU * depthSCU * heightSCU,
     groupWidthSCU: widthSCU,
     groupDepthSCU: depthSCU,
-    groupHeightSCU: maxH,
+    groupHeightSCU: heightSCU,
     positions: placements.map((p) => ({
       hi: p.hi,
       // Position hold center relative to group's left-front-bottom corner
       pos: [
         (p.ox - minX + p.gx / 2) * SCU_UNIT,
-        (p.gz * SCU_UNIT) / 2,
+        (p.oy - minY + p.gz / 2) * SCU_UNIT,
         (p.oz - minZ + p.gy / 2) * SCU_UNIT,
       ] as [number, number, number],
       dims: [p.gx * SCU_UNIT, p.gz * SCU_UNIT, p.gy * SCU_UNIT] as [
@@ -312,13 +320,40 @@ function findBestHoldArrangement(
     };
   });
 
+  // Check if all holds in this group have offsets — use manual placement
+  const allHaveOffsets = holdIndices.every((hi) => {
+    const h = cargoHolds[hi];
+    return (
+      h.offset && h.offset.x != null && h.offset.y != null && h.offset.z != null
+    );
+  });
+
+  if (allHaveOffsets) {
+    // Use manual offsets: offset values are in meters, convert to grid cells
+    const placements: Placement[] = dims.map((d) => {
+      const h = cargoHolds[d.hi];
+      const rotXZ = h.rotation === 90;
+      const rotXY = h.rotation === 270;
+      return {
+        hi: d.hi,
+        ox: h.offset!.x / SCU_UNIT,
+        oy: h.offset!.z / SCU_UNIT,
+        oz: h.offset!.y / SCU_UNIT,
+        gx: rotXZ ? d.z : rotXY ? d.y : d.x,
+        gy: rotXY ? d.x : d.y,
+        gz: rotXZ ? d.x : d.z,
+      };
+    });
+    return placementsToResult(placements);
+  }
+
   const candidates: ArrangeResult[] = [];
 
   // Option 1: All along X
   {
     let ox = 0;
     const pl: Placement[] = dims.map((d) => {
-      const p = { hi: d.hi, ox, oz: 0, gx: d.x, gy: d.y, gz: d.z };
+      const p = { hi: d.hi, ox, oy: 0, oz: 0, gx: d.x, gy: d.y, gz: d.z };
       ox += d.x;
       return p;
     });
@@ -329,7 +364,7 @@ function findBestHoldArrangement(
   {
     let oz = 0;
     const pl: Placement[] = dims.map((d) => {
-      const p = { hi: d.hi, ox: 0, oz, gx: d.x, gy: d.y, gz: d.z };
+      const p = { hi: d.hi, ox: 0, oy: 0, oz, gx: d.x, gy: d.y, gz: d.z };
       oz += d.y;
       return p;
     });
@@ -347,8 +382,24 @@ function findBestHoldArrangement(
         const mainPl: Placement[] = main.map((d) => {
           const p =
             mainAxis === "x"
-              ? { hi: d.hi, ox: offset, oz: 0, gx: d.x, gy: d.y, gz: d.z }
-              : { hi: d.hi, ox: 0, oz: offset, gx: d.x, gy: d.y, gz: d.z };
+              ? {
+                  hi: d.hi,
+                  ox: offset,
+                  oy: 0,
+                  oz: 0,
+                  gx: d.x,
+                  gy: d.y,
+                  gz: d.z,
+                }
+              : {
+                  hi: d.hi,
+                  ox: 0,
+                  oy: 0,
+                  oz: offset,
+                  gx: d.x,
+                  gy: d.y,
+                  gz: d.z,
+                };
           offset += mainAxis === "x" ? d.x : d.y;
           return p;
         });
@@ -369,6 +420,7 @@ function findBestHoldArrangement(
             {
               hi: side.hi,
               ox: mainWidth,
+              oy: 0,
               oz: 0,
               gx: side.x,
               gy: side.y,
@@ -384,6 +436,7 @@ function findBestHoldArrangement(
             {
               hi: side.hi,
               ox: 0,
+              oy: 0,
               oz: mainDepth,
               gx: side.x,
               gy: side.y,
@@ -658,9 +711,15 @@ function tryPlaceOne(
             }
           }
 
-          const cargoX = hold.dimensions.x;
-          const cargoY = hold.dimensions.y;
-          const cargoZ = hold.dimensions.z;
+          const rotXZ = hold.rotation === 90;
+          const rotXY = hold.rotation === 270;
+          const cargoX = rotXZ
+            ? hold.dimensions.z
+            : rotXY
+              ? hold.dimensions.y
+              : hold.dimensions.x;
+          const cargoY = rotXY ? hold.dimensions.x : hold.dimensions.y;
+          const cargoZ = rotXZ ? hold.dimensions.x : hold.dimensions.z;
 
           // Container dims in cargo space
           const cDimsC: [number, number, number] = [

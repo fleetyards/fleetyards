@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_03_03_204529) do
+ActiveRecord::Schema[7.2].define(version: 2026_03_09_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
@@ -147,6 +147,10 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_03_204529) do
     t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "offset_x", precision: 15, scale: 2
+    t.decimal "offset_y", precision: 15, scale: 2
+    t.decimal "offset_z", precision: 15, scale: 2
+    t.integer "rotation"
     t.index ["capacity_scu"], name: "index_cargo_holds_on_capacity_scu"
     t.index ["model_id", "max_container_size_scu"], name: "index_cargo_holds_on_model_id_and_max_container_size_scu"
     t.index ["model_id"], name: "index_cargo_holds_on_model_id"

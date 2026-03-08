@@ -4044,6 +4044,24 @@ components:
           additionalProperties: false
           required:
           - min
+        offset:
+          type: object
+          nullable: true
+          properties:
+            x:
+              type: number
+            "y":
+              type: number
+            z:
+              type: number
+          additionalProperties: false
+          required:
+          - x
+          - "y"
+          - z
+        rotation:
+          type: integer
+          nullable: true
       additionalProperties: false
       required:
       - dimensions

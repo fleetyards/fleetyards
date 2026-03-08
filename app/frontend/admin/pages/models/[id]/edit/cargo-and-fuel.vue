@@ -27,7 +27,6 @@ const props = defineProps<Props>();
 const { t } = useI18n();
 
 const initialValues = ref<ModelUpdateInput>({
-  cargo: props.model.metrics.cargo,
   hydrogenFuelTankSize: props.model.metrics.hydrogenFuelTankSize,
   quantumFuelTankSize: props.model.metrics.quantumFuelTankSize,
 });
@@ -39,7 +38,6 @@ const { defineField } = useForm({
   validationSchema,
 });
 
-const [cargo, cargoProps] = defineField("cargo");
 const [hydrogenFuelTankSize, hydrogenFuelTankSizeProps] = defineField(
   "hydrogenFuelTankSize",
 );
@@ -55,28 +53,6 @@ const [quantumFuelTankSize, quantumFuelTankSizeProps] = defineField(
     :validation-schema="validationSchema"
     :initial-values="initialValues"
   >
-    <div class="row">
-      <div class="col-12 col-md-6">
-        <FormInput
-          v-model="cargo"
-          v-bind="cargoProps"
-          :alignment="InputAlignmentsEnum.RIGHT"
-          name="cargo"
-          :type="InputTypesEnum.NUMBER"
-          translation-key="model.cargo"
-          :suffix="t('number.units.cargo')"
-        />
-        <FormTextarea
-          v-if="model.cargoHolds"
-          :model-value="JSON.stringify(model.cargoHolds, undefined, 4)"
-          name="cargoHolds"
-          translation-key="model.cargoHolds"
-          class="base-data-output"
-          disabled
-        />
-      </div>
-    </div>
-    <hr />
     <div class="row">
       <div class="col-12 col-md-6">
         <FormInput

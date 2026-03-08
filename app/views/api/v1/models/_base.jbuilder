@@ -116,7 +116,7 @@ json.metrics do
   json.dock_size model.dock_size
 end
 
-json.cargo_holds model.cargo_holds
+json.cargo_holds model.cargo_holds_with_offsets
 json.hydrogen_fuel_tanks model.hydrogen_fuel_tanks
 json.quantum_fuel_tanks model.quantum_fuel_tanks
 

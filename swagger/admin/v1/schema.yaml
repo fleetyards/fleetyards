@@ -202,6 +202,93 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/cargo-holds":
+    get:
+      summary: Cargo Holds list
+      operationId: listCargoHolds
+      tags:
+      - CargoHolds
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/CargoHoldQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminCargoHolds"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/cargo-holds/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: id
+      required: true
+    put:
+      summary: Update Cargo Hold
+      operationId: updateCargoHold
+      tags:
+      - CargoHolds
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminCargoHold"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CargoHoldInput"
+        required: true
   "/components":
     post:
       summary: Create Component
@@ -3780,6 +3867,24 @@ components:
           additionalProperties: false
           required:
           - min
+        offset:
+          type: object
+          nullable: true
+          properties:
+            x:
+              type: number
+            "y":
+              type: number
+            z:
+              type: number
+          additionalProperties: false
+          required:
+          - x
+          - "y"
+          - z
+        rotation:
+          type: integer
+          nullable: true
       additionalProperties: false
       required:
       - dimensions
@@ -5714,6 +5819,23 @@ components:
             type: string
       additionalProperties: false
       title: AdminUserInput
+    CargoHoldInput:
+      type: object
+      properties:
+        offsetX:
+          type: number
+          nullable: true
+        offsetY:
+          type: number
+          nullable: true
+        offsetZ:
+          type: number
+          nullable: true
+        rotation:
+          type: integer
+          nullable: true
+      additionalProperties: false
+      title: CargoHoldInput
     ComponentInput:
       type: object
       properties:
@@ -6497,6 +6619,86 @@ components:
       - meta
       - items
       title: Manufacturers
+    AdminCargoHold:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        modelId:
+          type: string
+          format: uuid
+        name:
+          type: string
+          nullable: true
+        position:
+          type: integer
+          nullable: true
+        capacityScu:
+          type: number
+        dimensionX:
+          type: number
+        dimensionY:
+          type: number
+        dimensionZ:
+          type: number
+        offsetX:
+          type: number
+          nullable: true
+        offsetY:
+          type: number
+          nullable: true
+        offsetZ:
+          type: number
+          nullable: true
+        rotation:
+          type: integer
+          nullable: true
+        model:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+            slug:
+              type: string
+          required:
+          - id
+          - name
+          - slug
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - modelId
+      - capacityScu
+      - dimensionX
+      - dimensionY
+      - dimensionZ
+      - createdAt
+      - updatedAt
+      title: AdminCargoHold
+    AdminCargoHolds:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/AdminCargoHold"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: AdminCargoHolds
     ModelHardpoint:
       type: object
       properties:
@@ -7758,6 +7960,14 @@ components:
       - meta
       - items
       title: ModelUpgrades
+    CargoHoldQuery:
+      type: object
+      properties:
+        modelIdEq:
+          type: string
+          format: uuid
+      additionalProperties: false
+      title: CargoHoldQuery
     ComponentQuery:
       type: object
       properties:
