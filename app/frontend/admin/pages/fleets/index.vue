@@ -92,7 +92,7 @@ const { t, l } = useI18n();
 </script>
 
 <template>
-  <Heading>
+  <Heading hero>
     {{ t("headlines.admin.fleets.index") }}
     <HeadingSmall v-if="fleets">
       {{

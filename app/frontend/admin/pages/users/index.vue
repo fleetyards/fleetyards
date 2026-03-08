@@ -106,7 +106,7 @@ const columns: BaseTableCol<User>[] = [
 </script>
 
 <template>
-  <Heading>
+  <Heading hero>
     {{ t("headlines.admin.users.index") }}
     <HeadingSmall v-if="users">
       {{

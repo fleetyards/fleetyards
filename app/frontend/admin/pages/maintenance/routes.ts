@@ -43,7 +43,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/maintenance/tasks.vue"),
     meta: {
       title: "admin.maintenance.tasks",
-      icon: "fad fa-list-timeline",
+      icon: "fad fa-clipboard-list-check",
       needsAuthentication: true,
       access: ["maintenance"],
       href: "/maintenance_tasks",

@@ -186,7 +186,7 @@ const onUnlink = (record: ModelModule) => {
 
 <template>
   <div class="d-flex align-items-center justify-content-between">
-    <Heading>{{ t("headlines.admin.models.edit.modules") }}</Heading>
+    <Heading hero>{{ t("headlines.admin.models.edit.modules") }}</Heading>
     <BtnGroup>
       <Btn
         :size="BtnSizesEnum.SMALL"

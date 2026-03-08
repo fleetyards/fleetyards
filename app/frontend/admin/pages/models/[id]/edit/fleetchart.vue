@@ -52,7 +52,7 @@ const [angledViewColored, angledViewColoredProps] =
 </script>
 
 <template>
-  <Heading>{{ t("headlines.admin.models.edit.fleetchart") }}</Heading>
+  <Heading hero>{{ t("headlines.admin.models.edit.fleetchart") }}</Heading>
   <ModelForm :model="model" :initial-values="initialValues">
     <div class="row">
       <div class="col-12 col-md-4">

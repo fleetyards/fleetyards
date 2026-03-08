@@ -144,7 +144,7 @@ const handleUploadDone = async (files: FileUpload[]) => {
 </script>
 
 <template>
-  <Heading>{{ t("headlines.admin.models.images") }}</Heading>
+  <Heading hero>{{ t("headlines.admin.models.images") }}</Heading>
 
   <DirectUpload
     direct-upload

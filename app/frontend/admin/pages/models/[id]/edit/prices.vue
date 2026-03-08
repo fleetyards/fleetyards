@@ -56,7 +56,7 @@ const itemPricesList = ref<{
 </script>
 
 <template>
-  <Heading>{{ t("headlines.admin.models.edit.prices") }}</Heading>
+  <Heading hero>{{ t("headlines.admin.models.edit.prices") }}</Heading>
   <ModelForm
     :model="model"
     :validation-schema="validationSchema"
@@ -107,7 +107,7 @@ const itemPricesList = ref<{
   </ModelForm>
 
   <div class="d-flex align-items-center justify-content-between">
-    <Heading>{{ t("headlines.admin.models.edit.itemPrices") }}</Heading>
+    <Heading hero>{{ t("headlines.admin.models.edit.itemPrices") }}</Heading>
     <Btn
       :size="BtnSizesEnum.SMALL"
       :disabled="itemPricesList?.creating"

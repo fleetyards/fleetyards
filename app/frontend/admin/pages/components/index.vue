@@ -115,7 +115,7 @@ const { t, l } = useI18n();
 </script>
 
 <template>
-  <Heading>
+  <Heading hero>
     {{ t("headlines.admin.components.index") }}
     <HeadingSmall v-if="components">
       {{

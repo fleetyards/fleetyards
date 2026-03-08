@@ -82,7 +82,7 @@ const [holo, holoProps] = defineField("holo");
 </script>
 
 <template>
-  <Heading>{{ t("headlines.admin.models.edit.index") }}</Heading>
+  <Heading hero>{{ t("headlines.admin.models.edit.index") }}</Heading>
   <ModelForm
     :model="model"
     :validation-schema="validationSchema"

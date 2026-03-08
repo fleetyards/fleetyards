@@ -155,7 +155,7 @@ const videoTypeOptions: FilterOption[] = Object.values(VideoTypeEnum).map(
 
 <template>
   <div class="d-flex align-items-center justify-content-between">
-    <Heading>{{ t("headlines.admin.models.edit.videos") }}</Heading>
+    <Heading hero>{{ t("headlines.admin.models.edit.videos") }}</Heading>
     <Btn
       :size="BtnSizesEnum.SMALL"
       :disabled="editableList?.creating"

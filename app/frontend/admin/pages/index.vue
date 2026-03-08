@@ -90,7 +90,7 @@ watch(
 
 <template>
   <Teleport to="#header-left">
-    <Heading>{{ t("headlines.admin.dashboard.title") }}</Heading>
+    <Heading hero>{{ t("headlines.admin.dashboard.title") }}</Heading>
   </Teleport>
 
   <section>

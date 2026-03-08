@@ -49,7 +49,7 @@ const [quantumFuelTankSize, quantumFuelTankSizeProps] = defineField(
 </script>
 
 <template>
-  <Heading>{{ t("headlines.admin.models.edit.cargoAndFuel") }}</Heading>
+  <Heading hero>{{ t("headlines.admin.models.edit.cargoAndFuel") }}</Heading>
   <ModelForm
     :model="model"
     :validation-schema="validationSchema"

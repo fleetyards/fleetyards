@@ -83,7 +83,7 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
 </script>
 
 <template>
-  <Heading>{{ t("headlines.admin.models.edit.metrics") }}</Heading>
+  <Heading hero>{{ t("headlines.admin.models.edit.metrics") }}</Heading>
   <ModelForm
     :model="model"
     :validation-schema="validationSchema"

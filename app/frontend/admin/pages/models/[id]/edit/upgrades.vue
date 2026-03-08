@@ -183,7 +183,7 @@ const onUnlink = (record: ModelUpgrade) => {
 
 <template>
   <div class="d-flex align-items-center justify-content-between">
-    <Heading>{{ t("headlines.admin.models.edit.upgrades") }}</Heading>
+    <Heading hero>{{ t("headlines.admin.models.edit.upgrades") }}</Heading>
     <BtnGroup>
       <Btn
         :size="BtnSizesEnum.SMALL"

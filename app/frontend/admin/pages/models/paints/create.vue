@@ -85,7 +85,7 @@ const handleCancel = async () => {
 </script>
 
 <template>
-  <Heading>{{ t("headlines.admin.modelPaints.new") }}</Heading>
+  <Heading hero>{{ t("headlines.admin.modelPaints.new") }}</Heading>
   <form @submit.prevent="onSubmit" id="admin-model-paint-create-form">
     <div class="row">
       <div class="col-12 col-md-6">

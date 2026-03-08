@@ -13,6 +13,6 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <Heading>{{ t("headlines.admin.images.index") }}</Heading>
+  <Heading hero>{{ t("headlines.admin.images.index") }}</Heading>
   <ImagesList filterable />
 </template>

@@ -111,7 +111,7 @@ const handleCancel = async () => {
 </script>
 
 <template>
-  <Heading>{{ t("headlines.admin.fleets.edit") }}</Heading>
+  <Heading hero>{{ t("headlines.admin.fleets.edit") }}</Heading>
   <form id="admin-fleet-edit-form" @submit.prevent="onSubmit">
     <div class="row">
       <div class="col-12 col-md-6">

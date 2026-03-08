@@ -114,7 +114,7 @@ const image = (record: Vehicle) => {
 </script>
 
 <template>
-  <Heading>
+  <Heading hero>
     {{ t("headlines.admin.vehicles.index") }}
     <HeadingSmall v-if="vehicles">
       {{

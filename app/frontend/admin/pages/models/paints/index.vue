@@ -116,7 +116,7 @@ const { t, l } = useI18n();
 </script>
 
 <template>
-  <Heading>
+  <Heading hero>
     {{ t("headlines.admin.modelPaints.index") }}
     <HeadingSmall v-if="paints">
       {{

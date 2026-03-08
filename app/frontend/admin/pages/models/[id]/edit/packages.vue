@@ -200,7 +200,7 @@ const onSaveCreate = async () => {
 
 <template>
   <div class="d-flex align-items-center justify-content-between">
-    <Heading>{{ t("headlines.admin.models.edit.packages") }}</Heading>
+    <Heading hero>{{ t("headlines.admin.models.edit.packages") }}</Heading>
     <Btn
       :size="BtnSizesEnum.SMALL"
       :disabled="editableList?.creating"
