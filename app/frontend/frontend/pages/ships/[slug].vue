@@ -6,7 +6,7 @@ const route = useRoute();
 
 const slug = computed(() => route.params.slug as string);
 
-const { data: model, ...asyncStatus } = useModelQuery(slug.value);
+const { data: model, ...asyncStatus } = useModelQuery(slug);
 </script>
 
 <template>
