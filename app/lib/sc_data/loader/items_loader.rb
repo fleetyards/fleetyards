@@ -2,9 +2,10 @@ module ScData
   module Loader
     class ItemsLoader < ::ScData::Loader::BaseLoader
       def all
-        load_items("items").each do |item|
-          next if item["category"] == "inventory"
+        items = load_items("items").reject { |item| item["category"] == "inventory" }
 
+        # Pass 1: create/update all components so they exist for cross-references
+        items.each do |item|
           normalized_key = item["key"].downcase
           name = item["name"]
           component = find_or_create_component(normalized_key, item["key"], item["ref"], name)
@@ -61,11 +62,16 @@ module ScData
             end
           end
 
-          if item["loadout"].present?
-            add_loadout(item, component)
-          end
-
           component.update!(update_params)
+        end
+
+        # Pass 2: link loadouts (all components now exist for cross-references)
+        items.each do |item|
+          next if item["loadout"].blank?
+
+          normalized_key = item["key"].downcase
+          component = find_component(normalized_key, item["key"], item["ref"])
+          add_loadout(item, component)
         end
       end
 

@@ -104,14 +104,31 @@ module ScData
 
           if component.present?
             if component.hidden?
+              # Build flattened hardpoints from the component's sub-hardpoints.
+              # Use model loadout data to fill in component references that
+              # the items loader couldn't resolve (e.g. Door → CargoGrid).
+              nested_loadout = item["loadout"] || item["default_loadout"]
               hardpoint_data = {
                 "loadout" => component.hardpoints.filter_map do |hp|
-                               next if hp.component.blank?
-                               next if loadout_name_blacklisted?(hp.component.sc_key)
+                               sub_component = hp.component
+
+                               if sub_component.blank? && nested_loadout.present?
+                                 nested = nested_loadout.find { |nl| nl["name"]&.downcase == hp.sc_name }
+                                 if nested.present?
+                                   sub_component = if nested["key"].present?
+                                     Component.find_by(sc_key: nested["key"]&.downcase, version: sc_version)
+                                   elsif nested["ref"].present?
+                                     Component.find_by(sc_ref: nested["ref"], version: sc_version)
+                                   end
+                                 end
+                               end
+
+                               next if sub_component.blank?
+                               next if loadout_name_blacklisted?(sub_component.sc_key)
 
                                {
                                  "name" => "#{item["name"]}-#{hp.sc_name}",
-                                 "key" => hp.component.sc_key
+                                 "key" => sub_component.sc_key
                                }
                              end
               }
