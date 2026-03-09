@@ -10,7 +10,7 @@ RSpec.describe "api/v1/user_features", type: :request, swagger_doc: "v1/schema.y
     sign_in(user) if user.present?
     Flipper.add("TestFeature")
     FeatureSetting.create!(feature_name: "TestFeature", self_service: true)
-    Flipper.feature("TestFeature").enable_actor(user)
+    Flipper.feature("TestFeature").enable_actor(user) if user.present?
   end
 
   path "/user-features/{id}/disable" do

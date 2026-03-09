@@ -14,6 +14,10 @@ class RsiRequestLog < ApplicationRecord
   after_create :notify_admin
   after_save :notify_admin_resolved
 
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[created_at resolved url]
+  end
+
   def notify_admin
     AdminMailer.notify_block(url).deliver_later
   end
