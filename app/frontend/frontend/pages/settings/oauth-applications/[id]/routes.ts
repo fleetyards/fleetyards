@@ -5,9 +5,7 @@ export const routes: RouteRecordRaw[] = [
     path: "",
     name: "settings-oauth-application",
     component: () =>
-      import(
-        "@/frontend/pages/settings/oauth-applications/[id]/index.vue"
-      ),
+      import("@/frontend/pages/settings/oauth-applications/[id]/index.vue"),
     meta: {
       title: "settings.oauthApplications",
       needsAuthentication: true,
@@ -18,9 +16,7 @@ export const routes: RouteRecordRaw[] = [
     path: "edit/",
     name: "settings-oauth-application-edit",
     component: () =>
-      import(
-        "@/frontend/pages/settings/oauth-applications/[id]/edit.vue"
-      ),
+      import("@/frontend/pages/settings/oauth-applications/[id]/edit.vue"),
     meta: {
       title: "settings.oauthApplications",
       needsAuthentication: true,

@@ -37,7 +37,7 @@ const queryParams = computed(() => ({
 
 const {
   data: rsiRequestLogs,
-  refetch,
+  refetch: _refetch,
   ...asyncStatus
 } = useRsiRequestLogs(queryParams);
 
@@ -110,10 +110,7 @@ const resolve = async (log: RsiRequestLog) => {
           {{ record.url }}
         </template>
         <template #col-resolved="{ record }">
-          <BasePill
-            :variant="record.resolved ? 'success' : 'danger'"
-            uppercase
-          >
+          <BasePill :variant="record.resolved ? 'success' : 'danger'" uppercase>
             {{
               record.resolved
                 ? t("labels.rsiRequestLogs.resolved")

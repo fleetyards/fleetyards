@@ -93,9 +93,9 @@ const confirmRegenerateSecret = () => {
   });
 };
 
-const dismissSecret = () => {
+const dismissSecret = async () => {
   visibleSecret.value = null;
-  router.replace({
+  await router.replace({
     query: {},
   });
 };
@@ -187,7 +187,9 @@ const confirmDestroy = () => {
 
   <div class="oauth-details">
     <div class="oauth-detail">
-      <label>{{ t("labels.oauthApplications.clientId") }}</label>
+      <span class="oauth-detail-label">{{
+        t("labels.oauthApplications.clientId")
+      }}</span>
       <div class="oauth-detail-value">
         <code>{{ oauthApplication.uid }}</code>
         <Btn
@@ -201,7 +203,9 @@ const confirmDestroy = () => {
     </div>
 
     <div class="oauth-detail">
-      <label>{{ t("labels.oauthApplications.clientSecret") }}</label>
+      <span class="oauth-detail-label">{{
+        t("labels.oauthApplications.clientSecret")
+      }}</span>
       <div class="oauth-detail-value">
         <Btn :size="BtnSizesEnum.SMALL" @click="confirmRegenerateSecret">
           <i class="fad fa-rotate" />
@@ -211,7 +215,9 @@ const confirmDestroy = () => {
     </div>
 
     <div class="oauth-detail">
-      <label>{{ t("labels.oauthApplications.redirectUri") }}</label>
+      <span class="oauth-detail-label">{{
+        t("labels.oauthApplications.redirectUri")
+      }}</span>
       <div v-for="uri in redirectUris" :key="uri" class="oauth-detail-value">
         <code>{{ uri }}</code>
         <Btn :size="BtnSizesEnum.SMALL" @click="copyToClipboard(uri)" inline>
@@ -221,7 +227,9 @@ const confirmDestroy = () => {
     </div>
 
     <div class="oauth-detail">
-      <label>{{ t("labels.oauthApplications.scopes") }}</label>
+      <span class="oauth-detail-label">{{
+        t("labels.oauthApplications.scopes")
+      }}</span>
       <div v-if="scopes.length" class="oauth-scopes">
         <code v-for="scope in scopes" :key="scope" class="oauth-scope">
           {{ scope }}
@@ -233,7 +241,9 @@ const confirmDestroy = () => {
     </div>
 
     <div class="oauth-detail">
-      <label>{{ t("labels.oauthApplications.confidential") }}</label>
+      <span class="oauth-detail-label">{{
+        t("labels.oauthApplications.confidential")
+      }}</span>
       <div class="oauth-detail-value">
         {{
           oauthApplication.confidential ? t("labels.true") : t("labels.false")
@@ -283,7 +293,7 @@ const confirmDestroy = () => {
 }
 
 .oauth-detail {
-  > label {
+  > .oauth-detail-label {
     display: block;
     font-size: 0.85rem;
     font-weight: 600;

@@ -143,9 +143,9 @@ const handleCancel = async () => {
           translation-key="oauthApplication.confidential"
         />
 
-        <label class="scopes-label">
+        <span class="scopes-label" role="heading" aria-level="3">
           {{ t("labels.oauthApplications.scopes") }}
-        </label>
+        </span>
         <p class="scopes-hint">
           {{
             t("labels.oauthApplication.scopesHint", {

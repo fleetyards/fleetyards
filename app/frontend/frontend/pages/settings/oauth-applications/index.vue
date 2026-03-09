@@ -64,9 +64,7 @@ const formatScopes = (scopes: string) => {
 
 <template>
   <BreadCrumbs
-    :crumbs="[
-      { to: { name: 'settings' }, label: t('nav.settings.index') },
-    ]"
+    :crumbs="[{ to: { name: 'settings' }, label: t('nav.settings.index') }]"
   />
 
   <div class="oauth-header">
