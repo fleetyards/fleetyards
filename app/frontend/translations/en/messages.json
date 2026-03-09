@@ -64,6 +64,10 @@
         "groupAdded": "Group added to feature.",
         "groupRemoved": "Group removed from feature."
       },
+      "rsiRequestLogs": {
+        "resolved": "Request log marked as resolved.",
+        "error": "Could not update request log."
+      },
       "updateNotifications": {
         "success": "Notification Settings updated."
       },

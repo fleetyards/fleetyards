@@ -57,6 +57,10 @@
         "scopes": "Scopes",
         "scopesHint": "If no scopes are selected, the default scopes will be used: %{scopes}"
       },
+      "rsiRequestLogs": {
+        "resolved": "Resolved",
+        "unresolved": "Unresolved"
+      },
       "oauthApplications": {
         "settingsIntro": "Manage your OAuth applications. These applications can access the FleetYards API on behalf of users.",
         "name": "Application Name",

@@ -97,6 +97,9 @@
           "selfService": "Self-Service",
           "addActor": "Add Actor"
         },
+        "rsiApiStatus": {
+          "index": "RSI API Status"
+        },
         "images": {
           "index": "Images"
         }

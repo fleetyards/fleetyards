@@ -85,6 +85,12 @@ v1_admin_api_routes = lambda do
 
   resources :oauth_applications, path: "oauth-applications", only: %i[index show create update destroy]
 
+  resources :rsi_request_logs, path: "rsi-request-logs", only: %i[index] do
+    member do
+      put :resolve
+    end
+  end
+
   resources :features, only: %i[index show] do
     member do
       put :enable
