@@ -127,13 +127,12 @@ $panelSuccessBorderColor: darken($success, 5%);
     z-index: 1;
     pointer-events: none;
     border-radius: $contentBorderRadius;
-    background:
-      linear-gradient(
-        to top,
-        rgba(0, 0, 0, 0.85) 0%,
-        rgba(0, 0, 0, 0.5) 40%,
-        rgba(0, 0, 0, 0.2) 100%
-      );
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.85) 0%,
+      rgba(0, 0, 0, 0.5) 40%,
+      rgba(0, 0, 0, 0.2) 100%
+    );
   }
 
   &-inner {
