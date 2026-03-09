@@ -89,6 +89,9 @@ test.describe("Admin Cargo Holds", () => {
     const cargoHoldsTab = page.getByText("Cargo Holds").first();
     await cargoHoldsTab.click();
 
+    // Wait for cargo holds list to load
+    await page.waitForSelector(".inline-editable-list__item");
+
     // Click edit button on first cargo hold
     const editBtn = page
       .locator(".inline-editable-list__item")
@@ -111,6 +114,9 @@ test.describe("Admin Cargo Holds", () => {
 
     const cargoHoldsTab = page.getByText("Cargo Holds").first();
     await cargoHoldsTab.click();
+
+    // Wait for cargo holds list to load
+    await page.waitForSelector(".inline-editable-list__item");
 
     // Click edit button on first cargo hold
     const editBtn = page

@@ -26,12 +26,18 @@ test.describe("Admin Features", () => {
   test("Shows feature flags list", async ({ page }) => {
     await page.goto("/admin/maintenance/features/");
 
+    // Wait for feature list to load from API
+    await page.waitForSelector(".inline-editable-list__item");
+
     // Feature names should be visible
     await expect(page.locator(".feature-name").first()).toBeVisible();
   });
 
   test("Shows feature state pills", async ({ page }) => {
     await page.goto("/admin/maintenance/features/");
+
+    // Wait for feature list to load from API
+    await page.waitForSelector(".inline-editable-list__item");
 
     // State pills (on/off/conditional) should be present
     const pills = page.locator(".inline-editable-list__display .pill");
@@ -40,6 +46,9 @@ test.describe("Admin Features", () => {
 
   test("Toggles a feature on", async ({ page, notification }) => {
     await page.goto("/admin/maintenance/features/");
+
+    // Wait for feature list to load from API
+    await page.waitForSelector(".inline-editable-list__item");
 
     // Find a toggle button and click it
     const toggleBtn = page
@@ -56,6 +65,9 @@ test.describe("Admin Features", () => {
   test("Opens edit mode for a feature", async ({ page }) => {
     await page.goto("/admin/maintenance/features/");
 
+    // Wait for feature list to load from API
+    await page.waitForSelector(".inline-editable-list__item");
+
     // Click edit button (pencil icon)
     const editBtn = page
       .locator(".inline-editable-list__item")
@@ -71,6 +83,9 @@ test.describe("Admin Features", () => {
 
   test("Toggles self-service flag", async ({ page, notification }) => {
     await page.goto("/admin/maintenance/features/");
+
+    // Wait for feature list to load from API
+    await page.waitForSelector(".inline-editable-list__item");
 
     // Open edit mode
     const editBtn = page
@@ -93,6 +108,9 @@ test.describe("Admin Features", () => {
 
   test("Adds a group to a feature", async ({ page, notification }) => {
     await page.goto("/admin/maintenance/features/");
+
+    // Wait for feature list to load from API
+    await page.waitForSelector(".inline-editable-list__item");
 
     // Open edit mode
     const editBtn = page

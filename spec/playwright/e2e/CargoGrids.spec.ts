@@ -9,6 +9,9 @@ test.describe("Cargo Grids", () => {
     await page.goto("/tools/cargo-grids/");
 
     await acceptCookie.accept();
+
+    // Wait for the filter component to be interactive
+    await page.waitForSelector(".filter-group input");
   });
 
   test("Loads the page", async ({ page }) => {
@@ -45,6 +48,9 @@ test.describe("Cargo Grids", () => {
 
   test("Selects a model via URL query parameter", async ({ page }) => {
     await page.goto("/tools/cargo-grids/?ship=caterpillar");
+
+    // Wait for page to settle after navigation with query param
+    await page.waitForLoadState("networkidle");
 
     // The cargo grid viewer should appear
     await expect(page.locator(".cargo-grid-viewer")).toBeVisible();
