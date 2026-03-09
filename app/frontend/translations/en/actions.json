@@ -28,6 +28,7 @@
       "export": "Export",
       "import": "Import",
       "here": "here",
+      "backToList": "Back to List",
       "backToTop": "Back to Top",
       "cancel": "Cancel",
       "ok": "Ok",
@@ -93,6 +94,10 @@
       "loadMore": "Load more",
       "unlink": "Unlink",
       "syncRsiHangar": "Sync RSI Hangar",
+      "oauthApplications": {
+        "create": "New Application",
+        "regenerateSecret": "Regenerate Secret"
+      },
       "oauth": {
         "apple": "Apple",
         "google": "Google",
@@ -137,6 +142,7 @@
         "hangarGuide": "Need Help?",
         "reset": "Clear Filters"
       },
+      "destroyFleet": "Destroy Fleet",
       "fleet": {
         "join": "Join %{fleet}!",
         "leave": "Leave %{fleet}",

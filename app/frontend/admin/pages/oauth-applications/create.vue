@@ -1,0 +1,172 @@
+<script lang="ts">
+export default {
+  name: "AdminOauthApplicationCreatePage",
+};
+</script>
+
+<script lang="ts" setup>
+import { useI18n } from "@/shared/composables/useI18n";
+import Heading from "@/shared/components/base/Heading/index.vue";
+import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import {
+  type OauthApplicationInput,
+  useCreateOauthApplication,
+  getOauthApplicationsQueryKey,
+} from "@/services/fyAdminApi";
+import { useForm } from "vee-validate";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
+import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import FormActions from "@/shared/components/base/FormActions/index.vue";
+import {
+  AVAILABLE_SCOPES,
+  DEFAULT_SCOPES,
+} from "@/frontend/pages/settings/oauth-applications/scopes";
+import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
+import { useQueryClient } from "@tanstack/vue-query";
+
+const { t } = useI18n();
+const router = useRouter();
+const { extend } = useBreadCrumbs();
+const queryClient = useQueryClient();
+
+const validationSchema = {
+  name: "required",
+  redirectUri: "required",
+};
+
+const { defineField, handleSubmit, meta } = useForm<OauthApplicationInput>({
+  initialValues: {
+    name: "",
+    redirectUri: "",
+    confidential: true,
+    scopes: [] as string[],
+  },
+  validationSchema,
+});
+
+const [name, nameProps] = defineField("name");
+const [redirectUri, redirectUriProps] = defineField("redirectUri");
+const [confidential, confidentialProps] = defineField("confidential");
+defineField("scopes");
+
+const submitting = ref(false);
+
+const createMutation = useCreateOauthApplication();
+
+const onSubmit = handleSubmit(async (values) => {
+  submitting.value = true;
+
+  await createMutation
+    .mutateAsync({ data: values })
+    .then(async (created) => {
+      await queryClient.invalidateQueries({
+        queryKey: getOauthApplicationsQueryKey(),
+      });
+      await router.push(
+        extend({
+          name: "admin-oauth-application-edit",
+          params: { id: created.id },
+        }),
+      );
+    })
+    .catch((error) => {
+      console.error("Error creating OAuth application:", error);
+    })
+    .finally(() => {
+      submitting.value = false;
+    });
+});
+
+const handleCancel = async () => {
+  await router.push(extend({ name: "admin-oauth-applications" }));
+};
+</script>
+
+<template>
+  <BreadCrumbs
+    :crumbs="[
+      {
+        to: { name: 'admin-oauth-applications' },
+        label: t('nav.admin.oauthApplications.index'),
+      },
+    ]"
+  />
+  <Heading hero>{{ t("headlines.admin.oauthApplications.new") }}</Heading>
+  <form id="admin-oauth-application-create-form" @submit.prevent="onSubmit">
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <FormInput
+          v-model="name"
+          v-bind="nameProps"
+          name="name"
+          translation-key="oauthApplication.name"
+        />
+        <FormTextarea
+          v-model="redirectUri"
+          v-bind="redirectUriProps"
+          translation-key="oauthApplication.redirectUri"
+          name="redirectUri"
+        />
+        <p class="field-hint">
+          {{ t("labels.oauthApplication.redirectUriHint") }}
+        </p>
+
+        <FormCheckbox
+          v-model="confidential"
+          v-bind="confidentialProps"
+          translation-key="oauthApplication.confidential"
+          name="confidential"
+        />
+
+        <label class="scopes-label">
+          {{ t("labels.oauthApplications.scopes") }}
+        </label>
+        <p class="scopes-hint">
+          {{
+            t("labels.oauthApplication.scopesHint", {
+              scopes: DEFAULT_SCOPES.join(", "),
+            })
+          }}
+        </p>
+        <div class="scopes-grid">
+          <FormCheckbox
+            v-for="scope in AVAILABLE_SCOPES"
+            :key="scope"
+            name="scopes"
+            :checkbox-value="scope"
+            :label="scope"
+          />
+        </div>
+      </div>
+    </div>
+    <FormActions
+      :submitting="submitting"
+      form-id="admin-oauth-application-create-form"
+      :dirty="meta.dirty || meta.touched"
+      @cancel="handleCancel"
+    />
+  </form>
+</template>
+
+<style lang="scss" scoped>
+.scopes-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.field-hint,
+.scopes-hint {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 0.75rem;
+}
+
+.scopes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.25rem 1rem;
+  margin-bottom: 1rem;
+}
+</style>

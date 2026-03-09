@@ -13,6 +13,12 @@ v1_api_routes = lambda do
     end
   end
 
+  resources :oauth_applications, path: "oauth-applications", only: %i[index show create update destroy] do
+    member do
+      put :regenerate_secret, path: "regenerate-secret"
+    end
+  end
+
   resource :sessions, only: %i[create destroy] do
     post "confirm-access", to: "sessions#confirm_access", on: :collection
   end

@@ -28,11 +28,15 @@ const show = (options: AppConfirmOptions) => {
 
 const hide = () => {
   visible.value = false;
+  onConfirm.value = undefined;
+  onClose.value = undefined;
 };
 
 const comlink = useComlink();
 
 const handleKeyDown = (event: KeyboardEvent) => {
+  if (!visible.value) return;
+
   if (event.key === "Enter") {
     handleConfirm().catch(console.error);
   }

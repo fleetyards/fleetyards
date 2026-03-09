@@ -16,6 +16,9 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useSessionStore } from "@/frontend/stores/session";
 import { generateOtpBackupCodes, type StandardError } from "@/services/fyApi";
 import { type ErrorType } from "@/services/axiosClient";
+import { useMetaInfo } from "@/shared/composables/useMetaInfo";
+
+useMetaInfo();
 
 const { t } = useI18n();
 

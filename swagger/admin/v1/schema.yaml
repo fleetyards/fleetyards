@@ -3086,6 +3086,175 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/oauth-applications":
+    post:
+      summary: Create OAuth Application
+      operationId: createOauthApplication
+      tags:
+      - OauthApplications
+      parameters: []
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OauthApplication"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/OauthApplicationInput"
+        required: true
+    get:
+      summary: OAuth Applications list
+      operationId: oauthApplications
+      tags:
+      - OauthApplications
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/OauthApplicationQuery"
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OauthApplications"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/oauth-applications/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: OAuth Application id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    delete:
+      summary: Destroy OAuth Application
+      operationId: destroyOauthApplication
+      tags:
+      - OauthApplications
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OauthApplication"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: OAuth Application detail
+      operationId: oauthApplication
+      tags:
+      - OauthApplications
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OauthApplication"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    put:
+      summary: Update OAuth Application
+      operationId: updateOauthApplication
+      tags:
+      - OauthApplications
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OauthApplication"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/OauthApplicationUpdateInput"
+        required: true
   "/sessions":
     post:
       summary: create session
@@ -6444,6 +6613,39 @@ components:
           type: string
       additionalProperties: false
       title: ModelUpgradeInput
+    OauthApplicationInput:
+      type: object
+      properties:
+        name:
+          type: string
+        redirectUri:
+          type: string
+        confidential:
+          type: boolean
+        scopes:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      required:
+      - name
+      - redirectUri
+      title: OauthApplicationInput
+    OauthApplicationUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        redirectUri:
+          type: string
+        confidential:
+          type: boolean
+        scopes:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      title: OauthApplicationUpdateInput
     SessionInput:
       type: object
       properties:
@@ -7960,6 +8162,63 @@ components:
       - meta
       - items
       title: ModelUpgrades
+    OauthApplication:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        uid:
+          type: string
+        secret:
+          type: string
+        confidential:
+          type: boolean
+        redirectUri:
+          type: string
+        scopes:
+          type: string
+        ownerName:
+          type: string
+          nullable: true
+        ownerId:
+          type: string
+          format: uuid
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - uid
+      - secret
+      - confidential
+      - redirectUri
+      - scopes
+      - createdAt
+      - updatedAt
+      title: OauthApplication
+    OauthApplications:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/OauthApplication"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: OauthApplications
     CargoHoldQuery:
       type: object
       properties:
@@ -8274,6 +8533,16 @@ components:
           format: uuid
       additionalProperties: false
       title: ModelUpgradeQuery
+    OauthApplicationQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        ownerIdEq:
+          type: string
+          format: uuid
+      additionalProperties: false
+      title: OauthApplicationQuery
     UserQuery:
       type: object
       properties:

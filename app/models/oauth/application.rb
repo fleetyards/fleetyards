@@ -23,8 +23,12 @@ module Oauth
   class Application < ApplicationRecord
     include ::Doorkeeper::Orm::ActiveRecord::Mixins::Application
 
-    belongs_to :owner, class_name: "User", foreign_key: :owner_id
+    belongs_to :owner, polymorphic: true, optional: true
 
     encrypts :secret
+
+    def self.policy_class
+      OauthApplicationPolicy
+    end
   end
 end

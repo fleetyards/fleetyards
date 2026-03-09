@@ -55,9 +55,11 @@
       },
       "settings": {
         "index": "Profile Settings",
+        "profile": "Profile Settings",
         "account": "Account",
         "hangar": "Hangar Settings",
         "features": "Feature Flags",
+        "oauthApplications": "OAuth Applications",
         "notifications": "Notification Settings",
         "security": "Account Security",
         "twoFactor": {
@@ -130,6 +132,11 @@
         "fleets": {
           "index": "Fleets",
           "edit": "Edit Fleet"
+        },
+        "oauthApplications": {
+          "index": "OAuth Applications",
+          "new": "New OAuth Application",
+          "edit": "Edit OAuth Application"
         },
         "features": {
           "index": "Feature Flags",

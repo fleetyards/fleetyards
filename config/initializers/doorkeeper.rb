@@ -264,7 +264,7 @@ Doorkeeper.configure do
   # redirects to localhost for example).
   #
   force_ssl_in_redirect_uri do |uri|
-    uri.host != "localhost" || Rails.env.development? || Rails.env.test?
+    uri.host != "localhost" && !Rails.env.development? && !Rails.env.test?
   end
   # force_ssl_in_redirect_uri !Rails.env.development?
   #

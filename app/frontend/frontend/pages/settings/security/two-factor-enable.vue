@@ -24,6 +24,9 @@ import {
   type ValidationError,
 } from "@/services/fyApi";
 import { type ErrorType } from "@/services/axiosClient";
+import { useMetaInfo } from "@/shared/composables/useMetaInfo";
+
+useMetaInfo();
 
 const { t } = useI18n();
 

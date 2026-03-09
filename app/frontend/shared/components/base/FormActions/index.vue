@@ -13,11 +13,13 @@ type Props = {
   formId: string;
   submitting?: boolean;
   dirty?: boolean;
+  hideCancel?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   submitting: false,
   dirty: false,
+  hideCancel: false,
 });
 
 const { t } = useI18n();
@@ -45,6 +47,7 @@ const handleCancel = () => {
     <hr />
     <div class="form-actions__inner">
       <Btn
+        v-if="!hideCancel"
         :type="BtnTypesEnum.BUTTON"
         data-test="submit-cancel"
         @click="handleCancel"

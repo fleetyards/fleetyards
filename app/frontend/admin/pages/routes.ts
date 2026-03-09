@@ -4,6 +4,7 @@ import { routes as componentsRoutes } from "@/admin/pages/components/routes";
 import { routes as fleetsRoutes } from "@/admin/pages/fleets/routes";
 import { routes as vehiclesRoutes } from "@/admin/pages/vehicles/routes";
 import { routes as adminsRoutes } from "@/admin/pages/admins/routes";
+import { routes as oauthApplicationsRoutes } from "@/admin/pages/oauth-applications/routes";
 import { routes as maintenanceRoutes } from "@/admin/pages/maintenance/routes";
 import { routes as usersRoutes } from "@/admin/pages/users/routes";
 import { RouteRecordRaw } from "vue-router";
@@ -117,6 +118,18 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       icon: "fad fa-user-group-crown",
       access: ["admins"],
+    },
+  },
+  {
+    path: "/oauth-applications/",
+    component: () => import("@/admin/pages/oauth-applications.vue"),
+    children: oauthApplicationsRoutes,
+    redirect: { name: oauthApplicationsRoutes[0].name },
+    meta: {
+      title: "admin.oauthApplications.index",
+      needsAuthentication: true,
+      icon: "fad fa-key",
+      access: ["oauth_applications"],
     },
   },
   {

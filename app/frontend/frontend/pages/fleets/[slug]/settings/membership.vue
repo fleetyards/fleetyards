@@ -7,8 +7,8 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
 import { useForm } from "vee-validate";
-import Btn from "@/shared/components/base/Btn/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import FormActions from "@/shared/components/base/FormActions/index.vue";
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import type { FilterOption } from "@/services/fyApi";
 import {
@@ -152,10 +152,11 @@ const onSubmit = handleSubmit(async (values) => {
     submitting.value = false;
   }
 });
+
 </script>
 
 <template>
-  <form @submit.prevent="onSubmit">
+  <form id="fleet-membership-form" @submit.prevent="onSubmit">
     <div class="row">
       <div class="col-12 col-md-6">
         <FormCheckbox
@@ -187,14 +188,10 @@ const onSubmit = handleSubmit(async (values) => {
         />
       </div>
     </div>
-    <hr />
-    <Btn
-      :loading="submitting"
-      type="submit"
-      size="large"
-      data-test="fleet-membership-save"
-    >
-      {{ t("actions.save") }}
-    </Btn>
+    <FormActions
+      :submitting="submitting"
+      form-id="fleet-membership-form"
+      hide-cancel
+    />
   </form>
 </template>

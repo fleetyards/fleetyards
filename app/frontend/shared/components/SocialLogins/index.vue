@@ -35,6 +35,11 @@ const connections = computed(() => {
 const activeProviders = computed(() => {
   return Object.values(OauthBtnProvidersEnum).filter(providerActive);
 });
+
+defineExpose({
+  connections,
+  activeProviders,
+});
 </script>
 
 <template>

@@ -35,5 +35,9 @@ en:
       update: Image could not be updated
     request_password: Request Password failed.
     signup: Signup failed. Please resolve all Errors and try again.
+    oauth_application:
+      create: OAuth application could not be created.
+      update: OAuth application could not be updated.
+      destroy: OAuth application could not be destroyed.
     hangar:
       import: Import failed

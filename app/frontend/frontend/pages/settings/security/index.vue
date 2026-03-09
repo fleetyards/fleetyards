@@ -11,6 +11,9 @@ import { useSessionStore } from "@/frontend/stores/session";
 import { useI18n } from "@/shared/composables/useI18n";
 import SocialLogins from "@/shared/components/SocialLogins/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useMetaInfo } from "@/shared/composables/useMetaInfo";
+
+useMetaInfo();
 
 const sessionStore = useSessionStore();
 
@@ -28,6 +31,8 @@ const generateBackupCodes = () => {
     },
   });
 };
+
+const socialLogins = ref<InstanceType<typeof SocialLogins> | undefined>();
 </script>
 
 <template>
@@ -46,9 +51,9 @@ const generateBackupCodes = () => {
         </div>
       </div>
 
-      <hr />
+      <hr v-if="socialLogins?.activeProviders.length" />
 
-      <SocialLogins :block="false" />
+      <SocialLogins :block="false" ref="socialLogins" />
 
       <hr />
 

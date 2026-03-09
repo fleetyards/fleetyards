@@ -7,16 +7,18 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
+import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useForm } from "vee-validate";
 import { useComlink } from "@/shared/composables/useComlink";
-import { BtnTypesEnum, BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { type UserUpdateInput } from "@/services/fyApi";
 import { useUpdateProfile as useUpdateProfileMutation } from "@/services/fyApi";
+import { useMetaInfo } from "@/shared/composables/useMetaInfo";
+
+useMetaInfo();
 
 const { t } = useI18n();
 
@@ -97,10 +99,11 @@ const onSubmit = handleSubmit(async (values) => {
       submitting.value = false;
     });
 });
+
 </script>
 
 <template>
-  <form @submit.prevent="onSubmit">
+  <form id="settings-profile-form" @submit.prevent="onSubmit">
     <div class="row">
       <div class="col-lg-12">
         <h1>{{ t("headlines.settings.profile") }}</h1>
@@ -182,17 +185,11 @@ const onSubmit = handleSubmit(async (values) => {
           translation-key="guilded"
         />
       </div>
-
-      <div class="col-12">
-        <br />
-        <Btn
-          :loading="submitting"
-          :type="BtnTypesEnum.SUBMIT"
-          :size="BtnSizesEnum.LARGE"
-        >
-          {{ t("actions.save") }}
-        </Btn>
-      </div>
     </div>
+    <FormActions
+      :submitting="submitting"
+      form-id="settings-profile-form"
+      hide-cancel
+    />
   </form>
 </template>

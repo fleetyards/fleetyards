@@ -5,16 +5,18 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import Btn from "@/shared/components/base/Btn/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useForm } from "vee-validate";
-import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import { UserUpdateInput } from "@/services/fyApi";
 import { useUpdateProfile as useUpdateProfileMutation } from "@/services/fyApi";
+import { useMetaInfo } from "@/shared/composables/useMetaInfo";
+
+useMetaInfo();
 
 const { t } = useI18n();
 
@@ -78,10 +80,11 @@ const onSubmit = handleSubmit(async (values) => {
       submitting.value = false;
     });
 });
+
 </script>
 
 <template>
-  <form @submit.prevent="onSubmit">
+  <form id="settings-notifications-form" @submit.prevent="onSubmit">
     <div class="row">
       <div class="col-lg-12">
         <h1>{{ t("headlines.settings.notifications") }}</h1>
@@ -97,13 +100,10 @@ const onSubmit = handleSubmit(async (values) => {
         />
       </div>
     </div>
-    <br />
-    <Btn
-      :loading="submitting"
-      :type="BtnTypesEnum.SUBMIT"
-      :size="BtnSizesEnum.LARGE"
-    >
-      {{ t("actions.save") }}
-    </Btn>
+    <FormActions
+      :submitting="submitting"
+      form-id="settings-notifications-form"
+      hide-cancel
+    />
   </form>
 </template>

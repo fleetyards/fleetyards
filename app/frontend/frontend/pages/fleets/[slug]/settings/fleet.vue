@@ -8,10 +8,15 @@ export default {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useForm } from "vee-validate";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
+import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import {
   type Fleet,
@@ -71,7 +76,7 @@ const validationSchema = {
   name: "required|min:3|alpha_dash",
 };
 
-const { defineField, handleSubmit } = useForm({
+const { defineField, handleSubmit, meta, resetForm } = useForm({
   initialValues: initialValues.value,
 });
 
@@ -130,6 +135,10 @@ const onSubmit = handleSubmit(async (values) => {
     });
 });
 
+const handleCancel = () => {
+  resetForm();
+};
+
 const onDestroy = async () => {
   deleting.value = true;
 
@@ -166,7 +175,7 @@ const onDestroy = async () => {
 </script>
 
 <template>
-  <form @submit.prevent="onSubmit">
+  <form id="fleet-settings-form" @submit.prevent="onSubmit">
     <div class="row">
       <div class="col-12 col-md-4">
         <FormFileInput
@@ -289,23 +298,33 @@ const onDestroy = async () => {
         />
       </div>
     </div>
-    <hr />
-    <Btn
-      :loading="submitting"
-      type="submit"
-      size="large"
-      data-test="fleet-save"
-    >
-      {{ t("actions.save") }}
-    </Btn>
-    <Btn
-      :loading="deleting"
-      size="large"
-      variant="danger"
-      data-test="fleet-delete"
-      @click="onDestroy"
-    >
-      {{ t("actions.delete") }}
-    </Btn>
+    <FormActions
+      :submitting="submitting"
+      form-id="fleet-settings-form"
+      :dirty="meta.dirty || meta.touched"
+      @cancel="handleCancel"
+    />
   </form>
+
+  <hr />
+
+  <div class="row">
+    <div class="col-12">
+      <br />
+      <p>
+        {{ t("labels.fleet.destroyInfo") }}
+      </p>
+      <div class="text-center">
+        <Btn
+          :loading="deleting"
+          :size="BtnSizesEnum.LARGE"
+          :variant="BtnVariantsEnum.DANGER"
+          data-test="fleet-delete"
+          @click="onDestroy"
+        >
+          {{ t("actions.destroyFleet") }}
+        </Btn>
+      </div>
+    </div>
+  </div>
 </template>

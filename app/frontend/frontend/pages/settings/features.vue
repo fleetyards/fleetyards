@@ -18,6 +18,9 @@ import {
   useInvalidateUserFeatures,
   type UserFeature,
 } from "@/frontend/api/userFeatures";
+import { useMetaInfo } from "@/shared/composables/useMetaInfo";
+
+useMetaInfo();
 
 const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();

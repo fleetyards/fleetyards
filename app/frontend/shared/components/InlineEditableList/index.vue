@@ -9,8 +9,7 @@ import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
-import Empty from "@/shared/components/Empty/index.vue";
-import Loader from "@/shared/components/Loader/index.vue";
+import ListGroup from "@/shared/components/ListGroup/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 type Props = {
@@ -102,14 +101,14 @@ defineExpose({
 </script>
 
 <template>
-  <div class="inline-editable-list">
-    <TransitionGroup name="list">
-      <div v-if="creating" key="__create__" class="inline-editable-list__item">
-        <div class="inline-editable-list__row">
+  <ListGroup :items="items" :loading="loading" :empty-name="emptyName">
+    <template #prepend>
+      <div v-if="creating" key="__create__" class="list-group__item">
+        <div class="list-group__row">
           <div class="inline-editable-list__form">
             <slot name="create" />
           </div>
-          <div class="inline-editable-list__actions">
+          <div class="list-group__actions">
             <BtnGroup inline>
               <Btn :size="BtnSizesEnum.SMALL" @click="saveCreate">
                 <i class="fad fa-check" />
@@ -121,69 +120,66 @@ defineExpose({
           </div>
         </div>
       </div>
+    </template>
 
-      <div
-        v-for="item in items"
-        :key="item.id"
-        class="inline-editable-list__item"
-      >
-        <div class="inline-editable-list__row">
-          <template v-if="editingId === item.id">
-            <div class="inline-editable-list__form">
-              <slot name="edit" :item="item" />
-            </div>
-            <div class="inline-editable-list__actions">
-              <BtnGroup inline>
-                <Btn :size="BtnSizesEnum.SMALL" @click="saveEdit">
-                  <i class="fad fa-check" />
-                </Btn>
-                <Btn :size="BtnSizesEnum.SMALL" @click="cancelEdit">
-                  <i class="fad fa-times" />
-                </Btn>
-              </BtnGroup>
-            </div>
-          </template>
-          <template v-else>
-            <div class="inline-editable-list__display">
-              <slot name="display" :item="item" />
-            </div>
-            <div class="inline-editable-list__actions">
-              <BtnGroup inline>
-                <slot name="actions" :item="item" />
-                <Btn
-                  v-if="!hideEdit"
-                  :size="BtnSizesEnum.SMALL"
-                  @click="startEdit(item)"
-                >
-                  <i class="fad fa-pencil" />
-                </Btn>
-                <Btn
-                  v-if="!hideDestroy"
-                  :size="BtnSizesEnum.SMALL"
-                  :variant="BtnVariantsEnum.DANGER"
-                  @click="destroy(item)"
-                >
-                  <i class="fad fa-trash" />
-                </Btn>
-              </BtnGroup>
-            </div>
-          </template>
+    <template #display="{ item }">
+      <template v-if="editingId === item.id">
+        <div class="inline-editable-list__form">
+          <slot name="edit" :item="item" />
         </div>
-        <slot name="expanded" :item="item" />
-      </div>
-    </TransitionGroup>
+      </template>
+      <template v-else>
+        <slot name="display" :item="item" />
+      </template>
+    </template>
 
-    <Loader :loading="loading" />
+    <template #actions="{ item }">
+      <template v-if="editingId === item.id">
+        <BtnGroup inline>
+          <Btn :size="BtnSizesEnum.SMALL" @click="saveEdit">
+            <i class="fad fa-check" />
+          </Btn>
+          <Btn :size="BtnSizesEnum.SMALL" @click="cancelEdit">
+            <i class="fad fa-times" />
+          </Btn>
+        </BtnGroup>
+      </template>
+      <template v-else>
+        <BtnGroup inline>
+          <slot name="actions" :item="item" />
+          <Btn
+            v-if="!hideEdit"
+            :size="BtnSizesEnum.SMALL"
+            @click="startEdit(item)"
+          >
+            <i class="fad fa-pencil" />
+          </Btn>
+          <Btn
+            v-if="!hideDestroy"
+            :size="BtnSizesEnum.SMALL"
+            :variant="BtnVariantsEnum.DANGER"
+            @click="destroy(item)"
+          >
+            <i class="fad fa-trash" />
+          </Btn>
+        </BtnGroup>
+      </template>
+    </template>
 
-    <Empty
-      v-if="!items.length && !creating && !loading"
-      variant="box"
-      hide-actions
-      :name="emptyName"
-    />
-  </div>
+    <template #expanded="{ item }">
+      <slot name="expanded" :item="item" />
+    </template>
+  </ListGroup>
 </template>
 
 <style lang="scss" scoped>
-@import "index";
+.inline-editable-list__form {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+
+  & > * {
+    flex: 1;
+  }
+}
 </style>

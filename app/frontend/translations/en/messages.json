@@ -70,6 +70,27 @@
       "updateAccount": {
         "success": "Account updated."
       },
+      "oauthApplications": {
+        "create": {
+          "success": "OAuth application created.",
+          "error": "Could not create OAuth application."
+        },
+        "update": {
+          "success": "OAuth application updated.",
+          "error": "Could not update OAuth application."
+        },
+        "destroy": {
+          "success": "OAuth application deleted.",
+          "error": "Could not delete OAuth application."
+        },
+        "regenerateSecret": {
+          "success": "Client secret regenerated.",
+          "error": "Could not regenerate client secret."
+        },
+        "copied": "Copied to clipboard.",
+        "copyError": "Could not copy to clipboard.",
+        "secretWarning": "Copy your client secret now. You won't be able to see it again."
+      },
       "avatarUpload": {
         "create": {
           "success": "Avatar uploaded",
@@ -277,6 +298,10 @@
           "invites": {
             "decline": "Are you sure you want to decline this Invite? This Action can't be reverted."
           }
+        },
+        "oauthApplication": {
+          "destroy": "Are you sure you want to delete this OAuth application? This action can't be reverted.",
+          "regenerateSecret": "Are you sure you want to regenerate the client secret? Existing integrations will stop working."
         },
         "twoFactor": {
           "generateBackupCodes": "Are you sure you want to regenerate your Two-factor Backup Codes?"

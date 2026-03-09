@@ -65,6 +65,7 @@
         "notifications": "Notifications",
         "hangar": "Hangar",
         "features": "Features",
+        "oauthApplications": "OAuth Apps",
         "verify": "RSI Account Verification"
       },
       "reload": "Update available!",
@@ -130,6 +131,9 @@
         },
         "admins": {
           "index": "Admins"
+        },
+        "oauthApplications": {
+          "index": "OAuth Apps"
         },
         "maintenance": {
           "index": "Maintenance",

@@ -124,6 +124,11 @@
       "user": {
         "rsiHandle": "RSI Handle"
       },
+      "oauthApplication": {
+        "name": "My Application",
+        "redirectUri": "https://example.com/callback",
+        "scopes": "public"
+      },
       "vehicle": {
         "serial": "Serial (XX-XXXX-XX)"
       },

@@ -83,6 +83,8 @@ v1_admin_api_routes = lambda do
 
   resources :imports, only: %i[index show]
 
+  resources :oauth_applications, path: "oauth-applications", only: %i[index show create update destroy]
+
   resources :features, only: %i[index show] do
     member do
       put :enable

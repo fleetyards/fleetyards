@@ -47,6 +47,28 @@
           "tools_cargo_grids": "Show interactive cargo grid viewer for ships."
         }
       },
+      "oauthApplication": {
+        "name": "Application Name",
+        "clientId": "Client ID",
+        "clientSecret": "Client Secret",
+        "redirectUri": "Redirect URI",
+        "redirectUriHint": "Use one URI per line.",
+        "confidential": "Confidential",
+        "scopes": "Scopes",
+        "scopesHint": "If no scopes are selected, the default scopes will be used: %{scopes}"
+      },
+      "oauthApplications": {
+        "settingsIntro": "Manage your OAuth applications. These applications can access the FleetYards API on behalf of users.",
+        "name": "Application Name",
+        "redirectUri": "Redirect URI",
+        "confidential": "Confidential",
+        "clientId": "Client ID",
+        "clientSecret": "Client Secret",
+        "scopes": "Scopes",
+        "defaultScopes": "Default scopes",
+        "confidentialShort": "Confidential",
+        "publicShort": "Public"
+      },
       "fleetInviteToken": "Fleet Invite",
       "scDataVersion": "Patch Version",
       "lastReload": "Last Reload",
@@ -216,6 +238,7 @@
       "yourFlagship": "Your Flagship",
       "flagship": "Flagship",
       "fleet": {
+        "destroyInfo": "If you want to delete this Fleet and remove all its information from Fleetyards.net click the button below. Be aware that this is a permanent action and can't be reverted.",
         "classes": "Fleet",
         "fid": "Fleet ID",
         "name": "Name",

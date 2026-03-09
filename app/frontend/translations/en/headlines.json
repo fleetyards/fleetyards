@@ -83,6 +83,11 @@
           "new": "New Admin",
           "edit": "Edit Admin"
         },
+        "oauthApplications": {
+          "index": "OAuth Applications",
+          "new": "New OAuth Application",
+          "edit": "Edit OAuth Application"
+        },
         "features": {
           "index": "Feature Flags",
           "show": "Feature Details",
@@ -175,6 +180,7 @@
         "profile": "Profile Settings",
         "hangar": "Hangar Settings",
         "features": "Feature Flags",
+        "oauthApplications": "OAuth Applications",
         "notifications": "Notification Settings",
         "verify": "Verify your RSI Account",
         "security": {
@@ -186,6 +192,10 @@
           "disable": "Disable Two-factor Authentiation",
           "backupCodes": "Generate Two-Factor Backup Codes"
         }
+      },
+      "oauthApplications": {
+        "new": "New OAuth Application",
+        "edit": "Edit OAuth Application"
       },
       "roadmap": "Ship-Roadmap",
       "tools": {

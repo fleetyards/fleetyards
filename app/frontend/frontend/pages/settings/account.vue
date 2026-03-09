@@ -9,6 +9,7 @@ import { useRouter } from "vue-router";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import FormActions from "@/shared/components/base/FormActions/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -19,13 +20,15 @@ import { type AccountUpdateInput } from "@/services/fyApi";
 import {
   BtnVariantsEnum,
   BtnSizesEnum,
-  BtnTypesEnum,
 } from "@/shared/components/base/Btn/types";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import {
   useUpdateAccount as useUpdateAccountMutation,
   useDestroyAccount as useDestroyAccountMutation,
 } from "@/services/fyApi";
+import { useMetaInfo } from "@/shared/composables/useMetaInfo";
+
+useMetaInfo();
 
 const sessionStore = useSessionStore();
 
@@ -143,7 +146,7 @@ const destroy = async () => {
 <template>
   <Heading>{{ t("headlines.settings.account") }}</Heading>
 
-  <form @submit.prevent="updateAccount">
+  <form id="settings-account-form" @submit.prevent="updateAccount">
     <div class="row">
       <div class="col-12 col-md-6">
         <FormInput v-model="username" v-bind="usernameProps" name="username" />
@@ -163,15 +166,13 @@ const destroy = async () => {
           :label="t('labels.user.unconfirmedEmail')"
           :no-placeholder="true"
         />
-        <Btn
-          :loading="submitting"
-          :type="BtnTypesEnum.SUBMIT"
-          :size="BtnSizesEnum.LARGE"
-        >
-          {{ t("actions.save") }}
-        </Btn>
       </div>
     </div>
+    <FormActions
+      :submitting="submitting"
+      form-id="settings-account-form"
+      hide-cancel
+    />
   </form>
 
   <hr />
@@ -182,15 +183,17 @@ const destroy = async () => {
       <p>
         {{ t("labels.account.destroyInfo") }}
       </p>
-      <Btn
-        :loading="deleting"
-        :variant="BtnVariantsEnum.DANGER"
-        :size="BtnSizesEnum.LARGE"
-        data-test="destroy-account"
-        @click="destroy"
-      >
-        {{ t("actions.destroyAccount") }}
-      </Btn>
+      <div class="text-center">
+        <Btn
+          :loading="deleting"
+          :variant="BtnVariantsEnum.DANGER"
+          :size="BtnSizesEnum.LARGE"
+          data-test="destroy-account"
+          @click="destroy"
+        >
+          {{ t("actions.destroyAccount") }}
+        </Btn>
+      </div>
     </div>
   </div>
 </template>

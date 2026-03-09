@@ -36,18 +36,6 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "flipper/",
-    name: "flipper",
-    component: () => import("@/admin/pages/maintenance/flipper.vue"),
-    meta: {
-      title: "admin.maintenance.flipper",
-      icon: "fad fa-sliders",
-      needsAuthentication: true,
-      access: ["features"],
-      href: "/flipper",
-    },
-  },
-  {
     path: "workers/",
     name: "workers",
     component: () => import("@/admin/pages/maintenance/workers.vue"),
