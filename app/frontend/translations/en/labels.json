@@ -995,8 +995,8 @@
         "totalCargo": "Total Cargo",
         "didNotFit": "Did not fit",
         "openInTool": "Open in Cargo Grid Tool",
-        "myHangar": "My Hangar",
-        "filterShips": "Filter Ships"
+        "myHangar": "Show only my Ships",
+        "filterShips": "Filter Ships by Container Size"
       },
       "admin": {
         "dashboard": {

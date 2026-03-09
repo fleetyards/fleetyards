@@ -10,3 +10,15 @@
     margin-bottom: 1rem;
   }
 }
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  &__actions {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 1rem;
+  }
+}

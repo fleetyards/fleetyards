@@ -17,6 +17,7 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
+  id?: string;
   name: string;
   rules?: MaybeRef<RuleExpression<string | number | null>>;
   icon?: string;
@@ -44,6 +45,7 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  id: undefined,
   icon: undefined,
   rules: undefined,
   modelValue: undefined,
@@ -82,7 +84,7 @@ const { t } = useI18n();
 
 const inputElement = ref<HTMLInputElement | undefined>();
 
-const id = ref(`${props.name}-${uuidv4()}`);
+const internalId = ref(`${props.name}-${uuidv4()}`);
 
 const innerStep = computed(() => {
   if (props.type === "number") {
@@ -152,7 +154,11 @@ const cssClasses = computed(() => {
 });
 
 onMounted(() => {
-  id.value = `${props.name}-${uuidv4()}`;
+  if (props.id) {
+    internalId.value = props.id;
+  } else {
+    internalId.value = `${props.name}-${uuidv4()}`;
+  }
 
   if (props.autofocus) {
     inputElement.value?.focus();

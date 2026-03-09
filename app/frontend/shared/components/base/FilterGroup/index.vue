@@ -515,6 +515,7 @@ defineExpose({
       <FormInput
         v-if="searchable"
         ref="searchInput"
+        :id="labelFor"
         v-model="search"
         :name="`${name}-searchInput-${id}`"
         :placeholder="searchPlaceholder"

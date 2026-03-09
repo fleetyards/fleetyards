@@ -178,6 +178,17 @@ const toggleHangarOnly = () => {
   void router.replace({ query });
 };
 
+const resetFilters = () => {
+  hangarOnly.value = false;
+  clearContainers();
+  selectedSlug.value = undefined;
+  selectedModel.value = undefined;
+
+  const query = { ...route.query };
+  delete query.ship;
+  void router.replace({ query });
+};
+
 const onModelSelect = (value: ValueType<Model> | undefined) => {
   selectedSlug.value = (value as string) || undefined;
   if (!value) {
@@ -198,32 +209,37 @@ const onModelSelect = (value: ValueType<Model> | undefined) => {
   <Heading hero>{{ t(`headlines.${route.meta.title}`) }}</Heading>
 
   <div class="row">
-    <div class="col-12 col-md-4">
-      <FilterGroup
-        :key="filterKey"
-        :model-value="selectedSlug"
-        :label="t('labels.selectModel')"
-        :search-label="t('labels.findModel')"
-        :query-fn="fetchCargoModels"
-        :query-response-formatter="formatModels"
-        name="cargo-grid-model"
-        :paginated="true"
-        :searchable="true"
-        :multiple="false"
-        :no-label="false"
-        @update:model-value="onModelSelect"
-      />
-      <Btn
-        v-if="sessionStore.isAuthenticated"
-        :size="BtnSizesEnum.SMALL"
-        :active="hangarOnly"
-        inline
-        @click="toggleHangarOnly"
-      >
-        {{ t("labels.cargoGridViewer.myHangar") }}
-      </Btn>
-    </div>
-    <div class="col-12 col-md-8">
+    <div class="col-12">
+      <div class="filters">
+        <FilterGroup
+          :key="filterKey"
+          :model-value="selectedSlug"
+          :label="t('labels.selectModel')"
+          :search-label="t('labels.findModel')"
+          :query-fn="fetchCargoModels"
+          :query-response-formatter="formatModels"
+          name="cargo-grid-model"
+          :paginated="true"
+          :searchable="true"
+          :multiple="false"
+          no-label
+          @update:model-value="onModelSelect"
+        />
+        <div class="filters__actions">
+          <Btn
+            v-if="sessionStore.isAuthenticated"
+            :size="BtnSizesEnum.SMALL"
+            :active="hangarOnly"
+            inline
+            @click="toggleHangarOnly"
+          >
+            {{ t("labels.cargoGridViewer.myHangar") }}
+          </Btn>
+          <Btn :size="BtnSizesEnum.SMALL" inline @click="resetFilters">
+            {{ t("actions.reset") }}
+          </Btn>
+        </div>
+      </div>
       <div class="container-fields">
         <div
           v-for="size in CONTAINER_SIZES"
