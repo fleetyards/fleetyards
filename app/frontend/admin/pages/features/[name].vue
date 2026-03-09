@@ -19,15 +19,16 @@ import {
   BtnSizesEnum,
 } from "@/shared/components/base/Btn/types";
 import {
-  useFeature,
-  enableFeature,
-  disableFeature,
-  enableFeatureActor,
-  disableFeatureActor,
-  enableFeatureGroup,
-  disableFeatureGroup,
-  useInvalidateFeatures,
-} from "@/admin/api/features";
+  useAdminFeature,
+  getAdminFeaturesQueryKey,
+  enableAdminFeature,
+  disableAdminFeature,
+  enableAdminFeatureActor,
+  disableAdminFeatureActor,
+  enableAdminFeatureGroup,
+  disableAdminFeatureGroup,
+} from "@/services/fyAdminApi";
+import { useQueryClient } from "@tanstack/vue-query";
 
 const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
@@ -35,8 +36,10 @@ const route = useRoute();
 
 const featureName = computed(() => route.params.name as string);
 
-const { data: feature, isLoading } = useFeature(featureName);
-const invalidateFeatures = useInvalidateFeatures();
+const { data: feature, isLoading } = useAdminFeature(featureName);
+const queryClient = useQueryClient();
+const invalidateFeatures = () =>
+  queryClient.invalidateQueries({ queryKey: getAdminFeaturesQueryKey() });
 
 const toggling = ref(false);
 
@@ -45,9 +48,9 @@ const toggleGlobal = async () => {
   toggling.value = true;
   try {
     if (feature.value.state === "on") {
-      await disableFeature(feature.value.name);
+      await disableAdminFeature(feature.value.name);
     } else {
-      await enableFeature(feature.value.name);
+      await enableAdminFeature(feature.value.name);
     }
     await invalidateFeatures();
     displaySuccess({ text: t("messages.features.updated") });
@@ -83,7 +86,10 @@ const addActor = async () => {
 
   addingActor.value = true;
   try {
-    await enableFeatureActor(feature.value.name, actorType.value, actorId);
+    await enableAdminFeatureActor(feature.value.name, {
+      actor_type: actorType.value,
+      actor_id: actorId,
+    });
     await invalidateFeatures();
     selectedUser.value = undefined;
     selectedFleet.value = undefined;
@@ -98,7 +104,10 @@ const addActor = async () => {
 const removeActor = async (type: string, id: string) => {
   if (!feature.value) return;
   try {
-    await disableFeatureActor(feature.value.name, type, id);
+    await disableAdminFeatureActor(feature.value.name, {
+      actor_type: type,
+      actor_id: id,
+    });
     await invalidateFeatures();
     displaySuccess({ text: t("messages.features.actorRemoved") });
   } catch {
@@ -114,7 +123,7 @@ const addGroup = async (group: string) => {
   if (!feature.value) return;
   addingGroup.value = true;
   try {
-    await enableFeatureGroup(feature.value.name, group);
+    await enableAdminFeatureGroup(feature.value.name, { group });
     await invalidateFeatures();
     displaySuccess({ text: t("messages.features.groupAdded") });
   } catch {
@@ -127,7 +136,7 @@ const addGroup = async (group: string) => {
 const removeGroup = async (group: string) => {
   if (!feature.value) return;
   try {
-    await disableFeatureGroup(feature.value.name, group);
+    await disableAdminFeatureGroup(feature.value.name, { group });
     await invalidateFeatures();
     displaySuccess({ text: t("messages.features.groupRemoved") });
   } catch {

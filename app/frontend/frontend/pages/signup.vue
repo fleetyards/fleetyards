@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useForm } from "vee-validate";
-import { transformErrors } from "@/frontend/api/helpers";
+import { transformErrors } from "@/frontend/utils/transformErrors";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useFleetStore } from "@/frontend/stores/fleet";

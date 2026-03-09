@@ -11,7 +11,7 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { transformErrors } from "@/frontend/api/helpers";
+import { transformErrors } from "@/frontend/utils/transformErrors";
 import {
   type Vehicle,
   type VehicleUpdateInput,

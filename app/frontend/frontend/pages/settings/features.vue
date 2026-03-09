@@ -13,11 +13,12 @@ import BasePill from "@/shared/components/base/Pill/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
   useUserFeatures,
+  getUserFeaturesQueryKey,
   enableUserFeature,
   disableUserFeature,
-  useInvalidateUserFeatures,
   type UserFeature,
-} from "@/frontend/api/userFeatures";
+} from "@/services/fyApi";
+import { useQueryClient } from "@tanstack/vue-query";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 
 useMetaInfo();
@@ -26,7 +27,9 @@ const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
 
 const { data: features, isLoading } = useUserFeatures();
-const invalidateUserFeatures = useInvalidateUserFeatures();
+const queryClient = useQueryClient();
+const invalidateUserFeatures = () =>
+  queryClient.invalidateQueries({ queryKey: getUserFeaturesQueryKey() });
 
 interface FeatureItem extends UserFeature {
   id: string;

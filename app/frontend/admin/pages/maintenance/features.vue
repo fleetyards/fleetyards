@@ -15,23 +15,26 @@ import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import UserFilterGroup from "@/admin/components/base/UserFilterGroup/index.vue";
 import FleetFilterGroup from "@/admin/components/base/FleetFilterGroup/index.vue";
 import {
-  useFeatures,
-  enableFeature,
-  disableFeature,
-  enableFeatureActor,
-  disableFeatureActor,
-  enableFeatureGroup,
-  disableFeatureGroup,
-  toggleSelfService,
-  useInvalidateFeatures,
+  useAdminFeatures,
+  getAdminFeaturesQueryKey,
+  enableAdminFeature,
+  disableAdminFeature,
+  enableAdminFeatureActor,
+  disableAdminFeatureActor,
+  enableAdminFeatureGroup,
+  disableAdminFeatureGroup,
+  toggleAdminFeatureSelfService,
   type Feature,
-} from "@/admin/api/features";
+} from "@/services/fyAdminApi";
+import { useQueryClient } from "@tanstack/vue-query";
 
 const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
 
-const { data: features, isLoading } = useFeatures();
-const invalidateFeatures = useInvalidateFeatures();
+const { data: features, isLoading } = useAdminFeatures();
+const queryClient = useQueryClient();
+const invalidateFeatures = () =>
+  queryClient.invalidateQueries({ queryKey: getAdminFeaturesQueryKey() });
 
 interface FeatureItem extends Feature {
   id: string;
@@ -63,9 +66,9 @@ const availableGroups = ["testers", "admins"];
 const toggleFeature = async (feature: FeatureItem) => {
   try {
     if (feature.state === "on") {
-      await disableFeature(feature.name);
+      await disableAdminFeature(feature.name);
     } else {
-      await enableFeature(feature.name);
+      await enableAdminFeature(feature.name);
     }
     await invalidateFeatures();
     displaySuccess({ text: t("messages.features.updated") });
@@ -80,7 +83,10 @@ const addActor = async (feature: FeatureItem) => {
   if (!actorId) return;
 
   try {
-    await enableFeatureActor(feature.name, editActorType.value, actorId);
+    await enableAdminFeatureActor(feature.name, {
+      actor_type: editActorType.value,
+      actor_id: actorId,
+    });
     await invalidateFeatures();
     selectedUser.value = undefined;
     selectedFleet.value = undefined;
@@ -92,7 +98,10 @@ const addActor = async (feature: FeatureItem) => {
 
 const removeActor = async (featureName: string, type: string, id: string) => {
   try {
-    await disableFeatureActor(featureName, type, id);
+    await disableAdminFeatureActor(featureName, {
+      actor_type: type,
+      actor_id: id,
+    });
     await invalidateFeatures();
     displaySuccess({ text: t("messages.features.actorRemoved") });
   } catch {
@@ -102,7 +111,7 @@ const removeActor = async (featureName: string, type: string, id: string) => {
 
 const addGroup = async (featureName: string, group: string) => {
   try {
-    await enableFeatureGroup(featureName, group);
+    await enableAdminFeatureGroup(featureName, { group });
     await invalidateFeatures();
     displaySuccess({ text: t("messages.features.groupAdded") });
   } catch {
@@ -112,7 +121,7 @@ const addGroup = async (featureName: string, group: string) => {
 
 const removeGroup = async (featureName: string, group: string) => {
   try {
-    await disableFeatureGroup(featureName, group);
+    await disableAdminFeatureGroup(featureName, { group });
     await invalidateFeatures();
     displaySuccess({ text: t("messages.features.groupRemoved") });
   } catch {
@@ -122,7 +131,7 @@ const removeGroup = async (featureName: string, group: string) => {
 
 const toggleSelfServiceFlag = async (feature: FeatureItem) => {
   try {
-    await toggleSelfService(feature.name);
+    await toggleAdminFeatureSelfService(feature.name);
     await invalidateFeatures();
     displaySuccess({ text: t("messages.features.updated") });
   } catch {

@@ -3647,6 +3647,101 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Stats"
+  "/user-features/{id}/disable":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
+    put:
+      summary: Disable User Feature
+      operationId: disableUserFeature
+      tags:
+      - UserFeatures
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/UserFeature"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/user-features/{id}/enable":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
+    put:
+      summary: Enable User Feature
+      operationId: enableUserFeature
+      tags:
+      - UserFeatures
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/UserFeature"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/user-features":
+    get:
+      summary: User Feature Flags
+      operationId: userFeatures
+      tags:
+      - UserFeatures
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/UserFeature"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/users/check-email":
     post:
       summary: Check E-Mail Availability
@@ -8812,6 +8907,18 @@ components:
       - createdAt
       - updatedAt
       title: User
+    UserFeature:
+      type: object
+      properties:
+        name:
+          type: string
+        enabled:
+          type: boolean
+      additionalProperties: false
+      required:
+      - name
+      - enabled
+      title: UserFeature
     UserPublic:
       type: object
       properties:

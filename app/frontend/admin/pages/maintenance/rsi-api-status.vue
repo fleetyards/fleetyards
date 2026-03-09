@@ -18,10 +18,11 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
   useRsiRequestLogs,
+  getRsiRequestLogsQueryKey,
   resolveRsiRequestLog,
-  useInvalidateRsiRequestLogs,
   type RsiRequestLog,
-} from "@/admin/api/rsiRequestLogs";
+} from "@/services/fyAdminApi";
+import { useQueryClient } from "@tanstack/vue-query";
 
 const { t, l } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
@@ -40,7 +41,9 @@ const {
   ...asyncStatus
 } = useRsiRequestLogs(queryParams);
 
-const invalidate = useInvalidateRsiRequestLogs();
+const queryClient = useQueryClient();
+const invalidate = () =>
+  queryClient.invalidateQueries({ queryKey: getRsiRequestLogsQueryKey() });
 
 const columns: BaseTableCol<RsiRequestLog>[] = [
   {

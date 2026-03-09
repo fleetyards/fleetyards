@@ -13,7 +13,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { type FleetCreateInput, type ValidationError } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
-import { transformErrors } from "@/frontend/api/helpers";
+import { transformErrors } from "@/frontend/utils/transformErrors";
 import { useCreateFleet as useCreateFleetMutation } from "@/services/fyApi";
 import { AxiosError } from "axios";
 

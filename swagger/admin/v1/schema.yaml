@@ -641,6 +641,361 @@ paths:
             schema:
               "$ref": "#/components/schemas/DockInput"
         required: true
+  "/features/{id}/disable-actor":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
+    put:
+      summary: Disable Feature for Actor
+      operationId: disableAdminFeatureActor
+      tags:
+      - Features
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Feature"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FeatureActorInput"
+  "/features/{id}/disable-group":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
+    put:
+      summary: Disable Feature for Group
+      operationId: disableAdminFeatureGroup
+      tags:
+      - Features
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Feature"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FeatureGroupInput"
+  "/features/{id}/disable":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
+    put:
+      summary: Disable Feature
+      operationId: disableAdminFeature
+      tags:
+      - Features
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Feature"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/features/{id}/enable-actor":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
+    put:
+      summary: Enable Feature for Actor
+      operationId: enableAdminFeatureActor
+      tags:
+      - Features
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Feature"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FeatureActorInput"
+  "/features/{id}/enable-group":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
+    put:
+      summary: Enable Feature for Group
+      operationId: enableAdminFeatureGroup
+      tags:
+      - Features
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Feature"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FeatureGroupInput"
+  "/features/{id}/enable":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
+    put:
+      summary: Enable Feature
+      operationId: enableAdminFeature
+      tags:
+      - Features
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Feature"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/features":
+    get:
+      summary: Features list
+      operationId: adminFeatures
+      tags:
+      - Features
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Feature"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/features/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
+    get:
+      summary: Feature Detail
+      operationId: adminFeature
+      tags:
+      - Features
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Feature"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/features/{id}/toggle-self-service":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
+    put:
+      summary: Toggle Feature Self-Service
+      operationId: toggleAdminFeatureSelfService
+      tags:
+      - Features
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Feature"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/fleets":
     post:
       summary: Create Fleet
@@ -3255,6 +3610,78 @@ paths:
             schema:
               "$ref": "#/components/schemas/OauthApplicationUpdateInput"
         required: true
+  "/rsi-request-logs":
+    get:
+      summary: RSI Request Logs list
+      operationId: rsiRequestLogs
+      tags:
+      - RsiRequestLogs
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 25
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: cacheId
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/RsiRequestLogs"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/rsi-request-logs/{id}/resolve":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: RSI Request Log id
+      required: true
+    put:
+      summary: Resolve RSI Request Log
+      operationId: resolveRsiRequestLog
+      tags:
+      - RsiRequestLogs
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/RsiRequestLog"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/sessions":
     post:
       summary: create session
@@ -5730,6 +6157,46 @@ components:
       - meta
       - items
       title: Docks
+    Feature:
+      type: object
+      properties:
+        name:
+          type: string
+        state:
+          type: string
+        selfService:
+          type: boolean
+        groups:
+          type: array
+          items:
+            type: string
+        actors:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FeatureActor"
+      additionalProperties: false
+      required:
+      - name
+      - state
+      - selfService
+      - groups
+      - actors
+      title: Feature
+    FeatureActor:
+      type: object
+      properties:
+        type:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+      additionalProperties: false
+      required:
+      - type
+      - id
+      - name
+      title: FeatureActor
     Fleet:
       type: object
       properties:
@@ -6075,6 +6542,27 @@ components:
           nullable: true
       additionalProperties: false
       title: DockInput
+    FeatureActorInput:
+      type: object
+      properties:
+        actor_type:
+          type: string
+        actor_id:
+          type: string
+      additionalProperties: false
+      required:
+      - actor_type
+      - actor_id
+      title: FeatureActorInput
+    FeatureGroupInput:
+      type: object
+      properties:
+        group:
+          type: string
+      additionalProperties: false
+      required:
+      - group
+      title: FeatureGroupInput
     FleetInput:
       type: object
       properties:
@@ -8658,6 +9146,44 @@ components:
           "$ref": "#/components/schemas/VideoTypeEnum"
       additionalProperties: false
       title: VideoQuery
+    RsiRequestLog:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        url:
+          type: string
+        resolved:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - url
+      - resolved
+      - createdAt
+      - updatedAt
+      title: RsiRequestLog
+    RsiRequestLogs:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/RsiRequestLog"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: RsiRequestLogs
     Stats:
       type: object
       properties:
