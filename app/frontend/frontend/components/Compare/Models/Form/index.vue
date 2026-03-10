@@ -7,7 +7,6 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import Starship42Btn from "@/frontend/components/Starship42Btn/index.vue";
 import ModelFilterGroup from "@/frontend/components/base/ModelFilterGroup/index.vue";
 import { useCompareModelFilters } from "@/frontend/composables/useCompareModelFilters";
 import { type Model } from "@/services/fyApi";
@@ -113,7 +112,6 @@ const handleChange = (model: string) => {
       <i />
       {{ t("labels.hardpoints.spviewer") }}
     </Btn>
-    <Starship42Btn :items="models" with-icon block inline />
   </div>
 </template>
 

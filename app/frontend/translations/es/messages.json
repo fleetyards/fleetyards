@@ -202,7 +202,7 @@
           "destroy": "¿Estás seguro de que quieres eliminar este Grupo de tu Hangar?"
         },
         "hangar": {
-          "import": "Las naves importadas se añadirán a tu Hangar sin coincidir con las Naves existentes.<br><br>Los formatos soportados son: Exportación de Fleetyards, Starship42 o HangarXplor.<br><br>¿Quieres continuar?",
+          "import": "Las naves importadas se añadirán a tu Hangar sin coincidir con las Naves existentes.<br><br>Los formatos soportados son: Exportación de Fleetyards o HangarXplor.<br><br>¿Quieres continuar?",
           "destroySelected": "¿Estás seguro de que quieres eliminar todas las Naves Seleccionadas de tu Hangar? Esta acción no se puede revertir.",
           "destroyAll": "¿Estás seguro de que quieres eliminar todas las Naves de tu Hangar? Esta acción no se puede revertir."
         },

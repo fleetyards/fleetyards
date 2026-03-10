@@ -10,7 +10,6 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/index.vue";
 import FleetChartStatusBtn from "@/frontend/components/FleetChartStatusBtn/index.vue";
-import Starship42Btn from "@/frontend/components/Starship42Btn/index.vue";
 import CommunityLogo from "@/shared/components/CommunityLogo/index.vue";
 import FleetchartItem from "./Item/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
@@ -213,8 +212,6 @@ const drawGridLines = async () => {
   <div class="row fleetchart-list">
     <div class="col-12 fleetchart-wrapper">
       <div class="fleetchart-controls">
-        <Starship42Btn v-if="!mobile" size="small" :items="items" />
-
         <BtnDropdown size="small">
           <template #label>
             <template v-if="!mobile">
@@ -248,13 +245,6 @@ const drawGridLines = async () => {
 
             <hr />
           </template>
-
-          <Starship42Btn
-            v-if="mobile"
-            :items="items"
-            size="small"
-            :with-icon="true"
-          />
 
           <Btn size="small" @click="toggleLabels">
             <i class="fad fa-tags" />

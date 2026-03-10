@@ -202,7 +202,7 @@
           "destroy": "Bist du sicher, dass du diese Gruppe aus deinem Hangar entfernen möchtest?"
         },
         "hangar": {
-          "import": "Importierte Schiffe werden zu deinem Hangar hinzugefügt, ohne sie mit vorhandenen Schiffen abzugleichen.<br><br>Unterstützte Formate sind: Fleetyards Export, Starship42 oder HangarXplor.<br><br>Möchtest du fortfahren?",
+          "import": "Importierte Schiffe werden zu deinem Hangar hinzugefügt, ohne sie mit vorhandenen Schiffen abzugleichen.<br><br>Unterstützte Formate sind: Fleetyards Export oder HangarXplor.<br><br>Möchtest du fortfahren?",
           "destroySelected": "Bist du sicher, dass du alle ausgewählten Schiffe aus deinem Hangar entfernen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
           "destroyAll": "Bist du sicher, dass du alle Schiffe aus deinem Hangar entfernen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
         },

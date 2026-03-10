@@ -12,7 +12,6 @@ import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/index.vue";
 import FleetChartStatusBtn from "@/frontend/components/FleetChartStatusBtn/index.vue";
 import debounce from "lodash.debounce";
-import Starship42Btn from "@/frontend/components/Starship42Btn/index.vue";
 import CommunityLogo from "@/shared/components/CommunityLogo/index.vue";
 import FleetchartItem from "./Item/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
@@ -479,8 +478,6 @@ const imageMaxWidth = (item: Vehicle | Model | VehiclePublic) => {
   <div class="row fleetchart-list-panzoom">
     <div class="col-12 fleetchart-wrapper">
       <div class="fleetchart-controls">
-        <Starship42Btn v-if="!mobile" size="small" :items="items" />
-
         <BtnDropdown size="small">
           <template #label>
             <template v-if="!mobile">
@@ -541,13 +538,6 @@ const imageMaxWidth = (item: Vehicle | Model | VehiclePublic) => {
 
             <hr />
           </template>
-
-          <Starship42Btn
-            v-if="mobile"
-            :items="items"
-            size="small"
-            :with-icon="true"
-          />
 
           <Btn size="small" @click="toggleLabels">
             <i class="fad fa-tags" />

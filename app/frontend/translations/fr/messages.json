@@ -202,7 +202,7 @@
           "destroy": "Êtes-vous sûr de vouloir supprimer ce groupe de votre Hangar ?"
         },
         "hangar": {
-          "import": "Les vaisseaux importés seront ajoutés à votre Hangar sans correspondance avec les vaisseaux existants.<br><br>Les formats supportés sont : Fleetyards Export, Starship42 ou HangarXplor.<br><br>Voulez-vous continuer ?",
+          "import": "Les vaisseaux importés seront ajoutés à votre Hangar sans correspondance avec les vaisseaux existants.<br><br>Les formats supportés sont : Fleetyards Export ou HangarXplor.<br><br>Voulez-vous continuer ?",
           "destroySelected": "Êtes-vous sûr de vouloir supprimer tous les vaisseaux sélectionnés de votre Hangar ? Cette action ne peut pas être annulée.",
           "destroyAll": "Êtes-vous sûr de vouloir supprimer tous les vaisseaux de votre Hangar ? Cette action ne peut pas être annulée."
         },

@@ -235,7 +235,7 @@
           "destroy": "您确定要从机库中移除这个群组吗？"
         },
         "hangar": {
-          "import": "导入的飞船将被添加到您的机库中，而不会与现有飞船进行匹配。<br><br>支持的格式：Fleetyards 导出、Starship42 或 HangarXplor。<br><br>您想继续吗？",
+          "import": "导入的飞船将被添加到您的机库中，而不会与现有飞船进行匹配。<br><br>支持的格式：Fleetyards 导出 或 HangarXplor。<br><br>您想继续吗？",
           "destroySelected": "您确定要从机库中移除所有选定的飞船吗？此操作无法撤销。",
           "destroyAll": "您确定要从机库中移除所有飞船吗？此操作无法撤销。"
         },
