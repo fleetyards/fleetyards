@@ -4,7 +4,7 @@
   "category": "weapons",
   "type": "Missile",
   "sub_type": "Rocket",
-  "size": "9",
+  "size": "0",
   "grade": "1",
   "manufacturer_ref": "67fd3077-ee8c-4a7c-8bad-91500b2a9509",
   "name": "Nova Pyrotechnica Venom Rocket",
@@ -19,6 +19,6 @@
     }
   },
   "durability": {
-    "health": 100.0
+    "health": 1000.0
   }
 }

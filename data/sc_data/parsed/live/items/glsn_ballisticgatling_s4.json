@@ -1,0 +1,63 @@
+{
+  "key": "GLSN_BallisticGatling_S4",
+  "ref": "353a4aae-1fb1-470c-a38c-2ca32e61bb12",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "768b4380-6486-4187-8c22-bc3deaf80770",
+  "name": "Breakneck S4 Gatling",
+  "short_name": "Breakneck",
+  "description": "Manufacturer: Unknown\\nItem Type: Ballistic Gatling\\nSize: 4\\n\\nWhile the exact origins and designer are unknown, the Breakneck is built off an existing ballistic gatling then modified to cause more mayhem. When the Breakneck starts shooting, the fun begins.",
+  "inventory_consumption": {
+    "micro_scu": 756000.0,
+    "dimensions": {
+      "x": 0.6699014,
+      "y": 4.422015,
+      "z": 1.202842
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1800.0
+  },
+  "ammunition": {
+    "max_ammo_count": 10500.0,
+    "initial_ammo_count": 10500.0,
+    "max_restock_count": 3.0
+  }
+}

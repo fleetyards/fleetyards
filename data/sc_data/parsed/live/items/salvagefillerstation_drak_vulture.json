@@ -6,7 +6,7 @@
   "sub_type": null,
   "size": "1",
   "grade": "1",
-  "manufacturer_ref": "6116471c-891d-4830-8968-650b6deafc00",
+  "manufacturer_ref": null,
   "name": null,
   "short_name": null,
   "description": null,
@@ -23,17 +23,13 @@
       "name": "hardpoint_salvage_refill",
       "min_size": "0",
       "max_size": "0",
-      "types": [
-
-      ]
+      "types": []
     },
     {
       "name": "hardpoint_salvage_crate",
       "min_size": "0",
       "max_size": "0",
-      "types": [
-
-      ]
+      "types": []
     }
   ]
 }

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Guardian_MX_Black_White_Red",
+  "ref": "4f8c2158-24ab-4afe-9087-cae704370530",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "67491806-1b03-483c-a97c-3bfc06127579",
+  "name": "Guardian Vector Livery",
+  "short_name": null,
+  "description": "Contrasting whites, reds, and blacks create strikingly angular design on the Vector livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

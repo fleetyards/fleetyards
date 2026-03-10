@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "16.1",
     "base_expediting_fee": "19595"
   },
-  "mass": 97858.0,
+  "mass": 3275858.0,
   "metrics": {
     "x": 126.0,
     "y": 74.0,
@@ -182,7 +182,7 @@
     },
     {
       "name": "hardpoint_engineeringscreen",
-      "ref": "26cd663d-9c7b-4ef6-8d08-e75ef0c43695",
+      "ref": "878ae63f-4076-42ab-bab2-861ff7988045",
       "key": null
     },
     {
@@ -237,18 +237,13 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": "a8d5784b-5abc-4ab0-9256-b1491b6d3eae",
+          "ref": "59346c37-671d-4aae-9eff-d38e13caa9c0",
           "key": null
         }
       ]
     },
     {
       "name": "hardpoint_quantum_fuel",
-      "ref": "69bd0212-7362-49a4-b476-54af2be9e8b7",
-      "key": null
-    },
-    {
-      "name": "hardpoint_quantum_fuel_2",
       "ref": "69bd0212-7362-49a4-b476-54af2be9e8b7",
       "key": null
     },
@@ -271,9 +266,7 @@
       "name": "hardpoint_seat_pilot",
       "ref": "da44c54e-9b10-4205-926d-c28319d48690",
       "key": null,
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_copilot_access_l",
@@ -284,9 +277,7 @@
       "name": "hardpoint_seat_copilot_l",
       "ref": "02e461f4-6f2a-449a-bd34-b1dca7d92d18",
       "key": null,
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_copilot_access_r",
@@ -297,9 +288,7 @@
       "name": "hardpoint_seat_copilot_r",
       "ref": "02e461f4-6f2a-449a-bd34-b1dca7d92d18",
       "key": null,
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_access_bridge_l",
@@ -310,9 +299,7 @@
       "name": "hardpoint_seat_bridge_l",
       "ref": "8afb9e60-a7e0-45d1-8c8c-5868e67cfc3e",
       "key": null,
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_access_bridge_r",
@@ -323,9 +310,7 @@
       "name": "hardpoint_seat_bridge_r",
       "ref": "b717a51f-bf61-4797-925f-a2e14cee3f8f",
       "key": null,
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_console_access",
@@ -336,9 +321,7 @@
       "name": "hardpoint_console",
       "ref": "2edc20db-08f3-4db3-85aa-e4931a6b9bbc",
       "key": null,
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_turret_left_seat_access",
@@ -457,9 +440,7 @@
       "name": "hardpoint_cart_console",
       "ref": "14dc4406-18a6-4056-9ca3-061da42f24e9",
       "key": null,
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_drone_access_l",
@@ -470,9 +451,7 @@
       "name": "hardpoint_seat_drone_l",
       "ref": "4d10317a-83e6-4fa8-a3d9-259bc3db85db",
       "key": null,
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_drone_access_r",
@@ -483,9 +462,7 @@
       "name": "hardpoint_seat_drone_r",
       "ref": "22712725-9ffb-4fbe-84dd-282bdf23cbb4",
       "key": null,
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_thruster_main_left_large",
@@ -737,6 +714,56 @@
       "name": "hardpoint_landing_system",
       "ref": "613bf1ef-7882-4e8a-9017-35e9e1af0687",
       "key": null
+    },
+    {
+      "name": "hardpoint_blastshield",
+      "ref": null,
+      "key": "Door_Ship_Exterior_ANVL_Carrack_Blastshield"
+    },
+    {
+      "name": "hardpoint_cargo_pod_01_L",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenReverse_ANVL_Cargopod_Left"
+    },
+    {
+      "name": "hardpoint_cargo_pod_01_R",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenReverse_ANVL_Cargopod_Right"
+    },
+    {
+      "name": "hardpoint_cargo_pod_02_L",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenReverse_ANVL_Cargopod_Left"
+    },
+    {
+      "name": "hardpoint_cargo_pod_02_R",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenReverse_ANVL_Cargopod_Right"
+    },
+    {
+      "name": "hardpoint_cargo_pod_03_L",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenReverse_ANVL_Cargopod_Left"
+    },
+    {
+      "name": "hardpoint_cargo_pod_03_R",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenReverse_ANVL_Cargopod_Right"
+    },
+    {
+      "name": "hardpoint_cargo_pod_01",
+      "ref": null,
+      "key": "Anvl_Carrack_Cargopod"
+    },
+    {
+      "name": "hardpoint_cargo_pod_02",
+      "ref": null,
+      "key": "Anvl_Carrack_Cargopod"
+    },
+    {
+      "name": "hardpoint_cargo_pod_03",
+      "ref": null,
+      "key": "Anvl_Carrack_Cargopod"
     }
   ]
 }

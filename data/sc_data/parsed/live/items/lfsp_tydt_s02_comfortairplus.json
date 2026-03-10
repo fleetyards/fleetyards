@@ -7,9 +7,9 @@
   "size": "2",
   "grade": "3",
   "manufacturer_ref": "a2a97679-2a6e-4e89-80d8-439c88a01427",
-  "name": null,
+  "name": "ComfortAir Plus",
   "short_name": null,
-  "description": null,
+  "description": "Item Type: Life Support\\nManufacturer: Tyler Design & Tech \\nSize: 2\\nGrade: C\\nClass: Civilian\\n\\nDesigned to be able to process atmosphere to above UEE standards, the ComfortAir life support system from Tyler Design & Tech provides you and your crew with a clean and comfortable environment.",
   "inventory_consumption": {
     "micro_scu": 0.0,
     "dimensions": {
@@ -49,28 +49,22 @@
       "name": "$slot_01",
       "key": null,
       "ref": "b44ec4bd-854d-48ef-9ac1-c4183edf1d0a",
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "$slot_02",
       "key": null,
       "ref": "b44ec4bd-854d-48ef-9ac1-c4183edf1d0a",
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "$slot_03",
       "key": null,
-      "ref": "b44ec4bd-854d-48ef-9ac1-c4183edf1d0a",
-      "default_loadout": [
-
-      ]
+      "ref": null,
+      "default_loadout": []
     }
   ],
   "durability": {
-    "health": 700.0
+    "health": 410.0
   }
 }

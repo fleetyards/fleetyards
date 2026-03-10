@@ -7,9 +7,9 @@
   "size": "1",
   "grade": "1",
   "manufacturer_ref": "99dc08db-37b5-48c7-88c8-0a3d78d9f425",
-  "name": null,
+  "name": "Starlancer Snowcap Livery",
   "short_name": null,
-  "description": null,
+  "description": "The dynamic stylings of the Snowcap livery gives the Starlancer a white front with a crisp shift to black in the back.",
   "inventory_consumption": {
     "micro_scu": 24000.0,
     "dimensions": {

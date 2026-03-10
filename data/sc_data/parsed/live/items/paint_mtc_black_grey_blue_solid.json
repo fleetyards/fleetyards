@@ -1,0 +1,21 @@
+{
+  "key": "Paint_MTC_Black_Grey_Blue_Solid",
+  "ref": "047ae622-d622-4d72-9482-008ab7d9600d",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "3bc8e00f-1e19-44ef-a1c1-f21c98cb82b1",
+  "name": "MTC Moonstone Livery",
+  "short_name": null,
+  "description": "Crisp, metallic blue with grey and black highlights provide the Moonstone livery a spirited look for the MTC, which can also be applied to other Greycat M-Series vehicles.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

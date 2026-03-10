@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Zeus_GoblinG_H_Black_Yellow",
+  "ref": "09cfd63f-25e8-46cb-ba5f-843faf4f1c33",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ff4581f4-cecb-473a-9000-01f422ab7666",
+  "name": "Zeus Hurston Livery",
+  "short_name": null,
+  "description": "The Hurston livery for the Zeus features the company's logo atop a grey base paint with yellow highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

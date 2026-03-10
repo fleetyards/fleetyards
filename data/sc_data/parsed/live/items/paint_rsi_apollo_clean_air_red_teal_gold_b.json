@@ -1,0 +1,21 @@
+{
+  "key": "Paint_RSI_Apollo_Clean_Air_Red_Teal_Gold_B",
+  "ref": "1346454b-ba8e-469c-b38c-cfd8a97d6080",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1f415388-1c55-4527-8e55-574f41c57921",
+  "name": "Apollo Alliance Aid Red & Gold Livery",
+  "short_name": null,
+  "description": "Showcase your dedication to helping Alliance Aid assist the people of Levski during their time of need with this red livery with golden accents.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

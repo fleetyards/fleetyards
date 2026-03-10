@@ -3,7 +3,7 @@
   "ref": "b74c05cb-0f60-403a-92cf-663a12268830",
   "category": "weapons",
   "type": "Missile",
-  "sub_type": "Missile",
+  "sub_type": "Torpedo",
   "size": "5",
   "grade": "1",
   "manufacturer_ref": "587fcede-4fe9-4fb4-85ec-124abc8542b0",
@@ -19,6 +19,6 @@
     }
   },
   "durability": {
-    "health": 28.0
+    "health": 50.0
   }
 }

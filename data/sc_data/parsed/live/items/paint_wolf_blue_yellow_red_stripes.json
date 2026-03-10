@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Wolf_Blue_Yellow_Red_Stripes",
+  "ref": "c3e7a9e5-9782-4fdb-849f-86f8eb40e1a0",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1229df54-6392-4f0e-9b38-092a5a67cc55",
+  "name": "Wolf Heatsink Livery",
+  "short_name": null,
+  "description": "The Heatsink livery features a two-tone striped blue base paint with bold yellow and red highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

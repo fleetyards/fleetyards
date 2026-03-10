@@ -6,8 +6,8 @@
   "min_crew": "1",
   "name": "Origin X1 Force",
   "description": "Manufacturer: Origin Jumpworks\\nFocus: Pathfinder\\n\\nBuilt to endure tougher environments and look good doing it, the X1 Force is a modified version of the base X1 model featuring additional defensive elements to toughen up this speedy and agile open-canopy bike, allowing it to serve in a variety of roles, from exploring worlds to potential security infiltration ops.",
-  "career": "Personal Transport",
-  "role": "Transport",
+  "career": "Combat",
+  "role": "Passenger",
   "insurance": {
     "base_wait_time_minutes": "0.15",
     "mandatory_wait_time_minutes": "0.05",

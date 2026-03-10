@@ -23,25 +23,19 @@
       "name": "hardpoint_ext_bot",
       "min_size": "1",
       "max_size": "1",
-      "types": [
-
-      ]
+      "types": []
     },
     {
       "name": "hardpoint_ext",
       "min_size": "1",
       "max_size": "1",
-      "types": [
-
-      ]
+      "types": []
     },
     {
       "name": "hardpoint_frame",
       "min_size": "1",
       "max_size": "1",
-      "types": [
-
-      ]
+      "types": []
     },
     {
       "name": "IP_Exterior",
@@ -57,9 +51,7 @@
       "name": "IP_Exterior",
       "key": "ControlPanel_Screen_DoorControl_9x16_Small_ANVL_Pisces",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     }
   ],
   "durability": {

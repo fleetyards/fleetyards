@@ -74,6 +74,14 @@
       "types": [
         "Missile"
       ]
+    },
+    {
+      "name": "hardpoint_inner_tube",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
     }
   ],
   "durability": {

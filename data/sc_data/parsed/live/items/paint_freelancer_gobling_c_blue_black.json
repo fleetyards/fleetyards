@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Freelancer_GoblinG_C_Blue_Black",
+  "ref": "c9f9a3ca-a1e5-4d37-9791-f79442ba3820",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a0accdbc-f869-4cc1-8d7e-d52a337c64f0",
+  "name": "Freelancer Crusader Livery",
+  "short_name": null,
+  "description": "The Crusader livery for the Freelancer features the company's logo atop a light blue base paint with black and white highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

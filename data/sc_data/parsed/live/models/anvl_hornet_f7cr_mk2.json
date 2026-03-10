@@ -7,13 +7,13 @@
   "name": "Anvil F7C-R Hornet Tracker Mk II",
   "description": "Manufacturer: Anvil Aerospace\\nFocus: Pathfinder\\n \\nWhen seeking the next great frontier, who better to trust than a next-generation pathfinder? The F7C-R Hornet Tracker Mk II boasts an overhauled radar suite ideal for deep-space explorers who require depth and accuracy in their scan packages.",
   "career": "Combat",
-  "role": "Medium Fighter",
+  "role": "Pathfinder",
   "insurance": {
     "base_wait_time_minutes": "9.33",
     "mandatory_wait_time_minutes": "2.33",
     "base_expediting_fee": "4070"
   },
-  "mass": 73317.0,
+  "mass": 66117.0,
   "metrics": {
     "x": 22.0,
     "y": 22.5,
@@ -187,8 +187,8 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": null,
-          "key": "JDRV_TARS_S01_C_Explorer"
+          "ref": "c8797bce-6220-4d1e-bc6d-23da4a366a6d",
+          "key": null
         }
       ]
     },

@@ -1,0 +1,24 @@
+{
+  "key": "MISL_S12_EM_BEHR_Executor",
+  "ref": "f3a369d7-b39a-4ab0-9265-224d994bb5bd",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "Torpedo",
+  "size": "12",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "EX-T12-EM \"Executor\" Torpedo",
+  "short_name": "EX-T12-EM Torpedo",
+  "description": "Manufacturer: Behring\\nTracking Signal: Electromagnetic\\nSize: 12\\n\\nBehring prides itself on crafting ordnance that is as dependable as it is powerful and the EX-T12 \"Executor\" is no exception. Designed as an anti-ship and anti-installation weapon, Behring engineers worked tirelessly to ensure this torpedo was a bold strategic statement.",
+  "inventory_consumption": {
+    "micro_scu": 140625.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 12.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 667.0
+  }
+}

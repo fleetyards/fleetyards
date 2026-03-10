@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "4.5",
     "base_expediting_fee": "6750"
   },
-  "mass": 430057.0,
+  "mass": 386857.0,
   "metrics": {
     "x": 27.75,
     "y": 63.5,
@@ -56,17 +56,13 @@
       "name": "hardpoint_seat_copilot_left",
       "ref": "52d3e4e9-e970-4a21-b214-510e6b5b43ba",
       "key": null,
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_copilot_right",
       "ref": "f3ff4f67-f968-4f35-9e07-eb9ed574c6cf",
       "key": null,
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_cockpit_selfdestruct",
@@ -176,7 +172,7 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S02_C_Explorer"
+          "key": "JDRV_TARS_S02_Excelsior_SCItem"
         }
       ]
     },

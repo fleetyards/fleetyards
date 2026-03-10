@@ -19,7 +19,7 @@
     }
   },
   "durability": {
-    "health": 540.0
+    "health": 180.0
   },
   "heat_connection": {
     "TemperatureToIR": 4.0,
@@ -58,8 +58,8 @@
     "decay_rate_of_em": 0.2
   },
   "type_data": {
-    "max_health": 1850.0,
-    "max_regen": 124.0,
+    "max_health": 1980.0,
+    "max_regen": 171.0,
     "decay_ratio": 0.25,
     "reserve_pool_initial_health_ratio": 1.0,
     "reserve_pool_max_health_ratio": 1.0,
@@ -80,8 +80,8 @@
         "min": 0.0
       },
       {
-        "max": 0.5,
-        "min": 0.0
+        "max": -0.15,
+        "min": -0.46
       },
       {
         "max": 0.95,
@@ -102,7 +102,7 @@
     ],
     "absorption": [
       {
-        "max": 0.3,
+        "max": 0.45,
         "min": 0.0
       },
       {

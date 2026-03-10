@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Asgard_VIP_Copper",
+  "ref": "50caf105-9039-473d-9f7a-e23710405a98",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "fa105f27-e6b4-4fbf-babc-6e5d0f635265",
+  "name": "Asgard Valhalla Livery",
+  "short_name": null,
+  "description": "The Valhalla livery melds a dazzling copper finish with green accents to give the Asgard a truly distinct appearance.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

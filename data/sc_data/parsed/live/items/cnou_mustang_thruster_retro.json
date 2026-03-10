@@ -58,7 +58,7 @@
     "decay_rate_of_em": 0.15
   },
   "type_data": {
-    "thrust_capacity": 836000.0,
+    "thrust_capacity": 789442.4,
     "fuel_burn_rate_per10_k_newton": 0.09275,
     "thruster_type": "Retro",
     "thruster_class": "retro"

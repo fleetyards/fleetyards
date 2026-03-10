@@ -7,7 +7,7 @@
   "size": "1",
   "grade": "1",
   "manufacturer_ref": null,
-  "name": null,
+  "name": "Door",
   "short_name": null,
   "description": null,
   "inventory_consumption": {
@@ -49,25 +49,19 @@
       "name": "hardpoint_cargo_grid_b",
       "key": "AEGS_Retaliator_CargoGrid_Front_Main",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "hardpoint_cargo_grid_a",
       "key": "AEGS_Retaliator_CargoGrid_Front_left",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "hardpoint_cargo_grid_c",
       "key": "AEGS_Retaliator_CargoGrid_Front_Right",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     }
   ],
   "durability": {

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_ATLS_Orange_Grey",
+  "ref": "e752fd5b-c275-471f-9a81-4de6d3c7972e",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "24c49a29-e0c9-4b1f-bf8b-13e887e8823d",
+  "name": "ATLS Safety Orange Livery",
+  "short_name": null,
+  "description": "Ideal for bustling work sites, the Safety Orange livery brings a bright orange base and white stripes to the ATLS.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

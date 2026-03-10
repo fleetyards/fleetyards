@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_Krig_l22_alphawolf",
+  "ref": "8f95050d-6df6-4fe5-868a-137e3a492a1f",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 970.0,
+    "dimensions": {
+      "x": 0.2575701,
+      "y": 0.1729496,
+      "z": 0.02177711
+    }
+  },
+  "type_data": {
+    "scm_speed": 225.0,
+    "scm_speed_boosted": 500.0,
+    "reverse_speed_boosted": 250.0,
+    "max_speed": 1225.0,
+    "angular_velocity": {
+      "pitch": 74.0,
+      "yaw": 54.0,
+      "roll": 210.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 88.8,
+      "yaw": 64.8,
+      "roll": 252.0
+    }
+  }
+}

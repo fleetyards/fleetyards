@@ -29,7 +29,7 @@
     }
   ],
   "durability": {
-    "health": 200.0
+    "health": 400.0
   },
   "power_connection": {
     "power_base": 0.0,

@@ -1,0 +1,24 @@
+{
+  "key": "GMISL_S02_CS_FSKI_Tempest",
+  "ref": "609ef22a-dfa4-4695-93ec-80019ce2242a",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "GroundVehicleMissile",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "5f81335d-44e6-4104-841e-c5af9df06829",
+  "name": "Tempest II-G Missile",
+  "short_name": "Tempest II-G",
+  "description": "Manufacturer: Firestorm Kinetics \\nTracking Signal: Cross Section \\nSize: 2  \\n\\nThe Tempest was designed with nothing but annihilation in mind. Utilizing FireStorm Kinetics' targeting technology, this proximity missile locks onto a target's cross section to draw conflicts to a swift conclusion. Note: This missile may only be launched by ground vehicles.",
+  "inventory_consumption": {
+    "micro_scu": 31250.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 2.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 25.0
+  }
+}

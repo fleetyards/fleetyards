@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Starlifter_Grey_Grey_Yellow_Camo",
+  "ref": "47b1c5dd-b7bb-46a5-9397-8289ed6cdfca",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "889542c3-e578-4c3a-8284-e1c904171f64",
+  "name": "Hercules Starlifter Deadlock Camo Livery",
+  "short_name": null,
+  "description": "Disguise the silhouette of the Hercules Starlifter with the Deadlock Camo livery, featuring a grey camo pattern with yellow highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

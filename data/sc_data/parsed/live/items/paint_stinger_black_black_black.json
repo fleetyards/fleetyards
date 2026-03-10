@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Stinger_Black_Black_Black",
+  "ref": "df34221a-190e-45f2-a8c6-ead7c0a2f146",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "5b3c97c0-eb72-48ef-bc7f-433fe8af31e6",
+  "name": "Stinger Mamba Livery",
+  "short_name": null,
+  "description": "Your enemies will never see you coming with the black-on-black Mamba livery for the Esperia Stinger.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

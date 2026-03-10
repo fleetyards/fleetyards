@@ -7,13 +7,13 @@
   "name": "Crusader A2 Hercules Starlifter",
   "description": "Manufacturer: Crusader Industries\\nFocus: Medium Freight / Gunship\\n\\nThe A2 gunship has been used to devastating effect in airborne assaults, search and rescue operations, and landing initiatives. With more than double the firepower of the M2, and a custom bomb bay capable of delivering a staggering payload, the A2 caters to anyone hauling massive amounts of cargo through potentially unfriendly skies.",
   "career": "Combat",
-  "role": "Bomber",
+  "role": "Heavy Bomber",
   "insurance": {
     "base_wait_time_minutes": "39.24",
     "mandatory_wait_time_minutes": "13.08",
     "base_expediting_fee": "20200"
   },
-  "mass": 3139240.06,
+  "mass": 2339240.06,
   "metrics": {
     "x": 94.0,
     "y": 70.0,
@@ -138,17 +138,12 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S03_C_Explorer"
+          "key": "JDRV_TARS_S03_Exodus_SCItem"
         }
       ]
     },
     {
-      "name": "hardpoint_quantum_fuel_l",
-      "ref": null,
-      "key": "QTNK_CRUS_Starlifter"
-    },
-    {
-      "name": "hardpoint_quantum_fuel_r",
+      "name": "hardpoint_quantum_fuel",
       "ref": null,
       "key": "QTNK_CRUS_Starlifter"
     },
@@ -442,9 +437,7 @@
       "name": "hardpoint_bridge_remote_turret_seat",
       "ref": null,
       "key": "CRUS_Starlifter_SCItem_Turret_Seat_Bridge",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_bridge_remote_turret_seat_access",
@@ -491,9 +484,7 @@
       "name": "hardpoint_forward_left_remote_turret_seat",
       "ref": null,
       "key": "CRUS_Starlifter_SCItem_Turret_Seat_Left",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_forward_left_remote_turret_seat_access",
@@ -528,9 +519,7 @@
       "name": "hardpoint_forward_right_remote_turret_seat",
       "ref": null,
       "key": "CRUS_Starlifter_SCItem_Turret_Seat_Right",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_forward_right_remote_turret_seat_access",
@@ -565,9 +554,7 @@
       "name": "hardpoint_rear_left_remote_turret_seat",
       "ref": null,
       "key": "CRUS_Starlifter_SCItem_Turret_Seat_Left",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_rear_left_remote_turret_seat_access",
@@ -614,9 +601,7 @@
       "name": "hardpoint_rear_right_remote_turret_seat",
       "ref": null,
       "key": "CRUS_Starlifter_SCItem_Turret_Seat_Right",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_rear_right_remote_turret_seat_access",
@@ -688,11 +673,6 @@
       "name": "hardpoint_front_ramp",
       "ref": null,
       "key": "Door_Ship_Exterior_CRUS_Starlifter_Front_Ramp"
-    },
-    {
-      "name": "hardpoint_Elevator_Exterior_Door",
-      "ref": null,
-      "key": "Door_Ship_Exterior_CRUS_Starlifter_Elevator_Door"
     },
     {
       "name": "hardpoint_controller_missile",

@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "10.23",
     "base_expediting_fee": "12555"
   },
-  "mass": 9757853.5,
+  "mass": 9509853.5,
   "metrics": {
     "x": 120.0,
     "y": 160.0,
@@ -94,9 +94,7 @@
       "name": "hardpoint_eng_console_front",
       "ref": null,
       "key": "AEGS_Reclaimer_SCItem_Engineer_Console",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_eng_console_front_access",
@@ -105,11 +103,8 @@
     },
     {
       "name": "hardpoint_eng_console_rear",
-      "ref": null,
-      "key": "AEGS_Reclaimer_SCItem_Engineer_Console",
-      "loadout": [
-
-      ]
+      "ref": "878ae63f-4076-42ab-bab2-861ff7988045",
+      "key": null
     },
     {
       "name": "hardpoint_eng_console_rear_access",
@@ -125,33 +120,25 @@
       "name": "hardpoint_scanner_console_01",
       "ref": null,
       "key": "AEGS_Reclaimer_Scanning_Console",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_scanner_console_02",
       "ref": null,
       "key": "AEGS_Reclaimer_Scanning_Console_2",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_turret_console_01",
       "ref": null,
       "key": "AEGS_Reclaimer_Remote_Turret_Console",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_turret_console_02",
       "ref": null,
       "key": "AEGS_Reclaimer_Remote_Turret_Console_2",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_controller_door",
@@ -161,7 +148,7 @@
     {
       "name": "hardpoint_airlock_door_left",
       "ref": null,
-      "key": "Door_RN_RoomConnector_Breachable_OpenClose_IP_Reclaimer_Airlock"
+      "key": "Door_RN_RoomConnector_Breachable_OpenClose_IP_Reclaimer_Airlock_Dock"
     },
     {
       "name": "hardpoint_airlock_door_right",
@@ -260,8 +247,8 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": null,
-          "key": "JDRV_TARS_S03_C_Explorer"
+          "ref": "59346c37-671d-4aae-9eff-d38e13caa9c0",
+          "key": null
         }
       ]
     },
@@ -368,32 +355,32 @@
     {
       "name": "hardpoint_thruster_front_left_side",
       "ref": null,
-      "key": "AEGS_Reclaimer_Thruster_Mav_Fixed"
+      "key": "AEGS_Reclaimer_Thruster_Mav_Fixed_Front"
     },
     {
       "name": "hardpoint_thruster_front_right_side",
       "ref": null,
-      "key": "AEGS_Reclaimer_Thruster_Mav_Fixed"
+      "key": "AEGS_Reclaimer_Thruster_Mav_Fixed_Front"
     },
     {
       "name": "hardpoint_thruster_front_right_top",
       "ref": null,
-      "key": "AEGS_Reclaimer_Thruster_Mav_Fixed_Top"
+      "key": "AEGS_Reclaimer_Thruster_Mav_Fixed_Top_Front"
     },
     {
       "name": "hardpoint_thruster_front_left_top",
       "ref": null,
-      "key": "AEGS_Reclaimer_Thruster_Mav_Fixed_Top"
+      "key": "AEGS_Reclaimer_Thruster_Mav_Fixed_Top_Front"
     },
     {
       "name": "hardpoint_thruster_front_left_bottom",
       "ref": null,
-      "key": "AEGS_Reclaimer_Thruster_Mav_Fixed_Bottom"
+      "key": "AEGS_Reclaimer_Thruster_Mav_Fixed_Bottom_Front"
     },
     {
       "name": "hardpoint_thruster_front_right_bottom",
       "ref": null,
-      "key": "AEGS_Reclaimer_Thruster_Mav_Fixed_Bottom"
+      "key": "AEGS_Reclaimer_Thruster_Mav_Fixed_Bottom_Front"
     },
     {
       "name": "hardpoint_thruster_outer_front_left",
@@ -868,32 +855,32 @@
       ]
     },
     {
-      "name": "hardpoint_relay",
+      "name": "hardpoint_relay_bridge",
       "ref": null,
       "key": "RELAY_1slot_slim"
     },
     {
-      "name": "hardpoint_relay_2",
+      "name": "hardpoint_relay_engineering",
       "ref": null,
       "key": "RELAY_1slot_slim"
     },
     {
-      "name": "hardpoint_relay_3",
+      "name": "hardpoint_relay_drone",
       "ref": null,
       "key": "RELAY_3slot_slim"
     },
     {
-      "name": "hardpoint_relay_4",
+      "name": "hardpoint_relay_habs",
       "ref": null,
       "key": "RELAY_3slot_slim"
     },
     {
-      "name": "hardpoint_relay_5",
+      "name": "hardpoint_relay_cargo",
       "ref": null,
       "key": "RELAY_3slot_slim"
     },
     {
-      "name": "hardpoint_relay_6",
+      "name": "hardpoint_relay_top",
       "ref": null,
       "key": "RELAY_2slot_slim"
     },
@@ -901,6 +888,151 @@
       "name": "hardpoint_lifesupport",
       "ref": null,
       "key": "LFSP_TYDT_S03_ComfortAirMax"
+    },
+    {
+      "name": "hardpoint_pdc_top_01",
+      "ref": null,
+      "key": "Turret_PDC_BEHR_A"
+    },
+    {
+      "name": "hardpoint_pdc_wcontroller_top_01",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_mcontroller_top_01",
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
+      "key": null
+    },
+    {
+      "name": "hardpoint_pdc_aimodule_top_01",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_top_02",
+      "ref": null,
+      "key": "Turret_PDC_BEHR_A"
+    },
+    {
+      "name": "hardpoint_pdc_wcontroller_top_02",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_mcontroller_top_02",
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
+      "key": null
+    },
+    {
+      "name": "hardpoint_pdc_aimodule_top_02",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_top_03",
+      "ref": null,
+      "key": "Turret_PDC_BEHR_A"
+    },
+    {
+      "name": "hardpoint_pdc_wcontroller_top_03",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_mcontroller_top_03",
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
+      "key": null
+    },
+    {
+      "name": "hardpoint_pdc_aimodule_top_03",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_bottom_01",
+      "ref": null,
+      "key": "Turret_PDC_BEHR_A"
+    },
+    {
+      "name": "hardpoint_pdc_wcontroller_bottom_01",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_mcontroller_bottom_01",
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
+      "key": null
+    },
+    {
+      "name": "hardpoint_pdc_aimodule_bottom_01",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_bottom_02",
+      "ref": null,
+      "key": "Turret_PDC_BEHR_A"
+    },
+    {
+      "name": "hardpoint_pdc_wcontroller_bottom_02",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_mcontroller_bottom_02",
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
+      "key": null
+    },
+    {
+      "name": "hardpoint_pdc_aimodule_bottom_02",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_bottom_03",
+      "ref": null,
+      "key": "Turret_PDC_BEHR_A"
+    },
+    {
+      "name": "hardpoint_pdc_wcontroller_bottom_03",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_mcontroller_bottom_03",
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
+      "key": null
+    },
+    {
+      "name": "hardpoint_pdc_aimodule_bottom_03",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_bottom_04",
+      "ref": null,
+      "key": "Turret_PDC_BEHR_A"
+    },
+    {
+      "name": "hardpoint_pdc_wcontroller_bottom_04",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_mcontroller_bottom_04",
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
+      "key": null
+    },
+    {
+      "name": "hardpoint_pdc_aimodule_bottom_04",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_docking_collar_left",
+      "ref": null,
+      "key": "AEGS_Reclaimer_DockingTube"
     }
   ]
 }

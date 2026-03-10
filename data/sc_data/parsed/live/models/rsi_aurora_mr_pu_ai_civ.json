@@ -7,13 +7,13 @@
   "name": "RSI Aurora MR",
   "description": "Manufacturer: RSI\\nFocus: Light Fighter\\n\\nPerhaps you're looking for something that offers carrying capacity but has combat capabilities too? The Aurora Marque comes with a pair of Behring-quality lasers and a high quality gun cooler system.",
   "career": "Combat",
-  "role": "Light Fighter",
+  "role": "Starter / Light Fighter",
   "insurance": {
     "base_wait_time_minutes": "2.92",
     "mandatory_wait_time_minutes": "0.97",
     "base_expediting_fee": "1631"
   },
-  "mass": 27893.0,
+  "mass": 25893.0,
   "metrics": {
     "x": 8.75,
     "y": 19.0,
@@ -34,11 +34,6 @@
       "name": "Hardpoint_Seat_Access",
       "ref": null,
       "key": "RSI_Aurora_SCItem_SeatAccess"
-    },
-    {
-      "name": "Hardpoint_Seat_Access_Door",
-      "ref": null,
-      "key": "RSI_Aurora_SCItem_SeatAccess_Door"
     },
     {
       "name": "Hardpoint_Cockpit_SelfDestruct",
@@ -344,6 +339,16 @@
       "name": "hardpoint_lifesupport",
       "ref": null,
       "key": "LFSP_TYDT_S01_ComfortAir"
+    },
+    {
+      "name": "hardpoint_door_left",
+      "ref": "7591f4b8-9807-452b-91fb-9d3ed24ea3ca",
+      "key": null
+    },
+    {
+      "name": "hardpoint_door_right",
+      "ref": "549ae195-4d13-4614-b5c2-0fa8c0361117",
+      "key": null
     }
   ]
 }

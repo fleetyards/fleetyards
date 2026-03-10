@@ -1,0 +1,56 @@
+{
+  "key": "Mining_Laser_SHIN_Klein_S0",
+  "ref": "40bd6a85-5695-409c-9d6c-ae1babde416a",
+  "category": "weapons",
+  "type": "WeaponMining",
+  "sub_type": "Gun",
+  "size": "0",
+  "grade": "1",
+  "manufacturer_ref": "ab35f85f-919f-4457-8d58-4e885ea6c5c0",
+  "name": "Lawson Mining Laser",
+  "short_name": "Lawson Mining Laser",
+  "description": "Manufacturer: Argo Astronautics\\nItem Type: Mining Laser\\nSize: S0\\nGrade: C\\n \\nOptimal Range: 25 m\\nMaximum Range: 25 m\\nGather Radius: 1 m\\nExtraction Throughput: 4 cSCU/s\\n \\nPower Transfer: 35\\n \\nInstability: +30 %\\nResistance: -40 %\\nOptimal Charge Window Size: +40 %\\nOptimal Charge Window Rate: 0%\\nThrottle min: 20%\\n\\nThe Lawson mining laser was developed by Argo Astronautics and specifically tuned for the ATLS GEO to make mining resources from the power suit as intuitive as possible.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 1.105504,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "Mining_Modifier_ATLS",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "UNDEFINED"
+      ]
+    },
+    {
+      "name": "Mining_Modifier_ROCds",
+      "min_size": "0",
+      "max_size": "1",
+      "types": []
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "Mining_Modifier_ATLS",
+      "key": null,
+      "ref": "361c0ac0-5e41-4e45-b3ab-5d18e65000ef",
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 8000.0
+  }
+}

@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "2.375",
     "base_expediting_fee": "4220"
   },
-  "mass": 166850.0,
+  "mass": 149850.0,
   "metrics": {
     "x": 16.5,
     "y": 20.0,
@@ -68,11 +68,6 @@
     {
       "name": "hardpoint_controller_door",
       "ref": "4a9ebf31-a405-4b68-9886-b4a47bd1b61d",
-      "key": null
-    },
-    {
-      "name": "hardpoint_controller_missile",
-      "ref": null,
       "key": null
     },
     {
@@ -152,7 +147,7 @@
     },
     {
       "name": "hardpoint_engineeringscreen",
-      "ref": "26cd663d-9c7b-4ef6-8d08-e75ef0c43695",
+      "ref": "878ae63f-4076-42ab-bab2-861ff7988045",
       "key": null
     },
     {
@@ -172,7 +167,7 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": "0089dcd7-93ec-4f42-89e4-00db71d52df6",
+          "ref": "c8797bce-6220-4d1e-bc6d-23da4a366a6d",
           "key": null
         }
       ]

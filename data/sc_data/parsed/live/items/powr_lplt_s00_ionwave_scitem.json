@@ -11,7 +11,7 @@
   "short_name": null,
   "description": "Item Type: Power Plant\\nManufacturer: Lightning Power Ltd.\\nSize: 0\\nGrade: B\\nClass: Civilian\\n\\nThe IonWave vehicle power plant can help you confidently summit the heights of most peaks without overheating thanks to the incredible technology inside designed by the folks at Lightning Power Ltd.",
   "inventory_consumption": {
-    "micro_scu": 1.0,
+    "micro_scu": 44000.0,
     "dimensions": {
       "x": 0.15,
       "y": 0.15,
@@ -19,7 +19,7 @@
     }
   },
   "durability": {
-    "health": 430.0
+    "health": 82.0
   },
   "heat_connection": {
     "TemperatureToIR": 0.52,

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Fortune_Green_Copper",
+  "ref": "ff7896e4-c353-4cd2-a23f-6e65c907ffa3",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "94b75df6-b75a-42bf-8ef2-52f874cec1ea",
+  "name": "Fortune Highlander Livery",
+  "short_name": null,
+  "description": "A deep, earthen green dominates the Fortune Highlander livery, accompanied by a unique copper tinted cockpit.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

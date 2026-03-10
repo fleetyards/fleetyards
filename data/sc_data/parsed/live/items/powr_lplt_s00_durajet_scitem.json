@@ -11,7 +11,7 @@
   "short_name": null,
   "description": "Item Type: Power Plant\\nManufacturer: Lightning Power Ltd.\\nSize: 0\\nGrade: D\\nClass: Civilian \\n\\nThe DuraJet is Lightning Power Ltd.’s base vehicle power plant. Not only does its design catch the eye, but its reliable construction and affordable price point make it a prime option to keep power flowing through your vehicle.",
   "inventory_consumption": {
-    "micro_scu": 1.0,
+    "micro_scu": 44000.0,
     "dimensions": {
       "x": 0.15,
       "y": 0.15,
@@ -19,7 +19,7 @@
     }
   },
   "durability": {
-    "health": 330.0
+    "health": 62.0
   },
   "heat_connection": {
     "TemperatureToIR": 0.52,

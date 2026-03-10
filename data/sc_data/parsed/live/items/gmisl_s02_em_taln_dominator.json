@@ -1,0 +1,24 @@
+{
+  "key": "GMISL_S02_EM_TALN_Dominator",
+  "ref": "5bf375c8-d4b8-4bb1-91e7-b6350fea4ad9",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "GroundVehicleMissile",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "587fcede-4fe9-4fb4-85ec-124abc8542b0",
+  "name": "Dominator II-G Missile",
+  "short_name": "Dmntr II-G",
+  "description": "Manufacturer: Talon \\nTracking Signal: Electromagnetic \\nSize: 2  \\n\\nDesigned to track an opponent’s electromagnetic signature, the Dominator strike missile is a precision ordnance package designed to establish tactical battlefield dominance. Note: This missile may only be launched by ground vehicles.",
+  "inventory_consumption": {
+    "micro_scu": 31250.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 2.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 25.0
+  }
+}

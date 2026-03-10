@@ -4,9 +4,9 @@
   "category": "turret",
   "type": "Turret",
   "sub_type": "GunTurret",
-  "size": "4",
+  "size": "2",
   "grade": "1",
-  "manufacturer_ref": "9e1f5a35-edcc-4d19-bede-08e2730043c5",
+  "manufacturer_ref": "1e47a9ec-a3f0-431d-be0e-377712e1ed84",
   "name": "Remote Turret",
   "short_name": null,
   "description": "Remote Turret",
@@ -20,11 +20,12 @@
   },
   "loadout": [
     {
-      "name": "turret_left",
-      "min_size": "1",
-      "max_size": "1",
+      "name": "hardpoint_class_2",
+      "min_size": "2",
+      "max_size": "2",
       "types": [
-        "WeaponGun"
+        "Turret",
+        "TractorBeam"
       ]
     }
   ],

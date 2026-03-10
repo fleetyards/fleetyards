@@ -43,7 +43,7 @@
     {
       "name": "hardpoint_controller_weapon",
       "ref": null,
-      "key": "Controller_Weapon"
+      "key": "Controller_Weapon_UnmannedTurret"
     },
     {
       "name": "hardpoint_controller_comms",
@@ -78,12 +78,12 @@
         {
           "name": "turret_left",
           "ref": null,
-          "key": "BEHR_LaserCannon_S6"
+          "key": "BEHR_LaserCannon_S6_SecurityNetwork"
         },
         {
           "name": "turret_right",
           "ref": null,
-          "key": "BEHR_LaserCannon_S6"
+          "key": "BEHR_LaserCannon_S6_SecurityNetwork"
         }
       ]
     },

@@ -1,0 +1,21 @@
+{
+  "key": "InstancedHangarGateway_Nyx_MediumFront_Levski",
+  "ref": "21bb01b7-2e4f-4f56-a4bf-109bc175cd9a",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": null,
+  "grade": null,
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  }
+}

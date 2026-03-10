@@ -6,14 +6,14 @@
   "min_crew": "1",
   "name": "Drake Cutter",
   "description": "Manufacturer: Drake Interplanetary\\nFocus: Light Freight\\n\\nDesigned for hard-working folks of all stripes, the Cutter packs 4 SCU of cargo room and plenty of wallop into a rough and tumble, compact frame. It's a ship that truly embodies the spirit of Drake: that no matter who you are or what you do, you can reach the stars.",
-  "career": "Starter",
-  "role": "Starter",
+  "career": "Exploration",
+  "role": "Starter / Pathfinder",
   "insurance": {
     "base_wait_time_minutes": "3.37",
     "mandatory_wait_time_minutes": "1.12",
     "base_expediting_fee": "2280"
   },
-  "mass": 86877.0,
+  "mass": 81677.0,
   "metrics": {
     "x": 16.0,
     "y": 20.0,
@@ -111,11 +111,6 @@
       "key": "HTNK_DRAK_Cutter"
     },
     {
-      "name": "hardpoint_fuel_tank_2",
-      "ref": null,
-      "key": "HTNK_DRAK_Cutter"
-    },
-    {
       "name": "hardpoint_power_plant",
       "ref": null,
       "key": "POWR_SASU_S01_LightBlossom_SCItem"
@@ -148,17 +143,12 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S01_C_Explorer"
+          "key": "JDRV_TARS_S01_Explorer_SCItem"
         }
       ]
     },
     {
       "name": "hardpoint_quantum_tank",
-      "ref": null,
-      "key": "QTNK_DRAK_Cutter"
-    },
-    {
-      "name": "hardpoint_quantum_tank_2",
       "ref": null,
       "key": "QTNK_DRAK_Cutter"
     },
@@ -186,11 +176,6 @@
       "name": "hardpoint_scanner",
       "ref": null,
       "key": null
-    },
-    {
-      "name": "hardpoint_personal_storage",
-      "ref": null,
-      "key": "PersonalStorage_Cutter"
     },
     {
       "name": "hardpoint_weapon_locker",
@@ -398,12 +383,12 @@
     {
       "name": "hardpoint_cargo_1",
       "ref": null,
-      "key": "DRAK_Cutter_CargoGrid_2Stack"
+      "key": "DRAK_Cutter_CargoGrid_4Stack"
     },
     {
       "name": "hardpoint_cargo_2",
       "ref": null,
-      "key": "DRAK_Cutter_CargoGrid_2Stack"
+      "key": null
     },
     {
       "name": "hardpoint_controller_fuel",

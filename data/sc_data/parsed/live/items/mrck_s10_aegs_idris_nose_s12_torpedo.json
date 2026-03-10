@@ -1,0 +1,344 @@
+{
+  "key": "MRCK_S10_AEGS_Idris_Nose_S12_Torpedo",
+  "ref": "bfba7023-a477-45e1-9595-60fbc6c17e83",
+  "category": "missile_racks",
+  "type": "MissileLauncher",
+  "sub_type": "MissileRack",
+  "size": "10",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "HMF-T12 \"Hammerfall\" Torpedo Launcher",
+  "short_name": "HMF-T12",
+  "description": "Item Type: Torpedo Launcher\\nManufacturer: Behring\\nSize: 10\\nTorpedoes: 20xS12\\n\\nOffering an alternative to the stock Aegis Idris nose gun, this set of four torpedo launchers are able to store twenty S12 torpedoes, four in each launcher and four in reserve.",
+  "inventory_consumption": {
+    "micro_scu": 120000000.0,
+    "dimensions": {
+      "x": 3.796108,
+      "y": 30.95411,
+      "z": 4.81137
+    }
+  },
+  "loadout": [
+    {
+      "name": "missile_01_attach",
+      "min_size": "12",
+      "max_size": "12",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_02_attach",
+      "min_size": "12",
+      "max_size": "12",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_03_attach",
+      "min_size": "12",
+      "max_size": "12",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_04_attach",
+      "min_size": "12",
+      "max_size": "12",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_05_attach",
+      "min_size": "12",
+      "max_size": "12",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_06_attach",
+      "min_size": "12",
+      "max_size": "12",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_07_attach",
+      "min_size": "12",
+      "max_size": "12",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_08_attach",
+      "min_size": "12",
+      "max_size": "12",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_09_attach",
+      "min_size": "12",
+      "max_size": "12",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_10_attach",
+      "min_size": "12",
+      "max_size": "12",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_11_attach",
+      "min_size": "12",
+      "max_size": "12",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_12_attach",
+      "min_size": "12",
+      "max_size": "12",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_13_attach",
+      "min_size": "12",
+      "max_size": "12",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_14_attach",
+      "min_size": "12",
+      "max_size": "12",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_15_attach",
+      "min_size": "12",
+      "max_size": "12",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_16_attach",
+      "min_size": "12",
+      "max_size": "12",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_17_attach",
+      "min_size": "12",
+      "max_size": "12",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_18_attach",
+      "min_size": "12",
+      "max_size": "12",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_19_attach",
+      "min_size": "12",
+      "max_size": "12",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_20_attach",
+      "min_size": "12",
+      "max_size": "12",
+      "types": [
+        "Missile"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "missile_01_attach",
+      "key": null,
+      "ref": "610b44d6-7ad5-4ea8-a1f3-f1f60d220588",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_02_attach",
+      "key": null,
+      "ref": "610b44d6-7ad5-4ea8-a1f3-f1f60d220588",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_03_attach",
+      "key": null,
+      "ref": "610b44d6-7ad5-4ea8-a1f3-f1f60d220588",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_04_attach",
+      "key": null,
+      "ref": "610b44d6-7ad5-4ea8-a1f3-f1f60d220588",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_05_attach",
+      "key": null,
+      "ref": "610b44d6-7ad5-4ea8-a1f3-f1f60d220588",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_06_attach",
+      "key": null,
+      "ref": "610b44d6-7ad5-4ea8-a1f3-f1f60d220588",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_07_attach",
+      "key": null,
+      "ref": "610b44d6-7ad5-4ea8-a1f3-f1f60d220588",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_08_attach",
+      "key": null,
+      "ref": "610b44d6-7ad5-4ea8-a1f3-f1f60d220588",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_09_attach",
+      "key": null,
+      "ref": "610b44d6-7ad5-4ea8-a1f3-f1f60d220588",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_10_attach",
+      "key": null,
+      "ref": "610b44d6-7ad5-4ea8-a1f3-f1f60d220588",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_11_attach",
+      "key": null,
+      "ref": "610b44d6-7ad5-4ea8-a1f3-f1f60d220588",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_12_attach",
+      "key": null,
+      "ref": "610b44d6-7ad5-4ea8-a1f3-f1f60d220588",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_13_attach",
+      "key": null,
+      "ref": "610b44d6-7ad5-4ea8-a1f3-f1f60d220588",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_14_attach",
+      "key": null,
+      "ref": "610b44d6-7ad5-4ea8-a1f3-f1f60d220588",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_15_attach",
+      "key": null,
+      "ref": "610b44d6-7ad5-4ea8-a1f3-f1f60d220588",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_16_attach",
+      "key": null,
+      "ref": "610b44d6-7ad5-4ea8-a1f3-f1f60d220588",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_17_attach",
+      "key": null,
+      "ref": "610b44d6-7ad5-4ea8-a1f3-f1f60d220588",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_18_attach",
+      "key": null,
+      "ref": "610b44d6-7ad5-4ea8-a1f3-f1f60d220588",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_19_attach",
+      "key": null,
+      "ref": "610b44d6-7ad5-4ea8-a1f3-f1f60d220588",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_20_attach",
+      "key": null,
+      "ref": "610b44d6-7ad5-4ea8-a1f3-f1f60d220588",
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 35000.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 1.0,
+    "StartIRTemperature": 250.0,
+    "OverpowerHeat": 0.0,
+    "OverclockThresholdMinHeat": 0.0,
+    "OverclockThresholdMaxHeat": 0.0,
+    "ThermalEnergyBase": 10.0,
+    "ThermalEnergyDraw": 20.0,
+    "ThermalConductivity": 3.0,
+    "SpecificHeatCapacity": 13.0,
+    "Mass": 200.0,
+    "SurfaceArea": 50.0,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 1.0,
+    "MaxTemperature": 450.0,
+    "OverheatTemperature": 370.0,
+    "RecoveryTemperature": 350.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "power_connection": {
+    "power_base": 20.0,
+    "power_draw": 20.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 20.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.0,
+    "overclock_threshold_max": 0.0,
+    "overpower_performance": 0.0,
+    "overclock_performance": 0.0,
+    "power_to_em": 3.0,
+    "decay_rate_of_em": 0.15
+  }
+}

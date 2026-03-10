@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Pulse_Lunar_2956_Red_Gold",
+  "ref": "0c963d33-44f1-4ed8-9c55-f3c2efa617d1",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1b34a55b-b612-49b9-9af6-039a1a957125",
+  "name": "Pulse Auspicious Red Livery",
+  "short_name": null,
+  "description": "The Auspicious Red livery brings a bold red base paint and striking gold accents to the Pulse.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Controller_Shield_Krig_l22_alphawolf",
+  "ref": "31d9cdbb-fc1c-4bf7-9df7-d5acbe3b1333",
+  "category": "controller",
+  "type": "ShieldController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SHIELDS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

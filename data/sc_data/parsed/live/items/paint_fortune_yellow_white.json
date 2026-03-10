@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Fortune_Yellow_White",
+  "ref": "5a20caf8-ca85-45a0-b81b-b6493c00066a",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "161d2198-c638-4a98-8914-a76b90b4cae4",
+  "name": "Fortune Luminance Livery",
+  "short_name": null,
+  "description": "The cool white of the Fortune Luminance livery are offset by metallic greys and bright dashes of yellow.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

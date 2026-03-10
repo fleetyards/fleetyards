@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "2.5",
     "base_expediting_fee": "3800"
   },
-  "mass": 88524.0,
+  "mass": 82224.0,
   "metrics": {
     "x": 23.0,
     "y": 24.0,
@@ -57,7 +57,7 @@
     },
     {
       "name": "hardpoint_life_support",
-      "ref": "0a6b14ca-9db9-45f3-bd46-92a3985a0212",
+      "ref": "e947b002-e65e-4637-90b7-c894925d6625",
       "key": null
     },
     {
@@ -242,7 +242,7 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": "0089dcd7-93ec-4f42-89e4-00db71d52df6",
+          "ref": "c8797bce-6220-4d1e-bc6d-23da4a366a6d",
           "key": null
         }
       ]

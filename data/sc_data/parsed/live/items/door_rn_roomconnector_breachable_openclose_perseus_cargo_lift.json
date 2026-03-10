@@ -1,0 +1,42 @@
+{
+  "key": "Door_RN_RoomConnector_Breachable_OpenClose_Perseus_Cargo_Lift",
+  "ref": "07c7cc6a-14d9-41fe-9bdf-be63fb4ba3b2",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": "Door",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_cargo_grid",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "CargoGrid"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_cargo_grid",
+      "key": null,
+      "ref": "93f56be0-6d3b-40cf-beeb-011e269e2bbb",
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 8000.0
+  }
+}

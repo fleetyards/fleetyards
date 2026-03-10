@@ -7,13 +7,13 @@
   "name": "C.O. Nomad",
   "description": "Manufacturer: Consolidated Outland \\nFocus: Light Freight\\n\\nWith the versatility of a medium-sized multi-purpose freighter packed into a stylish, compact frame, the Consolidated Outland Nomad is the model of self-sufficiency, the spirit of the open sky, and the perfect solution for anyone yearning to start a brand-new adventure.",
   "career": "Transporter",
-  "role": "Light Freight",
+  "role": "Starter / Light Freight",
   "insurance": {
     "base_wait_time_minutes": "3.95",
     "mandatory_wait_time_minutes": "1.32",
     "base_expediting_fee": "2687"
   },
-  "mass": 228123.0,
+  "mass": 216323.0,
   "metrics": {
     "x": 27.0,
     "y": 19.0,
@@ -228,7 +228,7 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S01_C_Explorer"
+          "key": "JDRV_TARS_S01_Explorer_SCItem"
         }
       ]
     },
@@ -341,6 +341,11 @@
       "name": "hardpoint_countermeasure_launcher_right",
       "ref": null,
       "key": "CNOU_Nomad_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_door_entrance",
+      "ref": "3ce7643a-fda9-497a-ac7f-3fa5210c2571",
+      "key": null
     },
     {
       "name": "hardpoint_cargo_bed",

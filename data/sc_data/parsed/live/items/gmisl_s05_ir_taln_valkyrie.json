@@ -1,0 +1,24 @@
+{
+  "key": "GMISL_S05_IR_TALN_Valkyrie",
+  "ref": "c87e69f1-f860-431f-8739-78f938ce4be0",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "GroundVehicleMissile",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "587fcede-4fe9-4fb4-85ec-124abc8542b0",
+  "name": "Valkyrie V-G Missile",
+  "short_name": "Valkyrie V-G",
+  "description": "Manufacturer: Talon \\nTracking Signal: Infrared \\nSize: 5  \\n\\nTalon's torpedo design team pulled out all the stops for their latest Valkyrie strike torpedo by creating a multitiered thrust solution with state of the art infrared tracking capabilities. Note: This missile may only be launched by ground vehicles.",
+  "inventory_consumption": {
+    "micro_scu": 78125.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 5.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 50.0
+  }
+}

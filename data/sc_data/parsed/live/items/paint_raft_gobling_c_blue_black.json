@@ -1,0 +1,21 @@
+{
+  "key": "Paint_RAFT_GoblinG_C_Blue_Black",
+  "ref": "851436c4-faf2-458d-8d0e-c05a1a2216a6",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cbda9a73-1731-4d65-8780-042f5f513466",
+  "name": "RAFT Crusader Livery",
+  "short_name": null,
+  "description": "The Crusader livery for the RAFT features the company's logo atop a light blue base paint with black and white highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

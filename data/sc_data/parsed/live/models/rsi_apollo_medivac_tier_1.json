@@ -1,0 +1,647 @@
+{
+  "key": "RSI_Apollo_Medivac_Tier_1",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "2",
+  "name": "RSI Apollo Medivac",
+  "description": "Manufacturer: RSI\\nFocus: Medical\\n\\nAlong with superior armor and dual missile racks, the 2948 Apollo Medivac model pays homage to the classic 2910 film, Astromedics: Back from the Brink, with livery that accurately recreates the headlining Kithara.",
+  "career": "Support",
+  "role": "Medical",
+  "insurance": {
+    "base_wait_time_minutes": "18.17",
+    "mandatory_wait_time_minutes": "4.55",
+    "base_expediting_fee": "9370"
+  },
+  "mass": 630456.0,
+  "metrics": {
+    "x": 73.0,
+    "y": 54.0,
+    "z": 14.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": "42014f8c-2b70-e411-4f1a-1c15cd36ce9f",
+      "key": null
+    },
+    {
+      "name": "hardpoint_self_destruct_pilot",
+      "ref": "88bd4909-630f-4b80-9b47-6e2224d8dc67",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": "9925488b-127a-4fc3-b7bb-9e4f5a46bbbd",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": "61cc7bf5-6666-40f7-8c0a-ee8a8092f51e",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": "b935e5d8-dead-47c5-8937-382c3aa11682",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": "4b02f78b-5559-92b3-4774-d9090693b4ac",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": "ae1a186e-0f8c-4deb-8079-bfb54df4a8a7",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": "4a9ebf31-a405-4b68-9886-b4a47bd1b61d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": "c78851f1-ded8-4e8d-91ec-905e3dae075e",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_weapon_turret",
+      "ref": "c78851f1-ded8-4e8d-91ec-905e3dae075e",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": "0219b443-6f28-4aa2-bcc3-cfbff843729d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": "47659da5-a4ec-572d-559d-a190d3387ab3",
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuel_intake_right",
+      "ref": "46e964ab-37b2-a7e1-39de-32019444718e",
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuel_intake_left",
+      "ref": "46e964ab-37b2-a7e1-39de-32019444718e",
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuelport_inflight",
+      "ref": "4d7f3134-85b4-909f-979e-f1da8beb6b9f",
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuelport_ground",
+      "ref": "465515d4-7a4d-5780-622d-ed9e7ad7158d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuel_tank_left",
+      "ref": "722eef25-4de6-4f2e-8ee1-84018e5023aa",
+      "key": null
+    },
+    {
+      "name": "hardpoint_power_plant_01",
+      "ref": "dabd2d8d-c06c-4ebf-8791-192ace67ac33",
+      "key": null
+    },
+    {
+      "name": "hardpoint_power_plant_02",
+      "ref": "dabd2d8d-c06c-4ebf-8791-192ace67ac33",
+      "key": null
+    },
+    {
+      "name": "hardpoint_cooler_01",
+      "ref": "b5543ea6-b332-47d7-a02c-5f25620d2fd1",
+      "key": null
+    },
+    {
+      "name": "hardpoint_cooler_02",
+      "ref": "b5543ea6-b332-47d7-a02c-5f25620d2fd1",
+      "key": null
+    },
+    {
+      "name": "hardpoint_shield_generator_01",
+      "ref": "86bfeaef-e0e2-4373-9dca-47e193c0b203",
+      "key": null
+    },
+    {
+      "name": "hardpoint_shield_generator_02",
+      "ref": "86bfeaef-e0e2-4373-9dca-47e193c0b203",
+      "key": null
+    },
+    {
+      "name": "hardpoint_shield_generator_03",
+      "ref": "86bfeaef-e0e2-4373-9dca-47e193c0b203",
+      "key": null
+    },
+    {
+      "name": "hardpoint_shield_generator_04",
+      "ref": "86bfeaef-e0e2-4373-9dca-47e193c0b203",
+      "key": null
+    },
+    {
+      "name": "hardpoint_life_support",
+      "ref": "c50917d3-f453-4ca6-b753-1c506a6710e0",
+      "key": null
+    },
+    {
+      "name": "hardpoint_engineeringscreen",
+      "ref": "878ae63f-4076-42ab-bab2-861ff7988045",
+      "key": null
+    },
+    {
+      "name": "hardpoint_engineeringscreen_rear",
+      "ref": "878ae63f-4076-42ab-bab2-861ff7988045",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_front",
+      "ref": "609b087d-bdfe-401d-b9fe-526af4d52d09",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_rear",
+      "ref": "609b087d-bdfe-401d-b9fe-526af4d52d09",
+      "key": null
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": "16ba45f1-bd70-4b58-96d6-0ef822f59803",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": "14cbe476-4050-4af5-8635-178519722f4b",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_fuel_tank",
+      "ref": "3ecf1e1e-bde7-4185-a955-020673128d8e",
+      "key": null
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": "5b0d1308-b34a-4b55-94f5-7270e03ca82a",
+      "key": null
+    },
+    {
+      "name": "hardpoint_cockpit_flair",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_access_pilot",
+      "ref": "4eca55db-a73b-7ba6-1216-1c0b07ca6d9f",
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": "450e7f4f-a466-3aba-f1ab-d8f416964589",
+      "key": null,
+      "loadout": []
+    },
+    {
+      "name": "hardpoint_seat_access_co_pilot",
+      "ref": "41a70aa5-64d6-3d90-4e0d-10db0b5bd19e",
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_co_pilot",
+      "ref": "4742dd7b-ae42-4ee7-9882-c0dec44ec3e2",
+      "key": null,
+      "loadout": []
+    },
+    {
+      "name": "hardpoint_thruster_main_left",
+      "ref": "41fbfb8e-75e7-9fda-9a55-df771b4773bc",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_main_right",
+      "ref": "41fbfb8e-75e7-9fda-9a55-df771b4773bc",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_main_nacelle_left",
+      "ref": "43899839-921d-64ae-8d5d-237d774d90b8",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_main_nacelle_right",
+      "ref": "43899839-921d-64ae-8d5d-237d774d90b8",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_retro_left",
+      "ref": "44dabf88-17d4-4d40-854f-9cc261fad7b2",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_retro_right",
+      "ref": "434532e6-3aa7-8c7e-cb8a-c8401b87029c",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_retro_nacelle_left",
+      "ref": "44e2093d-8aa5-b1af-fff0-8b1296bfbca2",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_retro_nacelle_right",
+      "ref": "44e2093d-8aa5-b1af-fff0-8b1296bfbca2",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_vtol_left_front",
+      "ref": "9ef2fca6-4e6b-4907-acaf-cec1f4271033",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_vtol_left_back",
+      "ref": "9ef2fca6-4e6b-4907-acaf-cec1f4271033",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_vtol_right_front",
+      "ref": "9ef2fca6-4e6b-4907-acaf-cec1f4271033",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_vtol_right_back",
+      "ref": "9ef2fca6-4e6b-4907-acaf-cec1f4271033",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_mav_nose_left",
+      "ref": "46db53c7-20ca-610e-6ef7-68eee68318aa",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_mav_nose_left_bot",
+      "ref": "7a999ff3-6051-4b79-8480-0ca958a2c5df",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_mav_nose_left_top",
+      "ref": "877cca71-237d-4402-ad3f-09228dfa2f5e",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_mav_nose_right",
+      "ref": "46db53c7-20ca-610e-6ef7-68eee68318aa",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_mav_nose_right_bot",
+      "ref": "7a999ff3-6051-4b79-8480-0ca958a2c5df",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_mav_nose_right_top",
+      "ref": "877cca71-237d-4402-ad3f-09228dfa2f5e",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_mav_body_left",
+      "ref": "46db53c7-20ca-610e-6ef7-68eee68318aa",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_mav_body_left_bot",
+      "ref": "7a999ff3-6051-4b79-8480-0ca958a2c5df",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_mav_body_left_top",
+      "ref": "877cca71-237d-4402-ad3f-09228dfa2f5e",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_mav_body_right",
+      "ref": "46db53c7-20ca-610e-6ef7-68eee68318aa",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_mav_body_right_bot",
+      "ref": "7a999ff3-6051-4b79-8480-0ca958a2c5df",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_mav_body_right_top",
+      "ref": "877cca71-237d-4402-ad3f-09228dfa2f5e",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_mav_tail_left_bot",
+      "ref": "7a999ff3-6051-4b79-8480-0ca958a2c5df",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_mav_tail_left_top",
+      "ref": "877cca71-237d-4402-ad3f-09228dfa2f5e",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_mav_tail_right_bot",
+      "ref": "7a999ff3-6051-4b79-8480-0ca958a2c5df",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_mav_tail_right_top",
+      "ref": "877cca71-237d-4402-ad3f-09228dfa2f5e",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_mav_nacelle_left",
+      "ref": "46db53c7-20ca-610e-6ef7-68eee68318aa",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_mav_nacelle_left_bot",
+      "ref": "7a999ff3-6051-4b79-8480-0ca958a2c5df",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_mav_nacelle_left_top",
+      "ref": "877cca71-237d-4402-ad3f-09228dfa2f5e",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_mav_nacelle_right",
+      "ref": "46db53c7-20ca-610e-6ef7-68eee68318aa",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_mav_nacelle_right_bot",
+      "ref": "7a999ff3-6051-4b79-8480-0ca958a2c5df",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_mav_nacelle_right_top",
+      "ref": "877cca71-237d-4402-ad3f-09228dfa2f5e",
+      "key": null
+    },
+    {
+      "name": "hardpoint_weapon_left",
+      "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_right",
+      "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret",
+      "ref": "42344479-bde5-5ffc-b03c-6c092ec8fdb9",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left",
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "b837397c-47b6-45e7-b409-db290a068b47",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "b837397c-47b6-45e7-b409-db290a068b47",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_left",
+      "ref": "4b02aa83-07c1-4028-dfe8-e86d024ee09f",
+      "key": null,
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": "d358cf84-9c78-4929-a2ad-b9caade81962",
+          "key": null
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": "d358cf84-9c78-4929-a2ad-b9caade81962",
+          "key": null
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": "d358cf84-9c78-4929-a2ad-b9caade81962",
+          "key": null
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": "d358cf84-9c78-4929-a2ad-b9caade81962",
+          "key": null
+        },
+        {
+          "name": "missile_05_attach",
+          "ref": "d358cf84-9c78-4929-a2ad-b9caade81962",
+          "key": null
+        },
+        {
+          "name": "missile_06_attach",
+          "ref": "d358cf84-9c78-4929-a2ad-b9caade81962",
+          "key": null
+        },
+        {
+          "name": "missile_07_attach",
+          "ref": "d358cf84-9c78-4929-a2ad-b9caade81962",
+          "key": null
+        },
+        {
+          "name": "missile_08_attach",
+          "ref": "d358cf84-9c78-4929-a2ad-b9caade81962",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_right",
+      "ref": "4b02aa83-07c1-4028-dfe8-e86d024ee09f",
+      "key": null,
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": "d358cf84-9c78-4929-a2ad-b9caade81962",
+          "key": null
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": "d358cf84-9c78-4929-a2ad-b9caade81962",
+          "key": null
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": "d358cf84-9c78-4929-a2ad-b9caade81962",
+          "key": null
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": "d358cf84-9c78-4929-a2ad-b9caade81962",
+          "key": null
+        },
+        {
+          "name": "missile_05_attach",
+          "ref": "d358cf84-9c78-4929-a2ad-b9caade81962",
+          "key": null
+        },
+        {
+          "name": "missile_06_attach",
+          "ref": "d358cf84-9c78-4929-a2ad-b9caade81962",
+          "key": null
+        },
+        {
+          "name": "missile_07_attach",
+          "ref": "d358cf84-9c78-4929-a2ad-b9caade81962",
+          "key": null
+        },
+        {
+          "name": "missile_08_attach",
+          "ref": "d358cf84-9c78-4929-a2ad-b9caade81962",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_countermeasure_left",
+      "ref": "d195e8b0-4859-4207-b253-d0956cd79560",
+      "key": null
+    },
+    {
+      "name": "hardpoint_countermeasure_right",
+      "ref": "64fc3736-99ad-4997-b436-e2acaa4bcf57",
+      "key": null
+    },
+    {
+      "name": "hardpoint_ramp",
+      "ref": "8bd56472-e0a6-4545-86c2-3d2914b1f5ab",
+      "key": null
+    },
+    {
+      "name": "hardpoint_elevator",
+      "ref": "45fad372-ef49-50b9-17b0-812aa7aacfa4",
+      "key": null
+    },
+    {
+      "name": "hardpoint_door_elevator",
+      "ref": "4788570a-76e6-6d9c-d8ac-6a6b28999b84",
+      "key": null
+    },
+    {
+      "name": "hardpoint_docking_collar",
+      "ref": "4563405f-fd04-8088-f2d5-3adf01c9af91",
+      "key": null
+    },
+    {
+      "name": "hardpoint_docking_arm",
+      "ref": "41852f35-62e0-30f3-34f4-7d21881c3197",
+      "key": null
+    },
+    {
+      "name": "hardpoint_docking_floor",
+      "ref": "42ff2349-76d0-b4f6-59be-d1aef3d24f9f",
+      "key": null
+    },
+    {
+      "name": "hardpoint_scanner",
+      "ref": "46f2a702-3724-10cc-e49d-3732941dde9b",
+      "key": null
+    },
+    {
+      "name": "hardpoint_cargo_left",
+      "ref": "8b0f46c8-895b-413b-9ef1-5e9e84797e9d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_cargo_right",
+      "ref": "8b0f46c8-895b-413b-9ef1-5e9e84797e9d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_modular_room_left",
+      "ref": "4983357f-cfe5-148f-8573-653efce249a2",
+      "key": null
+    },
+    {
+      "name": "hardpoint_modular_room_right",
+      "ref": "4adb053e-bc0a-34a1-a3bd-7c9fc2267e84",
+      "key": null
+    },
+    {
+      "name": "hardpoint_emergency_lights_front_left",
+      "ref": "3054ed67-35b4-4979-9473-9e52b6f6a5a1",
+      "key": null
+    },
+    {
+      "name": "hardpoint_emergency_lights_front_right",
+      "ref": "28a2a89d-c8b6-474f-9b34-efdcba23d6ad",
+      "key": null
+    },
+    {
+      "name": "hardpoint_emergency_lights_top_center",
+      "ref": "7bd31d46-ad2e-40f9-890f-161d8f638673",
+      "key": null
+    },
+    {
+      "name": "hardpoint_body_skylight",
+      "ref": "c267796b-38b6-41ea-a87c-2693f8b40dd6",
+      "key": null
+    }
+  ]
+}

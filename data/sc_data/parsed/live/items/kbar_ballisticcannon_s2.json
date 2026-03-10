@@ -21,10 +21,34 @@
   "loadout": [
     {
       "name": "magazine_attach",
-      "min_size": "0",
-      "max_size": "0",
+      "min_size": "1",
+      "max_size": "1",
       "types": [
-
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
       ]
     }
   ],
@@ -32,23 +56,8 @@
     "health": 850.0
   },
   "ammunition": {
-    "max_ammo_count": 467.0,
-    "initial_ammo_count": 467.0,
+    "max_ammo_count": 492.0,
+    "initial_ammo_count": 492.0,
     "max_restock_count": 3.0
-  },
-  "power_connection": {
-    "power_base": 40.0,
-    "power_draw": 60.0,
-    "time_to_reach_draw_request": 0.0,
-    "safeguard_priority": 20.0,
-    "displayed_in_powered_item_list": 1.0,
-    "is_throttleable": 0.0,
-    "is_overclockable": 0.0,
-    "overclock_threshold_min": 0.25,
-    "overclock_threshold_max": 0.46,
-    "overpower_performance": 0.3,
-    "overclock_performance": 0.25,
-    "power_to_em": 1.5,
-    "decay_rate_of_em": 0.5
   }
 }

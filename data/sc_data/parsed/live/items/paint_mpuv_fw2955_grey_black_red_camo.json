@@ -1,0 +1,21 @@
+{
+  "key": "Paint_MPUV_FW2955_Grey_Black_Red_Camo",
+  "ref": "f419a008-e931-49ce-acfb-adee776189ca",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a186fc3f-3ff2-4ac5-9843-7c0b08dbcc5f",
+  "name": "MPUV Nightbreak Livery",
+  "short_name": null,
+  "description": "Discreetly soar through the night sky in the MPUV with the Nightbreak livery, which is primarily black with red highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

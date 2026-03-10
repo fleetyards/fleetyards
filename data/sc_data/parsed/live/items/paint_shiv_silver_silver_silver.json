@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Shiv_Silver_Silver_Silver",
+  "ref": "aa161ff1-1666-4ff5-ad70-6c3818ef508e",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "eb293d3d-0923-4ffe-9fdd-b24309bfe74e",
+  "name": "Shiv Meridian Livery",
+  "short_name": null,
+  "description": "The Meridian livery gives the Shiv a simple yet stylish metallic silver finish.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -2,7 +2,7 @@
   "key": "MISC_Starlancer_Elevator_Exterior_Gate",
   "ref": "ef9da812-8ff1-4d62-8ff8-3e231dcde497",
   "category": "doors",
-  "type": null,
+  "type": "Door",
   "sub_type": null,
   "size": "1",
   "grade": "1",

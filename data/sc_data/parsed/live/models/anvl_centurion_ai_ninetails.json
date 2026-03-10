@@ -6,8 +6,8 @@
   "min_crew": "2",
   "name": "Anvil Centurion",
   "description": "Manufacturer: Anvil Aerospace\\nFocus: Combat\\n\\nBuilt on Anvil's popular Atlas Platform, the Centurion presents a tactical solution for short-range anti-aircraft operations. Thanks to the Centurion’s custom energy-based AA turret, your forces can establish ground superiority by assuring immediate threats from above are dealt with quickly and efficiently.",
-  "career": "Ground",
-  "role": "Ground",
+  "career": "Combat",
+  "role": "Anti-Air",
   "insurance": {
     "base_wait_time_minutes": "7.56",
     "mandatory_wait_time_minutes": "2.52",
@@ -34,9 +34,7 @@
       "name": "hardpoint_seat_gunner",
       "ref": null,
       "key": "ANVL_Centurion_SCItem_SeatDashboard_Gunner",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_access",
@@ -120,8 +118,15 @@
       "loadout": [
         {
           "name": "hardpoint_gunmount",
-          "ref": null,
-          "key": "HRST_LaserRepeater_S3"
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "c526f686-a3da-48fa-b9c3-d58fb8e31dc5",
+              "key": null
+            }
+          ]
         }
       ]
     },
@@ -137,23 +142,51 @@
       "loadout": [
         {
           "name": "turret_lower_left",
-          "ref": null,
-          "key": "KLWE_LaserRepeater_S4"
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
         },
         {
           "name": "turret_lower_right",
-          "ref": null,
-          "key": "KLWE_LaserRepeater_S4"
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
         },
         {
           "name": "turret_upper_left",
-          "ref": null,
-          "key": "KLWE_LaserRepeater_S4"
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
         },
         {
           "name": "turret_upper_right",
-          "ref": null,
-          "key": "KLWE_LaserRepeater_S4"
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "ecac1df2-4f6f-49df-9cce-f188d118a789",
+              "key": null
+            }
+          ]
         }
       ]
     },
@@ -221,6 +254,11 @@
       "name": "hardpoint_relay",
       "ref": null,
       "key": "RELAY_3slot_slim"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": "b9c57c11-2e49-4098-9475-671b7788e318",
+      "key": null
     },
     {
       "name": "hardpoint_seat_access_support",

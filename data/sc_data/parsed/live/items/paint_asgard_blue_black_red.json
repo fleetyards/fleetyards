@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Asgard_Blue_Black_Red",
+  "ref": "d92e1048-724f-424f-8b7a-e7bb6d5e4551",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "fce963cc-f0bc-4976-8640-b5cc556fd2df",
+  "name": "Asgard Sky Forge Livery",
+  "short_name": null,
+  "description": "Mainly blue, the Sky Forge livery for the Asgard also features black and red accents.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

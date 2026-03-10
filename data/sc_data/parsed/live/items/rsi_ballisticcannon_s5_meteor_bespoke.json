@@ -1,0 +1,63 @@
+{
+  "key": "RSI_BallisticCannon_S5_Meteor_Bespoke",
+  "ref": "2f92d27a-f04f-47f9-aeb5-96ad4fad15ea",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": "Leonids Cannon",
+  "short_name": "Leonids Cannon",
+  "description": "Manufacturer: RSI\\nItem Type: Ballistic Cannon\\nSize: 5\\n\\nBuilt specifically for the Meteor, the Leonids ballistic cannon provides formidable firepower designed to overwhelm aggressors that dare get within range. RSI expertly incorporated the cannon atop both sides of the ship to seamlessly integrate with the ship's components and provide full forward coverage.",
+  "inventory_consumption": {
+    "micro_scu": 4200000.0,
+    "dimensions": {
+      "x": 1.116502,
+      "y": 8.84403,
+      "z": 2.004737
+    }
+  },
+  "loadout": [
+    {
+      "name": "magazine_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 2500.0
+  },
+  "ammunition": {
+    "max_ammo_count": 720.0,
+    "initial_ammo_count": 720.0,
+    "max_restock_count": 3.0
+  }
+}

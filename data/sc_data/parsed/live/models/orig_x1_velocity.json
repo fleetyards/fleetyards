@@ -6,7 +6,7 @@
   "min_crew": "1",
   "name": "Origin X1 Velocity",
   "description": "Manufacturer: Origin Jumpworks\\nFocus: Racing\\n\\nHow do you make fast go faster? Origin Jumpworks' X1 Velocity dares to push the boundaries of speed by stripping down the base X1 to its core elements; eliminating the weapon mount and incorporating new Syntek composites to create a lighter chassis for overall weight loss.",
-  "career": "Personal Transport",
+  "career": "Competition",
   "role": "Racing",
   "insurance": {
     "base_wait_time_minutes": "0.15",

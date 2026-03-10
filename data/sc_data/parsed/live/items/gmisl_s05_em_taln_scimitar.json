@@ -1,0 +1,24 @@
+{
+  "key": "GMISL_S05_EM_TALN_Scimitar",
+  "ref": "e191151d-bb78-401d-8a3d-7b3406155245",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "GroundVehicleMissile",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "587fcede-4fe9-4fb4-85ec-124abc8542b0",
+  "name": "Scimitar V-G Missile",
+  "short_name": "Scimitar V-G",
+  "description": "Manufacturer: Talon \\nTracking Signal: Electromagnetic \\nSize: 5  \\n\\nThe Scimitar missile tracks targets via their EM signature to deliver a devastating size five payload. Note: This missile may only be launched by ground vehicles.",
+  "inventory_consumption": {
+    "micro_scu": 78125.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 5.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 50.0
+  }
+}

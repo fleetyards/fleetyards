@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "5.51",
     "base_expediting_fee": "17643"
   },
-  "mass": 55920.0,
+  "mass": 45720.0,
   "metrics": {
     "x": 24.5,
     "y": 24.5,
@@ -83,7 +83,7 @@
     {
       "name": "hardpoint_radar",
       "ref": null,
-      "key": "RADR_GRNP_S01_Ecouter"
+      "key": "RADR_BLTR_S01_Pelerous"
     },
     {
       "name": "hardpoint_powerplant",
@@ -92,11 +92,6 @@
     },
     {
       "name": "hardpoint_fuel_tank_left",
-      "ref": null,
-      "key": "HTNK_AEGS_Eclipse"
-    },
-    {
-      "name": "hardpoint_fuel_tank_right",
       "ref": null,
       "key": "HTNK_AEGS_Eclipse"
     },
@@ -127,18 +122,13 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": null,
-          "key": "JDRV_TARS_S01_C_Explorer"
+          "ref": "c8797bce-6220-4d1e-bc6d-23da4a366a6d",
+          "key": null
         }
       ]
     },
     {
       "name": "hardpoint_quantum_fuel_tank_left",
-      "ref": null,
-      "key": "QTNK_AEGS_Eclipse"
-    },
-    {
-      "name": "hardpoint_quantum_fuel_tank_right",
       "ref": null,
       "key": "QTNK_AEGS_Eclipse"
     },

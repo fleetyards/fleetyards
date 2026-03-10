@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Talon_AlienWeek_Green_Green_Brown",
+  "ref": "a4297f14-1746-4050-b93d-50fd87eb5819",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a1c95cb2-2f55-4b7e-ae42-34fb24946905",
+  "name": "Talon Luminary Livery",
+  "short_name": null,
+  "description": "The Luminary livery gives the Talon a glossy green base paint with brown highlights for a dazzlingly beautiful and complex design.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

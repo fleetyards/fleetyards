@@ -1,0 +1,21 @@
+{
+  "key": "Engineering_Buff_Modifier_MISC_Starfarer",
+  "ref": "fb637830-e585-4345-a1d2-9cd3133a9439",
+  "category": "utility",
+  "type": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 340.0,
+    "dimensions": {
+      "x": 0.0549,
+      "y": 0.0424,
+      "z": 0.133
+    }
+  }
+}

@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "6",
     "base_expediting_fee": "9000"
   },
-  "mass": 3555606.0,
+  "mass": 3466606.0,
   "metrics": {
     "x": 48.5,
     "y": 102.0,
@@ -176,11 +176,6 @@
       "key": null
     },
     {
-      "name": "hardpoint_ramp",
-      "ref": null,
-      "key": null
-    },
-    {
       "name": "hardpoint_engine_main",
       "ref": null,
       "key": "MISC_Starfarer_Thruster_Main"
@@ -293,7 +288,7 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S03_C_Explorer"
+          "key": "JDRV_TARS_S03_Exodus_SCItem"
         }
       ]
     },
@@ -561,6 +556,11 @@
       "name": "hardpoint_lifesupport",
       "ref": null,
       "key": "LFSP_TYDT_S03_ComfortAirMax"
+    },
+    {
+      "name": "hardpoint_powerplant_B",
+      "ref": "202db33c-6b87-4210-9392-6d5368bc3436",
+      "key": null
     }
   ]
 }

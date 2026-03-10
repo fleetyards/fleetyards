@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Mustang_Racing_Yellow_Blue_White",
+  "ref": "859943a7-fb06-486f-9187-e22227d43418",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cf28af6d-1ea4-462b-b391-f1152214b046",
+  "name": "Mustang Murray Cup Livery",
+  "short_name": null,
+  "description": "With a deep blue base and a bright yellow finish with chevron accents, this lively Murray Cup livery shows spectators that you've got a true competitor's spirit.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

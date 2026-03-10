@@ -6,14 +6,14 @@
   "min_crew": "3",
   "name": "Drake Cutlass Blue",
   "description": "Manufacturer: Drake Interplanetary\\nFocus: Interdiction\\n\\nSleek, mean, and royal. The Cutlass Blue adds missiles, a more aggressive engine, and Durasteel holding cells in the cargo bay to the standard model. The Cutlass Blue is the outworld militia standard ship of choice for patrols.",
-  "career": "Multi-Role",
-  "role": "Medium Fighter / Medium Freight",
+  "career": "Combat",
+  "role": "Interdiction",
   "insurance": {
     "base_wait_time_minutes": "9.99",
     "mandatory_wait_time_minutes": "3.33",
     "base_expediting_fee": "6643"
   },
-  "mass": 226700.0,
+  "mass": 222300.0,
   "metrics": {
     "x": 26.5,
     "y": 37.5,
@@ -167,7 +167,7 @@
     },
     {
       "name": "hardpoint_engineeringscreen",
-      "ref": "26cd663d-9c7b-4ef6-8d08-e75ef0c43695",
+      "ref": "878ae63f-4076-42ab-bab2-861ff7988045",
       "key": null
     },
     {
@@ -187,7 +187,7 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": "649c2450-0194-4a4d-99f3-38c16aacad53",
+          "ref": "14cbe476-4050-4af5-8635-178519722f4b",
           "key": null
         }
       ]
@@ -216,9 +216,7 @@
       "name": "hardpoint_seat_pilot",
       "ref": "70e94efa-7a36-47d2-95c9-ab357b30fe7d",
       "key": null,
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_access_copilot",
@@ -229,9 +227,7 @@
       "name": "hardpoint_copilot_seat",
       "ref": "7d9b1780-6a74-44c9-b14e-781b9a6b98a3",
       "key": null,
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_access_mannedturret",

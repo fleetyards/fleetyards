@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Starlancer_Blue_Blue_Yellow",
+  "ref": "30d459d6-7df9-43ef-9dbe-83df97d90bb0",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "21eecea5-916c-42d4-bd01-e3f4dfcdbec2",
+  "name": "Starlancer Atlantic Livery",
+  "short_name": null,
+  "description": "Become one with the sky with the Atlantic livery for the Starlancer, which is dark blue with ribbons of yellow.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

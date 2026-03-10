@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Fortune_Copper_Black",
+  "ref": "4a0332d5-3e09-4784-a630-d4e158e63aaa",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "3707a96a-0a9f-4058-9aad-1eccc96b4526",
+  "name": "Fortune Windfall Livery",
+  "short_name": null,
+  "description": "Make a lasting impression while sailing the stars in your Fortune with the Windfall livery's stunning copper finish.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

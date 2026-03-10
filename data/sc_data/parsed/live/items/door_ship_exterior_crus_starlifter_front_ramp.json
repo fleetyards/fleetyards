@@ -23,9 +23,7 @@
       "name": "IP_Exterior",
       "key": null,
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     }
   ],
   "durability": {

@@ -7,31 +7,31 @@
   "size": "1",
   "grade": "1",
   "manufacturer_ref": null,
-  "name": "SELF STATUS",
+  "name": null,
   "short_name": null,
   "description": null,
   "inventory_consumption": {
-    "micro_scu": 1.0,
+    "micro_scu": 970.0,
     "dimensions": {
-      "x": 0.15,
-      "y": 0.15,
-      "z": 0.15
+      "x": 0.2575701,
+      "y": 0.1729496,
+      "z": 0.02177711
     }
   },
   "type_data": {
-    "scm_speed": 197.0,
-    "scm_speed_boosted": 400.0,
+    "scm_speed": 200.0,
+    "scm_speed_boosted": 403.0,
     "reverse_speed_boosted": 205.0,
-    "max_speed": 1010.0,
+    "max_speed": 1100.0,
     "angular_velocity": {
-      "pitch": 32.0,
-      "yaw": 32.0,
-      "roll": 105.0
+      "pitch": 34.0,
+      "yaw": 30.0,
+      "roll": 103.0
     },
     "boosted_angular_velocity": {
-      "pitch": 38.4,
-      "yaw": 38.4,
-      "roll": 126.0
+      "pitch": 40.8,
+      "yaw": 36.0,
+      "roll": 123.6
     }
   }
 }

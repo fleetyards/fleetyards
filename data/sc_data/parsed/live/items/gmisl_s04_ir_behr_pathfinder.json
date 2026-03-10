@@ -1,0 +1,24 @@
+{
+  "key": "GMISL_S04_IR_BEHR_Pathfinder",
+  "ref": "4359f338-ee1c-47e3-8607-1613bb35dac5",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "GroundVehicleMissile",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "Pathfinder IV-G Missile",
+  "short_name": "Pathfndr IV-G",
+  "description": "Manufacturer: Behring \\nTracking Signal: Infrared \\nSize: 4  \\n\\nThe Pathfinder proximity missile has been a consistent member of Behring's already robust arsenal thanks to its tried and tested propulsion system and heat seeking guidance array. Note: This missile may only be launched by ground vehicles.",
+  "inventory_consumption": {
+    "micro_scu": 62500.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 4.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 25.0
+  }
+}

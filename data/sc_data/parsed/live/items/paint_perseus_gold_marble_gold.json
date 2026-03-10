@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Perseus_Gold_Marble_Gold",
+  "ref": "69cf3cf0-b37c-407a-aa55-1fd991248418",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ef634476-cd6a-4d9f-a1b6-0aae574de33f",
+  "name": "Perseus Hieron Livery",
+  "short_name": null,
+  "description": "The Hieron livery bring classical beauty to the modern war machine with its marble-inspired base paint and gold highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

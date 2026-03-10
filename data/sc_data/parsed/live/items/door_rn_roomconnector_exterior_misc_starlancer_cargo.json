@@ -7,7 +7,7 @@
   "size": "1",
   "grade": "1",
   "manufacturer_ref": null,
-  "name": null,
+  "name": "Door",
   "short_name": null,
   "description": null,
   "inventory_consumption": {
@@ -41,17 +41,13 @@
       "name": "cargo_grid_l",
       "key": "MISC_Starlancer_CargoGrid_Max",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "cargo_grid_r",
       "key": "MISC_Starlancer_CargoGrid_Max",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     }
   ],
   "durability": {

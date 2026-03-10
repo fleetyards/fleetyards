@@ -6,8 +6,8 @@
   "min_crew": "1",
   "name": "Tumbril Cyclone AA",
   "description": "Manufacturer: Tumbril Land Systems \\nFocus: Combat\\n\\nA battlefield equalizer, the Cyclone AA comes equipped with a surface-to-air missile and countermeasure package to provide cover for ground troops against airborne targets.",
-  "career": "Ground",
-  "role": "Support",
+  "career": "Combat",
+  "role": "Anti-Air",
   "insurance": {
     "base_wait_time_minutes": "2.03",
     "mandatory_wait_time_minutes": "0.68",
@@ -27,8 +27,8 @@
     },
     {
       "name": "hardpoint_seat_driver",
-      "ref": null,
-      "key": "TMBL_Cyclone_SCItem_Seat_Driver"
+      "ref": "6e8607da-e999-41bb-aa86-f2ae0c850bb9",
+      "key": null
     },
     {
       "name": "hardpoint_seat_passenger",
@@ -128,24 +128,24 @@
         {
           "name": "hardpoint_missilerack_left",
           "ref": null,
-          "key": "MRCK_S02_BEHR_Single_S02_Cyclone_AA",
+          "key": "GMRCK_S02_BEHR_Single_S02_Cyclone_AA",
           "loadout": [
             {
               "name": "missile_01_attach",
               "ref": null,
-              "key": "MISL_S02_EM_TALN_Dominator"
+              "key": "GMISL_S02_EM_TALN_Dominator"
             }
           ]
         },
         {
           "name": "hardpoint_missilerack_right",
           "ref": null,
-          "key": "MRCK_S02_BEHR_Single_S02_Cyclone_AA",
+          "key": "GMRCK_S02_BEHR_Single_S02_Cyclone_AA",
           "loadout": [
             {
               "name": "missile_01_attach",
               "ref": null,
-              "key": "MISL_S02_EM_TALN_Dominator"
+              "key": "GMISL_S02_EM_TALN_Dominator"
             }
           ]
         },
@@ -190,6 +190,16 @@
       "name": "hardpoint_relay_cockpit",
       "ref": null,
       "key": "RELAY_3slot"
+    },
+    {
+      "name": "hardpoint_personal_storage_left",
+      "ref": "9c624ba5-46f1-45fe-a42d-daa410167652",
+      "key": null
+    },
+    {
+      "name": "hardpoint_personal_storage_right",
+      "ref": "9c624ba5-46f1-45fe-a42d-daa410167652",
+      "key": null
     }
   ]
 }

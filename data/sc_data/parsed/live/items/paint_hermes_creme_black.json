@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hermes_Creme_Black",
+  "ref": "13958c7b-101f-4732-97c7-24aee51946c1",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1f53fc27-96d3-45e6-9f3c-9a2cdaec16ef",
+  "name": "Hermes Earthfall Livery",
+  "short_name": null,
+  "description": "Black, beige, and red come together to create a grounded color scheme for the Earthfall livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

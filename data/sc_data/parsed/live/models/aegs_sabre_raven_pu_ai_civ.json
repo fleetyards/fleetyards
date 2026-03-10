@@ -7,13 +7,13 @@
   "name": "Aegis Sabre Raven",
   "description": "Manufacturer: Aegis Dynamics \\nFocus: Interdiction\\n\\nAegis Dynamics have raised the bar yet again with their Raven variant, maintaining all the speed and maneuverability of its Sabre forebear, but with a lower ship signature, making it a fast, stealthy infiltrator.",
   "career": "Combat",
-  "role": "Interceptor",
+  "role": "Interdiction",
   "insurance": {
     "base_wait_time_minutes": "7.56",
     "mandatory_wait_time_minutes": "2.52",
     "base_expediting_fee": "3934"
   },
-  "mass": 70811.32,
+  "mass": 68711.32,
   "metrics": {
     "x": 24.5,
     "y": 24.5,
@@ -127,8 +127,8 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": null,
-          "key": "JDRV_TARS_S01_C_Explorer"
+          "ref": "c8797bce-6220-4d1e-bc6d-23da4a366a6d",
+          "key": null
         }
       ]
     },

@@ -7,13 +7,13 @@
   "name": "Aegis Retaliator",
   "description": "Manufacturer: Aegis Dynamics\\nFocus: Heavy Gunship\\n\\nThis civilian refit of the Retaliator updates the military ship's chassis with unladen space able to be fitted with various modules to suit your needs.",
   "career": "Combat",
-  "role": "Gunship",
+  "role": "Modular",
   "insurance": {
     "base_wait_time_minutes": "25.74",
     "mandatory_wait_time_minutes": "8.58",
     "base_expediting_fee": "32116"
   },
-  "mass": 343270.29,
+  "mass": 317870.29,
   "metrics": {
     "x": 44.0,
     "y": 70.5,
@@ -142,8 +142,8 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": null,
-          "key": "JDRV_TARS_S02_C_Explorer"
+          "ref": "14cbe476-4050-4af5-8635-178519722f4b",
+          "key": null
         }
       ]
     },

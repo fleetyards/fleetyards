@@ -57,56 +57,33 @@
       "name": "BAR1",
       "key": "BEHR_BallisticRepeater_Barrel_S2",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "MEC",
       "key": "BEHR_BallisticRepeater_FiringMechanism_S2",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "POW",
       "key": "BEHR_BallisticRepeater_PowerArray_S2",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "VEN",
       "key": "BEHR_BallisticRepeater_Ventilation_S2",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     }
   ],
   "durability": {
     "health": 850.0
   },
   "ammunition": {
-    "max_ammo_count": 1000.0,
-    "initial_ammo_count": 1000.0,
+    "max_ammo_count": 2637.0,
+    "initial_ammo_count": 2637.0,
     "max_restock_count": 3.0
-  },
-  "power_connection": {
-    "power_base": 40.0,
-    "power_draw": 60.0,
-    "time_to_reach_draw_request": 0.0,
-    "safeguard_priority": 20.0,
-    "displayed_in_powered_item_list": 1.0,
-    "is_throttleable": 0.0,
-    "is_overclockable": 0.0,
-    "overclock_threshold_min": 0.0,
-    "overclock_threshold_max": 0.0,
-    "overpower_performance": 0.0,
-    "overclock_performance": 0.0,
-    "power_to_em": 1.5,
-    "decay_rate_of_em": 1.0
   }
 }

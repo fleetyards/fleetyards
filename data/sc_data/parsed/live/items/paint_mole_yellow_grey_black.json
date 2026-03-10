@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Mole_Yellow_Grey_Black",
+  "ref": "882a48f8-fd78-4afc-a849-a365efa108fd",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f033f59d-0cdf-44a6-9190-6a94a34d923f",
+  "name": "MOLE Greycat Livery",
+  "short_name": null,
+  "description": "Proudly display your appreciation for one of Sol's most celebrated manufacturers with the Greycat livery, featuring the chrome yellows and industrial grays associated with the company's logo.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

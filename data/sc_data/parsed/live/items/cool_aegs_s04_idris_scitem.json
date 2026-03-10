@@ -7,9 +7,9 @@
   "size": "4",
   "grade": "1",
   "manufacturer_ref": null,
-  "name": null,
-  "short_name": null,
-  "description": null,
+  "name": "Exotherm",
+  "short_name": "Exotherm",
+  "description": "Item Type: Cooler\\nManufacturer: Aegis Dynamics\\nSize: 4\\n\\nThis capital-class cooler was designed specifically for the Idris frigate.",
   "inventory_consumption": {
     "micro_scu": 2100000.0,
     "dimensions": {
@@ -19,7 +19,7 @@
     }
   },
   "durability": {
-    "health": 6200.0
+    "health": 36000.0
   },
   "heat_connection": {
     "TemperatureToIR": 20.0,

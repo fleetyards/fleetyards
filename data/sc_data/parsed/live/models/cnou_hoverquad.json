@@ -6,8 +6,8 @@
   "min_crew": "1",
   "name": "C.O. HoverQuad",
   "description": "Manufacturer: Consolidated Outland\\nFocus: Transport\\n\\nDesigned as a companion ground vehicle for the Nomad, the HoverQuad's sleek angular frame utilizes four gravlev pads for maximum maneuverability, making it the perfect transport across all kinds of surfaces.",
-  "career": "Personal Transport",
-  "role": "Transport",
+  "career": "Exploration",
+  "role": "Passenger",
   "insurance": {
     "base_wait_time_minutes": "0.15",
     "mandatory_wait_time_minutes": "0.05",
@@ -238,7 +238,7 @@
     {
       "name": "hardpoint_relay_cockpit",
       "ref": null,
-      "key": "RELAY_2slot"
+      "key": "RELAY_1slot_MRAI_Pulse"
     }
   ]
 }

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hermes_Yellow_Black",
+  "ref": "73b775d9-2645-40be-82b5-cbe811c3f36c",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "de448a67-8ac2-4db8-9a04-b0da76d67efd",
+  "name": "Hermes Lockdown Livery",
+  "short_name": null,
+  "description": "Featuring yellow highlights that pops against a rich black hull, the Lockdown livery is sure to make a statement.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

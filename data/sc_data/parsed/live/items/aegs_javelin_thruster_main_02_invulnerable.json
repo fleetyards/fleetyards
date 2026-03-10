@@ -57,33 +57,25 @@
       "name": "hardpoint_mav_thruster_left",
       "key": null,
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "hardpoint_mav_thruster_right",
       "key": null,
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "hardpoint_mav_hatch_left",
       "key": null,
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "hardpoint_mav_hatch_right",
       "key": null,
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     }
   ],
   "durability": {

@@ -29,7 +29,7 @@
     }
   ],
   "durability": {
-    "health": 590.0
+    "health": 220.0
   },
   "heat_connection": {
     "TemperatureToIR": 1.3525,
@@ -94,7 +94,7 @@
         "permit_passive_detection": 0.0
       },
       {
-        "sensitivity": 0.5,
+        "sensitivity": 1.0,
         "piercing": 1.0,
         "permit_active_detection": 1.0,
         "permit_passive_detection": 1.0

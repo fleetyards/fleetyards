@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "4.5",
     "base_expediting_fee": "5715"
   },
-  "mass": 869686.0,
+  "mass": 852686.0,
   "metrics": {
     "x": 26.0,
     "y": 45.0,
@@ -132,8 +132,8 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": null,
-          "key": "JDRV_TARS_S02_C_Explorer"
+          "ref": "14cbe476-4050-4af5-8635-178519722f4b",
+          "key": null
         }
       ]
     },
@@ -379,43 +379,43 @@
     },
     {
       "name": "hardpoint_mining_pod_1",
-      "ref": null,
-      "key": "Cargo_Mining_Pod_Mole"
+      "ref": "f4aebc6d-ab66-4b7a-93ce-69bdd928ca99",
+      "key": null
     },
     {
       "name": "hardpoint_mining_pod_2",
-      "ref": null,
-      "key": "Cargo_Mining_Pod_Mole"
+      "ref": "f4aebc6d-ab66-4b7a-93ce-69bdd928ca99",
+      "key": null
     },
     {
       "name": "hardpoint_mining_pod_3",
-      "ref": null,
-      "key": "Cargo_Mining_Pod_Mole"
+      "ref": "f4aebc6d-ab66-4b7a-93ce-69bdd928ca99",
+      "key": null
     },
     {
       "name": "hardpoint_mining_pod_4",
-      "ref": null,
-      "key": "Cargo_Mining_Pod_Mole"
+      "ref": "f4aebc6d-ab66-4b7a-93ce-69bdd928ca99",
+      "key": null
     },
     {
       "name": "hardpoint_mining_pod_5",
-      "ref": null,
-      "key": "Cargo_Mining_Pod_Mole"
+      "ref": "f4aebc6d-ab66-4b7a-93ce-69bdd928ca99",
+      "key": null
     },
     {
       "name": "hardpoint_mining_pod_6",
-      "ref": null,
-      "key": "Cargo_Mining_Pod_Mole"
-    },
-    {
-      "name": "hardpoint_mining_pod_8",
-      "ref": null,
-      "key": "Cargo_Mining_Pod_Mole"
+      "ref": "f4aebc6d-ab66-4b7a-93ce-69bdd928ca99",
+      "key": null
     },
     {
       "name": "hardpoint_mining_pod_7",
-      "ref": null,
-      "key": "Cargo_Mining_Pod_Mole"
+      "ref": "f4aebc6d-ab66-4b7a-93ce-69bdd928ca99",
+      "key": null
+    },
+    {
+      "name": "hardpoint_mining_pod_8",
+      "ref": "f4aebc6d-ab66-4b7a-93ce-69bdd928ca99",
+      "key": null
     },
     {
       "name": "hardpoint_controller_missile",
@@ -473,16 +473,6 @@
       "key": "RELAY_2slot"
     },
     {
-      "name": "hardpoint_relay_habitation",
-      "ref": null,
-      "key": "RELAY_1slot"
-    },
-    {
-      "name": "hardpoint_relay_mining_turret",
-      "ref": null,
-      "key": "RELAY_1slot"
-    },
-    {
       "name": "hardpoint_relay_engineering",
       "ref": null,
       "key": "RELAY_3slot"
@@ -506,6 +496,91 @@
       "name": "hardpoint_radar_cab_right",
       "ref": null,
       "key": "RADR_S02_Fake"
+    },
+    {
+      "name": "hardpoint_stored_pod_1",
+      "ref": "be59463e-669b-41f2-99fb-ed13f8b70b5d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_stored_pod_2",
+      "ref": "be59463e-669b-41f2-99fb-ed13f8b70b5d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_stored_pod_3",
+      "ref": "be59463e-669b-41f2-99fb-ed13f8b70b5d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_stored_pod_4",
+      "ref": "be59463e-669b-41f2-99fb-ed13f8b70b5d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_stored_pod_5",
+      "ref": "be59463e-669b-41f2-99fb-ed13f8b70b5d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_stored_pod_6",
+      "ref": "be59463e-669b-41f2-99fb-ed13f8b70b5d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_stored_pod_7",
+      "ref": "be59463e-669b-41f2-99fb-ed13f8b70b5d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_stored_pod_8",
+      "ref": "be59463e-669b-41f2-99fb-ed13f8b70b5d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_stored_pod_9",
+      "ref": "be59463e-669b-41f2-99fb-ed13f8b70b5d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_stored_pod_10",
+      "ref": "be59463e-669b-41f2-99fb-ed13f8b70b5d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_stored_pod_11",
+      "ref": "be59463e-669b-41f2-99fb-ed13f8b70b5d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_stored_pod_12",
+      "ref": "be59463e-669b-41f2-99fb-ed13f8b70b5d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_stored_pod_13",
+      "ref": "be59463e-669b-41f2-99fb-ed13f8b70b5d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_stored_pod_14",
+      "ref": "be59463e-669b-41f2-99fb-ed13f8b70b5d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_stored_pod_15",
+      "ref": "be59463e-669b-41f2-99fb-ed13f8b70b5d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_stored_pod_16",
+      "ref": "be59463e-669b-41f2-99fb-ed13f8b70b5d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_ground_fuelport",
+      "ref": "2af039dc-e8fc-4fa0-b1d2-398d99724414",
+      "key": null
     }
   ]
 }

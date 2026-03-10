@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Salvation_blue_black_yellow",
+  "ref": "a5838d19-acc4-4aa6-8fd4-08fd056ae55c",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "9388aedc-1019-4ec5-b0c4-bf5fcc12d3e7",
+  "name": "Salvation Chimaera Livery",
+  "short_name": null,
+  "description": "The Chimaera livery for the Salvation is primarily blue and black with yellow highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

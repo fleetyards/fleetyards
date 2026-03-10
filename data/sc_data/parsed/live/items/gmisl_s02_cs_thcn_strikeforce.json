@@ -1,0 +1,24 @@
+{
+  "key": "GMISL_S02_CS_THCN_StrikeForce",
+  "ref": "e768a935-97f7-45fc-9201-79ba2c5802da",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "GroundVehicleMissile",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "d1a1bf03-89d9-4eae-ac34-11eeb8e45d8f",
+  "name": "StrikeForce II-G Missile",
+  "short_name": "StrkFrc II-G",
+  "description": "Manufacturer: Thermyte Concern \\nTracking Signal: Cross Section \\nSize: 2  \\n\\nThe StrikeForce is the latest culmination of Thermyte Concern's expansion into the missile industry, showcasing notable design and cross-section targeting improvements. Note: This missile may only be launched by ground vehicles.",
+  "inventory_consumption": {
+    "micro_scu": 31250.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 2.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 25.0
+  }
+}

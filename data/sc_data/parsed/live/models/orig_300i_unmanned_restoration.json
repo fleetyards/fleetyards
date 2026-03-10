@@ -7,13 +7,13 @@
   "name": "Origin 300i",
   "description": "Manufacturer: Origin Jumpworks\\nFocus: Touring\\n\\nIf you're going to travel the stars... why not do it in style? The 300i is Origin Jumpworks' premiere luxury spacecraft. It is a sleek, silver killer that sends as much of a message with its silhouette as it does with its particle cannons.",
   "career": "Exploration",
-  "role": "Luxury",
+  "role": "Luxury Touring",
   "insurance": {
     "base_wait_time_minutes": "7.76",
     "mandatory_wait_time_minutes": "2.59",
     "base_expediting_fee": "3618"
   },
-  "mass": 79677.0,
+  "mass": 69677.0,
   "metrics": {
     "x": 17.0,
     "y": 27.0,
@@ -54,8 +54,8 @@
     },
     {
       "name": "hardpoint_selfdestruct",
-      "ref": null,
-      "key": "VHCL_SelfDestruct_10s"
+      "ref": "27875030-1290-4098-827f-f1a5b67c0615",
+      "key": null
     },
     {
       "name": "hardpoint_controller_door",
@@ -220,12 +220,12 @@
     {
       "name": "hardpoint_mav_thruster_nose_top_right",
       "ref": null,
-      "key": "ORIG_300i_Thruster_Mav_Fixed_01_Top"
+      "key": "ORIG_300i_Thruster_Mav_Fixed_01_Front_Top"
     },
     {
       "name": "hardpoint_mav_thruster_nose_middle_right",
       "ref": null,
-      "key": "ORIG_300i_Thruster_Mav_Fixed_02"
+      "key": "ORIG_300i_Thruster_Mav_Fixed_Front_02"
     },
     {
       "name": "hardpoint_mav_thruster_nose_bottom_left",
@@ -235,12 +235,12 @@
     {
       "name": "hardpoint_mav_thruster_nose_top_left",
       "ref": null,
-      "key": "ORIG_300i_Thruster_Mav_Fixed_01_Top"
+      "key": "ORIG_300i_Thruster_Mav_Fixed_01_Front_Top"
     },
     {
       "name": "hardpoint_mav_thruster_nose_middle_left",
       "ref": null,
-      "key": "ORIG_300i_Thruster_Mav_Fixed_02"
+      "key": "ORIG_300i_Thruster_Mav_Fixed_Front_02"
     },
     {
       "name": "hardpoint_controller_weapon",
@@ -254,7 +254,7 @@
       "loadout": [
         {
           "name": "hardpoint_class_2",
-          "ref": "bbfbb4b5-c26e-4bee-9d41-9679e102e860",
+          "ref": "f72ca643-b48c-4f6e-abb7-d5bc8eb261aa",
           "key": null
         }
       ]
@@ -266,7 +266,7 @@
       "loadout": [
         {
           "name": "hardpoint_class_2",
-          "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+          "ref": "bbfbb4b5-c26e-4bee-9d41-9679e102e860",
           "key": null
         }
       ]
@@ -278,7 +278,7 @@
       "loadout": [
         {
           "name": "hardpoint_class_2",
-          "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+          "ref": "bbfbb4b5-c26e-4bee-9d41-9679e102e860",
           "key": null
         }
       ]
@@ -380,11 +380,6 @@
       "name": "hardpoint_cockpit_flair",
       "ref": null,
       "key": null
-    },
-    {
-      "name": "hardpoint_personal_storage",
-      "ref": null,
-      "key": "PersonalStorage_ORIG_300i"
     },
     {
       "name": "hardpoint_weapon_mount",

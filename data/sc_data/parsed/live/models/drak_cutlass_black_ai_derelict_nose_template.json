@@ -13,13 +13,11 @@
     "mandatory_wait_time_minutes": "3.33",
     "base_expediting_fee": "6251"
   },
-  "mass": 246577.0,
+  "mass": 242177.0,
   "metrics": {
     "x": 26.5,
     "y": 37.5,
     "z": 11.5
   },
-  "loadout": [
-
-  ]
+  "loadout": []
 }

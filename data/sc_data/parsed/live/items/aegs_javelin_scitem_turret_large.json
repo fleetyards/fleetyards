@@ -31,25 +31,19 @@
       "name": "turret_right",
       "min_size": "9",
       "max_size": "9",
-      "types": [
-
-      ]
+      "types": []
     },
     {
       "name": "turret_left_top",
       "min_size": "9",
       "max_size": "9",
-      "types": [
-
-      ]
+      "types": []
     },
     {
       "name": "turret_right_top",
       "min_size": "9",
       "max_size": "9",
-      "types": [
-
-      ]
+      "types": []
     }
   ],
   "default_loadout": [
@@ -57,33 +51,25 @@
       "name": "turret_left",
       "key": "BEHR_LaserCannon_S9",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "turret_right",
       "key": "BEHR_LaserCannon_S9",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "turret_right_top",
       "key": "BEHR_LaserCannon_S9",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "turret_left_top",
       "key": "BEHR_LaserCannon_S9",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     }
   ],
   "durability": {

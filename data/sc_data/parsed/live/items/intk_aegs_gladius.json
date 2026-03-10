@@ -13,7 +13,7 @@
   "inventory_consumption": {
     "micro_scu": 1.0,
     "dimensions": {
-      "x": 0.15,
+      "x": 0.1501,
       "y": 0.15,
       "z": 0.15
     }

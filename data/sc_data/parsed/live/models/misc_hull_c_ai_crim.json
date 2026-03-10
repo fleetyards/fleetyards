@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "15",
     "base_expediting_fee": "22500"
   },
-  "mass": 886930.0,
+  "mass": 726530.0,
   "metrics": {
     "x": 36.05,
     "y": 91.17,
@@ -495,7 +495,7 @@
             {
               "name": "hardpoint_jump_drive",
               "ref": null,
-              "key": "JDRV_TARS_S03_C_Explorer"
+              "key": "JDRV_TARS_S03_Exodus_SCItem"
             }
           ]
         },
@@ -528,11 +528,6 @@
           "name": "hardpoint_rear_seat_access_engineer",
           "ref": null,
           "key": null
-        },
-        {
-          "name": "hardpoint_rear_quantum_tank",
-          "ref": null,
-          "key": "QTNK_MISC_Hull_C"
         },
         {
           "name": "hardpoint_door_airlock_rear",
@@ -569,61 +564,6 @@
               "key": null
             }
           ]
-        },
-        {
-          "name": "",
-          "ref": null,
-          "key": null
-        },
-        {
-          "name": "",
-          "ref": null,
-          "key": null
-        },
-        {
-          "name": "",
-          "ref": null,
-          "key": null
-        },
-        {
-          "name": "",
-          "ref": null,
-          "key": null
-        },
-        {
-          "name": "",
-          "ref": null,
-          "key": null
-        },
-        {
-          "name": "",
-          "ref": null,
-          "key": null
-        },
-        {
-          "name": "",
-          "ref": null,
-          "key": null
-        },
-        {
-          "name": "",
-          "ref": null,
-          "key": null
-        },
-        {
-          "name": "",
-          "ref": null,
-          "key": null
-        },
-        {
-          "name": "",
-          "ref": null,
-          "key": null
-        },
-        {
-          "name": "",
-          "ref": null,
-          "key": null
         }
       ]
     },
@@ -857,26 +797,6 @@
       "name": "hardpoint_cockpit_flair_hang",
       "ref": null,
       "key": null
-    },
-    {
-      "name": "hardpoint_personal_storage_01",
-      "ref": null,
-      "key": "PersonalStorage_Hull_C"
-    },
-    {
-      "name": "hardpoint_personal_storage_02",
-      "ref": null,
-      "key": "PersonalStorage_Hull_C"
-    },
-    {
-      "name": "hardpoint_personal_storage_03",
-      "ref": null,
-      "key": "PersonalStorage_Hull_C"
-    },
-    {
-      "name": "hardpoint_personal_storage_04",
-      "ref": null,
-      "key": "PersonalStorage_Hull_C"
     },
     {
       "name": "hardpoint_extinguisher_bridge",

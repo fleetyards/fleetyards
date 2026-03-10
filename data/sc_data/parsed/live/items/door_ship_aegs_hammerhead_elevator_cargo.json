@@ -33,9 +33,7 @@
       "name": "hardpoint_cargogrid",
       "key": "AEGS_Hammerhead_CargoGrid_Main",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     }
   ],
   "power_connection": {

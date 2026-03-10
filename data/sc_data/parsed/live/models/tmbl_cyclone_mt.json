@@ -6,8 +6,8 @@
   "min_crew": "1",
   "name": "Tumbril Cyclone MT",
   "description": "Manufacturer: Tumbril Land Systems \\nFocus: Combat\\n\\nFollowing the success of the initial release of the Cyclone, Tumbril has taken your feedback and expanded their popular line of tactical vehicles with the all new Cyclone MT. Outfitted with a combination gun and missile turret, this module offers increased combat options in the field.",
-  "career": "Ground",
-  "role": "Combat",
+  "career": "Combat",
+  "role": "Anti-Air",
   "insurance": {
     "base_wait_time_minutes": "2.03",
     "mandatory_wait_time_minutes": "0.68",
@@ -123,34 +123,34 @@
         {
           "name": "hardpoint_missilerack_left",
           "ref": null,
-          "key": "MRCK_S03_TMBL_Dual_S02_Cyclone_MT_Left",
+          "key": "GMRCK_S03_TMBL_Dual_S02_Cyclone_MT_Left",
           "loadout": [
             {
               "name": "missile_01_attach",
               "ref": null,
-              "key": "MISL_S02_EM_TALN_Dominator"
+              "key": "GMISL_S02_EM_TALN_Dominator"
             },
             {
               "name": "missile_02_attach",
               "ref": null,
-              "key": "MISL_S02_EM_TALN_Dominator"
+              "key": "GMISL_S02_EM_TALN_Dominator"
             }
           ]
         },
         {
           "name": "hardpoint_missilerack_right",
           "ref": null,
-          "key": "MRCK_S03_TMBL_Dual_S02_Cyclone_MT_Right",
+          "key": "GMRCK_S03_TMBL_Dual_S02_Cyclone_MT_Right",
           "loadout": [
             {
               "name": "missile_01_attach",
               "ref": null,
-              "key": "MISL_S02_EM_TALN_Dominator"
+              "key": "GMISL_S02_EM_TALN_Dominator"
             },
             {
               "name": "missile_02_attach",
               "ref": null,
-              "key": "MISL_S02_EM_TALN_Dominator"
+              "key": "GMISL_S02_EM_TALN_Dominator"
             }
           ]
         },
@@ -188,7 +188,7 @@
     },
     {
       "name": "hardpoint_controller_missile",
-      "ref": null,
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
       "key": null
     },
     {
@@ -200,6 +200,16 @@
       "name": "hardpoint_relay_cockpit",
       "ref": null,
       "key": "RELAY_3slot"
+    },
+    {
+      "name": "hardpoint_personal_storage_left",
+      "ref": "9c624ba5-46f1-45fe-a42d-daa410167652",
+      "key": null
+    },
+    {
+      "name": "hardpoint_personal_storage_right",
+      "ref": "9c624ba5-46f1-45fe-a42d-daa410167652",
+      "key": null
     }
   ]
 }

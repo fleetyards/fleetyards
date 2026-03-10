@@ -40,7 +40,7 @@
       "min_size": "2",
       "max_size": "2",
       "types": [
-        "MissileLauncher",
+        "GroundVehicleMissileLauncher",
         "WeaponGun"
       ]
     },
@@ -49,7 +49,7 @@
       "min_size": "2",
       "max_size": "2",
       "types": [
-        "MissileLauncher",
+        "GroundVehicleMissileLauncher",
         "WeaponGun"
       ]
     },
@@ -75,9 +75,7 @@
       "name": "hardpoint_door_ramp",
       "key": "TMBL_Cyclone_Ramp_Locked",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     }
   ],
   "durability": {

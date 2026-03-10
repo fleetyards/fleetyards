@@ -3,7 +3,7 @@
   "ref": "d6becd3d-c806-488c-b85b-81c8b13ae3c8",
   "category": "turret",
   "type": "Turret",
-  "sub_type": "GunTurret",
+  "sub_type": "PDCTurret",
   "size": "9",
   "grade": "1",
   "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
@@ -33,9 +33,7 @@
       "name": "hardpoint_class_2",
       "key": null,
       "ref": "0e3f4b37-8085-4641-a360-40e4e372cd15",
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     }
   ],
   "durability": {

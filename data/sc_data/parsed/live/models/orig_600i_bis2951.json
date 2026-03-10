@@ -7,13 +7,13 @@
   "name": "Origin 600i 2951 BIS",
   "description": "Manufacturer: Origin Jumpworks\\nFocus: Touring\\n\\nThis multi-role luxury vessel from Origin Jumpworks features an exquisitely detailed hull design that balances performance and versatility in a sleek and timeless form. The 600i is designed with a cutting-edge modular technology, allowing you to customize your ship for your needs. To celebrate the 600i being voted a Best in Show finalist for 2951, this edition of the ship features a special blue and black livery already applied.",
   "career": "Exploration",
-  "role": "Luxury",
+  "role": "Expedition",
   "insurance": {
     "base_wait_time_minutes": "35.1",
     "mandatory_wait_time_minutes": "11.7",
     "base_expediting_fee": "17550"
   },
-  "mass": 1622067.0,
+  "mass": 1544667.0,
   "metrics": {
     "x": 52.0,
     "y": 91.5,
@@ -178,7 +178,7 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S02_C_Explorer"
+          "key": "JDRV_TARS_S02_Excelsior_SCItem"
         }
       ]
     },
@@ -609,32 +609,32 @@
       "key": "ORIG_600_CargoGrid_Main_Small"
     },
     {
-      "name": "hardpoint_relay",
+      "name": "hardpoint_relay_armory",
       "ref": null,
       "key": "RELAY_1slot_slim"
     },
     {
-      "name": "hardpoint_relay_2",
+      "name": "hardpoint_relay_bridge",
       "ref": null,
       "key": "RELAY_2slot_slim"
     },
     {
-      "name": "hardpoint_relay_3",
+      "name": "hardpoint_relay_engineering_left",
       "ref": null,
       "key": "RELAY_3slot_slim"
     },
     {
-      "name": "hardpoint_relay_4",
+      "name": "hardpoint_relay_engineering_right",
       "ref": null,
       "key": "RELAY_3slot_slim"
     },
     {
-      "name": "hardpoint_relay_5",
+      "name": "hardpoint_relay_hanger",
       "ref": null,
       "key": "RELAY_2slot_slim"
     },
     {
-      "name": "hardpoint_relay_6",
+      "name": "hardpoint_relay_crewquarters",
       "ref": null,
       "key": "RELAY_1slot_slim"
     },

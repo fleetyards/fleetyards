@@ -1,0 +1,40 @@
+{
+  "key": "AEGS_Idris_CargoGrid_AdditionalStorage",
+  "ref": "702b994a-6213-4225-ac4f-5ca4bec9e336",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 3.75,
+      "y": 2.5,
+      "z": 2.5
+    },
+    "capacity": 12,
+    "max_container_size": {
+      "size": 8,
+      "dimensions": {
+        "x": 2.5,
+        "y": 2.5,
+        "z": 2.5
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1
+      },
+      "max": {
+        "dimensions": {
+          "x": 2.5,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 2
+      }
+    }
+  }
+}

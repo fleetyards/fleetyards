@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Spirit_GoblinG_C_Blue_Black",
+  "ref": "c99adf21-5198-4a90-b950-1221fe04975a",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "73fea84d-dc2f-4ca0-923c-e6cea42eda02",
+  "name": "Spirit Crusader Livery",
+  "short_name": null,
+  "description": "The Crusader livery for the Spirit features the company's logo atop a light blue base paint with black and white highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

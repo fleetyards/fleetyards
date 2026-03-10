@@ -41,17 +41,13 @@
       "name": "turret_right",
       "key": "Bengal_BallisticCannon_S7",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "turret_left",
       "key": "Bengal_BallisticCannon_S7",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     }
   ],
   "durability": {

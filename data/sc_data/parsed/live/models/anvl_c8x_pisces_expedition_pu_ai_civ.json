@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "1.12",
     "base_expediting_fee": "1806"
   },
-  "mass": 48143.0,
+  "mass": 45243.0,
   "metrics": {
     "x": 12.0,
     "y": 16.0,
@@ -94,6 +94,11 @@
       "name": "hardpoint_radar",
       "ref": null,
       "key": "RADR_GRNP_S01_Ecouter"
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": "bd7f1a94-4d30-49dc-9239-b398f9d840eb",
+      "key": null
     },
     {
       "name": "hardpoint_seat_access",
@@ -207,7 +212,7 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": null,
+          "ref": "c8797bce-6220-4d1e-bc6d-23da4a366a6d",
           "key": null
         }
       ]
@@ -258,16 +263,6 @@
     },
     {
       "name": "hardpoint_cargogrid_right",
-      "ref": null,
-      "key": "ANVL_Pisces_CargoGrid"
-    },
-    {
-      "name": "hardpoint_cargogrid_leftF",
-      "ref": null,
-      "key": "ANVL_Pisces_CargoGrid"
-    },
-    {
-      "name": "hardpoint_cargogrid_rightF",
       "ref": null,
       "key": "ANVL_Pisces_CargoGrid"
     },

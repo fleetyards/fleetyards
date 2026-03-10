@@ -7,7 +7,7 @@
   "size": "1",
   "grade": "1",
   "manufacturer_ref": null,
-  "name": null,
+  "name": "Door",
   "short_name": null,
   "description": null,
   "inventory_consumption": {
@@ -39,9 +39,7 @@
       "name": "hardpoint_cargowall_left",
       "min_size": "1",
       "max_size": "1",
-      "types": [
-
-      ]
+      "types": []
     }
   ],
   "default_loadout": [
@@ -49,25 +47,19 @@
       "name": "hardpoint_cargogrid",
       "key": null,
       "ref": "f3963899-a698-4b9c-8efc-e0ad363d0e77",
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "hardpoint_cargowall_right",
       "key": null,
       "ref": "6900a68c-2078-4580-84ad-b383acc48fa6",
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "hardpoint_cargowall_left",
       "key": null,
       "ref": "3159cc1e-b097-4d41-b9f3-20762bb50034",
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     }
   ],
   "durability": {

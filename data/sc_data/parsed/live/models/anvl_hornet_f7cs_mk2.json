@@ -7,13 +7,13 @@
   "name": "Anvil F7C-S Hornet Ghost Mk II",
   "description": "Manufacturer: Anvil Aerospace\\nFocus: Stealth Fighter\\n \\nWhen approaching the Mk II redesign of the F7C-S Hornet Ghost, the engineers at Anvil Aerospace wanted to preserve what pilots loved about the low-emission drives, low-draw weapons, and Void Armor technology of the original, but refine them to an even higher level of performance for a whole new era of stealth operations.",
   "career": "Combat",
-  "role": "Medium Fighter",
+  "role": "Stealth Fighter",
   "insurance": {
     "base_wait_time_minutes": "9.5",
     "mandatory_wait_time_minutes": "2.375",
     "base_expediting_fee": "4190"
   },
-  "mass": 73317.0,
+  "mass": 66117.0,
   "metrics": {
     "x": 22.0,
     "y": 22.5,
@@ -57,8 +57,8 @@
     },
     {
       "name": "hardpoint_power_plant",
-      "ref": null,
-      "key": "POWR_AEGS_S01_Regulus_SCItem"
+      "ref": "ad089033-7cfc-479f-b7d4-49a93e1e3bd4",
+      "key": null
     },
     {
       "name": "hardpoint_controller_cooler",
@@ -68,12 +68,12 @@
     {
       "name": "hardpoint_cooler_left",
       "ref": null,
-      "key": "COOL_AEGS_S01_Bracer_SCItem"
+      "key": "COOL_TYDT_S01_HeatSafe_SCItem"
     },
     {
       "name": "hardpoint_cooler_right",
       "ref": null,
-      "key": "COOL_AEGS_S01_Bracer_SCItem"
+      "key": "COOL_TYDT_S01_HeatSafe_SCItem"
     },
     {
       "name": "hardpoint_controller_shield",
@@ -83,12 +83,12 @@
     {
       "name": "hardpoint_shield_generator_left",
       "ref": null,
-      "key": "SHLD_GODI_S01_AllStop_SCItem"
+      "key": "SHLD_ASAS_S01_Shimmer_SCItem"
     },
     {
       "name": "hardpoint_shield_generator_right",
       "ref": null,
-      "key": "SHLD_GODI_S01_AllStop_SCItem"
+      "key": "SHLD_ASAS_S01_Shimmer_SCItem"
     },
     {
       "name": "hardpoint_armor",
@@ -103,7 +103,7 @@
     {
       "name": "hardpoint_radar",
       "ref": null,
-      "key": "RADR_GRNP_S01_Ecouter"
+      "key": "RADR_BLTR_S01_Pelerous"
     },
     {
       "name": "hardpoint_engine_S5",
@@ -183,12 +183,12 @@
     {
       "name": "hardpoint_quantum_drive",
       "ref": null,
-      "key": "QDRV_RSI_S01_Eos_SCItem",
+      "key": "QDRV_RACO_S01_Drift_SCItem",
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": null,
-          "key": "JDRV_TARS_S01_C_Explorer"
+          "ref": "c8797bce-6220-4d1e-bc6d-23da4a366a6d",
+          "key": null
         }
       ]
     },
@@ -369,7 +369,7 @@
     },
     {
       "name": "hardpoint_power_plant_02",
-      "ref": "688aab9c-bc62-4774-be7d-065dee7e2187",
+      "ref": "ad089033-7cfc-479f-b7d4-49a93e1e3bd4",
       "key": null
     },
     {

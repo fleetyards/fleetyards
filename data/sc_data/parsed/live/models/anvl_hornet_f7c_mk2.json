@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "3.56",
     "base_expediting_fee": "5104"
   },
-  "mass": 73317.0,
+  "mass": 62117.0,
   "metrics": {
     "x": 22.0,
     "y": 22.5,
@@ -133,22 +133,22 @@
     {
       "name": "hardpoint_thruster_bottom_front_left",
       "ref": null,
-      "key": "ANVL_Hornet_F7_Mk2_Thruster_Mav_1"
+      "key": "ANVL_Hornet_F7_Mk2_Thruster_Mav_Front_1"
     },
     {
       "name": "hardpoint_thruster_bottom_front_right",
       "ref": null,
-      "key": "ANVL_Hornet_F7_Mk2_Thruster_Mav_1"
+      "key": "ANVL_Hornet_F7_Mk2_Thruster_Mav_Front_1"
     },
     {
       "name": "hardpoint_thruster_top_front_right",
       "ref": null,
-      "key": "ANVL_Hornet_F7_Mk2_Thruster_Mav_1"
+      "key": "ANVL_Hornet_F7_Mk2_Thruster_Mav_Front_1"
     },
     {
       "name": "hardpoint_thruster_top_front_left",
       "ref": null,
-      "key": "ANVL_Hornet_F7_Mk2_Thruster_Mav_1"
+      "key": "ANVL_Hornet_F7_Mk2_Thruster_Mav_Front_1"
     },
     {
       "name": "hardpoint_thruster_top_back_right",
@@ -187,8 +187,8 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": null,
-          "key": "JDRV_TARS_S01_C_Explorer"
+          "ref": "c8797bce-6220-4d1e-bc6d-23da4a366a6d",
+          "key": null
         }
       ]
     },

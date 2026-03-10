@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Polaris_FW2955_Grey_Black_Red_Camo",
+  "ref": "bc0f6356-3cfa-4a54-875b-5456ac03ff0e",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "c385961a-b7ce-4f05-953d-f28aa425ae3a",
+  "name": "Polaris Nightbreak Livery",
+  "short_name": null,
+  "description": "Discreetly soar through the night sky in the Polaris with the Nightbreak livery, which is primarily black with red highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

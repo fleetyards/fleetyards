@@ -1,0 +1,21 @@
+{
+  "key": "Engineering_Buff_Modifier_ANVL_Paladin",
+  "ref": "0530e14b-6f4e-4b06-81a4-65e539d840aa",
+  "category": "utility",
+  "type": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 340.0,
+    "dimensions": {
+      "x": 0.0549,
+      "y": 0.0424,
+      "z": 0.133
+    }
+  }
+}

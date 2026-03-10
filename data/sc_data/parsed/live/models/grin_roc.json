@@ -6,7 +6,7 @@
   "min_crew": "1",
   "name": "Greycat ROC",
   "description": "Manufacturer: Greycat Industrial\\nFocus: Mining\\n\\nBy focusing on the essentials of terrestrial-based mining, Greycat Industrial designed their hardworking, no-nonsense ROC (Remote Ore Collector) to complement the miners who use it. From its precision gimbaled mining arm to its all-terrain wheels, this solo-operated vehicle shows how important it is to have the right tool for the job.",
-  "career": "Ground",
+  "career": "Industrial",
   "role": "Light Mining",
   "insurance": {
     "base_wait_time_minutes": "3.54",
@@ -112,15 +112,15 @@
       "loadout": [
         {
           "name": "hardpoint_mining_laser",
-          "ref": null,
-          "key": "GRIN_ROC_Mining_Head"
+          "ref": "0982203d-579f-4c3c-8b7a-c5f1c4a7ddd6",
+          "key": null
         }
       ]
     },
     {
       "name": "hardpoint_cargogrid_main",
-      "ref": null,
-      "key": "GRIN_ROC_CargoGrid_Main"
+      "ref": "eb6fc98d-83c6-4633-bcc4-bfc7a3c91cfe",
+      "key": null
     },
     {
       "name": "hardpoint_controller_capacitor_assignment",
@@ -136,6 +136,11 @@
       "name": "hardpoint_relay_cockpit",
       "ref": null,
       "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_cargo_seat_access",
+      "ref": null,
+      "key": "GRIN_ROC_Cargo_SCItem_SeatAccess"
     }
   ]
 }

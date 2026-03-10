@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Shiv_Brown_White_Brown",
+  "ref": "059a058c-942f-4372-92e1-7ff69f3fa096",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "741b737d-63e2-49b5-8eb7-34ff9a4ed7e8",
+  "name": "Shiv Nightmare Livery",
+  "short_name": null,
+  "description": "Featuring a sinister skull atop a brown base paint, the Nightmare livery gives the Shiv a look that sends shivers down the spine.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

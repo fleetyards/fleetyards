@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "6.07",
     "base_expediting_fee": "9113"
   },
-  "mass": 244270.26,
+  "mass": 238070.26,
   "metrics": {
     "x": 40.0,
     "y": 48.0,
@@ -54,9 +54,7 @@
       "name": "hardpoint_engineer_console",
       "ref": null,
       "key": "AEGS_Vanguard_SCItem_Engineer_Console",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_engineer_console_access",
@@ -130,8 +128,8 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": null,
-          "key": "JDRV_TARS_S02_C_Explorer"
+          "ref": "14cbe476-4050-4af5-8635-178519722f4b",
+          "key": null
         }
       ]
     },
@@ -279,8 +277,8 @@
     },
     {
       "name": "hardpoint_turret",
-      "ref": null,
-      "key": "AEGS_Vanguard_SCItem_Turret",
+      "ref": "171c3bcf-ec19-4a36-b60a-701dbfebc17b",
+      "key": null,
       "loadout": [
         {
           "name": "turret_left",

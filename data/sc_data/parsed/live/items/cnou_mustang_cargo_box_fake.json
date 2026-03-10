@@ -21,18 +21,18 @@
   "loadout": [
     {
       "name": "hardpoint_front_door",
-      "min_size": "0",
-      "max_size": "0",
+      "min_size": "1",
+      "max_size": "1",
       "types": [
-
+        "Door"
       ]
     },
     {
       "name": "hardpoint_rear_door",
-      "min_size": "0",
-      "max_size": "0",
+      "min_size": "1",
+      "max_size": "1",
       "types": [
-
+        "Door"
       ]
     }
   ],
@@ -41,17 +41,13 @@
       "name": "hardpoint_front_door",
       "key": "SimpleOpenableObject_CNOU_Mustang_CargoBox_Door",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "hardpoint_rear_door",
       "key": "SimpleOpenableObject_CNOU_Mustang_CargoBox_Door",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     }
   ],
   "durability": {

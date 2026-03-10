@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "4.75",
     "base_expediting_fee": "6200"
   },
-  "mass": 458980.0,
+  "mass": 449970.0,
   "metrics": {
     "x": 21.5,
     "y": 31.5,
@@ -131,8 +131,8 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": null,
-          "key": "JDRV_TARS_S02_C_Explorer"
+          "ref": "14cbe476-4050-4af5-8635-178519722f4b",
+          "key": null
         }
       ]
     },
@@ -337,14 +337,9 @@
       "key": "ARGO_SRV_ShipATCDataManager"
     },
     {
-      "name": "hardpoint_personal_storage",
-      "ref": null,
-      "key": "PersonalStorage_ARGO_SRV"
-    },
-    {
       "name": "hardpoint_relay",
-      "ref": null,
-      "key": "RELAY_2slot"
+      "ref": "609b087d-bdfe-401d-b9fe-526af4d52d09",
+      "key": null
     },
     {
       "name": "hardpoint_lifesupport",

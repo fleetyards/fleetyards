@@ -6,14 +6,14 @@
   "min_crew": "1",
   "name": "RSI Constellation Phoenix Emerald",
   "description": "Manufacturer: RSI \\nFocus: Touring\\n\\nWhether you are a discerning socialite or a freewheeling party animal, the Constellation Phoenix Emerald is your personal passport to entertainment. With a swank interior cabin designed specifically for revelry, and a limited edition \"lucky\" paint job, the Emerald is the perfect venue to sip a glass of Radegast Gold or throw back a green Sleeping Tiger Malt while hurtling luxuriously through the stars. Just be sure to bring a designated pilot.",
-  "career": "Multi-Role",
-  "role": "Luxury",
+  "career": "Exploration",
+  "role": "Luxury Touring",
   "insurance": {
     "base_wait_time_minutes": "24.3",
     "mandatory_wait_time_minutes": "8.1",
     "base_expediting_fee": "12079"
   },
-  "mass": 427001.0,
+  "mass": 383801.0,
   "metrics": {
     "x": 27.75,
     "y": 63.5,
@@ -56,17 +56,13 @@
       "name": "hardpoint_seat_copilot_left",
       "ref": null,
       "key": "RSI_Constellation_Phoenix_SCItem_Seat_CoPilot_Left",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_copilot_right",
       "ref": null,
       "key": "RSI_Constellation_Phoenix_SCItem_Seat_CoPilot_Right",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_cockpit_selfdestruct",
@@ -186,7 +182,7 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S02_C_Explorer"
+          "key": "JDRV_TARS_S02_Excelsior_SCItem"
         }
       ]
     },
@@ -748,6 +744,11 @@
     {
       "name": "hardpoint_PDC_WC",
       "ref": "7f72f468-3e23-40b9-a5ee-d607d36437f2",
+      "key": null
+    },
+    {
+      "name": "hardpoint_PDC_MC",
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
       "key": null
     },
     {

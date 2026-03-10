@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "2.25",
     "base_expediting_fee": "3375"
   },
-  "mass": 314270.5,
+  "mass": 259270.5,
   "metrics": {
     "x": 47.5,
     "y": 44.0,
@@ -182,7 +182,7 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": "649c2450-0194-4a4d-99f3-38c16aacad53",
+          "ref": "14cbe476-4050-4af5-8635-178519722f4b",
           "key": null
         }
       ]
@@ -219,7 +219,7 @@
     },
     {
       "name": "hardpoint_copilot_seat",
-      "ref": "97b77473-bb59-402a-b0bd-6cd6055433ef",
+      "ref": "cd806a0c-2513-4b2a-8bb1-c4e8f73a2888",
       "key": null
     },
     {
@@ -299,32 +299,32 @@
     },
     {
       "name": "hardpoint_thruster_front_top_left",
-      "ref": "567ee16c-c332-44c8-a804-8b36e5c2b61f",
+      "ref": "b4f2541e-d6b7-4c9e-a85c-bff84d2f6bf1",
       "key": null
     },
     {
       "name": "hardpoint_thruster_front_top_right",
-      "ref": "567ee16c-c332-44c8-a804-8b36e5c2b61f",
+      "ref": "b4f2541e-d6b7-4c9e-a85c-bff84d2f6bf1",
       "key": null
     },
     {
       "name": "hardpoint_thruster_front_side_left",
-      "ref": "567ee16c-c332-44c8-a804-8b36e5c2b61f",
+      "ref": "b4f2541e-d6b7-4c9e-a85c-bff84d2f6bf1",
       "key": null
     },
     {
       "name": "hardpoint_thruster_front_side_right",
-      "ref": "567ee16c-c332-44c8-a804-8b36e5c2b61f",
+      "ref": "b4f2541e-d6b7-4c9e-a85c-bff84d2f6bf1",
       "key": null
     },
     {
       "name": "hardpoint_thruster_front_bottom_left",
-      "ref": "567ee16c-c332-44c8-a804-8b36e5c2b61f",
+      "ref": "b4f2541e-d6b7-4c9e-a85c-bff84d2f6bf1",
       "key": null
     },
     {
       "name": "hardpoint_thruster_front_bottom_right",
-      "ref": "567ee16c-c332-44c8-a804-8b36e5c2b61f",
+      "ref": "b4f2541e-d6b7-4c9e-a85c-bff84d2f6bf1",
       "key": null
     },
     {
@@ -369,12 +369,12 @@
     },
     {
       "name": "hardpoint_thruster_vtol_aux_front_left",
-      "ref": "3aa750df-c964-46ae-97ff-613190cf6341",
+      "ref": "a66bd731-e0b7-4ba9-80ec-e0446fb341ca",
       "key": null
     },
     {
       "name": "hardpoint_thruster_vtol_aux_front_right",
-      "ref": "3aa750df-c964-46ae-97ff-613190cf6341",
+      "ref": "a66bd731-e0b7-4ba9-80ec-e0446fb341ca",
       "key": null
     },
     {
@@ -581,12 +581,12 @@
     },
     {
       "name": "hardpoint_cargogrid_left",
-      "ref": "99644e5d-1c63-4803-a95f-57009d2999c7",
+      "ref": null,
       "key": null
     },
     {
       "name": "hardpoint_cargogrid_right",
-      "ref": "99644e5d-1c63-4803-a95f-57009d2999c7",
+      "ref": null,
       "key": null
     }
   ]

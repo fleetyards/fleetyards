@@ -31,9 +31,7 @@
       "name": "hardpoint_Ext_Door_Bottom_HACK",
       "min_size": "1",
       "max_size": "1",
-      "types": [
-
-      ]
+      "types": []
     }
   ],
   "default_loadout": [
@@ -41,17 +39,13 @@
       "name": "IP_Exterior",
       "key": null,
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "hardpoint_Ext_Door_Bottom_HACK",
       "key": "CRUS_Starlifter_Ext_Door_Bottom",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     }
   ],
   "durability": {

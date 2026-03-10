@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Perseus_Black_Grey_White",
+  "ref": "6f0ca3c8-9f2f-4960-b758-f43ee1706f71",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cefe8c9d-b365-412a-94de-85bbf7b77067",
+  "name": "Perseus Thundercloud Livery",
+  "short_name": null,
+  "description": "Restyle your Perseus with a dazzle camouflage inspired paint scheme using various abstract patterns and shades of black, grey, and white.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

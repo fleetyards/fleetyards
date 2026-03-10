@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Perseus_Beige_Blue_Red",
+  "ref": "8bf8f763-3fd3-467f-a40b-378c26193014",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f94b938e-9af9-42c5-a3e5-6f1b4174ec7e",
+  "name": "Perseus Repute Livery",
+  "short_name": null,
+  "description": "The unique Repute livery divides the Perseus into distinct sections with a tan front half and a red and blue back half.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

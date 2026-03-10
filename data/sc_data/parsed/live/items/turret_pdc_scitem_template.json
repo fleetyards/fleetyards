@@ -3,7 +3,7 @@
   "ref": "67b17d30-485b-48ba-b6cb-a6ef01a16e8e",
   "category": "turret",
   "type": "Turret",
-  "sub_type": "GunTurret",
+  "sub_type": "PDCTurret",
   "size": "9",
   "grade": "1",
   "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
@@ -41,17 +41,13 @@
       "name": "turret_right",
       "key": null,
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "turret_left",
       "key": null,
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     }
   ],
   "durability": {

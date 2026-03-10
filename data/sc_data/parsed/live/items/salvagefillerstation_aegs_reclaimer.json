@@ -23,25 +23,19 @@
       "name": "hardpoint_salvage_refill",
       "min_size": "0",
       "max_size": "0",
-      "types": [
-
-      ]
+      "types": []
     },
     {
       "name": "hardpoint_salvage_crate",
       "min_size": "0",
       "max_size": "0",
-      "types": [
-
-      ]
+      "types": []
     },
     {
       "name": "hardpoint_control_compacter",
       "min_size": "0",
       "max_size": "0",
-      "types": [
-
-      ]
+      "types": []
     }
   ],
   "default_loadout": [
@@ -49,9 +43,7 @@
       "name": "hardpoint_control_compacter",
       "key": "Salvage_Fillerstation_Screen_Template",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     }
   ]
 }

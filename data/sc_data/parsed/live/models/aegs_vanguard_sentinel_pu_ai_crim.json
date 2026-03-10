@@ -7,13 +7,13 @@
   "name": "Aegis Vanguard Sentinel",
   "description": "Manufacturer: Aegis Dynamics\\nFocus: Interdiction \\n\\nThe Vanguard Sentinel is a ship that's designed to fight smart instead of taking enemies head on. The conversion features an AR cockpit, an external e-War pod, decoy missiles and a set of EMP charges. Vanguard Sentinels often provide necessary combat support for combined operations. A lone Sentinel is frequently paired with Harbinger bombers and Warden escorts for large attack missions.",
   "career": "Combat",
-  "role": "Heavy Fighter",
+  "role": "Heavy Fighter / Bomber",
   "insurance": {
     "base_wait_time_minutes": "18.22",
     "mandatory_wait_time_minutes": "6.07",
     "base_expediting_fee": "9113"
   },
-  "mass": 232170.0,
+  "mass": 225970.0,
   "metrics": {
     "x": 40.0,
     "y": 48.0,
@@ -117,8 +117,8 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": null,
-          "key": "JDRV_TARS_S02_C_Explorer"
+          "ref": "14cbe476-4050-4af5-8635-178519722f4b",
+          "key": null
         }
       ]
     },
@@ -479,9 +479,7 @@
       "name": "hardpoint_engineer_console_sentinel",
       "ref": null,
       "key": "AEGS_Vanguard_Sentinel_SCItem_Engineer_Console",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_engineer_console_access_sentinel",

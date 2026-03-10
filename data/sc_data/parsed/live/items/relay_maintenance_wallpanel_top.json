@@ -23,25 +23,19 @@
       "name": "$slot_subi_4",
       "min_size": "1",
       "max_size": "2",
-      "types": [
-
-      ]
+      "types": []
     },
     {
       "name": "$slot_subi_5",
       "min_size": "1",
       "max_size": "2",
-      "types": [
-
-      ]
+      "types": []
     },
     {
       "name": "$slot_subi_6",
       "min_size": "1",
       "max_size": "2",
-      "types": [
-
-      ]
+      "types": []
     }
   ],
   "default_loadout": [
@@ -49,25 +43,19 @@
       "name": "$slot_subi_4",
       "key": "Wallpanel_1H_Fuses",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "$slot_subi_5",
       "key": "Wallpanel_1H_Fuses",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "$slot_subi_6",
       "key": "Wallpanel_1H_Fuses",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     }
   ]
 }

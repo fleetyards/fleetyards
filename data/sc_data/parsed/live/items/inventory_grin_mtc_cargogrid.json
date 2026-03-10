@@ -1,0 +1,33 @@
+{
+  "key": "Grin_MTC_CargoGrid",
+  "ref": "3910f3d5-8393-4229-977e-256af3b989e7",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 0.5,
+      "y": 0.5,
+      "z": 0.5
+    },
+    "capacity": 0,
+    "max_container_size": null,
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 0.5,
+          "y": 0.5,
+          "z": 0.5
+        },
+        "capacity": 0
+      },
+      "max": {
+        "dimensions": {
+          "x": 0.5,
+          "y": 0.5,
+          "z": 0.5
+        },
+        "capacity": 0
+      }
+    }
+  }
+}

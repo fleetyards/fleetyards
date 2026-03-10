@@ -7,13 +7,13 @@
   "name": "Drake Cutlass Steel",
   "description": "Manufacturer: Drake Interplanetary\\nFocus: Medium Fighter / Medium Troop Transport\\n\\nWith the Cutlass Steel, Drake Interplanetary has once again reinvented their classic design to create a next generation combat transport ship through the addition of dedicated jump seats and an expanded arsenal. It’s a dangerous ‘verse out there, and the Cutlass Steel is ready to cut a path through whatever stands in the way of you and your dedicated crew.",
   "career": "Combat",
-  "role": "Drop Ship",
+  "role": "Dropship",
   "insurance": {
     "base_wait_time_minutes": "11.99",
     "mandatory_wait_time_minutes": "4",
     "base_expediting_fee": "7051"
   },
-  "mass": 246577.0,
+  "mass": 242177.0,
   "metrics": {
     "x": 26.5,
     "y": 37.5,
@@ -172,7 +172,7 @@
     },
     {
       "name": "hardpoint_engineeringscreen",
-      "ref": "26cd663d-9c7b-4ef6-8d08-e75ef0c43695",
+      "ref": "878ae63f-4076-42ab-bab2-861ff7988045",
       "key": null
     },
     {
@@ -193,7 +193,7 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S02_C_Explorer"
+          "key": "JDRV_TARS_S02_Excelsior_SCItem"
         }
       ]
     },
@@ -221,9 +221,7 @@
       "name": "hardpoint_seat_pilot",
       "ref": "2f41d0be-8a41-417d-b214-9d8d62c7773e",
       "key": null,
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_access_copilot",
@@ -234,9 +232,7 @@
       "name": "hardpoint_copilot_seat",
       "ref": "7d9b1780-6a74-44c9-b14e-781b9a6b98a3",
       "key": null,
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_access_mannedturret",

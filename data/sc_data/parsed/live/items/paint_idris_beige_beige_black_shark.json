@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Idris_Beige_Beige_Black_Shark",
+  "ref": "145d7b4a-033e-4267-9fb9-129737d6d09d",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "789414e3-77e1-472a-b329-fb96ebd9a803",
+  "name": "Idris Sharktooth Livery",
+  "short_name": null,
+  "description": "Charge into battle in stylish and dramatic fashion with the Sharktooth livery. It gives the Idris a distinct look using beige and black for a disruptive coloration pattern that helps break up the silhouette of the ship.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

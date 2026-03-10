@@ -5,7 +5,7 @@
   "gravlev": "0",
   "min_crew": "1",
   "name": "Esperia Blade",
-  "description": "Manufacturer: Esperia\\nFocus: Light Fighter\\n\\nThese light fighters, designation 'Blade', are often used by Vanduul as scouts and first wave assault crafts. They have also served well as skirmisher units due to their speed allowing them to chase down any ships attempting to flee the area. For some decades, United Empire of Earth aggressor squadrons have operated replica Blade fighters produced under exclusive contract by Esperia, Inc.",
+  "description": "Manufacturer: Vanduul Clans\\nFocus: Light Fighter\\n\\nThese light fighters, designation 'Blade', are often used by Vanduul as scouts and first wave assault crafts. They have also served well as skirmisher units due to their speed allowing them to chase down any ships attempting to flee the area. For some decades, United Empire of Earth aggressor squadrons have operated replica Blade fighters produced under exclusive contract by Esperia, Inc.",
   "career": "Combat",
   "role": "Light Fighter",
   "insurance": {
@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "3.44",
     "base_expediting_fee": "5124"
   },
-  "mass": 27019.0,
+  "mass": 23219.0,
   "metrics": {
     "x": 16.5,
     "y": 20.5,
@@ -108,7 +108,7 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S01_C_Explorer"
+          "key": "JDRV_TARS_S01_Explorer_SCItem"
         }
       ]
     },
@@ -229,23 +229,51 @@
     },
     {
       "name": "hardpoint_weapon_front_left",
-      "ref": "2b261d0c-d208-4ab4-9217-ded64b8cb7cf",
-      "key": null
+      "ref": "2616dd99-282a-493a-9f79-750a1ba6f329",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "2b261d0c-d208-4ab4-9217-ded64b8cb7cf",
+          "key": null
+        }
+      ]
     },
     {
       "name": "hardpoint_weapon_front_right",
-      "ref": "2b261d0c-d208-4ab4-9217-ded64b8cb7cf",
-      "key": null
+      "ref": "2616dd99-282a-493a-9f79-750a1ba6f329",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "2b261d0c-d208-4ab4-9217-ded64b8cb7cf",
+          "key": null
+        }
+      ]
     },
     {
       "name": "hardpoint_weapon_wing_left",
-      "ref": "80ab18bb-9bc2-4e4f-a407-06c28e69bea7",
-      "key": null
+      "ref": "fbae6747-8e06-4409-8900-671529273e3d",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "e350773c-9131-4974-b624-e6b9e7c7200d",
+          "key": null
+        }
+      ]
     },
     {
       "name": "hardpoint_weapon_wing_right",
-      "ref": "80ab18bb-9bc2-4e4f-a407-06c28e69bea7",
-      "key": null
+      "ref": "fbae6747-8e06-4409-8900-671529273e3d",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "e350773c-9131-4974-b624-e6b9e7c7200d",
+          "key": null
+        }
+      ]
     },
     {
       "name": "hardpoint_missile_rack_left",

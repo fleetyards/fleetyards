@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "7",
     "base_expediting_fee": "9393"
   },
-  "mass": 715175.0,
+  "mass": 680575.0,
   "metrics": {
     "x": 55.0,
     "y": 51.0,
@@ -111,11 +111,6 @@
       "key": null
     },
     {
-      "name": "hardpoint_fuel_tank_right",
-      "ref": "7f4a396f-51e0-4237-a7b0-4b0d71986f2c",
-      "key": null
-    },
-    {
       "name": "hardpoint_power_plant_left",
       "ref": "be3eb52b-243a-4ed9-833a-d348f910a32a",
       "key": null
@@ -188,7 +183,7 @@
     {
       "name": "hardpoint_engineeringscreen",
       "ref": null,
-      "key": "SoftLock_EngineeringScreen_Template"
+      "key": "SoftLock_EngineeringScreen_StandardShip"
     },
     {
       "name": "hardpoint_relay_cockpit",
@@ -222,18 +217,13 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": "649c2450-0194-4a4d-99f3-38c16aacad53",
-          "key": "JDRV_TARS_S02_C_Explorer"
+          "ref": null,
+          "key": "JDRV_TARS_S02_Excelsior_SCItem"
         }
       ]
     },
     {
-      "name": "hardpoint_quantum_fuel_tank_left",
-      "ref": "a9f08dfe-cb58-4d03-bb4a-decf6b02dfba",
-      "key": null
-    },
-    {
-      "name": "hardpoint_quantum_fuel_tank_right",
+      "name": "hardpoint_quantum_fuel_tank",
       "ref": "a9f08dfe-cb58-4d03-bb4a-decf6b02dfba",
       "key": null
     },
@@ -348,9 +338,7 @@
       "name": "hardpoint_scanning_station",
       "ref": "d19c7678-8de0-42b8-8240-9d6c59c3d84b",
       "key": null,
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_scanner_dish",

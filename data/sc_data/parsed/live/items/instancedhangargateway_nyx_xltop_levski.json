@@ -1,0 +1,21 @@
+{
+  "key": "InstancedHangarGateway_Nyx_XLTop_Levski",
+  "ref": "c254b58f-fe6b-48db-8876-9032de256c03",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": null,
+  "grade": null,
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  }
+}

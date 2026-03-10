@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Asgard_Black_Grey_Red_Pirate_Skull",
+  "ref": "9b99bf98-c0df-4221-9a90-883840b0115d",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "775ef814-3ad6-466e-886b-95407c53a9d8",
+  "name": "Asgard Skullcrusher Livery",
+  "short_name": null,
+  "description": "Exude attitude with the Skullcrusher livery for the Asgard, which features a massive skull across the top.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

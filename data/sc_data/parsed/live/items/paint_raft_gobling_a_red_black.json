@@ -1,0 +1,21 @@
+{
+  "key": "Paint_RAFT_GoblinG_A_Red_Black",
+  "ref": "adf07b12-f8d6-4baa-ab12-c5788e43e68a",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dc1a8116-938d-4b7f-a41a-158e28a81737",
+  "name": "RAFT ArcCorp Livery",
+  "short_name": null,
+  "description": "The ArcCorp livery for the RAFT features the company's logo atop a maroon base paint with black and yellow highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

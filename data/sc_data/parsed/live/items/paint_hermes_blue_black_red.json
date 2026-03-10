@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hermes_Blue_Black_Red",
+  "ref": "2d1a623d-4655-4695-9974-5e62b8d5a783",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4a6757d1-3673-4256-be1f-7a06fd0f0d17",
+  "name": "Hermes Disco Livery",
+  "short_name": null,
+  "description": "Equip the ship livery used by ace pilot Disco in the classic children's cartoon Rory Nova. While it turns the Hermes metallic dark blue, black, and red, whether you turn into the 'dynamic, instinctive spacecraft operator' that inspired the livery's name is up to you.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

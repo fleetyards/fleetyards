@@ -9,9 +9,9 @@
   "career": "Ground Combat",
   "role": "Light Tank",
   "insurance": {
-    "base_wait_time_minutes": "1",
-    "mandatory_wait_time_minutes": "0.25",
-    "base_expediting_fee": "430"
+    "base_wait_time_minutes": "5.33",
+    "mandatory_wait_time_minutes": "1.33",
+    "base_expediting_fee": "1730"
   },
   "mass": 54230.0,
   "metrics": {

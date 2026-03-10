@@ -7,13 +7,13 @@
   "name": "Aegis Hammerhead",
   "description": "Manufacturer: Aegis Dynamics \\nFocus: Heavy Gunship\\n\\nA fast patrol ship with multiple turrets designed to combat fighters, the Hammerhead is equally suited to support larger capital ships in a fleet or act as a flagship for fighter groups.",
   "career": "Combat",
-  "role": "Corvette",
+  "role": "Heavy Gunship",
   "insurance": {
     "base_wait_time_minutes": "48.6",
     "mandatory_wait_time_minutes": "16.2",
     "base_expediting_fee": "24582"
   },
-  "mass": 4617511.0,
+  "mass": 4542311.0,
   "metrics": {
     "x": 72.0,
     "y": 120.0,
@@ -78,17 +78,13 @@
       "name": "hardpoint_component_room_left_engineer_console",
       "ref": null,
       "key": "AEGS_Hammerhead_SCItem_Engineer_Console",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_component_room_right_engineer_console",
       "ref": null,
       "key": "AEGS_Hammerhead_SCItem_Engineer_Console",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_access_captains_quarters",
@@ -182,8 +178,8 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": null,
-          "key": "JDRV_TARS_S03_C_Explorer"
+          "ref": "59346c37-671d-4aae-9eff-d38e13caa9c0",
+          "key": null
         }
       ]
     },
@@ -1011,7 +1007,17 @@
     {
       "name": "hardpoint_relay_cockpit",
       "ref": null,
-      "key": "RELAY_1slot"
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_relay_body",
+      "ref": null,
+      "key": "RELAY_3slot"
+    },
+    {
+      "name": "hardpoint_relay_tail",
+      "ref": null,
+      "key": "RELAY_2slot"
     },
     {
       "name": "hardpoint_lifesupport",

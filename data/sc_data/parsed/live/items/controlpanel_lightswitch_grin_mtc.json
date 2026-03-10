@@ -1,0 +1,21 @@
+{
+  "key": "ControlPanel_LightSwitch_Grin_MTC",
+  "ref": "d4251d95-f0ee-450d-a638-8ea43a22a29b",
+  "category": "doors",
+  "type": "ControlPanel",
+  "sub_type": "DoorPart",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

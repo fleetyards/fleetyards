@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Freelancer_White_Red",
+  "ref": "f142c310-514f-4ce5-ba0d-80f0363d8db7",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "603b6064-8e4a-4a46-b0d1-241d7043ceaf",
+  "name": "Freelancer Ellroy's Livery",
+  "short_name": null,
+  "description": "Ready to give your Freelancer a jolt of energy? The iconic, coffee serving mascot pops on the Ellroy's livery, which is primarily crisp white with red and black highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

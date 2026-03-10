@@ -20,5 +20,8 @@
   },
   "durability": {
     "health": 10000.0
+  },
+  "type_data": {
+    "capacity": 60.0
   }
 }

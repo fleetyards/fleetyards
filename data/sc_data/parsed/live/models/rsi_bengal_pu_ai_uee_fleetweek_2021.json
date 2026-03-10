@@ -338,11 +338,6 @@
       "key": "RSI_Bengal_SCItem_Remote_Turret_Main_Gun"
     },
     {
-      "name": "hardpoint_main_turret_radar",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_missile_turret_01",
       "ref": null,
       "key": null
@@ -388,11 +383,6 @@
       "key": "RSI_Bengal_SCItem_STS_Turret"
     },
     {
-      "name": "hardpoint_ai_turret_radar_01",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_ai_turret_controller_01",
       "ref": null,
       "key": "Controller_Weapon"
@@ -401,11 +391,6 @@
       "name": "hardpoint_ai_turret_02",
       "ref": null,
       "key": "RSI_Bengal_SCItem_STS_Turret"
-    },
-    {
-      "name": "hardpoint_ai_turret_radar_02",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_ai_turret_controller_02",
@@ -418,11 +403,6 @@
       "key": "RSI_Bengal_SCItem_STS_Turret"
     },
     {
-      "name": "hardpoint_ai_turret_radar_03",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_ai_turret_controller_03",
       "ref": null,
       "key": "Controller_Weapon"
@@ -431,11 +411,6 @@
       "name": "hardpoint_ai_turret_04",
       "ref": null,
       "key": "RSI_Bengal_SCItem_STS_Turret"
-    },
-    {
-      "name": "hardpoint_ai_turret_radar_04",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_ai_turret_controller_04",
@@ -448,11 +423,6 @@
       "key": "RSI_Bengal_SCItem_STS_Turret"
     },
     {
-      "name": "hardpoint_ai_turret_radar_05",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_ai_turret_controller_05",
       "ref": null,
       "key": "Controller_Weapon"
@@ -461,11 +431,6 @@
       "name": "hardpoint_ai_turret_06",
       "ref": null,
       "key": "RSI_Bengal_SCItem_STS_Turret"
-    },
-    {
-      "name": "hardpoint_ai_turret_radar_06",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_ai_turret_controller_06",
@@ -478,11 +443,6 @@
       "key": "RSI_Bengal_SCItem_STS_Turret"
     },
     {
-      "name": "hardpoint_ai_turret_radar_07",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_ai_turret_controller_07",
       "ref": null,
       "key": "Controller_Weapon"
@@ -491,11 +451,6 @@
       "name": "hardpoint_ai_turret_08",
       "ref": null,
       "key": "RSI_Bengal_SCItem_STS_Turret"
-    },
-    {
-      "name": "hardpoint_ai_turret_radar_08",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_ai_turret_controller_08",
@@ -508,11 +463,6 @@
       "key": "RSI_Bengal_SCItem_STS_Turret"
     },
     {
-      "name": "hardpoint_ai_turret_radar_09",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_ai_turret_controller_09",
       "ref": null,
       "key": "Controller_Weapon"
@@ -521,11 +471,6 @@
       "name": "hardpoint_ai_turret_10",
       "ref": null,
       "key": "RSI_Bengal_SCItem_STS_Turret"
-    },
-    {
-      "name": "hardpoint_ai_turret_radar_10",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_ai_turret_controller_10",
@@ -538,11 +483,6 @@
       "key": "RSI_Bengal_SCItem_STS_Turret"
     },
     {
-      "name": "hardpoint_ai_turret_radar_11",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_ai_turret_controller_11",
       "ref": null,
       "key": "Controller_Weapon"
@@ -551,11 +491,6 @@
       "name": "hardpoint_ai_turret_12",
       "ref": null,
       "key": "RSI_Bengal_SCItem_STS_Turret"
-    },
-    {
-      "name": "hardpoint_ai_turret_radar_12",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_ai_turret_controller_12",
@@ -568,11 +503,6 @@
       "key": "RSI_Bengal_SCItem_STS_Turret"
     },
     {
-      "name": "hardpoint_ai_turret_radar_13",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_ai_turret_controller_13",
       "ref": null,
       "key": "Controller_Weapon"
@@ -581,11 +511,6 @@
       "name": "hardpoint_ai_turret_14",
       "ref": null,
       "key": "RSI_Bengal_SCItem_STS_Turret"
-    },
-    {
-      "name": "hardpoint_ai_turret_radar_14",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_ai_turret_controller_14",
@@ -598,11 +523,6 @@
       "key": "RSI_Bengal_SCItem_STS_Turret"
     },
     {
-      "name": "hardpoint_ai_turret_radar_15",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_ai_turret_controller_15",
       "ref": null,
       "key": "Controller_Weapon"
@@ -611,11 +531,6 @@
       "name": "hardpoint_ai_turret_16",
       "ref": null,
       "key": "RSI_Bengal_SCItem_STS_Turret"
-    },
-    {
-      "name": "hardpoint_ai_turret_radar_16",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_ai_turret_controller_16",
@@ -628,11 +543,6 @@
       "key": "RSI_Bengal_SCItem_STS_Turret"
     },
     {
-      "name": "hardpoint_ai_turret_radar_17",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_ai_turret_controller_17",
       "ref": null,
       "key": "Controller_Weapon"
@@ -641,11 +551,6 @@
       "name": "hardpoint_ai_turret_18",
       "ref": null,
       "key": "RSI_Bengal_SCItem_STS_Turret"
-    },
-    {
-      "name": "hardpoint_ai_turret_radar_18",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_ai_turret_controller_18",
@@ -658,11 +563,6 @@
       "key": "RSI_Bengal_SCItem_STS_Turret"
     },
     {
-      "name": "hardpoint_ai_turret_radar_19",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_ai_turret_controller_19",
       "ref": null,
       "key": "Controller_Weapon"
@@ -671,11 +571,6 @@
       "name": "hardpoint_ai_turret_20",
       "ref": null,
       "key": "RSI_Bengal_SCItem_STS_Turret"
-    },
-    {
-      "name": "hardpoint_ai_turret_radar_20",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_ai_turret_controller_20",
@@ -688,11 +583,6 @@
       "key": "RSI_Bengal_SCItem_STS_Turret"
     },
     {
-      "name": "hardpoint_ai_turret_radar_21",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_ai_turret_controller_21",
       "ref": null,
       "key": "Controller_Weapon"
@@ -701,11 +591,6 @@
       "name": "hardpoint_ai_turret_22",
       "ref": null,
       "key": "RSI_Bengal_SCItem_STS_Turret"
-    },
-    {
-      "name": "hardpoint_ai_turret_radar_22",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_ai_turret_controller_22",
@@ -718,11 +603,6 @@
       "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
     },
     {
-      "name": "hardpoint_phalanx_turret_radar_01",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_phalanx_turret_controller_01",
       "ref": null,
       "key": "Controller_Weapon"
@@ -731,11 +611,6 @@
       "name": "hardpoint_phalanx_turret_02",
       "ref": null,
       "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
-    },
-    {
-      "name": "hardpoint_phalanx_turret_radar_02",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_phalanx_turret_controller_02",
@@ -748,11 +623,6 @@
       "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
     },
     {
-      "name": "hardpoint_phalanx_turret_radar_03",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_phalanx_turret_controller_03",
       "ref": null,
       "key": "Controller_Weapon"
@@ -761,11 +631,6 @@
       "name": "hardpoint_phalanx_turret_04",
       "ref": null,
       "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
-    },
-    {
-      "name": "hardpoint_phalanx_turret_radar_04",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_phalanx_turret_controller_04",
@@ -778,11 +643,6 @@
       "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
     },
     {
-      "name": "hardpoint_phalanx_turret_radar_05",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_phalanx_turret_controller_05",
       "ref": null,
       "key": "Controller_Weapon"
@@ -791,11 +651,6 @@
       "name": "hardpoint_phalanx_turret_06",
       "ref": null,
       "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
-    },
-    {
-      "name": "hardpoint_phalanx_turret_radar_06",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_phalanx_turret_controller_06",
@@ -808,11 +663,6 @@
       "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
     },
     {
-      "name": "hardpoint_phalanx_turret_radar_07",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_phalanx_turret_controller_07",
       "ref": null,
       "key": "Controller_Weapon"
@@ -821,11 +671,6 @@
       "name": "hardpoint_phalanx_turret_08",
       "ref": null,
       "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
-    },
-    {
-      "name": "hardpoint_phalanx_turret_radar_08",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_phalanx_turret_controller_08",
@@ -838,11 +683,6 @@
       "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
     },
     {
-      "name": "hardpoint_phalanx_turret_radar_09",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_phalanx_turret_controller_09",
       "ref": null,
       "key": "Controller_Weapon"
@@ -851,11 +691,6 @@
       "name": "hardpoint_phalanx_turret_10",
       "ref": null,
       "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
-    },
-    {
-      "name": "hardpoint_phalanx_turret_radar_10",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_phalanx_turret_controller_10",
@@ -868,11 +703,6 @@
       "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
     },
     {
-      "name": "hardpoint_phalanx_turret_radar_11",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_phalanx_turret_controller_11",
       "ref": null,
       "key": "Controller_Weapon"
@@ -881,11 +711,6 @@
       "name": "hardpoint_phalanx_turret_12",
       "ref": null,
       "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
-    },
-    {
-      "name": "hardpoint_phalanx_turret_radar_12",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_phalanx_turret_controller_12",
@@ -898,11 +723,6 @@
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
     },
     {
-      "name": "hardpoint_AA_turret_radar_01",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_AA_turret_controller_01",
       "ref": null,
       "key": "Controller_Weapon"
@@ -911,11 +731,6 @@
       "name": "hardpoint_AA_turret_02",
       "ref": null,
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
-    },
-    {
-      "name": "hardpoint_AA_turret_radar_02",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_AA_turret_controller_02",
@@ -928,11 +743,6 @@
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
     },
     {
-      "name": "hardpoint_AA_turret_radar_03",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_AA_turret_controller_03",
       "ref": null,
       "key": "Controller_Weapon"
@@ -941,11 +751,6 @@
       "name": "hardpoint_AA_turret_04",
       "ref": null,
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
-    },
-    {
-      "name": "hardpoint_AA_turret_radar_04",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_AA_turret_controller_04",
@@ -958,11 +763,6 @@
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
     },
     {
-      "name": "hardpoint_AA_turret_radar_05",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_AA_turret_controller_05",
       "ref": null,
       "key": "Controller_Weapon"
@@ -971,11 +771,6 @@
       "name": "hardpoint_AA_turret_06",
       "ref": null,
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
-    },
-    {
-      "name": "hardpoint_AA_turret_radar_06",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_AA_turret_controller_06",
@@ -988,11 +783,6 @@
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
     },
     {
-      "name": "hardpoint_AA_turret_radar_07",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_AA_turret_controller_07",
       "ref": null,
       "key": "Controller_Weapon"
@@ -1001,11 +791,6 @@
       "name": "hardpoint_AA_turret_08",
       "ref": null,
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
-    },
-    {
-      "name": "hardpoint_AA_turret_radar_08",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_AA_turret_controller_08",
@@ -1018,11 +803,6 @@
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
     },
     {
-      "name": "hardpoint_AA_turret_radar_09",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_AA_turret_controller_09",
       "ref": null,
       "key": "Controller_Weapon"
@@ -1031,11 +811,6 @@
       "name": "hardpoint_AA_turret_10",
       "ref": null,
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
-    },
-    {
-      "name": "hardpoint_AA_turret_radar_10",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_AA_turret_controller_10",
@@ -1048,11 +823,6 @@
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
     },
     {
-      "name": "hardpoint_AA_turret_radar_11",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_AA_turret_controller_11",
       "ref": null,
       "key": "Controller_Weapon"
@@ -1061,11 +831,6 @@
       "name": "hardpoint_AA_turret_12",
       "ref": null,
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
-    },
-    {
-      "name": "hardpoint_AA_turret_radar_12",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_AA_turret_controller_12",
@@ -1078,11 +843,6 @@
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
     },
     {
-      "name": "hardpoint_AA_turret_radar_13",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_AA_turret_controller_13",
       "ref": null,
       "key": "Controller_Weapon"
@@ -1091,11 +851,6 @@
       "name": "hardpoint_AA_turret_14",
       "ref": null,
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
-    },
-    {
-      "name": "hardpoint_AA_turret_radar_14",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_AA_turret_controller_14",
@@ -1108,11 +863,6 @@
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
     },
     {
-      "name": "hardpoint_AA_turret_radar_15",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_AA_turret_controller_15",
       "ref": null,
       "key": "Controller_Weapon"
@@ -1121,11 +871,6 @@
       "name": "hardpoint_AA_turret_16",
       "ref": null,
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
-    },
-    {
-      "name": "hardpoint_AA_turret_radar_16",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_AA_turret_controller_16",
@@ -1138,11 +883,6 @@
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
     },
     {
-      "name": "hardpoint_AA_turret_radar_17",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_AA_turret_controller_17",
       "ref": null,
       "key": "Controller_Weapon"
@@ -1151,11 +891,6 @@
       "name": "hardpoint_AA_turret_18",
       "ref": null,
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
-    },
-    {
-      "name": "hardpoint_AA_turret_radar_18",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_AA_turret_controller_18",
@@ -1168,11 +903,6 @@
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
     },
     {
-      "name": "hardpoint_AA_turret_radar_19",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_AA_turret_controller_19",
       "ref": null,
       "key": "Controller_Weapon"
@@ -1181,11 +911,6 @@
       "name": "hardpoint_AA_turret_20",
       "ref": null,
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
-    },
-    {
-      "name": "hardpoint_AA_turret_radar_20",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_AA_turret_controller_20",
@@ -1198,11 +923,6 @@
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
     },
     {
-      "name": "hardpoint_AA_turret_radar_21",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_AA_turret_controller_21",
       "ref": null,
       "key": "Controller_Weapon"
@@ -1211,11 +931,6 @@
       "name": "hardpoint_AA_turret_22",
       "ref": null,
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
-    },
-    {
-      "name": "hardpoint_AA_turret_radar_22",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_AA_turret_controller_22",
@@ -1228,11 +943,6 @@
       "key": null
     },
     {
-      "name": "hardpoint_AA_turret_radar_23",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_AA_turret_controller_23",
       "ref": null,
       "key": "Controller_Weapon"
@@ -1241,11 +951,6 @@
       "name": "hardpoint_AA_turret_24",
       "ref": null,
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
-    },
-    {
-      "name": "hardpoint_AA_turret_radar_24",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_AA_turret_controller_24",
@@ -1258,11 +963,6 @@
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
     },
     {
-      "name": "hardpoint_AA_turret_radar_25",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_AA_turret_controller_25",
       "ref": null,
       "key": "Controller_Weapon"
@@ -1271,11 +971,6 @@
       "name": "hardpoint_AA_turret_26",
       "ref": null,
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
-    },
-    {
-      "name": "hardpoint_AA_turret_radar_26",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_AA_turret_controller_26",
@@ -1288,11 +983,6 @@
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
     },
     {
-      "name": "hardpoint_AA_turret_radar_29",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_AA_turret_controller_29",
       "ref": null,
       "key": "Controller_Weapon"
@@ -1301,11 +991,6 @@
       "name": "hardpoint_AA_turret_30",
       "ref": null,
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
-    },
-    {
-      "name": "hardpoint_AA_turret_radar_30",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_AA_turret_controller_30",
@@ -1318,11 +1003,6 @@
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
     },
     {
-      "name": "hardpoint_AA_turret_radar_31",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_AA_turret_controller_31",
       "ref": null,
       "key": "Controller_Weapon"
@@ -1331,11 +1011,6 @@
       "name": "hardpoint_AA_turret_32",
       "ref": null,
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
-    },
-    {
-      "name": "hardpoint_AA_turret_radar_32",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_AA_turret_controller_32",
@@ -1348,11 +1023,6 @@
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
     },
     {
-      "name": "hardpoint_AA_turret_radar_33",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_AA_turret_controller_33",
       "ref": null,
       "key": "Controller_Weapon"
@@ -1361,11 +1031,6 @@
       "name": "hardpoint_AA_turret_34",
       "ref": null,
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
-    },
-    {
-      "name": "hardpoint_AA_turret_radar_34",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_AA_turret_controller_34",
@@ -1378,11 +1043,6 @@
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
     },
     {
-      "name": "hardpoint_AA_turret_radar_35",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_AA_turret_controller_35",
       "ref": null,
       "key": "Controller_Weapon"
@@ -1391,11 +1051,6 @@
       "name": "hardpoint_AA_turret_36",
       "ref": null,
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
-    },
-    {
-      "name": "hardpoint_AA_turret_radar_36",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_AA_turret_controller_36",
@@ -1408,11 +1063,6 @@
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
     },
     {
-      "name": "hardpoint_AA_turret_radar_37",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_AA_turret_controller_37",
       "ref": null,
       "key": "Controller_Weapon"
@@ -1421,11 +1071,6 @@
       "name": "hardpoint_AA_turret_38",
       "ref": null,
       "key": "RSI_Bengal_SCItem_Remote_Turret_AA"
-    },
-    {
-      "name": "hardpoint_AA_turret_radar_38",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_AA_turret_controller_38",
@@ -2193,11 +1838,6 @@
       "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
     },
     {
-      "name": "hardpoint_phalanx_turret_radar_13",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_phalanx_turret_controller_13",
       "ref": null,
       "key": "Controller_Weapon"
@@ -2206,11 +1846,6 @@
       "name": "hardpoint_phalanx_turret_14",
       "ref": null,
       "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
-    },
-    {
-      "name": "hardpoint_phalanx_turret_radar_14",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_phalanx_turret_controller_14",
@@ -2223,11 +1858,6 @@
       "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
     },
     {
-      "name": "hardpoint_phalanx_turret_radar_15",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
       "name": "hardpoint_phalanx_turret_controller_15",
       "ref": null,
       "key": "Controller_Weapon"
@@ -2236,11 +1866,6 @@
       "name": "hardpoint_phalanx_turret_16",
       "ref": null,
       "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx"
-    },
-    {
-      "name": "hardpoint_phalanx_turret_radar_16",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_phalanx_turret_controller_16",
@@ -2396,36 +2021,6 @@
       "name": "hardpoint_medium_turret_06",
       "ref": null,
       "key": "RSI_Bengal_SCItem_Remote_Turret_Medium"
-    },
-    {
-      "name": "hardpoint_medium_turret_radar_01",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
-      "name": "hardpoint_medium_turret_radar_02",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
-      "name": "hardpoint_medium_turret_radar_03",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
-      "name": "hardpoint_medium_turret_radar_04",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
-      "name": "hardpoint_medium_turret_radar_05",
-      "ref": null,
-      "key": "RADR_Default"
-    },
-    {
-      "name": "hardpoint_medium_turret_radar_06",
-      "ref": null,
-      "key": "RADR_Default"
     },
     {
       "name": "hardpoint_medium_turret_controller_01",

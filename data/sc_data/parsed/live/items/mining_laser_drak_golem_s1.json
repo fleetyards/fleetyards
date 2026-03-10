@@ -1,0 +1,50 @@
+{
+  "key": "Mining_Laser_DRAK_Golem_S1",
+  "ref": "5a704f96-c339-43e7-b918-7fc9957673ed",
+  "category": "weapons",
+  "type": "WeaponMining",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6116471c-891d-4830-8968-650b6deafc00",
+  "name": "Pitman Mining Laser",
+  "short_name": null,
+  "description": "Manufacturer: Drake Interplanetary\\nItem Type: Mining Laser \\nSize: 1\\n\\nOptimal Range: 40m\\nMaximum Range: 45m\\nMining Laser Power: 3150\\n\\nModule Slots: 2\\n \\nResistance: +25 %\\nLaser Instability: +35 %\\nInert Material Level: -30%\\nOptimal Charge Window Rate: -40%\\n\\nBespoke to the Drake Golem, this mining laser was designed for those beginning a career in mining. It's been carefully calibrated to ensure an easy operator experience and reduce the likelihood of catastrophic accidents.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 1.105504,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "BONE_ItemPort_Consumable_1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "MiningModifier"
+      ]
+    },
+    {
+      "name": "BONE_ItemPort_Consumable_2",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "MiningModifier"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 8000.0
+  }
+}

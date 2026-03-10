@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "5.4",
     "base_expediting_fee": "9171"
   },
-  "mass": 430057.0,
+  "mass": 386857.0,
   "metrics": {
     "x": 27.75,
     "y": 63.5,
@@ -56,17 +56,13 @@
       "name": "hardpoint_seat_copilot_left",
       "ref": null,
       "key": "RSI_Constellation_SCItem_Seat_CoPilot_Left",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_copilot_right",
       "ref": null,
       "key": "RSI_Constellation_SCItem_Seat_CoPilot_Right",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_cockpit_selfdestruct",
@@ -176,7 +172,7 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S02_C_Explorer"
+          "key": "JDRV_TARS_S02_Excelsior_SCItem"
         }
       ]
     },
@@ -382,9 +378,7 @@
       "name": "hardpoint_turret_base_upper",
       "ref": null,
       "key": "RSI_Constellation_Aquila_SCItem_Turret_Radar",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_turret_base_lower",

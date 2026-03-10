@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Meteor_Blue_Black_Red_Metal",
+  "ref": "977be180-d7f3-4863-9d63-2abaa2092ce6",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ac07ad20-8bb5-4a6d-a39c-8aee7b81910f",
+  "name": "Meteor Disco Livery",
+  "short_name": null,
+  "description": "Equip the ship livery used by ace pilot Disco in the classic children's cartoon Rory Nova. While it turns the Meteor metallic dark blue, black, and red, whether you turn into the 'dynamic, instinctive spacecraft operator' that inspired the livery's name is up to you.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

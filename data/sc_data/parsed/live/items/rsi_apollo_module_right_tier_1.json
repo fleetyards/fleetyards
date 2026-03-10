@@ -1,0 +1,24 @@
+{
+  "key": "RSI_Apollo_Module_Right_Tier_1",
+  "ref": "40f36374-37de-9184-e880-cc5ac6c7749e",
+  "category": "module",
+  "type": "Module",
+  "sub_type": null,
+  "size": "3",
+  "grade": "3",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": "Apollo Tier 1 Module Right",
+  "short_name": null,
+  "description": "This module contains 1x Tier 1 medical bed.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1.0
+  }
+}

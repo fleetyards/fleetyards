@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "11.78",
     "base_expediting_fee": "15995"
   },
-  "mass": 3583690.0,
+  "mass": 3494690.0,
   "metrics": {
     "x": 48.5,
     "y": 102.0,
@@ -228,11 +228,6 @@
       "key": "Door_RN_RoomConnector_Breachable_OpenReverse_Starfarer_CargoDoor"
     },
     {
-      "name": "hardpoint_ramp",
-      "ref": null,
-      "key": "Door_RN_NoRoomConnector_Breachable_OpenReverse_Starfarer_Ramp"
-    },
-    {
       "name": "hardpoint_engine_main",
       "ref": null,
       "key": "MISC_Starfarer_Gemini_Thruster_Main"
@@ -345,7 +340,7 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S03_C_Explorer"
+          "key": "JDRV_TARS_S03_Exodus_SCItem"
         }
       ]
     },
@@ -735,6 +730,11 @@
       "name": "hardpoint_lifesupport",
       "ref": null,
       "key": "LFSP_TYDT_S03_ComfortAirMax"
+    },
+    {
+      "name": "hardpoint_powerplant_B",
+      "ref": "202db33c-6b87-4210-9392-6d5368bc3436",
+      "key": null
     }
   ]
 }

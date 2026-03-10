@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Clipper_White_Black_Red",
+  "ref": "44d3658f-7bb5-4f38-9af3-83404f95285a",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "bd00f727-44cc-4b55-8dc6-1bd6d04c2287",
+  "name": "Clipper Regatta Livery",
+  "short_name": null,
+  "description": "The dynamic stylings of the Regatta livery features a white base paint with black highlights and stripes plus bold red accents.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "key": "Ship_Personal_Inventory_Template",
+  "ref": "58f88645-eb8b-44c9-b195-f2dd3fd7d749",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 0.0
+  }
+}

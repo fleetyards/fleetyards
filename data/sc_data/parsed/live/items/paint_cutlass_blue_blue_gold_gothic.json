@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Cutlass_Blue_Blue_Gold_Gothic",
+  "ref": "bad25221-01dd-41bb-81d9-655288a17859",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a6789a95-1d35-404b-be62-198b01da1524",
+  "name": "Cutlass Elysium Livery",
+  "short_name": null,
+  "description": "The brash and bold Elysium livery features ornate gold detailing atop a navy blue base paint.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

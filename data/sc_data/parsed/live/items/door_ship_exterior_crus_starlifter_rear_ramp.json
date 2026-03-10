@@ -33,9 +33,7 @@
       "name": "IP_Exterior",
       "key": "ControlPanel_Screen_DoorControl_Starlifter_Interior_Button",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     }
   ],
   "durability": {

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_MTC_grey_grey_red_camo_a",
+  "ref": "4fbe203a-4a66-487c-b6f2-76f30eb22a74",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1b9f82a8-a230-4a0a-8beb-0ef5f400e3c6",
+  "name": "MXC Icefront Camo Livery",
+  "short_name": null,
+  "description": "Disguise the silhouette of the MXC with the white and grey digital camo of the Icefront Camo livery, which is also compatible with other Greycat M-series vehicles.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

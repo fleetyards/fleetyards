@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "2.27",
     "base_expediting_fee": "3040"
   },
-  "mass": 67066.0,
+  "mass": 64166.0,
   "metrics": {
     "x": 0.0,
     "y": 0.0,
@@ -38,7 +38,7 @@
     {
       "name": "hardpoint_seat_prisoner",
       "ref": null,
-      "key": "Door_Ship_Exterior_ANVL_Hawk_Bounty_Pod"
+      "key": "Door_RN_NoRoomConnector_Breachable_OpenClose_ANVL_Hawk_Bounty_Pod"
     },
     {
       "name": "hardpoint_self_destruct_pilot",
@@ -217,8 +217,8 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": null,
-          "key": "JDRV_TARS_S01_C_Explorer"
+          "ref": "c8797bce-6220-4d1e-bc6d-23da4a366a6d",
+          "key": null
         }
       ]
     },
@@ -362,6 +362,11 @@
     {
       "name": "hardpoint_cockpit_flair",
       "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_personal_storage",
+      "ref": "7f417b7e-8367-4200-9156-2b7efa7bc8b5",
       "key": null
     }
   ]

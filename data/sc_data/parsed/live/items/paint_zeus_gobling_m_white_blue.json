@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Zeus_GoblinG_M_White_Blue",
+  "ref": "316244e4-dd72-4435-8000-a3cca0952a54",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dd4645a9-c02b-4ccf-b207-39ad9f32ccd6",
+  "name": "Zeus microTech Livery",
+  "short_name": null,
+  "description": "The microTech livery for the Zeus features the company's logo atop a white base paint with light blue and grey highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

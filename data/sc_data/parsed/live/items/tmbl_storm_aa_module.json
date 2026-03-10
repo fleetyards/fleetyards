@@ -24,7 +24,7 @@
       "min_size": "2",
       "max_size": "2",
       "types": [
-        "MissileLauncher"
+        "GroundVehicleMissileLauncher"
       ]
     },
     {
@@ -32,7 +32,7 @@
       "min_size": "2",
       "max_size": "2",
       "types": [
-        "MissileLauncher"
+        "GroundVehicleMissileLauncher"
       ]
     },
     {
@@ -40,7 +40,7 @@
       "min_size": "2",
       "max_size": "2",
       "types": [
-        "MissileLauncher"
+        "GroundVehicleMissileLauncher"
       ]
     },
     {
@@ -48,7 +48,7 @@
       "min_size": "2",
       "max_size": "2",
       "types": [
-        "MissileLauncher"
+        "GroundVehicleMissileLauncher"
       ]
     }
   ],

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Spirit_Yellow_Black_Chevron",
+  "ref": "37da7a2c-f663-4842-992b-c6c6fe9f5cd6",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "bbeeb31d-1289-440c-b216-6e96ec87709c",
+  "name": "Spirit Hazard Livery",
+  "short_name": null,
+  "description": "Make the Spirit stand out with the Hazard livery featuring a bright yellow base paint and diagonal black stripes.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

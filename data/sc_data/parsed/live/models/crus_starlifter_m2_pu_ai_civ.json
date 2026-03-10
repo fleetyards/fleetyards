@@ -7,13 +7,13 @@
   "name": "Crusader M2 Hercules Starlifter",
   "description": "Manufacturer: Crusader Industries\\nFocus: Medium Freight / Combat\\n\\nThe M2 Hercules is the UEE's premier tactical starlifter. The large-scale transport's potent combination of capacity, maneuverability, durability, and robust weapons package assures your cargo and crew get to where they’re going in one piece.",
   "career": "Transporter",
-  "role": "Courier",
+  "role": "Heavy Freight",
   "insurance": {
     "base_wait_time_minutes": "25",
     "mandatory_wait_time_minutes": "8",
     "base_expediting_fee": "1810"
   },
-  "mass": 3139240.06,
+  "mass": 2339240.06,
   "metrics": {
     "x": 94.0,
     "y": 70.0,
@@ -138,17 +138,12 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S03_C_Explorer"
+          "key": "JDRV_TARS_S03_Exodus_SCItem"
         }
       ]
     },
     {
-      "name": "hardpoint_quantum_fuel_l",
-      "ref": null,
-      "key": "QTNK_CRUS_Starlifter"
-    },
-    {
-      "name": "hardpoint_quantum_fuel_r",
+      "name": "hardpoint_quantum_fuel",
       "ref": null,
       "key": "QTNK_CRUS_Starlifter"
     },
@@ -452,9 +447,7 @@
       "name": "hardpoint_bridge_remote_turret_seat",
       "ref": null,
       "key": "CRUS_Starlifter_SCItem_Turret_Seat_Bridge",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_bridge_remote_turret_seat_access",
@@ -526,11 +519,6 @@
       "name": "hardpoint_front_ramp",
       "ref": null,
       "key": "Door_Ship_Exterior_CRUS_Starlifter_Front_Ramp"
-    },
-    {
-      "name": "hardpoint_Elevator_Exterior_Door",
-      "ref": null,
-      "key": "Door_Ship_Exterior_CRUS_Starlifter_Elevator_Door"
     },
     {
       "name": "hardpoint_controller_missile",

@@ -6,14 +6,14 @@
   "min_crew": "1",
   "name": "MISC Starlancer MAX",
   "description": "Manufacturer: MISC\\nFocus: Cargo\\n \\nFor those looking to expand their hauling operations, the engineers at MISC have upgraded the Starlancer MAX with an extra spacious hold ready to transport cargo and vehicles. Paired with comfortable accommodations for longer trips and a full defensive package for when you go off the beaten path, it’s easy to see why the Starlancer MAX is the hauler of choice for industrious pilots across the ‘verse.",
-  "career": "Exploration",
-  "role": "Industrial",
+  "career": "Transporter",
+  "role": "Medium Freight",
   "insurance": {
-    "base_wait_time_minutes": "40",
-    "mandatory_wait_time_minutes": "15",
-    "base_expediting_fee": "15000"
+    "base_wait_time_minutes": "12.33",
+    "mandatory_wait_time_minutes": "3.08",
+    "base_expediting_fee": "5190"
   },
-  "mass": 814270.5,
+  "mass": 498070.5,
   "metrics": {
     "x": 60.0,
     "y": 90.0,
@@ -141,11 +141,6 @@
       "key": "HTNK_MISC_Starlancer"
     },
     {
-      "name": "hardpoint_fuel_2",
-      "ref": null,
-      "key": "HTNK_MISC_Starlancer"
-    },
-    {
       "name": "hardpoint_fuel_intake_left",
       "ref": null,
       "key": "INTK_MISC_Starlancer"
@@ -173,7 +168,7 @@
         {
           "name": "hardpoint_Jump_Drive",
           "ref": null,
-          "key": "JDRV_TARS_S02_C_Explorer"
+          "key": "JDRV_TARS_S02_Excelsior_SCItem"
         }
       ]
     },
@@ -474,12 +469,12 @@
     {
       "name": "hardpoint_thruster_vtol_FR",
       "ref": null,
-      "key": "MISC_Starlancer_Thruster_VTOL"
+      "key": "MISC_Starlancer_Thruster_Front_VTOL"
     },
     {
       "name": "hardpoint_thruster_vtol_FL",
       "ref": null,
-      "key": "MISC_Starlancer_Thruster_VTOL"
+      "key": "MISC_Starlancer_Thruster_Front_VTOL"
     },
     {
       "name": "hardpoint_thruster_vtol_RR",
@@ -494,12 +489,12 @@
     {
       "name": "hardpoint_thruster_mav_FTL",
       "ref": null,
-      "key": "MISC_Starlancer_Thruster_Mav_Small"
+      "key": "MISC_Starlancer_Thruster_Mav_Front_Small"
     },
     {
       "name": "hardpoint_thruster_mav_FTR",
       "ref": null,
-      "key": "MISC_Starlancer_Thruster_Mav_Small"
+      "key": "MISC_Starlancer_Thruster_Mav_Front_Small"
     },
     {
       "name": "hardpoint_thruster_mav_MTL",
@@ -524,12 +519,12 @@
     {
       "name": "hardpoint_thruster_mav_FSL",
       "ref": null,
-      "key": "MISC_Starlancer_Thruster_Mav"
+      "key": "MISC_Starlancer_Thruster_Front_Mav"
     },
     {
       "name": "hardpoint_thruster_mav_FSR",
       "ref": null,
-      "key": "MISC_Starlancer_Thruster_Mav"
+      "key": "MISC_Starlancer_Thruster_Front_Mav"
     },
     {
       "name": "hardpoint_thruster_mav_RSL",
@@ -544,12 +539,12 @@
     {
       "name": "hardpoint_thruster_mav_FBR",
       "ref": null,
-      "key": "MISC_Starlancer_Thruster_Mav_Small_Bottom"
+      "key": "MISC_Starlancer_Thruster_Mav_Small_Front_Bottom"
     },
     {
       "name": "hardpoint_thruster_mav_FBL",
       "ref": null,
-      "key": "MISC_Starlancer_Thruster_Mav_Small_Bottom"
+      "key": "MISC_Starlancer_Thruster_Mav_Small_Front_Bottom"
     },
     {
       "name": "hardpoint_thruster_mav_MBR",
@@ -579,7 +574,7 @@
     {
       "name": "hardpoint_fuel_port",
       "ref": null,
-      "key": "DockingTube_Fuel_Ports_MISC_Hull_C"
+      "key": "DockingTube_Fuel_Ports_MISC_Starlancer"
     },
     {
       "name": "hardpoint_air_traffic_controller",

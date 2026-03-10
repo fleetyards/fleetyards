@@ -7,13 +7,13 @@
   "name": "Origin 890 Jump",
   "description": "Manufacturer: Origin Jumpworks\\nFocus: Touring\\n\\nWith an elegant, sleek exterior that belies its spacious interior, the 890 Jump is a true engineering marvel; crafted to impress from every angle by combining a unique, innovative design with the finest materials and the most advanced technology. The result is a vessel that is in a class all of its own, a masterpiece worthy of the name Origin.",
   "career": "Exploration",
-  "role": "Luxury",
+  "role": "Luxury Touring",
   "insurance": {
     "base_wait_time_minutes": "67.5",
     "mandatory_wait_time_minutes": "22.5",
     "base_expediting_fee": "33750"
   },
-  "mass": 44237159.0,
+  "mass": 43896159.0,
   "metrics": {
     "x": 80.0,
     "y": 210.0,
@@ -34,9 +34,7 @@
       "name": "hardpoint_seat_pilot",
       "ref": null,
       "key": "ORIG_890J_Seat_Pilot",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_access_bridge_left",
@@ -47,9 +45,7 @@
       "name": "hardpoint_seat_bridge_left",
       "ref": null,
       "key": "ORIG_890J_Seat_Bridge_Left",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_access_bridge_right",
@@ -60,33 +56,25 @@
       "name": "hardpoint_seat_bridge_right",
       "ref": null,
       "key": "ORIG_890J_Seat_Bridge_Right",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_BB_Left",
       "ref": null,
       "key": "ORIG_890J_Seat_BattleBridge_Left",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_BB_Right",
       "ref": null,
       "key": "ORIG_890J_Seat_BattleBridge_Right",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_BB_middle",
       "ref": null,
       "key": "ORIG_890J_Seat_BattleBridge_Middle",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_selfdestruct",
@@ -802,7 +790,7 @@
     {
       "name": "Hardpoint_Airlock_Door_L",
       "ref": null,
-      "key": "Door_RN_RoomConnector_Breachable_OpenClose_IP_890J_Airlock"
+      "key": "Door_RN_RoomConnector_Breachable_OpenClose_IP_890J_L_Airlock"
     },
     {
       "name": "Hardpoint_Airlock_Door_R",
@@ -905,64 +893,64 @@
       "key": "Door_Ship_Exterior_ORIG_890Jump_Entrance_Elevator"
     },
     {
-      "name": "hardpoint_relay",
+      "name": "hardpoint_relay_Bridge",
       "ref": null,
       "key": "RELAY_2slot_slim"
     },
     {
-      "name": "hardpoint_relay_2",
+      "name": "hardpoint_relay_Upperfoyer",
       "ref": null,
       "key": "RELAY_3slot_slim"
     },
     {
-      "name": "hardpoint_relay_3",
+      "name": "hardpoint_relay_Entryway",
       "ref": null,
       "key": "RELAY_3slot_slim"
     },
     {
-      "name": "hardpoint_relay_4",
+      "name": "hardpoint_relay_Hallway",
+      "ref": "a1c1bb89-b476-4293-8898-d324ca44d681",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_Escapepod1",
       "ref": null,
       "key": "RELAY_2slot_slim"
     },
     {
-      "name": "hardpoint_relay_5",
-      "ref": null,
-      "key": "RELAY_2slot_slim"
+      "name": "hardpoint_relay_Escapepod2",
+      "ref": "fd9d74e7-8b0a-46d3-8d14-7bf7c5e93900",
+      "key": null
     },
     {
-      "name": "hardpoint_relay_6",
-      "ref": null,
-      "key": "RELAY_3slot_slim"
+      "name": "hardpoint_relay_Cargobay_Left",
+      "ref": "a1c1bb89-b476-4293-8898-d324ca44d681",
+      "key": null
     },
     {
-      "name": "hardpoint_relay_7",
-      "ref": null,
-      "key": "RELAY_1slot_slim"
+      "name": "hardpoint_relay_Cargobay_Right",
+      "ref": "a1c1bb89-b476-4293-8898-d324ca44d681",
+      "key": null
     },
     {
-      "name": "hardpoint_relay_8",
-      "ref": null,
-      "key": "RELAY_2slot_slim"
+      "name": "hardpoint_relay_Battlebridge",
+      "ref": "fd9d74e7-8b0a-46d3-8d14-7bf7c5e93900",
+      "key": null
     },
     {
-      "name": "hardpoint_relay_9",
-      "ref": null,
-      "key": "RELAY_3slot_slim"
+      "name": "hardpoint_relay_Medicalroom",
+      "ref": "a1c1bb89-b476-4293-8898-d324ca44d681",
+      "key": null
     },
     {
-      "name": "hardpoint_relay_10",
-      "ref": null,
-      "key": "RELAY_2slot_slim"
+      "name": "hardpoint_relay_Crewarmory",
+      "ref": "fd9d74e7-8b0a-46d3-8d14-7bf7c5e93900",
+      "key": null
     },
     {
-      "name": "hardpoint_relay_11",
-      "ref": null,
-      "key": "RELAY_3slot_slim"
-    },
-    {
-      "name": "hardpoint_relay_12",
-      "ref": null,
-      "key": "RELAY_3slot_slim"
+      "name": "hardpoint_relay_Hanger",
+      "ref": "175e10ba-3752-4b28-bcb0-9f50c6349f80",
+      "key": null
     },
     {
       "name": "hardpoint_lifesupport",
@@ -977,6 +965,11 @@
     {
       "name": "hardpoint_PDC_WC_01",
       "ref": "7f72f468-3e23-40b9-a5ee-d607d36437f2",
+      "key": null
+    },
+    {
+      "name": "hardpoint_PDC_MC_01",
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
       "key": null
     },
     {
@@ -995,6 +988,11 @@
       "key": null
     },
     {
+      "name": "hardpoint_PDC_MC_02",
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
+      "key": null
+    },
+    {
       "name": "hardpoint_PDC_AIM_02",
       "ref": "15881eca-d6f4-47fc-a5bb-633ca4bba06b",
       "key": null
@@ -1007,6 +1005,11 @@
     {
       "name": "hardpoint_PDC_WC_03",
       "ref": "7f72f468-3e23-40b9-a5ee-d607d36437f2",
+      "key": null
+    },
+    {
+      "name": "hardpoint_PDC_MC_03",
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
       "key": null
     },
     {
@@ -1025,6 +1028,11 @@
       "key": null
     },
     {
+      "name": "hardpoint_PDC_MC_04",
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
+      "key": null
+    },
+    {
       "name": "hardpoint_PDC_AIM_04",
       "ref": "15881eca-d6f4-47fc-a5bb-633ca4bba06b",
       "key": null
@@ -1037,6 +1045,11 @@
     {
       "name": "hardpoint_PDC_WC_05",
       "ref": "7f72f468-3e23-40b9-a5ee-d607d36437f2",
+      "key": null
+    },
+    {
+      "name": "hardpoint_PDC_MC_05",
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
       "key": null
     },
     {
@@ -1055,6 +1068,11 @@
       "key": null
     },
     {
+      "name": "hardpoint_PDC_MC_06",
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
+      "key": null
+    },
+    {
       "name": "hardpoint_PDC_AIM_06",
       "ref": "15881eca-d6f4-47fc-a5bb-633ca4bba06b",
       "key": null
@@ -1067,6 +1085,11 @@
     {
       "name": "hardpoint_PDC_WC_07",
       "ref": "7f72f468-3e23-40b9-a5ee-d607d36437f2",
+      "key": null
+    },
+    {
+      "name": "hardpoint_PDC_MC_07",
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
       "key": null
     },
     {

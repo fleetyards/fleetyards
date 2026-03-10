@@ -36,6 +36,9 @@
       ]
     }
   ],
+  "durability": {
+    "health": 8000.0
+  },
   "power_connection": {
     "power_base": 0.0,
     "power_draw": 1.0,

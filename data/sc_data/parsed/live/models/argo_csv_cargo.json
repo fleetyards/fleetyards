@@ -6,8 +6,8 @@
   "min_crew": "1",
   "name": "Argo CSV-SM\\n",
   "description": "Manufacturer: Argo Astronautics\\nFocus: Cargo\\n\\nYou got your plot of land, you’ve got the right construction materials, and now you’re ready to watch your dreams take shape. The ideal companion to the CSV-FM, the CSV Supply Model provides additional storage for all the resources required to build your next settlement.\\n",
-  "career": "Ground",
-  "role": "Ground",
+  "career": "Transporter",
+  "role": "Light Freight",
   "insurance": {
     "base_wait_time_minutes": "0.33",
     "mandatory_wait_time_minutes": "0.08",

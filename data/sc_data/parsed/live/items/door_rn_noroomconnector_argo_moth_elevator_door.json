@@ -1,0 +1,21 @@
+{
+  "key": "Door_RN_NoRoomConnector_ARGO_MOTH_Elevator_Door",
+  "ref": "2a9b82ca-0668-4aef-9ed9-38cb58fcd8b5",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

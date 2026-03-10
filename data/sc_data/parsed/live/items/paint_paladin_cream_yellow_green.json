@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Paladin_cream_yellow_green",
+  "ref": "9f08c0ec-5e54-4bf6-a32d-5fc103459a3e",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "c7ba915a-d451-45fd-b434-e3c0e7a8c6a4",
+  "name": "Paladin Solaris Livery",
+  "short_name": null,
+  "description": "Showcasing the Paladin's powerful design, the wild greens, beige, and yellow of the Solaris livery demonstrate that this is not a ship to be trifled with.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

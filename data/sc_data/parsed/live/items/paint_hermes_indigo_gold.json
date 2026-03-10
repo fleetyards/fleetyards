@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hermes_Indigo_Gold",
+  "ref": "c4ce78ee-f972-4b04-a73b-9d208e784490",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "c7bb84d3-a41a-4a0f-8084-c2ab4bda43b7",
+  "name": "Hermes Paragon Livery",
+  "short_name": null,
+  "description": "The Paragon livery consists of a cool, crisp white, with regal blue and gold accents worthy of admiration.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

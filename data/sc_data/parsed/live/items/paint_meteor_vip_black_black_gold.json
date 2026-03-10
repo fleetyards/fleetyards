@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Meteor_VIP_Black_Black_Gold",
+  "ref": "76097045-6bdc-437f-a9e2-ffffa9f47890",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "90b3e6e0-7ba9-414c-8a6c-28d7050222bc",
+  "name": "Meteor Shimmer Livery",
+  "short_name": null,
+  "description": "The eye-catching Shimmer livery brings a beautiful luster to the Meteor with a paint that shifts between gold and dark blue depending on the lighting and viewing angle.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

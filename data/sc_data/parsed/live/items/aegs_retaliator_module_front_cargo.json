@@ -33,9 +33,7 @@
       "name": "hardpoint_front_cargo_lift",
       "key": "Door_RN_RoomConnector_Breachable_OpenClose_AEGS_Retaliator_Front_Module_Lift",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     }
   ],
   "durability": {

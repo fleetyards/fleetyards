@@ -6,8 +6,8 @@
   "min_crew": "1",
   "name": "Tumbril Cyclone TR",
   "description": "Manufacturer: Tumbril Land Systems \\nFocus: Combat\\n\\nDesigned for militia and security use, the Cyclone TR module features upgraded armor and a single Human-operated turret capable of mounting a Size 1 weapon and a responsive 360° field of fire.",
-  "career": "Ground",
-  "role": "Combat",
+  "career": "Combat",
+  "role": null,
   "insurance": {
     "base_wait_time_minutes": "2.03",
     "mandatory_wait_time_minutes": "0.68",
@@ -156,6 +156,16 @@
       "name": "hardpoint_relay_cockpit",
       "ref": null,
       "key": "RELAY_3slot"
+    },
+    {
+      "name": "hardpoint_personal_storage_left",
+      "ref": "9c624ba5-46f1-45fe-a42d-daa410167652",
+      "key": null
+    },
+    {
+      "name": "hardpoint_personal_storage_right",
+      "ref": "9c624ba5-46f1-45fe-a42d-daa410167652",
+      "key": null
     }
   ]
 }

@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "1.98",
     "base_expediting_fee": "2700"
   },
-  "mass": 122650.0,
+  "mass": 107050.0,
   "metrics": {
     "x": 12.5,
     "y": 30.0,
@@ -128,7 +128,7 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S01_C_Explorer"
+          "key": "JDRV_TARS_S01_Explorer_SCItem"
         }
       ]
     },
@@ -346,11 +346,6 @@
           "key": "MISC_Hull_A_CargoGrid"
         }
       ]
-    },
-    {
-      "name": "hardpoint_personal_storage",
-      "ref": null,
-      "key": "PersonalStorage_Hull_A"
     },
     {
       "name": "hardpoint_cockpit_flair",

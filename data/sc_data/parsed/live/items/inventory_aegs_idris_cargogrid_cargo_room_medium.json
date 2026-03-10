@@ -1,0 +1,40 @@
+{
+  "key": "AEGS_Idris_CargoGrid_Cargo_Room_Medium",
+  "ref": "2419d3c0-a57e-4a62-ab52-137e039cb074",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 1.25,
+      "y": 6.25,
+      "z": 2.5
+    },
+    "capacity": 10,
+    "max_container_size": {
+      "size": 2,
+      "dimensions": {
+        "x": 2.5,
+        "y": 1.25,
+        "z": 1.25
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1
+      },
+      "max": {
+        "dimensions": {
+          "x": 2.5,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 2
+      }
+    }
+  }
+}

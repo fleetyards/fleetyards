@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "0.97",
     "base_expediting_fee": "2005"
   },
-  "mass": 28714.0,
+  "mass": 26714.0,
   "metrics": {
     "x": 8.75,
     "y": 19.0,
@@ -34,11 +34,6 @@
       "name": "Hardpoint_Seat_Access",
       "ref": null,
       "key": "RSI_Aurora_SCItem_SeatAccess"
-    },
-    {
-      "name": "Hardpoint_Seat_Access_Door",
-      "ref": null,
-      "key": "RSI_Aurora_SCItem_SeatAccess_Door"
     },
     {
       "name": "Hardpoint_Cockpit_SelfDestruct",
@@ -326,6 +321,16 @@
       "name": "hardpoint_lifesupport",
       "ref": null,
       "key": "LFSP_TYDT_S01_ComfortAir"
+    },
+    {
+      "name": "hardpoint_door_left",
+      "ref": "7591f4b8-9807-452b-91fb-9d3ed24ea3ca",
+      "key": null
+    },
+    {
+      "name": "hardpoint_door_right",
+      "ref": "549ae195-4d13-4614-b5c2-0fa8c0361117",
+      "key": null
     }
   ]
 }

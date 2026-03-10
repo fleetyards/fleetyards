@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "0.63",
     "base_expediting_fee": "1483"
   },
-  "mass": 15339.0,
+  "mass": 13939.0,
   "metrics": {
     "x": 5.4,
     "y": 7.0,
@@ -94,9 +94,7 @@
       "name": "hardpoint_seat_pilot",
       "ref": null,
       "key": "MISC_Fury_SCItem_SeatDashboard",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_cooler_left",
@@ -381,8 +379,8 @@
     },
     {
       "name": "hardpoint_relay_cockpit",
-      "ref": null,
-      "key": "RELAY_2slot"
+      "ref": "bcc8fa77-c177-4ee3-983f-bd528ae3676c",
+      "key": null
     }
   ]
 }

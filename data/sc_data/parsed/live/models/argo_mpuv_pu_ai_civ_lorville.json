@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "0",
     "base_expediting_fee": "205"
   },
-  "mass": 13030.0,
+  "mass": 9210.0,
   "metrics": {
     "x": 9.0,
     "y": 10.5,
@@ -28,7 +28,7 @@
     {
       "name": "hardpoint_pilot_chair",
       "ref": null,
-      "key": "ARGO_MPUV_SCItem_Seat_Pilot"
+      "key": "ARGO_MPUV_1T_SCItem_Seat_Pilot"
     },
     {
       "name": "hardpoint_seat_access",
@@ -92,18 +92,18 @@
     },
     {
       "name": "hardpoint_door_left",
-      "ref": null,
-      "key": "Door_Ship_Exterior_ARGO_Cargo_Left"
+      "ref": "634c85af-c972-4b65-b30c-84a62771b5ff",
+      "key": null
     },
     {
       "name": "hardpoint_door_right",
-      "ref": null,
-      "key": "Door_Ship_Exterior_ARGO_Cargo_Right"
+      "ref": "205e6ad6-9f57-45b1-82d4-6bb6f9803b79",
+      "key": null
     },
     {
       "name": "hardpoint_door_rear",
-      "ref": null,
-      "key": "Door_Ship_Exterior_ARGO_Cargo_Rear"
+      "ref": "96f7761c-f9f8-49b6-81fc-19422db4c4d4",
+      "key": null
     },
     {
       "name": "hardpoint_powerplant",
@@ -188,7 +188,7 @@
     {
       "name": "hardpoint_thruster_front_left_bottom",
       "ref": null,
-      "key": "ARGO_MPUV_Thruster_Aux_Fixed_03"
+      "key": "ARGO_MPUV_Thruster_Aux_Fixed_Front_03"
     },
     {
       "name": "hardpoint_thruster_front_right_middle",
@@ -208,7 +208,7 @@
     {
       "name": "hardpoint_thruster_front_right_bottom",
       "ref": null,
-      "key": "ARGO_MPUV_Thruster_Aux_Fixed_03"
+      "key": "ARGO_MPUV_Thruster_Aux_Fixed_Front_03"
     },
     {
       "name": "hardpoint_thruster_rear_left_middle",

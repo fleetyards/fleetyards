@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Gladius_Grey_Black_Red",
+  "ref": "820c52ef-3717-4ada-b5c9-4b4b34ee3e7d",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "67522744-fdbc-4d3b-9179-2998d8d07f41",
+  "name": "Gladius Dunlevy",
+  "short_name": null,
+  "description": "Honor the famed Captain who shaped the course of the UEE Navy's elite fighter squadron with the Dunlevy livery for the Aegis Gladius. It pays to tribute to Captain Alexandra Dunlevy and Squadron 42 with red highlights against a grey base paint.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

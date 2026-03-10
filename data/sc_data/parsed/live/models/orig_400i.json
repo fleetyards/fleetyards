@@ -7,13 +7,13 @@
   "name": "Origin 400i",
   "description": "Manufacturer: Origin Jumpworks\\nFocus: Pathfinder\\n\\nTo explore the stars is a most noble endeavor, and Origin Jumpworks has risen to the occasion in crafting the 400i high-performance pathfinder. With class-leading range, substantial defensive capabilities, and a factory-equipped scanning array, the 400i is ready to take on the harshest corners of the galaxy while maintaining the comfort and elegance Origin is known for.",
   "career": "Exploration",
-  "role": "Luxury",
+  "role": "Expedition",
   "insurance": {
     "base_wait_time_minutes": "22.5",
     "mandatory_wait_time_minutes": "7.5",
     "base_expediting_fee": "12027"
   },
-  "mass": 430057.06,
+  "mass": 400457.06,
   "metrics": {
     "x": 32.0,
     "y": 56.0,
@@ -128,7 +128,7 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S02_C_Explorer"
+          "key": "JDRV_TARS_S02_Excelsior_SCItem"
         }
       ]
     },
@@ -301,7 +301,7 @@
     {
       "name": "hardpoint_thruster_side_front_right",
       "ref": null,
-      "key": "ORIG_400i_Thruster_Mav_Side"
+      "key": "ORIG_400i_Thruster_Mav_Side_R"
     },
     {
       "name": "hardpoint_thruster_nose_bottom",
@@ -650,6 +650,16 @@
       "name": "hardpoint_lifesupport",
       "ref": null,
       "key": "LFSP_TYDT_S02_ComfortAirPlus"
+    },
+    {
+      "name": "hardpoint_power_plant_2",
+      "ref": "bd423b9c-4115-4785-909a-77d621fd2bc4",
+      "key": null
+    },
+    {
+      "name": "hardpoint_cooler_2",
+      "ref": "f0429b13-6f0d-4ffb-9160-6ae0df03b5cb",
+      "key": null
     }
   ]
 }

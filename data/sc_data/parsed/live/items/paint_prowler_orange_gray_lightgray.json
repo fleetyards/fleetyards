@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Prowler_Orange_Gray_Lightgray",
+  "ref": "98b7b00b-086a-4504-92c7-bb5bc8ee8ac9",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "0ea2ed59-6ee6-452f-8083-e940225b8e7b",
+  "name": "Prowler Panthera Livery",
+  "short_name": null,
+  "description": "The Panthera livery brings bright orange and black highlights to the Prowler.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

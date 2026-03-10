@@ -7,13 +7,13 @@
   "name": "Esperia Prowler",
   "description": "Manufacturer: Esperia\\nFocus: Dropship\\n\\nNamed after the UPE military designation, the Prowler is a modernized version of the infamous Tevarin boarding craft from the First Tevarin War. The Prowler’s effectiveness as a rapid personnel deployment vehicle was mainly due to its silence. With the Prowler, you will find the perfect fusion of two cultures: the elegance and effectiveness of the Tevarin war machine combined with the reliability of modern UEE technology.",
   "career": "Combat",
-  "role": "Drop Ship",
+  "role": "Dropship",
   "insurance": {
     "base_wait_time_minutes": "23.22",
     "mandatory_wait_time_minutes": "7.74",
     "base_expediting_fee": "9993"
   },
-  "mass": 171700.0,
+  "mass": 148900.0,
   "metrics": {
     "x": 32.0,
     "y": 34.0,
@@ -83,12 +83,12 @@
     {
       "name": "hardpoint_shield_generator_left",
       "ref": null,
-      "key": "SHLD_BANU_S02_Placeholder_SCItem"
+      "key": "SHLD_ASAS_S02_Obscura_SCItem"
     },
     {
       "name": "hardpoint_shield_generator_right",
       "ref": null,
-      "key": "SHLD_BANU_S02_Placeholder_SCItem"
+      "key": "SHLD_ASAS_S02_Obscura_SCItem"
     },
     {
       "name": "hardpoint_armor",
@@ -96,14 +96,9 @@
       "key": "ARMR_ESPR_Prowler"
     },
     {
-      "name": "hardpoint_radar_pilot",
-      "ref": null,
-      "key": "RADR_GRNP_S02_Epier"
-    },
-    {
-      "name": "hardpoint_target_selector",
-      "ref": null,
-      "key": "Controller_TargetSelector"
+      "name": "hardpoint_radar",
+      "ref": "87008b2d-438a-4091-8ae4-303be47190d8",
+      "key": null
     },
     {
       "name": "hardpoint_scanner",
@@ -116,12 +111,7 @@
       "key": null
     },
     {
-      "name": "hardpoint_fuel_tank_left",
-      "ref": null,
-      "key": "HTNK_ESPR_Prowler"
-    },
-    {
-      "name": "hardpoint_fuel_tank_right",
+      "name": "hardpoint_hydrogen_fuel_tank",
       "ref": null,
       "key": "HTNK_ESPR_Prowler"
     },
@@ -143,7 +133,7 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S02_C_Explorer"
+          "key": "JDRV_TARS_S02_Excelsior_SCItem"
         }
       ]
     },
@@ -190,72 +180,72 @@
     {
       "name": "hardpoint_mav_thruster_nose_left_top",
       "ref": null,
-      "key": "ESPR_Prowler_Thruster_Mav_Down"
+      "key": "ESPR_Prowler_Thruster_Mav_Up"
     },
     {
       "name": "hardpoint_mav_thruster_nose_left_mid",
       "ref": null,
-      "key": "ESPR_Prowler_Thruster_Mav_Right"
+      "key": "ESPR_Prowler_Thruster_Mav_Lateral"
     },
     {
       "name": "hardpoint_mav_thruster_nose_left_bot",
       "ref": null,
-      "key": "ESPR_Prowler_Thruster_Mav_Up"
+      "key": "ESPR_Prowler_Thruster_Mav_Down"
     },
     {
       "name": "hardpoint_mav_thruster_nose_right_top",
       "ref": null,
-      "key": "ESPR_Prowler_Thruster_Mav_Down"
+      "key": "ESPR_Prowler_Thruster_Mav_Up"
     },
     {
       "name": "hardpoint_mav_thruster_nose_right_mid",
       "ref": null,
-      "key": "ESPR_Prowler_Thruster_Mav_Left"
+      "key": "ESPR_Prowler_Thruster_Mav_Lateral"
     },
     {
       "name": "hardpoint_mav_thruster_nose_right_bot",
       "ref": null,
-      "key": "ESPR_Prowler_Thruster_Mav_Up"
+      "key": "ESPR_Prowler_Thruster_Mav_Down"
     },
     {
       "name": "hardpoint_mav_thruster_tail_left_top",
       "ref": null,
-      "key": "ESPR_Prowler_Thruster_Mav_Down"
+      "key": "ESPR_Prowler_Thruster_Mav_Up"
     },
     {
       "name": "hardpoint_mav_thruster_tail_left_mid",
       "ref": null,
-      "key": "ESPR_Prowler_Thruster_Mav_Right"
+      "key": "ESPR_Prowler_Thruster_Mav_Lateral"
     },
     {
       "name": "hardpoint_mav_thruster_tail_left_bot",
       "ref": null,
-      "key": "ESPR_Prowler_Thruster_Mav_Up"
+      "key": "ESPR_Prowler_Thruster_Mav_Down"
     },
     {
       "name": "hardpoint_mav_thruster_tail_right_top",
       "ref": null,
-      "key": "ESPR_Prowler_Thruster_Mav_Down"
+      "key": "ESPR_Prowler_Thruster_Mav_Up"
     },
     {
       "name": "hardpoint_mav_thruster_tail_right_mid",
       "ref": null,
-      "key": "ESPR_Prowler_Thruster_Mav_Left"
+      "key": "ESPR_Prowler_Thruster_Mav_Lateral"
     },
     {
       "name": "hardpoint_mav_thruster_tail_right_bot",
       "ref": null,
-      "key": "ESPR_Prowler_Thruster_Mav_Up"
+      "key": "ESPR_Prowler_Thruster_Mav_Down"
     },
     {
       "name": "hardpoint_mav_thruster_wing_left_mid",
       "ref": null,
-      "key": "ESPR_Prowler_Thruster_Mav_Right"
+      "key": "ESPR_Prowler_Thruster_Mav_Lateral"
     },
     {
       "name": "hardpoint_mav_thruster_wing_right_mid",
       "ref": null,
-      "key": "ESPR_Prowler_Thruster_Mav_Left"
+      "key": "ESPR_Prowler_Thruster_Mav_Lateral"
     },
     {
       "name": "hardpoint_mav_thruster_spine_left",
@@ -608,9 +598,9 @@
       "key": "Controller_Fuel"
     },
     {
-      "name": "hardpoint_fuel_port",
-      "ref": null,
-      "key": "DockingTube_Fuel_Ports_ESPR_Prowler"
+      "name": "hardpoint_inflight_fuelport",
+      "ref": "9aeedf9f-22c4-4754-8fb9-3591551194fc",
+      "key": null
     },
     {
       "name": "hardpoint_air_traffic_controller",
@@ -628,19 +618,39 @@
       "key": null
     },
     {
-      "name": "hardpoint_relay_component_bay",
-      "ref": null,
-      "key": "RELAY_2slot"
+      "name": "hardpoint_life_support",
+      "ref": "e947b002-e65e-4637-90b7-c894925d6625",
+      "key": null
     },
     {
-      "name": "hardpoint_relay_drop_bay",
-      "ref": null,
-      "key": "RELAY_2slot"
+      "name": "hardpoint_engineeringscreen",
+      "ref": "26cd663d-9c7b-4ef6-8d08-e75ef0c43695",
+      "key": null
     },
     {
-      "name": "hardpoint_lifesupport",
-      "ref": null,
-      "key": "LFSP_TYDT_S02_ComfortAirPlus"
+      "name": "hardpoint_shield_generator_03",
+      "ref": "5f3fced2-3c4a-4a50-8a3e-4ba36064854c",
+      "key": null
+    },
+    {
+      "name": "hardpoint_shield_generator_04",
+      "ref": "5f3fced2-3c4a-4a50-8a3e-4ba36064854c",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_01",
+      "ref": "d046b6a3-84ba-4a9b-bc51-952ecb40224d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_ground_fuel_port",
+      "ref": "41adb6bf-b552-428c-a8dd-6cf7520309cb",
+      "key": null
+    },
+    {
+      "name": "hardpoint_engineeringscreen",
+      "ref": "878ae63f-4076-42ab-bab2-861ff7988045",
+      "key": null
     }
   ]
 }

@@ -1,0 +1,21 @@
+{
+  "key": "Controller_Salvage_MISC_Fortune_Secondary",
+  "ref": "9d4eb852-cf1e-40a3-9ac4-5a7ebbfa0379",
+  "category": "controller",
+  "type": "SalvageController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

@@ -13,13 +13,18 @@
     "mandatory_wait_time_minutes": "2.53125",
     "base_expediting_fee": "3800"
   },
-  "mass": 88408.0,
+  "mass": 86108.0,
   "metrics": {
     "x": 21.0,
     "y": 22.75,
     "z": 6.0
   },
   "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
     {
       "name": "hardpoint_seat_access",
       "ref": null,
@@ -182,8 +187,8 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": null,
-          "key": "JDRV_TARS_S01_C_Explorer"
+          "ref": "c8797bce-6220-4d1e-bc6d-23da4a366a6d",
+          "key": null
         }
       ]
     },
@@ -433,6 +438,11 @@
       "name": "hardpoint_lifesupport",
       "ref": null,
       "key": "LFSP_TYDT_S01_ComfortAir"
+    },
+    {
+      "name": "hardpoint_personal_storage",
+      "ref": "9bb32cbf-c326-43b7-a5e9-052b919098ef",
+      "key": null
     }
   ]
 }

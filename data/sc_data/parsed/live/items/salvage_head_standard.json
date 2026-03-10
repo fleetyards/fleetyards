@@ -9,7 +9,7 @@
   "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
   "name": "Baler Salvage Head",
   "short_name": "Baler Salvage Head",
-  "description": "Manufacturer: Greycat Industrial\\nItem Type: Salvage Head\\nSize: 2\\n\\nModule Capacity: 3\\nGimble Area: ???\\n\\nGreycat Industrial has spent centuries refining the Baler salvage head into its current form that's both durable and precise even under the harshest of conditions. Designed to swap between three modules, the Baler will be ready to rip apart whatever hull you find. Experience why it's the standard salvage head for countless personal and large-scale industrial operations across the universe.",
+  "description": "Manufacturer: Greycat Industrial\\nItem Type: Salvage Head\\nSize: 2\\n\\nModule Capacity: 3\\n\\nGreycat Industrial has spent centuries refining the Baler salvage head into its current form that's both durable and precise even under the harshest of conditions. Designed to swap between three modules, the Baler will be ready to rip apart whatever hull you find. Experience why it's the standard salvage head for countless personal and large-scale industrial operations across the universe.",
   "inventory_consumption": {
     "micro_scu": 84000.0,
     "dimensions": {

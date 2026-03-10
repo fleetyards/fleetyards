@@ -6,8 +6,8 @@
   "min_crew": "2",
   "name": "Anvil Ballista Snowblind",
   "description": "Manufacturer: Anvil Aerospace\\nFocus: Anti-Aircraft\\n\\nKeep your airspace clear of danger with the Anvil Ballista. Originally designed to defend outposts from Vanduul attacks, this mobile missile defense system packs a powerful loadout, allowing the Ballista to stand firm against any threat, whether it arrives by air or land. The Snowblind variant comes in a grey camouflage pattern to keep it concealed against rocky or lunar terrain.",
-  "career": "Ground",
-  "role": "Ground",
+  "career": "Combat",
+  "role": "Anti-Air",
   "insurance": {
     "base_wait_time_minutes": "6.19",
     "mandatory_wait_time_minutes": "2.06",
@@ -34,9 +34,7 @@
       "name": "hardpoint_seat_gunner",
       "ref": null,
       "key": "ANVL_Ballista_SCItem_SeatDashboard_Gunner",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_access",
@@ -148,78 +146,78 @@
         {
           "name": "hardpoint_missile_rack_S05_left",
           "ref": null,
-          "key": "MRCK_ANVL_Ballista_Quad_S05",
+          "key": "GMRCK_ANVL_Ballista_Quad_S05",
           "loadout": [
             {
               "name": "missile_01_attach",
               "ref": null,
-              "key": "MISL_S05_EM_TALN_Scimitar"
+              "key": "GMISL_S05_EM_TALN_Scimitar"
             },
             {
               "name": "missile_02_attach",
               "ref": null,
-              "key": "MISL_S05_EM_TALN_Scimitar"
+              "key": "GMISL_S05_EM_TALN_Scimitar"
             },
             {
               "name": "missile_03_attach",
               "ref": null,
-              "key": "MISL_S05_EM_TALN_Scimitar"
+              "key": "GMISL_S05_EM_TALN_Scimitar"
             },
             {
               "name": "missile_04_attach",
               "ref": null,
-              "key": "MISL_S05_EM_TALN_Scimitar"
+              "key": "GMISL_S05_EM_TALN_Scimitar"
             }
           ]
         },
         {
           "name": "hardpoint_missile_rack_S05_right",
           "ref": null,
-          "key": "MRCK_ANVL_Ballista_Quad_S05",
+          "key": "GMRCK_ANVL_Ballista_Quad_S05",
           "loadout": [
             {
               "name": "missile_01_attach",
               "ref": null,
-              "key": "MISL_S05_EM_TALN_Scimitar"
+              "key": "GMISL_S05_EM_TALN_Scimitar"
             },
             {
               "name": "missile_02_attach",
               "ref": null,
-              "key": "MISL_S05_EM_TALN_Scimitar"
+              "key": "GMISL_S05_EM_TALN_Scimitar"
             },
             {
               "name": "missile_03_attach",
               "ref": null,
-              "key": "MISL_S05_EM_TALN_Scimitar"
+              "key": "GMISL_S05_EM_TALN_Scimitar"
             },
             {
               "name": "missile_04_attach",
               "ref": null,
-              "key": "MISL_S05_EM_TALN_Scimitar"
+              "key": "GMISL_S05_EM_TALN_Scimitar"
             }
           ]
         },
         {
           "name": "hardpoint_missile_rack_S07_left",
           "ref": null,
-          "key": "MRCK_S07_ANVL_Ballista_Duel",
+          "key": "GMRCK_S07_ANVL_Ballista_Duel",
           "loadout": [
             {
               "name": "missile_01_attach",
               "ref": null,
-              "key": "MISL_S07_IR_TALN_Hellion"
+              "key": "GMISL_S07_IR_TALN_Hellion"
             }
           ]
         },
         {
           "name": "hardpoint_missile_rack_S07_right",
           "ref": null,
-          "key": "MRCK_S07_ANVL_Ballista_Duel",
+          "key": "GMRCK_S07_ANVL_Ballista_Duel",
           "loadout": [
             {
               "name": "missile_01_attach",
               "ref": null,
-              "key": "MISL_S07_IR_TALN_Hellion"
+              "key": "GMISL_S07_IR_TALN_Hellion"
             }
           ]
         }

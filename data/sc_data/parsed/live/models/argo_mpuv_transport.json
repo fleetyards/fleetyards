@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "0.23",
     "base_expediting_fee": "270"
   },
-  "mass": 13030.0,
+  "mass": 9210.0,
   "metrics": {
     "x": 9.0,
     "y": 10.5,
@@ -102,8 +102,8 @@
     },
     {
       "name": "hardpoint_door_rear",
-      "ref": null,
-      "key": "Door_Ship_Exterior_ARGO_Transport_Rear"
+      "ref": "678e6fd4-9fd4-42eb-a09b-237376947fcc",
+      "key": null
     },
     {
       "name": "hardpoint_powerplant",
@@ -188,7 +188,7 @@
     {
       "name": "hardpoint_thruster_front_left_bottom",
       "ref": null,
-      "key": "ARGO_MPUV_Thruster_Aux_Fixed_03"
+      "key": "ARGO_MPUV_Thruster_Aux_Fixed_Front_03"
     },
     {
       "name": "hardpoint_thruster_front_right_middle",
@@ -208,7 +208,7 @@
     {
       "name": "hardpoint_thruster_front_right_bottom",
       "ref": null,
-      "key": "ARGO_MPUV_Thruster_Aux_Fixed_03"
+      "key": "ARGO_MPUV_Thruster_Aux_Fixed_Front_03"
     },
     {
       "name": "hardpoint_thruster_rear_left_middle",

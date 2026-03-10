@@ -19,7 +19,7 @@
     }
   },
   "durability": {
-    "health": 0.0
+    "health": 1500.0
   },
   "heat_connection": {
     "TemperatureToIR": 4.0,
@@ -58,15 +58,15 @@
     "decay_rate_of_em": 0.2
   },
   "type_data": {
-    "max_health": 0.0,
-    "max_regen": 0.0,
+    "max_health": 45000.0,
+    "max_regen": 4455.0,
     "decay_ratio": 0.25,
     "reserve_pool_initial_health_ratio": 1.0,
     "reserve_pool_max_health_ratio": 1.0,
     "reserve_pool_regen_rate_ratio": 1.0,
     "reserve_pool_drain_rate_ratio": 2.5,
-    "downed_regen_delay": 10.0,
-    "damaged_regen_delay": 5.0,
+    "downed_regen_delay": 10.1,
+    "damaged_regen_delay": 5.04,
     "electrical_charge_damage_resistance": 0.0,
     "stun_params": {
       "min_alpha_damage_ratio": 0.005,
@@ -80,7 +80,7 @@
         "min": 0.0
       },
       {
-        "max": 0.5,
+        "max": 0.0,
         "min": 0.0
       },
       {
@@ -102,7 +102,7 @@
     ],
     "absorption": [
       {
-        "max": 0.3,
+        "max": 0.45,
         "min": 0.0
       },
       {

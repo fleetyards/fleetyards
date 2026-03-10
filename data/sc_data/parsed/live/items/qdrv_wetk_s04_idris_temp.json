@@ -7,9 +7,9 @@
   "size": "4",
   "grade": "1",
   "manufacturer_ref": null,
-  "name": null,
+  "name": "Frontline",
   "short_name": null,
-  "description": null,
+  "description": "Item Type: Quantum Drive\\nManufacturer: Aegis Dynamics\\nSize: 4\\n\\nThis capital-class quantum drive was designed specifically for the Idris frigate.",
   "inventory_consumption": {
     "micro_scu": 2100000.0,
     "dimensions": {
@@ -20,7 +20,7 @@
   },
   "loadout": [
     {
-      "name": "hardpoint_Jump_Drive",
+      "name": "hardpoint_jump_drive",
       "min_size": "4",
       "max_size": "4",
       "types": [
@@ -29,7 +29,7 @@
     }
   ],
   "durability": {
-    "health": 8200.0
+    "health": 48000.0
   },
   "heat_connection": {
     "TemperatureToIR": 2.5,
@@ -71,10 +71,10 @@
     "quantum_fuel_requirement": 0.0613,
     "jump_range": 3.402823e+38,
     "disconnect_range": 73206.0,
-    "drive_speed": 300000000.0,
+    "drive_speed": 718000000.0,
     "cooldown_time": 92.07,
-    "stage_one_accel_rate": 300000.0,
-    "stage_two_accel_rate": 14000000.0,
+    "stage_one_accel_rate": 626000.0,
+    "stage_two_accel_rate": 12700000.0,
     "engage_speed": 1500.0,
     "calibration_rate": 1000.0,
     "min_calibration_requirement": 5000.0,
@@ -98,14 +98,14 @@
       "spool_up_time": 9.0
     },
     "quantum_boost_params": {
-      "max_boost_speed": 1000000.0,
-      "time_to_max_boost_speed": 3.0,
-      "boost_use_time": 40.0,
-      "boost_recharge_time": 25.0,
-      "stop_time": 2.0,
-      "min_jump_distance": 10000.0,
-      "ifcs_handover_down_time": 3.0,
-      "ifcs_handover_respool_time": 4.0
+      "max_boost_speed": 0.0,
+      "time_to_max_boost_speed": 0.0,
+      "boost_use_time": 0.0,
+      "boost_recharge_time": 0.0,
+      "stop_time": 0.0,
+      "min_jump_distance": 0.0,
+      "ifcs_handover_down_time": 0.0,
+      "ifcs_handover_respool_time": 0.0
     }
   }
 }

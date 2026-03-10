@@ -6,8 +6,8 @@
   "min_crew": "1",
   "name": "Tumbril Cyclone RN",
   "description": "Manufacturer: Tumbril Land Systems \\nFocus: Recon\\n\\nStay mobile and aware with the Cyclone RN. This light reconnaissance vehicle is the perfect solution for scouting runs, providing fast and detailed scans of terrain as well as beacon placement.",
-  "career": "Ground",
-  "role": "Exploration",
+  "career": "Exploration",
+  "role": "Pathfinder",
   "insurance": {
     "base_wait_time_minutes": "2.03",
     "mandatory_wait_time_minutes": "0.68",
@@ -149,6 +149,16 @@
       "name": "hardpoint_relay_cockpit",
       "ref": null,
       "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_personal_storage_left",
+      "ref": "9c624ba5-46f1-45fe-a42d-daa410167652",
+      "key": null
+    },
+    {
+      "name": "hardpoint_personal_storage_right",
+      "ref": "9c624ba5-46f1-45fe-a42d-daa410167652",
+      "key": null
     }
   ]
 }

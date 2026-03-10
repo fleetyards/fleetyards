@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "0",
     "base_expediting_fee": "340"
   },
-  "mass": 34221.0,
+  "mass": 31221.0,
   "metrics": {
     "x": 18.0,
     "y": 21.5,
@@ -223,7 +223,7 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S01_C_Explorer"
+          "key": "JDRV_TARS_S01_Explorer_SCItem"
         }
       ]
     },
@@ -318,6 +318,11 @@
       "name": "hardpoint_lifesupport",
       "ref": null,
       "key": "LFSP_TYDT_S01_ComfortAir"
+    },
+    {
+      "name": "hardpoint_personalstorage",
+      "ref": "277adfd0-9467-4801-b360-0eacb5c396ab",
+      "key": null
     }
   ]
 }

@@ -6,14 +6,14 @@
   "min_crew": "1",
   "name": "Origin 135c",
   "description": "Manufacturer: Origin Jumpworks\\nFocus: Starter / Light Freighter\\n\\nWith a deceptive amount of storage space in its sleek, stylish frame, and Origin's patented AIR fuel system, the 135c model is the obvious choice for musicians, couriers, and anyone trying to get the party started. Get it there fast, and look good while you're doing it.",
-  "career": "Exploration",
+  "career": "Transporter",
   "role": "Light Freight",
   "insurance": {
     "base_wait_time_minutes": "3.78",
     "mandatory_wait_time_minutes": "1.26",
     "base_expediting_fee": "1830"
   },
-  "mass": 48143.0,
+  "mass": 45143.0,
   "metrics": {
     "x": 12.0,
     "y": 19.0,
@@ -128,7 +128,7 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S01_C_Explorer"
+          "key": "JDRV_TARS_S01_Explorer_SCItem"
         }
       ]
     },

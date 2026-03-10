@@ -6,14 +6,14 @@
   "min_crew": "1",
   "name": "Drake Cutter Scout",
   "description": "Manufacturer: Drake Interplanetary\\nFocus: Recon\\n\\nPairing down the rough and tumble, compact frame of the Cutter to the bare essentials, Drake took an already impressive ship and transformed it into the ideal scouting vessel. Featuring improved radar and scanning capabilities paired with more power and cooling, the Cutter Scout is ready to fly ahead of the pack.",
-  "career": "Starter",
-  "role": "Scout",
+  "career": "Exploration",
+  "role": "Pathfinder",
   "insurance": {
     "base_wait_time_minutes": "3.87",
     "mandatory_wait_time_minutes": "1.28",
     "base_expediting_fee": "2622"
   },
-  "mass": 92877.0,
+  "mass": 87677.0,
   "metrics": {
     "x": 16.0,
     "y": 20.0,
@@ -106,11 +106,6 @@
       "key": "HTNK_DRAK_Cutter"
     },
     {
-      "name": "hardpoint_fuel_tank_2",
-      "ref": null,
-      "key": "HTNK_DRAK_Cutter"
-    },
-    {
       "name": "hardpoint_ping",
       "ref": null,
       "key": null
@@ -126,11 +121,6 @@
       "key": "QTNK_DRAK_Cutter"
     },
     {
-      "name": "hardpoint_quantum_tank_2",
-      "ref": null,
-      "key": "QTNK_DRAK_Cutter"
-    },
-    {
       "name": "hardpoint_lifesupport",
       "ref": null,
       "key": "LFSP_TYDT_S01_ComfortAir"
@@ -139,11 +129,6 @@
       "name": "hardpoint_avionics",
       "ref": null,
       "key": "COMP_BEHR_S01_CSR-RP"
-    },
-    {
-      "name": "hardpoint_personal_storage",
-      "ref": null,
-      "key": "PersonalStorage_Cutter"
     },
     {
       "name": "hardpoint_weapon_locker",
@@ -356,7 +341,14 @@
     {
       "name": "hardpoint_scout_quantumdrive",
       "ref": null,
-      "key": "QDRV_ACAS_S01_FoxFire_SCItem"
+      "key": "QDRV_ACAS_S01_FoxFire_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": "c8797bce-6220-4d1e-bc6d-23da4a366a6d",
+          "key": null
+        }
+      ]
     },
     {
       "name": "hardpoint_scout_shieldgen",

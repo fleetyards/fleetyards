@@ -7,13 +7,13 @@
   "name": "Crusader C2 Hercules Starlifter",
   "description": "Manufacturer: Crusader Industries\\nFocus: Medium Freight\\n\\nUtilizing the patented Hercules military-grade spaceframe and expanding cargo capacity, while sacrificing barely any firepower, the C2 has taken the private sector by storm. It has become the industry standard for racing teams, ship dealers and manufacturers, construction orgs, mining corporations, and even large-scale touring entertainment outfits.",
   "career": "Transporter",
-  "role": "Courier",
+  "role": "Heavy Freight",
   "insurance": {
     "base_wait_time_minutes": "32.7",
     "mandatory_wait_time_minutes": "10.9",
     "base_expediting_fee": "17580"
   },
-  "mass": 3139240.06,
+  "mass": 2339240.06,
   "metrics": {
     "x": 94.0,
     "y": 70.0,
@@ -138,17 +138,12 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S03_C_Explorer"
+          "key": "JDRV_TARS_S03_Exodus_SCItem"
         }
       ]
     },
     {
-      "name": "hardpoint_quantum_fuel_l",
-      "ref": null,
-      "key": "QTNK_CRUS_Starlifter"
-    },
-    {
-      "name": "hardpoint_quantum_fuel_r",
+      "name": "hardpoint_quantum_fuel",
       "ref": null,
       "key": "QTNK_CRUS_Starlifter"
     },
@@ -487,11 +482,6 @@
       "name": "hardpoint_front_ramp",
       "ref": null,
       "key": "Door_Ship_Exterior_CRUS_Starlifter_Front_Ramp"
-    },
-    {
-      "name": "hardpoint_Elevator_Exterior_Door",
-      "ref": null,
-      "key": "Door_Ship_Exterior_CRUS_Starlifter_Elevator_Door"
     },
     {
       "name": "hardpoint_controller_missile",

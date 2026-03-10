@@ -1,0 +1,21 @@
+{
+  "key": "Controller_Shield_ARGO_MOTH",
+  "ref": "3b050078-dd41-4cdf-84b3-3fbfc4d6fc26",
+  "category": "controller",
+  "type": "ShieldController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SHIELDS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Cutlass_Showdown",
+  "ref": "9dff641f-1951-4ae6-bad5-59c5807f7c27",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1b4e2018-f0c3-487e-9526-1f05681ff13a",
+  "name": "Cutlass 2949 Best In Show Livery",
+  "short_name": null,
+  "description": "Customize your Cutlass with this special 2949 Best in Show livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Asgard_Green_Black_Yellow",
+  "ref": "98c50b9d-7a2d-4917-9da7-53b455ac96dc",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "597ba99b-9d05-4a44-8553-a8b550ee775c",
+  "name": "Asgard Savannah Livery",
+  "short_name": null,
+  "description": "Make the Asgard green with black and yellow accents with the Savannah livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

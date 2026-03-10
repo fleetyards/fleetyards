@@ -6,14 +6,14 @@
   "min_crew": "1",
   "name": "Drake Cutter Rambler",
   "description": "Manufacturer: Drake Interplanetary\\nFocus: Expedition\\n\\nThe brass at Drake heard what you had to say, and their answer was the Cutter Rambler. Building upon the original, the Rambler preserves a full 2 SCU of cargo room while adding in requested creature comforts and enough personal storage to make even the longest journey go by in a flash.",
-  "career": "Starter",
-  "role": "Exploration",
+  "career": "Exploration",
+  "role": "Expedition",
   "insurance": {
     "base_wait_time_minutes": "1.25",
     "mandatory_wait_time_minutes": "0",
     "base_expediting_fee": "480"
   },
-  "mass": 86877.0,
+  "mass": 81677.0,
   "metrics": {
     "x": 16.0,
     "y": 20.0,
@@ -111,11 +111,6 @@
       "key": "HTNK_DRAK_Cutter"
     },
     {
-      "name": "hardpoint_fuel_tank_2",
-      "ref": null,
-      "key": "HTNK_DRAK_Cutter"
-    },
-    {
       "name": "hardpoint_ping",
       "ref": null,
       "key": null
@@ -138,17 +133,12 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S01_C_Explorer"
+          "key": "JDRV_TARS_S01_Explorer_SCItem"
         }
       ]
     },
     {
       "name": "hardpoint_quantum_tank",
-      "ref": null,
-      "key": "QTNK_DRAK_Cutter"
-    },
-    {
-      "name": "hardpoint_quantum_tank_2",
       "ref": null,
       "key": "QTNK_DRAK_Cutter"
     },
@@ -421,11 +411,6 @@
       "name": "hardpoint_weapon_locker_expo",
       "ref": null,
       "key": "Weapon_Rack_DRAK_Cutter_Rambler_9_Slot"
-    },
-    {
-      "name": "hardpoint_personal_storage_expo",
-      "ref": null,
-      "key": "PersonalStorage_Cutter_Rambler"
     },
     {
       "name": "hardpoint_suit_locker_expo",

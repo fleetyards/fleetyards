@@ -1,0 +1,334 @@
+{
+  "key": "RSI_Salvation_Template",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "RSI Salvation",
+  "description": "Manufacturer: Roberts Space Industries\\nFocus: Salvage\\n \\nFor centuries, Roberts Space Industries' has prided itself on crafting vehicles that not only meets the pilots needs but exceeds expectations. While the RSI Salvation may seem like a simple salvaging craft at first glance, every detail from the salvaging arm, the onboard processing plant, to the convenient external storage has been refined and optimized to make even an amateur feel like an expert.",
+  "career": "Starter",
+  "role": "Light Salvage",
+  "insurance": {
+    "base_wait_time_minutes": "33.33",
+    "mandatory_wait_time_minutes": "3.33",
+    "base_expediting_fee": "333"
+  },
+  "mass": 62245.0,
+  "metrics": {
+    "x": 18.0,
+    "y": 8.0,
+    "z": 4.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": "b935e5d8-dead-47c5-8937-382c3aa11682",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": "61cc7bf5-6666-40f7-8c0a-ee8a8092f51e",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": "c78851f1-ded8-4e8d-91ec-905e3dae075e",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": "ae1a186e-0f8c-4deb-8079-bfb54df4a8a7",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_salvage",
+      "ref": "b7cc5644-338f-4373-b6cb-320395344629",
+      "key": null
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_battery",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuel_intake",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuel_tank",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cooler",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_powerplant",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_shield_generator_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_shield_generator_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_quantum_tank",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_computer",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_weapon_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_weapon_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_countermeasure_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_countermeasure_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_self_destruct_pilot",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_engine_top_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_engine_top_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_engine_bottom_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_engine_bottom_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_retro_bottom_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_retro_bottom_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_retro_top_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_retro_top_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_mav_rear_middle_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_mav_rear_middle_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_mav_rear_bottom_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_mav_rear_bottom_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_mav_rear_top_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_mav_rear_top_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_mav_front_middle_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_mav_front_middle_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_mav_front_bottom_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_mav_front_bottom_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_mav_front_top_Left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_mav_front_top_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_filler_station",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_salvage_arm_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_salvage_arm_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_internal_storage",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_disintegration_intake",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_attachable_buff",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_weapon_locker_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_weapon_locker_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": null
+    }
+  ]
+}

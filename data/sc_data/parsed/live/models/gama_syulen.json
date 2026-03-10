@@ -6,14 +6,14 @@
   "min_crew": "1",
   "name": "Gatac Syulen",
   "description": "Manufacturer: Gatac Manufacture\\nFocus: Cargo\\n\\nThe Syulen cargo vessel has been artfully crafted by the renowned House Gatac to be well suited for both Human and Xi’an pilots. With a refined agile frame, the Syulen lends itself to ferrying important deliveries across the universe, or as the ideal ship for those making their transport career debut.",
-  "career": "Starter",
-  "role": "Starter",
+  "career": "Multi-Role",
+  "role": "Starter / Pathfinder",
   "insurance": {
     "base_wait_time_minutes": "2.95",
     "mandatory_wait_time_minutes": "1.1",
     "base_expediting_fee": "2000"
   },
-  "mass": 86877.0,
+  "mass": 77877.0,
   "metrics": {
     "x": 0.0,
     "y": 0.0,
@@ -96,17 +96,7 @@
       "key": "HTNK_GAMA_Syulen"
     },
     {
-      "name": "hardpoint_fuel_tank_hydrogen_2",
-      "ref": null,
-      "key": "HTNK_GAMA_Syulen"
-    },
-    {
       "name": "hardpoint_fuel_tank_quantum_1",
-      "ref": null,
-      "key": "QTNK_GAMA_Syulen"
-    },
-    {
-      "name": "hardpoint_fuel_tank_quantum_2",
       "ref": null,
       "key": "QTNK_GAMA_Syulen"
     },
@@ -134,9 +124,7 @@
       "name": "hardpoint_seat_pilot",
       "ref": null,
       "key": "GAMA_Syulen_Pilot_Seat",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_shield_generator_1",
@@ -462,8 +450,8 @@
     },
     {
       "name": "hardpoint_airlock_ramp",
-      "ref": null,
-      "key": "Door_RN_RoomConnector_Breachable_OpenReverse_Gama_Syulen_Entrance"
+      "ref": "9ecd97ed-c42a-4354-9178-7d23c92bb299",
+      "key": null
     },
     {
       "name": "hardpoint_fuel_ground",
@@ -478,7 +466,7 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S01_C_Explorer"
+          "key": "JDRV_TARS_S01_Explorer_SCItem"
         }
       ]
     },

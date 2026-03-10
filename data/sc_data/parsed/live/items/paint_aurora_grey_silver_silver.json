@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Aurora_Grey_Silver_Silver",
+  "ref": "5b9005f4-bc58-49bd-98a2-c6d2535580a5",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a2767359-f193-4331-96a5-b5c9ce69b17e",
+  "name": "Aurora Record Breaker Livery",
+  "short_name": null,
+  "description": "Show the 'verse that you're ahead of the pack and ready to shatter expectations with this sleek gray and silver livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

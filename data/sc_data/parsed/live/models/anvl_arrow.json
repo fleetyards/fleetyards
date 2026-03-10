@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "1.76",
     "base_expediting_fee": "3121"
   },
-  "mass": 32310.0,
+  "mass": 30510.0,
   "metrics": {
     "x": 12.25,
     "y": 17.25,
@@ -192,8 +192,8 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": null,
-          "key": "JDRV_SPICE_S01"
+          "ref": "c8797bce-6220-4d1e-bc6d-23da4a366a6d",
+          "key": null
         }
       ]
     },
@@ -325,16 +325,6 @@
       "name": "hardpoint_controller_missile",
       "ref": null,
       "key": "Controller_Missile"
-    },
-    {
-      "name": "hardpoint_weapon_regen_pool",
-      "ref": null,
-      "key": null
-    },
-    {
-      "name": "hardpoint_weapon_regen_pool_turrets",
-      "ref": null,
-      "key": null
     },
     {
       "name": "hardpoint_controller_capacitor_assignment",

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Guardian_Grey_Black_Gold_Camo",
+  "ref": "7c00f248-7599-4b22-b341-2c8721ff7712",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a9b21a00-b64d-4196-b240-aefa43480e94",
+  "name": "Guardian Shadow Gild Livery",
+  "short_name": null,
+  "description": "For those Guardian pilots who prefer to subtly show their ostentatious side, the Shadow Gild livery variant features a dark gray and black camo hull and stylish gold highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

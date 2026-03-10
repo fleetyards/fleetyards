@@ -23,17 +23,13 @@
       "name": "hardpoint_salvage_refill",
       "min_size": "0",
       "max_size": "0",
-      "types": [
-
-      ]
+      "types": []
     },
     {
       "name": "hardpoint_salvage_crate",
       "min_size": "0",
       "max_size": "0",
-      "types": [
-
-      ]
+      "types": []
     }
   ]
 }

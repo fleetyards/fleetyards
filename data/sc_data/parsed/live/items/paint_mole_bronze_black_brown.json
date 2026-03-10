@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Mole_Bronze_Black_Brown",
+  "ref": "4eb550d5-3b35-4f43-a399-e47d34ddff5a",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "bab8b6b4-a05c-49e6-b95e-114242897a4a",
+  "name": "MOLE Shubin Livery",
+  "short_name": null,
+  "description": "Showcasing the bold colors of bronze alloy and deep obsidian, the Shubin livery embodies the spirit of the powerful planetary mining conglomerate.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

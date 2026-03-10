@@ -7,9 +7,9 @@
   "size": "7",
   "grade": "1",
   "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
-  "name": "Manned Turret",
-  "short_name": null,
-  "description": null,
+  "name": "IFR-A77 Turret",
+  "short_name": "IFR-A77 Turret",
+  "description": "Item Type: Manned Turret\\nManufacturer: Aegis Dynamics\\nSize: 7\\n\\nThis manned turret, designed by Aegis to be equipped with two size 7 weapons, is bespoke to the Idris frigate.",
   "inventory_consumption": {
     "micro_scu": 1.0,
     "dimensions": {
@@ -37,7 +37,7 @@
     }
   ],
   "durability": {
-    "health": 500000.0
+    "health": 15000.0
   },
   "heat_connection": {
     "TemperatureToIR": 6.0,

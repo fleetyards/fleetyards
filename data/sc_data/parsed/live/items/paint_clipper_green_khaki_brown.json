@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Clipper_Green_Khaki_Brown",
+  "ref": "14727164-e71f-4dad-baf7-9780e0daf221",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ef757be3-1019-43cf-acb4-0764f394327c",
+  "name": "Clipper Holt Camo Livery",
+  "short_name": null,
+  "description": "The swirling green and khaki camo pattern of the Holt Camo livery makes it an ideal choice when you want to make the Clipper a bit more inconspicuous.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

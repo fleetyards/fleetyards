@@ -5,9 +5,9 @@
   "gravlev": "0",
   "min_crew": "1",
   "name": "Greycat PTV",
-  "description": "Manufacturer: Greycat Industrial\\nFocus: Personal Transport\\n\\nThe Greycat PTV is a simple and practical buggy frequently used to reduce long walk distance in large hangers or outpost.",
+  "description": "Manufacturer: Greycat Industrial\\nFocus: Personal Transport\\n\\nThe Greycat PTV is a simple and practical buggy frequently used to reduce travel times in large hangars or outposts.",
   "career": "Ground",
-  "role": "Ground",
+  "role": "Passenger",
   "insurance": {
     "base_wait_time_minutes": "0.28",
     "mandatory_wait_time_minutes": "0.09",
@@ -29,9 +29,7 @@
       "name": "hardpoint_seat_driver",
       "ref": null,
       "key": "GRIN_PTV_SCItem_SeatDashboard_Pilot",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_passenger",
@@ -102,6 +100,11 @@
       "name": "hardpoint_relay_cockpit",
       "ref": null,
       "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": "7d6d82e1-ce7b-47b4-bec0-a826969cc501",
+      "key": null
     }
   ]
 }

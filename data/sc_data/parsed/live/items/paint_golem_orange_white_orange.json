@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Golem_Orange_White_Orange",
+  "ref": "7e19ec04-acd7-466e-98e9-857fbc3ca000",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1af8f15b-e65d-4016-8cae-1dab84a9b34d",
+  "name": "Golem Flashpoint Livery",
+  "short_name": null,
+  "description": "Prominent use of orange offset against white makes the Golem Flashpoint livery highly visible on busy and dangerous work sites.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "key": "GMISL_S05_EM_TALN_Reaper",
+  "ref": "a5ea02e9-fb08-498e-9598-55224dfa4b9c",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "GroundVehicleMissile",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "587fcede-4fe9-4fb4-85ec-124abc8542b0",
+  "name": "Reaper V-G Missile",
+  "short_name": "Reaper V-G",
+  "description": "Manufacturer: Talon \\nTracking Signal: Electromagnetic \\nSize: 5  \\n\\nThe Reaper strike torpedo features a favorable destructive yield-to-expense ratio and a proven Talon EM tracking suite. Note: This missile may only be launched by ground vehicles.",
+  "inventory_consumption": {
+    "micro_scu": 78125.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 5.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 50.0
+  }
+}

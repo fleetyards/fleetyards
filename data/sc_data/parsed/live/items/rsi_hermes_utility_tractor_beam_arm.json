@@ -1,0 +1,34 @@
+{
+  "key": "RSI_Hermes_Utility_Tractor_Beam_Arm",
+  "ref": "43421e75-383e-48c3-9820-00e0f8193c08",
+  "category": "utility",
+  "type": "ToolArm",
+  "sub_type": null,
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": "Tractor Turret",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_remote_turret",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "UtilityTurret"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 4000.0
+  }
+}

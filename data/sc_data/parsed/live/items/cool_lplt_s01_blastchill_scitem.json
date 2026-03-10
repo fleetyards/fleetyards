@@ -19,7 +19,7 @@
     }
   },
   "durability": {
-    "health": 330.0
+    "health": 110.0
   },
   "heat_connection": {
     "TemperatureToIR": 1.3525,

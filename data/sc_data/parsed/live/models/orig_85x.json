@@ -7,13 +7,13 @@
   "name": "Origin 85X Limited",
   "description": "Manufacturer: Origin Jumpworks\\nFocus: Touring\\n\\nElegantly styled and meticulously constructed, the 85X is a versatile and comprehensive away-vessel that features precision control in and out of atmosphere. Utilizing much of the same thruster technology as the 300 series, it has the power of a racer with the reliability of a touring ship. Whether descending down to the planet surface or taking in the sights of your system, this runabout continues Origin’s proud tradition of turning heads.",
   "career": "Exploration",
-  "role": "Luxury",
+  "role": "Touring",
   "insurance": {
     "base_wait_time_minutes": "1.0125",
     "mandatory_wait_time_minutes": "0",
     "base_expediting_fee": "510"
   },
-  "mass": 19833.5,
+  "mass": 18993.5,
   "metrics": {
     "x": 14.0,
     "y": 13.5,
@@ -67,8 +67,8 @@
     },
     {
       "name": "hardpoint_power_plant",
-      "ref": null,
-      "key": "POWR_LPLT_S01_PowerBolt_SCItem"
+      "ref": "4a4a2a9c-040f-4f36-befe-7101b230fa53",
+      "key": null
     },
     {
       "name": "hardpoint_controller_energy",
@@ -113,7 +113,7 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S01_C_Explorer"
+          "key": "JDRV_TARS_S01_Explorer_SCItem"
         }
       ]
     },

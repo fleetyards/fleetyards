@@ -1,0 +1,22 @@
+{
+  "key": "RSI_Perseus_CargoGrid_Main",
+  "ref": "93f56be0-6d3b-40cf-beeb-011e269e2bbb",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": "Cargo",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "1685f711-dd94-4343-8d66-bcc58aa36b72"
+}

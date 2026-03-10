@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Apollo_Blue_Orange",
+  "ref": "4cd28a2d-1185-4422-90ba-f3aad5e70533",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "51f30c8c-e5cf-4733-9b75-4cf9bb53e9be",
+  "name": "Apollo Shockwave Livery",
+  "short_name": null,
+  "description": "The subtle style of the Shockwave livery brings an appealing blue with orange highlights to the Apollo.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

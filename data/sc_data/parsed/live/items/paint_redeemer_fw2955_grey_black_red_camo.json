@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Redeemer_FW2955_Grey_Black_Red_Camo",
+  "ref": "8e7968ec-5da5-4282-86cd-e16c8f26a73f",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "9d16159d-c0f3-4ba2-ba96-eb0db09abe3e",
+  "name": "Redeemer Nightbreak Livery",
+  "short_name": null,
+  "description": "Discreetly soar through the night sky in the Redeemer with the Nightbreak livery, which is primarily black with red highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

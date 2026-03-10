@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "3.15",
     "base_expediting_fee": "4689"
   },
-  "mass": 86592.72,
+  "mass": 83092.72,
   "metrics": {
     "x": 24.5,
     "y": 24.5,
@@ -127,8 +127,8 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": null,
-          "key": "JDRV_TARS_S01_C_Explorer"
+          "ref": "c8797bce-6220-4d1e-bc6d-23da4a366a6d",
+          "key": null
         }
       ]
     },

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Perseus_Grey_Grey_Orange",
+  "ref": "d60e53be-2e49-486e-ac20-1463e7043960",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "991d2ffa-4de4-4a97-96d7-84b3c32834d8",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

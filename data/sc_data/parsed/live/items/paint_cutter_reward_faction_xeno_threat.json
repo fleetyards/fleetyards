@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Cutter_Reward_Faction_Xeno_Threat",
+  "ref": "f08141e7-163f-400a-9958-4153b3f5d395",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8fe91485-ebcf-42df-955b-444f2fe86b1e",
+  "name": "Cutter XenoThreat Purge Livery",
+  "short_name": null,
+  "description": "Let Humanity know you won't bow down to alien invaders with this XenoThreat livery featuring a muted teal with bright red accents.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

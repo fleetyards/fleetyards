@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "2.25",
     "base_expediting_fee": "3375"
   },
-  "mass": 74132.0,
+  "mass": 72032.0,
   "metrics": {
     "x": 25.5,
     "y": 28.25,
@@ -187,8 +187,8 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": null,
-          "key": "JDRV_TARS_S01_C_Explorer"
+          "ref": "c8797bce-6220-4d1e-bc6d-23da4a366a6d",
+          "key": null
         }
       ]
     },
@@ -412,6 +412,11 @@
       "name": "hardpoint_countermeasure_right_02",
       "ref": null,
       "key": "ANVL_F7A_Mk1_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_personal_storage",
+      "ref": "43190b5a-fb50-446a-8992-bb2d0d8ff5ae",
+      "key": null
     }
   ]
 }

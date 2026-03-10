@@ -41,17 +41,13 @@
       "name": "hardpoint_cargogrid_rear",
       "key": "ARGO_CSV_CargoGrid_Rear",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "hardpoint_cargo_box_01",
       "key": null,
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     }
   ],
   "durability": {

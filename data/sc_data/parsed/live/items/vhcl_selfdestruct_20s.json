@@ -6,10 +6,10 @@
   "sub_type": null,
   "size": "1",
   "grade": "1",
-  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
-  "name": "RSI Self Destruct",
+  "manufacturer_ref": null,
+  "name": "Self Destruct Unit",
   "short_name": null,
-  "description": null,
+  "description": "Self Destruct Unit",
   "inventory_consumption": {
     "micro_scu": 1.0,
     "dimensions": {

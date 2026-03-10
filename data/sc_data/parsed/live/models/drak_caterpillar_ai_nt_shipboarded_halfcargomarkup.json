@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "6.21",
     "base_expediting_fee": "7730"
   },
-  "mass": 1660063.0,
+  "mass": 1508063.0,
   "metrics": {
     "x": 39.5,
     "y": 13.4,
@@ -94,25 +94,19 @@
       "name": "hardpoint_seat_engineering",
       "ref": null,
       "key": "DRAK_Caterpillar_SCItem_Seat_Engineering",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_tractorbeam_left",
       "ref": null,
       "key": "DRAK_Caterpillar_SCItem_Seat_TractorBeam",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_tractorbeam_right",
       "ref": null,
       "key": "DRAK_Caterpillar_SCItem_Seat_TractorBeam",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_self_destruct_pilot",
@@ -412,7 +406,7 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S03_C_Explorer"
+          "key": "JDRV_TARS_S03_Exodus_SCItem"
         }
       ]
     },
@@ -754,14 +748,69 @@
       "key": "Controller_Salvage_TractorBeamOnly"
     },
     {
-      "name": "hardpoint_relay",
-      "ref": null,
-      "key": "RELAY_3slot"
-    },
-    {
       "name": "hardpoint_lifesupport",
       "ref": null,
       "key": "LFSP_TYDT_S03_ComfortAirMax"
+    },
+    {
+      "name": "hardpoint_relay_tractorbeam",
+      "ref": "b50ce2fd-9b1d-4daf-8bbc-e5b10d769e63",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_powerplant",
+      "ref": "d046b6a3-84ba-4a9b-bc51-952ecb40224d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_serverroom",
+      "ref": "609b087d-bdfe-401d-b9fe-526af4d52d09",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_jumpdrive",
+      "ref": "b50ce2fd-9b1d-4daf-8bbc-e5b10d769e63",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_bridge",
+      "ref": "d046b6a3-84ba-4a9b-bc51-952ecb40224d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_engineroom",
+      "ref": "609b087d-bdfe-401d-b9fe-526af4d52d09",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_foyer",
+      "ref": "b50ce2fd-9b1d-4daf-8bbc-e5b10d769e63",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_lowercargomod_inner",
+      "ref": "b50ce2fd-9b1d-4daf-8bbc-e5b10d769e63",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_lowercargomod_inner_mid",
+      "ref": "b50ce2fd-9b1d-4daf-8bbc-e5b10d769e63",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_lowercargomod_outer_mid",
+      "ref": "b50ce2fd-9b1d-4daf-8bbc-e5b10d769e63",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_lowercargomod_outer",
+      "ref": "b50ce2fd-9b1d-4daf-8bbc-e5b10d769e63",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_exteriorramp",
+      "ref": "b50ce2fd-9b1d-4daf-8bbc-e5b10d769e63",
+      "key": null
     }
   ]
 }

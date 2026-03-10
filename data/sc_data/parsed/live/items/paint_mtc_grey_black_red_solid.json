@@ -1,0 +1,21 @@
+{
+  "key": "Paint_MTC_Grey_Black_Red_Solid",
+  "ref": "97132163-0353-4ecc-86d6-b431474bfb60",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6e6e54fc-6cf5-4bf6-8dc2-3c94722c7223",
+  "name": "MTC Baracus Livery",
+  "short_name": null,
+  "description": "Bold red highlights add a bit of color and break up the black base paint of the MTC Baracus livery, which can also be applied to other Greycat M-Series vehicles.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

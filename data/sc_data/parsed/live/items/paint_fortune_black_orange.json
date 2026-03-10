@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Fortune_Black_Orange",
+  "ref": "9f767019-5ac2-4b26-9c03-9b4b73770f0f",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "356130d4-455c-4506-9f38-32e9e53379d8",
+  "name": "Fortune Sunspot Livery",
+  "short_name": null,
+  "description": "The deep contrast of the warm orange against the cold black of the Sunspot livery highlights the distinctive profile of the Fortune.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

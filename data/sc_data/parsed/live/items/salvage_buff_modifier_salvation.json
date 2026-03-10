@@ -1,0 +1,21 @@
+{
+  "key": "Salvage_Buff_Modifier_Salvation",
+  "ref": "bd018d70-f31a-40ce-9cf5-d1df4aee7540",
+  "category": "utility",
+  "type": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 340.0,
+    "dimensions": {
+      "x": 0.0549,
+      "y": 0.0424,
+      "z": 0.133
+    }
+  }
+}

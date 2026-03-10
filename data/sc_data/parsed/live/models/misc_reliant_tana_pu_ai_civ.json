@@ -6,14 +6,14 @@
   "min_crew": "1",
   "name": "MISC Reliant Tana",
   "description": "Manufacturer: MISC\\nFocus: Light Fighter\\n\\nWith Humanity ever-expanding through the universe, the need for a versatile lightweight fighter has expanded with it. Easy to maintain with a rugged construction, the Reliant Tana makes for an ideal choice for frontier and outpost defense thanks to its custom high-yield power plant, stronger shields, and additional weapon mounts.",
-  "career": "Multi-Role",
+  "career": "Combat",
   "role": "Light Fighter",
   "insurance": {
     "base_wait_time_minutes": "4.82",
     "mandatory_wait_time_minutes": "1.61",
     "base_expediting_fee": "3829"
   },
-  "mass": 39168.0,
+  "mass": 34968.0,
   "metrics": {
     "x": 28.5,
     "y": 14.75,
@@ -27,48 +27,46 @@
     },
     {
       "name": "hardpoint_seat_pilot",
-      "ref": null,
-      "key": "MISC_Reliant_SCItem_Seat_Pilot",
+      "ref": "2ff6a0f0-5119-4e4f-8d92-2b65d9029bab",
+      "key": null,
       "loadout": [
         {
           "name": "hardpoint_cockpit_radar",
-          "ref": null,
-          "key": "Radar_Display_MISC_Reliant"
+          "ref": "8e0db77b-1f27-421d-9bd4-843baf789943",
+          "key": null
         }
       ]
     },
     {
       "name": "hardpoint_seat_copilot",
-      "ref": null,
-      "key": "MISC_Reliant_SCItem_Seat_CoPilot",
-      "loadout": [
-
-      ]
+      "ref": "be907bef-e023-459c-b5bd-de724e8c4425",
+      "key": null,
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_access",
-      "ref": null,
-      "key": "MISC_Reliant_SCItem_SeatAccess"
+      "ref": "3f8ff318-91ae-4772-8f70-3cd006156efd",
+      "key": null
     },
     {
       "name": "hardpoint_selfdestruct",
-      "ref": null,
-      "key": "VHCL_SelfDestruct_30s"
+      "ref": "27875030-1290-4098-827f-f1a5b67c0615",
+      "key": null
     },
     {
       "name": "hardpoint_controller_energy",
-      "ref": null,
-      "key": "Controller_Energy"
+      "ref": "61cc7bf5-6666-40f7-8c0a-ee8a8092f51e",
+      "key": null
     },
     {
       "name": "hardpoint_power_plant",
       "ref": null,
-      "key": "POWR_AEGS_S01_Regulus_SCItem"
+      "key": "POWR_LPLT_S01_IonBurst_SCItem"
     },
     {
       "name": "hardpoint_controller_cooler",
-      "ref": null,
-      "key": "Controller_Cooler"
+      "ref": "b935e5d8-dead-47c5-8937-382c3aa11682",
+      "key": null
     },
     {
       "name": "hardpoint_cooler_left",
@@ -82,8 +80,8 @@
     },
     {
       "name": "hardpoint_controller_shield",
-      "ref": null,
-      "key": "Controller_Shield_MISC_Reliant"
+      "ref": "6046efc9-f61a-4c70-94b7-bb4b50c88b74",
+      "key": null
     },
     {
       "name": "hardpoint_shield_generator_left",
@@ -111,19 +109,9 @@
       "key": "RADR_GRNP_S01_Ecouter"
     },
     {
-      "name": "hardpoint_scanner",
-      "ref": null,
-      "key": null
-    },
-    {
-      "name": "hardpoint_ping",
-      "ref": null,
-      "key": null
-    },
-    {
       "name": "hardpoint_controller_comms",
-      "ref": null,
-      "key": "Controller_Comms"
+      "ref": "ae1a186e-0f8c-4deb-8079-bfb54df4a8a7",
+      "key": null
     },
     {
       "name": "hardpoint_thruster_main_left",
@@ -242,8 +230,8 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": null,
-          "key": "JDRV_TARS_S01_C_Explorer"
+          "ref": "c8797bce-6220-4d1e-bc6d-23da4a366a6d",
+          "key": null
         }
       ]
     },
@@ -264,8 +252,8 @@
     },
     {
       "name": "hardpoint_controller_door",
-      "ref": null,
-      "key": "Controller_Door"
+      "ref": "4a9ebf31-a405-4b68-9886-b4a47bd1b61d",
+      "key": null
     },
     {
       "name": "hardpoint_door_ramp",
@@ -274,59 +262,59 @@
     },
     {
       "name": "hardpoint_controller_weapon",
-      "ref": null,
-      "key": "Controller_Weapon"
+      "ref": "c78851f1-ded8-4e8d-91ec-905e3dae075e",
+      "key": null
     },
     {
       "name": "hardpoint_controller_weapon_copilot",
-      "ref": null,
-      "key": "Controller_Weapon"
+      "ref": "c78851f1-ded8-4e8d-91ec-905e3dae075e",
+      "key": null
     },
     {
       "name": "Hardpoint_Weapon_Wing_S1_Left",
-      "ref": "7fedca61-dfeb-4ecb-b421-e7c3ba55a584",
-      "key": null,
+      "ref": null,
+      "key": "Mount_Gimbal_S2",
       "loadout": [
         {
           "name": "hardpoint_class_2",
-          "ref": "5453a817-dfd4-4143-aa11-840ca428540c",
-          "key": null
+          "ref": null,
+          "key": "KLWE_LaserRepeater_S2"
         }
       ]
     },
     {
       "name": "Hardpoint_Weapon_Wing_S1_Right",
-      "ref": "7fedca61-dfeb-4ecb-b421-e7c3ba55a584",
-      "key": null,
+      "ref": null,
+      "key": "Mount_Gimbal_S2",
       "loadout": [
         {
           "name": "hardpoint_class_2",
-          "ref": "5453a817-dfd4-4143-aa11-840ca428540c",
-          "key": null
+          "ref": null,
+          "key": "KLWE_LaserRepeater_S2"
         }
       ]
     },
     {
       "name": "Hardpoint_Weapon_Wing_Tip_S3_Left",
-      "ref": "433251b0-f28d-4aa3-83f1-4ae45a1a0137",
-      "key": null,
+      "ref": null,
+      "key": "GMNT_MISC_S03_PL01",
       "loadout": [
         {
           "name": "hardpoint_weapon_s2",
-          "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
-          "key": null
+          "ref": null,
+          "key": "KLWE_LaserRepeater_S3"
         }
       ]
     },
     {
       "name": "Hardpoint_Weapon_Wing_Tip_S3_Right",
-      "ref": "433251b0-f28d-4aa3-83f1-4ae45a1a0137",
-      "key": null,
+      "ref": null,
+      "key": "GMNT_MISC_S03_PL01",
       "loadout": [
         {
           "name": "hardpoint_weapon_s2",
-          "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
-          "key": null
+          "ref": null,
+          "key": "KLWE_LaserRepeater_S3"
         }
       ]
     },
@@ -470,18 +458,18 @@
     },
     {
       "name": "hardpoint_controller_missile",
-      "ref": null,
-      "key": "Controller_Missile"
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
+      "key": null
     },
     {
       "name": "hardpoint_controller_capacitor_assignment",
-      "ref": null,
-      "key": "Controller_CapacitorAssignment"
+      "ref": "0219b443-6f28-4aa2-bcc3-cfbff843729d",
+      "key": null
     },
     {
       "name": "hardpoint_controller_fuel",
-      "ref": null,
-      "key": "Controller_Fuel"
+      "ref": "9925488b-127a-4fc3-b7bb-9e4f5a46bbbd",
+      "key": null
     },
     {
       "name": "hardpoint_fuel_port",

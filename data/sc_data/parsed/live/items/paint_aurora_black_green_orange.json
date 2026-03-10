@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Aurora_Black_Green_Orange",
+  "ref": "836dc7ef-66a7-456e-a0ba-2c62c1a41821",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "131a71f2-36d4-41e7-9b24-8ac7d49136c3",
+  "name": "Aurora SXSW15 Commemorative Livery",
+  "short_name": null,
+  "description": "Strike out boldly into the universe with this vibrant livery commemorating the iconic 2945 festival that celebrated community spirit and expansion.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

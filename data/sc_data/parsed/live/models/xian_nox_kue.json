@@ -183,22 +183,22 @@
     {
       "name": "hardpoint_gravplate_front_left",
       "ref": null,
-      "key": "XIAN_Nox_Thruster_Aux_Left"
+      "key": null
     },
     {
       "name": "hardpoint_gravplate_front_right",
       "ref": null,
-      "key": "XIAN_Nox_Thruster_Aux_Right"
+      "key": null
     },
     {
       "name": "hardpoint_gravplate_center_left",
       "ref": null,
-      "key": "XIAN_Nox_Thruster_Aux_Left"
+      "key": null
     },
     {
       "name": "hardpoint_gravplate_center_right",
       "ref": null,
-      "key": "XIAN_Nox_Thruster_Aux_Right"
+      "key": null
     },
     {
       "name": "hardpoint_gravplate_rear_left",
@@ -279,6 +279,11 @@
       "name": "hardpoint_relay_cockpit",
       "ref": null,
       "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_personal_storage",
+      "ref": "acef5f92-2fa7-4ea9-be0f-54648d8c1fe5",
+      "key": null
     }
   ]
 }

@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "3.43",
     "base_expediting_fee": "7311"
   },
-  "mass": 329001.0,
+  "mass": 325001.0,
   "metrics": {
     "x": 30.0,
     "y": 27.0,
@@ -42,8 +42,8 @@
     },
     {
       "name": "hardpoint_selfdestruct",
-      "ref": null,
-      "key": "VHCL_SelfDestruct_10s"
+      "ref": "e9655bd9-dd74-46ee-8a15-2ac3bd3dfde1",
+      "key": null
     },
     {
       "name": "hardpoint_controller_energy",
@@ -106,11 +106,6 @@
       "key": "HTNK_CRUS_Starfighter"
     },
     {
-      "name": "hardpoint_fuel_tank_right",
-      "ref": null,
-      "key": "HTNK_CRUS_Starfighter"
-    },
-    {
       "name": "hardpoint_fuel_intake_left",
       "ref": null,
       "key": "INTK_CRUS_Starfighter"
@@ -143,17 +138,12 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S02_C_Explorer"
+          "key": "JDRV_TARS_S02_Excelsior_SCItem"
         }
       ]
     },
     {
-      "name": "hardpoint_quantum_fuel_tank_left",
-      "ref": null,
-      "key": "QTNK_CRUS_Starfighter"
-    },
-    {
-      "name": "hardpoint_quantum_fuel_tank_right",
+      "name": "hardpoint_quantum_fuel_tank",
       "ref": null,
       "key": "QTNK_CRUS_Starfighter"
     },

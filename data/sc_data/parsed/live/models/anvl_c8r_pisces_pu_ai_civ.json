@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "1.53",
     "base_expediting_fee": "2301"
   },
-  "mass": 48143.0,
+  "mass": 45243.0,
   "metrics": {
     "x": 12.0,
     "y": 16.0,
@@ -94,6 +94,11 @@
       "name": "hardpoint_radar",
       "ref": null,
       "key": "RADR_GRNP_S01_Ecouter"
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": "67de5f34-f9db-4615-aea0-b60921909c74",
+      "key": null
     },
     {
       "name": "hardpoint_seat_access",
@@ -202,12 +207,12 @@
     },
     {
       "name": "hardpoint_quantum_drive",
-      "ref": null,
-      "key": "QDRV_TARS_S01_Expedition_SCItem",
+      "ref": "4702547f-fa0f-4f6c-b2ed-9782ee9f518b",
+      "key": null,
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": null,
+          "ref": "c8797bce-6220-4d1e-bc6d-23da4a366a6d",
           "key": null
         }
       ]

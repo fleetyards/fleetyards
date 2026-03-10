@@ -7,13 +7,13 @@
   "name": "Crusader A2 Hercules Starlifter",
   "description": "Manufacturer: Crusader Industries\\nFocus: Medium Freight / Gunship\\n\\nThe A2 gunship has been used to devastating effect in airborne assaults, search and rescue operations, and landing initiatives. With more than double the firepower of the M2, and a custom bomb bay capable of delivering a staggering payload, the A2 caters to anyone hauling massive amounts of cargo through potentially unfriendly skies.",
   "career": "Combat",
-  "role": "Bomber",
+  "role": "Heavy Bomber",
   "insurance": {
     "base_wait_time_minutes": "39.24",
     "mandatory_wait_time_minutes": "13.08",
     "base_expediting_fee": "20200"
   },
-  "mass": 3139240.06,
+  "mass": 2339240.06,
   "metrics": {
     "x": 94.0,
     "y": 70.0,
@@ -138,17 +138,12 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S03_C_Explorer"
+          "key": "JDRV_TARS_S03_Exodus_SCItem"
         }
       ]
     },
     {
-      "name": "hardpoint_quantum_fuel_l",
-      "ref": null,
-      "key": "QTNK_CRUS_Starlifter"
-    },
-    {
-      "name": "hardpoint_quantum_fuel_r",
+      "name": "hardpoint_quantum_fuel",
       "ref": null,
       "key": "QTNK_CRUS_Starlifter"
     },
@@ -442,9 +437,7 @@
       "name": "hardpoint_bridge_remote_turret_seat",
       "ref": null,
       "key": "CRUS_Starlifter_SCItem_Turret_Seat_Bridge",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_bridge_remote_turret_seat_access",
@@ -491,9 +484,7 @@
       "name": "hardpoint_forward_left_remote_turret_seat",
       "ref": null,
       "key": "CRUS_Starlifter_SCItem_Turret_Seat_Left",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_forward_left_remote_turret_seat_access",
@@ -528,9 +519,7 @@
       "name": "hardpoint_forward_right_remote_turret_seat",
       "ref": null,
       "key": "CRUS_Starlifter_SCItem_Turret_Seat_Right",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_forward_right_remote_turret_seat_access",
@@ -565,9 +554,7 @@
       "name": "hardpoint_rear_left_remote_turret_seat",
       "ref": null,
       "key": "CRUS_Starlifter_SCItem_Turret_Seat_Left",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_rear_left_remote_turret_seat_access",
@@ -614,9 +601,7 @@
       "name": "hardpoint_rear_right_remote_turret_seat",
       "ref": null,
       "key": "CRUS_Starlifter_SCItem_Turret_Seat_Right",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_rear_right_remote_turret_seat_access",
@@ -688,11 +673,6 @@
       "name": "hardpoint_front_ramp",
       "ref": null,
       "key": "Door_Ship_Exterior_CRUS_Starlifter_Front_Ramp"
-    },
-    {
-      "name": "hardpoint_Elevator_Exterior_Door",
-      "ref": null,
-      "key": "Door_Ship_Exterior_CRUS_Starlifter_Elevator_Door"
     },
     {
       "name": "hardpoint_controller_missile",
@@ -817,12 +797,171 @@
     {
       "name": "hardpoint_bombrack_left",
       "ref": "f5947322-f3aa-4a79-b2d2-5d29a342699b",
-      "key": null
+      "key": null,
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_05_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_06_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_07_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_08_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_09_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_10_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_11_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_12_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_13_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_14_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_15_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_16_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_17_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_18_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_19_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_20_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_21_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_22_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_23_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_24_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_25_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_26_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_27_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_28_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_29_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_30_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        }
+      ]
     },
     {
       "name": "hardpoint_bombrack_right",
       "ref": "4d81cb3e-3b87-436e-a036-45bee557b4bf",
-      "key": null
+      "key": null,
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        }
+      ]
     },
     {
       "name": "hardpoint_bomb_console",

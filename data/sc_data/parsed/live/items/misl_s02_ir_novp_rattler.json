@@ -22,57 +22,57 @@
     {
       "name": "cluster1",
       "min_size": "0",
-      "max_size": "1",
+      "max_size": "0",
       "types": [
-
+        "Missile"
       ]
     },
     {
       "name": "cluster2",
       "min_size": "0",
-      "max_size": "1",
+      "max_size": "0",
       "types": [
-
+        "Missile"
       ]
     },
     {
       "name": "cluster3",
       "min_size": "0",
-      "max_size": "1",
+      "max_size": "0",
       "types": [
-
+        "Missile"
       ]
     },
     {
       "name": "cluster4",
       "min_size": "0",
-      "max_size": "1",
+      "max_size": "0",
       "types": [
-
+        "Missile"
       ]
     },
     {
       "name": "cluster5",
       "min_size": "0",
-      "max_size": "1",
+      "max_size": "0",
       "types": [
-
+        "Missile"
       ]
     },
     {
       "name": "cluster6",
       "min_size": "0",
-      "max_size": "1",
+      "max_size": "0",
       "types": [
-
+        "Missile"
       ]
     },
     {
       "name": "cluster7",
       "min_size": "0",
-      "max_size": "1",
+      "max_size": "0",
       "types": [
-
+        "Missile"
       ]
     }
   ],
@@ -81,60 +81,46 @@
       "name": "cluster1",
       "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "cluster2",
       "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "cluster3",
       "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "cluster4",
       "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "cluster5",
       "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "cluster6",
       "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "cluster7",
       "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     }
   ],
   "durability": {
-    "health": 15.0
+    "health": 25.0
   }
 }

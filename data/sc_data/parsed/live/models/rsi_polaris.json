@@ -6,14 +6,14 @@
   "min_crew": "12",
   "name": "RSI Polaris",
   "description": "Manufacturer: Roberts Space Industries\\nFocus: Corvette\\n\\nThe Polaris is a nimble corvette-class capital ship that packs a powerful punch with a full armament of turrets and torpedoes. Intended for use as both a naval patrol ship and to serve as the flagship of militia operations, Polaris has the capacity to perform search and rescue operations, light strike missions and general security patrols. The Polaris includes the facilities to repair, rearm and refuel a single fighter, light bomber or support ship.",
-  "career": "Militia / Patrol",
-  "role": "Capital Ship",
+  "career": "Combat",
+  "role": "Corvette",
   "insurance": {
     "base_wait_time_minutes": "75.83",
     "mandatory_wait_time_minutes": "18.96",
     "base_expediting_fee": "44030"
   },
-  "mass": 11000000.0,
+  "mass": 10427000.0,
   "metrics": {
     "x": 87.0,
     "y": 181.0,
@@ -79,9 +79,7 @@
       "name": "hardpoint_seat_pilot",
       "ref": null,
       "key": "RSI_Polaris_Pilot_SCItem_SeatDashboard",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_captain",
@@ -506,6 +504,11 @@
           "name": "missile_07_attach",
           "ref": null,
           "key": "MISL_S10_IR_BEHR_Torpedo"
+        },
+        {
+          "name": "hardpoint_inner_tube",
+          "ref": null,
+          "key": "RSI_Polaris_Torpedo_Tube_Inner_Geo_L"
         }
       ]
     },
@@ -548,6 +551,11 @@
           "name": "missile_07_attach",
           "ref": null,
           "key": "MISL_S10_IR_BEHR_Torpedo"
+        },
+        {
+          "name": "hardpoint_inner_tube",
+          "ref": null,
+          "key": "RSI_Polaris_Torpedo_Tube_Inner_Geo_L"
         }
       ]
     },
@@ -590,6 +598,11 @@
           "name": "missile_07_attach",
           "ref": null,
           "key": "MISL_S10_IR_BEHR_Torpedo"
+        },
+        {
+          "name": "hardpoint_inner_tube",
+          "ref": null,
+          "key": "RSI_Polaris_Torpedo_Tube_Inner_Geo_R"
         }
       ]
     },
@@ -632,6 +645,11 @@
           "name": "missile_07_attach",
           "ref": null,
           "key": "MISL_S10_IR_BEHR_Torpedo"
+        },
+        {
+          "name": "hardpoint_inner_tube",
+          "ref": null,
+          "key": "RSI_Polaris_Torpedo_Tube_Inner_Geo_R"
         }
       ]
     },
@@ -642,16 +660,14 @@
     },
     {
       "name": "hardpoint_controller_torpedo_missile",
-      "ref": null,
-      "key": "Controller_Missile"
+      "ref": "bf974a5c-3c43-4b37-b511-3463db2e612f",
+      "key": null
     },
     {
       "name": "hardpoint_seat_torpedo_console",
       "ref": null,
       "key": "RSI_Polaris_Torpedo_Console",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_controller_turretseatleft_missile",
@@ -672,6 +688,11 @@
       "name": "hardpoint_controller_turretseatright_weapon",
       "ref": null,
       "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_controller_turretseatright_missile",
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
+      "key": null
     },
     {
       "name": "hardpoint_seat_turretseatright",
@@ -815,7 +836,7 @@
         {
           "name": "turret_upper_left",
           "ref": null,
-          "key": "Mount_Gimbal_S3",
+          "key": "Mount_Gimbal_S3_Polaris",
           "loadout": [
             {
               "name": "hardpoint_class_2",
@@ -827,7 +848,7 @@
         {
           "name": "turret_upper_right",
           "ref": null,
-          "key": "Mount_Gimbal_S3",
+          "key": "Mount_Gimbal_S3_Polaris",
           "loadout": [
             {
               "name": "hardpoint_class_2",
@@ -839,7 +860,7 @@
         {
           "name": "turret_lower_left",
           "ref": null,
-          "key": "Mount_Gimbal_S3",
+          "key": "Mount_Gimbal_S3_Polaris",
           "loadout": [
             {
               "name": "hardpoint_class_2",
@@ -851,7 +872,7 @@
         {
           "name": "turret_lower_right",
           "ref": null,
-          "key": "Mount_Gimbal_S3",
+          "key": "Mount_Gimbal_S3_Polaris",
           "loadout": [
             {
               "name": "hardpoint_class_2",
@@ -870,7 +891,7 @@
         {
           "name": "turret_upper_left",
           "ref": null,
-          "key": "Mount_Gimbal_S3",
+          "key": "Mount_Gimbal_S3_Polaris",
           "loadout": [
             {
               "name": "hardpoint_class_2",
@@ -882,7 +903,7 @@
         {
           "name": "turret_upper_right",
           "ref": null,
-          "key": "Mount_Gimbal_S3",
+          "key": "Mount_Gimbal_S3_Polaris",
           "loadout": [
             {
               "name": "hardpoint_class_2",
@@ -894,7 +915,7 @@
         {
           "name": "turret_lower_left",
           "ref": null,
-          "key": "Mount_Gimbal_S3",
+          "key": "Mount_Gimbal_S3_Polaris",
           "loadout": [
             {
               "name": "hardpoint_class_2",
@@ -906,7 +927,7 @@
         {
           "name": "turret_lower_right",
           "ref": null,
-          "key": "Mount_Gimbal_S3",
+          "key": "Mount_Gimbal_S3_Polaris",
           "loadout": [
             {
               "name": "hardpoint_class_2",
@@ -925,7 +946,7 @@
         {
           "name": "hardpoint_weapon_left_upper",
           "ref": null,
-          "key": "Mount_Gimbal_S4",
+          "key": "Mount_Gimbal_S4_Polaris",
           "loadout": [
             {
               "name": "hardpoint_class_2",
@@ -937,7 +958,7 @@
         {
           "name": "hardpoint_weapon_right_upper",
           "ref": null,
-          "key": "Mount_Gimbal_S4",
+          "key": "Mount_Gimbal_S4_Polaris",
           "loadout": [
             {
               "name": "hardpoint_class_2",
@@ -949,7 +970,7 @@
         {
           "name": "hardpoint_weapon_left_lower",
           "ref": null,
-          "key": "Mount_Gimbal_S4",
+          "key": "Mount_Gimbal_S4_Polaris",
           "loadout": [
             {
               "name": "hardpoint_class_2",
@@ -961,7 +982,7 @@
         {
           "name": "hardpoint_weapon_right_lower",
           "ref": null,
-          "key": "Mount_Gimbal_S4",
+          "key": "Mount_Gimbal_S4_Polaris",
           "loadout": [
             {
               "name": "hardpoint_class_2",
@@ -980,7 +1001,7 @@
         {
           "name": "hardpoint_weapon_left_upper",
           "ref": null,
-          "key": "Mount_Gimbal_S4",
+          "key": "Mount_Gimbal_S4_Polaris",
           "loadout": [
             {
               "name": "hardpoint_class_2",
@@ -992,7 +1013,7 @@
         {
           "name": "hardpoint_weapon_right_upper",
           "ref": null,
-          "key": "Mount_Gimbal_S4",
+          "key": "Mount_Gimbal_S4_Polaris",
           "loadout": [
             {
               "name": "hardpoint_class_2",
@@ -1004,7 +1025,7 @@
         {
           "name": "hardpoint_weapon_left_lower",
           "ref": null,
-          "key": "Mount_Gimbal_S4",
+          "key": "Mount_Gimbal_S4_Polaris",
           "loadout": [
             {
               "name": "hardpoint_class_2",
@@ -1016,7 +1037,7 @@
         {
           "name": "hardpoint_weapon_right_lower",
           "ref": null,
-          "key": "Mount_Gimbal_S4",
+          "key": "Mount_Gimbal_S4_Polaris",
           "loadout": [
             {
               "name": "hardpoint_class_2",
@@ -1047,7 +1068,7 @@
         {
           "name": "hardpoint_weapon_right",
           "ref": null,
-          "key": "Mount_Gimbal_S6_Polaris",
+          "key": "Mount_Gimbal_S6_Polaris_Right",
           "loadout": [
             {
               "name": "hardpoint_class_2",
@@ -1062,9 +1083,7 @@
       "name": "hardpoint_seat_copilot",
       "ref": null,
       "key": "RSI_Polaris_CoPilot_SCItem_SeatDashboard",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_door_exterior_airlock_left",
@@ -1109,7 +1128,7 @@
         {
           "name": "hardpoint_Jump_Drive",
           "ref": null,
-          "key": "JDRV_TARS_S03_C_Explorer"
+          "key": "JDRV_TARS_S03_Exodus_SCItem"
         }
       ]
     },
@@ -1175,8 +1194,8 @@
     },
     {
       "name": "hardpoint_life_support",
-      "ref": null,
-      "key": "LFSP_S04_RSI_Polaris"
+      "ref": "748aa523-77af-462e-93bb-4d6a4627f66b",
+      "key": null
     },
     {
       "name": "hardpoint_dummy_power_state",
@@ -1264,26 +1283,6 @@
       "key": "SoftLock_EngineeringScreen_PolarisScaled"
     },
     {
-      "name": "hardpoint_engineeringscreen_2",
-      "ref": null,
-      "key": "SoftLock_EngineeringScreen_PolarisScaled"
-    },
-    {
-      "name": "hardpoint_engineeringscreen_3",
-      "ref": null,
-      "key": "SoftLock_EngineeringScreen_PolarisScaled"
-    },
-    {
-      "name": "hardpoint_engineeringscreen_4",
-      "ref": null,
-      "key": "SoftLock_EngineeringScreen_PolarisScaled"
-    },
-    {
-      "name": "hardpoint_engineeringscreen_5",
-      "ref": null,
-      "key": "SoftLock_EngineeringScreen_PolarisScaled"
-    },
-    {
       "name": "hardpoint_pdc_top_01",
       "ref": null,
       "key": "Turret_PDC_BEHR_A"
@@ -1292,6 +1291,11 @@
       "name": "hardpoint_pdc_wcontroller_top_01",
       "ref": null,
       "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_mcontroller_top_01",
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
+      "key": null
     },
     {
       "name": "hardpoint_pdc_aimodule_top_01",
@@ -1309,6 +1313,11 @@
       "key": "Controller_Weapon_PDC"
     },
     {
+      "name": "hardpoint_pdc_mcontroller_top_02",
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
+      "key": null
+    },
+    {
       "name": "hardpoint_pdc_aimodule_top_02",
       "ref": null,
       "key": "AIModule_Unmanned_PU_PDC"
@@ -1322,6 +1331,11 @@
       "name": "hardpoint_pdc_wcontroller_top_03",
       "ref": null,
       "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_mcontroller_top_03",
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
+      "key": null
     },
     {
       "name": "hardpoint_pdc_aimodule_top_03",
@@ -1339,6 +1353,11 @@
       "key": "Controller_Weapon_PDC"
     },
     {
+      "name": "hardpoint_pdc_mcontroller_bottom_01",
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
+      "key": null
+    },
+    {
       "name": "hardpoint_pdc_aimodule_bottom_01",
       "ref": null,
       "key": "AIModule_Unmanned_PU_PDC"
@@ -1352,6 +1371,11 @@
       "name": "hardpoint_pdc_wcontroller_bottom_02",
       "ref": null,
       "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_mcontroller_bottom_02",
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
+      "key": null
     },
     {
       "name": "hardpoint_pdc_aimodule_bottom_02",
@@ -1369,6 +1393,11 @@
       "key": "Controller_Weapon_PDC"
     },
     {
+      "name": "hardpoint_pdc_mcontroller_bottom_03",
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
+      "key": null
+    },
+    {
       "name": "hardpoint_pdc_aimodule_bottom_03",
       "ref": null,
       "key": "AIModule_Unmanned_PU_PDC"
@@ -1382,6 +1411,11 @@
       "name": "hardpoint_pdc_wcontroller_bottom_04",
       "ref": null,
       "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_mcontroller_bottom_04",
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
+      "key": null
     },
     {
       "name": "hardpoint_pdc_aimodule_bottom_04",

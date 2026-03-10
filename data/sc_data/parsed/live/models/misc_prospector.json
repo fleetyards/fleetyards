@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "3",
     "base_expediting_fee": "3040"
   },
-  "mass": 137396.0,
+  "mass": 122096.0,
   "metrics": {
     "x": 16.5,
     "y": 26.5,
@@ -130,7 +130,7 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S01_C_Explorer"
+          "key": "JDRV_TARS_S01_Explorer_SCItem"
         }
       ]
     },
@@ -302,23 +302,23 @@
     },
     {
       "name": "hardpoint_mining_pod_1",
-      "ref": null,
-      "key": "Cargo_Mining_Pod"
+      "ref": "ca23670c-f690-4027-af9a-a5d6dda74c79",
+      "key": null
     },
     {
       "name": "hardpoint_mining_pod_2",
-      "ref": null,
-      "key": "Cargo_Mining_Pod"
+      "ref": "ca23670c-f690-4027-af9a-a5d6dda74c79",
+      "key": null
     },
     {
       "name": "hardpoint_mining_pod_3",
-      "ref": null,
-      "key": "Cargo_Mining_Pod"
+      "ref": "ca23670c-f690-4027-af9a-a5d6dda74c79",
+      "key": null
     },
     {
       "name": "hardpoint_mining_pod_4",
-      "ref": null,
-      "key": "Cargo_Mining_Pod"
+      "ref": "ca23670c-f690-4027-af9a-a5d6dda74c79",
+      "key": null
     },
     {
       "name": "hardpoint_controller_missile",
@@ -369,6 +369,26 @@
       "name": "hardpoint_lifesupport",
       "ref": null,
       "key": "LFSP_TYDT_S01_ComfortAir"
+    },
+    {
+      "name": "hardpoint_stored_pod_1",
+      "ref": "e4ed9d11-9a8e-4e08-83d4-a877eca31464",
+      "key": null
+    },
+    {
+      "name": "hardpoint_stored_pod_2",
+      "ref": "e4ed9d11-9a8e-4e08-83d4-a877eca31464",
+      "key": null
+    },
+    {
+      "name": "hardpoint_stored_pod_3",
+      "ref": "e4ed9d11-9a8e-4e08-83d4-a877eca31464",
+      "key": null
+    },
+    {
+      "name": "hardpoint_stored_pod_4",
+      "ref": "e4ed9d11-9a8e-4e08-83d4-a877eca31464",
+      "key": null
     }
   ]
 }

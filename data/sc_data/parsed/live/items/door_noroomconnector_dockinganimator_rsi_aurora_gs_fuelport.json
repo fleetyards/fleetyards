@@ -1,0 +1,24 @@
+{
+  "key": "Door_NoRoomConnector_DockingAnimator_RSI_Aurora_GS_FuelPort",
+  "ref": "97a7dd4f-352e-4e9e-8a0c-712b4634a31d",
+  "category": "doors",
+  "type": "DockingAnimator",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 0.0
+  }
+}

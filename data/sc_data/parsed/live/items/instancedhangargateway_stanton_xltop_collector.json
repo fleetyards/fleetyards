@@ -1,0 +1,21 @@
+{
+  "key": "InstancedHangarGateway_Stanton_XLTop_Collector",
+  "ref": "0af1566f-2398-4fb3-ac6c-3793d5d07b14",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": null,
+  "grade": null,
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  }
+}

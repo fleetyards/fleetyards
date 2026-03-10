@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hermes_Purple_Black",
+  "ref": "fc023bee-13a3-439e-a0ea-809fdc9bd9ca",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "c7d6b362-0a91-4829-9d98-c9a8665df463",
+  "name": "Hermes Pulsar Livery",
+  "short_name": null,
+  "description": "Primarily a brilliant purple offset by a vivid orange, the Pulsar livery blends these contrasting colors into an interstellar mix.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

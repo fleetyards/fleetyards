@@ -1,0 +1,63 @@
+{
+  "key": "RSI_Perseus_BallisticCannon_B_S8",
+  "ref": "17417d27-af6d-40fc-af97-ab6db7ab313c",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "8",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": "RSI Medusa Cannon",
+  "short_name": "RSI Medusa Cannon",
+  "description": "Manufacturer: RSI\\nItem Type: Ballistic Cannon\\nSize: 8\\n\\nBuilding on centuries of RSI weapon technology, the Perseus utilizes bespoke size 8 Medusa Cannons that deliver devastating salvos of ballistic fire, capable of starting fights just as easily as ending them. These custom made RSI cannons excel at punishing larger targets at long, making it a formidable battlefield equalizer.",
+  "inventory_consumption": {
+    "micro_scu": 7560000.0,
+    "dimensions": {
+      "x": 1.339803,
+      "y": 11.05504,
+      "z": 2.405685
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "6",
+      "max_size": "6",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "6",
+      "max_size": "6",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "6",
+      "max_size": "6",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "6",
+      "max_size": "6",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 30000.0
+  },
+  "ammunition": {
+    "max_ammo_count": 900.0,
+    "initial_ammo_count": 900.0,
+    "max_restock_count": 3.0
+  }
+}

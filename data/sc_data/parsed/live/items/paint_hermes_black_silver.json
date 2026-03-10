@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hermes_Black_Silver",
+  "ref": "092c9d3a-4fe7-4d86-a131-7aa07a834cb8",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "08bf158a-e460-4577-899d-0638b8870149",
+  "name": "Hermes Tripline Livery",
+  "short_name": null,
+  "description": "Sharp, silver accents cuts through the stark black of the Tripline livery's metallic color scheme.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

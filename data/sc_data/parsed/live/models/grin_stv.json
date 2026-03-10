@@ -7,7 +7,7 @@
   "name": "Greycat STV",
   "description": "Manufacturer: Greycat Industrial\\nFocus: Transport\\n\\nGet ready to have some serious fun on the job with the STV from Greycat. This Sport Terrain Vehicle was built by pros for pros and features blazing speed and convenient built-in storage.",
   "career": "Ground",
-  "role": "Ground",
+  "role": "Passenger",
   "insurance": {
     "base_wait_time_minutes": "0.2",
     "mandatory_wait_time_minutes": "0",
@@ -54,16 +54,6 @@
       "name": "hardpoint_radar",
       "ref": null,
       "key": "RADR_WLOP_S00_Denning"
-    },
-    {
-      "name": "hardpoint_ping",
-      "ref": null,
-      "key": null
-    },
-    {
-      "name": "hardpoint_scanner",
-      "ref": null,
-      "key": null
     },
     {
       "name": "hardpoint_controller_energy",
@@ -173,7 +163,7 @@
     {
       "name": "hardpoint_relay_cockpit",
       "ref": null,
-      "key": "RELAY_2slot"
+      "key": "RELAY_1slot_MRAI_Pulse"
     }
   ]
 }

@@ -2,7 +2,7 @@
   "key": "SoftLock_Terminal_Standard_Refueling_Starfarer_2",
   "ref": "abc7159f-e77d-419c-af0a-f807d5146723",
   "category": "utility",
-  "type": "SeatDashboard",
+  "type": "Display",
   "sub_type": null,
   "size": "1",
   "grade": "1",

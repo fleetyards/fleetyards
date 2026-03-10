@@ -1,0 +1,24 @@
+{
+  "key": "Door_RN_NoRoomConnector_Breachable_OpenClose_IP_AEGS_hab_toilet_door",
+  "ref": "daf0758d-f019-421c-afac-f9bb535500ec",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  }
+}

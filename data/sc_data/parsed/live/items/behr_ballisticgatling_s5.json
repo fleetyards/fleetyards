@@ -57,56 +57,33 @@
       "name": "BAR1",
       "key": "BEHR_BallisticGatling_Barrel_S5",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "MEC",
       "key": "BEHR_BallisticGatling_FiringMechanism_S5",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "POW",
       "key": "BEHR_BallisticGatling_PowerArray_S5",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "VEN",
       "key": "BEHR_BallisticGatling_Ventilation_S5",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     }
   ],
   "durability": {
     "health": 1650.0
   },
   "ammunition": {
-    "max_ammo_count": 1800.0,
-    "initial_ammo_count": 1800.0,
+    "max_ammo_count": 5004.0,
+    "initial_ammo_count": 5004.0,
     "max_restock_count": 3.0
-  },
-  "power_connection": {
-    "power_base": 80.0,
-    "power_draw": 100.0,
-    "time_to_reach_draw_request": 0.0,
-    "safeguard_priority": 20.0,
-    "displayed_in_powered_item_list": 1.0,
-    "is_throttleable": 0.0,
-    "is_overclockable": 0.0,
-    "overclock_threshold_min": 0.0,
-    "overclock_threshold_max": 0.0,
-    "overpower_performance": 0.0,
-    "overclock_performance": 0.0,
-    "power_to_em": 1.75,
-    "decay_rate_of_em": 0.5
   }
 }

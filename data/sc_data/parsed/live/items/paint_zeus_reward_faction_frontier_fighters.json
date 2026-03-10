@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Zeus_Reward_Faction_Frontier_Fighters",
+  "ref": "e66ef17b-0a71-4885-b0ac-fd6025ea0347",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "693ea97a-7870-47e3-b6b7-8863c53a6b8a",
+  "name": "Zeus Frontier Fighters Camo Livery",
+  "short_name": null,
+  "description": "Be ready to battle in the untamed wilds with this green camo livery featuring the logo of the Frontier Fighters vigilante group.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

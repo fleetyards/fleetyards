@@ -1,0 +1,92 @@
+{
+  "key": "Door_RN_RoomConnector_Breachable_OpenReverse_Grin_MDC_Rear_Cargo_Door",
+  "ref": "d4dbb2f7-eb01-4946-8d5c-703110a9ecdc",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "IP_Open",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "ControlPanel"
+      ]
+    },
+    {
+      "name": "hardpoint_cargo_01",
+      "min_size": "1",
+      "max_size": "4",
+      "types": []
+    },
+    {
+      "name": "hardpoint_cargo_02",
+      "min_size": "1",
+      "max_size": "4",
+      "types": []
+    },
+    {
+      "name": "hardpoint_cargo_03",
+      "min_size": "1",
+      "max_size": "4",
+      "types": []
+    },
+    {
+      "name": "hardpoint_cargo_04",
+      "min_size": "1",
+      "max_size": "4",
+      "types": []
+    },
+    {
+      "name": "IP_Open_2",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "ControlPanel"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "IP_Open",
+      "key": "ControlPanel_Screen_DoorControl_Physical_Grin_MXC_ProxyIP",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "IP_Open_2",
+      "key": "ControlPanel_Screen_DoorControl_Physical_Grin_MXC_ProxyIP",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "hardpoint_cargo_01",
+      "key": "Cargo_Slot_Grin_MTC_1Slot",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "hardpoint_cargo_02",
+      "key": "Cargo_Slot_Grin_MTC_1Slot",
+      "ref": null,
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 1000.0
+  }
+}

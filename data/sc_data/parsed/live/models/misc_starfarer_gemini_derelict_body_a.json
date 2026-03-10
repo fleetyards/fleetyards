@@ -80,6 +80,11 @@
       "name": "hardpoint_lifesupport",
       "ref": null,
       "key": "LFSP_TYDT_S03_ComfortAirMax"
+    },
+    {
+      "name": "hardpoint_powerplant_B",
+      "ref": "202db33c-6b87-4210-9392-6d5368bc3436",
+      "key": null
     }
   ]
 }

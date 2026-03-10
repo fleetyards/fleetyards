@@ -1,0 +1,21 @@
+{
+  "key": "Paint_ATLS_Black_Grey_DarkGrey",
+  "ref": "07c8e30c-fa4f-4ac3-ae39-33eae6a50be7",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "12751ec6-d6dd-4c11-93f9-98a86e4f87f1",
+  "name": "ATLS Thunderhead Livery",
+  "short_name": null,
+  "description": "The Thunderhead livery for the ATLS is black with grey stripes across the arms.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Arrow_Green_Black_Grey_cfp",
+  "ref": "7ceb996f-a110-48c4-90b9-6a93741f4cd4",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f8929650-bfbf-4dd5-a7d1-cce28a42704e",
+  "name": "Arrow Citizens for Prosperity Liberation Livery",
+  "short_name": null,
+  "description": "Be a beacon of hope by equipping the Citizens for Prosperity Liberation livery, which features the group's name and symbol atop a green, black, and grey paint job.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

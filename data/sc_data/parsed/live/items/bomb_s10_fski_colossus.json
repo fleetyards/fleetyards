@@ -3,7 +3,7 @@
   "ref": "2b8a744d-c0a0-4f92-b0e6-bf4ae077cc11",
   "category": "weapons",
   "type": "Bomb",
-  "sub_type": null,
+  "sub_type": "Utility",
   "size": "10",
   "grade": "1",
   "manufacturer_ref": "5f81335d-44e6-4104-841e-c5af9df06829",
@@ -19,6 +19,6 @@
     }
   },
   "durability": {
-    "health": 100.0
+    "health": 1000.0
   }
 }

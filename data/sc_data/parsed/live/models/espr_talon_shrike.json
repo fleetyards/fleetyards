@@ -7,13 +7,13 @@
   "name": "Esperia Talon Shrike",
   "description": "Manufacturer: Esperia\\nFocus: Light Fighter\\n\\nThe Talon represents Esperia's continuing effort to preserve historically significant Tevarin ship designs. A maneuverable single-seat combat ship with light armor but powerful, directional \"Phalanx\" shields, the Talon is made to strike first and strike hard before using the shields to cover its escape. The infamous Shrike variant model is armed with additional internal missile racks.",
   "career": "Combat",
-  "role": "Fighter",
+  "role": "Light Fighter",
   "insurance": {
     "base_wait_time_minutes": "11.34",
     "mandatory_wait_time_minutes": "3.78",
     "base_expediting_fee": "7183"
   },
-  "mass": 51352.06,
+  "mass": 46242.06,
   "metrics": {
     "x": 15.0,
     "y": 24.0,
@@ -54,8 +54,8 @@
     },
     {
       "name": "hardpoint_selfdestruct",
-      "ref": null,
-      "key": "VHCL_SelfDestruct_10s"
+      "ref": "27875030-1290-4098-827f-f1a5b67c0615",
+      "key": null
     },
     {
       "name": "hardpoint_controller_door",
@@ -80,12 +80,12 @@
     {
       "name": "hardpoint_cooler_left",
       "ref": null,
-      "key": "COOL_LPLT_S01_FlashFreeze_SCItem"
+      "key": "COOL_TYDT_S01_VaporBlock_SCItem"
     },
     {
       "name": "hardpoint_cooler_right",
       "ref": null,
-      "key": "COOL_LPLT_S01_FlashFreeze_SCItem"
+      "key": "COOL_TYDT_S01_VaporBlock_SCItem"
     },
     {
       "name": "hardpoint_controller_comms",
@@ -100,12 +100,12 @@
     {
       "name": "hardpoint_shield_left",
       "ref": null,
-      "key": "SHLD_BANU_S01_Placeholder_SCItem"
+      "key": "SHLD_ASAS_S01_Shimmer_SCItem"
     },
     {
       "name": "hardpoint_shield_right",
       "ref": null,
-      "key": "SHLD_BANU_S01_Placeholder_SCItem"
+      "key": "SHLD_ASAS_S01_Shimmer_SCItem"
     },
     {
       "name": "hardpoint_armour",
@@ -115,12 +115,12 @@
     {
       "name": "hardpoint_controller_flight",
       "ref": null,
-      "key": "Controller_Flight_ESPR_Talon"
+      "key": "Controller_Flight_ESPR_Talon_Shrike"
     },
     {
       "name": "hardpoint_radar",
       "ref": null,
-      "key": "RADR_GRNP_S01_Ecouter"
+      "key": "RADR_BLTR_S01_Pelerous"
     },
     {
       "name": "hardpoint_controller_scanner",
@@ -155,7 +155,7 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S01_C_Explorer"
+          "key": "JDRV_TARS_S01_Explorer_SCItem"
         }
       ]
     },
@@ -492,7 +492,7 @@
     {
       "name": "hardpoint_scanner",
       "ref": null,
-      "key": "COMP_BEHR_S01_CSR-RP"
+      "key": null
     },
     {
       "name": "hardpoint_controller_missile",

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Moth_blue_grey_green",
+  "ref": "d6646b29-8d14-4e5d-ab42-75123ec2a398",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1769a4cb-d782-4b73-8a9a-6cc5c4f93c7d",
+  "name": "MOTH Tide Pool Livery",
+  "short_name": null,
+  "description": "The colorful Tide Pool livery makes the MOTH blue with grey and green highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

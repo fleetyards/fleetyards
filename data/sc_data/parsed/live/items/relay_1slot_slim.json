@@ -33,12 +33,7 @@
       "name": "$slot_fuse_01",
       "key": null,
       "ref": "8cf8dd1b-756e-496c-a1ae-e88ebbf999f7",
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     }
-  ],
-  "durability": {
-    "health": 300.0
-  }
+  ]
 }

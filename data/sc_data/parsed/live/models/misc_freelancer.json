@@ -7,13 +7,13 @@
   "name": "MISC Freelancer",
   "description": "Manufacturer: MISC\\nFocus: Medium Freight\\n\\nFreelancers are used as long haul merchant ships by major corporations, but they are just as frequently repurposed as dedicated exploration vessels by independent captains who want to operate on the fringes of the galaxy.",
   "career": "Transporter",
-  "role": "Medium Freight",
+  "role": "Light Freight",
   "insurance": {
     "base_wait_time_minutes": "12.99",
     "mandatory_wait_time_minutes": "4.33",
     "base_expediting_fee": "6503"
   },
-  "mass": 231696.0,
+  "mass": 219396.0,
   "metrics": {
     "x": 23.5,
     "y": 38.0,
@@ -183,7 +183,7 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S02_C_Explorer"
+          "key": "JDRV_TARS_S02_Excelsior_SCItem"
         }
       ]
     },
@@ -502,8 +502,8 @@
     },
     {
       "name": "hardpoint_lifesupport",
-      "ref": null,
-      "key": "LFSP_TYDT_S02_ComfortAirPlus"
+      "ref": "c50917d3-f453-4ca6-b753-1c506a6710e0",
+      "key": null
     }
   ]
 }

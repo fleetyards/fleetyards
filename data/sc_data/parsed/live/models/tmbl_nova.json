@@ -27,128 +27,123 @@
     },
     {
       "name": "hardpoint_seat_access_gunner",
-      "ref": null,
-      "key": "TMBL_Nova_SCItem_SeatAccess_Gunner"
+      "ref": "1226848b-1c40-48fb-82a2-53e324e3aff1",
+      "key": null
     },
     {
       "name": "hardpoint_seat_driver",
-      "ref": null,
-      "key": "TMBL_Nova_SCItem_Seat_Driver"
+      "ref": "ff877cb1-b43f-43ee-ba6c-caab24c1a385",
+      "key": null
     },
     {
       "name": "hardpoint_gunner_seat",
-      "ref": null,
-      "key": "TMBL_Nova_SCItem_Seat_Gunner"
+      "ref": "8b254948-49fb-46cb-85d0-c153513a9a5e",
+      "key": null
     },
     {
       "name": "hardpoint_co-pilot_seat",
-      "ref": null,
-      "key": "TMBL_Nova_SCItem_Seat_CoDriver"
+      "ref": "c03b4118-f5fd-4c84-a3ce-035552949906",
+      "key": null
     },
     {
       "name": "hardpoint_controller_wheel",
-      "ref": null,
-      "key": "Controller_Wheel_TMBL_Nova"
+      "ref": "5b34e25e-bf67-44be-9244-a137f2b17190",
+      "key": null
     },
     {
       "name": "hardpoint_controller_comms",
-      "ref": null,
-      "key": "Controller_Comms"
+      "ref": "ae1a186e-0f8c-4deb-8079-bfb54df4a8a7",
+      "key": null
     },
     {
       "name": "hardpoint_controller_door",
-      "ref": null,
-      "key": "Controller_Door"
+      "ref": "4a9ebf31-a405-4b68-9886-b4a47bd1b61d",
+      "key": null
     },
     {
       "name": "hardpoint_radar",
-      "ref": null,
-      "key": "RADR_GRNP_S00_Prevenir"
-    },
-    {
-      "name": "hardpoint_scanner",
-      "ref": null,
+      "ref": "d8a9b395-4438-4995-a797-9d984c7fd4c0",
       "key": null
     },
     {
       "name": "hardpoint_selfdestruct",
-      "ref": null,
-      "key": "VHCL_SelfDestruct_10s"
+      "ref": "e5512d65-5462-4270-8095-212efe3fcf99",
+      "key": null
     },
     {
       "name": "hardpoint_controller_energy",
-      "ref": null,
-      "key": "Controller_Energy"
+      "ref": "61cc7bf5-6666-40f7-8c0a-ee8a8092f51e",
+      "key": null
     },
     {
       "name": "hardpoint_power_plant_01",
-      "ref": null,
-      "key": "POWR_LPLT_S00_Radix_SCItem"
+      "ref": "c46f3fb8-12f8-4c85-b4ac-0850b1e0d17d",
+      "key": null
     },
     {
       "name": "hardpoint_power_plant_02",
-      "ref": null,
-      "key": "POWR_LPLT_S00_Radix_SCItem"
+      "ref": "c46f3fb8-12f8-4c85-b4ac-0850b1e0d17d",
+      "key": null
     },
     {
       "name": "hardpoint_power_plant_03",
-      "ref": null,
-      "key": "POWR_LPLT_S00_Radix_SCItem"
+      "ref": "c46f3fb8-12f8-4c85-b4ac-0850b1e0d17d",
+      "key": null
     },
     {
       "name": "hardpoint_controller_cooler",
-      "ref": null,
-      "key": "Controller_Cooler"
+      "ref": "b935e5d8-dead-47c5-8937-382c3aa11682",
+      "key": null
     },
     {
       "name": "hardpoint_cooler_01",
-      "ref": null,
-      "key": "COOL_JSPN_S00_FrostStarSL_SCItem"
+      "ref": "387da568-31d2-4479-81da-21dd015db668",
+      "key": null
     },
     {
       "name": "hardpoint_cooler_02",
-      "ref": null,
-      "key": "COOL_JSPN_S00_FrostStarSL_SCItem"
+      "ref": "387da568-31d2-4479-81da-21dd015db668",
+      "key": null
     },
     {
       "name": "hardpoint_controller_shield",
-      "ref": null,
-      "key": "Controller_Shield_TMBL_Nova"
+      "ref": "64d5207d-2f70-4686-94ec-6fcb979a96a6",
+      "key": null
     },
     {
       "name": "hardpoint_shield_generator_01",
-      "ref": null,
-      "key": "SHLD_SECO_S00_PIN_SCItem"
+      "ref": "ffede9a8-3c50-4b9e-be0f-9d93e5a26f29",
+      "key": null
     },
     {
       "name": "hardpoint_shield_generator_02",
-      "ref": null,
-      "key": "SHLD_SECO_S00_PIN_SCItem"
+      "ref": "ffede9a8-3c50-4b9e-be0f-9d93e5a26f29",
+      "key": null
     },
     {
       "name": "hardpoint_shield_generator_03",
-      "ref": null,
-      "key": "SHLD_SECO_S00_PIN_SCItem"
+      "ref": "ffede9a8-3c50-4b9e-be0f-9d93e5a26f29",
+      "key": null
     },
     {
       "name": "hardpoint_armor",
-      "ref": null,
-      "key": "ARMR_TMBL_Nova"
+      "ref": "95fd9f33-938d-40dd-a8ce-31aa231822b2",
+      "key": null
     },
     {
       "name": "hardpoint_controller_weapon_primary",
-      "ref": null,
-      "key": "Controller_Weapon_Vehicle"
+      "ref": "2375d6b8-ac87-4885-bedf-8285ddc39777",
+      "key": null
     },
     {
       "name": "hardpoint_controller_weapon_secondary",
-      "ref": null,
-      "key": "Controller_Weapon_Vehicle"
+      "ref": "2375d6b8-ac87-4885-bedf-8285ddc39777",
+      "key": null
     },
     {
       "name": "hardpoint_primary_turret",
-      "ref": null,
-      "key": "TMBL_Nova_Main_Turret",
+      "ref": "b13be22c-06a1-477c-b550-1139a0b51607",
+      "key": null,
       "loadout": [
         {
           "name": "hardpoint_primary_weapon",
@@ -178,134 +173,134 @@
         {
           "name": "hardpoint_missile_launcher",
           "ref": null,
-          "key": "MRCK_S06_TMBL_Nova_Custom",
+          "key": "GMRCK_S06_TMBL_Nova_Custom",
           "loadout": [
             {
               "name": "hardpoint_s1_missile_101",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s1_missile_102",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s1_missile_103",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s1_missile_104",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s1_missile_201",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s1_missile_202",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s1_missile_203",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s1_missile_204",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s1_missile_301",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s1_missile_302",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s1_missile_303",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s1_missile_304",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             }
           ]
         },
         {
           "name": "hardpoint_missile_launcher_2",
           "ref": null,
-          "key": "MRCK_S06_TMBL_Nova_Custom",
+          "key": "GMRCK_S06_TMBL_Nova_Custom",
           "loadout": [
             {
               "name": "hardpoint_s1_missile_101",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s1_missile_102",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s1_missile_103",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s1_missile_104",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s1_missile_201",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s1_missile_202",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s1_missile_203",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s1_missile_204",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s1_missile_301",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s1_missile_302",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s1_missile_303",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s1_missile_304",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             }
           ]
         }
@@ -313,8 +308,8 @@
     },
     {
       "name": "hardpoint_secondary_turret",
-      "ref": null,
-      "key": "TMBL_Nova_Remote_Gun_Turret",
+      "ref": "0e72c7ce-f16a-4150-ba17-f01fe96df6bb",
+      "key": null,
       "loadout": [
         {
           "name": "hardpoint_left_weapon",
@@ -330,28 +325,28 @@
     },
     {
       "name": "hardpoint_rear_door",
-      "ref": null,
-      "key": "Door_RN_RoomConnector_Breachable_OpenReverse_IP_Nova"
+      "ref": "43938b9b-a393-41e6-aa66-a5e6cef60297",
+      "key": null
     },
     {
       "name": "hardpoint_seat_access",
-      "ref": null,
-      "key": "TMBL_Nova_SCItem_SeatAccess"
+      "ref": "0f9a0e4d-3404-4b13-86a4-48b211b96d9a",
+      "key": null
     },
     {
       "name": "hardpoint_weapon_rack",
-      "ref": null,
-      "key": "Weapon_Rack_TMBL_Nova_4_Slot"
+      "ref": "dd6102d5-65cb-4a18-a13d-cb06a781eb71",
+      "key": null
     },
     {
       "name": "hardpoint_controller_capacitor_assignment",
-      "ref": null,
-      "key": "Controller_CapacitorAssignment"
+      "ref": "0219b443-6f28-4aa2-bcc3-cfbff843729d",
+      "key": null
     },
     {
       "name": "hardpoint_controller_missile",
-      "ref": null,
-      "key": "Controller_Missile"
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
+      "key": null
     },
     {
       "name": "hardpoint_cockpit_flair",
@@ -365,8 +360,13 @@
     },
     {
       "name": "hardpoint_relay_cockpit",
-      "ref": null,
-      "key": "RELAY_3slot"
+      "ref": "d046b6a3-84ba-4a9b-bc51-952ecb40224d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": "b9c57c11-2e49-4098-9475-671b7788e318",
+      "key": null
     }
   ]
 }

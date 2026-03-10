@@ -23,17 +23,13 @@
       "name": "Lock1",
       "min_size": "0",
       "max_size": "4",
-      "types": [
-
-      ]
+      "types": []
     },
     {
       "name": "Lock2",
       "min_size": "0",
       "max_size": "4",
-      "types": [
-
-      ]
+      "types": []
     }
   ],
   "default_loadout": [
@@ -41,17 +37,13 @@
       "name": "Lock1",
       "key": "Door_Deadbolt_Cuttable",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "Lock2",
       "key": "Door_Deadbolt_Cuttable",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     }
   ],
   "power_connection": {

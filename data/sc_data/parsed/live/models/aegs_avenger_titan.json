@@ -7,13 +7,13 @@
   "name": "Aegis Avenger Titan",
   "description": "Manufacturer: Aegis Dynamics\\nFocus: Light Freight \\n\\nLacking the Prisoner Cells of the Stalker or the EMP Generator of the Warlock, the Titan’s hold is free to carry cargo. Couple that available space with the Avenger’s tried and true combat abilities and you’ve got a light cargo hauler that’s more than capable of handling itself in a fight.",
   "career": "Transporter",
-  "role": "Courier",
+  "role": "Light Freight",
   "insurance": {
     "base_wait_time_minutes": "4.05",
     "mandatory_wait_time_minutes": "1.35",
     "base_expediting_fee": "2343"
   },
-  "mass": 51362.68,
+  "mass": 48986.68,
   "metrics": {
     "x": 15.0,
     "y": 20.0,
@@ -187,8 +187,8 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": null,
-          "key": "JDRV_TARS_S01_C_Explorer"
+          "ref": "c8797bce-6220-4d1e-bc6d-23da4a366a6d",
+          "key": null
         }
       ]
     },

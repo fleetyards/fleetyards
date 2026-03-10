@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Razor_Racing_Red_Blue_Blue",
+  "ref": "9a4947ae-c956-4894-8b86-b4bc4c664e54",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6b2c6aac-c1d1-42a8-a357-ced5bb1e25bf",
+  "name": "Razor Racing Livery",
+  "short_name": null,
+  "description": "Pull away from the pack with this daring Mirai Racing livery. Combining coral reds with an undercurrent of teal, you're guaranteed to grab the attention of those you overtake when racing in these bold colors.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

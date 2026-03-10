@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Meteor_Black_Teal_Black",
+  "ref": "e2381617-cc1b-47af-8dda-248fa335abba",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "9a74ff05-301d-4ca4-8907-60f16239fc00",
+  "name": "Meteor Skylark Livery",
+  "short_name": null,
+  "description": "The Skylark livery for the Meteor is primarily black and teal.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

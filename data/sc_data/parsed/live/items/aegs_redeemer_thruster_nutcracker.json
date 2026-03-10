@@ -31,9 +31,7 @@
       "name": "hardpoint_thruster_mav_wing_top",
       "min_size": "0",
       "max_size": "0",
-      "types": [
-
-      ]
+      "types": []
     }
   ],
   "durability": {

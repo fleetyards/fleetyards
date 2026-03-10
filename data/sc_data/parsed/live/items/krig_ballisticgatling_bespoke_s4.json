@@ -1,0 +1,63 @@
+{
+  "key": "Krig_BallisticGatling_Bespoke_S4",
+  "ref": "ea0217e9-cdbe-48d2-a192-1837c52130b9",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "7b5d1ed3-11e7-49e6-9ed3-9d0cb52a3dc2",
+  "name": "Relentless L-21 Gatling",
+  "short_name": "Relentless",
+  "description": "Manufacturer: Kruger Intergalactic\\nItem Type: Ballistic Gatling\\nSize: 4\\n\\nEnemies will regret getting within range of the L-21 Wolf and its bespoke Relentless L-21 gatling. Kruger's expert engineering allows this rotary cannon to fire rounds at a head spinning speed with little worry of a misfire.",
+  "inventory_consumption": {
+    "micro_scu": 7560000.0,
+    "dimensions": {
+      "x": 1.339803,
+      "y": 11.05504,
+      "z": 2.405685
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 2000.0
+  },
+  "ammunition": {
+    "max_ammo_count": 4200.0,
+    "initial_ammo_count": 4200.0,
+    "max_restock_count": 3.0
+  }
+}

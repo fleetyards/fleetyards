@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Pisces_Reward_Faction_Xeno_Threat",
+  "ref": "0864216f-671a-412c-942a-a46efacec59f",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "e332abed-46a1-4b9a-893b-fde4ba1ba9da",
+  "name": "Pisces XenoThreat Purge Livery",
+  "short_name": null,
+  "description": "Let Humanity know you won't bow down to alien invaders with this XenoThreat livery featuring a muted teal with bright red accents.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "key": "Mining_Modules_VehicleMod_ROCds",
+  "ref": "e17408e8-e1ad-4402-9cd9-3e05425a291a",
+  "category": "utility",
+  "type": "MiningModifier",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d1a1bf03-89d9-4eae-ac34-11eeb8e45d8f",
+  "name": "ROC Module",
+  "short_name": null,
+  "description": "Manufacturer: Greycat Industrial\\nItem Type: Mining Module (Passive)\\n\\nThis bespoke mining module was designed specifically for use with the ROC.",
+  "inventory_consumption": {
+    "micro_scu": 10644.0,
+    "dimensions": {
+      "x": 0.2113915,
+      "y": 0.3365072,
+      "z": 0.187045
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

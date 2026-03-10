@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Paladin_blue_black_black",
+  "ref": "cf22e114-9a98-474c-8da7-41eb3de33441",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2b914f69-667a-420c-9b4a-915b12ab710f",
+  "name": "Paladin Downstream Livery",
+  "short_name": null,
+  "description": "The Downstream livery features subtle shades of blue and black to help the Paladin discreetly reach drop zones.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

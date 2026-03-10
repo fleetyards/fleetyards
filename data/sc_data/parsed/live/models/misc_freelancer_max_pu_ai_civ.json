@@ -7,13 +7,13 @@
   "name": "MISC Freelancer MAX",
   "description": "Manufacturer: MISC\\nFocus: Medium Freight\\n\\nFreelancer variant with additional cargo capacity at the expense of weapons. The Freelancer MAX variant sacrifices weaponry for an increased cargo capacity making it ideal for equipment or raw materials transport.",
   "career": "Transporter",
-  "role": "Heavy Freight",
+  "role": "Medium Freight",
   "insurance": {
     "base_wait_time_minutes": "16.46",
     "mandatory_wait_time_minutes": "5.49",
     "base_expediting_fee": "8028"
   },
-  "mass": 231696.0,
+  "mass": 219396.0,
   "metrics": {
     "x": 34.0,
     "y": 38.0,
@@ -183,7 +183,7 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S02_C_Explorer"
+          "key": "JDRV_TARS_S02_Excelsior_SCItem"
         }
       ]
     },

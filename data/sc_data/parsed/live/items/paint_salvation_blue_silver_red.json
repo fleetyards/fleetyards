@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Salvation_blue_silver_red",
+  "ref": "2ebd6bbe-b670-4194-bd0a-60c61a4bbe59",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "e9a47ff5-6ac5-4d0c-94b2-4b723358a243",
+  "name": "Salvation Disco Livery",
+  "short_name": null,
+  "description": "Equip the ship livery used by ace pilot Disco in the classic children's cartoon Rory Nova. While it turns the Salvation metallic dark blue, black, and red, whether you turn into the 'dynamic, instinctive spacecraft operator' that inspired the livery's name is up to you.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

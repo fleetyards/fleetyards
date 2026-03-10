@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "2.17",
     "base_expediting_fee": "3710"
   },
-  "mass": 295000.0,
+  "mass": 276600.0,
   "metrics": {
     "x": 35.0,
     "y": 46.0,
@@ -33,6 +33,11 @@
     {
       "name": "hardpoint_self_destruct",
       "ref": "55f62c57-b7ea-4ed7-b72e-2e99fc6c5486",
+      "key": null
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": "2d63eb1f-f5f5-434f-8488-2ab6805848cc",
       "key": null
     },
     {
@@ -114,25 +119,19 @@
       "name": "hardpoint_seat_pilot",
       "ref": "9b5673db-661f-4a6f-98fd-e61e47772a92",
       "key": null,
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_copilot",
       "ref": "798fcb2e-3785-4ec4-a37f-bff388a24747",
       "key": null,
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_gunner",
       "ref": "d5623c7c-7f1e-464e-aa15-3a7b37cf2e05",
       "key": null,
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_computer",
@@ -321,7 +320,7 @@
       "loadout": [
         {
           "name": "hardpoint_Jump_Drive",
-          "ref": "649c2450-0194-4a4d-99f3-38c16aacad53",
+          "ref": "14cbe476-4050-4af5-8635-178519722f4b",
           "key": null
         }
       ]

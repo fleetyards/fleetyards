@@ -1,0 +1,21 @@
+{
+  "key": "Engineering_Buff_Modifier_RSI_Scorpius",
+  "ref": "a626d645-a454-46a5-892a-df0f948c1bf4",
+  "category": "utility",
+  "type": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 340.0,
+    "dimensions": {
+      "x": 0.0549,
+      "y": 0.0424,
+      "z": 0.133
+    }
+  }
+}

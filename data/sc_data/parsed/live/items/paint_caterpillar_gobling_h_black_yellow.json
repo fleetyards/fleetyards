@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Caterpillar_GoblinG_H_Black_Yellow",
+  "ref": "242d261c-f9c9-46b3-a202-01c33c9d16e6",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "56128f11-247c-4aa8-83da-dfe27a4c0129",
+  "name": "Caterpillar Hurston Livery",
+  "short_name": null,
+  "description": "The Hurston livery for the Caterpillar features the company's logo atop a grey base paint with yellow highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Elevator_Idris_Bridge_Door",
+  "ref": "1095c45e-f2ed-42c8-8775-8f52da85c421",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

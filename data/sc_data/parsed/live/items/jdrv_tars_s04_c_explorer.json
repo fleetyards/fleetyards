@@ -3,7 +3,7 @@
   "ref": "ea607138-635a-4d31-9be6-9ec651b8260c",
   "category": "jumpdrive",
   "type": "JumpDrive",
-  "sub_type": "JumpDrive",
+  "sub_type": null,
   "size": "4",
   "grade": "3",
   "manufacturer_ref": "2b25a2dd-47ea-4ab0-8711-03d34be214b1",
@@ -19,7 +19,7 @@
     }
   },
   "durability": {
-    "health": 1200.0
+    "health": 2700.0
   },
   "power_connection": {
     "power_base": 80.0,

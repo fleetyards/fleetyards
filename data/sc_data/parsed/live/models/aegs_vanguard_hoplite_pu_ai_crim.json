@@ -7,13 +7,13 @@
   "name": "Aegis Vanguard Hoplite",
   "description": "Manufacturer: Aegis Dynamics\\nFocus: Dropship \\n\\nThe Vanguard Hoplite is a cross between the winning Vanguard deep space fighter and a dedicated boarding ship. Adapted from proven assault ship designs, the Hoplite is the perfect tool for inserting an armored strike team with enough firepower to get them out again.",
   "career": "Combat",
-  "role": "Drop Ship",
+  "role": "Dropship",
   "insurance": {
     "base_wait_time_minutes": "13.25",
     "mandatory_wait_time_minutes": "4.42",
     "base_expediting_fee": "6603"
   },
-  "mass": 234870.0,
+  "mass": 217870.0,
   "metrics": {
     "x": 40.0,
     "y": 48.0,
@@ -117,8 +117,8 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": null,
-          "key": "JDRV_TARS_S02_C_Explorer"
+          "ref": "14cbe476-4050-4af5-8635-178519722f4b",
+          "key": null
         }
       ]
     },
@@ -298,7 +298,7 @@
     {
       "name": "hardpoint_baydoor",
       "ref": null,
-      "key": "AEGS_Vanguard_Harbinger_Baydoor"
+      "key": "AEGS_Vanguard_Hoplite_Baydoor"
     },
     {
       "name": "hardpoint_weapon_missilerack_left_inner",

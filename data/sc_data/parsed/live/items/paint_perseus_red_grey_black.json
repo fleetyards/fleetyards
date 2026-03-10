@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Perseus_Red_Grey_Black",
+  "ref": "44aacee2-1c5d-40bd-bf73-b11c95e047b9",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1008e124-a6d7-4176-9e69-a00ec4fd5d51",
+  "name": "Perseus Incite Livery",
+  "short_name": null,
+  "description": "Proclaim the presence of the Perseus with the Incite livery, featuring a bold red front and grey and black rear.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

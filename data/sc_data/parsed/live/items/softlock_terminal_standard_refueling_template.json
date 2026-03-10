@@ -2,7 +2,7 @@
   "key": "SoftLock_Terminal_Standard_Refueling_TEMPLATE",
   "ref": "f962fd15-7968-4c82-843a-b29ed7983b8e",
   "category": "utility",
-  "type": "SeatDashboard",
+  "type": "Display",
   "sub_type": null,
   "size": "1",
   "grade": "1",

@@ -7,13 +7,13 @@
   "name": "Anvil Valkyrie",
   "description": "Manufacturer: Anvil Aerospace \\nFocus: Military / Industrial\\n\\nThe Valkyrie ups the ante on troop transport. Designed to carry up to twenty soldiers, as well as vehicles, to the most hostile locations, this conflict-ready mil-spec craft is a formidable force, both offensively and defensively. Built with military and private defense contractors in mind, the Valkyrie is one of the most efficient and effective personnel transports in its class.",
   "career": "Combat",
-  "role": "Drop Ship",
+  "role": "Dropship",
   "insurance": {
-    "base_wait_time_minutes": "16.875",
-    "mandatory_wait_time_minutes": "5.625",
-    "base_expediting_fee": "8440"
+    "base_wait_time_minutes": "19.82",
+    "mandatory_wait_time_minutes": "4.98",
+    "base_expediting_fee": "11910"
   },
-  "mass": 621046.06,
+  "mass": 597246.06,
   "metrics": {
     "x": 38.0,
     "y": 48.0,
@@ -86,21 +86,6 @@
       "key": "HTNK_ANVL_Valkyrie"
     },
     {
-      "name": "hardpoint_fueltank2",
-      "ref": null,
-      "key": "HTNK_ANVL_Valkyrie"
-    },
-    {
-      "name": "hardpoint_fueltank3",
-      "ref": null,
-      "key": "HTNK_ANVL_Valkyrie"
-    },
-    {
-      "name": "hardpoint_fueltank4",
-      "ref": null,
-      "key": "HTNK_ANVL_Valkyrie"
-    },
-    {
       "name": "hardpoint_fuel_intake_left",
       "ref": null,
       "key": "INTK_ANVL_Valkyrie"
@@ -132,8 +117,8 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": null,
-          "key": "JDRV_TARS_S02_C_Explorer"
+          "ref": "14cbe476-4050-4af5-8635-178519722f4b",
+          "key": null
         }
       ]
     },
@@ -418,9 +403,7 @@
       "name": "hardpoint_turret_console_left",
       "ref": null,
       "key": "ANVL_Valkyrie_Turret_Console_Left",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_turret_console_left_access",
@@ -431,9 +414,7 @@
       "name": "hardpoint_turret_console_right",
       "ref": null,
       "key": "ANVL_Valkyrie_Turret_Console_Right",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_turret_console_right_access",
@@ -442,41 +423,13 @@
     },
     {
       "name": "hardpoint_turret_door_right",
-      "ref": "8bb0e200-c486-44df-b944-84bf2fc755d3",
-      "key": null,
-      "loadout": [
-        {
-          "name": "hardpoint_turret_weapon",
-          "ref": "80ae6d83-7d8a-4357-b109-a0154418bae5",
-          "key": null,
-          "loadout": [
-            {
-              "name": "hardpoint_class_2",
-              "ref": "81645f3b-2c01-4fc4-aa9f-ed860b976058",
-              "key": null
-            }
-          ]
-        }
-      ]
+      "ref": "6dcd3145-0fe4-4082-bf11-970d78d793b5",
+      "key": null
     },
     {
       "name": "hardpoint_turret_door_left",
-      "ref": "4e806301-380d-41c1-8147-27ec38f460b3",
-      "key": null,
-      "loadout": [
-        {
-          "name": "hardpoint_turret_weapon",
-          "ref": "80ae6d83-7d8a-4357-b109-a0154418bae5",
-          "key": null,
-          "loadout": [
-            {
-              "name": "hardpoint_class_2",
-              "ref": "81645f3b-2c01-4fc4-aa9f-ed860b976058",
-              "key": null
-            }
-          ]
-        }
-      ]
+      "ref": "1fc0f4a0-efb6-4562-90d4-df9661c74fea",
+      "key": null
     },
     {
       "name": "hardpoint_CML1",

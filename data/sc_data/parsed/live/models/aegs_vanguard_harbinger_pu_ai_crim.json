@@ -7,13 +7,13 @@
   "name": "Aegis Vanguard Harbinger",
   "description": "Manufacturer: Aegis Dynamics\\nFocus: Bomber\\n\\nThe Vanguard Harbinger is Earth's standard fighter/bomber, converting the standard Warden's escape pod into a potent bomb bay. The extended range of the Vanguard and the relatively small profile mean that it can go where carrier-based ships or larger strategic bombers don't, strike hard, and then make it back to base.",
   "career": "Combat",
-  "role": "Heavy Fighter",
+  "role": "Heavy Fighter / Bomber",
   "insurance": {
     "base_wait_time_minutes": "16.39",
     "mandatory_wait_time_minutes": "5.46",
     "base_expediting_fee": "8383"
   },
-  "mass": 236604.0,
+  "mass": 230404.0,
   "metrics": {
     "x": 40.0,
     "y": 48.0,
@@ -117,8 +117,8 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": null,
-          "key": "JDRV_TARS_S02_C_Explorer"
+          "ref": "14cbe476-4050-4af5-8635-178519722f4b",
+          "key": null
         }
       ]
     },

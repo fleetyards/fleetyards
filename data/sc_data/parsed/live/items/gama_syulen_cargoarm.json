@@ -23,17 +23,13 @@
       "name": "Hardpoint_cargo_1",
       "min_size": "0",
       "max_size": "0",
-      "types": [
-
-      ]
+      "types": []
     },
     {
       "name": "Hardpoint_cargo_2",
       "min_size": "0",
       "max_size": "0",
-      "types": [
-
-      ]
+      "types": []
     }
   ],
   "default_loadout": [
@@ -41,21 +37,17 @@
       "name": "Hardpoint_cargo_1",
       "key": "GAMA_Syulen_CargoGrid_Main",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "Hardpoint_cargo_2",
       "key": "GAMA_Syulen_CargoGrid_Main",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     }
   ],
   "durability": {
-    "health": 200.0
+    "health": 400.0
   },
   "power_connection": {
     "power_base": 0.0,

@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "4.54",
     "base_expediting_fee": "6168"
   },
-  "mass": 122930.0,
+  "mass": 119930.0,
   "metrics": {
     "x": 24.5,
     "y": 24.5,
@@ -228,7 +228,7 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S01_C_Explorer"
+          "key": "JDRV_TARS_S01_Explorer_SCItem"
         }
       ]
     },
@@ -393,6 +393,23 @@
       "name": "hardpoint_lifesupport",
       "ref": null,
       "key": "LFSP_TYDT_S01_ComfortAir"
+    },
+    {
+      "name": "hardpoint_missile_rack_outer",
+      "ref": "6bea95f5-2898-434c-bffe-4b2b332d6440",
+      "key": null,
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": "d358cf84-9c78-4929-a2ad-b9caade81962",
+          "key": null
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": "d358cf84-9c78-4929-a2ad-b9caade81962",
+          "key": null
+        }
+      ]
     }
   ]
 }

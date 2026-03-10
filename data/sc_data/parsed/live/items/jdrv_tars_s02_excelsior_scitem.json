@@ -3,7 +3,7 @@
   "ref": "14cbe476-4050-4af5-8635-178519722f4b",
   "category": "jumpdrive",
   "type": "JumpDrive",
-  "sub_type": "JumpDrive",
+  "sub_type": null,
   "size": "2",
   "grade": "3",
   "manufacturer_ref": "2b25a2dd-47ea-4ab0-8711-03d34be214b1",
@@ -11,15 +11,15 @@
   "short_name": null,
   "description": "Item Type: Jump Module\\nManufacturer: Tarsus\\nSize: 2\\nGrade: C\\nClass: Civilian\\n\\nJourney across the ‘verse with Tarsus’ Excelsior jump module, offering greater reliability to help take your wanderlust to new heights.",
   "inventory_consumption": {
-    "micro_scu": 1.0,
+    "micro_scu": 775760.0,
     "dimensions": {
-      "x": 0.15,
-      "y": 0.15,
-      "z": 0.15
+      "x": 1.536,
+      "y": 0.9924,
+      "z": 0.5089
     }
   },
   "durability": {
-    "health": 490.0
+    "health": 350.0
   },
   "power_connection": {
     "power_base": 20.0,

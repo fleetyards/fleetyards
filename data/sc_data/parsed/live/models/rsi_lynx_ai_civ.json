@@ -6,8 +6,8 @@
   "min_crew": "2",
   "name": "RSI Lynx",
   "description": "Manufacturer: RSI\\nFocus: Exploration\\n\\nRSI designed the Lynx Rover to be a vehicle capable of exploring a wide variety of terrains while still delivering a top-rated and finely tuned driving experience.",
-  "career": "Ground",
-  "role": "Transporter",
+  "career": "Transporter",
+  "role": "Luxury Touring",
   "insurance": {
     "base_wait_time_minutes": "2.7",
     "mandatory_wait_time_minutes": "0.9",
@@ -29,9 +29,7 @@
       "name": "hardpoint_seat_passenger",
       "ref": null,
       "key": "RSI_Lynx_SCItem_SeatDashboard_Gunner",
-      "loadout": [
-
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_seat_driver",
@@ -127,13 +125,27 @@
       "loadout": [
         {
           "name": "turret_left",
-          "ref": null,
-          "key": "BEHR_LaserCannon_S1"
+          "ref": "80ae6d83-7d8a-4357-b109-a0154418bae5",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "42e2ddb1-7397-4299-88ee-2ddfaa0efc67",
+              "key": null
+            }
+          ]
         },
         {
           "name": "turret_right",
-          "ref": null,
-          "key": "BEHR_LaserCannon_S1"
+          "ref": "80ae6d83-7d8a-4357-b109-a0154418bae5",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "42e2ddb1-7397-4299-88ee-2ddfaa0efc67",
+              "key": null
+            }
+          ]
         }
       ]
     },
@@ -181,6 +193,16 @@
       "name": "hardpoint_fuelport",
       "ref": null,
       "key": "Door_Ship_Exterior_RSI_Lynx_Fuelport"
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": "6fb0f4a2-e747-4e5d-bef7-7e481a587254",
+      "key": null
+    },
+    {
+      "name": "hardpoint_life_support",
+      "ref": null,
+      "key": "LFSP_TYDT_S00_ComfortAirLite"
     }
   ]
 }

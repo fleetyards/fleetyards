@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Lightning_IAE_Black_Green_Green_Commemorative",
+  "ref": "27581f33-45ec-467f-b92b-14961892e5d9",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "e76b15f7-91c1-4b23-84d1-b55ad9027469",
+  "name": "F8 Lightning Nightweaver Livery",
+  "short_name": null,
+  "description": "Bring a distinct look to the F8 Lightning with the Nightweaver livery. It features a black fuselage intersected by green highlights in a unique and irregular pattern.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

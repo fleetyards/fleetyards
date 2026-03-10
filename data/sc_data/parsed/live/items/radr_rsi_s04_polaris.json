@@ -7,7 +7,7 @@
   "size": "4",
   "grade": "1",
   "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
-  "name": null,
+  "name": "Radar",
   "short_name": null,
   "description": null,
   "inventory_consumption": {
@@ -29,7 +29,7 @@
     }
   ],
   "durability": {
-    "health": 4700.0
+    "health": 18000.0
   },
   "heat_connection": {
     "TemperatureToIR": 20.0,
@@ -94,7 +94,7 @@
         "permit_passive_detection": 0.0
       },
       {
-        "sensitivity": 0.5,
+        "sensitivity": 1.0,
         "piercing": 1.0,
         "permit_active_detection": 1.0,
         "permit_passive_detection": 1.0

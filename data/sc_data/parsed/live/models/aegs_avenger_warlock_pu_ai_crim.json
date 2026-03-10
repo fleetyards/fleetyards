@@ -7,13 +7,13 @@
   "name": "Aegis Avenger Warlock",
   "description": "Manufacturer: Aegis Dynamics\\nFocus: Interdiction\\n\\nThe Avenger Warlock was built towards a single design philosophy: stop ships, don’t destroy them. Probably the closest to a non-lethal fighter, the Warlock is outfitted with a Behring REP-8 EMP Generator, capable of emitting a powerful electromagnetic wave to disable any electronics unfortunate enough to be within the blast radius.",
   "career": "Combat",
-  "role": "Interceptor",
+  "role": "Interdiction",
   "insurance": {
     "base_wait_time_minutes": "4.86",
     "mandatory_wait_time_minutes": "1.62",
     "base_expediting_fee": "2724"
   },
-  "mass": 47231.75,
+  "mass": 48986.75,
   "metrics": {
     "x": 15.0,
     "y": 20.0,
@@ -187,8 +187,8 @@
       "loadout": [
         {
           "name": "hardpoint_jump_drive",
-          "ref": null,
-          "key": "JDRV_TARS_S01_C_Explorer"
+          "ref": "c8797bce-6220-4d1e-bc6d-23da4a366a6d",
+          "key": null
         }
       ]
     },

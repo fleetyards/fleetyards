@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Avenger_FW2955_Grey_Black_Red_Camo",
+  "ref": "9a34e061-eedf-47c3-8157-b5e751d5cef9",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "0b8344a2-9028-4978-a678-05e23a877702",
+  "name": "Avenger Nightbreak Livery",
+  "short_name": null,
+  "description": "Discreetly soar through the night sky in the Avenger with the Nightbreak livery, which is primarily black with red highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

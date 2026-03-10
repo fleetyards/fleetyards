@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Cutter_Reward_Faction_Citizens_For_Prosperity",
+  "ref": "a1441184-5bd9-4f11-b2dd-84f7c318e83b",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "934ad5e2-40fb-4ce2-877b-09aae46edced",
+  "name": "Cutter Citizens for Prosperity Garnet Livery",
+  "short_name": null,
+  "description": "Join the Citizens for Prosperity in their mission to bring peace to the frontier with this dark grey and burgandy livery featuring the group's signature logo.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

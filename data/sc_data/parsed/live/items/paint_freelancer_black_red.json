@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Freelancer_Black_Red",
+  "ref": "ea626499-8dfa-4af0-a148-5286a2cfcac2",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "75aa1a5e-2d58-4d3c-9add-354b7a001328",
+  "name": "Freelancer Whammer's Livery",
+  "short_name": null,
+  "description": "Cravin' a special look for your Freelancer? Then equip this Whammer's branded black and red paint scheme and have yourself a good time.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

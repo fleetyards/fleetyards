@@ -1,0 +1,21 @@
+{
+  "key": "Paint_ATLS_White_Black_Teal",
+  "ref": "a7a662e3-77e8-4edc-b591-7847208a02c7",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b4fa013b-14ce-4c83-9479-a295ca14b988",
+  "name": "ATLS Cold Snap Livery",
+  "short_name": null,
+  "description": "Combining bright white with a cool teal, the Cold Snap livery delivers a striking appearance to the ATLS suit.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

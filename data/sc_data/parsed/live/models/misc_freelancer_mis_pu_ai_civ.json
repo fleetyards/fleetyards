@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "5.2",
     "base_expediting_fee": "10465"
   },
-  "mass": 231696.0,
+  "mass": 219396.0,
   "metrics": {
     "x": 23.5,
     "y": 38.0,
@@ -183,7 +183,7 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S02_C_Explorer"
+          "key": "JDRV_TARS_S02_Excelsior_SCItem"
         }
       ]
     },
@@ -566,6 +566,63 @@
       "name": "hardpoint_relay_cargo_bay",
       "ref": null,
       "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_weapon_missilelauncher_left",
+      "ref": "2c0a8a0f-b754-4c31-840e-471a1b95111d",
+      "key": null,
+      "loadout": [
+        {
+          "name": "missile_01_attach_left",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_02_attach_left",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_03_attach_left",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_04_attach_left",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_05_attach_left",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_06_attach_left",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_07_attach_left",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_08_attach_left",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_09_attach_left",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_10_attach_left",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        }
+      ]
     }
   ]
 }

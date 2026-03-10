@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Gladiator_BIS2955_Orange_Black_Orange",
+  "ref": "bab78d5e-806b-4318-b540-be51b85749d5",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "887d16c1-50f9-4450-bad4-85821aa4b24a",
+  "name": "Gladiator Best in Show 2955 Livery",
+  "short_name": null,
+  "description": "Commemorate the Gladiator making the final four of the 2955 Ship Showdown with this striking metallic orange and black Best in Show livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

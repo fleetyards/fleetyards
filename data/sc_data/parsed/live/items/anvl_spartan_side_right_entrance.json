@@ -33,13 +33,11 @@
       "name": "IP_Exterior_Left",
       "key": "ControlPanel_Screen_DoorControl_Physical_Spartan",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     }
   ],
   "durability": {
-    "health": 200.0
+    "health": 400.0
   },
   "power_connection": {
     "power_base": 0.0,

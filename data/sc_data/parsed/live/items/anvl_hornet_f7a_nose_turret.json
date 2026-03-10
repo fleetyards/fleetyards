@@ -7,9 +7,9 @@
   "size": "3",
   "grade": "1",
   "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
-  "name": "Anvil F7A Hornet Mk II Nose Turret",
+  "name": "Anvil Hornet Mk II S3 Nose Turret",
   "short_name": null,
-  "description": "Item Type: Turret\\nManufacturer: Anvil Aerospace\\nSize: 3\\n\\nThis nose turret was designed specifically for Anvil's F7A Mk II Hornet to allow for mounting two Size-2 weapons and precise gimbaled tracking of targets.",
+  "description": "Item Type: Turret\\nManufacturer: Anvil Aerospace\\nSize: 3\\n\\nThis military-grade nose turret was designed specifically for the Mk II versions of Anvil's F7A and F7C-M to allow for mounting two Size-3 weapons and precise gimbaled tracking of targets.",
   "inventory_consumption": {
     "micro_scu": 84000.0,
     "dimensions": {

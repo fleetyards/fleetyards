@@ -27,11 +27,8 @@ shared:
   opensearch_url: <%= ENV["OPENSEARCH_URL"] || 'localhost:9200' %>
 
   sc_data:
-    # version: "3.24.3-live.9423704"
-    # environment: "live"
-
-    version: "4.0.0-live.9470730"
-    environment: "live-preview"
+    version: "4.6.0-live.11218823"
+    environment: "live"
 
   discord:
     oauth_client_id: <%= ENV["DISCORD_OAUTH_CLIENT_ID"] %>

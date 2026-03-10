@@ -1,0 +1,21 @@
+{
+  "key": "Controller_Shield_MISC_Fortune",
+  "ref": "b8b5bf4a-a281-416c-b3f2-5fb615452d6e",
+  "category": "controller",
+  "type": "ShieldController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SHIELDS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

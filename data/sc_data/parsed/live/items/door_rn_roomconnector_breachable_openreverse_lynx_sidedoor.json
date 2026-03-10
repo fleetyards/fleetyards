@@ -7,7 +7,7 @@
   "size": "1",
   "grade": "1",
   "manufacturer_ref": null,
-  "name": null,
+  "name": "Door",
   "short_name": null,
   "description": null,
   "inventory_consumption": {
@@ -23,9 +23,7 @@
       "name": "IP_Exterior",
       "min_size": "0",
       "max_size": "0",
-      "types": [
-
-      ]
+      "types": []
     }
   ],
   "default_loadout": [
@@ -33,9 +31,7 @@
       "name": "IP_Exterior",
       "key": "ControlPanel_Screen_DoorControl_9x16_Small_RSI_Lynx",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     }
   ],
   "durability": {

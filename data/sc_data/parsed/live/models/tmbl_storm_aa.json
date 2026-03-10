@@ -9,9 +9,9 @@
   "career": "Ground Combat",
   "role": "Light Tank",
   "insurance": {
-    "base_wait_time_minutes": "1",
-    "mandatory_wait_time_minutes": "0.25",
-    "base_expediting_fee": "430"
+    "base_wait_time_minutes": "5.33",
+    "mandatory_wait_time_minutes": "1.33",
+    "base_expediting_fee": "1740"
   },
   "mass": 54230.0,
   "metrics": {
@@ -152,429 +152,429 @@
       "loadout": [
         {
           "name": "hardpoint_missile_rack_s1_left",
-          "ref": "d83798e4-f4d5-4191-843f-f85b1b5e1d80",
+          "ref": "720ea5f5-d897-4e06-af7c-fb729295f0c6",
           "key": null,
           "loadout": [
             {
               "name": "hardpoint_s1_missile_001",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_002",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_003",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_004",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_005",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_006",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_007",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_008",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_009",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_010",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_011",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_012",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_013",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_014",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_015",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_016",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_017",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_018",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_019",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_020",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_021",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_022",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_023",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_024",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_025",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_026",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_027",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_028",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_029",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_030",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_031",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_032",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             }
           ]
         },
         {
           "name": "hardpoint_missile_rack_s1_right",
-          "ref": "d83798e4-f4d5-4191-843f-f85b1b5e1d80",
+          "ref": "720ea5f5-d897-4e06-af7c-fb729295f0c6",
           "key": null,
           "loadout": [
             {
               "name": "hardpoint_s1_missile_001",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_002",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_003",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_004",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_005",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_006",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_007",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_008",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_009",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_010",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_011",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_012",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_013",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_014",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_015",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_016",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_017",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_018",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_019",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_020",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_021",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_022",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_023",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_024",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_025",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_026",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_027",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_028",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_029",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_030",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_031",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             },
             {
               "name": "hardpoint_s1_missile_032",
               "ref": null,
-              "key": "MISL_S01_IR_BEHR_Marksman"
+              "key": "GMISL_S01_IR_BEHR_Marksman"
             }
           ]
         },
         {
           "name": "hardpoint_missile_rack_s2_left",
-          "ref": "12ddeb1a-8c7e-4cf6-abae-c8e1dba62b26",
+          "ref": "65193d8e-3df2-4eed-bf13-71d95c0ddec4",
           "key": null,
           "loadout": [
             {
               "name": "hardpoint_s2_missile_001",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s2_missile_002",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s2_missile_003",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s2_missile_004",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s2_missile_005",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s2_missile_006",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s2_missile_007",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s2_missile_008",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             }
           ]
         },
         {
           "name": "hardpoint_missile_rack_s2_right",
-          "ref": "12ddeb1a-8c7e-4cf6-abae-c8e1dba62b26",
+          "ref": "65193d8e-3df2-4eed-bf13-71d95c0ddec4",
           "key": null,
           "loadout": [
             {
               "name": "hardpoint_s2_missile_001",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s2_missile_002",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s2_missile_003",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s2_missile_004",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s2_missile_005",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s2_missile_006",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s2_missile_007",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             },
             {
               "name": "hardpoint_s2_missile_008",
               "ref": null,
-              "key": "MISL_S02_IR_FSKI_Ignite"
+              "key": "GMISL_S02_IR_FSKI_Ignite"
             }
           ]
         }

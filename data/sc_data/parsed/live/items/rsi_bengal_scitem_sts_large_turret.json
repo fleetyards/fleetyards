@@ -31,25 +31,19 @@
       "name": "hardpoint_weapon_right_inner",
       "min_size": "12",
       "max_size": "12",
-      "types": [
-
-      ]
+      "types": []
     },
     {
       "name": "hardpoint_weapon_left_inner",
       "min_size": "12",
       "max_size": "12",
-      "types": [
-
-      ]
+      "types": []
     },
     {
       "name": "hardpoint_weapon_left_outer",
       "min_size": "12",
       "max_size": "12",
-      "types": [
-
-      ]
+      "types": []
     }
   ],
   "default_loadout": [
@@ -57,33 +51,25 @@
       "name": "hardpoint_weapon_right_outer",
       "key": "BEHR_MassDriver_S12",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "hardpoint_weapon_right_inner",
       "key": "BEHR_MassDriver_S12",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "hardpoint_weapon_left_inner",
       "key": "BEHR_MassDriver_S12",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     },
     {
       "name": "hardpoint_weapon_left_outer",
       "key": "BEHR_MassDriver_S12",
       "ref": null,
-      "default_loadout": [
-
-      ]
+      "default_loadout": []
     }
   ],
   "durability": {

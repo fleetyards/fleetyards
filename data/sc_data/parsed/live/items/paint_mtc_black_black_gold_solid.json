@@ -1,0 +1,21 @@
+{
+  "key": "Paint_MTC_black_black_gold_solid",
+  "ref": "335e3fa9-7ec2-4542-bf80-0967b8d5d55e",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "5334d75a-a7bb-4c7c-98ff-fb8b743b12c5",
+  "name": "MXC Perdition Livery",
+  "short_name": null,
+  "description": "The Perdition livery envelops the MXC, and other Greycat M-Series vehicles, in dark black with gold highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

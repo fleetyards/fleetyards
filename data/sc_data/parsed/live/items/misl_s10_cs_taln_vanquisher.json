@@ -1,0 +1,24 @@
+{
+  "key": "MISL_S10_CS_TALN_Vanquisher",
+  "ref": "3e1b8bfb-07d1-49b8-8f6a-834f0be6f320",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "Torpedo",
+  "size": "10",
+  "grade": "1",
+  "manufacturer_ref": "587fcede-4fe9-4fb4-85ec-124abc8542b0",
+  "name": "Vanquisher X-CS Torpedo",
+  "short_name": "Vanquish. X-CS Torp.",
+  "description": "Manufacturer: Talon\\nTracking Signal: Cross Section\\nSize: 10\\n\\nDesigned by Talon, the Vanquisher heat seeking strike torpedo delivers a heavy payload sure to serve as a deterrent from any further hostile actions.",
+  "inventory_consumption": {
+    "micro_scu": 140625.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 12.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 667.0
+  }
+}

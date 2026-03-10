@@ -7,13 +7,13 @@
   "name": "Crusader Intrepid",
   "description": "Manufacturer: Crusader Industries\\nFocus: Starter\\n\\nFor those eager to meet their future head on, the renowned ship engineers at Crusader Industries proudly present the Intrepid. A bold ship ready to tackle any number of jobs and conquer numerous challenges, the Intrepid features efficient cargo space and comfortable living quarters to make the most of your solo journey across the stars.",
   "career": "Starter",
-  "role": "Starter",
+  "role": "Starter / Light Freight",
   "insurance": {
     "base_wait_time_minutes": "5.67",
     "mandatory_wait_time_minutes": "1.42",
     "base_expediting_fee": "1850"
   },
-  "mass": 77653.0,
+  "mass": 66943.0,
   "metrics": {
     "x": 20.18,
     "y": 23.07,
@@ -153,7 +153,7 @@
         {
           "name": "hardpoint_jump_drive",
           "ref": null,
-          "key": "JDRV_TARS_S01_C_Explorer"
+          "key": "JDRV_TARS_S01_Explorer_SCItem"
         }
       ]
     },

@@ -1,0 +1,42 @@
+{
+  "key": "Door_RN_RoomConnector_Breachable_OpenReverse_ARGO_MOTH_RearElevator",
+  "ref": "717c18c9-db8c-4160-92f4-c167da510cbc",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_cargo_grid",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "CargoGrid"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_cargo_grid",
+      "key": null,
+      "ref": "a98730b6-717a-4314-9488-d2e660ee5391",
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 1000.0
+  }
+}

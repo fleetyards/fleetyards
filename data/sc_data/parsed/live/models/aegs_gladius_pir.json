@@ -13,7 +13,7 @@
     "mandatory_wait_time_minutes": "1.94",
     "base_expediting_fee": "2335"
   },
-  "mass": 51352.06,
+  "mass": 48552.06,
   "metrics": {
     "x": 17.5,
     "y": 21.0,
@@ -188,7 +188,14 @@
     {
       "name": "hardpoint_quantum_drive",
       "ref": null,
-      "key": "QDRV_TARS_S01_Expedition_SCItem"
+      "key": "QDRV_TARS_S01_Expedition_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": "c8797bce-6220-4d1e-bc6d-23da4a366a6d",
+          "key": null
+        }
+      ]
     },
     {
       "name": "hardpoint_quantum_fuel_tank",
@@ -388,6 +395,11 @@
       "name": "hardpoint_relay",
       "ref": null,
       "key": "RELAY_3slot"
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hanging",
+      "ref": null,
+      "key": null
     }
   ]
 }

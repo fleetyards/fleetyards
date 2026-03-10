@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Stinger_Silver_Grey_Teal",
+  "ref": "34ca03ed-aaf7-405d-98b8-6cf03cd9165e",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "5456737b-79e0-44b9-95ed-ca18d07ced81",
+  "name": "Stinger Insularis Livery",
+  "short_name": null,
+  "description": "Silvery gray highlights frame metallic blue wings in the Insularis livery for the Esperia Stinger.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

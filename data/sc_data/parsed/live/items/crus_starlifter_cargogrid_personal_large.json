@@ -19,7 +19,7 @@
     }
   },
   "storage": {
-    "storage": 2.5e-05
+    "storage": 0.000025
   },
   "durability": {
     "health": 1000.0

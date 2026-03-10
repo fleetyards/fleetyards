@@ -150,8 +150,8 @@ module ScData
       private def load_ini_file(path)
         data = {}
 
-        File.readlines(path, encoding: "UTF-8").each do |line|
-          line = line.chomp
+        File.foreach(path, encoding: "bom|UTF-8") do |line|
+          line = line.encode("UTF-8", invalid: :replace, undef: :replace).chomp
 
           unless /^\#/.match?(line)
             if /^([^=]+?)\s*=\s*(.*?)\s*$/.match?(line)

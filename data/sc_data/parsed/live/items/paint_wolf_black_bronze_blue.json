@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Wolf_Black_Bronze_Blue",
+  "ref": "3c58e888-f2f9-4cfa-bcef-50e768aefc35",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "3f850d70-6401-420e-891d-de68b5c5a8ea",
+  "name": "Wolf Riftwalker Livery",
+  "short_name": null,
+  "description": "Complement the elegant design of the Kruger Wolf with the Riftwalker livery, which is primarily black with bronze and blue highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}
