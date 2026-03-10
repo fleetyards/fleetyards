@@ -153,19 +153,6 @@
   z-index: 1000;
 }
 
-.starship42-link {
-  position: absolute;
-  top: 18px;
-  right: 75px;
-  z-index: 1000;
-  color: darken($text-color, 5%);
-  text-shadow: 0 0 3px black;
-
-  &:hover {
-    color: $text-color;
-  }
-}
-
 @media (max-width: $desktop-breakpoint) {
   .headline {
     flex-direction: column;
