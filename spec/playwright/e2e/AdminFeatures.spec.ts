@@ -27,7 +27,8 @@ test.describe("Admin Features", () => {
     await page.goto("/admin/maintenance/features/");
 
     // Wait for feature list to load from API
-    await page.waitForSelector(".list-group__item");
+    await page.waitForLoadState("networkidle");
+    await expect(page.locator(".list-group__item").first()).toBeVisible();
 
     // Feature names should be visible
     await expect(page.locator(".feature-name").first()).toBeVisible();
@@ -37,10 +38,11 @@ test.describe("Admin Features", () => {
     await page.goto("/admin/maintenance/features/");
 
     // Wait for feature list to load from API
-    await page.waitForSelector(".list-group__item");
+    await page.waitForLoadState("networkidle");
+    await expect(page.locator(".list-group__item").first()).toBeVisible();
 
     // State pills (on/off/conditional) should be present
-    const pills = page.locator(".list-group__content .pill");
+    const pills = page.locator(".list-group__content .base-pill");
     await expect(pills.first()).toBeVisible();
   });
 
@@ -48,7 +50,8 @@ test.describe("Admin Features", () => {
     await page.goto("/admin/maintenance/features/");
 
     // Wait for feature list to load from API
-    await page.waitForSelector(".list-group__item");
+    await page.waitForLoadState("networkidle");
+    await expect(page.locator(".list-group__item").first()).toBeVisible();
 
     // Find a toggle button and click it
     const toggleBtn = page
@@ -66,7 +69,8 @@ test.describe("Admin Features", () => {
     await page.goto("/admin/maintenance/features/");
 
     // Wait for feature list to load from API
-    await page.waitForSelector(".list-group__item");
+    await page.waitForLoadState("networkidle");
+    await expect(page.locator(".list-group__item").first()).toBeVisible();
 
     // Click edit button (pencil icon)
     const editBtn = page
@@ -85,7 +89,8 @@ test.describe("Admin Features", () => {
     await page.goto("/admin/maintenance/features/");
 
     // Wait for feature list to load from API
-    await page.waitForSelector(".list-group__item");
+    await page.waitForLoadState("networkidle");
+    await expect(page.locator(".list-group__item").first()).toBeVisible();
 
     // Open edit mode
     const editBtn = page
@@ -110,7 +115,8 @@ test.describe("Admin Features", () => {
     await page.goto("/admin/maintenance/features/");
 
     // Wait for feature list to load from API
-    await page.waitForSelector(".list-group__item");
+    await page.waitForLoadState("networkidle");
+    await expect(page.locator(".list-group__item").first()).toBeVisible();
 
     // Open edit mode
     const editBtn = page

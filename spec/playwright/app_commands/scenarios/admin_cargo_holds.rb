@@ -5,9 +5,20 @@ Rails.logger.info "E2E: Creating admin_cargo_holds scenario test data..."
 
 FactoryBot.create(:admin_user, username: "admin", email: "admin@test.com", password: "password123", password_confirmation: "password123", super_admin: true)
 
-model = FactoryBot.create(:model, :with_legacy_images, name: "Caterpillar", production_status: "flight-ready")
-FactoryBot.create(:cargo_hold, model: model, name: "cargo_front", dimension_x: 5.0, dimension_y: 2.5, dimension_z: 2.5, capacity_scu: 8, max_container_size_scu: 8)
-FactoryBot.create(:cargo_hold, model: model, name: "cargo_rear", dimension_x: 10.0, dimension_y: 2.5, dimension_z: 2.5, capacity_scu: 16, max_container_size_scu: 16)
+FactoryBot.create(:model, :with_legacy_images, name: "Caterpillar", production_status: "flight-ready", cargo_holds: [
+  {
+    "name" => "cargo_front",
+    "capacity" => 8,
+    "dimensions" => {"x" => 5.0, "y" => 2.5, "z" => 2.5},
+    "max_container_size" => {"size" => 8, "dimensions" => {"x" => 2.0, "y" => 2.0, "z" => 2.0}}
+  },
+  {
+    "name" => "cargo_rear",
+    "capacity" => 16,
+    "dimensions" => {"x" => 10.0, "y" => 2.5, "z" => 2.5},
+    "max_container_size" => {"size" => 16, "dimensions" => {"x" => 2.5, "y" => 2.5, "z" => 2.5}}
+  }
+])
 
 Model.reindex
 
