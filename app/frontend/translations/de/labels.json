@@ -155,11 +155,21 @@
       "fleetStats": "Stats",
       "hangarMetrics": {
         "total": "Total",
-        "totalMoney": "Money Value",
-        "totalCredits": "Credits",
+        "totalMoney": "Pledge-Wert",
+        "totalCredits": "In-Game gekauft Wert",
+        "totalIngameValue": "Hangar aUEC-Wert",
         "totalMinCrew": "Min. Crew",
         "totalMaxCrew": "Max. Crew",
-        "totalCargo": "Total Cargo"
+        "totalCargo": "Gesamtfracht",
+        "largestShip": "Größtes Schiff",
+        "smallestShip": "Kleinstes Schiff",
+        "averagePledgePrice": "Ø Pledge-Preis",
+        "flightReady": "Flugbereit",
+        "uniqueModels": "Einzigartige Modelle",
+        "manufacturerCount": "Hersteller",
+        "missingClassifications": "Fehlende Rollen",
+        "wishlistTotalMoney": "Wunschliste Pledge-Wert",
+        "wishlistTotalCredits": "Wunschliste In-Game-Wert"
       },
       "selectModel": "Select a Ship",
       "compare": {

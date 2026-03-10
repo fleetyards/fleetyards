@@ -44,6 +44,32 @@ const totalCount = ref(0);
 const minCrew = ref(0);
 const maxCrew = ref(0);
 const totalCargo = ref(0);
+const totalMoney = ref(0);
+const totalCredits = ref(0);
+const totalIngameValue = ref(0);
+const largestShip = ref(0);
+const smallestShip = ref(0);
+const averagePledgePrice = ref(0);
+const flightReadyCount = ref(0);
+const uniqueModelsCount = ref(0);
+const manufacturerCount = ref(0);
+const wishlistTotalMoney = ref(0);
+const wishlistTotalCredits = ref(0);
+const wishlistTotal = ref(0);
+
+const missingClassifications = computed(
+  () =>
+    quickStats.value?.metrics.missingClassifications
+      ?.map((c: string) =>
+        c.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase()),
+      )
+      .join(", ") || "",
+);
+
+const wishlistToHangarRatio = computed(() => {
+  if (!totalCount.value) return "";
+  return `${wishlistTotal.value} / ${totalCount.value}`;
+});
 
 // use refs and watch for stats to trigger animation on every page visit
 watch(
@@ -52,6 +78,18 @@ watch(
     quickStats.value?.metrics.totalMinCrew,
     quickStats.value?.metrics.totalMaxCrew,
     quickStats.value?.metrics.totalCargo,
+    quickStats.value?.metrics.totalMoney,
+    quickStats.value?.metrics.totalCredits,
+    quickStats.value?.metrics.totalIngameValue,
+    quickStats.value?.metrics.largestShip,
+    quickStats.value?.metrics.smallestShip,
+    quickStats.value?.metrics.averagePledgePrice,
+    quickStats.value?.metrics.flightReadyCount,
+    quickStats.value?.metrics.uniqueModelsCount,
+    quickStats.value?.metrics.manufacturerCount,
+    quickStats.value?.metrics.wishlistTotalMoney,
+    quickStats.value?.metrics.wishlistTotalCredits,
+    quickStats.value?.wishlistTotal,
   ],
   () => {
     setTimeout(() => {
@@ -59,17 +97,41 @@ watch(
       minCrew.value = quickStats.value?.metrics.totalMinCrew || 0;
       maxCrew.value = quickStats.value?.metrics.totalMaxCrew || 0;
       totalCargo.value = quickStats.value?.metrics.totalCargo || 0;
+      totalMoney.value = quickStats.value?.metrics.totalMoney || 0;
+      totalCredits.value = quickStats.value?.metrics.totalCredits || 0;
+      totalIngameValue.value = quickStats.value?.metrics.totalIngameValue || 0;
+      largestShip.value = quickStats.value?.metrics.largestShip || 0;
+      smallestShip.value = quickStats.value?.metrics.smallestShip || 0;
+      averagePledgePrice.value =
+        quickStats.value?.metrics.averagePledgePrice || 0;
+      flightReadyCount.value = quickStats.value?.metrics.flightReadyCount || 0;
+      uniqueModelsCount.value =
+        quickStats.value?.metrics.uniqueModelsCount || 0;
+      manufacturerCount.value =
+        quickStats.value?.metrics.manufacturerCount || 0;
+      wishlistTotalMoney.value =
+        quickStats.value?.metrics.wishlistTotalMoney || 0;
+      wishlistTotalCredits.value =
+        quickStats.value?.metrics.wishlistTotalCredits || 0;
+      wishlistTotal.value = quickStats.value?.wishlistTotal || 0;
     }, 200);
   },
   { immediate: true },
 );
 
 const route = useRoute();
+
+const millionFormat = {
+  notation: "compact" as const,
+  compactDisplay: "short" as const,
+  maximumFractionDigits: 2,
+};
 </script>
 
 <template>
   <BreadCrumbs :crumbs="[{ to: { name: 'hangar' }, label: t('nav.hangar') }]" />
   <Heading>{{ t(`headlines.${route.meta.title}`) }}</Heading>
+
   <div class="row">
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
@@ -103,6 +165,126 @@ const route = useRoute();
       />
     </div>
   </div>
+
+  <div class="row">
+    <div class="col-12 col-sm-6 col-lg-3">
+      <StatsPanel
+        icon="fad fa-dollar-sign fa-4x"
+        :value="totalMoney"
+        :label="t('labels.hangarMetrics.totalMoney')"
+        :prefix="t('number.units.currency')"
+      />
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+      <StatsPanel
+        icon="fad fa-coins fa-4x"
+        :value="totalCredits"
+        :label="t('labels.hangarMetrics.totalCredits')"
+        :suffix="t('number.units.uec')"
+        :format="millionFormat"
+      />
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+      <StatsPanel
+        icon="fad fa-coins fa-4x"
+        :value="totalIngameValue"
+        :label="t('labels.hangarMetrics.totalIngameValue')"
+        :suffix="t('number.units.uec')"
+        :format="millionFormat"
+      />
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+      <StatsPanel
+        icon="fad fa-dollar-sign fa-4x"
+        :value="averagePledgePrice"
+        :label="t('labels.hangarMetrics.averagePledgePrice')"
+        :prefix="t('number.units.currency')"
+      />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-sm-6 col-lg-3">
+      <StatsPanel
+        icon="fad fa-industry fa-4x"
+        :value="manufacturerCount"
+        :label="t('labels.hangarMetrics.manufacturerCount')"
+      />
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+      <StatsPanel
+        icon="fad fa-fingerprint fa-4x"
+        :value="uniqueModelsCount"
+        :label="t('labels.hangarMetrics.uniqueModels')"
+      />
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+      <StatsPanel
+        icon="fad fa-check-circle fa-4x"
+        :value="flightReadyCount"
+        :label="t('labels.hangarMetrics.flightReady')"
+      />
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+      <StatsPanel
+        icon="fad fa-ruler fa-4x"
+        :value="largestShip"
+        :label="t('labels.hangarMetrics.largestShip')"
+        :suffix="t('number.units.distance')"
+      />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-sm-6 col-lg-3">
+      <StatsPanel
+        icon="fad fa-ruler fa-4x"
+        :value="smallestShip"
+        :label="t('labels.hangarMetrics.smallestShip')"
+        :suffix="t('number.units.distance')"
+      />
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+      <StatsPanel
+        icon="fad fa-dollar-sign fa-4x"
+        :value="wishlistTotalMoney"
+        :label="t('labels.hangarMetrics.wishlistTotalMoney')"
+        :prefix="t('number.units.currency')"
+      />
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+      <StatsPanel
+        icon="fad fa-coins fa-4x"
+        :value="wishlistTotalCredits"
+        :label="t('labels.hangarMetrics.wishlistTotalCredits')"
+        :suffix="t('number.units.uec')"
+        :format="millionFormat"
+      />
+    </div>
+  </div>
+
+  <div v-if="missingClassifications" class="row">
+    <div class="col-12 col-sm-6">
+      <Panel>
+        <PanelHeading :level="HeadingLevelEnum.H2">
+          {{ t("labels.hangarMetrics.missingClassifications") }}
+        </PanelHeading>
+        <PanelBody>
+          <p>{{ missingClassifications }}</p>
+        </PanelBody>
+      </Panel>
+    </div>
+    <div class="col-12 col-sm-6">
+      <StatsPanel
+        icon="fad fa-heart fa-4x"
+        :value="wishlistTotal"
+        :label="t('labels.hangar')"
+        :suffix="wishlistToHangarRatio"
+        :outer-spacing="false"
+      />
+    </div>
+  </div>
+
   <div class="row">
     <div class="col-12 col-md-6">
       <Panel>

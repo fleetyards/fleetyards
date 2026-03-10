@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup>
 import Panel from "@/shared/components/base/Panel/index.vue";
 import { PanelBgColorsEnum } from "@/shared/components/base/Panel/types";
-import NumberFlow from "@number-flow/vue";
+import NumberFlow, { type Format } from "@number-flow/vue";
 
 type Props = {
   label: string;
@@ -16,6 +16,7 @@ type Props = {
   prefix?: string;
   suffix?: string;
   outerSpacing?: boolean;
+  format?: Format;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -23,6 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
   value: undefined,
   prefix: undefined,
   suffix: undefined,
+  format: undefined,
 });
 
 const innerValue = computed(() => {
@@ -57,7 +59,12 @@ const suffix = computed(() => {
         <i :class="icon" />
       </div>
       <div class="stats-panel-text">
-        <NumberFlow :value="innerValue" :prefix="prefix" :suffix="suffix" />
+        <NumberFlow
+          :value="innerValue"
+          :prefix="prefix"
+          :suffix="suffix"
+          :format="props.format"
+        />
         <div class="stats-panel-text-info">
           {{ label }}
         </div>
