@@ -8,7 +8,7 @@ gem "rails", "7.2.2.2"
 
 gem "pg", "~> 1.0"
 
-gem "sidekiq", "<= 8.0.7"
+gem "sidekiq", "~> 8.0"
 gem "sidekiq-cron"
 
 gem "paper_trail"
@@ -113,7 +113,7 @@ gem "pg_query", ">= 0.9.0"
 gem "git"
 gem "rdoc"
 
-gem "psych", "~> 5.2.6"
+gem "psych", "~> 5.2"
 
 gem "progress_bar"
 
@@ -161,7 +161,6 @@ group :test do
   gem "faker"
   gem "mocha", require: false
   gem "rails-perftest"
-  gem "shoulda"
   gem "shoulda-matchers"
   gem "simplecov", require: false
   gem "simplecov-console", require: false
