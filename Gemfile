@@ -181,7 +181,7 @@ group :development, :test do
 
   gem "factory_bot_rails", "~> 6.5.0"
 
-  gem "debug", ">= 1.0.0", platforms: %i[mri mingw x64_mingw]
+  gem "debug", ">= 1.0.0", platforms: %i[mri windows]
   gem "byebug", platform: :mri
   gem "pry-byebug"
 
