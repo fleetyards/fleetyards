@@ -7,9 +7,10 @@ Flipper.enable(:tools_travel_times)
 Flipper.enable(:tools_cargo_grids)
 
 # Ships with cargo holds (for cargo grids)
-# Set cargo_holds YAML attribute so the API returns cargo hold data
-# and the before_save callback creates CargoHold DB records
-FactoryBot.create(:model, :with_legacy_images, name: "Caterpillar", production_status: "flight-ready", cargo_holds: [
+# Set cargo_holds YAML attribute via update so the before_save callback
+# creates CargoHold DB records (can't set on create - parent must be saved first)
+model = FactoryBot.create(:model, :with_legacy_images, name: "Caterpillar", production_status: "flight-ready")
+model.update!(cargo_holds: [
   {
     "name" => "cargo_front",
     "capacity" => 8,

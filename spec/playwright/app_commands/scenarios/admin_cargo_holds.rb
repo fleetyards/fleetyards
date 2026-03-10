@@ -5,7 +5,8 @@ Rails.logger.info "E2E: Creating admin_cargo_holds scenario test data..."
 
 FactoryBot.create(:admin_user, username: "admin", email: "admin@test.com", password: "password123", password_confirmation: "password123", super_admin: true)
 
-FactoryBot.create(:model, :with_legacy_images, name: "Caterpillar", production_status: "flight-ready", cargo_holds: [
+model = FactoryBot.create(:model, :with_legacy_images, name: "Caterpillar", production_status: "flight-ready")
+model.update!(cargo_holds: [
   {
     "name" => "cargo_front",
     "capacity" => 8,
