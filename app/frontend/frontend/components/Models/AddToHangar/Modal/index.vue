@@ -48,9 +48,7 @@ const addToWishlist = async () => {
           model: props.model.name,
         }),
         component: () =>
-          import(
-            "@/frontend/components/Models/AddToHangar/Notifications/Success/index.vue"
-          ),
+          import("@/frontend/components/Models/AddToHangar/Notifications/Success/index.vue"),
         componentProps: {
           vehicle: vehicle,
         },
@@ -79,9 +77,7 @@ const addToHangar = async () => {
           model: props.model.name,
         }),
         component: () =>
-          import(
-            "@/frontend/components/Models/AddToHangar/Notifications/Success/index.vue"
-          ),
+          import("@/frontend/components/Models/AddToHangar/Notifications/Success/index.vue"),
         componentProps: {
           vehicle: vehicle,
         },
