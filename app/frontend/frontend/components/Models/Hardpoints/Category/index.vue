@@ -42,7 +42,7 @@ defineProps<Props>();
 
 const { t } = useI18n();
 
-const modelSlug = inject<ComputedRef<string>>("modelSlug");
+const modelSlug = inject<ComputedRef<string> | undefined>("modelSlug", undefined);
 
 const cargoGridsRoute = computed(() => ({
   name: "cargo-grids",

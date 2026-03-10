@@ -13,7 +13,6 @@ import { useI18n } from "@/shared/composables/useI18n";
 import {
   type Model,
   type Hardpoint,
-  HardpointSourceEnum,
   HardpointGroupEnum,
   modelHardpoints as fetchModelHardpoints,
 } from "@/services/fyApi";
@@ -64,8 +63,8 @@ watch(
 );
 
 onMounted(async () => {
-  await fetch();
   setupVisibles();
+  await fetch();
 });
 
 const fetch = async () => {
@@ -77,11 +76,7 @@ const fetch = async () => {
 };
 
 const fetchHardpoints = async (model: Model) => {
-  const hardpoints = await fetchModelHardpoints(model.slug, {
-    source: model.scIdentifier
-      ? HardpointSourceEnum.GAME_FILES
-      : HardpointSourceEnum.SHIP_MATRIX,
-  });
+  const hardpoints = await fetchModelHardpoints(model.slug);
 
   return {
     slug: model.slug,

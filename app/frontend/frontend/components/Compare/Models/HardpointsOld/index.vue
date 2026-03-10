@@ -12,7 +12,6 @@ import HardpointGroup from "@/frontend/components/Models/Hardpoints/old/Group/in
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   modelHardpoints as fetchModelHardpoints,
-  HardpointSourceEnum,
   ModelHardpointGroupEnum,
   type Model,
   type ModelHardpoint,
@@ -58,8 +57,8 @@ watch(
 );
 
 onMounted(async () => {
-  await fetch();
   setupVisibles();
+  await fetch();
 });
 
 const fetch = async () => {
@@ -71,11 +70,7 @@ const fetch = async () => {
 };
 
 const fetchHardpoints = async (model: Model) => {
-  const hardpoints = await fetchModelHardpoints(model.slug, {
-    source: model.scIdentifier
-      ? HardpointSourceEnum.GAME_FILES
-      : HardpointSourceEnum.SHIP_MATRIX,
-  });
+  const hardpoints = await fetchModelHardpoints(model.slug);
 
   return {
     slug: model.slug,
