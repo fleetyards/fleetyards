@@ -68,18 +68,23 @@ test.describe("Cargo Grids", () => {
     const option = page.getByText("Caterpillar").first();
     await option.click();
 
+    // Wait for model to load and cargo grid viewer to appear
+    await expect(page.locator(".cargo-grid-viewer")).toBeVisible();
+
     // At least one container input should have a value > 0 after greedy fill
-    const containerFields = page.locator(".container-field input");
-    const count = await containerFields.count();
-    let hasNonZero = false;
-    for (let i = 0; i < count; i++) {
-      const value = await containerFields.nth(i).inputValue();
-      if (Number(value) > 0) {
-        hasNonZero = true;
-        break;
+    await expect(async () => {
+      const containerFields = page.locator(".container-field input");
+      const count = await containerFields.count();
+      let hasNonZero = false;
+      for (let i = 0; i < count; i++) {
+        const value = await containerFields.nth(i).inputValue();
+        if (Number(value) > 0) {
+          hasNonZero = true;
+          break;
+        }
       }
-    }
-    expect(hasNonZero).toBe(true);
+      expect(hasNonZero).toBe(true);
+    }).toPass();
   });
 
   test("Clears container counts", async ({ page }) => {
@@ -101,14 +106,11 @@ test.describe("Cargo Grids", () => {
   });
 
   test("Shows message when model has no cargo holds", async ({ page }) => {
-    const filterGroup = page.locator(".filter-group").first();
-    await filterGroup.locator(".filter-group-title").click();
-    await filterGroup.locator("input").first().fill("Aurora");
+    // Navigate directly via URL since the filter excludes models without cargo grids
+    await page.goto("/tools/cargo-grids/?ship=aurora-mr");
+    await page.waitForLoadState("networkidle");
 
-    const option = page.getByText("Aurora MR").first();
-    await option.click();
-
-    // Should show the no-cargo-holds message
+    // Should show the no-cargo-holds message, not the viewer
     await expect(page.locator(".cargo-grid-viewer")).not.toBeVisible();
   });
 

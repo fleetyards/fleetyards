@@ -57,7 +57,7 @@ test.describe("Admin Features", () => {
     const toggleBtn = page
       .locator(".list-group__item")
       .first()
-      .locator(".list-group__actions .btn")
+      .locator(".list-group__actions .panel-btn")
       .first();
     await toggleBtn.click();
 
@@ -104,7 +104,7 @@ test.describe("Admin Features", () => {
     const selfServiceBtn = page
       .locator(".edit-section")
       .first()
-      .locator(".btn")
+      .locator(".panel-btn")
       .first();
     await selfServiceBtn.click();
 
@@ -127,7 +127,7 @@ test.describe("Admin Features", () => {
     await editBtn.click();
 
     // Click the "testers" group add button
-    const addGroupBtn = page.locator(".edit-groups .btn").filter({
+    const addGroupBtn = page.locator(".edit-groups .panel-btn").filter({
       hasText: "testers",
     });
     await addGroupBtn.click();
