@@ -4287,6 +4287,15 @@ components:
       required:
       - meta
       title: BaseList
+    BoughtViaEnum:
+      type: string
+      enum:
+      - pledge_store
+      - ingame
+      x-enumNames:
+      - PLEDGE_STORE
+      - INGAME
+      title: BoughtViaEnum
     CargoHold:
       type: object
       properties:
@@ -4372,6 +4381,43 @@ components:
       - dimensions
       - capacity
       title: CargoHoldLimit
+    ChannelsEnum:
+      type: string
+      enum:
+      - AppVersionChannel
+      - FleetMembersChannel
+      - FleetVehiclesChannel
+      - HangarChannel
+      - HangarCreateChannel
+      - HangarDestroyChannel
+      - ImportsChannel
+      - ModelsChannel
+      - NotificationsChannel
+      - OnSaleChannel
+      - OnSaleHangarChannel
+      - RoadmapChannel
+      - UserNotificationsChannel
+      - WishlistChannel
+      - WishlistCreateChannel
+      - WishlistDestroyChannel
+      x-enumNames:
+      - APP_VERSION_CHANNEL
+      - FLEET_MEMBERS_CHANNEL
+      - FLEET_VEHICLES_CHANNEL
+      - HANGAR_CHANNEL
+      - HANGAR_CREATE_CHANNEL
+      - HANGAR_DESTROY_CHANNEL
+      - IMPORTS_CHANNEL
+      - MODELS_CHANNEL
+      - NOTIFICATIONS_CHANNEL
+      - ON_SALE_CHANNEL
+      - ON_SALE_HANGAR_CHANNEL
+      - ROADMAP_CHANNEL
+      - USER_NOTIFICATIONS_CHANNEL
+      - WISHLIST_CHANNEL
+      - WISHLIST_CREATE_CHANNEL
+      - WISHLIST_DESTROY_CHANNEL
+      title: ChannelsEnum
     Check:
       type: object
       properties:
@@ -4381,6 +4427,15 @@ components:
       required:
       - taken
       title: Check
+    CheckInput:
+      type: object
+      properties:
+        value:
+          type: string
+      additionalProperties: false
+      required:
+      - value
+      title: CheckInput
     Component:
       type: object
       properties:
@@ -4467,6 +4522,36 @@ components:
       - createdAt
       - updatedAt
       title: Component
+    ComponentClassEnum:
+      type: string
+      enum:
+      - RSIModular
+      - RSIWeapon
+      - RSIAvionic
+      - RSIPropulsion
+      - RSIThruster
+      x-enumNames:
+      - RSI_MODULAR
+      - RSI_WEAPON
+      - RSI_AVIONIC
+      - RSI_PROPULSION
+      - RSI_THRUSTER
+      title: ComponentClassEnum
+    ComponentItemClassEnum:
+      type: string
+      enum:
+      - stealth
+      - civilian
+      - industrial
+      - military
+      - competition
+      x-enumNames:
+      - STEALTH
+      - CIVILIAN
+      - INDUSTRIAL
+      - MILITARY
+      - COMPETITION
+      title: ComponentItemClassEnum
     ComponentQuantumDrive:
       type: object
       properties:
@@ -4523,137 +4608,6 @@ components:
       - thrusterType
       - fuelBurnRatePer10KNewton
       title: ComponentThruster
-    Components:
-      type: object
-      properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
-        items:
-          type: array
-          items:
-            "$ref": "#/components/schemas/Component"
-      additionalProperties: false
-      required:
-      - meta
-      - items
-      title: Components
-    Dock:
-      type: object
-      properties:
-        name:
-          type: string
-        group:
-          type: string
-        size:
-          "$ref": "#/components/schemas/DockShipSizeEnum"
-        sizeLabel:
-          type: string
-        type:
-          "$ref": "#/components/schemas/DockTypeEnum"
-        typeLabel:
-          type: string
-      additionalProperties: false
-      required:
-      - name
-      - size
-      - sizeLabel
-      - type
-      - typeLabel
-      title: Dock
-    DockCount:
-      type: object
-      properties:
-        count:
-          type: integer
-        size:
-          type: string
-        type:
-          type: string
-        typeLabel:
-          type: string
-      additionalProperties: false
-      required:
-      - size
-      - count
-      - type
-      - typeLabel
-      title: DockCount
-    BoughtViaEnum:
-      type: string
-      enum:
-      - pledge_store
-      - ingame
-      x-enumNames:
-      - PLEDGE_STORE
-      - INGAME
-      title: BoughtViaEnum
-    ChannelsEnum:
-      type: string
-      enum:
-      - AppVersionChannel
-      - FleetMembersChannel
-      - FleetVehiclesChannel
-      - HangarChannel
-      - HangarCreateChannel
-      - HangarDestroyChannel
-      - ImportsChannel
-      - ModelsChannel
-      - NotificationsChannel
-      - OnSaleChannel
-      - OnSaleHangarChannel
-      - RoadmapChannel
-      - UserNotificationsChannel
-      - WishlistChannel
-      - WishlistCreateChannel
-      - WishlistDestroyChannel
-      x-enumNames:
-      - APP_VERSION_CHANNEL
-      - FLEET_MEMBERS_CHANNEL
-      - FLEET_VEHICLES_CHANNEL
-      - HANGAR_CHANNEL
-      - HANGAR_CREATE_CHANNEL
-      - HANGAR_DESTROY_CHANNEL
-      - IMPORTS_CHANNEL
-      - MODELS_CHANNEL
-      - NOTIFICATIONS_CHANNEL
-      - ON_SALE_CHANNEL
-      - ON_SALE_HANGAR_CHANNEL
-      - ROADMAP_CHANNEL
-      - USER_NOTIFICATIONS_CHANNEL
-      - WISHLIST_CHANNEL
-      - WISHLIST_CREATE_CHANNEL
-      - WISHLIST_DESTROY_CHANNEL
-      title: ChannelsEnum
-    ComponentClassEnum:
-      type: string
-      enum:
-      - RSIModular
-      - RSIWeapon
-      - RSIAvionic
-      - RSIPropulsion
-      - RSIThruster
-      x-enumNames:
-      - RSI_MODULAR
-      - RSI_WEAPON
-      - RSI_AVIONIC
-      - RSI_PROPULSION
-      - RSI_THRUSTER
-      title: ComponentClassEnum
-    ComponentItemClassEnum:
-      type: string
-      enum:
-      - stealth
-      - civilian
-      - industrial
-      - military
-      - competition
-      x-enumNames:
-      - STEALTH
-      - CIVILIAN
-      - INDUSTRIAL
-      - MILITARY
-      - COMPETITION
-      title: ComponentItemClassEnum
     ComponentTypeEnum:
       type: string
       enum:
@@ -4805,6 +4759,61 @@ components:
       - SALVAGE_FIELD_SUPPORTER
       - SALVAGE_INTERNAL_STORAGE
       title: ComponentTypeEnum
+    Components:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Component"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: Components
+    Dock:
+      type: object
+      properties:
+        name:
+          type: string
+        group:
+          type: string
+        size:
+          "$ref": "#/components/schemas/DockShipSizeEnum"
+        sizeLabel:
+          type: string
+        type:
+          "$ref": "#/components/schemas/DockTypeEnum"
+        typeLabel:
+          type: string
+      additionalProperties: false
+      required:
+      - name
+      - size
+      - sizeLabel
+      - type
+      - typeLabel
+      title: Dock
+    DockCount:
+      type: object
+      properties:
+        count:
+          type: integer
+        size:
+          type: string
+        type:
+          type: string
+        typeLabel:
+          type: string
+      additionalProperties: false
+      required:
+      - size
+      - count
+      - type
+      - typeLabel
+      title: DockCount
     DockShipSizeEnum:
       type: string
       enum:
@@ -4839,6 +4848,95 @@ components:
       - DOCKINGPORT
       - HANGAR
       title: DockTypeEnum
+    Equipment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        availability:
+          type: object
+          properties:
+            boughtAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ItemPrice"
+            soldAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ItemPrice"
+          additionalProperties: false
+          required:
+          - boughtAt
+          - soldAt
+        backpackCompatibility:
+          type: string
+        coreCompatibility:
+          type: string
+        damageReduction:
+          type: string
+        description:
+          type: string
+        extras:
+          type: string
+        grade:
+          type: string
+        itemType:
+          type: string
+        itemTypeLabel:
+          type: string
+        manufacturer:
+          "$ref": "#/components/schemas/Manufacturer"
+        media:
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaFile"
+          additionalProperties: false
+        range:
+          type: string
+        rateOfFire:
+          type: string
+        size:
+          type: string
+        slot:
+          type: string
+        slotLabel:
+          type: string
+        storage:
+          type: string
+        temperatureRating:
+          type: string
+        type:
+          type: string
+        typeLabel:
+          type: string
+        volume:
+          type: string
+        weaponClass:
+          type: string
+        weaponClassLabel:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - availability
+      - media
+      - createdAt
+      - updatedAt
+      title: Equipment
     EquipmentTypeEnum:
       type: string
       enum:
@@ -4860,6 +4958,43 @@ components:
       - WEAPON_ATTACHMENT
       - HACKING_TOOL
       title: EquipmentTypeEnum
+    FieldError:
+      type: object
+      properties:
+        attribute:
+          type: string
+        messages:
+          type: array
+          items:
+            "$ref": "#/components/schemas/StandardError"
+      additionalProperties: false
+      required:
+      - attribute
+      - messages
+      title: FieldError
+    FilterOption:
+      type: object
+      properties:
+        category:
+          type: string
+        icon:
+          type: string
+        label:
+          type: string
+        value:
+          anyOf:
+          - type: string
+            nullable: true
+          - type: number
+            nullable: true
+        name:
+          type: string
+          deprecated: true
+      additionalProperties: false
+      required:
+      - label
+      - value
+      title: FilterOption
     FleetMembershipShipsFilterEnum:
       type: string
       enum:
@@ -4871,6 +5006,31 @@ components:
       - HANGAR_GROUP
       - HIDE
       title: FleetMembershipShipsFilterEnum
+    FleetMembershipSortEnum:
+      type: string
+      enum:
+      - rsiHandle asc
+      - rsiHandle desc
+      - username asc
+      - username desc
+      - createdAt asc
+      - createdAt desc
+      - acceptedAt asc
+      - acceptedAt desc
+      - lastActiveAt asc
+      - lastActiveAt desc
+      x-enumNames:
+      - RSI_HANDLE_ASC
+      - RSI_HANDLE_DESC
+      - USERNAME_ASC
+      - USERNAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - ACCEPTED_AT_ASC
+      - ACCEPTED_AT_DESC
+      - LAST_ACTIVE_AT_ASC
+      - LAST_ACTIVE_AT_DESC
+      title: FleetMembershipSortEnum
     FleetMembershipStatusEnum:
       type: string
       enum:
@@ -4886,6 +5046,51 @@ components:
       - ACCEPTED
       - DECLINED
       title: FleetMembershipStatusEnum
+    FleetVehicleSortEnum:
+      type: string
+      enum:
+      - modelName asc
+      - modelName desc
+      - createdAt asc
+      - createdAt desc
+      - updatedAt asc
+      - updatedAt desc
+      x-enumNames:
+      - MODEL_NAME_ASC
+      - MODEL_NAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - UPDATED_AT_ASC
+      - UPDATED_AT_DESC
+      title: FleetVehicleSortEnum
+    FuelTank:
+      type: object
+      properties:
+        capacity:
+          type: number
+      additionalProperties: false
+      required:
+      - capacity
+      title: FuelTank
+    Gallery:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - type
+      - name
+      - slug
+      title: Gallery
     GalleryTypeEnum:
       type: string
       enum:
@@ -4897,6 +5102,53 @@ components:
       - STATION
       - ALBUM
       title: GalleryTypeEnum
+    Hardpoint:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        group:
+          "$ref": "#/components/schemas/HardpointGroupEnum"
+        groupKey:
+          type: string
+        matrixKey:
+          type: string
+        category:
+          "$ref": "#/components/schemas/HardpointCategoryEnum"
+        name:
+          type: string
+        minSize:
+          type: integer
+        maxSize:
+          type: integer
+        source:
+          "$ref": "#/components/schemas/HardpointSourceEnum"
+        types:
+          type: array
+          items:
+            type: string
+        details:
+          type: string
+        component:
+          "$ref": "#/components/schemas/Component"
+        hardpoints:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Hardpoint"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - createdAt
+      - updatedAt
+      title: Hardpoint
     HardpointCategoryEnum:
       type: string
       enum:
@@ -5083,6 +5335,54 @@ components:
       - SELL
       - RENTAL
       title: ItemPriceTypeEnum
+    MediaFile:
+      type: object
+      properties:
+        name:
+          type: string
+        contentType:
+          type: string
+        size:
+          type: integer
+        url:
+          type: string
+          format: uri
+        smallUrl:
+          type: string
+          format: uri
+        mediumUrl:
+          type: string
+          format: uri
+        largeUrl:
+          type: string
+          format: uri
+        xlargeUrl:
+          type: string
+          format: uri
+        previewUrl:
+          type: string
+          format: uri
+        width:
+          type: integer
+        height:
+          type: integer
+        uploadedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - name
+      - contentType
+      - size
+      - url
+      title: MediaFile
+    Meta:
+      type: object
+      properties:
+        pagination:
+          "$ref": "#/components/schemas/Pagination"
+      additionalProperties: false
+      title: Meta
     ModelHardpointCategoryEnum:
       type: string
       enum:
@@ -5226,440 +5526,6 @@ components:
       - EMP
       - UTILITY_ITEMS
       title: ModelHardpointTypeEnum
-    ModelProductionStatusEnum:
-      type: string
-      enum:
-      - in-concept
-      - in-production
-      - flight-ready
-      x-enumNames:
-      - IN_CONCEPT
-      - IN_PRODUCTION
-      - FLIGHT_READY
-      title: ModelProductionStatusEnum
-    OrderDirectionEnum:
-      type: string
-      enum:
-      - asc
-      - desc
-      x-enumNames:
-      - ASC
-      - DESC
-      title: OrderDirectionEnum
-    RsiHangarItemKindEnum:
-      type: string
-      enum:
-      - ship
-      - component
-      - upgrade
-      - skin
-      x-enumNames:
-      - SHIP
-      - COMPONENT
-      - UPGRADE
-      - SKIN
-      title: RsiHangarItemKindEnum
-    ThrusterClassEnum:
-      type: string
-      enum:
-      - main
-      - retro
-      - vtol
-      - mav
-      x-enumNames:
-      - MAIN
-      - RETRO
-      - VTOL
-      - MAV
-      title: ThrusterClassEnum
-    VideoTypeEnum:
-      type: string
-      enum:
-      - youtube
-      x-enumNames:
-      - YOUTUBE
-      title: VideoTypeEnum
-    Equipment:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        slug:
-          type: string
-        availability:
-          type: object
-          properties:
-            boughtAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ItemPrice"
-            soldAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ItemPrice"
-          additionalProperties: false
-          required:
-          - boughtAt
-          - soldAt
-        backpackCompatibility:
-          type: string
-        coreCompatibility:
-          type: string
-        damageReduction:
-          type: string
-        description:
-          type: string
-        extras:
-          type: string
-        grade:
-          type: string
-        itemType:
-          type: string
-        itemTypeLabel:
-          type: string
-        manufacturer:
-          "$ref": "#/components/schemas/Manufacturer"
-        media:
-          type: object
-          properties:
-            storeImage:
-              "$ref": "#/components/schemas/MediaFile"
-          additionalProperties: false
-        range:
-          type: string
-        rateOfFire:
-          type: string
-        size:
-          type: string
-        slot:
-          type: string
-        slotLabel:
-          type: string
-        storage:
-          type: string
-        temperatureRating:
-          type: string
-        type:
-          type: string
-        typeLabel:
-          type: string
-        volume:
-          type: string
-        weaponClass:
-          type: string
-        weaponClassLabel:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-      additionalProperties: false
-      required:
-      - id
-      - name
-      - slug
-      - availability
-      - media
-      - createdAt
-      - updatedAt
-      title: Equipment
-    FieldError:
-      type: object
-      properties:
-        attribute:
-          type: string
-        messages:
-          type: array
-          items:
-            "$ref": "#/components/schemas/StandardError"
-      additionalProperties: false
-      required:
-      - attribute
-      - messages
-      title: FieldError
-    FilterOption:
-      type: object
-      properties:
-        category:
-          type: string
-        icon:
-          type: string
-        label:
-          type: string
-        value:
-          anyOf:
-          - type: string
-            nullable: true
-          - type: number
-            nullable: true
-        name:
-          type: string
-          deprecated: true
-      additionalProperties: false
-      required:
-      - label
-      - value
-      title: FilterOption
-    FuelTank:
-      type: object
-      properties:
-        capacity:
-          type: number
-      additionalProperties: false
-      required:
-      - capacity
-      title: FuelTank
-    Gallery:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        type:
-          type: string
-        name:
-          type: string
-        slug:
-          type: string
-      additionalProperties: false
-      required:
-      - id
-      - type
-      - name
-      - slug
-      title: Gallery
-    Hardpoint:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        group:
-          "$ref": "#/components/schemas/HardpointGroupEnum"
-        groupKey:
-          type: string
-        matrixKey:
-          type: string
-        category:
-          "$ref": "#/components/schemas/HardpointCategoryEnum"
-        name:
-          type: string
-        minSize:
-          type: integer
-        maxSize:
-          type: integer
-        source:
-          "$ref": "#/components/schemas/HardpointSourceEnum"
-        types:
-          type: array
-          items:
-            type: string
-        details:
-          type: string
-        component:
-          "$ref": "#/components/schemas/Component"
-        hardpoints:
-          type: array
-          items:
-            "$ref": "#/components/schemas/Hardpoint"
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-      additionalProperties: false
-      required:
-      - id
-      - name
-      - createdAt
-      - updatedAt
-      title: Hardpoint
-    CheckInput:
-      type: object
-      properties:
-        value:
-          type: string
-      additionalProperties: false
-      required:
-      - value
-      title: CheckInput
-    SetupOtpInput:
-      type: object
-      properties:
-        otpCode:
-          type: string
-      additionalProperties: false
-      title: SetupOtpInput
-    MediaFile:
-      type: object
-      properties:
-        name:
-          type: string
-        contentType:
-          type: string
-        size:
-          type: integer
-        url:
-          type: string
-          format: uri
-        smallUrl:
-          type: string
-          format: uri
-        mediumUrl:
-          type: string
-          format: uri
-        largeUrl:
-          type: string
-          format: uri
-        xlargeUrl:
-          type: string
-          format: uri
-        previewUrl:
-          type: string
-          format: uri
-        width:
-          type: integer
-        height:
-          type: integer
-        uploadedAt:
-          type: string
-          format: date-time
-      additionalProperties: false
-      required:
-      - name
-      - contentType
-      - size
-      - url
-      title: MediaFile
-    Meta:
-      type: object
-      properties:
-        pagination:
-          "$ref": "#/components/schemas/Pagination"
-      additionalProperties: false
-      title: Meta
-    OtpBackupCodes:
-      type: object
-      properties:
-        codes:
-          type: array
-          items:
-            type: string
-          additionalProperties: false
-      additionalProperties: false
-      required:
-      - codes
-      title: OtpBackupCodes
-    Pagination:
-      type: object
-      properties:
-        totalCount:
-          type: integer
-        currentPage:
-          type: integer
-        totalPages:
-          type: integer
-        perPage:
-          type: integer
-        defaultPerPage:
-          type: integer
-        maxPerPage:
-          type: integer
-        perPageSteps:
-          type: array
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-      additionalProperties: false
-      required:
-      - currentPage
-      - totalPages
-      - totalCount
-      - perPage
-      title: Pagination
-    PieChartStats:
-      type: object
-      properties:
-        name:
-          type: string
-        "y":
-          type: integer
-        selected:
-          type: boolean
-        sliced:
-          type: boolean
-      additionalProperties: false
-      required:
-      - name
-      - "y"
-      - selected
-      - sliced
-      title: PieChartStats
-    ScDataVersion:
-      type: object
-      properties:
-        version:
-          type: string
-      additionalProperties: false
-      required:
-      - version
-      title: ScDataVersion
-    Session:
-      type: object
-      properties:
-        pagination:
-          "$ref": "#/components/schemas/Pagination"
-      additionalProperties: false
-      title: Session
-    FleetMembershipSortEnum:
-      type: string
-      enum:
-      - rsiHandle asc
-      - rsiHandle desc
-      - username asc
-      - username desc
-      - createdAt asc
-      - createdAt desc
-      - acceptedAt asc
-      - acceptedAt desc
-      - lastActiveAt asc
-      - lastActiveAt desc
-      x-enumNames:
-      - RSI_HANDLE_ASC
-      - RSI_HANDLE_DESC
-      - USERNAME_ASC
-      - USERNAME_DESC
-      - CREATED_AT_ASC
-      - CREATED_AT_DESC
-      - ACCEPTED_AT_ASC
-      - ACCEPTED_AT_DESC
-      - LAST_ACTIVE_AT_ASC
-      - LAST_ACTIVE_AT_DESC
-      title: FleetMembershipSortEnum
-    FleetVehicleSortEnum:
-      type: string
-      enum:
-      - modelName asc
-      - modelName desc
-      - createdAt asc
-      - createdAt desc
-      - updatedAt asc
-      - updatedAt desc
-      x-enumNames:
-      - MODEL_NAME_ASC
-      - MODEL_NAME_DESC
-      - CREATED_AT_ASC
-      - CREATED_AT_DESC
-      - UPDATED_AT_ASC
-      - UPDATED_AT_DESC
-      title: FleetVehicleSortEnum
     ModelPaintSortEnum:
       type: string
       enum:
@@ -5681,6 +5547,17 @@ components:
       - MODEL_SLUG_ASC
       - MODEL_SLUG_DESC
       title: ModelPaintSortEnum
+    ModelProductionStatusEnum:
+      type: string
+      enum:
+      - in-concept
+      - in-production
+      - flight-ready
+      x-enumNames:
+      - IN_CONCEPT
+      - IN_PRODUCTION
+      - FLIGHT_READY
+      title: ModelProductionStatusEnum
     ModelSortEnum:
       type: string
       enum:
@@ -5750,6 +5627,146 @@ components:
       - RSI_ID_ASC
       - RSI_ID_DESC
       title: ModelSortEnum
+    OrderDirectionEnum:
+      type: string
+      enum:
+      - asc
+      - desc
+      x-enumNames:
+      - ASC
+      - DESC
+      title: OrderDirectionEnum
+    OtpBackupCodes:
+      type: object
+      properties:
+        codes:
+          type: array
+          items:
+            type: string
+          additionalProperties: false
+      additionalProperties: false
+      required:
+      - codes
+      title: OtpBackupCodes
+    Pagination:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+        currentPage:
+          type: integer
+        totalPages:
+          type: integer
+        perPage:
+          type: integer
+        defaultPerPage:
+          type: integer
+        maxPerPage:
+          type: integer
+        perPageSteps:
+          type: array
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+      additionalProperties: false
+      required:
+      - currentPage
+      - totalPages
+      - totalCount
+      - perPage
+      title: Pagination
+    PieChartStats:
+      type: object
+      properties:
+        name:
+          type: string
+        "y":
+          type: integer
+        selected:
+          type: boolean
+        sliced:
+          type: boolean
+      additionalProperties: false
+      required:
+      - name
+      - "y"
+      - selected
+      - sliced
+      title: PieChartStats
+    RsiHangarItemKindEnum:
+      type: string
+      enum:
+      - ship
+      - component
+      - upgrade
+      - skin
+      x-enumNames:
+      - SHIP
+      - COMPONENT
+      - UPGRADE
+      - SKIN
+      title: RsiHangarItemKindEnum
+    ScDataVersion:
+      type: object
+      properties:
+        version:
+          type: string
+      additionalProperties: false
+      required:
+      - version
+      title: ScDataVersion
+    Session:
+      type: object
+      properties:
+        pagination:
+          "$ref": "#/components/schemas/Pagination"
+      additionalProperties: false
+      title: Session
+    SetupOtpInput:
+      type: object
+      properties:
+        otpCode:
+          type: string
+      additionalProperties: false
+      title: SetupOtpInput
+    StandardError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      additionalProperties: false
+      required:
+      - code
+      - message
+      title: StandardError
+    StandardMessage:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      additionalProperties: false
+      required:
+      - code
+      - message
+      title: StandardMessage
+    ThrusterClassEnum:
+      type: string
+      enum:
+      - main
+      - retro
+      - vtol
+      - mav
+      x-enumNames:
+      - MAIN
+      - RETRO
+      - VTOL
+      - MAV
+      title: ThrusterClassEnum
     UserSortEnum:
       type: string
       enum:
@@ -5775,6 +5792,22 @@ components:
       - LAST_SIGN_IN_AT_ASC
       - LAST_SIGN_IN_AT_DESC
       title: UserSortEnum
+    ValidationError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        errors:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FieldError"
+      additionalProperties: false
+      required:
+      - code
+      - message
+      title: ValidationError
     VehicleSortEnum:
       type: string
       enum:
@@ -5852,46 +5885,6 @@ components:
       - MODEL_FOCUS_ASC
       - MODEL_FOCUS_DESC
       title: VehicleSortEnum
-    StandardError:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-      additionalProperties: false
-      required:
-      - code
-      - message
-      title: StandardError
-    StandardMessage:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-      additionalProperties: false
-      required:
-      - code
-      - message
-      title: StandardMessage
-    ValidationError:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        errors:
-          type: array
-          items:
-            "$ref": "#/components/schemas/FieldError"
-      additionalProperties: false
-      required:
-      - code
-      - message
-      title: ValidationError
     Version:
       type: object
       properties:
@@ -5904,6 +5897,81 @@ components:
       - version
       - codename
       title: Version
+    VideoTypeEnum:
+      type: string
+      enum:
+      - youtube
+      x-enumNames:
+      - YOUTUBE
+      title: VideoTypeEnum
+    AccountUpdateInput:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+      additionalProperties: false
+      title: AccountUpdateInput
+    ComponentQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        idIn:
+          type: array
+          items:
+            type: string
+            format: uuid
+        nameIn:
+          type: array
+          items:
+            type: string
+        itemTypeIn:
+          type: array
+          items:
+            type: string
+        componentClassIn:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      title: ComponentQuery
+    ConfirmAccessInput:
+      type: object
+      properties:
+        password:
+          type: string
+      additionalProperties: false
+      required:
+      - password
+      title: ConfirmAccessInput
+    ConfirmAccountInput:
+      type: object
+      properties:
+        token:
+          type: string
+      additionalProperties: false
+      required:
+      - token
+      title: ConfirmAccountInput
+    EquipmentQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        idIn:
+          type: array
+          items:
+            type: string
+            format: uuid
+        nameIn:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      title: EquipmentQuery
     Fleet:
       type: object
       properties:
@@ -5959,6 +6027,45 @@ components:
       - createdAt
       - updatedAt
       title: Fleet
+    FleetCheckInput:
+      type: object
+      properties:
+        fid:
+          type: string
+      additionalProperties: false
+      title: FleetCheckInput
+    FleetCreateInput:
+      type: object
+      properties:
+        fid:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        publicFleet:
+          type: boolean
+        publicFleetStats:
+          type: boolean
+        homepage:
+          type: string
+        rsiSid:
+          type: string
+        discord:
+          type: string
+        ts:
+          type: string
+        youtube:
+          type: string
+        twitch:
+          type: string
+        guilded:
+          type: string
+      additionalProperties: false
+      required:
+      - fid
+      - name
+      title: FleetCreateInput
     FleetInviteUrl:
       type: object
       properties:
@@ -5994,6 +6101,17 @@ components:
       - createdAt
       - updatedAt
       title: FleetInviteUrl
+    FleetInviteUrlCreateInput:
+      type: object
+      properties:
+        limit:
+          type: integer
+          nullable: true
+        expiresAfterMinutes:
+          type: integer
+          nullable: true
+      additionalProperties: false
+      title: FleetInviteUrlCreateInput
     FleetMember:
       type: object
       properties:
@@ -6078,6 +6196,62 @@ components:
       - createdAt
       - updatedAt
       title: FleetMember
+    FleetMemberCreateInput:
+      type: object
+      properties:
+        username:
+          type: string
+      additionalProperties: false
+      title: FleetMemberCreateInput
+    FleetMemberQuery:
+      type: object
+      properties:
+        usernameCont:
+          type: string
+        nameCont:
+          type: string
+          deprecated: true
+          description: Use usernameCont instead
+        roleIn:
+          type: array
+          items:
+            type: string
+        stateIn:
+          type: array
+          items:
+            type: string
+        acceptedAtGteq:
+          type: string
+          format: date
+        acceptedAtLteq:
+          type: string
+          format: date
+        invitedAtGteq:
+          type: string
+          format: date
+        invitedAtLteq:
+          type: string
+          format: date
+        requestedAtGteq:
+          type: string
+          format: date
+        requestedAtLteq:
+          type: string
+          format: date
+        declinedAtGteq:
+          type: string
+          format: date
+        declinedAtLteq:
+          type: string
+          format: date
+        sorts:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/FleetMembershipSortEnum"
+          - "$ref": "#/components/schemas/FleetMembershipSortEnum"
+      additionalProperties: false
+      title: FleetMemberQuery
     FleetMembersList:
       type: object
       properties:
@@ -6125,6 +6299,25 @@ components:
       required:
       - total
       title: FleetMembersStatsPublic
+    FleetMembershipCreateInput:
+      type: object
+      properties:
+        token:
+          type: string
+      additionalProperties: false
+      title: FleetMembershipCreateInput
+    FleetMembershipUpdateInput:
+      type: object
+      properties:
+        primary:
+          type: boolean
+        shipsFilter:
+          "$ref": "#/components/schemas/FleetMembershipShipsFilterEnum"
+        hangarGroupId:
+          type: string
+          nullable: true
+      additionalProperties: false
+      title: FleetMembershipUpdateInput
     FleetModelCountsStats:
       type: object
       properties:
@@ -6205,6 +6398,44 @@ components:
       - createdAt
       - updatedAt
       title: FleetRoleExtended
+    FleetUpdateInput:
+      type: object
+      properties:
+        fid:
+          type: string
+        name:
+          type: string
+        logo:
+          type: string
+        removeLogo:
+          type: boolean
+        backgroundImage:
+          type: string
+          format: binary
+        removeBackground:
+          type: boolean
+        description:
+          type: string
+        publicFleet:
+          type: boolean
+        publicFleetStats:
+          type: boolean
+        homepage:
+          type: string
+        rsiSid:
+          type: string
+        discord:
+          type: string
+        ts:
+          type: string
+        youtube:
+          type: string
+        twitch:
+          type: string
+        guilded:
+          type: string
+      additionalProperties: false
+      title: FleetUpdateInput
     FleetVehicleExport:
       type: object
       properties:
@@ -6270,6 +6501,83 @@ components:
       - modules
       - upgrades
       title: FleetVehicleExport
+    FleetVehicleQuery:
+      type: object
+      properties:
+        beamGteq:
+          type: number
+        beamLteq:
+          type: number
+        classificationIn:
+          type: array
+          items:
+            type: string
+        focusIn:
+          type: array
+          items:
+            type: string
+        heightGteq:
+          type: number
+        heightLteq:
+          type: number
+        lengthGteq:
+          type: number
+        lengthLteq:
+          type: number
+        manufacturerIn:
+          type: array
+          items:
+            type: string
+        onSaleEq:
+          type: boolean
+        pledgePriceGteq:
+          type: number
+        pledgePriceLteq:
+          type: number
+        pledgePriceIn:
+          type: array
+          items:
+            type: number
+        priceGteq:
+          type: number
+        priceLteq:
+          type: number
+        priceIn:
+          type: array
+          items:
+            type: number
+        productionStatusIn:
+          type: array
+          items:
+            type: string
+        searchCont:
+          type: string
+        sizeIn:
+          type: array
+          items:
+            type: string
+        modelSlugIn:
+          type: array
+          items:
+            type: string
+        modelNameCont:
+          type: string
+        modelNameOrModelDescriptionCont:
+          type: string
+        loanerEq:
+          type: boolean
+        memberIn:
+          type: array
+          items:
+            type: string
+        sorts:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/FleetVehicleSortEnum"
+          - "$ref": "#/components/schemas/FleetVehicleSortEnum"
+      additionalProperties: false
+      title: FleetVehicleQuery
     FleetVehicles:
       type: object
       properties:
@@ -6303,6 +6611,40 @@ components:
       - classifications
       - metrics
       title: FleetVehiclesStats
+    Hangar:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Vehicle"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: Hangar
+    HangarClassificationMetric:
+      type: object
+      properties:
+        name:
+          type: string
+        label:
+          type: string
+        count:
+          type: integer
+      additionalProperties: false
+      required:
+      - name
+      - label
+      - count
+      title: HangarClassificationMetric
+    HangarEmbedQuery:
+      type: array
+      items:
+        type: string
+      title: HangarEmbedQuery
     HangarGroup:
       type: object
       properties:
@@ -6337,6 +6679,24 @@ components:
       - createdAt
       - updatedAt
       title: HangarGroup
+    HangarGroupCreateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        color:
+          type: string
+        sort:
+          type: integer
+          nullable: true
+        public:
+          type: boolean
+          nullable: true
+      additionalProperties: false
+      required:
+      - name
+      - color
+      title: HangarGroupCreateInput
     HangarGroupMetric:
       type: object
       properties:
@@ -6384,35 +6744,33 @@ components:
       - createdAt
       - updatedAt
       title: HangarGroupPublic
-    Hangar:
+    HangarGroupSortInput:
       type: object
       properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
-        items:
+        sorting:
           type: array
           items:
-            "$ref": "#/components/schemas/Vehicle"
-      additionalProperties: false
+            type: string
+            format: uuid
       required:
-      - meta
-      - items
-      title: Hangar
-    HangarClassificationMetric:
+      - sorting
+      additionalProperties: false
+      title: HangarGroupSortInput
+    HangarGroupUpdateInput:
       type: object
       properties:
         name:
           type: string
-        label:
+        color:
           type: string
-        count:
+        sort:
           type: integer
+          nullable: true
+        public:
+          type: boolean
+          nullable: true
       additionalProperties: false
-      required:
-      - name
-      - label
-      - count
-      title: HangarClassificationMetric
+      title: HangarGroupUpdateInput
     HangarImportResult:
       type: object
       properties:
@@ -6467,6 +6825,108 @@ components:
       - meta
       - items
       title: HangarPublic
+    HangarQuery:
+      type: object
+      properties:
+        beamGteq:
+          type: number
+        beamLteq:
+          type: number
+        classificationIn:
+          type: array
+          items:
+            type: string
+        descriptionCont:
+          type: string
+        focusIn:
+          type: array
+          items:
+            type: string
+        heightGteq:
+          type: number
+        heightLteq:
+          type: number
+        idIn:
+          type: array
+          items:
+            type: string
+        idNotIn:
+          type: array
+          items:
+            type: string
+        lengthGteq:
+          type: number
+        lengthLteq:
+          type: number
+        manufacturerIn:
+          type: array
+          items:
+            type: string
+        nameCont:
+          type: string
+        nameIn:
+          type: array
+          items:
+            type: string
+        nameOrDescriptionCont:
+          type: string
+        onSaleEq:
+          type: boolean
+        pledgePriceGteq:
+          type: number
+        pledgePriceLteq:
+          type: number
+        pledgePriceIn:
+          type: array
+          items:
+            type: number
+        priceGteq:
+          type: number
+        priceLteq:
+          type: number
+        priceIn:
+          type: array
+          items:
+            type: number
+        productionStatusIn:
+          type: array
+          items:
+            type: string
+        searchCont:
+          type: string
+        sizeIn:
+          type: array
+          items:
+            type: string
+        modelNameOrModelDescriptionCont:
+          type: string
+        publicEq:
+          type: boolean
+        loanerEq:
+          type: boolean
+        boughtViaEq:
+          "$ref": "#/components/schemas/BoughtViaEnum"
+        hangarGroupsIn:
+          type: array
+          items:
+            type: string
+        hangarGroupsNotIn:
+          type: array
+          items:
+            type: string
+        willItFit:
+          type: string
+          format: uuid
+        withCargo:
+          type: boolean
+        sorts:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/VehicleSortEnum"
+          - "$ref": "#/components/schemas/VehicleSortEnum"
+      additionalProperties: false
+      title: HangarQuery
     HangarStats:
       type: object
       properties:
@@ -6646,6 +7106,19 @@ components:
       - createdAt
       - updatedAt
       title: Image
+    ImageQuery:
+      type: object
+      properties:
+        modelIn:
+          type: array
+          items:
+            type: string
+        stationIn:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      title: ImageQuery
     Images:
       type: object
       properties:
@@ -6660,193 +7133,6 @@ components:
       - meta
       - items
       title: Images
-    AccountUpdateInput:
-      type: object
-      properties:
-        username:
-          type: string
-        email:
-          type: string
-          format: email
-      additionalProperties: false
-      title: AccountUpdateInput
-    ConfirmAccessInput:
-      type: object
-      properties:
-        password:
-          type: string
-      additionalProperties: false
-      required:
-      - password
-      title: ConfirmAccessInput
-    ConfirmAccountInput:
-      type: object
-      properties:
-        token:
-          type: string
-      additionalProperties: false
-      required:
-      - token
-      title: ConfirmAccountInput
-    FleetCheckInput:
-      type: object
-      properties:
-        fid:
-          type: string
-      additionalProperties: false
-      title: FleetCheckInput
-    FleetCreateInput:
-      type: object
-      properties:
-        fid:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-        publicFleet:
-          type: boolean
-        publicFleetStats:
-          type: boolean
-        homepage:
-          type: string
-        rsiSid:
-          type: string
-        discord:
-          type: string
-        ts:
-          type: string
-        youtube:
-          type: string
-        twitch:
-          type: string
-        guilded:
-          type: string
-      additionalProperties: false
-      required:
-      - fid
-      - name
-      title: FleetCreateInput
-    FleetInviteUrlCreateInput:
-      type: object
-      properties:
-        limit:
-          type: integer
-          nullable: true
-        expiresAfterMinutes:
-          type: integer
-          nullable: true
-      additionalProperties: false
-      title: FleetInviteUrlCreateInput
-    FleetMemberCreateInput:
-      type: object
-      properties:
-        username:
-          type: string
-      additionalProperties: false
-      title: FleetMemberCreateInput
-    FleetMembershipCreateInput:
-      type: object
-      properties:
-        token:
-          type: string
-      additionalProperties: false
-      title: FleetMembershipCreateInput
-    FleetMembershipUpdateInput:
-      type: object
-      properties:
-        primary:
-          type: boolean
-        shipsFilter:
-          "$ref": "#/components/schemas/FleetMembershipShipsFilterEnum"
-        hangarGroupId:
-          type: string
-          nullable: true
-      additionalProperties: false
-      title: FleetMembershipUpdateInput
-    FleetUpdateInput:
-      type: object
-      properties:
-        fid:
-          type: string
-        name:
-          type: string
-        logo:
-          type: string
-        removeLogo:
-          type: boolean
-        backgroundImage:
-          type: string
-          format: binary
-        removeBackground:
-          type: boolean
-        description:
-          type: string
-        publicFleet:
-          type: boolean
-        publicFleetStats:
-          type: boolean
-        homepage:
-          type: string
-        rsiSid:
-          type: string
-        discord:
-          type: string
-        ts:
-          type: string
-        youtube:
-          type: string
-        twitch:
-          type: string
-        guilded:
-          type: string
-      additionalProperties: false
-      title: FleetUpdateInput
-    HangarGroupCreateInput:
-      type: object
-      properties:
-        name:
-          type: string
-        color:
-          type: string
-        sort:
-          type: integer
-          nullable: true
-        public:
-          type: boolean
-          nullable: true
-      additionalProperties: false
-      required:
-      - name
-      - color
-      title: HangarGroupCreateInput
-    HangarGroupSortInput:
-      type: object
-      properties:
-        sorting:
-          type: array
-          items:
-            type: string
-            format: uuid
-      required:
-      - sorting
-      additionalProperties: false
-      title: HangarGroupSortInput
-    HangarGroupUpdateInput:
-      type: object
-      properties:
-        name:
-          type: string
-        color:
-          type: string
-        sort:
-          type: integer
-          nullable: true
-        public:
-          type: boolean
-          nullable: true
-      additionalProperties: false
-      title: HangarGroupUpdateInput
     ImportInput:
       type: object
       properties:
@@ -6856,322 +7142,6 @@ components:
           type: string
       additionalProperties: false
       title: ImportInput
-    OauthApplicationInput:
-      type: object
-      properties:
-        name:
-          type: string
-        redirectUri:
-          type: string
-        confidential:
-          type: boolean
-        scopes:
-          type: array
-          items:
-            type: string
-      additionalProperties: false
-      required:
-      - name
-      - redirectUri
-      title: OauthApplicationInput
-    OauthApplicationUpdateInput:
-      type: object
-      properties:
-        name:
-          type: string
-        redirectUri:
-          type: string
-        confidential:
-          type: boolean
-        scopes:
-          type: array
-          items:
-            type: string
-      additionalProperties: false
-      title: OauthApplicationUpdateInput
-    PasswordInput:
-      type: object
-      properties:
-        currentPassword:
-          type: string
-        password:
-          type: string
-        passwordConfirmation:
-          type: string
-      additionalProperties: false
-      title: PasswordInput
-    PasswordRequestInput:
-      type: object
-      properties:
-        email:
-          type: string
-      additionalProperties: false
-      title: PasswordRequestInput
-    RsiHangarItemInput:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        customName:
-          type: string
-        type:
-          "$ref": "#/components/schemas/RsiHangarItemKindEnum"
-        image:
-          type: string
-          format: uri
-      additionalProperties: false
-      required:
-      - id
-      - name
-      - type
-      title: RsiHangarItemInput
-    SessionInput:
-      type: object
-      properties:
-        login:
-          type: string
-          description: Username or email
-        password:
-          type: string
-        rememberMe:
-          type: boolean
-        twoFactorCode:
-          type: string
-      additionalProperties: false
-      title: SessionInput
-    SyncRsiHangarInput:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            "$ref": "#/components/schemas/RsiHangarItemInput"
-      title: SyncRsiHangarInput
-    UserCreateInput:
-      type: object
-      properties:
-        username:
-          type: string
-        email:
-          type: string
-          format: email
-        password:
-          type: string
-        passwordConfirmation:
-          type: string
-        saleNotify:
-          type: boolean
-        fleetInviteToken:
-          type: string
-      additionalProperties: false
-      title: UserCreateInput
-    UserUpdateInput:
-      type: object
-      properties:
-        avatar:
-          type: string
-        removeAvatar:
-          type: boolean
-        rsiHandle:
-          type: string
-        homepage:
-          type: string
-        discord:
-          type: string
-        youtube:
-          type: string
-        guilded:
-          type: string
-        twitch:
-          type: string
-        saleNotify:
-          type: boolean
-        publicHangar:
-          type: boolean
-        publicHangarLoaners:
-          type: boolean
-        publicWishlist:
-          type: boolean
-        hideOwner:
-          type: boolean
-      additionalProperties: false
-      title: UserUpdateInput
-    VehicleCheckSerialInput:
-      type: object
-      properties:
-        serial:
-          type: string
-      additionalProperties: false
-      required:
-      - serial
-      title: VehicleCheckSerialInput
-    VehicleCreateBulkInput:
-      type: object
-      properties:
-        vehicles:
-          type: array
-          items:
-            type: object
-            properties:
-              modelId:
-                type: string
-                format: uuid
-              wanted:
-                type: boolean
-              public:
-                type: boolean
-            additionalProperties: false
-            required:
-            - modelId
-      additionalProperties: false
-      required:
-      - vehicles
-      title: VehicleCreateBulkInput
-    VehicleCreateInput:
-      type: object
-      properties:
-        modelId:
-          type: string
-          format: uuid
-        name:
-          type: string
-          nullable: true
-        serial:
-          type: string
-          nullable: true
-        wanted:
-          type: boolean
-          nullable: true
-        nameVisible:
-          type: boolean
-          nullable: true
-        public:
-          type: boolean
-          nullable: true
-        saleNotify:
-          type: boolean
-          nullable: true
-        flagship:
-          type: boolean
-          nullable: true
-        modelPaintId:
-          type: string
-          format: uuid
-          nullable: true
-        boughtVia:
-          "$ref": "#/components/schemas/BoughtViaEnum"
-          nullable: true
-        hangarGroupIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-          nullable: true
-        modelModuleIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-          nullable: true
-        modelUpgradeIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-          nullable: true
-        alternativeNames:
-          type: array
-          items:
-            type: string
-          nullable: true
-      additionalProperties: false
-      required:
-      - modelId
-      title: VehicleCreateInput
-    VehicleDestroyBulkInput:
-      type: object
-      properties:
-        ids:
-          type: array
-          items:
-            type: string
-            format: uuid
-      additionalProperties: false
-      required:
-      - ids
-      title: VehicleDestroyBulkInput
-    VehicleUpdateBulkInput:
-      type: object
-      properties:
-        ids:
-          type: array
-          items:
-            type: string
-            format: uuid
-        wanted:
-          type: boolean
-          nullable: true
-        public:
-          type: boolean
-          nullable: true
-        hangarGroupIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-          nullable: true
-      additionalProperties: false
-      required:
-      - ids
-      title: VehicleUpdateBulkInput
-    VehicleUpdateInput:
-      type: object
-      properties:
-        name:
-          type: string
-          nullable: true
-        serial:
-          type: string
-          nullable: true
-        wanted:
-          type: boolean
-        nameVisible:
-          type: boolean
-        public:
-          type: boolean
-        saleNotify:
-          type: boolean
-        flagship:
-          type: boolean
-        modelPaintId:
-          type: string
-          format: uuid
-          nullable: true
-        boughtVia:
-          "$ref": "#/components/schemas/BoughtViaEnum"
-        hangarGroupIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-        modelModuleIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-        modelUpgradeIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-        alternativeNames:
-          type: array
-          items:
-            type: string
-      additionalProperties: false
-      title: VehicleUpdateInput
     ItemPrice:
       type: object
       properties:
@@ -7239,6 +7209,29 @@ components:
       - createdAt
       - updatedAt
       title: Manufacturer
+    ManufacturerQuery:
+      type: object
+      properties:
+        withModels:
+          type: boolean
+        nameEq:
+          type: string
+        nameCont:
+          type: string
+        nameIn:
+          type: array
+          items:
+            type: string
+        slugEq:
+          type: string
+        slugCont:
+          type: string
+        slugIn:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      title: ManufacturerQuery
     Manufacturers:
       type: object
       properties:
@@ -7253,92 +7246,6 @@ components:
       - meta
       - items
       title: Manufacturers
-    ModelHardpoint:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        category:
-          "$ref": "#/components/schemas/ModelHardpointCategoryEnum"
-        categoryLabel:
-          type: string
-        component:
-          "$ref": "#/components/schemas/Component"
-        details:
-          type: string
-        group:
-          "$ref": "#/components/schemas/ModelHardpointGroupEnum"
-        itemSlots:
-          type: integer
-        key:
-          type: string
-        loadoutIdentifier:
-          type: string
-          format: uuid
-        loadouts:
-          type: array
-          items:
-            "$ref": "#/components/schemas/ModelHardpointLoadout"
-        mount:
-          type: string
-        name:
-          type: string
-        size:
-          "$ref": "#/components/schemas/ModelHardpointSizeEnum"
-        sizeLabel:
-          type: string
-        source:
-          "$ref": "#/components/schemas/HardpointSourceEnum"
-        subCategory:
-          "$ref": "#/components/schemas/ModelHardpointSubCategoryEnum"
-        subCategoryLabel:
-          type: string
-        type:
-          "$ref": "#/components/schemas/ModelHardpointTypeEnum"
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-      additionalProperties: false
-      required:
-      - id
-      - key
-      - type
-      - group
-      - createdAt
-      - updatedAt
-      title: ModelHardpoint
-    ModelHardpointLoadout:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        component:
-          "$ref": "#/components/schemas/Component"
-          nullable: true
-        name:
-          type: string
-      additionalProperties: false
-      required:
-      - id
-      - name
-      title: ModelHardpointLoadout
-    ModelLoaner:
-      type: object
-      properties:
-        name:
-          type: string
-        slug:
-          type: string
-      additionalProperties: false
-      required:
-      - name
-      - slug
-      title: ModelLoaner
     Model:
       type: object
       properties:
@@ -7854,20 +7761,164 @@ components:
       - updatedAt
       - dockCounts
       title: ModelExtended
-    Models:
+    ModelHardpoint:
       type: object
       properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
-        items:
+        id:
+          type: string
+          format: uuid
+        category:
+          "$ref": "#/components/schemas/ModelHardpointCategoryEnum"
+        categoryLabel:
+          type: string
+        component:
+          "$ref": "#/components/schemas/Component"
+        details:
+          type: string
+        group:
+          "$ref": "#/components/schemas/ModelHardpointGroupEnum"
+        itemSlots:
+          type: integer
+        key:
+          type: string
+        loadoutIdentifier:
+          type: string
+          format: uuid
+        loadouts:
           type: array
           items:
-            "$ref": "#/components/schemas/Model"
+            "$ref": "#/components/schemas/ModelHardpointLoadout"
+        mount:
+          type: string
+        name:
+          type: string
+        size:
+          "$ref": "#/components/schemas/ModelHardpointSizeEnum"
+        sizeLabel:
+          type: string
+        source:
+          "$ref": "#/components/schemas/HardpointSourceEnum"
+        subCategory:
+          "$ref": "#/components/schemas/ModelHardpointSubCategoryEnum"
+        subCategoryLabel:
+          type: string
+        type:
+          "$ref": "#/components/schemas/ModelHardpointTypeEnum"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
       additionalProperties: false
       required:
-      - meta
-      - items
-      title: Models
+      - id
+      - key
+      - type
+      - group
+      - createdAt
+      - updatedAt
+      title: ModelHardpoint
+    ModelHardpointLoadout:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        component:
+          "$ref": "#/components/schemas/Component"
+          nullable: true
+        name:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - name
+      title: ModelHardpointLoadout
+    ModelLoaner:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      title: ModelLoaner
+    ModelModule:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        hasStoreImage:
+          type: boolean
+        scKey:
+          type: string
+        metrics:
+          type: object
+          properties:
+            cargo:
+              type: number
+          additionalProperties: false
+        cargoHolds:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CargoHold"
+        availability:
+          type: object
+          properties:
+            boughtAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ItemPrice"
+            soldAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ItemPrice"
+          additionalProperties: false
+          required:
+          - boughtAt
+          - soldAt
+        media:
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaFile"
+          additionalProperties: false
+        pledgePrice:
+          type: number
+        productionStatus:
+          type: string
+        manufacturer:
+          "$ref": "#/components/schemas/Manufacturer"
+        hardpoints:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Hardpoint"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - availability
+      - media
+      - createdAt
+      - updatedAt
+      title: ModelModule
     ModelModulePackage:
       type: object
       properties:
@@ -8007,78 +8058,6 @@ components:
       - meta
       - items
       title: ModelModulePackages
-    ModelModule:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        slug:
-          type: string
-        description:
-          type: string
-        hasStoreImage:
-          type: boolean
-        scKey:
-          type: string
-        metrics:
-          type: object
-          properties:
-            cargo:
-              type: number
-          additionalProperties: false
-        cargoHolds:
-          type: array
-          items:
-            "$ref": "#/components/schemas/CargoHold"
-        availability:
-          type: object
-          properties:
-            boughtAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ItemPrice"
-            soldAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ItemPrice"
-          additionalProperties: false
-          required:
-          - boughtAt
-          - soldAt
-        media:
-          type: object
-          properties:
-            storeImage:
-              "$ref": "#/components/schemas/MediaFile"
-          additionalProperties: false
-        pledgePrice:
-          type: number
-        productionStatus:
-          type: string
-        manufacturer:
-          "$ref": "#/components/schemas/Manufacturer"
-        hardpoints:
-          type: array
-          items:
-            "$ref": "#/components/schemas/Hardpoint"
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-      additionalProperties: false
-      required:
-      - id
-      - name
-      - availability
-      - media
-      - createdAt
-      - updatedAt
-      title: ModelModule
     ModelModules:
       type: object
       properties:
@@ -8263,432 +8242,6 @@ components:
       - createdAt
       - updatedAt
       title: ModelPaint
-    ModelUpgrade:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        description:
-          type: string
-        pledgePrice:
-          type: number
-        media:
-          type: object
-          properties:
-            storeImage:
-              "$ref": "#/components/schemas/MediaFile"
-          additionalProperties: false
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        storeImage:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageLarge:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageMedium:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageSmall:
-          type: string
-          format: uri
-          deprecated: true
-      additionalProperties: false
-      required:
-      - id
-      - name
-      - media
-      - createdAt
-      - updatedAt
-      title: ModelUpgrade
-    OauthApplication:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        uid:
-          type: string
-        confidential:
-          type: boolean
-        redirectUri:
-          type: string
-        scopes:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-      additionalProperties: false
-      required:
-      - id
-      - name
-      - uid
-      - confidential
-      - redirectUri
-      - scopes
-      - createdAt
-      - updatedAt
-      title: OauthApplication
-    OauthApplicationWithSecret:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        uid:
-          type: string
-        secret:
-          type: string
-        confidential:
-          type: boolean
-        redirectUri:
-          type: string
-        scopes:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-      additionalProperties: false
-      required:
-      - id
-      - name
-      - uid
-      - secret
-      - confidential
-      - redirectUri
-      - scopes
-      - createdAt
-      - updatedAt
-      title: OauthApplicationWithSecret
-    ComponentQuery:
-      type: object
-      properties:
-        nameCont:
-          type: string
-        idIn:
-          type: array
-          items:
-            type: string
-            format: uuid
-        nameIn:
-          type: array
-          items:
-            type: string
-        itemTypeIn:
-          type: array
-          items:
-            type: string
-        componentClassIn:
-          type: array
-          items:
-            type: string
-      additionalProperties: false
-      title: ComponentQuery
-    EquipmentQuery:
-      type: object
-      properties:
-        nameCont:
-          type: string
-        idIn:
-          type: array
-          items:
-            type: string
-            format: uuid
-        nameIn:
-          type: array
-          items:
-            type: string
-      additionalProperties: false
-      title: EquipmentQuery
-    FleetMemberQuery:
-      type: object
-      properties:
-        usernameCont:
-          type: string
-        nameCont:
-          type: string
-          deprecated: true
-          description: Use usernameCont instead
-        roleIn:
-          type: array
-          items:
-            type: string
-        stateIn:
-          type: array
-          items:
-            type: string
-        acceptedAtGteq:
-          type: string
-          format: date
-        acceptedAtLteq:
-          type: string
-          format: date
-        invitedAtGteq:
-          type: string
-          format: date
-        invitedAtLteq:
-          type: string
-          format: date
-        requestedAtGteq:
-          type: string
-          format: date
-        requestedAtLteq:
-          type: string
-          format: date
-        declinedAtGteq:
-          type: string
-          format: date
-        declinedAtLteq:
-          type: string
-          format: date
-        sorts:
-          anyOf:
-          - type: array
-            items:
-              "$ref": "#/components/schemas/FleetMembershipSortEnum"
-          - "$ref": "#/components/schemas/FleetMembershipSortEnum"
-      additionalProperties: false
-      title: FleetMemberQuery
-    FleetVehicleQuery:
-      type: object
-      properties:
-        beamGteq:
-          type: number
-        beamLteq:
-          type: number
-        classificationIn:
-          type: array
-          items:
-            type: string
-        focusIn:
-          type: array
-          items:
-            type: string
-        heightGteq:
-          type: number
-        heightLteq:
-          type: number
-        lengthGteq:
-          type: number
-        lengthLteq:
-          type: number
-        manufacturerIn:
-          type: array
-          items:
-            type: string
-        onSaleEq:
-          type: boolean
-        pledgePriceGteq:
-          type: number
-        pledgePriceLteq:
-          type: number
-        pledgePriceIn:
-          type: array
-          items:
-            type: number
-        priceGteq:
-          type: number
-        priceLteq:
-          type: number
-        priceIn:
-          type: array
-          items:
-            type: number
-        productionStatusIn:
-          type: array
-          items:
-            type: string
-        searchCont:
-          type: string
-        sizeIn:
-          type: array
-          items:
-            type: string
-        modelSlugIn:
-          type: array
-          items:
-            type: string
-        modelNameCont:
-          type: string
-        modelNameOrModelDescriptionCont:
-          type: string
-        loanerEq:
-          type: boolean
-        memberIn:
-          type: array
-          items:
-            type: string
-        sorts:
-          anyOf:
-          - type: array
-            items:
-              "$ref": "#/components/schemas/FleetVehicleSortEnum"
-          - "$ref": "#/components/schemas/FleetVehicleSortEnum"
-      additionalProperties: false
-      title: FleetVehicleQuery
-    HangarEmbedQuery:
-      type: array
-      items:
-        type: string
-      title: HangarEmbedQuery
-    HangarQuery:
-      type: object
-      properties:
-        beamGteq:
-          type: number
-        beamLteq:
-          type: number
-        classificationIn:
-          type: array
-          items:
-            type: string
-        descriptionCont:
-          type: string
-        focusIn:
-          type: array
-          items:
-            type: string
-        heightGteq:
-          type: number
-        heightLteq:
-          type: number
-        idIn:
-          type: array
-          items:
-            type: string
-        idNotIn:
-          type: array
-          items:
-            type: string
-        lengthGteq:
-          type: number
-        lengthLteq:
-          type: number
-        manufacturerIn:
-          type: array
-          items:
-            type: string
-        nameCont:
-          type: string
-        nameIn:
-          type: array
-          items:
-            type: string
-        nameOrDescriptionCont:
-          type: string
-        onSaleEq:
-          type: boolean
-        pledgePriceGteq:
-          type: number
-        pledgePriceLteq:
-          type: number
-        pledgePriceIn:
-          type: array
-          items:
-            type: number
-        priceGteq:
-          type: number
-        priceLteq:
-          type: number
-        priceIn:
-          type: array
-          items:
-            type: number
-        productionStatusIn:
-          type: array
-          items:
-            type: string
-        searchCont:
-          type: string
-        sizeIn:
-          type: array
-          items:
-            type: string
-        modelNameOrModelDescriptionCont:
-          type: string
-        publicEq:
-          type: boolean
-        loanerEq:
-          type: boolean
-        boughtViaEq:
-          "$ref": "#/components/schemas/BoughtViaEnum"
-        hangarGroupsIn:
-          type: array
-          items:
-            type: string
-        hangarGroupsNotIn:
-          type: array
-          items:
-            type: string
-        willItFit:
-          type: string
-          format: uuid
-        withCargo:
-          type: boolean
-        sorts:
-          anyOf:
-          - type: array
-            items:
-              "$ref": "#/components/schemas/VehicleSortEnum"
-          - "$ref": "#/components/schemas/VehicleSortEnum"
-      additionalProperties: false
-      title: HangarQuery
-    ImageQuery:
-      type: object
-      properties:
-        modelIn:
-          type: array
-          items:
-            type: string
-        stationIn:
-          type: array
-          items:
-            type: string
-      additionalProperties: false
-      title: ImageQuery
-    ManufacturerQuery:
-      type: object
-      properties:
-        withModels:
-          type: boolean
-        nameEq:
-          type: string
-        nameCont:
-          type: string
-        nameIn:
-          type: array
-          items:
-            type: string
-        slugEq:
-          type: string
-        slugCont:
-          type: string
-        slugIn:
-          type: array
-          items:
-            type: string
-      additionalProperties: false
-      title: ManufacturerQuery
     ModelPaintQuery:
       type: object
       properties:
@@ -8817,6 +8370,222 @@ components:
           - "$ref": "#/components/schemas/ModelSortEnum"
       additionalProperties: false
       title: ModelQuery
+    ModelUpgrade:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        pledgePrice:
+          type: number
+        media:
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaFile"
+          additionalProperties: false
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        storeImage:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageLarge:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageMedium:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageSmall:
+          type: string
+          format: uri
+          deprecated: true
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - media
+      - createdAt
+      - updatedAt
+      title: ModelUpgrade
+    Models:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Model"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: Models
+    OauthApplication:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        uid:
+          type: string
+        confidential:
+          type: boolean
+        redirectUri:
+          type: string
+        scopes:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - uid
+      - confidential
+      - redirectUri
+      - scopes
+      - createdAt
+      - updatedAt
+      title: OauthApplication
+    OauthApplicationInput:
+      type: object
+      properties:
+        name:
+          type: string
+        redirectUri:
+          type: string
+        confidential:
+          type: boolean
+        scopes:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      required:
+      - name
+      - redirectUri
+      title: OauthApplicationInput
+    OauthApplicationUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        redirectUri:
+          type: string
+        confidential:
+          type: boolean
+        scopes:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      title: OauthApplicationUpdateInput
+    OauthApplicationWithSecret:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        uid:
+          type: string
+        secret:
+          type: string
+        confidential:
+          type: boolean
+        redirectUri:
+          type: string
+        scopes:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - uid
+      - secret
+      - confidential
+      - redirectUri
+      - scopes
+      - createdAt
+      - updatedAt
+      title: OauthApplicationWithSecret
+    PasswordInput:
+      type: object
+      properties:
+        currentPassword:
+          type: string
+        password:
+          type: string
+        passwordConfirmation:
+          type: string
+      additionalProperties: false
+      title: PasswordInput
+    PasswordRequestInput:
+      type: object
+      properties:
+        email:
+          type: string
+      additionalProperties: false
+      title: PasswordRequestInput
+    RsiHangarItemInput:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        customName:
+          type: string
+        type:
+          "$ref": "#/components/schemas/RsiHangarItemKindEnum"
+        image:
+          type: string
+          format: uri
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - type
+      title: RsiHangarItemInput
+    SessionInput:
+      type: object
+      properties:
+        login:
+          type: string
+          description: Username or email
+        password:
+          type: string
+        rememberMe:
+          type: boolean
+        twoFactorCode:
+          type: string
+      additionalProperties: false
+      title: SessionInput
     Stats:
       type: object
       properties:
@@ -8829,6 +8598,14 @@ components:
       - shipsCountYear
       - shipsCountTotal
       title: Stats
+    SyncRsiHangarInput:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/RsiHangarItemInput"
+      title: SyncRsiHangarInput
     User:
       type: object
       properties:
@@ -8907,6 +8684,24 @@ components:
       - createdAt
       - updatedAt
       title: User
+    UserCreateInput:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+        passwordConfirmation:
+          type: string
+        saleNotify:
+          type: boolean
+        fleetInviteToken:
+          type: string
+      additionalProperties: false
+      title: UserCreateInput
     UserFeature:
       type: object
       properties:
@@ -8948,6 +8743,37 @@ components:
       - publicHangarLoaners
       - publicWishlist
       title: UserPublic
+    UserUpdateInput:
+      type: object
+      properties:
+        avatar:
+          type: string
+        removeAvatar:
+          type: boolean
+        rsiHandle:
+          type: string
+        homepage:
+          type: string
+        discord:
+          type: string
+        youtube:
+          type: string
+        guilded:
+          type: string
+        twitch:
+          type: string
+        saleNotify:
+          type: boolean
+        publicHangar:
+          type: boolean
+        publicHangarLoaners:
+          type: boolean
+        publicWishlist:
+          type: boolean
+        hideOwner:
+          type: boolean
+      additionalProperties: false
+      title: UserUpdateInput
     Vehicle:
       type: object
       properties:
@@ -9032,6 +8858,15 @@ components:
       - createdAt
       - updatedAt
       title: Vehicle
+    VehicleCheckSerialInput:
+      type: object
+      properties:
+        serial:
+          type: string
+      additionalProperties: false
+      required:
+      - serial
+      title: VehicleCheckSerialInput
     VehicleCheckSerialResponse:
       type: object
       properties:
@@ -9041,6 +8876,101 @@ components:
       required:
       - serialTaken
       title: VehicleCheckSerialResponse
+    VehicleCreateBulkInput:
+      type: object
+      properties:
+        vehicles:
+          type: array
+          items:
+            type: object
+            properties:
+              modelId:
+                type: string
+                format: uuid
+              wanted:
+                type: boolean
+              public:
+                type: boolean
+            additionalProperties: false
+            required:
+            - modelId
+      additionalProperties: false
+      required:
+      - vehicles
+      title: VehicleCreateBulkInput
+    VehicleCreateInput:
+      type: object
+      properties:
+        modelId:
+          type: string
+          format: uuid
+        name:
+          type: string
+          nullable: true
+        serial:
+          type: string
+          nullable: true
+        wanted:
+          type: boolean
+          nullable: true
+        nameVisible:
+          type: boolean
+          nullable: true
+        public:
+          type: boolean
+          nullable: true
+        saleNotify:
+          type: boolean
+          nullable: true
+        flagship:
+          type: boolean
+          nullable: true
+        modelPaintId:
+          type: string
+          format: uuid
+          nullable: true
+        boughtVia:
+          "$ref": "#/components/schemas/BoughtViaEnum"
+          nullable: true
+        hangarGroupIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          nullable: true
+        modelModuleIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          nullable: true
+        modelUpgradeIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          nullable: true
+        alternativeNames:
+          type: array
+          items:
+            type: string
+          nullable: true
+      additionalProperties: false
+      required:
+      - modelId
+      title: VehicleCreateInput
+    VehicleDestroyBulkInput:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+      additionalProperties: false
+      required:
+      - ids
+      title: VehicleDestroyBulkInput
     VehicleExport:
       type: object
       properties:
@@ -9162,6 +9092,76 @@ components:
       - createdAt
       - updatedAt
       title: VehiclePublic
+    VehicleUpdateBulkInput:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+        wanted:
+          type: boolean
+          nullable: true
+        public:
+          type: boolean
+          nullable: true
+        hangarGroupIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          nullable: true
+      additionalProperties: false
+      required:
+      - ids
+      title: VehicleUpdateBulkInput
+    VehicleUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        serial:
+          type: string
+          nullable: true
+        wanted:
+          type: boolean
+        nameVisible:
+          type: boolean
+        public:
+          type: boolean
+        saleNotify:
+          type: boolean
+        flagship:
+          type: boolean
+        modelPaintId:
+          type: string
+          format: uuid
+          nullable: true
+        boughtVia:
+          "$ref": "#/components/schemas/BoughtViaEnum"
+        hangarGroupIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        modelModuleIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        modelUpgradeIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        alternativeNames:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      title: VehicleUpdateInput
     Video:
       type: object
       properties:

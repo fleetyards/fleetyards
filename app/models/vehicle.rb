@@ -277,7 +277,7 @@ class Vehicle < ApplicationRecord
     Vehicle.where(user_id:, flagship: true)
       .where.not(id:)
       .find_each do |vehicle|
-      vehicle.update(flagship: false)
+        vehicle.update(flagship: false)
     end
   end
 

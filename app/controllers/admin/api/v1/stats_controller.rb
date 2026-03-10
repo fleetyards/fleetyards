@@ -38,11 +38,11 @@ module Admin
           visits_per_day = Ahoy::Visit.without_users(tracking_blocklist).one_month
             .group_by_day(:started_at).count
             .map do |created_at, count|
-            {
-              label: I18n.l(created_at.to_date, format: :day_month_short),
-              count:,
-              tooltip: I18n.l(created_at.to_date, format: :day_month)
-            }
+              {
+                label: I18n.l(created_at.to_date, format: :day_month_short),
+                count:,
+                tooltip: I18n.l(created_at.to_date, format: :day_month)
+              }
           end
 
           render json: visits_per_day.to_json
