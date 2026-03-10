@@ -73,8 +73,7 @@ const [youtube, youtubeProps] = defineField("youtube");
 const [ts, tsProps] = defineField("ts");
 const [rsiSid, rsiSidProps] = defineField("rsiSid");
 const [logo, logoProps] = defineField("logo");
-const [backgroundImage, backgroundImageProps] =
-  defineField("backgroundImage");
+const [backgroundImage, backgroundImageProps] = defineField("backgroundImage");
 
 const submitting = ref(false);
 
