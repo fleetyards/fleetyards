@@ -21,6 +21,9 @@ import {
   useModelsByProductionStatus as useModelsByProductionStatusQuery,
   useModelsPerMonth as useModelsPerMonthQuery,
   useModelsByManufacturer as useModelsByManufacturerQuery,
+  useVehiclesByModel as useVehiclesByModelQuery,
+  useVehiclesPerMonth as useVehiclesPerMonthQuery,
+  useShipsOfTheMonth as useShipsOfTheMonthQuery,
 } from "@/services/fyApi";
 
 const { t } = useI18n();
@@ -43,18 +46,65 @@ const { data: modelsPerMonth, ...modelsPerMonthStatus } =
 const { data: modelsByManufacturer, ...modelsByManufacturerStatus } =
   useModelsByManufacturerQuery();
 
+const { data: vehiclesByModelOptions, ...vehiclesByModelStatus } =
+  useVehiclesByModelQuery();
+
+const { data: vehiclesPerMonthOptions, ...vehiclesPerMonthStatus } =
+  useVehiclesPerMonthQuery();
+
+const { data: shipsOfTheMonth } = useShipsOfTheMonthQuery();
+
 const route = useRoute();
 
 const shipsCountYear = ref(0);
 const shipsCountTotal = ref(0);
+const manufacturerCount = ref(0);
+const flightReadyCount = ref(0);
+const averagePledgePrice = ref(0);
+const largestShip = ref(0);
+const smallestShip = ref(0);
+const vehiclesCount = ref(0);
+const wishlistsCount = ref(0);
+const shipOfTheMonthCount = ref(0);
+
+const shipOfTheMonth = computed(() => quickStats.value?.shipOfTheMonth || null);
+
+const shipOfTheMonthLabel = computed(() => {
+  if (!shipOfTheMonth.value) return t("labels.stats.quickStats.shipOfTheMonth");
+  return `${t("labels.stats.quickStats.shipOfTheMonth")}: ${shipOfTheMonth.value}`;
+});
+
+const flightReadyPercent = computed(() => {
+  if (!shipsCountTotal.value || !flightReadyCount.value) return "";
+  return `(${Math.round((flightReadyCount.value / shipsCountTotal.value) * 100)}%)`;
+});
 
 // use refs and watch for stats to trigger animation on every page visit
 watch(
-  () => [quickStats.value?.shipsCountYear, quickStats.value?.shipsCountTotal],
+  () => [
+    quickStats.value?.shipsCountYear,
+    quickStats.value?.shipsCountTotal,
+    quickStats.value?.manufacturerCount,
+    quickStats.value?.flightReadyCount,
+    quickStats.value?.averagePledgePrice,
+    quickStats.value?.largestShip,
+    quickStats.value?.smallestShip,
+    quickStats.value?.vehiclesCount,
+    quickStats.value?.wishlistsCount,
+    quickStats.value?.shipOfTheMonthCount,
+  ],
   () => {
     setTimeout(() => {
       shipsCountYear.value = quickStats.value?.shipsCountYear || 0;
       shipsCountTotal.value = quickStats.value?.shipsCountTotal || 0;
+      manufacturerCount.value = quickStats.value?.manufacturerCount || 0;
+      flightReadyCount.value = quickStats.value?.flightReadyCount || 0;
+      averagePledgePrice.value = quickStats.value?.averagePledgePrice || 0;
+      largestShip.value = quickStats.value?.largestShip || 0;
+      smallestShip.value = quickStats.value?.smallestShip || 0;
+      vehiclesCount.value = quickStats.value?.vehiclesCount || 0;
+      wishlistsCount.value = quickStats.value?.wishlistsCount || 0;
+      shipOfTheMonthCount.value = quickStats.value?.shipOfTheMonthCount || 0;
     }, 200);
   },
   { immediate: true },
@@ -84,7 +134,74 @@ watch(
         :label="t('labels.stats.quickStats.totalShips')"
       />
     </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+      <StatsPanel
+        icon="fad fa-industry fa-4x"
+        :value="manufacturerCount"
+        :label="t('labels.hangarMetrics.manufacturerCount')"
+      />
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+      <StatsPanel
+        icon="fad fa-check-circle fa-4x"
+        :value="flightReadyCount"
+        :label="t('labels.hangarMetrics.flightReady')"
+        :suffix="flightReadyPercent"
+      />
+    </div>
   </div>
+
+  <div class="row">
+    <div class="col-12 col-sm-6 col-lg-3">
+      <StatsPanel
+        icon="fad fa-dollar-sign fa-4x"
+        :value="averagePledgePrice"
+        :label="t('labels.hangarMetrics.averagePledgePrice')"
+        :prefix="t('number.units.currency')"
+      />
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+      <StatsPanel
+        icon="fad fa-ruler fa-4x"
+        :value="largestShip"
+        :label="t('labels.hangarMetrics.largestShip')"
+        :suffix="t('number.units.distance')"
+      />
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+      <StatsPanel
+        icon="fad fa-ruler fa-4x"
+        :value="smallestShip"
+        :label="t('labels.hangarMetrics.smallestShip')"
+        :suffix="t('number.units.distance')"
+      />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-sm-6 col-lg-3">
+      <StatsPanel
+        icon="fad fa-warehouse fa-4x"
+        :value="vehiclesCount"
+        :label="t('labels.stats.quickStats.vehicles')"
+      />
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+      <StatsPanel
+        icon="fad fa-heart fa-4x"
+        :value="wishlistsCount"
+        :label="t('labels.stats.quickStats.wishlists')"
+      />
+    </div>
+    <div v-if="shipOfTheMonth" class="col-12 col-sm-6 col-lg-3">
+      <StatsPanel
+        icon="fad fa-star fa-4x"
+        :value="shipOfTheMonthCount"
+        :label="shipOfTheMonthLabel"
+      />
+    </div>
+  </div>
+
   <div class="row">
     <div class="col-12 col-md-6">
       <Panel>
@@ -159,7 +276,7 @@ watch(
     </div>
   </div>
   <div class="row">
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-md-5">
       <Panel>
         <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.modelsByManufacturer") }}
@@ -173,6 +290,71 @@ watch(
             tooltip-type="ship-pie"
             type="pie"
           />
+        </PanelBody>
+      </Panel>
+    </div>
+    <div class="col-12 col-md-7">
+      <Panel>
+        <PanelHeading :level="HeadingLevelEnum.H2">
+          {{ t("labels.stats.vehiclesPerMonth") }}
+        </PanelHeading>
+        <PanelBody>
+          <Chart
+            key="vehicles-per-month"
+            name="vehicles-per-month"
+            :options="vehiclesPerMonthOptions"
+            :async-status="vehiclesPerMonthStatus"
+            tooltip-type="ship"
+            type="column"
+          />
+        </PanelBody>
+      </Panel>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <Panel>
+        <PanelHeading :level="HeadingLevelEnum.H2">
+          {{ t("labels.stats.topVehiclesByModel") }}
+        </PanelHeading>
+        <PanelBody>
+          <Chart
+            v-if="vehiclesByModelOptions"
+            key="vehicles-by-model"
+            name="vehicles-by-model"
+            :async-status="vehiclesByModelStatus"
+            :options="vehiclesByModelOptions"
+            tooltip-type="ship"
+            type="bar"
+          />
+        </PanelBody>
+      </Panel>
+    </div>
+    <div class="col-12 col-md-6">
+      <Panel>
+        <PanelHeading :level="HeadingLevelEnum.H2">
+          {{ t("labels.stats.shipsOfTheMonth") }}
+        </PanelHeading>
+        <PanelBody>
+          <table v-if="shipsOfTheMonth?.length" class="table">
+            <thead>
+              <tr>
+                <th>{{ t("labels.stats.quickStats.shipOfTheMonth") }}</th>
+                <th class="text-right">
+                  {{ t("labels.stats.quickStats.totalShips") }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="entry in shipsOfTheMonth" :key="entry.label">
+                <td>
+                  {{ entry.name }}
+                  <small class="text-muted">{{ entry.label }}</small>
+                </td>
+                <td class="text-right">{{ entry.count }}</td>
+              </tr>
+            </tbody>
+          </table>
         </PanelBody>
       </Panel>
     </div>

@@ -72,6 +72,9 @@ v1_api_routes = lambda do
     get "models-by-manufacturer", to: "base#models_by_manufacturer"
     get "models-by-classification", to: "base#models_by_classification"
     get "components-by-class", to: "base#components_by_class"
+    get "vehicles-by-model", to: "base#vehicles_by_model"
+    get "vehicles-per-month", to: "base#vehicles_per_month"
+    get "ships-of-the-month", to: "base#ships_of_the_month"
   end
 end
 

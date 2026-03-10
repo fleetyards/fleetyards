@@ -57,6 +57,16 @@ const wishlistTotalMoney = ref(0);
 const wishlistTotalCredits = ref(0);
 const wishlistTotal = ref(0);
 
+const uniqueModelsPercent = computed(() => {
+  if (!totalCount.value || !uniqueModelsCount.value) return "";
+  return `(${Math.round((uniqueModelsCount.value / totalCount.value) * 100)}%)`;
+});
+
+const flightReadyPercent = computed(() => {
+  if (!totalCount.value || !flightReadyCount.value) return "";
+  return `(${Math.round((flightReadyCount.value / totalCount.value) * 100)}%)`;
+});
+
 const missingClassifications = computed(
   () =>
     quickStats.value?.metrics.missingClassifications
@@ -121,11 +131,35 @@ watch(
 
 const route = useRoute();
 
-const millionFormat = {
-  notation: "compact" as const,
-  compactDisplay: "short" as const,
-  maximumFractionDigits: 2,
-};
+function compactUec(value: number) {
+  if (value >= 1_000_000_000) {
+    return {
+      value: Math.round((value / 1_000_000_000) * 100) / 100,
+      suffix: "B aUEC",
+    };
+  }
+  if (value >= 1_000_000) {
+    return {
+      value: Math.round((value / 1_000_000) * 100) / 100,
+      suffix: "M aUEC",
+    };
+  }
+  if (value >= 1_000) {
+    return {
+      value: Math.round((value / 1_000) * 10) / 10,
+      suffix: "K aUEC",
+    };
+  }
+  return { value, suffix: "aUEC" };
+}
+
+const totalCreditsCompact = computed(() => compactUec(totalCredits.value));
+const totalIngameValueCompact = computed(() =>
+  compactUec(totalIngameValue.value),
+);
+const wishlistTotalCreditsCompact = computed(() =>
+  compactUec(wishlistTotalCredits.value),
+);
 </script>
 
 <template>
@@ -178,19 +212,17 @@ const millionFormat = {
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
         icon="fad fa-coins fa-4x"
-        :value="totalCredits"
+        :value="totalCreditsCompact.value"
         :label="t('labels.hangarMetrics.totalCredits')"
-        :suffix="t('number.units.uec')"
-        :format="millionFormat"
+        :suffix="totalCreditsCompact.suffix"
       />
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
         icon="fad fa-coins fa-4x"
-        :value="totalIngameValue"
+        :value="totalIngameValueCompact.value"
         :label="t('labels.hangarMetrics.totalIngameValue')"
-        :suffix="t('number.units.uec')"
-        :format="millionFormat"
+        :suffix="totalIngameValueCompact.suffix"
       />
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
@@ -216,6 +248,7 @@ const millionFormat = {
         icon="fad fa-fingerprint fa-4x"
         :value="uniqueModelsCount"
         :label="t('labels.hangarMetrics.uniqueModels')"
+        :suffix="uniqueModelsPercent"
       />
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
@@ -223,6 +256,7 @@ const millionFormat = {
         icon="fad fa-check-circle fa-4x"
         :value="flightReadyCount"
         :label="t('labels.hangarMetrics.flightReady')"
+        :suffix="flightReadyPercent"
       />
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
@@ -255,10 +289,9 @@ const millionFormat = {
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
         icon="fad fa-coins fa-4x"
-        :value="wishlistTotalCredits"
+        :value="wishlistTotalCreditsCompact.value"
         :label="t('labels.hangarMetrics.wishlistTotalCredits')"
-        :suffix="t('number.units.uec')"
-        :format="millionFormat"
+        :suffix="wishlistTotalCreditsCompact.suffix"
       />
     </div>
   </div>

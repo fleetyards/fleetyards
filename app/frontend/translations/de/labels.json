@@ -64,14 +64,20 @@
         "quickStats": {
           "newShips": "New Ships in %{year}",
           "totalShips": "Total Ships",
-          "totalMembers": "Total Members"
+          "totalMembers": "Total Members",
+          "vehicles": "Hangar Schiffe",
+          "wishlists": "Wunschliste Schiffe",
+          "shipOfTheMonth": "Schiff des Monats"
         },
         "modelsByClassification": "Ships by Classification",
         "modelsBySize": "Ships by Size",
         "vehiclesByModel": "Ships by Model (Top %{limit})",
         "modelsPerMonth": "Ships per Month",
         "modelsByManufacturer": "Ships by Manufacturer",
-        "modelsByProductionStatus": "Ships by Production Status"
+        "modelsByProductionStatus": "Ships by Production Status",
+        "vehiclesPerMonth": "Hangar Schiffe pro Monat",
+        "topVehiclesByModel": "Top 10 Hangar Schiffe",
+        "shipsOfTheMonth": "Schiff des Monats"
       },
       "roadmap": {
         "selectWeek": "Select Week",

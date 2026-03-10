@@ -28,6 +28,8 @@ module Api
           )
         end
 
+        # rubocop:disable Metrics/CyclomaticComplexity
+        # rubocop:disable Metrics/PerceivedComplexity
         def vehicles
           scope = @fleet.vehicles.includes(:model, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules)
 
@@ -39,8 +41,12 @@ module Api
 
           vehicles = @q.result
           ingame_vehicles = vehicles.select(&:bought_via_ingame?)
+          pledge_store_vehicles = vehicles.select(&:bought_via_pledge_store?)
           models = vehicles.map(&:model)
-          models_without_loaners = vehicles.reject(&:loaner?).map(&:model)
+          non_loaner_models = vehicles.reject(&:loaner?).map(&:model)
+          pledge_store_models = pledge_store_vehicles.filter_map do |vehicle|
+            vehicle.model unless vehicle.loaner?
+          end
           ingame_models = ingame_vehicles.map(&:model)
           upgrades = vehicles.map(&:model_upgrades).flatten
           modules = vehicles.map(&:model_modules).flatten
@@ -55,15 +61,11 @@ module Api
                 label: classification.humanize
               )
             end,
-            metrics: {
-              total_money: models_without_loaners.map(&:pledge_price).sum(&:to_i) + modules.map(&:pledge_price).sum(&:to_i) + upgrades.map(&:pledge_price).sum(&:to_i),
-              total_credits: ingame_models.map(&:price).sum(&:to_i),
-              total_min_crew: models.map(&:min_crew).sum(&:to_i),
-              total_max_crew: models.map(&:max_crew).sum(&:to_i),
-              total_cargo: models.map(&:cargo).sum(&:to_i)
-            }
+            metrics: fleet_metrics(models, non_loaner_models, pledge_store_models, ingame_models, modules, upgrades)
           )
         end
+        # rubocop:enable Metrics/PerceivedComplexity
+        # rubocop:enable Metrics/CyclomaticComplexity
 
         # def vehicles_by_model
         #   authorize! :show, fleet
@@ -134,7 +136,41 @@ module Api
         #   render json: models_by_classification.to_json
         # end
 
-        private def set_fleet
+        private
+
+        # rubocop:disable Metrics/MethodLength
+        # rubocop:disable Metrics/CyclomaticComplexity
+        # rubocop:disable Metrics/PerceivedComplexity
+        def fleet_metrics(models, non_loaner_models, pledge_store_models, ingame_models, modules, upgrades)
+          lengths = models.filter_map { |m| m.length if m.length&.positive? }
+          unique_model_ids = non_loaner_models.each_with_object(Set.new) { |m, set| set.add(m.id) }
+          manufacturer_ids = non_loaner_models.each_with_object(Set.new) { |m, set| set.add(m.manufacturer_id) if m.manufacturer_id }
+          present_classifications = non_loaner_models.each_with_object(Set.new) { |m, set| set.add(m.classification) if m.classification }
+          missing_classifications = Model.classifications - present_classifications.to_a
+
+          {
+            total_money: pledge_store_models.map(&:pledge_price).sum(&:to_i) + modules.map(&:pledge_price).sum(&:to_i) + upgrades.map(&:pledge_price).sum(&:to_i),
+            total_credits: ingame_models.map(&:price).sum(&:to_i),
+            total_ingame_value: non_loaner_models.map(&:price).sum(&:to_i),
+            total_min_crew: models.map(&:min_crew).sum(&:to_i),
+            total_max_crew: models.map(&:max_crew).sum(&:to_i),
+            total_cargo: models.map(&:cargo).sum(&:to_i),
+            largest_ship: lengths.max,
+            smallest_ship: lengths.min,
+            average_pledge_price: pledge_store_models.any? ? (pledge_store_models.map(&:pledge_price).sum(&:to_i) / pledge_store_models.size) : 0,
+            flight_ready_count: non_loaner_models.count { |m| m.production_status == "flight-ready" },
+            unique_models_count: unique_model_ids.size,
+            manufacturer_count: manufacturer_ids.size,
+            missing_classifications: missing_classifications,
+            wishlist_total_money: 0,
+            wishlist_total_credits: 0
+          }
+        end
+        # rubocop:enable Metrics/PerceivedComplexity
+        # rubocop:enable Metrics/CyclomaticComplexity
+        # rubocop:enable Metrics/MethodLength
+
+        def set_fleet
           @fleet = Fleet.find_by!(slug: params[:fleet_slug])
 
           authorize! @fleet, to: :show?, with: ::Public::FleetPolicy
