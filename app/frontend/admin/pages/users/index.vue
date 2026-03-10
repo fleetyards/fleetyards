@@ -142,7 +142,7 @@ const columns: BaseTableCol<User>[] = [
           <LazyImage
             v-if="record.avatar"
             :variant="LazyImageVariantsEnum.EXTRA_SMALL"
-            :src="record.avatar"
+            :src="record.avatar?.smallUrl"
             alt="User Avatar"
             shadow
           />

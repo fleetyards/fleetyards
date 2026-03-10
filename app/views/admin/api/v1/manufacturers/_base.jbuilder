@@ -5,6 +5,8 @@ json.name manufacturer.name
 json.long_name manufacturer.long_name || manufacturer.name
 json.slug manufacturer.slug
 json.code manufacturer.code
-json.logo((manufacturer.logo.small.url if manufacturer.logo.present?))
+json.logo do
+  json.partial! "api/v1/shared/file", record: manufacturer, attr: :new_logo, old_attr: :logo
+end
 
 json.partial! "api/shared/dates", record: manufacturer

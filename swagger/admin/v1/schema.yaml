@@ -6230,9 +6230,9 @@ components:
         publicFleetStats:
           type: boolean
         logo:
-          type: string
+          "$ref": "#/components/schemas/MediaFile"
         backgroundImage:
-          type: string
+          "$ref": "#/components/schemas/MediaFile"
         createdAt:
           type: string
           format: date-time
@@ -7168,6 +7168,8 @@ components:
           type: boolean
         tester:
           type: boolean
+        avatar:
+          type: string
       additionalProperties: false
       title: UserInput
     VehicleInput:
@@ -7273,7 +7275,7 @@ components:
         code:
           type: string
         logo:
-          type: string
+          "$ref": "#/components/schemas/MediaFile"
         longName:
           type: string
         scRef:
@@ -9218,7 +9220,7 @@ components:
         unconfirmedEmail:
           type: string
         avatar:
-          type: string
+          "$ref": "#/components/schemas/MediaFile"
         rsiHandle:
           type: string
         discord:

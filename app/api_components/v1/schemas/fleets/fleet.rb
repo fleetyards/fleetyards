@@ -24,7 +24,7 @@ module V1
             publicFleet: {type: :boolean},
             publicFleetStats: {type: :boolean},
             logo: {"$ref": "#/components/schemas/MediaFile"},
-            backgroundImage: {type: :string},
+            backgroundImage: {"$ref": "#/components/schemas/MediaFile"},
             myFleet: {type: :boolean},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}

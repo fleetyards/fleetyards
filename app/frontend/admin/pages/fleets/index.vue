@@ -10,6 +10,8 @@ import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
+import LazyImage from "@/shared/components/LazyImage/index.vue";
+import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import FilterForm from "@/admin/components/Fleets/FilterForm/index.vue";
 import {
   useFleets,
@@ -59,6 +61,12 @@ const fleetsQueryParams = computed(() => {
 const { data: fleets, refetch, ...asyncStatus } = useFleets(fleetsQueryParams);
 
 const columns: BaseTableCol<Fleet>[] = [
+  {
+    name: "logo",
+    label: "",
+    width: "120px",
+    alignment: "center",
+  },
   {
     name: "name",
     label: "Name",
@@ -125,6 +133,15 @@ const { t, l } = useI18n();
         default-sort="name asc"
         selectable
       >
+        <template #col-logo="{ record }">
+          <LazyImage
+            v-if="record.logo"
+            :variant="LazyImageVariantsEnum.WIDE_SMALL"
+            :src="record.logo?.smallUrl"
+            alt="Fleet logo"
+            transparent
+          />
+        </template>
         <template #col-name="{ record }">
           {{ record.name }}
         </template>

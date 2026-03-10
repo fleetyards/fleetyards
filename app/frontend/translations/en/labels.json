@@ -256,6 +256,7 @@
         "homepage": "Homepage",
         "twitch": "Twitch Channel",
         "youtube": "Youtube Channel",
+        "backgroundImage": "Background Image",
         "ts": "Teamspeak Server",
         "awaitingConfirmation": "Awaiting confirmation by Fleet",
         "members": {
@@ -478,6 +479,7 @@
       "manufacturer": {
         "longName": "Long Name",
         "code": "Code",
+        "logo": "Logo",
         "scRef": "SC Ref"
       },
       "itemPrice": {

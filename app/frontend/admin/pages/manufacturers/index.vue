@@ -136,7 +136,7 @@ const { t, l } = useI18n();
           <LazyImage
             v-if="record.logo"
             :variant="LazyImageVariantsEnum.WIDE_SMALL"
-            :src="record.logo"
+            :src="record.logo?.smallUrl"
             alt="Manufacturer logo"
             transparent
           />

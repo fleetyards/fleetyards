@@ -23,8 +23,8 @@ module Admin
             homepage: {type: :string},
             publicFleet: {type: :boolean},
             publicFleetStats: {type: :boolean},
-            logo: {type: :string},
-            backgroundImage: {type: :string},
+            logo: {"$ref": "#/components/schemas/MediaFile"},
+            backgroundImage: {"$ref": "#/components/schemas/MediaFile"},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },

@@ -16,6 +16,8 @@ import {
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
+import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
@@ -65,6 +67,7 @@ const [publicHangarLoaners, publicHangarLoanersProps] = defineField(
 const [publicWishlist, publicWishlistProps] = defineField("publicWishlist");
 const [hideOwner, hideOwnerProps] = defineField("hideOwner");
 const [tester, testerProps] = defineField("tester");
+const [avatar, avatarProps] = defineField("avatar");
 
 const submitting = ref(false);
 
@@ -119,6 +122,15 @@ const handleCancel = async () => {
           v-bind="rsiHandleProps"
           translation-key="user.rsiHandle"
           name="rsiHandle"
+        />
+        <FormFileInput
+          v-model="avatar"
+          v-bind="avatarProps"
+          :file="user.avatar"
+          name="avatar"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          avatar
+          clearable
         />
       </div>
       <div class="col-12 col-md-6">

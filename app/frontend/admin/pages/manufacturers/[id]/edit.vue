@@ -16,6 +16,8 @@ import {
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
+import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
 import { useQueryClient } from "@tanstack/vue-query";
@@ -54,6 +56,7 @@ const [name, nameProps] = defineField("name");
 const [longName, longNameProps] = defineField("longName");
 const [code, codeProps] = defineField("code");
 const [scRef, scRefProps] = defineField("scRef");
+const [logo, logoProps] = defineField("logo");
 
 const submitting = ref(false);
 
@@ -119,6 +122,16 @@ const handleCancel = async () => {
           v-bind="scRefProps"
           translation-key="manufacturer.scRef"
           name="scRef"
+        />
+        <FormFileInput
+          v-model="logo"
+          v-bind="logoProps"
+          :file="manufacturer.logo"
+          translation-key="manufacturer.logo"
+          name="logo"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          avatar
+          clearable
         />
       </div>
     </div>

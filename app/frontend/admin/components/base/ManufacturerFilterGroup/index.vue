@@ -58,7 +58,7 @@ watch(
 const formatter = (response: Manufacturers) => {
   return response.items.map((manufacturer) => {
     return {
-      icon: manufacturer.logo,
+      icon: manufacturer.logo?.smallUrl,
       label: manufacturer.name,
       value: manufacturer[props.valueAttr],
     };

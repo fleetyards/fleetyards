@@ -12,7 +12,17 @@ export const useFilters = <T>({
   const defaultIgnoreKeys = ["s", "sorts"];
   const paginationKeys = ["page", "perPage"];
 
-  const filters = computed<T>(() => (route.query || {}) as T);
+  const excludeKeys = [...defaultIgnoreKeys, ...paginationKeys];
+
+  const filters = computed<T>(() => {
+    const query = { ...(route.query || {}) };
+
+    Object.keys(query)
+      .filter((key) => excludeKeys.includes(key))
+      .forEach((key) => delete query[key]);
+
+    return query as T;
+  });
 
   watch(
     () => filters.value,

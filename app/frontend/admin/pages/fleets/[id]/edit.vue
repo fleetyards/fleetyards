@@ -16,6 +16,8 @@ import {
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
+import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
@@ -70,6 +72,9 @@ const [twitch, twitchProps] = defineField("twitch");
 const [youtube, youtubeProps] = defineField("youtube");
 const [ts, tsProps] = defineField("ts");
 const [rsiSid, rsiSidProps] = defineField("rsiSid");
+const [logo, logoProps] = defineField("logo");
+const [backgroundImage, backgroundImageProps] =
+  defineField("backgroundImage");
 
 const submitting = ref(false);
 
@@ -133,6 +138,25 @@ const handleCancel = async () => {
           v-bind="rsiSidProps"
           translation-key="fleet.rsiSid"
           name="rsiSid"
+        />
+        <FormFileInput
+          v-model="logo"
+          v-bind="logoProps"
+          :file="fleet.logo"
+          translation-key="fleet.logo"
+          name="logo"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          avatar
+          clearable
+        />
+        <FormFileInput
+          v-model="backgroundImage"
+          v-bind="backgroundImageProps"
+          :file="fleet.backgroundImage"
+          translation-key="fleet.backgroundImage"
+          name="backgroundImage"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          clearable
         />
       </div>
       <div class="col-12 col-md-6">

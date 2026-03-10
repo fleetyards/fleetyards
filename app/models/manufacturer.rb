@@ -24,6 +24,15 @@ class Manufacturer < ApplicationRecord
   paginates_per 30
 
   mount_uploader :logo, LogoUploader
+  has_one_attached :new_logo
+
+  def logo=(value)
+    if value.is_a?(String) && value.present?
+      self.new_logo = value
+    else
+      super
+    end
+  end
 
   has_many :models,
     dependent: :nullify
@@ -67,10 +76,16 @@ class Manufacturer < ApplicationRecord
   end
 
   def to_filter
+    icon = if new_logo.attached?
+      Rails.application.routes.url_helpers.rails_blob_url(new_logo)
+    elsif logo.present?
+      logo.small.url
+    end
+
     Filter.new(
       category: "manufacturer",
       label: name_clean,
-      icon: (logo.small.url if logo.present?),
+      icon:,
       value: slug
     )
   end

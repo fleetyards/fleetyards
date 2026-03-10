@@ -18,7 +18,8 @@ module Admin
               publicHangarLoaners: {type: :boolean},
               publicWishlist: {type: :boolean},
               hideOwner: {type: :boolean},
-              tester: {type: :boolean}
+              tester: {type: :boolean},
+              avatar: {type: :string}
             },
             additionalProperties: false
           })

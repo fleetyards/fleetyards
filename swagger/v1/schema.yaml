@@ -5939,7 +5939,7 @@ components:
         logo:
           "$ref": "#/components/schemas/MediaFile"
         backgroundImage:
-          type: string
+          "$ref": "#/components/schemas/MediaFile"
         myFleet:
           type: boolean
         createdAt:
@@ -7221,7 +7221,7 @@ components:
         code:
           type: string
         logo:
-          type: string
+          "$ref": "#/components/schemas/MediaFile"
         longName:
           type: string
         scRef:

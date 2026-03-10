@@ -14,7 +14,11 @@ json.guilded fleet.guilded
 json.homepage fleet.homepage
 json.public_fleet fleet.public_fleet
 json.public_fleet_stats fleet.public_fleet_stats
-json.logo((fleet.logo.small.url if fleet.logo.present?))
-json.background_image((fleet.background_image.url if fleet.background_image.present?))
+json.logo do
+  json.partial! "api/v1/shared/file", record: fleet, attr: :new_logo, old_attr: :logo
+end
+json.background_image do
+  json.partial! "api/v1/shared/file", record: fleet, attr: :new_background_image, old_attr: :background_image
+end
 
 json.partial! "api/shared/dates", record: fleet
