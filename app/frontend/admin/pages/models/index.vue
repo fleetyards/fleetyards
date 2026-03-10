@@ -39,11 +39,11 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useImportLoading } from "@/admin/composables/useImportLoading";
 import { ImportTypeEnum } from "@/services/fyAdminApi";
 
-const { isImporting: isReloadingMatrix } = useImportLoading(
+const { isImporting: isImportingMatrix } = useImportLoading(
   ImportTypeEnum.IMPORTS_MODELS_IMPORT,
 );
 
-const { isImporting: isReloadingScData } = useImportLoading(
+const { isImporting: isImportingScData } = useImportLoading(
   ImportTypeEnum.IMPORTS_SC_DATA_MODELS_IMPORT,
 );
 
@@ -152,6 +152,13 @@ const { displayConfirm } = useAppNotifications();
 
 const reloadMatrixMutation = useReloadModelsMatrix();
 const reloadScDataMutation = useReloadModelsScData();
+
+const isReloadingMatrix = computed(
+  () => isImportingMatrix.value || reloadMatrixMutation.isPending.value,
+);
+const isReloadingScData = computed(
+  () => isImportingScData.value || reloadScDataMutation.isPending.value,
+);
 
 const reloadModels = () => {
   displayConfirm({

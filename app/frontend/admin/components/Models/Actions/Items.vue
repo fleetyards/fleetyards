@@ -40,7 +40,7 @@ const syncInputMatch = computed(() => ({
   rsiId: props.model.rsiId,
 }));
 
-const { isImporting: isSyncing } = useImportLoading(
+const { isImporting: isImportingSyncing } = useImportLoading(
   [
     ImportTypeEnum.IMPORTS_MODEL_IMPORT,
     ImportTypeEnum.IMPORTS_SC_DATA_MODEL_IMPORT,
@@ -65,6 +65,10 @@ const reloadOneMutation = useReloadOneModel({
     onSettled: invalidateModels,
   },
 });
+
+const isSyncing = computed(
+  () => isImportingSyncing.value || reloadOneMutation.isPending.value,
+);
 
 const useRsiImageMutation = useUseRsiImage({
   mutation: {
