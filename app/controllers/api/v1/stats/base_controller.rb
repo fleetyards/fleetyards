@@ -108,8 +108,7 @@ module Api
             .order(time: :desc)
             .map do |entry|
               {
-                label: I18n.l(entry.time.to_date, format: :month_year_short),
-                name: entry.dimensions["name"],
+                label: "#{entry.dimensions["name"]} (#{I18n.l(entry.time.to_date, format: :month_year_short)})",
                 count: entry.value.to_i,
                 tooltip: "#{entry.dimensions["name"]} (#{I18n.l(entry.time.to_date, format: :month_year)})"
               }

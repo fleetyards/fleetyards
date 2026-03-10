@@ -52,7 +52,8 @@ const { data: vehiclesByModelOptions, ...vehiclesByModelStatus } =
 const { data: vehiclesPerMonthOptions, ...vehiclesPerMonthStatus } =
   useVehiclesPerMonthQuery();
 
-const { data: shipsOfTheMonth } = useShipsOfTheMonthQuery();
+const { data: shipsOfTheMonthOptions, ...shipsOfTheMonthStatus } =
+  useShipsOfTheMonthQuery();
 
 const route = useRoute();
 
@@ -206,6 +207,45 @@ watch(
     <div class="col-12 col-md-6">
       <Panel>
         <PanelHeading :level="HeadingLevelEnum.H2">
+          {{ t("labels.stats.topVehiclesByModel") }}
+        </PanelHeading>
+        <PanelBody>
+          <Chart
+            v-if="vehiclesByModelOptions"
+            key="vehicles-by-model"
+            name="vehicles-by-model"
+            :async-status="vehiclesByModelStatus"
+            :options="vehiclesByModelOptions"
+            tooltip-type="ship"
+            type="bar"
+          />
+        </PanelBody>
+      </Panel>
+    </div>
+    <div class="col-12 col-md-6">
+      <Panel>
+        <PanelHeading :level="HeadingLevelEnum.H2">
+          {{ t("labels.stats.shipsOfTheMonth") }}
+        </PanelHeading>
+        <PanelBody>
+          <Chart
+            v-if="shipsOfTheMonthOptions"
+            key="ships-of-the-month"
+            name="ships-of-the-month"
+            :options="shipsOfTheMonthOptions"
+            :async-status="shipsOfTheMonthStatus"
+            tooltip-type="ship"
+            type="bar"
+          />
+        </PanelBody>
+      </Panel>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <Panel>
+        <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.modelsByClassification") }}
         </PanelHeading>
         <PanelBody>
@@ -307,54 +347,6 @@ watch(
             tooltip-type="ship"
             type="column"
           />
-        </PanelBody>
-      </Panel>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-12 col-md-6">
-      <Panel>
-        <PanelHeading :level="HeadingLevelEnum.H2">
-          {{ t("labels.stats.topVehiclesByModel") }}
-        </PanelHeading>
-        <PanelBody>
-          <Chart
-            v-if="vehiclesByModelOptions"
-            key="vehicles-by-model"
-            name="vehicles-by-model"
-            :async-status="vehiclesByModelStatus"
-            :options="vehiclesByModelOptions"
-            tooltip-type="ship"
-            type="bar"
-          />
-        </PanelBody>
-      </Panel>
-    </div>
-    <div class="col-12 col-md-6">
-      <Panel>
-        <PanelHeading :level="HeadingLevelEnum.H2">
-          {{ t("labels.stats.shipsOfTheMonth") }}
-        </PanelHeading>
-        <PanelBody>
-          <table v-if="shipsOfTheMonth?.length" class="table">
-            <thead>
-              <tr>
-                <th>{{ t("labels.stats.quickStats.shipOfTheMonth") }}</th>
-                <th class="text-right">
-                  {{ t("labels.stats.quickStats.totalShips") }}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="entry in shipsOfTheMonth" :key="entry.label">
-                <td>
-                  {{ entry.name }}
-                  <small class="text-muted">{{ entry.label }}</small>
-                </td>
-                <td class="text-right">{{ entry.count }}</td>
-              </tr>
-            </tbody>
-          </table>
         </PanelBody>
       </Panel>
     </div>

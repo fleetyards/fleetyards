@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_03_09_120000) do
+ActiveRecord::Schema[7.2].define(version: 2026_03_10_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
@@ -186,6 +186,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_09_120000) do
     t.string "version"
     t.integer "store_image_width"
     t.integer "store_image_height"
+    t.datetime "carrierwave_migrated_at"
     t.index ["manufacturer_id"], name: "index_components_on_manufacturer_id"
   end
 
@@ -327,6 +328,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_09_120000) do
     t.text "description"
     t.boolean "public_fleet_stats", default: false
     t.string "normalized_fid"
+    t.datetime "carrierwave_migrated_at"
     t.index ["fid"], name: "index_fleets_on_fid", unique: true
   end
 
@@ -392,6 +394,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_09_120000) do
     t.string "caption"
     t.string "gallery_name"
     t.string "gallery_slug"
+    t.datetime "carrierwave_migrated_at"
     t.index ["gallery_id"], name: "index_images_on_gallery_id"
   end
 
@@ -410,6 +413,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_09_120000) do
     t.uuid "user_id"
     t.string "import"
     t.text "import_data"
+    t.datetime "carrierwave_migrated_at"
     t.index ["aasm_state", "type"], name: "index_imports_on_aasm_state_and_type"
     t.index ["aasm_state"], name: "index_imports_on_aasm_state"
     t.index ["type"], name: "index_imports_on_type"
@@ -462,6 +466,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_09_120000) do
     t.string "long_name"
     t.string "code_mapping"
     t.string "sc_ref"
+    t.datetime "carrierwave_migrated_at"
   end
 
   create_table "message_attachments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -572,6 +577,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_09_120000) do
     t.integer "side_view_width"
     t.integer "store_image_width"
     t.integer "store_image_height"
+    t.datetime "carrierwave_migrated_at"
   end
 
   create_table "model_modules", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -592,6 +598,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_09_120000) do
     t.string "cargo_holds"
     t.integer "store_image_width"
     t.integer "store_image_height"
+    t.datetime "carrierwave_migrated_at"
   end
 
   create_table "model_paints", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -633,6 +640,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_09_120000) do
     t.integer "store_image_height"
     t.integer "rsi_store_image_width"
     t.integer "rsi_store_image_height"
+    t.datetime "carrierwave_migrated_at"
   end
 
   create_table "model_snub_crafts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -654,6 +662,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_09_120000) do
     t.datetime "updated_at", precision: nil, null: false
     t.integer "store_image_width"
     t.integer "store_image_height"
+    t.datetime "carrierwave_migrated_at"
   end
 
   create_table "models", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -786,6 +795,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_09_120000) do
     t.integer "rsi_store_image_width"
     t.integer "rsi_store_image_height"
     t.decimal "fleetchart_offset_beam", precision: 15, scale: 2
+    t.datetime "carrierwave_migrated_at"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 
@@ -950,6 +960,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_09_120000) do
     t.boolean "tester", default: false
     t.integer "purchased_vehicles_count", default: 0, null: false
     t.integer "wanted_vehicles_count", default: 0, null: false
+    t.datetime "carrierwave_migrated_at"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["normalized_username"], name: "index_users_on_normalized_username"
