@@ -78,7 +78,6 @@ gem "redcarpet"
 gem "puma"
 gem "rack-attack"
 
-gem "highline"
 gem "thor"
 
 gem "aasm"
@@ -138,7 +137,7 @@ end
 group :development do
   gem "annotate"
 
-  gem "i18n-tasks", "~> 1.0.5"
+  gem "i18n-tasks", "~> 1.0"
   gem "listen"
   gem "rails-erd"
 
