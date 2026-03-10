@@ -27,7 +27,7 @@ test.describe("Admin Features", () => {
     await page.goto("/admin/maintenance/features/");
 
     // Wait for feature list to load from API
-    await page.waitForSelector(".inline-editable-list__item");
+    await page.waitForSelector(".list-group__item");
 
     // Feature names should be visible
     await expect(page.locator(".feature-name").first()).toBeVisible();
@@ -37,10 +37,10 @@ test.describe("Admin Features", () => {
     await page.goto("/admin/maintenance/features/");
 
     // Wait for feature list to load from API
-    await page.waitForSelector(".inline-editable-list__item");
+    await page.waitForSelector(".list-group__item");
 
     // State pills (on/off/conditional) should be present
-    const pills = page.locator(".inline-editable-list__display .pill");
+    const pills = page.locator(".list-group__content .pill");
     await expect(pills.first()).toBeVisible();
   });
 
@@ -48,13 +48,13 @@ test.describe("Admin Features", () => {
     await page.goto("/admin/maintenance/features/");
 
     // Wait for feature list to load from API
-    await page.waitForSelector(".inline-editable-list__item");
+    await page.waitForSelector(".list-group__item");
 
     // Find a toggle button and click it
     const toggleBtn = page
-      .locator(".inline-editable-list__item")
+      .locator(".list-group__item")
       .first()
-      .locator(".inline-editable-list__actions .btn")
+      .locator(".list-group__actions .btn")
       .first();
     await toggleBtn.click();
 
@@ -66,11 +66,11 @@ test.describe("Admin Features", () => {
     await page.goto("/admin/maintenance/features/");
 
     // Wait for feature list to load from API
-    await page.waitForSelector(".inline-editable-list__item");
+    await page.waitForSelector(".list-group__item");
 
     // Click edit button (pencil icon)
     const editBtn = page
-      .locator(".inline-editable-list__item")
+      .locator(".list-group__item")
       .first()
       .locator("i.fad.fa-pencil")
       .first();
@@ -85,11 +85,11 @@ test.describe("Admin Features", () => {
     await page.goto("/admin/maintenance/features/");
 
     // Wait for feature list to load from API
-    await page.waitForSelector(".inline-editable-list__item");
+    await page.waitForSelector(".list-group__item");
 
     // Open edit mode
     const editBtn = page
-      .locator(".inline-editable-list__item")
+      .locator(".list-group__item")
       .first()
       .locator("i.fad.fa-pencil")
       .first();
@@ -110,11 +110,11 @@ test.describe("Admin Features", () => {
     await page.goto("/admin/maintenance/features/");
 
     // Wait for feature list to load from API
-    await page.waitForSelector(".inline-editable-list__item");
+    await page.waitForSelector(".list-group__item");
 
     // Open edit mode
     const editBtn = page
-      .locator(".inline-editable-list__item")
+      .locator(".list-group__item")
       .first()
       .locator("i.fad.fa-pencil")
       .first();

@@ -1,6 +1,6 @@
-import { Route } from 'vue-router'
+import { Route } from "vue-router";
 
 type BreadCrumb = {
-  to: Route
-  label: string
-}
+  to: Route;
+  label: string;
+};

@@ -90,11 +90,11 @@ test.describe("Admin Cargo Holds", () => {
     await cargoHoldsTab.click();
 
     // Wait for cargo holds list to load
-    await page.waitForSelector(".inline-editable-list__item");
+    await page.waitForSelector(".list-group__item");
 
     // Click edit button on first cargo hold
     const editBtn = page
-      .locator(".inline-editable-list__item")
+      .locator(".list-group__item")
       .first()
       .locator("i.fad.fa-pencil")
       .first();
@@ -116,11 +116,11 @@ test.describe("Admin Cargo Holds", () => {
     await cargoHoldsTab.click();
 
     // Wait for cargo holds list to load
-    await page.waitForSelector(".inline-editable-list__item");
+    await page.waitForSelector(".list-group__item");
 
     // Click edit button on first cargo hold
     const editBtn = page
-      .locator(".inline-editable-list__item")
+      .locator(".list-group__item")
       .first()
       .locator("i.fad.fa-pencil")
       .first();
@@ -134,7 +134,7 @@ test.describe("Admin Cargo Holds", () => {
 
     // Click save (check icon)
     const saveBtn = page
-      .locator(".inline-editable-list__item")
+      .locator(".list-group__item")
       .first()
       .locator("i.fad.fa-check")
       .first();

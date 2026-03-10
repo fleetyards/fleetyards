@@ -11,7 +11,7 @@ test.describe("Cargo Grids", () => {
     await acceptCookie.accept();
 
     // Wait for the filter component to be interactive
-    await page.waitForSelector(".filter-group input");
+    await page.waitForSelector(".filter-group");
   });
 
   test("Loads the page", async ({ page }) => {
@@ -33,6 +33,7 @@ test.describe("Cargo Grids", () => {
   }) => {
     // Open the model filter dropdown and search for Caterpillar
     const filterGroup = page.locator(".filter-group").first();
+    await filterGroup.locator(".filter-group-title").click();
     await filterGroup.locator("input").first().fill("Caterpillar");
 
     // Wait for search results and select
@@ -61,6 +62,7 @@ test.describe("Cargo Grids", () => {
     page,
   }) => {
     const filterGroup = page.locator(".filter-group").first();
+    await filterGroup.locator(".filter-group-title").click();
     await filterGroup.locator("input").first().fill("Caterpillar");
 
     const option = page.getByText("Caterpillar").first();
@@ -100,6 +102,7 @@ test.describe("Cargo Grids", () => {
 
   test("Shows message when model has no cargo holds", async ({ page }) => {
     const filterGroup = page.locator(".filter-group").first();
+    await filterGroup.locator(".filter-group-title").click();
     await filterGroup.locator("input").first().fill("Aurora");
 
     const option = page.getByText("Aurora MR").first();
