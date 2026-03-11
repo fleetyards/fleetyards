@@ -107,8 +107,9 @@ const hangarStatsQueryParams = computed(() => {
   return { q: getQuery() };
 });
 
-const { data: hangarStats, refetch: refetchStats } =
-  useHangarStatsQuery(hangarStatsQueryParams);
+const { data: hangarStats, refetch: refetchStats } = useHangarStatsQuery(
+  hangarStatsQueryParams,
+);
 
 const { data: hangarGroups, refetch: refetchGroups } = useHangarGroupsQuery();
 

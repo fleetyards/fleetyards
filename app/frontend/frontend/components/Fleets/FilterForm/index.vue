@@ -103,7 +103,7 @@ const submit = () => {
 
     <FleetMemberFilterGroup
       v-model="form.memberIn"
-      :fleet-slug="(route.params.slug as string)"
+      :fleet-slug="route.params.slug as string"
       name="member"
     />
 
