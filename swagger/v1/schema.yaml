@@ -6797,19 +6797,51 @@ components:
           type: number
         totalCredits:
           type: number
+        totalIngameValue:
+          type: number
         totalMinCrew:
           type: integer
         totalMaxCrew:
           type: integer
         totalCargo:
           type: number
+        largestShip:
+          type: number
+          nullable: true
+        smallestShip:
+          type: number
+          nullable: true
+        averagePledgePrice:
+          type: number
+        flightReadyCount:
+          type: integer
+        uniqueModelsCount:
+          type: integer
+        manufacturerCount:
+          type: integer
+        missingClassifications:
+          type: array
+          items:
+            type: string
+        wishlistTotalMoney:
+          type: number
+        wishlistTotalCredits:
+          type: number
       additionalProperties: false
       required:
       - totalMoney
       - totalCredits
+      - totalIngameValue
       - totalMinCrew
       - totalMaxCrew
       - totalCargo
+      - averagePledgePrice
+      - flightReadyCount
+      - uniqueModelsCount
+      - manufacturerCount
+      - missingClassifications
+      - wishlistTotalMoney
+      - wishlistTotalCredits
       title: HangarMetrics
     HangarPublic:
       type: object
@@ -8593,10 +8625,37 @@ components:
           type: integer
         shipsCountTotal:
           type: integer
+        manufacturerCount:
+          type: integer
+        flightReadyCount:
+          type: integer
+        averagePledgePrice:
+          type: integer
+        largestShip:
+          type: number
+          nullable: true
+        smallestShip:
+          type: number
+          nullable: true
+        vehiclesCount:
+          type: integer
+        wishlistsCount:
+          type: integer
+        shipOfTheMonth:
+          type: string
+          nullable: true
+        shipOfTheMonthCount:
+          type: integer
       additionalProperties: false
       required:
       - shipsCountYear
       - shipsCountTotal
+      - manufacturerCount
+      - flightReadyCount
+      - averagePledgePrice
+      - vehiclesCount
+      - wishlistsCount
+      - shipOfTheMonthCount
       title: Stats
     SyncRsiHangarInput:
       type: object
