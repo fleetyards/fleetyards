@@ -13,7 +13,7 @@ module Api
       before_action :set_fleet
 
       def members
-        @q = @fleet.fleet_memberships.ransack(member_query_params)
+        @q = @fleet.fleet_memberships.accepted.ransack(member_query_params)
 
         members = @q.result
 
@@ -165,8 +165,8 @@ module Api
           total_min_crew: models.map(&:min_crew).sum(&:to_i),
           total_max_crew: models.map(&:max_crew).sum(&:to_i),
           total_cargo: models.map(&:cargo).sum(&:to_i),
-          largest_ship: lengths.max,
-          smallest_ship: lengths.min,
+          largest_ship: lengths.max&.to_f,
+          smallest_ship: lengths.min&.to_f,
           average_pledge_price: pledge_store_models.any? ? (pledge_store_models.map(&:pledge_price).sum(&:to_i) / pledge_store_models.size) : 0,
           flight_ready_count: non_loaner_models.count { |m| m.production_status == "flight-ready" },
           unique_models_count: unique_model_ids.size,

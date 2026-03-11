@@ -12,6 +12,7 @@ import { type UserPublic } from "@/services/fyApi";
 
 type Props = {
   user: UserPublic;
+  headlineKey?: string;
 };
 
 const { t } = useI18n();
@@ -32,7 +33,9 @@ const usernamePlural = computed(() => {
   return `${userTitle.value}'s`;
 });
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  headlineKey: "headlines.hangar.public",
+});
 </script>
 
 <template>
@@ -40,7 +43,7 @@ const props = defineProps<Props>();
     <div class="flex justify-center items-center">
       <Avatar :avatar="props.user.avatar?.smallUrl" />
       <span>
-        {{ t("headlines.hangar.public", { user: usernamePlural }) }}
+        {{ t(props.headlineKey, { user: usernamePlural }) }}
       </span>
     </div>
   </Heading>

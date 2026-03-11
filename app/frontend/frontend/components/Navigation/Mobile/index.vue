@@ -13,7 +13,10 @@ import { useFleetRouteCheck } from "@/frontend/composables/useFleetRouteCheck";
 import { useFiltersStore } from "@/shared/stores/filters";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { type LocationQueryRaw } from "vue-router";
-import { useFleet as useFleetQuery } from "@/services/fyApi";
+import {
+  useFleet as useFleetQuery,
+  usePublicFleet as usePublicFleetQuery,
+} from "@/services/fyApi";
 
 const sessionStore = useSessionStore();
 
@@ -53,13 +56,25 @@ const fleetSlug = computed(() => {
   return route.params.slug as string;
 });
 
-const { data: currentFleetData } = useFleetQuery(fleetSlug, {
+const { data: fleetData } = useFleetQuery(fleetSlug, {
   query: {
-    enabled: isFleetRoute,
+    enabled: computed(() => isFleetRoute.value && isAuthenticated.value),
+    retry: false,
   },
 });
 
-const currentFleet = computed(() => currentFleetData.value);
+const { data: publicFleetData } = usePublicFleetQuery(fleetSlug, {
+  query: {
+    enabled: computed(
+      () =>
+        isFleetRoute.value &&
+        (!isAuthenticated.value || !fleetData.value),
+    ),
+    retry: false,
+  },
+});
+
+const currentFleet = computed(() => fleetData.value || publicFleetData.value);
 </script>
 
 <template>
@@ -77,6 +92,15 @@ const currentFleet = computed(() => currentFleetData.value);
           :to="{ name: 'fleet-ships', params: { slug: currentFleet.slug } }"
           :active="shipsNavActive"
           icon="fad fa-starship"
+        />
+        <NavItem
+          v-if="currentFleet.publicFleetStats || currentFleet.myFleet"
+          :to="{
+            name: 'fleet-stats',
+            params: { slug: currentFleet.slug },
+          }"
+          :active="routeActive('fleet-stats')"
+          icon="fad fa-chart-bar"
         />
         <template v-if="currentFleet.myFleet">
           <NavItem

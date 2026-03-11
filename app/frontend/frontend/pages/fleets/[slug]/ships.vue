@@ -18,7 +18,7 @@ import { type Fleet, type FleetMember } from "@/services/fyApi";
 
 type Props = {
   fleet: Fleet;
-  membership: FleetMember;
+  membership?: FleetMember;
 };
 
 const props = defineProps<Props>();

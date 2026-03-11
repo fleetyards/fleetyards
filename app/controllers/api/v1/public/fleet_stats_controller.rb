@@ -19,7 +19,7 @@ module Api
         end
 
         def members
-          @q = @fleet.fleet_memberships.ransack(member_query_params)
+          @q = @fleet.fleet_memberships.accepted.ransack(member_query_params)
 
           members = @q.result
 
@@ -67,74 +67,64 @@ module Api
         # rubocop:enable Metrics/PerceivedComplexity
         # rubocop:enable Metrics/CyclomaticComplexity
 
-        # def vehicles_by_model
-        #   authorize! :show, fleet
+        def vehicles_by_model
+          vehicles_by_model = transform_for_bar_chart(
+            @fleet.vehicles.visible.where(loaner: false)
+                 .joins(:model)
+                 .group("models.name").count
+          ).take(params[:limit].present? ? params[:limit].to_i : 10)
 
-        #   vehicles_by_model = transform_for_bar_chart(
-        #     fleet.vehicles.visible.where(loaner: false)
-        #          .joins(:model)
-        #          .group("models.name").count
-        #   ).take(params[:limit].present? ? params[:limit].to_i : Model.count)
+          render json: vehicles_by_model.to_json
+        end
 
-        #   render json: vehicles_by_model.to_json
-        # end
+        def models_by_size
+          models_by_size = transform_for_pie_chart(
+            @fleet.vehicles.visible.where(loaner: false)
+                 .joins(:model)
+                 .group("models.size").count
+                 .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
+                 .reduce(:merge) || []
+          )
 
-        # def models_by_size
-        #   authorize! :show, fleet
+          render json: models_by_size.to_json
+        end
 
-        #   models_by_size = transform_for_pie_chart(
-        #     fleet.vehicles.visible.where(loaner: false)
-        #          .joins(:model)
-        #          .group("models.size").count
-        #          .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
-        #          .reduce(:merge) || []
-        #   )
+        def models_by_production_status
+          models_by_production_status = transform_for_pie_chart(
+            @fleet.vehicles.visible.where(loaner: false)
+                 .joins(:model)
+                 .group("models.production_status").count
+                 .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
+                 .reduce(:merge) || []
+          )
 
-        #   render json: models_by_size.to_json
-        # end
+          render json: models_by_production_status.to_json
+        end
 
-        # def models_by_production_status
-        #   authorize! :show, fleet
+        def models_by_manufacturer
+          models_by_manufacturer = transform_for_pie_chart(
+            @fleet.manufacturers.uniq
+                .map do |manufacturer|
+                  model_ids = manufacturer.model_ids
+                  {manufacturer.name => @fleet.vehicles.visible.where(loaner: false, model_id: model_ids).count}
+                end
+                .reduce(:merge) || []
+          )
 
-        #   models_by_production_status = transform_for_pie_chart(
-        #     fleet.vehicles.visible.where(loaner: false)
-        #          .joins(:model)
-        #          .group("models.production_status").count
-        #          .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
-        #          .reduce(:merge) || []
-        #   )
+          render json: models_by_manufacturer.to_json
+        end
 
-        #   render json: models_by_production_status.to_json
-        # end
+        def models_by_classification
+          models_by_classification = transform_for_pie_chart(
+            @fleet.vehicles.visible.where(loaner: false)
+                 .joins(:model)
+                 .group("models.classification").count
+                 .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
+                 .reduce(:merge) || []
+          )
 
-        # def models_by_manufacturer
-        #   authorize! :show, fleet
-
-        #   models_by_manufacturer = transform_for_pie_chart(
-        #     fleet.manufacturers.uniq
-        #         .map do |manufacturer|
-        #           model_ids = manufacturer.model_ids
-        #           {manufacturer.name => fleet.vehicles.visible.where(loaner: false, model_id: model_ids).count}
-        #         end
-        #         .reduce(:merge) || []
-        #   )
-
-        #   render json: models_by_manufacturer.to_json
-        # end
-
-        # def models_by_classification
-        #   authorize! :show, fleet
-
-        #   models_by_classification = transform_for_pie_chart(
-        #     fleet.vehicles.visible.where(loaner: false)
-        #          .joins(:model)
-        #          .group("models.classification").count
-        #          .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
-        #          .reduce(:merge) || []
-        #   )
-
-        #   render json: models_by_classification.to_json
-        # end
+          render json: models_by_classification.to_json
+        end
 
         private
 
@@ -155,8 +145,8 @@ module Api
             total_min_crew: models.map(&:min_crew).sum(&:to_i),
             total_max_crew: models.map(&:max_crew).sum(&:to_i),
             total_cargo: models.map(&:cargo).sum(&:to_i),
-            largest_ship: lengths.max,
-            smallest_ship: lengths.min,
+            largest_ship: lengths.max&.to_f,
+            smallest_ship: lengths.min&.to_f,
             average_pledge_price: pledge_store_models.any? ? (pledge_store_models.map(&:pledge_price).sum(&:to_i) / pledge_store_models.size) : 0,
             flight_ready_count: non_loaner_models.count { |m| m.production_status == "flight-ready" },
             unique_models_count: unique_model_ids.size,
@@ -173,7 +163,7 @@ module Api
         def set_fleet
           @fleet = Fleet.find_by!(slug: params[:fleet_slug])
 
-          authorize! @fleet, to: :show?, with: ::Public::FleetPolicy
+          authorize! @fleet, to: :show_stats?, with: ::Public::FleetPolicy
         end
       end
     end

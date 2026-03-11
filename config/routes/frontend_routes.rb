@@ -23,7 +23,7 @@ namespace :frontend, **frontend_options do
 
   get "fleets/invites", to: "base#index", as: :fleets_invites
   get "fleets/invites/:token", to: "fleets#invite", as: :fleet_invite
-  get "fleets/:slug:", to: "fleets#show", as: :fleet
+  get "fleets/:slug", to: "fleets#show", as: :fleet
   get "fleets/:slug/ships", to: "fleets#show"
   get "fleets/:slug/fleetchart", to: "fleets#show"
   get "fleets/:slug/members", to: "fleets#members", as: :fleet_members

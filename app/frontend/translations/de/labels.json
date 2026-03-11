@@ -77,7 +77,10 @@
         "modelsByProductionStatus": "Ships by Production Status",
         "vehiclesPerMonth": "Hangar Schiffe pro Monat",
         "topVehiclesByModel": "Top 10 Hangar Schiffe",
-        "shipsOfTheMonth": "Schiff des Monats"
+        "shipsOfTheMonth": "Schiff des Monats",
+        "crewDeficit": "Crew Defizit",
+        "crewSurplus": "Crew Überschuss",
+        "membersByRole": "Mitglieder nach Rolle"
       },
       "roadmap": {
         "selectWeek": "Select Week",

@@ -6,6 +6,7 @@ export const routes: RouteRecordRaw[] = [
     name: "hangar-public",
     component: () => import("@/frontend/pages/hangar/[username]/index.vue"),
     meta: {
+      title: "hangar.public",
       backgroundImage: "bg-5",
     },
   },
@@ -22,6 +23,7 @@ export const routes: RouteRecordRaw[] = [
     name: "wishlist-public",
     component: () => import("@/frontend/pages/hangar/[username]/wishlist.vue"),
     meta: {
+      title: "hangar.publicWishlist",
       backgroundImage: "bg-5",
     },
   },

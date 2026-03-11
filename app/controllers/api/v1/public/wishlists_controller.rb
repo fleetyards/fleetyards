@@ -12,7 +12,7 @@ module Api
         def show
           vehicle_query_params["sorts"] = sorting_params(Vehicle, vehicle_query_params[:sorts], ["name asc", "model_name asc"])
 
-          scope = @user.vehicles.wanted
+          scope = @user.vehicles.wanted.where(loaner: false)
 
           scope = will_it_fit?(scope) if vehicle_query_params["will_it_fit"].present?
 

@@ -10,36 +10,48 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import {
   useFleet as useFleetQuery,
+  usePublicFleet as usePublicFleetQuery,
   useFleetMembership as useFleetMembershipQuery,
 } from "@/services/fyApi";
+import { useSessionStore } from "@/frontend/stores/session";
 
 const { t } = useI18n();
 
-const currentFleet = computed(() => {
-  if (!fleet.value) {
-    return;
-  }
-  return fleet.value;
-});
-
 const route = useRoute();
+
+const sessionStore = useSessionStore();
 
 const fleetSlug = computed(() => {
   return route.params.slug as string;
 });
 
+const hasSlug = computed(() => route.params.slug !== undefined);
+
 const { data: fleet, refetch } = useFleetQuery(fleetSlug, {
   query: {
     retry: false,
-    enabled: route.params.slug !== undefined,
+    enabled: computed(() => hasSlug.value && sessionStore.isAuthenticated),
+  },
+});
+
+const { data: publicFleet } = usePublicFleetQuery(fleetSlug, {
+  query: {
+    retry: false,
+    enabled: computed(
+      () => hasSlug.value && (!sessionStore.isAuthenticated || !fleet.value),
+    ),
   },
 });
 
 const { data: membership } = useFleetMembershipQuery(fleetSlug, {
   query: {
     retry: false,
-    enabled: route.params.slug !== undefined,
+    enabled: computed(() => hasSlug.value && sessionStore.isAuthenticated),
   },
+});
+
+const currentFleet = computed(() => {
+  return fleet.value || publicFleet.value;
 });
 
 const shipsNavActive = computed(() => {
@@ -76,19 +88,20 @@ onMounted(() => {
         prefix="01"
         icon="fad fa-starship"
       />
+      <NavItem
+        v-if="currentFleet.publicFleetStats || membership"
+        :to="{ name: 'fleet-stats', params: { slug: currentFleet.slug } }"
+        :label="t('nav.fleets.stats')"
+        :active="route.name === 'fleet-stats'"
+        icon="fad fa-chart-bar"
+        prefix="02"
+      />
       <template v-if="membership">
         <NavItem
           :to="{ name: 'fleet-members', params: { slug: currentFleet.slug } }"
           :label="t('nav.fleets.members.index')"
           :active="String(route.name).startsWith('fleet-members')"
           icon="fad fa-users"
-          prefix="02"
-        />
-        <NavItem
-          :to="{ name: 'fleet-stats', params: { slug: currentFleet.slug } }"
-          :label="t('nav.fleets.stats')"
-          :active="route.name === 'fleet-stats'"
-          icon="fad fa-chart-bar"
           prefix="03"
         />
         <NavItem

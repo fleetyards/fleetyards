@@ -59,7 +59,6 @@ export const routes: RouteRecordRaw[] = [
     name: "fleet-stats",
     component: () => import("@/frontend/pages/fleets/[slug]/stats.vue"),
     meta: {
-      needsAuthentication: true,
       backgroundImage: "bg-8",
       title: "fleets.stats",
     },

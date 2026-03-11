@@ -99,7 +99,7 @@ onMounted(async () => {
   </Teleport>
   <div class="row hangar-public">
     <div class="col-12 col-lg-8">
-      <HangarPublicHeading :user="user" />
+      <HangarPublicHeading :user="user" headline-key="headlines.hangar.publicWishlist" />
     </div>
 
     <div class="col-12 col-lg-4 hangar-profile-links">

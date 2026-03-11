@@ -130,7 +130,10 @@
         "modelsByProductionStatus": "Ships by Production Status",
         "vehiclesPerMonth": "Hangared Ships per Month",
         "topVehiclesByModel": "Top 10 Hangared Ships",
-        "shipsOfTheMonth": "Ship of the Month"
+        "shipsOfTheMonth": "Ship of the Month",
+        "crewDeficit": "Crew Deficit",
+        "crewSurplus": "Crew Surplus",
+        "membersByRole": "Members by Role"
       },
       "roadmap": {
         "selectWeek": "Select Week",

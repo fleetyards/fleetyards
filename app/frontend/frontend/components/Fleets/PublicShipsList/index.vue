@@ -8,17 +8,19 @@ export default {
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import FleetVehiclePanel from "@/frontend/components/Fleets/VehiclePanel/index.vue";
+import FleetVehiclesTable from "@/frontend/components/Fleets/VehiclesTable/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import PublicFleetVehiclesFilterForm from "@/frontend/components/Fleets/PublicFilterForm/index.vue";
 import type { Fleet, FleetVehicleQuery } from "@/services/fyApi";
 import { useMobile } from "@/shared/composables/useMobile";
 import { usePublicFleetStore } from "@/frontend/stores/publicFleet";
+import { useFleetStore } from "@/frontend/stores/fleet";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { storeToRefs } from "pinia";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
 import { useFilters } from "@/shared/composables/useFilters";
 import { usePagination } from "@/shared/composables/usePagination";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
@@ -39,8 +41,19 @@ const { t } = useI18n();
 const mobile = useMobile();
 
 const fleetStore = usePublicFleetStore();
+const displayStore = useFleetStore();
+
+const comlink = useComlink();
 
 const { grouped, detailsVisible } = storeToRefs(fleetStore);
+const { gridView } = storeToRefs(displayStore);
+
+const openDisplayOptionsModal = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Fleets/DisplayOptionsModal/index.vue"),
+  });
+};
 
 const fleetchartStore = useFleetchartStore();
 
@@ -52,14 +65,6 @@ const toggleFleetchart = () => {
   fleetchartStore.toggleFleetchart("publicFleet");
 };
 
-const toggleDetailsTooltip = computed(() => {
-  if (detailsVisible.value) {
-    return t("actions.hideDetails");
-  }
-
-  return t("actions.showDetails");
-});
-
 watch(
   () => grouped.value,
   () => refetch,
@@ -70,34 +75,12 @@ watch(
   () => refetch,
 );
 
-const vehiclesQueryParams = computed(() => {
-  return {
-    page: page.value,
-    perPage: perPage.value,
-    q: filters.value,
-  };
-});
-
-const { data: modelCounts, refetch: refetchModelCounts } =
-  usePublicFleetStatsModelCountsQuery(props.fleet.slug, vehiclesQueryParams);
-
-const refetch = async () => {
-  await refetchVehicles();
-  await refetchModelCounts();
-};
-
 const vehiclesQueryKey = computed(() => {
   return getPublicFleetVehiclesQueryKey(
     props.fleet.slug,
     vehiclesQueryParams.value,
   );
 });
-
-const {
-  data: fleetVehicles,
-  refetch: refetchVehicles,
-  ...asyncStatus
-} = usePublicFleetVehiclesQuery(props.fleet.slug, vehiclesQueryParams);
 
 const { filters } = useFilters<FleetVehicleQuery>({
   updateCallback: async () => {
@@ -106,6 +89,29 @@ const { filters } = useFilters<FleetVehicleQuery>({
 });
 
 const { perPage, page, updatePerPage } = usePagination(vehiclesQueryKey);
+
+const vehiclesQueryParams = computed(() => {
+  return {
+    page: page.value,
+    perPage: perPage.value,
+    q: filters.value,
+    grouped: grouped.value,
+  };
+});
+
+const { data: modelCounts, refetch: refetchModelCounts } =
+  usePublicFleetStatsModelCountsQuery(props.fleet.slug, vehiclesQueryParams);
+
+const {
+  data: fleetVehicles,
+  refetch: refetchVehicles,
+  ...asyncStatus
+} = usePublicFleetVehiclesQuery(props.fleet.slug, vehiclesQueryParams);
+
+const refetch = async () => {
+  await refetchVehicles();
+  await refetchModelCounts();
+};
 </script>
 
 <template>
@@ -115,50 +121,33 @@ const { perPage, page, updatePerPage } = usePagination(vehiclesQueryKey);
       :records="fleetVehicles?.items || []"
       :async-status="asyncStatus"
       primary-key="id"
-      :hide-loading="fleetchartVisible"
+      :hide-loading="fleetchartVisible || !gridView"
+      :hide-empty="!gridView"
     >
       <template #actions-right>
-        <BtnDropdown :size="BtnSizesEnum.SMALL">
-          <template v-if="mobile">
-            <Btn
-              :size="BtnSizesEnum.SMALL"
-              data-test="fleetchart-link"
-              @click="toggleFleetchart"
-            >
-              <i class="fad fa-starship" />
-              <span>{{ t("labels.fleetchart") }}</span>
-            </Btn>
-
-            <hr />
-          </template>
-          <Btn
-            :active="detailsVisible"
-            :aria-label="toggleDetailsTooltip"
-            :size="BtnSizesEnum.SMALL"
-            @click="fleetStore.toggleDetails"
-          >
-            <i class="fad fa-info-square" />
-            <span>{{ toggleDetailsTooltip }}</span>
-          </Btn>
-
-          <Btn :size="BtnSizesEnum.SMALL" @click="fleetStore.toggleGrouped">
-            <template v-if="grouped">
-              <i class="fas fa-object-intersect" />
-              <span>{{ t("actions.ungrouped") }}</span>
-            </template>
-            <template v-else>
-              <i class="fas fa-object-union" />
-              <span>{{ t("actions.groupedByModel") }}</span>
-            </template>
-          </Btn>
-        </BtnDropdown>
+        <Btn
+          :aria-label="t('actions.models.openTableConfiguration')"
+          :size="BtnSizesEnum.SMALL"
+          @click="openDisplayOptionsModal"
+        >
+          <i class="fad fa-sliders" />
+        </Btn>
+        <Btn
+          v-if="mobile"
+          :size="BtnSizesEnum.SMALL"
+          data-test="fleetchart-link"
+          @click="toggleFleetchart"
+        >
+          <i class="fad fa-starship" />
+        </Btn>
       </template>
 
       <template #filter>
         <PublicFleetVehiclesFilterForm />
       </template>
-      <template #default="{ records, loading, filterVisible }">
+      <template #default="{ records, loading, filterVisible, emptyVisible }">
         <Grid
+          v-if="gridView"
           :records="records"
           :filter-visible="filterVisible"
           primary-key="id"
@@ -173,6 +162,14 @@ const { perPage, page, updatePerPage } = usePagination(vehiclesQueryKey);
             />
           </template>
         </Grid>
+
+        <FleetVehiclesTable
+          v-else
+          :fleet-slug="fleet.slug"
+          :loading="loading"
+          :empty-visible="emptyVisible"
+          :vehicles="fleetVehicles?.items || []"
+        />
 
         <FleetchartApp
           :items="fleetVehicles?.items || []"

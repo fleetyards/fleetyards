@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_03_11_071907) do
+ActiveRecord::Schema[7.2].define(version: 2026_03_11_083613) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
@@ -778,6 +778,11 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_11_071907) do
     t.decimal "fleetchart_offset_beam", precision: 15, scale: 2
     t.datetime "carrierwave_migrated_at"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
+    t.index ["classification"], name: "index_models_on_classification"
+    t.index ["manufacturer_id"], name: "index_models_on_manufacturer_id"
+    t.index ["name"], name: "index_models_on_name"
+    t.index ["production_status"], name: "index_models_on_production_status"
+    t.index ["size"], name: "index_models_on_size"
   end
 
   create_table "module_hardpoints", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -991,6 +996,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_11_071907) do
     t.string "rsi_pledge_id"
     t.datetime "rsi_pledge_synced_at"
     t.string "slug"
+    t.index ["hidden", "loaner"], name: "index_vehicles_on_hidden_and_loaner"
     t.index ["model_id", "id"], name: "index_vehicles_on_model_id_and_id"
     t.index ["serial", "user_id"], name: "index_vehicles_on_serial_and_user_id", unique: true
     t.index ["user_id"], name: "index_vehicles_on_user_id"
