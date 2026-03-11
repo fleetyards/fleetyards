@@ -48,8 +48,5 @@ const crumbs = computed(() => {
 
   <FleetStats v-if="membership" :fleet="fleet" />
 
-  <PublicFleetStats
-    v-else-if="fleet.publicFleetStats"
-    :fleet="fleet"
-  />
+  <PublicFleetStats v-else-if="fleet.publicFleetStats" :fleet="fleet" />
 </template>

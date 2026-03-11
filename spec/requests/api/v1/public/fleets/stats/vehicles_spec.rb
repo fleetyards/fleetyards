@@ -4,7 +4,7 @@ require "swagger_helper"
 
 RSpec.describe "api/v1/public/fleets/stats", type: :request, swagger_doc: "v1/schema.yaml" do
   let(:member) { create(:user, vehicle_count: 3) }
-  let(:fleet) { create(:fleet, public_fleet: true, members: [member]) }
+  let(:fleet) { create(:fleet, public_fleet_stats: true, members: [member]) }
   let(:fleetSlug) { fleet.slug }
 
   before do
@@ -32,7 +32,7 @@ RSpec.describe "api/v1/public/fleets/stats", type: :request, swagger_doc: "v1/sc
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:fleet) { create(:fleet, public_fleet: false) }
+        let(:fleet) { create(:fleet, public_fleet_stats: false) }
 
         run_test!
       end

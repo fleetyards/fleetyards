@@ -66,9 +66,7 @@ const { data: fleetData } = useFleetQuery(fleetSlug, {
 const { data: publicFleetData } = usePublicFleetQuery(fleetSlug, {
   query: {
     enabled: computed(
-      () =>
-        isFleetRoute.value &&
-        (!isAuthenticated.value || !fleetData.value),
+      () => isFleetRoute.value && (!isAuthenticated.value || !fleetData.value),
     ),
     retry: false,
   },

@@ -34,6 +34,12 @@ export const usePublicHangarMeta = (
 
   onMounted(() => setTitle());
 
-  watch(() => route.name, () => setTitle());
-  watch(() => unref(user), () => setTitle());
+  watch(
+    () => route.name,
+    () => setTitle(),
+  );
+  watch(
+    () => unref(user),
+    () => setTitle(),
+  );
 };
