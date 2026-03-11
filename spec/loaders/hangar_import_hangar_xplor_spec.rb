@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
 require "rails_helper"
+require "webmock/rspec"
 
 RSpec.describe HangarImporter, "hangarXPLOR import" do
-  fixtures :users, :vehicles, :models, :manufacturers
-
   let(:loader) { ::Rsi::ModelsLoader.new }
-  let(:user) { users(:data) }
+  let(:user) { create(:user) }
   let(:import_file) { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/imports/hangarXPLOR.json")) }
   let(:import) { ::Imports::HangarImport.create!(user_id: user.id, import: import_file) }
+  let(:matrix_response_stub) { File.read("spec/fixtures/rsi/matrix.json") }
+  let(:pledge_store_data) { JSON.parse(File.read("spec/fixtures/rsi/pledge_store.json")) }
   let(:imported_ships) do
     [
       "100i",
@@ -18,7 +19,7 @@ RSpec.describe HangarImporter, "hangarXPLOR import" do
       "315p",
       "325a",
       "350r",
-      "600i Executive Edition",
+      "600i Executive-Edition",
       "600i Explorer",
       "600i Touring",
       "85X",
@@ -69,7 +70,7 @@ RSpec.describe HangarImporter, "hangarXPLOR import" do
       "Cyclone TR",
       "Defender",
       "Dragonfly Black",
-      "Dragonfly Star Kitten Edition",
+      "Dragonfly Starkitten Edition",
       "Dragonfly Yellowjacket",
       "Eclipse",
       "Endeavor",
@@ -117,6 +118,8 @@ RSpec.describe HangarImporter, "hangarXPLOR import" do
       "Mantis",
       "Merchantman",
       "Mercury",
+      "Mole Carbon Edition",
+      "Mole Talus Edition",
       "Mustang Alpha",
       "Mustang Alpha Vindicator",
       "Mustang Beta",
@@ -180,9 +183,21 @@ RSpec.describe HangarImporter, "hangarXPLOR import" do
 
   before do
     Timecop.freeze("2017-01-01 14:00:00")
-    VCR.use_cassette("rsi_models_loader_all") do
-      loader.all
-    end
+
+    stub_request(:get, %r{\Ahttps://robertsspaceindustries.com/ship-matrix/index.*})
+      .to_return(status: 200, body: matrix_response_stub)
+
+    stub_request(:post, %r{\Ahttps://robertsspaceindustries.com/graphql})
+      .to_return do |request|
+        body = JSON.parse(request.body)
+        chassis_id = body.first.dig("variables", "query", "ships", "chassisId", 0)
+        resources = pledge_store_data[chassis_id.to_s] || []
+        {status: 200, body: [{data: {store: {search: {resources: resources}}}}].to_json, headers: {"Content-Type" => "application/json"}}
+      end
+
+    loader.all
+
+    load Rails.root.join("db/seeds/01_manual_models.rb")
   end
 
   after do

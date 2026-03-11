@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
 require "rails_helper"
+require "webmock/rspec"
 
 describe Rsi::ModelsLoader do
   let(:loader) { ::Rsi::ModelsLoader.new }
+  let(:matrix_response_stub) { File.read("spec/fixtures/rsi/matrix.json") }
+  let(:pledge_store_data) { JSON.parse(File.read("spec/fixtures/rsi/pledge_store.json")) }
   let(:polaris) do
     create(
       :model,
@@ -17,6 +20,17 @@ describe Rsi::ModelsLoader do
 
   before do
     Timecop.freeze("2017-01-01 14:00:00")
+
+    stub_request(:get, %r{\Ahttps://robertsspaceindustries.com/ship-matrix/index.*})
+      .to_return(status: 200, body: matrix_response_stub)
+
+    stub_request(:post, %r{\Ahttps://robertsspaceindustries.com/graphql})
+      .to_return do |request|
+        body = JSON.parse(request.body)
+        chassis_id = body.first.dig("variables", "query", "ships", "chassisId", 0)
+        resources = pledge_store_data[chassis_id.to_s] || []
+        {status: 200, body: [{data: {store: {search: {resources: resources}}}}].to_json, headers: {"Content-Type" => "application/json"}}
+      end
   end
 
   after do
@@ -30,13 +44,11 @@ describe Rsi::ModelsLoader do
     initial_paint_count = ModelPaint.count
     initial_manufacturer_count = Manufacturer.count
 
-    VCR.use_cassette("loaders/rsi_models_all") do
-      loader.all
-    end
+    loader.all
 
     expectations = {
-      models: initial_model_count + 215,
-      hardpoints: initial_hardpoint_count + 9244,
+      models: initial_model_count + 211,
+      hardpoints: initial_hardpoint_count + 9104,
       components: initial_component_count,
       paints: initial_paint_count + 15,
       manufacturers: initial_manufacturer_count + 18
@@ -61,9 +73,7 @@ describe Rsi::ModelsLoader do
     initial_paint_count = ModelPaint.count
     initial_manufacturer_count = Manufacturer.count
 
-    VCR.use_cassette("loaders/rsi_models_300i") do
-      loader.one(7)
-    end
+    loader.one(7)
 
     expectations = {
       models: initial_model_count + 1,
@@ -84,40 +94,36 @@ describe Rsi::ModelsLoader do
   end
 
   it "#updates only when needed" do
-    VCR.use_cassette("loaders/rsi_models_300i_updates") do
-      loader.one(7)
+    loader.one(7)
 
-      model = Model.find_by(name: "300i")
+    model = Model.find_by(name: "300i")
 
-      Timecop.travel(1.day)
+    Timecop.travel(1.day)
 
-      loader.one(model.rsi_id)
+    loader.one(model.rsi_id)
 
-      model.reload
+    model.reload
 
-      expect(model.updated_at.day).not_to eq(Time.zone.now.day)
-      assert_in_delta(27.0, model.length.to_f)
-    end
+    expect(model.updated_at.day).not_to eq(Time.zone.now.day)
+    assert_in_delta(27.0, model.length.to_f)
   end
 
   it "#updates production status only when time_modified changes" do
-    VCR.use_cassette("loaders/rsi_models_300i_updates") do
-      loader.one(7)
+    loader.one(7)
 
-      model = Model.find_by(name: "300i")
+    model = Model.find_by(name: "300i")
 
-      assert_equal("flight-ready", model.production_status)
+    assert_equal("flight-ready", model.production_status)
 
-      model.update(production_status: "in-concept")
+    model.update(production_status: "in-concept")
 
-      Timecop.travel(1.day)
+    Timecop.travel(1.day)
 
-      loader.one(7)
+    loader.one(7)
 
-      model.reload
+    model.reload
 
-      expect("in-concept").to eq(model.production_status)
-    end
+    expect("in-concept").to eq(model.production_status)
   end
 
   it "#overides present data" do
@@ -126,9 +132,7 @@ describe Rsi::ModelsLoader do
 
     Timecop.travel(1.day)
 
-    VCR.use_cassette("loaders/rsi_models_polaris") do
-      loader.one(116)
-    end
+    loader.one(116)
 
     polaris.reload
 

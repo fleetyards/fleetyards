@@ -3,16 +3,16 @@
 require "rails_helper"
 
 RSpec.describe ScData::Loader::ModelsLoader do
-  fixtures :models
-
   let(:loader) { described_class.new }
+  let(:manufacturer) { create(:manufacturer, name: "Roberts Space Industries", slug: "rsi") }
 
   describe "#one" do
     let(:constellation_sc_data_id) { "rsi_constellation_andromeda" }
-    let(:model) { models(:andromeda) }
-
-    before do
-      model.update(sc_identifier: constellation_sc_data_id)
+    let(:model) do
+      create(:model,
+        name: "Constellation Andromeda",
+        manufacturer: manufacturer,
+        sc_identifier: constellation_sc_data_id)
     end
 
     it "loads data from game files" do

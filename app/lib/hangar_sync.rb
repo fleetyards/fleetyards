@@ -11,7 +11,7 @@ class HangarSync < HangarImporter
   ].freeze
 
   def initialize(data)
-    @data = data.map(&:deep_symbolize_keys)
+    @data = data.map { |item| item.deep_transform_keys { |key| key.to_s.underscore.to_sym } }
     @ships = @data.select { |item| item[:type] == "ship" }
     @components = @data.select { |item| item[:type] == "component" }
     @upgrades = @data.select { |item| item[:type] == "upgrade" }

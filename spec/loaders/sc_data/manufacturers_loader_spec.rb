@@ -1,15 +1,14 @@
 # frozen_string_literal: true
 
 require "rails_helper"
+require "webmock/rspec"
 
 RSpec.describe ScData::Loader::ManufacturersLoader do
   let(:loader) { described_class.new }
 
   describe "#all" do
     it "loads data from game files" do
-      initial_manufacturer_count = Manufacturer.count
-
-      expect { loader.all }.to change(Manufacturer, :count).by(92 + initial_manufacturer_count)
+      expect { loader.all }.to change(Manufacturer, :count).by(108)
 
       manufacturer_codes = Manufacturer.pluck(:code)
 
@@ -30,6 +29,9 @@ RSpec.describe ScData::Loader::ManufacturersLoader do
 
       stub_request(:get, %r{\Ahttps://robertsspaceindustries.com/ship-matrix/index.*})
         .to_return(status: 200, body: matrix_response_stub)
+
+      stub_request(:post, %r{\Ahttps://robertsspaceindustries.com/graphql})
+        .to_return(status: 200, body: [{data: {store: {search: {resources: []}}}}].to_json, headers: {"Content-Type" => "application/json"})
     end
 
     after do
@@ -37,13 +39,9 @@ RSpec.describe ScData::Loader::ManufacturersLoader do
     end
 
     it "reuses existing entries" do
-      initial_manufacturer_count = Manufacturer.count
+      expect { rsi_models_loader.all }.to change(Manufacturer, :count).by(18)
 
-      expect { rsi_models_loader.all }.to change(Manufacturer, :count).by(5 + initial_manufacturer_count)
-
-      initial_manufacturer_count += 5
-
-      expect { loader.all }.to change(Manufacturer, :count).by(78 + initial_manufacturer_count)
+      expect { loader.all }.to change(Manufacturer, :count).by(93)
 
       manufacturer_codes = Manufacturer.pluck(:code)
 

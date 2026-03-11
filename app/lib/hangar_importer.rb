@@ -231,6 +231,8 @@ class HangarImporter
       "Retaliator Bomber" => "Retaliator",
       "Ursa Rover" => "Ursa",
       "Ursa Rover Fortuna" => "Ursa Fortuna",
+      "Argo Mole - Carbon Edition" => "Mole Carbon Edition",
+      "Argo Mole - Talus Edition" => "Mole Talus Edition",
       "Crusader A1 Spirit" => "A1 Spirit",
       "Crusader C1 Spirit" => "C1 Spirit",
       "Crusader E1 Spirit" => "E1 Spirit"

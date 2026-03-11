@@ -18,11 +18,6 @@ Searchkick.disable_callbacks
 require "sidekiq/testing"
 Sidekiq::Testing.fake!
 
-VCR.configure do |config|
-  config.cassette_library_dir = "spec/fixtures/vcr_cassettes"
-  config.hook_into :webmock
-end
-
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
 # run as spec files by default. This means that files in spec/support that end
@@ -49,9 +44,6 @@ end
 RSpec.configure do |config|
   config.include ActiveSupport::Testing::TimeHelpers
   config.include FactoryBot::Syntax::Methods
-
-  # TODO: migrate remaining fixtures (users, vehicles, models, manufacturers) to factories
-  config.fixture_paths = [Rails.root.join("test/fixtures").to_s]
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
