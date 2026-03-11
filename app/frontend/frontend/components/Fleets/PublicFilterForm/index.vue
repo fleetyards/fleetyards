@@ -9,6 +9,11 @@ import RadioList from "@/shared/components/base/RadioList/index.vue";
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import ManufacturerFilterGroup from "@/frontend/components/base/ManufacturerFilterGroup/index.vue";
+import ProductionStatusFilterGroup from "@/frontend/components/base/ProductionStatusFilterGroup/index.vue";
+import ClassificationFilterGroup from "@/frontend/components/base/ModelClassificationFilterGroup/index.vue";
+import FocusFilterGroup from "@/frontend/components/base/ModelFocusFilterGroup/index.vue";
+import SizeFilterGroup from "@/frontend/components/base/ModelSizeFilterGroup/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 import { FleetVehicleQuery } from "@/services/fyApi";
@@ -56,56 +61,24 @@ const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
       :clearable="true"
     />
 
-    <FilterGroup
+    <ManufacturerFilterGroup
       v-model="form.manufacturerIn"
-      :label="t('labels.filters.models.manufacturer')"
-      fetch-path="manufacturers/with-models"
       name="manufacturer"
-      value-attr="slug"
-      icon-attr="logo"
-      :paginated="true"
-      :searchable="true"
-      :multiple="true"
-      :no-label="true"
     />
 
-    <FilterGroup
+    <ProductionStatusFilterGroup
       v-model="form.productionStatusIn"
-      :label="t('labels.filters.models.productionStatus')"
-      fetch-path="models/production-states"
       name="production-status"
-      :multiple="true"
-      :no-label="true"
     />
 
-    <FilterGroup
+    <ClassificationFilterGroup
       v-model="form.classificationIn"
-      :label="t('labels.filters.models.classification')"
-      fetch-path="models/classifications"
       name="classification"
-      :searchable="true"
-      :multiple="true"
-      :no-label="true"
     />
 
-    <FilterGroup
-      v-model="form.focusIn"
-      :label="t('labels.filters.models.focus')"
-      fetch-path="models/focus"
-      name="focus"
-      :searchable="true"
-      :multiple="true"
-      :no-label="true"
-    />
+    <FocusFilterGroup v-model="form.focusIn" name="focus" />
 
-    <FilterGroup
-      v-model="form.sizeIn"
-      :label="t('labels.filters.models.size')"
-      fetch-path="models/sizes"
-      name="size"
-      :multiple="true"
-      :no-label="true"
-    />
+    <SizeFilterGroup v-model="form.sizeIn" name="size" />
 
     <FilterGroup
       v-model="form.pledgePriceIn"

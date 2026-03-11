@@ -81,9 +81,13 @@ const {
   ...asyncStatus
 } = usePublicHangarQuery(username, publicHangarQueryParams);
 
+const publicHangarStatsQueryParams = computed(() => {
+  return { q: filters.value };
+});
+
 const { data: hangarStats, refetch: refetchStats } = usePublicHangarStats(
   username,
-  publicHangarQueryParams,
+  publicHangarStatsQueryParams,
 );
 
 const { data: hangarGroups, refetch: refetchGroups } =

@@ -35,7 +35,7 @@ const filter = async (filter: string) => {
   if (!props.filterKey) {
     return;
   }
-  const query = JSON.parse(JSON.stringify(route.query.q || {}));
+  const query = JSON.parse(JSON.stringify(route.query || {}));
 
   if ((query[props.filterKey] || []).includes(filter)) {
     const index = query[props.filterKey].findIndex(
@@ -53,19 +53,17 @@ const filter = async (filter: string) => {
 
   await router.replace({
     name: route.name || "home",
-    query: {
-      q: query,
-    },
+    query,
   });
 };
 
 const isActive = (classification: string) => {
-  if (!route.query.q || !props.filterKey) {
+  if (!props.filterKey) {
     return false;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const classFilter = (route.query.q as Record<string, any>)[props.filterKey];
+  const classFilter = (route.query as Record<string, any>)[props.filterKey];
   if (!classFilter) {
     return false;
   }

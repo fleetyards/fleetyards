@@ -9,12 +9,20 @@ import RadioList from "@/shared/components/base/RadioList/index.vue";
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import ManufacturerFilterGroup from "@/frontend/components/base/ManufacturerFilterGroup/index.vue";
+import ProductionStatusFilterGroup from "@/frontend/components/base/ProductionStatusFilterGroup/index.vue";
+import ClassificationFilterGroup from "@/frontend/components/base/ModelClassificationFilterGroup/index.vue";
+import FocusFilterGroup from "@/frontend/components/base/ModelFocusFilterGroup/index.vue";
+import SizeFilterGroup from "@/frontend/components/base/ModelSizeFilterGroup/index.vue";
+import FleetMemberFilterGroup from "@/frontend/components/base/FleetMemberFilterGroup/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFilters } from "@/shared/composables/useFilters";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 
 const { t } = useI18n();
 const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
+
+const route = useRoute();
 
 type FleetsFilterForm = {
   modelNameCont?: string;
@@ -36,21 +44,38 @@ type FleetsFilterForm = {
   memberIn?: string[];
 };
 
-const query = computed(() => (route.query.q || {}) as FleetsFilterForm);
+const prefillFormValues = () => {
+  return {
+    modelNameCont: filters.value.modelNameCont,
+    onSaleEq: filters.value.onSaleEq,
+    loanerEq: filters.value.loanerEq,
+    priceLteq: filters.value.priceLteq,
+    priceGteq: filters.value.priceGteq,
+    pledgePriceLteq: filters.value.pledgePriceLteq,
+    pledgePriceGteq: filters.value.pledgePriceGteq,
+    lengthLteq: filters.value.lengthLteq,
+    lengthGteq: filters.value.lengthGteq,
+    manufacturerIn: filters.value.manufacturerIn || [],
+    classificationIn: filters.value.classificationIn || [],
+    focusIn: filters.value.focusIn || [],
+    sizeIn: filters.value.sizeIn || [],
+    priceIn: filters.value.priceIn || [],
+    pledgePriceIn: filters.value.pledgePriceIn || [],
+    productionStatusIn: filters.value.productionStatusIn || [],
+    memberIn: filters.value.memberIn || [],
+  };
+};
 
-const form = ref<FleetsFilterForm>({});
+const setupForm = () => {
+  form.value = prefillFormValues();
+};
 
-const route = useRoute();
+const { resetFilter, isFilterSelected, filter, filters } =
+  useFilters<FleetsFilterForm>({
+    updateCallback: setupForm,
+  });
 
-const { resetFilter, isFilterSelected, filter } = useFilters();
-
-watch(
-  () => route.query,
-  () => {
-    setupForm();
-  },
-  { deep: true },
-);
+const form = ref<FleetsFilterForm>(prefillFormValues());
 
 watch(
   () => form.value,
@@ -59,32 +84,6 @@ watch(
   },
   { deep: true },
 );
-
-onMounted(() => {
-  setupForm();
-});
-
-const setupForm = () => {
-  form.value = {
-    modelNameCont: query.value.modelNameCont,
-    onSaleEq: query.value.onSaleEq,
-    loanerEq: query.value.loanerEq,
-    priceLteq: query.value.priceLteq,
-    priceGteq: query.value.priceGteq,
-    pledgePriceLteq: query.value.pledgePriceLteq,
-    pledgePriceGteq: query.value.pledgePriceGteq,
-    lengthLteq: query.value.lengthLteq,
-    lengthGteq: query.value.lengthGteq,
-    manufacturerIn: query.value.manufacturerIn || [],
-    classificationIn: query.value.classificationIn || [],
-    focusIn: query.value.focusIn || [],
-    sizeIn: query.value.sizeIn || [],
-    priceIn: query.value.priceIn || [],
-    pledgePriceIn: query.value.pledgePriceIn || [],
-    productionStatusIn: query.value.productionStatusIn || [],
-    memberIn: query.value.memberIn || [],
-  };
-};
 
 const submit = () => {
   filter(form.value);
@@ -102,70 +101,30 @@ const submit = () => {
       :clearable="true"
     />
 
-    <FilterGroup
+    <FleetMemberFilterGroup
       v-model="form.memberIn"
-      :label="t('labels.filters.fleets.member')"
-      :fetch-path="`fleets/${route.params.slug}/members`"
+      :fleet-slug="(route.params.slug as string)"
       name="member"
-      value-attr="username"
-      label-attr="username"
-      icon-attr="avatar"
-      :paginated="true"
-      :searchable="true"
-      :multiple="true"
-      :no-label="true"
     />
 
-    <FilterGroup
+    <ManufacturerFilterGroup
       v-model="form.manufacturerIn"
-      :label="t('labels.filters.models.manufacturer')"
-      fetch-path="manufacturers/with-models"
       name="manufacturer"
-      value-attr="slug"
-      icon-attr="logo"
-      :paginated="true"
-      :searchable="true"
-      :multiple="true"
-      :no-label="true"
     />
 
-    <FilterGroup
+    <ProductionStatusFilterGroup
       v-model="form.productionStatusIn"
-      :label="t('labels.filters.models.productionStatus')"
-      fetch-path="models/production-states"
       name="production-status"
-      :multiple="true"
-      :no-label="true"
     />
 
-    <FilterGroup
+    <ClassificationFilterGroup
       v-model="form.classificationIn"
-      :label="t('labels.filters.models.classification')"
-      fetch-path="models/classifications"
       name="classification"
-      :searchable="true"
-      :multiple="true"
-      :no-label="true"
     />
 
-    <FilterGroup
-      v-model="form.focusIn"
-      :label="t('labels.filters.models.focus')"
-      fetch-path="models/focus"
-      name="focus"
-      :searchable="true"
-      :multiple="true"
-      :no-label="true"
-    />
+    <FocusFilterGroup v-model="form.focusIn" name="focus" />
 
-    <FilterGroup
-      v-model="form.sizeIn"
-      :label="t('labels.filters.models.size')"
-      fetch-path="models/sizes"
-      name="size"
-      :multiple="true"
-      :no-label="true"
-    />
+    <SizeFilterGroup v-model="form.sizeIn" name="size" />
 
     <FilterGroup
       v-model="form.pledgePriceIn"
