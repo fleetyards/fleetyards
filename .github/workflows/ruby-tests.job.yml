@@ -38,6 +38,12 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+    strategy:
+      fail-fast: false
+      matrix:
+        ci_node_total: [2]
+        ci_node_index: [0, 1]
+
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
@@ -67,6 +73,18 @@ jobs:
       - uses: ankane/setup-opensearch@v1
       - run: mkdir -p log
       - name: Prepare test databases
-        run: bundle exec flatware fan rake db:create db:schema:load
+        run: bundle exec flatware fan -w 2 rake db:create db:schema:load
       - name: Run tests
-        run: bundle exec flatware rspec
+        env:
+          CI_NODE_TOTAL: ${{ matrix.ci_node_total }}
+          CI_NODE_INDEX: ${{ matrix.ci_node_index }}
+        run: |
+          specs=($(find spec -name '*_spec.rb' | sort))
+          total=${#specs[@]}
+          node_specs=()
+          for ((i=0; i<total; i++)); do
+            if (( i % CI_NODE_TOTAL == CI_NODE_INDEX )); then
+              node_specs+=("${specs[$i]}")
+            fi
+          done
+          bundle exec flatware rspec -w 2 "${node_specs[@]}"
