@@ -137,17 +137,17 @@ watch(
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
-        icon="fad fa-industry fa-4x"
-        :value="manufacturerCount"
-        :label="t('labels.hangarMetrics.manufacturerCount')"
-      />
-    </div>
-    <div class="col-12 col-sm-6 col-lg-3">
-      <StatsPanel
         icon="fad fa-check-circle fa-4x"
         :value="flightReadyCount"
         :label="t('labels.hangarMetrics.flightReady')"
         :suffix="flightReadyPercent"
+      />
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+      <StatsPanel
+        icon="fad fa-industry fa-4x"
+        :value="manufacturerCount"
+        :label="t('labels.hangarMetrics.manufacturerCount')"
       />
     </div>
   </div>

@@ -176,18 +176,18 @@ const wishlistTotalCreditsCompact = computed(() =>
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
-        icon="fad fa-user fa-4x"
-        :value="minCrew"
-        :label="t('labels.hangarMetrics.totalMinCrew')"
-        :suffix="t('number.units.people', { count: minCrew })"
+        icon="fad fa-fingerprint fa-4x"
+        :value="uniqueModelsCount"
+        :label="t('labels.hangarMetrics.uniqueModels')"
+        :suffix="uniqueModelsPercent"
       />
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
-        icon="fad fa-user fa-4x"
-        :value="maxCrew"
-        :label="t('labels.hangarMetrics.totalMaxCrew')"
-        :suffix="t('number.units.people', { count: maxCrew })"
+        icon="fad fa-check-circle fa-4x"
+        :value="flightReadyCount"
+        :label="t('labels.hangarMetrics.flightReady')"
+        :suffix="flightReadyPercent"
       />
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
@@ -245,31 +245,12 @@ const wishlistTotalCreditsCompact = computed(() =>
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
-        icon="fad fa-fingerprint fa-4x"
-        :value="uniqueModelsCount"
-        :label="t('labels.hangarMetrics.uniqueModels')"
-        :suffix="uniqueModelsPercent"
-      />
-    </div>
-    <div class="col-12 col-sm-6 col-lg-3">
-      <StatsPanel
-        icon="fad fa-check-circle fa-4x"
-        :value="flightReadyCount"
-        :label="t('labels.hangarMetrics.flightReady')"
-        :suffix="flightReadyPercent"
-      />
-    </div>
-    <div class="col-12 col-sm-6 col-lg-3">
-      <StatsPanel
         icon="fad fa-ruler fa-4x"
         :value="largestShip"
         :label="t('labels.hangarMetrics.largestShip')"
         :suffix="t('number.units.distance')"
       />
     </div>
-  </div>
-
-  <div class="row">
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
         icon="fad fa-ruler fa-4x"
@@ -278,6 +259,9 @@ const wishlistTotalCreditsCompact = computed(() =>
         :suffix="t('number.units.distance')"
       />
     </div>
+  </div>
+
+  <div class="row">
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
         icon="fad fa-dollar-sign fa-4x"
@@ -292,6 +276,22 @@ const wishlistTotalCreditsCompact = computed(() =>
         :value="wishlistTotalCreditsCompact.value"
         :label="t('labels.hangarMetrics.wishlistTotalCredits')"
         :suffix="wishlistTotalCreditsCompact.suffix"
+      />
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+      <StatsPanel
+        icon="fad fa-user fa-4x"
+        :value="minCrew"
+        :label="t('labels.hangarMetrics.totalMinCrew')"
+        :suffix="t('number.units.people', { count: minCrew })"
+      />
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+      <StatsPanel
+        icon="fad fa-user fa-4x"
+        :value="maxCrew"
+        :label="t('labels.hangarMetrics.totalMaxCrew')"
+        :suffix="t('number.units.people', { count: maxCrew })"
       />
     </div>
   </div>
