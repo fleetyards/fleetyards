@@ -6,7 +6,9 @@ alwaysApply: true
 
 # Backend Development Rules
 
-You are an expert in Ruby on Rails, PostgreSQL, Redis, Sidekiq, and SCSS, with a deep understanding of best practices and performance optimization techniques in these technologies.
+You are an expert in Ruby on Rails, PostgreSQL, Redis, Sidekiq,
+and SCSS, with a deep understanding of best practices and performance
+optimization techniques in these technologies.
 
 ## Directory structure
 
@@ -26,12 +28,12 @@ You are an expert in Ruby on Rails, PostgreSQL, Redis, Sidekiq, and SCSS, with a
 - config/                  # Rails configuration
 - db/                      # Database migrations, schema, seeds
 - spec/                    # RSpec tests
-- test/                    # Minitest tests
 - bin/                     # Development scripts
 
 ## Related rules
 
-- [Linting and Formatting](mdc:.cursor/rules/backend/linting-and-formatting.mdc): Ruby code style and formatting standards
+- [Linting and Formatting](mdc:.cursor/rules/backend/linting-and-formatting.mdc):
+  Ruby code style and formatting standards
 
 ## Key libraries
 
@@ -41,7 +43,7 @@ You are an expert in Ruby on Rails, PostgreSQL, Redis, Sidekiq, and SCSS, with a
 - **Sidekiq**: Background job processing
 - **Devise**: Authentication system
 - **Action Policy**: Authorization framework
-- **Minitest/RSpec**: Testing frameworks
+- **RSpec**: Testing framework (with rswag for API specs)
 - **FactoryBot**: Test data generation
 
 ## Code Style and Structure
@@ -50,8 +52,10 @@ You are an expert in Ruby on Rails, PostgreSQL, Redis, Sidekiq, and SCSS, with a
 - Follow Rails conventions and best practices.
 - Use object-oriented and functional programming patterns as appropriate.
 - Prefer iteration and modularization over code duplication.
-- Use descriptive variable and method names (e.g., user_signed_in?, calculate_total).
-- Structure files according to Rails conventions (MVC, concerns, helpers, etc.).
+- Use descriptive variable and method names
+  (e.g., user_signed_in?, calculate_total).
+- Structure files according to Rails conventions
+  (MVC, concerns, helpers, etc.).
 
 ## Naming Conventions
 
@@ -75,7 +79,8 @@ You are an expert in Ruby on Rails, PostgreSQL, Redis, Sidekiq, and SCSS, with a
 - Use exceptions for exceptional cases, not for control flow.
 - Implement proper error logging and user-friendly messages.
 - Use ActiveModel validations in models.
-- Handle errors gracefully in controllers and display appropriate flash messages.
+- Handle errors gracefully in controllers and display appropriate
+  flash messages.
 
 ## UI and Styling
 
@@ -98,13 +103,14 @@ You are an expert in Ruby on Rails, PostgreSQL, Redis, Sidekiq, and SCSS, with a
 
 ## Testing
 
-- Write comprehensive tests using Minitest or RSpec.
+- Write comprehensive tests using RSpec.
 - Use factories (factory_bot) for test data generation.
 
 ## Security
 
-- Implement proper authentication (devise) and authorization (action_policy).
+- Implement proper authentication (devise) and authorization
+  (action_policy).
 - Use strong parameters in controllers.
-- Protect against common web vulnerabilities (XSS, CSRF, SQL injection).
+- Protect against common web vulnerabilities
+  (XSS, CSRF, SQL injection).
 - Follow the official Ruby on Rails guides for best practices.
-

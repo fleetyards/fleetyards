@@ -4,7 +4,12 @@ globs: *.ts,*.vue
 alwaysApply: true
 ---
 
-You are an expert in TypeScript, Vue.js 3, Vite, Vue Router, Pinia (if used), Tanstack Vue Query, and SCSS, with a deep understanding of best practices and performance optimization techniques in these technologies.
+# Frontend Development Rules
+
+You are an expert in TypeScript, Vue.js 3, Vite, Vue Router, Pinia,
+Tanstack Vue Query, Orval, and SCSS, with a deep understanding of
+best practices and performance optimization techniques in these
+technologies.
 
 ## Directory structure
 
@@ -25,7 +30,8 @@ You are an expert in TypeScript, Vue.js 3, Vite, Vue Router, Pinia (if used), Ta
 
 ## Related rules
 
-- [Linting and Formatting](mdc:.cursor/rules/frontend/linting-and-formatting.mdc): VueJS and Typescript style and formatting standards
+- [Linting and Formatting](mdc:.cursor/rules/frontend/linting-and-formatting.mdc):
+  VueJS and Typescript style and formatting standards
 - [Styling](mdc:.cursor/rules/frontend/styling.mdc)
 - [Unit Test](mdc:.cursor/rules/frontend/unit-test.mdc)
 - [Vue SFC](mdc:.cursor/rules/frontend/vue-sfc.mdc)
@@ -37,38 +43,50 @@ You are an expert in TypeScript, Vue.js 3, Vite, Vue Router, Pinia (if used), Ta
 - **Vite.js**: Build tool and dev server
 - **SCSS/Sass**: CSS preprocessor
 - **Tanstack Vue Query**: Data fetching library
+- **Pinia**: State management (with persisted state plugin)
+- **Orval**: API client and TypeScript type generation from
+  OpenAPI schema
 
 ## Code Style and Structure
 
-- Write concise, maintainable, and technically accurate TypeScript code.
+- Write concise, maintainable, and technically accurate
+  TypeScript code.
 - Use functional and declarative programming patterns; avoid classes.
-- Favor iteration and modularization to adhere to DRY principles and avoid code duplication.
+- Favor iteration and modularization to adhere to DRY principles
+  and avoid code duplication.
 - Use descriptive variable names (e.g., isLoading, hasError).
-- Organize files so each file contains only related content (components, helpers, types, etc.).
+- Organize files so each file contains only related content
+  (components, helpers, types, etc.).
 
 ## Naming Conventions
 
-- Use lowercase with dashes for directories (e.g., shared/components/oauth-btn).
+- Use lowercase with dashes for directories
+  (e.g., shared/components/oauth-btn).
 - Favor named exports for functions.
 
 ## TypeScript Usage
 
-- Use TypeScript for all code; prefer interfaces over types for extendability.
+- Use TypeScript for all code; prefer interfaces over types
+  for extendability.
 - Use functional components with TypeScript interfaces.
 
 ## Syntax and Formatting
 
 - Use the "function" keyword for pure functions for hoisting and clarity.
-- Always use the Vue Composition API `<script setup>` style.
+- Always use the Vue Composition API `<script lang="ts" setup>` style
+  (note: `lang` before `setup`).
 
 ## UI and Styling
 
-- Use SCSS for styling, following BEM or similar conventions.
+- Use SCSS for styling with lowercase-dashed class names
+  (e.g., `.panel-heading`).
 
 ## Autoimport code
 
-- Use auto-imports for composables and utilities if configured (check vite config).
-- Do not import Vue core functions like `ref` or `onMounted` if auto-imported.
+- Use auto-imports for composables and utilities if configured
+  (check vite config).
+- Do not import Vue core functions like `ref` or `onMounted`
+  if auto-imported.
 
 ## Performance Optimization
 
@@ -78,4 +96,5 @@ You are an expert in TypeScript, Vue.js 3, Vite, Vue Router, Pinia (if used), Ta
 
 ## Key Conventions
 
-- Optimize Web Vitals (LCP, CLS, FID) using tools like Sentry, Lighthouse, or WebPageTest.
+- Optimize Web Vitals (LCP, CLS, FID) using tools like Sentry,
+  Lighthouse, or WebPageTest.

@@ -1,32 +1,37 @@
 ---
-description: 
+description:
 globs: *.vue
 alwaysApply: true
 ---
 
 # Shared Components Directory (`app/frontend/shared/components`)
 
-This directory contains reusable Vue components used throughout the Fleetyards frontend. Components here should be:
+This directory contains reusable Vue components used throughout the
+Fleetyards frontend. Components here should be:
+
 - Generic, composable, and not tightly coupled to a specific page or feature
 - Well-typed with TypeScript
-- Styled using SCSS (with BEM or similar conventions)
+- Styled using SCSS with lowercase-dashed class names
 - Documented and tested where appropriate
 
 ## Structure & Conventions
+
 - Each component lives in its own directory (PascalCase or descriptive name)
 - Main entry: `index.vue` (with optional `index.scss`, `types.ts`, and tests)
 - Subcomponents or helpers go in subdirectories
-- Use `<script setup lang="ts">` and `<style lang="scss" scoped>`
+- Use `<script lang="ts" setup>` and `<style lang="scss" scoped>`
 - Add a `README.md` or comment block for complex components
 
 ## Component List
 
 ### Top-level Components
+
 - **AccessCheck.vue** — Access control wrapper
 - **AsyncData.vue** / **AsyncData.types.ts** — Data loading utility
 - **Collapsed.vue** — Collapsible content panel
 
 ### Major Component Directories
+
 - **OauthBtn/** — OAuth login button (with types and styles)
 - **SocialLogins/** — Social login button group
 - **base/** — Primitives: Button, Input, Table, Panel, etc.
@@ -63,6 +68,7 @@ This directory contains reusable Vue components used throughout the Fleetyards f
 - **AppEnvironment/** — Environment indicator
 
 ## Adding New Components
+
 - Use a new directory for each major component
 - Include `index.vue`, `index.scss`, and `types.ts` as needed
 - Write unit tests (`index.test.ts`) for logic-heavy components
@@ -70,11 +76,13 @@ This directory contains reusable Vue components used throughout the Fleetyards f
 - Update this file with a short description
 
 ## Best Practices
+
 - Keep components focused and small
 - Use props and emits with full TypeScript typing
 - Prefer composition over inheritance
 - Document any non-obvious logic
 
 ---
-This file should be updated whenever new shared components are added or conventions change.
 
+This file should be updated whenever new shared components are added
+or conventions change.

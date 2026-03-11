@@ -6,7 +6,9 @@ alwaysApply: false
 
 # Bin Scripts and Development Workflow
 
-This document provides an overview of the development scripts available in the `bin` directory and how to use them for various development tasks within the Fleetyards application.
+This document provides an overview of the development scripts available
+in the `bin` directory and how to use them for various development tasks
+within the Fleetyards application.
 
 ## Development Environment Setup
 
@@ -15,15 +17,18 @@ This document provides an overview of the development scripts available in the `
 1. **`bin/dev`**
    - **Purpose**: Starts the local development environment
    - **When to use**: For running Rails, Sidekiq, and Vite locally
-   - **Implementation**: Uses `foreman` to run processes defined in `Procfile.dev`:
+   - **Implementation**: Uses `foreman` to run processes defined in
+     `Procfile.dev`:
      - `web`: Rails server
      - `worker`: Sidekiq background job processing
      - `vite`: Vite development server for frontend assets
 
 2. **`bin/dev-docker`**
-   - **Purpose**: Starts the complete development environment with Docker services
+   - **Purpose**: Starts the complete development environment with
+     Docker services
    - **When to use**: For running all services in Docker containers
-   - **Implementation**: Uses `foreman` to run processes defined in `Procfile.docker.dev`:
+   - **Implementation**: Uses `foreman` to run processes defined in
+     `Procfile.docker.dev`:
      - `web`: Rails server
      - `worker`: Sidekiq background job processing
      - `vite`: Vite development server
@@ -37,4 +42,3 @@ This document provides an overview of the development scripts available in the `
    - `bin/rubocop`: Runs Rubocop for Ruby linting
 
 Refer to each script for more details and available options.
-

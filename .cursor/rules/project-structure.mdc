@@ -12,7 +12,7 @@ This document outlines the overall structure of the Fleetyards application.
 
 The application follows a Rails convention-based structure:
 
-```
+```text
 fleetyards/
 ├── app/
 │   ├── models/                # ActiveRecord models
@@ -27,11 +27,10 @@ fleetyards/
 │   ├── api_components/        # API-specific code
 │   ├── lib/                   # Custom libraries
 │   ├── tasks/                 # Rake tasks
-│   └── frontend/              # Frontend code (Vue 3, TypeScript, SCSS)
+│   └── frontend/              # Frontend code (Vue 3, TS, SCSS)
 ├── config/                    # Rails configuration
 ├── db/                        # Database migrations, schema, seeds
 ├── spec/                      # RSpec tests
-├── test/                      # Minitest tests
 ├── bin/                       # Development scripts
 ├── public/                    # Static files
 ├── vendor/                    # Third-party code
@@ -41,20 +40,24 @@ fleetyards/
 
 ### Rails Application
 
-The application is built on Ruby on Rails, following standard Rails conventions.
+The application is built on Ruby on Rails, following standard
+Rails conventions.
 
 ### Frontend
 
-The frontend is built using Vue.js 3 with TypeScript, following a component-based architecture. Key aspects include:
+The frontend is built using Vue.js 3 with TypeScript, following a
+component-based architecture. Key aspects include:
 
-- Vue 3 Single File Components with script setup
+- Vue 3 Single File Components with `<script lang="ts" setup>`
 - TypeScript for type safety
 - SCSS for styling
 - Tanstack Vue Query for API requests
+- Orval for API client and type generation
 
 ## Database Structure
 
-The application uses PostgreSQL as its primary database, with tables organized around the core entities:
+The application uses PostgreSQL as its primary database, with tables
+organized around the core entities:
 
 - Users and authentication
 - Fleets, vehicles, and related data
@@ -62,8 +65,10 @@ The application uses PostgreSQL as its primary database, with tables organized a
 
 ## Docker Setup
 
-The application can be run with Docker Compose for local development, providing PostgreSQL, Redis, and other services as needed.
+The application can be run with Docker Compose for local development,
+providing PostgreSQL, Redis, and other services as needed.
 
 ## API Structure
 
-The application provides RESTful APIs structured around the core entities, with proper versioning and documentation.
+The application provides RESTful APIs structured around the core
+entities, with proper versioning and documentation.

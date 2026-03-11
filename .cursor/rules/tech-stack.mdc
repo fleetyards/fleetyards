@@ -6,18 +6,19 @@ alwaysApply: true
 
 # Technology Stack
 
-This document outlines the technology stack used in the Fleetyards application.
+This document outlines the technology stack used in the Fleetyards
+application.
 
 ## Backend
 
-- **Ruby**: 3.x
-- **Ruby on Rails**: Latest stable version
+- **Ruby**: 3.4.x
+- **Ruby on Rails**: 7.2.x
 - **PostgreSQL**: Database management system
 - **Redis**: For caching and Sidekiq job queue
 - **Sidekiq**: Background job processing
-- **Devise**: Authentication
+- **Devise**: Authentication (with OAuth via OmniAuth)
 - **Action Policy**: Authorization
-- **Minitest/RSpec**: Testing frameworks
+- **RSpec**: Testing framework (with rswag for API specs)
 - **FactoryBot**: Test data generation
 
 ## Frontend
@@ -27,15 +28,15 @@ This document outlines the technology stack used in the Fleetyards application.
 - **Vite.js**: Build tool and dev server
 - **SCSS/Sass**: CSS preprocessor
 - **Tanstack Vue Query**: Data fetching library
-- **Pinia**: State management (if used)
+- **Pinia**: State management (with persisted state plugin)
+- **Orval**: API client and TypeScript type generation from OpenAPI schema
 
 ## Development Tools
 
 - **Docker & Docker Compose**: Containerization
 - **ESLint**: JavaScript/TypeScript linting
 - **Prettier**: Code formatting
-- **Stylelint**: CSS/SCSS linting
-- **Rubocop**: Ruby code linting
+- **StandardRB**: Ruby code linting
 - **Playwright**: End-to-end testing
 
 ## Deployment & Infrastructure
@@ -52,5 +53,3 @@ This document outlines the technology stack used in the Fleetyards application.
 - **PostgreSQL**: Database
 - **Redis**: Caching and job queue
 - **imagemagick**: Image manipulation
-
-This technology stack provides a robust, modern development environment for building feature-rich web applications with excellent developer and user experience.
