@@ -160,7 +160,7 @@ module Api
         member = invite_url.fleet.fleet_memberships.create(
           user_id:,
           role: :member,
-          fleet_role: invite_url.fleet.fleet_roles.ranked.last,
+          fleet_role: invite_url.fleet.default_member_role,
           invited_by: invite_url.user_id,
           used_invite_token: invite_url.token
         )

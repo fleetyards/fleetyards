@@ -151,6 +151,13 @@ class Fleet < ApplicationRecord
     FleetRole.setup_default_roles!(self)
   end
 
+  def default_member_role
+    fleet_roles.ranked.last || begin
+      setup_default_roles!
+      fleet_roles.reload.ranked.last
+    end
+  end
+
   def setup_admin_user
     fleet_memberships.create(
       user_id: created_by,

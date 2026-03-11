@@ -108,7 +108,16 @@ class FleetMembership < ApplicationRecord
   after_commit :broadcast_update
   before_destroy :check_if_can_be_destroyed
 
-  delegate :has_access?, to: :fleet_role
+  def has_access?(privileges)
+    if fleet_role.present?
+      return fleet_role.has_access?(privileges)
+    end
+
+    return false if role.blank?
+
+    legacy_privileges = FleetRole.preset_privileges[role.to_sym] || []
+    legacy_privileges.any? { |access| privileges.include?(access) }
+  end
 
   def check_if_can_be_destroyed
     return unless fleet_role&.permanent?

@@ -60,7 +60,7 @@ module Api
 
         @membership = invite_url.fleet.fleet_memberships.new(
           user: current_user,
-          fleet_role: invite_url.fleet.fleet_roles.ranked.last,
+          fleet_role: invite_url.fleet.default_member_role,
           invited_by: invite_url.user_id,
           used_invite_token: invite_url.token
         )

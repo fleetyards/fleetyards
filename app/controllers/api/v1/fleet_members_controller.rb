@@ -43,7 +43,7 @@ module Api
 
         @member = @fleet.fleet_memberships.new(
           user: user,
-          fleet_role: @fleet.fleet_roles.ranked.last,
+          fleet_role: @fleet.default_member_role,
           invited_by: current_user.id
         )
 
