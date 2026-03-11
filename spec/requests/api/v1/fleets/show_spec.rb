@@ -3,10 +3,10 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
-  let(:admin) { create(:user) }
+  let(:admin) { create(:user, :with_rsi_handle) }
   let(:member) { create(:user) }
   let(:user) { admin }
-  let(:fleet) { create(:fleet, admins: [admin], members: [member]) }
+  let(:fleet) { create(:fleet, :with_description, :with_logo, :with_background_image, :with_social_links, admins: [admin], members: [member]) }
   let(:fleet_other) { create(:fleet) }
   let(:slug) { fleet.slug }
 

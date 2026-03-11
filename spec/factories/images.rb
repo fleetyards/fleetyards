@@ -28,5 +28,17 @@ FactoryBot.define do
     gallery { create(:model) }
     enabled { true }
     global { true }
+
+    trait :disabled do
+      enabled { false }
+    end
+
+    trait :private do
+      global { false }
+    end
+
+    trait :no_background do
+      background { false }
+    end
   end
 end

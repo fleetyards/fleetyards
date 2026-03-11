@@ -49,5 +49,28 @@ FactoryBot.define do
     model
     hidden { false }
     active { true }
+
+    trait :hidden do
+      hidden { true }
+    end
+
+    trait :on_sale do
+      on_sale { true }
+      pledge_price { 10.0 }
+    end
+
+    trait :with_store_image do
+      store_image { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/files/ship.jpg"), "image/jpeg") }
+    end
+
+    trait :with_fleetchart_image do
+      fleetchart_image { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/files/test.png"), "image/png") }
+    end
+
+    trait :with_rsi_data do
+      rsi_id { Faker::Number.number(digits: 5) }
+      rsi_name { name }
+      rsi_slug { name.parameterize }
+    end
   end
 end

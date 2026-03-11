@@ -6,7 +6,7 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
   let(:user) { create(:user) }
   let(:import_blob) do
     ActiveStorage::Blob.create_and_upload!(
-      io: File.open(Rails.root.join("test/fixtures/files/hangar_import.json")),
+      io: File.open(Rails.root.join("spec/fixtures/files/hangar_import.json")),
       filename: "hangar_import.json"
     )
   end
@@ -43,7 +43,7 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
 
         let(:import_blob) do
           ActiveStorage::Blob.create_and_upload!(
-            io: File.open(Rails.root.join("test/fixtures/files/empty_hangar_import.json")),
+            io: File.open(Rails.root.join("spec/fixtures/files/empty_hangar_import.json")),
             filename: "empty_hangar_import.json"
           )
         end

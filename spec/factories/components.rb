@@ -42,5 +42,31 @@ FactoryBot.define do
   factory :component do
     name { Faker::Name.name }
     component_class { "RSIModular" }
+
+    trait :with_manufacturer do
+      manufacturer
+    end
+
+    trait :with_store_image do
+      store_image { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/files/test.png"), "image/png") }
+    end
+
+    trait :hidden do
+      hidden { true }
+    end
+
+    trait :weapon do
+      item_type { "WeaponGun" }
+      category { "weapon" }
+      component_type { "gun" }
+      size { "S3" }
+    end
+
+    trait :shield do
+      item_type { "Shield" }
+      category { "defense" }
+      component_type { "shield_generator" }
+      size { "S2" }
+    end
   end
 end

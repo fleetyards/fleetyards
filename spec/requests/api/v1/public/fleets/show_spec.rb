@@ -4,10 +4,10 @@ require "swagger_helper"
 
 RSpec.describe "api/v1/public/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
   let(:user) { create(:user) }
-  let(:fleet_admin) { create(:fleet, admins: [user]) }
-  let(:fleet_member) { create(:fleet, members: [user]) }
-  let(:fleet_other) { create(:fleet) }
-  let(:fleet_hidden) { create(:fleet, public_fleet: false) }
+  let(:fleet_admin) { create(:fleet, :with_description, :with_logo, :with_social_links, admins: [user]) }
+  let(:fleet_member) { create(:fleet, :with_description, members: [user]) }
+  let(:fleet_other) { create(:fleet, :with_description) }
+  let(:fleet_hidden) { create(:fleet, :private) }
 
   before do
     sign_in(user) if user.present?

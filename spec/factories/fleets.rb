@@ -41,6 +41,34 @@ FactoryBot.define do
     fid { Faker::Alphanumeric.alphanumeric(number: 3).upcase }
     public_fleet { true }
 
+    trait :private do
+      public_fleet { false }
+    end
+
+    trait :with_public_stats do
+      public_fleet_stats { true }
+    end
+
+    trait :with_description do
+      description { Faker::Lorem.paragraph }
+    end
+
+    trait :with_logo do
+      logo { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/files/test.png"), "image/png") }
+    end
+
+    trait :with_background_image do
+      background_image { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/files/image.jpg"), "image/jpeg") }
+    end
+
+    trait :with_social_links do
+      discord { "https://discord.gg/test" }
+      twitch { "https://twitch.tv/test" }
+      youtube { "https://youtube.com/@test" }
+      homepage { "https://example.com" }
+      guilded { "https://guilded.gg/test" }
+    end
+
     after(:create) do |fleet, evaluator|
       evaluator.admins.each do |member|
         create(:fleet_membership, fleet: fleet, user: member, fleet_role: fleet.fleet_roles.ranked.first, aasm_state: :accepted)

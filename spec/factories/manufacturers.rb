@@ -21,9 +21,21 @@ FactoryBot.define do
   factory :manufacturer do
     name { Faker::Name.name }
     code { Faker::Name.initials(number: 4) }
-    logo { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/test.png"), "image/png") }
     long_name { name }
     sc_ref { name.parameterize }
+
+    trait :with_logo do
+      logo { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/files/test.png"), "image/png") }
+    end
+
+    trait :with_description do
+      description { Faker::Lorem.paragraph }
+      known_for { Faker::Lorem.sentence }
+    end
+
+    trait :with_rsi_data do
+      rsi_id { Faker::Number.number(digits: 5) }
+    end
 
     trait :with_models do
       transient do

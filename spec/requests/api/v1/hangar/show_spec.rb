@@ -3,9 +3,10 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
-  let(:author) { create(:user, wanted_vehicle_count: 2) }
+  let(:author) { create(:user, :with_rsi_handle, wanted_vehicle_count: 2) }
   let(:user) { author }
-  let(:vehicles) { create_list(:vehicle, 3, user: author) }
+  let(:model_with_images) { create(:model, :with_store_image, :with_description) }
+  let(:vehicles) { create_list(:vehicle, 2, user: author) + [create(:vehicle, :with_name, :flagship, user: author, model: model_with_images)] }
 
   before do
     sign_in(user) if user.present?

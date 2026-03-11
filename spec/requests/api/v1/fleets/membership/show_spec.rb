@@ -3,9 +3,9 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/fleets/membership", type: :request, swagger_doc: "v1/schema.yaml" do
-  let(:member) { create(:user) }
+  let(:member) { create(:user, :with_rsi_handle, :with_avatar) }
   let(:user) { member }
-  let(:fleet) { create(:fleet) }
+  let(:fleet) { create(:fleet, :with_description) }
   let(:fleetSlug) { fleet.slug }
 
   before do

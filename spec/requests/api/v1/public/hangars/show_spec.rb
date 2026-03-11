@@ -3,9 +3,10 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.yaml" do
-  let(:user) { create(:user) }
+  let(:user) { create(:user, :public_hangar) }
   let(:username) { user.username }
-  let(:vehicles) { create_list(:vehicle, 2, user: user, public: true) }
+  let(:model_with_images) { create(:model, :with_store_image, :with_description) }
+  let(:vehicles) { [create(:vehicle, :public, user: user), create(:vehicle, :public, :with_name, user: user, model: model_with_images)] }
 
   before do
     vehicles
@@ -75,7 +76,7 @@ RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:user) { create(:user, public_hangar: false) }
+        let(:user) { create(:user, :private_hangar) }
 
         run_test!
       end

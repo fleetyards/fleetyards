@@ -75,6 +75,42 @@ FactoryBot.define do
     password_confirmation { password }
     confirmed_at { Time.now }
 
+    trait :with_avatar do
+      avatar { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/files/test.png"), "image/png") }
+    end
+
+    trait :with_rsi_handle do
+      rsi_handle { Faker::Alphanumeric.alphanumeric(number: 10) }
+    end
+
+    trait :with_social_links do
+      discord { "https://discord.gg/test" }
+      twitch { "https://twitch.tv/test" }
+      youtube { "https://youtube.com/@test" }
+      homepage { "https://example.com" }
+      guilded { "https://guilded.gg/test" }
+    end
+
+    trait :tester do
+      tester { true }
+    end
+
+    trait :public_hangar do
+      public_hangar { true }
+      public_hangar_loaners { true }
+      public_wishlist { true }
+    end
+
+    trait :private_hangar do
+      public_hangar { false }
+      public_hangar_loaners { false }
+      public_wishlist { false }
+    end
+
+    trait :hide_owner do
+      hide_owner { true }
+    end
+
     after(:create) do |user, evaluator|
       evaluator.vehicle_count.times do
         create(:vehicle, user: user)

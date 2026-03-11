@@ -250,5 +250,43 @@ FactoryBot.define do
         create_list(:dock, 3, model: model)
       end
     end
+
+    trait :hidden do
+      hidden { true }
+    end
+
+    trait :inactive do
+      active { false }
+    end
+
+    trait :ground_vehicle do
+      ground { true }
+      ground_max_speed { 50.0 }
+      ground_acceleration { 5.0 }
+      ground_decceleration { 10.0 }
+      ground_reverse_speed { 25.0 }
+    end
+
+    trait :with_description do
+      description { Faker::Lorem.paragraph }
+      production_status { "flight-ready" }
+      production_note { "Available now" }
+    end
+
+    trait :on_sale do
+      on_sale { true }
+    end
+
+    trait :with_store_image do
+      store_image { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/files/ship.jpg"), "image/jpeg") }
+    end
+
+    trait :with_fleetchart_image do
+      fleetchart_image { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/files/test.png"), "image/png") }
+    end
+
+    trait :with_brochure do
+      brochure { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/files/test.png"), "image/png") }
+    end
   end
 end

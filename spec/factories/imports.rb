@@ -37,5 +37,23 @@ FactoryBot.define do
     trait :scdata_all do
       type { Imports::ScData::AllImport }
     end
+
+    trait :hangar_import do
+      type { Imports::HangarImport }
+      user
+    end
+
+    trait :hangar_sync do
+      type { Imports::HangarSync }
+      user
+    end
+
+    trait :model_import do
+      type { Imports::ModelImport }
+    end
+
+    trait :models_import do
+      type { Imports::ModelsImport }
+    end
   end
 end
