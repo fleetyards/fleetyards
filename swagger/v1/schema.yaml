@@ -3137,60 +3137,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/public/fleets/{fleetSlug}/stats/vehicles":
-    parameters:
-    - name: fleetSlug
-      in: path
-      description: Fleet slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: Public Fleet Vehicles Stats
-      operationId: publicFleetVehiclesStats
-      tags:
-      - FleetStats
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/FleetVehiclesStats"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/public/fleets/{fleetSlug}/stats/vehicles-by-model":
-    parameters:
-    - name: fleetSlug
-      in: path
-      description: Fleet slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: Public Fleet Stats - Vehicles by Model
-      operationId: publicFleetVehiclesByModel
-      tags:
-      - FleetStats
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/BarChartStats"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
   "/public/fleets/{fleetSlug}/stats/models-by-classification":
     parameters:
     - name: fleetSlug
@@ -3200,7 +3146,7 @@ paths:
       schema:
         type: string
     get:
-      summary: Public Fleet Stats - Models by Classification
+      summary: Public Fleet Models by Classification
       operationId: publicFleetModelsByClassification
       tags:
       - FleetStats
@@ -3228,7 +3174,7 @@ paths:
       schema:
         type: string
     get:
-      summary: Public Fleet Stats - Models by Manufacturer
+      summary: Public Fleet Models by Manufacturer
       operationId: publicFleetModelsByManufacturer
       tags:
       - FleetStats
@@ -3256,7 +3202,7 @@ paths:
       schema:
         type: string
     get:
-      summary: Public Fleet Stats - Models by Production Status
+      summary: Public Fleet Models by Production Status
       operationId: publicFleetModelsByProductionStatus
       tags:
       - FleetStats
@@ -3284,7 +3230,7 @@ paths:
       schema:
         type: string
     get:
-      summary: Public Fleet Stats - Models by Size
+      summary: Public Fleet Models by Size
       operationId: publicFleetModelsBySize
       tags:
       - FleetStats
@@ -3297,6 +3243,60 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/PieChartStats"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/public/fleets/{fleetSlug}/stats/vehicles-by-model":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Public Fleet Vehicles by Model
+      operationId: publicFleetVehiclesByModel
+      tags:
+      - FleetStats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/BarChartStats"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/public/fleets/{fleetSlug}/stats/vehicles":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Public Fleet Vehicles Stats
+      operationId: publicFleetVehiclesStats
+      tags:
+      - FleetStats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetVehiclesStats"
         '404':
           description: not found
           content:
@@ -3789,6 +3789,19 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/BarChartStats"
+  "/stats/quick-stats":
+    get:
+      summary: Stats
+      operationId: stats
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Stats"
   "/stats/vehicles-by-model":
     get:
       summary: Stats Vehicles by Model
@@ -3819,19 +3832,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/BarChartStats"
-  "/stats/quick-stats":
-    get:
-      summary: Stats
-      operationId: stats
-      tags:
-      - Stats
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Stats"
   "/user-features/{id}/disable":
     parameters:
     - name: id
