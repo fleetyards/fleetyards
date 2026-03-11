@@ -17,6 +17,7 @@
 #  brochure                   :string
 #  cargo                      :decimal(15, 2)
 #  cargo_holds                :string
+#  carrierwave_migrated_at    :datetime
 #  classification             :string(255)
 #  description                :text
 #  dock_size                  :integer
@@ -179,17 +180,6 @@ class Model < ApplicationRecord
   end
 
   belongs_to :manufacturer, optional: true
-
-  has_one :addition,
-    class_name: "ModelAddition",
-    dependent: :destroy,
-    inverse_of: :model
-
-  delegate :net_cargo, to: :addition, allow_nil: true
-  delegate :height, :length, :cargo, :max_crew, :min_crew,
-    :scm_speed, :afterburner_speed, :mass, :beam, :price, to: :addition, allow_nil: true, prefix: true
-
-  accepts_nested_attributes_for :addition, allow_destroy: true
 
   has_many :hardpoints, as: :parent, dependent: :destroy, autosave: true
   has_many :components, through: :hardpoints
@@ -358,7 +348,7 @@ class Model < ApplicationRecord
 
   def self.ransackable_associations(auth_object = nil)
     [
-      "addition", "components", "docks", "images", "loaners", "manufacturer", "model_hardpoints",
+      "components", "docks", "images", "loaners", "manufacturer", "model_hardpoints",
       "model_loaners", "model_snub_crafts", "module_hardpoints", "module_packages",
       "modules", "paints", "snub_crafts", "upgrade_kits", "upgrades", "vehicles",
       "versions", "videos"

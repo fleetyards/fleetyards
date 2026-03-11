@@ -9,6 +9,7 @@
 #  angled_view             :string
 #  angled_view_height      :integer
 #  angled_view_width       :integer
+#  carrierwave_migrated_at :datetime
 #  description             :string
 #  fleetchart_image        :string
 #  fleetchart_image_height :integer

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_03_10_120000) do
+ActiveRecord::Schema[7.2].define(version: 2026_03_11_071907) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
@@ -488,25 +488,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_10_120000) do
     t.string "email"
     t.text "to"
     t.text "from_raw"
-  end
-
-  create_table "model_additions", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "model_id", null: false
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.decimal "beam", precision: 15, scale: 2, default: "0.0", null: false
-    t.decimal "length", precision: 15, scale: 2, default: "0.0", null: false
-    t.decimal "height", precision: 15, scale: 2, default: "0.0", null: false
-    t.decimal "mass", precision: 15, scale: 2, default: "0.0", null: false
-    t.decimal "cargo", precision: 15, scale: 2
-    t.decimal "net_cargo", precision: 15, scale: 2
-    t.decimal "scm_speed", precision: 15, scale: 2
-    t.decimal "afterburner_speed", precision: 15, scale: 2
-    t.decimal "cruise_speed", precision: 15, scale: 2
-    t.integer "min_crew"
-    t.integer "max_crew"
-    t.decimal "price", precision: 15, scale: 2
-    t.index ["model_id"], name: "index_model_additions_on_model_id"
   end
 
   create_table "model_hardpoint_loadouts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

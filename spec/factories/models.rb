@@ -15,6 +15,7 @@
 #  brochure                   :string
 #  cargo                      :decimal(15, 2)
 #  cargo_holds                :string
+#  carrierwave_migrated_at    :datetime
 #  classification             :string(255)
 #  description                :text
 #  dock_size                  :integer

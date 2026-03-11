@@ -15,7 +15,7 @@ module Api
           total = models.count
           flight_ready = models.where(production_status: "flight-ready").count
           pledge_prices = models.where("pledge_price > 0").pluck(:pledge_price)
-          lengths = models.joins(:addition).where("model_additions.length > 0").pluck("model_additions.length")
+          lengths = models.where("models.length > 0").pluck(:length)
 
           ship_of_the_month_entry = Rollup.where(
             name: "Ship of the Month",
