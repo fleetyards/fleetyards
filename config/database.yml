@@ -19,4 +19,4 @@ development:
 
 test:
   <<: *default
-  database: <%= ENV["DB_NAME"] || 'fleetyards_test' %>
+  database: <%= ENV["DB_NAME"] || "fleetyards_test#{ENV['TEST_ENV_NUMBER']}" %>

@@ -272,6 +272,12 @@ GEM
     ffi (1.17.3-arm64-darwin)
     ffi (1.17.3-x86_64-linux-gnu)
     fiber-storage (1.0.1)
+    flatware (2.3.4)
+      drb
+      thor (< 2.0)
+    flatware-rspec (2.3.4)
+      flatware (= 2.3.4)
+      rspec (>= 3.6)
     flipper (1.4.0)
       concurrent-ruby (< 2)
     flipper-active_record (1.4.0)
@@ -410,8 +416,6 @@ GEM
       activerecord
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
-    knapsack (4.0.0)
-      rake
     language_server-protocol (3.17.0.5)
     launchy (3.1.1)
       addressable (~> 2.8)
@@ -705,6 +709,10 @@ GEM
       chunky_png (~> 1.0)
       rqrcode_core (~> 2.0)
     rqrcode_core (2.1.0)
+    rspec (3.13.2)
+      rspec-core (~> 3.13.0)
+      rspec-expectations (~> 3.13.0)
+      rspec-mocks (~> 3.13.0)
     rspec-core (3.13.6)
       rspec-support (~> 3.13.0)
     rspec-expectations (3.13.5)
@@ -928,6 +936,7 @@ DEPENDENCIES
   enum_attributes_validation (~> 0.1.7)
   factory_bot_rails (~> 6.5.0)
   faker
+  flatware-rspec
   flipper
   flipper-active_record
   flipper-ui
@@ -947,7 +956,6 @@ DEPENDENCIES
   jbuilder
   js_cookie_rails
   kaminari
-  knapsack
   letter_opener
   lexorank
   listen

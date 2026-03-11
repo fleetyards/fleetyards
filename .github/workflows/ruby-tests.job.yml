@@ -37,12 +37,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-    strategy:
-      fail-fast: false
-      matrix:
-        ci_node_total: [4]
-        ci_node_index: [0, 1, 2, 3]
-
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
@@ -72,9 +66,7 @@ jobs:
       - uses: ankane/setup-opensearch@v1
       - run: mkdir -p log
       - run: bundle exec rails db:create db:schema:load
+      - name: Prepare test databases
+        run: bundle exec flatware fan rake db:test:prepare
       - name: Run tests
-        env:
-          CI_NODE_TOTAL: ${{ matrix.ci_node_total }}
-          CI_NODE_INDEX: ${{ matrix.ci_node_index }}
-        run: |
-          bundle exec rake knapsack:rspec
+        run: bundle exec flatware rspec

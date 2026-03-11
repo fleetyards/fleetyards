@@ -1278,17 +1278,6 @@
     };
     version = "1.2.2";
   };
-  knapsack = {
-    dependencies = ["rake"];
-    groups = ["development" "test"];
-    platforms = [];
-    source = {
-      remotes = ["https://rubygems.org"];
-      sha256 = "1f42akjbdkrg1ihwvls9pkkvz8vikaapzgxl82dd128rfn42chm9";
-      type = "gem";
-    };
-    version = "4.0.0";
-  };
   launchy = {
     dependencies = ["addressable"];
     groups = ["default" "development"];

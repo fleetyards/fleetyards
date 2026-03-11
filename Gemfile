@@ -182,7 +182,7 @@ group :development, :test do
   gem "byebug", platform: :mri
   gem "pry-byebug"
 
-  gem "knapsack"
+  gem "flatware-rspec", require: false
 
   gem "cypress-on-rails"
 
