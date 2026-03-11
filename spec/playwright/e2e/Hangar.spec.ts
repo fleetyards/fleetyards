@@ -1,61 +1,82 @@
-describe("Hangar", () => {
-  beforeEach(() => {
-    cy.visitApp("/");
+import { test, expect } from "../support/commands";
+import { app, appFactories, appScenario } from "../support/on-rails";
 
-    cy.acceptCookies();
+test.describe("Hangar", () => {
+  test.beforeEach(async ({ page, acceptCookie }) => {
+    await app("clean");
+    await appScenario("ships");
+
+    await page.goto("/");
+
+    await acceptCookie.accept();
   });
 
-  it("Shows Preview", () => {
-    cy.clickNav("hangar-preview");
+  test("Shows Preview", async ({ page, nav }) => {
+    await nav.click("hangar-preview");
 
-    cy.url().should("include", "/hangar/preview/");
+    await expect(page).toHaveURL(/\/hangar\/preview\//);
 
-    cy.selectElement("login").click();
+    await page.getByTestId("login").click();
 
-    cy.url().should("include", "/login");
+    await expect(page).toHaveURL(/\/login/);
 
-    cy.clickNav("hangar");
+    await nav.click("hangar");
 
-    cy.url().should("include", "/login");
+    await expect(page).toHaveURL(/\/login/);
 
-    cy.visitApp("/");
+    await page.goto("/");
 
-    cy.clickNav("hangar");
+    await nav.click("hangar");
 
-    cy.url().should("include", "/login");
+    await expect(page).toHaveURL(/\/login/);
   });
 
-  it("Default Workflow", () => {
-    cy.clickNav("login");
+  test("Default Workflow", async ({ page, nav }) => {
+    await nav.click("login");
 
-    cy.login();
+    await appFactories([
+      ["create", "user", { username: "test", password: "password" }],
+    ]);
 
-    cy.url().should("include", "/");
+    await page.locator("input[name='login']").fill("test");
+    await page.locator("input[name='password']").fill("password");
+    await page.getByTestId("submit-login").click();
 
-    cy.clickNav("models");
+    await expect(page).toHaveURL(/\//);
 
-    cy.url().should("include", "/ships/");
+    await nav.click("models");
 
-    cy.addToHangar("300i");
+    await expect(page).toHaveURL(/\/ships\//);
 
-    cy.clickNav("hangar");
+    await page
+      .locator(".model-panel-300i")
+      .getByTestId("add-to-hangar")
+      .click();
 
-    cy.get(".model-panel-300i .panel-title a")
-      .first()
-      .contains("300i")
-      .should("exist");
+    await nav.click("hangar");
 
-    cy.openShipMenu("300i", "edit-name");
+    await expect(
+      page.locator(".model-panel-300i .panel-title a").first(),
+    ).toContainText("300i");
 
-    cy.selectElement("input-vehicle-name").clear().type("Enterprise");
+    await page
+      .locator(".model-panel-300i")
+      .getByTestId("300i-dropdown")
+      .click();
+    await page
+      .locator(".panel-btn-dropdown__list.visible")
+      .locator("[data-test='edit-name']")
+      .click();
 
-    cy.selectElement("vehicle-save").click();
+    await page.getByTestId("input-vehicle-name").clear();
+    await page.getByTestId("input-vehicle-name").fill("Enterprise");
 
-    cy.get(".model-panel-300i .panel-title a")
-      .first()
-      .contains("Enterprise")
-      .should("exist");
+    await page.getByTestId("vehicle-save").click();
 
-    cy.selectElement("fleetchart-link").click();
+    await expect(
+      page.locator(".model-panel-300i .panel-title a").first(),
+    ).toContainText("Enterprise");
+
+    await page.getByTestId("fleetchart-link").click();
   });
 });

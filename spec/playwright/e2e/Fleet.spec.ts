@@ -1,58 +1,68 @@
-describe("Fleet", () => {
-  beforeEach(() => {
-    cy.visitApp("/");
+import { test, expect } from "../support/commands";
+import { app, appFactories } from "../support/on-rails";
 
-    cy.acceptCookies();
+test.describe("Fleet", () => {
+  test.beforeEach(async ({ page, acceptCookie }) => {
+    await app("clean");
+
+    await page.goto("/");
+
+    await acceptCookie.accept();
   });
 
-  it("Shows Preview only once", () => {
-    cy.clickNav("fleets-menu", "fleet-preview");
+  test("Shows Preview only once", async ({ page, nav }) => {
+    await nav.click("fleets-menu", "fleet-preview");
 
-    cy.url().should("include", "/fleets/preview/");
+    await expect(page).toHaveURL(/\/fleets\/preview\//);
 
-    cy.selectElement("login").click();
+    await page.getByTestId("login").click();
 
-    cy.url().should("include", "/login");
+    await expect(page).toHaveURL(/\/login/);
 
-    cy.visitApp("/");
+    await page.goto("/");
 
-    cy.wait(300);
+    await page.waitForTimeout(300);
 
-    cy.clickNav("fleets-menu", "fleet-add");
+    await nav.click("fleets-menu", "fleet-add");
 
-    cy.url().should("include", "/login");
+    await expect(page).toHaveURL(/\/login/);
   });
 
-  it("default workflow", () => {
-    cy.clickNav("fleets-menu", "fleet-preview");
+  test("default workflow", async ({ page, nav, notification }) => {
+    await nav.click("fleets-menu", "fleet-preview");
 
-    cy.url().should("include", "/fleets/preview/");
+    await expect(page).toHaveURL(/\/fleets\/preview\//);
 
-    cy.selectElement("login").click();
+    await page.getByTestId("login").click();
 
-    cy.login();
+    await appFactories([
+      ["create", "user", { username: "test", password: "password" }],
+    ]);
 
-    cy.url().should("include", "/fleets/add/");
+    await page.locator("input[name='login']").fill("test");
+    await page.locator("input[name='password']").fill("password");
+    await page.getByTestId("submit-login").click();
 
-    cy.selectElement("input-fid").type("TestFleet1");
-    cy.selectElement("input-name").type("Test Fleet 1.");
+    await expect(page).toHaveURL(/\/fleets\/add\//);
 
-    cy.selectElement("fleet-save").click();
+    await page.getByTestId("input-fid").fill("TestFleet1");
+    await page.getByTestId("input-name").fill("Test Fleet 1.");
 
-    cy.url().should("include", "/fleets/testfleet1/");
+    await page.getByTestId("fleet-save").click();
 
-    cy.success("Your Fleet has been created.");
+    await expect(page).toHaveURL(/\/fleets\/testfleet1\//);
 
-    cy.wait(500);
+    await notification.success("Your Fleet has been created.");
 
-    cy.clickNav("fleet-settings");
+    await page.waitForTimeout(500);
 
-    cy.selectElement("fleet-delete").click();
+    await nav.click("fleet-settings");
 
-    cy.acceptConfirm();
+    page.on("dialog", (dialog) => dialog.accept());
+    await page.getByTestId("fleet-delete").click();
 
-    cy.wait(500);
+    await page.waitForTimeout(500);
 
-    cy.success("Your Fleet has been destroyed.");
+    await notification.success("Your Fleet has been destroyed.");
   });
 });

@@ -1,25 +1,30 @@
-describe("EmbedV1", () => {
-  it("Default Workflow", () => {
-    cy.visitApp("/embed-test");
+import { test, expect } from "../support/commands";
+import { app } from "../support/on-rails";
 
-    cy.get(".model-300i").should("have.length", 1);
+test.describe("EmbedV1", () => {
+  test("Default Workflow", async ({ page }) => {
+    await app("clean");
 
-    cy.get(".model-300i .top-metrics").should("be.visible");
+    await page.goto("/embed-test");
 
-    cy.selectElement("fleetview-details-button").click();
+    await expect(page.locator(".model-300i")).toHaveCount(1);
 
-    cy.get(".model-300i .top-metrics").should("not.be.visible");
+    await expect(page.locator(".model-300i .top-metrics")).toBeVisible();
 
-    cy.selectElement("fleetview-grouped-button").click();
+    await page.getByTestId("fleetview-details-button").click();
 
-    cy.get(".model-300i").should("have.length", 2);
+    await expect(page.locator(".model-300i .top-metrics")).not.toBeVisible();
 
-    cy.selectElement("fleetview-fleetchart-button").click();
+    await page.getByTestId("fleetview-grouped-button").click();
 
-    cy.get(".model-300i").should("have.length", 2);
+    await expect(page.locator(".model-300i")).toHaveCount(2);
 
-    cy.selectElement("fleetview-grouped-button").click();
+    await page.getByTestId("fleetview-fleetchart-button").click();
 
-    cy.get(".model-300i").should("have.length", 1);
+    await expect(page.locator(".model-300i")).toHaveCount(2);
+
+    await page.getByTestId("fleetview-grouped-button").click();
+
+    await expect(page.locator(".model-300i")).toHaveCount(1);
   });
 });
