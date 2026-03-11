@@ -10,6 +10,7 @@ jobs:
     env:
       RAILS_ENV: test
       DB_HOST: 127.0.0.1
+      DB_PORT: 5432
       DB_USER: root
       DB_PASSWORD: root
       REDIS_URL: redis://localhost:6379
