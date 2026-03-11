@@ -35,6 +35,8 @@ test.describe("Fleet", () => {
 
     await page.getByTestId("login").click();
 
+    await expect(page).toHaveURL(/\/login/);
+
     await appFactories([
       ["create", "user", { username: "test", password: "password" }],
     ]);

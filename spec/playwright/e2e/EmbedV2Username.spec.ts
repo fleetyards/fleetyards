@@ -1,10 +1,7 @@
 import { test, expect } from "../support/commands";
-import { app } from "../support/on-rails";
 
 test.describe("EmbedV2Username", () => {
   test("Default Workflow", async ({ page }) => {
-    await app("clean");
-
     await page.goto("/embed-v2-username-test");
 
     await expect(page.locator(".model-freelancer")).toHaveCount(1);

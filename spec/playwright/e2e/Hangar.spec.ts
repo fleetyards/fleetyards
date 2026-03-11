@@ -34,6 +34,8 @@ test.describe("Hangar", () => {
   test("Default Workflow", async ({ page, nav }) => {
     await nav.click("login");
 
+    await expect(page).toHaveURL(/\/login/);
+
     await appFactories([
       ["create", "user", { username: "test", password: "password" }],
     ]);

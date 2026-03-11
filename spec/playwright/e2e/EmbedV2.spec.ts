@@ -1,10 +1,7 @@
 import { test, expect } from "../support/commands";
-import { app } from "../support/on-rails";
 
 test.describe("EmbedV2", () => {
   test("Default Workflow", async ({ page }) => {
-    await app("clean");
-
     await page.goto("/embed-v2-test");
 
     await expect(page.locator(".model-600i-explorer")).toHaveCount(1);
