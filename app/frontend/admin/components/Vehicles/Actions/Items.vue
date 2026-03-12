@@ -33,11 +33,10 @@ const { displayConfirm } = useAppNotifications();
 const queryClient = useQueryClient();
 const { extend } = useBreadCrumbs();
 
-const invalidateVehicles = async () => {
-  await queryClient.invalidateQueries({
+const invalidateVehicles = () =>
+  queryClient.invalidateQueries({
     queryKey: getVehiclesQueryKey(),
   });
-};
 
 const destroyMutation = useDestroyVehicle({
   mutation: {

@@ -33,8 +33,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const submitting = ref(false);
-
 const initialValues = ref<VehicleUpdateInput>({
   flagship: props.vehicle.flagship,
   public: props.vehicle.public,
@@ -89,11 +87,10 @@ const { useUpdateMutation } = useVehicleMutations();
 
 const vehicle = computed(() => props.vehicle);
 
-const mutation = useUpdateMutation(vehicle);
+const { mutateAsync, isPending: submitting } = useUpdateMutation(vehicle);
 
 const onSubmit = handleSubmit(async (values) => {
-  await mutation
-    .mutateAsync({
+  await mutateAsync({
       id: props.vehicle.id,
       data: values,
     })

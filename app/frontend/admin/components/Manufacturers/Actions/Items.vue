@@ -31,11 +31,10 @@ const { t } = useI18n();
 const { displayConfirm } = useAppNotifications();
 const queryClient = useQueryClient();
 
-const invalidateManufacturers = async () => {
-  await queryClient.invalidateQueries({
+const invalidateManufacturers = () =>
+  queryClient.invalidateQueries({
     queryKey: getManufacturersQueryKey(),
   });
-};
 
 const destroyMutation = useDestroyManufacturer({
   mutation: {

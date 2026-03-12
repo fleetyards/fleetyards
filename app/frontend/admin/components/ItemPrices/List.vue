@@ -59,11 +59,10 @@ const { data, isLoading } = useItemPricesQuery({
   },
 });
 
-const invalidateItemPrices = async () => {
-  await queryClient.invalidateQueries({
+const invalidateItemPrices = () =>
+  queryClient.invalidateQueries({
     queryKey: getItemPricesQueryKey(),
   });
-};
 
 // Edit
 const editForm = ref<ItemPriceFormData>({});

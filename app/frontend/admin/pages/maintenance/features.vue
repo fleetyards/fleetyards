@@ -70,7 +70,7 @@ const toggleFeature = async (feature: FeatureItem) => {
     } else {
       await enableAdminFeature(feature.name);
     }
-    await invalidateFeatures();
+    void invalidateFeatures();
     displaySuccess({ text: t("messages.features.updated") });
   } catch {
     displayAlert({ text: t("messages.features.error") });
@@ -87,7 +87,7 @@ const addActor = async (feature: FeatureItem) => {
       actor_type: editActorType.value,
       actor_id: actorId,
     });
-    await invalidateFeatures();
+    void invalidateFeatures();
     selectedUser.value = undefined;
     selectedFleet.value = undefined;
     displaySuccess({ text: t("messages.features.actorAdded") });
@@ -102,7 +102,7 @@ const removeActor = async (featureName: string, type: string, id: string) => {
       actor_type: type,
       actor_id: id,
     });
-    await invalidateFeatures();
+    void invalidateFeatures();
     displaySuccess({ text: t("messages.features.actorRemoved") });
   } catch {
     displayAlert({ text: t("messages.features.error") });
@@ -112,7 +112,7 @@ const removeActor = async (featureName: string, type: string, id: string) => {
 const addGroup = async (featureName: string, group: string) => {
   try {
     await enableAdminFeatureGroup(featureName, { group });
-    await invalidateFeatures();
+    void invalidateFeatures();
     displaySuccess({ text: t("messages.features.groupAdded") });
   } catch {
     displayAlert({ text: t("messages.features.error") });
@@ -122,7 +122,7 @@ const addGroup = async (featureName: string, group: string) => {
 const removeGroup = async (featureName: string, group: string) => {
   try {
     await disableAdminFeatureGroup(featureName, { group });
-    await invalidateFeatures();
+    void invalidateFeatures();
     displaySuccess({ text: t("messages.features.groupRemoved") });
   } catch {
     displayAlert({ text: t("messages.features.error") });
@@ -132,7 +132,7 @@ const removeGroup = async (featureName: string, group: string) => {
 const toggleSelfServiceFlag = async (feature: FeatureItem) => {
   try {
     await toggleAdminFeatureSelfService(feature.name);
-    await invalidateFeatures();
+    void invalidateFeatures();
     displaySuccess({ text: t("messages.features.updated") });
   } catch {
     displayAlert({ text: t("messages.features.error") });

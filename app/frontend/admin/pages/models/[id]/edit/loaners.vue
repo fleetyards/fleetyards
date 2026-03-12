@@ -60,11 +60,10 @@ const { perPage, page, updatePerPage } = usePagination(loanersQueryKey);
 
 const { data, isLoading } = useListModelLoanersQuery(loanersQueryParams);
 
-const invalidateLoaners = async () => {
-  await queryClient.invalidateQueries({
+const invalidateLoaners = () =>
+  queryClient.invalidateQueries({
     queryKey: getListModelLoanersQueryKey(),
   });
-};
 
 // Edit
 const editForm = ref<ModelLoanerInput>({});

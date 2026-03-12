@@ -77,13 +77,15 @@ const submitting = ref(false);
 
 const updateMutation = useUpdateComponent({
   mutation: {
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: getComponentsQueryKey(),
-      });
-      await queryClient.invalidateQueries({
-        queryKey: getComponentQueryKey(props.component.id),
-      });
+    onSettled: () => {
+      void Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: getComponentsQueryKey(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: getComponentQueryKey(props.component.id),
+        }),
+      ]);
     },
   },
 });

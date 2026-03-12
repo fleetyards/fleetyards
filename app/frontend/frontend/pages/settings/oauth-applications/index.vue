@@ -43,7 +43,7 @@ const confirmDestroy = (app: OauthApplication) => {
     onConfirm: async () => {
       try {
         await destroyOauthApplication(app.id);
-        await invalidateOauthApplications();
+        void invalidateOauthApplications();
         displaySuccess({
           text: t("messages.oauthApplications.destroy.success"),
         });

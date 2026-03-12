@@ -60,7 +60,7 @@ const onSubmit = handleSubmit(async (values) => {
   await createMutation
     .mutateAsync({ data: values })
     .then(async (created) => {
-      await queryClient.invalidateQueries({
+      void queryClient.invalidateQueries({
         queryKey: getOauthApplicationsQueryKey(),
       });
       await router.push(

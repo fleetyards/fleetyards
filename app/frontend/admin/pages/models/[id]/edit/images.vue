@@ -63,11 +63,10 @@ const { perPage, page, updatePerPage } = usePagination(imagesQueryKey);
 
 const { data, isLoading } = useImagesQuery(imagesQueryParams);
 
-const invalidateImages = async () => {
-  await queryClient.invalidateQueries({
+const invalidateImages = () =>
+  queryClient.invalidateQueries({
     queryKey: getImagesQueryKey(),
   });
-};
 
 // Edit
 const editForm = ref<ImageInput>({});
@@ -139,7 +138,7 @@ const handleUploadDone = async (files: FileUpload[]) => {
     });
   }
 
-  await invalidateImages();
+  void invalidateImages();
 };
 </script>
 

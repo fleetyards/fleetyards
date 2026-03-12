@@ -62,13 +62,15 @@ const submitting = ref(false);
 
 const updateMutation = useUpdateVehicle({
   mutation: {
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: getVehiclesQueryKey(),
-      });
-      await queryClient.invalidateQueries({
-        queryKey: getVehicleQueryKey(props.vehicle.id),
-      });
+    onSettled: () => {
+      void Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: getVehiclesQueryKey(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: getVehicleQueryKey(props.vehicle.id),
+        }),
+      ]);
     },
   },
 });

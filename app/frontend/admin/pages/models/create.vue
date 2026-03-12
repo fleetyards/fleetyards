@@ -59,8 +59,8 @@ const submitting = ref(false);
 
 const createMutation = useCreateModel({
   mutation: {
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
+    onSettled: () => {
+      void queryClient.invalidateQueries({
         queryKey: getModelsQueryKey(),
       });
     },

@@ -73,11 +73,10 @@ const { perPage, page, updatePerPage } = usePagination(hardpointsQueryKey);
 
 const { data, isLoading } = useListModelHardpointsQuery(hardpointsQueryParams);
 
-const invalidateHardpoints = async () => {
-  await queryClient.invalidateQueries({
+const invalidateHardpoints = () =>
+  queryClient.invalidateQueries({
     queryKey: getListModelHardpointsQueryKey(),
   });
-};
 
 const toOptions = (enumObj: Record<string, string>): FilterOption[] =>
   Object.keys(enumObj).map((key) => ({

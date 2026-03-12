@@ -49,8 +49,8 @@ const submitting = ref(false);
 
 const createMutation = useCreateModelPaint({
   mutation: {
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
+    onSettled: () => {
+      void queryClient.invalidateQueries({
         queryKey: getListModelPaintsQueryKey(),
       });
     },

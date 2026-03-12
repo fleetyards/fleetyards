@@ -73,15 +73,20 @@ const submitting = ref(false);
 
 const updateMutation = useUpdateUser({
   mutation: {
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: getUsersQueryKey(),
-      });
+    onSettled: () => {
+      const promises: Promise<void>[] = [
+        queryClient.invalidateQueries({
+          queryKey: getUsersQueryKey(),
+        }),
+      ];
       if (props.user.id) {
-        await queryClient.invalidateQueries({
-          queryKey: getUserQueryKey(props.user.id),
-        });
+        promises.push(
+          queryClient.invalidateQueries({
+            queryKey: getUserQueryKey(props.user.id),
+          }),
+        );
       }
+      void Promise.all(promises);
     },
   },
 });

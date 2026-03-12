@@ -31,11 +31,10 @@ const { t } = useI18n();
 const { displayConfirm } = useAppNotifications();
 const queryClient = useQueryClient();
 
-const invalidateModelPaints = async () => {
-  await queryClient.invalidateQueries({
+const invalidateModelPaints = () =>
+  queryClient.invalidateQueries({
     queryKey: getListModelPaintsQueryKey(),
   });
-};
 
 const destroyMutation = useDestroyModelPaint({
   mutation: {

@@ -52,7 +52,7 @@ const toggleGlobal = async () => {
     } else {
       await enableAdminFeature(feature.value.name);
     }
-    await invalidateFeatures();
+    void invalidateFeatures();
     displaySuccess({ text: t("messages.features.updated") });
   } catch {
     displayAlert({ text: t("messages.features.error") });
@@ -90,7 +90,7 @@ const addActor = async () => {
       actor_type: actorType.value,
       actor_id: actorId,
     });
-    await invalidateFeatures();
+    void invalidateFeatures();
     selectedUser.value = undefined;
     selectedFleet.value = undefined;
     displaySuccess({ text: t("messages.features.actorAdded") });
@@ -108,7 +108,7 @@ const removeActor = async (type: string, id: string) => {
       actor_type: type,
       actor_id: id,
     });
-    await invalidateFeatures();
+    void invalidateFeatures();
     displaySuccess({ text: t("messages.features.actorRemoved") });
   } catch {
     displayAlert({ text: t("messages.features.error") });
@@ -124,7 +124,7 @@ const addGroup = async (group: string) => {
   addingGroup.value = true;
   try {
     await enableAdminFeatureGroup(feature.value.name, { group });
-    await invalidateFeatures();
+    void invalidateFeatures();
     displaySuccess({ text: t("messages.features.groupAdded") });
   } catch {
     displayAlert({ text: t("messages.features.error") });
@@ -137,7 +137,7 @@ const removeGroup = async (group: string) => {
   if (!feature.value) return;
   try {
     await disableAdminFeatureGroup(feature.value.name, { group });
-    await invalidateFeatures();
+    void invalidateFeatures();
     displaySuccess({ text: t("messages.features.groupRemoved") });
   } catch {
     displayAlert({ text: t("messages.features.error") });

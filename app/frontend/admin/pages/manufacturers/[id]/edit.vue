@@ -62,13 +62,15 @@ const submitting = ref(false);
 
 const updateMutation = useUpdateManufacturer({
   mutation: {
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: getManufacturersQueryKey(),
-      });
-      await queryClient.invalidateQueries({
-        queryKey: getManufacturerQueryKey(props.manufacturer.id),
-      });
+    onSettled: () => {
+      void Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: getManufacturersQueryKey(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: getManufacturerQueryKey(props.manufacturer.id),
+        }),
+      ]);
     },
   },
 });

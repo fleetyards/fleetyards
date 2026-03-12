@@ -72,11 +72,10 @@ const { perPage, page, updatePerPage } = usePagination(modulesQueryKey);
 
 const { data, isLoading } = useListModelModulesQuery(modulesQueryParams);
 
-const invalidateModules = async () => {
-  await queryClient.invalidateQueries({
+const invalidateModules = () =>
+  queryClient.invalidateQueries({
     queryKey: getListModelModulesQueryKey(),
   });
-};
 
 // Edit
 const editForm = ref<ModelModuleInput>({});

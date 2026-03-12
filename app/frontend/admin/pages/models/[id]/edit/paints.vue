@@ -63,11 +63,10 @@ const { perPage, page, updatePerPage } = usePagination(paintsQueryKey);
 
 const { data, isLoading } = useListModelPaintsQuery(paintsQueryParams);
 
-const invalidatePaints = async () => {
-  await queryClient.invalidateQueries({
+const invalidatePaints = () =>
+  queryClient.invalidateQueries({
     queryKey: getListModelPaintsQueryKey(),
   });
-};
 
 // Edit
 const editForm = ref<ModelPaintInput>({});

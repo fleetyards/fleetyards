@@ -47,7 +47,7 @@ const toggleFeature = async (feature: FeatureItem) => {
     } else {
       await enableUserFeature(feature.name);
     }
-    await invalidateUserFeatures();
+    void invalidateUserFeatures();
     displaySuccess({ text: t("messages.features.updated") });
   } catch {
     displayAlert({ text: t("messages.features.error") });

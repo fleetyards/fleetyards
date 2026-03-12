@@ -79,13 +79,15 @@ const submitting = ref(false);
 
 const updateMutation = useUpdateFleet({
   mutation: {
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: getFleetsQueryKey(),
-      });
-      await queryClient.invalidateQueries({
-        queryKey: getFleetQueryKey(props.fleet.id),
-      });
+    onSettled: () => {
+      void Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: getFleetsQueryKey(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: getFleetQueryKey(props.fleet.id),
+        }),
+      ]);
     },
   },
 });

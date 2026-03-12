@@ -34,11 +34,10 @@ const { t } = useI18n();
 const { displayConfirm } = useAppNotifications();
 const queryClient = useQueryClient();
 
-const invalidateUsers = async () => {
-  await queryClient.invalidateQueries({
+const invalidateUsers = () =>
+  queryClient.invalidateQueries({
     queryKey: getUsersQueryKey(),
   });
-};
 
 const resendConfirmationMutation = useResendUserConfirmation({
   mutation: {

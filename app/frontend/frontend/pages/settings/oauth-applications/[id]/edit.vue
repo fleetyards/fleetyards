@@ -68,12 +68,14 @@ const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
   try {
     await updateOauthApplication(props.oauthApplication.id, values);
-    await queryClient.invalidateQueries({
-      queryKey: getOauthApplicationsQueryKey(),
-    });
-    await queryClient.invalidateQueries({
-      queryKey: getOauthApplicationQueryKey(props.oauthApplication.id),
-    });
+    void Promise.all([
+      queryClient.invalidateQueries({
+        queryKey: getOauthApplicationsQueryKey(),
+      }),
+      queryClient.invalidateQueries({
+        queryKey: getOauthApplicationQueryKey(props.oauthApplication.id),
+      }),
+    ]);
     displaySuccess({ text: t("messages.oauthApplications.update.success") });
     await router.push({
       name: "settings-oauth-application",

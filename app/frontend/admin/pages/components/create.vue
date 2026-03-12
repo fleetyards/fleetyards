@@ -52,8 +52,8 @@ const submitting = ref(false);
 
 const createMutation = useCreateComponent({
   mutation: {
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
+    onSettled: () => {
+      void queryClient.invalidateQueries({
         queryKey: getComponentsQueryKey(),
       });
     },

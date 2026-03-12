@@ -120,8 +120,8 @@ const toggleSelect = (id: string) => {
 
 const linkMutation = useLinkModelModuleMutation({
   mutation: {
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
+    onSettled: () => {
+      void queryClient.invalidateQueries({
         queryKey: getListModelModulesQueryKey(),
       });
     },

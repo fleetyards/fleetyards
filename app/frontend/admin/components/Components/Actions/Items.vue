@@ -31,11 +31,10 @@ const { t } = useI18n();
 const { displayConfirm } = useAppNotifications();
 const queryClient = useQueryClient();
 
-const invalidateComponents = async () => {
-  await queryClient.invalidateQueries({
+const invalidateComponents = () =>
+  queryClient.invalidateQueries({
     queryKey: getComponentsQueryKey(),
   });
-};
 
 const destroyMutation = useDestroyComponent({
   mutation: {

@@ -69,7 +69,7 @@ const columns: BaseTableCol<RsiRequestLog>[] = [
 const resolve = async (log: RsiRequestLog) => {
   try {
     await resolveRsiRequestLog(log.id);
-    await invalidate();
+    void invalidate();
     displaySuccess({ text: t("messages.rsiRequestLogs.resolved") });
   } catch {
     displayAlert({ text: t("messages.rsiRequestLogs.error") });

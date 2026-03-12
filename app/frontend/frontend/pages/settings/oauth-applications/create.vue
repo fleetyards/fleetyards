@@ -58,7 +58,7 @@ const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
   try {
     const result = await createOauthApplication(values);
-    await queryClient.invalidateQueries({
+    void queryClient.invalidateQueries({
       queryKey: getOauthApplicationsQueryKey(),
     });
     displaySuccess({ text: t("messages.oauthApplications.create.success") });

@@ -77,11 +77,10 @@ const { perPage, page, updatePerPage } = usePagination(queryKey);
 
 const { data, isLoading } = useListCargoHoldsQuery(queryParams);
 
-const invalidateCargoHolds = async () => {
-  await queryClient.invalidateQueries({
+const invalidateCargoHolds = () =>
+  queryClient.invalidateQueries({
     queryKey: getListCargoHoldsQueryKey(),
   });
-};
 
 // Edit
 const editForm = ref<CargoHoldInput>({});

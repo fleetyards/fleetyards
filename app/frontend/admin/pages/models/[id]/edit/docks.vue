@@ -56,11 +56,10 @@ const { perPage, page, updatePerPage } = usePagination(docksQueryKey);
 
 const { data, isLoading } = useDocksQuery(docksQueryParams);
 
-const invalidateDocks = async () => {
-  await queryClient.invalidateQueries({
+const invalidateDocks = () =>
+  queryClient.invalidateQueries({
     queryKey: getDocksQueryKey(),
   });
-};
 
 // Dropdown options
 const dockTypeOptions: FilterOption[] = [

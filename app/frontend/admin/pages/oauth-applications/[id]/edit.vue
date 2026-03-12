@@ -71,13 +71,15 @@ const onSubmit = handleSubmit(async (values) => {
 
   await updateMutation
     .mutateAsync({ id: props.oauthApplication.id, data: values })
-    .then(async () => {
-      await queryClient.invalidateQueries({
-        queryKey: getOauthApplicationsQueryKey(),
-      });
-      await queryClient.invalidateQueries({
-        queryKey: getOauthApplicationQueryKey(props.oauthApplication.id),
-      });
+    .then(() => {
+      void Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: getOauthApplicationsQueryKey(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: getOauthApplicationQueryKey(props.oauthApplication.id),
+        }),
+      ]);
     })
     .catch((error) => {
       console.error("Error updating OAuth application:", error);

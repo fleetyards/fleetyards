@@ -41,7 +41,7 @@ const destroy = () => {
     text: t("messages.confirm.oauthApplication.destroy"),
     onConfirm: async () => {
       await destroyMutation.mutateAsync({ id: props.oauthApplication.id });
-      await queryClient.invalidateQueries({
+      void queryClient.invalidateQueries({
         queryKey: getOauthApplicationsQueryKey(),
       });
     },

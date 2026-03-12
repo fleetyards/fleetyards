@@ -19,8 +19,8 @@ export const useVehicleMutations = () => {
   const useCreateMutation = () => {
     return useCreateVehicleMutation({
       mutation: {
-        onSettled: async () => {
-          await invalidateHangarQueries();
+        onSettled: () => {
+          void invalidateHangarQueries();
         },
       },
     });
@@ -29,8 +29,8 @@ export const useVehicleMutations = () => {
   const useCreateBulkMutation = () => {
     return useCreateBulkVehicleMutation({
       mutation: {
-        onSettled: async () => {
-          await invalidateHangarQueries();
+        onSettled: () => {
+          void invalidateHangarQueries();
         },
       },
     });
@@ -58,6 +58,10 @@ export const useVehicleMutations = () => {
           queryData.forEach((query) => {
             const [queryKey, previousVehicles] = query as [QueryKey, Hangar];
 
+            if (!previousVehicles?.items) {
+              return;
+            }
+
             queryClient.setQueryData(queryKey, {
               ...previousVehicles,
               items: previousVehicles.items.map((vehicle) => {
@@ -80,11 +84,11 @@ export const useVehicleMutations = () => {
           context.queryData.forEach((query) => {
             const [queryKey, previousVehicles] = query as [QueryKey, Hangar];
 
-            queryClient.setQueryData([queryKey], previousVehicles);
+            queryClient.setQueryData(queryKey, previousVehicles);
           });
         },
-        onSettled: async (_updatedVehicle) => {
-          await invalidateHangarQueries();
+        onSettled: () => {
+          void invalidateHangarQueries();
         },
       },
     });
@@ -93,8 +97,8 @@ export const useVehicleMutations = () => {
   const useUpdateBulkMutation = () => {
     return useUpdateBulkVehicleMutation({
       mutation: {
-        onSettled: async () => {
-          await invalidateHangarQueries();
+        onSettled: () => {
+          void invalidateHangarQueries();
         },
       },
     });
@@ -117,9 +121,13 @@ export const useVehicleMutations = () => {
           queryData.forEach((query) => {
             const [queryKey, previousVehicles] = query as [QueryKey, Hangar];
 
+            if (!previousVehicles?.items) {
+              return;
+            }
+
             queryClient.setQueryData(queryKey, {
               ...previousVehicles,
-              items: (previousVehicles.items || []).filter((item) => {
+              items: previousVehicles.items.filter((item) => {
                 return item.id !== vehicleForMutation.id;
               }),
             });
@@ -135,11 +143,11 @@ export const useVehicleMutations = () => {
           context.queryData.forEach((query) => {
             const [queryKey, previousVehicles] = query as [QueryKey, Hangar];
 
-            queryClient.setQueryData([queryKey], previousVehicles);
+            queryClient.setQueryData(queryKey, previousVehicles);
           });
         },
-        onSettled: async () => {
-          await invalidateHangarQueries();
+        onSettled: () => {
+          void invalidateHangarQueries();
         },
       },
     });
@@ -148,29 +156,33 @@ export const useVehicleMutations = () => {
   const useDestroyBulkMutation = () => {
     return useDestroyBulkVehicleMutation({
       mutation: {
-        onSettled: async () => {
-          await invalidateHangarQueries();
+        onSettled: () => {
+          void invalidateHangarQueries();
         },
       },
     });
   };
 
   const invalidateHangarQueries = async () => {
-    await queryClient.invalidateQueries({
-      queryKey: [getHangarQueryKey()],
-    });
-    await queryClient.invalidateQueries({
-      queryKey: [getWishlistQueryKey()],
-    });
+    await Promise.all([
+      queryClient.invalidateQueries({
+        queryKey: getHangarQueryKey(),
+      }),
+      queryClient.invalidateQueries({
+        queryKey: getWishlistQueryKey(),
+      }),
+    ]);
   };
 
   const getPreviousHangarQueryData = async () => {
-    await queryClient.cancelQueries({
-      queryKey: [getHangarQueryKey()],
-    });
-    await queryClient.cancelQueries({
-      queryKey: [getWishlistQueryKey()],
-    });
+    await Promise.all([
+      queryClient.cancelQueries({
+        queryKey: getHangarQueryKey(),
+      }),
+      queryClient.cancelQueries({
+        queryKey: getWishlistQueryKey(),
+      }),
+    ]);
 
     return getPreviousQueryData(queryClient, [
       getHangarQueryKey(),

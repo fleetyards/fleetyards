@@ -61,15 +61,20 @@ const submitting = ref(false);
 
 const updateMutation = useUpdateAdminUser({
   mutation: {
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: getAdminUsersQueryKey(),
-      });
+    onSettled: () => {
+      const promises: Promise<void>[] = [
+        queryClient.invalidateQueries({
+          queryKey: getAdminUsersQueryKey(),
+        }),
+      ];
       if (props.adminUser.id) {
-        await queryClient.invalidateQueries({
-          queryKey: getAdminUserQueryKey(props.adminUser.id),
-        });
+        promises.push(
+          queryClient.invalidateQueries({
+            queryKey: getAdminUserQueryKey(props.adminUser.id),
+          }),
+        );
       }
+      void Promise.all(promises);
     },
   },
 });

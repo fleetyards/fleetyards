@@ -53,13 +53,15 @@ const scopes = computed(() =>
     : [],
 );
 
-const invalidate = async () => {
-  await queryClient.invalidateQueries({
-    queryKey: getOauthApplicationsQueryKey(),
-  });
-  await queryClient.invalidateQueries({
-    queryKey: getOauthApplicationQueryKey(props.oauthApplication.id),
-  });
+const invalidate = () => {
+  void Promise.all([
+    queryClient.invalidateQueries({
+      queryKey: getOauthApplicationsQueryKey(),
+    }),
+    queryClient.invalidateQueries({
+      queryKey: getOauthApplicationQueryKey(props.oauthApplication.id),
+    }),
+  ]);
 };
 
 const copyToClipboard = async (text: string) => {
@@ -79,7 +81,7 @@ const confirmRegenerateSecret = () => {
         const result = await regenerateOauthApplicationSecret(
           props.oauthApplication.id,
         );
-        await invalidate();
+        invalidate();
         visibleSecret.value = result.secret;
         displaySuccess({
           text: t("messages.oauthApplications.regenerateSecret.success"),
@@ -106,7 +108,7 @@ const confirmDestroy = () => {
     onConfirm: async () => {
       try {
         await destroyOauthApplication(props.oauthApplication.id);
-        await queryClient.invalidateQueries({
+        void queryClient.invalidateQueries({
           queryKey: getOauthApplicationsQueryKey(),
         });
         displaySuccess({

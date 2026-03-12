@@ -31,11 +31,10 @@ const { t } = useI18n();
 const { displayConfirm } = useAppNotifications();
 const queryClient = useQueryClient();
 
-const invalidateImages = async () => {
-  await queryClient.invalidateQueries({
+const invalidateImages = () =>
+  queryClient.invalidateQueries({
     queryKey: getImagesQueryKey(),
   });
-};
 
 const destroyMutation = useDestroyImage({
   mutation: {

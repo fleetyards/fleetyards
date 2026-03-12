@@ -71,11 +71,10 @@ const { perPage, page, updatePerPage } = usePagination(upgradesQueryKey);
 
 const { data, isLoading } = useListModelUpgradesQuery(upgradesQueryParams);
 
-const invalidateUpgrades = async () => {
-  await queryClient.invalidateQueries({
+const invalidateUpgrades = () =>
+  queryClient.invalidateQueries({
     queryKey: getListModelUpgradesQueryKey(),
   });
-};
 
 // Edit
 const editForm = ref<ModelUpgradeInput>({});

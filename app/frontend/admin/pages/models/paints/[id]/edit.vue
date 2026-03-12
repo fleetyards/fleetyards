@@ -71,13 +71,15 @@ const submitting = ref(false);
 
 const updateMutation = useUpdateModelPaint({
   mutation: {
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: getListModelPaintsQueryKey(),
-      });
-      await queryClient.invalidateQueries({
-        queryKey: getModelPaintQueryKey(props.modelPaint.id),
-      });
+    onSettled: () => {
+      void Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: getListModelPaintsQueryKey(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: getModelPaintQueryKey(props.modelPaint.id),
+        }),
+      ]);
     },
   },
 });

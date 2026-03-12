@@ -39,11 +39,10 @@ const isSelf = computed(
   () => sessionStore.currentUser?.id === props.adminUser.id,
 );
 
-const invalidateAdminUsers = async () => {
-  await queryClient.invalidateQueries({
+const invalidateAdminUsers = () =>
+  queryClient.invalidateQueries({
     queryKey: getAdminUsersQueryKey(),
   });
-};
 
 const destroyMutation = useDestroyAdminUser({
   mutation: {

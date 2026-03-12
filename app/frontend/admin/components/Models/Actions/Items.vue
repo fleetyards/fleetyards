@@ -48,11 +48,10 @@ const { isImporting: isImportingSyncing } = useImportLoading(
   syncInputMatch,
 );
 
-const invalidateModels = async () => {
-  await queryClient.invalidateQueries({
+const invalidateModels = () =>
+  queryClient.invalidateQueries({
     queryKey: getModelsQueryKey(),
   });
-};
 
 const destroyMutation = useDestroyModel({
   mutation: {

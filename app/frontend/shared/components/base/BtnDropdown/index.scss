@@ -22,9 +22,10 @@
     border: $panel-border-width solid $panel-inner-border;
     border-radius: $panel-border-radius;
     cursor: pointer;
+    flex-direction: column;
 
     &.visible {
-      display: block;
+      display: flex;
     }
 
     &::before {
@@ -53,10 +54,10 @@
     }
 
     > :deep(.panel-btn) {
+      display: flex;
       background-color: transparent;
       border: none;
       margin: 0;
-      width: 100%;
       text-align: left;
       line-height: 1.5;
 

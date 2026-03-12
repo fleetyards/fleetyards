@@ -33,8 +33,8 @@ export const usePagination = (
 
   watch(
     () => page.value,
-    async () => {
-      await queryClient.invalidateQueries({
+    () => {
+      void queryClient.invalidateQueries({
         queryKey: [queryKey],
       });
     },
@@ -42,8 +42,8 @@ export const usePagination = (
 
   watch(
     () => perPage.value,
-    async () => {
-      await queryClient.invalidateQueries({
+    () => {
+      void queryClient.invalidateQueries({
         queryKey: [queryKey],
       });
     },

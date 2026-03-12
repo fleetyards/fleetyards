@@ -35,6 +35,7 @@ import rsiLogo from "@/images/rsi_logo.png";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
+import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
   ChannelsEnum,
@@ -52,6 +53,8 @@ import {
 } from "@/services/fyApi";
 
 const { t, toDollar, toUEC, toNumber } = useI18n();
+
+useMetaInfo();
 
 const { displayAlert, displayConfirm } = useAppNotifications();
 

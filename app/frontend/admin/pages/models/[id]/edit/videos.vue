@@ -60,11 +60,10 @@ const { perPage, page, updatePerPage } = usePagination(videosQueryKey);
 
 const { data, isLoading } = useVideosQuery(videosQueryParams);
 
-const invalidateVideos = async () => {
-  await queryClient.invalidateQueries({
+const invalidateVideos = () =>
+  queryClient.invalidateQueries({
     queryKey: getVideosQueryKey(),
   });
-};
 
 // Edit
 const editForm = ref<VideoInput>({});

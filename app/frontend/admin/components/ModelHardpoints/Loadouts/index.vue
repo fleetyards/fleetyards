@@ -40,11 +40,10 @@ const loadouts = computed(
   () => (props.hardpoint.loadouts as ModelHardpointLoadout[]) || [],
 );
 
-const invalidateHardpoints = async () => {
-  await queryClient.invalidateQueries({
+const invalidateHardpoints = () =>
+  queryClient.invalidateQueries({
     queryKey: getListModelHardpointsQueryKey(),
   });
-};
 
 // Edit
 const editForm = ref<ModelHardpointLoadoutInput>({});
