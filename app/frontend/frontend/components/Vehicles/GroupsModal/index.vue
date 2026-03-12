@@ -104,12 +104,11 @@ const onSubmit = handleSubmit(async (values) => {
     <template #footer>
       <div class="float-sm-right">
         <Btn
-          :form="`vehicle-${vehicle.id}`"
           :loading="submitting"
-          type="submit"
           size="large"
           data-test="vehicle-save"
           :inline="true"
+          @click="onSubmit"
         >
           {{ t("actions.save") }}
         </Btn>

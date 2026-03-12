@@ -20,7 +20,7 @@ import {
 import { useComlink } from "@/shared/composables/useComlink";
 import { useCreateFleetMember as useCreateFleetMemberMutation } from "@/services/fyApi";
 import { type ErrorType } from "@/services/axiosClient";
-import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 const { t } = useI18n();
 
@@ -107,11 +107,10 @@ const onSubmit = handleSubmit(async (values) => {
     <template #footer>
       <div class="float-sm-right">
         <Btn
-          :form="`fleet-member-${fleet.id}`"
           :loading="submitting"
-          :type="BtnTypesEnum.SUBMIT"
           :size="BtnSizesEnum.LARGE"
           :inline="true"
+          @click="onSubmit"
         >
           {{ t("actions.fleet.members.invite") }}
         </Btn>

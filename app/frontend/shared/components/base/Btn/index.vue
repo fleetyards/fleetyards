@@ -20,7 +20,6 @@ export type Props = {
   href?: string;
   target?: HTMLAnchorElement["target"];
   type?: `${BtnTypesEnum}`;
-  form?: string;
   loading?: boolean;
   spinner?: boolean | `${SpinnerAlignment}`;
   variant?: `${BtnVariantsEnum}`;
@@ -42,7 +41,6 @@ const props = withDefaults(defineProps<Props>(), {
   href: undefined,
   target: undefined,
   type: BtnTypesEnum.BUTTON,
-  form: undefined,
   loading: false,
   spinner: false,
   variant: BtnVariantsEnum.DEFAULT,
@@ -105,7 +103,6 @@ const btnProps = computed(() => {
 
   return {
     type: props.type,
-    form: props.form,
   };
 });
 

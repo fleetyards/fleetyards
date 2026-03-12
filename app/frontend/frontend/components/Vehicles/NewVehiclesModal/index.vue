@@ -13,7 +13,7 @@ import { type Model } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
-import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { type FilterGroupOption } from "@/shared/components/base/FilterGroup/index.vue";
 
 type Props = {
@@ -121,11 +121,10 @@ const save = async () => {
     <template #footer>
       <div class="float-sm-right">
         <Btn
-          :type="BtnTypesEnum.SUBMIT"
-          form="new-vehicles"
           :loading="submitting"
           :size="BtnSizesEnum.LARGE"
           :inline="true"
+          @click="save"
         >
           {{ t("actions.add") }}
         </Btn>

@@ -20,7 +20,7 @@ import {
   type ModelPaint,
 } from "@/services/fyApi";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
-import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
   vehicle: Vehicle;
@@ -195,12 +195,11 @@ const paintsFilterFormatter = (paints: ModelPaint[]) => {
     <template #footer>
       <div class="float-sm-right">
         <Btn
-          :form="`vehicle-${vehicle.id}`"
           :loading="submitting"
-          :type="BtnTypesEnum.SUBMIT"
           :size="BtnSizesEnum.LARGE"
           data-test="vehicle-save"
           :inline="true"
+          @click="onSubmit"
         >
           {{ t("actions.save") }}
         </Btn>

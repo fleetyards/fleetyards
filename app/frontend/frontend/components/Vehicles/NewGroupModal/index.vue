@@ -104,11 +104,10 @@ const onSubmit = handleSubmit(async (values) => {
     <template #footer>
       <div class="float-sm-right">
         <Btn
-          form="hangar-group-new"
           :loading="submitting"
-          type="submit"
           size="large"
           :inline="true"
+          @click="onSubmit"
         >
           {{ t("actions.save") }}
         </Btn>

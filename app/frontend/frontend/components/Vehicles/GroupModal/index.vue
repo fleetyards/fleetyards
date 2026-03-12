@@ -168,11 +168,10 @@ const onSubmit = handleSubmit(async (values) => {
           <i class="fal fa-trash" />
         </Btn>
         <Btn
-          :form="`hangar-group-${hangarGroup.id}`"
           :loading="submitting"
-          type="submit"
           size="large"
           inline
+          @click="onSubmit"
         >
           {{ t("actions.save") }}
         </Btn>
