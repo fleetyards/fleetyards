@@ -9,9 +9,14 @@ export default {
 
     configure({
       generateMessage: (context) => {
+        const params = Array.isArray(context.rule?.params)
+          ? { min: context.rule?.params[0], max: context.rule?.params[1] }
+          : context.rule?.params || {};
+
         return t(`validations.${context.rule?.name}`, {
           value: context.value,
           field: context.field,
+          ...params,
         });
       },
     });
