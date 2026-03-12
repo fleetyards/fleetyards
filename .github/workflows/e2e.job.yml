@@ -21,6 +21,7 @@ jobs:
       OPENSEARCH_URL: http://localhost:9200
       RAILS_SERVE_STATIC_FILES: 1
       DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
+      TEST_SEEDS: 1
       JOBS: 1
 
     services:

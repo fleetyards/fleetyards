@@ -15,7 +15,7 @@ const appCommands = async (data) => {
       `/__e2e__/command failed with status ${response.status()}: ${body}`,
     );
   }
-  return response.body;
+  return response.json();
 };
 
 const app = (name, options = {}) =>
