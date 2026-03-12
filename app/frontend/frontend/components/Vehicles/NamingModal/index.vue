@@ -42,11 +42,10 @@ const { defineField, handleSubmit, setErrors } = useForm({
   initialValues: initialValues.value,
 });
 
-const [name, nameProps] = defineField("name");
-const [serial, serialProps] = defineField("serial");
-const [nameVisible, nameVisibleProps] = defineField("nameVisible");
-const [alternativeNames, alternativeNamesProps] =
-  defineField("alternativeNames");
+const [name] = defineField("name");
+const [serial] = defineField("serial");
+const [nameVisible] = defineField("nameVisible");
+const [alternativeNames] = defineField("alternativeNames");
 
 const submitting = ref(false);
 
@@ -128,7 +127,6 @@ const useName = (newName: string) => {
           <div class="form-group">
             <FormInput
               v-model="name"
-              v-bind="nameProps"
               name="name"
               :placeholder="vehicle.model.name"
               translation-key="name"
@@ -140,7 +138,6 @@ const useName = (newName: string) => {
           <div class="form-group">
             <FormInput
               v-model="serial"
-              v-bind="serialProps"
               name="serial"
               :placeholder="t('placeholders.vehicle.serial')"
               translation-key="vehicle.serial"
@@ -151,7 +148,6 @@ const useName = (newName: string) => {
         <div class="col-12 col-md-6">
           <FormCheckbox
             v-model="nameVisible"
-            v-bind="nameVisibleProps"
             name="nameVisible"
             :label="t('labels.vehicle.nameVisible')"
           />
@@ -159,7 +155,6 @@ const useName = (newName: string) => {
       </div>
       <AlternativeNamesInput
         v-model="alternativeNames"
-        v-bind="alternativeNamesProps"
         name="alternativeNames"
         :current-name="name"
         @use-name="useName"
