@@ -3,7 +3,12 @@ require "factory_bot_rails"
 
 Rails.logger.info "E2E: Creating admin_features scenario test data..."
 
-FactoryBot.create(:admin_user, username: "admin", email: "admin@test.com", password: "password123", password_confirmation: "password123", super_admin: true)
+AdminUser.find_or_create_by!(username: "admin_features") do |u|
+  u.email = "admin_features@test.com"
+  u.password = "password123"
+  u.password_confirmation = "password123"
+  u.super_admin = true
+end
 
 # Ensure feature flags exist
 Flipper.add(:tools_cargo_grids) unless Flipper.exist?(:tools_cargo_grids)

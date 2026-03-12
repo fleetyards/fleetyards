@@ -3,9 +3,17 @@ require "factory_bot_rails"
 
 Rails.logger.info "E2E: Creating admin_cargo_holds scenario test data..."
 
-FactoryBot.create(:admin_user, username: "admin", email: "admin@test.com", password: "password123", password_confirmation: "password123", super_admin: true)
+AdminUser.find_or_create_by!(username: "admin_cargo") do |u|
+  u.email = "admin_cargo@test.com"
+  u.password = "password123"
+  u.password_confirmation = "password123"
+  u.super_admin = true
+end
 
-model = FactoryBot.create(:model, :with_legacy_images, name: "Caterpillar", production_status: "flight-ready")
+model = Model.find_or_initialize_by(name: "Caterpillar")
+if model.new_record?
+  model = FactoryBot.create(:model, :with_legacy_images, name: "Caterpillar", production_status: "flight-ready")
+end
 model.update!(cargo_holds: [
   {
     "name" => "cargo_front",

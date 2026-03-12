@@ -3,10 +3,15 @@ require "factory_bot_rails"
 
 Rails.logger.info "E2E: Creating ships scenario test data..."
 
-model = FactoryBot.create(:model, :with_legacy_images, name: "Ironclad")
-FactoryBot.create_list(:image, 10, gallery: model)
+model = Model.find_or_initialize_by(name: "Ironclad")
+if model.new_record?
+  model = FactoryBot.create(:model, :with_legacy_images, name: "Ironclad")
+end
+FactoryBot.create_list(:image, 10, gallery: model) if model.images.count < 10
 
-FactoryBot.create(:model, :with_legacy_images, name: "Corsair")
+unless Model.exists?(name: "Corsair")
+  FactoryBot.create(:model, :with_legacy_images, name: "Corsair")
+end
 
 Model.reindex
 

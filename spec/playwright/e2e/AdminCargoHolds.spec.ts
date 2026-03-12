@@ -8,7 +8,7 @@ test.describe("Admin Cargo Holds", () => {
 
     // Login to admin
     await page.goto("/admin/login/");
-    await page.locator("input[name='login']").fill("admin");
+    await page.locator("input[name='login']").fill("admin_cargo");
     await page.locator("input[name='password']").fill("password123");
     await page.getByTestId("submit-login").click();
 

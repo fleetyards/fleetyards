@@ -8,7 +8,7 @@ test.describe("Admin Features", () => {
 
     // Login to admin
     await page.goto("/admin/login/");
-    await page.locator("input[name='login']").fill("admin");
+    await page.locator("input[name='login']").fill("admin_features");
     await page.locator("input[name='password']").fill("password123");
     await page.getByTestId("submit-login").click();
 
