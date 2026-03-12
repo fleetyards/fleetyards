@@ -5,6 +5,7 @@ import { createPinia } from "pinia";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import FloatingVue from "floating-vue";
 import "floating-vue/dist/style.css";
+import { VueQueryPlugin } from "@tanstack/vue-query";
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
@@ -19,6 +20,8 @@ setTimeout(() => {
   app.use(router);
   app.use(pinia);
   app.use(VueLazyload);
+  app.use(VueQueryPlugin);
+
   app.use(FloatingVue, {
     container: "#fleetyards-view",
   });
