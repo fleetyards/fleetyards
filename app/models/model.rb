@@ -487,15 +487,15 @@ class Model < ApplicationRecord
       cargo_holds_db.where.not(offset_z: nil)
     ).or(
       cargo_holds_db.where.not(rotation: nil)
-    ).index_by { |h| [h.name, h.position] }
+    ).index_by(&:position)
 
     cargo_holds_db.destroy_all
 
     cargo_holds.each_with_index do |hold_data, index|
       next if hold_data.blank? || hold_data["dimensions"].blank?
 
-      # Restore offsets from previous record if they existed
-      previous = existing_offsets[[hold_data["name"], index]]
+      # Restore offsets from previous record if they existed (match by position)
+      previous = existing_offsets[index]
 
       cargo_hold = cargo_holds_db.create!(
         name: hold_data["name"],

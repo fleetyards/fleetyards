@@ -38,7 +38,7 @@
 #  fk_rails_...  (model_id => models.id)
 #
 class CargoHold < ApplicationRecord
-  belongs_to :model
+  belongs_to :model, touch: true
   has_many :cargo_hold_container_capacities, dependent: :destroy
 
   validates :dimension_x, :dimension_y, :dimension_z, :capacity_scu,

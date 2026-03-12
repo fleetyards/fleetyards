@@ -53,14 +53,14 @@ class SetCargoHoldOffsets < ActiveRecord::Migration[7.2]
       {position: 2, x: 16.25, y: 0, z: 25, r: 90},       # top large (rotated, z:25..35)
       {position: 9, x: 16.25, y: 0, z: 35, r: 90},       # top small (rotated, z:35..40)
       # Section 2 (y=11.25, 10+1.25 gap)
-      {position: 11, x: 0, y: 11.25, z: 16.25},          # left small (outer)
+      {position: 6, x: 0, y: 11.25, z: 16.25},            # left small (outer)
       {position: 4, x: 5, y: 11.25, z: 16.25},            # left large (inner)
       {position: 5, x: 25, y: 11.25, z: 16.25},           # right large (inner)
       {position: 12, x: 35, y: 11.25, z: 16.25},          # right small (outer)
       {position: 15, x: 16.25, y: 11.25, z: 0, r: 90},   # bottom small (rotated)
-      {position: 14, x: 16.25, y: 11.25, z: 5, r: 90},   # bottom large (rotated)
-      {position: 6, x: 16.25, y: 11.25, z: 25, r: 90},   # top large (rotated)
-      {position: 13, x: 16.25, y: 11.25, z: 35, r: 90}   # top small (rotated)
+      {position: 11, x: 16.25, y: 11.25, z: 5, r: 90},   # bottom large (rotated)
+      {position: 13, x: 16.25, y: 11.25, z: 25, r: 90},  # top large (rotated)
+      {position: 14, x: 16.25, y: 11.25, z: 35, r: 90}    # top small (rotated)
     ]
 
     apply_offsets(model, offsets)
