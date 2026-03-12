@@ -72,10 +72,17 @@ test.describe("Hangar", () => {
       .locator("[data-test='vehicle-edit-name']")
       .click();
 
-    await page.getByTestId("input-name").clear();
+    await page.locator(".app-modal.show").waitFor({ state: "visible" });
+
     await page.getByTestId("input-name").fill("Enterprise");
 
+    const updateResponse = page.waitForResponse(
+      (resp) => resp.url().includes("/vehicles/") && resp.request().method() === "PUT",
+    );
     await page.getByTestId("vehicle-save").click();
+    await updateResponse;
+
+    await page.locator(".app-modal").waitFor({ state: "hidden" });
 
     await expect(
       page.locator(".model-panel-300i .panel-heading__title a").first(),

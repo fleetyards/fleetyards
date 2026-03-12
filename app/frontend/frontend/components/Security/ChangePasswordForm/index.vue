@@ -27,7 +27,7 @@ const { displaySuccess, displayAlert } = useAppNotifications();
 const validationSchema = {
   currentPassword: "required",
   password: "required|min:8",
-  passwordConfirmation: "required|confirmed:password",
+  passwordConfirmation: "required|confirmed:@password",
 };
 
 const initialValues = ref<PasswordInput>({

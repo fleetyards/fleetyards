@@ -64,8 +64,13 @@ test.describe("Fleet", () => {
 
     await expect(page).toHaveURL(/\/settings\/fleet\//);
 
-    page.on("dialog", (dialog) => dialog.accept());
     await page.getByTestId("fleet-delete").click();
+
+    await page.locator(".app-confirm").waitFor({ state: "visible" });
+    await page
+      .locator(".app-confirm__buttons")
+      .getByText("Confirm")
+      .click();
 
     await page.waitForTimeout(500);
 

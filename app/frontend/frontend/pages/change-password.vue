@@ -31,7 +31,7 @@ const router = useRouter();
 
 const validationSchema = {
   password: "required|min:8",
-  passwordConfirmation: "required|confirmed:password",
+  passwordConfirmation: "required|confirmed:@password",
 };
 
 const { defineField, handleSubmit } = useForm<PasswordInput>();

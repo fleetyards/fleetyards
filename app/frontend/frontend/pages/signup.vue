@@ -49,7 +49,7 @@ const validationSchema = {
   username: "required|alpha_dash|usernameTaken",
   email: "required|email|emailTaken",
   password: "required|min:8",
-  passwordConfirmation: "required|confirmed:password",
+  passwordConfirmation: "required|confirmed:@password",
 };
 
 const { defineField, handleSubmit, setErrors } = useForm<UserCreateInput>({
