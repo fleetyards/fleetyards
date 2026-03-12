@@ -48,7 +48,7 @@ const submit = handleSubmit(async (values) => {
 
   await mutation
     .mutateAsync({
-      data: values.value,
+      data: values,
     })
     .then((fleet) => {
       comlink.emit("fleet-create");

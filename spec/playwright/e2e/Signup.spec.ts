@@ -30,9 +30,7 @@ test.describe("Signup", () => {
       await page.locator("input[name='username']").fill(user.username);
       await page.locator("input[name='email']").fill(user.email);
       await page.locator("input[name='password']").fill(password);
-      await page
-        .locator("input[name='passwordConfirmation']")
-        .fill(password);
+      await page.locator("input[name='passwordConfirmation']").fill(password);
       await page.getByTestId("submit-signup").click();
 
       await notification.success("Welcome to FleetYards.net");
@@ -73,49 +71,48 @@ test.describe("Signup", () => {
   // cy.get("nav a").contains("nav a", "Login").should("exist");
 
   test("Validates all fields", async ({ page, nav, notification }) => {
-    await nav.click("signup");
+    await page.goto("/sign-up/");
 
     await expect(page).toHaveURL(/\/sign-up/);
 
-    await appFactories([["create", "user", { password: "password" }]]).then(
-      async ([user]) => {
-        const usernameInput = page.getByTestId("input-username");
-        await usernameInput.fill(user.username);
-        await expect(
-          page.locator(".base-input").filter({ has: usernameInput }),
-        ).toHaveClass("base-input--with_error");
+    const password = "password";
+    await appFactories([
+      ["create", "user", { password, password_confirmation: password }],
+    ]).then(async ([user]) => {
+      const usernameInput = page.getByTestId("input-username");
+      await usernameInput.fill(user.username);
+      await expect(
+        page.locator(".base-input").filter({ has: usernameInput }),
+      ).toHaveClass("base-input--with_error");
 
-        const emailInput = page.getByTestId("input-email");
-        await emailInput.fill(user.email);
-        await expect(
-          page.locator(".base-input").filter({ has: emailInput }),
-        ).toHaveClass("base-input--with_error");
-        const invalidEmail = "foo";
-        await emailInput.fill(invalidEmail);
-        await expect(
-          page.locator(".base-input").filter({ has: emailInput }),
-        ).toHaveClass("base-input--with_error");
-        await emailInput.fill("test@test.de");
-        await expect(
-          page.locator(".base-input").filter({ has: emailInput }),
-        ).not.toHaveClass("base-input--with_error");
+      const emailInput = page.getByTestId("input-email");
+      await emailInput.fill(user.email);
+      await expect(
+        page.locator(".base-input").filter({ has: emailInput }),
+      ).toHaveClass("base-input--with_error");
+      const invalidEmail = "foo";
+      await emailInput.fill(invalidEmail);
+      await expect(
+        page.locator(".base-input").filter({ has: emailInput }),
+      ).toHaveClass("base-input--with_error");
+      await emailInput.fill("test@test.de");
+      await expect(
+        page.locator(".base-input").filter({ has: emailInput }),
+      ).not.toHaveClass("base-input--with_error");
 
-        const passwordInput = page.getByTestId("input-password");
-        const tooShortPassword = "foo";
-        await passwordInput.fill(tooShortPassword);
-        await expect(
-          page.locator(".base-input").filter({ has: passwordInput }),
-        ).toHaveClass("base-input--with_error");
-        await passwordInput.fill("password");
-        await expect(
-          page.locator(".base-input").filter({ has: passwordInput }),
-        ).not.toHaveClass("base-input--with_error");
+      const passwordInput = page.getByTestId("input-password");
+      const tooShortPassword = "foo";
+      await passwordInput.fill(tooShortPassword);
+      await expect(
+        page.locator(".base-input").filter({ has: passwordInput }),
+      ).toHaveClass("base-input--with_error");
+      await passwordInput.fill("password");
+      await expect(
+        page.locator(".base-input").filter({ has: passwordInput }),
+      ).not.toHaveClass("base-input--with_error");
 
-        await page
-          .locator("input[name='passwordConfirmation']")
-          .fill(user.password);
-      },
-    );
+      await page.locator("input[name='passwordConfirmation']").fill(password);
+    });
   });
 
   // cy.fixture("users").then((userData) => {
@@ -154,7 +151,7 @@ test.describe("Signup", () => {
     nav,
     notification,
   }) => {
-    await nav.click("signup");
+    await page.goto("/sign-up/");
 
     await expect(page).toHaveURL(/\/sign-up/);
 

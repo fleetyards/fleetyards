@@ -46,7 +46,7 @@ test.describe("Hangar", () => {
 
     await expect(page).toHaveURL(/\//);
 
-    await nav.click("models");
+    await nav.click("ships");
 
     await expect(page).toHaveURL(/\/ships\//);
 

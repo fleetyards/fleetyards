@@ -1,6 +1,12 @@
 import { test, expect } from "../support/commands";
+import { app, appScenario } from "../support/on-rails";
 
 test.describe("EmbedV2Fleet", () => {
+  test.beforeEach(async () => {
+    await app("clean");
+    await appScenario("embed");
+  });
+
   test("Default Workflow", async ({ page }) => {
     await page.goto("/embed-v2-fleet-test");
 
