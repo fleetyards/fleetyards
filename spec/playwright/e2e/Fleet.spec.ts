@@ -60,6 +60,10 @@ test.describe("Fleet", () => {
 
     await nav.click("fleet-settings");
 
+    await page.getByText("Fleet Settings").click();
+
+    await expect(page).toHaveURL(/\/settings\/fleet\//);
+
     page.on("dialog", (dialog) => dialog.accept());
     await page.getByTestId("fleet-delete").click();
 

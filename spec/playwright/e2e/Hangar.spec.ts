@@ -60,25 +60,25 @@ test.describe("Hangar", () => {
     await nav.click("hangar");
 
     await expect(
-      page.locator(".model-panel-300i .panel-title a").first(),
+      page.locator(".model-panel-300i .panel-heading__title a").first(),
     ).toContainText("300i");
 
     await page
       .locator(".model-panel-300i")
-      .getByTestId("300i-dropdown")
+      .getByTestId("vehicle-menu")
       .click();
     await page
       .locator(".panel-btn-dropdown__list.visible")
-      .locator("[data-test='edit-name']")
+      .locator("[data-test='vehicle-edit-name']")
       .click();
 
-    await page.getByTestId("input-vehicle-name").clear();
-    await page.getByTestId("input-vehicle-name").fill("Enterprise");
+    await page.getByTestId("input-name").clear();
+    await page.getByTestId("input-name").fill("Enterprise");
 
     await page.getByTestId("vehicle-save").click();
 
     await expect(
-      page.locator(".model-panel-300i .panel-title a").first(),
+      page.locator(".model-panel-300i .panel-heading__title a").first(),
     ).toContainText("Enterprise");
 
     await page.getByTestId("fleetchart-link").click();

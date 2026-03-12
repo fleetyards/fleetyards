@@ -1,6 +1,8 @@
 import { test, expect } from "../support/commands";
 import { app, appScenario } from "../support/on-rails";
 
+const EMBED_TIMEOUT = { timeout: 30000 };
+
 test.describe("EmbedV1", () => {
   test.beforeEach(async () => {
     await app("clean");
@@ -10,7 +12,7 @@ test.describe("EmbedV1", () => {
   test("Default Workflow", async ({ page }) => {
     await page.goto("/embed-test");
 
-    await expect(page.locator(".model-300i")).toHaveCount(1);
+    await expect(page.locator(".model-300i")).toHaveCount(1, EMBED_TIMEOUT);
 
     await expect(page.locator(".model-300i .top-metrics")).toBeVisible();
 

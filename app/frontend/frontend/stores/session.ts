@@ -61,6 +61,6 @@ export const useSessionStore = defineStore("session", {
     },
   },
   persist: {
-    pick: ["authenticated", "accessConfirmed"],
+    pick: ["authenticated", "accessConfirmed", "currentUser"],
   },
 });
