@@ -48,7 +48,7 @@ test.describe("Fleet", () => {
     await expect(page).toHaveURL(/\/fleets\/add\//);
 
     await page.getByTestId("input-fid").fill("TestFleet1");
-    await page.getByTestId("input-name").fill("Test Fleet 1.");
+    await page.getByTestId("input-name").fill("Test_Fleet_1");
 
     await page.getByTestId("fleet-save").click();
 

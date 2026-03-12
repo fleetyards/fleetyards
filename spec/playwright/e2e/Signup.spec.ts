@@ -83,33 +83,33 @@ test.describe("Signup", () => {
       await usernameInput.fill(user.username);
       await expect(
         page.locator(".base-input").filter({ has: usernameInput }),
-      ).toHaveClass("base-input--with-error");
+      ).toHaveClass(/base-input--with-error/);
 
       const emailInput = page.getByTestId("input-email");
       await emailInput.fill(user.email);
       await expect(
         page.locator(".base-input").filter({ has: emailInput }),
-      ).toHaveClass("base-input--with-error");
+      ).toHaveClass(/base-input--with-error/);
       const invalidEmail = "foo";
       await emailInput.fill(invalidEmail);
       await expect(
         page.locator(".base-input").filter({ has: emailInput }),
-      ).toHaveClass("base-input--with-error");
+      ).toHaveClass(/base-input--with-error/);
       await emailInput.fill("test@test.de");
       await expect(
         page.locator(".base-input").filter({ has: emailInput }),
-      ).not.toHaveClass("base-input--with-error");
+      ).not.toHaveClass(/base-input--with-error/);
 
       const passwordInput = page.getByTestId("input-password");
       const tooShortPassword = "foo";
       await passwordInput.fill(tooShortPassword);
       await expect(
         page.locator(".base-input").filter({ has: passwordInput }),
-      ).toHaveClass("base-input--with-error");
+      ).toHaveClass(/base-input--with-error/);
       await passwordInput.fill("password");
       await expect(
         page.locator(".base-input").filter({ has: passwordInput }),
-      ).not.toHaveClass("base-input--with-error");
+      ).not.toHaveClass(/base-input--with-error/);
 
       await page.locator("input[name='passwordConfirmation']").fill(password);
     });
