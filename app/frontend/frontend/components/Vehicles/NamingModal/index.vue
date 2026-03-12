@@ -38,7 +38,7 @@ const initialValues = ref<VehicleUpdateInput>({
   alternativeNames: props.vehicle.alternativeNames,
 });
 
-const { defineField, setErrors } = useForm({
+const { defineField, handleSubmit, setErrors } = useForm({
   initialValues: initialValues.value,
 });
 
@@ -81,18 +81,13 @@ const comlink = useComlink();
 
 const { displayAlert } = useAppNotifications();
 
-const onSubmit = async () => {
+const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
   await mutation
     .mutateAsync({
       id: props.vehicle.id,
-      data: {
-        name: name.value,
-        serial: serial.value,
-        nameVisible: nameVisible.value,
-        alternativeNames: alternativeNames.value,
-      },
+      data: values,
     })
     .then(() => {
       comlink.emit("close-modal");
@@ -115,7 +110,7 @@ const onSubmit = async () => {
     .finally(() => {
       submitting.value = false;
     });
-};
+});
 
 const useName = (newName: string) => {
   name.value = newName;
