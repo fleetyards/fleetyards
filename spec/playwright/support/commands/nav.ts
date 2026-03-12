@@ -9,9 +9,7 @@ export default class Nav {
 
   async click(name: string, subName?: string) {
     const navItem = this.page.getByTestId(`nav-${name}`);
-    if (navItem) {
-      navItem.click();
-    }
+    await navItem.click();
 
     if (subName) {
       const subNavItem = this.page.getByTestId(`nav-${subName}`);

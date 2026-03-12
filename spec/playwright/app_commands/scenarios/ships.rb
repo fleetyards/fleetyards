@@ -13,12 +13,6 @@ unless Model.exists?(name: "Corsair")
   FactoryBot.create(:model, :with_legacy_images, name: "Corsair")
 end
 
-# 300i is needed by Hangar tests (add-to-hangar workflow)
-unless Model.exists?(name: "300i")
-  FactoryBot.create(:model, :with_legacy_images, name: "300i", production_status: "flight-ready",
-    manufacturer: Manufacturer.find_or_create_by!(name: "Origin"))
-end
-
 Model.reindex
 
 Rails.logger.info "E2E: Created ships scenario test data"

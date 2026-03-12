@@ -23,13 +23,16 @@ test.describe("Signup", () => {
 
     await expect(page).toHaveURL(/\/sign-up/);
 
-    await appFactories([["build", "user"]]).then(async ([user]) => {
+    const password = "password123";
+    await appFactories([
+      ["build", "user", { password, password_confirmation: password }],
+    ]).then(async ([user]) => {
       await page.locator("input[name='username']").fill(user.username);
       await page.locator("input[name='email']").fill(user.email);
-      await page.locator("input[name='password']").fill(user.password);
+      await page.locator("input[name='password']").fill(password);
       await page
         .locator("input[name='passwordConfirmation']")
-        .fill(user.password);
+        .fill(password);
       await page.getByTestId("submit-signup").click();
 
       await notification.success("Welcome to FleetYards.net");
@@ -37,7 +40,7 @@ test.describe("Signup", () => {
       await nav.click("login");
 
       await page.locator("input[name='login']").fill(user.username);
-      await page.locator("input[name='password']").fill(user.password);
+      await page.locator("input[name='password']").fill(password);
       await page.getByTestId("submit-login").click();
 
       await expect(

@@ -73,6 +73,8 @@ jobs:
         run: bundle exec rails assets:precompile
       - name: Prefill DB
         run: bundle exec rails db:seed
+      - name: Reindex after seed
+        run: bundle exec rails searchkick:reindex:all
       - name: Get Playwright version
         id: playwright-version
         run: echo "version=$(pnpm playwright --version)" >> $GITHUB_OUTPUT

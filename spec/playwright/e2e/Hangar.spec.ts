@@ -4,7 +4,7 @@ import { app, appFactories, appScenario } from "../support/on-rails";
 test.describe("Hangar", () => {
   test.beforeEach(async ({ page, acceptCookie }) => {
     await app("clean");
-    await appScenario("ships");
+    await appScenario("hangar");
 
     await page.goto("/");
 
