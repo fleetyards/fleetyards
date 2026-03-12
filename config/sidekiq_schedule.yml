@@ -13,9 +13,6 @@ production: &production
     cron: '0 20 */1 * *' # Daily at 20:00
     class: 'Loaders::ModelsJob'
     queue: 'loaders'
-  prices_job:
-    cron: '0 21 */1 * *' # Daily at 21:00
-    class: 'PricesJob'
   sc_data_check_job:
     cron: '0 22 */1 * *' # Daily at 22:00
     class: 'ScData::CheckJob'
