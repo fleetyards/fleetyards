@@ -55,6 +55,8 @@ test.describe("Hangar", () => {
       .getByTestId("add-to-hangar")
       .click();
 
+    await page.getByTestId("add-to-hangar-as-normal").click();
+
     await nav.click("hangar");
 
     await expect(

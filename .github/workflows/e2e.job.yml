@@ -23,6 +23,7 @@ jobs:
       DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
       TEST_SEEDS: 1
       JOBS: 1
+      PORT: 8280
 
     services:
       postgres:

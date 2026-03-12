@@ -21,10 +21,10 @@ const { t } = useI18n();
 
 const { displaySuccess, displayAlert } = useAppNotifications();
 
-const initialValues = ref<FleetCreateInput>({
+const initialValues: FleetCreateInput = {
   name: "",
   fid: "",
-});
+};
 
 const validationSchema = {
   name: "required|min:3|alpha_dash",
