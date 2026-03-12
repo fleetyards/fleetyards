@@ -167,12 +167,7 @@ const onSubmit = handleSubmit(async (values) => {
         >
           <i class="fal fa-trash" />
         </Btn>
-        <Btn
-          :loading="submitting"
-          size="large"
-          inline
-          @click="onSubmit"
-        >
+        <Btn :loading="submitting" size="large" inline @click="onSubmit">
           {{ t("actions.save") }}
         </Btn>
       </div>
