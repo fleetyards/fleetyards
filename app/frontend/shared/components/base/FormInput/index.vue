@@ -165,11 +165,12 @@ onMounted(() => {
   }
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "clear"]);
 
 const clear = () => {
   handleReset();
   emit("update:modelValue", undefined);
+  emit("clear");
 };
 
 const onChange = (event: Event) => {
