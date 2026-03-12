@@ -41,6 +41,8 @@ const sessionStore = useSessionStore();
 
 const hangarOnly = ref(false);
 
+const containerFilterActive = ref(false);
+
 const CONTAINER_SIZES = [1, 2, 4, 8, 16, 24, 32] as const;
 
 const selectedSlug = ref<string | undefined>(
@@ -75,6 +77,7 @@ const fillGreedy = () => {
 };
 
 const clearContainers = () => {
+  containerFilterActive.value = false;
   for (const size of CONTAINER_SIZES) {
     containerRequests.value[size] = 0;
   }
@@ -99,7 +102,7 @@ const fetchCargoModels = async (params: FilterGroupParams<Model>) => {
     q.inHangar = true;
   }
 
-  if (hasContainerRequests.value) {
+  if (containerFilterActive.value && hasContainerRequests.value) {
     const fit: Record<string, number> = {};
     for (const size of CONTAINER_SIZES) {
       const qty = Number(containerRequests.value[size]);
@@ -159,6 +162,7 @@ const filterKey = computed(
 );
 
 const applyContainerFilter = () => {
+  containerFilterActive.value = true;
   containerFilterVersion.value++;
   selectedSlug.value = undefined;
   selectedModel.value = undefined;
@@ -180,6 +184,7 @@ const toggleHangarOnly = () => {
 
 const resetFilters = () => {
   hangarOnly.value = false;
+  containerFilterActive.value = false;
   clearContainers();
   selectedSlug.value = undefined;
   selectedModel.value = undefined;
