@@ -91,12 +91,11 @@ const { mutateAsync, isPending: submitting } = useUpdateMutation(vehicle);
 
 const onSubmit = handleSubmit(async (values) => {
   await mutateAsync({
-      id: props.vehicle.id,
-      data: values,
-    })
-    .then(() => {
-      comlink.emit("close-modal");
-    });
+    id: props.vehicle.id,
+    data: values,
+  }).then(() => {
+    comlink.emit("close-modal");
+  });
 });
 
 const { data: boughtViaFilters } = useVehicleBoughtViaFiltersQuery();
