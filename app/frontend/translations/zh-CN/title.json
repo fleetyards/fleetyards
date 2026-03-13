@@ -10,11 +10,13 @@
       "home": "首页",
       "search": "搜索结果",
       "ships": {
-        "index": "舰船"
+        "index": "舰船",
+        "viewer": "舰船查看器"
       },
       "ship": "%{name} - %{manufacturer}",
       "shipImages": "%{name} 图片",
       "shipVideos": "%{name} 视频",
+      "shipViewer": "%{name} 查看器",
       "images": "图片",
       "stats": "统计",
       "login": "登录",
@@ -67,7 +69,8 @@
       "notFound": "404",
       "tools": {
         "index": "工具",
-        "travelTimes": "旅行时间"
+        "travelTimes": "旅行时间",
+        "cargoGrids": "货物网格"
       },
       "impressum": "版权声明",
       "privacyPolicy": "隐私政策",

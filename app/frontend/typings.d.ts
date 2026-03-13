@@ -3,6 +3,7 @@ import "vue-router";
 declare module "vue-router" {
   interface RouteMeta {
     title?: string;
+    customTitle?: boolean;
     needsAuthentication?: boolean;
     quickSearch?: string;
     primaryAction?: boolean;

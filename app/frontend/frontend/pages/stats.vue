@@ -13,7 +13,6 @@ import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import StatsPanel from "@/shared/components/StatsPanel/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import {
   useStats as useStatsQuery,
   useModelsByClassification as useModelsByClassificationQuery,
@@ -27,8 +26,6 @@ import {
 } from "@/services/fyApi";
 
 const { t } = useI18n();
-
-useMetaInfo();
 
 const { data: quickStats } = useStatsQuery();
 

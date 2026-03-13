@@ -19,9 +19,6 @@ import {
   type UserFeature,
 } from "@/services/fyApi";
 import { useQueryClient } from "@tanstack/vue-query";
-import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-
-useMetaInfo();
 
 const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();

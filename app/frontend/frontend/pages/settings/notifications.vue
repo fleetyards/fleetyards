@@ -14,9 +14,6 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useForm } from "vee-validate";
 import { UserUpdateInput } from "@/services/fyApi";
 import { useUpdateProfile as useUpdateProfileMutation } from "@/services/fyApi";
-import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-
-useMetaInfo();
 
 const { t } = useI18n();
 

@@ -8,6 +8,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "hangar.public",
       backgroundImage: "bg-5",
+      customTitle: true,
     },
   },
   {
@@ -25,6 +26,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "hangar.publicWishlist",
       backgroundImage: "bg-5",
+      customTitle: true,
     },
   },
 ];

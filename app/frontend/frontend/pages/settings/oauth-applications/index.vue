@@ -7,7 +7,6 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import ListGroup from "@/shared/components/ListGroup/index.vue";
 import {
@@ -21,8 +20,6 @@ import {
   type OauthApplication,
 } from "@/services/fyApi";
 import { useQueryClient } from "@tanstack/vue-query";
-
-useMetaInfo();
 
 const { t } = useI18n();
 const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();

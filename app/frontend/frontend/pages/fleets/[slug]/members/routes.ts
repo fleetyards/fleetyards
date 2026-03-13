@@ -9,6 +9,7 @@ export const routes: RouteRecordRaw[] = [
       title: "fleets.members.index",
       needsAuthentication: true,
       quickSearch: "searchCont",
+      customTitle: true,
     },
   },
   {
@@ -24,6 +25,7 @@ export const routes: RouteRecordRaw[] = [
         "fleet:memberships:manage",
         "fleet:manage",
       ],
+      customTitle: true,
     },
   },
 ];

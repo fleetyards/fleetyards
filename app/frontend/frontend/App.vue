@@ -39,8 +39,11 @@ import { useCheckStoreVersion } from "@/shared/composables/useCheckStoreVersion"
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 import { useFlashNotifications } from "@/shared/composables/useFlashNotifications";
+import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 
 useWebpCheck(true);
+
+useMetaInfo();
 
 useAxiosInterceptors();
 

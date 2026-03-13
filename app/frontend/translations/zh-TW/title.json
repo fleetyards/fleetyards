@@ -10,11 +10,13 @@
       "home": "首頁",
       "search": "搜尋結果",
       "ships": {
-        "index": "艦船"
+        "index": "艦船",
+        "viewer": "艦船檢視器"
       },
       "ship": "%{name} - %{manufacturer}",
       "shipImages": "%{name} 圖片",
       "shipVideos": "%{name} 影片",
+      "shipViewer": "%{name} 檢視器",
       "images": "圖片",
       "stats": "統計",
       "login": "登入",
@@ -67,7 +69,8 @@
       "notFound": "404",
       "tools": {
         "index": "工具",
-        "travelTimes": "旅行時間"
+        "travelTimes": "旅行時間",
+        "cargoGrids": "貨物網格"
       },
       "impressum": "版權聲明",
       "privacyPolicy": "隱私政策",

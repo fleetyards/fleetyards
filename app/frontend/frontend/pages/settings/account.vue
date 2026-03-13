@@ -26,9 +26,6 @@ import {
   useUpdateAccount as useUpdateAccountMutation,
   useDestroyAccount as useDestroyAccountMutation,
 } from "@/services/fyApi";
-import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-
-useMetaInfo();
 
 const sessionStore = useSessionStore();
 

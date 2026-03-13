@@ -9,10 +9,11 @@
       "defaultDocsShort": "FleetYards Docs",
       "home": "Accueil",
       "search": "Résultats de la recherche",
-      "ships": { "index": "Vaisseaux" },
+      "ships": { "index": "Vaisseaux", "viewer": "Ship Viewer" },
       "ship": "%{name} - %{manufacturer}",
       "shipImages": "Images de %{name}",
       "shipVideos": "Vidéos de %{name}",
+      "shipViewer": "%{name} Viewer",
       "images": "Images",
       "stats": "Statistiques",
       "login": "Se connecter",
@@ -63,7 +64,8 @@
       "notFound": "404",
       "tools": {
         "index": "Outils",
-        "travelTimes": "Temps de Voyage"
+        "travelTimes": "Temps de Voyage",
+        "cargoGrids": "Cargo Grids"
       },
       "impressum": "Mentions légales",
       "privacyPolicy": "Politique de confidentialité",

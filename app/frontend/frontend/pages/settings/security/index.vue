@@ -11,9 +11,6 @@ import { useSessionStore } from "@/frontend/stores/session";
 import { useI18n } from "@/shared/composables/useI18n";
 import SocialLogins from "@/shared/components/SocialLogins/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-
-useMetaInfo();
 
 const sessionStore = useSessionStore();
 

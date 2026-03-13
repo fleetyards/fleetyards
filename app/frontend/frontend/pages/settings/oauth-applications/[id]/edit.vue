@@ -25,9 +25,6 @@ import {
   AVAILABLE_SCOPES,
   DEFAULT_SCOPES,
 } from "@/frontend/pages/settings/oauth-applications/scopes";
-import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-
-useMetaInfo();
 
 type Props = {
   oauthApplication: OauthApplication;

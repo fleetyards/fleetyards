@@ -28,7 +28,6 @@ import { useWishlistStore } from "@/frontend/stores/wishlist";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
-import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
   ChannelsEnum,
@@ -44,8 +43,6 @@ import {
 } from "@/services/fyApi";
 
 const { t } = useI18n();
-
-useMetaInfo();
 
 const { displayAlert, displayConfirm } = useAppNotifications();
 

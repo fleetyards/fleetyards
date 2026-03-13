@@ -24,10 +24,6 @@ import {
   useImagesRandom as useImagesRandomQuery,
   useModelsLatest as useLatestModelsQuery,
 } from "@/services/fyApi";
-import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-
-useMetaInfo();
-
 const { t } = useI18n();
 
 const searchQuery = ref<string | undefined>();

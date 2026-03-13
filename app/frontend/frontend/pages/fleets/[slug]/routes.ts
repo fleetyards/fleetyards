@@ -9,6 +9,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/fleets/[slug]/index.vue"),
     meta: {
       backgroundImage: "bg-8",
+      customTitle: true,
     },
   },
   {
@@ -17,6 +18,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/fleets/[slug]/ships.vue"),
     meta: {
       backgroundImage: "bg-8",
+      customTitle: true,
     },
   },
   {
@@ -34,6 +36,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       needsAuthentication: true,
       backgroundImage: "bg-8",
+      customTitle: true,
     },
     redirect: {
       name: membersRoutes[0].name,
@@ -48,6 +51,7 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       backgroundImage: "bg-8",
       title: "fleets.settings.index",
+      customTitle: true,
     },
     redirect: {
       name: settingsRoutes[0].name,
@@ -61,6 +65,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       backgroundImage: "bg-8",
       title: "fleets.stats",
+      customTitle: true,
     },
   },
 ];

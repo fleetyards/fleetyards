@@ -21,7 +21,6 @@ import { storeToRefs } from "pinia";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useModelFilters } from "@/frontend/composables/useModelFilters";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
@@ -35,8 +34,6 @@ useHangarItems();
 useWishlistItems();
 
 const { t } = useI18n();
-
-useMetaInfo();
 
 const modelsStore = useModelsStore();
 const fleetchartsStore = useFleetchartStore();

@@ -9,10 +9,11 @@
       "defaultDocsShort": "FleetYards Docs",
       "home": "Startseite",
       "search": "Suchergebnisse",
-      "ships": { "index": "Schiffe" },
+      "ships": { "index": "Schiffe", "viewer": "Schiff Viewer" },
       "ship": "%{name} - %{manufacturer}",
       "shipImages": "%{name} Bilder",
       "shipVideos": "%{name} Videos",
+      "shipViewer": "%{name} Viewer",
       "images": "Bilder",
       "stats": "Statistiken",
       "login": "Anmelden",
@@ -67,7 +68,8 @@
       "notFound": "404",
       "tools": {
         "index": "Werkzeuge",
-        "travelTimes": "Reisezeiten"
+        "travelTimes": "Reisezeiten",
+        "cargoGrids": "Frachtgitter"
       },
       "impressum": "Impressum",
       "privacyPolicy": "Datenschutzrichtlinie",

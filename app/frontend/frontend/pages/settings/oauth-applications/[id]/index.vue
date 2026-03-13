@@ -20,9 +20,6 @@ import {
   regenerateOauthApplicationSecret,
 } from "@/services/fyApi";
 import { useQueryClient } from "@tanstack/vue-query";
-import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-
-useMetaInfo();
 
 type Props = {
   oauthApplication: OauthApplication;

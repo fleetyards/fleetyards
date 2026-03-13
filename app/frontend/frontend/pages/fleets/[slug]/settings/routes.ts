@@ -9,6 +9,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "fleets.settings.membership",
       needsAuthentication: true,
+      customTitle: true,
     },
   },
   {
@@ -20,6 +21,7 @@ export const routes: RouteRecordRaw[] = [
       title: "fleets.settings.fleet",
       needsAuthentication: true,
       access: ["fleet:manage"],
+      customTitle: true,
     },
   },
   {
@@ -31,6 +33,7 @@ export const routes: RouteRecordRaw[] = [
       title: "fleets.settings.roles",
       needsAuthentication: true,
       access: ["fleet:roles:read", "fleet:roles:manage", "fleet:manage"],
+      customTitle: true,
     },
   },
 ];

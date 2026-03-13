@@ -15,9 +15,6 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useForm } from "vee-validate";
 import { useUpdateProfile as useUpdateProfileMutation } from "@/services/fyApi";
-import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-
-useMetaInfo();
 
 const { t } = useI18n();
 
