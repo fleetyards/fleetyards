@@ -62,11 +62,15 @@ jobs:
     needs: ruby-setup
     uses: ./.github/workflows/seeds.job.yml
 
-  # build:
-  #   uses: ./.github/workflows/build.job.yml
-  #   with:
-  #     name: ${GITHUB_REF##*/}
-
+  build:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: [ruby-tests, js-tests, e2e-test]
+    uses: ./.github/workflows/build.job.yml
+    with:
+      tag: latest
+    permissions:
+      contents: read
+      packages: write
 
   api-schema-check:
     name: API Schema Check
