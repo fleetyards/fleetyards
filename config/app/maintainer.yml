@@ -1,9 +1,9 @@
 shared:
-  name: <%= Rails.application.credentials.dig(:maintainer, :name) %>
-  mail: <%= Rails.application.credentials.dig(:maintainer, :mail) %>
+  name: <%= Rails.application.credentials.dig(:maintainer, :name) rescue nil %>
+  mail: <%= Rails.application.credentials.dig(:maintainer, :mail) rescue nil %>
 
   address:
-    street: <%= Rails.application.credentials.dig(:maintainer, :address, :street) %>
-    postalcode: <%= Rails.application.credentials.dig(:maintainer, :address, :postalcode) %>
-    city: <%= Rails.application.credentials.dig(:maintainer, :address, :city) %>
-    country: <%= Rails.application.credentials.dig(:maintainer, :address, :country) %>
+    street: <%= Rails.application.credentials.dig(:maintainer, :address, :street) rescue nil %>
+    postalcode: <%= Rails.application.credentials.dig(:maintainer, :address, :postalcode) rescue nil %>
+    city: <%= Rails.application.credentials.dig(:maintainer, :address, :city) rescue nil %>
+    country: <%= Rails.application.credentials.dig(:maintainer, :address, :country) rescue nil %>
