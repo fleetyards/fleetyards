@@ -63,7 +63,7 @@ jobs:
     uses: ./.github/workflows/seeds.job.yml
 
   build:
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
     needs: [ruby-tests, ruby-lint, js-tests, js-lint, js-prettier, tsc, api-schema-check, api-schema-lint, e2e-test]
     uses: ./.github/workflows/build.job.yml
     with:
