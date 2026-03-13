@@ -92,7 +92,7 @@ RUN rm -rf \
       test \
       tmp/cache \
       vendor/assets \
-    && mkdir -p tmp/pids tmp/cache log
+    && mkdir -p tmp/pids tmp/cache log storage db
 
 # Run as non-root user for security
 RUN groupadd --system --gid 1000 rails && \
