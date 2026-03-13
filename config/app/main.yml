@@ -31,26 +31,26 @@ shared:
     environment: "live"
 
   discord:
-    oauth_client_id: <%= ENV["DISCORD_OAUTH_CLIENT_ID"] %>
-    oauth_secret: <%= ENV["DISCORD_OAUTH_SECRET"] %>
+    oauth_client_id: <%= Rails.application.credentials.dig(:discord, :oauth_client_id) rescue nil %>
+    oauth_secret: <%= Rails.application.credentials.dig(:discord, :oauth_secret) rescue nil %>
 
   github:
-    oauth_client_id: <%= ENV["GITHUB_OAUTH_CLIENT_ID"] %>
-    oauth_secret: <%= ENV["GITHUB_OAUTH_SECRET"] %>
+    oauth_client_id: <%= Rails.application.credentials.dig(:github, :oauth_client_id) rescue nil %>
+    oauth_secret: <%= Rails.application.credentials.dig(:github, :oauth_secret) rescue nil %>
 
   twitch:
-    oauth_client_id: <%= ENV["TWITCH_OAUTH_CLIENT_ID"] %>
-    oauth_secret: <%= ENV["TWITCH_OAUTH_SECRET"] %>
+    oauth_client_id: <%= Rails.application.credentials.dig(:twitch, :oauth_client_id) rescue nil %>
+    oauth_secret: <%= Rails.application.credentials.dig(:twitch, :oauth_secret) rescue nil %>
 
   google:
-    oauth_client_id: <%= ENV["GOOGLE_OAUTH_CLIENT_ID"] %>
-    oauth_secret: <%= ENV["GOOGLE_OAUTH_SECRET"] %>
+    oauth_client_id: <%= Rails.application.credentials.dig(:google, :oauth_client_id) rescue nil %>
+    oauth_secret: <%= Rails.application.credentials.dig(:google, :oauth_secret) rescue nil %>
 
   apple:
-    bundle_id: <%= ENV["APPLE_BUNDLE_ID"] %>
-    id_prefix: <%= ENV["APPLE_ID_PREFIX"] %>
-    key: <%= ENV["APPLE_KEY_ID"] %>
-    pem: <%= ENV["APPLE_PEM"] %>
+    bundle_id: <%= Rails.application.credentials.dig(:apple, :bundle_id) rescue nil %>
+    id_prefix: <%= Rails.application.credentials.dig(:apple, :id_prefix) rescue nil %>
+    key: <%= Rails.application.credentials.dig(:apple, :key_id) rescue nil %>
+    pem: <%= Rails.application.credentials.dig(:apple, :pem) rescue nil %>
 
 staging:
   on_subdomain?: true

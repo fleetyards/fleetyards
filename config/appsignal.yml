@@ -1,5 +1,5 @@
 production:
-  push_api_key: "<%= ENV['APPSIGNAL_PUSH_API_KEY'] %>"
+  push_api_key: "<%= Rails.application.credentials.dig(:appsignal, :push_api_key) rescue nil %>"
   name: "Fleetyards"
   active: true
   ignore_errors:
@@ -8,7 +8,7 @@ production:
       - ActionController::InvalidAuthenticityToken
 
 staging:
-  push_api_key: "<%= ENV['APPSIGNAL_PUSH_API_KEY'] %>"
+  push_api_key: "<%= Rails.application.credentials.dig(:appsignal, :push_api_key) rescue nil %>"
   name: "Fleetyards"
   active: true
   ignore_errors:
