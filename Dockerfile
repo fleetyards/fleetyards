@@ -38,6 +38,7 @@ RUN apt-get update -qq && \
       libcurl4-openssl-dev \
       libmagickwand-dev \
       libpq-dev \
+      libyaml-dev \
       node-gyp \
       pkg-config \
       python-is-python3 \
