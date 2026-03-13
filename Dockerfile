@@ -51,7 +51,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_${NODE_MAJOR}.x | bash - && \
 RUN corepack enable && corepack prepare pnpm@10.31.0 --activate
 
 # Install Ruby gems
-COPY Gemfile Gemfile.lock .ruby-version ./
+COPY Gemfile Gemfile.lock .tool-versions ./
 RUN bundle install --jobs 4 && \
     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git
 
