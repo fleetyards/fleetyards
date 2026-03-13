@@ -68,6 +68,7 @@ jobs:
     uses: ./.github/workflows/build.job.yml
     with:
       tag: ${{ github.ref_name }}
+    secrets: inherit
     permissions:
       contents: read
       packages: write
