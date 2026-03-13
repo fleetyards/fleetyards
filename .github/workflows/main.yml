@@ -63,11 +63,11 @@ jobs:
     uses: ./.github/workflows/seeds.job.yml
 
   build:
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    needs: [ruby-tests, js-tests, e2e-test]
+    if: github.event_name == 'push'
+    needs: [ruby-tests, ruby-lint, js-tests, js-lint, js-prettier, tsc, api-schema-check, api-schema-lint, e2e-test]
     uses: ./.github/workflows/build.job.yml
     with:
-      tag: latest
+      tag: ${{ github.ref_name }}
     permissions:
       contents: read
       packages: write
