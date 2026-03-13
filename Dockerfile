@@ -56,12 +56,15 @@ COPY Gemfile Gemfile.lock .tool-versions ./
 RUN bundle install --jobs 4 && \
     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git
 
-# Install Node dependencies
+# Install Node dependencies (skip postinstall, orval runs after full copy)
 COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --ignore-scripts
 
 # Copy the rest of the application
 COPY . .
+
+# Run postinstall scripts now that full source is available
+RUN pnpm run postinstall
 
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
