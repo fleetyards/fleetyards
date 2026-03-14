@@ -14,6 +14,7 @@ import CompareView from "@/frontend/components/Compare/Models/View/index.vue";
 import CompareBase from "@/frontend/components/Compare/Models/Base/index.vue";
 import CompareCrew from "@/frontend/components/Compare/Models/Crew/index.vue";
 import CompareSpeed from "@/frontend/components/Compare/Models/Speed/index.vue";
+import CompareCargo from "@/frontend/components/Compare/Models/Cargo/index.vue";
 import CompareHardpoints from "@/frontend/components/Compare/Models/Hardpoints/index.vue";
 import CompareHardpointsOld from "@/frontend/components/Compare/Models/HardpointsOld/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -106,6 +107,7 @@ watch(
             <CompareBase :models="models" :slim="navStore.slim" />
             <CompareCrew :models="models" :slim="navStore.slim" />
             <CompareSpeed :models="models" :slim="navStore.slim" />
+            <CompareCargo :models="models" :slim="navStore.slim" />
             <CompareHardpoints
               v-if="isFeatureEnabled('hardpoints-v2')"
               :models="models"

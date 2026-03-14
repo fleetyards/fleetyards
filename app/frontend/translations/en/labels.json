@@ -492,6 +492,7 @@
         "base": "Base",
         "crew": "Crew",
         "speed": "Speed",
+        "cargo": "Cargo",
         "hardpoints": "Hardpoints",
         "missileOptions": "Missle Options (if available)"
       },
