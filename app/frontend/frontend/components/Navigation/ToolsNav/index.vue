@@ -43,7 +43,7 @@ const active = computed(() => {
         v-if="isFeatureEnabled('tools_cargo_grids')"
         :to="{ name: 'cargo-grids' }"
         :label="t('nav.tools.cargoGrids')"
-        icon="fad fa-box-taped"
+        icon="fad fa-cubes"
       />
     </template>
   </NavItem>

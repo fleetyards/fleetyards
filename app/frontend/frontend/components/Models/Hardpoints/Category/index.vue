@@ -87,7 +87,7 @@ const icons = {
         v-if="category === HardpointCategoryEnum.CARGOGRID"
         class="hardpoint-category__icon"
       >
-        <i class="fad fa-boxes fa-lg" />
+        <i class="fad fa-cubes fa-lg" />
       </span>
       <span
         v-else-if="category === HardpointCategoryEnum.SEAT"
