@@ -29,7 +29,7 @@ withDefaults(defineProps<Props>(), {
     class="fleetchart-item-image"
   />
   <span v-else>
-    <i class="fal fa-question-circle" />
+    <i class="fa-light fa-question-circle" />
     <p>{{ label }}</p>
   </span>
 </template>

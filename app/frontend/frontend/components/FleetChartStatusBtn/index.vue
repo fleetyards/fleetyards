@@ -77,7 +77,7 @@ const toggleStatus = () => {
     @click="toggleStatus"
   >
     <i
-      class="fad"
+      class="fa-duotone"
       :class="{
         'fa-star-half-alt': !showStatus,
         'fa-star': showStatus,

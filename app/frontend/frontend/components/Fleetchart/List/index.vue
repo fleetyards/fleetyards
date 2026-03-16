@@ -232,7 +232,7 @@ const drawGridLines = async () => {
         </BtnDropdown>
 
         <Btn size="small" :active="gridEnabled" @click="toggleGrid">
-          <i class="fad fa-th" />
+          <i class="fa-duotone fa-th" />
         </Btn>
 
         <BtnDropdown size="small">
@@ -247,7 +247,7 @@ const drawGridLines = async () => {
           </template>
 
           <Btn size="small" @click="toggleLabels">
-            <i class="fad fa-tags" />
+            <i class="fa-duotone fa-tags" />
             <span v-if="showLabels">
               {{ t("actions.hideLabels") }}
             </span>

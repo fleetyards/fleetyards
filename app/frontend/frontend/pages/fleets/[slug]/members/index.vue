@@ -155,7 +155,7 @@ const crumbs = computed(() => {
       :inline="true"
       :to="{ name: 'fleet-members-invites', params: { slug: fleet.slug } }"
     >
-      <i class="fad fa-user-plus" />
+      <i class="fa-duotone fa-user-plus" />
       {{ t("actions.fleet.manageInvites") }}
     </Btn>
   </Teleport>
@@ -172,7 +172,7 @@ const crumbs = computed(() => {
       <Btn
         :to="{ name: 'fleet-members-invites', params: { slug: fleet.slug } }"
       >
-        <i class="fad fa-user-plus" />
+        <i class="fa-duotone fa-user-plus" />
         <span>{{ t("actions.fleet.manageInvites") }}</span>
       </Btn>
     </template>

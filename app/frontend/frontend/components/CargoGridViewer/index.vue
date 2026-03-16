@@ -964,7 +964,7 @@ const resetCamera = () => {
         inline
         @click="resetCamera"
       >
-        <i class="fal fa-crosshairs" />
+        <i class="fa-light fa-crosshairs" />
       </Btn>
       <TresCanvas :key="canvasKey" :clear-alpha="0" shadows alpha>
         <TresPerspectiveCamera

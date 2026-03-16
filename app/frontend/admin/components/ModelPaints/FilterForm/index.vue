@@ -124,7 +124,7 @@ watch(
 
     <br />
     <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
-      <i class="fal fa-times" />
+      <i class="fa-light fa-times" />
       {{ t("actions.resetFilter") }}
     </Btn>
   </form>

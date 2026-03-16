@@ -31,7 +31,7 @@ const close = () => {
       <div class="modal-content">
         <div class="modal-header">
           <a v-if="!fixed" class="close" aria-label="Close" @click="close">
-            <i class="fal fa-times" />
+            <i class="fa-light fa-times" />
           </a>
           <h2 class="modal-title">
             <slot name="title">

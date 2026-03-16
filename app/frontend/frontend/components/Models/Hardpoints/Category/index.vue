@@ -32,7 +32,6 @@ import missilesIconUrl from "@/images/hardpoints/missiles.svg";
 import utilityItemsIconUrl from "@/images/hardpoints/utility_items.svg";
 import qedIconUrl from "@/images/hardpoints/qed.svg";
 import empIconUrl from "@/images/hardpoints/emp.svg";
-
 type Props = {
   hardpoints: Hardpoint[];
   category: HardpointCategoryEnum;
@@ -87,49 +86,49 @@ const icons = {
         v-if="category === HardpointCategoryEnum.CARGOGRID"
         class="hardpoint-category__icon"
       >
-        <i class="fad fa-cubes fa-lg" />
+        <i class="fa-duotone fa-thin fa-cubes fa-lg" />
       </span>
       <span
         v-else-if="category === HardpointCategoryEnum.SEAT"
         class="hardpoint-category__icon"
       >
-        <i class="fad fa-person-seat-reclined fa-lg" />
+        <i class="fa-duotone fa-person-seat-reclined fa-lg" />
       </span>
       <span
         v-else-if="category === HardpointCategoryEnum.MODULE"
         class="hardpoint-category__icon"
       >
-        <i class="fad fa-puzzle fa-lg" />
+        <i class="fa-duotone fa-puzzle fa-lg" />
       </span>
       <span
         v-else-if="category === HardpointCategoryEnum.SALVAGEFILLERSTATION"
         class="hardpoint-category__icon"
       >
-        <i class="fad fa-bin-recycle fa-lg" />
+        <i class="fa-duotone fa-bin-recycle fa-lg" />
       </span>
       <span
         v-else-if="category === HardpointCategoryEnum.ARMOR"
         class="hardpoint-category__icon"
       >
-        <i class="fad fa-shield-halved fa-lg" />
+        <i class="fa-duotone fa-shield-halved fa-lg" />
       </span>
       <span
         v-else-if="category === HardpointCategoryEnum.COUNTERMEASURES"
         class="hardpoint-category__icon"
       >
-        <i class="fad fa-shield-quartered fa-lg" />
+        <i class="fa-duotone fa-shield-quartered fa-lg" />
       </span>
       <span
         v-else-if="category === HardpointCategoryEnum.LIFESUPPORT"
         class="hardpoint-category__icon"
       >
-        <i class="fad fa-star-of-life fa-lg" />
+        <i class="fa-duotone fa-star-of-life fa-lg" />
       </span>
       <span
         v-else-if="category === HardpointCategoryEnum.RELAY"
         class="hardpoint-category__icon"
       >
-        <i class="fad fa-transformer-bolt fa-lg" />
+        <i class="fa-duotone fa-transformer-bolt fa-lg" />
       </span>
       <img
         v-else
@@ -145,7 +144,7 @@ const icons = {
         inline
         class="hardpoint-category__link"
       >
-        <i class="fal fa-cube" />
+        <i class="fa-light fa-cube" />
         3D
       </Btn>
     </div>

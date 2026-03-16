@@ -241,7 +241,7 @@ const declineRequest = async () => {
     :disabled="!canUpdateMembers || updating"
     @click="acceptRequest"
   >
-    <i class="fal fa-check" />
+    <i class="fa-light fa-check" />
     <span v-if="withLabels">{{ t("actions.fleet.members.accept") }}</span>
   </Btn>
   <Btn
@@ -251,7 +251,7 @@ const declineRequest = async () => {
     :disabled="!canUpdateMembers || updating"
     @click="declineRequest"
   >
-    <i class="fal fa-times" />
+    <i class="fa-light fa-times" />
     <span v-if="withLabels">{{ t("actions.fleet.members.decline") }}</span>
   </Btn>
   <Btn
@@ -261,7 +261,7 @@ const declineRequest = async () => {
     :disabled="!canDeleteMembers || updating"
     @click="promoteMember"
   >
-    <i class="fal fa-chevron-up" />
+    <i class="fa-light fa-chevron-up" />
     <span v-if="withLabels">{{ t("actions.fleet.members.promote") }}</span>
   </Btn>
   <Btn
@@ -271,7 +271,7 @@ const declineRequest = async () => {
     :disabled="!canDeleteMembers || updating"
     @click="demoteMember"
   >
-    <i class="fal fa-chevron-down" />
+    <i class="fa-light fa-chevron-down" />
     <span v-if="withLabels">{{ t("actions.fleet.members.demote") }}</span>
   </Btn>
   <Btn
@@ -281,7 +281,7 @@ const declineRequest = async () => {
     :disabled="!canDeleteMembers || deleting"
     @click="removeMember"
   >
-    <i class="fad fa-trash-alt" />
+    <i class="fa-duotone fa-trash-alt" />
     <span v-if="withLabels">{{ t("actions.fleet.members.remove") }}</span>
   </Btn>
 </template>

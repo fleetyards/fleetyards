@@ -53,7 +53,7 @@ const visible = computed(() => {
 <template>
   <div v-if="visible" class="app-environment" :class="cssClasses">
     <BasePill :variant="environtmentVariant">
-      <i class="far fa-info-circle" />
+      <i class="fa-regular fa-info-circle" />
       {{ nodeEnv }}
     </BasePill>
     <BasePill
@@ -61,7 +61,7 @@ const visible = computed(() => {
       :variant="environtmentVariant"
       class="app-environment__git-revision"
     >
-      <i class="far fa-fingerprint" />
+      <i class="fa-regular fa-fingerprint" />
       {{ gitRevision }}
     </BasePill>
   </div>

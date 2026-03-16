@@ -521,11 +521,11 @@ const imageMaxWidth = (item: Vehicle | Model | VehiclePublic) => {
         </BtnDropdown>
 
         <Btn size="small" :active="gridEnabled" @click="toggleGrid">
-          <i class="fad fa-th" />
+          <i class="fa-duotone fa-th" />
         </Btn>
 
         <Btn size="small" :active="coloredEnabled" @click="toggleColored">
-          <i class="fad fa-palette" />
+          <i class="fa-duotone fa-palette" />
         </Btn>
 
         <BtnDropdown size="small">
@@ -540,7 +540,7 @@ const imageMaxWidth = (item: Vehicle | Model | VehiclePublic) => {
           </template>
 
           <Btn size="small" @click="toggleLabels">
-            <i class="fad fa-tags" />
+            <i class="fa-duotone fa-tags" />
             <span v-if="showLabels">
               {{ t("actions.hideLabels") }}
             </span>
@@ -552,7 +552,7 @@ const imageMaxWidth = (item: Vehicle | Model | VehiclePublic) => {
           <FleetChartStatusBtn size="small" />
 
           <Btn size="small" @click="markForReset">
-            <i class="fad fa-undo" />
+            <i class="fa-duotone fa-undo" />
             <span>{{ t("actions.resetZoom") }}</span>
           </Btn>
         </BtnDropdown>

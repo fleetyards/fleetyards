@@ -75,7 +75,7 @@ const formatScopes = (scopes: string) => {
       :size="BtnSizesEnum.SMALL"
       :to="{ name: 'settings-oauth-application-create' }"
     >
-      <i class="fad fa-plus" />
+      <i class="fa-duotone fa-plus" />
       {{ t("actions.oauthApplications.create") }}
     </Btn>
   </div>
@@ -98,7 +98,7 @@ const formatScopes = (scopes: string) => {
           </span>
           <span class="oauth-app-meta-item">
             <i
-              :class="item.confidential ? 'fad fa-lock' : 'fad fa-lock-open'"
+              :class="item.confidential ? 'fa-duotone fa-lock' : 'fa-duotone fa-lock-open'"
             />
             {{
               item.confidential
@@ -122,14 +122,14 @@ const formatScopes = (scopes: string) => {
             params: { id: item.id },
           }"
         >
-          <i class="fad fa-pencil" />
+          <i class="fa-duotone fa-pencil" />
         </Btn>
         <Btn
           :size="BtnSizesEnum.SMALL"
           :variant="BtnVariantsEnum.DANGER"
           @click="confirmDestroy(item)"
         >
-          <i class="fad fa-trash" />
+          <i class="fa-duotone fa-trash" />
         </Btn>
       </BtnGroup>
     </template>

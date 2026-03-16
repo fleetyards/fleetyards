@@ -98,7 +98,7 @@ const add = async () => {
     @click="add"
   >
     <i v-if="inHangar || onWishlist" class="fa fa-bookmark" />
-    <i v-else class="fal fa-bookmark" />
+    <i v-else class="fa-light fa-bookmark" />
     <slot name="label">
       <span v-if="label">{{ t("labels.addToHangar") }}</span>
     </slot>

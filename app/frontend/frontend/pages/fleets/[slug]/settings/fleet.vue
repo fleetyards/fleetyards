@@ -256,7 +256,7 @@ const onDestroy = async () => {
         <FormInput
           v-model="ts"
           name="ts"
-          icon="fab fa-teamspeak"
+          icon="fa-brands fa-teamspeak"
           translation-key="fleet.ts"
           v-bind="tsProps"
         />
@@ -267,7 +267,7 @@ const onDestroy = async () => {
         <FormInput
           v-model="discord"
           name="discord"
-          icon="fab fa-discord"
+          icon="fa-brands fa-discord"
           v-bind="discordProps"
         />
       </div>
@@ -275,7 +275,7 @@ const onDestroy = async () => {
         <FormInput
           v-model="guilded"
           name="guilded"
-          icon="fab fa-guilded"
+          icon="fa-brands fa-guilded"
           v-bind="guildedProps"
         />
       </div>
@@ -285,7 +285,7 @@ const onDestroy = async () => {
         <FormInput
           v-model="twitch"
           name="twitch"
-          icon="fab fa-twitch"
+          icon="fa-brands fa-twitch"
           v-bind="twitchProps"
         />
       </div>
@@ -293,7 +293,7 @@ const onDestroy = async () => {
         <FormInput
           v-model="youtube"
           name="youtube"
-          icon="fab fa-youtube"
+          icon="fa-brands fa-youtube"
           v-bind="youtubeProps"
         />
       </div>

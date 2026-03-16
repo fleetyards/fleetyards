@@ -251,7 +251,7 @@ const highlight = (group?: HangarGroup | HangarGroupPublic) => {
       @click="openNewGroupModal"
     >
       <span class="label-inner">
-        <i class="far fa-plus" />
+        <i class="fa-regular fa-plus" />
       </span>
     </a>
   </div>

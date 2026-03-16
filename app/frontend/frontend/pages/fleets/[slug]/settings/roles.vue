@@ -125,10 +125,10 @@ const isImpliedByManage = (role: FleetRoleExtended, privilege: string) => {
                 <i
                   :class="
                     hasPrivilege(role, privilege)
-                      ? 'fas fa-check text-success'
+                      ? 'fa-solid fa-check text-success'
                       : isImpliedByManage(role, privilege)
-                        ? 'fas fa-check text-info'
-                        : 'fas fa-times text-muted'
+                        ? 'fa-solid fa-check text-info'
+                        : 'fa-solid fa-times text-muted'
                   "
                 />
                 {{ t(`labels.fleet.roles.privileges.${privilege}`) }}

@@ -117,7 +117,7 @@ const destroy = () => {
     spinner
     @click="sync"
   >
-    <i class="fad fa-rotate" />
+    <i class="fa-duotone fa-rotate" />
     <span v-if="withLabels">{{ t("actions.models.sync") }}</span>
   </Btn>
   <Btn
@@ -125,7 +125,7 @@ const destroy = () => {
     :size="BtnSizesEnum.SMALL"
     @click="exchangeStoreImage"
   >
-    <i class="fad fa-arrow-right-arrow-left" />
+    <i class="fa-duotone fa-arrow-right-arrow-left" />
     <span v-if="withLabels">{{ t("actions.models.exchangeStoreImage") }}</span>
   </Btn>
   <Btn
@@ -133,7 +133,7 @@ const destroy = () => {
     :size="BtnSizesEnum.SMALL"
     :to="{ name: 'admin-model-edit', params: { id: props.model.id } }"
   >
-    <i class="fad fa-pen-to-square" />
+    <i class="fa-duotone fa-pen-to-square" />
     <span v-if="withLabels">{{ t("actions.edit") }}</span>
   </Btn>
   <Btn
@@ -142,7 +142,7 @@ const destroy = () => {
     :variant="BtnVariantsEnum.DANGER"
     @click="destroy"
   >
-    <i class="fad fa-trash" />
+    <i class="fa-duotone fa-trash" />
     <span v-if="withLabels">{{ t("actions.delete") }}</span>
   </Btn>
 </template>

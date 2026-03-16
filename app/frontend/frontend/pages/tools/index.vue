@@ -113,7 +113,7 @@ const toolsWithImages = computed(() =>
 </script>
 
 <template>
-  <Heading>{{ t(`headlines.${route.meta.title}`) }}</Heading>
+  <Heading hero>{{ t(`headlines.${route.meta.title}`) }}</Heading>
   <div class="row">
     <div
       v-for="tool in toolsWithImages"

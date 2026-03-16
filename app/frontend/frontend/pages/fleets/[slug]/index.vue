@@ -37,7 +37,7 @@ const description = computed(() => {
           :transparent="!!fleet.logo"
           :round="false"
           size="large"
-          icon="fad fa-image"
+          icon="fa-duotone fa-image"
         />
         <span class="title">{{ fleet.name }} ({{ fleet.fid }})</span>
       </h1>
@@ -53,7 +53,7 @@ const description = computed(() => {
         target="_blank"
         rel="noopener"
       >
-        <i class="fal fa-globe globe-rotate" />
+        <i class="fa-light fa-globe globe-rotate" />
       </a>
       <a
         v-if="fleet.rsiSid"
@@ -73,7 +73,7 @@ const description = computed(() => {
         target="_blank"
         rel="noopener"
       >
-        <i class="fab fa-guilded" />
+        <i class="fa-brands fa-guilded" />
       </a>
       <a
         v-if="fleet.discord"
@@ -83,7 +83,7 @@ const description = computed(() => {
         target="_blank"
         rel="noopener"
       >
-        <i class="fab fa-discord" />
+        <i class="fa-brands fa-discord" />
       </a>
       <a
         v-if="fleet.ts"
@@ -93,7 +93,7 @@ const description = computed(() => {
         target="_blank"
         rel="noopener"
       >
-        <i class="fab fa-teamspeak" />
+        <i class="fa-brands fa-teamspeak" />
       </a>
       <a
         v-if="fleet.youtube"
@@ -103,7 +103,7 @@ const description = computed(() => {
         target="_blank"
         rel="noopener"
       >
-        <i class="fab fa-youtube" />
+        <i class="fa-brands fa-youtube" />
       </a>
       <a
         v-if="fleet.twitch"
@@ -113,7 +113,7 @@ const description = computed(() => {
         target="_blank"
         rel="noopener"
       >
-        <i class="fab fa-twitch" />
+        <i class="fa-brands fa-twitch" />
       </a>
     </div>
   </div>

@@ -252,7 +252,7 @@ const adiMap = computed(() => {
                 }"
                 v-tooltip="t('labels.openInNewWindow')"
               >
-                <i class="fal fa-external-link-alt" />
+                <i class="fa-light fa-external-link-alt" />
               </Btn>
               <Btn
                 :active="holoviewerVisible"
@@ -371,7 +371,7 @@ const adiMap = computed(() => {
                 }"
                 :size="BtnSizesEnum.SMALL"
               >
-                <i class="fal fa-video" />
+                <i class="fa-light fa-video" />
                 <span>{{ t("nav.videos") }}</span>
               </Btn>
               <Btn
@@ -379,7 +379,7 @@ const adiMap = computed(() => {
                 :href="model.media.brochure.url"
                 :size="BtnSizesEnum.SMALL"
               >
-                <i class="fal fa-download" />
+                <i class="fa-light fa-download" />
                 <span>{{ t("labels.model.brochure") }}</span>
               </Btn>
               <Btn
@@ -390,7 +390,7 @@ const adiMap = computed(() => {
                 data-test="compare"
                 :size="BtnSizesEnum.SMALL"
               >
-                <i class="fal fa-code-compare" />
+                <i class="fa-light fa-code-compare" />
                 <span>{{ t("actions.compare.ships") }}</span>
               </Btn>
               <ShareBtn
@@ -405,7 +405,7 @@ const adiMap = computed(() => {
                 :href="model.links.salesPageUrl"
                 :size="BtnSizesEnum.SMALL"
               >
-                <i class="fad fa-megaphone" />
+                <i class="fa-duotone fa-megaphone" />
                 <span>{{ t("labels.model.salesPage") }}</span>
               </Btn>
               <Btn :href="wikiUrl" :size="BtnSizesEnum.SMALL">

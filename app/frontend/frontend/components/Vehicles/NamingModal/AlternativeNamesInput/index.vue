@@ -71,7 +71,7 @@ const onChange = () => {
           variant="link"
           @click="addName"
         >
-          <i class="fal fa-plus" />
+          <i class="fa-light fa-plus" />
         </Btn>
       </h3>
     </div>
@@ -96,7 +96,7 @@ const onChange = () => {
             variant="link"
             @click="useName(index)"
           >
-            <i class="fad fa-repeat" />
+            <i class="fa-duotone fa-repeat" />
           </Btn>
           <Btn
             v-tooltip="t('actions.remove')"
@@ -105,7 +105,7 @@ const onChange = () => {
             variant="link"
             @click="removeName(index)"
           >
-            <i class="fal fa-times" />
+            <i class="fa-light fa-times" />
           </Btn>
         </div>
       </div>

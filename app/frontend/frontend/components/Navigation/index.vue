@@ -112,7 +112,7 @@ const settingsActive = computed(() => {
         <NavItem
           :to="{ name: 'home' }"
           :label="t('nav.home')"
-          icon="fad fa-home-alt"
+          icon="fa-duotone fa-home-alt"
           prefix="01"
         />
         <NavItem
@@ -123,14 +123,14 @@ const settingsActive = computed(() => {
           }"
           :label="t('nav.hangar')"
           :active="isHangarRoute"
-          icon="fad fa-warehouse"
+          icon="fa-duotone fa-warehouse"
           prefix="02"
         />
         <NavItem
           v-else
           :to="{ name: 'hangar-preview' }"
           :label="t('nav.hangar')"
-          icon="fal fa-warehouse"
+          icon="fa-light fa-warehouse"
           prefix="02"
         />
         <NavItem
@@ -140,27 +140,27 @@ const settingsActive = computed(() => {
           }"
           :label="t('nav.ships.index')"
           :active="isShipRoute"
-          icon="fad fa-starship"
+          icon="fa-duotone fa-starship"
           prefix="03"
         />
         <NavItem
           :to="{ name: 'compare' }"
           :label="t('nav.compare.ships')"
-          icon="fad fa-code-compare"
+          icon="fa-duotone fa-code-compare"
           prefix="04"
         />
         <FleetsNav />
         <NavItem
           :to="{ name: 'images' }"
           :label="t('nav.images')"
-          icon="fad fa-images"
+          icon="fa-duotone fa-images"
           prefix="06"
         />
         <ToolsNav />
         <NavItem
           :to="{ name: 'stats' }"
           :label="t('nav.stats')"
-          icon="fad fa-chart-bar"
+          icon="fa-duotone fa-chart-bar"
           prefix="08"
         />
         <template v-if="shouldVisualTestsRouteBeVisible">
@@ -168,7 +168,7 @@ const settingsActive = computed(() => {
           <NavItem
             :to="{ name: 'visual-tests' }"
             :label="t('nav.visualTests.index')"
-            icon="fad fa-pen-swirl"
+            icon="fa-duotone fa-pen-swirl"
             prefix="09"
           />
         </template>
@@ -180,7 +180,7 @@ const settingsActive = computed(() => {
           :to="{ name: 'settings' }"
           :active="settingsActive"
           :label="t('nav.settings.index')"
-          icon="fal fa-cog"
+          icon="fa-light fa-cog"
         />
         <template v-if="currentUser.rsiHandle">
           <NavItem
@@ -193,7 +193,7 @@ const settingsActive = computed(() => {
           :action="logout"
           menu-key="logout"
           :label="t('nav.logout')"
-          icon="fal fa-sign-out"
+          icon="fa-light fa-sign-out"
         />
         <NavItem
           menu-key="user-menu"
@@ -208,7 +208,7 @@ const settingsActive = computed(() => {
         key="user-menu-guest"
         :to="{ name: 'login' }"
         :label="t('nav.login')"
-        icon="fal fa-sign-in"
+        icon="fa-light fa-sign-in"
       />
     </template>
   </AppNavigation>

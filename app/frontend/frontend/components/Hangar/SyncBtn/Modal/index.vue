@@ -306,7 +306,7 @@ const refreshPage = async () => {
             :href="link.url"
             target="_blank"
           >
-            <i :class="`fab fa-${link.platform}`" />
+            <i :class="`fa-brands fa-${link.platform}`" />
           </a>
         </div>
       </div>
@@ -332,7 +332,7 @@ const refreshPage = async () => {
             :disabled="loadingIdentity"
             @click="checkRSIIdentity"
           >
-            <i class="fal fa-sync" />
+            <i class="fa-light fa-sync" />
           </Btn>
         </p>
         <p v-html="t('texts.syncExtension.info')" />
@@ -371,11 +371,11 @@ const refreshPage = async () => {
               />
               <i
                 v-if="step.status === 'success'"
-                class="fal fa-check text-success"
+                class="fa-light fa-check text-success"
               />
               <i
                 v-if="step.status === 'failure'"
-                class="fal fa-times text-danger"
+                class="fa-light fa-times text-danger"
               />
             </div>
             <div

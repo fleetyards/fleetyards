@@ -162,7 +162,7 @@ const hideInfo = () => {
                   :disabled="true"
                 />
                 <i
-                  class="info-link fal fa-info-circle"
+                  class="info-link fa-light fa-info-circle"
                   @click="openInfo('fontawesome')"
                 />
               </div>
@@ -174,7 +174,7 @@ const hideInfo = () => {
                   :disabled="true"
                 />
                 <i
-                  class="info-link fal fa-info-circle"
+                  class="info-link fa-light fa-info-circle"
                   @click="openInfo('googleFonts')"
                 />
               </div>
@@ -188,7 +188,7 @@ const hideInfo = () => {
                   :label="t('privacySettings.ahoy')"
                 />
                 <i
-                  class="info-link fal fa-info-circle"
+                  class="info-link fa-light fa-info-circle"
                   @click="openInfo('ahoy')"
                 />
               </div>
@@ -199,7 +199,7 @@ const hideInfo = () => {
                   :label="t('privacySettings.youtube')"
                 />
                 <i
-                  class="info-link fal fa-info-circle"
+                  class="info-link fa-light fa-info-circle"
                   @click="openInfo('youtube')"
                 />
               </div>
@@ -227,7 +227,7 @@ const hideInfo = () => {
     <template #footer>
       <div class="cookies-banner-actions">
         <Btn v-if="info" :inline="true" :block="true" @click="hideInfo">
-          <i class="fal fa-chevron-left" />
+          <i class="fa-light fa-chevron-left" />
           {{ t("actions.back") }}
         </Btn>
         <Btn

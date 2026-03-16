@@ -143,7 +143,7 @@ const confirmDestroy = () => {
           params: { id: oauthApplication.id },
         }"
       >
-        <i class="fad fa-pencil" />
+        <i class="fa-duotone fa-pencil" />
         {{ t("actions.edit") }}
       </Btn>
       <Btn
@@ -151,7 +151,7 @@ const confirmDestroy = () => {
         :variant="BtnVariantsEnum.DANGER"
         @click="confirmDestroy"
       >
-        <i class="fad fa-trash" />
+        <i class="fa-duotone fa-trash" />
         {{ t("actions.delete") }}
       </Btn>
     </BtnGroup>
@@ -166,7 +166,7 @@ const confirmDestroy = () => {
         @click="dismissSecret"
         inline
       >
-        <i class="fad fa-times" />
+        <i class="fa-duotone fa-times" />
       </Btn>
     </div>
     <p class="oauth-secret-warning">
@@ -179,7 +179,7 @@ const confirmDestroy = () => {
         @click="copyToClipboard(visibleSecret)"
         inline
       >
-        <i class="fad fa-copy" />
+        <i class="fa-duotone fa-copy" />
       </Btn>
     </div>
   </div>
@@ -196,7 +196,7 @@ const confirmDestroy = () => {
           @click="copyToClipboard(oauthApplication.uid)"
           inline
         >
-          <i class="fad fa-copy" />
+          <i class="fa-duotone fa-copy" />
         </Btn>
       </div>
     </div>
@@ -207,7 +207,7 @@ const confirmDestroy = () => {
       }}</span>
       <div class="oauth-detail-value">
         <Btn :size="BtnSizesEnum.SMALL" @click="confirmRegenerateSecret">
-          <i class="fad fa-rotate" />
+          <i class="fa-duotone fa-rotate" />
           {{ t("actions.oauthApplications.regenerateSecret") }}
         </Btn>
       </div>
@@ -220,7 +220,7 @@ const confirmDestroy = () => {
       <div v-for="uri in redirectUris" :key="uri" class="oauth-detail-value">
         <code>{{ uri }}</code>
         <Btn :size="BtnSizesEnum.SMALL" @click="copyToClipboard(uri)" inline>
-          <i class="fad fa-copy" />
+          <i class="fa-duotone fa-copy" />
         </Btn>
       </div>
     </div>

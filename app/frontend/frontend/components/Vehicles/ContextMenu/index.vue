@@ -231,7 +231,7 @@ const openAddonsModal = () => {
       }"
       :size="BtnSizesEnum.SMALL"
     >
-      <i class="fad fa-starship" />
+      <i class="fa-duotone fa-starship" />
       <span>{{ t("actions.showDetailPage") }}</span>
     </Btn>
     <Btn
@@ -242,7 +242,7 @@ const openAddonsModal = () => {
       data-test="vehicle-add-to-wishlist"
       @click="addToWishlist"
     >
-      <i class="fad fa-wand-sparkles" />
+      <i class="fa-duotone fa-wand-sparkles" />
       <span>{{ t("actions.addToWishlist") }}</span>
     </Btn>
     <Btn
@@ -253,7 +253,7 @@ const openAddonsModal = () => {
       data-test="vehicle-add-to-hangar"
       @click="addToHangar"
     >
-      <i class="fad fa-garage" />
+      <i class="fa-duotone fa-garage" />
       <span>{{ t("actions.addToHangar") }}</span>
     </Btn>
     <Btn
@@ -273,7 +273,7 @@ const openAddonsModal = () => {
       data-test="vehicle-edit-groups"
       @click="openEditGroupsModal"
     >
-      <i class="fad fa-object-group" />
+      <i class="fa-duotone fa-object-group" />
       <span>{{ t("actions.hangar.editGroups") }}</span>
     </Btn>
     <Btn
@@ -293,7 +293,7 @@ const openAddonsModal = () => {
       data-test="vehicle-remove"
       @click="remove"
     >
-      <i class="fal fa-trash" />
+      <i class="fa-light fa-trash" />
       <span>{{ t("actions.remove") }}</span>
     </Btn>
   </BtnDropdown>

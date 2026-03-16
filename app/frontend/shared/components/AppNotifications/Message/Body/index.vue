@@ -23,7 +23,7 @@ withDefaults(defineProps<Props>(), {
     </div>
 
     <div class="app-notifications__message-body__close">
-      <i class="fal fa-times" />
+      <i class="fa-light fa-times" />
     </div>
   </div>
 </template>

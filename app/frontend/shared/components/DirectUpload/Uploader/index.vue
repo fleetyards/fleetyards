@@ -290,7 +290,7 @@ defineExpose({
       @dragleave.prevent="dragleave"
       @dragend.prevent="dragend"
     >
-      <i class="fal fa-cloud-upload"></i>
+      <i class="fa-light fa-cloud-upload"></i>
       <span class="direct-upload__dropzone-title">
         <template v-if="multiple">
           {{ t("directUpload.dropzone.textMultiple") }}

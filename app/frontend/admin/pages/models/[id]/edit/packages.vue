@@ -205,7 +205,7 @@ const onSaveCreate = async () => {
       :disabled="editableList?.creating"
       @click="editableList?.startCreate()"
     >
-      <i class="fad fa-plus" />
+      <i class="fa-duotone fa-plus" />
       {{ t("actions.add") }}
     </Btn>
   </div>
@@ -247,7 +247,7 @@ const onSaveCreate = async () => {
         @click="toggleField(item, 'hidden')"
       >
         <i
-          class="fad fa-eye-slash"
+          class="fa-duotone fa-eye-slash"
           :class="item.hidden ? 'text-warning' : 'text-muted'"
         />
       </Btn>
@@ -258,7 +258,7 @@ const onSaveCreate = async () => {
         @click="toggleField(item, 'active')"
       >
         <i
-          class="fad fa-ban"
+          class="fa-duotone fa-ban"
           :class="!item.active ? 'text-warning' : 'text-muted'"
         />
       </Btn>

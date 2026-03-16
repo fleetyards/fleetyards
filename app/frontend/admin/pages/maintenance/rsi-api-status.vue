@@ -127,7 +127,7 @@ const resolve = async (log: RsiRequestLog) => {
             :size="BtnSizesEnum.SMALL"
             @click.prevent="resolve(record)"
           >
-            <i class="fad fa-check" />
+            <i class="fa-duotone fa-check" />
             {{ t("actions.resolve") }}
           </Btn>
         </template>

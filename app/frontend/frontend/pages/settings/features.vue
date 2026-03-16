@@ -85,7 +85,7 @@ const toggleFeature = async (feature: FeatureItem) => {
 
     <template #actions="{ item }">
       <Btn :size="BtnSizesEnum.SMALL" @click.prevent="toggleFeature(item)">
-        <i :class="item.enabled ? 'fad fa-toggle-on' : 'fad fa-toggle-off'" />
+        <i :class="item.enabled ? 'fa-duotone fa-toggle-on' : 'fa-duotone fa-toggle-off'" />
       </Btn>
     </template>
   </InlineEditableList>

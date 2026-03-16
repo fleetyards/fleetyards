@@ -150,7 +150,7 @@ useSubscription({
         target="_blank"
         rel="noopener"
       >
-        <i class="fal fa-globe globe-rotate" />
+        <i class="fa-light fa-globe globe-rotate" />
       </a>
       <a
         v-if="user.rsiHandle"
@@ -170,7 +170,7 @@ useSubscription({
         target="_blank"
         rel="noopener"
       >
-        <i class="fab fa-guilded" />
+        <i class="fa-brands fa-guilded" />
       </a>
       <a
         v-if="user.discord"
@@ -180,7 +180,7 @@ useSubscription({
         target="_blank"
         rel="noopener"
       >
-        <i class="fab fa-discord" />
+        <i class="fa-brands fa-discord" />
       </a>
       <a
         v-if="user.youtube"
@@ -190,7 +190,7 @@ useSubscription({
         target="_blank"
         rel="noopener"
       >
-        <i class="fab fa-youtube" />
+        <i class="fa-brands fa-youtube" />
       </a>
       <a
         v-if="user.twitch"
@@ -200,7 +200,7 @@ useSubscription({
         target="_blank"
         rel="noopener"
       >
-        <i class="fab fa-twitch" />
+        <i class="fa-brands fa-twitch" />
       </a>
     </div>
   </div>
@@ -222,7 +222,7 @@ useSubscription({
 
   <Teleport v-if="!mobile" to="#header-right">
     <Btn v-if="user.publicWishlist" :to="{ name: 'wishlist-public' }">
-      <i class="fad fa-wand-sparkles" />
+      <i class="fa-duotone fa-wand-sparkles" />
       {{ t("labels.wishlist") }}
       <transition name="fade" mode="out-in" appear>
         <span v-if="hangarStats && hangarStats.wishlistTotal">
@@ -232,7 +232,7 @@ useSubscription({
     </Btn>
 
     <Btn data-test="fleetchart-link" @click="toggleFleetchart">
-      <i class="fad fa-starship" />
+      <i class="fa-duotone fa-starship" />
       {{ t("labels.fleetchart") }}
     </Btn>
   </Teleport>
@@ -251,7 +251,7 @@ useSubscription({
           :to="{ name: 'hangar-wishlist' }"
           :size="BtnSizesEnum.SMALL"
         >
-          <i class="fad fa-wand-sparkles" />
+          <i class="fa-duotone fa-wand-sparkles" />
           <span>{{ t("labels.wishlist") }}</span>
         </Btn>
 
@@ -260,7 +260,7 @@ useSubscription({
           :size="BtnSizesEnum.SMALL"
           @click="toggleFleetchart"
         >
-          <i class="fad fa-starship" />
+          <i class="fa-duotone fa-starship" />
           <span>{{ t("labels.fleetchart") }}</span>
         </Btn>
       </BtnDropdown>

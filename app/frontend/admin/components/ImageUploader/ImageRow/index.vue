@@ -274,15 +274,15 @@ const updateCaption = debounce(debouncedUpdateCaption, 500);
             <i class="fa fa-check-square" />
           </span>
           <span v-show="!internalImage.enabled">
-            <i class="far fa-square" />
+            <i class="fa-regular fa-square" />
           </span>
         </Btn>
         <Btn :disabled="updating" @click="toggleGlobal">
           <span v-show="internalImage.global">
-            <i class="fas fa-globe" />
+            <i class="fa-solid fa-globe" />
           </span>
           <span v-show="!internalImage.global">
-            <i class="fal fa-globe icon-disabled" />
+            <i class="fa-light fa-globe icon-disabled" />
           </span>
         </Btn>
         <Btn

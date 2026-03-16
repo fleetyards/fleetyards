@@ -113,7 +113,7 @@ const routeForImage = (image: Image) => {
                         :size="BtnSizesEnum.LARGE"
                         @click="search"
                       >
-                        <i class="fal fa-search" />
+                        <i class="fa-light fa-search" />
                       </Btn>
                     </div>
                   </div>
@@ -150,7 +150,7 @@ const routeForImage = (image: Image) => {
         class="home-scroll-to-more"
         @click="scrollDown"
       >
-        <i class="fal fa-chevron-down" />
+        <i class="fa-light fa-chevron-down" />
       </div>
     </transition>
   </div>

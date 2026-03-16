@@ -158,7 +158,7 @@ const onSaveCreate = async () => {
       :disabled="editableList?.creating"
       @click="editableList?.startCreate()"
     >
-      <i class="fad fa-plus" />
+      <i class="fa-duotone fa-plus" />
       {{ t("actions.add") }}
     </Btn>
   </div>

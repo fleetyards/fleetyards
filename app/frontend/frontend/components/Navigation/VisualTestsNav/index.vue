@@ -16,7 +16,7 @@ const { t } = useI18n();
     <NavItem
       :to="{ name: 'home' }"
       :label="t('nav.back')"
-      icon="fal fa-chevron-left"
+      icon="fa-light fa-chevron-left"
     />
     <NavItem
       :to="{ name: 'visual-tests-panels' }"

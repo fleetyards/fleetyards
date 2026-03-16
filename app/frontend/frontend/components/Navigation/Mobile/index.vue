@@ -89,7 +89,7 @@ const currentFleet = computed(() => fleetData.value || publicFleetData.value);
           v-if="currentFleet.publicFleet || currentFleet.myFleet"
           :to="{ name: 'fleet-ships', params: { slug: currentFleet.slug } }"
           :active="shipsNavActive"
-          icon="fad fa-starship"
+          icon="fa-duotone fa-starship"
         />
         <NavItem
           v-if="currentFleet.publicFleetStats || currentFleet.myFleet"
@@ -98,7 +98,7 @@ const currentFleet = computed(() => fleetData.value || publicFleetData.value);
             params: { slug: currentFleet.slug },
           }"
           :active="routeActive('fleet-stats')"
-          icon="fad fa-chart-bar"
+          icon="fa-duotone fa-chart-bar"
         />
         <template v-if="currentFleet.myFleet">
           <NavItem
@@ -107,7 +107,7 @@ const currentFleet = computed(() => fleetData.value || publicFleetData.value);
               params: { slug: currentFleet.slug },
             }"
             :active="routeActive('fleet-members')"
-            icon="fad fa-users"
+            icon="fa-duotone fa-users"
           />
           <NavItem
             :to="{
@@ -115,7 +115,7 @@ const currentFleet = computed(() => fleetData.value || publicFleetData.value);
               params: { slug: currentFleet.slug },
             }"
             :active="routeActive('fleet-settings')"
-            icon="fad fa-cogs"
+            icon="fa-duotone fa-cogs"
           />
         </template>
       </template>
@@ -124,14 +124,14 @@ const currentFleet = computed(() => fleetData.value || publicFleetData.value);
       <NavItem
         :to="{ name: 'home' }"
         :active="routeActive('home')"
-        icon="fad fa-home-alt"
+        icon="fa-duotone fa-home-alt"
       />
       <NavItem
         :to="{
           name: 'ships',
           query: filterFor('ships'),
         }"
-        icon="fad fa-starship"
+        icon="fa-duotone fa-starship"
       />
       <NavItem :to="{ name: 'search' }" icon="fa fa-search" />
       <NavItem
@@ -140,12 +140,12 @@ const currentFleet = computed(() => fleetData.value || publicFleetData.value);
           name: 'hangar',
           query: filterFor('hangar'),
         }"
-        icon="fad fa-warehouse"
+        icon="fa-duotone fa-warehouse"
       />
       <NavItem
         v-else
         :to="{ name: 'hangar-preview' }"
-        icon="fal fa-warehouse"
+        icon="fa-light fa-warehouse"
       />
     </template>
   </AppNavigationMobile>

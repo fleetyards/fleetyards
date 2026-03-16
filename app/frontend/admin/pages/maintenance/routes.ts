@@ -7,7 +7,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/maintenance/pghero.vue"),
     meta: {
       title: "admin.maintenance.pghero",
-      icon: "fad fa-database",
+      icon: "fa-duotone fa-database",
       needsAuthentication: true,
       access: ["pghero"],
       href: "/pghero",
@@ -19,7 +19,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/maintenance/features.vue"),
     meta: {
       title: "admin.maintenance.features",
-      icon: "fad fa-circle-star",
+      icon: "fa-duotone fa-circle-star",
       needsAuthentication: true,
       access: ["features"],
     },
@@ -41,7 +41,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/maintenance/workers.vue"),
     meta: {
       title: "admin.maintenance.workers",
-      icon: "fad fa-list-timeline",
+      icon: "fa-duotone fa-list-timeline",
       needsAuthentication: true,
       access: ["workers"],
       href: "/workers",
@@ -53,7 +53,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/maintenance/tasks.vue"),
     meta: {
       title: "admin.maintenance.tasks",
-      icon: "fad fa-clipboard-list-check",
+      icon: "fa-duotone fa-clipboard-list-check",
       needsAuthentication: true,
       access: ["maintenance"],
       href: "/maintenance_tasks",
@@ -65,7 +65,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/maintenance/rsi-api-status.vue"),
     meta: {
       title: "admin.maintenance.rsiApiStatus",
-      icon: "fad fa-chart-line",
+      icon: "fa-duotone fa-chart-line",
       needsAuthentication: true,
       access: ["rsi-api-status"],
     },

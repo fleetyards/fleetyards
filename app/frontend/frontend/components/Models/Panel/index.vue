@@ -126,7 +126,7 @@ const image = computed(() => {
           v-tooltip="t('labels.model.onSale')"
           class="model-panel-on-sale"
         >
-          <i class="fal fa-dollar-sign" />
+          <i class="fa-light fa-dollar-sign" />
         </div>
         <slot name="default" />
       </PanelBody>

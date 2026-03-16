@@ -270,7 +270,7 @@ defineExpose({
           :models="[holoModel]"
           inline
         />
-        <i v-else class="fas fa-7x" :class="fileTypeIconClass" />
+        <i v-else class="fa-solid fa-7x" :class="fileTypeIconClass" />
       </template>
       <DirectUpload
         v-if="!disabled"

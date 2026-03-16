@@ -86,7 +86,7 @@ const download = async () => {
     @click="download"
   >
     <SmallLoader :loading="downloading" />
-    <i class="fad fa-image" />
+    <i class="fa-duotone fa-image" />
     <span v-if="withLabel">
       {{ t("actions.saveScreenshot") }}
     </span>

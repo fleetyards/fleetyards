@@ -42,11 +42,11 @@ const { t } = useI18n();
       </p>
       <div class="page-actions page-actions-center">
         <Btn href="https://paypal.me/mortik" size="large">
-          <i class="fab fa-paypal" />
+          <i class="fa-brands fa-paypal" />
           PayPal
         </Btn>
         <Btn href="https://www.patreon.com/fleetyards" size="large">
-          <i class="fab fa-patreon" />
+          <i class="fa-brands fa-patreon" />
           Patreon
         </Btn>
         <Btn href="https://ko-fi.com/fleetyardsnet" size="large">

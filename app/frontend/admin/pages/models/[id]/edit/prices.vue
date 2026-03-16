@@ -113,7 +113,7 @@ const itemPricesList = ref<{
       :disabled="itemPricesList?.creating"
       @click="itemPricesList?.startCreate()"
     >
-      <i class="fad fa-plus" />
+      <i class="fa-duotone fa-plus" />
       {{ t("actions.add") }}
     </Btn>
   </div>

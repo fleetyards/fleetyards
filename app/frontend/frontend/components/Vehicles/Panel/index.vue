@@ -213,14 +213,14 @@ const shouldHighlight = computed(() => {
         v-tooltip="t('labels.vehicle.loaner')"
         class="vehicle-panel-loaner-label"
       >
-        <i class="fal fa-exchange" />
+        <i class="fa-light fa-exchange" />
       </div>
       <div
         v-else-if="hasLoaners && loanersHintVisible"
         v-tooltip="loanersTooltip"
         class="vehicle-panel-loaner-label"
       >
-        <i class="fal fa-exchange" />
+        <i class="fa-light fa-exchange" />
       </div>
       <HangarGroups
         :groups="vehicle.hangarGroups"
@@ -239,7 +239,7 @@ const shouldHighlight = computed(() => {
           <i class="fa fa-plus-octagon" />
         </span>
         <span v-show="!hasAddons">
-          <i class="far fa-plus-octagon" />
+          <i class="fa-regular fa-plus-octagon" />
         </span>
       </div>
     </template>

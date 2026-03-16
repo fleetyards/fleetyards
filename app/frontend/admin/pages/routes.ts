@@ -16,7 +16,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/index.vue"),
     meta: {
       title: "home",
-      icon: "fad fa-home-alt",
+      icon: "fa-duotone fa-home-alt",
       needsAuthentication: true,
       exact: true,
       mobileNav: 0,
@@ -30,7 +30,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.models.index",
       needsAuthentication: true,
-      icon: "fad fa-starship",
+      icon: "fa-duotone fa-starship",
       mobileNav: 1,
       access: ["models"],
     },
@@ -43,7 +43,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.components.index",
       needsAuthentication: true,
-      icon: "fad fa-flux-capacitor",
+      icon: "fa-duotone fa-flux-capacitor",
       access: ["components"],
     },
   },
@@ -55,7 +55,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.manufacturers.index",
       needsAuthentication: true,
-      icon: "fad fa-industry",
+      icon: "fa-duotone fa-industry",
       access: ["manufacturers"],
     },
   },
@@ -66,7 +66,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.images.index",
       needsAuthentication: true,
-      icon: "fad fa-images",
+      icon: "fa-duotone fa-images",
       access: ["images"],
     },
   },
@@ -78,7 +78,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.vehicles.index",
       needsAuthentication: true,
-      icon: "fad fa-rocket",
+      icon: "fa-duotone fa-rocket",
       access: ["vehicles"],
     },
   },
@@ -90,7 +90,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.fleets.index",
       needsAuthentication: true,
-      icon: "fad fa-users-class",
+      icon: "fa-duotone fa-users-class",
       mobileNav: 2,
       access: ["fleets"],
     },
@@ -103,7 +103,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.users.index",
       needsAuthentication: true,
-      icon: "fad fa-users",
+      icon: "fa-duotone fa-users",
       mobileNav: 3,
       access: ["users"],
     },
@@ -116,7 +116,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.admins.index",
       needsAuthentication: true,
-      icon: "fad fa-user-group-crown",
+      icon: "fa-duotone fa-user-group-crown",
       access: ["admins"],
     },
   },
@@ -128,7 +128,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.oauthApplications.index",
       needsAuthentication: true,
-      icon: "fad fa-key",
+      icon: "fa-duotone fa-key",
       access: ["oauth_applications"],
     },
   },
@@ -140,7 +140,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.maintenance.index",
       needsAuthentication: true,
-      icon: "fad fa-screwdriver-wrench",
+      icon: "fa-duotone fa-screwdriver-wrench",
       access: ["maintenance"],
     },
   },
@@ -150,7 +150,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/login.vue"),
     meta: {
       title: "login",
-      icon: "fal fa-sign-in",
+      icon: "fa-light fa-sign-in",
       hideWhenAuthenticated: true,
       nav: "footer",
     },

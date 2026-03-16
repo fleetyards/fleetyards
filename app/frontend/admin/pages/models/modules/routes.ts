@@ -9,7 +9,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       needsAuthentication: true,
       title: "admin.modelModules.index",
-      icon: "fad fa-puzzle",
+      icon: "fa-duotone fa-puzzle",
       access: ["model_modules"],
     },
   },

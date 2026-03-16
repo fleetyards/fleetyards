@@ -183,8 +183,8 @@ const { t, l } = useI18n();
           {{ record.manufacturer?.name }}
         </template>
         <template #col-hidden="{ record }">
-          <i v-if="record.hidden" class="fad fa-check" />
-          <i v-else class="fad fa-times" />
+          <i v-if="record.hidden" class="fa-duotone fa-check" />
+          <i v-else class="fa-duotone fa-times" />
         </template>
         <template #col-createdAt="{ record }">
           {{ l(record.createdAt, "datetime.formats.short") }}

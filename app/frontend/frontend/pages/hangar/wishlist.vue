@@ -226,7 +226,7 @@ const openDisplayOptionsModal = () => {
 
   <Teleport v-if="!mobile" to="#header-right">
     <Btn data-test="fleetchart-link" @click="toggleFleetchart">
-      <i class="fad fa-starship" />
+      <i class="fa-duotone fa-starship" />
       {{ t("labels.fleetchart") }}
     </Btn>
   </Teleport>
@@ -246,7 +246,7 @@ const openDisplayOptionsModal = () => {
         :size="BtnSizesEnum.SMALL"
         @click="openDisplayOptionsModal"
       >
-        <i class="fad fa-cog" />
+        <i class="fa-duotone fa-cog" />
       </Btn>
       <BtnDropdown :size="BtnSizesEnum.SMALL">
         <template v-if="mobile">
@@ -255,7 +255,7 @@ const openDisplayOptionsModal = () => {
             :size="BtnSizesEnum.SMALL"
             @click="toggleFleetchart"
           >
-            <i class="fad fa-starship" />
+            <i class="fa-duotone fa-starship" />
             <span>{{ t("labels.fleetchart") }}</span>
           </Btn>
 
@@ -266,7 +266,7 @@ const openDisplayOptionsModal = () => {
           :aria-label="t('actions.export')"
           @click="exportJson"
         >
-          <i class="fal fa-download" />
+          <i class="fa-light fa-download" />
           <span>{{ t("actions.export") }}</span>
         </Btn>
 
@@ -278,7 +278,7 @@ const openDisplayOptionsModal = () => {
           :aria-label="t('actions.hangar.destroyAll')"
           @click="destroyAll"
         >
-          <i class="fal fa-trash" />
+          <i class="fa-light fa-trash" />
           <span>{{ t("actions.hangar.destroyAll") }}</span>
         </Btn>
       </BtnDropdown>

@@ -232,7 +232,7 @@ defineExpose({
       class="holo-viewer__close"
       @click.prevent.stop="disableFullscreen"
     >
-      <i class="fal fa-times" />
+      <i class="fa-light fa-times" />
     </Btn>
     <BtnGroup
       v-if="controllable || internalFullscreen"
@@ -246,7 +246,7 @@ defineExpose({
         inline
         @click="toggleAutoRotate"
       >
-        <i class="fal fa-planet-ringed" />
+        <i class="fa-light fa-planet-ringed" />
       </Btn>
       <Btn
         v-tooltip="zoomTooltip"
@@ -255,7 +255,7 @@ defineExpose({
         inline
         @click="toggleZoom"
       >
-        <i class="fal fa-search-plus" />
+        <i class="fa-light fa-search-plus" />
       </Btn>
       <Btn
         v-if="colored"
@@ -265,7 +265,7 @@ defineExpose({
         inline
         @click="toggleColor"
       >
-        <i class="fad fa-fill-drip" />
+        <i class="fa-duotone fa-fill-drip" />
       </Btn>
     </BtnGroup>
 

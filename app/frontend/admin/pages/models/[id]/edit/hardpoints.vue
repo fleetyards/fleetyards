@@ -180,7 +180,7 @@ const onSaveCreate = async () => {
       :disabled="editableList?.creating"
       @click="editableList?.startCreate()"
     >
-      <i class="fad fa-plus" />
+      <i class="fa-duotone fa-plus" />
       {{ t("actions.add") }}
     </Btn>
   </div>
@@ -257,7 +257,7 @@ const onSaveCreate = async () => {
         @click.stop="toggleExpand(item.id)"
       >
         <i
-          class="fad fa-layer-group"
+          class="fa-duotone fa-layer-group"
           :class="expandedId === item.id ? 'text-primary' : ''"
         />
       </Btn>

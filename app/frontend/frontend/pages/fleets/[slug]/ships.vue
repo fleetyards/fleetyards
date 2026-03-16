@@ -67,7 +67,7 @@ const toggleFleetchart = () => {
           v-if="fleet.logo"
           :avatar="fleet.logo.smallUrl"
           :transparent="!!fleet.logo"
-          icon="fad fa-image"
+          icon="fa-duotone fa-image"
         />
         {{ fleet.name }} ({{ fleet.fid }})
       </h1>
@@ -79,7 +79,7 @@ const toggleFleetchart = () => {
           data-test="fleetchart-link"
           @click="toggleFleetchart"
         >
-          <i class="fad fa-starship" />
+          <i class="fa-duotone fa-starship" />
           {{ t("labels.fleetchart") }}
         </Btn>
 

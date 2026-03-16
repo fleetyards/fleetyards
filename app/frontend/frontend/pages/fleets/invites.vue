@@ -154,7 +154,7 @@ const { data: invites, isLoading } = useFleetInvitesQuery();
                     :inline="true"
                     @click="accept(invite)"
                   >
-                    <i class="fal fa-check" />
+                    <i class="fa-light fa-check" />
                     {{ t("actions.fleet.acceptInvite") }}
                   </Btn>
                   <Btn
@@ -164,7 +164,7 @@ const { data: invites, isLoading } = useFleetInvitesQuery();
                     :inline="true"
                     @click="decline(invite)"
                   >
-                    <i class="fal fa-times" />
+                    <i class="fa-light fa-times" />
                     {{ t("actions.fleet.declineInvite") }}
                   </Btn>
                 </div>
@@ -174,7 +174,7 @@ const { data: invites, isLoading } = useFleetInvitesQuery();
                     :disabled="true"
                     :inline="true"
                   >
-                    <i class="fal fa-clock" />
+                    <i class="fa-light fa-clock" />
                     {{ t("labels.fleet.awaitingConfirmation") }}
                   </Btn>
                 </div>

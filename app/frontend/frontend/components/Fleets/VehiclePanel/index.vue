@@ -161,7 +161,7 @@ const filterManufacturerQuery = (manufacturer: string) => {
         v-tooltip="t('labels.vehicle.loaner')"
         class="fleet-vehicle-panel-loaner"
       >
-        <i class="fal fa-exchange" />
+        <i class="fa-light fa-exchange" />
       </div>
       <VehicleOwner
         v-if="showOwner"

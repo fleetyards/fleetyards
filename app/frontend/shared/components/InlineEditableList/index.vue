@@ -111,10 +111,10 @@ defineExpose({
           <div class="list-group__actions">
             <BtnGroup inline>
               <Btn :size="BtnSizesEnum.SMALL" @click="saveCreate">
-                <i class="fad fa-check" />
+                <i class="fa-duotone fa-check" />
               </Btn>
               <Btn :size="BtnSizesEnum.SMALL" @click="cancelCreate">
-                <i class="fad fa-times" />
+                <i class="fa-duotone fa-times" />
               </Btn>
             </BtnGroup>
           </div>
@@ -137,10 +137,10 @@ defineExpose({
       <template v-if="editingId === item.id">
         <BtnGroup inline>
           <Btn :size="BtnSizesEnum.SMALL" @click="saveEdit">
-            <i class="fad fa-check" />
+            <i class="fa-duotone fa-check" />
           </Btn>
           <Btn :size="BtnSizesEnum.SMALL" @click="cancelEdit">
-            <i class="fad fa-times" />
+            <i class="fa-duotone fa-times" />
           </Btn>
         </BtnGroup>
       </template>
@@ -152,7 +152,7 @@ defineExpose({
             :size="BtnSizesEnum.SMALL"
             @click="startEdit(item)"
           >
-            <i class="fad fa-pencil" />
+            <i class="fa-duotone fa-pencil" />
           </Btn>
           <Btn
             v-if="!hideDestroy"
@@ -160,7 +160,7 @@ defineExpose({
             :variant="BtnVariantsEnum.DANGER"
             @click="destroy(item)"
           >
-            <i class="fad fa-trash" />
+            <i class="fa-duotone fa-trash" />
           </Btn>
         </BtnGroup>
       </template>

@@ -102,8 +102,8 @@ const { t, l } = useI18n();
           {{ record.email }}
         </template>
         <template #col-superAdmin="{ record }">
-          <i v-if="record.superAdmin" class="fad fa-check" />
-          <i v-else class="fad fa-times" />
+          <i v-if="record.superAdmin" class="fa-duotone fa-check" />
+          <i v-else class="fa-duotone fa-times" />
         </template>
         <template #col-resourceAccess="{ record }">
           {{ record.resourceAccess.join(", ") }}

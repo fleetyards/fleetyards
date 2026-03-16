@@ -29,9 +29,9 @@ const { currentDirection, sortableLink } = useTableSorting({
 <template>
   <router-link :to="sortableLink" class="base-table-sortable-link">
     {{ props.label }}
-    <i v-if="currentDirection === 'desc'" class="fad fa-sort-up" />
-    <i v-else-if="currentDirection === 'asc'" class="fad fa-sort-down" />
-    <i v-else class="base-table-sortable-link-icon far fa-sort" />
+    <i v-if="currentDirection === 'desc'" class="fa-duotone fa-sort-up" />
+    <i v-else-if="currentDirection === 'asc'" class="fa-duotone fa-sort-down" />
+    <i v-else class="base-table-sortable-link-icon fa-regular fa-sort" />
   </router-link>
 </template>
 

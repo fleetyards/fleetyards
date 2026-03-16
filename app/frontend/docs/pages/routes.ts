@@ -30,7 +30,7 @@ export const routes: RouteRecordRaw[] = [
     },
     meta: {
       title: "apiV1",
-      icon: "fad fa-books",
+      icon: "fa-duotone fa-books",
       mobileNav: 0,
     },
   },
@@ -40,7 +40,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/docs/pages/embed.vue"),
     meta: {
       title: "embed",
-      icon: "fad fa-arrow-up-from-square",
+      icon: "fa-duotone fa-arrow-up-from-square",
       mobileNav: 1,
     },
   },

@@ -63,7 +63,7 @@ const destroy = () => {
       params: { id: props.component.id },
     }"
   >
-    <i class="fad fa-pen-to-square" />
+    <i class="fa-duotone fa-pen-to-square" />
     <span v-if="withLabels">{{ t("actions.edit") }}</span>
   </Btn>
   <Btn
@@ -72,7 +72,7 @@ const destroy = () => {
     :variant="BtnVariantsEnum.DANGER"
     @click="destroy"
   >
-    <i class="fad fa-trash" />
+    <i class="fa-duotone fa-trash" />
     <span v-if="withLabels">{{ t("actions.delete") }}</span>
   </Btn>
 </template>

@@ -126,7 +126,7 @@ const holoModel = computed(() => {
       :models="[holoModel]"
       inline
     />
-    <i v-else class="fas fa-7x" :class="fileTypeIconClass" />
+    <i v-else class="fa-solid fa-7x" :class="fileTypeIconClass" />
     <div class="preview__name" v-if="!isImage && !isHolo">
       {{ file.file.name }}
     </div>

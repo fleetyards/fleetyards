@@ -194,14 +194,14 @@ const copy = (inviteUrl: FleetInviteUrl) => {
           @click="copy(inviteUrl)"
         />
         <Btn :size="BtnSizesEnum.SMALL" :inline="true" @click="copy(inviteUrl)">
-          <i class="fad fa-copy" />
+          <i class="fa-duotone fa-copy" />
         </Btn>
         <Btn
           :size="BtnSizesEnum.SMALL"
           :inline="true"
           @click="remove(inviteUrl)"
         >
-          <i class="fad fa-trash" />
+          <i class="fa-duotone fa-trash" />
         </Btn>
       </div>
       <div class="invite-url-subline">

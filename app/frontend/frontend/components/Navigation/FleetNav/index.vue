@@ -70,7 +70,7 @@ onMounted(() => {
     <NavItem
       :to="{ name: 'home' }"
       :label="t('nav.back')"
-      icon="fal fa-chevron-left"
+      icon="fa-light fa-chevron-left"
     />
     <template v-if="currentFleet">
       <NavItem
@@ -86,14 +86,14 @@ onMounted(() => {
         :label="t('nav.fleets.ships')"
         :active="shipsNavActive"
         prefix="01"
-        icon="fad fa-starship"
+        icon="fa-duotone fa-starship"
       />
       <NavItem
         v-if="currentFleet.publicFleetStats || membership"
         :to="{ name: 'fleet-stats', params: { slug: currentFleet.slug } }"
         :label="t('nav.fleets.stats')"
         :active="route.name === 'fleet-stats'"
-        icon="fad fa-chart-bar"
+        icon="fa-duotone fa-chart-bar"
         prefix="02"
       />
       <template v-if="membership">
@@ -101,14 +101,14 @@ onMounted(() => {
           :to="{ name: 'fleet-members', params: { slug: currentFleet.slug } }"
           :label="t('nav.fleets.members.index')"
           :active="String(route.name).startsWith('fleet-members')"
-          icon="fad fa-users"
+          icon="fa-duotone fa-users"
           prefix="03"
         />
         <NavItem
           :to="{ name: 'fleet-settings', params: { slug: currentFleet.slug } }"
           :label="t('nav.fleets.settings.index')"
           :active="String(route.name).startsWith('fleet-settings')"
-          icon="fad fa-cogs"
+          icon="fa-duotone fa-cogs"
           prefix="04"
         />
       </template>

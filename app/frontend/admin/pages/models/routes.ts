@@ -10,7 +10,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       needsAuthentication: true,
       title: "admin.models.index",
-      icon: "fad fa-list",
+      icon: "fa-duotone fa-list",
       mobileNav: 1,
       access: ["models"],
     },

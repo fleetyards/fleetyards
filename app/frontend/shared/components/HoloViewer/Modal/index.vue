@@ -34,10 +34,10 @@ const close = () => {
       aria-label="Close"
       @click="close"
     >
-      <i class="fal fa-times" />
+      <i class="fa-light fa-times" />
     </router-link>
     <a v-else class="close" aria-label="Close" @click="close">
-      <i class="fal fa-times" />
+      <i class="fa-light fa-times" />
     </a>
     <HoloViewer :models="models" :autoRotate="false" zoomable panable grid />
   </div>

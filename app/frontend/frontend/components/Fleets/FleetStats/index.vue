@@ -138,8 +138,8 @@ const crewDeficitLabel = computed(() => {
 });
 
 const crewDeficitIcon = computed(() => {
-  if (minCrew.value > totalMemberCount.value) return "fad fa-user-minus fa-4x";
-  return "fad fa-user-plus fa-4x";
+  if (minCrew.value > totalMemberCount.value) return "fa-duotone fa-user-minus fa-4x";
+  return "fa-duotone fa-user-plus fa-4x";
 });
 
 const membersByRole = computed(() => {
@@ -210,14 +210,14 @@ const totalIngameValueCompact = computed(() =>
   <div class="row">
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
-        icon="fad fa-users-viewfinder fa-4x"
+        icon="fa-duotone fa-users-viewfinder fa-4x"
         :value="totalMemberCount"
         :label="t('labels.stats.quickStats.totalMembers')"
       />
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
-        icon="fad fa-user fa-4x"
+        icon="fa-duotone fa-user fa-4x"
         :value="minCrew"
         :label="t('labels.hangarMetrics.totalMinCrew')"
         :suffix="t('number.units.people', { count: minCrew })"
@@ -225,7 +225,7 @@ const totalIngameValueCompact = computed(() =>
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
-        icon="fad fa-users fa-4x"
+        icon="fa-duotone fa-users fa-4x"
         :value="maxCrew"
         :label="t('labels.hangarMetrics.totalMaxCrew')"
         :suffix="t('number.units.people', { count: maxCrew })"
@@ -243,14 +243,14 @@ const totalIngameValueCompact = computed(() =>
   <div class="row">
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
-        icon="fad fa-rocket fa-4x"
+        icon="fa-duotone fa-rocket fa-4x"
         :value="totalShipCount"
         :label="t('labels.stats.quickStats.totalShips')"
       />
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
-        icon="fad fa-fingerprint fa-4x"
+        icon="fa-duotone fa-fingerprint fa-4x"
         :value="uniqueModelsCount"
         :label="t('labels.hangarMetrics.uniqueModels')"
         :suffix="uniqueModelsPercent"
@@ -258,7 +258,7 @@ const totalIngameValueCompact = computed(() =>
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
-        icon="fad fa-check-circle fa-4x"
+        icon="fa-duotone fa-check-circle fa-4x"
         :value="flightReadyCount"
         :label="t('labels.hangarMetrics.flightReady')"
         :suffix="flightReadyPercent"
@@ -269,7 +269,7 @@ const totalIngameValueCompact = computed(() =>
   <div class="row">
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
-        icon="fad fa-dollar-sign fa-4x"
+        icon="fa-duotone fa-dollar-sign fa-4x"
         :value="totalMoney"
         :label="t('labels.hangarMetrics.totalMoney')"
         :prefix="t('number.units.currency')"
@@ -277,7 +277,7 @@ const totalIngameValueCompact = computed(() =>
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
-        icon="fad fa-coins fa-4x"
+        icon="fa-duotone fa-coins fa-4x"
         :value="totalCreditsCompact.value"
         :label="t('labels.hangarMetrics.totalCredits')"
         :suffix="totalCreditsCompact.suffix"
@@ -285,7 +285,7 @@ const totalIngameValueCompact = computed(() =>
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
-        icon="fad fa-coins fa-4x"
+        icon="fa-duotone fa-coins fa-4x"
         :value="totalIngameValueCompact.value"
         :label="t('labels.hangarMetrics.totalIngameValue')"
         :suffix="totalIngameValueCompact.suffix"
@@ -293,7 +293,7 @@ const totalIngameValueCompact = computed(() =>
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
-        icon="fad fa-dollar-sign fa-4x"
+        icon="fa-duotone fa-dollar-sign fa-4x"
         :value="averagePledgePrice"
         :label="t('labels.hangarMetrics.averagePledgePrice')"
         :prefix="t('number.units.currency')"
@@ -304,14 +304,14 @@ const totalIngameValueCompact = computed(() =>
   <div class="row">
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
-        icon="fad fa-industry fa-4x"
+        icon="fa-duotone fa-industry fa-4x"
         :value="manufacturerCount"
         :label="t('labels.hangarMetrics.manufacturerCount')"
       />
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
-        icon="fad fa-ruler fa-4x"
+        icon="fa-duotone fa-ruler fa-4x"
         :value="largestShip"
         :label="t('labels.hangarMetrics.largestShip')"
         :suffix="t('number.units.distance')"
@@ -319,7 +319,7 @@ const totalIngameValueCompact = computed(() =>
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
-        icon="fad fa-ruler fa-4x"
+        icon="fa-duotone fa-ruler fa-4x"
         :value="smallestShip"
         :label="t('labels.hangarMetrics.smallestShip')"
         :suffix="t('number.units.distance')"
@@ -327,7 +327,7 @@ const totalIngameValueCompact = computed(() =>
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
-        icon="fad fa-box-taped fa-4x"
+        icon="fa-duotone fa-box-taped fa-4x"
         :value="totalCargo"
         :label="t('labels.hangarMetrics.totalCargo')"
         :suffix="t('number.units.cargo')"

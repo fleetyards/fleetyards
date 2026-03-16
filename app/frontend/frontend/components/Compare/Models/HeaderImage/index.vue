@@ -41,7 +41,7 @@ const remove = (model: Model) => {
       class="remove-model"
       @click="remove(model)"
     >
-      <i class="fal fa-times" />
+      <i class="fa-light fa-times" />
     </div>
   </div>
 </template>

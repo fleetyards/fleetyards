@@ -24,26 +24,26 @@ const active = computed(() => {
     :label="t('nav.tools.index')"
     menu-key="tools-menu"
     :submenu-active="active"
-    icon="fad fa-toolbox"
+    icon="fa-duotone fa-toolbox"
     prefix="07"
   >
     <template #submenu>
       <NavItem
         :to="{ name: 'tools' }"
         :label="t('nav.tools.index')"
-        icon="fad fa-telescope"
+        icon="fa-duotone fa-browsers"
       />
       <NavItem
         v-if="isFeatureEnabled('tools_travel_times')"
         :to="{ name: 'travel-times' }"
         :label="t('nav.tools.travelTimes')"
-        icon="fad fa-gauge-high"
+        icon="fa-duotone fa-gauge-high"
       />
       <NavItem
         v-if="isFeatureEnabled('tools_cargo_grids')"
         :to="{ name: 'cargo-grids' }"
         :label="t('nav.tools.cargoGrids')"
-        icon="fad fa-cubes"
+        icon="fa-duotone fa-thin fa-cubes"
       />
     </template>
   </NavItem>

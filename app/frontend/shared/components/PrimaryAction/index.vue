@@ -13,7 +13,7 @@ type Props = {
 
 withDefaults(defineProps<Props>(), {
   action: undefined,
-  icon: "fal fa-plus",
+  icon: "fa-light fa-plus",
   label: undefined,
 });
 </script>

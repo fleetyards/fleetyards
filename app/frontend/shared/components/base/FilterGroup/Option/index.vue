@@ -51,7 +51,7 @@ const select = (option: FilterOption) => {
       v-if="multiple || (selected && nullable)"
       v-tooltip="t('filterGroup.labels.removeTooltip')"
     >
-      <i class="fal fa-plus" />
+      <i class="fa-light fa-plus" />
     </span>
   </a>
 </template>

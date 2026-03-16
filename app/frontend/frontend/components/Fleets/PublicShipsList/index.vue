@@ -130,7 +130,7 @@ const refetch = async () => {
           :size="BtnSizesEnum.SMALL"
           @click="openDisplayOptionsModal"
         >
-          <i class="fad fa-sliders" />
+          <i class="fa-duotone fa-sliders" />
         </Btn>
         <Btn
           v-if="mobile"
@@ -138,7 +138,7 @@ const refetch = async () => {
           data-test="fleetchart-link"
           @click="toggleFleetchart"
         >
-          <i class="fad fa-starship" />
+          <i class="fa-duotone fa-starship" />
         </Btn>
       </template>
 

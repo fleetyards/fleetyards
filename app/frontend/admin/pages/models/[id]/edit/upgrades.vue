@@ -189,11 +189,11 @@ const onUnlink = (record: ModelUpgrade) => {
         :disabled="editableList?.creating"
         @click="editableList?.startCreate()"
       >
-        <i class="fad fa-plus" />
+        <i class="fa-duotone fa-plus" />
         {{ t("actions.add") }}
       </Btn>
       <Btn :size="BtnSizesEnum.SMALL" @click="openLinkModal">
-        <i class="fad fa-link" />
+        <i class="fa-duotone fa-link" />
         {{ t("actions.linkExisting") }}
       </Btn>
     </BtnGroup>
@@ -233,7 +233,7 @@ const onUnlink = (record: ModelUpgrade) => {
         :variant="BtnVariantsEnum.TRANSPARENT"
         @click="onUnlink(item)"
       >
-        <i class="fad fa-unlink text-muted" />
+        <i class="fa-duotone fa-unlink text-muted" />
       </Btn>
       <Btn
         v-tooltip="t('labels.modelUpgrade.hidden')"
@@ -242,7 +242,7 @@ const onUnlink = (record: ModelUpgrade) => {
         @click="toggleField(item, 'hidden')"
       >
         <i
-          class="fad fa-eye-slash"
+          class="fa-duotone fa-eye-slash"
           :class="item.hidden ? 'text-warning' : 'text-muted'"
         />
       </Btn>
@@ -253,7 +253,7 @@ const onUnlink = (record: ModelUpgrade) => {
         @click="toggleField(item, 'active')"
       >
         <i
-          class="fad fa-ban"
+          class="fa-duotone fa-ban"
           :class="!item.active ? 'text-warning' : 'text-muted'"
         />
       </Btn>

@@ -115,7 +115,7 @@ const copyShareUrl = () => {
     :inline="inline"
     @click="share"
   >
-    <i class="fad fa-share-square" />
+    <i class="fa-duotone fa-share-square" />
     <span v-if="!noLabel">{{ t("actions.share") }}</span>
   </Btn>
 </template>

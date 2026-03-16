@@ -247,7 +247,7 @@ defineExpose({
         @click="clear"
       >
         <i
-          class="fal fa-times"
+          class="fa-light fa-times"
           :class="{
             'with-label': !!innerLabel && !noLabel,
           }"

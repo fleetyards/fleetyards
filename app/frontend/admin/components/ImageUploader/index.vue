@@ -279,7 +279,7 @@ const inputFilter = (
       @click="selectImages"
     >
       <div class="dropzone">
-        <i class="fal fa-file-plus fa-2x" />
+        <i class="fa-light fa-file-plus fa-2x" />
         <h3>
           {{ t("models.image.dropzone") }}
         </h3>

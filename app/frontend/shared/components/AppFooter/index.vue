@@ -58,7 +58,7 @@ const openSupportModal = () => {
           rel="noopener"
           aria-label="Discrod"
         >
-          <i class="fab fa-discord" />
+          <i class="fa-brands fa-discord" />
         </a>
         <a
           v-tooltip="'Github'"
@@ -67,7 +67,7 @@ const openSupportModal = () => {
           rel="noopener"
           aria-label="Github"
         >
-          <i class="fab fa-github" />
+          <i class="fa-brands fa-github" />
         </a>
         <a
           v-tooltip="'Bluesky'"
@@ -76,7 +76,7 @@ const openSupportModal = () => {
           rel="noopener"
           aria-label="Bluesky"
         >
-          <i class="fab fa-bluesky" />
+          <i class="fa-brands fa-bluesky" />
         </a>
         <a
           v-tooltip="'Mastodon'"
@@ -85,7 +85,7 @@ const openSupportModal = () => {
           rel="noopener"
           aria-label="Mastodon"
         >
-          <i class="fab fa-mastodon" />
+          <i class="fa-brands fa-mastodon" />
         </a>
         <a
           v-tooltip="'Instagram'"
@@ -94,7 +94,7 @@ const openSupportModal = () => {
           rel="noopener"
           aria-label="Instagram"
         >
-          <i class="fab fa-instagram" />
+          <i class="fa-brands fa-instagram" />
         </a>
       </div>
       <div class="app-footer__support">
@@ -135,7 +135,7 @@ const openSupportModal = () => {
           class="app-footer__git-revision"
         >
           <span class="hidden">{{ gitRevision }}</span>
-          <i class="far fa-fingerprint" />
+          <i class="fa-regular fa-fingerprint" />
         </span>
       </div>
       <div class="app-footer__sc-data-version">

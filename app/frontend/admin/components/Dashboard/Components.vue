@@ -85,7 +85,7 @@ const columns: BaseTableCol<Component>[] = [
             params: { id: record.id },
           }"
         >
-          <i class="fad fa-pen" />
+          <i class="fa-duotone fa-pen" />
         </Btn>
       </template>
     </BaseTable>

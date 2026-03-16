@@ -360,7 +360,7 @@ const openDisplayOptionsModal = () => {
 
   <Teleport v-if="!mobile" to="#header-right">
     <Btn :to="{ name: 'hangar-wishlist' }">
-      <i class="fad fa-wand-sparkles" />
+      <i class="fa-duotone fa-wand-sparkles" />
       {{ t("labels.wishlist") }}
       <transition name="fade" mode="out-in" appear>
         <span v-if="hangarStats && hangarStats.wishlistTotal">
@@ -370,12 +370,12 @@ const openDisplayOptionsModal = () => {
     </Btn>
 
     <Btn data-test="fleetchart-link" @click="toggleFleetchart">
-      <i class="fad fa-starship" />
+      <i class="fa-duotone fa-starship" />
       {{ t("labels.fleetchart") }}
     </Btn>
 
     <Btn :to="{ name: 'hangar-stats' }">
-      <i class="fal fa-chart-bar" />
+      <i class="fa-light fa-chart-bar" />
       {{ t("labels.hangarStats") }}
     </Btn>
 
@@ -402,13 +402,13 @@ const openDisplayOptionsModal = () => {
         :size="BtnSizesEnum.SMALL"
         @click="openDisplayOptionsModal"
       >
-        <i class="fad fa-sliders" />
+        <i class="fa-duotone fa-sliders" />
       </Btn>
       <HangarSyncBtn :size="BtnSizesEnum.SMALL" />
       <BtnDropdown :size="BtnSizesEnum.SMALL">
         <template v-if="mobile">
           <Btn :to="{ name: 'hangar-wishlist' }" :size="BtnSizesEnum.SMALL">
-            <i class="fad fa-wand-sparkles" />
+            <i class="fa-duotone fa-wand-sparkles" />
             <span>{{ t("labels.wishlist") }}</span>
           </Btn>
 
@@ -417,12 +417,12 @@ const openDisplayOptionsModal = () => {
             :size="BtnSizesEnum.SMALL"
             @click="toggleFleetchart"
           >
-            <i class="fad fa-starship" />
+            <i class="fa-duotone fa-starship" />
             <span>{{ t("labels.fleetchart") }}</span>
           </Btn>
 
           <Btn :to="{ name: 'hangar-stats' }" :size="BtnSizesEnum.SMALL">
-            <i class="fad fa-chart-bar" />
+            <i class="fa-duotone fa-chart-bar" />
             <span>{{ t("labels.hangarStats") }}</span>
           </Btn>
 
@@ -441,7 +441,7 @@ const openDisplayOptionsModal = () => {
           :size="BtnSizesEnum.SMALL"
           @click="openGuide"
         >
-          <i class="fad fa-question" />
+          <i class="fa-duotone fa-question" />
           <span>{{ t("actions.showGuide") }}</span>
         </Btn>
 
@@ -463,7 +463,7 @@ const openDisplayOptionsModal = () => {
           :aria-label="t('actions.export')"
           @click="exportJson"
         >
-          <i class="fal fa-download" />
+          <i class="fa-light fa-download" />
           <span>{{ t("actions.export") }}</span>
         </Btn>
 
@@ -474,7 +474,7 @@ const openDisplayOptionsModal = () => {
           :aria-label="t('actions.hangar.resetIngame.openModal')"
           @click="showResetIngameModal"
         >
-          <i class="fal fa-arrow-rotate-left" />
+          <i class="fa-light fa-arrow-rotate-left" />
           <span>{{ t("actions.hangar.resetIngame.openModal") }}</span>
         </Btn>
 
@@ -486,7 +486,7 @@ const openDisplayOptionsModal = () => {
           :aria-label="t('actions.hangar.destroyAll')"
           @click="destroyAll"
         >
-          <i class="fal fa-trash" />
+          <i class="fa-light fa-trash" />
           <span>{{ t("actions.hangar.destroyAll") }}</span>
         </Btn>
       </BtnDropdown>

@@ -147,7 +147,7 @@ const onSubmit = handleSubmit(async (values) => {
           v-bind="discordProps"
           name="discord"
           translation-key="discord"
-          icon="fab fa-discord"
+          icon="fa-brands fa-discord"
         />
       </div>
     </div>
@@ -159,7 +159,7 @@ const onSubmit = handleSubmit(async (values) => {
           v-bind="youtubeProps"
           name="youtube"
           translation-key="youtube"
-          icon="fab fa-youtube"
+          icon="fa-brands fa-youtube"
         />
       </div>
       <div class="col-12 col-md-6">
@@ -168,7 +168,7 @@ const onSubmit = handleSubmit(async (values) => {
           v-bind="twitchProps"
           name="twitch"
           translation-key="twitch"
-          icon="fab fa-twitch"
+          icon="fa-brands fa-twitch"
         />
       </div>
       <div class="col-12 col-md-6">
@@ -176,7 +176,7 @@ const onSubmit = handleSubmit(async (values) => {
           v-model="guilded"
           v-bind="guildedProps"
           name="guilded"
-          icon="fab fa-guilded"
+          icon="fa-brands fa-guilded"
           :clearable="true"
           translation-key="guilded"
         />

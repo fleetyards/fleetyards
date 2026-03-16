@@ -109,7 +109,7 @@ const destroy = () => {
     :size="BtnSizesEnum.SMALL"
     :to="{ name: 'admin-user-edit', params: { id: user.id } }"
   >
-    <i class="fad fa-pen-to-square" />
+    <i class="fa-duotone fa-pen-to-square" />
     <span v-if="withLabels">{{ t("actions.edit") }}</span>
   </Btn>
   <Btn
@@ -117,7 +117,7 @@ const destroy = () => {
     :size="BtnSizesEnum.SMALL"
     @click="loginAs"
   >
-    <i class="fad fa-right-to-bracket" />
+    <i class="fa-duotone fa-right-to-bracket" />
     <span v-if="withLabels">{{ t("actions.users.loginAs") }}</span>
   </Btn>
   <Btn
@@ -125,7 +125,7 @@ const destroy = () => {
     :size="BtnSizesEnum.SMALL"
     @click="resendConfirmation"
   >
-    <i class="fad fa-envelope" />
+    <i class="fa-duotone fa-envelope" />
     <span v-if="withLabels">{{ t("actions.users.resendConfirmation") }}</span>
   </Btn>
   <Btn
@@ -133,7 +133,7 @@ const destroy = () => {
     :size="BtnSizesEnum.SMALL"
     @click="sendPasswordReset"
   >
-    <i class="fad fa-key" />
+    <i class="fa-duotone fa-key" />
     <span v-if="withLabels">{{ t("actions.users.sendPasswordReset") }}</span>
   </Btn>
   <Btn
@@ -142,7 +142,7 @@ const destroy = () => {
     :variant="BtnVariantsEnum.DANGER"
     @click="destroy"
   >
-    <i class="fad fa-trash" />
+    <i class="fa-duotone fa-trash" />
     <span v-if="withLabels">{{ t("actions.delete") }}</span>
   </Btn>
 </template>

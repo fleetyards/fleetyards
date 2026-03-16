@@ -93,11 +93,11 @@ const openDisplayOptionsModal = () => {
       }"
       mobile-block
     >
-      <i class="fad fa-code-compare" />
+      <i class="fa-duotone fa-code-compare" />
       {{ t("actions.compare.ships") }}
     </Btn>
     <Btn data-test="fleetchart-link" mobile-block @click="toggleFleetchart">
-      <i class="fad fa-starship" />
+      <i class="fa-duotone fa-starship" />
       {{ t("labels.fleetchart") }}
     </Btn>
   </Teleport>
@@ -116,7 +116,7 @@ const openDisplayOptionsModal = () => {
         :size="BtnSizesEnum.SMALL"
         @click="openDisplayOptionsModal"
       >
-        <i class="fad fa-sliders" />
+        <i class="fa-duotone fa-sliders" />
       </Btn>
     </template>
 

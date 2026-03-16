@@ -99,12 +99,12 @@ watch(
         <div class="row">
           <div class="col-12 col-sm-6">
             <StatsPanel
-              icon="fad fa-user fa-4x"
+              icon="fa-duotone fa-user fa-4x"
               :value="onlineCount"
               :label="t('labels.admin.dashboard.quickStats.onlineUsers')"
             />
             <StatsPanel
-              icon="fad fa-rocket fa-4x"
+              icon="fa-duotone fa-rocket fa-4x"
               :value="shipsCountYear"
               :label="
                 t('labels.admin.dashboard.quickStats.newShipsInYear', {
@@ -113,19 +113,19 @@ watch(
               "
             />
             <StatsPanel
-              icon="fad fa-users-class fa-4x"
+              icon="fa-duotone fa-users-class fa-4x"
               :value="fleetsCountTotal"
               :label="t('labels.admin.dashboard.quickStats.totalFleets')"
             />
           </div>
           <div class="col-12 col-sm-6">
             <StatsPanel
-              icon="fad fa-users fa-4x"
+              icon="fa-duotone fa-users fa-4x"
               :value="usersCountTotal"
               :label="t('labels.admin.dashboard.quickStats.totalUsers')"
             />
             <StatsPanel
-              icon="fad fa-starship fa-4x"
+              icon="fa-duotone fa-starship fa-4x"
               :value="shipsCountTotal"
               :label="t('labels.admin.dashboard.quickStats.totalShips')"
             />

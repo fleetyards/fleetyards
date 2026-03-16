@@ -83,7 +83,7 @@ const displayAsList = () => {
           :active="modelsStore.gridView"
           @click="displayAsGrid"
         >
-          <i class="fas fa-th"></i>
+          <i class="fa-solid fa-th"></i>
           {{ t("actions.showGridView") }}
         </Btn>
       </div>
@@ -94,7 +94,7 @@ const displayAsList = () => {
           :active="!modelsStore.gridView"
           @click="displayAsList"
         >
-          <i class="fad fa-list"></i>
+          <i class="fa-duotone fa-list"></i>
           {{ t("actions.showTableView") }}
         </Btn>
       </div>

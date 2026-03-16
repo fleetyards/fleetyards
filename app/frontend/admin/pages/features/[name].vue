@@ -175,7 +175,7 @@ const stateLabel = (state: string) => {
 
 <template>
   <div v-if="isLoading" class="text-center">
-    <i class="fad fa-spinner fa-spin fa-2x" />
+    <i class="fa-duotone fa-spinner fa-spin fa-2x" />
   </div>
 
   <template v-else-if="feature">

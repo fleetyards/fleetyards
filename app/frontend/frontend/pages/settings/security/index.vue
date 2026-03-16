@@ -63,11 +63,11 @@ const socialLogins = ref<InstanceType<typeof SocialLogins> | undefined>();
                 v-if="sessionStore.currentUser.twoFactorRequired"
                 class="badge badge-success"
               >
-                <i class="fas fa-check" />
+                <i class="fa-solid fa-check" />
                 {{ t("labels.enabled") }}
               </span>
               <span v-else class="badge badge-danger">
-                <i class="fas fa-times" />
+                <i class="fa-solid fa-times" />
                 {{ t("labels.disabled") }}
               </span>
             </small>

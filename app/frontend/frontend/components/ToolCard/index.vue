@@ -49,7 +49,7 @@ const { t } = useI18n();
         >
           {{ name }}
           <i
-            class="fad fa-arrow-up-right-from-square tool-card-external-icon"
+            class="fa-duotone fa-arrow-up-right-from-square tool-card-external-icon"
           />
         </a>
         <span v-else class="tool-card-link tool-card-link-disabled">

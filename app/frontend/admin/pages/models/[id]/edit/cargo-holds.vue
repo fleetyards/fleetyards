@@ -204,7 +204,7 @@ const formatOffset = (hold: AdminCargoHold) => {
         :variant="BtnVariantsEnum.TRANSPARENT"
         @click="clearOffsets(item)"
       >
-        <i class="fad fa-undo" />
+        <i class="fa-duotone fa-undo" />
       </Btn>
     </template>
 

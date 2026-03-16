@@ -73,7 +73,7 @@ const copyExample = () => {
       </BaseText>
 
       <div class="code-highlight" @click="copyExample">
-        <i class="fas fa-copy copy-icon"></i>
+        <i class="fa-solid fa-copy copy-icon"></i>
         <pre
           v-highlightjs="widgetExample"
         ><code class="javascript rounded !py-5 !px-4"></code></pre>

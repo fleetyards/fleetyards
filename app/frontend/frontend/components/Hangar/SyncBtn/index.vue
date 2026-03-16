@@ -126,7 +126,7 @@ const openModal = () => {
     :loading="loading"
     @click="openModal"
   >
-    <i class="fal fa-sync" />
+    <i class="fa-light fa-sync" />
     <span>
       {{ t("actions.syncRsiHangar") }}
     </span>

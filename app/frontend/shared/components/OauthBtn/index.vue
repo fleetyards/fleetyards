@@ -86,9 +86,9 @@ const providerActive = computed(() => {
       @click="handleClick"
     >
       <slot>
-        <i :class="`fab fa-${provider}`" />
+        <i :class="`fa-brands fa-${provider}`" />
         <span v-if="!onlyIcon">{{ label }}</span>
-        <i v-if="connected" class="fal fa-check text-success" />
+        <i v-if="connected" class="fa-light fa-check text-success" />
       </slot>
     </Btn>
   </Transition>

@@ -165,7 +165,7 @@ const onSubmit = handleSubmit(async (values) => {
           :confirm="t('messages.confirm.hangarGroup.destroy')"
           @click="onDestroy"
         >
-          <i class="fal fa-trash" />
+          <i class="fa-light fa-trash" />
         </Btn>
         <Btn :loading="submitting" size="large" inline @click="onSubmit">
           {{ t("actions.save") }}

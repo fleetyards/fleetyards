@@ -241,7 +241,7 @@ const closeFleetchart = async () => {
         class="fleetchart-app-close"
         @click="hide"
       >
-        <i class="fal fa-times" />
+        <i class="fa-light fa-times" />
       </Btn>
 
       <div class="fleetchart-app__filter">
@@ -254,10 +254,10 @@ const closeFleetchart = async () => {
           @click="toggleFilter"
         >
           <span v-show="isFilterSelected">
-            <i class="fas fa-filter" />
+            <i class="fa-solid fa-filter" />
           </span>
           <span v-show="!isFilterSelected">
-            <i class="far fa-filter" />
+            <i class="fa-regular fa-filter" />
           </span>
         </Btn>
 

@@ -133,7 +133,7 @@ const importJson = async (value: VueUploadItem) => {
     :disabled="disabled"
     @click="selectFile"
   >
-    <i class="fal fa-upload" />
+    <i class="fa-light fa-upload" />
     <span>
       {{ t("actions.import") }}
       <VueUploadComponent

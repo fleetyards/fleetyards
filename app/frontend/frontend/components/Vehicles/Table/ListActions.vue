@@ -156,7 +156,7 @@ const destroyBulk = async () => {
       :disabled="updating"
       @click="showOnPublicHangar"
     >
-      <i class="fad fa-eye" />
+      <i class="fa-duotone fa-eye" />
     </Btn>
     <Btn
       v-tooltip="t('actions.hangar.hideFromPublicHangar')"
@@ -164,7 +164,7 @@ const destroyBulk = async () => {
       :disabled="updating"
       @click="hideFromPublicHangar"
     >
-      <i class="fad fa-eye-slash" />
+      <i class="fa-duotone fa-eye-slash" />
     </Btn>
   </BtnGroup>
   <Btn
@@ -200,6 +200,6 @@ const destroyBulk = async () => {
     inline
     @click="destroyBulk"
   >
-    <i class="fal fa-trash" />
+    <i class="fa-light fa-trash" />
   </Btn>
 </template>

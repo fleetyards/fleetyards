@@ -26,7 +26,7 @@ const { t } = useI18n();
       target="_blank"
       rel="noopener"
     >
-      <i class="fad fa-bookmark" />
+      <i class="fa-duotone fa-bookmark" />
     </a>
     <a
       v-if="props.member.homepage"
@@ -36,7 +36,7 @@ const { t } = useI18n();
       target="_blank"
       rel="noopener"
     >
-      <i class="fal fa-globe globe-rotate" />
+      <i class="fa-light fa-globe globe-rotate" />
     </a>
     <a
       v-if="props.member.rsiHandle"
@@ -56,7 +56,7 @@ const { t } = useI18n();
       target="_blank"
       rel="noopener"
     >
-      <i class="fab fa-youtube" />
+      <i class="fa-brands fa-youtube" />
     </a>
     <a
       v-if="props.member.twitch"
@@ -66,7 +66,7 @@ const { t } = useI18n();
       target="_blank"
       rel="noopener"
     >
-      <i class="fab fa-twitch" />
+      <i class="fa-brands fa-twitch" />
     </a>
     <a
       v-if="props.member.guilded"
@@ -76,7 +76,7 @@ const { t } = useI18n();
       target="_blank"
       rel="noopener"
     >
-      <i class="fab fa-guilded" />
+      <i class="fa-brands fa-guilded" />
     </a>
     <a
       v-if="props.member.discord"
@@ -86,7 +86,7 @@ const { t } = useI18n();
       target="_blank"
       rel="noopener"
     >
-      <i class="fab fa-discord" />
+      <i class="fa-brands fa-discord" />
     </a>
   </div>
 </template>

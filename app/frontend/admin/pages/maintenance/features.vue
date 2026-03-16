@@ -216,7 +216,7 @@ const hasSelectedActor = computed(() => {
       <Btn :size="BtnSizesEnum.SMALL" @click.prevent="toggleFeature(item)">
         <i
           :class="
-            item.state === 'on' ? 'fad fa-toggle-on' : 'fad fa-toggle-off'
+            item.state === 'on' ? 'fa-duotone fa-toggle-on' : 'fa-duotone fa-toggle-off'
           "
         />
       </Btn>
@@ -232,7 +232,7 @@ const hasSelectedActor = computed(() => {
           >
             <i
               :class="
-                item.selfService ? 'fad fa-toggle-on' : 'fad fa-toggle-off'
+                item.selfService ? 'fa-duotone fa-toggle-on' : 'fa-duotone fa-toggle-off'
               "
             />
             {{
@@ -257,7 +257,7 @@ const hasSelectedActor = computed(() => {
                 inline
                 @click.prevent="removeGroup(item.name, group)"
               >
-                <i class="fad fa-times" />
+                <i class="fa-duotone fa-times" />
               </Btn>
             </div>
             <Btn
@@ -269,7 +269,7 @@ const hasSelectedActor = computed(() => {
               inline
               @click.prevent="addGroup(item.name, group)"
             >
-              <i class="fad fa-plus" />
+              <i class="fa-duotone fa-plus" />
               {{ group }}
             </Btn>
           </div>
@@ -290,7 +290,7 @@ const hasSelectedActor = computed(() => {
                 inline
                 @click.prevent="removeActor(item.name, actor.type, actor.id)"
               >
-                <i class="fad fa-times" />
+                <i class="fa-duotone fa-times" />
               </Btn>
             </div>
           </div>
@@ -320,7 +320,7 @@ const hasSelectedActor = computed(() => {
               :disabled="!hasSelectedActor"
               @click.prevent="addActor(item)"
             >
-              <i class="fad fa-plus" />
+              <i class="fa-duotone fa-plus" />
               {{ t("actions.addActor") }}
             </Btn>
           </div>

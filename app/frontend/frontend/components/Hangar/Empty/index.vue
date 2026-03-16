@@ -83,7 +83,7 @@ const openGuide = () => {
                 :href="link.url"
                 target="_blank"
               >
-                <i :class="`fab fa-${link.platform}`" />
+                <i :class="`fa-brands fa-${link.platform}`" />
               </a>
             </div>
           </div>

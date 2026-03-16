@@ -65,7 +65,7 @@ const hasAccessTo = (access?: string[]) => {
           :action="logout"
           menu-key="logout"
           :label="t('nav.logout')"
-          icon="fal fa-sign-out"
+          icon="fa-light fa-sign-out"
         />
         <NavItem
           menu-key="user-menu"

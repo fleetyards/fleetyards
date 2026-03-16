@@ -50,7 +50,7 @@ const acceptYoutube = () => {
       <iframe :src="video.url" class="embed-responsive-item" />
     </template>
     <div v-else-if="video.type === 'youtube'" class="youtube-placeholder">
-      <i class="fab fa-youtube" />
+      <i class="fa-brands fa-youtube" />
       <div class="youtube-placeholder-buttons">
         <Btn :inline="true" @click="acceptYoutube"> Allow video embeds </Btn>
         <Btn :inline="true" @click="copyVideoUrl(video)">

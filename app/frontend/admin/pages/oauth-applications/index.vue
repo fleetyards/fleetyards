@@ -110,8 +110,8 @@ const { t, l } = useI18n();
           <code>{{ record.uid }}</code>
         </template>
         <template #col-confidential="{ record }">
-          <i v-if="record.confidential" class="fad fa-check" />
-          <i v-else class="fad fa-times" />
+          <i v-if="record.confidential" class="fa-duotone fa-check" />
+          <i v-else class="fa-duotone fa-times" />
         </template>
         <template #col-createdAt="{ record }">
           {{ l(record.createdAt, "datetime.formats.short") }}

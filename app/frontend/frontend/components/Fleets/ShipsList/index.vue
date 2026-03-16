@@ -284,7 +284,7 @@ const {
             :size="BtnSizesEnum.SMALL"
             @click="openDisplayOptionsModal"
           >
-            <i class="fad fa-sliders" />
+            <i class="fa-duotone fa-sliders" />
           </Btn>
           <BtnDropdown :size="BtnSizesEnum.SMALL">
             <template v-if="mobile">
@@ -293,7 +293,7 @@ const {
                 data-test="fleetchart-link"
                 @click="toggleFleetchart"
               >
-                <i class="fad fa-starship" />
+                <i class="fa-duotone fa-starship" />
                 <span>{{ t("labels.fleetchart") }}</span>
               </Btn>
 
@@ -311,7 +311,7 @@ const {
               :aria-label="t('actions.export')"
               @click="exportJson"
             >
-              <i class="fal fa-download" />
+              <i class="fa-light fa-download" />
               <span>{{ t("actions.export") }}</span>
             </Btn>
           </BtnDropdown>

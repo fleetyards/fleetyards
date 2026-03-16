@@ -128,7 +128,7 @@ const leave = () => {
         }"
       >
         <a @click="leave">
-          <i class="fal fa-sign-out" />
+          <i class="fa-light fa-sign-out" />
           {{ t("actions.fleet.leave", { fleet: fleet.name }) }}
         </a>
       </li>

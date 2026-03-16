@@ -78,7 +78,7 @@ const save = async () => {
 <template>
   <Modal :title="t('headlines.vehicle.bulkGroupEdit')">
     <p class="hint">
-      <i class="fal fa-info-circle" />
+      <i class="fa-light fa-info-circle" />
       {{ t("labels.vehicle.bulkGroupEdit.hint") }}
     </p>
 

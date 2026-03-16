@@ -133,7 +133,7 @@ const onSaveCreate = async () => {
 
 // Helpers
 const videoTypeIcons: Record<string, string> = {
-  [VideoTypeEnum.YOUTUBE]: "fab fa-youtube",
+  [VideoTypeEnum.YOUTUBE]: "fa-brands fa-youtube",
 };
 
 const thumbnailUrl = (video: Video) => {
@@ -160,7 +160,7 @@ const videoTypeOptions: FilterOption[] = Object.values(VideoTypeEnum).map(
       :disabled="editableList?.creating"
       @click="editableList?.startCreate()"
     >
-      <i class="fad fa-plus" />
+      <i class="fa-duotone fa-plus" />
       {{ t("actions.add") }}
     </Btn>
   </div>

@@ -144,8 +144,8 @@ const toggleFilter = () => {
               :size="BtnSizesEnum.SMALL"
               @click="toggleFilter"
             >
-              <i v-if="isFilterSelected" class="fas fa-filter" />
-              <i v-else class="far fa-filter" />
+              <i v-if="isFilterSelected" class="fa-solid fa-filter" />
+              <i v-else class="fa-regular fa-filter" />
             </Btn>
             <slot name="actions-left" :records="records" />
           </div>

@@ -24,7 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
   size: "default",
   editable: false,
   creatable: false,
-  icon: "fad fa-user",
+  icon: "fa-duotone fa-user",
   transparent: false,
   round: true,
 });

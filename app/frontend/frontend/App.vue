@@ -325,7 +325,7 @@ const setLocale = (locale: string) => {
             :expand-top="true"
           >
             <template #label>
-              <i class="fad fa-language" /> {{ currentLocale() }}
+              <i class="fa-duotone fa-language" /> {{ currentLocale() }}
             </template>
             <Btn
               v-for="availableLocale in locales"

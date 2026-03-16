@@ -112,7 +112,7 @@ const { data: modelsPerMonth, ...modelsPerMonthStatus } =
             params: { id: record.id },
           }"
         >
-          <i class="fad fa-pen" />
+          <i class="fa-duotone fa-pen" />
         </Btn>
       </template>
     </BaseTable>

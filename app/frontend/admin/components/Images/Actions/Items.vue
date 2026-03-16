@@ -61,7 +61,7 @@ const destroy = () => {
     :variant="BtnVariantsEnum.DANGER"
     @click="destroy"
   >
-    <i class="fad fa-trash" />
+    <i class="fa-duotone fa-trash" />
     <span v-if="withLabels">{{ t("actions.delete") }}</span>
   </Btn>
 </template>

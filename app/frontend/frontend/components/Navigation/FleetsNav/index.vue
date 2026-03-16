@@ -62,7 +62,7 @@ watch(
     :label="t('nav.fleets.index')"
     :submenu-active="active"
     menu-key="fleets-menu"
-    icon="fad fa-users"
+    icon="fa-duotone fa-users"
     prefix="05"
   >
     <template #submenu>
@@ -78,19 +78,19 @@ watch(
         v-if="isAuthenticated && fleetInvites && fleetInvites.length"
         :to="{ name: 'fleet-invites' }"
         :label="t('nav.fleets.invites')"
-        icon="fad fa-envelope-open-text"
+        icon="fa-duotone fa-envelope-open-text"
       />
       <NavItem
         v-if="isAuthenticated || !fleetPreview"
         :to="{ name: 'fleet-add' }"
         :label="t('nav.fleets.add')"
-        icon="fal fa-plus"
+        icon="fa-light fa-plus"
       />
       <NavItem
         v-else
         :to="{ name: 'fleet-preview' }"
         :label="t('nav.fleets.add')"
-        icon="fal fa-plus"
+        icon="fa-light fa-plus"
       />
     </template>
   </NavItem>

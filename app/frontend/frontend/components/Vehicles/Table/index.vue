@@ -351,22 +351,22 @@ const resetSelected = () => {
           <i
             v-if="record.model.onSale"
             v-tooltip="t('labels.model.onSale')"
-            class="fad fa-dollar-sign on-sale"
+            class="fa-duotone fa-dollar-sign on-sale"
           />
           <i
             v-if="record.public && record.nameVisible"
             v-tooltip="t('labels.vehicle.fullPublic')"
-            class="fad fa-eye-evil full-public-icon"
+            class="fa-duotone fa-eye-evil full-public-icon"
           />
           <i
             v-else-if="record.public"
             v-tooltip="t('labels.vehicle.public')"
-            class="fad fa-eye"
+            class="fa-duotone fa-eye"
           />
           <i
             v-if="wishlist && record.saleNotify"
             v-tooltip="t('labels.vehicle.saleNotify')"
-            class="fad fa-bell"
+            class="fa-duotone fa-bell"
           />
         </div>
       </template>
@@ -382,7 +382,7 @@ const resetSelected = () => {
             data-test="vehicle-edit"
             @click="openEditModal(record)"
           >
-            <i class="fad fa-pen-to-square" />
+            <i class="fa-duotone fa-pen-to-square" />
             {{ t("actions.edit") }}
           </Btn>
           <VehicleContextMenu

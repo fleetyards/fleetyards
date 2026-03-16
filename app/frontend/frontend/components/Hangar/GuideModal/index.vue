@@ -77,7 +77,7 @@ const videos = computed<VideoList>(() => ({
         <p v-html="t('texts.hangarGuide.add')" />
         <div class="hangar-guide-highlight">
           {{ t("texts.hangarGuide.icon") }}
-          <i class="fal fa-bookmark" />
+          <i class="fa-light fa-bookmark" />
         </div>
       </div>
       <div class="hangar-guide-video">
@@ -107,7 +107,7 @@ const videos = computed<VideoList>(() => ({
         <p v-html="t('texts.hangarGuide.wishlist')" />
         <div class="hangar-guide-highlight">
           {{ t("texts.hangarGuide.icon") }}
-          <i class="fal fa-bookmark" />
+          <i class="fa-light fa-bookmark" />
         </div>
       </div>
       <div class="hangar-guide-video">

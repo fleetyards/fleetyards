@@ -182,7 +182,7 @@ const handleUploadDone = async (files: FileUpload[]) => {
         @click="toggleField(item, 'enabled')"
       >
         <i
-          class="fad fa-ban"
+          class="fa-duotone fa-ban"
           :class="!item.enabled ? 'text-warning' : 'text-muted'"
         />
       </Btn>
@@ -193,7 +193,7 @@ const handleUploadDone = async (files: FileUpload[]) => {
         @click="toggleField(item, 'global')"
       >
         <i
-          class="fad fa-globe"
+          class="fa-duotone fa-globe"
           :class="!item.global ? 'text-warning' : 'text-muted'"
         />
       </Btn>
@@ -204,7 +204,7 @@ const handleUploadDone = async (files: FileUpload[]) => {
         @click="toggleField(item, 'background')"
       >
         <i
-          class="fad fa-image"
+          class="fa-duotone fa-image"
           :class="item.background ? 'text-info' : 'text-muted'"
         />
       </Btn>

@@ -54,7 +54,7 @@ const mobile = useMobile();
       }"
       :size="BtnSizesEnum.SMALL"
     >
-      <i class="fad fa-starship" />
+      <i class="fa-duotone fa-starship" />
       <span>{{ t("actions.showDetailPage") }}</span>
     </Btn>
     <Btn
@@ -84,7 +84,7 @@ const mobile = useMobile();
       }"
       :size="BtnSizesEnum.SMALL"
     >
-      <i class="fal fa-video" />
+      <i class="fa-light fa-video" />
       <span>{{ t("nav.videos") }}</span>
     </Btn>
     <Btn
@@ -92,7 +92,7 @@ const mobile = useMobile();
       :href="model.brochure"
       :size="BtnSizesEnum.SMALL"
     >
-      <i class="fal fa-download" />
+      <i class="fa-light fa-download" />
       <span>{{ t("labels.model.brochure") }}</span>
     </Btn>
     <Btn
@@ -103,7 +103,7 @@ const mobile = useMobile();
       data-test="compare"
       :size="BtnSizesEnum.SMALL"
     >
-      <i class="fal fa-code-compare" />
+      <i class="fa-light fa-code-compare" />
       <span>{{ t("actions.compare.ships") }}</span>
     </Btn>
     <Btn
@@ -111,7 +111,7 @@ const mobile = useMobile();
       :href="model.links.salesPageUrl"
       :size="BtnSizesEnum.SMALL"
     >
-      <i class="fad fa-megaphone" />
+      <i class="fa-duotone fa-megaphone" />
       <span>{{ t("labels.model.salesPage") }}</span>
     </Btn>
   </BtnDropdown>

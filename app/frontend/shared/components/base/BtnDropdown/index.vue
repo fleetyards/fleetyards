@@ -115,7 +115,7 @@ const documentClick = (event: MouseEvent) => {
       @click="toggle"
     >
       <slot name="label">
-        <i class="fas fa-ellipsis-v" />
+        <i class="fa-solid fa-ellipsis-v" />
       </slot>
     </Btn>
     <Teleport to="body">
