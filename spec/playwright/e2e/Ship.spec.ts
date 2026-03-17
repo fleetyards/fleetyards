@@ -15,11 +15,13 @@ test.describe("Ship", () => {
     await nav.click("ships");
 
     await expect(
-      page.locator(".panel-heading__title a span").getByText("Ironclad"),
+      page.getByTestId("panel-heading-title").locator("a span").getByText("Ironclad"),
     ).toBeVisible();
 
     await page
-      .locator(".model-panel-ironclad .panel-heading__title a")
+      .getByTestId("model-panel-ironclad")
+      .getByTestId("panel-heading-title")
+      .locator("a")
       .first()
       .click();
 

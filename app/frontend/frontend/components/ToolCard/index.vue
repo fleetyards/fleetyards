@@ -34,8 +34,9 @@ const { t } = useI18n();
     :shadow="PanelShadowsEnum.TOP"
     class="tool-card"
     :class="{ 'tool-card-disabled': disabled }"
+    data-test="tool-card"
   >
-    <div v-if="disabled" class="tool-card-banner">
+    <div v-if="disabled" class="tool-card-banner" data-test="tool-card-banner">
       {{ t("tools.discontinued") }}
     </div>
     <PanelHeading :level="HeadingLevelEnum.H3" class="tool-card-heading">
@@ -46,6 +47,7 @@ const { t } = useI18n();
           target="_blank"
           rel="noopener"
           class="tool-card-link"
+          data-test="tool-card-link"
         >
           {{ name }}
           <i

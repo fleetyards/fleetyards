@@ -66,11 +66,8 @@ test.describe("Fleet", () => {
 
     await page.getByTestId("fleet-delete").click();
 
-    await page.locator(".app-confirm").waitFor({ state: "visible" });
-    await page
-      .locator(".app-confirm__buttons")
-      .getByText("Confirm")
-      .click();
+    await page.getByTestId("confirm-dialog").waitFor({ state: "visible" });
+    await page.getByTestId("confirm-ok").click();
 
     await page.waitForTimeout(500);
 

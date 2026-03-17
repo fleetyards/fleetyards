@@ -230,7 +230,7 @@ const onModelSelect = (value: ValueType<Model> | undefined) => {
           no-label
           @update:model-value="onModelSelect"
         />
-        <div class="filters__actions">
+        <div class="filters__actions" data-test="filters-actions">
           <Btn
             v-if="sessionStore.isAuthenticated"
             :size="BtnSizesEnum.SMALL"
@@ -251,6 +251,7 @@ const onModelSelect = (value: ValueType<Model> | undefined) => {
           :key="size"
           style="width: 5rem; flex-shrink: 0"
           class="container-field"
+          :data-test="`container-field-${size}`"
         >
           <FormInput
             v-model.number="containerRequests[size]"

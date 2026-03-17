@@ -15,7 +15,7 @@ export default class Dropdown {
     await dropdown.click();
 
     const item = this.page
-      .locator(".panel-btn-dropdown__list.visible")
+      .getByTestId("dropdown-list")
       .locator(`[data-test='${navItem}']`);
 
     await expect(item).toBeVisible();

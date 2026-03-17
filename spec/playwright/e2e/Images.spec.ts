@@ -16,7 +16,7 @@ test.describe("Images", () => {
 
     await expect(page).toHaveURL(/\/images/);
 
-    const images = page.locator(".images a");
+    const images = page.getByTestId("images-list").locator("a");
     await expect(images).toHaveCount(20);
   });
 });

@@ -156,7 +156,7 @@ const routeForImage = (image: Image) => {
   </div>
   <section>
     <div class="row">
-      <div class="col-12 col-lg-6 relative home-ships">
+      <div class="col-12 col-lg-6 relative home-ships" data-test="home-ships">
         <h2 class="sr-only">
           {{ t("headlines.welcomeShips") }}
         </h2>
@@ -179,7 +179,7 @@ const routeForImage = (image: Image) => {
         </transition-group>
         <Loader :loading="modelsLoading" :fixed="true" />
       </div>
-      <div class="col-12 col-lg-6 relative home-images">
+      <div class="col-12 col-lg-6 relative home-images" data-test="home-images">
         <Panel inset>
           <h2 class="sr-only">
             {{ t("headlines.welcomeImages") }}
@@ -202,6 +202,7 @@ const routeForImage = (image: Image) => {
                   :title="image.name"
                   :to="routeForImage(image)"
                   class="home-image image"
+                data-test="home-image"
                 />
               </div>
             </transition-group>

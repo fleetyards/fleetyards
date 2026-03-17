@@ -28,10 +28,10 @@ test.describe("Admin Features", () => {
 
     // Wait for feature list to load from API
     await page.waitForLoadState("networkidle");
-    await expect(page.locator(".list-group__item").first()).toBeVisible();
+    await expect(page.getByTestId("list-group-item").first()).toBeVisible();
 
     // Feature names should be visible
-    await expect(page.locator(".feature-name").first()).toBeVisible();
+    await expect(page.getByTestId("feature-name").first()).toBeVisible();
   });
 
   test("Shows feature state pills", async ({ page }) => {
@@ -39,10 +39,10 @@ test.describe("Admin Features", () => {
 
     // Wait for feature list to load from API
     await page.waitForLoadState("networkidle");
-    await expect(page.locator(".list-group__item").first()).toBeVisible();
+    await expect(page.getByTestId("list-group-item").first()).toBeVisible();
 
     // State pills (on/off/conditional) should be present
-    const pills = page.locator(".list-group__content .base-pill");
+    const pills = page.getByTestId("pill");
     await expect(pills.first()).toBeVisible();
   });
 
@@ -51,14 +51,13 @@ test.describe("Admin Features", () => {
 
     // Wait for feature list to load from API
     await page.waitForLoadState("networkidle");
-    await expect(page.locator(".list-group__item").first()).toBeVisible();
+    await expect(page.getByTestId("list-group-item").first()).toBeVisible();
 
     // Find a toggle button and click it
     const toggleBtn = page
-      .locator(".list-group__item")
+      .getByTestId("list-group-item")
       .first()
-      .locator(".list-group__actions .panel-btn")
-      .first();
+      .getByTestId("toggle-feature");
     await toggleBtn.click();
 
     // Should show success notification
@@ -70,19 +69,18 @@ test.describe("Admin Features", () => {
 
     // Wait for feature list to load from API
     await page.waitForLoadState("networkidle");
-    await expect(page.locator(".list-group__item").first()).toBeVisible();
+    await expect(page.getByTestId("list-group-item").first()).toBeVisible();
 
-    // Click edit button (pencil icon)
+    // Click edit button
     const editBtn = page
-      .locator(".list-group__item")
+      .getByTestId("list-group-item")
       .first()
-      .locator("i.fad.fa-pencil")
-      .first();
+      .getByTestId("start-edit");
     await editBtn.click();
 
     // Edit form should appear with self-service toggle and group buttons
-    await expect(page.locator(".edit-feature")).toBeVisible();
-    await expect(page.locator(".edit-section")).toHaveCount(3);
+    await expect(page.getByTestId("edit-feature")).toBeVisible();
+    await expect(page.getByTestId("edit-section")).toHaveCount(3);
   });
 
   test("Toggles self-service flag", async ({ page, notification }) => {
@@ -90,23 +88,17 @@ test.describe("Admin Features", () => {
 
     // Wait for feature list to load from API
     await page.waitForLoadState("networkidle");
-    await expect(page.locator(".list-group__item").first()).toBeVisible();
+    await expect(page.getByTestId("list-group-item").first()).toBeVisible();
 
     // Open edit mode
     const editBtn = page
-      .locator(".list-group__item")
+      .getByTestId("list-group-item")
       .first()
-      .locator("i.fad.fa-pencil")
-      .first();
+      .getByTestId("start-edit");
     await editBtn.click();
 
     // Click self-service toggle
-    const selfServiceBtn = page
-      .locator(".edit-section")
-      .first()
-      .locator(".panel-btn")
-      .first();
-    await selfServiceBtn.click();
+    await page.getByTestId("toggle-self-service").click();
 
     await notification.success("updated");
   });
@@ -116,21 +108,17 @@ test.describe("Admin Features", () => {
 
     // Wait for feature list to load from API
     await page.waitForLoadState("networkidle");
-    await expect(page.locator(".list-group__item").first()).toBeVisible();
+    await expect(page.getByTestId("list-group-item").first()).toBeVisible();
 
     // Open edit mode
     const editBtn = page
-      .locator(".list-group__item")
+      .getByTestId("list-group-item")
       .first()
-      .locator("i.fad.fa-pencil")
-      .first();
+      .getByTestId("start-edit");
     await editBtn.click();
 
     // Click the "testers" group add button
-    const addGroupBtn = page.locator(".edit-groups .panel-btn").filter({
-      hasText: "testers",
-    });
-    await addGroupBtn.click();
+    await page.getByTestId("add-group-testers").click();
 
     await notification.success("added");
   });

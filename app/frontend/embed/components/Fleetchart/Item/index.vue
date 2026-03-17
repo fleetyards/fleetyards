@@ -37,6 +37,7 @@ const label = computed(
     v-tooltip.bottom="label"
     class="fleetchart-item fade-list-item"
     :class="`model-${model.slug}`"
+    :data-test="`model-${model.slug}`"
   >
     <a :href="url" target="_blank" rel="noopener" :aria-label="label">
       <FleetchartItemImage

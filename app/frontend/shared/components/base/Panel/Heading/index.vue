@@ -47,6 +47,7 @@ const slots = defineSlots<{
       hero
       shadow
       class="panel-heading__title"
+      data-test="panel-heading-title"
       :class="{
         'panel-heading__title--with-actions': slots.actions,
       }"

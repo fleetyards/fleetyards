@@ -6,6 +6,6 @@ test.describe("Footer", () => {
 
     await acceptCookie.accept();
 
-    await expect(page.locator(".app-footer")).toBeVisible();
+    await expect(page.getByTestId("app-footer")).toBeVisible();
   });
 });

@@ -16,11 +16,11 @@ test.describe("Ships", () => {
 
     await expect(page).toHaveURL(/\/ships/);
 
-    const ships = page.locator(".model-panel");
+    const ships = page.locator("[data-test^='model-panel-']");
     await expect(ships).toHaveCount(2);
 
     await expect(
-      page.locator(".panel .panel-heading__title span").getByText("Corsair"),
+      page.getByTestId("panel-heading-title").locator("span").getByText("Corsair"),
     ).toBeVisible();
   });
 });

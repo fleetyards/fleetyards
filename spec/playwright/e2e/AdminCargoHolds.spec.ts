@@ -90,14 +90,13 @@ test.describe("Admin Cargo Holds", () => {
     await cargoHoldsTab.click();
 
     // Wait for cargo holds list to load
-    await page.waitForSelector(".list-group__item");
+    await page.getByTestId("list-group-item").first().waitFor();
 
     // Click edit button on first cargo hold
     const editBtn = page
-      .locator(".list-group__item")
+      .getByTestId("list-group-item")
       .first()
-      .locator("i.fad.fa-pencil")
-      .first();
+      .getByTestId("start-edit");
     await editBtn.click();
 
     // Should show offset and rotation inputs
@@ -116,14 +115,13 @@ test.describe("Admin Cargo Holds", () => {
     await cargoHoldsTab.click();
 
     // Wait for cargo holds list to load
-    await page.waitForSelector(".list-group__item");
+    await page.getByTestId("list-group-item").first().waitFor();
 
     // Click edit button on first cargo hold
     const editBtn = page
-      .locator(".list-group__item")
+      .getByTestId("list-group-item")
       .first()
-      .locator("i.fad.fa-pencil")
-      .first();
+      .getByTestId("start-edit");
     await editBtn.click();
 
     // Fill in offset values
@@ -132,12 +130,11 @@ test.describe("Admin Cargo Holds", () => {
     await page.locator('input[name="offsetZ"]').fill("0.5");
     await page.locator('input[name="rotation"]').fill("90");
 
-    // Click save (check icon)
+    // Click save
     const saveBtn = page
-      .locator(".list-group__item")
+      .getByTestId("list-group-item")
       .first()
-      .locator("i.fad.fa-check")
-      .first();
+      .getByTestId("save-edit");
     await saveBtn.click();
 
     // Should exit edit mode and show the offset values

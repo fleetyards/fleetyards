@@ -21,7 +21,7 @@ test.describe("Home", () => {
 
     await expect(page).toHaveURL(/.*\/ships/);
     await expect(
-      page.locator(".panel .panel-heading__title span").getByText("Ironclad"),
+      page.getByTestId("panel-heading-title").locator("span").getByText("Ironclad"),
     ).toBeVisible();
   });
 
@@ -31,17 +31,17 @@ test.describe("Home", () => {
 
     await expect(page).toHaveURL(/.*\/ships/);
     await expect(
-      page.locator(".panel .panel-heading__title span").getByText("Corsair"),
+      page.getByTestId("panel-heading-title").locator("span").getByText("Corsair"),
     ).toBeVisible();
   });
 
   test("Shows Latest Ships", async ({ page }) => {
-    const ships = page.locator(".home-ships .panel");
+    const ships = page.getByTestId("home-ships").locator(".panel");
     await expect(ships).toHaveCount(2);
   });
 
   test("Shows Random Images", async ({ page }) => {
-    const images = page.locator(".home-images .home-image");
+    const images = page.getByTestId("home-images").getByTestId("home-image");
     await expect(images).toHaveCount(10);
   });
 });

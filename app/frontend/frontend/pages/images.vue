@@ -46,6 +46,7 @@ useGallery(".images");
     :records="images?.items || []"
     :async-status="asyncStatus"
     class="images"
+    data-test="images-list"
   >
     <template #default="{ records, loading, filterVisible }">
       <Grid

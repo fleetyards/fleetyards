@@ -42,7 +42,7 @@ test.describe("Signup", () => {
       await page.getByTestId("submit-login").click();
 
       await expect(
-        page.locator(".user-menu").getByText(user.username),
+        page.getByTestId("user-menu").getByText(user.username),
       ).toBeVisible();
 
       await nav.click("settings");
@@ -82,33 +82,33 @@ test.describe("Signup", () => {
       const usernameInput = page.getByTestId("input-username");
       await usernameInput.fill(user.username);
       await expect(
-        page.locator(".base-input").filter({ has: usernameInput }),
+        page.getByTestId("input-wrapper-username"),
       ).toHaveClass(/base-input--with-error/);
 
       const emailInput = page.getByTestId("input-email");
       await emailInput.fill(user.email);
       await expect(
-        page.locator(".base-input").filter({ has: emailInput }),
+        page.getByTestId("input-wrapper-email"),
       ).toHaveClass(/base-input--with-error/);
       const invalidEmail = "foo";
       await emailInput.fill(invalidEmail);
       await expect(
-        page.locator(".base-input").filter({ has: emailInput }),
+        page.getByTestId("input-wrapper-email"),
       ).toHaveClass(/base-input--with-error/);
       await emailInput.fill("test@test.de");
       await expect(
-        page.locator(".base-input").filter({ has: emailInput }),
+        page.getByTestId("input-wrapper-email"),
       ).not.toHaveClass(/base-input--with-error/);
 
       const passwordInput = page.getByTestId("input-password");
       const tooShortPassword = "foo";
       await passwordInput.fill(tooShortPassword);
       await expect(
-        page.locator(".base-input").filter({ has: passwordInput }),
+        page.getByTestId("input-wrapper-password"),
       ).toHaveClass(/base-input--with-error/);
       await passwordInput.fill("password");
       await expect(
-        page.locator(".base-input").filter({ has: passwordInput }),
+        page.getByTestId("input-wrapper-password"),
       ).not.toHaveClass(/base-input--with-error/);
 
       await page.locator("input[name='passwordConfirmation']").fill(password);

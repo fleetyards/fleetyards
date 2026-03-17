@@ -16,6 +16,6 @@ test.describe("Stats", () => {
 
     await expect(page).toHaveURL(/\/stats/);
 
-    await expect(page.locator(".stats")).toBeVisible();
+    await expect(page.getByTestId("stats")).toBeVisible();
   });
 });

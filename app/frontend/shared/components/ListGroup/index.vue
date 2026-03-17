@@ -25,7 +25,7 @@ withDefaults(defineProps<Props>(), {
     <TransitionGroup name="list">
       <slot name="prepend" />
 
-      <div v-for="item in items" :key="item.id" class="list-group__item">
+      <div v-for="item in items" :key="item.id" class="list-group__item" data-test="list-group-item">
         <div class="list-group__row">
           <div class="list-group__content">
             <slot name="display" :item="item" />

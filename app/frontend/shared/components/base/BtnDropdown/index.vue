@@ -125,6 +125,7 @@ const documentClick = (event: MouseEvent) => {
         :class="{
           visible,
         }"
+        data-test="dropdown-list"
         :style="listPosition"
       >
         <slot />

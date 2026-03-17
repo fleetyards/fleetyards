@@ -62,6 +62,7 @@ const groundSpeeds = computed(
 <template>
   <div
     class="row metrics-block top-metrics"
+    data-test="top-metrics"
     :class="{
       'metrics-padding': padding,
     }"

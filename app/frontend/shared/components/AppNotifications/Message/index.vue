@@ -57,6 +57,7 @@ onMounted(() => {
   <div
     class="app-notifications__message"
     :class="messageClasses"
+    :data-test="`notification-${type}`"
     @click="hideMessage"
   >
     <component :is="component" v-if="component" v-bind="componentProps" />

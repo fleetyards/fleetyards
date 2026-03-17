@@ -71,6 +71,7 @@ const image = computed(() => {
     :id="internalId"
     class="model-panel"
     :class="`model-panel-${model.slug}`"
+    :data-test="`model-panel-${model.slug}`"
     :highlight="highlight"
     :bg-image="image"
     :bg-rounded="details ? PanelBgRoundedEnum.TOP : PanelBgRoundedEnum.ALL"

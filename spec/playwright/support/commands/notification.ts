@@ -9,7 +9,8 @@ export default class Notification {
 
   async alert(message: string) {
     const alertModal = this.page
-      .locator(".app-notifications__message--alert div")
+      .getByTestId("notification-alert")
+      .locator("div")
       .getByText(message);
 
     await expect(alertModal).toBeVisible();
@@ -19,7 +20,8 @@ export default class Notification {
 
   async success(message: string) {
     const successModal = this.page
-      .locator(".app-notifications__message--success div")
+      .getByTestId("notification-success")
+      .locator("div")
       .getByText(message);
 
     await expect(successModal).toBeVisible();

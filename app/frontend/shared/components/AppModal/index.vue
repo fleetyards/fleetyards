@@ -146,6 +146,7 @@ defineExpose({
     ref="modal"
     :class="modalClasses"
     class="app-modal fade"
+    data-test="modal"
     @click.self="() => close()"
   >
     <div class="modal-dialog" :class="modalDialogClasses">

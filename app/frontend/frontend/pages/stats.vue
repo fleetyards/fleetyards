@@ -113,7 +113,7 @@ watch(
   <Teleport to="#header-left">
     <Heading hidden>{{ t(`headlines.${route.meta.title}`) }}</Heading>
   </Teleport>
-  <div class="row">
+  <div class="row" data-test="stats">
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
         icon="fa-duotone fa-rocket-launch fa-4x"

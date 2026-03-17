@@ -30,7 +30,7 @@ const cssClasses = computed(() => {
 </script>
 
 <template>
-  <component :is="tag" :class="cssClasses">
+  <component :is="tag" :class="cssClasses" data-test="pill">
     <slot />
   </component>
 </template>

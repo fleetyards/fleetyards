@@ -201,7 +201,7 @@ const hasSelectedActor = computed(() => {
       <BasePill :variant="stateVariant(item.state)" uppercase margin-right>
         {{ stateLabel(item.state) }}
       </BasePill>
-      <span class="feature-name">{{ item.name }}</span>
+      <span class="feature-name" data-test="feature-name">{{ item.name }}</span>
       <BasePill v-if="item.selfService" margin-right>
         {{ t("labels.features.selfService") }}
       </BasePill>
@@ -214,12 +214,12 @@ const hasSelectedActor = computed(() => {
     </template>
 
     <template #actions="{ item }">
-      <Toggle :active="item.state === 'on'" @toggle="toggleFeature(item)" />
+      <Toggle :active="item.state === 'on'" data-test="toggle-feature" @toggle="toggleFeature(item)" />
     </template>
 
     <template #edit="{ item }">
-      <div class="edit-feature">
-        <div class="edit-section">
+      <div class="edit-feature" data-test="edit-feature">
+        <div class="edit-section" data-test="edit-section">
           <h4>{{ t("headlines.admin.features.selfService") }}</h4>
           <Toggle
             :active="item.selfService"
@@ -228,11 +228,12 @@ const hasSelectedActor = computed(() => {
                 ? t('labels.features.selfServiceEnabled')
                 : t('labels.features.selfServiceDisabled')
             "
+            data-test="toggle-self-service"
             @toggle="toggleSelfServiceFlag(item)"
           />
         </div>
 
-        <div class="edit-section">
+        <div class="edit-section" data-test="edit-section">
           <h4>{{ t("headlines.admin.features.groups") }}</h4>
           <div class="edit-groups">
             <div
@@ -255,6 +256,7 @@ const hasSelectedActor = computed(() => {
               )"
               :key="group"
               :size="BtnSizesEnum.SMALL"
+              :data-test="`add-group-${group}`"
               inline
               @click.prevent="addGroup(item.name, group)"
             >
@@ -264,7 +266,7 @@ const hasSelectedActor = computed(() => {
           </div>
         </div>
 
-        <div class="edit-section">
+        <div class="edit-section" data-test="edit-section">
           <h4>{{ t("headlines.admin.features.actors") }}</h4>
           <div v-if="item.actors.length > 0" class="edit-actors">
             <div

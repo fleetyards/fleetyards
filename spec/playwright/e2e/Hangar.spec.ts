@@ -51,7 +51,7 @@ test.describe("Hangar", () => {
     await expect(page).toHaveURL(/\/ships\//);
 
     await page
-      .locator(".model-panel-300i")
+      .getByTestId("model-panel-300i")
       .getByTestId("add-to-hangar")
       .click();
 
@@ -60,19 +60,19 @@ test.describe("Hangar", () => {
     await nav.click("hangar");
 
     await expect(
-      page.locator(".model-panel-300i .panel-heading__title a").first(),
+      page.getByTestId("model-panel-300i").getByTestId("panel-heading-title").locator("a").first(),
     ).toContainText("300i");
 
     await page
-      .locator(".model-panel-300i")
+      .getByTestId("model-panel-300i")
       .getByTestId("vehicle-menu")
       .click();
     await page
-      .locator(".panel-btn-dropdown__list.visible")
+      .getByTestId("dropdown-list")
       .locator("[data-test='vehicle-edit-name']")
       .click();
 
-    await page.locator(".app-modal.show").waitFor({ state: "visible" });
+    await page.getByTestId("modal").waitFor({ state: "visible" });
 
     await page.getByTestId("input-name").fill("Enterprise");
 
@@ -82,10 +82,10 @@ test.describe("Hangar", () => {
     await page.getByTestId("vehicle-save").click();
     await updateResponse;
 
-    await page.locator(".app-modal").waitFor({ state: "hidden" });
+    await page.getByTestId("modal").waitFor({ state: "hidden" });
 
     await expect(
-      page.locator(".model-panel-300i .panel-heading__title a").first(),
+      page.getByTestId("model-panel-300i").getByTestId("panel-heading-title").locator("a").first(),
     ).toContainText("Enterprise");
 
     await page.getByTestId("fleetchart-link").click();

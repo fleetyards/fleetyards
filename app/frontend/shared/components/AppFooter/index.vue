@@ -38,7 +38,7 @@ const openSupportModal = () => {
 </script>
 
 <template>
-  <footer class="app-footer">
+  <footer class="app-footer" data-test="app-footer">
     <div class="app-footer__border app-footer__border-top">
       <div class="app-footer__border-left" />
       <div class="app-footer__border-right" />

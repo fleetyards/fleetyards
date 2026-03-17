@@ -463,7 +463,7 @@ defineExpose({
 </script>
 
 <template>
-  <div ref="filterGroup" class="filter-group" :class="cssClasses">
+  <div ref="filterGroup" class="filter-group" :class="cssClasses" :data-test="`filter-group-${name}`">
     <transition name="fade">
       <label
         v-show="labelVisible"
@@ -482,6 +482,7 @@ defineExpose({
         hasLabel: labelVisible,
       }"
       class="filter-group-title"
+      data-test="filter-group-title"
       @click="toggle"
     >
       <span class="filter-group-title-prompt">

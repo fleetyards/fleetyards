@@ -201,6 +201,7 @@ const settingsActive = computed(() => {
           :avatar="true"
           :label="currentUser.username"
           class="user-menu mt-1"
+          data-test="user-menu"
         />
       </template>
       <NavItem

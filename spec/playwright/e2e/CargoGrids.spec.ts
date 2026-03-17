@@ -11,7 +11,7 @@ test.describe("Cargo Grids", () => {
     await acceptCookie.accept();
 
     // Wait for the filter component to be interactive
-    await page.waitForSelector(".filter-group");
+    await page.getByTestId("filter-group-cargo-grid-model").waitFor();
   });
 
   test("Loads the page", async ({ page }) => {
@@ -32,8 +32,8 @@ test.describe("Cargo Grids", () => {
     page,
   }) => {
     // Open the model filter dropdown and search for Caterpillar
-    const filterGroup = page.locator(".filter-group").first();
-    await filterGroup.locator(".filter-group-title").click();
+    const filterGroup = page.getByTestId("filter-group-cargo-grid-model");
+    await filterGroup.getByTestId("filter-group-title").click();
     await filterGroup.locator("input").first().fill("Caterpillar");
 
     // Wait for search results and select
@@ -43,8 +43,8 @@ test.describe("Cargo Grids", () => {
     await expect(page).toHaveURL(/ship=caterpillar/);
 
     // The cargo grid viewer should appear with stats
-    await expect(page.locator(".cargo-grid-viewer")).toBeVisible();
-    await expect(page.locator(".cargo-grid-viewer__stats")).toBeVisible();
+    await expect(page.getByTestId("cargo-grid-viewer")).toBeVisible();
+    await expect(page.getByTestId("cargo-grid-viewer-stats")).toBeVisible();
   });
 
   test("Selects a model via URL query parameter", async ({ page }) => {
@@ -54,26 +54,26 @@ test.describe("Cargo Grids", () => {
     await page.waitForLoadState("networkidle");
 
     // The cargo grid viewer should appear
-    await expect(page.locator(".cargo-grid-viewer")).toBeVisible();
-    await expect(page.locator(".cargo-grid-viewer__stats")).toBeVisible();
+    await expect(page.getByTestId("cargo-grid-viewer")).toBeVisible();
+    await expect(page.getByTestId("cargo-grid-viewer-stats")).toBeVisible();
   });
 
   test("Auto-fills container counts when selecting a model with cargo holds", async ({
     page,
   }) => {
-    const filterGroup = page.locator(".filter-group").first();
-    await filterGroup.locator(".filter-group-title").click();
+    const filterGroup = page.getByTestId("filter-group-cargo-grid-model");
+    await filterGroup.getByTestId("filter-group-title").click();
     await filterGroup.locator("input").first().fill("Caterpillar");
 
     const option = page.getByText("Caterpillar").first();
     await option.click();
 
     // Wait for model to load and cargo grid viewer to appear
-    await expect(page.locator(".cargo-grid-viewer")).toBeVisible();
+    await expect(page.getByTestId("cargo-grid-viewer")).toBeVisible();
 
     // At least one container input should have a value > 0 after greedy fill
     await expect(async () => {
-      const containerFields = page.locator(".container-field input");
+      const containerFields = page.locator("[data-test^='container-field-'] input");
       const count = await containerFields.count();
       let hasNonZero = false;
       for (let i = 0; i < count; i++) {
@@ -111,7 +111,7 @@ test.describe("Cargo Grids", () => {
     await page.waitForLoadState("networkidle");
 
     // Should show the no-cargo-holds message, not the viewer
-    await expect(page.locator(".cargo-grid-viewer")).not.toBeVisible();
+    await expect(page.getByTestId("cargo-grid-viewer")).not.toBeVisible();
   });
 
   test("Resets filters", async ({ page }) => {
@@ -120,7 +120,7 @@ test.describe("Cargo Grids", () => {
 
     // Click reset
     const resetBtn = page
-      .locator(".filters__actions")
+      .getByTestId("filters-actions")
       .getByText("Reset")
       .first();
     await resetBtn.click();

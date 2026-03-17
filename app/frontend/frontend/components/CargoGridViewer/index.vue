@@ -875,8 +875,8 @@ const resetCamera = () => {
 </script>
 
 <template>
-  <div class="cargo-grid-viewer">
-    <div class="cargo-grid-viewer__stats">
+  <div class="cargo-grid-viewer" data-test="cargo-grid-viewer">
+    <div class="cargo-grid-viewer__stats" data-test="cargo-grid-viewer-stats">
       <template v-if="isPreviewMode">
         <div class="cargo-grid-viewer__stat">
           <span class="cargo-grid-viewer__stat-label">{{

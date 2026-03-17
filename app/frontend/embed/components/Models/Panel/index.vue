@@ -48,7 +48,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <Panel v-if="model" :class="`model-${model.slug}`">
+    <Panel v-if="model" :class="`model-${model.slug}`" :data-test="`model-${model.slug}`">
       <div class="panel-heading">
         <h2 class="panel-title">
           <a :href="url" target="_blank" rel="noopener">

@@ -73,16 +73,16 @@ const handleCancel = async () => {
 
 <template>
   <Transition name="app-confirm-fade">
-    <div v-if="visible" class="app-confirm">
+    <div v-if="visible" class="app-confirm" data-test="confirm-dialog">
       <div class="app-confirm__inner">
         <div class="app-confirm__text">
           {{ text }}
         </div>
-        <div class="app-confirm__buttons">
-          <Btn inline size="small" autofocus @click="handleCancel">{{
+        <div class="app-confirm__buttons" data-test="confirm-buttons">
+          <Btn inline size="small" data-test="confirm-cancel" autofocus @click="handleCancel">{{
             cancelText
           }}</Btn>
-          <Btn inline size="small" @click="handleConfirm">{{
+          <Btn inline size="small" data-test="confirm-ok" @click="handleConfirm">{{
             confirmText
           }}</Btn>
         </div>

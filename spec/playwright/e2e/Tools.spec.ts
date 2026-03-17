@@ -17,7 +17,7 @@ test.describe("Tools Index", () => {
   });
 
   test("Shows tool cards", async ({ page }) => {
-    const toolCards = page.locator(".tool-card");
+    const toolCards = page.getByTestId("tool-card");
     await expect(toolCards.first()).toBeVisible();
 
     // Verify some known tools are present
@@ -27,12 +27,12 @@ test.describe("Tools Index", () => {
   });
 
   test("Shows disabled banner for unavailable tools", async ({ page }) => {
-    const disabledBanner = page.locator(".tool-card-banner");
+    const disabledBanner = page.getByTestId("tool-card-banner");
     await expect(disabledBanner).toBeVisible();
   });
 
   test("Tool cards have external links", async ({ page }) => {
-    const toolLinks = page.locator(".tool-card-link");
+    const toolLinks = page.getByTestId("tool-card-link");
     await expect(toolLinks.first()).toBeVisible();
   });
 });
