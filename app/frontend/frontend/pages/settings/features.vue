@@ -16,6 +16,7 @@ import Toggle from "@/shared/components/base/Toggle/index.vue";
 import {
   useUserFeatures,
   getUserFeaturesQueryKey,
+  getFeaturesQueryKey,
   enableUserFeature,
   disableUserFeature,
   type UserFeature,
@@ -28,7 +29,10 @@ const { displaySuccess, displayAlert } = useAppNotifications();
 const { data: features, isLoading } = useUserFeatures();
 const queryClient = useQueryClient();
 const invalidateUserFeatures = () =>
-  queryClient.invalidateQueries({ queryKey: getUserFeaturesQueryKey() });
+  Promise.all([
+    queryClient.invalidateQueries({ queryKey: getUserFeaturesQueryKey() }),
+    queryClient.invalidateQueries({ queryKey: getFeaturesQueryKey() }),
+  ]);
 
 interface FeatureItem extends UserFeature {
   id: string;

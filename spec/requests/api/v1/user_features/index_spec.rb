@@ -35,25 +35,17 @@ RSpec.describe "api/v1/user_features", type: :request, swagger_doc: "v1/schema.y
     end
   end
 
-  path "/user-features" do
-    get("excludes globally enabled features") do
-      operationId "userFeaturesExcludesGlobal"
-      tags "UserFeatures"
-      produces "application/json"
+  describe "excludes globally enabled features" do
+    before do
+      Flipper.enable("TestFeature")
+    end
 
-      before do
-        Flipper.enable("TestFeature")
-      end
-
-      response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/UserFeature"}
-
-        run_test! do |response|
-          data = JSON.parse(response.body)
-          expect(data).to be_an(Array)
-          expect(data).to be_empty
-        end
-      end
+    it "does not return globally enabled features" do
+      sign_in(user)
+      get "/api/v1/user-features", headers: {"Accept" => "application/json"}
+      data = JSON.parse(response.body)
+      expect(data).to be_an(Array)
+      expect(data).to be_empty
     end
   end
 end
