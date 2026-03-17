@@ -145,7 +145,11 @@ defineExpose({
         </BtnGroup>
       </template>
       <template v-else>
-        <BtnGroup inline>
+        <slot name="pre-actions" :item="item" />
+        <BtnGroup
+          v-if="!hideEdit || !hideDestroy || $slots.actions"
+          inline
+        >
           <slot name="actions" :item="item" />
           <Btn
             v-if="!hideEdit"

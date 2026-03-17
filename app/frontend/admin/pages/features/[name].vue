@@ -10,6 +10,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import Toggle from "@/shared/components/base/Toggle/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import UserFilterGroup from "@/admin/components/base/UserFilterGroup/index.vue";
@@ -198,21 +199,16 @@ const stateLabel = (state: string) => {
             {{ stateLabel(feature.state) }}
           </BasePill>
         </span>
-        <Btn
-          :variant="
-            feature.state === 'on'
-              ? BtnVariantsEnum.DANGER
-              : BtnVariantsEnum.DEFAULT
-          "
+        <Toggle
+          :active="feature.state === 'on'"
           :loading="toggling"
-          @click.prevent="toggleGlobal"
-        >
-          {{
-            feature.state === "on"
-              ? t("actions.disableGlobally")
-              : t("actions.enableGlobally")
-          }}
-        </Btn>
+          :label="
+            feature.state === 'on'
+              ? t('actions.disableGlobally')
+              : t('actions.enableGlobally')
+          "
+          @toggle="toggleGlobal"
+        />
       </div>
     </Panel>
 

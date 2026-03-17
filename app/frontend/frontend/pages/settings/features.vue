@@ -10,7 +10,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import Toggle from "@/shared/components/base/Toggle/index.vue";
 import {
   useUserFeatures,
   getUserFeaturesQueryKey,
@@ -83,10 +83,11 @@ const toggleFeature = async (feature: FeatureItem) => {
       </span>
     </template>
 
-    <template #actions="{ item }">
-      <Btn :size="BtnSizesEnum.SMALL" @click.prevent="toggleFeature(item)">
-        <i :class="item.enabled ? 'fa-duotone fa-toggle-on' : 'fa-duotone fa-toggle-off'" />
-      </Btn>
+    <template #pre-actions="{ item }">
+      <Toggle
+        :active="item.enabled"
+        @toggle="toggleFeature(item)"
+      />
     </template>
   </InlineEditableList>
 </template>

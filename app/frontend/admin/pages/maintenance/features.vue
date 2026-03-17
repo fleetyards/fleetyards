@@ -11,6 +11,7 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import Toggle from "@/shared/components/base/Toggle/index.vue";
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import UserFilterGroup from "@/admin/components/base/UserFilterGroup/index.vue";
 import FleetFilterGroup from "@/admin/components/base/FleetFilterGroup/index.vue";
@@ -212,35 +213,26 @@ const hasSelectedActor = computed(() => {
       </BasePill>
     </template>
 
-    <template #actions="{ item }">
-      <Btn :size="BtnSizesEnum.SMALL" @click.prevent="toggleFeature(item)">
-        <i
-          :class="
-            item.state === 'on' ? 'fa-duotone fa-toggle-on' : 'fa-duotone fa-toggle-off'
-          "
-        />
-      </Btn>
+    <template #pre-actions="{ item }">
+      <Toggle
+        :active="item.state === 'on'"
+        @toggle="toggleFeature(item)"
+      />
     </template>
 
     <template #edit="{ item }">
       <div class="edit-feature">
         <div class="edit-section">
           <h4>{{ t("headlines.admin.features.selfService") }}</h4>
-          <Btn
-            :size="BtnSizesEnum.SMALL"
-            @click.prevent="toggleSelfServiceFlag(item)"
-          >
-            <i
-              :class="
-                item.selfService ? 'fa-duotone fa-toggle-on' : 'fa-duotone fa-toggle-off'
-              "
-            />
-            {{
+          <Toggle
+            :active="item.selfService"
+            :label="
               item.selfService
-                ? t("labels.features.selfServiceEnabled")
-                : t("labels.features.selfServiceDisabled")
-            }}
-          </Btn>
+                ? t('labels.features.selfServiceEnabled')
+                : t('labels.features.selfServiceDisabled')
+            "
+            @toggle="toggleSelfServiceFlag(item)"
+          />
         </div>
 
         <div class="edit-section">
