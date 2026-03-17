@@ -8,6 +8,7 @@ export default {
 import { useI18n } from "@/shared/composables/useI18n";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
+import Toggle from "@/shared/components/base/Toggle/index.vue";
 import {
   type ModelExtended,
   type ModelPaint,
@@ -25,10 +26,7 @@ import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
   model: ModelExtended;
@@ -176,28 +174,16 @@ const onSaveCreate = async () => {
     </template>
 
     <template #actions="{ item }">
-      <Btn
+      <Toggle
         v-tooltip="t('labels.modelPaint.hidden')"
-        :size="BtnSizesEnum.SMALL"
-        :variant="BtnVariantsEnum.TRANSPARENT"
-        @click="toggleField(item, 'hidden')"
-      >
-        <i
-          class="fa-duotone fa-eye-slash"
-          :class="item.hidden ? 'text-warning' : 'text-muted'"
-        />
-      </Btn>
-      <Btn
+        :active="!item.hidden"
+        @toggle="toggleField(item, 'hidden')"
+      />
+      <Toggle
         v-tooltip="t('labels.modelPaint.active')"
-        :size="BtnSizesEnum.SMALL"
-        :variant="BtnVariantsEnum.TRANSPARENT"
-        @click="toggleField(item, 'active')"
-      >
-        <i
-          class="fa-duotone fa-ban"
-          :class="!item.active ? 'text-warning' : 'text-muted'"
-        />
-      </Btn>
+        :active="item.active"
+        @toggle="toggleField(item, 'active')"
+      />
     </template>
 
     <template #edit="{ item }">

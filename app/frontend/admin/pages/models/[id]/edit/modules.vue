@@ -9,6 +9,7 @@ import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
+import Toggle from "@/shared/components/base/Toggle/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
@@ -232,6 +233,16 @@ const onUnlink = (record: ModelModule) => {
     </template>
 
     <template #actions="{ item }">
+      <Toggle
+        v-tooltip="t('labels.modelModule.hidden')"
+        :active="!item.hidden"
+        @toggle="toggleField(item, 'hidden')"
+      />
+      <Toggle
+        v-tooltip="t('labels.modelModule.active')"
+        :active="item.active"
+        @toggle="toggleField(item, 'active')"
+      />
       <Btn
         v-tooltip="t('actions.unlink')"
         :size="BtnSizesEnum.SMALL"
@@ -239,28 +250,6 @@ const onUnlink = (record: ModelModule) => {
         @click="onUnlink(item)"
       >
         <i class="fa-duotone fa-unlink text-muted" />
-      </Btn>
-      <Btn
-        v-tooltip="t('labels.modelModule.hidden')"
-        :size="BtnSizesEnum.SMALL"
-        :variant="BtnVariantsEnum.TRANSPARENT"
-        @click="toggleField(item, 'hidden')"
-      >
-        <i
-          class="fa-duotone fa-eye-slash"
-          :class="item.hidden ? 'text-warning' : 'text-muted'"
-        />
-      </Btn>
-      <Btn
-        v-tooltip="t('labels.modelModule.active')"
-        :size="BtnSizesEnum.SMALL"
-        :variant="BtnVariantsEnum.TRANSPARENT"
-        @click="toggleField(item, 'active')"
-      >
-        <i
-          class="fa-duotone fa-ban"
-          :class="!item.active ? 'text-warning' : 'text-muted'"
-        />
       </Btn>
     </template>
 

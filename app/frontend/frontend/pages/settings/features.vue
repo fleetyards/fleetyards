@@ -83,7 +83,7 @@ const toggleFeature = async (feature: FeatureItem) => {
       </span>
     </template>
 
-    <template #pre-actions="{ item }">
+    <template #actions="{ item }">
       <Toggle
         :active="item.enabled"
         @toggle="toggleFeature(item)"

@@ -8,6 +8,11 @@ export default {
 import { useI18n } from "@/shared/composables/useI18n";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
+import Toggle from "@/shared/components/base/Toggle/index.vue";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import {
   type ModelExtended,
   type Image,
@@ -27,10 +32,6 @@ import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import DirectUpload, {
   type FileUpload,
 } from "@/shared/components/DirectUpload/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
 
 type Props = {
   model: ModelExtended;
@@ -175,17 +176,11 @@ const handleUploadDone = async (files: FileUpload[]) => {
     </template>
 
     <template #actions="{ item }">
-      <Btn
+      <Toggle
         v-tooltip="t('labels.image.enabled')"
-        :size="BtnSizesEnum.SMALL"
-        :variant="BtnVariantsEnum.TRANSPARENT"
-        @click="toggleField(item, 'enabled')"
-      >
-        <i
-          class="fa-duotone fa-ban"
-          :class="!item.enabled ? 'text-warning' : 'text-muted'"
-        />
-      </Btn>
+        :active="item.enabled"
+        @toggle="toggleField(item, 'enabled')"
+      />
       <Btn
         v-tooltip="t('labels.image.global')"
         :size="BtnSizesEnum.SMALL"

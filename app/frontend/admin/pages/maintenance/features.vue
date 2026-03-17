@@ -213,7 +213,7 @@ const hasSelectedActor = computed(() => {
       </BasePill>
     </template>
 
-    <template #pre-actions="{ item }">
+    <template #actions="{ item }">
       <Toggle
         :active="item.state === 'on'"
         @toggle="toggleFeature(item)"
