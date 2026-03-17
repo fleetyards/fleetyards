@@ -8,6 +8,7 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
@@ -102,14 +103,14 @@ const displayAsList = () => {
     <hr />
     <div class="row">
       <div class="col-6">
-        <FormCheckbox
+        <FormToggle
           v-model="fleetStore.grouped"
           name="grouped"
           :label="t('actions.groupedByModel')"
         />
       </div>
       <div v-if="fleetStore.gridView" class="col-6">
-        <FormCheckbox
+        <FormToggle
           v-model="fleetStore.detailsVisible"
           name="detailsVisible"
           :label="t('actions.showDetails')"

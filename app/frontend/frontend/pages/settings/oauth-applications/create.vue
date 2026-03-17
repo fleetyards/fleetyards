@@ -11,6 +11,7 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import {
   type OauthApplicationInput,
@@ -111,7 +112,7 @@ const handleCancel = async () => {
         <p class="field-hint">
           {{ t("labels.oauthApplication.redirectUriHint") }}
         </p>
-        <FormCheckbox
+        <FormToggle
           v-model="confidential"
           v-bind="confidentialProps"
           name="confidential"

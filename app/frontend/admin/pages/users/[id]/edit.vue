@@ -18,7 +18,7 @@ import { useForm } from "vee-validate";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
-import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
 import { useQueryClient } from "@tanstack/vue-query";
@@ -141,7 +141,7 @@ const handleCancel = async () => {
       <div class="col-12 col-md-6">
         <div class="row">
           <div class="col-12 col-md-6">
-            <FormCheckbox
+            <FormToggle
               v-model="saleNotify"
               translation-key="user.saleNotify"
               v-bind="saleNotifyProps"
@@ -149,7 +149,7 @@ const handleCancel = async () => {
             />
           </div>
           <div class="col-12 col-md-6">
-            <FormCheckbox
+            <FormToggle
               v-model="tester"
               translation-key="user.tester"
               v-bind="testerProps"
@@ -160,7 +160,7 @@ const handleCancel = async () => {
         <hr />
         <div class="row">
           <div class="col-12 col-md-6">
-            <FormCheckbox
+            <FormToggle
               v-model="publicHangar"
               translation-key="user.publicHangar"
               v-bind="publicHangarProps"
@@ -168,7 +168,7 @@ const handleCancel = async () => {
             />
           </div>
           <div class="col-12 col-md-6">
-            <FormCheckbox
+            <FormToggle
               v-model="publicHangarLoaners"
               translation-key="user.publicHangarLoaners"
               v-bind="publicHangarLoanersProps"
@@ -178,7 +178,7 @@ const handleCancel = async () => {
         </div>
         <div class="row">
           <div class="col-12 col-md-6">
-            <FormCheckbox
+            <FormToggle
               v-model="publicWishlist"
               translation-key="user.publicWishlist"
               v-bind="publicWishlistProps"
@@ -186,7 +186,7 @@ const handleCancel = async () => {
             />
           </div>
           <div class="col-12 col-md-6">
-            <FormCheckbox
+            <FormToggle
               v-model="hideOwner"
               translation-key="user.hideOwner"
               v-bind="hideOwnerProps"

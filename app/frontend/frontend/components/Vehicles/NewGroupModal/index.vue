@@ -9,7 +9,7 @@ import { useForm } from "vee-validate";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import { VSwatches } from "vue3-swatches";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
@@ -89,7 +89,7 @@ const onSubmit = handleSubmit(async (values) => {
           />
         </div>
         <div class="col-12 col-md-6">
-          <FormCheckbox
+          <FormToggle
             v-model="publicField"
             name="public"
             v-bind="publicFieldProps"

@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
@@ -92,7 +92,7 @@ const save = async () => {
               :key="group.id"
               class="col-12 col-md-6"
             >
-              <FormCheckbox
+              <FormToggle
                 :name="group.name"
                 :label="group.name"
                 :value="selected(group.id)"

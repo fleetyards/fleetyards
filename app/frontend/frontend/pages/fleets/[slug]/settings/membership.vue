@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
 import { useForm } from "vee-validate";
-import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import type { FilterOption } from "@/services/fyApi";
@@ -158,7 +158,7 @@ const onSubmit = handleSubmit(async (values) => {
   <form id="fleet-membership-form" @submit.prevent="onSubmit">
     <div class="row">
       <div class="col-12 col-md-6">
-        <FormCheckbox
+        <FormToggle
           v-model="primary"
           name="primary"
           translation-key="fleet.members.primary"

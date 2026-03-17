@@ -16,6 +16,7 @@ import SizeFilterGroup from "@/frontend/components/base/ModelSizeFilterGroup/ind
 import WillItFitFilterGroup from "@/frontend/components/base/ModelWillItFitFilterGroup/index.vue";
 import HangarGroupsFilterGroup from "@/frontend/components/base/HangarGroupsFilterGroup/index.vue";
 import BoughtViaFilterGroup from "@/frontend/components/base/BoughtViaFilterGroup/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
@@ -249,7 +250,7 @@ const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
       name="public"
     />
 
-    <FormCheckbox
+    <FormToggle
       v-model="form.withCargo"
       :label="t('labels.filters.models.withCargo')"
       name="withCargo"

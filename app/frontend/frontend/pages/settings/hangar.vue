@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup>
 import { useSessionStore } from "@/frontend/stores/session";
 import { type UserUpdateInput } from "@/services/fyApi";
-import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -96,7 +96,7 @@ const onSubmit = handleSubmit(async (values) => {
   <form id="settings-hangar-form" @submit.prevent="onSubmit">
     <div class="row">
       <div class="col-12 col-md-6">
-        <FormCheckbox
+        <FormToggle
           v-model="publicHangar"
           v-bind="publicHangarProps"
           name="publicHangar"
@@ -104,7 +104,7 @@ const onSubmit = handleSubmit(async (values) => {
         />
       </div>
       <div class="col-12 col-md-6">
-        <FormCheckbox
+        <FormToggle
           v-model="publicHangarLoaners"
           name="publicHangarLoaners"
           v-bind="publicHangarLoanersProps"
@@ -112,7 +112,7 @@ const onSubmit = handleSubmit(async (values) => {
         />
       </div>
       <div class="col-12 col-md-6">
-        <FormCheckbox
+        <FormToggle
           v-model="publicWishlist"
           name="publicWishlist"
           v-bind="publicWishlistProps"
@@ -120,7 +120,7 @@ const onSubmit = handleSubmit(async (values) => {
         />
       </div>
       <div class="col-12 col-md-6">
-        <FormCheckbox
+        <FormToggle
           v-model="hideOwner"
           name="hideOwner"
           v-bind="hideOwnerProps"

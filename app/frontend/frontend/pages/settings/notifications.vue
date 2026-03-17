@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -88,7 +88,7 @@ const onSubmit = handleSubmit(async (values) => {
     </div>
     <div class="row">
       <div class="col-12 col-md-6">
-        <FormCheckbox
+        <FormToggle
           v-model="saleNotify"
           v-bind="saleNotifyProps"
           :label="t('labels.user.saleNotify')"

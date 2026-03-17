@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { type Cookies } from "@/frontend/stores/cookies";
@@ -155,7 +155,7 @@ const hideInfo = () => {
             <fieldset>
               <legend>{{ t("privacySettings.essential") }}</legend>
               <div class="form-item">
-                <FormCheckbox
+                <FormToggle
                   name="fontawesome"
                   :value="true"
                   :label="t('privacySettings.fontawesome')"
@@ -167,7 +167,7 @@ const hideInfo = () => {
                 />
               </div>
               <div class="form-item">
-                <FormCheckbox
+                <FormToggle
                   name="googleFonts"
                   :value="true"
                   :label="t('privacySettings.googleFonts')"
@@ -182,7 +182,7 @@ const hideInfo = () => {
             <fieldset>
               <legend>{{ t("privacySettings.functional") }}</legend>
               <div class="form-item">
-                <FormCheckbox
+                <FormToggle
                   v-model="form.ahoy"
                   name="ahoy"
                   :label="t('privacySettings.ahoy')"
@@ -193,7 +193,7 @@ const hideInfo = () => {
                 />
               </div>
               <div class="form-item">
-                <FormCheckbox
+                <FormToggle
                   v-model="form.youtube"
                   name="youtube"
                   :label="t('privacySettings.youtube')"

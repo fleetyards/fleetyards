@@ -8,7 +8,7 @@ export default {
 import { useForm } from "vee-validate";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -140,7 +140,7 @@ const onSubmit = handleSubmit(async (values) => {
             :hide-label-on-empty="true"
             :clearable="true"
           />
-          <FormCheckbox
+          <FormToggle
             v-model="rememberMe"
             v-bind="rememberMeProps"
             name="rememberMe"

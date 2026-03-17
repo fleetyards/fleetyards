@@ -15,7 +15,7 @@ import {
 import { useForm } from "vee-validate";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
-import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import ModelFilterGroup from "@/admin/components/base/ModelFilterGroup/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
@@ -107,7 +107,7 @@ const handleCancel = async () => {
       <div class="col-12 col-md-6">
         <div class="row">
           <div class="col-12 col-md-4">
-            <FormCheckbox
+            <FormToggle
               v-model="hidden"
               translation-key="modelPaint.hidden"
               v-bind="hiddenProps"
@@ -115,7 +115,7 @@ const handleCancel = async () => {
             />
           </div>
           <div class="col-12 col-md-4">
-            <FormCheckbox
+            <FormToggle
               v-model="active"
               translation-key="modelPaint.active"
               v-bind="activeProps"
@@ -123,7 +123,7 @@ const handleCancel = async () => {
             />
           </div>
           <div class="col-12 col-md-4">
-            <FormCheckbox
+            <FormToggle
               v-model="onSale"
               translation-key="modelPaint.onSale"
               v-bind="onSaleProps"

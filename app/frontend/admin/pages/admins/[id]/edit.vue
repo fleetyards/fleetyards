@@ -16,7 +16,7 @@ import {
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
 import { useQueryClient } from "@tanstack/vue-query";
@@ -110,7 +110,7 @@ const handleCancel = async () => {
       <div class="col-12 col-md-6">
         <FormInput v-model="username" v-bind="usernameProps" name="username" />
         <FormInput v-model="email" v-bind="emailProps" name="email" />
-        <FormCheckbox
+        <FormToggle
           v-model="superAdmin"
           v-bind="superAdminProps"
           translation-key="adminUser.superAdmin"

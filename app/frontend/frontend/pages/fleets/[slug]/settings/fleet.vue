@@ -13,7 +13,7 @@ import {
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
@@ -231,7 +231,7 @@ const onDestroy = async () => {
     </div>
     <div class="row">
       <div class="col-12 col-md-6">
-        <FormCheckbox
+        <FormToggle
           v-model="publicFleet"
           name="publicFLeet"
           translation-key="fleet.public"
@@ -239,7 +239,7 @@ const onDestroy = async () => {
         />
       </div>
       <div class="col-12 col-md-6">
-        <FormCheckbox
+        <FormToggle
           v-model="publicFleetStats"
           name="publicFleetStats"
           translation-key="fleet.publicStats"

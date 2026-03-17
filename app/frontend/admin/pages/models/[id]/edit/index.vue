@@ -17,7 +17,7 @@ import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import ModelForm from "@/admin/components/Models/Form/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
-import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import ModelFilterGroup from "@/admin/components/base/ModelFilterGroup/index.vue";
 import ManufacturerFilterGroup from "@/admin/components/base/ManufacturerFilterGroup/index.vue";
 import ProductionStatusFilterGroup from "@/admin/components/base/ProductionStatusFilterGroup/index.vue";
@@ -117,7 +117,7 @@ const [holo, holoProps] = defineField("holo");
       <div class="col-12 col-md-6">
         <div class="row">
           <div class="col-12 col-md-4">
-            <FormCheckbox
+            <FormToggle
               v-model="hidden"
               translation-key="model.hidden"
               v-bind="hiddenProps"
@@ -125,7 +125,7 @@ const [holo, holoProps] = defineField("holo");
             />
           </div>
           <div class="col-12 col-md-4">
-            <FormCheckbox
+            <FormToggle
               v-model="active"
               translation-key="model.active"
               v-bind="activeProps"
@@ -133,7 +133,7 @@ const [holo, holoProps] = defineField("holo");
             />
           </div>
           <div class="col-12 col-md-4">
-            <FormCheckbox
+            <FormToggle
               v-model="ground"
               translation-key="model.ground"
               v-bind="groundProps"

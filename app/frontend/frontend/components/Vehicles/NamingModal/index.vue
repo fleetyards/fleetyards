@@ -9,7 +9,7 @@ import { useForm } from "vee-validate";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { transformErrors } from "@/frontend/utils/transformErrors";
 import {
@@ -146,7 +146,7 @@ const useName = (newName: string) => {
           </div>
         </div>
         <div class="col-12 col-md-6">
-          <FormCheckbox
+          <FormToggle
             v-model="nameVisible"
             name="nameVisible"
             :label="t('labels.vehicle.nameVisible')"

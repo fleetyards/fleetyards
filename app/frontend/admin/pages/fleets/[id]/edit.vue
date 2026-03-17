@@ -18,7 +18,7 @@ import { useForm } from "vee-validate";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
-import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
 import { useQueryClient } from "@tanstack/vue-query";
@@ -163,7 +163,7 @@ const handleCancel = async () => {
       <div class="col-12 col-md-6">
         <div class="row">
           <div class="col-12 col-md-6">
-            <FormCheckbox
+            <FormToggle
               v-model="publicFleet"
               v-bind="publicFleetProps"
               translation-key="fleet.publicFleet"
@@ -171,7 +171,7 @@ const handleCancel = async () => {
             />
           </div>
           <div class="col-12 col-md-6">
-            <FormCheckbox
+            <FormToggle
               v-model="publicFleetStats"
               v-bind="publicFleetStatsProps"
               translation-key="fleet.publicFleetStats"

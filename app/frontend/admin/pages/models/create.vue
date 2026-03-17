@@ -17,7 +17,7 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
-import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import ManufacturerFilterGroup from "@/admin/components/base/ManufacturerFilterGroup/index.vue";
 import ProductionStatusFilterGroup from "@/admin/components/base/ProductionStatusFilterGroup/index.vue";
 import ModelClassificationFilterGroup from "@/frontend/components/base/ModelClassificationFilterGroup/index.vue";
@@ -117,7 +117,7 @@ const handleCancel = async () => {
       <div class="col-12 col-md-6">
         <div class="row">
           <div class="col-12 col-md-4">
-            <FormCheckbox
+            <FormToggle
               v-model="hidden"
               translation-key="model.hidden"
               v-bind="hiddenProps"
@@ -125,7 +125,7 @@ const handleCancel = async () => {
             />
           </div>
           <div class="col-12 col-md-4">
-            <FormCheckbox
+            <FormToggle
               v-model="active"
               translation-key="model.active"
               v-bind="activeProps"
@@ -133,7 +133,7 @@ const handleCancel = async () => {
             />
           </div>
           <div class="col-12 col-md-4">
-            <FormCheckbox
+            <FormToggle
               v-model="ground"
               translation-key="model.ground"
               v-bind="groundProps"

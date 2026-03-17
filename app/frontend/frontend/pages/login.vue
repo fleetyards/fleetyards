@@ -9,7 +9,7 @@ import { useForm } from "vee-validate";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import SocialLogins from "@/shared/components/SocialLogins/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -157,7 +157,7 @@ const signupRoute = computed(() => {
             :hide-label-on-empty="true"
             :clearable="true"
           />
-          <FormCheckbox
+          <FormToggle
             v-model="rememberMe"
             v-bind="rememberMeProps"
             name="rememberMe"

@@ -9,6 +9,8 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
+import Box from "@/shared/components/Box/index.vue";
+import Loader from "@/shared/components/Loader/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import Toggle from "@/shared/components/base/Toggle/index.vue";
 import {
@@ -59,9 +61,16 @@ const toggleFeature = async (feature: FeatureItem) => {
     {{ t("labels.features.settingsIntro") }}
   </p>
 
+  <Loader :loading="isLoading" />
+
+  <Box v-if="!featureItems.length && !isLoading" :large="true">
+    <p class="features-empty text-muted">
+      {{ t("labels.features.noFeaturesAvailable") }}
+    </p>
+  </Box>
+
   <InlineEditableList
-    empty-name="features"
-    :loading="isLoading"
+    v-if="featureItems.length"
     :items="featureItems"
     hide-destroy
     hide-edit
@@ -96,6 +105,12 @@ const toggleFeature = async (feature: FeatureItem) => {
 .features-intro {
   margin-bottom: 1.5rem;
   color: var(--text-muted);
+}
+
+.features-empty {
+  text-align: center;
+  padding: 2rem 0;
+  margin: 0;
 }
 
 .feature-name {

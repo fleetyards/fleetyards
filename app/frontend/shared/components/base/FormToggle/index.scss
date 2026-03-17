@@ -17,6 +17,7 @@
 
     & + label .form-toggle-switch {
       display: inline-block;
+      position: relative;
       width: 44px;
       height: 24px;
       background: $input-bg;
@@ -33,8 +34,8 @@
         background: $gray-lighter;
         border-radius: 50%;
         position: absolute;
-        top: 3px;
-        left: 3px;
+        top: 2px;
+        left: 2px;
         transition: all 250ms ease;
       }
     }
@@ -44,7 +45,7 @@
       border-color: $primary;
 
       &::after {
-        left: 23px;
+        left: 22px;
         background: #fff;
       }
     }

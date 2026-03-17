@@ -21,7 +21,7 @@ import { useRedirectBack } from "@/shared/composables/useRedirectBack";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import SocialLogins from "@/shared/components/SocialLogins/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import { type AxiosError } from "axios";
 
 const { t } = useI18n();
@@ -170,7 +170,7 @@ const onSubmit = handleSubmit(async (values) => {
           @clear="resetFleetInviteToken"
         />
 
-        <FormCheckbox
+        <FormToggle
           v-model="saleNotify"
           v-bind="saleNotifyProps"
           name="saleNotify"

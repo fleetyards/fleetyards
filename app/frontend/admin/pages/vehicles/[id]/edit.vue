@@ -16,7 +16,7 @@ import {
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
 import { useQueryClient } from "@tanstack/vue-query";
@@ -113,43 +113,43 @@ const handleCancel = async () => {
         />
       </div>
       <div class="col-12 col-md-6">
-        <FormCheckbox
+        <FormToggle
           v-model="wanted"
           v-bind="wantedProps"
           translation-key="vehicle.wanted"
           name="wanted"
         />
-        <FormCheckbox
+        <FormToggle
           v-model="flagship"
           v-bind="flagshipProps"
           translation-key="vehicle.flagship"
           name="flagship"
         />
-        <FormCheckbox
+        <FormToggle
           v-model="publicField"
           v-bind="publicProps"
           translation-key="vehicle.public"
           name="public"
         />
-        <FormCheckbox
+        <FormToggle
           v-model="nameVisible"
           v-bind="nameVisibleProps"
           translation-key="vehicle.nameVisible"
           name="nameVisible"
         />
-        <FormCheckbox
+        <FormToggle
           v-model="saleNotify"
           v-bind="saleNotifyProps"
           translation-key="vehicle.saleNotify"
           name="saleNotify"
         />
-        <FormCheckbox
+        <FormToggle
           v-model="hidden"
           v-bind="hiddenProps"
           translation-key="vehicle.hidden"
           name="hidden"
         />
-        <FormCheckbox
+        <FormToggle
           v-model="loaner"
           v-bind="loanerProps"
           translation-key="vehicle.loaner"

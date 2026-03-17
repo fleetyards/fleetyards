@@ -16,6 +16,7 @@ import {
   InputAlignmentsEnum,
   InputTypesEnum,
 } from "@/shared/components/base/FormInput/types";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import ModelForm from "@/admin/components/Models/Form/index.vue";
 import ItemPricesList from "@/admin/components/ItemPrices/List.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
@@ -84,7 +85,7 @@ const itemPricesList = ref<{
         />
       </div>
       <div class="col-12 col-md-8">
-        <FormCheckbox
+        <FormToggle
           v-model="onSale"
           translation-key="model.onSale"
           v-bind="onSaleProps"
