@@ -9,7 +9,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
-import Box from "@/shared/components/Box/index.vue";
+import Empty from "@/shared/components/Empty/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import Toggle from "@/shared/components/base/Toggle/index.vue";
@@ -63,11 +63,18 @@ const toggleFeature = async (feature: FeatureItem) => {
 
   <Loader :loading="isLoading" />
 
-  <Box v-if="!featureItems.length && !isLoading" :large="true">
-    <p class="features-empty text-muted">
-      {{ t("labels.features.noFeaturesAvailable") }}
-    </p>
-  </Box>
+  <Empty
+    v-if="!featureItems.length && !isLoading"
+    variant="box"
+    hide-actions
+  >
+    <template #headline>
+      {{ t("empty.headlines.features") }}
+    </template>
+    <template #info>
+      <p>{{ t("empty.info.features") }}</p>
+    </template>
+  </Empty>
 
   <InlineEditableList
     v-if="featureItems.length"
@@ -105,12 +112,6 @@ const toggleFeature = async (feature: FeatureItem) => {
 .features-intro {
   margin-bottom: 1.5rem;
   color: var(--text-muted);
-}
-
-.features-empty {
-  text-align: center;
-  padding: 2rem 0;
-  margin: 0;
 }
 
 .feature-name {
