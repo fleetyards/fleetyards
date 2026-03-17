@@ -8,8 +8,11 @@ module Api
       before_action :authenticate_user!
 
       def index
-        @features = FeatureSetting.self_service_feature_names.map do |feature_name|
+        @features = FeatureSetting.self_service_feature_names.filter_map do |feature_name|
           feature = Flipper.feature(feature_name)
+
+          next if feature.state == :on
+
           {
             name: feature.name,
             enabled: Flipper.enabled?(feature.name, current_resource_owner)
