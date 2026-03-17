@@ -63,11 +63,7 @@ const toggleFeature = async (feature: FeatureItem) => {
 
   <Loader :loading="isLoading" />
 
-  <Empty
-    v-if="!featureItems.length && !isLoading"
-    variant="box"
-    hide-actions
-  >
+  <Empty v-if="!featureItems.length && !isLoading" variant="box" hide-actions>
     <template #headline>
       {{ t("empty.headlines.features") }}
     </template>
@@ -100,10 +96,7 @@ const toggleFeature = async (feature: FeatureItem) => {
     </template>
 
     <template #actions="{ item }">
-      <Toggle
-        :active="item.enabled"
-        @toggle="toggleFeature(item)"
-      />
+      <Toggle :active="item.enabled" @toggle="toggleFeature(item)" />
     </template>
   </InlineEditableList>
 </template>

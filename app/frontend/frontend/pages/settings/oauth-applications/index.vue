@@ -98,7 +98,11 @@ const formatScopes = (scopes: string) => {
           </span>
           <span class="oauth-app-meta-item">
             <i
-              :class="item.confidential ? 'fa-duotone fa-lock' : 'fa-duotone fa-lock-open'"
+              :class="
+                item.confidential
+                  ? 'fa-duotone fa-lock'
+                  : 'fa-duotone fa-lock-open'
+              "
             />
             {{
               item.confidential

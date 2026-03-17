@@ -40,7 +40,9 @@ const toggleSlim = () => {
       :action="toggleSlim"
       :label="toggleSlimLabel"
       :icon="
-        slim ? 'fa-light fa-chevron-double-right' : 'fa-light fa-chevron-double-left'
+        slim
+          ? 'fa-light fa-chevron-double-right'
+          : 'fa-light fa-chevron-double-left'
       "
     />
     <slot />

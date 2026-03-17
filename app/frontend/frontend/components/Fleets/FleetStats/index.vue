@@ -138,7 +138,8 @@ const crewDeficitLabel = computed(() => {
 });
 
 const crewDeficitIcon = computed(() => {
-  if (minCrew.value > totalMemberCount.value) return "fa-duotone fa-user-minus fa-4x";
+  if (minCrew.value > totalMemberCount.value)
+    return "fa-duotone fa-user-minus fa-4x";
   return "fa-duotone fa-user-plus fa-4x";
 });
 
