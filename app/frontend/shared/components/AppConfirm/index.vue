@@ -79,12 +79,21 @@ const handleCancel = async () => {
           {{ text }}
         </div>
         <div class="app-confirm__buttons" data-test="confirm-buttons">
-          <Btn inline size="small" data-test="confirm-cancel" autofocus @click="handleCancel">{{
-            cancelText
-          }}</Btn>
-          <Btn inline size="small" data-test="confirm-ok" @click="handleConfirm">{{
-            confirmText
-          }}</Btn>
+          <Btn
+            inline
+            size="small"
+            data-test="confirm-cancel"
+            autofocus
+            @click="handleCancel"
+            >{{ cancelText }}</Btn
+          >
+          <Btn
+            inline
+            size="small"
+            data-test="confirm-ok"
+            @click="handleConfirm"
+            >{{ confirmText }}</Btn
+          >
         </div>
       </div>
     </div>

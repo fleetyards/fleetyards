@@ -214,7 +214,11 @@ const hasSelectedActor = computed(() => {
     </template>
 
     <template #actions="{ item }">
-      <Toggle :active="item.state === 'on'" data-test="toggle-feature" @toggle="toggleFeature(item)" />
+      <Toggle
+        :active="item.state === 'on'"
+        data-test="toggle-feature"
+        @toggle="toggleFeature(item)"
+      />
     </template>
 
     <template #edit="{ item }">

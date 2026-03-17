@@ -202,7 +202,7 @@ const routeForImage = (image: Image) => {
                   :title="image.name"
                   :to="routeForImage(image)"
                   class="home-image image"
-                data-test="home-image"
+                  data-test="home-image"
                 />
               </div>
             </transition-group>

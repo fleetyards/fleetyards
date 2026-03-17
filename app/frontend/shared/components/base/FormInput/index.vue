@@ -191,7 +191,12 @@ defineExpose({
 </script>
 
 <template>
-  <div :key="id" class="base-input" :class="cssClasses" :data-test="`input-wrapper-${name}`">
+  <div
+    :key="id"
+    class="base-input"
+    :class="cssClasses"
+    :data-test="`input-wrapper-${name}`"
+  >
     <transition name="fade">
       <label
         v-show="!hideLabelOnEmpty || inputValue"

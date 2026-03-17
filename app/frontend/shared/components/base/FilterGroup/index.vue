@@ -463,7 +463,12 @@ defineExpose({
 </script>
 
 <template>
-  <div ref="filterGroup" class="filter-group" :class="cssClasses" :data-test="`filter-group-${name}`">
+  <div
+    ref="filterGroup"
+    class="filter-group"
+    :class="cssClasses"
+    :data-test="`filter-group-${name}`"
+  >
     <transition name="fade">
       <label
         v-show="labelVisible"
