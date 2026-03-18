@@ -26,7 +26,11 @@ export const useImportsStore = defineStore("adminImports", {
         const typeArray = Array.isArray(types) ? types : [types];
         return Object.values(state.imports).some((imp) => {
           if (!typeArray.includes(imp.type)) return false;
-          if (imp.status !== ImportStatusEnum.STARTED) return false;
+          if (
+            imp.status !== ImportStatusEnum.CREATED &&
+            imp.status !== ImportStatusEnum.STARTED
+          )
+            return false;
 
           if (inputMatch) {
             const impInput = imp.input as unknown as ImportInput | undefined;
