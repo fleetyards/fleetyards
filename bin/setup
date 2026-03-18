@@ -10,6 +10,19 @@ VERBOSE = ARGV.include?("--verbose")
 FRESH = ARGV.include?("--fresh")
 SKIP_ENV = ARGV.include?("--skip-env")
 FORCE_ENV = ARGV.include?("--force-env")
+
+def parse_flag(prefix)
+  arg = ARGV.find { |a| a.start_with?("#{prefix}=") }
+  arg&.split("=", 2)&.last
+end
+
+def parse_int_flag(prefix)
+  parse_flag(prefix)&.to_i
+end
+
+PORT_OVERRIDE = parse_int_flag("--port")
+VITE_PORT_OVERRIDE = parse_int_flag("--vite-port")
+NAME_OVERRIDE = parse_flag("--name")
 SPINNER = %w[⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏].freeze
 
 $stdout.sync = true
@@ -290,6 +303,9 @@ if ARGV.include?("--help") || ARGV.include?("-h")
                       WARNING: affects all worktrees (shared Docker services)
       --skip-env      Skip copying .env from main worktree
       --force-env     Overwrite existing .env with copy from main worktree
+      --name=NAME     Override the worktree name used for DB suffix, ports, etc.
+      --port=N        Override the Rails port (default: derived from name)
+      --vite-port=N   Override the Vite dev server port (default: derived from name)
       --dev           Start the development server after setup
       --dev-<flag>    Forward --<flag> to bin/dev (e.g. --dev-docker, --dev-open)
       --verbose       Show full command output (default: concise status lines)
@@ -307,21 +323,22 @@ FileUtils.chdir APP_ROOT do
   vite_port = 8274
 
   if wt_name
-    port = worktree_port(wt_name)
-    db_port = worktree_db_port(wt_name)
-    vite_port = worktree_vite_port(wt_name)
-    db_suffix = worktree_db_suffix(wt_name)
-    sidekiq_db = worktree_sidekiq_redis_db(wt_name)
+    effective_name = NAME_OVERRIDE || wt_name
+    port = PORT_OVERRIDE || worktree_port(effective_name)
+    db_port = worktree_db_port(effective_name)
+    vite_port = VITE_PORT_OVERRIDE || worktree_vite_port(effective_name)
+    db_suffix = worktree_db_suffix(effective_name)
+    sidekiq_db = worktree_sidekiq_redis_db(effective_name)
 
     if VERBOSE
-      puts "== Worktree detected: #{wt_name} =="
-      puts "   Rails port:  #{port}"
-      puts "   Vite port:   #{vite_port}"
+      puts "== Worktree detected: #{wt_name}#{" (as #{effective_name})" if NAME_OVERRIDE} =="
+      puts "   Rails port:  #{port}#{" (override)" if PORT_OVERRIDE}"
+      puts "   Vite port:   #{vite_port}#{" (override)" if VITE_PORT_OVERRIDE}"
       puts "   DB port:     #{db_port}"
       puts "   DB suffix:   #{db_suffix}"
       puts "   Sidekiq DB:  #{sidekiq_db}"
     else
-      puts "  Worktree: #{wt_name} (port #{port})"
+      puts "  Worktree: #{effective_name} (port #{port})"
     end
 
     write_env_local(port, db_port, vite_port, db_suffix, sidekiq_db)
@@ -355,6 +372,10 @@ FileUtils.chdir APP_ROOT do
   unless system("command -v pnpm > /dev/null 2>&1")
     abort "pnpm is not installed. Install it via: npm install -g pnpm"
   end
+
+  # Ensure log/ and tmp/ directories exist (worktrees may not have them)
+  FileUtils.mkdir_p(File.join(APP_ROOT, "log"))
+  FileUtils.mkdir_p(File.join(APP_ROOT, "tmp"))
 
   if FRESH
     run_step "Wiping application state", "docker compose down -v"
