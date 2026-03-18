@@ -1,0 +1,4 @@
+{
+  "setup": ["./bin/setup"],
+  "teardown": []
+}
