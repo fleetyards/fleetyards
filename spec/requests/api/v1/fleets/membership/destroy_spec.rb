@@ -22,6 +22,12 @@ RSpec.describe "api/v1/fleets/membership", type: :request, swagger_doc: "v1/sche
       tags "FleetMembership"
       produces "application/json"
 
+      security [{
+        SessionCookie: [],
+        Oauth2: [],
+        OpenId: []
+      }]
+
       response(204, "successful") do
         run_test!
       end

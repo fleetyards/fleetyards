@@ -28,6 +28,12 @@ RSpec.describe "api/v1/hangar/groups", type: :request, swagger_doc: "v1/schema.y
 
       parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/HangarGroupSortInput"}, required: true
 
+      security [{
+        SessionCookie: [],
+        Oauth2: ["hangar", "hangar:write"],
+        OpenId: ["hangar", "hangar:write"]
+      }]
+
       response(200, "successful") do
         schema type: :object, properties: {success: {type: :boolean}}
 

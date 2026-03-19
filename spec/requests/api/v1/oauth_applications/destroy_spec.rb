@@ -20,6 +20,12 @@ RSpec.describe "api/v1/oauth_applications", type: :request, swagger_doc: "v1/sch
       tags "OauthApplications"
       produces "application/json"
 
+      security [{
+        SessionCookie: [],
+        Oauth2: [],
+        OpenId: []
+      }]
+
       response(204, "successful") do
         run_test!
       end

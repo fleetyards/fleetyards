@@ -9464,7 +9464,7 @@ components:
             openid: Authenticate your account
     OpenId:
       type: openIdConnect
-      openIdConnectUrl: http://fleetyards.test/.well-known/openid-configuration
+      openIdConnectUrl: https://fleetyards.net/.well-known/openid-configuration
     SessionCookie:
       type: apiKey
       description: Session Cookie

@@ -3,7 +3,9 @@
 module Api
   module V1
     class OauthApplicationsController < ::Api::BaseController
-      before_action :authenticate_user!
+      before_action :authenticate_user!, only: []
+      before_action -> { doorkeeper_authorize! },
+        unless: :user_signed_in?
       before_action :check_feature_flag
       before_action :set_application, only: %i[show update destroy regenerate_secret]
 

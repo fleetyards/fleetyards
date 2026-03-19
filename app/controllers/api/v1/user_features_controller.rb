@@ -5,7 +5,9 @@ module Api
     class UserFeaturesController < ::Api::BaseController
       skip_verify_authorized
 
-      before_action :authenticate_user!
+      before_action :authenticate_user!, only: []
+      before_action -> { doorkeeper_authorize! "profile:write" },
+        unless: :user_signed_in?
 
       def index
         @features = FeatureSetting.self_service_feature_names.filter_map do |feature_name|

@@ -18,6 +18,10 @@ RSpec.describe "api/v1/otp", type: :request, swagger_doc: "v1/schema.yaml" do
       tags "OTP"
       produces "application/json"
 
+      security [{
+        SessionCookie: []
+      }]
+
       response(200, "successful") do
         schema "$ref": "#/components/schemas/OtpBackupCodes"
 

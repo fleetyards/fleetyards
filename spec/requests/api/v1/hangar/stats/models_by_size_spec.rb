@@ -19,6 +19,12 @@ RSpec.describe "api/v1/hangar/stats", type: :request, swagger_doc: "v1/schema.ya
       tags "HangarStats"
       produces "application/json"
 
+      security [{
+        SessionCookie: [],
+        Oauth2: ["hangar", "hangar:read"],
+        OpenId: ["hangar", "hangar:read"]
+      }]
+
       response(200, "successful") do
         schema type: :array, items: {"$ref": "#/components/schemas/PieChartStats"}
 

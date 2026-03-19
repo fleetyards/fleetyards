@@ -26,6 +26,10 @@ RSpec.describe "api/v1/otp", type: :request, swagger_doc: "v1/schema.yaml" do
 
       parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/SetupOtpInput"}, required: true
 
+      security [{
+        SessionCookie: []
+      }]
+
       response(200, "successful") do
         schema "$ref": "#/components/schemas/StandardMessage"
 

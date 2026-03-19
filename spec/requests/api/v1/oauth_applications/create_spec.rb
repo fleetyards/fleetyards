@@ -26,6 +26,12 @@ RSpec.describe "api/v1/oauth_applications", type: :request, swagger_doc: "v1/sch
 
       parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/OauthApplicationInput"}, required: true
 
+      security [{
+        SessionCookie: [],
+        Oauth2: [],
+        OpenId: []
+      }]
+
       response(201, "successful") do
         schema "$ref": "#/components/schemas/OauthApplicationWithSecret"
 

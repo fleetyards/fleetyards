@@ -25,6 +25,10 @@ RSpec.describe "api/v1/password", type: :request, swagger_doc: "v1/schema.yaml" 
 
       parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/PasswordInput"}, required: true
 
+      security [{
+        SessionCookie: []
+      }]
+
       response(200, "successful") do
         schema "$ref": "#/components/schemas/StandardMessage"
 

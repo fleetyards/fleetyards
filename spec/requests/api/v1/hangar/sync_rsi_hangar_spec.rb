@@ -30,6 +30,12 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
         schema: {"$ref": "#/components/schemas/SyncRsiHangarInput"},
         required: true
 
+      security [{
+        SessionCookie: [],
+        Oauth2: ["hangar", "hangar:write"],
+        OpenId: ["hangar", "hangar:write"]
+      }]
+
       response(200, "successful") do
         schema "$ref": "#/components/schemas/HangarSyncResult"
 

@@ -29,6 +29,12 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/sch
 
       parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/FleetInviteUrlCreateInput"}, required: true
 
+      security [{
+        SessionCookie: [],
+        Oauth2: ["fleet", "fleet:write"],
+        OpenId: ["fleet", "fleet:write"]
+      }]
+
       response(201, "successful") do
         schema "$ref": "#/components/schemas/FleetInviteUrl"
 

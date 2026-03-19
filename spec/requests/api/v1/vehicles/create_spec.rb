@@ -25,6 +25,12 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
 
       parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/VehicleCreateInput"}, required: true
 
+      security [{
+        SessionCookie: [],
+        Oauth2: ["hangar", "hangar:write"],
+        OpenId: ["hangar", "hangar:write"]
+      }]
+
       response(201, "successful") do
         schema "$ref": "#/components/schemas/Vehicle"
 

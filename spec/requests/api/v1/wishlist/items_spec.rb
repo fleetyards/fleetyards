@@ -15,6 +15,12 @@ RSpec.describe "api/v1/wishlist", type: :request, swagger_doc: "v1/schema.yaml" 
       tags "Wishlist"
       produces "application/json"
 
+      security [{
+        SessionCookie: [],
+        Oauth2: ["hangar", "hangar:read"],
+        OpenId: ["hangar", "hangar:read"]
+      }]
+
       response(200, "successful") do
         schema type: :array, items: {type: :string}
 

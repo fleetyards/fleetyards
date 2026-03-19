@@ -28,6 +28,12 @@ RSpec.describe "api/v1/hangar/stats", type: :request, swagger_doc: "v1/schema.ya
         explode: true,
         required: false
 
+      security [{
+        SessionCookie: [],
+        Oauth2: ["hangar", "hangar:read"],
+        OpenId: ["hangar", "hangar:read"]
+      }]
+
       response(200, "successful") do
         schema "$ref": "#/components/schemas/HangarStats"
 

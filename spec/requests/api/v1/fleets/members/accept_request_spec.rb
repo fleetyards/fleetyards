@@ -25,6 +25,12 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
       consumes "application/json"
       produces "application/json"
 
+      security [{
+        SessionCookie: [],
+        Oauth2: ["fleet", "fleet:write"],
+        OpenId: ["fleet", "fleet:write"]
+      }]
+
       response(200, "successful") do
         schema "$ref": "#/components/schemas/StandardMessage"
 

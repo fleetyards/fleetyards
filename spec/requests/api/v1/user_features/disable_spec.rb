@@ -21,6 +21,12 @@ RSpec.describe "api/v1/user_features", type: :request, swagger_doc: "v1/schema.y
       tags "UserFeatures"
       produces "application/json"
 
+      security [{
+        SessionCookie: [],
+        Oauth2: ["profile:write"],
+        OpenId: ["profile:write"]
+      }]
+
       response(200, "successful") do
         schema "$ref": "#/components/schemas/UserFeature"
         run_test!

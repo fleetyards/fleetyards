@@ -22,6 +22,12 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
       tags "Fleets"
       produces "application/json"
 
+      security [{
+        SessionCookie: [],
+        Oauth2: ["fleet", "fleet:read"],
+        OpenId: ["fleet", "fleet:read"]
+      }]
+
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Fleet"
 
