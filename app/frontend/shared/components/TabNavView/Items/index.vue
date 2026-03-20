@@ -35,8 +35,18 @@ const { t } = useI18n();
 
 const route = useRoute();
 
-const activeRoute = (routeName?: RouteRecordName) => {
-  return routeName === route.name;
+const activeRoute = (tabRouteName?: RouteRecordName) => {
+  if (tabRouteName === route.name) return true;
+
+  const tabRoute = filteredRoutes.value.find(
+    (r) => routeName(r) === tabRouteName,
+  );
+  if (!tabRoute?.children?.length) return false;
+
+  return route.matched.some(
+    (matched) =>
+      (matched.redirect as RouteRecordRaw)?.name === tabRouteName,
+  );
 };
 
 const routeName = (route: RouteRecordRaw) => {

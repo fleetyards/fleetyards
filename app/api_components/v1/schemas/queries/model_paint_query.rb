@@ -16,7 +16,8 @@ module V1
             idNotIn: {type: :array, items: {type: :string, format: :uuid}},
             nameIn: {type: :array, items: {type: :string}}
           },
-          additionalProperties: false
+          additionalProperties: false,
+          example: {}
         })
       end
     end

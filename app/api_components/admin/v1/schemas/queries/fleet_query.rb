@@ -13,7 +13,8 @@ module Admin
               nameCont: {type: :string},
               fidCont: {type: :string}
             },
-            additionalProperties: false
+            additionalProperties: false,
+            example: {}
           })
         end
       end

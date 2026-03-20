@@ -13,7 +13,8 @@ module Admin
               modelIdEq: {type: :string, format: :uuid},
               videoTypeEq: {"$ref": "#/components/schemas/VideoTypeEnum"}
             },
-            additionalProperties: false
+            additionalProperties: false,
+            example: {}
           })
         end
       end

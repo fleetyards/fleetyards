@@ -21,7 +21,6 @@ RSpec.describe "api/v1/images", type: :request, swagger_doc: "v1/schema.yaml" do
       }, required: false
       parameter name: "q", in: :query,
         schema: {
-          type: :object,
           "$ref": "#/components/schemas/ImageQuery"
         },
         style: :deepObject,

@@ -23,7 +23,6 @@ RSpec.describe "admin/api/v1/docks", type: :request, swagger_doc: "admin/v1/sche
       parameter name: "perPage", in: :query, schema: {type: :string, default: Dock.default_per_page}, required: false
       parameter name: "q", in: :query,
         schema: {
-          type: :object,
           "$ref": "#/components/schemas/DockQuery"
         },
         style: :deepObject,

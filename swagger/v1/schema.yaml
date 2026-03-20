@@ -40,7 +40,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ComponentQuery"
         style: deepObject
         explode: true
@@ -214,6 +213,14 @@ paths:
       tags:
       - Fleets
       parameters: []
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - fleet
+        - fleet:read
+        OpenId:
+        - fleet
+        - fleet:read
       responses:
         '200':
           description: successful
@@ -240,6 +247,10 @@ paths:
       tags:
       - Fleets
       parameters: []
+      security:
+      - SessionCookie: []
+        Oauth2: []
+        OpenId: []
       responses:
         '201':
           description: successful
@@ -278,6 +289,14 @@ paths:
       operationId: destroyFleet
       tags:
       - Fleets
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - fleet
+        - fleet:write
+        OpenId:
+        - fleet
+        - fleet:write
       description: You are not the owner of this Fleet
       responses:
         '204':
@@ -305,6 +324,14 @@ paths:
       operationId: fleet
       tags:
       - Fleets
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - fleet
+        - fleet:read
+        OpenId:
+        - fleet
+        - fleet:read
       responses:
         '200':
           description: successful
@@ -336,6 +363,14 @@ paths:
       tags:
       - Fleets
       parameters: []
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - fleet
+        - fleet:write
+        OpenId:
+        - fleet
+        - fleet:write
       description: You are not an Admin or Officer of this Fleet
       responses:
         '200':
@@ -381,6 +416,14 @@ paths:
       operationId: findFleetByInvite
       tags:
       - Fleets
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - fleet
+        - fleet:read
+        OpenId:
+        - fleet
+        - fleet:read
       responses:
         '200':
           description: successful
@@ -408,6 +451,14 @@ paths:
       tags:
       - FleetInviteUrls
       parameters: []
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - fleet
+        - fleet:write
+        OpenId:
+        - fleet
+        - fleet:write
       responses:
         '201':
           description: successful
@@ -463,6 +514,14 @@ paths:
           type: string
           default: 30
         required: false
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - fleet
+        - fleet:read
+        OpenId:
+        - fleet
+        - fleet:read
       responses:
         '200':
           description: successful
@@ -509,6 +568,14 @@ paths:
       operationId: destroyFleetInviteUrl
       tags:
       - FleetInviteUrls
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - fleet
+        - fleet:write
+        OpenId:
+        - fleet
+        - fleet:write
       responses:
         '204':
           description: successful
@@ -537,6 +604,10 @@ paths:
       tags:
       - FleetInviteUrls
       parameters: []
+      security:
+      - SessionCookie: []
+        Oauth2: []
+        OpenId: []
       description: User is already a member of this fleet
       responses:
         '201':
@@ -575,6 +646,14 @@ paths:
       operationId: fleetInvites
       tags:
       - Fleets
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - fleet
+        - fleet:read
+        OpenId:
+        - fleet
+        - fleet:read
       responses:
         '200':
           description: successful
@@ -609,6 +688,14 @@ paths:
       operationId: acceptFleetMember
       tags:
       - FleetMembers
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - fleet
+        - fleet:write
+        OpenId:
+        - fleet
+        - fleet:write
       description: No Member found
       responses:
         '200':
@@ -655,6 +742,14 @@ paths:
       tags:
       - FleetMembers
       parameters: []
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - fleet
+        - fleet:write
+        OpenId:
+        - fleet
+        - fleet:write
       responses:
         '201':
           description: successful
@@ -713,7 +808,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/FleetMemberQuery"
         style: deepObject
         explode: true
@@ -723,6 +817,14 @@ paths:
         required: false
         schema:
           type: string
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - fleet
+        - fleet:read
+        OpenId:
+        - fleet
+        - fleet:read
       responses:
         '200':
           description: successful
@@ -761,6 +863,14 @@ paths:
       operationId: declineFleetMember
       tags:
       - FleetMembers
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - fleet
+        - fleet:write
+        OpenId:
+        - fleet
+        - fleet:write
       description: No Member found
       responses:
         '200':
@@ -812,6 +922,14 @@ paths:
       operationId: demoteFleetMember
       tags:
       - FleetMembers
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - fleet
+        - fleet:write
+        OpenId:
+        - fleet
+        - fleet:write
       description: No Member found
       responses:
         '200':
@@ -863,6 +981,14 @@ paths:
       operationId: destroyFleetMember
       tags:
       - FleetMembers
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - fleet
+        - fleet:write
+        OpenId:
+        - fleet
+        - fleet:write
       description: Without authentication
       responses:
         '204':
@@ -904,6 +1030,14 @@ paths:
       operationId: promoteFleetMember
       tags:
       - FleetMembers
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - fleet
+        - fleet:write
+        OpenId:
+        - fleet
+        - fleet:write
       description: No Member found
       responses:
         '200':
@@ -943,6 +1077,10 @@ paths:
       operationId: acceptFleetMembership
       tags:
       - FleetMembership
+      security:
+      - SessionCookie: []
+        Oauth2: []
+        OpenId: []
       responses:
         '200':
           description: successful
@@ -981,6 +1119,10 @@ paths:
       operationId: declineFleetMembership
       tags:
       - FleetMembership
+      security:
+      - SessionCookie: []
+        Oauth2: []
+        OpenId: []
       responses:
         '200':
           description: successful
@@ -1019,6 +1161,10 @@ paths:
       operationId: leaveFleet
       tags:
       - FleetMembership
+      security:
+      - SessionCookie: []
+        Oauth2: []
+        OpenId: []
       responses:
         '204':
           description: successful
@@ -1039,6 +1185,10 @@ paths:
       operationId: fleetMembership
       tags:
       - FleetMembership
+      security:
+      - SessionCookie: []
+        Oauth2: []
+        OpenId: []
       responses:
         '200':
           description: successful
@@ -1064,6 +1214,10 @@ paths:
       tags:
       - FleetMembership
       parameters: []
+      security:
+      - SessionCookie: []
+        Oauth2: []
+        OpenId: []
       description: Fleet for this slug and user does not exist
       responses:
         '200':
@@ -1102,6 +1256,14 @@ paths:
       operationId: myFleets
       tags:
       - Fleets
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - fleet
+        - fleet:read
+        OpenId:
+        - fleet
+        - fleet:read
       responses:
         '200':
           description: successful
@@ -1130,6 +1292,14 @@ paths:
       operationId: fleetRoles
       tags:
       - FleetRoles
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - fleet
+        - fleet:read
+        OpenId:
+        - fleet
+        - fleet:read
       responses:
         '200':
           description: successful
@@ -1168,11 +1338,18 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/FleetMemberQuery"
         style: deepObject
         explode: true
         required: false
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - fleet
+        - fleet:read
+        OpenId:
+        - fleet
+        - fleet:read
       responses:
         '200':
           description: successful
@@ -1197,11 +1374,18 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/FleetVehicleQuery"
         style: deepObject
         explode: true
         required: false
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - fleet
+        - fleet:read
+        OpenId:
+        - fleet
+        - fleet:read
       responses:
         '200':
           description: successful
@@ -1234,6 +1418,14 @@ paths:
       operationId: fleetModelsByClassification
       tags:
       - FleetStats
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - fleet
+        - fleet:read
+        OpenId:
+        - fleet
+        - fleet:read
       responses:
         '200':
           description: successful
@@ -1262,6 +1454,14 @@ paths:
       operationId: fleetModelsByManufacturer
       tags:
       - FleetStats
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - fleet
+        - fleet:read
+        OpenId:
+        - fleet
+        - fleet:read
       responses:
         '200':
           description: successful
@@ -1290,6 +1490,14 @@ paths:
       operationId: fleetModelsByProductionStatus
       tags:
       - FleetStats
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - fleet
+        - fleet:read
+        OpenId:
+        - fleet
+        - fleet:read
       responses:
         '200':
           description: successful
@@ -1318,6 +1526,14 @@ paths:
       operationId: fleetModelsBySize
       tags:
       - FleetStats
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - fleet
+        - fleet:read
+        OpenId:
+        - fleet
+        - fleet:read
       responses:
         '200':
           description: successful
@@ -1346,6 +1562,14 @@ paths:
       operationId: fleetVehiclesByModel
       tags:
       - FleetStats
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - fleet
+        - fleet:read
+        OpenId:
+        - fleet
+        - fleet:read
       responses:
         '200':
           description: successful
@@ -1374,6 +1598,14 @@ paths:
       operationId: fleetVehiclesStats
       tags:
       - FleetStats
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - fleet
+        - fleet:read
+        OpenId:
+        - fleet
+        - fleet:read
       responses:
         '200':
           description: successful
@@ -1410,11 +1642,18 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/FleetVehicleQuery"
         style: deepObject
         explode: true
         required: false
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - fleet
+        - fleet:read
+        OpenId:
+        - fleet
+        - fleet:read
       responses:
         '200':
           description: successful
@@ -1465,7 +1704,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/FleetVehicleQuery"
         style: deepObject
         explode: true
@@ -1480,6 +1718,14 @@ paths:
         required: false
         schema:
           type: string
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - fleet
+        - fleet:read
+        OpenId:
+        - fleet
+        - fleet:read
       responses:
         '200':
           description: successful
@@ -1505,6 +1751,14 @@ paths:
       operationId: destroyHangar
       tags:
       - Hangar
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:write
+        OpenId:
+        - hangar
+        - hangar:write
       responses:
         '204':
           description: successful
@@ -1521,6 +1775,12 @@ paths:
       - Hangar
       security:
       - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:read
+        OpenId:
+        - hangar
+        - hangar:read
       parameters:
       - name: page
         in: query
@@ -1537,7 +1797,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/HangarQuery"
         style: deepObject
         explode: true
@@ -1571,11 +1830,18 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/HangarQuery"
         style: deepObject
         explode: true
         required: false
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:read
+        OpenId:
+        - hangar
+        - hangar:read
       responses:
         '200':
           description: successful
@@ -1598,6 +1864,14 @@ paths:
       tags:
       - HangarGroups
       parameters: []
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:write
+        OpenId:
+        - hangar
+        - hangar:write
       responses:
         '201':
           description: successful
@@ -1622,6 +1896,14 @@ paths:
       operationId: hangarGroups
       tags:
       - HangarGroups
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:read
+        OpenId:
+        - hangar
+        - hangar:read
       responses:
         '200':
           description: successful
@@ -1651,6 +1933,14 @@ paths:
       operationId: destroyHangarGroup
       tags:
       - HangarGroups
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:write
+        OpenId:
+        - hangar
+        - hangar:write
       responses:
         '200':
           description: successful
@@ -1682,6 +1972,14 @@ paths:
       tags:
       - HangarGroups
       parameters: []
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:write
+        OpenId:
+        - hangar
+        - hangar:write
       responses:
         '200':
           description: successful
@@ -1720,6 +2018,14 @@ paths:
       tags:
       - HangarGroups
       parameters: []
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:write
+        OpenId:
+        - hangar
+        - hangar:write
       responses:
         '200':
           description: successful
@@ -1749,6 +2055,14 @@ paths:
       tags:
       - Hangar
       parameters: []
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:write
+        OpenId:
+        - hangar
+        - hangar:write
       responses:
         '200':
           description: successful
@@ -1780,6 +2094,14 @@ paths:
       operationId: hangarItems
       tags:
       - Hangar
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:read
+        OpenId:
+        - hangar
+        - hangar:read
       responses:
         '200':
           description: successful
@@ -1801,6 +2123,14 @@ paths:
       operationId: moveAllIngameToWishlist
       tags:
       - Hangar
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:write
+        OpenId:
+        - hangar
+        - hangar:write
       responses:
         '204':
           description: successful
@@ -1816,6 +2146,14 @@ paths:
       operationId: hangarModelsByClassification
       tags:
       - HangarStats
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:read
+        OpenId:
+        - hangar
+        - hangar:read
       responses:
         '200':
           description: successful
@@ -1837,6 +2175,14 @@ paths:
       operationId: hangarModelsByManufacturer
       tags:
       - HangarStats
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:read
+        OpenId:
+        - hangar
+        - hangar:read
       responses:
         '200':
           description: successful
@@ -1858,6 +2204,14 @@ paths:
       operationId: hangarModelsByProductionStatus
       tags:
       - HangarStats
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:read
+        OpenId:
+        - hangar
+        - hangar:read
       responses:
         '200':
           description: successful
@@ -1879,6 +2233,14 @@ paths:
       operationId: hangarModelsBySize
       tags:
       - HangarStats
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:read
+        OpenId:
+        - hangar
+        - hangar:read
       responses:
         '200':
           description: successful
@@ -1904,11 +2266,18 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/HangarQuery"
         style: deepObject
         explode: true
         required: false
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:read
+        OpenId:
+        - hangar
+        - hangar:read
       responses:
         '200':
           description: successful
@@ -1929,6 +2298,14 @@ paths:
       tags:
       - Hangar
       parameters: []
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:write
+        OpenId:
+        - hangar
+        - hangar:write
       responses:
         '200':
           description: successful
@@ -1976,7 +2353,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ImageQuery"
         style: deepObject
         explode: true
@@ -2040,7 +2416,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ManufacturerQuery"
         style: deepObject
         explode: true
@@ -2091,7 +2466,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ModelPaintQuery"
         style: deepObject
         explode: true
@@ -2267,7 +2641,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ModelQuery"
         style: deepObject
         explode: true
@@ -2660,7 +3033,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ModelQuery"
         style: deepObject
         explode: true
@@ -2684,6 +3056,10 @@ paths:
       tags:
       - OauthApplications
       parameters: []
+      security:
+      - SessionCookie: []
+        Oauth2: []
+        OpenId: []
       responses:
         '201':
           description: successful
@@ -2714,6 +3090,10 @@ paths:
       operationId: oauthApplications
       tags:
       - OauthApplications
+      security:
+      - SessionCookie: []
+        Oauth2: []
+        OpenId: []
       responses:
         '200':
           description: successful
@@ -2743,6 +3123,10 @@ paths:
       operationId: destroyOauthApplication
       tags:
       - OauthApplications
+      security:
+      - SessionCookie: []
+        Oauth2: []
+        OpenId: []
       responses:
         '204':
           description: successful
@@ -2763,6 +3147,10 @@ paths:
       operationId: oauthApplication
       tags:
       - OauthApplications
+      security:
+      - SessionCookie: []
+        Oauth2: []
+        OpenId: []
       responses:
         '200':
           description: successful
@@ -2788,6 +3176,10 @@ paths:
       tags:
       - OauthApplications
       parameters: []
+      security:
+      - SessionCookie: []
+        Oauth2: []
+        OpenId: []
       responses:
         '200':
           description: successful
@@ -2827,6 +3219,10 @@ paths:
       operationId: regenerateOauthApplicationSecret
       tags:
       - OauthApplications
+      security:
+      - SessionCookie: []
+        Oauth2: []
+        OpenId: []
       responses:
         '200':
           description: successful
@@ -2853,6 +3249,8 @@ paths:
       tags:
       - OTP
       parameters: []
+      security:
+      - SessionCookie: []
       responses:
         '200':
           description: successful
@@ -2885,6 +3283,8 @@ paths:
       tags:
       - OTP
       parameters: []
+      security:
+      - SessionCookie: []
       responses:
         '200':
           description: successful
@@ -2916,6 +3316,8 @@ paths:
       operationId: generateOtpBackupCodes
       tags:
       - OTP
+      security:
+      - SessionCookie: []
       responses:
         '200':
           description: successful
@@ -2941,6 +3343,8 @@ paths:
       operationId: startOtpSetup
       tags:
       - OTP
+      security:
+      - SessionCookie: []
       responses:
         '200':
           description: successful
@@ -2993,6 +3397,8 @@ paths:
       tags:
       - Password
       parameters: []
+      security:
+      - SessionCookie: []
       responses:
         '200':
           description: successful
@@ -3119,7 +3525,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/FleetVehicleQuery"
         style: deepObject
         explode: true
@@ -3320,7 +3725,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/FleetVehicleQuery"
         style: deepObject
         explode: true
@@ -3369,7 +3773,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/FleetVehicleQuery"
         style: deepObject
         explode: true
@@ -3407,7 +3810,6 @@ paths:
       - name: usernames
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/HangarEmbedQuery"
         style: deepObject
         explode: true
@@ -3471,7 +3873,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/HangarQuery"
         style: deepObject
         explode: true
@@ -3506,7 +3907,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/HangarQuery"
         style: deepObject
         explode: true
@@ -3577,7 +3977,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/HangarQuery"
         style: deepObject
         explode: true
@@ -3615,6 +4014,8 @@ paths:
       tags:
       - Sessions
       parameters: []
+      security:
+      - SessionCookie: []
       responses:
         '200':
           description: successful
@@ -3671,6 +4072,8 @@ paths:
       operationId: destroySession
       tags:
       - Sessions
+      security:
+      - SessionCookie: []
       responses:
         '200':
           description: successful
@@ -3845,6 +4248,12 @@ paths:
       operationId: disableUserFeature
       tags:
       - UserFeatures
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - profile:write
+        OpenId:
+        - profile:write
       responses:
         '200':
           description: successful
@@ -3882,6 +4291,12 @@ paths:
       operationId: enableUserFeature
       tags:
       - UserFeatures
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - profile:write
+        OpenId:
+        - profile:write
       responses:
         '200':
           description: successful
@@ -3912,6 +4327,12 @@ paths:
       operationId: userFeatures
       tags:
       - UserFeatures
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - profile:write
+        OpenId:
+        - profile:write
       responses:
         '200':
           description: successful
@@ -4031,6 +4452,10 @@ paths:
       operationId: destroyAccount
       tags:
       - Users
+      security:
+      - SessionCookie: []
+        Oauth2: []
+        OpenId: []
       responses:
         '200':
           description: successful
@@ -4049,6 +4474,10 @@ paths:
       operationId: me
       tags:
       - Users
+      security:
+      - SessionCookie: []
+        Oauth2: []
+        OpenId: []
       responses:
         '200':
           description: successful
@@ -4068,6 +4497,10 @@ paths:
       tags:
       - Users
       parameters: []
+      security:
+      - SessionCookie: []
+        Oauth2: []
+        OpenId: []
       responses:
         '200':
           description: successful
@@ -4094,6 +4527,10 @@ paths:
       tags:
       - Users
       parameters: []
+      security:
+      - SessionCookie: []
+        Oauth2: []
+        OpenId: []
       responses:
         '200':
           description: successful
@@ -4126,6 +4563,14 @@ paths:
       tags:
       - Vehicles
       parameters: []
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:read
+        OpenId:
+        - hangar
+        - hangar:read
       responses:
         '200':
           description: successful
@@ -4157,6 +4602,9 @@ paths:
         Oauth2:
         - hangar
         - hangar:write
+        OpenId:
+        - hangar
+        - hangar:write
       responses:
         '204':
           description: successful
@@ -4178,6 +4626,14 @@ paths:
       tags:
       - Vehicles
       parameters: []
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:write
+        OpenId:
+        - hangar
+        - hangar:write
       responses:
         '204':
           description: successful
@@ -4200,6 +4656,14 @@ paths:
       tags:
       - Vehicles
       parameters: []
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:write
+        OpenId:
+        - hangar
+        - hangar:write
       responses:
         '201':
           description: successful
@@ -4225,6 +4689,14 @@ paths:
       operationId: destroyAllIngameVehicles
       tags:
       - Vehicles
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:write
+        OpenId:
+        - hangar
+        - hangar:write
       responses:
         '204':
           description: successful
@@ -4241,6 +4713,14 @@ paths:
       tags:
       - Vehicles
       parameters: []
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:write
+        OpenId:
+        - hangar
+        - hangar:write
       responses:
         '204':
           description: successful
@@ -4270,6 +4750,14 @@ paths:
       operationId: destroyVehicle
       tags:
       - Vehicles
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:write
+        OpenId:
+        - hangar
+        - hangar:write
       responses:
         '200':
           description: successful
@@ -4295,6 +4783,14 @@ paths:
       tags:
       - Vehicles
       parameters: []
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:write
+        OpenId:
+        - hangar
+        - hangar:write
       responses:
         '200':
           description: successful
@@ -4339,6 +4835,14 @@ paths:
       operationId: destroyWishlist
       tags:
       - Wishlist
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:write
+        OpenId:
+        - hangar
+        - hangar:write
       responses:
         '204':
           description: successful
@@ -4369,11 +4873,18 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/HangarQuery"
         style: deepObject
         explode: true
         required: false
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:read
+        OpenId:
+        - hangar
+        - hangar:read
       responses:
         '200':
           description: successful
@@ -4393,6 +4904,14 @@ paths:
       operationId: exportWishlist
       tags:
       - Wishlist
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:read
+        OpenId:
+        - hangar
+        - hangar:read
       responses:
         '200':
           description: successful
@@ -4414,6 +4933,14 @@ paths:
       operationId: wishlistItems
       tags:
       - Wishlist
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:read
+        OpenId:
+        - hangar
+        - hangar:read
       responses:
         '200':
           description: successful
@@ -6122,6 +6649,7 @@ components:
           items:
             type: string
       additionalProperties: false
+      example: {}
       title: ComponentQuery
     ConfirmAccessInput:
       type: object
@@ -6156,6 +6684,7 @@ components:
           items:
             type: string
       additionalProperties: false
+      example: {}
       title: EquipmentQuery
     Fleet:
       type: object
@@ -6436,6 +6965,7 @@ components:
               "$ref": "#/components/schemas/FleetMembershipSortEnum"
           - "$ref": "#/components/schemas/FleetMembershipSortEnum"
       additionalProperties: false
+      example: {}
       title: FleetMemberQuery
     FleetMembersList:
       type: object
@@ -6762,6 +7292,7 @@ components:
               "$ref": "#/components/schemas/FleetVehicleSortEnum"
           - "$ref": "#/components/schemas/FleetVehicleSortEnum"
       additionalProperties: false
+      example: {}
       title: FleetVehicleQuery
     FleetVehicles:
       type: object
@@ -7143,6 +7674,7 @@ components:
               "$ref": "#/components/schemas/VehicleSortEnum"
           - "$ref": "#/components/schemas/VehicleSortEnum"
       additionalProperties: false
+      example: {}
       title: HangarQuery
     HangarStats:
       type: object
@@ -7335,6 +7867,7 @@ components:
           items:
             type: string
       additionalProperties: false
+      example: {}
       title: ImageQuery
     Images:
       type: object
@@ -7448,6 +7981,7 @@ components:
           items:
             type: string
       additionalProperties: false
+      example: {}
       title: ManufacturerQuery
     Manufacturers:
       type: object
@@ -8484,6 +9018,7 @@ components:
           items:
             type: string
       additionalProperties: false
+      example: {}
       title: ModelPaintQuery
     ModelQuery:
       type: object
@@ -8586,6 +9121,7 @@ components:
               "$ref": "#/components/schemas/ModelSortEnum"
           - "$ref": "#/components/schemas/ModelSortEnum"
       additionalProperties: false
+      example: {}
       title: ModelQuery
     ModelUpgrade:
       type: object

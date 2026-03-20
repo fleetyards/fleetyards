@@ -3,10 +3,21 @@
 module Oauth
   class AuthorizationsController < Doorkeeper::ApplicationController
     before_action :authenticate_resource_owner!
+    skip_verify_authorized
+
+    private def oidc_authorization_request?
+      mapping = Doorkeeper::Rails::Routes.mapping[:authorizations]
+      return false unless mapping
+
+      controller_path == mapping[:controllers] &&
+        action_name == "new" &&
+        pre_auth.valid? &&
+        pre_auth.scopes.include?("openid")
+    end
+
+    public
 
     def new
-      authorize! :read, :oauth_authorizations
-
       if pre_auth.authorizable?
         render_success
       else
@@ -15,14 +26,10 @@ module Oauth
     end
 
     def create
-      authorize! :create, :oauth_authorizations
-
       redirect_or_render(authorize_response)
     end
 
     def destroy
-      authorize! :destroy, :oauth_authorizations
-
       redirect_or_render(authorization.deny)
     rescue Doorkeeper::Errors::InvalidTokenStrategy => e
       error_response = get_error_response_from_exception(e)
@@ -48,7 +55,7 @@ module Oauth
           end
           format.json do
             @pre_auth = pre_auth
-            render :pre_authorization, layout: false
+            render "oauth/authorizations/pre_authorization", layout: false
           end
         end
       end

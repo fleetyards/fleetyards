@@ -8,6 +8,7 @@ export default {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import Heading from "@/shared/components/base/Heading/index.vue";
 import ListGroup from "@/shared/components/ListGroup/index.vue";
 import {
   BtnSizesEnum,
@@ -53,6 +54,15 @@ const confirmDestroy = (app: OauthApplication) => {
   });
 };
 
+const copyToClipboard = async (text: string) => {
+  try {
+    await navigator.clipboard.writeText(text);
+    displaySuccess({ text: t("messages.oauthApplications.copied") });
+  } catch {
+    displayAlert({ text: t("messages.oauthApplications.copyError") });
+  }
+};
+
 const formatScopes = (scopes: string) => {
   if (!scopes) return t("labels.oauthApplications.defaultScopes");
   return scopes.split(" ").filter(Boolean).join(", ");
@@ -66,7 +76,7 @@ const formatScopes = (scopes: string) => {
 
   <div class="oauth-header">
     <div>
-      <h1>{{ t("headlines.settings.oauthApplications") }}</h1>
+      <Heading hero>{{ t("headlines.settings.oauthApplications") }}</Heading>
       <p class="oauth-intro">
         {{ t("labels.oauthApplications.settingsIntro") }}
       </p>
@@ -90,11 +100,15 @@ const formatScopes = (scopes: string) => {
           {{ item.name }}
         </router-link>
         <div class="oauth-app-meta">
-          <span class="oauth-app-meta-item">
+          <span
+            class="oauth-app-meta-item oauth-app-meta-item--copyable"
+            @click.stop.prevent="copyToClipboard(item.uid)"
+          >
             <span class="oauth-app-meta-label">
               {{ t("labels.oauthApplications.clientId") }}:
             </span>
             <code>{{ item.uid }}</code>
+            <i class="fa-duotone fa-copy" />
           </span>
           <span class="oauth-app-meta-item">
             <i
@@ -184,6 +198,14 @@ const formatScopes = (scopes: string) => {
 
   code {
     font-size: 0.8rem;
+  }
+}
+
+.oauth-app-meta-item--copyable {
+  cursor: pointer;
+
+  &:hover {
+    color: var(--text-primary, inherit);
   }
 }
 

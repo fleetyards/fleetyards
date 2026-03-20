@@ -24,7 +24,6 @@ RSpec.describe "admin/api/v1/model_upgrades", type: :request, swagger_doc: "admi
       parameter "$ref": "#/components/parameters/SortingParameter"
       parameter name: "q", in: :query,
         schema: {
-          type: :object,
           "$ref": "#/components/schemas/ModelUpgradeQuery"
         },
         style: :deepObject,

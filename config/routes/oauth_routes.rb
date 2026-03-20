@@ -6,14 +6,12 @@ oauth_options = {
 use_doorkeeper_openid_connect
 
 namespace :oauth, **oauth_options do
-  get :authorize, to: "/frontend/base#index", constaints: ->(req) { req.format.html? }, as: :authorization
+  get :authorize, to: "/frontend/base#index", constraints: ->(req) { req.format.html? }, as: :authorization
+  get :authorize, to: "/oauth/authorizations#new", constraints: ->(req) { !req.format.html? }
+  post :authorize, to: "/oauth/authorizations#create"
+  delete :authorize, to: "/oauth/authorizations#destroy"
 
-  # use_doorkeeper scope: "" do
-  #   # skip_controllers :applications, :authorized_applications, :tokens, :token_info
-  #   # controllers authorizations: "authorizations"
-  # end
-
-  # resources :tokens, only: [:create, :destroy]
-  # resources :applications, only: [:index, :show, :create, :update, :destroy]
-  # resources :authorized_applications, path: "authorized-applications", only: [:index, :show, :destroy]
+  post :token, to: "/doorkeeper/tokens#create"
+  post :revoke, to: "/doorkeeper/tokens#destroy"
+  post :introspect, to: "/doorkeeper/tokens#introspect"
 end

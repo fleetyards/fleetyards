@@ -18,7 +18,8 @@ module Admin
               moduleHardpointsModelIdEq: {type: :string, format: :uuid},
               moduleHardpointsModelIdNotEq: {type: :string, format: :uuid}
             },
-            additionalProperties: false
+            additionalProperties: false,
+            example: {}
           })
         end
       end

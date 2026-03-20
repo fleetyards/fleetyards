@@ -25,7 +25,8 @@ module Admin
                 "$ref": "#/components/schemas/ModelPaintSortEnum"
               }]}
             },
-            additionalProperties: false
+            additionalProperties: false,
+            example: {}
           })
         end
       end

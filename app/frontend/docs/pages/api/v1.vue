@@ -23,6 +23,11 @@ const oasVersion = computed(() => window.API_OAS_VERSION);
 
 const swagger = ref<SwaggerUIBundle>();
 
+const frontendEndpoint = computed(() => window.FRONTEND_ENDPOINT);
+const oauth2RedirectUrl = computed(
+  () => `${window.location.origin}/oauth2-redirect.html`,
+);
+
 const validatorIconUrl = computed(
   () => `https://validator.swagger.io/validator?url=${schemaUrl.value}`,
 );
@@ -31,7 +36,43 @@ const validatorUrl = computed(
   () => `https://validator.swagger.io/validator/debug?url=${schemaUrl.value}`,
 );
 
-onMounted(() => {
+const LocalOAuthPlugin = () => ({
+  statePlugins: {
+    spec: {
+      wrapActions: {
+        updateJsonSpec:
+          (oriAction: (spec: Record<string, unknown>) => void) =>
+          (spec: Record<string, unknown>) => {
+            const endpoint = frontendEndpoint.value;
+            const components = spec.components as Record<string, unknown>;
+            const securitySchemes = components?.securitySchemes as Record<
+              string,
+              Record<string, unknown>
+            >;
+
+            if (securitySchemes?.Oauth2) {
+              const flows = securitySchemes.Oauth2.flows as Record<
+                string,
+                Record<string, string>
+              >;
+              if (flows?.authorizationCode) {
+                flows.authorizationCode.authorizationUrl = `${endpoint}/oauth/authorize`;
+                flows.authorizationCode.tokenUrl = `${endpoint}/oauth/token`;
+              }
+            }
+
+            if (securitySchemes?.OpenId) {
+              securitySchemes.OpenId.openIdConnectUrl = `${endpoint}/.well-known/openid-configuration`;
+            }
+
+            return oriAction(spec);
+          },
+      },
+    },
+  },
+});
+
+function initSwaggerUI() {
   swagger.value = SwaggerUIBundle({
     dom_id: "#swagger-ui",
     url: schemaUrl.value,
@@ -39,13 +80,17 @@ onMounted(() => {
     filter: true,
     defaultModelRendering: "model",
     defaultModelExpandDepth: 3,
+    oauth2RedirectUrl: oauth2RedirectUrl.value,
+    plugins: [LocalOAuthPlugin],
   });
 
   swagger.value?.initOAuth({
-    clientId: "your-client-id",
-    clientSecret: "",
     usePkceWithAuthorizationCodeGrant: true,
   });
+}
+
+onMounted(() => {
+  initSwaggerUI();
 });
 </script>
 

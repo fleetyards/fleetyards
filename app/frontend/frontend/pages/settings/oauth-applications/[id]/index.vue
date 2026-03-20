@@ -8,6 +8,9 @@ export default {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import Heading from "@/shared/components/base/Heading/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import {
   BtnVariantsEnum,
   BtnSizesEnum,
@@ -134,7 +137,7 @@ const confirmDestroy = () => {
   />
 
   <div class="oauth-detail-header">
-    <h1>{{ oauthApplication.name }}</h1>
+    <Heading hero>{{ oauthApplication.name }}</Heading>
     <BtnGroup inline>
       <Btn
         :size="BtnSizesEnum.SMALL"
@@ -184,72 +187,86 @@ const confirmDestroy = () => {
     </div>
   </div>
 
-  <div class="oauth-details">
-    <div class="oauth-detail">
-      <span class="oauth-detail-label">{{
-        t("labels.oauthApplications.clientId")
-      }}</span>
-      <div class="oauth-detail-value">
-        <code>{{ oauthApplication.uid }}</code>
-        <Btn
-          :size="BtnSizesEnum.SMALL"
-          @click="copyToClipboard(oauthApplication.uid)"
-          inline
-        >
-          <i class="fa-duotone fa-copy" />
-        </Btn>
-      </div>
-    </div>
+  <Panel>
+    <PanelBody>
+      <div class="oauth-details">
+        <div class="oauth-detail">
+          <span class="oauth-detail-label">{{
+            t("labels.oauthApplications.clientId")
+          }}</span>
+          <div class="oauth-detail-value">
+            <code>{{ oauthApplication.uid }}</code>
+            <Btn
+              :size="BtnSizesEnum.SMALL"
+              @click="copyToClipboard(oauthApplication.uid)"
+              inline
+            >
+              <i class="fa-duotone fa-copy" />
+            </Btn>
+          </div>
+        </div>
 
-    <div class="oauth-detail">
-      <span class="oauth-detail-label">{{
-        t("labels.oauthApplications.clientSecret")
-      }}</span>
-      <div class="oauth-detail-value">
-        <Btn :size="BtnSizesEnum.SMALL" @click="confirmRegenerateSecret">
-          <i class="fa-duotone fa-rotate" />
-          {{ t("actions.oauthApplications.regenerateSecret") }}
-        </Btn>
-      </div>
-    </div>
+        <div class="oauth-detail">
+          <span class="oauth-detail-label">{{
+            t("labels.oauthApplications.clientSecret")
+          }}</span>
+          <div class="oauth-detail-value">
+            <Btn :size="BtnSizesEnum.SMALL" @click="confirmRegenerateSecret">
+              <i class="fa-duotone fa-rotate" />
+              {{ t("actions.oauthApplications.regenerateSecret") }}
+            </Btn>
+          </div>
+        </div>
 
-    <div class="oauth-detail">
-      <span class="oauth-detail-label">{{
-        t("labels.oauthApplications.redirectUri")
-      }}</span>
-      <div v-for="uri in redirectUris" :key="uri" class="oauth-detail-value">
-        <code>{{ uri }}</code>
-        <Btn :size="BtnSizesEnum.SMALL" @click="copyToClipboard(uri)" inline>
-          <i class="fa-duotone fa-copy" />
-        </Btn>
-      </div>
-    </div>
+        <div class="oauth-detail">
+          <span class="oauth-detail-label">{{
+            t("labels.oauthApplications.redirectUri")
+          }}</span>
+          <div
+            v-for="uri in redirectUris"
+            :key="uri"
+            class="oauth-detail-value"
+          >
+            <code>{{ uri }}</code>
+            <Btn
+              :size="BtnSizesEnum.SMALL"
+              @click="copyToClipboard(uri)"
+              inline
+            >
+              <i class="fa-duotone fa-copy" />
+            </Btn>
+          </div>
+        </div>
 
-    <div class="oauth-detail">
-      <span class="oauth-detail-label">{{
-        t("labels.oauthApplications.scopes")
-      }}</span>
-      <div v-if="scopes.length" class="oauth-scopes">
-        <code v-for="scope in scopes" :key="scope" class="oauth-scope">
-          {{ scope }}
-        </code>
-      </div>
-      <div v-else class="oauth-detail-value">
-        <code>{{ t("labels.oauthApplications.defaultScopes") }}</code>
-      </div>
-    </div>
+        <div class="oauth-detail">
+          <span class="oauth-detail-label">{{
+            t("labels.oauthApplications.scopes")
+          }}</span>
+          <div v-if="scopes.length" class="oauth-scopes">
+            <code v-for="scope in scopes" :key="scope" class="oauth-scope">
+              {{ scope }}
+            </code>
+          </div>
+          <div v-else class="oauth-detail-value">
+            <code>{{ t("labels.oauthApplications.defaultScopes") }}</code>
+          </div>
+        </div>
 
-    <div class="oauth-detail">
-      <span class="oauth-detail-label">{{
-        t("labels.oauthApplications.confidential")
-      }}</span>
-      <div class="oauth-detail-value">
-        {{
-          oauthApplication.confidential ? t("labels.true") : t("labels.false")
-        }}
+        <div class="oauth-detail">
+          <span class="oauth-detail-label">{{
+            t("labels.oauthApplications.confidential")
+          }}</span>
+          <div class="oauth-detail-value">
+            {{
+              oauthApplication.confidential
+                ? t("labels.true")
+                : t("labels.false")
+            }}
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
+    </PanelBody>
+  </Panel>
 </template>
 
 <style lang="scss" scoped>
@@ -257,6 +274,7 @@ const confirmDestroy = () => {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 1rem;
 
   h1 {
     margin-bottom: 0;
@@ -285,7 +303,6 @@ const confirmDestroy = () => {
 }
 
 .oauth-details {
-  margin-top: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;

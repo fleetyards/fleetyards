@@ -17,7 +17,8 @@ module V1
             slugCont: {type: :string},
             slugIn: {type: :array, items: {type: :string}}
           },
-          additionalProperties: false
+          additionalProperties: false,
+          example: {}
         })
       end
     end

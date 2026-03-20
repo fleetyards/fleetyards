@@ -8,6 +8,8 @@ export default {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import Heading from "@/shared/components/base/Heading/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
@@ -99,12 +101,13 @@ const onSubmit = handleSubmit(async (values) => {
 </script>
 
 <template>
+  <BreadCrumbs
+    :crumbs="[{ to: { name: 'settings' }, label: t('nav.settings.index') }]"
+  />
+
+  <Heading hero>{{ t("headlines.settings.profile") }}</Heading>
+
   <form id="settings-profile-form" @submit.prevent="onSubmit">
-    <div class="row">
-      <div class="col-lg-12">
-        <h1>{{ t("headlines.settings.profile") }}</h1>
-      </div>
-    </div>
 
     <div class="row">
       <div class="col-12 col-md-4">

@@ -8,6 +8,7 @@ export default {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import Heading from "@/shared/components/base/Heading/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
@@ -88,7 +89,7 @@ const handleCancel = async () => {
     ]"
   />
 
-  <h1>{{ t("headlines.oauthApplications.new") }}</h1>
+  <Heading hero>{{ t("headlines.oauthApplications.new") }}</Heading>
 
   <form
     id="settings-oauth-application-create-form"

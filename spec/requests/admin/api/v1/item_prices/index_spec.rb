@@ -24,7 +24,6 @@ RSpec.describe "admin/api/v1/item_prices", type: :request, swagger_doc: "admin/v
       parameter "$ref": "#/components/parameters/SortingParameter"
       parameter name: "q", in: :query,
         schema: {
-          type: :object,
           "$ref": "#/components/schemas/ItemPriceQuery"
         },
         style: :deepObject,

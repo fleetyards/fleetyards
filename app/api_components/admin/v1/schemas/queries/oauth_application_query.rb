@@ -13,7 +13,8 @@ module Admin
               nameCont: {type: :string},
               ownerIdEq: {type: :string, format: :uuid}
             },
-            additionalProperties: false
+            additionalProperties: false,
+            example: {}
           })
         end
       end

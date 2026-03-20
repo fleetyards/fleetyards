@@ -29,7 +29,8 @@ module Admin
                 "$ref": "#/components/schemas/ModelSortEnum"
               }]}
             },
-            additionalProperties: false
+            additionalProperties: false,
+            example: {}
           })
         end
       end

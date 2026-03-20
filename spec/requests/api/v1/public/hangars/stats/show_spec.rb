@@ -16,7 +16,6 @@ RSpec.describe "api/v1/public/hangars/stats", type: :request, swagger_doc: "v1/s
 
       parameter name: "q", in: :query,
         schema: {
-          type: :object,
           "$ref": "#/components/schemas/HangarQuery"
         },
         style: :deepObject,

@@ -48,7 +48,8 @@ module V1
               "$ref": "#/components/schemas/VehicleSortEnum"
             }]}
           },
-          additionalProperties: false
+          additionalProperties: false,
+          example: {}
         })
       end
     end

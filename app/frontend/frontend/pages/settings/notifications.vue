@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import Heading from "@/shared/components/base/Heading/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -80,12 +82,13 @@ const onSubmit = handleSubmit(async (values) => {
 </script>
 
 <template>
+  <BreadCrumbs
+    :crumbs="[{ to: { name: 'settings' }, label: t('nav.settings.index') }]"
+  />
+
+  <Heading hero>{{ t("headlines.settings.notifications") }}</Heading>
+
   <form id="settings-notifications-form" @submit.prevent="onSubmit">
-    <div class="row">
-      <div class="col-lg-12">
-        <h1>{{ t("headlines.settings.notifications") }}</h1>
-      </div>
-    </div>
     <div class="row">
       <div class="col-12 col-md-6">
         <FormToggle

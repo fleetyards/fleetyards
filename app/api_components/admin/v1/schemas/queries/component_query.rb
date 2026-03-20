@@ -19,7 +19,8 @@ module Admin
               componentClassIn: {type: :array, items: {type: :string}},
               manufacturerIdIn: {type: :array, items: {type: :string, format: :uuid}}
             },
-            additionalProperties: false
+            additionalProperties: false,
+            example: {}
           })
         end
       end

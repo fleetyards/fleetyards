@@ -23,7 +23,6 @@ RSpec.describe "admin/api/v1/model_modules", type: :request, swagger_doc: "admin
       parameter name: "perPage", in: :query, schema: {type: :string, default: ModelModule.default_per_page}, required: false
       parameter name: "q", in: :query,
         schema: {
-          type: :object,
           "$ref": "#/components/schemas/ModelModuleQuery"
         },
         style: :deepObject,

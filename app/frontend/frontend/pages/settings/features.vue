@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
@@ -59,7 +60,11 @@ const toggleFeature = async (feature: FeatureItem) => {
 </script>
 
 <template>
-  <Heading>{{ t("headlines.settings.features") }}</Heading>
+  <BreadCrumbs
+    :crumbs="[{ to: { name: 'settings' }, label: t('nav.settings.index') }]"
+  />
+
+  <Heading hero>{{ t("headlines.settings.features") }}</Heading>
 
   <p class="features-intro">
     {{ t("labels.features.settingsIntro") }}

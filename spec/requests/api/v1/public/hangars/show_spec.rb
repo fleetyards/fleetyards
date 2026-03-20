@@ -24,7 +24,6 @@ RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.
       parameter name: "perPage", in: :query, schema: {type: :string, default: Vehicle.default_per_page}, required: false
       parameter name: "q", in: :query,
         schema: {
-          type: :object,
           "$ref": "#/components/schemas/HangarQuery"
         },
         style: :deepObject,

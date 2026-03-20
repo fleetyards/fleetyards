@@ -48,7 +48,8 @@ module V1
               "$ref": "#/components/schemas/ModelSortEnum"
             }]}
           },
-          additionalProperties: false
+          additionalProperties: false,
+          example: {}
         })
       end
     end

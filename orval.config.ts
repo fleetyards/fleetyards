@@ -22,6 +22,27 @@ export default defineConfig({
       target: "./swagger/v1/schema.yaml",
     },
   },
+  fyOAuthApi: {
+    output: {
+      namingConvention: "PascalCase",
+      mode: "tags-split",
+      workspace: "app/frontend/services/fyOAuthApi",
+      target: "./services",
+      schemas: "./models",
+      client: "vue-query",
+      mock: true,
+      clean: true,
+      override: {
+        mutator: {
+          path: "../axiosOAuthClient.ts",
+          name: "axiosClient",
+        },
+      },
+    },
+    input: {
+      target: "./swagger/oauth/v1/schema.yaml",
+    },
+  },
   fyAdminApi: {
     output: {
       namingConvention: "PascalCase",

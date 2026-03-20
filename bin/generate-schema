@@ -8,6 +8,7 @@ echo "cleanup old generated files"
 
 rm -rf ./app/frontend/services/fyAdminApi
 rm -rf ./app/frontend/services/fyApi
+rm -rf ./app/frontend/services/fyOAuthApi
 
 echo "generate api clients"
 

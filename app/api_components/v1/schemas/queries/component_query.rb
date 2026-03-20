@@ -15,7 +15,8 @@ module V1
             itemTypeIn: {type: :array, items: {type: :string}},
             componentClassIn: {type: :array, items: {type: :string}}
           },
-          additionalProperties: false
+          additionalProperties: false,
+          example: {}
         })
       end
     end

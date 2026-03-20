@@ -19,7 +19,8 @@ module Admin
               slugCont: {type: :string},
               slugIn: {type: :array, items: {type: :string}}
             },
-            additionalProperties: false
+            additionalProperties: false,
+            example: {}
           })
         end
       end

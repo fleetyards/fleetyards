@@ -10,6 +10,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
+import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -141,7 +142,11 @@ const destroy = async () => {
 </script>
 
 <template>
-  <Heading>{{ t("headlines.settings.account") }}</Heading>
+  <BreadCrumbs
+    :crumbs="[{ to: { name: 'settings' }, label: t('nav.settings.index') }]"
+  />
+
+  <Heading hero>{{ t("headlines.settings.account") }}</Heading>
 
   <form id="settings-account-form" @submit.prevent="updateAccount">
     <div class="row">

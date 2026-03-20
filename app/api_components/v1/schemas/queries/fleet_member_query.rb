@@ -27,7 +27,8 @@ module V1
               "$ref": "#/components/schemas/FleetMembershipSortEnum"
             }]}
           },
-          additionalProperties: false
+          additionalProperties: false,
+          example: {}
         })
       end
     end

@@ -21,7 +21,6 @@ RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.
 
       parameter name: :usernames, in: :query,
         schema: {
-          type: :object,
           "$ref": "#/components/schemas/HangarEmbedQuery"
         },
         style: :deepObject,

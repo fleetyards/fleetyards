@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import ChangePasswordForm from "@/frontend/components/Security/ChangePasswordForm/index.vue";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -33,14 +35,14 @@ const socialLogins = ref<InstanceType<typeof SocialLogins> | undefined>();
 </script>
 
 <template>
+  <BreadCrumbs
+    :crumbs="[{ to: { name: 'settings' }, label: t('nav.settings.index') }]"
+  />
+
+  <Heading hero>{{ t("headlines.settings.security.index") }}</Heading>
+
   <div v-if="sessionStore.currentUser" class="row">
     <div class="col-12">
-      <div class="row">
-        <div class="col-12">
-          <h1>{{ t("headlines.settings.security.index") }}</h1>
-        </div>
-      </div>
-      <br />
       <div class="row">
         <div class="col-12 col-md-6">
           <h2 id="change-password">{{ t("headlines.changePassword") }}</h2>

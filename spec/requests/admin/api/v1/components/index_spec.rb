@@ -23,7 +23,6 @@ RSpec.describe "admin/api/v1/components", type: :request, swagger_doc: "admin/v1
       parameter "$ref": "#/components/parameters/SortingParameter"
       parameter name: "q", in: :query,
         schema: {
-          type: :object,
           "$ref": "#/components/schemas/ComponentQuery"
         },
         style: :deepObject,

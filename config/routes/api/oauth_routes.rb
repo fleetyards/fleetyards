@@ -1,6 +1,4 @@
 namespace :oauth do
-  post :authorize, to: "authorizations#create", as: :create_authorization
-  delete :authorize, to: "authorizations#create", as: :revoke_authorization
   post :token, to: "tokens#create", as: :token
   post :revoke, to: "tokens#destroy", as: :revoke
   post :introspect, to: "tokens#introspect", as: :introspect

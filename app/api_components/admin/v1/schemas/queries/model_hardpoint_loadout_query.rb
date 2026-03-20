@@ -13,7 +13,8 @@ module Admin
               modelHardpointIdEq: {type: :string, format: :uuid},
               nameCont: {type: :string}
             },
-            additionalProperties: false
+            additionalProperties: false,
+            example: {}
           })
         end
       end

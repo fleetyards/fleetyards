@@ -34,7 +34,8 @@ module Admin
                 "$ref": "#/components/schemas/VehicleSortEnum"
               }]}
             },
-            additionalProperties: false
+            additionalProperties: false,
+            example: {}
           })
         end
       end

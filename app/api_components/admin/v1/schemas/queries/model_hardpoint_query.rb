@@ -16,7 +16,8 @@ module Admin
               sourceEq: {type: :string},
               nameCont: {type: :string}
             },
-            additionalProperties: false
+            additionalProperties: false,
+            example: {}
           })
         end
       end

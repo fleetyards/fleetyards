@@ -14,7 +14,8 @@ module Admin
               loanerModelIdEq: {type: :string, format: :uuid},
               hiddenEq: {type: :boolean}
             },
-            additionalProperties: false
+            additionalProperties: false,
+            example: {}
           })
         end
       end

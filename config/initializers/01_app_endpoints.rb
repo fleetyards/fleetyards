@@ -14,6 +14,8 @@ ADMIN_DOMAIN = endpoints.admin_domain
 ADMIN_ENDPOINT = endpoints.admin_endpoint
 ADMIN_API_ENDPOINT = endpoints.admin_api_endpoint
 
+OAUTH_ENDPOINT = endpoints.oauth_endpoint
+
 CABLE_ENDPOINT = endpoints.cable_endpoint
 
 DOCS_DOMAIN = endpoints.docs_domain

@@ -1,0 +1,239 @@
+---
+openapi: 3.0.3
+info:
+  title: FleetYards.net OAuth API
+  version: v1
+  license:
+    name: GNU General Public License v3.0
+    url: https://github.com/fleetyards/fleetyards/blob/main/LICENSE
+servers:
+- url: http://fleetyards.test/oauth
+  description: Dev Server
+- url: https://fleetyards.net/oauth
+  description: Production Server
+- url: https://fleetyards.dev/oauth
+  description: Staging Server
+security: []
+paths:
+  "/authorize":
+    get:
+      summary: Pre-authorize OAuth application
+      operationId: oauthPreAuthorize
+      tags:
+      - OAuth
+      parameters:
+      - name: client_id
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: redirect_uri
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: response_type
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: scope
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: state
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: code_challenge
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: code_challenge_method
+        in: query
+        required: false
+        schema:
+          type: string
+      security:
+      - SessionCookie: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OauthPreAuthorization"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    post:
+      summary: Authorize OAuth application
+      operationId: oauthAuthorize
+      tags:
+      - OAuth
+      parameters: []
+      security:
+      - SessionCookie: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OauthAuthorizationRedirect"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/OauthAuthorizationInput"
+        required: true
+    delete:
+      summary: Deny OAuth authorization
+      operationId: oauthDeny
+      tags:
+      - OAuth
+      parameters: []
+      security:
+      - SessionCookie: []
+      responses:
+        '400':
+          description: denied
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OauthAuthorizationRedirect"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/OauthAuthorizationInput"
+        required: true
+components:
+  schemas:
+    OauthAuthorizationInput:
+      type: object
+      properties:
+        clientId:
+          type: string
+        redirectUri:
+          type: string
+        responseType:
+          type: string
+        responseMode:
+          type: string
+          nullable: true
+        scope:
+          type: string
+        state:
+          type: string
+          nullable: true
+        codeChallenge:
+          type: string
+          nullable: true
+        codeChallengeMethod:
+          type: string
+          nullable: true
+      additionalProperties: false
+      required:
+      - clientId
+      - redirectUri
+      - responseType
+      - scope
+      title: OauthAuthorizationInput
+    OauthAuthorizationRedirect:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - redirect
+          - post
+        redirect_uri:
+          type: string
+      additionalProperties: false
+      required:
+      - status
+      - redirect_uri
+      title: OauthAuthorizationRedirect
+    OauthPreAuthorization:
+      type: object
+      properties:
+        clientId:
+          type: string
+        clientName:
+          type: string
+        redirectUri:
+          type: string
+        state:
+          type: string
+          nullable: true
+        responseType:
+          type: string
+        responseMode:
+          type: string
+          nullable: true
+        scope:
+          type: string
+        codeChallenge:
+          type: string
+          nullable: true
+        codeChallengeMethod:
+          type: string
+          nullable: true
+        scopes:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+            required:
+            - name
+            - description
+      additionalProperties: false
+      required:
+      - clientId
+      - clientName
+      - redirectUri
+      - responseType
+      - scope
+      - scopes
+      title: OauthPreAuthorization
+    StandardError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      additionalProperties: false
+      required:
+      - code
+      - message
+      title: StandardError
+  securitySchemes:
+    SessionCookie:
+      type: apiKey
+      description: Session Cookie
+      name: FLTYRD
+      in: cookie

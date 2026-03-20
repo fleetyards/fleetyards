@@ -35,6 +35,7 @@ declare global {
     DATA_PREFETCH: KeyValuePair;
     FLASH: KeyValuePair;
     FRONTEND_ENDPOINT: string;
+    OAUTH_ENDPOINT: string;
     CABLE_ENDPOINT: string;
     ON_SUBDOMAIN: boolean;
     NODE_ENV: string;

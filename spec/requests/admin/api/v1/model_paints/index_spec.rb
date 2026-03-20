@@ -24,7 +24,6 @@ RSpec.describe "admin/api/v1/model_paints", type: :request, swagger_doc: "admin/
       parameter "$ref": "#/components/parameters/SortingParameter"
       parameter name: "q", in: :query,
         schema: {
-          type: :object,
           "$ref": "#/components/schemas/ModelPaintQuery"
         },
         style: :deepObject,

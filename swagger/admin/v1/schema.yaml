@@ -219,7 +219,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/CargoHoldQuery"
         style: deepObject
         explode: true
@@ -338,7 +337,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ComponentQuery"
         style: deepObject
         explode: true
@@ -527,7 +525,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/DockQuery"
         style: deepObject
         explode: true
@@ -1215,7 +1212,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ImageQuery"
         style: deepObject
         explode: true
@@ -1317,7 +1313,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ImportQuery"
         style: deepObject
         explode: true
@@ -1429,7 +1424,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ItemPriceQuery"
         style: deepObject
         explode: true
@@ -1598,7 +1592,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ManufacturerQuery"
         style: deepObject
         explode: true
@@ -1787,7 +1780,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ModelHardpointLoadoutQuery"
         style: deepObject
         explode: true
@@ -1955,7 +1947,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ModelHardpointQuery"
         style: deepObject
         explode: true
@@ -2123,7 +2114,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ModelLoanerQuery"
         style: deepObject
         explode: true
@@ -2286,7 +2276,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ModelModulePackageQuery"
         style: deepObject
         explode: true
@@ -2460,7 +2449,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ModelModuleQuery"
         style: deepObject
         explode: true
@@ -2711,7 +2699,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ModelPaintQuery"
         style: deepObject
         explode: true
@@ -2890,7 +2877,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ModelUpgradeQuery"
         style: deepObject
         explode: true
@@ -3141,7 +3127,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ModelQuery"
         style: deepObject
         explode: true
@@ -3949,7 +3934,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/UserQuery"
         style: deepObject
         explode: true
@@ -4207,7 +4191,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/VehicleQuery"
         style: deepObject
         explode: true
@@ -4285,7 +4268,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/VideoQuery"
         style: deepObject
         explode: true
@@ -6266,6 +6248,7 @@ components:
           type: string
           format: uuid
       additionalProperties: false
+      example: {}
       title: CargoHoldQuery
     ComponentInput:
       type: object
@@ -6335,6 +6318,7 @@ components:
             type: string
             format: uuid
       additionalProperties: false
+      example: {}
       title: ComponentQuery
     DockInput:
       type: object
@@ -6383,6 +6367,7 @@ components:
         nameCont:
           type: string
       additionalProperties: false
+      example: {}
       title: DockQuery
     Docks:
       type: object
@@ -6553,6 +6538,7 @@ components:
         fidCont:
           type: string
       additionalProperties: false
+      example: {}
       title: FleetQuery
     Fleets:
       type: object
@@ -6715,6 +6701,7 @@ components:
         galleryTypeEq:
           type: string
       additionalProperties: false
+      example: {}
       title: ImageQuery
     Images:
       type: object
@@ -6784,6 +6771,7 @@ components:
           items:
             "$ref": "#/components/schemas/ImportTypeEnum"
       additionalProperties: false
+      example: {}
       title: ImportQuery
     Imports:
       type: object
@@ -6883,6 +6871,7 @@ components:
           items:
             "$ref": "#/components/schemas/ItemPriceTypeEnum"
       additionalProperties: false
+      example: {}
       title: ItemPriceQuery
     ItemPrices:
       type: object
@@ -6973,6 +6962,7 @@ components:
           items:
             type: string
       additionalProperties: false
+      example: {}
       title: ManufacturerQuery
     Manufacturers:
       type: object
@@ -7793,6 +7783,7 @@ components:
         nameCont:
           type: string
       additionalProperties: false
+      example: {}
       title: ModelHardpointLoadoutQuery
     ModelHardpointLoadouts:
       type: object
@@ -7823,6 +7814,7 @@ components:
         nameCont:
           type: string
       additionalProperties: false
+      example: {}
       title: ModelHardpointQuery
     ModelHardpoints:
       type: object
@@ -7921,6 +7913,7 @@ components:
         hiddenEq:
           type: boolean
       additionalProperties: false
+      example: {}
       title: ModelLoanerQuery
     ModelLoaners:
       type: object
@@ -8222,6 +8215,7 @@ components:
           type: string
           format: uuid
       additionalProperties: false
+      example: {}
       title: ModelModulePackageQuery
     ModelModulePackages:
       type: object
@@ -8259,6 +8253,7 @@ components:
           type: string
           format: uuid
       additionalProperties: false
+      example: {}
       title: ModelModuleQuery
     ModelModules:
       type: object
@@ -8540,6 +8535,7 @@ components:
               "$ref": "#/components/schemas/ModelPaintSortEnum"
           - "$ref": "#/components/schemas/ModelPaintSortEnum"
       additionalProperties: false
+      example: {}
       title: ModelPaintQuery
     ModelPaints:
       type: object
@@ -8601,6 +8597,7 @@ components:
               "$ref": "#/components/schemas/ModelSortEnum"
           - "$ref": "#/components/schemas/ModelSortEnum"
       additionalProperties: false
+      example: {}
       title: ModelQuery
     ModelUpdateInput:
       type: object
@@ -8826,6 +8823,7 @@ components:
           type: string
           format: uuid
       additionalProperties: false
+      example: {}
       title: ModelUpgradeQuery
     ModelUpgrades:
       type: object
@@ -8925,6 +8923,7 @@ components:
           type: string
           format: uuid
       additionalProperties: false
+      example: {}
       title: OauthApplicationQuery
     OauthApplicationUpdateInput:
       type: object
@@ -9163,6 +9162,7 @@ components:
               "$ref": "#/components/schemas/UserSortEnum"
           - "$ref": "#/components/schemas/UserSortEnum"
       additionalProperties: false
+      example: {}
       title: UserQuery
     Users:
       type: object
@@ -9362,6 +9362,7 @@ components:
               "$ref": "#/components/schemas/VehicleSortEnum"
           - "$ref": "#/components/schemas/VehicleSortEnum"
       additionalProperties: false
+      example: {}
       title: VehicleQuery
     Vehicles:
       type: object
@@ -9426,6 +9427,7 @@ components:
         videoTypeEq:
           "$ref": "#/components/schemas/VideoTypeEnum"
       additionalProperties: false
+      example: {}
       title: VideoQuery
     Videos:
       type: object

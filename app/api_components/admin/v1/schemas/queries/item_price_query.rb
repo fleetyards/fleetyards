@@ -18,7 +18,8 @@ module Admin
               priceTypeEq: {"$ref": "#/components/schemas/ItemPriceTypeEnum"},
               priceTypeIn: {type: :array, items: {"$ref": "#/components/schemas/ItemPriceTypeEnum"}}
             },
-            additionalProperties: false
+            additionalProperties: false,
+            example: {}
           })
         end
       end

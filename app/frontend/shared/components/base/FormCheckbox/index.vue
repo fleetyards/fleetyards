@@ -39,7 +39,12 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const { value, errorMessage } = useField(props.name);
+const fieldOptions =
+  props.checkboxValue !== undefined
+    ? { type: "checkbox" as const, checkedValue: props.checkboxValue }
+    : {};
+
+const { value, errorMessage } = useField(props.name, undefined, fieldOptions);
 
 const uuid = ref(`${props.name}-${uuidv4()}`);
 
@@ -58,14 +63,18 @@ const checked = computed(() => {
 watch(
   () => props.modelValue,
   () => {
-    value.value = props.modelValue;
+    if (props.modelValue !== undefined) {
+      value.value = props.modelValue;
+    }
   },
 );
 
 onMounted(() => {
   uuid.value = `${props.name}-${uuidv4()}`;
 
-  value.value = props.modelValue;
+  if (props.modelValue !== undefined) {
+    value.value = props.modelValue;
+  }
 });
 
 const emit = defineEmits(["update:modelValue"]);

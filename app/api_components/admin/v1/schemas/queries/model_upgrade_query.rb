@@ -15,7 +15,8 @@ module Admin
               nameEq: {type: :string},
               upgradeKitsModelIdEq: {type: :string, format: :uuid}
             },
-            additionalProperties: false
+            additionalProperties: false,
+            example: {}
           })
         end
       end

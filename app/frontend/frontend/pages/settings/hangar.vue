@@ -9,6 +9,7 @@ import { useSessionStore } from "@/frontend/stores/session";
 import { type UserUpdateInput } from "@/services/fyApi";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
+import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -92,7 +93,11 @@ const onSubmit = handleSubmit(async (values) => {
 </script>
 
 <template>
-  <Heading>{{ t("headlines.settings.hangar") }}</Heading>
+  <BreadCrumbs
+    :crumbs="[{ to: { name: 'settings' }, label: t('nav.settings.index') }]"
+  />
+
+  <Heading hero>{{ t("headlines.settings.hangar") }}</Heading>
   <form id="settings-hangar-form" @submit.prevent="onSubmit">
     <div class="row">
       <div class="col-12 col-md-6">

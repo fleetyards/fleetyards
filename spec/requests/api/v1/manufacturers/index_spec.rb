@@ -16,7 +16,6 @@ RSpec.describe "api/v1/manufacturers", type: :request, swagger_doc: "v1/schema.y
       parameter name: "perPage", in: :query, schema: {type: :string, default: Manufacturer.default_per_page}, required: false
       parameter name: "q", in: :query,
         schema: {
-          type: :object,
           "$ref": "#/components/schemas/ManufacturerQuery"
         },
         style: :deepObject,

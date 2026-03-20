@@ -13,7 +13,8 @@ module Admin
               galleryIdEq: {type: :string, format: :uuid},
               galleryTypeEq: {type: :string}
             },
-            additionalProperties: false
+            additionalProperties: false,
+            example: {}
           })
         end
       end

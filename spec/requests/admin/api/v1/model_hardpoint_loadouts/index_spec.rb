@@ -23,7 +23,6 @@ RSpec.describe "admin/api/v1/model_hardpoint_loadouts", type: :request, swagger_
       parameter name: "perPage", in: :query, schema: {type: :string, default: 30}, required: false
       parameter name: "q", in: :query,
         schema: {
-          type: :object,
           "$ref": "#/components/schemas/ModelHardpointLoadoutQuery"
         },
         style: :deepObject,

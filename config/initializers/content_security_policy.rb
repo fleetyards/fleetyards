@@ -23,8 +23,11 @@ Rails.application.configure do
       Rails.application.credentials.s3_endpoint
     ].compact.join("")
 
+    docs_uri = URI.parse(DOCS_ENDPOINT)
+    docs_endpoint = "#{docs_uri.scheme}://#{docs_uri.host}"
+
     connect_src = [
-      :self, :data, cable_endpoint, api_endpoint, admin_endpoint, cdn_endpoint, legacy_cdn_endpoint,
+      :self, :data, cable_endpoint, api_endpoint, admin_endpoint, docs_endpoint, cdn_endpoint, legacy_cdn_endpoint,
       "https://img.youtube.com", "https://sentry.io", "https://fonts.googleapis.com",
       "https://fonts.gstatic.com", "https://pro.fontawesome.com", Rails.configuration.rsi.endpoint,
       "https://kit.fontawesome.com", "https://kit-pro.fontawesome.com",
