@@ -108,7 +108,6 @@ const onSubmit = handleSubmit(async (values) => {
   <Heading hero>{{ t("headlines.settings.profile") }}</Heading>
 
   <form id="settings-profile-form" @submit.prevent="onSubmit">
-
     <div class="row">
       <div class="col-12 col-md-4">
         <FormFileInput

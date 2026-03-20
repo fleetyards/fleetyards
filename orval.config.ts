@@ -11,6 +11,7 @@ export default defineConfig({
       client: "vue-query",
       mock: true,
       clean: true,
+      prettier: true,
       override: {
         mutator: {
           path: "../axiosClient.ts",
@@ -32,6 +33,7 @@ export default defineConfig({
       client: "vue-query",
       mock: true,
       clean: true,
+      prettier: true,
       override: {
         mutator: {
           path: "../axiosOAuthClient.ts",
@@ -53,6 +55,7 @@ export default defineConfig({
       client: "vue-query",
       mock: true,
       clean: true,
+      prettier: true,
       override: {
         mutator: {
           path: "../axiosAdminClient.ts",

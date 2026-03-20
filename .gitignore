@@ -33,6 +33,7 @@ app/frontend/components.d.ts
 
 # generated api client
 app/frontend/services/fyApi
+app/frontend/services/fyOAuthApi
 app/frontend/services/fyAdminApi
 
 # app files

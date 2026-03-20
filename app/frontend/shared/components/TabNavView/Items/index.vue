@@ -44,8 +44,7 @@ const activeRoute = (tabRouteName?: RouteRecordName) => {
   if (!tabRoute?.children?.length) return false;
 
   return route.matched.some(
-    (matched) =>
-      (matched.redirect as RouteRecordRaw)?.name === tabRouteName,
+    (matched) => (matched.redirect as RouteRecordRaw)?.name === tabRouteName,
   );
 };
 
