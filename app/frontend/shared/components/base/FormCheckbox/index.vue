@@ -44,7 +44,9 @@ const fieldOptions =
     ? { type: "checkbox" as const, checkedValue: props.checkboxValue }
     : {};
 
-const { value, errorMessage } = useField(props.name, undefined, fieldOptions);
+const { value, errorMessage } = useField<
+  boolean | string | number | (string | number)[] | null
+>(props.name, undefined, fieldOptions);
 
 const uuid = ref(`${props.name}-${uuidv4()}`);
 
