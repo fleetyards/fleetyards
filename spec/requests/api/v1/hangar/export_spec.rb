@@ -45,9 +45,9 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
         required: false
 
       security [
-        { SessionCookie: [] },
-        { Oauth2: ["hangar", "hangar:read"] },
-        { OpenId: ["hangar", "hangar:read"] }
+        {SessionCookie: []},
+        {Oauth2: ["hangar", "hangar:read"]},
+        {OpenId: ["hangar", "hangar:read"]}
       ]
 
       response(200, "successful") do

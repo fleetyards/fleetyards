@@ -43,9 +43,9 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
       produces "application/json"
 
       security [
-        { SessionCookie: [] },
-        { Oauth2: ["fleet", "fleet:write"] },
-        { OpenId: ["fleet", "fleet:write"] }
+        {SessionCookie: []},
+        {Oauth2: ["fleet", "fleet:write"]},
+        {OpenId: ["fleet", "fleet:write"]}
       ]
 
       response(200, "successful") do

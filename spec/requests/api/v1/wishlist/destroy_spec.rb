@@ -33,9 +33,9 @@ RSpec.describe "api/v1/wishlist", type: :request, swagger_doc: "v1/schema.yaml" 
       produces "application/json"
 
       security [
-        { SessionCookie: [] },
-        { Oauth2: ["hangar", "hangar:write"] },
-        { OpenId: ["hangar", "hangar:write"] }
+        {SessionCookie: []},
+        {Oauth2: ["hangar", "hangar:write"]},
+        {OpenId: ["hangar", "hangar:write"]}
       ]
 
       response(204, "successful") do

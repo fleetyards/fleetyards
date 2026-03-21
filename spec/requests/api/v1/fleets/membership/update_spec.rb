@@ -41,9 +41,9 @@ RSpec.describe "api/v1/fleets/membership", type: :request, swagger_doc: "v1/sche
       end
 
       security [
-        { SessionCookie: [] },
-        { Oauth2: [] },
-        { OpenId: [] }
+        {SessionCookie: []},
+        {Oauth2: []},
+        {OpenId: []}
       ]
 
       response(200, "successful") do

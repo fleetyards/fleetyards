@@ -45,9 +45,9 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
       parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/CheckInput"}, required: true
 
       security [
-        { SessionCookie: [] },
-        { Oauth2: ["fleet", "fleet:read"] },
-        { OpenId: ["fleet", "fleet:read"] }
+        {SessionCookie: []},
+        {Oauth2: ["fleet", "fleet:read"]},
+        {OpenId: ["fleet", "fleet:read"]}
       ]
 
       response(200, "successful") do

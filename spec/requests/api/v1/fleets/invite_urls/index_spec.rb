@@ -44,9 +44,9 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/sch
       parameter name: "perPage", in: :query, schema: {type: :string, default: FleetVehicle.default_per_page}, required: false
 
       security [
-        { SessionCookie: [] },
-        { Oauth2: ["fleet", "fleet:read"] },
-        { OpenId: ["fleet", "fleet:read"] }
+        {SessionCookie: []},
+        {Oauth2: ["fleet", "fleet:read"]},
+        {OpenId: ["fleet", "fleet:read"]}
       ]
 
       response(200, "successful") do

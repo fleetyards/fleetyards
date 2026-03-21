@@ -35,9 +35,9 @@ RSpec.describe "api/v1/sessions", type: :request, swagger_doc: "v1/schema.yaml" 
       parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/ConfirmAccessInput"}, required: true
 
       security [
-        { SessionCookie: [] },
-        { Oauth2: [] },
-        { OpenId: [] }
+        {SessionCookie: []},
+        {Oauth2: []},
+        {OpenId: []}
       ]
 
       response(200, "successful") do

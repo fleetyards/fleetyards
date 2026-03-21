@@ -36,9 +36,9 @@ RSpec.describe "api/v1/otp", type: :request, swagger_doc: "v1/schema.yaml" do
         required: false
 
       security [
-        { SessionCookie: [] },
-        { Oauth2: [] },
-        { OpenId: [] }
+        {SessionCookie: []},
+        {Oauth2: []},
+        {OpenId: []}
       ]
 
       response(200, "successful") do

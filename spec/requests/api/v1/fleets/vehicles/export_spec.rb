@@ -53,9 +53,9 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
         required: false
 
       security [
-        { SessionCookie: [] },
-        { Oauth2: ["fleet", "fleet:read"] },
-        { OpenId: ["fleet", "fleet:read"] }
+        {SessionCookie: []},
+        {Oauth2: ["fleet", "fleet:read"]},
+        {OpenId: ["fleet", "fleet:read"]}
       ]
 
       response(200, "successful") do
