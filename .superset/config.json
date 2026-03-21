@@ -1,4 +1,9 @@
 {
-  "setup": ["./bin/setup"],
-  "teardown": []
+  "setup": [
+    "./bin/setup"
+  ],
+  "teardown": [],
+  "run": [
+    "./bin/dev"
+  ]
 }
