@@ -15,6 +15,7 @@ RSpec.describe "api/v1/model_paints", type: :request, swagger_doc: "v1/schema.ya
       parameter name: "perPage", in: :query, schema: {type: :string, default: ModelPaint.default_per_page}, required: false
       parameter name: "q", in: :query,
         schema: {
+          type: :object,
           "$ref": "#/components/schemas/ModelPaintQuery"
         },
         style: :deepObject,

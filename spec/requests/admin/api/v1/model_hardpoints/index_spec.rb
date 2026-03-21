@@ -23,6 +23,7 @@ RSpec.describe "admin/api/v1/model_hardpoints", type: :request, swagger_doc: "ad
       parameter name: "perPage", in: :query, schema: {type: :string, default: 30}, required: false
       parameter name: "q", in: :query,
         schema: {
+          type: :object,
           "$ref": "#/components/schemas/ModelHardpointQuery"
         },
         style: :deepObject,

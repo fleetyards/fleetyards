@@ -18,7 +18,7 @@ RSpec.describe "admin/api/v1/fleets", type: :request, swagger_doc: "admin/v1/sch
 
       parameter "$ref": "#/components/parameters/PageParameter"
       parameter "$ref": "#/components/parameters/SortingParameter"
-      parameter name: :q, in: :query, schema: {"$ref": "#/components/schemas/FleetQuery"}, required: false
+      parameter name: :q, in: :query, schema: {type: :object, "$ref": "#/components/schemas/FleetQuery"}, required: false
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Fleets"

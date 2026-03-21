@@ -24,6 +24,7 @@ RSpec.describe "admin/api/v1/videos", type: :request, swagger_doc: "admin/v1/sch
       parameter name: "perPage", in: :query, schema: {type: :string, default: Video.default_per_page}, required: false
       parameter name: "q", in: :query,
         schema: {
+          type: :object,
           "$ref": "#/components/schemas/VideoQuery"
         },
         style: :deepObject,

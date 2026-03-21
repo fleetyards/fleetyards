@@ -24,6 +24,7 @@ RSpec.describe "admin/api/v1/model_module_packages", type: :request, swagger_doc
       parameter "$ref": "#/components/parameters/SortingParameter"
       parameter name: "q", in: :query,
         schema: {
+          type: :object,
           "$ref": "#/components/schemas/ModelModulePackageQuery"
         },
         style: :deepObject,

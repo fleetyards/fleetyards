@@ -25,6 +25,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
 
       parameter name: "q", in: :query,
         schema: {
+          type: :object,
           "$ref": "#/components/schemas/FleetVehicleQuery"
         },
         style: :deepObject,

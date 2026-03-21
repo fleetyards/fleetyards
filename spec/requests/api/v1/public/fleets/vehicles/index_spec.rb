@@ -27,6 +27,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
       parameter name: "perPage", in: :query, schema: {type: :string, default: FleetVehicle.default_per_page}, required: false
       parameter name: "q", in: :query,
         schema: {
+          type: :object,
           "$ref": "#/components/schemas/FleetVehicleQuery"
         },
         style: :deepObject,

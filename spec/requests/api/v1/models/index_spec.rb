@@ -15,6 +15,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
       parameter name: "perPage", in: :query, schema: {type: :string, default: Model.default_per_page}, required: false
       parameter name: "q", in: :query,
         schema: {
+          type: :object,
           "$ref": "#/components/schemas/ModelQuery"
         },
         style: :deepObject,

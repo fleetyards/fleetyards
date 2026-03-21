@@ -17,7 +17,7 @@ RSpec.describe "admin/api/v1/oauth_applications", type: :request, swagger_doc: "
       produces "application/json"
 
       parameter "$ref": "#/components/parameters/PageParameter"
-      parameter name: :q, in: :query, schema: {"$ref": "#/components/schemas/OauthApplicationQuery"}, required: false
+      parameter name: :q, in: :query, schema: {type: :object, "$ref": "#/components/schemas/OauthApplicationQuery"}, required: false
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/OauthApplications"

@@ -24,6 +24,7 @@ RSpec.describe "admin/api/v1/imports", type: :request, swagger_doc: "admin/v1/sc
       parameter "$ref": "#/components/parameters/SortingParameter"
       parameter name: "q", in: :query,
         schema: {
+          type: :object,
           "$ref": "#/components/schemas/ImportQuery"
         },
         style: :deepObject,
