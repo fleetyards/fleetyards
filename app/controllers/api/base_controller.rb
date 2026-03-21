@@ -70,10 +70,21 @@ module Api
       Flipper.enabled?(feature, current_resource_owner)
     end
 
-    def access_cookie_valid?
-      access_cookie = cookies.encrypted["#{Rails.configuration.cookie_prefix}_ACCESS_CONFIRMED"]
+    def access_confirmed?
+      if doorkeeper_token
+        token = request.headers["X-Access-Confirmation"]
+        return false if token.blank?
 
-      access_cookie.present? && access_cookie == current_user.confirm_access_token
+        user_id = access_confirmation_verifier.verified(token)
+        user_id.present? && user_id == current_resource_owner.id
+      else
+        access_cookie = cookies.encrypted["#{Rails.configuration.cookie_prefix}_ACCESS_CONFIRMED"]
+        access_cookie.present? && access_cookie == current_user.confirm_access_token
+      end
+    end
+
+    def access_confirmation_verifier
+      ActiveSupport::MessageVerifier.new(Rails.application.credentials.confirm_access_secret!, purpose: :access_confirmation)
     end
 
     def provider

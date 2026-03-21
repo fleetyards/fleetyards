@@ -23,7 +23,7 @@ module Api
       end
 
       def update_account
-        unless access_cookie_valid?
+        unless access_confirmed?
           render json: {code: "requires_access_confirmation", message: I18n.t("messages.user.requires_access_confirmation")}, status: :bad_request
           return
         end

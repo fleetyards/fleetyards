@@ -6,7 +6,7 @@ module Api
       def start
         authorize! current_user, to: :update?
 
-        unless access_cookie_valid?
+        unless access_confirmed?
           render json: {code: "requires_access_confirmation", message: I18n.t("messages.user.requires_access_confirmation")}, status: :bad_request
           return
         end
@@ -34,7 +34,7 @@ module Api
       def enable
         authorize! current_user, to: :update?
 
-        unless access_cookie_valid?
+        unless access_confirmed?
           render json: {code: "requires_access_confirmation", message: I18n.t("messages.user.requires_access_confirmation")}, status: :bad_request
           return
         end
@@ -58,7 +58,7 @@ module Api
       def disable
         authorize! current_user, to: :update?
 
-        unless access_cookie_valid?
+        unless access_confirmed?
           render json: {code: "requires_access_confirmation", message: I18n.t("messages.user.requires_access_confirmation")}, status: :bad_request
           return
         end
@@ -82,7 +82,7 @@ module Api
       def generate_backup_codes
         authorize! current_user, to: :update?
 
-        unless access_cookie_valid?
+        unless access_confirmed?
           render json: {code: "requires_access_confirmation", message: I18n.t("messages.user.requires_access_confirmation")}, status: :bad_request
           return
         end

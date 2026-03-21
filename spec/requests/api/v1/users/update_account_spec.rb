@@ -12,6 +12,7 @@ RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
   end
 
   let(:Authorization) { nil }
+  let(:"X-Access-Confirmation") { nil }
   let(:oauth_access_token) do
     create(
       :oauth_access_token,
@@ -37,6 +38,9 @@ RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
       produces "application/json"
 
       parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/AccountUpdateInput"}, required: true
+      parameter name: "X-Access-Confirmation", in: :header, schema: {type: :string},
+        description: "Access confirmation token obtained from confirm-access endpoint. Required when using OAuth/OpenID authentication.",
+        required: false
 
       security [
         { SessionCookie: [] },
@@ -52,6 +56,17 @@ RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
 
           expect(data["username"]).to eq("TestUser")
         end
+      end
+
+      response(200, "successful with OAuth token") do
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{oauth_access_token.token}" }
+        let(:"X-Access-Confirmation") do
+          verifier = ActiveSupport::MessageVerifier.new(Rails.application.credentials.confirm_access_secret!, purpose: :access_confirmation)
+          verifier.generate(author.id, expires_in: 15.minutes)
+        end
+
+        run_test!
       end
 
       response(400, "requires access confirmation with OAuth token") do

@@ -5,7 +5,8 @@ module Api
     class SessionsController < ::Api::BaseController
       skip_verify_authorized except: [:confirm_access]
 
-      before_action :authenticate_user!, except: [:create]
+      before_action :authenticate_user!, except: [:create, :confirm_access]
+      before_action -> { doorkeeper_authorize! }, unless: -> { warden.authenticate?(scope: :user) }, only: [:confirm_access]
       before_action :set_user, only: [:confirm_access]
 
       def create
@@ -58,25 +59,32 @@ module Api
       end
 
       def confirm_access
-        unless current_user.valid_password?(login_params[:password])
+        user = current_resource_owner
+
+        unless user.valid_password?(login_params[:password])
           render json: {code: "session.confirmAccess.failure", message: I18n.t("messages.confirmAccess.failure")}, status: :bad_request
           return
         end
 
-        cookies.encrypted["#{Rails.configuration.cookie_prefix}_ACCESS_CONFIRMED"] = {
-          value: current_user.confirm_access_token,
-          domain: Rails.configuration.app.cookie_domain,
-          secure: Rails.env.production? || Rails.env.staging?,
-          expires: 15.minutes,
-          httponly: true,
-          same_site: :lax
-        }
+        if doorkeeper_token
+          token = access_confirmation_verifier.generate(user.id, expires_in: 15.minutes)
+          render json: {code: :success, message: I18n.t("labels.success"), token:}
+        else
+          cookies.encrypted["#{Rails.configuration.cookie_prefix}_ACCESS_CONFIRMED"] = {
+            value: user.confirm_access_token,
+            domain: Rails.configuration.app.cookie_domain,
+            secure: Rails.env.production? || Rails.env.staging?,
+            expires: 15.minutes,
+            httponly: true,
+            same_site: :lax
+          }
 
-        render json: {code: :success, message: I18n.t("labels.success")}
+          render json: {code: :success, message: I18n.t("labels.success")}
+        end
       end
 
       private def set_user
-        @user = current_user
+        @user = current_resource_owner
 
         authorize! @user
       end
