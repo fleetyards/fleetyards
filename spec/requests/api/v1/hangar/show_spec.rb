@@ -8,6 +8,22 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
   let(:model_with_images) { create(:model, :with_store_image, :with_description) }
   let(:vehicles) { create_list(:vehicle, 2, user: author) + [create(:vehicle, :with_name, :flagship, user: author, model: model_with_images)] }
 
+  let(:Authorization) { nil }
+  let(:oauth_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: author.id,
+      scopes: ["hangar", "hangar:read"]
+    )
+  end
+  let(:wrong_scope_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: author.id,
+      scopes: ["public"]
+    )
+  end
+
   before do
     sign_in(user) if user.present?
 
@@ -20,11 +36,11 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
       tags "Hangar"
       produces "application/json"
 
-      security [{
-        SessionCookie: [],
-        Oauth2: ["hangar", "hangar:read"],
-        OpenId: ["hangar", "hangar:read"]
-      }]
+      security [
+        { SessionCookie: [] },
+        { Oauth2: ["hangar", "hangar:read"] },
+        { OpenId: ["hangar", "hangar:read"] }
+      ]
 
       parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
       parameter name: "perPage", in: :query, schema: {
@@ -47,6 +63,22 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
 
           expect(items.count).to be > 0
         end
+      end
+
+      response(200, "successful with OAuth token") do
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{oauth_access_token.token}" }
+
+        run_test!
+      end
+
+      response(401, "unauthorized with wrong scope token") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{wrong_scope_access_token.token}" }
+
+        run_test!
       end
 
       response(200, "successful") do

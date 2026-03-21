@@ -35,7 +35,7 @@ module Api
 
         Vehicle.transaction do
           (vehicle_create_bulk_params[:vehicles] || []).each do |vehicle_params|
-            new_vehicle = current_user.vehicles.new(vehicle_params)
+            new_vehicle = current_resource_owner.vehicles.new(vehicle_params)
 
             errors << new_vehicle.errors unless new_vehicle.save
           end
@@ -113,7 +113,7 @@ module Api
           authorized_scope(Vehicle.all).purchased.where(bought_via: :ingame).update_all(notify: false)
           # rubocop:enable Rails/SkipsModelValidations
 
-          vehicle_ids = current_user.vehicles.purchased.where(bought_via: :ingame).pluck(:id)
+          vehicle_ids = current_resource_owner.vehicles.purchased.where(bought_via: :ingame).pluck(:id)
 
           VehicleUpgrade.where(vehicle_id: vehicle_ids).delete_all
           VehicleModule.where(vehicle_id: vehicle_ids).delete_all
@@ -124,14 +124,14 @@ module Api
       def check_serial
         authorize!
 
-        render json: {taken: current_user.vehicles.visible.purchased.exists?(serial: params[:value]&.upcase)}
+        render json: {taken: current_resource_owner.vehicles.visible.purchased.exists?(serial: params[:value]&.upcase)}
       end
 
       # DEPRECATED
       def fleetchart
         authorize! :show, :api_hangar
 
-        scope = current_user.vehicles.visible.purchased
+        scope = current_resource_owner.vehicles.visible.purchased
 
         scope = loaner_included?(scope)
 
@@ -146,11 +146,11 @@ module Api
       # DEPRECATED
       def hangar
         authorize! :index, :api_hangar
-        @vehicles = current_user.vehicles.where(loaner: false).purchased.visible
+        @vehicles = current_resource_owner.vehicles.where(loaner: false).purchased.visible
       end
 
       private def set_vehicle
-        @vehicle = current_user.vehicles.find(params[:id])
+        @vehicle = current_resource_owner.vehicles.find(params[:id])
 
         authorize! @vehicle
       end
@@ -161,21 +161,21 @@ module Api
             :name, :serial, :model_id, :wanted, :name_visible, :public, :sale_notify, :flagship,
             :model_paint_id, :bought_via,
             hangar_group_ids: [], model_module_ids: [], model_upgrade_ids: [], alternative_names: []
-          ).merge(user_id: current_user.id)
+          ).merge(user_id: current_resource_owner.id)
       end
 
       private def vehicle_create_bulk_params
         @vehicle_bulk_params ||= params.transform_keys(&:underscore)
           .permit(
             vehicles: [:wanted, :model_id]
-          ).merge(user_id: current_user.id)
+          ).merge(user_id: current_resource_owner.id)
       end
 
       private def vehicle_bulk_params
         @vehicle_bulk_params ||= params.transform_keys(&:underscore)
           .permit(
             :wanted, :public, hangar_group_ids: []
-          ).merge(user_id: current_user.id)
+          ).merge(user_id: current_resource_owner.id)
       end
     end
   end

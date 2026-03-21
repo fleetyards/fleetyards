@@ -9,6 +9,22 @@ RSpec.describe "api/v1/fleets/roles", type: :request, swagger_doc: "v1/schema.ya
   let(:fleet) { create(:fleet, admins: [admin], members: [member]) }
   let(:fleetSlug) { fleet.slug }
 
+  let(:Authorization) { nil }
+  let(:oauth_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: admin.id,
+      scopes: ["fleet", "fleet:read"]
+    )
+  end
+  let(:wrong_scope_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: admin.id,
+      scopes: ["public"]
+    )
+  end
+
   before do
     sign_in(user) if user.present?
   end
@@ -21,11 +37,11 @@ RSpec.describe "api/v1/fleets/roles", type: :request, swagger_doc: "v1/schema.ya
       tags "FleetRoles"
       produces "application/json"
 
-      security [{
-        SessionCookie: [],
-        Oauth2: ["fleet", "fleet:read"],
-        OpenId: ["fleet", "fleet:read"]
-      }]
+      security [
+        { SessionCookie: [] },
+        { Oauth2: ["fleet", "fleet:read"] },
+        { OpenId: ["fleet", "fleet:read"] }
+      ]
 
       response(200, "successful") do
         schema type: :array,
@@ -39,6 +55,22 @@ RSpec.describe "api/v1/fleets/roles", type: :request, swagger_doc: "v1/schema.ya
           expect(data.first).to have_key("resourceAccess")
           expect(data.first).to have_key("permanent")
         end
+      end
+
+      response(200, "successful with OAuth token") do
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{oauth_access_token.token}" }
+
+        run_test!
+      end
+
+      response(401, "unauthorized with wrong scope token") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{wrong_scope_access_token.token}" }
+
+        run_test!
       end
 
       response(404, "not found") do

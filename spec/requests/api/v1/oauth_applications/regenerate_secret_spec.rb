@@ -3,9 +3,19 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/oauth_applications", type: :request, swagger_doc: "v1/schema.yaml" do
-  let(:user) { create(:user) }
-  let(:oauth_application) { create(:oauth_application, owner: user) }
+  let(:author) { create(:user) }
+  let(:user) { author }
+  let(:oauth_application) { create(:oauth_application, owner: author) }
   let(:id) { oauth_application.id }
+
+  let(:Authorization) { nil }
+  let(:oauth_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: author.id,
+      scopes: ["public"]
+    )
+  end
 
   before do
     Flipper.enable("oauth-applications")
@@ -20,14 +30,21 @@ RSpec.describe "api/v1/oauth_applications", type: :request, swagger_doc: "v1/sch
       tags "OauthApplications"
       produces "application/json"
 
-      security [{
-        SessionCookie: [],
-        Oauth2: [],
-        OpenId: []
-      }]
+      security [
+        { SessionCookie: [] },
+        { Oauth2: [] },
+        { OpenId: [] }
+      ]
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/OauthApplicationWithSecret"
+
+        run_test!
+      end
+
+      response(200, "successful with OAuth token") do
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{oauth_access_token.token}" }
 
         run_test!
       end

@@ -3,11 +3,21 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
-  let(:user) { create(:user, password: "enterprise") }
+  let(:author) { create(:user, password: "enterprise") }
+  let(:user) { author }
   let(:input) do
     {
       username: "TestUser"
     }
+  end
+
+  let(:Authorization) { nil }
+  let(:oauth_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: author.id,
+      scopes: ["public"]
+    )
   end
 
   before do
@@ -28,11 +38,11 @@ RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
 
       parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/AccountUpdateInput"}, required: true
 
-      security [{
-        SessionCookie: [],
-        Oauth2: [],
-        OpenId: []
-      }]
+      security [
+        { SessionCookie: [] },
+        { Oauth2: [] },
+        { OpenId: [] }
+      ]
 
       response(200, "successful") do
         schema "$ref" => "#/components/schemas/User"
@@ -42,6 +52,13 @@ RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
 
           expect(data["username"]).to eq("TestUser")
         end
+      end
+
+      response(400, "requires access confirmation with OAuth token") do
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{oauth_access_token.token}" }
+
+        run_test!
       end
 
       response(400, "bad request") do

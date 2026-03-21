@@ -10,6 +10,22 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/sch
   let(:fleetSlug) { fleet.slug }
   let(:invite_urls) { create_list(:fleet_invite_url, 4, fleet: fleet, user: admin) }
 
+  let(:Authorization) { nil }
+  let(:oauth_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: admin.id,
+      scopes: ["fleet", "fleet:read"]
+    )
+  end
+  let(:wrong_scope_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: admin.id,
+      scopes: ["public"]
+    )
+  end
+
   before do
     sign_in(user) if user.present?
 
@@ -27,11 +43,11 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/sch
       parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
       parameter name: "perPage", in: :query, schema: {type: :string, default: FleetVehicle.default_per_page}, required: false
 
-      security [{
-        SessionCookie: [],
-        Oauth2: ["fleet", "fleet:read"],
-        OpenId: ["fleet", "fleet:read"]
-      }]
+      security [
+        { SessionCookie: [] },
+        { Oauth2: ["fleet", "fleet:read"] },
+        { OpenId: ["fleet", "fleet:read"] }
+      ]
 
       response(200, "successful") do
         schema type: :array,
@@ -43,6 +59,22 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/sch
           expect(data.count).to be > 0
           expect(data.count).to eq(4)
         end
+      end
+
+      response(200, "successful with OAuth token") do
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{oauth_access_token.token}" }
+
+        run_test!
+      end
+
+      response(401, "unauthorized with wrong scope token") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{wrong_scope_access_token.token}" }
+
+        run_test!
       end
 
       response(200, "successful") do

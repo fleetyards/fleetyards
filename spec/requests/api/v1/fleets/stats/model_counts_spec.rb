@@ -11,6 +11,22 @@ RSpec.describe "api/v1/fleets/stats", type: :request, swagger_doc: "v1/schema.ya
   let(:user) { member }
   let(:fleetSlug) { fleet.slug }
 
+  let(:Authorization) { nil }
+  let(:oauth_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: member.id,
+      scopes: ["fleet", "fleet:read"]
+    )
+  end
+  let(:wrong_scope_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: member.id,
+      scopes: ["public"]
+    )
+  end
+
   before do
     Sidekiq::Testing.inline!
 
@@ -41,11 +57,11 @@ RSpec.describe "api/v1/fleets/stats", type: :request, swagger_doc: "v1/schema.ya
         explode: true,
         required: false
 
-      security [{
-        SessionCookie: [],
-        Oauth2: ["fleet", "fleet:read"],
-        OpenId: ["fleet", "fleet:read"]
-      }]
+      security [
+        { SessionCookie: [] },
+        { Oauth2: ["fleet", "fleet:read"] },
+        { OpenId: ["fleet", "fleet:read"] }
+      ]
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/FleetModelCountsStats"
@@ -58,6 +74,22 @@ RSpec.describe "api/v1/fleets/stats", type: :request, swagger_doc: "v1/schema.ya
             vehicle_2.model.slug => 1
           })
         end
+      end
+
+      response(200, "successful with OAuth token") do
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{oauth_access_token.token}" }
+
+        run_test!
+      end
+
+      response(401, "unauthorized with wrong scope token") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{wrong_scope_access_token.token}" }
+
+        run_test!
       end
 
       response(200, "successful") do

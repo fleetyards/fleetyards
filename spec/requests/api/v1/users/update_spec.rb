@@ -3,11 +3,21 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
-  let(:user) { create(:user) }
+  let(:author) { create(:user) }
+  let(:user) { author }
   let(:input) do
     {
       discord: "DiscordServer"
     }
+  end
+
+  let(:Authorization) { nil }
+  let(:oauth_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: author.id,
+      scopes: ["public"]
+    )
   end
 
   before do
@@ -24,11 +34,11 @@ RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
 
       parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/UserUpdateInput"}, required: true
 
-      security [{
-        SessionCookie: [],
-        Oauth2: [],
-        OpenId: []
-      }]
+      security [
+        { SessionCookie: [] },
+        { Oauth2: [] },
+        { OpenId: [] }
+      ]
 
       response(200, "successful") do
         schema "$ref" => "#/components/schemas/User"
@@ -38,6 +48,13 @@ RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
 
           expect(data["discord"]).to eq("DiscordServer")
         end
+      end
+
+      response(200, "successful with OAuth token") do
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{oauth_access_token.token}" }
+
+        run_test!
       end
 
       response(401, "unauthorized") do

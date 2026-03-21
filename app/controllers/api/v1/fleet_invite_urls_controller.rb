@@ -35,7 +35,7 @@ module Api
         @fleet_invite_url = @fleet.fleet_invite_urls.new(
           expires_after: expires_after_minutes,
           limit: fleet_invite_url_params[:limit],
-          user_id: current_user.id
+          user_id: current_resource_owner.id
         )
 
         authorize! @fleet_invite_url
@@ -59,7 +59,7 @@ module Api
         authorize! invite_url
 
         @membership = invite_url.fleet.fleet_memberships.new(
-          user: current_user,
+          user: current_resource_owner,
           fleet_role: invite_url.fleet.default_member_role,
           invited_by: invite_url.user_id,
           used_invite_token: invite_url.token

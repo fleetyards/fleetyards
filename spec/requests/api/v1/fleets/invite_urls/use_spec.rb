@@ -6,12 +6,22 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/sch
   let(:member) { create(:user) }
   let(:admin) { create(:user) }
   let(:fleet) { create(:fleet, members: [member], admins: [admin]) }
-  let(:user) { create(:user) }
+  let(:author) { create(:user) }
+  let(:user) { author }
   let(:invite_url) { create(:fleet_invite_url, fleet: fleet, user: admin) }
   let(:input) do
     {
       token: invite_url.token
     }
+  end
+
+  let(:Authorization) { nil }
+  let(:oauth_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: author.id,
+      scopes: ["public"]
+    )
   end
 
   before do
@@ -27,11 +37,11 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/sch
 
       parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/FleetMembershipCreateInput"}, required: true
 
-      security [{
-        SessionCookie: [],
-        Oauth2: [],
-        OpenId: []
-      }]
+      security [
+        { SessionCookie: [] },
+        { Oauth2: [] },
+        { OpenId: [] }
+      ]
 
       response(201, "successful") do
         schema "$ref": "#/components/schemas/FleetMember"
@@ -42,6 +52,13 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/sch
           expect(data["username"]).to eq(user.username)
           expect(data["status"]).to eq("requested")
         end
+      end
+
+      response(201, "successful with OAuth token") do
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{oauth_access_token.token}" }
+
+        run_test!
       end
 
       response(404, "not found") do

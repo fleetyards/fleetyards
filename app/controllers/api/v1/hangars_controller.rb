@@ -64,7 +64,7 @@ module Api
       def import
         authorize! to: :update?, with: ::HangarPolicy
 
-        import = Imports::HangarImport.new(import_params.merge(user_id: current_user.id))
+        import = Imports::HangarImport.new(import_params.merge(user_id: current_resource_owner.id))
 
         unless import.save
           render json: ValidationError.new("hangar.import", errors: import.errors), status: :bad_request
@@ -102,7 +102,7 @@ module Api
 
         render json: ValidationError.new("vehicle.sync", message: I18n.t("messages.hangar_sync.no_data")), status: :bad_request if params[:items].blank?
 
-        @response = ::HangarSync.new(sync_params[:items].to_a.map(&:to_h)).run(current_user.id)
+        @response = ::HangarSync.new(sync_params[:items].to_a.map(&:to_h)).run(current_resource_owner.id)
       end
 
       def items

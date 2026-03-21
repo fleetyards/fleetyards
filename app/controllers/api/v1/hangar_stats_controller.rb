@@ -97,7 +97,7 @@ module Api
         authorize! to: :show?, with: ::HangarPolicy
 
         models_by_manufacturer = transform_for_pie_chart(
-          current_user.manufacturers.uniq
+          current_resource_owner.manufacturers.uniq
               .map do |manufacturer|
                 model_ids = manufacturer.model_ids
                 {manufacturer.name => authorized_scope(Vehicle.all).visible.purchased.where(loaner: false, model_id: model_ids).count}

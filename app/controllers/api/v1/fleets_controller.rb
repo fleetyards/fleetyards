@@ -40,7 +40,7 @@ module Api
       end
 
       def create
-        @fleet = Fleet.new(fleet_create_params.merge(created_by: current_user.id))
+        @fleet = Fleet.new(fleet_create_params.merge(created_by: current_resource_owner.id))
 
         authorize! @fleet
 
