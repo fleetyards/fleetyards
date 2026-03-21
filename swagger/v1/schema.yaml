@@ -40,6 +40,7 @@ paths:
       - name: q
         in: query
         schema:
+          type: object
           "$ref": "#/components/schemas/ComponentQuery"
         style: deepObject
         explode: true
@@ -215,15 +216,15 @@ paths:
       parameters: []
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - fleet
         - fleet:read
-        OpenId:
+      - OpenId:
         - fleet
         - fleet:read
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -249,11 +250,11 @@ paths:
       parameters: []
       security:
       - SessionCookie: []
-        Oauth2: []
-        OpenId: []
+      - Oauth2: []
+      - OpenId: []
       responses:
         '201':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -291,16 +292,22 @@ paths:
       - Fleets
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - fleet
         - fleet:write
-        OpenId:
+      - OpenId:
         - fleet
         - fleet:write
       description: You are not the owner of this Fleet
       responses:
         '204':
-          description: successful
+          description: successful with OAuth token
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '404':
           description: not found
           content:
@@ -309,12 +316,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '403':
           description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
           content:
             application/json:
               schema:
@@ -326,19 +327,25 @@ paths:
       - Fleets
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - fleet
         - fleet:read
-        OpenId:
+      - OpenId:
         - fleet
         - fleet:read
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Fleet"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '403':
           description: forbidden
           content:
@@ -347,12 +354,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '404':
           description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
           content:
             application/json:
               schema:
@@ -365,20 +366,26 @@ paths:
       parameters: []
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - fleet
         - fleet:write
-        OpenId:
+      - OpenId:
         - fleet
         - fleet:write
       description: You are not an Admin or Officer of this Fleet
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Fleet"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '404':
           description: not found
           content:
@@ -387,12 +394,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '403':
           description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
           content:
             application/json:
               schema:
@@ -418,15 +419,15 @@ paths:
       - Fleets
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - fleet
         - fleet:read
-        OpenId:
+      - OpenId:
         - fleet
         - fleet:read
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -453,19 +454,25 @@ paths:
       parameters: []
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - fleet
         - fleet:write
-        OpenId:
+      - OpenId:
         - fleet
         - fleet:write
       responses:
         '201':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FleetInviteUrl"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '400':
           description: bad request
           content:
@@ -480,12 +487,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '403':
           description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
           content:
             application/json:
               schema:
@@ -516,10 +517,10 @@ paths:
         required: false
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - fleet
         - fleet:read
-        OpenId:
+      - OpenId:
         - fleet
         - fleet:read
       responses:
@@ -531,6 +532,12 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/FleetInviteUrl"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '404':
           description: not found
           content:
@@ -539,12 +546,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '403':
           description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
           content:
             application/json:
               schema:
@@ -570,15 +571,21 @@ paths:
       - FleetInviteUrls
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - fleet
         - fleet:write
-        OpenId:
+      - OpenId:
         - fleet
         - fleet:write
       responses:
         '204':
-          description: successful
+          description: successful with OAuth token
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '404':
           description: not found
           content:
@@ -587,12 +594,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '403':
           description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
           content:
             application/json:
               schema:
@@ -606,12 +607,12 @@ paths:
       parameters: []
       security:
       - SessionCookie: []
-        Oauth2: []
-        OpenId: []
+      - Oauth2: []
+      - OpenId: []
       description: User is already a member of this fleet
       responses:
         '201':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -648,15 +649,15 @@ paths:
       - Fleets
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - fleet
         - fleet:read
-        OpenId:
+      - OpenId:
         - fleet
         - fleet:read
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -690,20 +691,26 @@ paths:
       - FleetMembers
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - fleet
         - fleet:write
-        OpenId:
+      - OpenId:
         - fleet
         - fleet:write
       description: No Member found
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardMessage"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '400':
           description: bad request
           content:
@@ -718,12 +725,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '403':
           description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
           content:
             application/json:
               schema:
@@ -744,19 +745,25 @@ paths:
       parameters: []
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - fleet
         - fleet:write
-        OpenId:
+      - OpenId:
         - fleet
         - fleet:write
       responses:
         '201':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FleetMember"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '400':
           description: bad request
           content:
@@ -771,12 +778,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '403':
           description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
           content:
             application/json:
               schema:
@@ -808,6 +809,7 @@ paths:
       - name: q
         in: query
         schema:
+          type: object
           "$ref": "#/components/schemas/FleetMemberQuery"
         style: deepObject
         explode: true
@@ -819,27 +821,27 @@ paths:
           type: string
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - fleet
         - fleet:read
-        OpenId:
+      - OpenId:
         - fleet
         - fleet:read
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FleetMembersList"
-        '404':
-          description: not found
+        '401':
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
+        '404':
+          description: not found
           content:
             application/json:
               schema:
@@ -865,20 +867,26 @@ paths:
       - FleetMembers
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - fleet
         - fleet:write
-        OpenId:
+      - OpenId:
         - fleet
         - fleet:write
       description: No Member found
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardMessage"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '400':
           description: bad request
           content:
@@ -893,12 +901,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '403':
           description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
           content:
             application/json:
               schema:
@@ -924,20 +926,26 @@ paths:
       - FleetMembers
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - fleet
         - fleet:write
-        OpenId:
+      - OpenId:
         - fleet
         - fleet:write
       description: No Member found
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FleetMember"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '404':
           description: not found
           content:
@@ -952,12 +960,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '403':
           description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
           content:
             application/json:
               schema:
@@ -983,16 +985,22 @@ paths:
       - FleetMembers
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - fleet
         - fleet:write
-        OpenId:
+      - OpenId:
         - fleet
         - fleet:write
       description: Without authentication
       responses:
         '204':
           description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '404':
           description: not found
           content:
@@ -1001,12 +1009,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '403':
           description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
           content:
             application/json:
               schema:
@@ -1032,20 +1034,26 @@ paths:
       - FleetMembers
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - fleet
         - fleet:write
-        OpenId:
+      - OpenId:
         - fleet
         - fleet:write
       description: No Member found
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FleetMember"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '404':
           description: not found
           content:
@@ -1054,12 +1062,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '403':
           description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
           content:
             application/json:
               schema:
@@ -1079,11 +1081,11 @@ paths:
       - FleetMembership
       security:
       - SessionCookie: []
-        Oauth2: []
-        OpenId: []
+      - Oauth2: []
+      - OpenId: []
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -1121,11 +1123,11 @@ paths:
       - FleetMembership
       security:
       - SessionCookie: []
-        Oauth2: []
-        OpenId: []
+      - Oauth2: []
+      - OpenId: []
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -1163,11 +1165,11 @@ paths:
       - FleetMembership
       security:
       - SessionCookie: []
-        Oauth2: []
-        OpenId: []
+      - Oauth2: []
+      - OpenId: []
       responses:
         '204':
-          description: successful
+          description: successful with OAuth token
         '404':
           description: not found
           content:
@@ -1187,11 +1189,11 @@ paths:
       - FleetMembership
       security:
       - SessionCookie: []
-        Oauth2: []
-        OpenId: []
+      - Oauth2: []
+      - OpenId: []
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -1216,12 +1218,12 @@ paths:
       parameters: []
       security:
       - SessionCookie: []
-        Oauth2: []
-        OpenId: []
+      - Oauth2: []
+      - OpenId: []
       description: Fleet for this slug and user does not exist
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -1258,15 +1260,15 @@ paths:
       - Fleets
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - fleet
         - fleet:read
-        OpenId:
+      - OpenId:
         - fleet
         - fleet:read
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -1294,29 +1296,29 @@ paths:
       - FleetRoles
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - fleet
         - fleet:read
-        OpenId:
+      - OpenId:
         - fleet
         - fleet:read
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
                 type: array
                 items:
                   "$ref": "#/components/schemas/FleetRoleExtended"
-        '404':
-          description: not found
+        '401':
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
+        '404':
+          description: not found
           content:
             application/json:
               schema:
@@ -1338,25 +1340,32 @@ paths:
       - name: q
         in: query
         schema:
+          type: object
           "$ref": "#/components/schemas/FleetMemberQuery"
         style: deepObject
         explode: true
         required: false
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - fleet
         - fleet:read
-        OpenId:
+      - OpenId:
         - fleet
         - fleet:read
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FleetMembersStats"
+        '401':
+          description: unauthorized with wrong scope token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/stats/model-counts":
     parameters:
     - name: fleetSlug
@@ -1374,16 +1383,17 @@ paths:
       - name: q
         in: query
         schema:
+          type: object
           "$ref": "#/components/schemas/FleetVehicleQuery"
         style: deepObject
         explode: true
         required: false
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - fleet
         - fleet:read
-        OpenId:
+      - OpenId:
         - fleet
         - fleet:read
       responses:
@@ -1393,14 +1403,14 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FleetModelCountsStats"
-        '404':
-          description: not found
+        '401':
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
+        '404':
+          description: not found
           content:
             application/json:
               schema:
@@ -1420,15 +1430,15 @@ paths:
       - FleetStats
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - fleet
         - fleet:read
-        OpenId:
+      - OpenId:
         - fleet
         - fleet:read
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -1456,15 +1466,15 @@ paths:
       - FleetStats
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - fleet
         - fleet:read
-        OpenId:
+      - OpenId:
         - fleet
         - fleet:read
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -1492,15 +1502,15 @@ paths:
       - FleetStats
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - fleet
         - fleet:read
-        OpenId:
+      - OpenId:
         - fleet
         - fleet:read
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -1528,15 +1538,15 @@ paths:
       - FleetStats
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - fleet
         - fleet:read
-        OpenId:
+      - OpenId:
         - fleet
         - fleet:read
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -1564,15 +1574,15 @@ paths:
       - FleetStats
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - fleet
         - fleet:read
-        OpenId:
+      - OpenId:
         - fleet
         - fleet:read
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -1600,26 +1610,26 @@ paths:
       - FleetStats
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - fleet
         - fleet:read
-        OpenId:
+      - OpenId:
         - fleet
         - fleet:read
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FleetVehiclesStats"
-        '404':
+        '401':
           description: successful
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '401':
+        '404':
           description: successful
           content:
             application/json:
@@ -1642,16 +1652,17 @@ paths:
       - name: q
         in: query
         schema:
+          type: object
           "$ref": "#/components/schemas/FleetVehicleQuery"
         style: deepObject
         explode: true
         required: false
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - fleet
         - fleet:read
-        OpenId:
+      - OpenId:
         - fleet
         - fleet:read
       responses:
@@ -1663,14 +1674,14 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/FleetVehicleExport"
-        '404':
-          description: not found
+        '401':
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
+        '404':
+          description: not found
           content:
             application/json:
               schema:
@@ -1704,6 +1715,7 @@ paths:
       - name: q
         in: query
         schema:
+          type: object
           "$ref": "#/components/schemas/FleetVehicleQuery"
         style: deepObject
         explode: true
@@ -1720,27 +1732,27 @@ paths:
           type: string
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - fleet
         - fleet:read
-        OpenId:
+      - OpenId:
         - fleet
         - fleet:read
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FleetVehicles"
-        '404':
-          description: not found
+        '401':
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
+        '404':
+          description: not found
           content:
             application/json:
               schema:
@@ -1753,15 +1765,15 @@ paths:
       - Hangar
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - hangar
         - hangar:write
-        OpenId:
+      - OpenId:
         - hangar
         - hangar:write
       responses:
         '204':
-          description: successful
+          description: successful with OAuth token
         '401':
           description: unauthorized
           content:
@@ -1775,10 +1787,10 @@ paths:
       - Hangar
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - hangar
         - hangar:read
-        OpenId:
+      - OpenId:
         - hangar
         - hangar:read
       parameters:
@@ -1797,6 +1809,7 @@ paths:
       - name: q
         in: query
         schema:
+          type: object
           "$ref": "#/components/schemas/HangarQuery"
         style: deepObject
         explode: true
@@ -1808,14 +1821,14 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Hangar"
-        '400':
-          description: bad request
+        '401':
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
+        '400':
+          description: bad request
           content:
             application/json:
               schema:
@@ -1830,21 +1843,22 @@ paths:
       - name: q
         in: query
         schema:
+          type: object
           "$ref": "#/components/schemas/HangarQuery"
         style: deepObject
         explode: true
         required: false
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - hangar
         - hangar:read
-        OpenId:
+      - OpenId:
         - hangar
         - hangar:read
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -1866,15 +1880,15 @@ paths:
       parameters: []
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - hangar
         - hangar:write
-        OpenId:
+      - OpenId:
         - hangar
         - hangar:write
       responses:
         '201':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -1898,15 +1912,15 @@ paths:
       - HangarGroups
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - hangar
         - hangar:read
-        OpenId:
+      - OpenId:
         - hangar
         - hangar:read
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -1935,19 +1949,25 @@ paths:
       - HangarGroups
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - hangar
         - hangar:write
-        OpenId:
+      - OpenId:
         - hangar
         - hangar:write
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/HangarGroup"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '403':
           description: forbidden
           content:
@@ -1956,12 +1976,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '404':
           description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
           content:
             application/json:
               schema:
@@ -1974,19 +1988,25 @@ paths:
       parameters: []
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - hangar
         - hangar:write
-        OpenId:
+      - OpenId:
         - hangar
         - hangar:write
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/HangarGroup"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '404':
           description: not found
           content:
@@ -1995,12 +2015,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '403':
           description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
           content:
             application/json:
               schema:
@@ -2020,15 +2034,15 @@ paths:
       parameters: []
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - hangar
         - hangar:write
-        OpenId:
+      - OpenId:
         - hangar
         - hangar:write
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -2057,31 +2071,31 @@ paths:
       parameters: []
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - hangar
         - hangar:write
-        OpenId:
+      - OpenId:
         - hangar
         - hangar:write
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/HangarImportResult"
-        '400':
-          description: bad request
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ValidationError"
         '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
       requestBody:
         content:
           application/json:
@@ -2096,15 +2110,15 @@ paths:
       - Hangar
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - hangar
         - hangar:read
-        OpenId:
+      - OpenId:
         - hangar
         - hangar:read
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -2125,15 +2139,15 @@ paths:
       - Hangar
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - hangar
         - hangar:write
-        OpenId:
+      - OpenId:
         - hangar
         - hangar:write
       responses:
         '204':
-          description: successful
+          description: successful with OAuth token
         '401':
           description: unauthorized
           content:
@@ -2148,15 +2162,15 @@ paths:
       - HangarStats
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - hangar
         - hangar:read
-        OpenId:
+      - OpenId:
         - hangar
         - hangar:read
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -2177,15 +2191,15 @@ paths:
       - HangarStats
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - hangar
         - hangar:read
-        OpenId:
+      - OpenId:
         - hangar
         - hangar:read
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -2206,15 +2220,15 @@ paths:
       - HangarStats
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - hangar
         - hangar:read
-        OpenId:
+      - OpenId:
         - hangar
         - hangar:read
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -2235,15 +2249,15 @@ paths:
       - HangarStats
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - hangar
         - hangar:read
-        OpenId:
+      - OpenId:
         - hangar
         - hangar:read
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -2266,21 +2280,22 @@ paths:
       - name: q
         in: query
         schema:
+          type: object
           "$ref": "#/components/schemas/HangarQuery"
         style: deepObject
         explode: true
         required: false
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - hangar
         - hangar:read
-        OpenId:
+      - OpenId:
         - hangar
         - hangar:read
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -2300,27 +2315,27 @@ paths:
       parameters: []
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - hangar
         - hangar:write
-        OpenId:
+      - OpenId:
         - hangar
         - hangar:write
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/HangarSyncResult"
-        '400':
-          description: bad request
+        '401':
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
+        '400':
+          description: bad request
           content:
             application/json:
               schema:
@@ -2353,6 +2368,7 @@ paths:
       - name: q
         in: query
         schema:
+          type: object
           "$ref": "#/components/schemas/ImageQuery"
         style: deepObject
         explode: true
@@ -2416,6 +2432,7 @@ paths:
       - name: q
         in: query
         schema:
+          type: object
           "$ref": "#/components/schemas/ManufacturerQuery"
         style: deepObject
         explode: true
@@ -2466,6 +2483,7 @@ paths:
       - name: q
         in: query
         schema:
+          type: object
           "$ref": "#/components/schemas/ModelPaintQuery"
         style: deepObject
         explode: true
@@ -2641,6 +2659,7 @@ paths:
       - name: q
         in: query
         schema:
+          type: object
           "$ref": "#/components/schemas/ModelQuery"
         style: deepObject
         explode: true
@@ -3033,6 +3052,7 @@ paths:
       - name: q
         in: query
         schema:
+          type: object
           "$ref": "#/components/schemas/ModelQuery"
         style: deepObject
         explode: true
@@ -3058,11 +3078,11 @@ paths:
       parameters: []
       security:
       - SessionCookie: []
-        Oauth2: []
-        OpenId: []
+      - Oauth2: []
+      - OpenId: []
       responses:
         '201':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -3092,11 +3112,11 @@ paths:
       - OauthApplications
       security:
       - SessionCookie: []
-        Oauth2: []
-        OpenId: []
+      - Oauth2: []
+      - OpenId: []
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -3125,11 +3145,11 @@ paths:
       - OauthApplications
       security:
       - SessionCookie: []
-        Oauth2: []
-        OpenId: []
+      - Oauth2: []
+      - OpenId: []
       responses:
         '204':
-          description: successful
+          description: successful with OAuth token
         '404':
           description: not found
           content:
@@ -3149,11 +3169,11 @@ paths:
       - OauthApplications
       security:
       - SessionCookie: []
-        Oauth2: []
-        OpenId: []
+      - Oauth2: []
+      - OpenId: []
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -3178,11 +3198,11 @@ paths:
       parameters: []
       security:
       - SessionCookie: []
-        Oauth2: []
-        OpenId: []
+      - Oauth2: []
+      - OpenId: []
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -3221,11 +3241,11 @@ paths:
       - OauthApplications
       security:
       - SessionCookie: []
-        Oauth2: []
-        OpenId: []
+      - Oauth2: []
+      - OpenId: []
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -3248,12 +3268,21 @@ paths:
       operationId: disableOtpSetup
       tags:
       - OTP
-      parameters: []
+      parameters:
+      - name: X-Access-Confirmation
+        in: header
+        schema:
+          type: string
+        description: Access confirmation token obtained from confirm-access endpoint.
+          Required when using OAuth/OpenID authentication.
+        required: false
       security:
       - SessionCookie: []
+      - Oauth2: []
+      - OpenId: []
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -3282,12 +3311,21 @@ paths:
       operationId: enableOtpSetup
       tags:
       - OTP
-      parameters: []
+      parameters:
+      - name: X-Access-Confirmation
+        in: header
+        schema:
+          type: string
+        description: Access confirmation token obtained from confirm-access endpoint.
+          Required when using OAuth/OpenID authentication.
+        required: false
       security:
       - SessionCookie: []
+      - Oauth2: []
+      - OpenId: []
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -3316,11 +3354,21 @@ paths:
       operationId: generateOtpBackupCodes
       tags:
       - OTP
+      parameters:
+      - name: X-Access-Confirmation
+        in: header
+        schema:
+          type: string
+        description: Access confirmation token obtained from confirm-access endpoint.
+          Required when using OAuth/OpenID authentication.
+        required: false
       security:
       - SessionCookie: []
+      - Oauth2: []
+      - OpenId: []
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -3343,11 +3391,21 @@ paths:
       operationId: startOtpSetup
       tags:
       - OTP
+      parameters:
+      - name: X-Access-Confirmation
+        in: header
+        schema:
+          type: string
+        description: Access confirmation token obtained from confirm-access endpoint.
+          Required when using OAuth/OpenID authentication.
+        required: false
       security:
       - SessionCookie: []
+      - Oauth2: []
+      - OpenId: []
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -3525,6 +3583,7 @@ paths:
       - name: q
         in: query
         schema:
+          type: object
           "$ref": "#/components/schemas/FleetVehicleQuery"
         style: deepObject
         explode: true
@@ -3725,6 +3784,7 @@ paths:
       - name: q
         in: query
         schema:
+          type: object
           "$ref": "#/components/schemas/FleetVehicleQuery"
         style: deepObject
         explode: true
@@ -3773,6 +3833,7 @@ paths:
       - name: q
         in: query
         schema:
+          type: object
           "$ref": "#/components/schemas/FleetVehicleQuery"
         style: deepObject
         explode: true
@@ -3810,6 +3871,7 @@ paths:
       - name: usernames
         in: query
         schema:
+          type: object
           "$ref": "#/components/schemas/HangarEmbedQuery"
         style: deepObject
         explode: true
@@ -3873,6 +3935,7 @@ paths:
       - name: q
         in: query
         schema:
+          type: object
           "$ref": "#/components/schemas/HangarQuery"
         style: deepObject
         explode: true
@@ -3907,6 +3970,7 @@ paths:
       - name: q
         in: query
         schema:
+          type: object
           "$ref": "#/components/schemas/HangarQuery"
         style: deepObject
         explode: true
@@ -3977,6 +4041,7 @@ paths:
       - name: q
         in: query
         schema:
+          type: object
           "$ref": "#/components/schemas/HangarQuery"
         style: deepObject
         explode: true
@@ -4016,9 +4081,11 @@ paths:
       parameters: []
       security:
       - SessionCookie: []
+      - Oauth2: []
+      - OpenId: []
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -4250,17 +4317,23 @@ paths:
       - UserFeatures
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - profile:write
-        OpenId:
+      - OpenId:
         - profile:write
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/UserFeature"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '403':
           description: forbidden
           content:
@@ -4272,12 +4345,6 @@ paths:
                     type: string
                   message:
                     type: string
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
   "/user-features/{id}/enable":
     parameters:
     - name: id
@@ -4293,17 +4360,23 @@ paths:
       - UserFeatures
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - profile:write
-        OpenId:
+      - OpenId:
         - profile:write
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/UserFeature"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '403':
           description: forbidden
           content:
@@ -4315,12 +4388,6 @@ paths:
                     type: string
                   message:
                     type: string
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
   "/user-features":
     get:
       summary: User Feature Flags
@@ -4329,13 +4396,13 @@ paths:
       - UserFeatures
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - profile:write
-        OpenId:
+      - OpenId:
         - profile:write
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -4454,11 +4521,11 @@ paths:
       - Users
       security:
       - SessionCookie: []
-        Oauth2: []
-        OpenId: []
+      - Oauth2: []
+      - OpenId: []
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -4476,11 +4543,11 @@ paths:
       - Users
       security:
       - SessionCookie: []
-        Oauth2: []
-        OpenId: []
+      - Oauth2: []
+      - OpenId: []
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -4499,11 +4566,11 @@ paths:
       parameters: []
       security:
       - SessionCookie: []
-        Oauth2: []
-        OpenId: []
+      - Oauth2: []
+      - OpenId: []
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -4526,14 +4593,21 @@ paths:
       operationId: updateAccount
       tags:
       - Users
-      parameters: []
+      parameters:
+      - name: X-Access-Confirmation
+        in: header
+        schema:
+          type: string
+        description: Access confirmation token obtained from confirm-access endpoint.
+          Required when using OAuth/OpenID authentication.
+        required: false
       security:
       - SessionCookie: []
-        Oauth2: []
-        OpenId: []
+      - Oauth2: []
+      - OpenId: []
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -4565,10 +4639,10 @@ paths:
       parameters: []
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - hangar
         - hangar:read
-        OpenId:
+      - OpenId:
         - hangar
         - hangar:read
       responses:
@@ -4628,15 +4702,15 @@ paths:
       parameters: []
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - hangar
         - hangar:write
-        OpenId:
+      - OpenId:
         - hangar
         - hangar:write
       responses:
         '204':
-          description: successful
+          description: successful with OAuth token
         '401':
           description: unauthorized
           content:
@@ -4658,15 +4732,15 @@ paths:
       parameters: []
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - hangar
         - hangar:write
-        OpenId:
+      - OpenId:
         - hangar
         - hangar:write
       responses:
         '201':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -4691,15 +4765,15 @@ paths:
       - Vehicles
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - hangar
         - hangar:write
-        OpenId:
+      - OpenId:
         - hangar
         - hangar:write
       responses:
         '204':
-          description: successful
+          description: successful with OAuth token
         '401':
           description: unauthorized
           content:
@@ -4715,15 +4789,15 @@ paths:
       parameters: []
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - hangar
         - hangar:write
-        OpenId:
+      - OpenId:
         - hangar
         - hangar:write
       responses:
         '204':
-          description: successful
+          description: successful with OAuth token
         '401':
           description: unauthorized
           content:
@@ -4752,27 +4826,27 @@ paths:
       - Vehicles
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - hangar
         - hangar:write
-        OpenId:
+      - OpenId:
         - hangar
         - hangar:write
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Vehicle"
-        '404':
-          description: not found
+        '401':
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
+        '404':
+          description: not found
           content:
             application/json:
               schema:
@@ -4785,27 +4859,27 @@ paths:
       parameters: []
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - hangar
         - hangar:write
-        OpenId:
+      - OpenId:
         - hangar
         - hangar:write
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Vehicle"
-        '404':
-          description: not found
+        '401':
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
+        '404':
+          description: not found
           content:
             application/json:
               schema:
@@ -4837,15 +4911,15 @@ paths:
       - Wishlist
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - hangar
         - hangar:write
-        OpenId:
+      - OpenId:
         - hangar
         - hangar:write
       responses:
         '204':
-          description: successful
+          description: successful with OAuth token
         '401':
           description: unauthorized
           content:
@@ -4873,16 +4947,17 @@ paths:
       - name: q
         in: query
         schema:
+          type: object
           "$ref": "#/components/schemas/HangarQuery"
         style: deepObject
         explode: true
         required: false
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - hangar
         - hangar:read
-        OpenId:
+      - OpenId:
         - hangar
         - hangar:read
       responses:
@@ -4906,15 +4981,15 @@ paths:
       - Wishlist
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - hangar
         - hangar:read
-        OpenId:
+      - OpenId:
         - hangar
         - hangar:read
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:
@@ -4935,15 +5010,15 @@ paths:
       - Wishlist
       security:
       - SessionCookie: []
-        Oauth2:
+      - Oauth2:
         - hangar
         - hangar:read
-        OpenId:
+      - OpenId:
         - hangar
         - hangar:read
       responses:
         '200':
-          description: successful
+          description: successful with OAuth token
           content:
             application/json:
               schema:

@@ -118,7 +118,9 @@ const { t } = useI18n();
 const mobile = useMobile();
 
 const dpr = computed(() =>
-  mobile.value ? Math.min(window.devicePixelRatio, 1.5) : window.devicePixelRatio,
+  mobile.value
+    ? Math.min(window.devicePixelRatio, 1.5)
+    : window.devicePixelRatio,
 );
 
 const powerPreference = computed<WebGLPowerPreference>(() =>
