@@ -16,6 +16,7 @@ import { TresCanvas } from "@tresjs/core";
 import { OrbitControls, TransformControls, Grid } from "@tresjs/cientos";
 import Model from "./Model/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useMobile } from "@/shared/composables/useMobile";
 
 export type HoloModel = {
   path: string;
@@ -46,6 +47,16 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { displayAlert } = useAppNotifications();
+
+const mobile = useMobile();
+
+const dpr = computed(() =>
+  mobile.value ? Math.min(window.devicePixelRatio, 1.5) : window.devicePixelRatio,
+);
+
+const powerPreference = computed<WebGLPowerPreference>(() =>
+  mobile.value ? "low-power" : "default",
+);
 
 const internalFullscreen = ref(props.fullscreen);
 
@@ -271,10 +282,16 @@ defineExpose({
 
     <Loader v-if="loading" :loading="loading" :progress="progress" />
     <input v-if="debug" v-model="modelColor" type="color" />
-    <TresCanvas :clear-alpha="0" shadows alpha>
+    <TresCanvas
+      :clear-alpha="0"
+      :shadows="!mobile"
+      :dpr="dpr"
+      :power-preference="powerPreference"
+      alpha
+    >
       <TresPerspectiveCamera :position="cameraPosition" :args="cameraArgs">
-        <TresDirectionalLight :intensity="2" cast-shadow />
-        <TresAmbientLight :intensity="0.5" />
+        <TresDirectionalLight :intensity="2" :cast-shadow="!mobile" />
+        <TresAmbientLight :intensity="mobile ? 0.8 : 0.5" />
       </TresPerspectiveCamera>
       <OrbitControls
         :auto-rotate="internalAutoRotate"
@@ -311,6 +328,7 @@ defineExpose({
           :model="model"
           :color="modelColor"
           :on-grid="grid"
+          :mobile="mobile"
           :offsetModel="models[models.indexOf(model) - 1]"
           @loaded="handleModelLoaded"
           @error="handleModelError"

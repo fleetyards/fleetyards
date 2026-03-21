@@ -110,9 +110,20 @@ import { BoxGeometry, EdgesGeometry, LineBasicMaterial, Color } from "three";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useMobile } from "@/shared/composables/useMobile";
 import { humanizeHoldName } from "@/shared/utils/CargoHolds";
 
 const { t } = useI18n();
+
+const mobile = useMobile();
+
+const dpr = computed(() =>
+  mobile.value ? Math.min(window.devicePixelRatio, 1.5) : window.devicePixelRatio,
+);
+
+const powerPreference = computed<WebGLPowerPreference>(() =>
+  mobile.value ? "low-power" : "default",
+);
 
 type Props = {
   cargoHolds: CargoHold[];
@@ -966,7 +977,14 @@ const resetCamera = () => {
       >
         <i class="fa-light fa-crosshairs" />
       </Btn>
-      <TresCanvas :key="canvasKey" :clear-alpha="0" shadows alpha>
+      <TresCanvas
+        :key="canvasKey"
+        :clear-alpha="0"
+        :shadows="!mobile"
+        :dpr="dpr"
+        :power-preference="powerPreference"
+        alpha
+      >
         <TresPerspectiveCamera
           :position="cameraPosition"
           :args="[45, 1, 0.1, 1000]"
@@ -983,11 +1001,11 @@ const resetCamera = () => {
           make-default
         />
 
-        <TresAmbientLight :intensity="0.4" />
+        <TresAmbientLight :intensity="mobile ? 0.7 : 0.4" />
         <TresDirectionalLight
           :position="[10, 20, 10]"
           :intensity="0.8"
-          cast-shadow
+          :cast-shadow="!mobile"
         />
 
         <!-- SCU floor grid -->

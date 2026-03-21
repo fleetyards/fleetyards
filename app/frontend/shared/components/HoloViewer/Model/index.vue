@@ -10,10 +10,12 @@ import { useGLTF } from "@tresjs/cientos";
 import {
   type Mesh,
   DoubleSide,
+  FrontSide,
   Box3,
   Vector3,
   type Group,
   MeshPhongMaterial,
+  MeshLambertMaterial,
   DefaultLoadingManager,
 } from "three";
 import { type HoloModel } from "../index.vue";
@@ -22,6 +24,7 @@ type Props = {
   model: HoloModel;
   color?: string;
   onGrid?: boolean;
+  mobile?: boolean;
   offsetModel?: HoloModel;
   windowColor?: string;
 };
@@ -29,20 +32,25 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   color: "#428bca",
   onGrid: false,
+  mobile: false,
   offsetModel: undefined,
   windowColor: "#1d3d59",
 });
 
 const setMaterials = (scene: Group) => {
-  const material = new MeshPhongMaterial({
+  const side = props.mobile ? FrontSide : DoubleSide;
+  const MaterialClass = props.mobile ? MeshLambertMaterial : MeshPhongMaterial;
+
+  const material = new MaterialClass({
     color: props.color,
-    side: DoubleSide,
+    side,
   });
 
-  const windowMaterial = new MeshPhongMaterial({
+  const windowMaterial = new MaterialClass({
     color: props.windowColor,
     opacity: 0.8,
     transparent: true,
+    side,
   });
 
   const windowRefs = ["window", "glass"];
