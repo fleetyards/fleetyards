@@ -61,7 +61,7 @@ watch(
 );
 
 const source = ref(
-  props.model.scIdentifier
+  props.model.scIdentifier && props.model.productionStatus === "flight-ready"
     ? HardpointSourceEnum.GAME_FILES
     : HardpointSourceEnum.SHIP_MATRIX,
 );
