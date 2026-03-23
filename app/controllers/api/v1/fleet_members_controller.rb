@@ -33,7 +33,7 @@ module Api
         @members = FleetMembership.where(
           FleetMembership.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
         )
-          .ransack(sorts: member_query_params["sorts"]).result(distinct: false)
+          .order(@q.result.order_values)
           .includes(:user)
           .joins(:user)
           .page(params[:page])

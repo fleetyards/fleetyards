@@ -20,7 +20,8 @@ RSpec.describe Loaders::LoanerJob do
     end
 
     it "creates a GitHub issue when there are missing loaners" do
-      allow(loader).to receive(:run).and_return([["Missing Loaner"], []])
+      missing_loaners = [{loaner: "F7C Hornet", model: "Mole", model_id: "abc-123"}]
+      allow(loader).to receive(:run).and_return([missing_loaners, []])
 
       creator = instance_double(GithubIssueCreator, run: true)
       allow(GithubIssueCreator).to receive(:new).and_return(creator)

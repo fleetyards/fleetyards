@@ -25,7 +25,7 @@ module Api
           result = Vehicle.where(
             Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
           )
-            .ransack(sorts: vehicle_query_params["sorts"]).result(distinct: false)
+            .order(@q.result.order_values)
             .includes(:model)
             .joins(:model)
 
@@ -49,7 +49,7 @@ module Api
           @vehicles = Vehicle.where(
             Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
           )
-            .ransack(sorts: vehicle_query_params["sorts"]).result(distinct: false)
+            .order(@q.result.order_values)
             .includes(:model)
             .joins(:model)
         end

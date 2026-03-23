@@ -41,7 +41,7 @@ module Api
         result = Vehicle.where(
           Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
         )
-          .ransack(sorts: vehicle_query_params["sorts"]).result(distinct: false)
+          .order(@q.result.order_values)
           .includes(:vehicle_upgrades, :model_paint, :model_upgrades, :module_package,
             :task_forces, :hangar_groups,
             model: [:manufacturer, :item_prices, {model_loaners: :loaner_model}])
@@ -100,7 +100,7 @@ module Api
         @vehicles = Vehicle.where(
           Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
         )
-          .ransack(sorts: vehicle_query_params["sorts"]).result(distinct: false)
+          .order(@q.result.order_values)
           .includes(model: [:manufacturer])
           .joins(model: [:manufacturer])
       end

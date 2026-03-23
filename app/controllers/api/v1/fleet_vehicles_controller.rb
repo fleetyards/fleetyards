@@ -52,10 +52,10 @@ module Api
 
           render "api/v1/fleet_vehicles/models"
         else
-          result = FleetVehicle.where(
-            FleetVehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
+          result = Vehicle.where(
+            Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
           )
-            .ransack(sorts: vehicle_query_params["sorts"]).result(distinct: false)
+            .order(@q.result.order_values)
             .includes(:model).joins(:model)
 
           @vehicles = result_with_pagination(result, per_page(FleetVehicle))
@@ -74,10 +74,10 @@ module Api
         vehicle_query_params["sorts"] = "model_name asc"
 
         @q = scope.ransack(vehicle_query_params)
-        @vehicles = FleetVehicle.where(
-          FleetVehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
+        @vehicles = Vehicle.where(
+          Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
         )
-          .ransack(sorts: vehicle_query_params["sorts"]).result(distinct: false)
+          .order(@q.result.order_values)
           .includes(:model).joins(:model)
       end
 
@@ -89,8 +89,8 @@ module Api
         scope = scope.where(loaner: loaner_included?)
 
         @q = scope.ransack(vehicle_query_params)
-        @vehicles = FleetVehicle.where(
-          FleetVehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
+        @vehicles = Vehicle.where(
+          Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
         )
           .includes(:model)
           .joins(:model)
