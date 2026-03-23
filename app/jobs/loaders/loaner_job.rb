@@ -15,7 +15,38 @@ module Loaders
 
       Vehicle.where(loaner: true).where.not(model_id: loaner_model_ids).destroy_all
 
-      AdminMailer.missing_loaners(missing_loaners, missing_models).deliver_later if missing_loaners.present? || missing_models.present?
+      if missing_loaners.present? || missing_models.present?
+        body = missing_loaners_body(missing_loaners, missing_models)
+
+        GithubIssueCreator.new(
+          task_type: "loaner_sync",
+          title: "Missing Loaners",
+          body:
+        ).run
+      end
+    end
+
+    private def missing_loaners_body(missing_loaners, missing_models)
+      lines = []
+
+      if missing_models.present?
+        lines << "## Missing Models"
+        lines << ""
+        missing_models.each do |model|
+          lines << "- **#{model[:name]}** — Loaners: #{model[:loaners]}"
+        end
+      end
+
+      if missing_loaners.present?
+        lines << "" if lines.any?
+        lines << "## Missing Loaners"
+        lines << ""
+        missing_loaners.each do |loaner|
+          lines << "- **#{loaner[:loaner]}** — For Model: #{loaner[:model]} (#{loaner[:model_id]})"
+        end
+      end
+
+      lines.join("\n")
     end
   end
 end

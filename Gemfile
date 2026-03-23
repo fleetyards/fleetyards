@@ -205,5 +205,7 @@ gem "aws-sdk-s3", require: false
 
 gem "graphlient"
 
+gem "octokit"
+
 gem "abbrev"
 gem "csv"

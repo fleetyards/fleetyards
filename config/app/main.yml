@@ -26,6 +26,8 @@ shared:
 
   opensearch_url: <%= ENV["OPENSEARCH_URL"] || 'localhost:9200' %>
 
+  github_repo: <%= ENV["GITHUB_REPO"] || 'fleetyards/fleetyards' %>
+
 staging:
   on_subdomain?: true
 
