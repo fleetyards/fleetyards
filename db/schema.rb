@@ -67,13 +67,19 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.boolean "otp_required_for_login"
     t.string "otp_backup_codes", array: true
     t.string "otp_secret"
-    t.string "normalized_username"
-    t.string "normalized_email"
-    t.boolean "super_admin", default: false
-    t.string "resource_access"
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
     t.index ["username"], name: "index_admin_users_on_username", unique: true
+  end
+
+  create_table "affiliations", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+    t.string "affiliationable_type"
+    t.uuid "affiliationable_id"
+    t.uuid "faction_id"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.index ["affiliationable_type", "affiliationable_id"], name: "index_affiliations_on_affiliationable"
+    t.index ["faction_id"], name: "index_affiliations_on_faction_id"
   end
 
   create_table "ahoy_events", force: :cascade do |t|
@@ -116,44 +122,55 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.datetime "updated_at", precision: nil
   end
 
-  create_table "cargo_hold_container_capacities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "cargo_hold_id", null: false
-    t.integer "container_size_scu", null: false
-    t.integer "max_quantity", default: 0, null: false
-    t.string "best_orientation"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["cargo_hold_id", "container_size_scu"], name: "index_cargo_hold_capacities_on_hold_and_size", unique: true
-    t.index ["cargo_hold_id"], name: "index_cargo_hold_container_capacities_on_cargo_hold_id"
-    t.index ["container_size_scu"], name: "index_cargo_hold_container_capacities_on_container_size_scu"
-    t.index ["max_quantity"], name: "index_cargo_hold_container_capacities_on_max_quantity"
+  create_table "celestial_objects", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.uuid "starsystem_id"
+    t.string "object_type"
+    t.integer "rsi_id"
+    t.string "code"
+    t.string "status"
+    t.string "designation"
+    t.datetime "last_updated_at", precision: nil
+    t.text "description"
+    t.boolean "hidden", default: true
+    t.string "orbit_period"
+    t.boolean "habitable", default: false
+    t.boolean "fairchanceact", default: false
+    t.integer "sensor_population"
+    t.integer "sensor_economy"
+    t.integer "sensor_danger"
+    t.string "size"
+    t.string "sub_type"
+    t.string "store_image"
+    t.uuid "parent_id"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.index ["starsystem_id"], name: "index_celestial_objects_on_starsystem_id"
   end
 
-  create_table "cargo_holds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "model_id", null: false
-    t.decimal "dimension_x", precision: 15, scale: 2, null: false
-    t.decimal "dimension_y", precision: 15, scale: 2, null: false
-    t.decimal "dimension_z", precision: 15, scale: 2, null: false
-    t.decimal "capacity_scu", precision: 15, scale: 2, null: false
-    t.integer "max_container_size_scu", null: false
-    t.decimal "max_container_dimension_x", precision: 15, scale: 2
-    t.decimal "max_container_dimension_y", precision: 15, scale: 2
-    t.decimal "max_container_dimension_z", precision: 15, scale: 2
-    t.integer "min_container_size_scu"
-    t.decimal "min_container_dimension_x", precision: 15, scale: 2
-    t.decimal "min_container_dimension_y", precision: 15, scale: 2
-    t.decimal "min_container_dimension_z", precision: 15, scale: 2
+  create_table "commodities", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
-    t.integer "position"
+    t.string "slug"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.text "description"
+    t.string "store_image"
+    t.integer "commodity_type"
+    t.index ["name"], name: "index_commodities_on_name", unique: true
+  end
+
+  create_table "commodity_prices", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+    t.string "type"
+    t.uuid "shop_commodity_id"
+    t.decimal "price", precision: 15, scale: 2
+    t.integer "time_range"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.decimal "offset_x", precision: 15, scale: 2
-    t.decimal "offset_y", precision: 15, scale: 2
-    t.decimal "offset_z", precision: 15, scale: 2
-    t.integer "rotation"
-    t.index ["capacity_scu"], name: "index_cargo_holds_on_capacity_scu"
-    t.index ["model_id", "max_container_size_scu"], name: "index_cargo_holds_on_model_id_and_max_container_size_scu"
-    t.index ["model_id"], name: "index_cargo_holds_on_model_id"
+    t.boolean "confirmed", default: false
+    t.integer "submission_count", default: 0
+    t.string "submitters"
+    t.index ["shop_commodity_id"], name: "index_commodity_prices_on_shop_commodity_id"
   end
 
   create_table "components", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -176,17 +193,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.string "power_connection"
     t.string "heat_connection"
     t.string "ammunition"
-    t.boolean "hidden", default: false
-    t.string "sc_key"
-    t.string "sc_ref"
-    t.string "category"
-    t.string "component_type"
-    t.string "component_sub_type"
-    t.string "inventory_consumption"
-    t.string "version"
-    t.integer "store_image_width"
-    t.integer "store_image_height"
-    t.datetime "carrierwave_migrated_at"
     t.index ["manufacturer_id"], name: "index_components_on_manufacturer_id"
   end
 
@@ -195,6 +201,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
 
   create_table "docks", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.integer "dock_type"
+    t.uuid "station_id"
     t.string "name"
     t.integer "max_ship_size"
     t.integer "min_ship_size"
@@ -206,6 +213,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.decimal "beam", precision: 15, scale: 2
     t.decimal "length", precision: 15, scale: 2
     t.string "group"
+    t.index ["station_id"], name: "index_docks_on_station_id"
   end
 
   create_table "email_rejections", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -238,17 +246,17 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.string "temperature_rating"
     t.integer "backpack_compatibility"
     t.integer "core_compatibility"
-    t.integer "store_image_width"
-    t.integer "store_image_height"
     t.index ["manufacturer_id"], name: "index_equipment_on_manufacturer_id"
   end
 
-  create_table "feature_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "feature_name", null: false
-    t.boolean "self_service", default: false, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["feature_name"], name: "index_feature_settings_on_feature_name", unique: true
+  create_table "factions", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "rsi_id"
+    t.string "name"
+    t.string "slug"
+    t.string "code"
+    t.string "color"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "fleet_invite_urls", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -259,7 +267,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.datetime "updated_at", null: false
     t.datetime "expires_after", precision: nil
     t.integer "limit"
-    t.integer "usage_count", default: 0, null: false
     t.index ["token"], name: "index_fleet_invite_urls_on_token", unique: true
   end
 
@@ -280,22 +287,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.datetime "invited_at", precision: nil
     t.datetime "requested_at", precision: nil
     t.string "used_invite_token"
-    t.uuid "fleet_role_id"
-    t.index ["fleet_role_id"], name: "index_fleet_memberships_on_fleet_role_id"
     t.index ["user_id", "fleet_id"], name: "index_fleet_memberships_on_user_id_and_fleet_id", unique: true
-  end
-
-  create_table "fleet_roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
-    t.string "slug"
-    t.text "rank"
-    t.text "resource_access"
-    t.uuid "fleet_id", null: false
-    t.boolean "permanent"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["fleet_id", "rank"], name: "index_fleet_roles_on_fleet_id_and_rank", unique: true
-    t.index ["fleet_id"], name: "index_fleet_roles_on_fleet_id"
   end
 
   create_table "fleet_vehicles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -328,7 +320,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.text "description"
     t.boolean "public_fleet_stats", default: false
     t.string "normalized_fid"
-    t.datetime "carrierwave_migrated_at"
     t.index ["fid"], name: "index_fleets_on_fid", unique: true
   end
 
@@ -357,6 +348,16 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.index ["task_type"], name: "index_github_issue_logs_on_task_type"
   end
 
+  create_table "habitations", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.integer "habitation_type"
+    t.uuid "station_id"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.string "habitation_name"
+    t.index ["station_id"], name: "index_habitations_on_station_id"
+  end
+
   create_table "hangar_groups", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "slug"
@@ -367,26 +368,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.integer "sort"
     t.boolean "public", default: false
     t.index ["user_id", "name"], name: "index_hangar_groups_on_user_id_and_name", unique: true
-  end
-
-  create_table "hardpoints", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "sc_name"
-    t.integer "min_size"
-    t.integer "max_size"
-    t.string "types"
-    t.string "parent_type", null: false
-    t.uuid "parent_id", null: false
-    t.uuid "component_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "source"
-    t.integer "group"
-    t.integer "category"
-    t.string "group_key"
-    t.string "matrix_key"
-    t.string "details"
-    t.index ["component_id"], name: "index_hardpoints_on_component_id"
-    t.index ["parent_type", "parent_id"], name: "index_hardpoints_on_parent"
   end
 
   create_table "images", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -401,9 +382,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.integer "height"
     t.boolean "global", default: true
     t.string "caption"
-    t.string "gallery_name"
-    t.string "gallery_slug"
-    t.datetime "carrierwave_migrated_at"
     t.index ["gallery_id"], name: "index_images_on_gallery_id"
   end
 
@@ -422,44 +400,9 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.uuid "user_id"
     t.string "import"
     t.text "import_data"
-    t.datetime "carrierwave_migrated_at"
     t.index ["aasm_state", "type"], name: "index_imports_on_aasm_state_and_type"
     t.index ["aasm_state"], name: "index_imports_on_aasm_state"
     t.index ["type"], name: "index_imports_on_type"
-  end
-
-  create_table "item_prices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "price_type"
-    t.decimal "price", precision: 15, scale: 2
-    t.string "location"
-    t.string "location_url"
-    t.integer "time_range"
-    t.string "item_type", null: false
-    t.uuid "item_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["item_type", "item_id"], name: "index_item_prices_on_item"
-  end
-
-  create_table "maintenance_tasks_runs", force: :cascade do |t|
-    t.string "task_name", null: false
-    t.datetime "started_at", precision: nil
-    t.datetime "ended_at", precision: nil
-    t.float "time_running", default: 0.0, null: false
-    t.bigint "tick_count", default: 0, null: false
-    t.bigint "tick_total"
-    t.string "job_id"
-    t.string "cursor"
-    t.string "status", default: "enqueued", null: false
-    t.string "error_class"
-    t.string "error_message"
-    t.text "backtrace"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.text "arguments"
-    t.integer "lock_version", default: 0, null: false
-    t.text "metadata"
-    t.index ["task_name", "status", "created_at"], name: "index_maintenance_tasks_runs", order: { created_at: :desc }
   end
 
   create_table "manufacturers", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -474,8 +417,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.string "code"
     t.string "long_name"
     t.string "code_mapping"
-    t.string "sc_ref"
-    t.datetime "carrierwave_migrated_at"
   end
 
   create_table "message_attachments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -497,6 +438,25 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.string "email"
     t.text "to"
     t.text "from_raw"
+  end
+
+  create_table "model_additions", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "model_id", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.decimal "beam", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "length", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "height", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "mass", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "cargo", precision: 15, scale: 2
+    t.decimal "net_cargo", precision: 15, scale: 2
+    t.decimal "scm_speed", precision: 15, scale: 2
+    t.decimal "afterburner_speed", precision: 15, scale: 2
+    t.decimal "cruise_speed", precision: 15, scale: 2
+    t.integer "min_crew"
+    t.integer "max_crew"
+    t.decimal "price", precision: 15, scale: 2
+    t.index ["model_id"], name: "index_model_additions_on_model_id"
   end
 
   create_table "model_hardpoint_loadouts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -565,9 +525,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.string "side_view"
     t.integer "side_view_height"
     t.integer "side_view_width"
-    t.integer "store_image_width"
-    t.integer "store_image_height"
-    t.datetime "carrierwave_migrated_at"
   end
 
   create_table "model_modules", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -583,12 +540,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.decimal "pledge_price", precision: 15, scale: 2
-    t.string "sc_key"
-    t.decimal "cargo", precision: 15, scale: 2
-    t.string "cargo_holds"
-    t.integer "store_image_width"
-    t.integer "store_image_height"
-    t.datetime "carrierwave_migrated_at"
   end
 
   create_table "model_paints", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -626,11 +577,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.integer "top_view_width"
     t.integer "side_view_height"
     t.integer "side_view_width"
-    t.integer "store_image_width"
-    t.integer "store_image_height"
-    t.integer "rsi_store_image_width"
-    t.integer "rsi_store_image_height"
-    t.datetime "carrierwave_migrated_at"
   end
 
   create_table "model_snub_crafts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -650,9 +596,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.decimal "pledge_price", precision: 15, scale: 2
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.integer "store_image_width"
-    t.integer "store_image_height"
-    t.datetime "carrierwave_migrated_at"
   end
 
   create_table "models", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -774,24 +717,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.string "rsi_pledge_slug"
     t.integer "rsi_pledge_value"
     t.boolean "adi_map", default: false
-    t.decimal "scm_speed_boosted", precision: 15, scale: 2
-    t.decimal "pitch_boosted", precision: 15, scale: 2
-    t.decimal "yaw_boosted", precision: 15, scale: 2
-    t.decimal "reverse_speed_boosted", precision: 15, scale: 2
-    t.decimal "roll_boosted", precision: 15, scale: 2
-    t.decimal "fuel_consumption", precision: 15, scale: 2
-    t.integer "store_image_width"
-    t.integer "store_image_height"
-    t.integer "rsi_store_image_width"
-    t.integer "rsi_store_image_height"
-    t.decimal "fleetchart_offset_beam", precision: 15, scale: 2
-    t.datetime "carrierwave_migrated_at"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
-    t.index ["classification"], name: "index_models_on_classification"
-    t.index ["manufacturer_id"], name: "index_models_on_manufacturer_id"
-    t.index ["name"], name: "index_models_on_name"
-    t.index ["production_status"], name: "index_models_on_production_status"
-    t.index ["size"], name: "index_models_on_size"
   end
 
   create_table "module_hardpoints", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -801,67 +727,26 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "oauth_access_grants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "resource_owner_id", null: false
-    t.uuid "application_id", null: false
-    t.string "token", limit: 512, null: false
-    t.integer "expires_in", null: false
-    t.text "redirect_uri", null: false
-    t.string "scopes", default: "", null: false
-    t.datetime "created_at", null: false
-    t.datetime "revoked_at"
-    t.string "code_challenge"
-    t.string "code_challenge_method"
-    t.index ["application_id"], name: "index_oauth_access_grants_on_application_id"
-    t.index ["resource_owner_id"], name: "index_oauth_access_grants_on_resource_owner_id"
-    t.index ["token"], name: "index_oauth_access_grants_on_token", unique: true
-  end
-
-  create_table "oauth_access_tokens", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "resource_owner_id"
-    t.uuid "application_id", null: false
-    t.text "token", null: false
-    t.text "refresh_token"
-    t.integer "expires_in"
-    t.string "scopes"
-    t.datetime "created_at", null: false
-    t.datetime "revoked_at"
-    t.string "previous_refresh_token", default: "", null: false
-    t.index ["application_id"], name: "index_oauth_access_tokens_on_application_id"
-    t.index ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true
-    t.index ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id"
-    t.index ["token"], name: "index_oauth_access_tokens_on_token", unique: true
-  end
-
-  create_table "oauth_applications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name", null: false
-    t.string "uid", null: false
-    t.string "secret", limit: 512, null: false
-    t.text "redirect_uri"
-    t.string "scopes", default: "", null: false
-    t.boolean "confidential", default: true, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.uuid "owner_id"
-    t.string "owner_type"
-    t.index ["owner_id", "owner_type"], name: "index_oauth_applications_on_owner_id_and_owner_type"
-    t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
-  end
-
-  create_table "oauth_openid_requests", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "access_grant_id", null: false
-    t.string "nonce", null: false
-    t.index ["access_grant_id"], name: "index_oauth_openid_requests_on_access_grant_id"
-  end
-
-  create_table "omniauth_connections", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "user_id", null: false
-    t.string "uid", null: false
-    t.integer "provider", null: false
-    t.jsonb "auth_payload"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_omniauth_connections_on_user_id"
+  create_table "roadmap_items", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "rsi_id"
+    t.integer "rsi_category_id"
+    t.integer "rsi_release_id"
+    t.string "release"
+    t.text "release_description"
+    t.string "name"
+    t.uuid "model_id"
+    t.text "body"
+    t.text "description"
+    t.boolean "released", default: false
+    t.string "image"
+    t.integer "tasks"
+    t.integer "inprogress"
+    t.integer "completed"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.string "store_image"
+    t.boolean "active", default: false
+    t.boolean "committed", default: false
   end
 
   create_table "rollups", force: :cascade do |t|
@@ -880,6 +765,50 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "shop_commodities", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "shop_id"
+    t.decimal "buy_price", precision: 15, scale: 2
+    t.decimal "sell_price", precision: 15, scale: 2
+    t.string "commodity_item_type"
+    t.uuid "commodity_item_id"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.boolean "price_per_unit", default: false
+    t.decimal "rental_price_1_day", precision: 15, scale: 2
+    t.decimal "rental_price_7_days", precision: 15, scale: 2
+    t.decimal "rental_price_30_days", precision: 15, scale: 2
+    t.decimal "rental_price_3_days", precision: 15, scale: 2
+    t.decimal "average_buy_price", precision: 15, scale: 2
+    t.decimal "average_sell_price", precision: 15, scale: 2
+    t.decimal "average_rental_price_1_day", precision: 15, scale: 2
+    t.decimal "average_rental_price_3_days", precision: 15, scale: 2
+    t.decimal "average_rental_price_7_days", precision: 15, scale: 2
+    t.decimal "average_rental_price_30_days", precision: 15, scale: 2
+    t.boolean "confirmed", default: false
+    t.uuid "submitted_by"
+    t.index ["commodity_item_id"], name: "index_shop_commodities_on_commodity_item_id"
+    t.index ["commodity_item_type", "commodity_item_id"], name: "index_shop_commodities_on_item_type_and_item_id"
+    t.index ["shop_id"], name: "index_shop_commodities_on_shop_id"
+  end
+
+  create_table "shops", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.string "store_image"
+    t.uuid "station_id"
+    t.integer "shop_type"
+    t.boolean "hidden", default: true
+    t.boolean "rental", default: false
+    t.boolean "buying", default: false
+    t.boolean "selling", default: false
+    t.boolean "refinery_terminal", default: false
+    t.text "description"
+    t.string "location"
+    t.index ["station_id"], name: "index_shops_on_station_id"
+  end
+
   create_table "star_citizen_updates", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "url"
     t.string "title"
@@ -890,6 +819,56 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "starsystems", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.string "map"
+    t.string "store_image"
+    t.integer "rsi_id"
+    t.string "code"
+    t.string "position_x"
+    t.string "position_y"
+    t.string "position_z"
+    t.string "status"
+    t.datetime "last_updated_at", precision: nil
+    t.string "system_type"
+    t.string "aggregated_size"
+    t.integer "aggregated_population"
+    t.integer "aggregated_economy"
+    t.integer "aggregated_danger"
+    t.boolean "hidden", default: true
+    t.text "description"
+    t.string "map_y"
+    t.string "map_x"
+  end
+
+  create_table "stations", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.uuid "planet_id"
+    t.integer "station_type"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.boolean "hidden", default: true
+    t.string "store_image"
+    t.string "location"
+    t.string "map"
+    t.text "description"
+    t.uuid "celestial_object_id"
+    t.integer "status"
+    t.integer "images_count", default: 0
+    t.boolean "cargo_hub", default: false
+    t.boolean "refinery", default: false
+    t.integer "classification"
+    t.boolean "habitable", default: true
+    t.integer "size"
+    t.index ["celestial_object_id"], name: "index_stations_on_celestial_object_id"
+    t.index ["name"], name: "index_stations_on_name", unique: true
+    t.index ["planet_id"], name: "index_stations_on_planet_id"
+  end
+
   create_table "task_forces", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "hangar_group_id"
     t.uuid "vehicle_id"
@@ -897,6 +876,31 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.datetime "updated_at", precision: nil, null: false
     t.index ["hangar_group_id"], name: "index_task_forces_on_hangar_group_id"
     t.index ["vehicle_id"], name: "index_task_forces_on_vehicle_id"
+  end
+
+  create_table "trade_routes", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "origin_id"
+    t.uuid "origin_station_id"
+    t.uuid "origin_celestial_object_id"
+    t.uuid "origin_starsystem_id"
+    t.uuid "destination_id"
+    t.uuid "destination_station_id"
+    t.uuid "destination_celestial_object_id"
+    t.uuid "destination_starsystem_id"
+    t.decimal "profit_per_unit", precision: 15, scale: 2
+    t.decimal "profit_per_unit_percent", precision: 15, scale: 2
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.decimal "average_profit_per_unit", precision: 15, scale: 2
+    t.decimal "average_profit_per_unit_percent", precision: 15, scale: 2
+    t.index ["destination_celestial_object_id"], name: "index_trade_routes_on_destination_celestial_object_id"
+    t.index ["destination_id"], name: "index_trade_routes_on_destination_id"
+    t.index ["destination_starsystem_id"], name: "index_trade_routes_on_destination_starsystem_id"
+    t.index ["destination_station_id"], name: "index_trade_routes_on_destination_station_id"
+    t.index ["origin_celestial_object_id"], name: "index_trade_routes_on_origin_celestial_object_id"
+    t.index ["origin_id", "destination_id"], name: "index_trade_routes_on_origin_id_and_destination_id", unique: true
+    t.index ["origin_starsystem_id"], name: "index_trade_routes_on_origin_starsystem_id"
+    t.index ["origin_station_id"], name: "index_trade_routes_on_origin_station_id"
   end
 
   create_table "upgrade_kits", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -955,7 +959,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.boolean "tester", default: false
     t.integer "purchased_vehicles_count", default: 0, null: false
     t.integer "wanted_vehicles_count", default: 0, null: false
-    t.datetime "carrierwave_migrated_at"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["normalized_username"], name: "index_users_on_normalized_username"
@@ -1005,7 +1008,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.string "rsi_pledge_id"
     t.datetime "rsi_pledge_synced_at"
     t.string "slug"
-    t.index ["hidden", "loaner"], name: "index_vehicles_on_hidden_and_loaner"
     t.index ["model_id", "id"], name: "index_vehicles_on_model_id_and_id"
     t.index ["serial", "user_id"], name: "index_vehicles_on_serial_and_user_id", unique: true
     t.index ["user_id"], name: "index_vehicles_on_user_id"
@@ -1044,15 +1046,4 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "cargo_hold_container_capacities", "cargo_holds"
-  add_foreign_key "cargo_holds", "models"
-  add_foreign_key "fleet_memberships", "fleet_roles"
-  add_foreign_key "fleet_roles", "fleets"
-  add_foreign_key "hardpoints", "components"
-  add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
-  add_foreign_key "oauth_access_grants", "users", column: "resource_owner_id"
-  add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
-  add_foreign_key "oauth_access_tokens", "users", column: "resource_owner_id"
-  add_foreign_key "oauth_openid_requests", "oauth_access_grants", column: "access_grant_id", on_delete: :cascade
-  add_foreign_key "omniauth_connections", "users"
 end
