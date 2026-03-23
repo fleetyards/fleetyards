@@ -31,7 +31,7 @@ module Api
             render "api/v1/public/fleet_vehicles/models"
           else
             result = Vehicle.where(id: @q.result(distinct: true).select(:id))
-              .ransack(sorts: vehicle_query_params["sorts"]).result
+              .ransack(sorts: vehicle_query_params["sorts"]).result(distinct: false)
               .includes(:model)
               .joins(:model)
 
@@ -53,7 +53,7 @@ module Api
           @q = scope.ransack(vehicle_query_params)
 
           @vehicles = Vehicle.where(id: @q.result(distinct: true).select(:id))
-            .ransack(sorts: vehicle_query_params["sorts"]).result
+            .ransack(sorts: vehicle_query_params["sorts"]).result(distinct: false)
             .includes(:model)
             .joins(:model)
             .all

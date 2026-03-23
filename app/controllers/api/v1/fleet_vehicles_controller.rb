@@ -53,7 +53,7 @@ module Api
           render "api/v1/fleet_vehicles/models"
         else
           result = FleetVehicle.where(id: @q.result(distinct: true).select(:id))
-            .ransack(sorts: vehicle_query_params["sorts"]).result
+            .ransack(sorts: vehicle_query_params["sorts"]).result(distinct: false)
             .includes(:model).joins(:model)
 
           @vehicles = result_with_pagination(result, per_page(FleetVehicle))
@@ -74,7 +74,7 @@ module Api
         @q = scope.ransack(vehicle_query_params)
 
         @vehicles = FleetVehicle.where(id: @q.result(distinct: true).select(:id))
-          .ransack(sorts: vehicle_query_params["sorts"]).result
+          .ransack(sorts: vehicle_query_params["sorts"]).result(distinct: false)
           .includes(:model).joins(:model)
       end
 

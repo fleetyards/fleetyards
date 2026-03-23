@@ -39,7 +39,7 @@ module Api
         @q = scope.ransack(vehicle_query_params)
 
         result = Vehicle.where(id: @q.result(distinct: true).select(:id))
-          .ransack(sorts: vehicle_query_params["sorts"]).result
+          .ransack(sorts: vehicle_query_params["sorts"]).result(distinct: false)
           .includes(:vehicle_upgrades, :model_paint, :model_upgrades, :module_package,
             :task_forces, :hangar_groups,
             model: [:manufacturer, :item_prices, {model_loaners: :loaner_model}])
@@ -96,7 +96,7 @@ module Api
         @q = scope.ransack(vehicle_query_params)
 
         @vehicles = Vehicle.where(id: @q.result(distinct: true).select(:id))
-          .ransack(sorts: vehicle_query_params["sorts"]).result
+          .ransack(sorts: vehicle_query_params["sorts"]).result(distinct: false)
           .includes(model: [:manufacturer])
           .joins(model: [:manufacturer])
       end
