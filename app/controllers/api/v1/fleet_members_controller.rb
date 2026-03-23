@@ -31,7 +31,9 @@ module Api
 
         @q = scope.ransack(member_query_params)
 
-        @members = FleetMembership.where(id: @q.result(distinct: true).select(:id))
+        filtered_ids = @q.result(distinct: true).reorder(nil).ids
+
+        @members = FleetMembership.where(id: filtered_ids)
           .ransack(sorts: member_query_params["sorts"]).result(distinct: false)
           .includes(:user)
           .joins(:user)

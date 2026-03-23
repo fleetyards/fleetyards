@@ -52,7 +52,9 @@ module Api
 
           render "api/v1/fleet_vehicles/models"
         else
-          result = FleetVehicle.where(id: @q.result(distinct: true).select(:id))
+          filtered_ids = @q.result(distinct: true).reorder(nil).ids
+
+          result = FleetVehicle.where(id: filtered_ids)
             .ransack(sorts: vehicle_query_params["sorts"]).result(distinct: false)
             .includes(:model).joins(:model)
 
@@ -73,7 +75,9 @@ module Api
 
         @q = scope.ransack(vehicle_query_params)
 
-        @vehicles = FleetVehicle.where(id: @q.result(distinct: true).select(:id))
+        filtered_ids = @q.result(distinct: true).reorder(nil).ids
+
+        @vehicles = FleetVehicle.where(id: filtered_ids)
           .ransack(sorts: vehicle_query_params["sorts"]).result(distinct: false)
           .includes(:model).joins(:model)
       end
@@ -87,7 +91,9 @@ module Api
 
         @q = scope.ransack(vehicle_query_params)
 
-        @vehicles = FleetVehicle.where(id: @q.result(distinct: true).select(:id))
+        filtered_ids = @q.result(distinct: true).reorder(nil).ids
+
+        @vehicles = FleetVehicle.where(id: filtered_ids)
           .includes(:model)
           .joins(:model)
           .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
