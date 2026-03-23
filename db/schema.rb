@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_03_11_083613) do
+ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
@@ -346,6 +346,15 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_11_083613) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["feature_key", "key", "value"], name: "index_flipper_gates_on_feature_key_and_key_and_value", unique: true
+  end
+
+  create_table "github_issue_logs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "task_type", null: false
+    t.string "content_digest", null: false
+    t.integer "issue_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["task_type"], name: "index_github_issue_logs_on_task_type"
   end
 
   create_table "hangar_groups", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|

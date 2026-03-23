@@ -30,6 +30,8 @@ shared:
     version: "4.6.0-live.11218823"
     environment: "live"
 
+  github_repo: <%= ENV["GITHUB_REPO"] || 'fleetyards/fleetyards' %>
+
   discord:
     oauth_client_id: <%= Rails.application.credentials.dig(:discord, :oauth_client_id) rescue nil %>
     oauth_secret: <%= Rails.application.credentials.dig(:discord, :oauth_secret) rescue nil %>

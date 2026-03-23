@@ -208,5 +208,7 @@ gem "maintenance_tasks", "~> 2.11"
 
 gem "graphlient"
 
+gem "octokit"
+
 gem "abbrev"
 gem "csv"
