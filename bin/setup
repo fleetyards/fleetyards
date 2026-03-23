@@ -367,6 +367,21 @@ FileUtils.chdir APP_ROOT do
         end
       end
     end
+
+    # Copy credential keys from main worktree
+    source_root = main_worktree_root
+    if source_root
+      %w[config/master.key config/credentials/production.key config/credentials/staging.key config/credentials/review.key].each do |key_path|
+        source_key = File.join(source_root, key_path)
+        target_key = File.join(APP_ROOT, key_path)
+        next unless File.exist?(source_key)
+        next if File.exist?(target_key)
+
+        FileUtils.mkdir_p(File.dirname(target_key))
+        FileUtils.cp(source_key, target_key, preserve: true)
+        puts VERBOSE ? "   Copied #{key_path} from main worktree" : "  Copied #{key_path}"
+      end
+    end
   end
 
   unless system("command -v pnpm > /dev/null 2>&1")
