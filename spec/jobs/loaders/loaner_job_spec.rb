@@ -19,15 +19,20 @@ RSpec.describe Loaders::LoanerJob do
       expect(loader).to have_received(:run)
     end
 
-    it "sends admin email when there are missing loaners" do
+    it "creates a GitHub issue when there are missing loaners" do
       allow(loader).to receive(:run).and_return([["Missing Loaner"], []])
 
-      mailer = double(deliver_later: true)
-      allow(AdminMailer).to receive(:missing_loaners).and_return(mailer)
+      creator = instance_double(GithubIssueCreator, run: true)
+      allow(GithubIssueCreator).to receive(:new).and_return(creator)
 
       described_class.new.perform
 
-      expect(AdminMailer).to have_received(:missing_loaners).with(["Missing Loaner"], [])
+      expect(GithubIssueCreator).to have_received(:new).with(
+        task_type: "loaner_sync",
+        title: "Missing Loaners",
+        body: anything
+      )
+      expect(creator).to have_received(:run)
     end
   end
 end
