@@ -39,7 +39,9 @@ module Api
         @q = scope.ransack(vehicle_query_params)
 
         result = @q.result(distinct: true)
-          .includes(:vehicle_upgrades, :model_paint, :model_upgrades, model: [:manufacturer])
+          .includes(:vehicle_upgrades, :model_paint, :model_upgrades, :module_package,
+            :task_forces, :hangar_groups,
+            model: [:manufacturer, :item_prices, {model_loaners: :loaner_model}])
           .joins(model: [:manufacturer])
 
         @vehicles = result_with_pagination(result, per_page(Vehicle))
