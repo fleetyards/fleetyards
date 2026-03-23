@@ -122,6 +122,48 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.datetime "updated_at", precision: nil
   end
 
+  create_table "cargo_hold_container_capacities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "cargo_hold_id", null: false
+    t.integer "container_size_scu", null: false
+    t.integer "max_quantity", default: 0, null: false
+    t.string "best_orientation"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cargo_hold_id", "container_size_scu"], name: "index_cargo_hold_capacities_on_hold_and_size", unique: true
+    t.index ["cargo_hold_id"], name: "index_cargo_hold_container_capacities_on_cargo_hold_id"
+    t.index ["container_size_scu"], name: "index_cargo_hold_container_capacities_on_container_size_scu"
+    t.index ["max_quantity"], name: "index_cargo_hold_container_capacities_on_max_quantity"
+  end
+
+
+  create_table "cargo_holds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "model_id", null: false
+    t.decimal "dimension_x", precision: 15, scale: 2, null: false
+    t.decimal "dimension_y", precision: 15, scale: 2, null: false
+    t.decimal "dimension_z", precision: 15, scale: 2, null: false
+    t.decimal "capacity_scu", precision: 15, scale: 2, null: false
+    t.integer "max_container_size_scu", null: false
+    t.decimal "max_container_dimension_x", precision: 15, scale: 2
+    t.decimal "max_container_dimension_y", precision: 15, scale: 2
+    t.decimal "max_container_dimension_z", precision: 15, scale: 2
+    t.integer "min_container_size_scu"
+    t.decimal "min_container_dimension_x", precision: 15, scale: 2
+    t.decimal "min_container_dimension_y", precision: 15, scale: 2
+    t.decimal "min_container_dimension_z", precision: 15, scale: 2
+    t.string "name"
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.decimal "offset_x", precision: 15, scale: 2
+    t.decimal "offset_y", precision: 15, scale: 2
+    t.decimal "offset_z", precision: 15, scale: 2
+    t.integer "rotation"
+    t.index ["capacity_scu"], name: "index_cargo_holds_on_capacity_scu"
+    t.index ["model_id", "max_container_size_scu"], name: "index_cargo_holds_on_model_id_and_max_container_size_scu"
+    t.index ["model_id"], name: "index_cargo_holds_on_model_id"
+  end
+
+
   create_table "celestial_objects", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "slug"
@@ -259,6 +301,15 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
+  create_table "feature_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "feature_name", null: false
+    t.boolean "self_service", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["feature_name"], name: "index_feature_settings_on_feature_name", unique: true
+  end
+
+
   create_table "fleet_invite_urls", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "fleet_id"
     t.uuid "user_id"
@@ -289,6 +340,20 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.string "used_invite_token"
     t.index ["user_id", "fleet_id"], name: "index_fleet_memberships_on_user_id_and_fleet_id", unique: true
   end
+
+  create_table "fleet_roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.text "rank"
+    t.text "resource_access"
+    t.uuid "fleet_id", null: false
+    t.boolean "permanent"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fleet_id", "rank"], name: "index_fleet_roles_on_fleet_id_and_rank", unique: true
+    t.index ["fleet_id"], name: "index_fleet_roles_on_fleet_id"
+  end
+
 
   create_table "fleet_vehicles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "vehicle_id"
@@ -370,6 +435,27 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.index ["user_id", "name"], name: "index_hangar_groups_on_user_id_and_name", unique: true
   end
 
+  create_table "hardpoints", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "sc_name"
+    t.integer "min_size"
+    t.integer "max_size"
+    t.string "types"
+    t.string "parent_type", null: false
+    t.uuid "parent_id", null: false
+    t.uuid "component_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "source"
+    t.integer "group"
+    t.integer "category"
+    t.string "group_key"
+    t.string "matrix_key"
+    t.string "details"
+    t.index ["component_id"], name: "index_hardpoints_on_component_id"
+    t.index ["parent_type", "parent_id"], name: "index_hardpoints_on_parent"
+  end
+
+
   create_table "images", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", limit: 255
     t.uuid "gallery_id"
@@ -404,6 +490,42 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.index ["aasm_state"], name: "index_imports_on_aasm_state"
     t.index ["type"], name: "index_imports_on_type"
   end
+
+  create_table "item_prices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "price_type"
+    t.decimal "price", precision: 15, scale: 2
+    t.string "location"
+    t.string "location_url"
+    t.integer "time_range"
+    t.string "item_type", null: false
+    t.uuid "item_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_type", "item_id"], name: "index_item_prices_on_item"
+  end
+
+
+  create_table "maintenance_tasks_runs", force: :cascade do |t|
+    t.string "task_name", null: false
+    t.datetime "started_at", precision: nil
+    t.datetime "ended_at", precision: nil
+    t.float "time_running", default: 0.0, null: false
+    t.bigint "tick_count", default: 0, null: false
+    t.bigint "tick_total"
+    t.string "job_id"
+    t.string "cursor"
+    t.string "status", default: "enqueued", null: false
+    t.string "error_class"
+    t.string "error_message"
+    t.text "backtrace"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "arguments"
+    t.integer "lock_version", default: 0, null: false
+    t.text "metadata"
+    t.index ["task_name", "status", "created_at"], name: "index_maintenance_tasks_runs", order: { created_at: :desc }
+  end
+
 
   create_table "manufacturers", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", limit: 255
@@ -727,6 +849,74 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
+  create_table "oauth_access_grants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "resource_owner_id", null: false
+    t.uuid "application_id", null: false
+    t.string "token", limit: 512, null: false
+    t.integer "expires_in", null: false
+    t.text "redirect_uri", null: false
+    t.string "scopes", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "revoked_at"
+    t.string "code_challenge"
+    t.string "code_challenge_method"
+    t.index ["application_id"], name: "index_oauth_access_grants_on_application_id"
+    t.index ["resource_owner_id"], name: "index_oauth_access_grants_on_resource_owner_id"
+    t.index ["token"], name: "index_oauth_access_grants_on_token", unique: true
+  end
+
+
+  create_table "oauth_access_tokens", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "resource_owner_id"
+    t.uuid "application_id", null: false
+    t.text "token", null: false
+    t.text "refresh_token"
+    t.integer "expires_in"
+    t.string "scopes"
+    t.datetime "created_at", null: false
+    t.datetime "revoked_at"
+    t.string "previous_refresh_token", default: "", null: false
+    t.index ["application_id"], name: "index_oauth_access_tokens_on_application_id"
+    t.index ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true
+    t.index ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id"
+    t.index ["token"], name: "index_oauth_access_tokens_on_token", unique: true
+  end
+
+
+  create_table "oauth_applications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.string "uid", null: false
+    t.string "secret", limit: 512, null: false
+    t.text "redirect_uri"
+    t.string "scopes", default: "", null: false
+    t.boolean "confidential", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "owner_id"
+    t.string "owner_type"
+    t.index ["owner_id", "owner_type"], name: "index_oauth_applications_on_owner_id_and_owner_type"
+    t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
+  end
+
+
+  create_table "oauth_openid_requests", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "access_grant_id", null: false
+    t.string "nonce", null: false
+    t.index ["access_grant_id"], name: "index_oauth_openid_requests_on_access_grant_id"
+  end
+
+
+  create_table "omniauth_connections", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "uid", null: false
+    t.integer "provider", null: false
+    t.jsonb "auth_payload"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_omniauth_connections_on_user_id"
+  end
+
+
   create_table "roadmap_items", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.integer "rsi_id"
     t.integer "rsi_category_id"
@@ -1046,4 +1236,15 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "cargo_hold_container_capacities", "cargo_holds"
+  add_foreign_key "cargo_holds", "models"
+  add_foreign_key "fleet_memberships", "fleet_roles"
+  add_foreign_key "fleet_roles", "fleets"
+  add_foreign_key "hardpoints", "components"
+  add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
+  add_foreign_key "oauth_access_grants", "users", column: "resource_owner_id"
+  add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
+  add_foreign_key "oauth_access_tokens", "users", column: "resource_owner_id"
+  add_foreign_key "oauth_openid_requests", "oauth_access_grants", column: "access_grant_id", on_delete: :cascade
+  add_foreign_key "omniauth_connections", "users"
 end
