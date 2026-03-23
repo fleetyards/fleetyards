@@ -136,10 +136,9 @@ module Api
         scope = loaner_included?(scope)
 
         @q = scope.ransack(vehicle_query_params)
-
-        filtered_ids = @q.result(distinct: true).reorder(nil).ids
-
-        @vehicles = Vehicle.where(id: filtered_ids)
+        @vehicles = Vehicle.where(
+          Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
+        )
           .includes(model: [:manufacturer])
           .joins(model: [:manufacturer])
           .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }

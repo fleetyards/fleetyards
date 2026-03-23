@@ -30,10 +30,9 @@ module Api
         member_query_params["sorts"] = sorting_params(FleetMembership, member_query_params["sorts"])
 
         @q = scope.ransack(member_query_params)
-
-        filtered_ids = @q.result(distinct: true).reorder(nil).ids
-
-        @members = FleetMembership.where(id: filtered_ids)
+        @members = FleetMembership.where(
+          FleetMembership.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
+        )
           .ransack(sorts: member_query_params["sorts"]).result(distinct: false)
           .includes(:user)
           .joins(:user)

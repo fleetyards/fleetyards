@@ -30,9 +30,9 @@ module Api
 
             render "api/v1/public/fleet_vehicles/models"
           else
-            filtered_ids = @q.result(distinct: true).reorder(nil).ids
-
-            result = Vehicle.where(id: filtered_ids)
+            result = Vehicle.where(
+              Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
+            )
               .ransack(sorts: vehicle_query_params["sorts"]).result(distinct: false)
               .includes(:model)
               .joins(:model)
@@ -53,10 +53,9 @@ module Api
           vehicle_query_params["sorts"] = sorting_params(FleetVehicle, vehicle_query_params["sorts"])
 
           @q = scope.ransack(vehicle_query_params)
-
-          filtered_ids = @q.result(distinct: true).reorder(nil).ids
-
-          @vehicles = Vehicle.where(id: filtered_ids)
+          @vehicles = Vehicle.where(
+            Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
+          )
             .ransack(sorts: vehicle_query_params["sorts"]).result(distinct: false)
             .includes(:model)
             .joins(:model)
@@ -69,10 +68,9 @@ module Api
           scope = scope.where(loaner: loaner_included?)
 
           @q = scope.ransack(vehicle_query_params)
-
-          filtered_ids = @q.result(distinct: true).reorder(nil).ids
-
-          @vehicles = Vehicle.where(id: filtered_ids)
+          @vehicles = Vehicle.where(
+            Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
+          )
             .includes(:model)
             .joins(:model)
             .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }

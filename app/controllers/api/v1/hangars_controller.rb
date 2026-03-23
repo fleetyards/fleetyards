@@ -38,9 +38,9 @@ module Api
 
         @q = scope.ransack(vehicle_query_params)
 
-        vehicle_ids = @q.result(distinct: true).reorder(nil).ids
-
-        result = Vehicle.where(id: vehicle_ids)
+        result = Vehicle.where(
+          Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
+        )
           .ransack(sorts: vehicle_query_params["sorts"]).result(distinct: false)
           .includes(:vehicle_upgrades, :model_paint, :model_upgrades, :module_package,
             :task_forces, :hangar_groups,
@@ -97,9 +97,9 @@ module Api
 
         @q = scope.ransack(vehicle_query_params)
 
-        vehicle_ids = @q.result(distinct: true).reorder(nil).ids
-
-        @vehicles = Vehicle.where(id: vehicle_ids)
+        @vehicles = Vehicle.where(
+          Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
+        )
           .ransack(sorts: vehicle_query_params["sorts"]).result(distinct: false)
           .includes(model: [:manufacturer])
           .joins(model: [:manufacturer])

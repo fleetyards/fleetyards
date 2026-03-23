@@ -36,10 +36,9 @@ module Api
         vehicle_query_params["sorts"] = sorting_params(Vehicle, vehicle_query_params["sorts"], ["name asc", "model_name asc"])
 
         @q = scope.ransack(vehicle_query_params)
-
-        filtered_ids = @q.result(distinct: true).reorder(nil).ids
-
-        result = Vehicle.where(id: filtered_ids)
+        result = Vehicle.where(
+          Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
+        )
           .ransack(sorts: vehicle_query_params["sorts"]).result(distinct: false)
           .includes(:vehicle_upgrades, :model_paint, :model_upgrades, model: [:manufacturer])
           .joins(model: [:manufacturer])
@@ -73,10 +72,9 @@ module Api
         vehicle_query_params["sorts"] = "model_name asc"
 
         @q = scope.ransack(vehicle_query_params)
-
-        filtered_ids = @q.result(distinct: true).reorder(nil).ids
-
-        @vehicles = Vehicle.where(id: filtered_ids)
+        @vehicles = Vehicle.where(
+          Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
+        )
           .ransack(sorts: vehicle_query_params["sorts"]).result(distinct: false)
           .includes(model: [:manufacturer])
           .joins(model: [:manufacturer])
