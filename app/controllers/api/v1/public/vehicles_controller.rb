@@ -24,7 +24,7 @@ module Api
           @vehicles = []
           return unless user.public_hangar?
 
-          @vehicles = @q.result(distinct: true)
+          @vehicles = Vehicle.where(id: @q.result(distinct: true).select(:id))
             .includes(:model)
             .joins(:model)
             .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }

@@ -52,7 +52,9 @@ module Api
 
           render "api/v1/fleet_vehicles/models"
         else
-          result = @q.result(distinct: true).includes(:model).joins(:model)
+          result = FleetVehicle.where(id: @q.result(distinct: true).select(:id))
+            .ransack(sorts: vehicle_query_params["sorts"]).result
+            .includes(:model).joins(:model)
 
           @vehicles = result_with_pagination(result, per_page(FleetVehicle))
         end
@@ -71,7 +73,9 @@ module Api
 
         @q = scope.ransack(vehicle_query_params)
 
-        @vehicles = @q.result(distinct: true).includes(:model).joins(:model)
+        @vehicles = FleetVehicle.where(id: @q.result(distinct: true).select(:id))
+          .ransack(sorts: vehicle_query_params["sorts"]).result
+          .includes(:model).joins(:model)
       end
 
       def fleetchart
@@ -83,7 +87,7 @@ module Api
 
         @q = scope.ransack(vehicle_query_params)
 
-        @vehicles = @q.result(distinct: true)
+        @vehicles = FleetVehicle.where(id: @q.result(distinct: true).select(:id))
           .includes(:model)
           .joins(:model)
           .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }

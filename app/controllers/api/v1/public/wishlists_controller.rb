@@ -18,7 +18,8 @@ module Api
 
           @q = scope.ransack(vehicle_query_params)
 
-          result = @q.result(distinct: true)
+          result = Vehicle.where(id: @q.result(distinct: true).select(:id))
+            .ransack(sorts: vehicle_query_params["sorts"]).result
             .includes(:model)
             .joins(:model)
 

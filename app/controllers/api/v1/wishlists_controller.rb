@@ -37,7 +37,8 @@ module Api
 
         @q = scope.ransack(vehicle_query_params)
 
-        result = @q.result(distinct: true)
+        result = Vehicle.where(id: @q.result(distinct: true).select(:id))
+          .ransack(sorts: vehicle_query_params["sorts"]).result
           .includes(:vehicle_upgrades, :model_paint, :model_upgrades, model: [:manufacturer])
           .joins(model: [:manufacturer])
 
@@ -71,7 +72,8 @@ module Api
 
         @q = scope.ransack(vehicle_query_params)
 
-        @vehicles = @q.result(distinct: true)
+        @vehicles = Vehicle.where(id: @q.result(distinct: true).select(:id))
+          .ransack(sorts: vehicle_query_params["sorts"]).result
           .includes(model: [:manufacturer])
           .joins(model: [:manufacturer])
       end

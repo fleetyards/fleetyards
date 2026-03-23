@@ -137,7 +137,7 @@ module Api
 
         @q = scope.ransack(vehicle_query_params)
 
-        @vehicles = @q.result(distinct: true)
+        @vehicles = Vehicle.where(id: @q.result(distinct: true).select(:id))
           .includes(model: [:manufacturer])
           .joins(model: [:manufacturer])
           .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
