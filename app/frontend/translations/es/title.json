@@ -8,7 +8,6 @@
       "defaultDocs": "FleetYards.net Documentation",
       "defaultDocsShort": "FleetYards Docs",
       "home": "Inicio",
-      "search": "Search Results",
       "ships": { "index": "Ships", "viewer": "Ship Viewer" },
       "ship": "%{name} - %{manufacturer}",
       "shipImages": "%{name} Images",

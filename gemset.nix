@@ -2353,17 +2353,6 @@
     };
     version = "2.1.2";
   };
-  searchkick = {
-    dependencies = ["activemodel" "hashie"];
-    groups = ["default"];
-    platforms = [];
-    source = {
-      remotes = ["https://rubygems.org"];
-      sha256 = "0ypwwvj8a18shincjx4bbqvn6s525hfc293r4xi3r3x7cjrv1sr2";
-      type = "gem";
-    };
-    version = "5.1.2";
-  };
   selectize-rails = {
     groups = ["default"];
     platforms = [];

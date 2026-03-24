@@ -64,13 +64,6 @@ jobs:
       - run: pnpm install
       - name: Build email assets
         run: bin/build-email-assets
-      - name: Configure sysctl limits
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
-      - uses: ankane/setup-opensearch@v1
       - run: mkdir -p log
       - name: Prepare test databases
         run: bundle exec flatware fan -w 2 rake db:create db:schema:load

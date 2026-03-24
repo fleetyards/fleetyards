@@ -13,8 +13,6 @@ fi
 
 bundle exec rails db:migrate
 
-bundle exec rails searchkick:reindex:all
-
 bundle exec rails db:seed
 
 exec "$@"

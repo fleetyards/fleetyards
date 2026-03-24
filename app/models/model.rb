@@ -169,21 +169,6 @@ class Model < ApplicationRecord
   max_paginates_per 240
   per_page_steps [15, 30, 60, 120, 240]
 
-  searchkick searchable: %i[name manufacturer_name manufacturer_code],
-    word_start: %i[name manufacturer_name]
-
-  def search_data
-    {
-      name:,
-      manufacturer_name: manufacturer.name,
-      manufacturer_code: manufacturer.code
-    }
-  end
-
-  def should_index?
-    active && !hidden
-  end
-
   belongs_to :manufacturer, optional: true
 
   has_many :hardpoints, as: :parent, dependent: :destroy, autosave: true

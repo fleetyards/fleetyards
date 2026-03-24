@@ -164,11 +164,6 @@
       },
       "unselect": "Auswahl aufheben",
       "openPriceModal": "Preis einreichen",
-      "shoppingCart": {
-        "add": "In den Warenkorb",
-        "refresh": "Warenkorb aktualisieren",
-        "clear": "Warenkorb leeren"
-      },
       "twoFactor": {
         "enable": "Zwei-Faktor aktivieren",
         "disable": "Zwei-Faktor deaktivieren",

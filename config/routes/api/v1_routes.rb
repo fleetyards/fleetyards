@@ -50,8 +50,6 @@ v1_api_routes = lambda do
     get :weeks, on: :collection
   end
 
-  resources :search, only: %i[index]
-
   resources :trade_routes, path: "trade-routes", only: [:index]
 
   resources :equipment, only: [:index]

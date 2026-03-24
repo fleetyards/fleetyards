@@ -44,6 +44,8 @@
       "confirmAccess": "Confirmer l'accès",
       "filterModels": "Filtrer les vaisseaux",
       "filterVehicles": "Filtrer Hangar",
+      "filterCargoRoutes": "Filtrer les routes de fret",
+      "filterCommodities": "Filtrer les marchandises",
       "fleets": {
         "owners": "Propriétaires",
         "add": "Créer une nouvelle Flotte",
@@ -66,7 +68,6 @@
         "create": "Créer un groupe",
         "edit": "Modifier le groupe"
       },
-      "searchHistory": "Historique de recherche",
       "compare": { "ships": "Comparer les vaisseaux" },
       "settings": {
         "account": "Mon compte",
@@ -85,13 +86,39 @@
         }
       },
       "roadmap": "Roadmap des vaisseaux",
+      "tools": {
+        "profitCalculator": { "index": "Calculatrice de profits" },
+        "tradeRoutes": {
+          "index": "Routes commerciales",
+          "withShip": "Routes commerciales pour %{name} (%{cargo})"
+        }
+      },
+      "starsystems": "Systèmes planétaires",
+      "starsystem": "Le système %{starsystem}",
+      "celestialObjects": "Objets célestes",
+      "celestialObject": "%{celestialObject} dans le système %{starsystem}",
+      "moons": "Lunes",
+      "stations": "Stations",
+      "station": "%{station} à proximité de %{celestialObject}",
+      "stationImages": "%{station} à proximité de %{celestialObject}",
+      "shops": "Points de vente",
+      "shop": "%{shop} sur %{station}",
+      "commodities": "Marchandises",
       "rsiVerification": "Vérifier votre compte RSI",
       "hangarGuideEmpty": "Rien à voir ici.",
       "hangarGuide": "Guide du Hangar",
       "support": "Soutenir FleetYards.net",
       "vehicle": { "bulkGroupEdit": "Ajouter/Retirer des groupes" },
-      "modals": {},
-      "shoppingCart": "Panier"
+      "modals": {
+        "shopCommodity": {
+          "update": "Mettre à jour la marchandise %{shopCommodity}",
+          "create": "Ajouter une marchandise",
+          "sellPrices": "Prix de vente de %{shopCommodity}",
+          "buyPrices": "%{shopCommodity} Prix d'achat",
+          "rentalPrices": "Prix de vente de %{shopCommodity}"
+        },
+        "commodityPrice": { "create": "Soumettre le prix" }
+      }
     }
   }
 }

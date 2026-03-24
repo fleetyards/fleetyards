@@ -13,6 +13,4 @@ unless Model.exists?(name: "Corsair")
   FactoryBot.create(:model, :with_legacy_images, name: "Corsair")
 end
 
-Model.reindex
-
 Rails.logger.info "E2E: Created ships scenario test data"

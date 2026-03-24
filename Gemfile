@@ -15,9 +15,6 @@ gem "paper_trail"
 
 gem "data_migrate"
 
-gem "opensearch-ruby"
-gem "searchkick"
-
 gem "discordrb-webhooks"
 
 gem "vite_rails"

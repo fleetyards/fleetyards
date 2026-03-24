@@ -114,7 +114,6 @@
         "index": "Ships Index",
         "fleetchart": "Ships Fleetchart"
       },
-      "search": "Search",
       "images": "Images Index",
       "stats": "Stats",
       "notFound": "Navigation Error",
@@ -177,7 +176,6 @@
         "create": "Create Group",
         "edit": "Edit Group"
       },
-      "searchHistory": "Search History",
       "compare": {
         "ships": "Compare Ships"
       },
@@ -227,7 +225,6 @@
           "displayOptions": "Display Options"
         }
       },
-      "shoppingCart": "Shopping Cart",
       "visualTests": {
         "overview": "Overview",
         "panels": "Panels",

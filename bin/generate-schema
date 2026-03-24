@@ -2,7 +2,9 @@
 
 set -euo pipefail
 
-SKIP_COMMITTEE=true bundle exec rake rswag:specs:swaggerize
+# Pin DOMAIN and ON_SUBDOMAIN so the generated schema always contains
+# canonical dev-server URLs, regardless of the local environment.
+DOMAIN=fleetyards.test ON_SUBDOMAIN=true SKIP_COMMITTEE=true bundle exec rake rswag:specs:swaggerize
 
 echo "cleanup old generated files"
 

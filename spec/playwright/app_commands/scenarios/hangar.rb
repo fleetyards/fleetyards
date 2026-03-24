@@ -9,6 +9,4 @@ unless Model.exists?(name: "300i")
     manufacturer: Manufacturer.find_or_create_by!(name: "Origin"))
 end
 
-Model.reindex
-
 Rails.logger.info "E2E: Created hangar scenario test data"

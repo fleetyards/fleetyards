@@ -28,7 +28,40 @@
       "groups": "Groupes",
       "fleetInviteToken": "invitation de la flotte",
       "scDataVersion": "Version corrigée",
-      "home": { "search": "Recherche de vaisseaux" },
+      "home": {
+        "search": "Recherche de vaisseaux"
+      },
+      "shop": {
+        "rentalPrice": "prix de location",
+        "sellPrice": "prix de vente",
+        "buyPrice": "prix d'achat"
+      },
+      "shopCommodity": {
+        "item": "Objets",
+        "shop": "Magasin",
+        "sellPrices": "Prix de vente",
+        "buyPrices": "Prix d'achat",
+        "rentalPrices": "Prix de location",
+        "confirmed": "Confirmé ",
+        "submittedBy": "Soumis par",
+        "prices": {
+          "label": "prix",
+          "rentalPrice": "prix de location",
+          "averageRentalPrice": "location (Ø)",
+          "sellPrice": "prix de vente",
+          "averageSellPrice": "vente pour (Ø)",
+          "buyPrice": "Achats pour",
+          "averageBuyPrice": "achats pour (Ø)",
+          "rentalPrice1Day": "1 jour pour",
+          "averageRentalPrice1Day": "1 jour pour (Ø)",
+          "rentalPrice3Days": "3 jours pour",
+          "averageRentalPrice3Days": "3 jours pour (Ø)",
+          "rentalPrice7Days": "7 jours pour",
+          "averageRentalPrice7Days": "7 jours pour (Ø)",
+          "rentalPrice30Days": "30 jours pour",
+          "averageRentalPrice30Days": "30 jours pour (Ø)"
+        }
+      },
       "stats": {
         "quickStats": {
           "newShips": "Nouveaux vaisseaux en %{year}",
@@ -77,10 +110,6 @@
       "rsiRoadmap": "Carte RSI",
       "unknown": "inconnu",
       "none": "nul",
-      "search": {
-        "default": "Recherche",
-        "shareTitle": "Recherche pour: %{query}"
-      },
       "unknownModel": "%{slug} Inconnu",
       "not-available": "N/A",
       "receiveSaleNotifications": "",
@@ -133,7 +162,9 @@
       "selectModel": "Sélectionner un vaisseau",
       "compare": {
         "removeModel": "Enlever un vaisseau",
-        "addModel": { "nullablePrompt": "Ajouter un vaisseau" },
+        "addModel": {
+          "nullablePrompt": "Ajouter un vaisseau"
+        },
         "enough": "Ne pensez-vous pas que 8 vaisseaux suffisent ? ;)"
       },
       "cargoRoutes": "Routes de cargaisons",
@@ -245,7 +276,9 @@
         "speed": "Vitesse",
         "missileOptions": "Options de Missile (si disponible)"
       },
-      "component": { "size": "Taille : %{size}" },
+      "component": {
+        "size": "Taille : %{size}"
+      },
       "hardpoint": {
         "legend": {
           "headline": "Légende",
@@ -290,7 +323,7 @@
         "modular": "Aucun module présent",
         "avionics": "Aucun Avionique présent",
         "fleetInvites": "Aucune invitation présente",
-        "shoppingCart": "Panier d'achat vide",
+        "shopCommodities": "Aucun produit disponible",
         "userShips": "Votre Hangar est actuellement vide. Pour ajouter des Vaisseaux / Véhicules à votre Hangar, cliquez sur l'icône suivante sur n'importe quel vaisseau de la Base de données :"
       },
       "user": {
@@ -317,10 +350,16 @@
         "saleNotify": "Je souhaite recevoir les notifications de vente",
         "hangarGroups": "Groupes",
         "selectGroup": "Sélectionner un Groupe",
-        "modelPaintSelect": { "nullablePrompt": "Sélectionner une peinture" },
-        "bulkGroupEdit": { "hint": "Les groupes existants seront remplacés !" },
+        "modelPaintSelect": {
+          "nullablePrompt": "Sélectionner une peinture"
+        },
+        "bulkGroupEdit": {
+          "hint": "Les groupes existants seront remplacés !"
+        },
         "hasLoaners": "Prêteurs",
-        "boughtViaSelect": { "label": "Acheté via" }
+        "boughtViaSelect": {
+          "label": "Acheté via"
+        }
       },
       "image": {
         "background": "Utiliser comme arrière-plan ?",
@@ -361,6 +400,51 @@
         "destroyInfo": "Si vous voulez supprimer votre compte et enlever toutes vos informations de Fleetyards.net et ses Services cliquez sur le Bouton ci-dessous. Sachez qu'il s'agit d'une action permanente qui ne peut pas être révoquée."
       },
       "filters": {
+        "shops": {
+          "name": "Nom",
+          "type": "Type",
+          "celestialObject": "Objet Céleste",
+          "model": "Vaisseau",
+          "equipment": "Équipement",
+          "component": "Composant",
+          "commodity": "Marchandise",
+          "commodityType": "Type de marchandise",
+          "starsystem": "Système planétaire",
+          "station": "Station"
+        },
+        "shopCommodities": {
+          "commodityType": "Type de marchandise",
+          "station": "Station",
+          "shopId": "Magasin",
+          "equipment": "Équipement",
+          "component": "Composant",
+          "componentItemTypeFilter": "Types d'éléments de composant",
+          "equipmentItemTypeFilter": "Types d'objet d'équipement",
+          "equipmentTypeFilter": "Type d'équipement",
+          "equipmentSlotFilter": "Emplacement d'équipement",
+          "commodity": "Marchandise",
+          "model": "Vaisseau",
+          "name": "Nom"
+        },
+        "shopItems": {
+          "category": "Catégorie",
+          "subCategory": "Sous catégorie",
+          "name": "Nom",
+          "manufacturer": "Fabricant",
+          "minPrice": "Prix min.",
+          "maxPrice": "Prix max."
+        },
+        "stations": {
+          "name": "Nom",
+          "celestialObject": "Objet Céleste",
+          "starsystem": "Système planétaire",
+          "type": "Type de Station",
+          "shops": "Magasins",
+          "docks": "Quais",
+          "habs": "Habitation?",
+          "cargoHub": "plate-forme de fret",
+          "refinery": "Station de raffinerie?"
+        },
         "vehicles": {
           "name": "Nom ou nom du vaisseau",
           "lengthLt": "Longueur <=",
@@ -374,6 +458,21 @@
           "group": "Groupe",
           "loaner": "Prêteurs",
           "boughtVia": "Acheté via?"
+        },
+        "tradeRoutes": {
+          "sortBy": "Trier par",
+          "sortByValues": {
+            "percent": "Pourcentage Max.",
+            "profit": "Bénéfice max."
+          },
+          "cargoShip": "Avec le vaisseau de marchandise ?",
+          "origin": "De ?",
+          "destination": "Vers?",
+          "excludeCommodityType": "Exclure le type de marchandise",
+          "originCelestialObject": "Lieu d'origine d'objet céleste",
+          "destinationCelestialObject": "Destination d'objet céleste",
+          "originStarsystem": "Système planétaire d'origine",
+          "destinationStarsystem": "Destination du système planétaire"
         },
         "models": {
           "shipRole": "Rôle du vaisseau",
@@ -398,6 +497,7 @@
           "willItFit": "Est-ce que cela conviendra ?"
         },
         "images": {
+          "station": "-",
           "model": "Vaisseau"
         },
         "fleets": {
@@ -420,6 +520,30 @@
           }
         }
       },
+      "station": {
+        "docks": "Quais",
+        "location": "Localisation",
+        "type": "Type",
+        "habitation": "Habitation",
+        "habs": "Habitat",
+        "shops": "Magasins",
+        "locationPrefix": {
+          "default": "Activé",
+          "asteriod": "à proximité d'un astéroïde",
+          "orbit": "autour de l'orbite"
+        },
+        "locationSuffix": "à proximité de %{location}"
+      },
+      "tradeRoutes": {
+        "buy": "Acheter pour: %{uec}",
+        "sell": "Vendre pour: %{uec}",
+        "cargoShip": "pour %{cargo} SCU",
+        "sortByPercent": "Trier par Pourcentage",
+        "sortByProfit": "Trier par Bénéfice",
+        "sortByStation": "Trier par Station",
+        "showAveragePrices": "Affichage des prix moyens",
+        "showLatestPrices": "Affichage des derniers prix"
+      },
       "erkul": {
         "prefix": "Essayer la configuration avec",
         "link": "Calculatrice de DPS d'Erkul"
@@ -428,21 +552,29 @@
         "prefix": "Configurations basées sur les produits développés par Gamefiles ",
         "link": "SCunpacked"
       },
-      "newVehicle": { "nullablePrompt": "Sélectionner un vaisseau" },
-      "addAddon": { "nullablePrompt": "" },
+      "newVehicle": {
+        "nullablePrompt": "Sélectionner un vaisseau"
+      },
+      "addAddon": {
+        "nullablePrompt": ""
+      },
       "pagination": {
         "perPage": "Par Page",
         "pages": "%{page} sur %{total}"
       },
-      "table": { "selected": "%{count} sélectionné" },
-      "shoppingCart": {
-        "total": "Total",
-        "itemTotal": "Total d'article",
-        "perItem": "par article",
-        "items": {
-          "one": "<b>%{count}</b> Article pour <b>%{price}</b>",
-          "other": "<b>%{count}</b> Articles pour <b>%{price}</b>"
-        }
+      "table": {
+        "selected": "%{count} sélectionné"
+      },
+      "commodityPrice": {
+        "shopId": "Magasin",
+        "station": "Station",
+        "commodityItemType": "Type de marchandise",
+        "commodityItemId": "Article de marchandise",
+        "item": "Magasins de marchandise",
+        "price": "Prix",
+        "type": "Type",
+        "shop": "Magasin",
+        "submittedBy": "Soumis par"
       },
       "syncExtension": {
         "status": {

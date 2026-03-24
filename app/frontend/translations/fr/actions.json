@@ -124,11 +124,6 @@
       },
       "unselect": "Retirer la sélection",
       "openPriceModal": "Soumettre le prix",
-      "shoppingCart": {
-        "add": "Ajouter au panier",
-        "refresh": "Actualiser le panier",
-        "clear": "Vider le panier"
-      },
       "twoFactor": {
         "enable": "Activer l'authentification à deux facteurs",
         "disable": "Désactiver l'authentification à deux facteurs",
