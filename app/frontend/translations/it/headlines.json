@@ -44,8 +44,6 @@
       "confirmAccess": "Conferma l'accesso",
       "filterModels": "Filtra Le Navi",
       "filterVehicles": "Filtra Hangar",
-      "filterCargoRoutes": "Filtra rotte di carico",
-      "filterCommodities": "Filtra Merci",
       "fleets": {
         "owners": "Proprietari",
         "add": "Crea una nuova flotta",

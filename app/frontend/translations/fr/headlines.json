@@ -44,8 +44,6 @@
       "confirmAccess": "Confirmer l'accès",
       "filterModels": "Filtrer les vaisseaux",
       "filterVehicles": "Filtrer Hangar",
-      "filterCargoRoutes": "Filtrer les routes de fret",
-      "filterCommodities": "Filtrer les marchandises",
       "fleets": {
         "owners": "Propriétaires",
         "add": "Créer une nouvelle Flotte",
