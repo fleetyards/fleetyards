@@ -12,9 +12,6 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require "rspec/rails"
 # Add additional requires below this line. Rails is not loaded until this point!
 
-# and disable callbacks
-Searchkick.disable_callbacks
-
 require "sidekiq/testing"
 Sidekiq::Testing.fake!
 
@@ -76,14 +73,5 @@ RSpec.configure do |config|
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
-    Searchkick.disable_callbacks
-  end
-
-  config.around(:each, search: true) do |example|
-    DatabaseCleaner.cleaning do
-      Searchkick.callbacks(nil) do
-        example.run
-      end
-    end
   end
 end

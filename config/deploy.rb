@@ -186,20 +186,6 @@ namespace :bundler do
   end
 end
 
-namespace :search do
-  task :index do
-    on roles(:app) do
-      within release_path do
-        with rails_env: fetch(:rails_env) do
-          info "Reindexing..."
-          execute(:bundle, :exec, :rails, "searchkick:reindex:all")
-          info "Reindexing finished"
-        end
-      end
-    end
-  end
-end
-
 namespace :sidekiq do
   task :clear do
     within release_path do

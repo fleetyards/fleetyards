@@ -1,9 +1,7 @@
 #!/usr/bin/env ruby
 require "fileutils"
 require "zlib"
-require "json"
 require "open3"
-require "net/http"
 
 APP_ROOT = File.expand_path("..", __dir__)
 VERBOSE = ARGV.include?("--verbose")
@@ -235,39 +233,6 @@ def worktree_sidekiq_redis_db(name)
   2 + (Zlib.crc32(name) % 500)
 end
 
-def active_worktree_opensearch_prefixes
-  output = `git worktree list --porcelain 2>/dev/null`
-  return [] if output.empty?
-
-  output.scan(/^worktree (.+)$/).filter_map do |match|
-    dir = match[0]
-    next unless File.file?(File.join(dir, ".git"))
-
-    "wt_#{sanitize_worktree_name(File.basename(dir))}"
-  end
-end
-
-def cleanup_stale_worktree_indices
-  uri = URI("http://localhost:8273/_cat/indices/wt_*?format=json&h=index")
-  response = Net::HTTP.get_response(uri)
-  return unless response.is_a?(Net::HTTPSuccess)
-
-  indices = JSON.parse(response.body).map { |i| i["index"] }
-  return if indices.empty?
-
-  active = active_worktree_opensearch_prefixes
-  stale = indices.reject { |index_name| active.any? { |p| index_name.start_with?("#{p}_") } }
-  return if stale.empty?
-
-  stale.each_slice(50) do |batch|
-    del_uri = URI("http://localhost:8273/#{batch.join(",")}")
-    req = Net::HTTP::Delete.new(del_uri)
-    Net::HTTP.start(del_uri.host, del_uri.port) { |http| http.request(req) }
-  end
-rescue StandardError => e
-  $stderr.puts "  Skipping Opensearch cleanup: #{e.message}" if VERBOSE
-end
-
 def write_env_local(port, db_port, vite_port, db_suffix, sidekiq_redis_db)
   env_local = File.join(APP_ROOT, ".env.local")
 
@@ -402,18 +367,15 @@ FileUtils.chdir APP_ROOT do
   docker = run_step "Starting Docker services", "docker compose up -d --wait --wait-timeout 30", async: true
   run_step_wait(ruby_deps, node_deps, docker)
 
-  # Group B: Prepare databases, build Vite test assets, and clean stale ES indices (need deps + Docker)
+  # Group B: Prepare databases and build Vite test assets (need deps + Docker)
   dev_db = run_step "Preparing database (dev)", "DB_PORT=#{db_port} bin/rails db:prepare", async: true
   test_db = run_step "Preparing database (test)", "DB_PORT=#{db_port} RAILS_ENV=test bin/rails db:prepare", async: true
   vite_build = run_step "Building Vite assets (test)", "RAILS_ENV=test bundle exec vite build", async: true
-  opensearch_cleanup = run_step("Cleaning stale Opensearch indices", async: true) { cleanup_stale_worktree_indices }
-  run_step_wait(dev_db, test_db, vite_build, opensearch_cleanup)
+  run_step_wait(dev_db, test_db, vite_build)
 
-  # Group C: Reindex Opensearch and clean logs/tmp (need databases)
-  dev_opensearch = run_step "Reindexing Opensearch (dev)", "DB_PORT=#{db_port} OPENSEARCH_URL=http://localhost:8273 bin/rails searchkick:reindex:all", async: true
-  test_opensearch = run_step "Reindexing Opensearch (test)", "DB_PORT=#{db_port} OPENSEARCH_URL=http://localhost:8273 RAILS_ENV=test bin/rails searchkick:reindex:all", async: true
+  # Group C: Clean logs/tmp (need databases)
   clean = run_step "Cleaning logs and temp files", "bin/rails log:clear tmp:clear", async: true
-  run_step_wait(dev_opensearch, test_opensearch, clean)
+  run_step_wait(clean)
 
   total_elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC) - total_start
   puts "\n== Setup complete in #{format_duration(total_elapsed)} =="

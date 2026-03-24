@@ -24,8 +24,6 @@ shared:
 
   s3_seeds_fleetchart_bucket: <%= ENV["S3_SEEDS_FLEETCHART_BUCKET"] || "seeds_fleetchart" %>
 
-  opensearch_url: <%= ENV["OPENSEARCH_URL"] || 'localhost:9200' %>
-
   sc_data:
     version: "4.6.0-live.11218823"
     environment: "live"
@@ -65,4 +63,3 @@ production:
 
 review:
   domain: <%= ENV["HEROKU_APP_NAME"] %>.herokuapp.com
-  elasticsearch_url: <%= ENV["BONSAI_URL"] %>

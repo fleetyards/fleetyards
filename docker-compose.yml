@@ -17,29 +17,8 @@ services:
       - 8272:6379
     volumes:
       - redis:/data
-  opensearch:
-    image: opensearchproject/opensearch:2
-    environment:
-      - cluster.name=fleetyards-opensearch-cluster
-      - node.name=fleetyards-opensearch-node1
-      - discovery.type=single-node
-      - plugins.security.disabled=true
-      - bootstrap.memory_lock=true # along with the memlock settings below, disables swapping
-      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m" # minimum and maximum Java heap size, recommend setting both to 50% of system RAM
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536 # maximum number of open files for the OpenSearch user, set to at least 65536 on modern systems
-        hard: 65536
-    volumes:
-      - opensearch:/usr/share/opensearch/data
-    ports:
-      - 8273:9200
 volumes:
   postgres:
-  opensearch:
   redis:
 networks:
   default:

@@ -18,7 +18,6 @@ jobs:
       DATABASE_HOST: 127.0.0.1
       DATABASE_USER: root
       DATABASE_PASSWORD: password
-      OPENSEARCH_URL: http://localhost:9200
       RAILS_SERVE_STATIC_FILES: 1
       DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
       TEST_SEEDS: 1
@@ -54,13 +53,6 @@ jobs:
         with:
           bundler-cache: true
       - uses: ./.github/workflows/js-setup-action
-      - name: Configure sysctl limits
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
-      - uses: ankane/setup-opensearch@v1
       - run: mkdir -p log && mkdir -p tmp/pids && rm -f tmp/pids/*
       - name: install dependencies
         uses: Eeems-Org/apt-cache-action@v1.3
@@ -68,14 +60,10 @@ jobs:
           packages: imagemagick libmagickwand-dev
       - name: Setup DB
         run: bundle exec rails db:create db:schema:load
-      - name: Create ES Index
-        run: bundle exec rails searchkick:reindex:all
       - name: Assets Compile
         run: bundle exec rails assets:precompile
       - name: Prefill DB
         run: bundle exec rails db:seed
-      - name: Reindex after seed
-        run: bundle exec rails searchkick:reindex:all
       - name: Get Playwright version
         id: playwright-version
         run: echo "version=$(pnpm playwright --version)" >> $GITHUB_OUTPUT

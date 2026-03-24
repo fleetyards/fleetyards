@@ -38,24 +38,6 @@
 class Equipment < ApplicationRecord
   paginates_per 50
 
-  searchkick searchable: %i[name manufacturer_name manufacturer_code equipment_type item_type slot],
-    word_start: %i[name manufacturer_name equipment_type item_type]
-
-  def search_data
-    {
-      name:,
-      item_type:,
-      equipment_type:,
-      manufacturer_name: manufacturer&.name,
-      manufacturer_code: manufacturer&.code,
-      slot:
-    }
-  end
-
-  def should_index?
-    !hidden && (sold_at.present? || bought_at.present?)
-  end
-
   belongs_to :manufacturer, optional: true
   has_many :item_prices, as: :item, dependent: :destroy
 

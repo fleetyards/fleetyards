@@ -44,24 +44,6 @@ class Component < ApplicationRecord
   paginates_per 50
   max_paginates_per 240
 
-  searchkick searchable: %i[name manufacturer_name manufacturer_code item_type item_class],
-    word_start: %i[name manufacturer_name item_type],
-    filterable: []
-
-  def search_data
-    {
-      name:,
-      item_type: (item_type || "").tr("_", " "),
-      item_class:,
-      manufacturer_name: manufacturer&.name,
-      manufacturer_code: manufacturer&.code
-    }
-  end
-
-  def should_index?
-    sold_at.present? || bought_at.present?
-  end
-
   belongs_to :manufacturer, optional: true
 
   has_many :hardpoints, as: :parent, dependent: :destroy, autosave: true
