@@ -49,7 +49,6 @@ const beforeResolve = (to: RouteLocation): FyRedirectRoute | undefined => {
       routeName: "home",
     };
   }
-
 };
 
 const router = setupRouter({

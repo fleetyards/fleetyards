@@ -17,9 +17,7 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <BreadCrumbs
-    :crumbs="[{ to: { name: 'api-v1' }, label: t('nav.apiV1') }]"
-  />
+  <BreadCrumbs :crumbs="[{ to: { name: 'api-v1' }, label: t('nav.apiV1') }]" />
 
   <Heading :size="HeadingSizeEnum.HERO" hero>Pagination</Heading>
 

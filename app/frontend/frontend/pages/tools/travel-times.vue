@@ -150,83 +150,86 @@ const { data: quantumDrives, ...asyncStatus } = useComponentsQuery(
     <div class="row">
       <div class="col-6">
         <FormInput
-        v-model.number="distance"
-        :min="1"
-        name="distance"
-        :type="InputTypesEnum.NUMBER"
-        inline
-        :alignment="InputAlignmentsEnum.RIGHT"
-        suffix="Mkm"
-      />
+          v-model.number="distance"
+          :min="1"
+          name="distance"
+          :type="InputTypesEnum.NUMBER"
+          inline
+          :alignment="InputAlignmentsEnum.RIGHT"
+          suffix="Mkm"
+        />
+      </div>
     </div>
-  </div>
 
-  <div class="row">
-    <div class="col-12">
-      <p>
-        powered by
-        <a
-          href="https://gitlab.com/Erecco/a-study-on-quantum-travel-time/-/blob/master/A_study_on_Quantum_Travel_time_07042021.pdf?ref_type=heads"
-          >Erec</a
+    <div class="row">
+      <div class="col-12">
+        <p>
+          powered by
+          <a
+            href="https://gitlab.com/Erecco/a-study-on-quantum-travel-time/-/blob/master/A_study_on_Quantum_Travel_time_07042021.pdf?ref_type=heads"
+            >Erec</a
+          >
+        </p>
+      </div>
+    </div>
+
+    <FilteredList
+      key="quantumDrives"
+      :paginated="true"
+      :records="sortedQuantumDrives"
+      :name="route.name?.toString() || ''"
+      :async-status="asyncStatus"
+    >
+      <template #default="{ records }">
+        <BaseTable
+          :records="records"
+          :filter-visible="false"
+          primary-key="slug"
+          :columns="columns"
         >
-      </p>
-    </div>
-  </div>
-
-  <FilteredList
-    key="quantumDrives"
-    :paginated="true"
-    :records="sortedQuantumDrives"
-    :name="route.name?.toString() || ''"
-    :async-status="asyncStatus"
-  >
-    <template #default="{ records }">
-      <BaseTable
-        :records="records"
-        :filter-visible="false"
-        primary-key="slug"
-        :columns="columns"
-      >
-        <template #col-storeImage="{ record }">
-          <div
-            :key="storeImage(record)"
-            v-lazy:background-image="storeImage(record)"
-            class="image lazy"
-            alt="storeImage"
-          />
-        </template>
-        <template #col-name="{ record }">
-          {{ record.name }}
-        </template>
-        <template #col-fuel_usage="{ record }">
-          <template v-if="getFuelRate(record)">
-            {{ Math.round(getFuelRate(record)! * distance * 100) / 100.0 }}
+          <template #col-storeImage="{ record }">
+            <div
+              :key="storeImage(record)"
+              v-lazy:background-image="storeImage(record)"
+              class="image lazy"
+              alt="storeImage"
+            />
           </template>
-          <template v-else> - </template>
-        </template>
-        <template #col-travel_time="{ record }">
-          <TravelTime :quantum-drive="record" :distance="distance * 1000000" />
-        </template>
-      </BaseTable>
-    </template>
+          <template #col-name="{ record }">
+            {{ record.name }}
+          </template>
+          <template #col-fuel_usage="{ record }">
+            <template v-if="getFuelRate(record)">
+              {{ Math.round(getFuelRate(record)! * distance * 100) / 100.0 }}
+            </template>
+            <template v-else> - </template>
+          </template>
+          <template #col-travel_time="{ record }">
+            <TravelTime
+              :quantum-drive="record"
+              :distance="distance * 1000000"
+            />
+          </template>
+        </BaseTable>
+      </template>
 
-    <template #pagination-top>
-      <Paginator
-        v-if="quantumDrives"
-        :query-result-ref="quantumDrives"
-        :per-page="perPage"
-        :update-per-page="updatePerPage"
-      />
-    </template>
+      <template #pagination-top>
+        <Paginator
+          v-if="quantumDrives"
+          :query-result-ref="quantumDrives"
+          :per-page="perPage"
+          :update-per-page="updatePerPage"
+        />
+      </template>
 
-    <template #pagination-bottom>
-      <Paginator
-        v-if="quantumDrives"
-        :query-result-ref="quantumDrives"
-        :per-page="perPage"
-        :update-per-page="updatePerPage"
-      />
-    </template>
+      <template #pagination-bottom>
+        <Paginator
+          v-if="quantumDrives"
+          :query-result-ref="quantumDrives"
+          :per-page="perPage"
+          :update-per-page="updatePerPage"
+        />
+      </template>
     </FilteredList>
   </FeatureGuard>
 </template>
