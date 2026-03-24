@@ -87,9 +87,6 @@
       "roadmap": {
         "inactive": "Questo elemento è stato rimosso dalla Roadmap. Questa è la sua ultima posizione"
       },
-      "commodityPrice": {
-        "info": "Si prega di segnalare Stazioni, Negozi e Prodotti mancanti via email a <a href=\"mailto:info@fleetyards.net\">info@fleetyards.net</a>"
-      },
       "twoFactor": {
         "backupCodes": "Salva una copia dei tuoi codici di backup. Saranno visibili solo questa volta.",
         "disable": "Per disabilitare l'autenticazione a due fattori basta inserire un Token valido.",

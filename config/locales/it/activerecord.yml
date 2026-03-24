@@ -2,30 +2,6 @@
 it:
   activerecord:
     attributes:
-      celestial_object:
-        hidden: nascosto?
-        location_prefix:
-          default: nel Sistema %{starsystem}
-      commodity:
-        commodity_types:
-          agricultural_supply: Forniture per l'agricoltura
-          consumer_goods: Beni di consumo
-          food: Alimenti
-          gas: Carburante
-          harvestable: Raccoglibile
-          medical_supply: Forniture mediche
-          metal: Metalli
-          mineral: Minerali
-          non_metals: Non-Metalli
-          processed_goods: Merci Lavorate
-          scrap: Rottami
-          waste: Rifiuti
-      commodity_rental_price:
-        time_ranges:
-          1-day: 1 Giorno
-          3-days: 3 Giorni
-          30-days: 30 Giorni
-          7-days: 7 Giorni
       component:
         component_classes:
           RSIAvionic: Avionica
@@ -122,29 +98,3 @@ it:
         holo_colored: Il file 3D ha materiali colorati?
         length: Lunghezza
         manufacturer: Produttore
-      shop:
-        shop_types:
-          admin: Admin Office
-          armor: Negozio Di Armature
-          armor_and_weapons: Negozio Armature e Armi
-          bar: Bar
-          blackmarket: Mercato Nero
-          cargo: Cargo Center
-          clothing: Negozio di vestiti
-          components: Negozio Di Componenti
-          computers: Negozio di computer
-          courier: Corriere
-          equipment: Equipaggiamento
-          hospital: Ospedale
-          kiosk: Chiosco
-          mining_equipment: Attrezzature Minerarie
-          pharmacy: farmacia
-          refinery: Raffineria
-          rental: Noleggio
-          resources: Broker Di Risorse
-          salvage: Cantiere Di Recupero
-          ship_customizations: Personalizzazioni Navi E Veicoli
-          ships: Concessionario di Navi
-          souvenirs: Souvenir
-          superstore: Superstore
-          weapons: Negozio Di Armi

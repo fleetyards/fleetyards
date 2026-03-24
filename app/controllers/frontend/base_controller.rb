@@ -31,12 +31,6 @@ module Frontend
       render_frontend
     end
 
-    def commodities
-      @title = I18n.t("title.frontend.commodities")
-
-      render_frontend
-    end
-
     def model
       @model = model_record.includes(model_hardpoints: [:component]).first
       if @model.present?
@@ -86,66 +80,6 @@ module Frontend
         )
         @og_image = @models.first.store_image.url
         # compare_image(@models) TODO: needs to be updated for AWS images
-      end
-
-      render_frontend
-    end
-
-    def starsystem
-      @starsystem = Starsystem.find_by(["slug = :value", {value: (params[:slug] || "").downcase}])
-      if @starsystem.present?
-        @title = I18n.t("title.frontend.starsystem", starsystem: @starsystem.name)
-        # @description = @station.description
-        @og_type = "article"
-        @og_image = @starsystem.store_image.url
-      end
-
-      render_frontend
-    end
-
-    def station
-      @station = Station.find_by(["slug = :value", {value: (params[:slug] || "").downcase}])
-      if @station.present?
-        @title = I18n.t("title.frontend.station", station: @station.name, celestial_object: @station.celestial_object.name)
-        # @description = @station.description
-        @og_type = "article"
-        @og_image = @station.store_image.url
-      end
-
-      render_frontend
-    end
-
-    def station_images
-      @station = Station.find_by(["slug = :value", {value: (params[:slug] || "").downcase}])
-      if @station.present?
-        @title = I18n.t("title.frontend.station_images", station: @station.name, celestial_object: @station.celestial_object.name)
-        # @description = @station.description
-        @og_type = "article"
-        @og_image = @station.store_image.url
-      end
-
-      render_frontend
-    end
-
-    def celestial_object
-      @celestial_object = CelestialObject.find_by(["slug = :value", {value: (params[:slug] || "").downcase}])
-      if @celestial_object.present?
-        @title = I18n.t("title.frontend.celestial_object", starsystem: @celestial_object.starsystem.name, celestial_object: @celestial_object.name)
-        # @description = @station.description
-        @og_type = "article"
-        @og_image = @celestial_object.store_image.url
-      end
-
-      render_frontend
-    end
-
-    def shop
-      @shop = Shop.find_by(["slug = :value", {value: (params[:slug] || "").downcase}])
-      if @shop.present?
-        @title = I18n.t("title.frontend.shop", station: @shop.station.name, shop: @shop.name)
-        # @description = @station.description
-        @og_type = "article"
-        @og_image = @shop.store_image.url
       end
 
       render_frontend

@@ -13,8 +13,4 @@ en:
     image:
       model:
         title: Model
-    shop_commodities:
-      sub_categories:
-        class: Component
-        classification: Ship
-        equipment_type: Equipment
+

@@ -143,20 +143,12 @@
             "paragraph3": "获取更多信息 "
           }
         },
-        "commodityPrice": {
-          "accountRequired": "您需要 <a href=\"/sign-up/\">注册</a> 或 <a href=\"/login/\">登录</a> 以提交价格。"
-        },
         "default": "<b>出现了一些问题。</b> <br>您是否尝试过关闭并重新打开？"
       },
       "account": {
         "destroy": {
           "success": "<b>您的账户已被删除。</b> <br>很遗憾看到您离开 :'(",
           "failure": "我们无法删除您的账户！请稍后再试。"
-        }
-      },
-      "commodityPrice": {
-        "create": {
-          "success": "感谢您提交价格信息。"
         }
       },
       "fleet": {
@@ -242,17 +234,8 @@
         "wishlist": {
           "destroyAll": "您确定要从愿望清单中移除所有飞船吗？此操作无法撤销。"
         },
-        "tradeRoutes": {
-          "reset": "您确定要重置所有商品价格吗？"
-        },
         "account": {
           "destroy": "您确定要删除您的账户吗？此操作无法撤销。"
-        },
-        "commodityPrice": {
-          "destroy": "您确定要删除此价格吗？此操作无法撤销。"
-        },
-        "shopCommodity": {
-          "destroy": "您确定要删除此商品吗？此操作无法撤销。"
         },
         "fleet": {
           "leave": "您确定要离开舰队吗？此操作无法撤销。",

@@ -10,7 +10,6 @@ on:
       - "config/version.rb"
       - "package.json"
   pull_request:
-    branches: ["main"]
   merge_group:
   workflow_dispatch:
 

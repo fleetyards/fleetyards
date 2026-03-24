@@ -7,16 +7,6 @@ en:
         edit: Edit %{admin_user}
         index: Admin Users
         new: New Admin User
-      celestial_object:
-        edit: Celestial Object %{celestial_object}
-        index: Celestial Objects
-        new: New Celestial Object
-      commodity:
-        edit: Commodity %{commodity}
-        index: Commodities
-        new: New Commodity
-      commodity_price:
-        confirmation: Confirm submitted Prices
       component:
         edit: Edit %{component}
         index: Component
@@ -57,23 +47,6 @@ en:
         edit: Upgrade %{model_upgrade}
         index: Upgrades
         new: New Upgrade
-      shop:
-        edit: Shop %{shop}
-        index: Shops
-        new: New Shop
-      shop_commodities:
-        index: Shop Commodities for %{shop}
-      shop_commodity:
-        confirmation: Confirm submitted Shop Commodities
-      starsystem:
-        edit: Starsystem %{starsystem}
-        index: Starsystems
-        new: New Starsystem
-      station:
-        edit: Station %{station}
-        images: Imageupload for %{station}
-        index: Stations
-        new: New Station
       user:
         edit: Edit %{user}
         index: Users

@@ -12,9 +12,6 @@ zh-CN:
         model_upgrade: 未找到任何玩家。
         model_paints: 未找到任何玩家。
         planet: 项目无法找到。
-        shop: 项目无法找到。
-        starsystem: 项目无法找到。
-        station: 项目无法找到。
         user: 未找到任何玩家。
         rsi_api_status: 没有未解决的 RSI API内存信息
       component:

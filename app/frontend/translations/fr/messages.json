@@ -114,9 +114,6 @@
         "hangar": {
           "accountRequired": "Vous devez <a href=\"/sign-up/\">Créer un compte</a> ou <a href=\"/login/\">Vous connecter</a> pour ajouter des vaisseaux à votre Hangar.<br>Obtenez plus d'informations <a href=\"/hangar/preview/\">ici</a>"
         },
-        "commodityPrice": {
-          "accountRequired": "Vous devez <a href=\"/sign-up/\">Créer un compte</a> ou <a href=\"/login/\">Vous connecter</a> pour soumettre des prix."
-        },
         "default": "<b>Quelque chose s'est mal passé.</b> <br>Avez-vous essayé de l'éteindre et de le rallumer ?"
       },
       "account": {
@@ -124,9 +121,6 @@
           "success": "<b>Votre compte a été supprimé.</b> <br>Désolé de vous voir partir :'(",
           "failure": "Nous n'avons pas pu supprimer votre compte ! Veuillez réessayer plus tard."
         }
-      },
-      "commodityPrice": {
-        "create": { "success": "Merci pour votre soumission de prix." }
       },
       "fleet": {
         "create": {
@@ -209,17 +203,8 @@
         "wishlist": {
           "destroyAll": "Êtes-vous sûr de vouloir supprimer tous les vaisseaux de votre liste de souhaits ? Cette action ne peut pas être annulée."
         },
-        "tradeRoutes": {
-          "reset": "Êtes-vous sûr de vouloir réinitialiser tous les prix des marchandises ?"
-        },
         "account": {
           "destroy": "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action ne peut pas être annulée."
-        },
-        "commodityPrice": {
-          "destroy": "Êtes-vous sûr de vouloir supprimer ce prix ? Cette action ne peut pas être annulée."
-        },
-        "shopCommodity": {
-          "destroy": "Êtes-vous sûr de vouloir supprimer cette marchandise ? Cette action ne peut pas être annulée."
         },
         "fleet": {
           "leave": "Êtes-vous sûr de vouloir quitter la flotte ? Cette action ne peut pas être annulée.",

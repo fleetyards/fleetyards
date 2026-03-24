@@ -9,10 +9,6 @@ en:
     unprocessable_entity: Your Request could not be processed.
   nav:
     admin_users: Admins
-    celestial_objects: Celestial Objects
-    commodities: Commodities
-    commodity_prices:
-      confirmation: Confirm Price Submissions
     components: Components
     equipment: Equipment
     home: Home
@@ -30,9 +26,6 @@ en:
     otp: Two Factor Auth
     pghero: PGHero
     features: Features
-    shop_commodities:
-      confirmation: Confirm Shop Commodities
-    starsystems: Starsystems
     users: Users
     workers: Workers
     header:

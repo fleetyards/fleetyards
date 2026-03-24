@@ -1,8 +1,6 @@
 ---
 fr:
   resources:
-    celestial_object: Objet Céleste
-    commodity: Marchandise
     component: Composant
     equipment: Équipement
     image: Image
@@ -14,6 +12,4 @@ fr:
     model_module: Module
     model_paint: Peinture
     models: Modèles
-    shop: Point de vente
-    station: Station
     user: Utilisateur

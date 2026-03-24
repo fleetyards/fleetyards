@@ -2,16 +2,10 @@
 fr:
   actions:
     add: Ajouter
-    add_commodity: Ajouter une marchandise
     add_module_package_item: Ajouter un module
-    add_trade_commodity: Ajouter une marchandise
     add_video: Ajouter une vidéo
     login_in_as: Connectez-vous en tant que
     admin:
-      celestial_object:
-        new: Créer un nouvel objet céleste
-      commodity:
-        new: Créer une nouvelle marchandise
       component:
         new: Créer un nouveau composant
       equipment:
@@ -20,12 +14,6 @@ fr:
         new: Créer un nouveau constructeur
       model_paint:
         new: Créer une nouvelle peinture
-      shop:
-        new: Créer un nouveau point de vente
-      starsystem:
-        new: Créer un nouveau système planétaire
-      station:
-        new: Créer une nouvelle station
       user:
         new: Créer un nouvel utilisateur
     back: Précédent
@@ -46,6 +34,4 @@ fr:
     save_password: Sauvegarder le mot de passe
     sign_in: Se connecter
     sign_out: Se déconnecter
-    station:
-      images: Images
     unlock: Déverrouiller le compte

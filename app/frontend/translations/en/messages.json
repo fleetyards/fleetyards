@@ -176,20 +176,12 @@
             "paragraph3": "Get more Information "
           }
         },
-        "commodityPrice": {
-          "accountRequired": "You need to <a href=\"/sign-up/\">Sign up</a> or <a href=\"/login/\">Login</a> to submit Prices."
-        },
         "default": "<b>Something wrong happened.</b> <br>Have you tried turning it off and on again?"
       },
       "account": {
         "destroy": {
           "success": "<b>Your Account has been destroyed.</b> <br>Sad to see you go :'(",
           "failure": "We could not destroy your Account! Please try again later."
-        }
-      },
-      "commodityPrice": {
-        "create": {
-          "success": "Thank you for your price submission."
         }
       },
       "fleet": {
@@ -278,20 +270,11 @@
         "wishlist": {
           "destroyAll": "Are you sure you want to remove all Ships from you Wishlist? This Action can't be reverted."
         },
-        "tradeRoutes": {
-          "reset": "Are you sure you want to reset all commodity prices?"
-        },
         "account": {
           "destroy": "Are you sure you want to destroy your Account? This Action can't be reverted."
         },
-        "commodityPrice": {
-          "destroy": "Are you sure you want to destroy this Price? This Action can't be reverted."
-        },
         "itemPrice": {
           "destroy": "Are you sure you want to destroy this Item Price? This Action can't be reverted."
-        },
-        "shopCommodity": {
-          "destroy": "Are you sure you want to destroy this Commodity? This Action can't be reverted."
         },
         "fleet": {
           "leave": "Are you sure you want to leave the Fleet? This Action can't be reverted.",

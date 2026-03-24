@@ -7,16 +7,6 @@ zh-CN:
         edit: 编辑 %{admin_user}
         index: 管理用户
         new: 创建管理员用户
-      celestial_object:
-        edit: 天体%{celestial_object}
-        index: 天体对象
-        new: 创建新的天体
-      commodity:
-        edit: 商品 %{commodity}
-        index: 商品
-        new: 新商品
-      commodity_price:
-        confirmation: 确认提交的价格
       component:
         edit: 编辑 %{component}
         index: 项目组件

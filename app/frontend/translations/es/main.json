@@ -4,14 +4,6 @@
       "description": "FleetYards.net, Your Database for all Information related to Ships from “Star Citizen“.",
       "keywords": "Star Citizen, Spaceships, Ships, Fighter, Database, Squadron, 42, Star, Citizen, English, Chris, Roberts, Online, Game, Space, Simulation"
     },
-    "station": {
-      "type": "Type",
-      "location": "Location",
-      "classification": "Classification",
-      "habitable": "Habitable?",
-      "refinery": "Refinery Station",
-      "cargoHub": "Cargo Hub"
-    },
     "model": {
       "focus": "Focus",
       "classification": "Classification",
@@ -73,47 +65,6 @@
     "component": {
       "manufacturer": "Manufacturer",
       "size": "Size"
-    },
-    "celestialObject": {
-      "type": "Type",
-      "subType": "Sub Type",
-      "habitable": "Habitable?",
-      "fairchanceact": "Fair Chance Act?",
-      "population": "Population",
-      "economy": "Economy",
-      "danger": "Danger"
-    },
-    "starsystem": {
-      "type": "Type",
-      "size": "Size",
-      "population": "Population",
-      "economy": "Economy",
-      "danger": "Danger"
-    },
-    "shop": {
-      "type": "Type",
-      "celestialObject": "Location",
-      "station": "Station",
-      "location": "%{name} at %{location}",
-      "refineryTerminal": "Refinery Terminal"
-    },
-    "commodityItem": {
-      "grade": "Grade",
-      "type": "Type",
-      "itemType": "Item Type",
-      "itemClass": "Item Class",
-      "weaponClass": "Weapon Class",
-      "size": "Size",
-      "range": "Range",
-      "damageReduction": "Damage Reduction",
-      "rateOfFire": "Rate of Fire",
-      "extras": "Additional Info",
-      "location": "Location",
-      "slot": "Slot",
-      "storage": "Storage",
-      "shop": "Shop",
-      "unconfirmed": "Item is unconfirmed",
-      "manufacturer": "Manufacturer"
     },
     "availability": {
       "listedAt": "Listed at",

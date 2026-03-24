@@ -13,8 +13,3 @@ it:
     image:
       model:
         title: Modello
-    shop_commodities:
-      sub_categories:
-        class: Componente
-        classification: Nave
-        equipment_type: Equipaggiamento

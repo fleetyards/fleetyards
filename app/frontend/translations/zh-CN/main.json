@@ -4,14 +4,6 @@
       "description": "FleetYards.net, Your Database for all Information related to Ships from “Star Citizen“.",
       "keywords": "Star Citizen, Spaceships, Ships, Fighter, Database, Squadron, 42, Star, Citizen, English, Chris, Roberts, Online, Game, Space, Simulation"
     },
-    "station": {
-      "type": "类型",
-      "location": "位置",
-      "classification": "分类",
-      "habitable": "适居住？",
-      "refinery": "精炼站",
-      "cargoHub": "货运枢纽"
-    },
     "model": {
       "focus": "定位",
       "classification": "分类",
@@ -73,47 +65,6 @@
     "component": {
       "manufacturer": "制造商",
       "size": "尺寸"
-    },
-    "celestialObject": {
-      "type": "类型",
-      "subType": "子类型",
-      "habitable": "适居住？",
-      "fairchanceact": "公平机会法？",
-      "population": "人口",
-      "economy": "经济",
-      "danger": "危险"
-    },
-    "starsystem": {
-      "type": "类型",
-      "size": "尺寸",
-      "population": "人口",
-      "economy": "经济",
-      "danger": "危险"
-    },
-    "shop": {
-      "type": "类型",
-      "celestialObject": "位置",
-      "station": "空间站",
-      "location": "%{name} 于 %{location}",
-      "refineryTerminal": "精炼终端"
-    },
-    "commodityItem": {
-      "grade": "等级",
-      "type": "类型",
-      "itemType": "物品类型",
-      "itemClass": "物品等级",
-      "weaponClass": "武器等级",
-      "size": "尺寸",
-      "range": "射程",
-      "damageReduction": "伤害减免",
-      "rateOfFire": "射击速率",
-      "extras": "附加信息",
-      "location": "位置",
-      "slot": "插槽",
-      "storage": "存储",
-      "shop": "商店",
-      "unconfirmed": "物品未确认",
-      "manufacturer": "制造商"
     },
     "availability": {
       "listedAt": "列出于",

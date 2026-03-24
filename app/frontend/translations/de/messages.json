@@ -114,9 +114,6 @@
         "hangar": {
           "accountRequired": "Du musst dich <a href=\"/sign-up/\">registrieren</a> oder <a href=\"/login/\">anmelden</a>, um Schiffe zu deinem Hangar hinzuzufügen.<br>Weitere Informationen findest du <a href=\"/hangar/preview/\">hier</a>"
         },
-        "commodityPrice": {
-          "accountRequired": "Du musst dich <a href=\"/sign-up/\">registrieren</a> oder <a href=\"/login/\">anmelden</a>, um Preise zu übermitteln."
-        },
         "default": "<b>Etwas ist schief gelaufen.</b> <br>Hast du schon versucht, es aus- und wieder einzuschalten?"
       },
       "account": {
@@ -124,9 +121,6 @@
           "success": "<b>Dein Konto wurde gelöscht.</b> <br>Schade, dass du gehst :'(",
           "failure": "Wir konnten dein Konto nicht löschen! Bitte versuche es später erneut."
         }
-      },
-      "commodityPrice": {
-        "create": { "success": "Vielen Dank für deine Preisangabe." }
       },
       "fleet": {
         "create": {
@@ -209,17 +203,8 @@
         "wishlist": {
           "destroyAll": "Bist du sicher, dass du alle Schiffe aus deiner Wunschliste entfernen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
         },
-        "tradeRoutes": {
-          "reset": "Bist du sicher, dass du alle Warenpreise zurücksetzen möchtest?"
-        },
         "account": {
           "destroy": "Bist du sicher, dass du dein Konto löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
-        },
-        "commodityPrice": {
-          "destroy": "Bist du sicher, dass du diesen Preis löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
-        },
-        "shopCommodity": {
-          "destroy": "Bist du sicher, dass du diese Ware löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
         },
         "fleet": {
           "leave": "Bist du sicher, dass du die Flotte verlassen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",

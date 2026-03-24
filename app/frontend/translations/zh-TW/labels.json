@@ -32,37 +32,6 @@
       "home": {
         "search": "搜尋飛船..."
       },
-      "shop": {
-        "rentalPrice": "租賃",
-        "sellPrice": "出售價格",
-        "buyPrice": "購買價格"
-      },
-      "shopCommodity": {
-        "item": "項目",
-        "shop": "商店",
-        "sellPrices": "出售價格",
-        "buyPrices": "購買價格",
-        "rentalPrices": "租賃價格",
-        "confirmed": "已確認？",
-        "submittedBy": "提交者",
-        "prices": {
-          "label": "價格",
-          "rentalPrice": "租賃",
-          "averageRentalPrice": "租賃 (Ø)",
-          "sellPrice": "出售價格",
-          "averageSellPrice": "出售價格 (Ø)",
-          "buyPrice": "購買價格",
-          "averageBuyPrice": "購買價格 (Ø)",
-          "rentalPrice1Day": "1 天",
-          "averageRentalPrice1Day": "1 天 (Ø)",
-          "rentalPrice3Days": "3 天",
-          "averageRentalPrice3Days": "3 天 (Ø)",
-          "rentalPrice7Days": "7 天",
-          "averageRentalPrice7Days": "7 天 (Ø)",
-          "rentalPrice30Days": "30 天",
-          "averageRentalPrice30Days": "30 天 (Ø)"
-        }
-      },
       "stats": {
         "quickStats": {
           "newShips": "%{year} 年新飛船",
@@ -329,7 +298,6 @@
         "modular": "No Modular present",
         "avionics": "No Avionics present",
         "fleetInvites": "No Invites present",
-        "shopCommodities": "No Commodites available",
         "shoppingCart": "Shopping Cart empty",
         "userShips": "Your Hangar is currently Empty. To Add Ships / Vehicles to Your Hangar click the following Icon on Any Ship in the Database:"
       },
@@ -409,51 +377,6 @@
       },
 
       "filters": {
-        "shops": {
-          "name": "Name",
-          "type": "Type",
-          "celestialObject": "Celestial object",
-          "model": "Ship",
-          "equipment": "Equipment",
-          "component": "Component",
-          "commodity": "Commodity",
-          "commodityType": "Commodity Type",
-          "starsystem": "Starsystem",
-          "station": "Station"
-        },
-        "shopCommodities": {
-          "commodityType": "Commodity Type",
-          "station": "Station",
-          "shopId": "Shop",
-          "equipment": "Equipment",
-          "component": "Component",
-          "componentItemTypeFilter": "Component Item Types",
-          "equipmentItemTypeFilter": "Equipment Item Types",
-          "equipmentTypeFilter": "Equipment Type",
-          "equipmentSlotFilter": "Equipment Slot",
-          "commodity": "Commodity",
-          "model": "Ship",
-          "name": "Name"
-        },
-        "shopItems": {
-          "category": "Category",
-          "subCategory": "Sub Category",
-          "name": "Name",
-          "manufacturer": "Manufacturer",
-          "minPrice": "min. Price",
-          "maxPrice": "max. Price"
-        },
-        "stations": {
-          "name": "Name",
-          "celestialObject": "Celestial Object",
-          "starsystem": "Starsystem",
-          "type": "Station Type",
-          "shops": "Shops",
-          "docks": "Docks",
-          "habs": "Habitation?",
-          "cargoHub": "Cargo Hub?",
-          "refinery": "Refinery Station?"
-        },
         "vehicles": {
           "name": "Name or Ship name",
           "lengthLt": "Length <=",
@@ -467,21 +390,6 @@
           "group": "Group",
           "loaner": "Loaners",
           "boughtVia": "Bought via?"
-        },
-        "tradeRoutes": {
-          "sortBy": "Sort by",
-          "sortByValues": {
-            "percent": "Max. Percent",
-            "profit": "Max. Profit"
-          },
-          "cargoShip": "With Cargoship?",
-          "origin": "From?",
-          "destination": "To?",
-          "excludeCommodityType": "Exclude Commodity Type",
-          "originCelestialObject": "Origin Celestial Object",
-          "destinationCelestialObject": "Destination Celestial Object",
-          "originStarsystem": "Origin Starsystem",
-          "destinationStarsystem": "Destination Starsystem"
         },
         "models": {
           "shipRole": "Ship Role",
@@ -506,7 +414,6 @@
           "willItFit": "Will it Fit?"
         },
         "images": {
-          "station": "Station",
           "model": "Ship"
         },
         "fleets": {
@@ -530,30 +437,6 @@
         },
         "manufacturer": "Manufacturer"
       },
-      "station": {
-        "docks": "Docks",
-        "location": "Location",
-        "type": "Type",
-        "habitation": "Habitation",
-        "habs": "Habs",
-        "shops": "Shops",
-        "locationPrefix": {
-          "default": "on",
-          "asteriod": "on asteroid near",
-          "orbit": "in orbit around"
-        },
-        "locationSuffix": "near %{location}"
-      },
-      "tradeRoutes": {
-        "buy": "Buy for: %{uec}",
-        "sell": "Sell for: %{uec}",
-        "cargoShip": "for %{cargo} SCU",
-        "sortByPercent": "Sort by Percent",
-        "sortByProfit": "Sort by Profit",
-        "sortByStation": "Sort by Station",
-        "showAveragePrices": "Display average Prices",
-        "showLatestPrices": "Display latest Prices"
-      },
       "erkul": {
         "prefix": "Tryout Loadouts with",
         "link": "Erkul's DPS Calculator"
@@ -570,17 +453,6 @@
       },
       "table": {
         "selected": "%{count} Selected"
-      },
-      "commodityPrice": {
-        "shopId": "Shop",
-        "station": "Station",
-        "commodityItemType": "Commodity Type",
-        "commodityItemId": "Commodity Item",
-        "item": "ShopCommodity",
-        "price": "Price",
-        "type": "Type",
-        "shop": "Shop",
-        "submittedBy": "Submitted By"
       },
       "shoppingCart": {
         "total": "Total",
