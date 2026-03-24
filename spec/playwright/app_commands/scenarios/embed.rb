@@ -50,6 +50,4 @@ fleet.fleet_memberships.each do |membership|
   membership.setup_fleet_vehicles
 end
 
-Model.reindex
-
 Rails.logger.info "E2E: Created embed scenario test data"

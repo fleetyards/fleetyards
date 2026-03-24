@@ -29,6 +29,4 @@ model.update!(cargo_holds: [
   }
 ])
 
-Model.reindex
-
 Rails.logger.info "E2E: Created admin_cargo_holds scenario test data"

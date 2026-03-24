@@ -55,7 +55,4 @@ unless Component.exists?(name: "Expedition")
   })
 end
 
-Component.reindex
-Model.reindex
-
 Rails.logger.info "E2E: Created tools scenario test data"
