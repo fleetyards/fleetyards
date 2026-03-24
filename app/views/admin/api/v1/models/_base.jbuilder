@@ -2,6 +2,7 @@
 
 json.id model.id
 json.sc_identifier model.sc_identifier
+json.in_game model.in_game?
 json.name model.name
 json.slug model.slug
 json.hidden model.hidden
