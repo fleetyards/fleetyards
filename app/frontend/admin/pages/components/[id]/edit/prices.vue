@@ -27,7 +27,9 @@ const itemPricesList = ref<{
 
 <template>
   <div class="d-flex align-items-center justify-content-between">
-    <Heading hero>{{ t("headlines.admin.components.edit.itemPrices") }}</Heading>
+    <Heading hero>{{
+      t("headlines.admin.components.edit.itemPrices")
+    }}</Heading>
     <Btn
       :size="BtnSizesEnum.SMALL"
       :disabled="itemPricesList?.creating"
