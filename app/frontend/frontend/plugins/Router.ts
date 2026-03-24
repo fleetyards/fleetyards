@@ -1,5 +1,4 @@
 import { useAppStore } from "@/frontend/stores/app";
-import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useFleetStore } from "@/frontend/stores/fleet";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useRedirectBackStore } from "@/shared/stores/redirectBack";
@@ -51,15 +50,6 @@ const beforeResolve = (to: RouteLocation): FyRedirectRoute | undefined => {
     };
   }
 
-  if (to.meta.feature) {
-    const { isFeatureEnabled } = useFeatures();
-
-    if (!isFeatureEnabled(to.meta.feature)) {
-      return {
-        routeName: "home",
-      };
-    }
-  }
 };
 
 const router = setupRouter({

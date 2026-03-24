@@ -31,6 +31,7 @@ import {
   InputTypesEnum,
   InputAlignmentsEnum,
 } from "@/shared/components/base/FormInput/types";
+import FeatureGuard from "@/frontend/components/FeatureGuard.vue";
 
 const { t } = useI18n();
 
@@ -143,11 +144,12 @@ const { data: quantumDrives, ...asyncStatus } = useComponentsQuery(
 </script>
 
 <template>
-  <Heading>{{ t(`headlines.${route.meta.title}`) }}</Heading>
+  <FeatureGuard feature="tools_travel_times">
+    <Heading>{{ t(`headlines.${route.meta.title}`) }}</Heading>
 
-  <div class="row">
-    <div class="col-6">
-      <FormInput
+    <div class="row">
+      <div class="col-6">
+        <FormInput
         v-model.number="distance"
         :min="1"
         name="distance"
@@ -225,5 +227,6 @@ const { data: quantumDrives, ...asyncStatus } = useComponentsQuery(
         :update-per-page="updatePerPage"
       />
     </template>
-  </FilteredList>
+    </FilteredList>
+  </FeatureGuard>
 </template>

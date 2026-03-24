@@ -4,6 +4,12 @@ export default {
 };
 </script>
 
+<script lang="ts" setup>
+import FeatureGuard from "@/frontend/components/FeatureGuard.vue";
+</script>
+
 <template>
-  <router-view />
+  <FeatureGuard feature="oauth-applications">
+    <router-view />
+  </FeatureGuard>
 </template>

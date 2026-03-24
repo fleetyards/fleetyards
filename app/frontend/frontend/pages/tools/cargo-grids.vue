@@ -31,6 +31,7 @@ import {
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import type { ContainerRequest } from "@/frontend/components/CargoGridViewer/index.vue";
 import { useSessionStore } from "@/frontend/stores/session";
+import FeatureGuard from "@/frontend/components/FeatureGuard.vue";
 
 const { t } = useI18n();
 
@@ -211,7 +212,8 @@ const onModelSelect = (value: ValueType<Model> | undefined) => {
 </script>
 
 <template>
-  <Heading hero>{{ t(`headlines.${route.meta.title}`) }}</Heading>
+  <FeatureGuard feature="tools_cargo_grids">
+    <Heading hero>{{ t(`headlines.${route.meta.title}`) }}</Heading>
 
   <div class="row">
     <div class="col-12">
@@ -319,7 +321,8 @@ const onModelSelect = (value: ValueType<Model> | undefined) => {
         />
       </div>
     </div>
-  </template>
+    </template>
+  </FeatureGuard>
 </template>
 
 <style lang="scss" scoped>
