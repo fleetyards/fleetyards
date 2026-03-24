@@ -17,7 +17,9 @@ import {
   oauthDeny,
 } from "@/services/fyOAuthApi/services/oauth/oauth";
 import type { OauthPreAuthorization } from "@/services/fyOAuthApi/models";
+import { useI18n } from "@/shared/composables/useI18n";
 
+const { t } = useI18n();
 const route = useRoute();
 
 const preAuth = ref<OauthPreAuthorization | null>(null);
@@ -41,7 +43,7 @@ onMounted(async () => {
     if (e instanceof Error) {
       error.value = e.message;
     } else {
-      error.value = "Failed to load authorization details.";
+      error.value = t("messages.oauthAuthorize.loadError");
     }
   } finally {
     loading.value = false;
@@ -69,7 +71,7 @@ async function authorize() {
       window.location.href = data.redirect_uri;
     }
   } catch {
-    error.value = "Authorization failed.";
+    error.value = t("messages.oauthAuthorize.authorizeError");
     submitting.value = false;
   }
 }
@@ -91,7 +93,7 @@ async function deny() {
       codeChallengeMethod: preAuth.value.codeChallengeMethod,
     });
   } catch {
-    error.value = "Authorization denial failed.";
+    error.value = t("messages.oauthAuthorize.denyError");
     submitting.value = false;
   }
 }
@@ -103,9 +105,13 @@ async function deny() {
     :heading-level="HeadingLevelEnum.H1"
     :heading-size="HeadingSizeEnum.XXL"
   >
-    <template #heading> Authorize Application </template>
+    <template #heading>
+      {{ t("headlines.oauthAuthorize") }}
+    </template>
 
-    <div v-if="loading" class="text-center">Loading...</div>
+    <div v-if="loading" class="text-center">
+      {{ t("messages.oauthAuthorize.loading") }}
+    </div>
 
     <template v-else-if="error">
       <p class="text-danger">{{ error }}</p>
@@ -113,12 +119,15 @@ async function deny() {
 
     <template v-else-if="preAuth">
       <p class="authorize-info">
-        <strong>{{ preAuth.clientName }}</strong> is requesting access to your
-        account.
+        {{
+          t("texts.oauthAuthorize.requestingAccess", {
+            clientName: preAuth.clientName,
+          })
+        }}
       </p>
 
       <template v-if="preAuth.scopes.length > 0">
-        <p>This application will be able to:</p>
+        <p>{{ t("texts.oauthAuthorize.scopesIntro") }}</p>
         <ul class="authorize-scopes">
           <li v-for="scope in preAuth.scopes" :key="scope.name">
             {{ scope.description }}
@@ -129,6 +138,9 @@ async function deny() {
 
     <template #footer>
       <div class="authorize-actions">
+        <BaseBtn variant="danger" :disabled="submitting" block @click="deny">
+          {{ t("actions.oauthAuthorize.deny") }}
+        </BaseBtn>
         <BaseBtn
           type="submit"
           :loading="submitting"
@@ -136,10 +148,7 @@ async function deny() {
           block
           @click="authorize"
         >
-          Authorize
-        </BaseBtn>
-        <BaseBtn variant="danger" :disabled="submitting" block @click="deny">
-          Deny
+          {{ t("actions.oauthAuthorize.authorize") }}
         </BaseBtn>
       </div>
     </template>

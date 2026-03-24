@@ -357,6 +357,12 @@
           "destroy": "Are you sure you want to delete this vehicle? This action can't be reverted."
         }
       },
+      "oauthAuthorize": {
+        "loading": "Loading...",
+        "loadError": "Failed to load authorization details.",
+        "authorizeError": "Authorization failed.",
+        "denyError": "Authorization denial failed."
+      },
       "confirmAccess": {
         "failure": "Access could not be confirmed. Please check your password and try again."
       },

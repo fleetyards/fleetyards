@@ -150,6 +150,7 @@
       "requestPassword": "Request Password",
       "changePassword": "Change Password",
       "confirmAccess": "Confirm access",
+      "oauthAuthorize": "Authorize Application",
       "filterModels": "Filter Ships",
       "filterVehicles": "Filter Hangar",
       "fleets": {

@@ -98,6 +98,10 @@
         "create": "New Application",
         "regenerateSecret": "Regenerate Secret"
       },
+      "oauthAuthorize": {
+        "authorize": "Authorize",
+        "deny": "Deny"
+      },
       "oauth": {
         "apple": "Apple",
         "google": "Google",
