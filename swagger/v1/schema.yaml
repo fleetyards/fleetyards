@@ -5882,11 +5882,9 @@ components:
       type: string
       enum:
       - Model
-      - Station
       - Album
       x-enumNames:
       - MODEL
-      - STATION
       - ALBUM
       title: GalleryTypeEnum
     Hardpoint:
