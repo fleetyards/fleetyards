@@ -641,6 +641,121 @@ paths:
             schema:
               "$ref": "#/components/schemas/DockInput"
         required: true
+  "/features":
+    post:
+      summary: Create Feature
+      operationId: createAdminFeature
+      tags:
+      - Features
+      parameters: []
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Feature"
+        '422':
+          description: invalid
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FeatureInput"
+    get:
+      summary: Features list
+      operationId: adminFeatures
+      tags:
+      - Features
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Feature"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/features/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
+    delete:
+      summary: Delete Feature
+      operationId: destroyAdminFeature
+      tags:
+      - Features
+      responses:
+        '204':
+          description: deleted
+        '404':
+          description: not found
+        '403':
+          description: forbidden
+        '401':
+          description: unauthorized
+    get:
+      summary: Feature Detail
+      operationId: adminFeature
+      tags:
+      - Features
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Feature"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/features/{id}/disable-actor":
     parameters:
     - name: id
@@ -866,71 +981,6 @@ paths:
     put:
       summary: Enable Feature
       operationId: enableAdminFeature
-      tags:
-      - Features
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Feature"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/features":
-    get:
-      summary: Features list
-      operationId: adminFeatures
-      tags:
-      - Features
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Feature"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/features/{id}":
-    parameters:
-    - name: id
-      in: path
-      schema:
-        type: string
-      description: Feature name
-      required: true
-    get:
-      summary: Feature Detail
-      operationId: adminFeature
       tags:
       - Features
       responses:
@@ -6462,6 +6512,15 @@ components:
       required:
       - group
       title: FeatureGroupInput
+    FeatureInput:
+      type: object
+      properties:
+        name:
+          type: string
+      additionalProperties: false
+      required:
+      - name
+      title: FeatureInput
     Fleet:
       type: object
       properties:
