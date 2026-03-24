@@ -66,11 +66,6 @@
       "manufacturer": "Manufacturer",
       "size": "Size"
     },
-    "shop": {
-      "type": "Type",
-      "location": "%{name} at %{location}",
-      "refineryTerminal": "Refinery Terminal"
-    },
     "commodityItem": {
       "grade": "Grade",
       "type": "Type",
@@ -85,7 +80,6 @@
       "location": "Location",
       "slot": "Slot",
       "storage": "Storage",
-      "shop": "Shop",
       "unconfirmed": "Item is unconfirmed",
       "manufacturer": "Manufacturer"
     },

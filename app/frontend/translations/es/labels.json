@@ -29,11 +29,6 @@
       "fleetInviteToken": "Invitación de flota",
       "scDataVersion": "Versión del parche",
       "home": { "search": "Buscar naves..." },
-      "shop": {
-        "rentalPrice": "alquiler",
-        "sellPrice": "vende por",
-        "buyPrice": "compra por"
-      },
       "stats": {
         "quickStats": {
           "newShips": "Nuevas naves en %{year}",

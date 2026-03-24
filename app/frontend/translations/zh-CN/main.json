@@ -66,11 +66,6 @@
       "manufacturer": "制造商",
       "size": "尺寸"
     },
-    "shop": {
-      "type": "类型",
-      "location": "%{name} 于 %{location}",
-      "refineryTerminal": "精炼终端"
-    },
     "commodityItem": {
       "grade": "等级",
       "type": "类型",
@@ -85,7 +80,6 @@
       "location": "位置",
       "slot": "插槽",
       "storage": "存储",
-      "shop": "商店",
       "unconfirmed": "物品未确认",
       "manufacturer": "制造商"
     },

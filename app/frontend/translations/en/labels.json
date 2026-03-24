@@ -82,11 +82,6 @@
       "home": {
         "search": "Search for Ships..."
       },
-      "shop": {
-        "rentalPrice": "rental",
-        "sellPrice": "sells for",
-        "buyPrice": "buys for"
-      },
       "stats": {
         "quickStats": {
           "newShips": "New Ships in %{year}",

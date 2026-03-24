@@ -29,11 +29,6 @@
       "fleetInviteToken": "invitation de la flotte",
       "scDataVersion": "Version corrigée",
       "home": { "search": "Recherche de vaisseaux" },
-      "shop": {
-        "rentalPrice": "prix de location",
-        "sellPrice": "prix de vente",
-        "buyPrice": "prix d'achat"
-      },
       "stats": {
         "quickStats": {
           "newShips": "Nouveaux vaisseaux en %{year}",

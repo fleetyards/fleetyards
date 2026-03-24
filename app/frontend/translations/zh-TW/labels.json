@@ -32,11 +32,6 @@
       "home": {
         "search": "搜尋飛船..."
       },
-      "shop": {
-        "rentalPrice": "租賃",
-        "sellPrice": "出售價格",
-        "buyPrice": "購買價格"
-      },
       "stats": {
         "quickStats": {
           "newShips": "%{year} 年新飛船",

@@ -66,11 +66,6 @@
       "manufacturer": "Fabricant",
       "size": "Taille"
     },
-    "shop": {
-      "type": "Type",
-      "location": "%{name} à %{location}",
-      "refineryTerminal": "Terminal de raffinerie"
-    },
     "commodityItem": {
       "grade": "Niveau",
       "type": "Type",
@@ -85,7 +80,6 @@
       "location": "Lieu",
       "slot": "Emplacement",
       "storage": "Stockage",
-      "shop": "Magasin",
       "unconfirmed": "L'article n'est pas confirmé",
       "manufacturer": "Fabricant"
     },

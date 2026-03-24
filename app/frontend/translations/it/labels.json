@@ -29,11 +29,6 @@
       "fleetInviteToken": "Inviti Alla Flotta",
       "scDataVersion": "Versione Della Patch",
       "home": { "search": "Cerca Navi..." },
-      "shop": {
-        "rentalPrice": "noleggio",
-        "sellPrice": "vende per",
-        "buyPrice": "compra per"
-      },
       "stats": {
         "quickStats": {
           "newShips": "Nuove navi in %{year}",
