@@ -155,7 +155,7 @@ const onSaveCreate = async () => {
   if (!name) return;
 
   try {
-    await createAdminFeature(name);
+    await createAdminFeature({ name });
     void invalidateFeatures();
     newFeatureName.value = "";
     editableList.value?.finishCreate();
