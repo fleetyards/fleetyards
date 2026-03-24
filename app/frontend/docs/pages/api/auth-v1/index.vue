@@ -1,21 +1,33 @@
 <script lang="ts">
 export default {
-  name: "OauthApiPage",
+  name: "AuthApiSchemaPage",
 };
 </script>
 
 <script lang="ts" setup>
 import Panel from "@/shared/components/base/Panel/index.vue";
-import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
-import BaseSpacer from "@/shared/components/base/Spacer/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
-import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import { HeadingSizeEnum } from "@/shared/components/base/Heading/types";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { SwaggerUIBundle } from "swagger-ui-dist";
+import copyText from "@/shared/utils/CopyText";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
-const schemaUrl = computed(() => `${window.OAUTH_ENDPOINT}/schema.yaml`);
+const { t } = useI18n();
+const { displayInfo, displayAlert } = useAppNotifications();
+
+const schemaUrl = computed(() => `${window.OAUTH_ENDPOINT}/v1/schema.yaml`);
+
+const copySchemaUrl = () => {
+  copyText(schemaUrl.value).then(
+    () => displayInfo({ text: t("messages.copy.success") }),
+    () => displayAlert({ text: t("messages.copy.failure") }),
+  );
+};
 
 const apiVersion = computed(() => window.API_VERSION);
 const oasVersion = computed(() => window.API_OAS_VERSION);
@@ -32,7 +44,7 @@ const validatorUrl = computed(
 
 function initSwaggerUI() {
   swagger.value = SwaggerUIBundle({
-    dom_id: "#swagger-ui",
+    dom_id: "#swagger-ui-auth",
     url: schemaUrl.value,
     showCommonExtensions: true,
     filter: true,
@@ -47,29 +59,32 @@ onMounted(() => {
 </script>
 
 <template>
-  <Heading :size="HeadingSizeEnum.HERO" hero>
-    FleetYards.net OAuth API
-    <HeadingSmall>
+  <div class="heading-row">
+    <Heading :size="HeadingSizeEnum.HERO" hero>
+      FleetYards.net Auth API
+    </Heading>
+    <div class="version-pills">
       <BasePill>{{ apiVersion }}</BasePill>
       <BasePill variant="success">OAS {{ oasVersion }}</BasePill>
-    </HeadingSmall>
-  </Heading>
-
-  <BaseSpacer />
+    </div>
+  </div>
 
   <Panel>
-    <PanelHeading>Schema</PanelHeading>
     <PanelBody>
-      <a
-        :href="schemaUrl"
-        target="_blank"
-        rel="noopener"
-        class="text-brand-primary hover:text-brand-primary/80 transition-colors"
-      >
-        {{ schemaUrl }}
-      </a>
-      <div id="swagger-ui" class="swagger-ui-wrapper"></div>
-      <div class="flex justify-end">
+      <div class="schema-url-row">
+        <FormInput
+          name="schemaUrl"
+          :model-value="schemaUrl"
+          :disabled="true"
+          no-label
+          inline
+        />
+        <Btn :size="BtnSizesEnum.SMALL" inline @click="copySchemaUrl">
+          <i class="fa-duotone fa-copy" />
+        </Btn>
+      </div>
+      <div id="swagger-ui-auth" class="swagger-ui-wrapper"></div>
+      <div class="validator-badge">
         <a target="_blank" rel="noopener noreferrer" :href="validatorUrl">
           <img :src="validatorIconUrl" alt="Online validator badge" />
         </a>
@@ -77,6 +92,36 @@ onMounted(() => {
     </PanelBody>
   </Panel>
 </template>
+
+<style lang="scss" scoped>
+.heading-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.version-pills {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.schema-url-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 600px;
+  margin: 0 auto 1rem;
+
+  :deep(.base-input) {
+    flex: 1;
+  }
+}
+
+.validator-badge {
+  display: flex;
+  justify-content: flex-end;
+}
+</style>
 
 <style lang="scss">
 .swagger-ui-wrapper {

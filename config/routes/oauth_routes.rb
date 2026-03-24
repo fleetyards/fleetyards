@@ -14,4 +14,8 @@ namespace :oauth, **oauth_options do
   post :token, to: "/doorkeeper/tokens#create"
   post :revoke, to: "/doorkeeper/tokens#destroy"
   post :introspect, to: "/doorkeeper/tokens#introspect"
+
+  scope format: true, constraints: {format: "yaml"} do
+    get ":api_version/schema" => "schema#index", :as => :schema
+  end
 end

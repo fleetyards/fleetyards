@@ -20,7 +20,11 @@
       "signUp": "S'inscrire",
       "embed": "Widget Intégré",
       "apiV1": "API V1",
-      "oauthApiV1": "OAuth API V1",
+      "apiV1Schema": "Schéma",
+      "apiV1Pagination": "Pagination",
+      "authApiV1": "Auth API V1",
+      "authApiV1OpenId": "OpenID Connect",
+      "authApiV1Schema": "Schéma",
       "hangar": {
         "index": "Mon Hangar",
         "preview": "Aperçu de mon Hangar",

@@ -23,7 +23,11 @@
       "signUp": "註冊",
       "embed": "嵌入式小工具",
       "apiV1": "API V1",
-      "oauthApiV1": "OAuth API V1",
+      "apiV1Schema": "Schema",
+      "apiV1Pagination": "分頁",
+      "authApiV1": "Auth API V1",
+      "authApiV1OpenId": "OpenID Connect",
+      "authApiV1Schema": "Schema",
       "hangar": {
         "index": "我的機庫",
         "preview": "我的機庫預覽",

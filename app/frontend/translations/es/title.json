@@ -20,7 +20,11 @@
       "signUp": "Registrarse",
       "embed": "Widget Embebido",
       "apiV1": "API V1",
-      "oauthApiV1": "OAuth API V1",
+      "apiV1Schema": "Schema",
+      "apiV1Pagination": "Paginación",
+      "authApiV1": "Auth API V1",
+      "authApiV1OpenId": "OpenID Connect",
+      "authApiV1Schema": "Schema",
       "hangar": {
         "index": "My Hangar",
         "preview": "My Hangar Preview",

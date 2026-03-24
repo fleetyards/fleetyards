@@ -1,11 +1,13 @@
 import type { RouteRecordRaw } from "vue-router";
+import { routes as apiV1Routes } from "./api/v1/routes";
+import { routes as authApiV1Routes } from "./api/auth-v1/routes";
 
 export const routes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "home",
     redirect: {
-      name: "api-v1",
+      name: "api-v1-schema",
     },
     meta: {
       nav: "hidden",
@@ -15,7 +17,7 @@ export const routes: RouteRecordRaw[] = [
     path: "/api/",
     name: "api",
     redirect: {
-      name: "api-v1",
+      name: "api-v1-schema",
     },
     meta: {
       nav: "hidden",
@@ -25,24 +27,29 @@ export const routes: RouteRecordRaw[] = [
     path: "/api/v1/",
     name: "api-v1",
     component: () => import("@/docs/pages/api/v1.vue"),
-    props: {
-      version: "v1",
+    redirect: {
+      name: "api-v1-schema",
     },
     meta: {
       title: "apiV1",
       icon: "fa-duotone fa-books",
       mobileNav: 0,
     },
+    children: apiV1Routes,
   },
   {
-    path: "/api/oauth/v1/",
-    name: "api-oauth-v1",
-    component: () => import("@/docs/pages/api/oauth-v1.vue"),
+    path: "/api/auth/v1/",
+    name: "api-auth-v1",
+    component: () => import("@/docs/pages/api/auth-v1.vue"),
+    redirect: {
+      name: "api-auth-v1-schema",
+    },
     meta: {
-      title: "oauthApiV1",
+      title: "authApiV1",
       icon: "fa-duotone fa-key",
       mobileNav: 1,
     },
+    children: authApiV1Routes,
   },
   {
     path: "/embed/",
@@ -51,7 +58,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "embed",
       icon: "fa-duotone fa-arrow-up-from-square",
-      mobileNav: 1,
+      mobileNav: 2,
     },
   },
 ];
