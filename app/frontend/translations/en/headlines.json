@@ -49,7 +49,10 @@
         "components": {
           "index": "Components",
           "new": "New Component",
-          "edit": "Edit Component"
+          "edit": {
+            "index": "Edit Component",
+            "itemPrices": "Item Prices"
+          }
         },
         "modelPaints": {
           "index": "Paints",

@@ -98,7 +98,11 @@
           "create": "Créer un Paquet de Modules"
         },
         "components": {
-          "index": "Composants"
+          "index": "Composants",
+          "edit": {
+            "index": "Base Data",
+            "prices": "Prices"
+          }
         },
         "manufacturers": {
           "index": "Fabricants"

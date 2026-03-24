@@ -112,7 +112,11 @@
           "create": "Create Module Package"
         },
         "components": {
-          "index": "Components"
+          "index": "Components",
+          "edit": {
+            "index": "Base Data",
+            "prices": "Prices"
+          }
         },
         "manufacturers": {
           "index": "Manufacturers"

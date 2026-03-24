@@ -100,7 +100,10 @@
         "components": {
           "index": "Componentes",
           "new": "Nuevo Componente",
-          "edit": "Editar Componente"
+          "edit": {
+            "index": "Editar Componente",
+            "prices": "Editar Precios del Componente"
+          }
         },
         "manufacturers": {
           "index": "Fabricantes",

@@ -107,7 +107,11 @@
           "create": "Modulpaket erstellen"
         },
         "components": {
-          "index": "Komponenten"
+          "index": "Komponenten",
+          "edit": {
+            "index": "Basisdaten",
+            "prices": "Preise"
+          }
         },
         "manufacturers": {
           "index": "Hersteller"

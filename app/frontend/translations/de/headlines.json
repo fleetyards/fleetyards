@@ -47,7 +47,10 @@
         "components": {
           "index": "Komponenten",
           "new": "Neue Komponente",
-          "edit": "Komponente bearbeiten"
+          "edit": {
+            "index": "Komponente bearbeiten",
+            "itemPrices": "Artikelpreise"
+          }
         },
         "modelPaints": {
           "index": "Lackierungen",
