@@ -17,6 +17,7 @@
       "login": "登录",
       "logout": "登出",
       "apiV1": "API v1",
+      "oauthApiV1": "OAuth API v1",
       "embed": "嵌入小部件",
       "signUp": "注册",
       "privacyPolicy": "隐私政策",

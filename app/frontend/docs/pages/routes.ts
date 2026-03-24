@@ -35,6 +35,16 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "/api/oauth/v1/",
+    name: "api-oauth-v1",
+    component: () => import("@/docs/pages/api/oauth-v1.vue"),
+    meta: {
+      title: "oauthApiV1",
+      icon: "fa-duotone fa-key",
+      mobileNav: 1,
+    },
+  },
+  {
     path: "/embed/",
     name: "embed",
     component: () => import("@/docs/pages/embed.vue"),

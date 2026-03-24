@@ -23,6 +23,7 @@
       "signUp": "注册",
       "embed": "嵌入式小组件",
       "apiV1": "API V1",
+      "oauthApiV1": "OAuth API V1",
       "hangar": {
         "index": "我的机库",
         "preview": "我的机库预览",
