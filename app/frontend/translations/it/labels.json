@@ -361,21 +361,6 @@
         "destroyInfo": "Se si desidera eliminare il tuo account e rimuovere tutte le informazioni da Fleetyards,nett e i suoi servizi fare clic sul pulsante qui sotto. Sii consapevole che questa è un'azione permanente e non può essere annullata."
       },
       "filters": {
-        "shops": {
-          "name": "Nome",
-          "type": "Tipo",
-          "model": "Nave",
-          "equipment": "Equipaggiamento",
-          "component": "Componente"
-        },
-        "shopItems": {
-          "category": "Categoria",
-          "subCategory": "Sottocategoria",
-          "name": "Nome",
-          "manufacturer": "Produttore",
-          "minPrice": "Prezzo Min.",
-          "maxPrice": "Prezzo Max."
-        },
         "vehicles": {
           "name": "Nome o nome della Nave",
           "lengthLt": "Lunghezza <=",

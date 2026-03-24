@@ -66,23 +66,6 @@
       "manufacturer": "Hersteller",
       "size": "Größe"
     },
-    "commodityItem": {
-      "grade": "Stufe",
-      "type": "Typ",
-      "itemType": "Item-Typ",
-      "itemClass": "Item-Klasse",
-      "weaponClass": "Waffenklasse",
-      "size": "Größe",
-      "range": "Reichweite",
-      "damageReduction": "Schadensreduktion",
-      "rateOfFire": "Feuerrate",
-      "extras": "Zusätzliche Informationen",
-      "location": "Position",
-      "slot": "Slot",
-      "storage": "Lager",
-      "unconfirmed": "Item ist unbestätigt",
-      "manufacturer": "Hersteller"
-    },
     "availability": {
       "listedAt": "Gelistet bei",
       "soldAt": "Verkauft bei",

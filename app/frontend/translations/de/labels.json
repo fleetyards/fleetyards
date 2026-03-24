@@ -422,21 +422,6 @@
         "destroyInfo": "If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can't be reverted."
       },
       "filters": {
-        "shops": {
-          "name": "Name",
-          "type": "Type",
-          "model": "Ship",
-          "equipment": "Equipment",
-          "component": "Component"
-        },
-        "shopItems": {
-          "category": "Category",
-          "subCategory": "Sub Category",
-          "name": "Name",
-          "manufacturer": "Manufacturer",
-          "minPrice": "min. Price",
-          "maxPrice": "max. Price"
-        },
         "vehicles": {
           "name": "Name or Ship name",
           "lengthLt": "Length <=",

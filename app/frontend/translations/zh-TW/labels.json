@@ -377,21 +377,6 @@
       },
 
       "filters": {
-        "shops": {
-          "name": "Name",
-          "type": "Type",
-          "model": "Ship",
-          "equipment": "Equipment",
-          "component": "Component"
-        },
-        "shopItems": {
-          "category": "Category",
-          "subCategory": "Sub Category",
-          "name": "Name",
-          "manufacturer": "Manufacturer",
-          "minPrice": "min. Price",
-          "maxPrice": "max. Price"
-        },
         "vehicles": {
           "name": "Name or Ship name",
           "lengthLt": "Length <=",

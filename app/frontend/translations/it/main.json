@@ -66,23 +66,6 @@
       "manufacturer": "Produttore",
       "size": "Dimensione"
     },
-    "commodityItem": {
-      "grade": "Grado",
-      "type": "Tipo",
-      "itemType": "Tipo di Elemento",
-      "itemClass": "Classe Elemento",
-      "weaponClass": "Classe D'Arma",
-      "size": "Dimensione",
-      "range": "Gittata",
-      "damageReduction": "Riduzione del Danno",
-      "rateOfFire": "Rateo di Fuoco",
-      "extras": "Ulteriori Informazioni",
-      "location": "Posizione",
-      "slot": "Slot",
-      "storage": "Storage",
-      "unconfirmed": "Elemento non confermato",
-      "manufacturer": "Produttore"
-    },
     "availability": {
       "listedAt": "Elencato a",
       "soldAt": "Venduto a",

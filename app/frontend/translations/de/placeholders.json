@@ -22,8 +22,7 @@
         "models-fleetchart": "Avenger, Carrack, Cutlass...",
         "hangar": "Enterprise, Andromeda...",
         "hangar-fleetchart": "Enterprise, Andromeda...",
-        "hangar-wishlist": "Avenger, Carrack, Cutlass...",
-        "shops": "Search for Shops..."
+        "hangar-wishlist": "Avenger, Carrack, Cutlass..."
       },
       "search": {
         "default": "Search the Verse...",
@@ -100,15 +99,6 @@
         "caption": "Beschriftung"
       },
       "filters": {
-        "shops": {
-          "name": "Casaba, Platinum Bay...",
-          "commodityName": "Aurora, L86..."
-        },
-        "shopItems": {
-          "name": "Aurora, L86...",
-          "minPrice": "minmal Price in UEC",
-          "maxPrice": "maximal Price in UEC"
-        },
         "vehicles": {
           "name": "Enterprise, Andromeda...",
           "priceLt": "Price <=",

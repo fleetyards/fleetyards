@@ -361,21 +361,6 @@
         "destroyInfo": "Si vous voulez supprimer votre compte et enlever toutes vos informations de Fleetyards.net et ses Services cliquez sur le Bouton ci-dessous. Sachez qu'il s'agit d'une action permanente qui ne peut pas être révoquée."
       },
       "filters": {
-        "shops": {
-          "name": "Nom",
-          "type": "Type",
-          "model": "Vaisseau",
-          "equipment": "Équipement",
-          "component": "Composant"
-        },
-        "shopItems": {
-          "category": "Catégorie",
-          "subCategory": "Sous catégorie",
-          "name": "Nom",
-          "manufacturer": "Fabricant",
-          "minPrice": "Prix min.",
-          "maxPrice": "Prix max."
-        },
         "vehicles": {
           "name": "Nom ou nom du vaisseau",
           "lengthLt": "Longueur <=",

@@ -66,23 +66,6 @@
       "manufacturer": "Fabricant",
       "size": "Taille"
     },
-    "commodityItem": {
-      "grade": "Niveau",
-      "type": "Type",
-      "itemType": "Type de l'article",
-      "itemClass": "Classe d'objets",
-      "weaponClass": "Classe de l'arme",
-      "size": "Taille",
-      "range": "Portée",
-      "damageReduction": "Réduction de dégâts",
-      "rateOfFire": "Cadence de Tir",
-      "extras": "Informations complémentaires",
-      "location": "Lieu",
-      "slot": "Emplacement",
-      "storage": "Stockage",
-      "unconfirmed": "L'article n'est pas confirmé",
-      "manufacturer": "Fabricant"
-    },
     "availability": {
       "listedAt": "Listé à",
       "soldAt": "Vendu à",

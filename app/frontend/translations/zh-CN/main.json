@@ -66,23 +66,6 @@
       "manufacturer": "制造商",
       "size": "尺寸"
     },
-    "commodityItem": {
-      "grade": "等级",
-      "type": "类型",
-      "itemType": "物品类型",
-      "itemClass": "物品等级",
-      "weaponClass": "武器等级",
-      "size": "尺寸",
-      "range": "射程",
-      "damageReduction": "伤害减免",
-      "rateOfFire": "射击速率",
-      "extras": "附加信息",
-      "location": "位置",
-      "slot": "插槽",
-      "storage": "存储",
-      "unconfirmed": "物品未确认",
-      "manufacturer": "制造商"
-    },
     "availability": {
       "listedAt": "列出于",
       "soldAt": "出售于",
