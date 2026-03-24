@@ -19,7 +19,8 @@
       "color": "Color",
       "features": {
         "username": "Username or User ID",
-        "fleetFid": "Fleet FID or Fleet ID"
+        "fleetFid": "Fleet FID or Fleet ID",
+        "name": "Feature name"
       },
       "fleetInviteToken": "Fleet Invite",
       "quicksearch": {

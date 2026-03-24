@@ -26,6 +26,7 @@
       "networkStatusOffline": "Network Status: Offline - Service Unavailable",
       "groups": "Groups",
       "features": {
+        "name": "Feature Name",
         "stateOn": "Enabled",
         "stateOff": "Disabled",
         "stateConditional": "Conditional",

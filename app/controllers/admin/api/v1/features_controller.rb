@@ -4,7 +4,7 @@ module Admin
   module Api
     module V1
       class FeaturesController < ::Admin::Api::BaseController
-        before_action :set_feature, only: %i[show enable disable enable_actor disable_actor enable_group disable_group toggle_self_service]
+        before_action :set_feature, only: %i[show enable disable enable_actor disable_actor enable_group disable_group toggle_self_service destroy]
 
         def index
           authorize! with: ::Admin::FeaturePolicy
@@ -13,6 +13,29 @@ module Admin
         end
 
         def show
+        end
+
+        def create
+          authorize! with: ::Admin::FeaturePolicy
+
+          feature_name = params[:name].to_s.strip
+          return render json: {code: "feature.blank", message: "Feature name can't be blank"}, status: :unprocessable_entity if feature_name.blank?
+
+          if Flipper.features.map { |f| f.name.to_s }.include?(feature_name)
+            return render json: {code: "feature.exists", message: "Feature already exists"}, status: :unprocessable_entity
+          end
+
+          @feature = Flipper.feature(feature_name)
+          @feature.add
+
+          render :show, status: :created
+        end
+
+        def destroy
+          FeatureSetting.find_by(feature_name: @feature.name.to_s)&.destroy
+          @feature.remove
+
+          head :no_content
         end
 
         def enable

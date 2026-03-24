@@ -91,7 +91,7 @@ v1_admin_api_routes = lambda do
     end
   end
 
-  resources :features, only: %i[index show] do
+  resources :features, only: %i[index show create destroy] do
     member do
       put :enable
       put :disable

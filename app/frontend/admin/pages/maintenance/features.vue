@@ -25,6 +25,8 @@ import {
   enableAdminFeatureGroup,
   disableAdminFeatureGroup,
   toggleAdminFeatureSelfService,
+  createAdminFeature,
+  destroyAdminFeature,
   type Feature,
 } from "@/services/fyAdminApi";
 import { useQueryClient } from "@tanstack/vue-query";
@@ -50,7 +52,11 @@ const editableList = ref<{
   editingId: string | null;
   creating: boolean;
   finishEdit: () => void;
+  finishCreate: () => void;
+  startCreate: () => void;
 } | null>(null);
+
+const newFeatureName = ref("");
 
 // Edit form state
 const editActorType = ref("User");
@@ -140,6 +146,35 @@ const toggleSelfServiceFlag = async (feature: FeatureItem) => {
   }
 };
 
+const onStartCreate = () => {
+  newFeatureName.value = "";
+};
+
+const onSaveCreate = async () => {
+  const name = newFeatureName.value.trim();
+  if (!name) return;
+
+  try {
+    await createAdminFeature(name);
+    void invalidateFeatures();
+    newFeatureName.value = "";
+    editableList.value?.finishCreate();
+    displaySuccess({ text: t("messages.features.created") });
+  } catch {
+    displayAlert({ text: t("messages.features.createError") });
+  }
+};
+
+const onDestroy = async (item: FeatureItem) => {
+  try {
+    await destroyAdminFeature(item.name);
+    void invalidateFeatures();
+    displaySuccess({ text: t("messages.features.destroyed") });
+  } catch {
+    displayAlert({ text: t("messages.features.error") });
+  }
+};
+
 const onStartEdit = (_item: FeatureItem) => {
   editActorType.value = "User";
   selectedUser.value = undefined;
@@ -186,17 +221,41 @@ const hasSelectedActor = computed(() => {
 </script>
 
 <template>
-  <Heading hero>{{ t("headlines.admin.features.index") }}</Heading>
+  <div class="d-flex align-items-center justify-content-between">
+    <Heading hero>{{ t("headlines.admin.features.index") }}</Heading>
+    <Btn
+      :size="BtnSizesEnum.SMALL"
+      :disabled="editableList?.creating"
+      @click="editableList?.startCreate()"
+    >
+      <i class="fa-duotone fa-plus" />
+      {{ t("actions.add") }}
+    </Btn>
+  </div>
 
   <InlineEditableList
     ref="editableList"
     empty-name="features"
     :loading="isLoading"
     :items="featureItems"
-    hide-destroy
+    confirm-destroy-text="Are you sure you want to remove this feature flag?"
     @start-edit="onStartEdit"
     @save-edit="onSaveEdit"
+    @start-create="onStartCreate"
+    @save-create="onSaveCreate"
+    @destroy="onDestroy"
   >
+    <template #create>
+      <FormInput
+        v-model="newFeatureName"
+        name="create-feature-name"
+        translation-key="features.name"
+        no-label
+        inline
+        @keyup.enter="onSaveCreate"
+      />
+    </template>
+
     <template #display="{ item }">
       <BasePill :variant="stateVariant(item.state)" uppercase margin-right>
         {{ stateLabel(item.state) }}

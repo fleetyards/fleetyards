@@ -62,7 +62,10 @@
         "actorAdded": "Actor added to feature.",
         "actorRemoved": "Actor removed from feature.",
         "groupAdded": "Group added to feature.",
-        "groupRemoved": "Group removed from feature."
+        "groupRemoved": "Group removed from feature.",
+        "created": "Feature created.",
+        "destroyed": "Feature removed.",
+        "createError": "Could not create feature."
       },
       "rsiRequestLogs": {
         "resolved": "Request log marked as resolved.",
