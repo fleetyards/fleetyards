@@ -28,7 +28,40 @@
       "groups": "Grupos",
       "fleetInviteToken": "Invitación de flota",
       "scDataVersion": "Versión del parche",
-      "home": { "search": "Buscar naves..." },
+      "home": {
+        "search": "Buscar naves..."
+      },
+      "shop": {
+        "rentalPrice": "alquiler",
+        "sellPrice": "vende por",
+        "buyPrice": "compra por"
+      },
+      "shopCommodity": {
+        "item": "Artículo",
+        "shop": "Tienda",
+        "sellPrices": "Precios de venta",
+        "buyPrices": "Precios de compra",
+        "rentalPrices": "Precios de alquiler",
+        "confirmed": "¿Confirmado?",
+        "submittedBy": "Enviado por",
+        "prices": {
+          "label": "Precios",
+          "rentalPrice": "alquiler",
+          "averageRentalPrice": "alquiler (Ø)",
+          "sellPrice": "vende por",
+          "averageSellPrice": "vende por (Ø)",
+          "buyPrice": "compra por",
+          "averageBuyPrice": "compra por (Ø)",
+          "rentalPrice1Day": "1 día por",
+          "averageRentalPrice1Day": "1 día por (Ø)",
+          "rentalPrice3Days": "3 días por",
+          "averageRentalPrice3Days": "3 días por (Ø)",
+          "rentalPrice7Days": "7 días por",
+          "averageRentalPrice7Days": "7 días por (Ø)",
+          "rentalPrice30Days": "30 días por",
+          "averageRentalPrice30Days": "30 días por (Ø)"
+        }
+      },
       "stats": {
         "quickStats": {
           "newShips": "Nuevas naves en %{year}",
@@ -77,10 +110,6 @@
       "rsiRoadmap": "RSI Roadmap",
       "unknown": "Unknown",
       "none": "-",
-      "search": {
-        "default": "Search",
-        "shareTitle": "Search for: %{query}"
-      },
       "unknownModel": "%{slug} Unknown",
       "not-available": "N/A",
       "receiveSaleNotifications": "",
@@ -133,7 +162,9 @@
       "selectModel": "Select a Ship",
       "compare": {
         "removeModel": "Remove Ship",
-        "addModel": { "nullablePrompt": "Add a Ship" },
+        "addModel": {
+          "nullablePrompt": "Add a Ship"
+        },
         "enough": "Don't you think 8 Ships are enough? ;)"
       },
       "cargoRoutes": "Cargo routes",
@@ -245,7 +276,9 @@
         "speed": "Speed",
         "missileOptions": "Missle Options (if available)"
       },
-      "component": { "size": "Size: %{size}" },
+      "component": {
+        "size": "Size: %{size}"
+      },
       "hardpoint": {
         "legend": {
           "headline": "Legend",
@@ -290,7 +323,7 @@
         "modular": "No Modular present",
         "avionics": "No Avionics present",
         "fleetInvites": "No Invites present",
-        "shoppingCart": "Shopping Cart empty",
+        "shopCommodities": "No Commodites available",
         "userShips": "Your Hangar is currently Empty. To Add Ships / Vehicles to Your Hangar click the following Icon on Any Ship in the Database:"
       },
       "user": {
@@ -317,10 +350,16 @@
         "saleNotify": "I want to receive Sale Notifications",
         "hangarGroups": "Groups",
         "selectGroup": "Select a Group",
-        "modelPaintSelect": { "nullablePrompt": "Select a Paint" },
-        "bulkGroupEdit": { "hint": "Existing Groups will be overridden!" },
+        "modelPaintSelect": {
+          "nullablePrompt": "Select a Paint"
+        },
+        "bulkGroupEdit": {
+          "hint": "Existing Groups will be overridden!"
+        },
         "hasLoaners": "Loaners",
-        "boughtViaSelect": { "label": "Bought via" }
+        "boughtViaSelect": {
+          "label": "Bought via"
+        }
       },
       "image": {
         "background": "Use as Background?",
@@ -361,6 +400,51 @@
         "destroyInfo": "If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can't be reverted."
       },
       "filters": {
+        "shops": {
+          "name": "Name",
+          "type": "Type",
+          "celestialObject": "Celestial object",
+          "model": "Ship",
+          "equipment": "Equipment",
+          "component": "Component",
+          "commodity": "Commodity",
+          "commodityType": "Commodity Type",
+          "starsystem": "Starsystem",
+          "station": "Station"
+        },
+        "shopCommodities": {
+          "commodityType": "Commodity Type",
+          "station": "Station",
+          "shopId": "Shop",
+          "equipment": "Equipment",
+          "component": "Component",
+          "componentItemTypeFilter": "Component Item Types",
+          "equipmentItemTypeFilter": "Equipment Item Types",
+          "equipmentTypeFilter": "Equipment Type",
+          "equipmentSlotFilter": "Equipment Slot",
+          "commodity": "Commodity",
+          "model": "Ship",
+          "name": "Name"
+        },
+        "shopItems": {
+          "category": "Category",
+          "subCategory": "Sub Category",
+          "name": "Name",
+          "manufacturer": "Manufacturer",
+          "minPrice": "min. Price",
+          "maxPrice": "max. Price"
+        },
+        "stations": {
+          "name": "Name",
+          "celestialObject": "Celestial Object",
+          "starsystem": "Starsystem",
+          "type": "Station Type",
+          "shops": "Shops",
+          "docks": "Docks",
+          "habs": "Habitation?",
+          "cargoHub": "Cargo Hub?",
+          "refinery": "Refinery Station?"
+        },
         "vehicles": {
           "name": "Name or Ship name",
           "lengthLt": "Length <=",
@@ -374,6 +458,21 @@
           "group": "Group",
           "loaner": "Loaners",
           "boughtVia": "Bought via?"
+        },
+        "tradeRoutes": {
+          "sortBy": "Sort by",
+          "sortByValues": {
+            "percent": "Max. Percent",
+            "profit": "Max. Profit"
+          },
+          "cargoShip": "With Cargoship?",
+          "origin": "From?",
+          "destination": "To?",
+          "excludeCommodityType": "Exclude Commodity Type",
+          "originCelestialObject": "Origin Celestial Object",
+          "destinationCelestialObject": "Destination Celestial Object",
+          "originStarsystem": "Origin Starsystem",
+          "destinationStarsystem": "Destination Starsystem"
         },
         "models": {
           "shipRole": "Ship Role",
@@ -398,6 +497,7 @@
           "willItFit": "Will it Fit?"
         },
         "images": {
+          "station": "Station",
           "model": "Ship"
         },
         "fleets": {
@@ -420,6 +520,30 @@
           }
         }
       },
+      "station": {
+        "docks": "Docks",
+        "location": "Location",
+        "type": "Type",
+        "habitation": "Habitation",
+        "habs": "Habs",
+        "shops": "Shops",
+        "locationPrefix": {
+          "default": "on",
+          "asteriod": "on asteroid near",
+          "orbit": "in orbit around"
+        },
+        "locationSuffix": "near %{location}"
+      },
+      "tradeRoutes": {
+        "buy": "Buy for: %{uec}",
+        "sell": "Sell for: %{uec}",
+        "cargoShip": "for %{cargo} SCU",
+        "sortByPercent": "Sort by Percent",
+        "sortByProfit": "Sort by Profit",
+        "sortByStation": "Sort by Station",
+        "showAveragePrices": "Display average Prices",
+        "showLatestPrices": "Display latest Prices"
+      },
       "erkul": {
         "prefix": "Tryout Loadouts with",
         "link": "Erkul's DPS Calculator"
@@ -428,17 +552,25 @@
         "prefix": "Loadouts based on Gamefiles powered by",
         "link": "SCunpacked"
       },
-      "newVehicle": { "nullablePrompt": "Select a Ship" },
-      "addAddon": { "nullablePrompt": "" },
-      "table": { "selected": "%{count} Selected" },
-      "shoppingCart": {
-        "total": "Total",
-        "itemTotal": "Item Total",
-        "perItem": "per Item",
-        "items": {
-          "one": "<b>%{count}</b> Item for <b>%{price}</b>",
-          "other": "<b>%{count}</b> Items for <b>%{price}</b>"
-        }
+      "newVehicle": {
+        "nullablePrompt": "Select a Ship"
+      },
+      "addAddon": {
+        "nullablePrompt": ""
+      },
+      "table": {
+        "selected": "%{count} Selected"
+      },
+      "commodityPrice": {
+        "shopId": "Shop",
+        "station": "Station",
+        "commodityItemType": "Commodity Type",
+        "commodityItemId": "Commodity Item",
+        "item": "ShopCommodity",
+        "price": "Price",
+        "type": "Type",
+        "shop": "Shop",
+        "submittedBy": "Submitted By"
       },
       "syncExtension": {
         "status": {

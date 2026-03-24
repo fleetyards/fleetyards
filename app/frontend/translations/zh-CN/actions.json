@@ -129,11 +129,6 @@
       },
       "unselect": "Unselect all Selected",
       "openPriceModal": "Submit Price",
-      "shoppingCart": {
-        "add": "Add to Cart",
-        "refresh": "Refresh Cart",
-        "clear": "Clear Cart"
-      },
       "twoFactor": {
         "enable": "Enable Two-factor",
         "disable": "Disable Two-factor",

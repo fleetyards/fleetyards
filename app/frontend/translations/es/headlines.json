@@ -44,6 +44,8 @@
       "confirmAccess": "Confirm access",
       "filterModels": "Filter Ships",
       "filterVehicles": "Filter Hangar",
+      "filterCargoRoutes": "Filter Cargo routes",
+      "filterCommodities": "Filter Commodities",
       "fleets": {
         "owners": "Owners",
         "add": "Crear una nueva flota",
@@ -66,7 +68,6 @@
         "create": "Create Group",
         "edit": "Edit Group"
       },
-      "searchHistory": "Search History",
       "compare": {
         "ships": "Compare Ships"
       },
@@ -87,6 +88,26 @@
         }
       },
       "roadmap": "Ship-Roadmap",
+      "tools": {
+        "profitCalculator": {
+          "index": "Profit Calculator"
+        },
+        "tradeRoutes": {
+          "index": "Trade Routes",
+          "withShip": "Trade Routes for %{name} (%{cargo})"
+        }
+      },
+      "starsystems": "Starsystems",
+      "starsystem": "%{starsystem} Starsystem",
+      "celestialObjects": "Celestial Objects",
+      "celestialObject": "%{celestialObject} in the %{starsystem} System",
+      "moons": "Moons",
+      "stations": "Stations",
+      "station": "%{station} near %{celestialObject}",
+      "stationImages": "Images of %{station} near %{celestialObject}",
+      "shops": "Shops",
+      "shop": "%{shop} on %{station}",
+      "commodities": "Commodities",
       "rsiVerification": "Verify your RSI-Account",
       "hangarGuideEmpty": "Not much to see here?",
       "hangarGuide": "Hangar Guide",
@@ -94,8 +115,18 @@
       "vehicle": {
         "bulkGroupEdit": "Add/Remove Groups"
       },
-      "modals": {},
-      "shoppingCart": "Shopping Cart"
+      "modals": {
+        "shopCommodity": {
+          "update": "Update Commodity %{shopCommodity}",
+          "create": "Add Commodity",
+          "sellPrices": "%{shopCommodity} Sell Prices",
+          "buyPrices": "%{shopCommodity} Buy Prices",
+          "rentalPrices": "%{shopCommodity} Rental Prices"
+        },
+        "commodityPrice": {
+          "create": "Submit Price"
+        }
+      }
     }
   }
 }

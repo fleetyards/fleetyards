@@ -8,7 +8,6 @@
       "defaultDocs": "FleetYards.net Documentation",
       "defaultDocsShort": "FleetYards Docs",
       "home": "首頁",
-      "search": "搜尋結果",
       "ships": {
         "index": "艦船",
         "viewer": "艦船檢視器"
