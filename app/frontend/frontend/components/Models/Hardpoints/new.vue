@@ -61,7 +61,7 @@ watch(
 );
 
 const source = ref(
-  props.model.scIdentifier && props.model.productionStatus === "flight-ready"
+  props.model.inGame
     ? HardpointSourceEnum.GAME_FILES
     : HardpointSourceEnum.SHIP_MATRIX,
 );
@@ -85,7 +85,7 @@ const {
 <template>
   <div id="hardpoints" class="row hardpoints">
     <div class="col-12">
-      <div v-if="model.scIdentifier" class="d-flex justify-content-center">
+      <div v-if="model.inGame" class="d-flex justify-content-center">
         <BtnGroup>
           <span class="text-muted">{{ t("labels.hardpoints.prefix") }}</span>
           <Btn :href="erkulUrl" mobile-block class="erkul-link">
@@ -107,7 +107,7 @@ const {
         <BtnGroup>
           <Btn
             :active="source === HardpointSourceEnum.GAME_FILES"
-            :disabled="!model.scIdentifier"
+            :disabled="!model.inGame"
             @click="source = HardpointSourceEnum.GAME_FILES"
           >
             {{

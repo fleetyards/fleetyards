@@ -366,6 +366,10 @@ class Model < ApplicationRecord
 
   PRODUCTION_STATUSES = %w[in-concept in-production flight-ready].freeze
 
+  def in_game?
+    sc_identifier.present? && production_status == "flight-ready"
+  end
+
   def self.production_status_filters
     PRODUCTION_STATUSES.map do |item|
       Filter.new(

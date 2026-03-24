@@ -8078,6 +8078,8 @@ components:
           format: uuid
         scIdentifier:
           type: string
+        inGame:
+          type: boolean
         name:
           type: string
         slug:
@@ -8312,6 +8314,7 @@ components:
       - hasPaints
       - hasUpgrades
       - hasVideos
+      - inGame
       - links
       - loaners
       - media
@@ -8330,6 +8333,8 @@ components:
           format: uuid
         scIdentifier:
           type: string
+        inGame:
+          type: boolean
         name:
           type: string
         slug:
@@ -8574,6 +8579,7 @@ components:
       - hasPaints
       - hasUpgrades
       - hasVideos
+      - inGame
       - links
       - loaners
       - media

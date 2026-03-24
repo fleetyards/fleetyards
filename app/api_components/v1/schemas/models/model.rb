@@ -11,6 +11,7 @@ module V1
           properties: {
             id: {type: :string, format: :uuid},
             scIdentifier: {type: :string},
+            inGame: {type: :boolean},
             name: {type: :string},
             slug: {type: :string},
 
@@ -166,7 +167,7 @@ module V1
           additionalProperties: false,
           required: %w[
             id name slug availability crew hasImages hasModules hasPaints hasUpgrades hasVideos
-            links loaners media metrics onSale speeds adiMap createdAt updatedAt
+            inGame links loaners media metrics onSale speeds adiMap createdAt updatedAt
           ]
         })
       end
