@@ -23,7 +23,6 @@
         "hangar": "Enterprise, Andromeda...",
         "hangar-fleetchart": "Enterprise, Andromeda...",
         "hangar-wishlist": "Avenger, Carrack, Cutlass...",
-        "stations": "Cerca Stazioni...",
         "shops": "Search for Shops..."
       },
       "search": {
@@ -38,13 +37,11 @@
       },
       "user": { "rsiHandle": "RSI Handle" },
       "vehicle": { "serial": "Seriale" },
-      "commodityPrice": { "price": "100.00" },
       "filters": {
         "shops": {
           "name": "Casaba, Platinum Bay...",
           "commodityName": "Aurora, L86..."
         },
-        "stations": { "name": "Port Olisar, Teasa..." },
         "shopItems": {
           "name": "Aurora, L86...",
           "minPrice": "Prezzo minimo in UEC",
@@ -63,8 +60,7 @@
           "onSale": "Sì o No",
           "productionStatus": "Announced, Flight Ready, In Concept..."
         },
-        "fleets": { "members": { "username": "Username" } },
-        "shopCommodities": { "name": "Nome" }
+        "fleets": { "members": { "username": "Username" } }
       }
     }
   }

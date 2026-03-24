@@ -2,20 +2,13 @@
 en:
   actions:
     add: Add
-    add_commodity: Add Commodity
     add_dock: Add Dock
     add_module_hardpoint: Add Model
     add_module_package_item: Add Module
-    add_trade_commodity: Add Commodity
     add_upgrade_kit: Add Model
     add_video: Add Video
     login_in_as: Login as
-    commodities: Commodities
     admin:
-      celestial_object:
-        new: Create new Celestial Object
-      commodity:
-        new: Create new Commodity
       component:
         new: Create new Component
       equipment:
@@ -33,12 +26,6 @@ en:
         new: Create new Paint
       model_upgrade:
         new: Create new Upgrade
-      shop:
-        new: Create new Shop
-      starsystem:
-        new: Create new Starsystem
-      station:
-        new: Create new Station
       user:
         new: Create new User
     back: Back
@@ -64,6 +51,4 @@ en:
     save_password: Save password
     sign_in: Login
     sign_out: Logout
-    station:
-      images: Images
     unlock: Unlock Account

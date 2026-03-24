@@ -114,9 +114,6 @@
         "hangar": {
           "accountRequired": "Necesitas <a href=\"/sign-up/\">Registrarte</a> o <a href=\"/login/\">Iniciar sesión</a> para añadir Naves a tu Hangar.<br>Obtén más información <a href=\"/hangar/preview/\">aquí</a>"
         },
-        "commodityPrice": {
-          "accountRequired": "Necesitas <a href=\"/sign-up/\">Registrarte</a> o <a href=\"/login/\">Iniciar sesión</a> para enviar Precios."
-        },
         "default": "<b>Algo salió mal.</b> <br>¿Has intentado apagarlo y volverlo a encender?"
       },
       "account": {
@@ -124,9 +121,6 @@
           "success": "<b>Tu cuenta ha sido eliminada.</b> <br>Es triste verte partir :'(",
           "failure": "¡No pudimos eliminar tu cuenta! Por favor inténtalo más tarde."
         }
-      },
-      "commodityPrice": {
-        "create": { "success": "Gracias por tu envío de precio." }
       },
       "fleet": {
         "create": {
@@ -209,17 +203,8 @@
         "wishlist": {
           "destroyAll": "¿Estás seguro de que quieres eliminar todas las Naves de tu Lista de Deseos? Esta acción no se puede revertir."
         },
-        "tradeRoutes": {
-          "reset": "¿Estás seguro de que quieres reiniciar todos los precios de mercancías?"
-        },
         "account": {
           "destroy": "¿Estás seguro de que quieres destruir tu Cuenta? Esta acción no se puede revertir."
-        },
-        "commodityPrice": {
-          "destroy": "¿Estás seguro de que quieres destruir este Precio? Esta acción no se puede revertir."
-        },
-        "shopCommodity": {
-          "destroy": "¿Estás seguro de que quieres destruir esta Mercancía? Esta acción no se puede revertir."
         },
         "fleet": {
           "leave": "¿Estás seguro de que quieres abandonar la Flota? Esta acción no se puede revertir.",

@@ -4,14 +4,6 @@
       "description": "FleetYards.net, Deine Datenbank für alle Information rund um die Schiffe & Stationen von “Star Citizen“.",
       "keywords": "Star, Citizen, Spaceships, Raumschiffe, Weltraum, Ships, Fighter, Database, Squadron, 42, Star, Citizen, English, Chris, Roberts, Online, Game, Space, Simulation"
     },
-    "station": {
-      "type": "Typ",
-      "location": "Himmelskörper",
-      "classification": "Klassifizierung",
-      "habitable": "Bewohnbar?",
-      "refinery": "Raffinerie-Station",
-      "cargoHub": "Frachtzentrum"
-    },
     "model": {
       "focus": "Fokus",
       "classification": "Klassifizierung",
@@ -74,26 +66,8 @@
       "manufacturer": "Hersteller",
       "size": "Größe"
     },
-    "celestialObject": {
-      "type": "Typ",
-      "subType": "Unterart",
-      "habitable": "Bewohnbar?",
-      "fairchanceact": "Fair Chance Act?",
-      "population": "Bevölkerung",
-      "economy": "Wirtschaft",
-      "danger": "Gefahr"
-    },
-    "starsystem": {
-      "type": "Typ",
-      "size": "Größe",
-      "population": "Bevölkerung",
-      "economy": "Wirtschaft",
-      "danger": "Gefahr"
-    },
     "shop": {
       "type": "Typ",
-      "celestialObject": "Himmelskörper",
-      "station": "Station",
       "location": "%{name} in %{location}",
       "refineryTerminal": "Raffinerie-Terminal"
     },

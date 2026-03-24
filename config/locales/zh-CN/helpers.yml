@@ -33,18 +33,6 @@ zh-CN:
         code: 名称短码
         known_for: "..."
       name: 名称
-      shop_commodity:
-        buy_price: 购买价格
-        description: 描述
-        name: 名称
-        rental_price: 租金价格
-        rental_price_1_day: 1天
-        rental_price_30_days: 30天
-        rental_price_3_days: 3 天
-        rental_price_7_days: 7天
-        sell_price: 出售价格
-      station:
-        hidden: 隐藏
       trade_commodity:
         buy: 购买
         sell: 出售？
@@ -57,8 +45,4 @@ zh-CN:
         username: 用户名
       video:
         url: 网址或YouTube ID
-    prompt:
-      celestial_object:
-        starsystem: 请选择一个星系
-      commodity:
-        commodity_type: 请选择类型
+    prompt: {}

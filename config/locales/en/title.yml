@@ -71,16 +71,6 @@ en:
     #   edit: Edit Admin User
     #   index: Admin Users
     #   new: New Admin User
-    # celestial_object:
-    #   edit: Edit Celestial Object
-    #   index: Celestial Objects
-    #   new: New Planet
-    # commodity:
-    #   edit: Edit Commodity
-    #   index: Commodities
-    #   new: New Commodity
-    # commodity_price:
-    #   confirmation: Confirm submitted Prices
     # component:
     #   edit: Edit Component
     #   index: Components
@@ -129,24 +119,7 @@ en:
     # password:
     #   edit: Change Password
     #   new: Forgot your Password?
-    # shop:
-    #   edit: Edit Shop
-    #   index: Shops
-    #   new: New Shop
-    # shop_commodities:
-    #   index: Shop Commodities
-    # shop_commodity:
-    #   confirmation: Confirm submitted Shop Commodities
     # sign_in: Login
-    # starsystem:
-    #   edit: Edit Starsystem
-    #   index: Starsystems
-    #   new: New Starsystem
-    # station:
-    #   edit: Edit Station
-    #   images: Images
-    #   index: Stations
-    #   new: New Station
     # unlock: Unlock Account
     # user:
     #   edit: Edit User

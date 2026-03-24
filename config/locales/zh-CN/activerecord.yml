@@ -123,24 +123,6 @@ zh-CN:
           password: SMPT 密码或令牌
           port: SMTP 端口
           user: SMTP 用户名
-      shop:
-        buying: 是否购买物品？
-        hidden: 隐藏
-        location_prefix:
-          default: 在
-      station:
-        location_prefix:
-          default: 'on'
-          near: 附近
-          orbit: 在环绕轨道上
-        refinery: 是否有炼油站？
-        station_types:
-          aid_shelter: 援助庇护所
-          asteroid_station: 小行星站
-          district: 区域
-          landing_zone: 降落点
-          outpost: 前哨站
-          station: 气象站
       trade_commodity:
         buy: 购买
         sell: 出售？

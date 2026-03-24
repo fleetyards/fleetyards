@@ -2,19 +2,13 @@
 zh-CN:
   actions:
     add: 新增
-    add_commodity: 添加商品
     add_dock: 新增船坞
     add_module_hardpoint: 新增型号
     add_module_package_item: 新增模块
-    add_trade_commodity: 新增商品
     add_upgrade_kit: 新增型号
     add_video: 新增影片
     login_in_as: 登陆身份
     admin:
-      celestial_object:
-        new: 创建新的天体
-      commodity:
-        new: 创建新商品
       component:
         new: 创建新组件
       equipment:
@@ -32,12 +26,6 @@ zh-CN:
         new: 创建新画图
       model_upgrade:
         new: 创建新升级
-      shop:
-        new: 创建新商店
-      starsystem:
-        new: 创建新的恒星系统
-      station:
-        new: 创建新站
       user:
         new: 创建新用户
     back: 返回
@@ -63,6 +51,4 @@ zh-CN:
     save_password: 保存密码
     sign_in: 登陆
     sign_out: 登出
-    station:
-      images: 图像
     unlock: 解锁账户

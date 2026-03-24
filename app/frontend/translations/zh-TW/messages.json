@@ -143,20 +143,12 @@
             "paragraph3": "取得更多資訊"
           }
         },
-        "commodityPrice": {
-          "accountRequired": "您需要<a href=\"/sign-up/\">註冊</a>或<a href=\"/login/\">登入</a>以提交價格。"
-        },
         "default": "<b>發生了錯誤。</b><br>您試過重新啟動嗎？"
       },
       "account": {
         "destroy": {
           "success": "<b>您的帳戶已刪除。</b><br>很遺憾看到您離開 :'(",
           "failure": "我們無法刪除您的帳戶！請稍後再試。"
-        }
-      },
-      "commodityPrice": {
-        "create": {
-          "success": "感謝您提交價格。"
         }
       },
       "fleet": {
@@ -242,17 +234,8 @@
         "wishlist": {
           "destroyAll": "您確定要從願望清單移除所有飛船嗎？此操作無法復原。"
         },
-        "tradeRoutes": {
-          "reset": "您確定要重置所有商品價格嗎？"
-        },
         "account": {
           "destroy": "您確定要刪除您的帳戶嗎？此操作無法復原。"
-        },
-        "commodityPrice": {
-          "destroy": "您確定要刪除此價格嗎？此操作無法復原。"
-        },
-        "shopCommodity": {
-          "destroy": "您確定要刪除此商品嗎？此操作無法復原。"
         },
         "fleet": {
           "leave": "您確定要離開艦隊嗎？此操作無法復原。",

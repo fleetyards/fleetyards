@@ -8,8 +8,6 @@ it:
     add_video: Aggiungi Video
     login_in_as: Login come
     admin:
-      celestial_object:
-        new: Crea un nuovo Oggetto Celeste
       component:
         new: Crea un nuovo Componente
       equipment:
@@ -23,12 +21,6 @@ it:
         new: Crea nuovo Modulo
       model_paint:
         new: Crea nuova Paint
-      shop:
-        new: Crea Nuovo Negozio
-      starsystem:
-        new: Crea nuovo Sistema Stellare
-      station:
-        new: Crea nuova Stazione
       user:
         new: Crea nuovo Utente
     back: Indietro
@@ -54,6 +46,4 @@ it:
     save_password: Salva password
     sign_in: Login
     sign_out: Esci
-    station:
-      images: Immagini
     unlock: Sblocca account

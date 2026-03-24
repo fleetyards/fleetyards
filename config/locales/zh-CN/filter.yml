@@ -13,8 +13,3 @@ zh-CN:
     image:
       model:
         title: 型号
-    shop_commodities:
-      sub_categories:
-        class: 项目组件
-        classification: 飞船
-        equipment_type: 装备

@@ -34,32 +34,6 @@
         "sellPrice": "vende per",
         "buyPrice": "compra per"
       },
-      "shopCommodity": {
-        "item": "Articolo",
-        "shop": "Negozio",
-        "sellPrices": "Prezzo di Vendita",
-        "buyPrices": "Prezzo d'Acquisto",
-        "rentalPrices": "Prezzo di Noleggio",
-        "confirmed": "Confermato?",
-        "submittedBy": "Inviato da",
-        "prices": {
-          "label": "Prezzi",
-          "rentalPrice": "noleggio",
-          "averageRentalPrice": "noleggio (Ø)",
-          "sellPrice": "vende per",
-          "averageSellPrice": "vende per (Ø)",
-          "buyPrice": "compra per",
-          "averageBuyPrice": "compra per (Ø)",
-          "rentalPrice1Day": "1 giorno per",
-          "averageRentalPrice1Day": "1 giorno per (Ø)",
-          "rentalPrice3Days": "3 giorni per",
-          "averageRentalPrice3Days": "3 giorni per (Ø)",
-          "rentalPrice7Days": "7 giorni per",
-          "averageRentalPrice7Days": "7 giorni per (Ø)",
-          "rentalPrice30Days": "30 giorni per",
-          "averageRentalPrice30Days": "30 giorni per (Ø)"
-        }
-      },
       "stats": {
         "quickStats": {
           "newShips": "Nuove navi in %{year}",
@@ -321,7 +295,6 @@
         "modular": "No Modular present",
         "avionics": "Nessuna Avionica presente",
         "fleetInvites": "Nessun Invito presente",
-        "shopCommodities": "Nessun Prodotto disponibile",
         "shoppingCart": "Il carrello è vuoto",
         "userShips": "Il tuo Hangar è attualmente vuoto. Per aggiungere navi / veicoli al tuo Hangar fare clic sulla seguente icona su qualsiasi nave nel database:"
       },
@@ -396,28 +369,9 @@
         "shops": {
           "name": "Nome",
           "type": "Tipo",
-          "celestialObject": "Oggetto Celeste",
           "model": "Nave",
           "equipment": "Equipaggiamento",
-          "component": "Componente",
-          "commodity": "Prodotto",
-          "commodityType": "Tipo Di Prodotto",
-          "starsystem": "Sistema Stellare",
-          "station": "Stazione"
-        },
-        "shopCommodities": {
-          "commodityType": "Tipo Di Prodotto",
-          "station": "Stazione",
-          "shopId": "Negozio",
-          "equipment": "Equipaggiamento",
-          "component": "Componente",
-          "componentItemTypeFilter": "Tipo di componente",
-          "equipmentItemTypeFilter": "Tipo d'equipaggiamento",
-          "equipmentTypeFilter": "Equipment Type",
-          "equipmentSlotFilter": "Slot Equipaggiamento",
-          "commodity": "Prodotto",
-          "model": "Nave",
-          "name": "Nome"
+          "component": "Componente"
         },
         "shopItems": {
           "category": "Categoria",
@@ -426,17 +380,6 @@
           "manufacturer": "Produttore",
           "minPrice": "Prezzo Min.",
           "maxPrice": "Prezzo Max."
-        },
-        "stations": {
-          "name": "Nome",
-          "celestialObject": "Oggetto Celeste",
-          "starsystem": "Sistema Stellare",
-          "type": "Tipo di Stazione",
-          "shops": "Negozi",
-          "docks": "Moli",
-          "habs": "Abitazioni?",
-          "cargoHub": "Cargo Hub?",
-          "refinery": "Stazione Di Raffinazione?"
         },
         "vehicles": {
           "name": "Nome o nome della Nave",
@@ -451,21 +394,6 @@
           "group": "Gruppo",
           "loaner": "Navi in comodato",
           "boughtVia": "Bought via?"
-        },
-        "tradeRoutes": {
-          "sortBy": "Ordina per",
-          "sortByValues": {
-            "percent": "Percentuale Max.",
-            "profit": "Profitto Max."
-          },
-          "cargoShip": "Con Nave Cargo?",
-          "origin": "Da?",
-          "destination": "A?",
-          "excludeCommodityType": "Escludi Tipo Di Prodotto",
-          "originCelestialObject": "Oggetto Celeste d'Origine",
-          "destinationCelestialObject": "Oggetto Celeste di Destinazione",
-          "originStarsystem": "Sistema Stellare d'Origine",
-          "destinationStarsystem": "Sistema Stellare di Destinazione"
         },
         "models": {
           "shipRole": "Ruolo Della Nave",
@@ -490,7 +418,6 @@
           "willItFit": "Ci starà?"
         },
         "images": {
-          "station": "Stazione",
           "model": "Nave"
         },
         "fleets": {
@@ -513,30 +440,6 @@
           }
         }
       },
-      "station": {
-        "docks": "Moli",
-        "location": "Posizione",
-        "type": "Tipo",
-        "habitation": "Abitazione",
-        "habs": "Habs",
-        "shops": "Negozi",
-        "locationPrefix": {
-          "default": "su",
-          "asteriod": "sull'asteroide vicino",
-          "orbit": "in orbita attorno"
-        },
-        "locationSuffix": "vicino a %{location}"
-      },
-      "tradeRoutes": {
-        "buy": "Acquista per: %{uec}",
-        "sell": "Vendi per: %{uec}",
-        "cargoShip": "per %{cargo} SCU",
-        "sortByPercent": "Ordina per Percentuale",
-        "sortByProfit": "Ordina per Profitto",
-        "sortByStation": "Ordina per Stazione",
-        "showAveragePrices": "Mostra i prezzi medi",
-        "showLatestPrices": "Mostra i prezzi più recenti"
-      },
       "erkul": {
         "prefix": "Prova Loadouts con",
         "link": "Calcolatore DPS Di Erkul"
@@ -548,17 +451,6 @@
       "newVehicle": { "nullablePrompt": "Seleziona una Nave" },
       "addAddon": { "nullablePrompt": "" },
       "table": { "selected": "%{count} selezionati" },
-      "commodityPrice": {
-        "shopId": "Negozio",
-        "station": "Stazione",
-        "commodityItemType": "Tipo Di Prodotto",
-        "commodityItemId": "Commodity Item",
-        "item": "ShopCommodity",
-        "price": "Prezzo",
-        "type": "Type",
-        "shop": "Negozio",
-        "submittedBy": "Inviato da"
-      },
       "shoppingCart": {
         "total": "Totale",
         "itemTotal": "Totale Elemento",

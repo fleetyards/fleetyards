@@ -135,9 +135,6 @@
             "paragraph3": "Ottieni più informazioni "
           }
         },
-        "commodityPrice": {
-          "accountRequired": "Devi <a href=\"/sign-up/\">registrarti</a> o <a href=\"/login/\">effettuare il login</a> per inviare prezzi."
-        },
         "default": "<b>Si è verificato un errore.</b> <br>Hai provato a spegnere e riaccendere?"
       },
       "account": {
@@ -145,9 +142,6 @@
           "success": "<b>Il tuo account è stato distrutto.</b> <br>É un peccato vederti andare :'(",
           "failure": "Impossibile eliminare il tuo account. Riprova più tardi."
         }
-      },
-      "commodityPrice": {
-        "create": { "success": "Grazie per la segnalazione." }
       },
       "fleet": {
         "create": {
@@ -230,17 +224,8 @@
         "wishlist": {
           "destroyAll": "Sei sicuro di voler rimuovere tutte le navi dalla tua Lista dei Desideri? Questa azione non può essere annullata."
         },
-        "tradeRoutes": {
-          "reset": "Sei sicuro di voler resettare tutti i prezzi delle merci?"
-        },
         "account": {
           "destroy": "Sei sicuro di voler eliminare il tuo account? Questa azione non potrà essere annullata."
-        },
-        "commodityPrice": {
-          "destroy": "Sei sicuro di voler eliminare questo prezzo? Questa azione non potrà essere annullata."
-        },
-        "shopCommodity": {
-          "destroy": "Sei sicuro di voler eliminare questa merce? Questa azione non può essere annullata."
         },
         "fleet": {
           "leave": "Sei sicuro di voler lasciare questa Flotta? Questa azione non potrà essere annullata.",

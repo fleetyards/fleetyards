@@ -4,14 +4,6 @@
       "description": "FleetYards.net, votre base de données pour toutes les informations relatives aux vaisseaux de « Star Citizen ».",
       "keywords": "Star Citizen, vaisseaux spatiaux, vaisseaux, Fighter, Database, Squadron, 42, Star, Citizen, Français, Chris, Roberts, Online, Game, Espace, Simulation"
     },
-    "station": {
-      "type": "Type",
-      "location": "Lieu",
-      "classification": "Classification",
-      "habitable": "Habitable?",
-      "refinery": "Raffinerie",
-      "cargoHub": "Centre de marchandise"
-    },
     "model": {
       "focus": "Domaine",
       "classification": "Classification",
@@ -74,26 +66,8 @@
       "manufacturer": "Fabricant",
       "size": "Taille"
     },
-    "celestialObject": {
-      "type": "Type",
-      "subType": "Sous-type",
-      "habitable": "Habitable?",
-      "fairchanceact": "loi sur l'équité des chances",
-      "population": "Population",
-      "economy": "Économie",
-      "danger": "Danger"
-    },
-    "starsystem": {
-      "type": "Type",
-      "size": "Taille",
-      "population": "Population",
-      "economy": "Économie",
-      "danger": "Danger"
-    },
     "shop": {
       "type": "Type",
-      "celestialObject": "Emplacement",
-      "station": "Station",
       "location": "%{name} à %{location}",
       "refineryTerminal": "Terminal de raffinerie"
     },
