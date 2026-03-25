@@ -83,7 +83,7 @@ def with_spinner(label)
     else
       puts "FAILED (#{time_str})\n"
     end
-    $stderr.puts output
+    warn output
     abort
   end
 end
@@ -131,7 +131,7 @@ def run_step_wait(*steps)
       elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC) - step[:start_time]
       puts "  (#{format_duration(elapsed)})"
       next if success
-      $stderr.puts output
+      warn output
       abort "\n  #{step[:label]} failed!"
     end
     return
@@ -173,7 +173,7 @@ def run_step_wait(*steps)
     failed = steps.each_with_index.filter_map { |step, i| [step, finished[i]] unless finished[i][:success] }
     unless failed.empty?
       print "\n"
-      $stderr.puts failed.map { |step, f| "== #{step[:label]} ==\n#{f[:output]}" }.join("\n")
+      warn failed.map { |step, f| "== #{step[:label]} ==\n#{f[:output]}" }.join("\n")
       abort
     end
   else
@@ -186,7 +186,7 @@ def run_step_wait(*steps)
         puts "  #{step[:label]}...OK (#{time_str})"
       else
         puts "  #{step[:label]}...FAILED (#{time_str})\n"
-        $stderr.puts output
+        warn output
         abort
       end
     end
@@ -395,6 +395,6 @@ FileUtils.chdir APP_ROOT do
     end
     $stdout.flush
     dev_args = ARGV.filter_map { |arg| arg.delete_prefix("--dev-") if arg.start_with?("--dev-") }
-    exec(*["bin/dev", *dev_args.map { |a| "--#{a}" }])
+    exec("bin/dev", *dev_args.map { |a| "--#{a}" })
   end
 end

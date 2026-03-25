@@ -1,6 +1,7 @@
 ignore:
   - 'db/schema.rb'
   - 'db/migrate/**/*'
+  - '.ruby-lsp/**/*'
   - Style/Documentation
-  - 'app/**/*':
+  - app/**/*:
     - Style/Documentation
