@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+set -a
+source .env.live
+set +a
+kamal app exec -i -d live -r web "bin/rails console"

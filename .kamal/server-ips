@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROLE="${1:?Usage: server-ips <web|accessory> <destination> [--private]}"
+DEST="${2:?Usage: server-ips <web|accessory> <destination> [--private]}"
+NETWORK="${3:-}"
+
+case "$ROLE" in
+  web)       NAME="fltyrd-$DEST-web" ;;
+  accessory) NAME="fltyrd-$DEST-accessories" ;;
+  *)         echo "Unknown role: $ROLE" >&2; exit 1 ;;
+esac
+
+if [ "$NETWORK" = "--private" ]; then
+  COLUMNS="name,private_net"
+else
+  COLUMNS="name,ipv4"
+fi
+
+hcloud server list -o columns="$COLUMNS" -o noheader | grep "^$NAME" | awk '{print $2}' | tr '\n' ',' | sed 's/,$//'

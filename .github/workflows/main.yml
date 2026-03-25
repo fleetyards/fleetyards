@@ -72,6 +72,15 @@ jobs:
       contents: read
       packages: write
 
+  deploy-stage:
+    needs: build
+    uses: ./.github/workflows/deploy.job.yml
+    with:
+      destination: stage
+      name: staging
+      url: https://fleetyards.dev
+    secrets: inherit
+
   api-schema-check:
     name: API Schema Check
     needs: [ruby-setup, js-setup]

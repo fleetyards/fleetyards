@@ -3,7 +3,7 @@ name: Legacy Deploy Job
 on:
   workflow_call:
     inputs:
-      capEnv:
+      destination:
         required: true
         type: string
       name:

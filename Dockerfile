@@ -21,7 +21,8 @@ RUN apt-get update -qq && \
     && rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Set production environment
-ENV RAILS_ENV="production" \
+ARG RAILS_ENV="production"
+ENV RAILS_ENV="${RAILS_ENV}" \
     BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
     BUNDLE_WITHOUT="development:test"
@@ -74,6 +75,14 @@ RUN --mount=type=secret,id=RAILS_MASTER_KEY \
     RAILS_MASTER_KEY="$(cat /run/secrets/RAILS_MASTER_KEY)" \
     SECRET_KEY_BASE_DUMMY=1 \
     bin/rails assets:precompile
+
+# Copy PWA files to public root (Vite outputs to public/vite/ but they need root scope)
+RUN cp public/vite/sw.js public/sw.js 2>/dev/null; \
+    cp public/vite/sw.js.map public/sw.js.map 2>/dev/null; \
+    cp public/vite/workbox-*.js public/ 2>/dev/null; \
+    cp public/vite/workbox-*.js.map public/ 2>/dev/null; \
+    cp public/vite/manifest.webmanifest public/manifest.webmanifest 2>/dev/null; \
+    true
 
 # Stage 3: Final production image
 FROM base
