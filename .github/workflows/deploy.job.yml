@@ -28,7 +28,7 @@ jobs:
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_KEY }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+          known_hosts: unnecessary
           if_key_exists: ignore
 
       - uses: ruby/setup-ruby@v1
@@ -39,6 +39,15 @@ jobs:
         run: |
           curl -fsSL -o /tmp/hcloud.tar.gz https://github.com/hetznercloud/cli/releases/latest/download/hcloud-linux-amd64.tar.gz
           tar -xzf /tmp/hcloud.tar.gz -C /usr/local/bin hcloud
+
+      - name: Fetch known hosts
+        env:
+          HCLOUD_TOKEN: ${{ secrets.HCLOUD_TOKEN }}
+        run: |
+          WEB_IPS=$(bash .kamal/server-ips web ${{ inputs.destination }})
+          ACC_IPS=$(bash .kamal/server-ips accessory ${{ inputs.destination }})
+          ALL_IPS=$(echo "$WEB_IPS,$ACC_IPS" | tr ',' ' ')
+          ssh-keyscan $ALL_IPS >> ~/.ssh/known_hosts
 
       - name: Deploy with Kamal
         env:
