@@ -10,7 +10,6 @@ export enum ChannelsEnum {
   WISHLIST_DESTROY = "WishlistDestroyChannel",
   ON_SALE_HANGAR = "OnSaleHangarChannel",
   ON_SALE = "OnSaleChannel",
-  ROADMAP = "RoadmapChannel",
   IMPORTS = "ImportsChannel",
   FLEET_MEMBERS = "FleetMembersChannel",
   FLEET_VEHICLES = "FleetVehiclesChannel",
