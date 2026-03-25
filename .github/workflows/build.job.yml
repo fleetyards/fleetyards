@@ -36,7 +36,7 @@ jobs:
           images: ghcr.io/fleetyards/app
           tags: |
             type=raw,value=${{ inputs.tag }}
-            type=sha,prefix=
+            type=raw,value=${{ github.sha }}
 
       - name: Build and push
         uses: docker/build-push-action@v6
