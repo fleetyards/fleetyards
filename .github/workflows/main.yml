@@ -93,6 +93,18 @@ jobs:
           -H 'Content-Type: application/json' \
           -d "{\"revision\": \"$GITHUB_SHA\", \"user\": \"${{ github.actor }}\"}"
 
+  notify-discord-stage:
+    runs-on: ubuntu-latest
+    needs: [deploy-stage]
+    environment: Stage
+    env:
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+    steps:
+      - run: |
+          curl -X POST "$DISCORD_WEBHOOK" \
+          -H 'Content-Type: application/json' \
+          -d "{\"content\": \"**Stage Deploy:** ${{ github.ref_name }} deployed to https://fleetyards.dev by ${{ github.actor }}\" }"
+
   api-schema-check:
     name: API Schema Check
     needs: [ruby-setup, js-setup]
