@@ -4,7 +4,15 @@ require "swagger_helper"
 
 RSpec.describe "admin/api/v1/models", type: :request, swagger_doc: "admin/v1/schema.yaml" do
   let(:user) { create(:admin_user, resource_access: [:models]) }
-  let(:model) { create(:model) }
+  let(:model) do
+    m = create(:model)
+    m.new_rsi_store_image.attach(
+      io: File.open(Rails.root.join("spec/fixtures/files/test.png")),
+      filename: "test.png",
+      content_type: "image/png"
+    )
+    m
+  end
   let(:id) { model.id }
 
   before do

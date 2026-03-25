@@ -12,8 +12,8 @@ Rails.application.configure do
   # Redirect www to apex domain
   config.middleware.insert_before ActionDispatch::SSL, Rack::Rewrite do
     r301 %r{.*}, ->(match, rack_env) {
-      "https://#{rack_env['SERVER_NAME'].sub(/\Awww\./, '')}#{rack_env['PATH_INFO']}"
-    }, if: ->(rack_env) { rack_env['SERVER_NAME']&.start_with?('www.') }
+      "https://#{rack_env["SERVER_NAME"].sub(/\Awww\./, "")}#{rack_env["PATH_INFO"]}"
+    }, if: ->(rack_env) { rack_env["SERVER_NAME"]&.start_with?("www.") }
   end
 
   # Code is not reloaded between requests.
