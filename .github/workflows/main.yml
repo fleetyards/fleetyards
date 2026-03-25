@@ -77,9 +77,21 @@ jobs:
     uses: ./.github/workflows/deploy.job.yml
     with:
       destination: stage
-      name: staging
+      name: Stage
       url: https://fleetyards.dev
     secrets: inherit
+
+  notify-app-signal-stage:
+    runs-on: ubuntu-latest
+    needs: [deploy-stage]
+    environment: Stage
+    env:
+      APP_SIGNAL_DEPLOY_HOOK: ${{ secrets.APP_SIGNAL_DEPLOY_HOOK }}
+    steps:
+      - run: |
+          curl -X POST "$APP_SIGNAL_DEPLOY_HOOK" \
+          -H 'Content-Type: application/json' \
+          -d "{\"revision\": \"$GITHUB_SHA\", \"user\": \"${{ github.actor }}\"}"
 
   api-schema-check:
     name: API Schema Check
