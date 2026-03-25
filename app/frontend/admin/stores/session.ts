@@ -49,10 +49,10 @@ export const useSessionStore = defineStore("session", {
       this.currentUser = user;
     },
     async logout() {
-      await destroySession().finally(() => {
-        this.authenticated = false;
-        this.currentUser = undefined;
-      });
+      this.authenticated = false;
+      this.currentUser = undefined;
+
+      await destroySession().catch(() => {});
     },
     hasAccessTo(resource?: string) {
       if (!resource || resource === "all") {

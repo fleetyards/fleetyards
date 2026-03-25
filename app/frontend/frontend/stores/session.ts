@@ -43,12 +43,12 @@ export const useSessionStore = defineStore("session", {
       this.currentUser = user;
     },
     async logout() {
-      await destroySession().finally(() => {
-        const hangarStore = useHangarStore();
-        hangarStore.ships = [];
+      const hangarStore = useHangarStore();
+      hangarStore.ships = [];
 
-        this.$reset();
-      });
+      this.$reset();
+
+      await destroySession().catch(() => {});
     },
     confirmAccess() {
       this.accessConfirmed = formatISO(new Date());
