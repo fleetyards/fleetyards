@@ -1,5 +1,7 @@
 ignore:
-  - 'db/schema.rb'
+  - 'bin/**/*'
+  - 'db/schema.rb':
+    - Layout/SpaceInsideHashLiteralBraces
   - 'db/migrate/**/*'
   - '.ruby-lsp/**/*'
   - Style/Documentation
