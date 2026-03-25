@@ -5182,7 +5182,6 @@ components:
       - NotificationsChannel
       - OnSaleChannel
       - OnSaleHangarChannel
-      - RoadmapChannel
       - UserNotificationsChannel
       - WishlistChannel
       - WishlistCreateChannel
@@ -5199,7 +5198,6 @@ components:
       - NOTIFICATIONS_CHANNEL
       - ON_SALE_CHANNEL
       - ON_SALE_HANGAR_CHANNEL
-      - ROADMAP_CHANNEL
       - USER_NOTIFICATIONS_CHANNEL
       - WISHLIST_CHANNEL
       - WISHLIST_CREATE_CHANNEL
