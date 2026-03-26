@@ -4,4 +4,7 @@ set -euo pipefail
 set -a
 source .env.stage
 set +a
-kamal app exec -d stage -r web "$@"
+
+ROLE="${1:-web}"
+shift 2>/dev/null || true
+kamal app exec -d stage -r "$ROLE" "$@"

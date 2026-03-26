@@ -4,4 +4,7 @@ set -euo pipefail
 set -a
 source .env.live
 set +a
-kamal app exec -i -d live -r web "bin/rails console"
+
+ROLE="${1:-web}"
+shift 2>/dev/null || true
+kamal app exec -i -d live -r "$ROLE" "bin/rails console"
