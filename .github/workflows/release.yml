@@ -26,7 +26,7 @@ jobs:
   #       secrets: inherit
   deploy-to-live:
     # needs: [smoke-test]
-    uses: ./.github/workflows/deploy.job.yml
+    uses: ./.github/workflows/legacy-deploy.job.yml
     with:
       capEnv: live
       name: Live
