@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.33.2](https://github.com/fleetyards/fleetyards/compare/v5.33.1...v5.33.2) (2026-03-26)
+
+
+### Bug Fixes
+
+* use LEGACY_SSH_KEY for legacy Capistrano deploys ([4b24d88](https://github.com/fleetyards/fleetyards/commit/4b24d88fea7c27d6e4cb696d7a8d4c847e92fe77))
+
 ### [5.33.1](https://github.com/fleetyards/fleetyards/compare/v5.33.0...v5.33.1) (2026-03-26)
 
 
