@@ -26,7 +26,7 @@ jobs:
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
-          key: ${{ secrets.SSH_KEY }}
+          key: ${{ secrets.LEGACY_SSH_KEY }}
           known_hosts: unnecessary
           if_key_exists: ignore
       - name: Fetch known hosts
