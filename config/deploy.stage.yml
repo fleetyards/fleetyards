@@ -24,6 +24,7 @@ proxy:
     - api.fleetyards.dev
     - admin.fleetyards.dev
     - docs.fleetyards.dev
+    - fltyrd.dev
 
 env:
   clear:
@@ -44,3 +45,7 @@ accessories:
     host: <%= acc_ips.first %>
   db-backup:
     host: <%= acc_ips.first %>
+    env:
+      clear:
+        POSTGRES_DATABASE: fleetyards_staging
+        S3_PREFIX: db/stage

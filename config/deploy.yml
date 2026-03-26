@@ -28,6 +28,7 @@ proxy:
     - api.fleetyards.net
     - admin.fleetyards.net
     - docs.fleetyards.net
+    - fltyrd.net
   app_port: 3000
   healthcheck:
     interval: 3
