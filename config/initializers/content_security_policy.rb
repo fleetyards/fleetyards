@@ -107,7 +107,6 @@ Rails.application.configure do
     policy.frame_ancestors :none
 
     policy.upgrade_insecure_requests true unless Rails.env.development? || Rails.env.test?
-
   end
 
   # Generate session nonces for permitted importmap and inline scripts
