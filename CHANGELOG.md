@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.33.1](https://github.com/fleetyards/fleetyards/compare/v5.33.0...v5.33.1) (2026-03-26)
+
+
+### Bug Fixes
+
+* rename deploy job to legacy and use dynamic known_hosts ([6eda803](https://github.com/fleetyards/fleetyards/commit/6eda8038c3a7701b10936eff4e660b6051fc0966))
+
 ## [5.33.0](https://github.com/fleetyards/fleetyards/compare/v5.32.12...v5.33.0) (2026-03-26)
 
 
