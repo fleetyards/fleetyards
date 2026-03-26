@@ -1,4 +1,4 @@
-import { computed, watch } from "vue";
+import { computed, watch, type Ref } from "vue";
 import {
   useSubscription,
   ChannelsEnum,
@@ -21,7 +21,7 @@ const formatImportLabel = (importData: Import): string => {
     .trim();
 };
 
-export const useImportUpdates = () => {
+export const useImportUpdates = (enabled: Ref<boolean>) => {
   const importsStore = useImportsStore();
   const { displayInfo, displaySuccess, displayAlert } = useAppNotifications();
   const { t } = useI18n();
@@ -74,6 +74,7 @@ export const useImportUpdates = () => {
 
   const { data: existingImports } = useImports(activeImportsParams, {
     query: {
+      enabled,
       staleTime: 30_000,
     },
   });

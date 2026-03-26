@@ -42,7 +42,11 @@ useMetaInfo({
   appTitle: t("title.defaultAdmin"),
 });
 
-useImportUpdates();
+const sessionStore = useSessionStore();
+
+const { isAuthenticated } = storeToRefs(sessionStore);
+
+useImportUpdates(isAuthenticated);
 
 const route = useRoute();
 
@@ -63,10 +67,6 @@ const { collapsed: navCollapsed } = storeToRefs(navStore);
 const overlayStore = useOverlayStore();
 
 const { visible: overlayVisible } = storeToRefs(overlayStore);
-
-const sessionStore = useSessionStore();
-
-const { isAuthenticated } = storeToRefs(sessionStore);
 
 const { requestBrowserPermission } = useAppNotifications();
 
