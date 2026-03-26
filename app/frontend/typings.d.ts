@@ -40,7 +40,7 @@ declare global {
     ON_SUBDOMAIN: boolean;
     NODE_ENV: string;
     GIT_REVISION: string;
-    SENTRY_DSN?: string;
+    APPSIGNAL_KEY?: string;
     MAINTAINER_NAME: string;
     MAINTAINER_MAIL: string;
     MAINTAINER_ADDRESS_STREET: string;

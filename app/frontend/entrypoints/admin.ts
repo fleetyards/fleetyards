@@ -3,7 +3,7 @@ import App from "@/admin/App.vue";
 import router from "@/admin/plugins/Router";
 import { createPinia } from "pinia";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
-import sentry from "@/shared/plugins/Sentry";
+import { setupAppsignal } from "@/shared/plugins/Appsignal";
 import FloatingVue from "floating-vue";
 import "floating-vue/dist/style.css";
 import VueLazyload from "vue-lazyload";
@@ -35,7 +35,7 @@ const vueQueryPluginOptions: VueQueryPluginOptions = {
 app.use(VueQueryPlugin, vueQueryPluginOptions);
 app.use(router);
 app.use(pinia);
-app.use(sentry);
+setupAppsignal(app);
 app.use(VueLazyload);
 app.use(veeValidate);
 app.use(FloatingVue);

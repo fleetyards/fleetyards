@@ -28,7 +28,7 @@ Rails.application.configure do
 
     connect_src = [
       :self, :data, cable_endpoint, api_endpoint, admin_endpoint, docs_endpoint, cdn_endpoint, legacy_cdn_endpoint,
-      "https://img.youtube.com", "https://sentry.io", "https://fonts.googleapis.com",
+      "https://img.youtube.com", "https://fonts.googleapis.com",
       "https://fonts.gstatic.com", "https://pro.fontawesome.com", Rails.configuration.rsi.endpoint,
       "https://kit.fontawesome.com", "https://kit-pro.fontawesome.com",
       "https://kit-free.fontawesome.com", "https://ka-p.fontawesome.com", "https://starship42.com",
@@ -108,7 +108,6 @@ Rails.application.configure do
 
     policy.upgrade_insecure_requests true unless Rails.env.development? || Rails.env.test?
 
-    # policy.report_uri Rails.application.credentials.sentry_csp_uri if Rails.application.credentials.sentry_csp_uri.present?
   end
 
   # Generate session nonces for permitted importmap and inline scripts

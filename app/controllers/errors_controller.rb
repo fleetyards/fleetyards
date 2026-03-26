@@ -52,6 +52,10 @@ class ErrorsController < ActionController::Base
   end
 
   def server_error
+    if (exception = request.env["action_dispatch.exception"])
+      Appsignal.report_error(exception)
+    end
+
     respond_to do |format|
       format.html do
         render "frontend/index", status: :internal_server_error

@@ -768,16 +768,6 @@ GEM
       addressable (>= 2.3.5)
       faraday (>= 0.17.3, < 3)
     securerandom (0.4.1)
-    sentry-rails (6.4.1)
-      railties (>= 5.2.0)
-      sentry-ruby (~> 6.4.1)
-    sentry-ruby (6.4.1)
-      bigdecimal
-      concurrent-ruby (~> 1.0, >= 1.0.2)
-      logger
-    sentry-sidekiq (6.4.1)
-      sentry-ruby (~> 6.4.1)
-      sidekiq (>= 5.0)
     shoulda-matchers (7.0.1)
       activesupport (>= 7.1)
     sidekiq (8.0.10)
@@ -993,9 +983,6 @@ DEPENDENCIES
   rswag-api
   rswag-schema_components
   rswag-specs
-  sentry-rails
-  sentry-ruby
-  sentry-sidekiq
   shoulda-matchers
   sidekiq (~> 8.0)
   sidekiq-cron

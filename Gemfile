@@ -92,10 +92,6 @@ gem "typhoeus"
 gem "rack-cors", require: "rack/cors"
 gem "rack-rewrite"
 
-gem "sentry-rails"
-gem "sentry-ruby"
-gem "sentry-sidekiq"
-
 gem "lograge"
 
 gem "pry-rails"
