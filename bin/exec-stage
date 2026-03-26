@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+set -a
+source .env.stage
+set +a
+kamal app exec -d stage -r web "$@"

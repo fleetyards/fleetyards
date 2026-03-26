@@ -4,7 +4,7 @@ module Loaders
   module ScData
     class AllJob < ::Loaders::BaseJob
       def perform
-        version = Rails.configuration.app.sc_data_sc_version
+        version = Rails.configuration.app.sc_data[:version]
 
         import = Imports::ScData::AllImport.create(version:)
 

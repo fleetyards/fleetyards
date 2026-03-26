@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+set -a
+source .env.live
+set +a
+kamal app exec -d live -r web "$@"
