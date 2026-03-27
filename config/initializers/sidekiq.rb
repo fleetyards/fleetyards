@@ -2,7 +2,7 @@
 
 require "sidekiq/web"
 require "sidekiq/cron/web"
-require "sidekiq-failures/web"
+require "sidekiq-failures"
 
 sidekiq_config = {url: Rails.configuration.redis.url, db: Rails.configuration.redis.db}
 
