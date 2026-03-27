@@ -10,6 +10,7 @@ gem "pg", "~> 1.0"
 
 gem "sidekiq", "~> 8.0"
 gem "sidekiq-cron"
+gem "sidekiq-failures"
 
 gem "paper_trail"
 
