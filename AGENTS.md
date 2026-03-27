@@ -66,6 +66,20 @@ pnpm test                         # Frontend tests (Vitest)
 pnpm test:e2e:run                 # E2E tests (Playwright)
 ```
 
+### Deployment & Remote Operations
+```bash
+bin/deploy-stage                  # Deploy to staging
+bin/deploy                        # Deploy to production
+bin/exec-stage <role> -- <cmd>    # Run command on staging (e.g. bin/exec-stage web -- bundle exec rails console)
+bin/exec-live <role> -- <cmd>     # Run command on production
+bin/console-stage                 # Rails console on staging
+bin/console-live                  # Rails console on production
+bin/logs-stage                    # View staging logs
+bin/logs-live                     # View production logs
+bin/setup-stage                   # Run Kamal setup for staging
+bin/setup-live                    # Run Kamal setup for production
+```
+
 ### Linting & Formatting
 ```bash
 bundle exec standardrb --fix      # Ruby linting (always run after changing .rb files)
