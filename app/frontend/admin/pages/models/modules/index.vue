@@ -139,12 +139,12 @@ const { t } = useI18n();
     <template #filter>
       <FilterForm />
     </template>
-    <template #default="{ loading, emptyVisible }">
+    <template #default="{ loading, refetching, emptyVisible }">
       <BaseTable
         :records="models?.items || []"
         primary-key="id"
         :columns="columns"
-        :loading="loading"
+        :loading="loading || refetching"
         :empty-visible="emptyVisible"
         default-sort="name asc"
         selectable

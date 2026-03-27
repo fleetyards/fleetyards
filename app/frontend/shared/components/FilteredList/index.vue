@@ -38,6 +38,10 @@ const loading = computed(() => {
   );
 });
 
+const refetching = computed(() => {
+  return props.asyncStatus.isRefetching.value;
+});
+
 const fullscreen = ref(false);
 
 const mobile = ref(false);
@@ -170,7 +174,7 @@ const toggleFilter = () => {
           :class="{
             'col-lg-9 col-xxl-10': !fullscreen,
           }"
-          class="col-12 col-animated"
+          class="col-12 col-animated filtered-list__content"
         >
           <slot v-if="!hideLoading && loading" name="loader" :loading="loading">
             <Loader :loading="loading" fixed />
@@ -188,14 +192,25 @@ const toggleFilter = () => {
             </transition>
           </slot>
 
-          <slot
-            v-else
-            name="default"
-            :records="records"
-            :filter-visible="filterVisible"
-            :loading="loading"
-            :empty-visible="emptyVisible"
-          />
+          <template v-else>
+            <transition name="fade">
+              <div
+                v-if="refetching"
+                class="filtered-list__refetch-overlay"
+              >
+                <Loader :loading="true" />
+              </div>
+            </transition>
+
+            <slot
+              name="default"
+              :records="records"
+              :filter-visible="filterVisible"
+              :loading="loading"
+              :refetching="refetching"
+              :empty-visible="emptyVisible"
+            />
+          </template>
         </div>
       </div>
       <div class="row">

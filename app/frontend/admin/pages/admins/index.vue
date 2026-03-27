@@ -86,12 +86,12 @@ const { t, l } = useI18n();
     hide-loading
     hide-empty
   >
-    <template #default="{ loading, emptyVisible }">
+    <template #default="{ loading, refetching, emptyVisible }">
       <BaseTable
         :records="adminUsers?.items || []"
         primary-key="id"
         :columns="columns"
-        :loading="loading"
+        :loading="loading || refetching"
         :empty-visible="emptyVisible"
         selectable
       >

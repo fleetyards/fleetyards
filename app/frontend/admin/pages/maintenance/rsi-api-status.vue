@@ -97,12 +97,12 @@ const resolve = async (log: RsiRequestLog) => {
     hide-loading
     hide-empty
   >
-    <template #default="{ loading, emptyVisible }">
+    <template #default="{ loading, refetching, emptyVisible }">
       <BaseTable
         :records="rsiRequestLogs?.items || []"
         primary-key="id"
         :columns="columns"
-        :loading="loading"
+        :loading="loading || refetching"
         :empty-visible="emptyVisible"
         default-sort="created_at desc"
       >
