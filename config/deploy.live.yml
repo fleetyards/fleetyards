@@ -33,3 +33,7 @@ accessories:
     host: <%= acc_ips.first %>
   db-backup:
     host: <%= acc_ips.first %>
+    env:
+      clear:
+        POSTGRES_DATABASE: fleetyards_production
+        S3_BUCKET: fltyrd-live-backups

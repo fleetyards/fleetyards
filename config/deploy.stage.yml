@@ -48,4 +48,4 @@ accessories:
     env:
       clear:
         POSTGRES_DATABASE: fleetyards_staging
-        S3_PREFIX: db/stage
+        S3_BUCKET: fltyrd-stage-backups

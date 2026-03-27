@@ -95,10 +95,8 @@ accessories:
     env:
       clear:
         POSTGRES_HOST: fleetyards-db
-        POSTGRES_DATABASE: fleetyards_production
         SCHEDULE: "0 3 * * *"
         S3_ENDPOINT: https://fsn1.your-objectstorage.com
-        S3_BUCKET: fleetyards-backups
         S3_PREFIX: db
         BACKUP_KEEP_DAYS: 7
       secret:
