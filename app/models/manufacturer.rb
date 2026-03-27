@@ -21,6 +21,7 @@
 #
 class Manufacturer < ApplicationRecord
   include ActionView::Helpers::OutputSafetyHelper
+  include ActiveStorageVariants
 
   paginates_per 30
 

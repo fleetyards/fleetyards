@@ -46,6 +46,8 @@
 #  rsi_id                  :integer
 #
 class ModelPaint < ApplicationRecord
+  include ActiveStorageVariants
+
   paginates_per 30
 
   belongs_to :model, optional: true, touch: true, counter_cache: true

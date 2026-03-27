@@ -148,6 +148,7 @@
 class Model < ApplicationRecord
   include ActionView::Helpers::NumberHelper
   include RoutingConcern
+  include ActiveStorageVariants
 
   attr_accessor :update_reason, :update_reason_description, :author_id
 

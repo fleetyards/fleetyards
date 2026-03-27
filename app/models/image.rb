@@ -25,6 +25,8 @@
 #  index_images_on_gallery_id  (gallery_id)
 #
 class Image < ApplicationRecord
+  include ActiveStorageVariants
+
   paginates_per 30
 
   belongs_to :gallery, polymorphic: true, touch: true, counter_cache: true

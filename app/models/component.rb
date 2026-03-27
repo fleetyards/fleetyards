@@ -41,6 +41,8 @@
 #  index_components_on_manufacturer_id  (manufacturer_id)
 #
 class Component < ApplicationRecord
+  include ActiveStorageVariants
+
   paginates_per 50
   max_paginates_per 240
 
