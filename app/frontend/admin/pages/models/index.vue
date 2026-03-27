@@ -35,7 +35,6 @@ import {
   useReloadModelsMatrix,
   useReloadModelsScData,
 } from "@/services/fyAdminApi";
-import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useImportLoading } from "@/admin/composables/useImportLoading";
 import { ImportTypeEnum } from "@/services/fyAdminApi";
 
@@ -148,8 +147,6 @@ const openDisplayOptionsModal = () => {
   });
 };
 
-const { displayConfirm } = useAppNotifications();
-
 const reloadMatrixMutation = useReloadModelsMatrix();
 const reloadScDataMutation = useReloadModelsScData();
 
@@ -160,22 +157,12 @@ const isReloadingScData = computed(
   () => isImportingScData.value || reloadScDataMutation.isPending.value,
 );
 
-const reloadModels = () => {
-  displayConfirm({
-    text: t("messages.confirm.model.reloadMatrix"),
-    onConfirm: async () => {
-      await reloadMatrixMutation.mutateAsync();
-    },
-  });
+const reloadModels = async () => {
+  await reloadMatrixMutation.mutateAsync();
 };
 
-const reloadScData = () => {
-  displayConfirm({
-    text: t("messages.confirm.model.reloadScData"),
-    onConfirm: async () => {
-      await reloadScDataMutation.mutateAsync();
-    },
-  });
+const reloadScData = async () => {
+  await reloadScDataMutation.mutateAsync();
 };
 
 const breadcrumbsStore = useBreadCrumbsStore();
@@ -214,6 +201,7 @@ watch(
     <Btn
       :size="BtnSizesEnum.SMALL"
       :loading="isReloadingMatrix"
+      :confirm="t('messages.confirm.model.reloadMatrix')"
       spinner
       @click="reloadModels"
     >
@@ -223,6 +211,7 @@ watch(
     <Btn
       :size="BtnSizesEnum.SMALL"
       :loading="isReloadingScData"
+      :confirm="t('messages.confirm.model.reloadScData')"
       spinner
       @click="reloadScData"
     >

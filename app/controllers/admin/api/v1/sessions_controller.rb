@@ -52,7 +52,7 @@ module Admin
         end
 
         def destroy
-          sign_out(:user)
+          sign_out(:admin_user)
 
           render json: {code: "sessions.destroy", message: I18n.t("devise.sessions.signed_out")}
         end
