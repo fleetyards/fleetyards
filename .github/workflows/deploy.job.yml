@@ -63,4 +63,6 @@ jobs:
       - name: Deploy with Kamal
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-        run: bundle exec kamal ${{ inputs.command }} -d ${{ inputs.destination }} --skip-push
+        run: |
+          export HCLOUD_TOKEN=$(op read "op://Fleetyards/HCLOUD/${{ inputs.destination }}")
+          bundle exec kamal ${{ inputs.command }} -d ${{ inputs.destination }} --skip-push
