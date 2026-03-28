@@ -39,6 +39,12 @@ jobs:
         with:
           bundler-cache: true
 
+      - name: Install 1Password CLI
+        run: |
+          curl -sSfo /tmp/op.zip "https://cache.agilebits.com/dist/1P/op2/pkg/v2.33.0/op_linux_amd64_v2.33.0.zip"
+          unzip -o /tmp/op.zip -d /usr/local/bin op
+          chmod +x /usr/local/bin/op
+
       - name: Install hcloud CLI
         run: |
           curl -fsSL -o /tmp/hcloud.tar.gz https://github.com/hetznercloud/cli/releases/latest/download/hcloud-linux-amd64.tar.gz
@@ -46,8 +52,9 @@ jobs:
 
       - name: Fetch known hosts
         env:
-          HCLOUD_TOKEN: ${{ secrets.HCLOUD_TOKEN }}
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
         run: |
+          export HCLOUD_TOKEN=$(op read "op://Fleetyards/HCLOUD/${{ inputs.destination }}")
           WEB_IPS=$(bash .kamal/server-ips web ${{ inputs.destination }})
           ACC_IPS=$(bash .kamal/server-ips accessory ${{ inputs.destination }})
           ALL_IPS=$(echo "$WEB_IPS,$ACC_IPS" | tr ',' ' ')
@@ -55,12 +62,5 @@ jobs:
 
       - name: Deploy with Kamal
         env:
-          HCLOUD_TOKEN: ${{ secrets.HCLOUD_TOKEN }}
-          KAMAL_REGISTRY_USERNAME: ${{ github.repository_owner }}
-          KAMAL_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
-          S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
         run: bundle exec kamal ${{ inputs.command }} -d ${{ inputs.destination }} --skip-push
