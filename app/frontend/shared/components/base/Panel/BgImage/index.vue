@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
 const target = ref<HTMLElement | null>(null);
 const imageSrc = computed(() => props.image);
 
-useLazyBackground(target, imageSrc);
+const { isLoaded } = useLazyBackground(target, imageSrc);
 </script>
 
 <template>
@@ -37,7 +37,9 @@ useLazyBackground(target, imageSrc);
       'panel-bg-align-left': alignment === 'left',
       'panel-bg-align-right': alignment === 'right',
     }"
-  />
+  >
+    <div v-if="!isLoaded" class="panel-bg__skeleton" />
+  </div>
 </template>
 
 <style lang="scss" scoped>
