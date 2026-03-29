@@ -156,6 +156,10 @@ class PaintsImporter
     paint_map = {
       "MTC Citizens for Prosperity Liberation" => "Citizens for Prosperity Liberation",
       "MTC Headhunters Reaper" => "Headhunters Reaper",
+      "MXC Citizens for Prosperity Liberation" => "Citizens for Prosperity Liberation",
+      "MXC Headhunters Reaper" => "Headhunters Reaper",
+      "Aurora UEE Distinguished Service" => "UEE Distinguished Service",
+      "Aurora Dread Pirate" => "Dread Pirate",
       "Arrow Citizens for Prosperity Liberation" => "Citizens for Prosperity Liberation",
       "Arrow Headhunters Reaper" => "Headhunters Reaper",
       "Spirit Citizens for Prosperity Liberation" => "Citizens for Prosperity Liberation",
@@ -256,7 +260,8 @@ class PaintsImporter
   end
 
   private def models_mapping(name)
-    aurora = ["Aurora CL", "Aurora ES", "Aurora LN", "Aurora LX", "Aurora MR"]
+    aurora = ["Aurora Mk I CL", "Aurora Mk I ES", "Aurora Mk I LN", "Aurora Mk I LX", "Aurora Mk I MR"]
+    aurora_mk2 = ["Aurora Mk II"]
     avenger = ["Avenger Stalker", "Avenger Titan", "Avenger Titan Renegade", "Avenger Warlock"]
     connie = [
       "Constellation Andromeda", "Constellation Aquila", "Constellation Phoenix",
@@ -287,6 +292,7 @@ class PaintsImporter
       "F7C-S Hornet Ghost Mk II"
     ]
     mercury = ["Mercury", "Mercury Star Runner"]
+    mxc = %w[MTC MDC]
     roc = %w[ROC ROC-DS]
     prospector = ["Prospector"]
     dragonfly = ["Dragonfly Yellowjacket", "Dragonfly Black"]
@@ -309,6 +315,7 @@ class PaintsImporter
     alts = ["ATLS", "ATLS Geo"]
     apollo = ["Apollo Medivac", "Apollo Triage"]
     mtc = ["MTC"]
+    mole = ["MOLE"]
 
     models_map = {
       "Wolf" => ["L-21 Wolf"],
@@ -332,6 +339,9 @@ class PaintsImporter
       "MPUV" => mpuv,
       "MTC Citizens for Prosperity Liberation" => mtc,
       "MTC Headhunters Reaper" => mtc,
+      "MXC" => mxc,
+      "MXC Citizens for Prosperity Liberation" => mxc,
+      "MXC Headhunters Reaper" => mxc,
       "Spirit Citizens for Prosperity Liberation" => spirit,
       "Spirit Headhunters Reaper" => spirit,
       "Arrow Citizens for Prosperity Liberation" => arrow,
@@ -346,6 +356,7 @@ class PaintsImporter
       "600i BIS 2951" => series_600,
       "MPUV BIS 2951" => ["MPUV Personnel", "MPUV Cargo"],
       "Origin X1 Scarlet" => x1,
+      "Mercury" => mercury,
       "Mercury Star Runner BIS 2951" => mercury,
       "Star Runner" => mercury,
       "Star Runner Silver Spark" => mercury,
@@ -366,16 +377,19 @@ class PaintsImporter
       "F7 Hornet Mk II" => hornet_mk2,
       "F7A Hornet Mk II" => hornet_mk2,
       "F7C Hornet Mk II" => hornet_mk2,
-      "Mole Lovestruck" => ["MOLE"],
-      "MOLE Dolivine" => ["MOLE"],
-      "MOLE Aphorite" => ["MOLE"],
-      "MOLE Hadanite" => ["MOLE"],
+      "Mole" => mole,
+      "Mole Lovestruck" => mole,
+      "MOLE" => mole,
+      "MOLE Dolivine" => mole,
+      "MOLE Aphorite" => mole,
+      "MOLE Hadanite" => mole,
       "ROC Dolivine" => roc,
       "ROC Aphorite" => roc,
       "ROC Hadanite" => roc,
       "Prospector Aphorite" => prospector,
       "Prospector Dolivine" => prospector,
       "Prospector Hadanite" => prospector,
+      "Hercules" => hercules,
       "Hercules Starlifter" => hercules,
       "Crusader Hercules" => hercules,
       "Hercules Starlifter BIS 2951" => hercules,
@@ -437,7 +451,11 @@ class PaintsImporter
       "MISC Reliant" => reliant,
       "Reliant Invictus Blue and Gold" => reliant,
       "Aurora" => aurora,
+      "Aurora Mk I" => aurora,
+      "Aurora Mk II" => aurora_mk2,
       "Aurora SXSW 2015" => aurora,
+      "Aurora Dread Pirate" => aurora,
+      "Aurora UEE Distinguished Service" => aurora,
       "Operation Pitchfork" => aurora,
       "Dread Pirate" => aurora,
       "UEE Distinguished Service" => aurora,
