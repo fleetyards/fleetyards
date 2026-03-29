@@ -14,8 +14,8 @@ jobs:
       packages: write
 
   deploy-to-live:
-    needs: [build]
-    uses: ./.github/workflows/deploy.job.yml
+    # needs: [build]
+    uses: ./.github/workflows/legacy-deploy.job.yml
     with:
       destination: live
       name: Live

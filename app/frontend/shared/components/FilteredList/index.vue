@@ -193,11 +193,7 @@ const toggleFilter = () => {
           </slot>
 
           <template v-else>
-            <transition name="fade">
-              <div v-if="refetching" class="filtered-list__refetch-overlay">
-                <Loader :loading="true" />
-              </div>
-            </transition>
+            <Loader :loading="refetching" fixed />
 
             <slot
               name="default"
