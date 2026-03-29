@@ -1,83 +1,33 @@
 # Migrate Kamal Secrets to 1Password
 
-Deployment secrets are currently in plain-text `.env.live` / `.env.stage` files, manually sourced before running Kamal. Migrating to 1Password centralizes secrets, accessible via a single service account token (`OP_SERVICE_ACCOUNT_TOKEN`).
+**Status: Complete**
 
-## Phase 1: Create 1Password items in `Fleetyards` vault
+Deployment secrets migrated from plain-text `.env` files to 1Password. All secrets are fetched via `op read` at deploy time using a service account token.
 
-**Shared secrets** (single `credential` field):
+## Key learnings
 
-| Item | Field |
-|---|---|
-| `HCLOUD_TOKEN` | `credential` |
-| `KAMAL_REGISTRY_USERNAME` | `credential` |
-| `S3_ACCESS_KEY_ID` | `credential` |
-| `S3_SECRET_ACCESS_KEY` | `credential` |
+- Kamal uses Dotenv parsing for secrets files, NOT bash — `$DESTINATION` is not available. Per-environment secrets must go in `secrets.live` / `secrets.stage`, not `secrets-common`.
+- 1Password item field names must not clash with built-in fields (e.g., "Login" items have a built-in `username` field — adding another causes ambiguity errors).
+- Bash variable expansion: `$DESTINATION_user` is parsed as variable `$DESTINATION_user`, not `$DESTINATION` + `_user`. Use `${DESTINATION}_user`.
+- `HCLOUD_TOKEN` must be exported in the CI shell before `kamal` runs because Kamal evaluates ERB deploy configs (which call `hcloud`) before loading secrets files.
 
-**Per-environment secrets** (`live` and `stage` fields):
+## Final structure
 
-| Item | Fields |
-|---|---|
-| `KAMAL_REGISTRY_PASSWORD` | `live`, `stage` |
-| `RAILS_MASTER_KEY` | `live`, `stage` |
-| `POSTGRES_USER` | `live`, `stage` |
-| `POSTGRES_PASSWORD` | `live`, `stage` |
+### `.kamal/secrets-common` (shared secrets only)
+- `S3_ACCESS_KEY_ID` / `S3_SECRET_ACCESS_KEY` via `op read`
 
-Values come from the current `.env.live` and `.env.stage` files.
+### `.kamal/secrets.live` and `.kamal/secrets.stage` (per-environment)
+- `HCLOUD_TOKEN`, `KAMAL_REGISTRY_USERNAME`, `KAMAL_REGISTRY_PASSWORD`
+- `RAILS_MASTER_KEY`, `POSTGRES_USER`, `POSTGRES_PASSWORD`
+- `DATABASE_URL`, `REDIS_URL` (computed from above)
 
-## Phase 2: Update `.kamal/secrets-common`
+### CI (`.github/workflows/deploy.job.yml`)
+- Installs `op` CLI
+- Single secret: `OP_SERVICE_ACCOUNT_TOKEN`
+- Exports `HCLOUD_TOKEN` via `op read` before running kamal
 
-Replace env var passthrough with `op read` calls:
+## Post-merge cleanup
 
-```bash
-# All secrets are fetched from 1Password (vault: Fleetyards)
-# Requires OP_SERVICE_ACCOUNT_TOKEN to be set in the environment
-
-VAULT="Fleetyards"
-
-# Shared secrets
-HCLOUD_TOKEN=$(op read "op://$VAULT/HCLOUD_TOKEN/credential")
-KAMAL_REGISTRY_USERNAME=$(op read "op://$VAULT/KAMAL_REGISTRY_USERNAME/credential")
-S3_ACCESS_KEY_ID=$(op read "op://$VAULT/S3_ACCESS_KEY_ID/credential")
-S3_SECRET_ACCESS_KEY=$(op read "op://$VAULT/S3_SECRET_ACCESS_KEY/credential")
-
-# Per-environment secrets (DESTINATION is set by Kamal via -d flag)
-KAMAL_REGISTRY_PASSWORD=$(op read "op://$VAULT/KAMAL_REGISTRY_PASSWORD/$DESTINATION")
-RAILS_MASTER_KEY=$(op read "op://$VAULT/RAILS_MASTER_KEY/$DESTINATION")
-POSTGRES_USER=$(op read "op://$VAULT/POSTGRES_USER/$DESTINATION")
-POSTGRES_PASSWORD=$(op read "op://$VAULT/POSTGRES_PASSWORD/$DESTINATION")
-```
-
-No changes to `.kamal/secrets.live` or `.kamal/secrets.stage` — they compute `DATABASE_URL` and `REDIS_URL` from variables set by secrets-common.
-
-## Phase 3: Update `.github/workflows/deploy.job.yml`
-
-- Add step to install 1Password CLI (`op`) after `ruby/setup-ruby`
-- Update "Fetch known hosts" step: replace `${{ secrets.HCLOUD_TOKEN }}` with `op read` using `OP_SERVICE_ACCOUNT_TOKEN`
-- Replace all individual secret env vars in "Deploy with Kamal" step with single `OP_SERVICE_ACCOUNT_TOKEN`
-
-## Phase 4: Update `.env.example`
-
-Add comment documenting the 1Password deploy flow:
-
-```
-# Kamal deployment secrets are fetched from 1Password at deploy time.
-# Set OP_SERVICE_ACCOUNT_TOKEN before deploying:
-#   export OP_SERVICE_ACCOUNT_TOKEN="your-token"
-#   kamal deploy -d live
-```
-
-## Phase 5: GitHub Actions secrets
-
-- Add `OP_SERVICE_ACCOUNT_TOKEN` as a repository secret (before merging)
-- After verification, remove old secrets: `HCLOUD_TOKEN`, `RAILS_MASTER_KEY`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`
+- Delete local `.env.live` and `.env.stage`
+- Remove old GitHub Actions secrets: `HCLOUD_TOKEN`, `RAILS_MASTER_KEY`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`
 - Keep `SSH_KEY` (CI infrastructure)
-
-## Phase 6: Local cleanup
-
-- Delete `.env.live` and `.env.stage` from local machines (already gitignored)
-
-## Verification
-
-1. `export OP_SERVICE_ACCOUNT_TOKEN=... && kamal config -d stage` — verify secrets resolve locally
-2. Push to trigger a stage deploy via CI — confirm it succeeds
-3. Confirm clean failure when `OP_SERVICE_ACCOUNT_TOKEN` is unset
