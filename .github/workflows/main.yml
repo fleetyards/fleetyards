@@ -63,8 +63,8 @@ jobs:
     uses: ./.github/workflows/seeds.job.yml
 
   build:
-    # TODO: remove chore/vue3 and chore/kamal-deployment branch conditions after merging into main (see #3520)
-    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/chore/vue3')) || (github.event_name == 'pull_request' && github.head_ref == 'chore/kamal-deployment') || github.event_name == 'workflow_dispatch'
+    # TODO: remove chore/vue3 branch condition after merging into main (see #3520)
+    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/chore/vue3')) || github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/build.job.yml
     with:
       tag: ${{ github.ref_name }}
@@ -74,8 +74,8 @@ jobs:
       packages: write
 
   deploy-stage:
-    # TODO: remove chore/vue3 and chore/kamal-deployment branch conditions after merging into main (see #3520)
-    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/chore/vue3')) || (github.event_name == 'pull_request' && github.head_ref == 'chore/kamal-deployment') || github.event_name == 'workflow_dispatch'
+    # TODO: remove chore/vue3 branch condition after merging into main (see #3520)
+    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/chore/vue3')) || github.event_name == 'workflow_dispatch'
     needs: [build, ruby-tests, ruby-lint, js-tests, js-lint, js-prettier, tsc, api-schema-check, api-schema-lint, e2e-test]
     uses: ./.github/workflows/deploy.job.yml
     with:
