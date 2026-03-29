@@ -54,7 +54,8 @@ jobs:
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
         run: |
-          export HCLOUD_TOKEN=$(op read "op://Fleetyards/HCLOUD/${{ inputs.destination }}")
+          DESTINATION=$(echo "${{ inputs.destination }}" | tr '[:lower:]' '[:upper:]')
+          export HCLOUD_TOKEN=$(op read "op://Fleetyards/HCLOUD_${DESTINATION}/credential")
           WEB_IPS=$(bash .kamal/server-ips web ${{ inputs.destination }})
           ACC_IPS=$(bash .kamal/server-ips accessory ${{ inputs.destination }})
           ALL_IPS=$(echo "$WEB_IPS,$ACC_IPS" | tr ',' ' ')
@@ -64,5 +65,6 @@ jobs:
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
         run: |
-          export HCLOUD_TOKEN=$(op read "op://Fleetyards/HCLOUD/${{ inputs.destination }}")
+          DESTINATION=$(echo "${{ inputs.destination }}" | tr '[:lower:]' '[:upper:]')
+          export HCLOUD_TOKEN=$(op read "op://Fleetyards/HCLOUD_${DESTINATION}/credential")
           bundle exec kamal ${{ inputs.command }} -d ${{ inputs.destination }} --skip-push
