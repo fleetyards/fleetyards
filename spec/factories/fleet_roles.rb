@@ -14,7 +14,6 @@
 #
 # Indexes
 #
-#  index_fleet_roles_on_fleet_id           (fleet_id)
 #  index_fleet_roles_on_fleet_id_and_rank  (fleet_id,rank) UNIQUE
 #
 # Foreign Keys

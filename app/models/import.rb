@@ -23,7 +23,6 @@
 #
 # Indexes
 #
-#  index_imports_on_aasm_state           (aasm_state)
 #  index_imports_on_aasm_state_and_type  (aasm_state,type)
 #  index_imports_on_type                 (type)
 #

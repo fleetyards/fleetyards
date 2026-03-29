@@ -30,7 +30,6 @@
 # Indexes
 #
 #  index_cargo_holds_on_capacity_scu                         (capacity_scu)
-#  index_cargo_holds_on_model_id                             (model_id)
 #  index_cargo_holds_on_model_id_and_max_container_size_scu  (model_id,max_container_size_scu)
 #
 # Foreign Keys

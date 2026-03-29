@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
+ActiveRecord::Schema[7.2].define(version: 2026_03_29_155741) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
@@ -124,7 +124,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cargo_hold_id", "container_size_scu"], name: "index_cargo_hold_capacities_on_hold_and_size", unique: true
-    t.index ["cargo_hold_id"], name: "index_cargo_hold_container_capacities_on_cargo_hold_id"
     t.index ["container_size_scu"], name: "index_cargo_hold_container_capacities_on_container_size_scu"
     t.index ["max_quantity"], name: "index_cargo_hold_container_capacities_on_max_quantity"
   end
@@ -153,7 +152,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.integer "rotation"
     t.index ["capacity_scu"], name: "index_cargo_holds_on_capacity_scu"
     t.index ["model_id", "max_container_size_scu"], name: "index_cargo_holds_on_model_id_and_max_container_size_scu"
-    t.index ["model_id"], name: "index_cargo_holds_on_model_id"
   end
 
   create_table "components", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -295,7 +293,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["fleet_id", "rank"], name: "index_fleet_roles_on_fleet_id_and_rank", unique: true
-    t.index ["fleet_id"], name: "index_fleet_roles_on_fleet_id"
   end
 
   create_table "fleet_vehicles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -424,7 +421,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_23_000000) do
     t.text "import_data"
     t.datetime "carrierwave_migrated_at"
     t.index ["aasm_state", "type"], name: "index_imports_on_aasm_state_and_type"
-    t.index ["aasm_state"], name: "index_imports_on_aasm_state"
     t.index ["type"], name: "index_imports_on_type"
   end
 

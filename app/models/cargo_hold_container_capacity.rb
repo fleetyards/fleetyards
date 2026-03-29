@@ -15,7 +15,6 @@
 # Indexes
 #
 #  index_cargo_hold_capacities_on_hold_and_size                 (cargo_hold_id,container_size_scu) UNIQUE
-#  index_cargo_hold_container_capacities_on_cargo_hold_id       (cargo_hold_id)
 #  index_cargo_hold_container_capacities_on_container_size_scu  (container_size_scu)
 #  index_cargo_hold_container_capacities_on_max_quantity        (max_quantity)
 #
