@@ -49,5 +49,3 @@ jobs:
             service=fleetyards
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          secrets: |
-            RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}
