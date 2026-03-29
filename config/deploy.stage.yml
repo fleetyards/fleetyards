@@ -35,6 +35,7 @@ env:
     DOMAIN: fleetyards.dev
     SHORT_DOMAIN: fltyrd.dev
     CDN_ENDPOINT: "https://cdn.fltyrd.dev"
+    STORAGE_CDN_ENDPOINT: "https://storage.fltyrd.dev"
     MAILER_DEFAULT_FROM: "info@fleetyards.dev"
     CABLE_ENDPOINT: "wss://fleetyards.dev/cable"
 

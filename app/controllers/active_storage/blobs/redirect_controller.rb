@@ -15,6 +15,15 @@ class ActiveStorage::Blobs::RedirectController < ActiveStorage::BaseController
     params = URI.decode_www_form(uri.query || "")
     params << ["origin", request.origin.to_s]
     uri.query = URI.encode_www_form(params)
+
+    cdn_endpoint = Rails.configuration.app.storage_cdn_endpoint
+    if cdn_endpoint.present?
+      cdn_uri = URI.parse(cdn_endpoint)
+      uri.scheme = cdn_uri.scheme
+      uri.host = cdn_uri.host
+      uri.port = cdn_uri.port
+    end
+
     uri.to_s
   end
 end

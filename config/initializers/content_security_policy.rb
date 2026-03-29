@@ -22,6 +22,7 @@ Rails.application.configure do
       ".",
       Rails.application.credentials.s3_endpoint
     ].compact.join("")
+    storage_cdn_endpoint = Rails.configuration.app.storage_cdn_endpoint
 
     docs_uri = URI.parse(DOCS_ENDPOINT)
     docs_endpoint = "#{docs_uri.scheme}://#{docs_uri.host}"
@@ -32,7 +33,7 @@ Rails.application.configure do
       "https://fonts.gstatic.com", "https://pro.fontawesome.com", Rails.configuration.rsi.endpoint,
       "https://kit.fontawesome.com", "https://kit-pro.fontawesome.com",
       "https://kit-free.fontawesome.com", "https://ka-p.fontawesome.com", "https://starship42.com",
-      s3_endpoint,
+      s3_endpoint, storage_cdn_endpoint,
       "https://www.gstatic.com",
       "https://cdn.jsdelivr.net",
       "https://stackpath.bootstrapcdn.com"
@@ -65,7 +66,7 @@ Rails.application.configure do
       :self, :data, :blob, FRONTEND_ENDPOINT, api_endpoint, cdn_endpoint, legacy_cdn_endpoint,
       Rails.configuration.rsi.endpoint, "https://img.youtube.com", "https://img.buymeacoffee.com",
       "https://validator.swagger.io",
-      s3_endpoint
+      s3_endpoint, storage_cdn_endpoint
     ].compact
 
     font_src = [
