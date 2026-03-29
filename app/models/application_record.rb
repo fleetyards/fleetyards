@@ -21,11 +21,23 @@ class ApplicationRecord < ActiveRecord::Base
     end
   end
 
+  def jbuilder_collection_folder
+    "#{self.class.model_name.collection}/#{self.class.model_name.element}"
+  end
+
+  def jbuilder_template_instance_name
+    self.class.model_name.element.to_sym
+  end
+
+  def jbuilder_template_path
+    "api/v1/#{jbuilder_collection_folder}"
+  end
+
   def to_jbuilder_json(*_args)
     ApplicationController.renderer.render(
-      partial: "api/v1/#{self.class.model_name.element.pluralize}/#{self.class.model_name.element}",
+      partial: jbuilder_template_path,
       locals: {
-        self.class.model_name.element.to_sym => self
+        jbuilder_template_instance_name => self
       },
       formats: [:json],
       handlers: [:jbuilder]
