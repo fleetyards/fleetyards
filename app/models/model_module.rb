@@ -25,6 +25,8 @@
 #  model_id                :uuid
 #
 class ModelModule < ApplicationRecord
+  include ActiveStorageVariants
+
   paginates_per 30
 
   attr_accessor :update_reason, :update_reason_description, :author_id

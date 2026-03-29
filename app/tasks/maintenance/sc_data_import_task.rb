@@ -5,7 +5,7 @@ module Maintenance
     no_collection
 
     def process
-      version = Rails.configuration.app.sc_data_sc_version
+      version = Rails.configuration.app.sc_data[:version]
 
       import = Imports::ScData::AllImport.create(version:)
 

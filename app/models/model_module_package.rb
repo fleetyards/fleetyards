@@ -29,6 +29,8 @@
 #  model_id                :uuid
 #
 class ModelModulePackage < ApplicationRecord
+  include ActiveStorageVariants
+
   paginates_per 30
 
   belongs_to :model, touch: true

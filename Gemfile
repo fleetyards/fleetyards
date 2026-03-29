@@ -10,6 +10,7 @@ gem "pg", "~> 1.0"
 
 gem "sidekiq", "~> 8.0"
 gem "sidekiq-cron"
+gem "sidekiq-failures"
 
 gem "paper_trail"
 
@@ -90,10 +91,7 @@ gem "nokogiri"
 gem "typhoeus"
 
 gem "rack-cors", require: "rack/cors"
-
-gem "sentry-rails"
-gem "sentry-ruby"
-gem "sentry-sidekiq"
+gem "rack-rewrite"
 
 gem "lograge"
 
@@ -144,12 +142,7 @@ group :development do
   gem "spring-watcher-listen"
   gem "web-console"
 
-  gem "bcrypt_pbkdf", require: false
-  gem "capistrano", "~> 3.11", require: false
-  gem "capistrano-rails", "~> 1.4", require: false
-  gem "capistrano-rails-console", require: false
-  gem "capistrano-rbenv", "~> 2.1", require: false
-  gem "ed25519", require: false
+  gem "kamal", require: false
 
   gem "letter_opener"
 end

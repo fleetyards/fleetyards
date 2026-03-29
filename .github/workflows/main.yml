@@ -2,7 +2,8 @@ name: Main
 
 on:
   push:
-    branches: ["main", "staging", "trying"]
+    # TODO: remove chore/vue3 after merging into main (see #3520)
+    branches: ["main", "staging", "trying", "chore/vue3"]
     tags-ignore:
       - "*.*"
     paths-ignore:
@@ -19,6 +20,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/workflows/js-setup-action
+
+  ruby-setup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
 
   js-lint:
     needs: js-setup
@@ -41,14 +50,6 @@ jobs:
     needs: js-setup
     uses: ./.github/workflows/js-tests.job.yml
 
-  ruby-setup:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-
   ruby-lint:
     needs: ruby-setup
     uses: ./.github/workflows/ruby-lint.job.yml
@@ -62,8 +63,8 @@ jobs:
     uses: ./.github/workflows/seeds.job.yml
 
   build:
-    if: github.event_name == 'push' || github.event_name == 'pull_request'
-    needs: [ruby-tests, ruby-lint, js-tests, js-lint, js-prettier, tsc, api-schema-check, api-schema-lint, e2e-test]
+    # TODO: remove chore/vue3 and chore/kamal-deployment branch conditions after merging into main (see #3520)
+    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/chore/vue3')) || (github.event_name == 'pull_request' && github.head_ref == 'chore/kamal-deployment') || github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/build.job.yml
     with:
       tag: ${{ github.ref_name }}
@@ -71,6 +72,41 @@ jobs:
     permissions:
       contents: read
       packages: write
+
+  deploy-stage:
+    # TODO: remove chore/vue3 and chore/kamal-deployment branch conditions after merging into main (see #3520)
+    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/chore/vue3')) || (github.event_name == 'pull_request' && github.head_ref == 'chore/kamal-deployment') || github.event_name == 'workflow_dispatch'
+    needs: [build, ruby-tests, ruby-lint, js-tests, js-lint, js-prettier, tsc, api-schema-check, api-schema-lint, e2e-test]
+    uses: ./.github/workflows/deploy.job.yml
+    with:
+      destination: stage
+      name: Stage
+      url: https://fleetyards.dev
+    secrets: inherit
+
+  notify-app-signal-stage:
+    runs-on: ubuntu-latest
+    needs: [deploy-stage]
+    environment: Stage
+    env:
+      APP_SIGNAL_DEPLOY_HOOK: ${{ secrets.APP_SIGNAL_DEPLOY_HOOK }}
+    steps:
+      - run: |
+          curl -X POST "$APP_SIGNAL_DEPLOY_HOOK" \
+          -H 'Content-Type: application/json' \
+          -d "{\"revision\": \"$GITHUB_SHA\", \"user\": \"${{ github.actor }}\"}"
+
+  notify-discord-stage:
+    runs-on: ubuntu-latest
+    needs: [deploy-stage]
+    environment: Stage
+    env:
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+    steps:
+      - run: |
+          curl -X POST "$DISCORD_WEBHOOK" \
+          -H 'Content-Type: application/json' \
+          -d "{\"content\": \"**Stage Deploy:** ${{ github.ref_name }} deployed to https://fleetyards.dev by ${{ github.actor }}\" }"
 
   api-schema-check:
     name: API Schema Check

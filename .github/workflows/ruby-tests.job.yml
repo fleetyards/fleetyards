@@ -50,12 +50,12 @@ jobs:
         with:
           bundler-cache: true
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: "20"
       - name: Install pnpm
         run: npm install -g pnpm@9.1.3
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             "**/node_modules"
@@ -72,7 +72,7 @@ jobs:
           CI_NODE_TOTAL: ${{ matrix.ci_node_total }}
           CI_NODE_INDEX: ${{ matrix.ci_node_index }}
         run: |
-          specs=($(find spec -name '*_spec.rb' | sort))
+          mapfile -t specs < <(find spec -name '*_spec.rb' | sort)
           total=${#specs[@]}
           node_specs=()
           for ((i=0; i<total; i++)); do

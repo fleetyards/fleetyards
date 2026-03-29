@@ -4,7 +4,7 @@ module Loaders
   module ScData
     class ModelJob < ::Loaders::BaseJob
       def perform(model_id)
-        version = Rails.configuration.app.sc_data_sc_version
+        version = Rails.configuration.app.sc_data[:version]
 
         import = Imports::ScData::ModelImport.create(input: {model_id: model_id})
 

@@ -66,6 +66,7 @@
 #
 class User < ApplicationRecord
   include UrlFieldConcern
+  include ActiveStorageVariants
   include Rails.application.routes.url_helpers
 
   devise :two_factor_authenticatable, :two_factor_backupable, :recoverable, :trackable,

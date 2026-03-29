@@ -1,3 +1,5 @@
+require "open-uri"
+
 module Rsi
   class BaseLoader
     attr_accessor :base_url, :graphql_client
@@ -5,6 +7,23 @@ module Rsi
     def initialize(options = {})
       @base_url = options[:base_url] || Rails.configuration.rsi.endpoint
       @graphql_client = Graphlient::Client.new("#{base_url}/graphql")
+    end
+
+    private def attach_image_from_url(record, attachment_name, url)
+      return if url.blank?
+
+      uri = URI.parse(url)
+      tempfile = uri.open # rubocop:disable Security/Open
+      filename = File.basename(uri.path)
+      content_type = Marcel::MimeType.for(name: filename)
+
+      record.send(attachment_name).attach(
+        io: tempfile,
+        filename: filename,
+        content_type: content_type
+      )
+    rescue => e
+      Rails.logger.error "Failed to attach image #{attachment_name} for #{record.class}##{record.id}: #{e.message}"
     end
 
     private def fetch_remote(url)

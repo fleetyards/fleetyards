@@ -10,10 +10,10 @@ if record.try(new_attr) && record.send(new_attr).attached?
   json.size file.byte_size
   json.url rails_blob_url(file)
   if file.representable?
-    json.small_url rails_representation_url(file.representation(resize_to_limit: [500, 500], saver: {quality: 80}))
-    json.medium_url rails_representation_url(file.representation(resize_to_limit: [1000, 1000], saver: {quality: 90}))
-    json.large_url rails_representation_url(file.representation(resize_to_limit: [2000, 2000], saver: {quality: 90}))
-    json.xlarge_url rails_representation_url(file.representation(resize_to_limit: [3000, 3000]))
+    json.small_url rails_representation_url(file.representation(ActiveStorageVariants::REPRESENTATION_SIZES[:small]))
+    json.medium_url rails_representation_url(file.representation(ActiveStorageVariants::REPRESENTATION_SIZES[:medium]))
+    json.large_url rails_representation_url(file.representation(ActiveStorageVariants::REPRESENTATION_SIZES[:large]))
+    json.xlarge_url rails_representation_url(file.representation(ActiveStorageVariants::REPRESENTATION_SIZES[:xlarge]))
   end
   json.width file.metadata[:width]
   json.height file.metadata[:height]

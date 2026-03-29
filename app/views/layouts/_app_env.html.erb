@@ -14,7 +14,7 @@
   window.OAUTH_ENDPOINT = '<%= OAUTH_ENDPOINT %>'
   window.ON_SUBDOMAIN = <%= Rails.configuration.app.on_subdomain? %>
   window.RSI_ENDPOINT = '<%= Rails.configuration.rsi.endpoint %>'
-  window.SENTRY_DSN = '<%= Rails.application.credentials.sentry_frontend_dsn %>'
+  window.APPSIGNAL_KEY = '<%= Rails.application.credentials.dig(:appsignal, :frontend_key) %>'
   window.DATA_PREFETCH = <%= @data_prefetch.to_json.html_safe %>
   window.MAINTAINER_NAME = '<%= Rails.configuration.maintainer.name %>'
   window.MAINTAINER_MAIL = '<%= Rails.configuration.maintainer.mail %>'

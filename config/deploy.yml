@@ -1,0 +1,108 @@
+# Kamal deploy configuration for Fleetyards
+# See https://kamal-deploy.org/docs/configuration/ for full reference
+#
+# Use destinations for environment-specific overrides:
+#   kamal deploy -d live
+#   kamal deploy -d stage
+
+service: fleetyards
+deploy_timeout: 120
+
+image: fleetyards/app
+
+servers:
+  web:
+    options:
+      memory: 2g
+  worker:
+    cmd: bundle exec sidekiq -C config/sidekiq.yml
+    options:
+      memory: 2g
+
+proxy:
+  ssl: true
+  forward_headers: true
+  hosts:
+    - fleetyards.net
+    - www.fleetyards.net
+    - api.fleetyards.net
+    - admin.fleetyards.net
+    - docs.fleetyards.net
+    - fltyrd.net
+  app_port: 3000
+  healthcheck:
+    interval: 3
+    timeout: 10
+    path: /up
+
+registry:
+  server: ghcr.io
+  username:
+    - KAMAL_REGISTRY_USERNAME
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+builder:
+  arch: amd64
+  secrets:
+    - RAILS_MASTER_KEY
+
+ssh:
+  user: kamal
+
+env:
+  clear:
+    RAILS_ENV: production
+    RAILS_LOG_TO_STDOUT: "1"
+    RAILS_SERVE_STATIC_FILES: "true"
+    WORKER_COUNT: "2"
+    MAX_THREADS: "5"
+    MIN_THREADS: "5"
+    ON_SUBDOMAIN: "true"
+  secret:
+    # Rails core (all other secrets are in Rails credentials)
+    - RAILS_MASTER_KEY
+    # Database
+    - DATABASE_URL
+    # Redis
+    - REDIS_URL
+accessories:
+  db:
+    image: postgres:16
+    port: "5432:5432"
+    env:
+      clear:
+        POSTGRES_DB: fleetyards_production
+      secret:
+        - POSTGRES_USER
+        - POSTGRES_PASSWORD
+    directories:
+      - data:/var/lib/postgresql/data
+    options:
+      memory: 512m
+
+  redis:
+    image: redis:7.2
+    port: "6379:6379"
+    cmd: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    directories:
+      - data:/data
+    options:
+      memory: 512m
+
+  db-backup:
+    image: eeshugerman/postgres-backup-s3:16
+    env:
+      clear:
+        POSTGRES_HOST: fleetyards-db
+        SCHEDULE: "0 3 * * *"
+        S3_ENDPOINT: https://fsn1.your-objectstorage.com
+        S3_PREFIX: db
+        BACKUP_KEEP_DAYS: 7
+      secret:
+        - POSTGRES_USER
+        - POSTGRES_PASSWORD
+        - S3_ACCESS_KEY_ID
+        - S3_SECRET_ACCESS_KEY
+    options:
+      memory: 256m

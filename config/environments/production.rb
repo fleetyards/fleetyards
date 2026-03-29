@@ -9,6 +9,13 @@ Rails.application.configure do
   config.hosts << ".#{Rails.configuration.app.domain}"
   config.hosts << Rails.configuration.app.short_domain
 
+  # Redirect www to apex domain
+  config.middleware.insert_before ActionDispatch::SSL, Rack::Rewrite do
+    r301 %r{.*}, ->(match, rack_env) {
+      "https://#{rack_env["SERVER_NAME"].sub(/\Awww\./, "")}#{rack_env["PATH_INFO"]}"
+    }, if: ->(rack_env) { rack_env["SERVER_NAME"]&.start_with?("www.") }
+  end
+
   # Code is not reloaded between requests.
   config.enable_reloading = false
 
@@ -50,7 +57,7 @@ Rails.application.configure do
 
   # Assume all access to the app is happening through a SSL-terminating reverse proxy.
   # Can be used together with config.force_ssl for Strict-Transport-Security and secure cookies.
-  # config.assume_ssl = true
+  config.assume_ssl = true
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = !ENV["UNSAFE"]
@@ -141,5 +148,5 @@ Rails.application.configure do
   #   /.*\.example\.com/ # Allow requests from subdomains like `www.example.com`
   # ]
   # Skip DNS rebinding protection for the default health check endpoint.
-  # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+  config.host_authorization = {exclude: ->(request) { request.path == "/up" }}
 end

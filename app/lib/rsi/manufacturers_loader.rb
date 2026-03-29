@@ -20,10 +20,8 @@ module Rsi
         description: manufacturer_data["description"].presence
       )
 
-      if !Rails.env.test? && manufacturer.logo.blank? && manufacturer_data["media"].present? && manufacturer_data["media"][0]["source_url"].present?
-        manufacturer.update(
-          remote_logo_url: "#{base_url}#{manufacturer_data["media"][0]["source_url"]}"
-        )
+      if !Rails.env.test? && !manufacturer.new_logo.attached? && manufacturer_data["media"].present? && manufacturer_data["media"][0]["source_url"].present?
+        attach_image_from_url(manufacturer, :new_logo, "#{base_url}#{manufacturer_data["media"][0]["source_url"]}")
       end
 
       manufacturer

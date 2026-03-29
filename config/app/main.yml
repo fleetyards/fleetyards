@@ -21,6 +21,7 @@ shared:
   mailer_default_admin_to: <%= ENV["MAILER_DEFAULT_ADMIN_TO"] %>
 
   cdn_endpoint: <%= ENV["CDN_ENDPOINT"] || "cdn.fltyrd.net" %>
+  storage_cdn_endpoint: <%= ENV["STORAGE_CDN_ENDPOINT"] %>
 
   s3_seeds_fleetchart_bucket: <%= ENV["S3_SEEDS_FLEETCHART_BUCKET"] || "seeds_fleetchart" %>
 

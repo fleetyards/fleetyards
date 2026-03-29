@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+set -a
+source .env.live
+set +a
+
+ROLE="${1:-web}"
+shift 2>/dev/null || true
+kamal app exec -d live -r "$ROLE" "$@"

@@ -12,6 +12,7 @@ Dockerfile*
 # Data dumps
 dumps/*
 data/*
+!data/sc_data
 
 # Config/secrets
 .env*

@@ -66,10 +66,10 @@ jobs:
         run: bundle exec rails db:seed
       - name: Get Playwright version
         id: playwright-version
-        run: echo "version=$(pnpm playwright --version)" >> $GITHUB_OUTPUT
+        run: echo "version=$(pnpm playwright --version)" >> "$GITHUB_OUTPUT"
       - name: Cache Playwright browsers
         id: playwright-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}

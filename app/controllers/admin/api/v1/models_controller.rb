@@ -74,9 +74,10 @@ module Admin
         end
 
         def use_rsi_image
-          return if @model.update(remote_store_image_url: @model.rsi_store_image_url)
-
-          Rails.logger.info @model.errors.to_a.to_yaml
+          if @model.new_rsi_store_image.attached?
+            @model.new_store_image.attach(@model.new_rsi_store_image.blob)
+            return
+          end
 
           render json: ValidationError.new("model.use_rsi_image", errors: @model.errors), status: :bad_request
         end

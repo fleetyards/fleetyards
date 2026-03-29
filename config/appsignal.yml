@@ -2,6 +2,7 @@ production:
   push_api_key: "<%= Rails.application.credentials.dig(:appsignal, :push_api_key) rescue nil %>"
   name: "Fleetyards"
   active: true
+  working_directory_path: "/tmp/appsignal"
   ignore_errors:
       - ActiveRecord::RecordNotFound
       - ActionController::RoutingError
@@ -9,8 +10,10 @@ production:
 
 staging:
   push_api_key: "<%= Rails.application.credentials.dig(:appsignal, :push_api_key) rescue nil %>"
-  name: "Fleetyards"
+  name: "fleetyards"
   active: true
+  working_directory_path: "/tmp/appsignal"
+  log_level: "debug"
   ignore_errors:
       - ActiveRecord::RecordNotFound
       - ActionController::RoutingError

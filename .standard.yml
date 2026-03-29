@@ -1,7 +1,39 @@
 ignore:
-  - 'db/schema.rb'
-  - 'db/migrate/**/*'
-  - '.ruby-lsp/**/*'
+  - bin/bundle:
+    - Performance/ConstantRegexp
+    - Layout/MultilineOperationIndentation
+  - bin/bundler:
+    - Style/StringLiterals
+  - bin/byebug:
+    - Style/StringLiterals
+  - bin/dotenv:
+    - Style/StringLiterals
+  - bin/foreman:
+    - Style/StringLiterals
+  - bin/nokogiri:
+    - Style/StringLiterals
+  - bin/puma:
+    - Style/StringLiterals
+  - bin/pumactl:
+    - Style/StringLiterals
+  - bin/rackup:
+    - Style/StringLiterals
+  - bin/redcarpet:
+    - Style/StringLiterals
+  - bin/sidekiq:
+    - Style/StringLiterals
+  - bin/sidekiqctl:
+    - Style/StringLiterals
+  - bin/spring:
+    - Style/StringLiterals
+  - bin/thor:
+    - Style/StringLiterals
+  - bin/vite:
+    - Performance/RegexpMatch
+  - db/schema.rb:
+    - Layout/SpaceInsideHashLiteralBraces
+  - db/migrate/**/*
+  - .ruby-lsp/**/*
   - Style/Documentation
   - app/**/*:
     - Style/Documentation

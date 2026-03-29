@@ -1,4 +1,5 @@
 require "json"
+require "open-uri"
 
 class PaintsImporter
   def run
@@ -112,13 +113,20 @@ class PaintsImporter
         }
       end
 
-      ModelPaint.create!(
+      model_paint = ModelPaint.create!(
         model_id: model.id,
         name: paint_name,
-        remote_store_image_url: paint[:image],
         hidden: false,
         active: true
       )
+
+      if paint[:image].present?
+        uri = URI.parse(paint[:image])
+        tempfile = uri.open # rubocop:disable Security/Open
+        filename = File.basename(uri.path)
+        content_type = Marcel::MimeType.for(name: filename)
+        model_paint.new_store_image.attach(io: tempfile, filename: filename, content_type: content_type)
+      end
 
       {
         new: true,

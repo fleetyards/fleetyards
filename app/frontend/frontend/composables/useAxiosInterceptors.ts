@@ -7,11 +7,8 @@ export const useAxiosInterceptors = () => {
   const { currentLocale } = useI18n();
 
   AXIOS_INSTANCE.interceptors.request.use((config) => {
-    config.headers["common"] = {
-      ...config.headers["common"],
-      "Accept-Language": `${currentLocale()},en;q=0.8`,
-      "X-CSRF-Token": csrfToken(),
-    };
+    config.headers.set("Accept-Language", `${currentLocale()},en;q=0.8`);
+    config.headers.set("X-CSRF-Token", csrfToken());
 
     return config;
   });
