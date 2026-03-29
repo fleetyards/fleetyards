@@ -12,7 +12,8 @@
         "shinytracker": "Personal progress tracker for missions, reputation, achievements, and exploration goals with detailed statistics",
         "uexCorp": "Real-time commodity trading platform with price tracking, trade route optimization, and market analysis tools",
         "cargoGridViewer": "3D cargo grid viewer showing cargo hold dimensions and container fitting for all ships",
-        "scmdb": "Browse missions, rewards, reputation paths, mining resources and more for Star Citizen"
+        "scmdb": "Browse missions, rewards, reputation paths, mining resources and more for Star Citizen",
+        "regolith": "Star Citizen mining tool with rock scanning, refining calculations, and mining head comparisons"
       },
       "discontinued": "This project has been discontinued."
     }

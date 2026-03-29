@@ -23,6 +23,7 @@ import shinytrackerImage from "@/images/tools/shinytracker.webp";
 import uexCorpImage from "@/images/tools/uex-corp.webp";
 import cargoGridViewerImage from "@/images/tools/cargo-grid-viewer.webp";
 import scmdbImage from "@/images/tools/scmdb.webp";
+import regolithImage from "@/images/tools/regolith.webp";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -40,6 +41,7 @@ const toolImages: Record<string, string> = {
   uexCorp: uexCorpImage,
   cargoGridViewer: cargoGridViewerImage,
   scmdb: scmdbImage,
+  regolith: regolithImage,
 };
 
 const tools: Array<Tool & { key: string }> = [
@@ -109,6 +111,12 @@ const tools: Array<Tool & { key: string }> = [
     url: "https://scmdb.net/",
     name: "SCMDB // Mission Database",
     description: t("tools.descriptions.scmdb"),
+  },
+  {
+    key: "regolith",
+    url: "https://regolith.rocks/",
+    name: "Regolith Co.",
+    description: t("tools.descriptions.regolith"),
   },
 ];
 

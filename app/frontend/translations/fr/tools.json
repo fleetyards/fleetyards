@@ -11,7 +11,9 @@
         "starHangar": "Marché de confiance pour les packages de vaisseaux Star Citizen avec trading sécurisé et suivi des prix",
         "shinytracker": "Suivi de progression personnel pour missions, réputation, succès et objectifs d'exploration avec statistiques détaillées",
         "uexCorp": "Plateforme de trading de matières premières en temps réel avec suivi des prix, optimisation des routes commerciales et outils d'analyse de marché",
-        "scmdb": "Parcourez les missions, récompenses, chemins de réputation, ressources minières et plus pour Star Citizen"
+        "cargoGridViewer": "Visualiseur 3D de grille de cargaison montrant les dimensions de soute et l'ajustement des conteneurs pour tous les vaisseaux",
+        "scmdb": "Parcourez les missions, récompenses, chemins de réputation, ressources minières et plus pour Star Citizen",
+        "regolith": "Outil minier Star Citizen avec scan de roches, calculs de raffinage et comparaisons de têtes de minage"
       },
       "discontinued": "Ce projet a été abandonné."
     }
