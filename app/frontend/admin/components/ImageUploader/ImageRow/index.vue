@@ -194,16 +194,16 @@ const updateCaption = debounce(debouncedUpdateCaption, 500);
       >
         <div
           :key="internalImage.smallUrl"
-          v-lazy:background-image="internalImage.smallUrl"
-          class="image lazy"
+          :style="{ backgroundImage: `url(${internalImage.smallUrl})` }"
+          class="image"
           alt="storeImage"
         />
       </a>
       <div
         v-else
         :key="internalImage.smallUrl"
-        v-lazy:background-image="internalImage.smallUrl"
-        class="image lazy"
+        :style="{ backgroundImage: `url(${internalImage.smallUrl})` }"
+        class="image"
         alt="storeImage"
       />
     </div>

@@ -5,23 +5,29 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { useLazyBackground } from "@/shared/composables/useLazyBackground";
+
 type Props = {
   image: string;
   alignment?: "left" | "right";
   rounded?: "all" | "left" | "right" | "top" | "bottom";
 };
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   alignment: undefined,
   rounded: "all",
 });
+
+const target = ref<HTMLElement | null>(null);
+const imageSrc = computed(() => props.image);
+
+useLazyBackground(target, imageSrc);
 </script>
 
 <template>
   <div
-    :key="image"
-    v-lazy:background-image="image"
-    class="panel-bg lazy"
+    ref="target"
+    class="panel-bg"
     :class="{
       'panel-bg-rounded': rounded === 'all',
       'panel-bg-rounded-left': rounded === 'left',

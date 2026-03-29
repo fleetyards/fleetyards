@@ -224,7 +224,10 @@ const adiMap = computed(() => {
               <span>{{ model.manufacturer?.name }}</span>
               <img
                 v-if="model.manufacturer && model.manufacturer.logo"
-                v-lazy="model.manufacturer.logo"
+                :src="
+                  model.manufacturer.logo.smallUrl ||
+                  model.manufacturer.logo.url
+                "
                 class="manufacturer-logo"
                 alt="manufacturer-logo"
               />

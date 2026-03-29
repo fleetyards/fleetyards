@@ -9,5 +9,5 @@ import logoUrl from "@/images/community-logo.png";
 </script>
 
 <template>
-  <img v-lazy="logoUrl" alt="made-by-the-community" />
+  <img :src="logoUrl" alt="made-by-the-community" />
 </template>

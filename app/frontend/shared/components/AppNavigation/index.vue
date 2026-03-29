@@ -75,7 +75,7 @@ const closeNav = () => {
       <div class="app-navigation__inner">
         <ul>
           <NavItem class="logo-menu">
-            <img v-lazy="logo" class="logo-menu-image" alt="logo" />
+            <img :src="logo" class="logo-menu-image" alt="logo" />
             <span v-if="!slim" class="logo-menu-label">
               {{ title }}
             </span>

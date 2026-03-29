@@ -3,7 +3,6 @@ import { Plugin } from "vue";
 import { createTestingPinia, TestingOptions } from "@pinia/testing";
 import { VueQueryPlugin } from "@tanstack/vue-query";
 import { createRouter, createWebHashHistory, type Router } from "vue-router";
-import VueLazyload from "vue-lazyload";
 
 const createPinia = (newState: TestingOptions["initialState"]) =>
   createTestingPinia({
@@ -48,7 +47,6 @@ export const mountWithDefaults = async <C extends new (...args: any) => any>(
     slots: params?.slots,
     global: {
       plugins: [
-        VueLazyload,
         createPinia(params?.initialState || {}),
         VueQueryPlugin,
         ...withRouter,

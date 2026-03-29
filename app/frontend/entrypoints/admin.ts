@@ -6,7 +6,6 @@ import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import { setupAppsignal } from "@/shared/plugins/Appsignal";
 import FloatingVue from "floating-vue";
 import "floating-vue/dist/style.css";
-import VueLazyload from "vue-lazyload";
 import veeValidate from "@/admin/plugins/VeeValidate";
 import {
   VueQueryPlugin,
@@ -36,7 +35,6 @@ app.use(VueQueryPlugin, vueQueryPluginOptions);
 app.use(router);
 app.use(pinia);
 setupAppsignal(app);
-app.use(VueLazyload);
 app.use(veeValidate);
 app.use(FloatingVue);
 

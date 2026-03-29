@@ -8,7 +8,7 @@ export default {
 import { v4 as uuidv4 } from "uuid";
 import { RouteLocationRaw } from "vue-router";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
-import loadingImage from "@/images/loading.svg";
+import { useLazyLoad } from "@/shared/composables/useLazyLoad";
 import placeholderImage from "@/images/fallback/store_image.webp";
 
 export type Props = {
@@ -43,6 +43,25 @@ onMounted(() => {
   uuid.value = uuidv4();
 });
 
+const imageSrc = computed(() => {
+  return props.src || placeholderImage;
+});
+
+const wrapperEl = ref<HTMLElement | null>(null);
+const wrapperRef = ref<HTMLElement | ComponentPublicInstance | null>(null);
+
+watch(wrapperRef, (value) => {
+  if (value) {
+    wrapperEl.value = value instanceof HTMLElement ? value : value.$el;
+  }
+});
+
+const { loadedSrc, isLoaded, hasError } = useLazyLoad(wrapperEl, imageSrc);
+
+const errorSrc = computed(() => {
+  return placeholderImage;
+});
+
 const componentType = computed(() => {
   if (props.to) {
     return "router-link";
@@ -75,21 +94,30 @@ const cssClasses = computed(() => {
     "lazy-image--transparent": props.transparent,
   };
 });
-
-const imageSrc = computed(() => {
-  return props.src || placeholderImage;
-});
 </script>
 
 <template>
   <component
     :is="componentType"
     :key="`${imageSrc}-${uuid}`"
+    ref="wrapperRef"
     v-bind="componentProps"
     class="lazy-image"
     :class="cssClasses"
   >
-    <img v-lazy="{ src: imageSrc, loading: loadingImage }" :alt="alt" />
+    <div v-if="!isLoaded && !hasError" class="lazy-image__skeleton" />
+    <img
+      v-if="isLoaded"
+      :src="loadedSrc"
+      :alt="alt"
+      class="lazy-image__img lazy-image__img--fade-in"
+    />
+    <img
+      v-else-if="hasError"
+      :src="errorSrc"
+      :alt="alt"
+      class="lazy-image__img lazy-image__img--error"
+    />
     <slot />
     <!-- eslint-disable-next-line vue/no-v-html -->
     <div v-if="caption" class="hidden-caption-content" v-html="caption" />

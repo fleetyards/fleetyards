@@ -8,6 +8,7 @@ export default {
 import { type Vehicle } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import MessageBody from "@/shared/components/AppNotifications/Message/Body/index.vue";
+import { useLazyLoad } from "@/shared/composables/useLazyLoad";
 
 type Props = {
   vehicle: Vehicle;
@@ -58,6 +59,9 @@ const paragraph2 = computed(() => {
 
   return t("messages.vehicle.add.success.paragraph2");
 });
+
+const target = ref<HTMLElement | null>(null);
+const { loadedSrc, isLoaded } = useLazyLoad(target, image);
 </script>
 
 <template>
@@ -69,5 +73,7 @@ const paragraph2 = computed(() => {
       {{ linkLabel }}
     </router-link>
   </MessageBody>
-  <img v-lazy="image" :alt="alt" :title="title || alt" />
+  <div ref="target">
+    <img v-if="isLoaded" :src="loadedSrc" :alt="alt" :title="title || alt" />
+  </div>
 </template>

@@ -1,4 +1,3 @@
-import VueLazyload from "vue-lazyload";
 import AppV1 from "@/embed/AppV1.vue";
 import router from "@/embed/plugins/Router";
 import { createPinia } from "pinia";
@@ -15,7 +14,6 @@ setTimeout(() => {
 
   app.use(router);
   app.use(pinia);
-  app.use(VueLazyload);
   app.use(VueQueryPlugin);
 
   app.use(FloatingVue, {

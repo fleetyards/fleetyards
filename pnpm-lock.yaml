@@ -177,9 +177,6 @@ importers:
       vue-collapsed:
         specifier: ^1.3.5
         version: 1.3.5
-      vue-lazyload:
-        specifier: ~3.0.0
-        version: 3.0.0
       vue-number-animation:
         specifier: ^2.0.2
         version: 2.0.2(vue@3.5.30(typescript@5.9.3))
@@ -6607,9 +6604,6 @@ packages:
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
-
-  vue-lazyload@3.0.0:
-    resolution: {integrity: sha512-h2keL/Rj550dLgesgOtXJS9qOiSMmuJNeVlfNAYV1/IYwOQYaWk5mFJlwRxmZDK9YC5gECcFLYYj7z1lKSf9ug==}
 
   vue-number-animation@2.0.2:
     resolution: {integrity: sha512-1YQ1f6SHqQGdrf9/EKykvCa9FlAcUoh7o3c4Fe5Qc0TDbj415brB1lTpuIw6rpkTApLR7APerlZHXjNOWYOA3Q==}
@@ -13615,8 +13609,6 @@ snapshots:
       semver: 7.7.4
     transitivePeerDependencies:
       - supports-color
-
-  vue-lazyload@3.0.0: {}
 
   vue-number-animation@2.0.2(vue@3.5.30(typescript@5.9.3)):
     dependencies:

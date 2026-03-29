@@ -190,8 +190,8 @@ const { data: quantumDrives, ...asyncStatus } = useComponentsQuery(
           <template #col-storeImage="{ record }">
             <div
               :key="storeImage(record)"
-              v-lazy:background-image="storeImage(record)"
-              class="image lazy"
+              :style="{ backgroundImage: `url(${storeImage(record)})` }"
+              class="image"
               alt="storeImage"
             />
           </template>
