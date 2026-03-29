@@ -32,7 +32,7 @@ export const routes: RouteRecordRaw[] = [
     },
     meta: {
       title: "apiV1",
-      icon: "fa-duotone fa-books",
+      icon: "fa-duotone fa-brackets-curly",
       mobileNav: 0,
     },
     children: apiV1Routes,
@@ -46,7 +46,7 @@ export const routes: RouteRecordRaw[] = [
     },
     meta: {
       title: "authApiV1",
-      icon: "fa-duotone fa-key",
+      icon: "fa-duotone fa-shield-check",
       mobileNav: 1,
     },
     children: authApiV1Routes,
