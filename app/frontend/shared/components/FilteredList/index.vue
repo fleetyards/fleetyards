@@ -174,7 +174,7 @@ const toggleFilter = () => {
           :class="{
             'col-lg-9 col-xxl-10': !fullscreen,
           }"
-          class="col-12 col-animated filtered-list__content"
+          class="col-12 col-animated"
         >
           <slot v-if="!hideLoading && loading" name="loader" :loading="loading">
             <Loader :loading="loading" fixed />
@@ -193,14 +193,7 @@ const toggleFilter = () => {
           </slot>
 
           <template v-else>
-            <transition name="fade">
-              <div
-                v-if="refetching"
-                class="filtered-list__refetch-overlay"
-              >
-                <Loader :loading="true" />
-              </div>
-            </transition>
+            <Loader :loading="refetching" fixed />
 
             <slot
               name="default"
