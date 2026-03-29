@@ -10,7 +10,8 @@
         "itemFinder": "Base de datos integral de ubicación de objetos y equipos con seguimiento de disponibilidad en tiempo real en el universo",
         "starHangar": "Mercado confiable para paquetes de naves de Star Citizen con comercio seguro y seguimiento de precios",
         "shinytracker": "Rastreador de progreso personal para misiones, reputación, logros y objetivos de exploración con estadísticas detalladas",
-        "uexCorp": "Plataforma de comercio de materias primas en tiempo real con seguimiento de precios, optimización de rutas comerciales y herramientas de análisis de mercado"
+        "uexCorp": "Plataforma de comercio de materias primas en tiempo real con seguimiento de precios, optimización de rutas comerciales y herramientas de análisis de mercado",
+        "scmdb": "Explora misiones, recompensas, rutas de reputación, recursos mineros y más para Star Citizen"
       },
       "discontinued": "Este proyecto ha sido descontinuado."
     }

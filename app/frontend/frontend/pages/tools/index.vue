@@ -22,6 +22,7 @@ import starHangarImage from "@/images/tools/star-hangar.webp";
 import shinytrackerImage from "@/images/tools/shinytracker.webp";
 import uexCorpImage from "@/images/tools/uex-corp.webp";
 import cargoGridViewerImage from "@/images/tools/cargo-grid-viewer.webp";
+import scmdbImage from "@/images/tools/scmdb.webp";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -38,6 +39,7 @@ const toolImages: Record<string, string> = {
   shinytracker: shinytrackerImage,
   uexCorp: uexCorpImage,
   cargoGridViewer: cargoGridViewerImage,
+  scmdb: scmdbImage,
 };
 
 const tools: Array<Tool & { key: string }> = [
@@ -101,6 +103,12 @@ const tools: Array<Tool & { key: string }> = [
     url: "https://sc-cargo.space/",
     name: "Cargo Grid Viewer",
     description: t("tools.descriptions.cargoGridViewer"),
+  },
+  {
+    key: "scmdb",
+    url: "https://scmdb.net/",
+    name: "SCMDB // Mission Database",
+    description: t("tools.descriptions.scmdb"),
   },
 ];
 
