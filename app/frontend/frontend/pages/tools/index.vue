@@ -24,6 +24,7 @@ import uexCorpImage from "@/images/tools/uex-corp.webp";
 import cargoGridViewerImage from "@/images/tools/cargo-grid-viewer.webp";
 import scmdbImage from "@/images/tools/scmdb.webp";
 import regolithImage from "@/images/tools/regolith.webp";
+import spviewerImage from "@/images/tools/spviewer.webp";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -41,6 +42,7 @@ const toolImages: Record<string, string> = {
   cargoGridViewer: cargoGridViewerImage,
   scmdb: scmdbImage,
   regolith: regolithImage,
+  spviewer: spviewerImage,
 };
 
 type ToolEntry = Tool & { key: string; category?: string };
@@ -70,6 +72,12 @@ const featuredTools: Array<ToolEntry> = [
 ];
 
 const tools: Array<ToolEntry> = [
+  {
+    key: "spviewer",
+    url: "https://www.spviewer.eu/",
+    name: "SP Viewer",
+    description: t("tools.descriptions.spviewer"),
+  },
   {
     key: "uexCorp",
     url: "https://uexcorp.space/",

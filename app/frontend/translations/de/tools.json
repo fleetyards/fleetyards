@@ -13,7 +13,8 @@
         "uexCorp": "Echtzeit-Handelsplattform für Rohstoffe mit Preisverfolgung, Handelsrouten-Optimierung und Marktanalyse-Tools",
         "cargoGridViewer": "3D-Frachtraster-Viewer mit Frachtraumdimensionen und Container-Passungen für alle Schiffe",
         "scmdb": "Durchsuche Missionen, Belohnungen, Reputationspfade, Bergbauressourcen und mehr für Star Citizen",
-        "regolith": "Star Citizen Mining-Tool mit Gesteinsscanning, Raffinierungsberechnungen und Abbaukopf-Vergleichen"
+        "regolith": "Star Citizen Mining-Tool mit Gesteinsscanning, Raffinierungsberechnungen und Abbaukopf-Vergleichen",
+        "spviewer": "Schiffsleistungsanalyse-Tool mit detaillierten Flugeigenschaften, Geschwindigkeitsvergleichen und Manövrierfähigkeitsdaten"
       },
       "categories": {
         "trading": "Handel & Wirtschaft",
