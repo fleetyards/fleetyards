@@ -71,7 +71,9 @@ RUN pnpm run postinstall
 RUN bundle exec bootsnap precompile app/ lib/
 
 # Build frontend assets with Vite
-RUN SECRET_KEY_BASE_DUMMY=1 \
+RUN --mount=type=secret,id=RAILS_MASTER_KEY \
+    RAILS_MASTER_KEY="$(cat /run/secrets/RAILS_MASTER_KEY)" \
+    SECRET_KEY_BASE_DUMMY=1 \
     bin/rails assets:precompile
 
 # Copy PWA files to public root (Vite outputs to public/vite/ but they need root scope)

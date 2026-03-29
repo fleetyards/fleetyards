@@ -119,7 +119,7 @@ Rails.application.configure do
   config.action_mailer.asset_host = Rails.configuration.app.cdn_endpoint || endpoints.frontend_endpoint
 
   config.action_mailer.postmark_settings = {
-    api_token: ENV["SECRET_KEY_BASE_DUMMY"] ? "build-placeholder" : Rails.application.credentials.postmark_api_token
+    api_token: Rails.application.credentials.postmark_api_token
   }
 
   if ENV["RAILS_LOG_TO_STDOUT"].present?
