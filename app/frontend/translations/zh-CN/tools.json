@@ -15,7 +15,18 @@
         "scmdb": "浏览星际公民的任务、奖励、声望路径、采矿资源等",
         "regolith": "星际公民采矿工具，提供岩石扫描、精炼计算和采矿头比较"
       },
-      "discontinued": "该项目已停止维护。"
+      "categories": {
+        "trading": "贸易与经济",
+        "loadouts": "飞船装载与战斗",
+        "mining": "采矿",
+        "guides": "信息与指南",
+        "missions": "任务与数据库",
+        "roadmap": "路线图与追踪",
+        "fleet": "舰队管理",
+        "marketplace": "市场"
+      },
+      "discontinued": "该项目已停止维护。",
+      "discontinuedHeading": "已停止的项目"
     }
   }
 }

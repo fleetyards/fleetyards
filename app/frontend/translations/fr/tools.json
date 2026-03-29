@@ -15,7 +15,18 @@
         "scmdb": "Parcourez les missions, récompenses, chemins de réputation, ressources minières et plus pour Star Citizen",
         "regolith": "Outil minier Star Citizen avec scan de roches, calculs de raffinage et comparaisons de têtes de minage"
       },
-      "discontinued": "Ce projet a été abandonné."
+      "categories": {
+        "trading": "Commerce et Économie",
+        "loadouts": "Équipement et Combat",
+        "mining": "Minage",
+        "guides": "Informations et Guides",
+        "missions": "Missions et Base de Données",
+        "roadmap": "Feuille de Route et Suivi",
+        "fleet": "Gestion de Flotte",
+        "marketplace": "Marché"
+      },
+      "discontinued": "Ce projet a été abandonné.",
+      "discontinuedHeading": "Projets abandonnés"
     }
   }
 }

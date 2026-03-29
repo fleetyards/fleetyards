@@ -15,7 +15,18 @@
         "scmdb": "Esplora missioni, ricompense, percorsi di reputazione, risorse minerarie e altro per Star Citizen",
         "regolith": "Strumento minerario Star Citizen con scansione rocce, calcoli di raffinazione e confronti di testine di estrazione"
       },
-      "discontinued": "Questo progetto è stato dismesso."
+      "categories": {
+        "trading": "Commercio ed Economia",
+        "loadouts": "Equipaggiamento e Combattimento",
+        "mining": "Estrazione Mineraria",
+        "guides": "Informazioni e Guide",
+        "missions": "Missioni e Database",
+        "roadmap": "Roadmap e Tracciamento",
+        "fleet": "Gestione Flotta",
+        "marketplace": "Mercato"
+      },
+      "discontinued": "Questo progetto è stato dismesso.",
+      "discontinuedHeading": "Progetti dismessi"
     }
   }
 }

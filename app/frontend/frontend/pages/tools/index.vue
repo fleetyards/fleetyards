@@ -28,7 +28,6 @@ import regolithImage from "@/images/tools/regolith.webp";
 const { t } = useI18n();
 const route = useRoute();
 
-// Create image mapping using fixed keys
 const toolImages: Record<string, string> = {
   verseGuide: verseGuideImage,
   starCitizenTools: starCitizenToolsImage,
@@ -44,7 +43,51 @@ const toolImages: Record<string, string> = {
   regolith: regolithImage,
 };
 
-const tools: Array<Tool & { key: string }> = [
+type ToolEntry = Tool & { key: string; category?: string };
+
+const featuredTools: Array<ToolEntry> = [
+  {
+    key: "scmdb",
+    url: "https://scmdb.net/",
+    name: "SCMDB // Mission Database",
+    description: t("tools.descriptions.scmdb"),
+    category: t("tools.categories.missions"),
+  },
+  {
+    key: "erkul",
+    url: "https://erkul.games/",
+    name: "Erkul",
+    description: t("tools.descriptions.erkul"),
+    category: t("tools.categories.loadouts"),
+  },
+  {
+    key: "regolith",
+    url: "https://regolith.rocks/",
+    name: "Regolith Co.",
+    description: t("tools.descriptions.regolith"),
+    category: t("tools.categories.mining"),
+  },
+];
+
+const tools: Array<ToolEntry> = [
+  {
+    key: "uexCorp",
+    url: "https://uexcorp.space/",
+    name: "UEX Corp",
+    description: t("tools.descriptions.uexCorp"),
+  },
+  {
+    key: "itemFinder",
+    url: "https://finder.cstone.space/",
+    name: "Item Finder",
+    description: t("tools.descriptions.itemFinder"),
+  },
+  {
+    key: "cargoGridViewer",
+    url: "https://sc-cargo.space/",
+    name: "Cargo Grid Viewer",
+    description: t("tools.descriptions.cargoGridViewer"),
+  },
   {
     key: "verseGuide",
     url: "https://verseguide.com/",
@@ -58,17 +101,10 @@ const tools: Array<Tool & { key: string }> = [
     description: t("tools.descriptions.starCitizenTools"),
   },
   {
-    key: "starship42",
-    url: "https://starship42.com/",
-    name: "Starship42",
-    description: t("tools.descriptions.starship42"),
-    disabled: true,
-  },
-  {
-    key: "erkul",
-    url: "https://erkul.games/",
-    name: "Erkul",
-    description: t("tools.descriptions.erkul"),
+    key: "shinytracker",
+    url: "https://shinytracker.app/",
+    name: "ShinyTracker",
+    description: t("tools.descriptions.shinytracker"),
   },
   {
     key: "starjump",
@@ -77,72 +113,114 @@ const tools: Array<Tool & { key: string }> = [
     description: t("tools.descriptions.starjump"),
   },
   {
-    key: "itemFinder",
-    url: "https://finder.cstone.space/",
-    name: "Item Finder",
-    description: t("tools.descriptions.itemFinder"),
-  },
-  {
     key: "starHangar",
     url: "https://star-hangar.com/",
     name: "Star Hangar",
     description: t("tools.descriptions.starHangar"),
   },
+];
+
+const discontinuedTools: Array<ToolEntry> = [
   {
-    key: "shinytracker",
-    url: "https://shinytracker.app/",
-    name: "ShinyTracker",
-    description: t("tools.descriptions.shinytracker"),
-  },
-  {
-    key: "uexCorp",
-    url: "https://uexcorp.space/",
-    name: "UEX Corp",
-    description: t("tools.descriptions.uexCorp"),
-  },
-  {
-    key: "cargoGridViewer",
-    url: "https://sc-cargo.space/",
-    name: "Cargo Grid Viewer",
-    description: t("tools.descriptions.cargoGridViewer"),
-  },
-  {
-    key: "scmdb",
-    url: "https://scmdb.net/",
-    name: "SCMDB // Mission Database",
-    description: t("tools.descriptions.scmdb"),
-  },
-  {
-    key: "regolith",
-    url: "https://regolith.rocks/",
-    name: "Regolith Co.",
-    description: t("tools.descriptions.regolith"),
+    key: "starship42",
+    url: "https://starship42.com/",
+    name: "Starship42",
+    description: t("tools.descriptions.starship42"),
+    disabled: true,
   },
 ];
 
-const toolsWithImages = computed(() =>
-  tools.map((tool) => ({
+const withImages = (list: Array<ToolEntry>) =>
+  list.map((tool) => ({
     ...tool,
     image: toolImages[tool.key],
-  })),
+  }));
+
+const featuredToolsWithImages = computed(() => withImages(featuredTools));
+const toolsWithImages = computed(() => withImages(tools));
+const discontinuedToolsWithImages = computed(() =>
+  withImages(discontinuedTools),
 );
 </script>
 
 <template>
   <Heading hero>{{ t(`headlines.${route.meta.title}`) }}</Heading>
-  <div class="row">
-    <div
+
+  <div class="tools-featured">
+    <ToolCard
+      v-for="tool in featuredToolsWithImages"
+      :key="tool.key"
+      :url="tool.url"
+      :name="tool.name"
+      :description="tool.description"
+      :image="tool.image"
+      :category="tool.category"
+      featured
+    />
+  </div>
+
+  <div class="tools-grid">
+    <ToolCard
       v-for="tool in toolsWithImages"
       :key="tool.key"
-      class="col-12 col-md-6 col-lg-4 col-xl-3 col-xxl-2dot4"
-    >
-      <ToolCard
-        :url="tool.url"
-        :name="tool.name"
-        :description="tool.description"
-        :image="tool.image"
-        :disabled="tool.disabled"
-      />
-    </div>
+      :url="tool.url"
+      :name="tool.name"
+      :description="tool.description"
+      :image="tool.image"
+    />
+  </div>
+
+  <Heading level="h2" size="lg" class="tools-discontinued-heading">
+    {{ t("tools.discontinuedHeading") }}
+  </Heading>
+  <div class="tools-grid">
+    <ToolCard
+      v-for="tool in discontinuedToolsWithImages"
+      :key="tool.key"
+      :url="tool.url"
+      :name="tool.name"
+      :description="tool.description"
+      :image="tool.image"
+      disabled
+    />
   </div>
 </template>
+
+<style lang="scss" scoped>
+.tools-featured {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 2rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 2rem;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tools-discontinued-heading {
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(white, 0.1);
+  color: $gray-lighter;
+}
+</style>

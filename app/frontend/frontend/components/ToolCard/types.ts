@@ -4,4 +4,6 @@ export interface Tool {
   description: string;
   image?: string;
   disabled?: boolean;
+  featured?: boolean;
+  category?: string;
 }

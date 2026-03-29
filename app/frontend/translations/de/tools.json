@@ -15,7 +15,18 @@
         "scmdb": "Durchsuche Missionen, Belohnungen, Reputationspfade, Bergbauressourcen und mehr für Star Citizen",
         "regolith": "Star Citizen Mining-Tool mit Gesteinsscanning, Raffinierungsberechnungen und Abbaukopf-Vergleichen"
       },
-      "discontinued": "Dieses Projekt wurde eingestellt."
+      "categories": {
+        "trading": "Handel & Wirtschaft",
+        "loadouts": "Schiffsausrüstung & Kampf",
+        "mining": "Bergbau",
+        "guides": "Informationen & Anleitungen",
+        "missions": "Missionen & Datenbank",
+        "roadmap": "Roadmap & Verfolgung",
+        "fleet": "Flottenverwaltung",
+        "marketplace": "Marktplatz"
+      },
+      "discontinued": "Dieses Projekt wurde eingestellt.",
+      "discontinuedHeading": "Eingestellte Projekte"
     }
   }
 }

@@ -15,7 +15,18 @@
         "scmdb": "Browse missions, rewards, reputation paths, mining resources and more for Star Citizen",
         "regolith": "Star Citizen mining tool with rock scanning, refining calculations, and mining head comparisons"
       },
-      "discontinued": "This project has been discontinued."
+      "categories": {
+        "trading": "Trading & Economy",
+        "loadouts": "Ship Loadouts & Combat",
+        "mining": "Mining",
+        "guides": "Information & Guides",
+        "missions": "Missions & Database",
+        "roadmap": "Roadmap & Tracking",
+        "fleet": "Fleet Management",
+        "marketplace": "Marketplace"
+      },
+      "discontinued": "This project has been discontinued.",
+      "discontinuedHeading": "Discontinued Projects"
     }
   }
 }
