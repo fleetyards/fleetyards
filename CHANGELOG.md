@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.33.2](https://github.com/fleetyards/fleetyards/compare/v5.33.1...v5.33.2) (2026-03-26)
+
+
+### Bug Fixes
+
+* use LEGACY_SSH_KEY for legacy Capistrano deploys ([4b24d88](https://github.com/fleetyards/fleetyards/commit/4b24d88fea7c27d6e4cb696d7a8d4c847e92fe77))
+
+### [5.33.1](https://github.com/fleetyards/fleetyards/compare/v5.33.0...v5.33.1) (2026-03-26)
+
+
+### Bug Fixes
+
+* rename deploy job to legacy and use dynamic known_hosts ([6eda803](https://github.com/fleetyards/fleetyards/commit/6eda8038c3a7701b10936eff4e660b6051fc0966))
+
+## [5.33.0](https://github.com/fleetyards/fleetyards/compare/v5.32.12...v5.33.0) (2026-03-26)
+
+
+### Features
+
+* replace admin emails with GitHub issue creation for paints import and loaner sync ([7960c3b](https://github.com/fleetyards/fleetyards/commit/7960c3bf8afa8ef882f5433f65e9d7973a4f0bf5))
+
+
+### Bug Fixes
+
+* add .worktrees to .gitignore ([ffa0b9a](https://github.com/fleetyards/fleetyards/commit/ffa0b9ad8f9101e5bba480610c3ffa143bd0185a))
+* clean up schema.rb from vue3 branch pollution ([7201c6e](https://github.com/fleetyards/fleetyards/commit/7201c6e2fcf7f13b98031794b1101c99e8be5730))
+
 ### [5.32.12](///compare/v5.32.11...v5.32.12) (2025-12-09)
 
 ### [5.32.11](///compare/v5.32.10...v5.32.11) (2025-12-09)

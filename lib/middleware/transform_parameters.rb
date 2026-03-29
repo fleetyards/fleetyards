@@ -18,7 +18,9 @@ module Middleware
     end
 
     private def decamelize(camel_cased_word)
-      camel_cased_word.split(/(?=[A-Z])/).join("_").downcase
+      camel_cased_word
+        .encode("UTF-8", invalid: :replace, undef: :replace, replace: "")
+        .split(/(?=[A-Z])/).join("_").downcase
     end
   end
 end
