@@ -69,6 +69,7 @@ env:
 accessories:
   db:
     image: postgres:16
+    cmd: postgres -c shared_preload_libraries=pg_stat_statements -c pg_stat_statements.track=all
     port: "5432:5432"
     env:
       clear:
