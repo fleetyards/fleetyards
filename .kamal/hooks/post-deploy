@@ -1,4 +1,9 @@
 #!/bin/sh
 
+DEST_FLAG=""
+if [ -n "$KAMAL_DESTINATION" ]; then
+  DEST_FLAG="-d $KAMAL_DESTINATION"
+fi
+
 echo "Running database migrations..."
-kamal app exec --roles=web 'bin/rails db:migrate'
+kamal app exec $DEST_FLAG --roles=web 'bin/rails db:migrate'
