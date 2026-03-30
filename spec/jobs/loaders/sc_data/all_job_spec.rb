@@ -5,7 +5,7 @@ require "rails_helper"
 RSpec.describe Loaders::ScData::AllJob do
   describe "#perform" do
     before do
-      allow(Rails.configuration.app).to receive(:sc_data).and_return({version: "3.24.0"})
+      allow(Rails.configuration).to receive(:sc_data).and_return({version: "3.24.0"})
     end
 
     it "creates an import, runs the loader, and finishes the import" do
@@ -17,7 +17,7 @@ RSpec.describe Loaders::ScData::AllJob do
 
       expect(import).to be_present
       expect(import.aasm_state).to eq("finished")
-      expect(ScData::Loader::BaseLoader).to have_received(:all).with(sc_version: "3.24.0")
+      expect(ScData::Loader::BaseLoader).to have_received(:all)
     end
 
     it "marks import as failed on error" do

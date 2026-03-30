@@ -5,7 +5,7 @@ require "rails_helper"
 RSpec.describe Loaders::ScData::ModelsJob do
   describe "#perform" do
     before do
-      allow(Rails.configuration.app).to receive(:sc_data_sc_version).and_return("3.24.0")
+      allow(Rails.configuration).to receive(:sc_data).and_return({version: "3.24.0", environment: "live"})
     end
 
     it "creates an import, runs the loader, and finishes the import" do

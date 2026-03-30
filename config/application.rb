@@ -55,6 +55,7 @@ module Fleetyards
     config.middleware.use Middleware::TransformParameters
 
     config.app = config_for("app/main")
+    config.sc_data = config_for("app/sc_data")
     config.maintainer = config_for("app/maintainer")
     config.rsi = config_for("app/rsi")
     config.api_schema = config_for("app/api_schema")

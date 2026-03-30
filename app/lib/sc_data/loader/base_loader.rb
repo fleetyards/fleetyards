@@ -3,19 +3,16 @@ module ScData
     class BaseLoader
       attr_accessor :sc_version, :sc_environment
 
-      def self.all(sc_environment: nil, sc_version: nil)
-        sc_version ||= Rails.configuration.app.sc_data[:version]
-        sc_environment ||= Rails.configuration.app.sc_data[:environment]
-
-        ::ScData::Loader::ManufacturersLoader.new(sc_environment:, sc_version:).all
-        ::ScData::Loader::ItemsLoader.new(sc_environment:, sc_version:).all
-        ::ScData::Loader::ModelsLoader.new(sc_environment:, sc_version:).all
-        ::ScData::Loader::ModelModulesLoader.new(sc_environment:, sc_version:).all
+      def self.all
+        ::ScData::Loader::ManufacturersLoader.new.all
+        ::ScData::Loader::ItemsLoader.new.all
+        ::ScData::Loader::ModelsLoader.new.all
+        ::ScData::Loader::ModelModulesLoader.new.all
       end
 
-      def initialize(sc_environment: nil, sc_version: nil)
-        self.sc_environment = sc_environment || Rails.configuration.app.sc_data[:environment]
-        self.sc_version = sc_version || Rails.configuration.app.sc_data[:version]
+      def initialize
+        self.sc_version = Rails.configuration.sc_data[:version]
+        self.sc_environment = Rails.configuration.sc_data[:environment]
       end
 
       def load_item(path)

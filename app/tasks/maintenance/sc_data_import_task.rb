@@ -5,13 +5,13 @@ module Maintenance
     no_collection
 
     def process
-      version = Rails.configuration.app.sc_data[:version]
+      version = Rails.configuration.sc_data[:version]
 
       import = Imports::ScData::AllImport.create(version:)
 
       import.start!
 
-      ::ScData::Loader::BaseLoader.all(sc_version: version)
+      ::ScData::Loader::BaseLoader.all
 
       import.finish!
     rescue => e

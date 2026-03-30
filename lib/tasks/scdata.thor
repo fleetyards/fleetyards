@@ -18,62 +18,96 @@ class Scdata < Thor
   end
 
   desc "parse", "Parse SC Data"
-  def parse(sc_version = nil, sc_environment = nil, export_folder = EXPORT_FOLDER)
+  def parse(sc_environment = nil, export_folder = EXPORT_FOLDER)
     require "./config/environment"
 
-    sc_version ||= Rails.configuration.app.sc_data[:version]
-    sc_environment ||= Rails.configuration.app.sc_data[:environment]
+    sc_environment ||= Rails.configuration.sc_data[:environment]
+    sc_version = latest_version(export_folder, sc_environment)
+
+    say("Parsing SC Data version: #{sc_version} (#{sc_environment})", :green)
 
     ScData::Parser::BaseParser.all(base_folder: Rails.root.join(export_folder), sc_version:, sc_environment:)
+
+    update_config(sc_version, sc_environment)
+
+    say("Updated config/app/sc_data.yml to version: #{sc_version}", :green)
   end
 
   desc "load_all", "Load all SC Data (manufacturers, items, models, model modules)"
-  def load_all(sc_version = nil, sc_environment = nil)
+  def load_all
     require "./config/environment"
 
-    sc_version ||= Rails.configuration.app.sc_data[:version]
-    sc_environment ||= Rails.configuration.app.sc_data[:environment]
+    say("Loading all SC Data #{config_info}", :green)
 
-    ScData::Loader::BaseLoader.all(sc_version:, sc_environment:)
+    ScData::Loader::BaseLoader.all
   end
 
   desc "load_manufacturers", "Load Manufacturers from SC Data"
-  def load_manufacturers(sc_version = nil, sc_environment = nil)
+  def load_manufacturers
     require "./config/environment"
 
-    sc_version ||= Rails.configuration.app.sc_data[:version]
-    sc_environment ||= Rails.configuration.app.sc_data[:environment]
+    say("Loading manufacturers from SC Data #{config_info}", :green)
 
-    ScData::Loader::ManufacturersLoader.new(sc_version:, sc_environment:).all
+    ScData::Loader::ManufacturersLoader.new.all
   end
 
   desc "load_items", "Load Items from SC Data"
-  def load_items(sc_version = nil, sc_environment = nil)
+  def load_items
     require "./config/environment"
 
-    sc_version ||= Rails.configuration.app.sc_data[:version]
-    sc_environment ||= Rails.configuration.app.sc_data[:environment]
+    say("Loading items from SC Data #{config_info}", :green)
 
-    ScData::Loader::ItemsLoader.new(sc_version:, sc_environment:).all
+    ScData::Loader::ItemsLoader.new.all
   end
 
   desc "load_models", "Load Models (hardpoints) from SC Data"
-  def load_models(sc_version = nil, sc_environment = nil)
+  def load_models
     require "./config/environment"
 
-    sc_version ||= Rails.configuration.app.sc_data[:version]
-    sc_environment ||= Rails.configuration.app.sc_data[:environment]
+    say("Loading models from SC Data #{config_info}", :green)
 
-    ScData::Loader::ModelsLoader.new(sc_version:, sc_environment:).all
+    ScData::Loader::ModelsLoader.new.all
   end
 
   desc "load_model_modules", "Load Model Modules from SC Data"
-  def load_model_modules(sc_version = nil, sc_environment = nil)
+  def load_model_modules
     require "./config/environment"
 
-    sc_version ||= Rails.configuration.app.sc_data[:version]
-    sc_environment ||= Rails.configuration.app.sc_data[:environment]
+    say("Loading model modules from SC Data #{config_info}", :green)
 
-    ScData::Loader::ModelModulesLoader.new(sc_version:, sc_environment:).all
+    ScData::Loader::ModelModulesLoader.new.all
+  end
+
+  private
+
+  def config_info
+    config = Rails.configuration.sc_data
+    "version: #{config[:version]} (#{config[:environment]})"
+  end
+
+  def latest_version(export_folder, sc_environment)
+    raw_path = File.join(export_folder, "raw")
+
+    raise Thor::Error, "Raw data folder not found: #{raw_path}" unless Dir.exist?(raw_path)
+
+    folders = Dir.children(raw_path)
+      .select { |name| name.match?(/\A.+-#{Regexp.escape(sc_environment)}\.\d+\z/) }
+      .sort_by { |name| name.match(/\.(\d+)\z/)[1].to_i }
+
+    raise Thor::Error, "No data found for environment: #{sc_environment}" if folders.empty?
+
+    folders.last
+  end
+
+  def update_config(sc_version, sc_environment)
+    config_path = File.join(Dir.pwd, "config/app/sc_data.yml")
+
+    content = <<~YAML
+      shared:
+        version: "#{sc_version}"
+        environment: "#{sc_environment}"
+    YAML
+
+    File.write(config_path, content)
   end
 end
