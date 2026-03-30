@@ -35,7 +35,7 @@ const { t } = useI18n();
     rel="noopener"
     class="tool-card"
     :class="{ 'tool-card-featured': featured }"
-    data-test="tool-card"
+    data-test="tool-card-link"
   >
     <div v-if="image" class="tool-card-bg">
       <img :src="image" :alt="name" loading="lazy" />
@@ -57,7 +57,7 @@ const { t } = useI18n();
       <img :src="image" :alt="name" loading="lazy" />
     </div>
     <div class="tool-card-overlay" />
-    <div class="tool-card-banner">
+    <div class="tool-card-banner" data-test="tool-card-banner">
       {{ t("tools.discontinued") }}
     </div>
     <div class="tool-card-content">

@@ -17,7 +17,7 @@ test.describe("Tools Index", () => {
   });
 
   test("Shows tool cards", async ({ page }) => {
-    const toolCards = page.getByTestId("tool-card");
+    const toolCards = page.getByTestId("tool-card-link");
     await expect(toolCards.first()).toBeVisible();
 
     // Verify some known tools are present

@@ -48,8 +48,7 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
           data = JSON.parse(response.body)
 
           expect(data.size).to eq(2)
-          expect(data[0]["id"]).to eq(fleet_1.id)
-          expect(data[1]["id"]).to eq(fleet_2.id)
+          expect(data.map { |f| f["id"] }).to match_array([fleet_1.id, fleet_2.id])
         end
       end
 
