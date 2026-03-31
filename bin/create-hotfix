@@ -1,0 +1,23 @@
+#!/bin/bash
+set -euo pipefail
+
+# Find the latest non-RC release tag
+LATEST_TAG=$(git tag -l "v[0-9]*" --sort=-version:refname | grep -v '\-rc\.' | head -1)
+
+if [ -z "$LATEST_TAG" ]; then
+  echo "Error: No release tags found"
+  exit 1
+fi
+
+VERSION="${LATEST_TAG#v}"
+IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+NEXT_PATCH=$((PATCH + 1))
+BRANCH="hotfix/${MAJOR}.${MINOR}.${NEXT_PATCH}"
+
+if git show-ref --verify --quiet "refs/heads/$BRANCH"; then
+  echo "Branch $BRANCH already exists, switching to it"
+  git checkout "$BRANCH"
+else
+  echo "Creating $BRANCH from $LATEST_TAG"
+  git checkout -b "$BRANCH" "$LATEST_TAG"
+fi
