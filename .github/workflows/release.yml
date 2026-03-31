@@ -12,6 +12,7 @@ jobs:
     permissions:
       contents: read
       packages: write
+    secrets: inherit
 
   deploy-to-stage:
     if: github.event.release.prerelease
